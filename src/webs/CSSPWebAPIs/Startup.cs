@@ -165,10 +165,18 @@ namespace CSSPWebAPIs
             services.AddScoped<IContactService, ContactService>();
 
             LoadAllDBServices(services);
-            services.AddScoped<ICSSPFileService, CSSPFileService>();
-            services.AddScoped<ICreateGzFileService, CreateGzFileService>();
-            services.AddScoped<IDownloadGzFileService, DownloadGzFileService>();
-            services.AddScoped<IReadGzFileService, ReadGzFileService>();
+            
+            if (RunningOn == "Azure")
+            {
+                services.AddScoped<ICreateGzFileService, CreateGzFileService>();
+            }
+
+            if (RunningOn == "Local")
+            {
+                services.AddScoped<ICSSPFileService, CSSPFileService>();
+                services.AddScoped<IDownloadGzFileService, DownloadGzFileService>();
+                services.AddScoped<IReadGzFileService, ReadGzFileService>();
+            }
 
             if (RunningOn == "Local")
             {

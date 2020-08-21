@@ -35,78 +35,25 @@ namespace CSSPDesktopServices.Services
             AppendStatus(new AppendEventArgs(string.Format(appTextModel.Found_InDBLogin, "Contact")));
             ContactLoggedIn = contact;
 
-            // doing LoginEmail
-            LoginEmail = (from c in dbLogin.Preferences
-                          where c.PreferenceName == "LoginEmail"
-                          select c.PreferenceText).FirstOrDefault();
+            // doing preference
+            preference = (from c in dbLogin.Preferences
+                          select c).FirstOrDefault();
 
-            if (string.IsNullOrWhiteSpace(LoginEmail))
+            if (preference == null)
             {
-                AppendStatus(new AppendEventArgs(string.Format(appTextModel.CouldNotFind_InDBLogin, "LoginEmail")));
+                AppendStatus(new AppendEventArgs(string.Format(appTextModel.CouldNotFind_InDBLogin, "Preference")));
 
                 LoginRequired = true;
                 return await Task.FromResult(true);
             }
 
-            AppendStatus(new AppendEventArgs(string.Format(appTextModel.Found_InDBLogin, "LoginEmail")));
-            LoginEmail = await Descramble(LoginEmail);
-
-            // doing Password
-            Password = (from c in dbLogin.Preferences
-                        where c.PreferenceName == "Password"
-                        select c.PreferenceText).FirstOrDefault();
-
-            if (string.IsNullOrWhiteSpace(Password))
-            {
-                AppendStatus(new AppendEventArgs(string.Format(appTextModel.CouldNotFind_InDBLogin, "Password")));
-
-                LoginRequired = true;
-                return await Task.FromResult(true);
-            }
-
-            AppendStatus(new AppendEventArgs(string.Format(appTextModel.Found_InDBLogin, "Password")));
-            Password = await Descramble(Password);
-
-            // doing LoggedIn
-            string LoggedInTxt = (from c in dbLogin.Preferences
-                                  where c.PreferenceName == "LoggedIn"
-                                  select c.PreferenceText).FirstOrDefault();
-
-            if (string.IsNullOrWhiteSpace(LoggedInTxt))
-            {
-                AppendStatus(new AppendEventArgs(string.Format(appTextModel.CouldNotFind_InDBLogin, "LoggedIn")));
-
-                LoginRequired = true;
-                return await Task.FromResult(true);
-            }
-
-            AppendStatus(new AppendEventArgs(string.Format(appTextModel.Found_InDBLogin, "LoggedIn")));
-            LoggedInTxt = await Descramble(LoggedInTxt);
-
-            IsLoggedIn = bool.Parse(LoggedInTxt);
-
-            if (!IsLoggedIn)
-            {
-                LoginRequired = true;
-                return await Task.FromResult(true);
-            }
-
-            // doing AzureStore
-            AzureStore = (from c in dbLogin.Preferences
-                          where c.PreferenceName == "AzureStore"
-                          select c.PreferenceText).FirstOrDefault();
-
-            if (string.IsNullOrWhiteSpace(AzureStore))
-            {
-                AppendStatus(new AppendEventArgs(string.Format(appTextModel.CouldNotFind_InDBLogin, "AzureStore")));
-
-                LoginRequired = true;
-                return await Task.FromResult(true);
-            }
-
-            AppendStatus(new AppendEventArgs(string.Format(appTextModel.Found_InDBLogin, "AzureStore")));
-            AzureStore = await Descramble(AzureStore);
-
+            AppendStatus(new AppendEventArgs(string.Format(appTextModel.Found_InDBLogin, "Preference")));
+            preference.AzureStore = await Descramble(preference.AzureStore);
+            preference.LoginEmail = await Descramble(preference.LoginEmail);
+            preference.Password = await Descramble(preference.Password);
+            preference.HasInternetConnection = bool.Parse(await Descramble(preference.HasInternetConnection.ToString()));
+            preference.LoggedIn = bool.Parse(await Descramble(preference.LoggedIn.ToString()));
+            preference.Token = await Descramble(preference.Token);
             LoginRequired = false;
 
             AppendStatus(new AppendEventArgs(""));

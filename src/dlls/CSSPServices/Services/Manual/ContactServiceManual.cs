@@ -1,0 +1,188 @@
+/*
+ * Manually edited
+ *
+ */
+
+using CSSPEnums;
+using CSSPModels;
+using CSSPCultureServices.Resources;
+using CSSPCultureServices.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Security.Claims;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+
+namespace CSSPServices
+{
+    public partial interface IContactService
+    {
+    }
+
+    public partial class ContactService : ControllerBase, IContactService
+    {
+        #region Variables
+        #endregion Variables
+
+        #region Properties
+        #endregion Properties
+
+        #region Constructors
+        #endregion Constructors
+
+        #region Functions public 
+        public async Task<ActionResult<Contact>> Register(RegisterModel registerModel)
+        {
+            // before starting ... should verify
+            // - required FirstName, LastName, Password, ConfirmPassword, LoginEmail
+            // - min and max lengths
+            // - Password and ConfirmPassword are equal
+            // - email is unique -- not already taken
+            // - FirstName, Initial and LastName is unique -- not already taken
+            // - Password has at least 6 characters
+
+            ValidationResults = RegisterModelService.Validate(new ValidationContext(registerModel));
+            if (ValidationResults.Count() > 0)
+            {
+                return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            ValidationResults = ValidateContact(new ValidationContext(registerModel));
+            if (ValidationResults.Count() > 0)
+            {
+                return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            // need to check if connected to the internet
+            // should only allow register to the CSSPDB on Azure
+            // Send a BadRequest, if not connected to the internet
+
+            AspNetUser aspNetUser = (from c in db.AspNetUsers
+                                     where c.UserName == registerModel.LoginEmail
+                                     select c).FirstOrDefault();
+
+            if (aspNetUser != null)
+            {
+                return BadRequest($"{ string.Format(CSSPCultureServicesRes.LoginEmail_IsAlreadyTaken, registerModel.LoginEmail) }");
+            }
+
+            Contact contact = (from c in db.Contacts
+                               where c.LoginEmail == registerModel.LoginEmail
+                               select c).FirstOrDefault();
+
+            if (contact != null)
+            {
+                return BadRequest($"{ string.Format(CSSPCultureServicesRes.LoginEmail_IsAlreadyTaken, registerModel.LoginEmail) }");
+            }
+
+            if (string.IsNullOrWhiteSpace(registerModel.Initial))
+            {
+                contact = (from c in db.Contacts
+                           where c.FirstName == registerModel.FirstName
+                           && c.LastName == registerModel.LastName
+                           select c).FirstOrDefault();
+
+                if (contact != null)
+                {
+                    string fullName = $"{ registerModel.FirstName } { registerModel.LastName }";
+                    return BadRequest($"{ string.Format(CSSPCultureServicesRes.FullName_IsAlreadyTaken, fullName) }");
+                }
+            }
+            else
+            {
+                contact = (from c in db.Contacts
+                           where c.FirstName == registerModel.FirstName
+                           && c.Initial == registerModel.Initial
+                           && c.LastName == registerModel.LastName
+                           select c).FirstOrDefault();
+
+                if (contact != null)
+                {
+                    string fullName = $"{ registerModel.FirstName } { registerModel.Initial }, { registerModel.LastName }";
+                    return BadRequest($"{ string.Format(CSSPCultureServicesRes.FullName_IsAlreadyTaken, fullName) }");
+                }
+            }
+
+            // creating user in AspNetUsers table
+            var user = new ApplicationUser { UserName = registerModel.LoginEmail, Email = registerModel.LoginEmail };
+            var result = await UserManager.CreateAsync(user, registerModel.Password);
+
+            if (result.Succeeded == false)
+            {
+                return BadRequest(result.Errors);
+            }
+
+            // Adding more info in Contacts table
+            Contact contactNew = new Contact()
+            {
+                Id = user.Id,
+                FirstName = registerModel.FirstName,
+                Initial = registerModel.Initial,
+                LastName = registerModel.LastName,
+                LoginEmail = registerModel.LoginEmail,
+                //etc...
+
+            };
+
+            // everything when ok, i.e. new user was properly registered
+            // now we should add the information to the CSSPDBLogin database
+            // AspNetUsers, Contacts, TVItemUserAuthorization, TVTypeUserAuthorization
+
+
+            return Ok(true);
+        }
+        #endregion Functions public
+
+        #region Functions private
+        private IEnumerable<ValidationResult> ValidateContact(ValidationContext validationContext)
+        {
+            RegisterModel registerModel = validationContext.ObjectInstance as RegisterModel;
+
+            if (registerModel.Password != registerModel.ConfirmPassword)
+            {
+                yield return new ValidationResult(CSSPCultureServicesRes.PasswordAndConfirmPasswordNotIdentical, new[] { nameof(registerModel.Password), nameof(registerModel.ConfirmPassword) });
+            }
+
+            if (string.IsNullOrWhiteSpace(registerModel.Initial))
+            {
+                if ((from c in dbIM.Contacts.AsNoTracking()
+                     where c.FirstName == registerModel.FirstName.Trim()
+                     && c.LastName == registerModel.LastName.Trim()
+                     select c).Any())
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.FullName_IsAlreadyTaken, $"{registerModel.FirstName} {registerModel.LastName}"), new[] { nameof(registerModel.FirstName), nameof(registerModel.Initial), nameof(registerModel.LastName) });
+                }
+            }
+            else
+            {
+                if ((from c in dbIM.Contacts.AsNoTracking()
+                     where c.FirstName == registerModel.FirstName.Trim()
+                     && c.Initial == registerModel.Initial.Trim()
+                     && c.LastName == registerModel.LastName.Trim()
+                     select c).Any())
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.FullName_IsAlreadyTaken, $"{registerModel.FirstName} {registerModel.Initial}, {registerModel.LastName}"), new[] { nameof(registerModel.FirstName), nameof(registerModel.Initial), nameof(registerModel.LastName) });
+                }
+            }
+
+            if ((from c in db.Contacts
+                 from a in db.AspNetUsers
+                 where c.Id == a.Id
+                 && a.Email == registerModel.LoginEmail.Trim()
+                 select c).Any())
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._HasToBeUnique, "LoginEmail"), new[] { nameof(registerModel.LoginEmail) });
+            }
+        }
+        #endregion Functions private
+
+    }
+}

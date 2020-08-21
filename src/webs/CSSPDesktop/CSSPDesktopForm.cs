@@ -166,9 +166,9 @@ namespace CSSPDesktop
         {
             if (!await CSSPDesktopService.CheckingInternetConnection()) return await Task.FromResult(false);
 
-            if (CSSPDesktopService.HasInternetConnection != null)
+            if (CSSPDesktopService.preference.HasInternetConnection != null)
             {
-                if ((bool)CSSPDesktopService.HasInternetConnection)
+                if ((bool)CSSPDesktopService.preference.HasInternetConnection)
                 {
                     Text = CSSPDesktopService.appTextModel.FormTitleText + $" --- ({ CSSPDesktopService.appTextModel.ConnectedOnInternet })";
                 }
@@ -390,7 +390,7 @@ namespace CSSPDesktop
 
             if (!await CheckInternetConnection()) return await Task.FromResult(false);
 
-            if (!await CSSPDesktopService.StoreVariableIndbLogin("HasInternetConnection", ((bool)CSSPDesktopService.HasInternetConnection).ToString().ToLower())) return await Task.FromResult(false);
+            if (!(bool)CSSPDesktopService.preference.HasInternetConnection) return await Task.FromResult(false);
 
             lblStatus.Text = "";
 
@@ -410,13 +410,13 @@ namespace CSSPDesktop
             }
 
             // Form
-            if (CSSPDesktopService.HasInternetConnection == null)
+            if (CSSPDesktopService.preference.HasInternetConnection == null)
             {
                 Text = CSSPDesktopService.appTextModel.FormTitleText;
             }
             else
             {
-                if ((bool)CSSPDesktopService.HasInternetConnection)
+                if ((bool)CSSPDesktopService.preference.HasInternetConnection)
                 {
                     Text = CSSPDesktopService.appTextModel.FormTitleText + $" --- ({ CSSPDesktopService.appTextModel.ConnectedOnInternet })";
                 }

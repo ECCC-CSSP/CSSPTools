@@ -37,6 +37,7 @@ namespace CSSPServices
         private CSSPDBContext db { get; }
         private CSSPDBLocalContext dbLocal { get; }
         private CSSPDBInMemoryContext dbIM { get; }
+        private CSSPDBLoginContext dbLogin { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -44,7 +45,9 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public TVItemUserAuthorizationService(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal = null, CSSPDBInMemoryContext dbIM = null)
+        public TVItemUserAuthorizationService(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, 
+           IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal = null, 
+           CSSPDBInMemoryContext dbIM = null, CSSPDBLoginContext dbLogin = null)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
@@ -52,6 +55,7 @@ namespace CSSPServices
             this.db = db;
             this.dbLocal = dbLocal;
             this.dbIM = dbIM;
+            this.dbLogin = dbLogin;
         }
         #endregion Constructors
 
@@ -79,6 +83,19 @@ namespace CSSPServices
             else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 TVItemUserAuthorization tvItemUserAuthorization = (from c in dbLocal.TVItemUserAuthorizations.AsNoTracking()
+                        where c.TVItemUserAuthorizationID == TVItemUserAuthorizationID
+                        select c).FirstOrDefault();
+
+                if (tvItemUserAuthorization == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(tvItemUserAuthorization));
+            }
+            else if (LoggedInService.DBLocation == DBLocationEnum.Login)
+            {
+                TVItemUserAuthorization tvItemUserAuthorization = (from c in dbLogin.TVItemUserAuthorizations.AsNoTracking()
                         where c.TVItemUserAuthorizationID == TVItemUserAuthorizationID
                         select c).FirstOrDefault();
 
@@ -119,6 +136,12 @@ namespace CSSPServices
             else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 List<TVItemUserAuthorization> tvItemUserAuthorizationList = (from c in dbLocal.TVItemUserAuthorizations.AsNoTracking() orderby c.TVItemUserAuthorizationID select c).Skip(skip).Take(take).ToList();
+
+                return await Task.FromResult(Ok(tvItemUserAuthorizationList));
+            }
+            else if (LoggedInService.DBLocation == DBLocationEnum.Login)
+            {
+                List<TVItemUserAuthorization> tvItemUserAuthorizationList = (from c in dbLogin.TVItemUserAuthorizations.AsNoTracking() orderby c.TVItemUserAuthorizationID select c).Skip(skip).Take(take).ToList();
 
                 return await Task.FromResult(Ok(tvItemUserAuthorizationList));
             }
@@ -174,6 +197,29 @@ namespace CSSPServices
                 {
                    dbLocal.TVItemUserAuthorizations.Remove(tvItemUserAuthorization);
                    dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.DBLocation == DBLocationEnum.Login)
+            {
+                TVItemUserAuthorization tvItemUserAuthorization = (from c in dbLogin.TVItemUserAuthorizations
+                                   where c.TVItemUserAuthorizationID == TVItemUserAuthorizationID
+                                   select c).FirstOrDefault();
+                
+                if (tvItemUserAuthorization == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItemUserAuthorization", "TVItemUserAuthorizationID", TVItemUserAuthorizationID.ToString())));
+                }
+
+                try
+                {
+                   dbLogin.TVItemUserAuthorizations.Remove(tvItemUserAuthorization);
+                   dbLogin.SaveChanges();
                 }
                 catch (DbUpdateException ex)
                 {
@@ -247,6 +293,20 @@ namespace CSSPServices
 
                 return await Task.FromResult(Ok(tvItemUserAuthorization));
             }
+            else if (LoggedInService.DBLocation == DBLocationEnum.Login)
+            {
+                try
+                {
+                   dbLogin.TVItemUserAuthorizations.Add(tvItemUserAuthorization);
+                   dbLogin.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(tvItemUserAuthorization));
+            }
             else
             {
                 try
@@ -295,6 +355,20 @@ namespace CSSPServices
             {
                dbLocal.TVItemUserAuthorizations.Update(tvItemUserAuthorization);
                dbLocal.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(tvItemUserAuthorization));
+            }
+            else if (LoggedInService.DBLocation == DBLocationEnum.Login)
+            {
+            try
+            {
+               dbLogin.TVItemUserAuthorizations.Update(tvItemUserAuthorization);
+               dbLogin.SaveChanges();
             }
             catch (DbUpdateException ex)
             {

@@ -60,7 +60,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                         sb.AppendLine($@"        public async Task<ActionResult<{ TypeName }>> Get{ TypeName }With{ TypeName }ID(int { TypeName }ID)");
                     }
                     sb.AppendLine(@"        {");
-                    sb.AppendLine(@"            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)");
+                    sb.AppendLine(@"            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)");
                     sb.AppendLine(@"            {");
                     sb.AppendLine(@"                return await Task.FromResult(Unauthorized());");
                     sb.AppendLine(@"            }");
@@ -108,6 +108,35 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                     sb.AppendLine($@"                return await Task.FromResult(Ok({ TypeNameLower }));");
 
                     sb.AppendLine(@"            }");
+                    if (currentDLLTypeInfo.Type.Name == "AspNetUser"
+                        || currentDLLTypeInfo.Type.Name == "Contact"
+                        || currentDLLTypeInfo.Type.Name == "TVItemUserAuthorization"
+                        || currentDLLTypeInfo.Type.Name == "TVTypeUserAuthorization")
+                    {
+                        sb.AppendLine(@"            else if (LoggedInService.DBLocation == DBLocationEnum.Login)");
+                        sb.AppendLine(@"            {");
+
+                        sb.AppendLine($@"                { TypeName } { TypeNameLower } = (from c in dbLogin.{ TypeName }{ Plurial }.AsNoTracking()");
+                        if (currentDLLTypeInfo.Name == "AspNetUser")
+                        {
+                            sb.AppendLine(@"                        where c.Id == Id");
+                        }
+                        else
+                        {
+                            sb.AppendLine($@"                        where c.{ TypeName }ID == { TypeName }ID");
+                        }
+                        sb.AppendLine(@"                        select c).FirstOrDefault();");
+                        sb.AppendLine(@"");
+                        sb.AppendLine($@"                if ({ TypeNameLower } == null)");
+                        sb.AppendLine(@"                {");
+                        sb.AppendLine($@"                   return await Task.FromResult(NotFound());");
+                        sb.AppendLine(@"                }");
+                        sb.AppendLine(@"");
+                        sb.AppendLine($@"                return await Task.FromResult(Ok({ TypeNameLower }));");
+
+                        sb.AppendLine(@"            }");
+
+                    }
                     sb.AppendLine(@"            else");
                     sb.AppendLine(@"            {");
 
@@ -134,7 +163,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
 
                     sb.AppendLine($@"        public async Task<ActionResult<List<{ TypeName }>>> Get{ TypeName }List(int skip = 0, int take = 100)");
                     sb.AppendLine(@"        {");
-                    sb.AppendLine(@"            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)");
+                    sb.AppendLine(@"            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)");
                     sb.AppendLine(@"            {");
                     sb.AppendLine(@"                return await Task.FromResult(Unauthorized());");
                     sb.AppendLine(@"            }");
@@ -168,6 +197,27 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                     sb.AppendLine($@"                return await Task.FromResult(Ok({ TypeNameLower }List));");
 
                     sb.AppendLine(@"            }");
+                    if (currentDLLTypeInfo.Type.Name == "AspNetUser"
+                        || currentDLLTypeInfo.Type.Name == "Contact"
+                        || currentDLLTypeInfo.Type.Name == "TVItemUserAuthorization"
+                        || currentDLLTypeInfo.Type.Name == "TVTypeUserAuthorization")
+                    {
+                        sb.AppendLine(@"            else if (LoggedInService.DBLocation == DBLocationEnum.Login)");
+                        sb.AppendLine(@"            {");
+
+                        if (TypeName == "AspNetUser")
+                        {
+                            sb.AppendLine($@"                List<{ TypeName }> { TypeNameLower }List = (from c in dbLogin.{ TypeName }{ Plurial }.AsNoTracking() orderby c.Id select c).Skip(skip).Take(take).ToList();");
+                        }
+                        else
+                        {
+                            sb.AppendLine($@"                List<{ TypeName }> { TypeNameLower }List = (from c in dbLogin.{ TypeName }{ Plurial }.AsNoTracking() orderby c.{ TypeName }ID select c).Skip(skip).Take(take).ToList();");
+                        }
+                        sb.AppendLine(@"");
+                        sb.AppendLine($@"                return await Task.FromResult(Ok({ TypeNameLower }List));");
+
+                        sb.AppendLine(@"            }");
+                    }
                     sb.AppendLine(@"            else");
                     sb.AppendLine(@"            {");
 

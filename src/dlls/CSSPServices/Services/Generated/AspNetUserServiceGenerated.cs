@@ -37,6 +37,7 @@ namespace CSSPServices
         private CSSPDBContext db { get; }
         private CSSPDBLocalContext dbLocal { get; }
         private CSSPDBInMemoryContext dbIM { get; }
+        private CSSPDBLoginContext dbLogin { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -44,7 +45,9 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public AspNetUserService(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal = null, CSSPDBInMemoryContext dbIM = null)
+        public AspNetUserService(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, 
+           IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal = null, 
+           CSSPDBInMemoryContext dbIM = null, CSSPDBLoginContext dbLogin = null)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
@@ -52,6 +55,7 @@ namespace CSSPServices
             this.db = db;
             this.dbLocal = dbLocal;
             this.dbIM = dbIM;
+            this.dbLogin = dbLogin;
         }
         #endregion Constructors
 
@@ -79,6 +83,19 @@ namespace CSSPServices
             else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 AspNetUser aspNetUser = (from c in dbLocal.AspNetUsers.AsNoTracking()
+                        where c.Id == Id
+                        select c).FirstOrDefault();
+
+                if (aspNetUser == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(aspNetUser));
+            }
+            else if (LoggedInService.DBLocation == DBLocationEnum.Login)
+            {
+                AspNetUser aspNetUser = (from c in dbLogin.AspNetUsers.AsNoTracking()
                         where c.Id == Id
                         select c).FirstOrDefault();
 
@@ -119,6 +136,12 @@ namespace CSSPServices
             else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 List<AspNetUser> aspNetUserList = (from c in dbLocal.AspNetUsers.AsNoTracking() orderby c.Id select c).Skip(skip).Take(take).ToList();
+
+                return await Task.FromResult(Ok(aspNetUserList));
+            }
+            else if (LoggedInService.DBLocation == DBLocationEnum.Login)
+            {
+                List<AspNetUser> aspNetUserList = (from c in dbLogin.AspNetUsers.AsNoTracking() orderby c.Id select c).Skip(skip).Take(take).ToList();
 
                 return await Task.FromResult(Ok(aspNetUserList));
             }
@@ -174,6 +197,29 @@ namespace CSSPServices
                 {
                    dbLocal.AspNetUsers.Remove(aspNetUser);
                    dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.DBLocation == DBLocationEnum.Login)
+            {
+                AspNetUser aspNetUser = (from c in dbLogin.AspNetUsers
+                                   where c.Id == Id
+                                   select c).FirstOrDefault();
+                
+                if (aspNetUser == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AspNetUser", "Id", Id)));
+                }
+
+                try
+                {
+                   dbLogin.AspNetUsers.Remove(aspNetUser);
+                   dbLogin.SaveChanges();
                 }
                 catch (DbUpdateException ex)
                 {
@@ -247,6 +293,20 @@ namespace CSSPServices
 
                 return await Task.FromResult(Ok(aspNetUser));
             }
+            else if (LoggedInService.DBLocation == DBLocationEnum.Login)
+            {
+                try
+                {
+                   dbLogin.AspNetUsers.Add(aspNetUser);
+                   dbLogin.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(aspNetUser));
+            }
             else
             {
                 try
@@ -295,6 +355,20 @@ namespace CSSPServices
             {
                dbLocal.AspNetUsers.Update(aspNetUser);
                dbLocal.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(aspNetUser));
+            }
+            else if (LoggedInService.DBLocation == DBLocationEnum.Login)
+            {
+            try
+            {
+               dbLogin.AspNetUsers.Update(aspNetUser);
+               dbLogin.SaveChanges();
             }
             catch (DbUpdateException ex)
             {

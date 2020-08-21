@@ -27,7 +27,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                 sb.AppendLine($@"        public async Task<ActionResult<bool>> Delete(int { TypeName }ID)");
             }
             sb.AppendLine(@"        {");
-            sb.AppendLine(@"            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)");
+            sb.AppendLine(@"            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)");
             sb.AppendLine(@"            {");
             sb.AppendLine(@"                return await Task.FromResult(Unauthorized());");
             sb.AppendLine(@"            }");
@@ -95,7 +95,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                 sb.AppendLine($@"                    return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""{ TypeName }ID"", { TypeName }ID.ToString())));");
             }
             sb.AppendLine(@"                }");
-            sb.AppendLine(@"");    
+            sb.AppendLine(@"");
             sb.AppendLine($@"                try");
             sb.AppendLine(@"                {");
             sb.AppendLine($@"                   dbLocal.{ TypeName }{ Plurial }.Remove({ TypeNameLower });");
@@ -105,10 +105,55 @@ namespace ServicesClassNameServiceGeneratedServices.Services
             sb.AppendLine(@"                {");
             sb.AppendLine($@"                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? "" Inner: "" + ex.InnerException.Message : """")));");
             sb.AppendLine(@"                }");
-            sb.AppendLine(@"");    
+            sb.AppendLine(@"");
             sb.AppendLine($@"                return await Task.FromResult(Ok(true));");
-            
+
             sb.AppendLine(@"            }");
+            if (dllTypeInto.Type.Name == "AspNetUser"
+                || dllTypeInto.Type.Name == "Contact"
+                || dllTypeInto.Type.Name == "TVItemUserAuthorization"
+                || dllTypeInto.Type.Name == "TVTypeUserAuthorization")
+            {
+                sb.AppendLine(@"            else if (LoggedInService.DBLocation == DBLocationEnum.Login)");
+
+                sb.AppendLine(@"            {");
+                sb.AppendLine($@"                { TypeName } { TypeNameLower } = (from c in dbLogin.{ TypeName }{ Plurial }");
+                if (TypeName == "AspNetUser")
+                {
+                    sb.AppendLine($@"                                   where c.Id == Id");
+                }
+                else
+                {
+                    sb.AppendLine($@"                                   where c.{ TypeName }ID == { TypeName }ID");
+                }
+                sb.AppendLine(@"                                   select c).FirstOrDefault();");
+                sb.AppendLine(@"                ");
+                sb.AppendLine($@"                if ({ TypeNameLower } == null)");
+                sb.AppendLine(@"                {");
+                if (TypeName == "AspNetUser")
+                {
+                    sb.AppendLine($@"                    return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""Id"", Id)));");
+                }
+                else
+                {
+                    sb.AppendLine($@"                    return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""{ TypeName }ID"", { TypeName }ID.ToString())));");
+                }
+                sb.AppendLine(@"                }");
+                sb.AppendLine(@"");
+                sb.AppendLine($@"                try");
+                sb.AppendLine(@"                {");
+                sb.AppendLine($@"                   dbLogin.{ TypeName }{ Plurial }.Remove({ TypeNameLower });");
+                sb.AppendLine($@"                   dbLogin.SaveChanges();");
+                sb.AppendLine(@"                }");
+                sb.AppendLine($@"                catch (DbUpdateException ex)");
+                sb.AppendLine(@"                {");
+                sb.AppendLine($@"                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? "" Inner: "" + ex.InnerException.Message : """")));");
+                sb.AppendLine(@"                }");
+                sb.AppendLine(@"");
+                sb.AppendLine($@"                return await Task.FromResult(Ok(true));");
+
+                sb.AppendLine(@"            }");
+            }
             sb.AppendLine(@"            else");
             sb.AppendLine(@"            {");
 
@@ -160,7 +205,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                 sb.AppendLine($@"        public async Task<ActionResult<{ TypeName }>> Post({ TypeName } { TypeNameLower })");
             }
             sb.AppendLine(@"        {");
-            sb.AppendLine(@"            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)");
+            sb.AppendLine(@"            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)");
             sb.AppendLine(@"            {");
             sb.AppendLine(@"                return await Task.FromResult(Unauthorized());");
             sb.AppendLine(@"            }");
@@ -205,10 +250,32 @@ namespace ServicesClassNameServiceGeneratedServices.Services
             sb.AppendLine(@"                {");
             sb.AppendLine($@"                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? "" Inner: "" + ex.InnerException.Message : """")));");
             sb.AppendLine(@"                }");
-            sb.AppendLine(@"");    
+            sb.AppendLine(@"");
             sb.AppendLine($@"                return await Task.FromResult(Ok({ TypeNameLower }));");
 
             sb.AppendLine(@"            }");
+            if (dllTypeInto.Type.Name == "AspNetUser"
+                || dllTypeInto.Type.Name == "Contact"
+                || dllTypeInto.Type.Name == "TVItemUserAuthorization"
+                || dllTypeInto.Type.Name == "TVTypeUserAuthorization")
+            {
+                sb.AppendLine(@"            else if (LoggedInService.DBLocation == DBLocationEnum.Login)");
+                sb.AppendLine(@"            {");
+
+                sb.AppendLine($@"                try");
+                sb.AppendLine(@"                {");
+                sb.AppendLine($@"                   dbLogin.{ TypeName }{ Plurial }.Add({ TypeNameLower });");
+                sb.AppendLine($@"                   dbLogin.SaveChanges();");
+                sb.AppendLine(@"                }");
+                sb.AppendLine($@"                catch (DbUpdateException ex)");
+                sb.AppendLine(@"                {");
+                sb.AppendLine($@"                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? "" Inner: "" + ex.InnerException.Message : """")));");
+                sb.AppendLine(@"                }");
+                sb.AppendLine(@"");
+                sb.AppendLine($@"                return await Task.FromResult(Ok({ TypeNameLower }));");
+
+                sb.AppendLine(@"            }");
+            }
             sb.AppendLine(@"            else");
             sb.AppendLine(@"            {");
 
@@ -230,7 +297,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
             // doing Put
             sb.AppendLine($@"        public async Task<ActionResult<{ TypeName }>> Put({ TypeName } { TypeNameLower })");
             sb.AppendLine(@"        {");
-            sb.AppendLine(@"            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)");
+            sb.AppendLine(@"            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)");
             sb.AppendLine(@"            {");
             sb.AppendLine(@"                return await Task.FromResult(Unauthorized());");
             sb.AppendLine(@"            }");
@@ -279,6 +346,28 @@ namespace ServicesClassNameServiceGeneratedServices.Services
             sb.AppendLine($@"            return await Task.FromResult(Ok({ TypeNameLower }));");
 
             sb.AppendLine(@"            }");
+            if (dllTypeInto.Type.Name == "AspNetUser"
+                || dllTypeInto.Type.Name == "Contact"
+                || dllTypeInto.Type.Name == "TVItemUserAuthorization"
+                || dllTypeInto.Type.Name == "TVTypeUserAuthorization")
+            {
+                sb.AppendLine(@"            else if (LoggedInService.DBLocation == DBLocationEnum.Login)");
+                sb.AppendLine(@"            {");
+
+                sb.AppendLine($@"            try");
+                sb.AppendLine(@"            {");
+                sb.AppendLine($@"               dbLogin.{ TypeName }{ Plurial }.Update({ TypeNameLower });");
+                sb.AppendLine($@"               dbLogin.SaveChanges();");
+                sb.AppendLine(@"            }");
+                sb.AppendLine($@"            catch (DbUpdateException ex)");
+                sb.AppendLine(@"            {");
+                sb.AppendLine($@"               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? "" Inner: "" + ex.InnerException.Message : """")));");
+                sb.AppendLine(@"            }");
+                sb.AppendLine(@"");
+                sb.AppendLine($@"            return await Task.FromResult(Ok({ TypeNameLower }));");
+
+                sb.AppendLine(@"            }");
+            }
             sb.AppendLine(@"            else");
             sb.AppendLine(@"            {");
 

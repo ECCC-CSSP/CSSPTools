@@ -174,7 +174,7 @@ namespace ActionCommandDBServices.Tests
             actionCommandDBService.PercentCompleted = 33;
             actionActionCommand = await actionCommandDBService.Update();
             Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
-            Assert.Equal($"{ string.Format(CSSPCultureServicesRes._IsRequied, "Command") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
+            Assert.Equal($"{ string.Format(CSSPCultureServicesRes._IsRequired, "Command") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]

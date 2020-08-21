@@ -27,13 +27,13 @@ namespace CSSPDesktopServices.Services
                 if (!string.IsNullOrWhiteSpace(ret))
                 {
                     AppendStatus(new AppendEventArgs(appTextModel.InternetConnectionDetected));
-                    HasInternetConnection = true;
+                    preference.HasInternetConnection = true;
                 }
             }
             catch (Exception)
             {
                 AppendStatus(new AppendEventArgs(appTextModel.InternetConnectionNotDetected));
-                HasInternetConnection = false;
+                preference.HasInternetConnection = false;
             }
 
             AppendStatus(new AppendEventArgs(""));

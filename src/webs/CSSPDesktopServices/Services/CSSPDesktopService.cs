@@ -21,20 +21,22 @@ namespace CSSPDesktopServices.Services
         // Properties
         bool IsEnglish { get; set; }
         AppTextModel appTextModel { get; set; }
-        bool? HasInternetConnection { get; set; }
+        //bool? HasInternetConnection { get; set; }
         bool LoginRequired { get; set; }
         bool UpdateIsNeeded { get; set; }
-        bool IsLoggedIn { get; set; }
+        //bool IsLoggedIn { get; set; }
         bool HasHelpFiles { get; set; }
         string CSSPDBLocal { get; set; }
         string CSSPDBFilesManagement { get; set; }
         string CSSPDBLogin { get; set; }
         string CSSPAzureUrl { get; set; }
         string CSSPLocalUrl { get; set; }
-        string LoginEmail { get; set; }
-        string Password { get; set; }
+        Preference preference { get; set; }
+        //string LoginEmail { get; set; }
+        //string Password { get; set; }
+        //string Token { get; set; }
         Contact ContactLoggedIn { get; set; }
-        string AzureStore { get; set; }
+        //string AzureStore { get; set; }
         string LocalCSSPWebAPIsPath { get; set; }
 
         // Functions
@@ -50,7 +52,6 @@ namespace CSSPDesktopServices.Services
         Task<bool> Logoff();
         Task<bool> ReadConfiguration();
         Task<string> Descramble(string Text);
-        Task<bool> StoreVariableIndbLogin(string strName, string strValue);
 
         //string Scramble(string Text);
         //string Descramble(string Text);
@@ -68,21 +69,23 @@ namespace CSSPDesktopServices.Services
 
         #region Properties public
         public AppTextModel appTextModel { get; set; }
-        public bool? HasInternetConnection { get; set; } = null;
+        //public bool? HasInternetConnection { get; set; } = null;
         public bool IsEnglish { get; set; }
         public bool LoginRequired { get; set; } = false;
         public bool UpdateIsNeeded { get; set; } = false;
-        public bool IsLoggedIn { get; set; } = false;
+        //public bool IsLoggedIn { get; set; } = false;
         public bool HasHelpFiles { get; set; } = false;
         public string CSSPDBLocal { get; set; }
         public string CSSPDBFilesManagement { get; set; }
         public string CSSPDBLogin { get; set; }
         public string CSSPAzureUrl { get; set; }
         public string CSSPLocalUrl { get; set; }
-        public string LoginEmail { get; set; }
-        public string Password { get; set; }
+        public Preference preference { get; set; }
+        //public string LoginEmail { get; set; }
+        //public string Password { get; set; }
+        //public string Token { get; set; }
         public Contact ContactLoggedIn { get; set; }
-        public string AzureStore { get; set; }
+        //public string AzureStore { get; set; }
         public string LocalCSSPWebAPIsPath { get; set; }
         #endregion Properties public
         
@@ -117,6 +120,8 @@ namespace CSSPDesktopServices.Services
             this.dbLocal = dbLocal;
             this.dbLogin = dbLogin;
             this.dbFM = dbFM;
+
+            preference = new Preference();
         }
         #endregion Constructors
 
@@ -177,9 +182,6 @@ namespace CSSPDesktopServices.Services
         }
         public async Task<bool> Login(string LoginEmail, string Password)
         {
-            this.LoginEmail = LoginEmail;
-            this.Password = Password;
-
             if (!await DoLogin(LoginEmail, Password)) return await Task.FromResult(false);
 
             return await Task.FromResult(true);
@@ -193,12 +195,6 @@ namespace CSSPDesktopServices.Services
         public async Task<string> Descramble(string Text)
         {
             return await Task.FromResult(DoDescramble(Text));
-        }
-        public async Task<bool> StoreVariableIndbLogin(string strName, string strValue)
-        {
-            if (!await DoStoreVariableIndbLogin(strName, strValue)) return await Task.FromResult(false);
-
-            return await Task.FromResult(true);
         }
         #endregion Function public
     }

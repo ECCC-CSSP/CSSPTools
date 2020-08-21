@@ -34,7 +34,7 @@ namespace CSSPDesktopServices.Services
             {
                 FileInfo fi = new FileInfo($"{ LocalCSSPDesktopPath }{ zipFileName }");
 
-                BlobClient blobClient = new BlobClient(AzureStore, AzureStoreCSSPWebAPIsPath, zipFileName);
+                BlobClient blobClient = new BlobClient(preference.AzureStore, AzureStoreCSSPWebAPIsPath, zipFileName);
                 BlobProperties blobProperties = blobClient.GetProperties();
                 if (blobProperties == null)
                 {

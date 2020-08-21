@@ -27,6 +27,9 @@ namespace CSSPDesktopServices.Services
             -1, 2, 3, 2, 1, -3, 2, 3, 2, 0, 4, 1, 2, -2, -1, 0, 3, -2, 0, 3, 1, -4, -1, 3, 2, 0, 2, 1,
             -4, 3, 1, -3, 1, 2, 2, 0, 1, 2, 4, 1, -1, 3, -1, -2, -1, 3, -2, 0, 3, 1, -4, -1, 2, 0, -1, 2, 1,
             1, 3, 4, 1, -3, -2, 2, 2, 0, -1, 4, 1, -2, -1, 3, 2, -2, 0, 1, 3, 1, -2, -4, -1, -1, 2, 0, 2, 1,
+            4, 3, -2, -1, 2, 0, 2, -1, 4, 2, 0, 1, -1, -1, -3, -2, 2, -4, 3, 2, 1, -3, 2, -1, 2, 4, 0, 0, 1,
+            2, 1, -2, -4, 1, 3, -3, 1, -1, 2, 1, 0, 4, -1, 1, -1, -3, 1, 1, -3, -4, 1, -3, 1, -3, 1, -1, 0,
+            4, 2, 1, -3, 1, -2, 1, -4, 1, -2, 0, 3, -1, 4, 1, -2, 1, 0, -4, -1, -3, 2, 1, 4, -1, 1, 2, 4, 2
         };
         #endregion Properties
 
@@ -115,8 +118,6 @@ namespace CSSPDesktopServices.Services
                 }
 
                 // Getting AspNetUser for the Contact
-                //stringData = JsonSerializer.Serialize(contact.Id);
-                //contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
                 response = httpClient.GetAsync($"{ CSSPAzureUrl }api/en-CA/aspnetuser/{ contact.Id }").Result;
                 if ((int)response.StatusCode != 200)
@@ -287,25 +288,50 @@ namespace CSSPDesktopServices.Services
                     }
                 }
 
-                // Adding AzureStore
                 string AzureStore = JsonSerializer.Deserialize<string>(response.Content.ReadAsStringAsync().Result);
 
-                if (!await StoreVariableIndbLogin("AzureStore", AzureStore)) return await Task.FromResult(false);
+                List<Preference> preferenceToDeleteList = (from c in dbLogin.Preferences
+                                                           select c).ToList();
 
-                if (!await StoreVariableIndbLogin("LoginEmail", LoginEmail)) return await Task.FromResult(false);
+                try
+                {
+                    dbLogin.Preferences.RemoveRange(preferenceToDeleteList);
+                    dbLogin.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes.CouldNotDelete_Error_, "PreferenceToDeleteList", ex.Message)));
+                    return await Task.FromResult(false);
+                }
 
-                if (!await StoreVariableIndbLogin("Password", Password)) return await Task.FromResult(false);
+                Preference preference = new Preference()
+                {
+                    AzureStore = AzureStore,
+                    LoginEmail = LoginEmail,
+                    Password = Password,
+                    HasInternetConnection = true,
+                    LoggedIn = true,
+                    Token = contact.Token,
+                };
 
-                if (!await StoreVariableIndbLogin("LoggedIn", "true")) return await Task.FromResult(false);
+                try
+                {
+                    dbLogin.Preferences.Add(preference);
+                    dbLogin.SaveChanges();
 
-                if (!await StoreVariableIndbLogin("HasInternetConnection", "true")) return await Task.FromResult(false);
+                    AppendStatus(new AppendEventArgs(string.Format(appTextModel._StoredInTable_AndDatabase_, "Preference", "Preferences", "CSSPDBLogin.db")));
+                }
+                catch (Exception ex)
+                {
+                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "Preference", ex.Message)));
+                    return await Task.FromResult(false);
+                }
             }
 
             AppendStatus(new AppendEventArgs(""));
 
             return await Task.FromResult(true);
         }
-
 
         private async Task<string> Scramble(string Text)
         {

@@ -60,16 +60,7 @@ namespace CreateGzFileControllers.Tests
             int TVItemID = 629;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
-            using (HttpClient httpClient = new HttpClient())
-            {
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
-
-                string url = $"{ CSSPAzureUrl }api/{ culture }/CreateGzFile/{ (int)webType }/{ TVItemID }/{ (int)webTypeYear }";
-                var response = await httpClient.GetAsync(url);
-                Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-                string responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-            }
+            await NewMethod(culture, webType, TVItemID, webTypeYear);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -82,14 +73,7 @@ namespace CreateGzFileControllers.Tests
             int TVItemID = 229465;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
-            HttpClient httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
-
-            string url = "https://localhost:44342/api/" + culture + $"/CreateGzFile/{ (int)webType }/{ TVItemID }/{ (int)webTypeYear }";
-            var response = await httpClient.GetAsync(url);
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
+            await NewMethod(culture, webType, TVItemID, webTypeYear);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -102,14 +86,7 @@ namespace CreateGzFileControllers.Tests
             int TVItemID = 7;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
-            HttpClient httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
-
-            string url = "https://localhost:44342/api/" + culture + $"/CreateGzFile/{ (int)webType }/{ TVItemID }/{ (int)webTypeYear }";
-            var response = await httpClient.GetAsync(url);
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
+            await NewMethod(culture, webType, TVItemID, webTypeYear);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -122,14 +99,7 @@ namespace CreateGzFileControllers.Tests
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
-            HttpClient httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
-
-            string url = "https://localhost:44342/api/" + culture + $"/CreateGzFile/{ (int)webType }/{ TVItemID }/{ (int)webTypeYear }";
-            var response = await httpClient.GetAsync(url);
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
+            await NewMethod(culture, webType, TVItemID, webTypeYear);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -142,14 +112,7 @@ namespace CreateGzFileControllers.Tests
             int TVItemID = 5;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
-            HttpClient httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
-
-            string url = "https://localhost:44342/api/" + culture + $"/CreateGzFile/{ (int)webType }/{ TVItemID }/{ (int)webTypeYear }";
-            var response = await httpClient.GetAsync(url);
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
+            await NewMethod(culture, webType, TVItemID, webTypeYear);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -162,14 +125,7 @@ namespace CreateGzFileControllers.Tests
             int TVItemID = 556;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
-            HttpClient httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
-
-            string url = "https://localhost:44342/api/" + culture + $"/CreateGzFile/{ (int)webType }/{ TVItemID }/{ (int)webTypeYear }";
-            var response = await httpClient.GetAsync(url);
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
+            await NewMethod(culture, webType, TVItemID, webTypeYear);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -182,14 +138,7 @@ namespace CreateGzFileControllers.Tests
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
-            HttpClient httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
-
-            string url = "https://localhost:44342/api/" + culture + $"/CreateGzFile/{ (int)webType }/{ TVItemID }/{ (int)webTypeYear }";
-            var response = await httpClient.GetAsync(url);
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
+            await NewMethod(culture, webType, TVItemID, webTypeYear);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -202,14 +151,7 @@ namespace CreateGzFileControllers.Tests
             int TVItemID = 51705;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
-            HttpClient httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
-
-            string url = "https://localhost:44342/api/" + culture + $"/CreateGzFile/{ (int)webType }/{ TVItemID }/{ (int)webTypeYear }";
-            var response = await httpClient.GetAsync(url);
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
+            await NewMethod(culture, webType, TVItemID, webTypeYear);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -222,14 +164,7 @@ namespace CreateGzFileControllers.Tests
             int TVItemID = 7;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
-            HttpClient httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
-
-            string url = "https://localhost:44342/api/" + culture + $"/CreateGzFile/{ (int)webType }/{ TVItemID }/{ (int)webTypeYear }";
-            var response = await httpClient.GetAsync(url);
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
+            await NewMethod(culture, webType, TVItemID, webTypeYear);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -242,14 +177,7 @@ namespace CreateGzFileControllers.Tests
             int TVItemID = 12281;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
-            HttpClient httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
-
-            string url = "https://localhost:44342/api/" + culture + $"/CreateGzFile/{ (int)webType }/{ TVItemID }/{ (int)webTypeYear }";
-            var response = await httpClient.GetAsync(url);
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
+            await NewMethod(culture, webType, TVItemID, webTypeYear);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -262,14 +190,7 @@ namespace CreateGzFileControllers.Tests
             int TVItemID = 7;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
-            HttpClient httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
-
-            string url = "https://localhost:44342/api/" + culture + $"/CreateGzFile/{ (int)webType }/{ TVItemID }/{ (int)webTypeYear }";
-            var response = await httpClient.GetAsync(url);
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
+            await NewMethod(culture, webType, TVItemID, webTypeYear);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -282,14 +203,7 @@ namespace CreateGzFileControllers.Tests
             int TVItemID = 12110;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
-            HttpClient httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
-
-            string url = "https://localhost:44342/api/" + culture + $"/CreateGzFile/{ (int)webType }/{ TVItemID }/{ (int)webTypeYear }";
-            var response = await httpClient.GetAsync(url);
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
+            await NewMethod(culture, webType, TVItemID, webTypeYear);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -302,14 +216,7 @@ namespace CreateGzFileControllers.Tests
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
-            HttpClient httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
-
-            string url = "https://localhost:44342/api/" + culture + $"/CreateGzFile/{ (int)webType }/{ TVItemID }/{ (int)webTypeYear }";
-            var response = await httpClient.GetAsync(url);
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
+            await NewMethod(culture, webType, TVItemID, webTypeYear);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -322,14 +229,7 @@ namespace CreateGzFileControllers.Tests
             int TVItemID = 635;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
-            HttpClient httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
-
-            string url = "https://localhost:44342/api/" + culture + $"/CreateGzFile/{ (int)webType }/{ TVItemID }/{ (int)webTypeYear }";
-            var response = await httpClient.GetAsync(url);
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
+            await NewMethod(culture, webType, TVItemID, webTypeYear);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -342,14 +242,7 @@ namespace CreateGzFileControllers.Tests
             int TVItemID = 635;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
-            HttpClient httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
-
-            string url = "https://localhost:44342/api/" + culture + $"/CreateGzFile/{ (int)webType }/{ TVItemID }/{ (int)webTypeYear }";
-            var response = await httpClient.GetAsync(url);
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
+            await NewMethod(culture, webType, TVItemID, webTypeYear);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -362,14 +255,7 @@ namespace CreateGzFileControllers.Tests
             int TVItemID = 635;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1990;
 
-            HttpClient httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
-
-            string url = "https://localhost:44342/api/" + culture + $"/CreateGzFile/{ (int)webType }/{ TVItemID }/{ (int)webTypeYear }";
-            var response = await httpClient.GetAsync(url);
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
+            await NewMethod(culture, webType, TVItemID, webTypeYear);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -382,14 +268,7 @@ namespace CreateGzFileControllers.Tests
             int TVItemID = 635;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2000;
 
-            HttpClient httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
-
-            string url = "https://localhost:44342/api/" + culture + $"/CreateGzFile/{ (int)webType }/{ TVItemID }/{ (int)webTypeYear }";
-            var response = await httpClient.GetAsync(url);
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
+            await NewMethod(culture, webType, TVItemID, webTypeYear);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -402,14 +281,7 @@ namespace CreateGzFileControllers.Tests
             int TVItemID = 635;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
 
-            HttpClient httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
-
-            string url = "https://localhost:44342/api/" + culture + $"/CreateGzFile/{ (int)webType }/{ TVItemID }/{ (int)webTypeYear }";
-            var response = await httpClient.GetAsync(url);
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
+            await NewMethod(culture, webType, TVItemID, webTypeYear);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -422,14 +294,7 @@ namespace CreateGzFileControllers.Tests
             int TVItemID = 635;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2020;
 
-            HttpClient httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
-
-            string url = "https://localhost:44342/api/" + culture + $"/CreateGzFile/{ (int)webType }/{ TVItemID }/{ (int)webTypeYear }";
-            var response = await httpClient.GetAsync(url);
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
+            await NewMethod(culture, webType, TVItemID, webTypeYear);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -442,14 +307,7 @@ namespace CreateGzFileControllers.Tests
             int TVItemID = 635;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2030;
 
-            HttpClient httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
-
-            string url = "https://localhost:44342/api/" + culture + $"/CreateGzFile/{ (int)webType }/{ TVItemID }/{ (int)webTypeYear }";
-            var response = await httpClient.GetAsync(url);
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
+            await NewMethod(culture, webType, TVItemID, webTypeYear);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -462,14 +320,7 @@ namespace CreateGzFileControllers.Tests
             int TVItemID = 635;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2040;
 
-            HttpClient httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
-
-            string url = "https://localhost:44342/api/" + culture + $"/CreateGzFile/{ (int)webType }/{ TVItemID }/{ (int)webTypeYear }";
-            var response = await httpClient.GetAsync(url);
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
+            await NewMethod(culture, webType, TVItemID, webTypeYear);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -482,14 +333,7 @@ namespace CreateGzFileControllers.Tests
             int TVItemID = 635;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2050;
 
-            HttpClient httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
-
-            string url = "https://localhost:44342/api/" + culture + $"/CreateGzFile/{ (int)webType }/{ TVItemID }/{ (int)webTypeYear }";
-            var response = await httpClient.GetAsync(url);
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
+            await NewMethod(culture, webType, TVItemID, webTypeYear);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -502,14 +346,7 @@ namespace CreateGzFileControllers.Tests
             int TVItemID = 635;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
-            HttpClient httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
-
-            string url = "https://localhost:44342/api/" + culture + $"/CreateGzFile/{ (int)webType }/{ TVItemID }/{ (int)webTypeYear }";
-            var response = await httpClient.GetAsync(url);
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
+            await NewMethod(culture, webType, TVItemID, webTypeYear);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -522,14 +359,7 @@ namespace CreateGzFileControllers.Tests
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
-            HttpClient httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
-
-            string url = "https://localhost:44342/api/" + culture + $"/CreateGzFile/{ (int)webType }/{ TVItemID }/{ (int)webTypeYear }";
-            var response = await httpClient.GetAsync(url);
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
+            await NewMethod(culture, webType, TVItemID, webTypeYear);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -542,14 +372,7 @@ namespace CreateGzFileControllers.Tests
             int TVItemID = 635;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
-            HttpClient httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
-
-            string url = "https://localhost:44342/api/" + culture + $"/CreateGzFile/{ (int)webType }/{ TVItemID }/{ (int)webTypeYear }";
-            var response = await httpClient.GetAsync(url);
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
+            await NewMethod(culture, webType, TVItemID, webTypeYear);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -562,14 +385,7 @@ namespace CreateGzFileControllers.Tests
             int TVItemID = 7;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
-            HttpClient httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
-
-            string url = "https://localhost:44342/api/" + culture + $"/CreateGzFile/{ (int)webType }/{ TVItemID }/{ (int)webTypeYear }";
-            var response = await httpClient.GetAsync(url);
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
+            await NewMethod(culture, webType, TVItemID, webTypeYear);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -582,14 +398,7 @@ namespace CreateGzFileControllers.Tests
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
-            HttpClient httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
-
-            string url = "https://localhost:44342/api/" + culture + $"/CreateGzFile/{ (int)webType }/{ TVItemID }/{ (int)webTypeYear }";
-            var response = await httpClient.GetAsync(url);
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
+            await NewMethod(culture, webType, TVItemID, webTypeYear);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -602,14 +411,7 @@ namespace CreateGzFileControllers.Tests
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
-            HttpClient httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
-
-            string url = "https://localhost:44342/api/" + culture + $"/CreateGzFile/{ (int)webType }/{ TVItemID }/{ (int)webTypeYear }";
-            var response = await httpClient.GetAsync(url);
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
+            await NewMethod(culture, webType, TVItemID, webTypeYear);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -622,14 +424,7 @@ namespace CreateGzFileControllers.Tests
             int TVItemID = 8;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
-            HttpClient httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
-
-            string url = "https://localhost:44342/api/" + culture + $"/CreateGzFile/{ (int)webType }/{ TVItemID }/{ (int)webTypeYear }";
-            var response = await httpClient.GetAsync(url);
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
+            await NewMethod(culture, webType, TVItemID, webTypeYear);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -642,14 +437,7 @@ namespace CreateGzFileControllers.Tests
             int TVItemID = 633;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
-            HttpClient httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
-
-            string url = "https://localhost:44342/api/" + culture + $"/CreateGzFile/{ (int)webType }/{ TVItemID }/{ (int)webTypeYear }";
-            var response = await httpClient.GetAsync(url);
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
+            await NewMethod(culture, webType, TVItemID, webTypeYear);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -662,14 +450,7 @@ namespace CreateGzFileControllers.Tests
             int TVItemID = 635;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
-            HttpClient httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
-
-            string url = "https://localhost:44342/api/" + culture + $"/CreateGzFile/{ (int)webType }/{ TVItemID }/{ (int)webTypeYear }";
-            var response = await httpClient.GetAsync(url);
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
+            await NewMethod(culture, webType, TVItemID, webTypeYear);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -682,18 +463,24 @@ namespace CreateGzFileControllers.Tests
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
-            HttpClient httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
-
-            string url = "https://localhost:44342/api/" + culture + $"/CreateGzFile/{ (int)webType }/{ TVItemID }/{ (int)webTypeYear }";
-            var response = await httpClient.GetAsync(url);
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
+            await NewMethod(culture, webType, TVItemID, webTypeYear);
         }
         #endregion Tests
 
         #region Functions private
+        private async Task NewMethod(string culture, WebTypeEnum webType, int TVItemID, WebTypeYearEnum webTypeYear)
+        {
+            using (HttpClient httpClient = new HttpClient())
+            {
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
+
+                string url = $"{ CSSPAzureUrl }api/{ culture }/CreateGzFile/{ (int)webType }/{ TVItemID }/{ (int)webTypeYear }";
+                var response = await httpClient.GetAsync(url);
+                Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+                string responseContent = await response.Content.ReadAsStringAsync();
+                Assert.True(bool.Parse(responseContent));
+            }
+        }
         #endregion Functions private
     }
 }

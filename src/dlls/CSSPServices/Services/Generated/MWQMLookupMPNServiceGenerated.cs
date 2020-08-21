@@ -44,7 +44,8 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public MWQMLookupMPNService(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal = null, CSSPDBInMemoryContext dbIM = null)
+        public MWQMLookupMPNService(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IEnums enums, 
+           CSSPDBContext db, CSSPDBLocalContext dbLocal = null, CSSPDBInMemoryContext dbIM = null)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;

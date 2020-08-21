@@ -182,6 +182,13 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                     sb.AppendLine(@"        private CSSPDBContext db { get; }");
                     sb.AppendLine(@"        private CSSPDBLocalContext dbLocal { get; }");
                     sb.AppendLine(@"        private CSSPDBInMemoryContext dbIM { get; }");
+                    if (dllTypeInfoModels.Type.Name == "AspNetUser"
+                        || dllTypeInfoModels.Type.Name == "Contact"
+                        || dllTypeInfoModels.Type.Name == "TVItemUserAuthorization"
+                        || dllTypeInfoModels.Type.Name == "TVTypeUserAuthorization")
+                    {
+                        sb.AppendLine(@"        private CSSPDBLoginContext dbLogin { get; }");
+                    }
                     if (dllTypeInfoModels.Type.Name == "Contact")
                     {
                         sb.AppendLine(@"        private IConfiguration Configuration { get; }");
@@ -198,15 +205,26 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                     sb.AppendLine(@"        #endregion Properties");
                     sb.AppendLine(@"");
                     sb.AppendLine(@"        #region Constructors");
-                    if (dllTypeInfoModels.Type.Name == "Contact")
+                    if (dllTypeInfoModels.Type.Name == "AspNetUser"
+                        || dllTypeInfoModels.Type.Name == "TVItemUserAuthorization"
+                        || dllTypeInfoModels.Type.Name == "TVTypeUserAuthorization")
                     {
-                        sb.AppendLine($@"        public { dllTypeInfoModels.Type.Name }Service(IConfiguration Configuration, UserManager<ApplicationUser> UserManager, ICSSPCultureService CSSPCultureService, ");
-                        sb.AppendLine($@"           ILoggedInService LoggedInService, IEnums enums, IAspNetUserService AspNetUserService, ILoginModelService LoginModelService, ");
-                        sb.AppendLine($@"           IRegisterModelService RegisterModelService, CSSPDBContext db, CSSPDBLocalContext dbLocal = null, CSSPDBInMemoryContext dbIM = null)");
+                        sb.AppendLine($@"        public { dllTypeInfoModels.Type.Name }Service(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, ");
+                        sb.AppendLine($@"           IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal = null, ");
+                        sb.AppendLine($@"           CSSPDBInMemoryContext dbIM = null, CSSPDBLoginContext dbLogin = null)");
+                    }
+                    else if (dllTypeInfoModels.Type.Name == "Contact")
+                    {
+                        sb.AppendLine($@"        public { dllTypeInfoModels.Type.Name }Service(IConfiguration Configuration, UserManager<ApplicationUser> UserManager, ");
+                        sb.AppendLine($@"           ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IEnums enums, ");
+                        sb.AppendLine($@"           IAspNetUserService AspNetUserService, ILoginModelService LoginModelService, ");
+                        sb.AppendLine($@"           IRegisterModelService RegisterModelService, CSSPDBContext db, CSSPDBLocalContext dbLocal = null, ");
+                        sb.AppendLine($@"           CSSPDBInMemoryContext dbIM = null, CSSPDBLoginContext dbLogin = null)");
                     }
                     else
                     {
-                        sb.AppendLine($@"        public { dllTypeInfoModels.Type.Name }Service(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal = null, CSSPDBInMemoryContext dbIM = null)");
+                        sb.AppendLine($@"        public { dllTypeInfoModels.Type.Name }Service(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IEnums enums, ");
+                        sb.AppendLine($@"           CSSPDBContext db, CSSPDBLocalContext dbLocal = null, CSSPDBInMemoryContext dbIM = null)");
                     }
                     sb.AppendLine(@"        {");
                     if (dllTypeInfoModels.Type.Name == "Contact")
@@ -223,6 +241,13 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                     sb.AppendLine(@"            this.db = db;");
                     sb.AppendLine(@"            this.dbLocal = dbLocal;");
                     sb.AppendLine(@"            this.dbIM = dbIM;");
+                    if (dllTypeInfoModels.Type.Name == "AspNetUser"
+                        || dllTypeInfoModels.Type.Name == "Contact"
+                        || dllTypeInfoModels.Type.Name == "TVItemUserAuthorization"
+                        || dllTypeInfoModels.Type.Name == "TVTypeUserAuthorization")
+                    {
+                        sb.AppendLine(@"            this.dbLogin = dbLogin;");
+                    }
                     sb.AppendLine(@"        }");
                     sb.AppendLine(@"        #endregion Constructors");
                     sb.AppendLine(@"");

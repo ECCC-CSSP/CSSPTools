@@ -46,6 +46,7 @@ namespace CSSPServices
         private CSSPDBContext db { get; }
         private CSSPDBLocalContext dbLocal { get; }
         private CSSPDBInMemoryContext dbIM { get; }
+        private CSSPDBLoginContext dbLogin { get; }
         private IConfiguration Configuration { get; }
         private UserManager<ApplicationUser> UserManager { get; }
         private IAspNetUserService AspNetUserService { get; }
@@ -58,9 +59,11 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public ContactService(IConfiguration Configuration, UserManager<ApplicationUser> UserManager, ICSSPCultureService CSSPCultureService, 
-           ILoggedInService LoggedInService, IEnums enums, IAspNetUserService AspNetUserService, ILoginModelService LoginModelService, 
-           IRegisterModelService RegisterModelService, CSSPDBContext db, CSSPDBLocalContext dbLocal = null, CSSPDBInMemoryContext dbIM = null)
+        public ContactService(IConfiguration Configuration, UserManager<ApplicationUser> UserManager, 
+           ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IEnums enums, 
+           IAspNetUserService AspNetUserService, ILoginModelService LoginModelService, 
+           IRegisterModelService RegisterModelService, CSSPDBContext db, CSSPDBLocalContext dbLocal = null, 
+           CSSPDBInMemoryContext dbIM = null, CSSPDBLoginContext dbLogin = null)
         {
             this.Configuration = Configuration;
             this.UserManager = UserManager;
@@ -73,6 +76,7 @@ namespace CSSPServices
             this.db = db;
             this.dbLocal = dbLocal;
             this.dbIM = dbIM;
+            this.dbLogin = dbLogin;
         }
         #endregion Constructors
 
@@ -100,6 +104,19 @@ namespace CSSPServices
             else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 Contact contact = (from c in dbLocal.Contacts.AsNoTracking()
+                        where c.ContactID == ContactID
+                        select c).FirstOrDefault();
+
+                if (contact == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(contact));
+            }
+            else if (LoggedInService.DBLocation == DBLocationEnum.Login)
+            {
+                Contact contact = (from c in dbLogin.Contacts.AsNoTracking()
                         where c.ContactID == ContactID
                         select c).FirstOrDefault();
 
@@ -140,6 +157,12 @@ namespace CSSPServices
             else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 List<Contact> contactList = (from c in dbLocal.Contacts.AsNoTracking() orderby c.ContactID select c).Skip(skip).Take(take).ToList();
+
+                return await Task.FromResult(Ok(contactList));
+            }
+            else if (LoggedInService.DBLocation == DBLocationEnum.Login)
+            {
+                List<Contact> contactList = (from c in dbLogin.Contacts.AsNoTracking() orderby c.ContactID select c).Skip(skip).Take(take).ToList();
 
                 return await Task.FromResult(Ok(contactList));
             }
@@ -195,6 +218,29 @@ namespace CSSPServices
                 {
                    dbLocal.Contacts.Remove(contact);
                    dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.DBLocation == DBLocationEnum.Login)
+            {
+                Contact contact = (from c in dbLogin.Contacts
+                                   where c.ContactID == ContactID
+                                   select c).FirstOrDefault();
+                
+                if (contact == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "Contact", "ContactID", ContactID.ToString())));
+                }
+
+                try
+                {
+                   dbLogin.Contacts.Remove(contact);
+                   dbLogin.SaveChanges();
                 }
                 catch (DbUpdateException ex)
                 {
@@ -268,6 +314,20 @@ namespace CSSPServices
 
                 return await Task.FromResult(Ok(contact));
             }
+            else if (LoggedInService.DBLocation == DBLocationEnum.Login)
+            {
+                try
+                {
+                   dbLogin.Contacts.Add(contact);
+                   dbLogin.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(contact));
+            }
             else
             {
                 try
@@ -316,6 +376,20 @@ namespace CSSPServices
             {
                dbLocal.Contacts.Update(contact);
                dbLocal.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(contact));
+            }
+            else if (LoggedInService.DBLocation == DBLocationEnum.Login)
+            {
+            try
+            {
+               dbLogin.Contacts.Update(contact);
+               dbLogin.SaveChanges();
             }
             catch (DbUpdateException ex)
             {
@@ -392,8 +466,6 @@ namespace CSSPServices
                     SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
                     contact.Token = tokenHandler.WriteToken(token);
 
-                    LoggedInService.HasInternetConnection = true;
-
                     return contact;
                 }
             }
@@ -406,10 +478,10 @@ namespace CSSPServices
         }
         public async Task<ActionResult<string>> AzureStore()
         {
-            string sto = Configuration.GetValue<string>("AzureStoreConnectionString");
+            string sto = Configuration.GetValue<string>("AzureCSSPStorageConnectionString");
             if (string.IsNullOrWhiteSpace(sto))
             {
-                return await Task.FromResult(BadRequest(String.Format(CSSPCultureServicesRes.__CouldNotBeFound, "Configuration", "AzureStoreConnectionString")));
+                return await Task.FromResult(BadRequest(String.Format(CSSPCultureServicesRes.__CouldNotBeFound, "Configuration", "AzureCSSPStorageConnectionString")));
             }
 
             return await Task.FromResult(Ok(sto));
@@ -440,6 +512,19 @@ namespace CSSPServices
             else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 Contact contact = (from c in dbLocal.Contacts.AsNoTracking()
+                                   where c.Id == Id
+                                   select c).FirstOrDefault();
+
+                if (contact == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(contact));
+            }
+            else if (LoggedInService.DBLocation == DBLocationEnum.Login)
+            {
+                Contact contact = (from c in dbLogin.Contacts.AsNoTracking()
                                    where c.Id == Id
                                    select c).FirstOrDefault();
 

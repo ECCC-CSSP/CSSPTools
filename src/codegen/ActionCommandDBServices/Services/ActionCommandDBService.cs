@@ -72,8 +72,8 @@ namespace ActionCommandDBServices.Services
         #region Functions public
         public async Task<ActionResult<ActionCommand>> Get()
         {
-            if (string.IsNullOrWhiteSpace(Action)) return BadRequest($"{ string.Format(CSSPCultureServicesRes._IsRequied, ActionText) }");
-            if (string.IsNullOrWhiteSpace(Command)) return BadRequest($"{ string.Format(CSSPCultureServicesRes._IsRequied, CommandText) }");
+            if (string.IsNullOrWhiteSpace(Action)) return BadRequest($"{ string.Format(CSSPCultureServicesRes._IsRequired, ActionText) }");
+            if (string.IsNullOrWhiteSpace(Command)) return BadRequest($"{ string.Format(CSSPCultureServicesRes._IsRequired, CommandText) }");
 
             ActionCommand actionCommand = GetActionCommand();
 
@@ -239,8 +239,8 @@ namespace ActionCommandDBServices.Services
         }
         public async Task<ActionResult<ActionCommand>> Update()
         {
-            if (string.IsNullOrWhiteSpace(Action)) return BadRequest($"{ string.Format(CSSPCultureServicesRes._IsRequied, ActionText) }");
-            if (string.IsNullOrWhiteSpace(Command)) return BadRequest($"{ string.Format(CSSPCultureServicesRes._IsRequied, CommandText) }");
+            if (string.IsNullOrWhiteSpace(Action)) return BadRequest($"{ string.Format(CSSPCultureServicesRes._IsRequired, ActionText) }");
+            if (string.IsNullOrWhiteSpace(Command)) return BadRequest($"{ string.Format(CSSPCultureServicesRes._IsRequired, CommandText) }");
 
             ActionCommand actionCommand = GetActionCommand();
             if (actionCommand == null)
