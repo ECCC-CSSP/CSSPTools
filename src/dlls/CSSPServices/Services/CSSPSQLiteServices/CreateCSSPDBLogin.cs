@@ -123,9 +123,11 @@ namespace CSSPServices
                     "AzureStore TEXT NOT NULL, " +
                     "LoginEmail TEXT NOT NULL, " +
                     "Password TEXT NOT NULL, + " +
-                    "HasInternetConnection INTEGER NOT NULL, " +
-                    "LoggedIn INTEGER NOT NULL, " +
-                    "Token TEXT NOT NULL)";
+                    "HasInternetConnection INTEGER, " +
+                    "AzureLoggedIn INTEGER, " +
+                    "AzureToken TEXT," +
+                    "LocalLoggedIn INTEGER, " +
+                    "LocalToken TEXT)";
 
             using (var command = dbLogin.Database.GetDbConnection().CreateCommand())
             {

@@ -223,15 +223,8 @@ namespace CSSPDesktop
             SettingUpAllTextForLanguage();
             if (! await CSSPDesktopService.CreateAllRequiredDirectories()) return await Task.FromResult(false);
 
-            // create CSSPDBLocal if it does not exist
-            FileInfo fi = new FileInfo(CSSPDesktopService.CSSPDBLocal);
-            if (!fi.Exists)
-            {
-                if (! await CSSPSQLiteService.CreateSQLiteCSSPDBLocal()) return await Task.FromResult(false);
-            }
-
             // create CSSPDBFilesManagement if it does not exist
-            fi = new FileInfo(CSSPDesktopService.CSSPDBFilesManagement);
+            FileInfo fi = new FileInfo(CSSPDesktopService.CSSPDBFilesManagement);
             if (!fi.Exists)
             {
                 if (!await CSSPSQLiteService.CreateSQLiteCSSPDBFilesManagement()) return await Task.FromResult(false);
@@ -303,20 +296,6 @@ namespace CSSPDesktop
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<ICSSPDesktopService, CSSPDesktopService>();
             Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
-
-            string CSSPDBLocal = Configuration.GetValue<string>("CSSPDBLocal");
-            if (string.IsNullOrWhiteSpace(CSSPDBLocal))
-            {
-                richTextBoxStatus.AppendText(string.Format(_CouldNotBeFoundInConfigurationFile_, "CSSPDBLocal", "appsettings_csspdesktop.json"));
-                return await Task.FromResult(false);
-            }
-
-            FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocal);
-
-            Services.AddDbContext<CSSPDBLocalContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
-            });
 
             string CSSPDBFilesManagement = Configuration.GetValue<string>("CSSPDBFilesManagement");
             if (string.IsNullOrWhiteSpace(CSSPDBFilesManagement))

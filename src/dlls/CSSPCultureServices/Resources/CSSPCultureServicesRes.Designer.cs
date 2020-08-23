@@ -349,6 +349,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} only available when running on Local.
+        /// </summary>
+        public static string _OnlyAvailableWhenRunningOnLocal {
+            get {
+                return ResourceManager.GetString("_OnlyAvailableWhenRunningOnLocal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} was registered on the website..
         /// </summary>
         public static string _RegisteredAndAddedInWebSite {
@@ -876,6 +885,15 @@ namespace CSSPCultureServices.Resources {
         public static string CreatedNew_ {
             get {
                 return ResourceManager.GetString("CreatedNew_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CreateGzFile only available when running on Azure.
+        /// </summary>
+        public static string CreateGzFileOnlyAvailableWhenRunningOnAzure {
+            get {
+                return ResourceManager.GetString("CreateGzFileOnlyAvailableWhenRunningOnAzure", resourceCulture);
             }
         }
         

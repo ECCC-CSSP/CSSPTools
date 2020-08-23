@@ -208,15 +208,26 @@ namespace CSSPServices
                 yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Password", "100"), new[] { nameof(preference.Password) });
             }
 
-            // doing Token
-            if (string.IsNullOrWhiteSpace(preference.Token))
+            // doing AzureToken
+            if (string.IsNullOrWhiteSpace(preference.AzureToken))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Token"), new[] { nameof(preference.Token) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Token"), new[] { nameof(preference.AzureToken) });
             }
 
-            if (!string.IsNullOrWhiteSpace(preference.Token) && preference.Token.Length > 300)
+            if (!string.IsNullOrWhiteSpace(preference.AzureToken) && preference.AzureToken.Length > 300)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Token", "300"), new[] { nameof(preference.Token) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Token", "300"), new[] { nameof(preference.AzureToken) });
+            }
+
+            // doing LocalToken
+            if (string.IsNullOrWhiteSpace(preference.LocalToken))
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Token"), new[] { nameof(preference.LocalToken) });
+            }
+
+            if (!string.IsNullOrWhiteSpace(preference.LocalToken) && preference.LocalToken.Length > 300)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Token", "300"), new[] { nameof(preference.LocalToken) });
             }
         }
         #endregion Functions private

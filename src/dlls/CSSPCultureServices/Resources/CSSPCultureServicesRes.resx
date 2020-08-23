@@ -798,4 +798,10 @@
   <data name="ServerNotRespondingDoYouHaveInternetConnection" xml:space="preserve">
     <value>Server not responding. Do you have internet connection?</value>
   </data>
+  <data name="CreateGzFileOnlyAvailableWhenRunningOnAzure" xml:space="preserve">
+    <value>CreateGzFile only available when running on Azure</value>
+  </data>
+  <data name="_OnlyAvailableWhenRunningOnLocal" xml:space="preserve">
+    <value>{0} only available when running on Local</value>
+  </data>
 </root>

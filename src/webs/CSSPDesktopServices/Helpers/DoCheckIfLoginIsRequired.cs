@@ -51,8 +51,8 @@ namespace CSSPDesktopServices.Services
             preference.AzureStore = await Descramble(preference.AzureStore);
             preference.LoginEmail = await Descramble(preference.LoginEmail);
             preference.Password = await Descramble(preference.Password);
-            preference.HasInternetConnection = bool.Parse(await Descramble(preference.HasInternetConnection.ToString()));
-            preference.LoggedIn = bool.Parse(await Descramble(preference.LoggedIn.ToString()));
+            //preference.HasInternetConnection = preference.HasInternetConnection;
+            //preference.LoggedIn = preference.LoggedIn;
             preference.Token = await Descramble(preference.Token);
             LoginRequired = false;
 

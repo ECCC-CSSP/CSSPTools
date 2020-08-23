@@ -115,8 +115,8 @@ namespace CSSPWebAPIs
             services.AddIdentityCore<ApplicationUser>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            if (RunningOn == "Local")
-            {
+            //if (RunningOn == "Local")
+            //{
                 /* ---------------------------------------------------------------------------------
                  * using CSSPDBLocal 
                  * ---------------------------------------------------------------------------------      
@@ -155,7 +155,7 @@ namespace CSSPWebAPIs
                 {
                     options.UseSqlite($"Data Source={ fiCSSPDBFilesManagement.FullName }");
                 });
-            }
+            //}
 
             services.AddScoped<ICSSPCultureService, CSSPCultureService>();
             services.AddScoped<IEnums, Enums>();
@@ -166,17 +166,17 @@ namespace CSSPWebAPIs
 
             LoadAllDBServices(services);
             
-            if (RunningOn == "Azure")
-            {
+            //if (RunningOn == "Azure")
+            //{
                 services.AddScoped<ICreateGzFileService, CreateGzFileService>();
-            }
+            //}
 
-            if (RunningOn == "Local")
-            {
+            //if (RunningOn == "Local")
+            //{
                 services.AddScoped<ICSSPFileService, CSSPFileService>();
                 services.AddScoped<IDownloadGzFileService, DownloadGzFileService>();
                 services.AddScoped<IReadGzFileService, ReadGzFileService>();
-            }
+            //}
 
             if (RunningOn == "Local")
             {

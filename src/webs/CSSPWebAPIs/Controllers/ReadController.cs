@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CSSPEnums;
+using CSSPCultureServices.Resources;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -74,6 +75,11 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
+            if (LoggedInService.RunningOn == "Azure")
+            {
+                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebArea")));
+            }
+
             return await ReadGzFileService.ReadJSON<WebArea>(WebType, TVItemID, WebTypeYear);
         }
         [Route("WebClimateDataValue/{WebType:int}/{TVItemID:int}/{WebTypeYear:int}")]
@@ -83,6 +89,11 @@ namespace CSSPWebAPIs.Controllers
             // TVItemID = ClimateSiteTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            if (LoggedInService.RunningOn == "Azure")
+            {
+                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebClimateDataValue")));
+            }
 
             return await ReadGzFileService.ReadJSON<WebClimateDataValue>(WebType, TVItemID, WebTypeYear);
         }
@@ -94,6 +105,11 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
+            if (LoggedInService.RunningOn == "Azure")
+            {
+                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebClimateSite")));
+            }
+
             return await ReadGzFileService.ReadJSON<WebClimateSite>(WebType, TVItemID, WebTypeYear);
         }
         [Route("WebContact/{WebType:int}/{TVItemID:int}/{WebTypeYear:int}")]
@@ -103,6 +119,11 @@ namespace CSSPWebAPIs.Controllers
             // TVItemID = 0 -- not used
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            if (LoggedInService.RunningOn == "Azure")
+            {
+                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebContact")));
+            }
 
             return await ReadGzFileService.ReadJSON<WebContact>(WebType, TVItemID, WebTypeYear);
         }
@@ -114,6 +135,11 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
+            if (LoggedInService.RunningOn == "Azure")
+            {
+                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebCountry")));
+            }
+
             return await ReadGzFileService.ReadJSON<WebCountry>(WebType, TVItemID, WebTypeYear);
         }
         [Route("WebDrogueRun/{WebType:int}/{TVItemID:int}/{WebTypeYear:int}")]
@@ -123,6 +149,11 @@ namespace CSSPWebAPIs.Controllers
             // TVItemID = SubsectorTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            if (LoggedInService.RunningOn == "Azure")
+            {
+                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebDrogueRun")));
+            }
 
             return await ReadGzFileService.ReadJSON<WebDrogueRun>(WebType, TVItemID, WebTypeYear);
         }
@@ -134,6 +165,11 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
+            if (LoggedInService.RunningOn == "Azure")
+            {
+                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebHelpDoc")));
+            }
+
             return await ReadGzFileService.ReadJSON<WebHelpDoc>(WebType, TVItemID, WebTypeYear);
         }
         [Route("WebHydrometricDataValue/{WebType:int}/{TVItemID:int}/{WebTypeYear:int}")]
@@ -143,6 +179,11 @@ namespace CSSPWebAPIs.Controllers
             // TVItemID = HydrometricSiteTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            if (LoggedInService.RunningOn == "Azure")
+            {
+                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebHydrometricDataValue")));
+            }
 
             return await ReadGzFileService.ReadJSON<WebHydrometricDataValue>(WebType, TVItemID, WebTypeYear);
         }
@@ -154,6 +195,11 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
+            if (LoggedInService.RunningOn == "Azure")
+            {
+                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebHydrometricSite")));
+            }
+
             return await ReadGzFileService.ReadJSON<WebHydrometricSite>(WebType, TVItemID, WebTypeYear);
         }
         [Route("WebMikeScenario/{WebType:int}/{TVItemID:int}/{WebTypeYear:int}")]
@@ -163,6 +209,11 @@ namespace CSSPWebAPIs.Controllers
             // TVItemID = MikeScenarioTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            if (LoggedInService.RunningOn == "Azure")
+            {
+                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebMikeScenario")));
+            }
 
             return await ReadGzFileService.ReadJSON<WebMikeScenario>(WebType, TVItemID, WebTypeYear);
         }
@@ -174,6 +225,11 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
+            if (LoggedInService.RunningOn == "Azure")
+            {
+                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebMunicipalities")));
+            }
+
             return await ReadGzFileService.ReadJSON<WebMunicipalities>(WebType, TVItemID, WebTypeYear);
         }
         [Route("WebMunicipality/{WebType:int}/{TVItemID:int}/{WebTypeYear:int}")]
@@ -183,6 +239,11 @@ namespace CSSPWebAPIs.Controllers
             // TVItemID = MunicipalityTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            if (LoggedInService.RunningOn == "Azure")
+            {
+                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebMunicipality")));
+            }
 
             return await ReadGzFileService.ReadJSON<WebMunicipality>(WebType, TVItemID, WebTypeYear);
         }
@@ -194,6 +255,11 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
+            if (LoggedInService.RunningOn == "Azure")
+            {
+                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebMWQMLookupMPN")));
+            }
+
             return await ReadGzFileService.ReadJSON<WebMWQMLookupMPN>(WebType, TVItemID, WebTypeYear);
         }
         [Route("WebMWQMRun/{WebType:int}/{TVItemID:int}/{WebTypeYear:int}")]
@@ -203,6 +269,11 @@ namespace CSSPWebAPIs.Controllers
             // TVItemID = SubsectorTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            if (LoggedInService.RunningOn == "Azure")
+            {
+                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebMWQMRun")));
+            }
 
             return await ReadGzFileService.ReadJSON<WebMWQMRun>(WebType, TVItemID, WebTypeYear);
         }
@@ -214,6 +285,11 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
+            if (LoggedInService.RunningOn == "Azure")
+            {
+                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebMWQMSample")));
+            }
+
             return await ReadGzFileService.ReadJSON<WebMWQMSample>(WebType, TVItemID, WebTypeYear);
         }
         [Route("WebMWQMSite/{WebType:int}/{TVItemID:int}/{WebTypeYear:int}")]
@@ -223,6 +299,11 @@ namespace CSSPWebAPIs.Controllers
             // TVItemID = SubsectorTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            if (LoggedInService.RunningOn == "Azure")
+            {
+                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebMWQMSite")));
+            }
 
             return await ReadGzFileService.ReadJSON<WebMWQMSite>(WebType, TVItemID, WebTypeYear);
         }
@@ -234,6 +315,11 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
+            if (LoggedInService.RunningOn == "Azure")
+            {
+                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebPolSourceGrouping")));
+            }
+
             return await ReadGzFileService.ReadJSON<WebPolSourceGrouping>(WebType, TVItemID, WebTypeYear);
         }
         [Route("WebPolSourceSite/{WebType:int}/{TVItemID:int}/{WebTypeYear:int}")]
@@ -243,6 +329,11 @@ namespace CSSPWebAPIs.Controllers
             // TVItemID = SubsectorTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            if (LoggedInService.RunningOn == "Azure")
+            {
+                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebPolSourceSite")));
+            }
 
             return await ReadGzFileService.ReadJSON<WebPolSourceSite>(WebType, TVItemID, WebTypeYear);
         }
@@ -254,6 +345,11 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
+            if (LoggedInService.RunningOn == "Azure")
+            {
+                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebProvince")));
+            }
+
             return await ReadGzFileService.ReadJSON<WebProvince>(WebType, TVItemID, WebTypeYear);
         }
         [Route("WebReportType/{WebType:int}/{TVItemID:int}/{WebTypeYear:int}")]
@@ -263,6 +359,11 @@ namespace CSSPWebAPIs.Controllers
             // TVItemID = 0 -- not used
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            if (LoggedInService.RunningOn == "Azure")
+            {
+                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebReportType")));
+            }
 
             return await ReadGzFileService.ReadJSON<WebReportType>(WebType, TVItemID, WebTypeYear);
         }
@@ -274,6 +375,11 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
+            if (LoggedInService.RunningOn == "Azure")
+            {
+                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebRoot")));
+            }
+
             return await ReadGzFileService.ReadJSON<WebRoot>(WebType, TVItemID, WebTypeYear);
         }
         [Route("WebSamplingPlan/{WebType:int}/{TVItemID:int}/{WebTypeYear:int}")]
@@ -283,6 +389,11 @@ namespace CSSPWebAPIs.Controllers
             // TVItemID = SamplingPlanID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            if (LoggedInService.RunningOn == "Azure")
+            {
+                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebSamplingPlan")));
+            }
 
             return await ReadGzFileService.ReadJSON<WebSamplingPlan>(WebType, TVItemID, WebTypeYear);
         }
@@ -294,6 +405,11 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
+            if (LoggedInService.RunningOn == "Azure")
+            {
+                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebSector")));
+            }
+
             return await ReadGzFileService.ReadJSON<WebSector>(WebType, TVItemID, WebTypeYear);
         }
         [Route("WebSubsector/{WebType:int}/{TVItemID:int}/{WebTypeYear:int}")]
@@ -304,6 +420,11 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
+            if (LoggedInService.RunningOn == "Azure")
+            {
+                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebSubsector")));
+            }
+
             return await ReadGzFileService.ReadJSON<WebSubsector>(WebType, TVItemID, WebTypeYear);
         }
         [Route("WebTideLocation/{WebType:int}/{TVItemID:int}/{WebTypeYear:int}")]
@@ -313,6 +434,11 @@ namespace CSSPWebAPIs.Controllers
             // TVItemID = 0 -- not used
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            if (LoggedInService.RunningOn == "Azure")
+            {
+                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebTideLocation")));
+            }
 
             return await ReadGzFileService.ReadJSON<WebTideLocation>(WebType, TVItemID, WebTypeYear);
         }

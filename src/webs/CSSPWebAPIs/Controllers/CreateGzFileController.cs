@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CSSPEnums;
+using CSSPCultureServices.Resources;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -48,6 +49,11 @@ namespace CSSPWebAPIs.Controllers
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            if (LoggedInService.RunningOn != "Azure")
+            {
+                return await Task.FromResult(BadRequest(CSSPCultureServicesRes.CreateGzFileOnlyAvailableWhenRunningOnAzure));
+            }
 
             return await CreateGzFileService.CreateGzFile(WebType, TVItemID, WebTypeYear);
         }

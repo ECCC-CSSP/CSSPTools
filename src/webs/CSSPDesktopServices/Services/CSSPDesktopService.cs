@@ -21,22 +21,15 @@ namespace CSSPDesktopServices.Services
         // Properties
         bool IsEnglish { get; set; }
         AppTextModel appTextModel { get; set; }
-        //bool? HasInternetConnection { get; set; }
         bool LoginRequired { get; set; }
         bool UpdateIsNeeded { get; set; }
-        //bool IsLoggedIn { get; set; }
         bool HasHelpFiles { get; set; }
-        string CSSPDBLocal { get; set; }
         string CSSPDBFilesManagement { get; set; }
         string CSSPDBLogin { get; set; }
         string CSSPAzureUrl { get; set; }
         string CSSPLocalUrl { get; set; }
         Preference preference { get; set; }
-        //string LoginEmail { get; set; }
-        //string Password { get; set; }
-        //string Token { get; set; }
         Contact ContactLoggedIn { get; set; }
-        //string AzureStore { get; set; }
         string LocalCSSPWebAPIsPath { get; set; }
 
         // Functions
@@ -69,29 +62,21 @@ namespace CSSPDesktopServices.Services
 
         #region Properties public
         public AppTextModel appTextModel { get; set; }
-        //public bool? HasInternetConnection { get; set; } = null;
         public bool IsEnglish { get; set; }
         public bool LoginRequired { get; set; } = false;
         public bool UpdateIsNeeded { get; set; } = false;
-        //public bool IsLoggedIn { get; set; } = false;
         public bool HasHelpFiles { get; set; } = false;
-        public string CSSPDBLocal { get; set; }
         public string CSSPDBFilesManagement { get; set; }
         public string CSSPDBLogin { get; set; }
         public string CSSPAzureUrl { get; set; }
         public string CSSPLocalUrl { get; set; }
         public Preference preference { get; set; }
-        //public string LoginEmail { get; set; }
-        //public string Password { get; set; }
-        //public string Token { get; set; }
         public Contact ContactLoggedIn { get; set; }
-        //public string AzureStore { get; set; }
         public string LocalCSSPWebAPIsPath { get; set; }
         #endregion Properties public
         
         #region Properties private
         private CSSPDBContext db { get; }
-        private CSSPDBLocalContext dbLocal { get; }
         private CSSPDBLoginContext dbLogin { get; }
         private CSSPDBFilesManagementContext dbFM { get; }
         private IConfiguration Configuration { get; }
@@ -107,21 +92,21 @@ namespace CSSPDesktopServices.Services
         private string AzureStoreCSSPFilesPath { get; set; }
         private Process processCSSPWebAPIs { get; set; }
         private Process processBrowser { get; set; }
+        private Contact contact { get; set; }
         #endregion Properties private
 
         #region Constructors
-        public CSSPDesktopService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, 
-            IEnums enums, CSSPDBLocalContext dbLocal = null, CSSPDBLoginContext dbLogin = null,
+        public CSSPDesktopService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, CSSPDBLoginContext dbLogin = null,
             CSSPDBFilesManagementContext dbFM = null)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.enums = enums;
-            this.dbLocal = dbLocal;
             this.dbLogin = dbLogin;
             this.dbFM = dbFM;
 
             preference = new Preference();
+            contact = new Contact();
         }
         #endregion Constructors
 

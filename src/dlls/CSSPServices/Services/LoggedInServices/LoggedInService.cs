@@ -17,6 +17,8 @@ namespace CSSPServices
         bool HasInternetConnection { get; set; }
         DBLocationEnum DBLocation { get; set; }
         string RunningOn { get; set; }
+        string AzureToken { get; set; }
+        string LocalToken { get; set; }
 
         Task<bool> CheckInternetConnection();
         Task<bool> SetLoggedInContactInfo(Contact contact);
@@ -32,6 +34,8 @@ namespace CSSPServices
         public bool HasInternetConnection { get; set; } = true;
         public DBLocationEnum DBLocation { get; set; }
         public string RunningOn { get; set; }
+        public string AzureToken { get; set; }
+        public string LocalToken { get; set; }
 
         private ICSSPCultureService CSSPCultureService { get; }
         private CSSPDBContext db { get; }
