@@ -25,7 +25,7 @@ namespace CSSPDesktopServices.Services
         {
             AppendStatus(new AppendEventArgs(appTextModel.Logoff));
 
-            if (!preference.LoggedIn) return await Task.FromResult(false);
+            if (preference.LoggedIn != null && !(bool)preference.LoggedIn) return await Task.FromResult(false);
 
             AppendStatus(new AppendEventArgs(""));
 

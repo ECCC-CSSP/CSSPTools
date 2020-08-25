@@ -115,47 +115,44 @@ namespace CSSPWebAPIs
             services.AddIdentityCore<ApplicationUser>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            //if (RunningOn == "Local")
-            //{
-                /* ---------------------------------------------------------------------------------
-                 * using CSSPDBLocal 
-                 * ---------------------------------------------------------------------------------      
-                 */
-                string CSSPDBLocalFileName = Configuration.GetValue<string>("CSSPDBLocal");
+            /* ---------------------------------------------------------------------------------
+             * using CSSPDBLocal 
+             * ---------------------------------------------------------------------------------      
+             */
+            string CSSPDBLocalFileName = Configuration.GetValue<string>("CSSPDBLocal");
 
-                FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocalFileName);
+            FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocalFileName);
 
-                services.AddDbContext<CSSPDBLocalContext>(options =>
-                {
-                    options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
-                });
+            services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
+            });
 
-                /* ---------------------------------------------------------------------------------
-                 * using CSSPDBLogin
-                 * ---------------------------------------------------------------------------------      
-                 */
-                string CSSPDBLoginFileName = Configuration.GetValue<string>("CSSPDBLogin");
+            /* ---------------------------------------------------------------------------------
+             * using CSSPDBLogin
+             * ---------------------------------------------------------------------------------      
+             */
+            string CSSPDBLoginFileName = Configuration.GetValue<string>("CSSPDBLogin");
 
-                FileInfo fiCSSPDBLogin = new FileInfo(CSSPDBLoginFileName);
+            FileInfo fiCSSPDBLogin = new FileInfo(CSSPDBLoginFileName);
 
-                services.AddDbContext<CSSPDBLoginContext>(options =>
-                {
-                    options.UseSqlite($"Data Source={ fiCSSPDBLogin.FullName }");
-                });
+            services.AddDbContext<CSSPDBLoginContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiCSSPDBLogin.FullName }");
+            });
 
-                /* ---------------------------------------------------------------------------------
-                 * using CSSPDBFileManagement
-                 * ---------------------------------------------------------------------------------      
-                 */
-                string CSSPDBFilesManagementFileName = Configuration.GetValue<string>("CSSPDBFilesManagement");
+            /* ---------------------------------------------------------------------------------
+             * using CSSPDBFileManagement
+             * ---------------------------------------------------------------------------------      
+             */
+            string CSSPDBFilesManagementFileName = Configuration.GetValue<string>("CSSPDBFilesManagement");
 
-                FileInfo fiCSSPDBFilesManagement = new FileInfo(CSSPDBFilesManagementFileName);
+            FileInfo fiCSSPDBFilesManagement = new FileInfo(CSSPDBFilesManagementFileName);
 
-                services.AddDbContext<CSSPDBFilesManagementContext>(options =>
-                {
-                    options.UseSqlite($"Data Source={ fiCSSPDBFilesManagement.FullName }");
-                });
-            //}
+            services.AddDbContext<CSSPDBFilesManagementContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiCSSPDBFilesManagement.FullName }");
+            });
 
             services.AddScoped<ICSSPCultureService, CSSPCultureService>();
             services.AddScoped<IEnums, Enums>();
@@ -165,18 +162,11 @@ namespace CSSPWebAPIs
             services.AddScoped<IContactService, ContactService>();
 
             LoadAllDBServices(services);
-            
-            //if (RunningOn == "Azure")
-            //{
-                services.AddScoped<ICreateGzFileService, CreateGzFileService>();
-            //}
 
-            //if (RunningOn == "Local")
-            //{
-                services.AddScoped<ICSSPFileService, CSSPFileService>();
-                services.AddScoped<IDownloadGzFileService, DownloadGzFileService>();
-                services.AddScoped<IReadGzFileService, ReadGzFileService>();
-            //}
+            services.AddScoped<ICreateGzFileService, CreateGzFileService>();
+            services.AddScoped<ICSSPFileService, CSSPFileService>();
+            services.AddScoped<IDownloadGzFileService, DownloadGzFileService>();
+            services.AddScoped<IReadGzFileService, ReadGzFileService>();
 
             if (RunningOn == "Local")
             {

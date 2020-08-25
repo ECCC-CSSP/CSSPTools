@@ -45,15 +45,18 @@ namespace CSSPDesktopServices.Services
                 List<TVTypeUserAuthorization> TVTypeUserAuthorizationToDeleteList = (from c in dbLogin.TVTypeUserAuthorizations
                                                                                      select c).ToList();
 
-                try
+                if (TVTypeUserAuthorizationToDeleteList.Count > 0)
                 {
-                    dbLogin.TVTypeUserAuthorizations.RemoveRange(TVTypeUserAuthorizationToDeleteList);
-                    dbLogin.SaveChanges();
-                }
-                catch (Exception ex)
-                {
-                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes.CouldNotDelete_Error_, "TVTypeUserAuthorizationList", ex.Message)));
-                    return await Task.FromResult(false);
+                    try
+                    {
+                        dbLogin.TVTypeUserAuthorizations.RemoveRange(TVTypeUserAuthorizationToDeleteList);
+                        dbLogin.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes.CouldNotDelete_Error_, "TVTypeUserAuthorizationList", ex.Message)));
+                        return await Task.FromResult(false);
+                    }
                 }
 
                 try

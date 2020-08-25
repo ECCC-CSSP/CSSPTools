@@ -40,6 +40,7 @@
             this.butHideHelpPanel = new System.Windows.Forms.Button();
             this.panelHelpSpace1 = new System.Windows.Forms.Panel();
             this.panelLoginCenter = new System.Windows.Forms.Panel();
+            this.lblInternetRequired = new System.Windows.Forms.Label();
             this.butLogin = new System.Windows.Forms.Button();
             this.textBoxPassword = new System.Windows.Forms.TextBox();
             this.textBoxLoginEmail = new System.Windows.Forms.TextBox();
@@ -215,17 +216,31 @@
             // 
             // panelLoginCenter
             // 
+            this.panelLoginCenter.Controls.Add(this.lblInternetRequired);
             this.panelLoginCenter.Controls.Add(this.butLogin);
             this.panelLoginCenter.Controls.Add(this.textBoxPassword);
             this.panelLoginCenter.Controls.Add(this.textBoxLoginEmail);
             this.panelLoginCenter.Controls.Add(this.lblPassword);
             this.panelLoginCenter.Controls.Add(this.lblLoginEmail);
             this.panelLoginCenter.Controls.Add(this.lblCSSPWebToolsLoginOneTime);
-            this.panelLoginCenter.Location = new System.Drawing.Point(24, 327);
+            this.panelLoginCenter.Location = new System.Drawing.Point(24, 297);
             this.panelLoginCenter.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.panelLoginCenter.Name = "panelLoginCenter";
-            this.panelLoginCenter.Size = new System.Drawing.Size(484, 284);
+            this.panelLoginCenter.Size = new System.Drawing.Size(484, 314);
             this.panelLoginCenter.TabIndex = 9;
+            // 
+            // lblInternetRequired
+            // 
+            this.lblInternetRequired.AutoSize = true;
+            this.lblInternetRequired.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblInternetRequired.ForeColor = System.Drawing.Color.Red;
+            this.lblInternetRequired.Location = new System.Drawing.Point(60, 278);
+            this.lblInternetRequired.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblInternetRequired.Name = "lblInternetRequired";
+            this.lblInternetRequired.Size = new System.Drawing.Size(279, 20);
+            this.lblInternetRequired.TabIndex = 7;
+            this.lblInternetRequired.Text = "Internet connection is required to login";
+            this.lblInternetRequired.Visible = false;
             // 
             // butLogin
             // 
@@ -236,7 +251,7 @@
             this.butLogin.Size = new System.Drawing.Size(139, 44);
             this.butLogin.TabIndex = 2;
             this.butLogin.Text = "Login";
-            this.butLogin.Click += new System.EventHandler(this.linkLabelLogin_Click);
+            this.butLogin.Click += new System.EventHandler(this.butLogin_Click);
             // 
             // textBoxPassword
             // 
@@ -632,6 +647,7 @@
         private System.Windows.Forms.Panel panelLoginEmail;
         private System.Windows.Forms.Label lblContactLoggedIn;
         private System.Windows.Forms.Panel panelHelpSpace1;
+        private System.Windows.Forms.Label lblInternetRequired;
     }
 }
 

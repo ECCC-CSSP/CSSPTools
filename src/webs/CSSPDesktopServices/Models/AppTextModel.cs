@@ -12,24 +12,24 @@ namespace CSSPDesktopServices.Models
             FormTitleText = "CSSP Desktop Application";
 
             // PanelTop
-            linkLabelShowLanguagePanelText = "Language";
-            linkLabelShowHelpPanelText = "Help";
-            linkLabelShowLoginPanelText = "Login";
-            linkLabelLogoffText = "Logoff";
+            butShowLanguagePanelText = "Language";
+            butShowHelpPanelText = "Help";
+            butShowLoginPanelText = "Login";
+            butLogoffText = "Logoff";
 
             // PanelButtonsCenter
-            linkLabelStartText = "Start";
-            linkLabelStopText = "Stop";
-            linkLabelCloseText = "Close";
-            linkLabelUpdatesAvailableText = "Updates Available";
+            butStartText = "Start";
+            butStopText = "Stop";
+            butCloseText = "Close";
+            butUpdatesAvailableText = "Updates Available";
 
             // PanelHelp
-            linkLabelHideHelpPanelText = "Close Help";
+            butHideHelpPanelText = "Close Help";
 
             // PanelUpdateCenter
-            linkLabelUpdateText = "Update";
-            linkLabelCancelUpdateText = "Cancel";
-            linkLabelUpdateCompletedText = "Update Completed";
+            butUpdateText = "Update";
+            butCancelUpdateText = "Cancel";
+            butUpdateCompletedText = "Update Completed";
             lblInstallingText = "Installing...";
             Downloading_ = "Downloading {0}";
             Unzipping_ = "Unzipping {0}";
@@ -39,7 +39,9 @@ namespace CSSPDesktopServices.Models
             lblCSSPWebToolsLoginOneTimeText = "CSSP Web Tools Login (one time thing)";
             lblLoginEmailText = "Login Email:";
             lblPasswordText = "Password:";
-            linkLabelLoginText = "Login";
+            butLoginText = "Login";
+            lblInternetRequiredText = "Internet connection is required";
+            LoggingIn = "Logging in ... ";
 
             // PanelStatus
             lblStatusText = "Status:";
@@ -90,6 +92,7 @@ namespace CSSPDesktopServices.Models
             CSSPFilesManagementUpdateAzureStorage_AzureFileName_ = "CSSPFilesManagement.db Upate. AzureStorage {0} - AzureFileName {1}";
             PostRequestLoginEmailAndPasswordTo_ = "Post request with LoginEmail and Password to {0}";
             _StoredInTable_AndDatabase_ = "{0} stored in table {1} and {2}";
+            InternetConnectionRequiredFirstTimeConnecting = "Internet connection is required the first time connecting";
         }
     }
     public class AppTextModelFR : AppTextModel
@@ -99,24 +102,24 @@ namespace CSSPDesktopServices.Models
             // Form
             FormTitleText = "Application PCCSM de bureau";
             // PanelTop
-            linkLabelShowLanguagePanelText = "Langage";
-            linkLabelShowHelpPanelText = "Aide";
-            linkLabelShowLoginPanelText = "Connexion";
-            linkLabelLogoffText = "Déconnextion";
+            butShowLanguagePanelText = "Langage";
+            butShowHelpPanelText = "Aide";
+            butShowLoginPanelText = "Connexion";
+            butLogoffText = "Déconnextion";
 
             // PanelButtonsCenter
-            linkLabelStartText = "Commencer";
-            linkLabelStopText = "Arrêter";
-            linkLabelCloseText = "Fermer";
-            linkLabelUpdatesAvailableText = "Mise à jour disponible";
+            butStartText = "Commencer";
+            butStopText = "Arrêter";
+            butCloseText = "Fermer";
+            butUpdatesAvailableText = "Mise à jour disponible";
 
             // PanelHelp
-            linkLabelHideHelpPanelText = "Fermer l'aide";
+            butHideHelpPanelText = "Fermer l'aide";
 
             // PanelUpdateCenter
-            linkLabelUpdateText = "Mise à jour";
-            linkLabelCancelUpdateText = "Annuler";
-            linkLabelUpdateCompletedText = "Mise à jour complété";
+            butUpdateText = "Mise à jour";
+            butCancelUpdateText = "Annuler";
+            butUpdateCompletedText = "Mise à jour complété";
             lblInstallingText = "Installation en cours...";
             Downloading_ = "Téléchargement de {0}";
             Unzipping_ = "Décompression de {0}";
@@ -126,7 +129,9 @@ namespace CSSPDesktopServices.Models
             lblCSSPWebToolsLoginOneTimeText = "Connexion à l'outil PCCSM (une fois seulement)";
             lblLoginEmailText = "Courriel de connextion:";
             lblPasswordText = "Mot de passe:";
-            linkLabelLoginText = "Ouvrir session";
+            butLoginText = "Ouvrir session";
+            lblInternetRequiredText = "Connexion internet est requis";
+            LoggingIn = "Connexion en cours...";
 
             // PanelStatus
             lblStatusText = "Etat:";
@@ -177,6 +182,7 @@ namespace CSSPDesktopServices.Models
             CSSPFilesManagementUpdateAzureStorage_AzureFileName_ = "CSSPFilesManagement.db entré. AzureStorage {0} - AzureFileName {1}";
             PostRequestLoginEmailAndPasswordTo_ = "Requête 'POST' avec LoginEmail et Password à {0}";
             _StoredInTable_AndDatabase_ = "{0} sauvegardé dans la table {1} et la base de données {2}";
+            InternetConnectionRequiredFirstTimeConnecting = "Une connexion internet est requise pour se connecter la première fois";
         }
     }
     public class AppTextModel
@@ -185,24 +191,24 @@ namespace CSSPDesktopServices.Models
         public string FormTitleText { get; set; }
 
         // PanelTop
-        public string linkLabelShowLanguagePanelText { get; set; }
-        public string linkLabelShowHelpPanelText { get; set; }
-        public string linkLabelShowLoginPanelText { get; set; }
-        public string linkLabelLogoffText { get; set; }
+        public string butShowLanguagePanelText { get; set; }
+        public string butShowHelpPanelText { get; set; }
+        public string butShowLoginPanelText { get; set; }
+        public string butLogoffText { get; set; }
 
         // PanelButtonsCenter
-        public string linkLabelStartText { get; set; }
-        public string linkLabelStopText { get; set; }
-        public string linkLabelCloseText { get; set; }
-        public string linkLabelUpdatesAvailableText { get; set; }
+        public string butStartText { get; set; }
+        public string butStopText { get; set; }
+        public string butCloseText { get; set; }
+        public string butUpdatesAvailableText { get; set; }
 
         // PanelHelp
-        public string linkLabelHideHelpPanelText { get; set; }
+        public string butHideHelpPanelText { get; set; }
 
         // PanelUpdateCenter
-        public string linkLabelUpdateText { get; set; }
-        public string linkLabelCancelUpdateText { get; set; }
-        public string linkLabelUpdateCompletedText { get; set; }
+        public string butUpdateText { get; set; }
+        public string butCancelUpdateText { get; set; }
+        public string butUpdateCompletedText { get; set; }
         public string lblInstallingText { get; set; }
         public string Downloading_ { get; set; }
         public string Unzipping_ { get; set; }
@@ -212,7 +218,9 @@ namespace CSSPDesktopServices.Models
         public string lblCSSPWebToolsLoginOneTimeText { get; set; }
         public string lblLoginEmailText { get; set; }
         public string lblPasswordText { get; set; }
-        public string linkLabelLoginText { get; set; }
+        public string butLoginText { get; set; }
+        public string lblInternetRequiredText { get; set; }
+        public string LoggingIn { get; set; }
 
         // PanelStatus
         public string lblStatusText { get; set; }
@@ -263,5 +271,6 @@ namespace CSSPDesktopServices.Models
         public string CSSPFilesManagementUpdateAzureStorage_AzureFileName_ { get; set; }
         public string PostRequestLoginEmailAndPasswordTo_ { get; set; }
         public string _StoredInTable_AndDatabase_ { get; set; }
+        public string InternetConnectionRequiredFirstTimeConnecting { get; set; }
     }
 }

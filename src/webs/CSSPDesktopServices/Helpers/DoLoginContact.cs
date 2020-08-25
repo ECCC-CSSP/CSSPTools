@@ -50,29 +50,38 @@ namespace CSSPDesktopServices.Services
 
                 AppendStatus(new AppendEventArgs(string.Format(appTextModel.PostRequestLoginEmailAndPasswordTo_, $"{ CSSPAzureUrl }api/en-CA/auth/token")));
 
-                // trying to login
-                string stringData = JsonSerializer.Serialize(loginModel);
-                var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = httpClient.PostAsync($"{ CSSPAzureUrl }api/en-CA/auth/token", contentData).Result;
-                if ((int)response.StatusCode != 200)
+                try
                 {
-                    if ((int)response.StatusCode == 400)
+                    // trying to login
+                    string stringData = JsonSerializer.Serialize(loginModel);
+                    var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = httpClient.PostAsync($"{ CSSPAzureUrl }api/en-CA/auth/token", contentData).Result;
+                    if ((int)response.StatusCode != 200)
+                    {
+                        if ((int)response.StatusCode == 400)
+                        {
+                            AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes.UnableToLoginAs_WithProvidedPassword, LoginEmail)));
+                            return await Task.FromResult(false);
+                        }
+                        else
+                        {
+                            AppendStatus(new AppendEventArgs(CSSPCultureServicesRes.ServerNotRespondingDoYouHaveInternetConnection));
+                            return await Task.FromResult(false);
+                        }
+                    }
+
+                    contact = JsonSerializer.Deserialize<Contact>(response.Content.ReadAsStringAsync().Result);
+
+                    if (contact == null)
                     {
                         AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes.UnableToLoginAs_WithProvidedPassword, LoginEmail)));
                         return await Task.FromResult(false);
                     }
-                    else
-                    {
-                        AppendStatus(new AppendEventArgs(CSSPCultureServicesRes.ServerNotRespondingDoYouHaveInternetConnection));
-                        return await Task.FromResult(false);
-                    }
+
                 }
-
-                contact = JsonSerializer.Deserialize<Contact>(response.Content.ReadAsStringAsync().Result);
-
-                if (contact == null)
+                catch (Exception ex)
                 {
-                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes.UnableToLoginAs_WithProvidedPassword, LoginEmail)));
+                    AppendStatus(new AppendEventArgs(ex.Message));
                     return await Task.FromResult(false);
                 }
 
@@ -80,15 +89,18 @@ namespace CSSPDesktopServices.Services
                 List<Contact> contactToDeleteList = (from c in dbLogin.Contacts
                                                      select c).ToList();
 
-                try
+                if (contactToDeleteList.Count > 0)
                 {
-                    dbLogin.Contacts.RemoveRange(contactToDeleteList);
-                    dbLogin.SaveChanges();
-                }
-                catch (Exception ex)
-                {
-                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes.CouldNotDelete_Error_, "Contacts", ex.Message)));
-                    return await Task.FromResult(false);
+                    try
+                    {
+                        dbLogin.Contacts.RemoveRange(contactToDeleteList);
+                        dbLogin.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes.CouldNotDelete_Error_, "Contacts", ex.Message)));
+                        return await Task.FromResult(false);
+                    }
                 }
 
                 try

@@ -143,11 +143,20 @@ namespace ContactServices.Tests
 
             string CSSPDBLocalFileName = Configuration.GetValue<string>("CSSPDBLocal");
 
-            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName);
+            FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocalFileName);
 
             ServiceCollection.AddDbContext<CSSPDBLocalContext>(options =>
             {
-                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
+                options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
+            });
+
+            string CSSPDBLoginFileName = Configuration.GetValue<string>("CSSPDBLogin");
+
+            FileInfo fiCSSPDBLogin = new FileInfo(CSSPDBLocalFileName);
+
+            ServiceCollection.AddDbContext<CSSPDBLoginContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiCSSPDBLogin.FullName }");
             });
 
             ServiceCollection.AddIdentityCore<ApplicationUser>()
@@ -155,7 +164,6 @@ namespace ContactServices.Tests
 
             ServiceCollection.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(TestDB));
-
 
             ServiceProvider = ServiceCollection.BuildServiceProvider();
             Assert.NotNull(ServiceProvider);

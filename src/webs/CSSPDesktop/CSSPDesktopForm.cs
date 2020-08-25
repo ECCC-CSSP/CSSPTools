@@ -76,11 +76,13 @@ namespace CSSPDesktop
         }
         private void butSetLanguageToEnglish_Click(object sender, EventArgs e)
         {
-            SetLanguage(true);
+            IsEnglish = true;
+            StartTheAppWithLanguage().GetAwaiter().GetResult();
         }
         private void butSetLanguageToFrancais_Click(object sender, EventArgs e)
         {
-            SetLanguage(false);
+            IsEnglish = false;
+            StartTheAppWithLanguage().GetAwaiter().GetResult();
         }
         private void butStart_Click(object sender, EventArgs e)
         {
@@ -151,9 +153,13 @@ namespace CSSPDesktop
         }
         #endregion csspDesktopServiceEvent
         #region Login
-        private void linkLabelLogin_Click(object sender, EventArgs e)
+        private void butLogin_Click(object sender, EventArgs e)
         {
+            butLogin.Enabled = false;
+            butLogin.Text = CSSPDesktopService.appTextModel.LoggingIn;
             Login().GetAwaiter().GetResult();
+            butLogin.Text = CSSPDesktopService.appTextModel.butLoginText;
+            butLogin.Enabled = true;
         }
         #endregion Login
         #endregion Events
@@ -213,31 +219,9 @@ namespace CSSPDesktop
 
             butHideHelpPanel.Left = panelHelpTop.Width / 2 - butHideHelpPanel.Width / 2;
         }
-        private void SetLanguage(bool isEnglish)
-        {
-            IsEnglish = isEnglish;
-            StartTheAppWithLanguage().GetAwaiter().GetResult();
-        }
         private async Task<bool> StartTheAppWithLanguage()
         {
             SettingUpAllTextForLanguage();
-            if (! await CSSPDesktopService.CreateAllRequiredDirectories()) return await Task.FromResult(false);
-
-            // create CSSPDBFilesManagement if it does not exist
-            FileInfo fi = new FileInfo(CSSPDesktopService.CSSPDBFilesManagement);
-            if (!fi.Exists)
-            {
-                if (!await CSSPSQLiteService.CreateSQLiteCSSPDBFilesManagement()) return await Task.FromResult(false);
-            }
-
-            // create CSSPDBLogin if it does not exist
-            fi = new FileInfo(CSSPDesktopService.CSSPDBLogin);
-            if (!fi.Exists)
-            {
-                if (! await CSSPSQLiteService.CreateSQLiteCSSPDBLogin()) return await Task.FromResult(false);
-            }
-
-            if (! await CSSPDesktopService.CheckIfHelpFilesExist()) return await Task.FromResult(false);
 
             if (!await CSSPDesktopService.CheckIfLoginIsRequired()) return await Task.FromResult(false);
 
@@ -253,6 +237,19 @@ namespace CSSPDesktop
 
                 lblContactLoggedIn.Text = "";
                 ShowPanels(ShowPanel.Login);
+
+                if (CSSPDesktopService.preference.HasInternetConnection == null || (bool)CSSPDesktopService.preference.HasInternetConnection == false)
+                {
+                    butLogin.Enabled = false;
+                    lblInternetRequired.Visible = true;
+                    lblStatus.Text = CSSPDesktopService.appTextModel.InternetConnectionRequiredFirstTimeConnecting;
+                }
+                else
+                {
+                    butLogin.Enabled = true;
+                    lblInternetRequired.Visible = false;
+                    lblStatus.Text = "";
+                }
             }
             else
             {
@@ -294,9 +291,23 @@ namespace CSSPDesktop
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
-            Services.AddSingleton<ICSSPDesktopService, CSSPDesktopService>();
-            Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
 
+            // doing CSSPLocal
+            string CSSPDBLocal = Configuration.GetValue<string>("CSSPDBLocal");
+            if (string.IsNullOrWhiteSpace(CSSPDBLocal))
+            {
+                richTextBoxStatus.AppendText(string.Format(_CouldNotBeFoundInConfigurationFile_, "CSSPDBLocal", "appsettings_csspdesktop.json"));
+                return await Task.FromResult(false);
+            }
+
+            FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocal);
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
+            });
+
+            // doing CSSPDBFilesManagement
             string CSSPDBFilesManagement = Configuration.GetValue<string>("CSSPDBFilesManagement");
             if (string.IsNullOrWhiteSpace(CSSPDBFilesManagement))
             {
@@ -311,6 +322,7 @@ namespace CSSPDesktop
                 options.UseSqlite($"Data Source={ fiCSSPDBFileManagement.FullName }");
             });
 
+            // doing CSSPLogin
             string CSSPDBLogin = Configuration.GetValue<string>("CSSPDBLogin");
             if (string.IsNullOrWhiteSpace(CSSPDBLogin))
             {
@@ -325,20 +337,20 @@ namespace CSSPDesktop
                 options.UseSqlite($"Data Source={ fiCSSPDBLogin.FullName }");
             });
 
+            Services.AddSingleton<ICSSPDesktopService, CSSPDesktopService>();
+            Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
 
             Provider = Services.BuildServiceProvider();
+            if (Provider == null)
+            {
+                richTextBoxStatus.AppendText("Provider should not be null\r\n");
+                return await Task.FromResult(false);
+            }
 
             CSSPDesktopService = Provider.GetService<ICSSPDesktopService>();
             if (CSSPDesktopService == null)
             {
-                if (!IsEnglish)
-                {
-                    richTextBoxStatus.AppendText("CSSPDesktopService ne devrais pas être null\r\n");
-                }
-                else
-                {
-                    richTextBoxStatus.AppendText("CSSPDesktopService should not be null\r\n");
-                }
+                richTextBoxStatus.AppendText("CSSPDesktopService should not be null\r\n");
                 return await Task.FromResult(false);
             }
 
@@ -356,7 +368,31 @@ namespace CSSPDesktop
                 richTextBoxStatus.AppendText(string.Format(CSSPDesktopService.appTextModel._ShouldNotBeNull, "CSSPSQLiteService"));
             }
 
+            if (!await CSSPDesktopService.CreateAllRequiredDirectories()) return await Task.FromResult(false);
+
+
             SettingUpAllTextForLanguage();
+
+            // create CSSPDBLocal if it does not exist
+            FileInfo fi = new FileInfo(CSSPDesktopService.CSSPDBLocal);
+            if (!fi.Exists)
+            {
+                if (!await CSSPSQLiteService.CreateSQLiteCSSPDBLocal()) return await Task.FromResult(false);
+            }
+
+            // create CSSPDBFilesManagement if it does not exist
+            fi = new FileInfo(CSSPDesktopService.CSSPDBFilesManagement);
+            if (!fi.Exists)
+            {
+                if (!await CSSPSQLiteService.CreateSQLiteCSSPDBFilesManagement()) return await Task.FromResult(false);
+            }
+
+            // create CSSPDBLogin if it does not exist
+            fi = new FileInfo(CSSPDesktopService.CSSPDBLogin);
+            if (!fi.Exists)
+            {
+                if (!await CSSPSQLiteService.CreateSQLiteCSSPDBLogin()) return await Task.FromResult(false);
+            }
 
             splitContainerFirst.Dock = DockStyle.Fill;
             panelHelp.Dock = DockStyle.Fill;
@@ -367,9 +403,9 @@ namespace CSSPDesktop
 
             RecenterPanels();
 
-            if (!await CheckInternetConnection()) return await Task.FromResult(false);
+            if (!await CSSPDesktopService.CheckIfHelpFilesExist()) return await Task.FromResult(false);
 
-            if (!(bool)CSSPDesktopService.preference.HasInternetConnection) return await Task.FromResult(false);
+            if (!await CheckInternetConnection()) return await Task.FromResult(false);
 
             lblStatus.Text = "";
 
@@ -406,32 +442,33 @@ namespace CSSPDesktop
             }
 
             // PanelTop
-            butShowLanguagePanel.Text = CSSPDesktopService.appTextModel.linkLabelShowLanguagePanelText;
-            butShowHelpPanel.Text = CSSPDesktopService.appTextModel.linkLabelShowHelpPanelText;
+            butShowLanguagePanel.Text = CSSPDesktopService.appTextModel.butShowLanguagePanelText;
+            butShowHelpPanel.Text = CSSPDesktopService.appTextModel.butShowHelpPanelText;
             lblLoginEmail.Text = CSSPDesktopService.appTextModel.lblLoginEmailText;
-            butShowLoginPanel.Text = CSSPDesktopService.appTextModel.linkLabelShowLoginPanelText;
-            butLogoff.Text = CSSPDesktopService.appTextModel.linkLabelLogoffText;
+            butShowLoginPanel.Text = CSSPDesktopService.appTextModel.butShowLoginPanelText;
+            butLogoff.Text = CSSPDesktopService.appTextModel.butLogoffText;
 
 
             // PanelButtonsCenter
-            butStart.Text = CSSPDesktopService.appTextModel.linkLabelStartText;
-            butStop.Text = CSSPDesktopService.appTextModel.linkLabelStopText;
-            butClose.Text = CSSPDesktopService.appTextModel.linkLabelCloseText;
-            butShowUpdatePanel.Text = CSSPDesktopService.appTextModel.linkLabelUpdatesAvailableText;
+            butStart.Text = CSSPDesktopService.appTextModel.butStartText;
+            butStop.Text = CSSPDesktopService.appTextModel.butStopText;
+            butClose.Text = CSSPDesktopService.appTextModel.butCloseText;
+            butShowUpdatePanel.Text = CSSPDesktopService.appTextModel.butUpdatesAvailableText;
 
             // PanelHelpCenter
-            butHideHelpPanel.Text = CSSPDesktopService.appTextModel.linkLabelHideHelpPanelText;
+            butHideHelpPanel.Text = CSSPDesktopService.appTextModel.butHideHelpPanelText;
 
             // PanelUpdateCenter
-            butUpdate.Text = CSSPDesktopService.appTextModel.linkLabelUpdateText;
-            butCancelUpdate.Text = CSSPDesktopService.appTextModel.linkLabelCancelUpdateText;
-            butUpdateCompleted.Text = CSSPDesktopService.appTextModel.linkLabelUpdateCompletedText;
+            butUpdate.Text = CSSPDesktopService.appTextModel.butUpdateText;
+            butCancelUpdate.Text = CSSPDesktopService.appTextModel.butCancelUpdateText;
+            butUpdateCompleted.Text = CSSPDesktopService.appTextModel.butUpdateCompletedText;
             lblInstalling.Text = CSSPDesktopService.appTextModel.lblInstallingText;
 
             // PanelLoginCenter
             lblCSSPWebToolsLoginOneTime.Text = CSSPDesktopService.appTextModel.lblCSSPWebToolsLoginOneTimeText;
             lblPassword.Text = CSSPDesktopService.appTextModel.lblPasswordText;
-            butLogin.Text = CSSPDesktopService.appTextModel.linkLabelLoginText;
+            butLogin.Text = CSSPDesktopService.appTextModel.butLoginText;
+            lblInternetRequired.Text = CSSPDesktopService.appTextModel.lblInternetRequiredText;
 
             // PanelStatus
             lblStatusText.Text = CSSPDesktopService.appTextModel.lblStatusText;

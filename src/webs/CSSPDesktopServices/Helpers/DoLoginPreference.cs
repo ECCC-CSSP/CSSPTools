@@ -53,15 +53,18 @@ namespace CSSPDesktopServices.Services
                 List<Preference> preferenceToDeleteList = (from c in dbLogin.Preferences
                                                            select c).ToList();
 
-                try
+                if (preferenceToDeleteList.Count > 0)
                 {
-                    dbLogin.Preferences.RemoveRange(preferenceToDeleteList);
-                    dbLogin.SaveChanges();
-                }
-                catch (Exception ex)
-                {
-                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes.CouldNotDelete_Error_, "PreferenceToDeleteList", ex.Message)));
-                    return await Task.FromResult(false);
+                    try
+                    {
+                        dbLogin.Preferences.RemoveRange(preferenceToDeleteList);
+                        dbLogin.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes.CouldNotDelete_Error_, "PreferenceToDeleteList", ex.Message)));
+                        return await Task.FromResult(false);
+                    }
                 }
 
                 Preference preference = new Preference()
@@ -71,10 +74,8 @@ namespace CSSPDesktopServices.Services
                     LoginEmail = await Scramble(LoginEmail),
                     Password = await Scramble(Password),
                     HasInternetConnection = true,
-                    AzureLoggedIn = true,
-                    AzureToken = await Scramble(contact.Token),
-                    LocalLoggedIn = false,
-                    LocalToken = "",
+                    LoggedIn = true,
+                    Token = await Scramble(contact.Token),
                 };
 
                 try

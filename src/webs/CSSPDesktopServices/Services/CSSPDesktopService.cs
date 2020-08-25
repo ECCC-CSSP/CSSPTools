@@ -26,6 +26,7 @@ namespace CSSPDesktopServices.Services
         bool HasHelpFiles { get; set; }
         string CSSPDBFilesManagement { get; set; }
         string CSSPDBLogin { get; set; }
+        string CSSPDBLocal { get; set; }
         string CSSPAzureUrl { get; set; }
         string CSSPLocalUrl { get; set; }
         Preference preference { get; set; }
@@ -68,15 +69,16 @@ namespace CSSPDesktopServices.Services
         public bool HasHelpFiles { get; set; } = false;
         public string CSSPDBFilesManagement { get; set; }
         public string CSSPDBLogin { get; set; }
+        public string CSSPDBLocal { get; set; }
         public string CSSPAzureUrl { get; set; }
         public string CSSPLocalUrl { get; set; }
         public Preference preference { get; set; }
         public Contact ContactLoggedIn { get; set; }
         public string LocalCSSPWebAPIsPath { get; set; }
         #endregion Properties public
-        
+
         #region Properties private
-        private CSSPDBContext db { get; }
+        private CSSPDBLocalContext dbLocal { get; }
         private CSSPDBLoginContext dbLogin { get; }
         private CSSPDBFilesManagementContext dbFM { get; }
         private IConfiguration Configuration { get; }
@@ -96,12 +98,13 @@ namespace CSSPDesktopServices.Services
         #endregion Properties private
 
         #region Constructors
-        public CSSPDesktopService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, CSSPDBLoginContext dbLogin = null,
-            CSSPDBFilesManagementContext dbFM = null)
+        public CSSPDesktopService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, 
+            CSSPDBLocalContext dbLocal, CSSPDBLoginContext dbLogin, CSSPDBFilesManagementContext dbFM)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.enums = enums;
+            this.dbLocal = dbLocal;
             this.dbLogin = dbLogin;
             this.dbFM = dbFM;
 

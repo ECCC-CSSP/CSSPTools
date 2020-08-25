@@ -51,15 +51,18 @@ namespace CSSPDesktopServices.Services
                 List<AspNetUser> aspNetUserToDeleteList = (from c in dbLogin.AspNetUsers
                                                            select c).ToList();
 
-                try
+                if (aspNetUserToDeleteList.Count > 0)
                 {
-                    dbLogin.AspNetUsers.RemoveRange(aspNetUserToDeleteList);
-                    dbLogin.SaveChanges();
-                }
-                catch (Exception ex)
-                {
-                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes.CouldNotDelete_Error_, "AspNetUsers", ex.Message)));
-                    return await Task.FromResult(false);
+                    try
+                    {
+                        dbLogin.AspNetUsers.RemoveRange(aspNetUserToDeleteList);
+                        dbLogin.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes.CouldNotDelete_Error_, "AspNetUsers", ex.Message)));
+                        return await Task.FromResult(false);
+                    }
                 }
 
                 try

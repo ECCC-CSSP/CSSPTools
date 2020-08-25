@@ -36,10 +36,10 @@ namespace CSSPDesktopServices.Services
             ContactLoggedIn = contact;
 
             // doing preference
-            preference = (from c in dbLogin.Preferences
-                          select c).FirstOrDefault();
+            Preference preferenceInDB = (from c in dbLogin.Preferences
+                                         select c).FirstOrDefault();
 
-            if (preference == null)
+            if (preferenceInDB == null)
             {
                 AppendStatus(new AppendEventArgs(string.Format(appTextModel.CouldNotFind_InDBLogin, "Preference")));
 
@@ -48,12 +48,14 @@ namespace CSSPDesktopServices.Services
             }
 
             AppendStatus(new AppendEventArgs(string.Format(appTextModel.Found_InDBLogin, "Preference")));
-            preference.AzureStore = await Descramble(preference.AzureStore);
-            preference.LoginEmail = await Descramble(preference.LoginEmail);
-            preference.Password = await Descramble(preference.Password);
-            //preference.HasInternetConnection = preference.HasInternetConnection;
-            //preference.LoggedIn = preference.LoggedIn;
-            preference.Token = await Descramble(preference.Token);
+            preference.PreferenceID = preferenceInDB.PreferenceID;
+            preference.AzureStore = await Descramble(preferenceInDB.AzureStore);
+            preference.LoginEmail = await Descramble(preferenceInDB.LoginEmail);
+            preference.Password = await Descramble(preferenceInDB.Password);
+            preference.HasInternetConnection = preferenceInDB.HasInternetConnection;
+            preference.LoggedIn = preferenceInDB.LoggedIn;
+            preference.Token = await Descramble(preferenceInDB.Token);
+
             LoginRequired = false;
 
             AppendStatus(new AppendEventArgs(""));

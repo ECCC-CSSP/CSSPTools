@@ -23,14 +23,10 @@ namespace CSSPModels
         [CSSPMaxLength(100)]
         public string Password { get; set; }
         public bool? HasInternetConnection { get; set; }
-        public bool? AzureLoggedIn { get; set; }
+        public bool? LoggedIn { get; set; }
         [CSSPMaxLength(300)]
         [CSSPAllowNull]
-        public string AzureToken { get; set; }
-        public bool? LocalLoggedIn { get; set; }
-        [CSSPMaxLength(300)]
-        [CSSPAllowNull]
-        public string LocalToken { get; set; }
+        public string Token { get; set; }
         #endregion Properties in DB
 
         #region Constructors

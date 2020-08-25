@@ -41,6 +41,15 @@ namespace AuthController.Tests
             Assert.True(await Setup(culture));
             Assert.NotNull(LoggedInService);
         }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task AuthController_Login_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+            
+
+        }
         #endregion Functions public
 
         #region Functions private

@@ -15,6 +15,13 @@ namespace CSSPDesktopServices.Services
         {
             AppendStatus(new AppendEventArgs(appTextModel.ReadingConfiguration));
 
+            CSSPDBLocal = Configuration.GetValue<string>("CSSPDBLocal");
+            if (string.IsNullOrWhiteSpace(CSSPDBLocal))
+            {
+                AppendStatus(new AppendEventArgs(string.Format(appTextModel._CouldNotBeFoundInConfigurationFile_, "CSSPDBLocal", "appsettings_csspdesktop.json")));
+                return await Task.FromResult(false);
+            }
+
             CSSPDBFilesManagement = Configuration.GetValue<string>("CSSPDBFilesManagement");
             if (string.IsNullOrWhiteSpace(CSSPDBFilesManagement))
             {

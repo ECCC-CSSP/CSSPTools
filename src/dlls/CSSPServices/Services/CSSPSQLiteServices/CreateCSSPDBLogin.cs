@@ -87,14 +87,14 @@ namespace CSSPServices
 
             string TVItemUserAuthorizationsTable = "CREATE TABLE TVItemUserAuthorizations (" +
                 "TVItemUserAuthorizationID INTEGER  NOT NULL  UNIQUE, " +
-                "ContactTVItemID INTEGER  NOT NULL , " +
-                "TVItemID1 INTEGER  NOT NULL , " +
-                "TVItemID2 INTEGER  , " +
-                "TVItemID3 INTEGER  , " +
-                "TVItemID4 INTEGER  , " +
-                "TVAuth INTEGER  NOT NULL , " +
-                "LastUpdateDate_UTC TEXT  NOT NULL , " +
-                "LastUpdateContactTVItemID INTEGER  NOT NULL )";
+                "ContactTVItemID INTEGER NOT NULL, " +
+                "TVItemID1 INTEGER NOT NULL, " +
+                "TVItemID2 INTEGER, " +
+                "TVItemID3 INTEGER, " +
+                "TVItemID4 INTEGER, " +
+                "TVAuth INTEGER NOT NULL, " +
+                "LastUpdateDate_UTC TEXT NOT NULL, " +
+                "LastUpdateContactTVItemID INTEGER NOT NULL)";
 
             using (var command = dbLogin.Database.GetDbConnection().CreateCommand())
             {
@@ -105,11 +105,11 @@ namespace CSSPServices
 
             string TVTypeUserAuthorizationsTable = "CREATE TABLE TVTypeUserAuthorizations (" +
                 "TVTypeUserAuthorizationID INTEGER  NOT NULL  UNIQUE, " +
-                "ContactTVItemID INTEGER  NOT NULL , " +
-                "TVType INTEGER  NOT NULL , " +
-                "TVAuth INTEGER  NOT NULL , " +
-                "LastUpdateDate_UTC TEXT  NOT NULL , " +
-                "LastUpdateContactTVItemID INTEGER  NOT NULL )";
+                "ContactTVItemID INTEGER  NOT NULL, " +
+                "TVType INTEGER  NOT NULL, " +
+                "TVAuth INTEGER  NOT NULL, " +
+                "LastUpdateDate_UTC TEXT NOT NULL, " +
+                "LastUpdateContactTVItemID INTEGER NOT NULL)";
 
             using (var command = dbLogin.Database.GetDbConnection().CreateCommand())
             {
@@ -118,16 +118,14 @@ namespace CSSPServices
                 command.ExecuteNonQuery();
             }
 
-            string CreatePreferencesTable = "CREATE TABLE Preferences ( " +
+            string CreatePreferencesTable = "CREATE TABLE Preferences (" +
                     "PreferenceID INTEGER NOT NULL UNIQUE, " +
                     "AzureStore TEXT NOT NULL, " +
                     "LoginEmail TEXT NOT NULL, " +
-                    "Password TEXT NOT NULL, + " +
+                    "Password TEXT NOT NULL, " +
                     "HasInternetConnection INTEGER, " +
-                    "AzureLoggedIn INTEGER, " +
-                    "AzureToken TEXT," +
-                    "LocalLoggedIn INTEGER, " +
-                    "LocalToken TEXT)";
+                    "LoggedIn INTEGER, " +
+                    "Token TEXT)";
 
             using (var command = dbLogin.Database.GetDbConnection().CreateCommand())
             {

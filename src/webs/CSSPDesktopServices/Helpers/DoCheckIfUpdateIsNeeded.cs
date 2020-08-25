@@ -25,6 +25,11 @@ namespace CSSPDesktopServices.Services
 
             UpdateIsNeeded = false;
 
+            if (preference.HasInternetConnection == null || (bool)preference.HasInternetConnection == false)
+            {
+                return await Task.FromResult(true);
+            }
+
             List<string> zipFileNameList = new List<string>()
             {
                 "csspwebapis.zip", "csspclient.zip", "helpdocs.zip"

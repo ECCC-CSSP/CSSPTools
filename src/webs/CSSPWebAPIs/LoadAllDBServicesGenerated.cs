@@ -11,7 +11,7 @@ namespace CSSPWebAPIs
 {
     public partial class Startup
     {
-        private void LoadAllDBServices(IServiceCollection services)
+        public void LoadAllDBServices(IServiceCollection services)
         {
             services.AddScoped<IAddressService, AddressService>();
             services.AddScoped<IAppErrLogService, AppErrLogService>();
