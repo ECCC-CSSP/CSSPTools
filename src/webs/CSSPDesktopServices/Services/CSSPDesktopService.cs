@@ -164,7 +164,17 @@ namespace CSSPDesktopServices.Services
         }
         public async Task<bool> InstallUpdates()
         {
+            // need to stop CSSPWebAPIs so we can copy over some files 
+            foreach (var process in Process.GetProcessesByName("CSSPWebAPIs"))
+            {
+                process.Kill();
+            }
+
+            if (!await Stop()) await Task.FromResult(false);
+
             if (!await DoInstallUpdates()) return await Task.FromResult(false);
+
+            if (!OpenCSSPWebAPIs()) return await Task.FromResult(false);
 
             return await Task.FromResult(true);
         }

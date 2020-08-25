@@ -17,6 +17,7 @@ using CSSPDesktopServices.Models;
 using System.IO.Compression;
 using CSSPServices;
 using Azure;
+using System.Diagnostics;
 
 namespace CSSPDesktopServices.Services
 {
@@ -25,9 +26,6 @@ namespace CSSPDesktopServices.Services
         private async Task<bool> DoInstallUpdates()
         {
             AppendStatus(new AppendEventArgs(appTextModel.InstallUpdates));
-
-            // need to stop CSSPWebAPIs so we can copy over some files 
-            if (!await Stop()) await Task.FromResult(false);
 
             DirectoryInfo di = new DirectoryInfo(LocalCSSPDesktopPath);
 

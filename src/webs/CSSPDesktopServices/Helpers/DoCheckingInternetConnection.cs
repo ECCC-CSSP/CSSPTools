@@ -74,7 +74,13 @@ namespace CSSPDesktopServices.Services
                 return await Task.FromResult(false);
             }
 
-            preference = preferenceInDB;
+            preference.PreferenceID = preferenceInDB.PreferenceID;
+            preference.AzureStore = await Descramble(preferenceInDB.AzureStore);
+            preference.LoginEmail = await Descramble(preferenceInDB.LoginEmail);
+            preference.Password = await Descramble(preferenceInDB.Password);
+            preference.HasInternetConnection = preferenceInDB.HasInternetConnection;
+            preference.LoggedIn = preferenceInDB.LoggedIn;
+            preference.Token = await Descramble(preferenceInDB.Token);
 
             AppendStatus(new AppendEventArgs(""));
 

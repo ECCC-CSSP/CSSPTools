@@ -56,8 +56,8 @@ namespace CSSPServices
             }
 
             Preference preference = (from c in dbLogin.Preferences.AsNoTracking()
-                                 where c.PreferenceID == PreferenceID
-                                 select c).FirstOrDefault();
+                                     where c.PreferenceID == PreferenceID
+                                     select c).FirstOrDefault();
 
             if (preference == null)
             {
@@ -85,8 +85,8 @@ namespace CSSPServices
             }
 
             Preference preference = (from c in dbLogin.Preferences
-                                 where c.PreferenceID == PreferenceID
-                                 select c).FirstOrDefault();
+                                     where c.PreferenceID == PreferenceID
+                                     select c).FirstOrDefault();
 
             if (preference == null)
             {

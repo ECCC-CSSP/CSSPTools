@@ -14,7 +14,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpGet]
         public string Get()
         {
-            return "Empty Just to see if its working 2222";
+            return "Empty Just to see if its working Septembre 25, 2020";
         }
     }
 }
