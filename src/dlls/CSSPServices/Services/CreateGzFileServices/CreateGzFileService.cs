@@ -140,6 +140,8 @@ namespace CSSPServices
                     return await DoCreateWebSubsectorGzFile(TVItemID); // TVItemID = SubsectorTVItemID
                 case WebTypeEnum.WebTideLocation:
                     return await DoCreateWebTideLocationGzFile();
+                case WebTypeEnum.WebTVItem:
+                    return await DoCreateWebTVItemGzFile();
                 default:
                     return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._NotImplementedYet, $"{ webType }")));
             }

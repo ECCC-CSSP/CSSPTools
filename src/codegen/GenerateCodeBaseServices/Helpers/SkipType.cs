@@ -16,6 +16,7 @@ namespace GenerateCodeBaseServices.Services
                 || type.Name.StartsWith("CSSPDBFilesManagementContext")
                 || type.Name.StartsWith("CSSPDBInMemoryContext")
                 || type.Name.StartsWith("CSSPDBLocalContext")
+                || type.Name.StartsWith("CSSPDBSearchContext")
                 || type.Name.StartsWith("CSSPDBLoginContext")
                 || type.Name.StartsWith("TestDBContext")
                 || type.Name.StartsWith("CSSPAfter")

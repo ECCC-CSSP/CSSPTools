@@ -564,6 +564,23 @@ namespace CSSPServices.Tests
             var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
             Assert.Equal(401, ((UnauthorizedResult)actionRes.Result).StatusCode);
         }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task CreateWebTVItem_Unauthorized_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
+
+            WebTypeEnum webType = WebTypeEnum.WebTVItem;
+            int TVItemID = 0;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
+
+            // Create gz
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
+            Assert.Equal(401, ((UnauthorizedResult)actionRes.Result).StatusCode);
+        }
         #endregion Tests 
 
         #region Functions private

@@ -27,6 +27,7 @@ namespace CSSPDesktopServices.Services
         string CSSPDBFilesManagement { get; set; }
         string CSSPDBLogin { get; set; }
         string CSSPDBLocal { get; set; }
+        string CSSPDBSearch { get; set; }
         string CSSPAzureUrl { get; set; }
         string CSSPLocalUrl { get; set; }
         Preference preference { get; set; }
@@ -70,6 +71,7 @@ namespace CSSPDesktopServices.Services
         public string CSSPDBFilesManagement { get; set; }
         public string CSSPDBLogin { get; set; }
         public string CSSPDBLocal { get; set; }
+        public string CSSPDBSearch { get; set; }
         public string CSSPAzureUrl { get; set; }
         public string CSSPLocalUrl { get; set; }
         public Preference preference { get; set; }
@@ -79,6 +81,7 @@ namespace CSSPDesktopServices.Services
 
         #region Properties private
         private CSSPDBLocalContext dbLocal { get; }
+        private CSSPDBSearchContext dbSearch { get; }
         private CSSPDBLoginContext dbLogin { get; }
         private CSSPDBFilesManagementContext dbFM { get; }
         private IConfiguration Configuration { get; }
@@ -99,12 +102,13 @@ namespace CSSPDesktopServices.Services
 
         #region Constructors
         public CSSPDesktopService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, 
-            CSSPDBLocalContext dbLocal, CSSPDBLoginContext dbLogin, CSSPDBFilesManagementContext dbFM)
+            CSSPDBLocalContext dbLocal, CSSPDBSearchContext dbSearch, CSSPDBLoginContext dbLogin, CSSPDBFilesManagementContext dbFM)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.enums = enums;
             this.dbLocal = dbLocal;
+            this.dbSearch = dbSearch;
             this.dbLogin = dbLogin;
             this.dbFM = dbFM;
 

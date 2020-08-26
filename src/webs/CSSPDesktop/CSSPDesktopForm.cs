@@ -307,6 +307,21 @@ namespace CSSPDesktop
                 options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
             });
 
+            // doing CSSPSearch
+            string CSSPDBSearch = Configuration.GetValue<string>("CSSPDBSearch");
+            if (string.IsNullOrWhiteSpace(CSSPDBSearch))
+            {
+                richTextBoxStatus.AppendText(string.Format(_CouldNotBeFoundInConfigurationFile_, "CSSPDBSearch", "appsettings_csspdesktop.json"));
+                return await Task.FromResult(false);
+            }
+
+            FileInfo fiCSSPDBSearch = new FileInfo(CSSPDBSearch);
+
+            Services.AddDbContext<CSSPDBSearchContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiCSSPDBSearch.FullName }");
+            });
+
             // doing CSSPDBFilesManagement
             string CSSPDBFilesManagement = Configuration.GetValue<string>("CSSPDBFilesManagement");
             if (string.IsNullOrWhiteSpace(CSSPDBFilesManagement))
@@ -378,6 +393,13 @@ namespace CSSPDesktop
             if (!fi.Exists)
             {
                 if (!await CSSPSQLiteService.CreateSQLiteCSSPDBLocal()) return await Task.FromResult(false);
+            }
+
+            // create CSSPDBSearch if it does not exist
+            fi = new FileInfo(CSSPDesktopService.CSSPDBSearch);
+            if (!fi.Exists)
+            {
+                if (!await CSSPSQLiteService.CreateSQLiteCSSPDBSearch()) return await Task.FromResult(false);
             }
 
             // create CSSPDBFilesManagement if it does not exist

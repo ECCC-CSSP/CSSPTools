@@ -1085,7 +1085,8 @@ namespace CSSPEnums
         WebTideLocation = 22,
         WebPolSourceSite = 23,
         WebPolSourceGrouping = 24,
-        WebReportType = 25
+        WebReportType = 25,
+        WebTVItem = 26
     }
     public enum WebTypeYearEnum
     {

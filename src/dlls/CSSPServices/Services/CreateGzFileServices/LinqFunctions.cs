@@ -532,12 +532,12 @@ namespace CSSPServices
         private async Task<List<MWQMSiteStartEndDate>> GetMWQMSiteStartEndDateListFromSubsector(TVItem tvItemSubsector)
         {
             List<int> MWQMSiteIDList = await (from c in db.TVItems
-                                             from s in db.MWQMSites
-                                             where c.TVItemID == s.MWQMSiteTVItemID
-                                             && c.TVPath.Contains(tvItemSubsector.TVPath + "p")
-                                             && c.ParentID == tvItemSubsector.TVItemID
-                                             && c.TVType == TVTypeEnum.MWQMSite
-                                             select s.MWQMSiteID).ToListAsync();
+                                              from s in db.MWQMSites
+                                              where c.TVItemID == s.MWQMSiteTVItemID
+                                              && c.TVPath.Contains(tvItemSubsector.TVPath + "p")
+                                              && c.ParentID == tvItemSubsector.TVItemID
+                                              && c.TVType == TVTypeEnum.MWQMSite
+                                              select s.MWQMSiteID).ToListAsync();
 
             return await (from sd in db.MWQMSiteStartEndDates
                           where MWQMSiteIDList.Contains(sd.MWQMSiteTVItemID)
@@ -852,6 +852,16 @@ namespace CSSPServices
         private async Task<List<ReportSection>> GetReportSectionList()
         {
             return await (from c in db.ReportSections
+                          select c).AsNoTracking().ToListAsync();
+        }
+        private async Task<List<TVItem>> GetAllTVItem()
+        {
+            return await (from c in db.TVItems
+                          select c).AsNoTracking().ToListAsync();
+        }
+        private async Task<List<TVItemLanguage>> GetAllTVItemLanguage()
+        {
+            return await (from c in db.TVItemLanguages
                           select c).AsNoTracking().ToListAsync();
         }
     }

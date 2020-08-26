@@ -40,6 +40,7 @@ namespace CSSPSQLiteServices.Tests
         protected IRegisterModelService RegisterModelService { get; set; }
         protected IContactService ContactService { get; set; }
         protected FileInfo fiCSSPDBLocal { get; set; }
+        protected FileInfo fiCSSPDBSearch { get; set; }
         protected FileInfo fiCSSPDBLogin { get; set; }
         protected FileInfo fiCSSPDBFilesManagement { get; set; }
         #endregion Properties
@@ -82,6 +83,17 @@ namespace CSSPSQLiteServices.Tests
             Services.AddDbContext<CSSPDBLocalContext>(options =>
             {
                 options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
+            });
+
+            // doing CSSPDBSearch
+            string CSSPDBSearch = Config.GetValue<string>("CSSPDBSearch");
+            Assert.NotNull(CSSPDBSearch);
+
+            fiCSSPDBSearch = new FileInfo(CSSPDBSearch);
+
+            Services.AddDbContext<CSSPDBSearchContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiCSSPDBSearch.FullName }");
             });
 
             // doing CSSPLoginDB

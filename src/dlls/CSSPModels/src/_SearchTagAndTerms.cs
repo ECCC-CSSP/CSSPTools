@@ -20,7 +20,7 @@
 //        #region Properties not in DB
 //        [CSSPEnumType]
 //        public SearchTagEnum SearchTag { get; set; }
-//        [CSSPMaxLength(100)]
+//        [CSSPMaxLength(200)]
 //        [CSSPEnumTypeText(EnumTypeName = "SearchTagEnum", EnumType = "SearchTag")]
 //        [CSSPAllowNull]
 //        public string SearchTagText { get; set; }

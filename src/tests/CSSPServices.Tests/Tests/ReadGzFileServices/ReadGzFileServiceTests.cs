@@ -745,6 +745,25 @@ namespace CSSPServices.Tests
             Assert.NotNull(webTideLocation);
             Assert.NotNull(webTideLocation.TideLocationList);
         }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task ReadWebTVItem_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebTVItem;
+            int TVItemID = 0;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
+
+            // Read gz
+            var actionRes = await ReadGzFileService.ReadJSON<WebTVItem>(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+            WebTVItem webWebTVItem = (WebTVItem)((OkObjectResult)actionRes.Result).Value;
+            Assert.NotNull(webWebTVItem);
+            Assert.NotNull(webWebTVItem.TVItemList);
+        }
         #endregion Tests 
 
         #region Functions private

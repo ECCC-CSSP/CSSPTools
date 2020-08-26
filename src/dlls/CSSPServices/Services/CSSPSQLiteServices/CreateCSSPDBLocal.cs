@@ -17,7 +17,7 @@ namespace CSSPServices
             if (!await FillListTableToDelete(ListTableToDelete)) return await Task.FromResult(false);
             if (!await DeleteTables(ListTableToDelete, ExistingTableList)) return await Task.FromResult(false);
             if (!await FillListTableToCreate(ListTableToCreate, ListTableToDelete)) return await Task.FromResult(false);
-            if (!await CreateAllTables(ListTableToCreate)) return await Task.FromResult(false);
+            if (!await CreateAllTables(ListTableToCreate, false)) return await Task.FromResult(false);
 
             return await Task.FromResult(true);
         }

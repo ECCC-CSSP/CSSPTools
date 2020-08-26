@@ -51,7 +51,7 @@ namespace CSSPServices.Tests
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
             // Read gz
-            var actionWebArea = await ReadGzFileService.ReadJSON<WebArea>(webType, TVItemID, webTypeYear);
+            var actionWebArea = await ReadGzFileService.ReadJSON<WebClimateDataValue>(webType, TVItemID, webTypeYear);
             Assert.Equal(401, ((UnauthorizedResult)actionWebArea.Result).StatusCode);
         }
         [Theory]
@@ -68,7 +68,7 @@ namespace CSSPServices.Tests
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
             // Read gz
-            var actionWebArea = await ReadGzFileService.ReadJSON<WebArea>(webType, TVItemID, webTypeYear);
+            var actionWebArea = await ReadGzFileService.ReadJSON<WebClimateSite>(webType, TVItemID, webTypeYear);
             Assert.Equal(401, ((UnauthorizedResult)actionWebArea.Result).StatusCode);
         }
         [Theory]
@@ -85,7 +85,7 @@ namespace CSSPServices.Tests
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
             // Read gz
-            var actionWebArea = await ReadGzFileService.ReadJSON<WebArea>(webType, TVItemID, webTypeYear);
+            var actionWebArea = await ReadGzFileService.ReadJSON<WebContact>(webType, TVItemID, webTypeYear);
             Assert.Equal(401, ((UnauthorizedResult)actionWebArea.Result).StatusCode);
         }
         [Theory]
@@ -102,7 +102,7 @@ namespace CSSPServices.Tests
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
             // Read gz
-            var actionWebArea = await ReadGzFileService.ReadJSON<WebArea>(webType, TVItemID, webTypeYear);
+            var actionWebArea = await ReadGzFileService.ReadJSON<WebCountry>(webType, TVItemID, webTypeYear);
             Assert.Equal(401, ((UnauthorizedResult)actionWebArea.Result).StatusCode);
         }
         [Theory]
@@ -119,7 +119,7 @@ namespace CSSPServices.Tests
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
             // Read gz
-            var actionWebArea = await ReadGzFileService.ReadJSON<WebArea>(webType, TVItemID, webTypeYear);
+            var actionWebArea = await ReadGzFileService.ReadJSON<WebDrogueRun>(webType, TVItemID, webTypeYear);
             Assert.Equal(401, ((UnauthorizedResult)actionWebArea.Result).StatusCode);
         }
         [Theory]
@@ -136,7 +136,7 @@ namespace CSSPServices.Tests
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
             // Read gz
-            var actionWebArea = await ReadGzFileService.ReadJSON<WebArea>(webType, TVItemID, webTypeYear);
+            var actionWebArea = await ReadGzFileService.ReadJSON<WebHelpDoc>(webType, TVItemID, webTypeYear);
             Assert.Equal(401, ((UnauthorizedResult)actionWebArea.Result).StatusCode);
         }
         [Theory]
@@ -153,7 +153,7 @@ namespace CSSPServices.Tests
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
             // Read gz
-            var actionWebArea = await ReadGzFileService.ReadJSON<WebArea>(webType, TVItemID, webTypeYear);
+            var actionWebArea = await ReadGzFileService.ReadJSON<WebHydrometricDataValue>(webType, TVItemID, webTypeYear);
             Assert.Equal(401, ((UnauthorizedResult)actionWebArea.Result).StatusCode);
         }
         [Theory]
@@ -170,7 +170,7 @@ namespace CSSPServices.Tests
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
             // Read gz
-            var actionWebArea = await ReadGzFileService.ReadJSON<WebArea>(webType, TVItemID, webTypeYear);
+            var actionWebArea = await ReadGzFileService.ReadJSON<WebHydrometricSite>(webType, TVItemID, webTypeYear);
             Assert.Equal(401, ((UnauthorizedResult)actionWebArea.Result).StatusCode);
         }
         [Theory]
@@ -187,7 +187,7 @@ namespace CSSPServices.Tests
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
             // Read gz
-            var actionWebArea = await ReadGzFileService.ReadJSON<WebArea>(webType, TVItemID, webTypeYear);
+            var actionWebArea = await ReadGzFileService.ReadJSON<WebMikeScenario>(webType, TVItemID, webTypeYear);
             Assert.Equal(401, ((UnauthorizedResult)actionWebArea.Result).StatusCode);
         }
         [Theory]
@@ -204,7 +204,7 @@ namespace CSSPServices.Tests
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
             // Read gz
-            var actionWebArea = await ReadGzFileService.ReadJSON<WebArea>(webType, TVItemID, webTypeYear);
+            var actionWebArea = await ReadGzFileService.ReadJSON<WebMunicipalities>(webType, TVItemID, webTypeYear);
             Assert.Equal(401, ((UnauthorizedResult)actionWebArea.Result).StatusCode);
         }
         [Theory]
@@ -221,7 +221,7 @@ namespace CSSPServices.Tests
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
             // Read gz
-            var actionWebArea = await ReadGzFileService.ReadJSON<WebArea>(webType, TVItemID, webTypeYear);
+            var actionWebArea = await ReadGzFileService.ReadJSON<WebMunicipality>(webType, TVItemID, webTypeYear);
             Assert.Equal(401, ((UnauthorizedResult)actionWebArea.Result).StatusCode);
         }
         [Theory]
@@ -238,7 +238,7 @@ namespace CSSPServices.Tests
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
             // Read gz
-            var actionWebArea = await ReadGzFileService.ReadJSON<WebArea>(webType, TVItemID, webTypeYear);
+            var actionWebArea = await ReadGzFileService.ReadJSON<WebMWQMLookupMPN>(webType, TVItemID, webTypeYear);
             Assert.Equal(401, ((UnauthorizedResult)actionWebArea.Result).StatusCode);
         }
         [Theory]
@@ -255,7 +255,7 @@ namespace CSSPServices.Tests
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
             // Read gz
-            var actionWebArea = await ReadGzFileService.ReadJSON<WebArea>(webType, TVItemID, webTypeYear);
+            var actionWebArea = await ReadGzFileService.ReadJSON<WebMWQMRun>(webType, TVItemID, webTypeYear);
             Assert.Equal(401, ((UnauthorizedResult)actionWebArea.Result).StatusCode);
         }
         [Theory]
@@ -272,7 +272,7 @@ namespace CSSPServices.Tests
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
             // Read gz
-            var actionWebArea = await ReadGzFileService.ReadJSON<WebArea>(webType, TVItemID, webTypeYear);
+            var actionWebArea = await ReadGzFileService.ReadJSON<WebMWQMSample>(webType, TVItemID, webTypeYear);
             Assert.Equal(401, ((UnauthorizedResult)actionWebArea.Result).StatusCode);
         }
         [Theory]
@@ -289,7 +289,7 @@ namespace CSSPServices.Tests
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1990;
 
             // Read gz
-            var actionWebArea = await ReadGzFileService.ReadJSON<WebArea>(webType, TVItemID, webTypeYear);
+            var actionWebArea = await ReadGzFileService.ReadJSON<WebMWQMSample>(webType, TVItemID, webTypeYear);
             Assert.Equal(401, ((UnauthorizedResult)actionWebArea.Result).StatusCode);
         }
         [Theory]
@@ -306,7 +306,7 @@ namespace CSSPServices.Tests
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2000;
 
             // Read gz
-            var actionWebArea = await ReadGzFileService.ReadJSON<WebArea>(webType, TVItemID, webTypeYear);
+            var actionWebArea = await ReadGzFileService.ReadJSON<WebMWQMSample>(webType, TVItemID, webTypeYear);
             Assert.Equal(401, ((UnauthorizedResult)actionWebArea.Result).StatusCode);
         }
         [Theory]
@@ -323,7 +323,7 @@ namespace CSSPServices.Tests
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
 
             // Read gz
-            var actionWebArea = await ReadGzFileService.ReadJSON<WebArea>(webType, TVItemID, webTypeYear);
+            var actionWebArea = await ReadGzFileService.ReadJSON<WebMWQMSample>(webType, TVItemID, webTypeYear);
             Assert.Equal(401, ((UnauthorizedResult)actionWebArea.Result).StatusCode);
         }
         [Theory]
@@ -340,7 +340,7 @@ namespace CSSPServices.Tests
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2020;
 
             // Read gz
-            var actionWebArea = await ReadGzFileService.ReadJSON<WebArea>(webType, TVItemID, webTypeYear);
+            var actionWebArea = await ReadGzFileService.ReadJSON<WebMWQMSample>(webType, TVItemID, webTypeYear);
             Assert.Equal(401, ((UnauthorizedResult)actionWebArea.Result).StatusCode);
         }
         [Theory]
@@ -357,7 +357,7 @@ namespace CSSPServices.Tests
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2030;
 
             // Read gz
-            var actionWebArea = await ReadGzFileService.ReadJSON<WebArea>(webType, TVItemID, webTypeYear);
+            var actionWebArea = await ReadGzFileService.ReadJSON<WebMWQMSample>(webType, TVItemID, webTypeYear);
             Assert.Equal(401, ((UnauthorizedResult)actionWebArea.Result).StatusCode);
         }
         [Theory]
@@ -374,7 +374,7 @@ namespace CSSPServices.Tests
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2040;
 
             // Read gz
-            var actionWebArea = await ReadGzFileService.ReadJSON<WebArea>(webType, TVItemID, webTypeYear);
+            var actionWebArea = await ReadGzFileService.ReadJSON<WebMWQMSample>(webType, TVItemID, webTypeYear);
             Assert.Equal(401, ((UnauthorizedResult)actionWebArea.Result).StatusCode);
         }
         [Theory]
@@ -391,7 +391,7 @@ namespace CSSPServices.Tests
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2050;
 
             // Read gz
-            var actionWebArea = await ReadGzFileService.ReadJSON<WebArea>(webType, TVItemID, webTypeYear);
+            var actionWebArea = await ReadGzFileService.ReadJSON<WebMWQMSample>(webType, TVItemID, webTypeYear);
             Assert.Equal(401, ((UnauthorizedResult)actionWebArea.Result).StatusCode);
         }
         [Theory]
@@ -408,7 +408,7 @@ namespace CSSPServices.Tests
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
             // Read gz
-            var actionWebArea = await ReadGzFileService.ReadJSON<WebArea>(webType, TVItemID, webTypeYear);
+            var actionWebArea = await ReadGzFileService.ReadJSON<WebMWQMSite>(webType, TVItemID, webTypeYear);
             Assert.Equal(401, ((UnauthorizedResult)actionWebArea.Result).StatusCode);
         }
         [Theory]
@@ -425,7 +425,7 @@ namespace CSSPServices.Tests
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
             // Read gz
-            var actionWebArea = await ReadGzFileService.ReadJSON<WebArea>(webType, TVItemID, webTypeYear);
+            var actionWebArea = await ReadGzFileService.ReadJSON<WebPolSourceGrouping>(webType, TVItemID, webTypeYear);
             Assert.Equal(401, ((UnauthorizedResult)actionWebArea.Result).StatusCode);
         }
         [Theory]
@@ -442,7 +442,7 @@ namespace CSSPServices.Tests
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
             // Read gz
-            var actionWebArea = await ReadGzFileService.ReadJSON<WebArea>(webType, TVItemID, webTypeYear);
+            var actionWebArea = await ReadGzFileService.ReadJSON<WebPolSourceSite>(webType, TVItemID, webTypeYear);
             Assert.Equal(401, ((UnauthorizedResult)actionWebArea.Result).StatusCode);
         }
         [Theory]
@@ -459,7 +459,7 @@ namespace CSSPServices.Tests
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
             // Read gz
-            var actionWebArea = await ReadGzFileService.ReadJSON<WebArea>(webType, TVItemID, webTypeYear);
+            var actionWebArea = await ReadGzFileService.ReadJSON<WebProvince>(webType, TVItemID, webTypeYear);
             Assert.Equal(401, ((UnauthorizedResult)actionWebArea.Result).StatusCode);
         }
         [Theory]
@@ -476,7 +476,7 @@ namespace CSSPServices.Tests
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
             // Read gz
-            var actionWebArea = await ReadGzFileService.ReadJSON<WebArea>(webType, TVItemID, webTypeYear);
+            var actionWebArea = await ReadGzFileService.ReadJSON<WebReportType>(webType, TVItemID, webTypeYear);
             Assert.Equal(401, ((UnauthorizedResult)actionWebArea.Result).StatusCode);
         }
         [Theory]
@@ -493,7 +493,7 @@ namespace CSSPServices.Tests
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
             // Read gz
-            var actionWebArea = await ReadGzFileService.ReadJSON<WebArea>(webType, TVItemID, webTypeYear);
+            var actionWebArea = await ReadGzFileService.ReadJSON<WebRoot>(webType, TVItemID, webTypeYear);
             Assert.Equal(401, ((UnauthorizedResult)actionWebArea.Result).StatusCode);
         }
         [Theory]
@@ -510,7 +510,7 @@ namespace CSSPServices.Tests
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
             // Read gz
-            var actionWebArea = await ReadGzFileService.ReadJSON<WebArea>(webType, TVItemID, webTypeYear);
+            var actionWebArea = await ReadGzFileService.ReadJSON<WebSamplingPlan>(webType, TVItemID, webTypeYear);
             Assert.Equal(401, ((UnauthorizedResult)actionWebArea.Result).StatusCode);
         }
         [Theory]
@@ -527,7 +527,7 @@ namespace CSSPServices.Tests
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
             // Read gz
-            var actionWebArea = await ReadGzFileService.ReadJSON<WebArea>(webType, TVItemID, webTypeYear);
+            var actionWebArea = await ReadGzFileService.ReadJSON<WebSector>(webType, TVItemID, webTypeYear);
             Assert.Equal(401, ((UnauthorizedResult)actionWebArea.Result).StatusCode);
         }
         [Theory]
@@ -544,7 +544,7 @@ namespace CSSPServices.Tests
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
             // Read gz
-            var actionWebArea = await ReadGzFileService.ReadJSON<WebArea>(webType, TVItemID, webTypeYear);
+            var actionWebArea = await ReadGzFileService.ReadJSON<WebSubsector>(webType, TVItemID, webTypeYear);
             Assert.Equal(401, ((UnauthorizedResult)actionWebArea.Result).StatusCode);
         }
         [Theory]
@@ -561,7 +561,24 @@ namespace CSSPServices.Tests
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
             // Read gz
-            var actionWebArea = await ReadGzFileService.ReadJSON<WebArea>(webType, TVItemID, webTypeYear);
+            var actionWebArea = await ReadGzFileService.ReadJSON<WebTideLocation>(webType, TVItemID, webTypeYear);
+            Assert.Equal(401, ((UnauthorizedResult)actionWebArea.Result).StatusCode);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task ReadWebTVItem_Unauthorized_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
+
+            WebTypeEnum webType = WebTypeEnum.WebTVItem;
+            int TVItemID = 0;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
+
+            // Read gz
+            var actionWebArea = await ReadGzFileService.ReadJSON<WebTVItem>(webType, TVItemID, webTypeYear);
             Assert.Equal(401, ((UnauthorizedResult)actionWebArea.Result).StatusCode);
         }
         #endregion Tests 

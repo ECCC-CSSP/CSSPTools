@@ -61,167 +61,29 @@ namespace AuthController.Tests
 
             Services = new ServiceCollection();
 
-            //string CSSPDBLocalFileName = Configuration.GetValue<string>("CSSPDBLocal");
-            //Assert.NotNull(CSSPDBLocalFileName);
+            Services.AddSingleton<IConfiguration>(Configuration);
 
-            //string TestDB = Configuration.GetValue<string>("CSSPDB2");
-            //Assert.NotNull(TestDB);
+            string CSSPDBLocalFileName = Configuration.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
 
-            //Services.AddSingleton<IConfiguration>(Configuration);
+            string CSSPDBLoginFileName = Configuration.GetValue<string>("CSSPDBLogin");
+            Assert.NotNull(CSSPDBLoginFileName);
 
-            //Services.AddDbContext<CSSPDBContext>(options =>
-            //{
-            //    options.UseSqlServer(TestDB);
-            //});
+            string CSSPDBFilesManagementFileName = Configuration.GetValue<string>("CSSPDBFilesManagement");
+            Assert.NotNull(CSSPDBFilesManagementFileName);
 
-            //Services.AddDbContext<CSSPDBInMemoryContext>(options =>
-            //{
-            //    options.UseInMemoryDatabase(TestDB);
-            //});
-
-            //FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName);
-
-            //Services.AddDbContext<CSSPDBLocalContext>(options =>
-            //{
-            //    options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
-            //});
-
-            //FileInfo fiAppDataPath = new FileInfo(CSSPDBLoginFileName);
-
-            //Services.AddDbContext<CSSPDBLocalContext>(options =>
-            //{
-            //    options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
-            //});
-
-            //Services.AddIdentityCore<ApplicationUser>()
-            //    .AddEntityFrameworkStores<ApplicationDbContext>();
-
-            //Services.AddDbContext<ApplicationDbContext>(options =>
-            //    options.UseSqlServer(TestDB));
-
-            //Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
-            //Services.AddSingleton<IEnums, Enums>();
-            //Services.AddSingleton<ILoggedInService, LoggedInService>();
-            //Services.AddSingleton<IAspNetUserService, AspNetUserService>();
-            //Services.AddSingleton<ILoginModelService, LoginModelService>();
-            //Services.AddSingleton<IRegisterModelService, RegisterModelService>();
-            //Services.AddSingleton<IContactService, ContactService>();
-
-            //Provider = Services.BuildServiceProvider();
-            //Assert.NotNull(Provider);
-
-            //CSSPCultureService = Provider.GetService<ICSSPCultureService>();
-            //Assert.NotNull(CSSPCultureService);
-
-            //CSSPCultureService.SetCulture(culture);
-
-            //ContactService = Provider.GetService<IContactService>();
-            //Assert.NotNull(ContactService);
-
-            //string LoginEmail = Configuration.GetValue<string>("LoginEmail");
-            //Assert.NotNull(LoginEmail);
-
-            //string Password = Password = Configuration.GetValue<string>("Password");
-            //Assert.NotNull(Password);
-
-            //LoginModel loginModel = new LoginModel()
-            //{
-            //    LoginEmail = LoginEmail,
-            //    Password = Password
-            //};
-
-            //var actionUserModel = await ContactService.Login(loginModel);
-            //Assert.NotNull(actionUserModel.Value);
-            //contact = actionUserModel.Value;
-
-            //LoggedInService = Provider.GetService<ILoggedInService>();
-            //Assert.NotNull(LoggedInService);
-
-            //await LoggedInService.SetLoggedInContactInfo(contact.Id);
-            //Assert.NotNull(LoggedInService.LoggedInContactInfo);
-
-
-
-            Services.AddCors();
-            Services.AddControllers()
-                .AddJsonOptions(options =>
-                {
-                    options.JsonSerializerOptions.PropertyNamingPolicy = null;
-                });
-
-            string APISecret = Configuration.GetValue<string>("APISecret");
-            byte[] key = Encoding.ASCII.GetBytes(APISecret);
-
-            Services.AddAuthentication(x =>
-            {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(x =>
-            {
-                x.RequireHttpsMetadata = false;
-                x.SaveToken = true;
-                x.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false
-                };
-            });
-
-            RunningOn = Configuration.GetValue<string>("RunningOn"); // either "Local", "Azure"
-
-            string DBConnStr = "";
-
-            if (RunningOn == "Azure")
-            {
-                DBConnStr = Configuration.GetValue<string>("AzureCSSPDB");
-
-            }
-            else
-            {
-                string DBToUse = Configuration.GetValue<string>("DBToUse");
-
-                if (DBToUse == "CSSPDB")
-                {
-                    DBConnStr = Configuration.GetValue<string>("CSSPDB");
-                }
-
-                if (DBToUse == "CSSPDB2")
-                {
-                    DBConnStr = Configuration.GetValue<string>("CSSPDB2");
-                }
-
-                if (DBToUse == "TestDB")
-                {
-                    DBConnStr = Configuration.GetValue<string>("TestDB");
-
-                }
-            }
-
-            /* ---------------------------------------------------------------------------------
-             * Setting up the required CSSPDB, CSSPDB2, TestDB or AzureCSSPDB with ApplicationUser
-             * ---------------------------------------------------------------------------------      
-             */
+            string TestDB = Configuration.GetValue<string>("CSSPDB2");
+            Assert.NotNull(TestDB);
 
             Services.AddDbContext<CSSPDBContext>(options =>
-                    options.UseSqlServer(DBConnStr));
+            {
+                options.UseSqlServer(TestDB);
+            });
 
             Services.AddDbContext<CSSPDBInMemoryContext>(options =>
-                    options.UseInMemoryDatabase(DBConnStr));
-
-            Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(DBConnStr));
-
-            Services.AddIdentityCore<ApplicationUser>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
-
-            /* ---------------------------------------------------------------------------------
-             * using CSSPDBLocal 
-             * ---------------------------------------------------------------------------------      
-             */
-            string CSSPDBLocalFileName = Configuration.GetValue<string>("CSSPDBLocal");
+            {
+                options.UseInMemoryDatabase(TestDB);
+            });
 
             FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocalFileName);
 
@@ -230,24 +92,12 @@ namespace AuthController.Tests
                 options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
             });
 
-            /* ---------------------------------------------------------------------------------
-             * using CSSPDBLogin
-             * ---------------------------------------------------------------------------------      
-             */
-            string CSSPDBLoginFileName = Configuration.GetValue<string>("CSSPDBLogin");
-
             FileInfo fiCSSPDBLogin = new FileInfo(CSSPDBLoginFileName);
 
             Services.AddDbContext<CSSPDBLoginContext>(options =>
             {
                 options.UseSqlite($"Data Source={ fiCSSPDBLogin.FullName }");
             });
-
-            /* ---------------------------------------------------------------------------------
-             * using CSSPDBFileManagement
-             * ---------------------------------------------------------------------------------      
-             */
-            string CSSPDBFilesManagementFileName = Configuration.GetValue<string>("CSSPDBFilesManagement");
 
             FileInfo fiCSSPDBFilesManagement = new FileInfo(CSSPDBFilesManagementFileName);
 
@@ -256,20 +106,52 @@ namespace AuthController.Tests
                 options.UseSqlite($"Data Source={ fiCSSPDBFilesManagement.FullName }");
             });
 
-            Services.AddScoped<ICSSPCultureService, CSSPCultureService>();
-            Services.AddScoped<IEnums, Enums>();
-            Services.AddScoped<ILoginModelService, LoginModelService>();
-            Services.AddScoped<IRegisterModelService, RegisterModelService>();
-            Services.AddScoped<ILoggedInService, LoggedInService>();
-            Services.AddScoped<IContactService, ContactService>();
+            Services.AddIdentityCore<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            Startup startup = new Startup(Configuration); 
-            startup.LoadAllDBServices(Services);
+            Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(TestDB));
 
-            Services.AddScoped<ICreateGzFileService, CreateGzFileService>();
-            Services.AddScoped<ICSSPFileService, CSSPFileService>();
-            Services.AddScoped<IDownloadGzFileService, DownloadGzFileService>();
-            Services.AddScoped<IReadGzFileService, ReadGzFileService>();
+            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<IAspNetUserService, AspNetUserService>();
+            Services.AddSingleton<ILoginModelService, LoginModelService>();
+            Services.AddSingleton<IRegisterModelService, RegisterModelService>();
+            Services.AddSingleton<IContactService, ContactService>();
+
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+
+            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
+            Assert.NotNull(CSSPCultureService);
+
+            CSSPCultureService.SetCulture(culture);
+
+            ContactService = Provider.GetService<IContactService>();
+            Assert.NotNull(ContactService);
+
+            string LoginEmail = Configuration.GetValue<string>("LoginEmail");
+            Assert.NotNull(LoginEmail);
+
+            string Password = Password = Configuration.GetValue<string>("Password");
+            Assert.NotNull(Password);
+
+            LoginModel loginModel = new LoginModel()
+            {
+                LoginEmail = LoginEmail,
+                Password = Password
+            };
+
+            var actionUserModel = await ContactService.Login(loginModel);
+            Assert.NotNull(actionUserModel.Value);
+            contact = actionUserModel.Value;
+
+            LoggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(LoggedInService);
+
+            await LoggedInService.SetLoggedInContactInfo(contact.Id);
+            Assert.NotNull(LoggedInService.LoggedInContactInfo);
 
             return await Task.FromResult(true);
         }

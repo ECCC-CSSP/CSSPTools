@@ -47,6 +47,16 @@ namespace CSSPSQLiteServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
+        public async Task CreateSQLiteCSSPDBSearch_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            bool retBool = await CSSPSQLiteService.CreateSQLiteCSSPDBSearch();
+            Assert.True(retBool);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
         public async Task CreateSQLiteCSSPDBFileManagement_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -133,6 +143,41 @@ namespace CSSPSQLiteServices.Tests
             Assert.True(retBool2);
 
             retBool = await CSSPSQLiteService.CSSPDBLocalIsEmpty();
+            Assert.True(retBool);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task CSSPDBSearchIsEmpty_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            try
+            {
+                fiCSSPDBSearch.Delete();
+            }
+            catch (Exception ex)
+            {
+                Assert.True(false, ex.Message);
+            }
+
+            bool retBool = await CSSPSQLiteService.CreateSQLiteCSSPDBSearch();
+            Assert.True(retBool);
+
+            retBool = await CSSPSQLiteService.CSSPDBSearchIsEmpty();
+            Assert.True(retBool);
+
+            LoggedInService.DBLocation = DBLocationEnum.Server;
+
+            var actionTVItemList = await TVItemService.GetTVItemList();
+            Assert.Equal(200, ((ObjectResult)actionTVItemList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionTVItemList.Result).Value);
+            List<TVItem> tvItemList = (List<TVItem>)((OkObjectResult)actionTVItemList.Result).Value;
+            Assert.True(tvItemList.Count > 0);
+
+
+
+            retBool = await CSSPSQLiteService.CSSPDBSearchIsEmpty();
             Assert.True(retBool);
         }
         [Theory]

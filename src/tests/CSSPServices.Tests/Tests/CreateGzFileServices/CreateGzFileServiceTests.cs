@@ -568,6 +568,23 @@ namespace CSSPServices.Tests
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
         }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task CreateWebTVItem_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebTVItem;
+            int TVItemID = 0;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
+
+            // Create gz
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+        }
         #endregion Tests 
 
         #region Functions private

@@ -7,11 +7,11 @@ namespace CSSPServices
 {
     public partial class CSSPSQLiteService : ICSSPSQLiteService
     {
-        private async Task<bool> CreateAllTables(List<string> ListTableToCreate)
+        private async Task<bool> CreateAllTables(List<string> ListTableToCreate, bool DoSearch)
         {
             foreach (string TableName in ListTableToCreate)
             {
-                if (! await CreateTableBuilder(TableName)) return await Task.FromResult(false);
+                if (! await CreateTableBuilder(TableName, DoSearch)) return await Task.FromResult(false);
             }
 
             return await Task.FromResult(true);

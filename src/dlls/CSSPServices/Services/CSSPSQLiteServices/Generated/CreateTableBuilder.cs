@@ -12,7 +12,7 @@ namespace CSSPServices
 {
     public partial class CSSPSQLiteService : ICSSPSQLiteService
     {
-        private async Task<bool> CreateTableBuilder(string tableName)
+        private async Task<bool> CreateTableBuilder(string tableName, bool DoSearch)
         {
             string CreateTable = "";
             switch (tableName)
@@ -1374,11 +1374,23 @@ namespace CSSPServices
                     break;
             }
 
-            using (var command = dbLocal.Database.GetDbConnection().CreateCommand())
+            if (DoSearch)
             {
-                command.CommandText = CreateTable;
-                dbLocal.Database.OpenConnection();
-                command.ExecuteNonQuery();
+                using (var command = dbSearch.Database.GetDbConnection().CreateCommand())
+                {
+                    command.CommandText = CreateTable;
+                    dbSearch.Database.OpenConnection();
+                    command.ExecuteNonQuery();
+                }
+            }
+            else
+            {
+                using (var command = dbLocal.Database.GetDbConnection().CreateCommand())
+                {
+                    command.CommandText = CreateTable;
+                    dbLocal.Database.OpenConnection();
+                    command.ExecuteNonQuery();
+                }
             }
 
             return await Task.FromResult(true);
