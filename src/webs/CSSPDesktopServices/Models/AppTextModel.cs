@@ -93,6 +93,7 @@ namespace CSSPDesktopServices.Models
             PostRequestLoginEmailAndPasswordTo_ = "Post request with LoginEmail and Password to {0}";
             _StoredInTable_AndDatabase_ = "{0} stored in table {1} and {2}";
             InternetConnectionRequiredFirstTimeConnecting = "Internet connection is required the first time connecting";
+            CheckIfNewTVItemsOrTVItemLanguagesExist = "Checking and collecting new informations 'TVItems' or 'TVItemLanguage'";
         }
     }
     public class AppTextModelFR : AppTextModel
@@ -183,6 +184,7 @@ namespace CSSPDesktopServices.Models
             PostRequestLoginEmailAndPasswordTo_ = "Requête 'POST' avec LoginEmail et Password à {0}";
             _StoredInTable_AndDatabase_ = "{0} sauvegardé dans la table {1} et la base de données {2}";
             InternetConnectionRequiredFirstTimeConnecting = "Une connexion internet est requise pour se connecter la première fois";
+            CheckIfNewTVItemsOrTVItemLanguagesExist = "Vérification et collection de nouvelles informations 'TVItems' ou 'TVItemLanguage'";
         }
     }
     public class AppTextModel
@@ -246,6 +248,7 @@ namespace CSSPDesktopServices.Models
         public string CheckIfHelpFileExist { get; set; }
         public string CheckIfLoginIsRequired { get; set; }
         public string CheckIfUpdateIsNeeded { get; set; }
+        public string CheckIfNewTVItemsOrTVItemLanguagesExist { get; set; }
         public string CheckingInternetConnection { get; set; }
         public string CreatingAllRequiredDirectories { get; set; }
         public string ReadingConfiguration { get; set; }

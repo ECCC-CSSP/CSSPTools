@@ -41,7 +41,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Tests\SQLiteServices\Generated\" />
+    <Folder Include="Tests\SQLiteServicesTests\Generated\" />
   </ItemGroup>
 
 </Project>

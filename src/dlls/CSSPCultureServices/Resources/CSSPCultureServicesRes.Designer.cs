@@ -691,6 +691,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not fill CSSPDBSearch with TVItems and TVItemLanguages.
+        /// </summary>
+        public static string CouldNotFillCSSPDBSearchWithTVItemsAndTVItemLanguages {
+            get {
+                return ResourceManager.GetString("CouldNotFillCSSPDBSearchWithTVItemsAndTVItemLanguages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not find {0}..
         /// </summary>
         public static string CouldNotFind_ {

@@ -354,6 +354,7 @@ namespace CSSPDesktop
 
             Services.AddSingleton<ICSSPDesktopService, CSSPDesktopService>();
             Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
+            Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
 
             Provider = Services.BuildServiceProvider();
             if (Provider == null)

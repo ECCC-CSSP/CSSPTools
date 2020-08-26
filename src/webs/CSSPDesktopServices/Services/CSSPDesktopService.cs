@@ -23,6 +23,7 @@ namespace CSSPDesktopServices.Services
         AppTextModel appTextModel { get; set; }
         bool LoginRequired { get; set; }
         bool UpdateIsNeeded { get; set; }
+        bool HasNewTVItemsOrTVItemLanguages { get; set; }
         bool HasHelpFiles { get; set; }
         string CSSPDBFilesManagement { get; set; }
         string CSSPDBLogin { get; set; }
@@ -38,6 +39,7 @@ namespace CSSPDesktopServices.Services
         Task<bool> CheckIfHelpFilesExist();
         Task<bool> CheckIfLoginIsRequired();
         Task<bool> CheckIfUpdateIsNeeded();
+        Task<bool> CheckIfNewTVItemsOrTVItemLanguagesExist();
         Task<bool> CreateAllRequiredDirectories();
         Task<bool> CheckingInternetConnection();
         Task<bool> InstallUpdates();
@@ -67,6 +69,7 @@ namespace CSSPDesktopServices.Services
         public bool IsEnglish { get; set; }
         public bool LoginRequired { get; set; } = false;
         public bool UpdateIsNeeded { get; set; } = false;
+        public bool HasNewTVItemsOrTVItemLanguages { get; set; } = false;
         public bool HasHelpFiles { get; set; } = false;
         public string CSSPDBFilesManagement { get; set; }
         public string CSSPDBLogin { get; set; }
@@ -87,6 +90,7 @@ namespace CSSPDesktopServices.Services
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private IEnums enums { get; }
+        private ICSSPDBSearchService CSSPDBSearchService { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         private string LocalCSSPDesktopPath { get; set; }
         private string LocalCSSPDatabasesPath { get; set; }
@@ -102,7 +106,8 @@ namespace CSSPDesktopServices.Services
 
         #region Constructors
         public CSSPDesktopService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, 
-            CSSPDBLocalContext dbLocal, CSSPDBSearchContext dbSearch, CSSPDBLoginContext dbLogin, CSSPDBFilesManagementContext dbFM)
+            CSSPDBLocalContext dbLocal, CSSPDBSearchContext dbSearch, CSSPDBLoginContext dbLogin, CSSPDBFilesManagementContext dbFM,
+            ICSSPDBSearchService CSSPDBSearchService)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
@@ -111,6 +116,7 @@ namespace CSSPDesktopServices.Services
             this.dbSearch = dbSearch;
             this.dbLogin = dbLogin;
             this.dbFM = dbFM;
+            this.CSSPDBSearchService = CSSPDBSearchService;
 
             preference = new Preference();
             contact = new Contact();
@@ -133,6 +139,12 @@ namespace CSSPDesktopServices.Services
         public async Task<bool> CheckIfUpdateIsNeeded()
         {
             if (!await DoCheckIfUpdateIsNeeded()) return await Task.FromResult(false);
+
+            return await Task.FromResult(true);
+        }
+        public async Task<bool> CheckIfNewTVItemsOrTVItemLanguagesExist()
+        {
+            if (!await DoCheckIfNewTVItemsOrTVItemLanguagesExist()) return await Task.FromResult(false);
 
             return await Task.FromResult(true);
         }

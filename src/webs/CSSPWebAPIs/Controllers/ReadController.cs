@@ -442,6 +442,21 @@ namespace CSSPWebAPIs.Controllers
 
             return await ReadGzFileService.ReadJSON<WebTideLocation>(WebType, TVItemID, WebTypeYear);
         }
+        [Route("WebTVItem/{WebType:int}/{TVItemID:int}/{WebTypeYear:int}")]
+        [HttpGet]
+        public async Task<ActionResult<WebTVItem>> WebTVItem(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear)
+        {
+            // TVItemID = 0 -- not used
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            if (LoggedInService.RunningOn == "Azure")
+            {
+                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebTVItem")));
+            }
+
+            return await ReadGzFileService.ReadJSON<WebTVItem>(WebType, TVItemID, WebTypeYear);
+        }
         #endregion Functions public
 
         #region Functions private
