@@ -31,36 +31,48 @@ namespace CSSPDesktopServices.Services
                 return await Task.FromResult(true);
             }
 
-            DateTime dateTimeLastTVItem = await (from c in dbSearch.TVItems
-                                                 orderby c.LastUpdateDate_UTC descending
-                                                 select c.LastUpdateDate_UTC).FirstOrDefaultAsync();
+            TVItem LastTVItem = await (from c in dbSearch.TVItems
+                                       orderby c.LastUpdateDate_UTC descending
+                                       select c).FirstOrDefaultAsync();
 
-            if (dateTimeLastTVItem == null)
+            if (LastTVItem == null)
             {
+                AppendStatus(new AppendEventArgs(appTextModel.CSSPDBSearchIsEmpty));
+                AppendStatus(new AppendEventArgs(appTextModel.UpdatingCSSPDBSearchThisCanTakeSomeTime));
                 var actionRes = await CSSPDBSearchService.FillCSSDBSearch();
-                if (((ObjectResult)actionRes.Result).StatusCode == 200)
+                if (((ObjectResult)actionRes.Result).StatusCode != 200)
                 {
+                    AppendStatus(new AppendEventArgs(appTextModel.ErrorWhileTryingToUpdateCSSPDBSearch));
                     return await Task.FromResult(false);
                 }
-                else 
-                { 
-                    return await Task.FromResult(false);
-                }
+
+                int numberOfTVItem = await (from c in dbSearch.TVItems
+                                            select c).CountAsync();
+
+                AppendStatus(new AppendEventArgs(string.Format(appTextModel.CSSPDBSearchHasBeenUpdated_TVItems, numberOfTVItem.ToString())));
             }
             else
             {
-                var actionTVItem = await CSSPDBSearchService.UpdateCSSDBSearch(dateTimeLastTVItem);
+                AppendStatus(new AppendEventArgs(appTextModel.CSSPDBSearchIsNotEmpty));
+                AppendStatus(new AppendEventArgs(appTextModel.UpdatingCSSPDBSearchThisCanTakeSomeTime));
 
+                int numberOfTVItem = await (from c in dbSearch.TVItems
+                                            select c).CountAsync();
+
+                AppendStatus(new AppendEventArgs(string.Format(appTextModel.CSSPDBSearchHas_TVItems, numberOfTVItem.ToString())));
+
+                var actionRetBool = await CSSPDBSearchService.UpdateCSSDBSearch(LastTVItem.LastUpdateDate_UTC);
+                if (((ObjectResult)actionRetBool.Result).StatusCode != 200)
+                {
+                    AppendStatus(new AppendEventArgs(appTextModel.ErrorWhileTryingToUpdateCSSPDBSearch));
+                    return await Task.FromResult(false);
+                }
+
+                numberOfTVItem = await (from c in dbSearch.TVItems
+                                        select c).CountAsync();
+
+                AppendStatus(new AppendEventArgs(string.Format(appTextModel.CSSPDBSearchHasBeenUpdated_TVItems, numberOfTVItem.ToString())));
             }
-
-
-            DateTime dateTimeLastTVItemLanguage = await (from c in dbSearch.TVItems
-                                                         orderby c.LastUpdateDate_UTC descending
-                                                         select c.LastUpdateDate_UTC).FirstOrDefaultAsync();
-
-
-
-
 
             AppendStatus(new AppendEventArgs(""));
 

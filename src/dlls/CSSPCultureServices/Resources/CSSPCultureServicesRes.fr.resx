@@ -798,7 +798,10 @@
   <data name="_OnlyAvailableWhenRunningOnLocal" xml:space="preserve">
     <value>{0} disponible uniquement lors de l'exécution local</value>
   </data>
-  <data name="CouldNotFillCSSPDBSearchWithTVItemsAndTVItemLanguages" xml:space="preserve">
-    <value>Dans l'impossibilité de remplir la base de données CSSPDBSearch avec TVItems et TVItemLanguages</value>
+  <data name="CouldNotUpdateCSSPDBSearchWithTVItemsAndTVItemLanguages" xml:space="preserve">
+    <value>Dans l'impossibilité de mettre la base de données CSSPDBSearch avec TVItems et TVItemLanguages</value>
+  </data>
+  <data name="CSSPDBSearchAlreadyFilled" xml:space="preserve">
+    <value>CSSPDBSearch déjà rempli</value>
   </data>
 </root>

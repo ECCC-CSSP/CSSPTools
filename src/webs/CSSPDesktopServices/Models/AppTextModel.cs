@@ -94,6 +94,12 @@ namespace CSSPDesktopServices.Models
             _StoredInTable_AndDatabase_ = "{0} stored in table {1} and {2}";
             InternetConnectionRequiredFirstTimeConnecting = "Internet connection is required the first time connecting";
             CheckIfNewTVItemsOrTVItemLanguagesExist = "Checking and collecting new informations 'TVItems' or 'TVItemLanguage'";
+            CSSPDBSearchIsEmpty = "CSSPDBSearch is empty";
+            UpdatingCSSPDBSearchThisCanTakeSomeTime = "Updating CSSPDBSearch. This can take some time.";
+            ErrorWhileTryingToUpdateCSSPDBSearch = "Error while trying to update CSSPDBSearch";
+            CSSPDBSearchHasBeenUpdated_TVItems = "CSSPDBSearch has been updated with {0} items in TVItems";
+            CSSPDBSearchIsNotEmpty = "CSSPDBSearch is not empty";
+            CSSPDBSearchHas_TVItems = "CSSPDBSearch has {0} TVItems";
         }
     }
     public class AppTextModelFR : AppTextModel
@@ -185,6 +191,12 @@ namespace CSSPDesktopServices.Models
             _StoredInTable_AndDatabase_ = "{0} sauvegardé dans la table {1} et la base de données {2}";
             InternetConnectionRequiredFirstTimeConnecting = "Une connexion internet est requise pour se connecter la première fois";
             CheckIfNewTVItemsOrTVItemLanguagesExist = "Vérification et collection de nouvelles informations 'TVItems' ou 'TVItemLanguage'";
+            CSSPDBSearchIsEmpty = "CSSPDBSearch est vide";
+            UpdatingCSSPDBSearchThisCanTakeSomeTime = "Mise-à-jour de CSSPDBSearch. Cette tâche peut prendre un peu de temps.";
+            ErrorWhileTryingToUpdateCSSPDBSearch = "Erreur lors de la mise-à-jour de CSSPDBSearch";
+            CSSPDBSearchHasBeenUpdated_TVItems = "Mise-à-jour complété pour CSSPDBSearch avec {0} items de TVItems";
+            CSSPDBSearchIsNotEmpty = "CSSPDBSearch n'est pas vide";
+            CSSPDBSearchHas_TVItems = "CSSPDBSearch a {0} TVItems";
         }
     }
     public class AppTextModel
@@ -275,5 +287,11 @@ namespace CSSPDesktopServices.Models
         public string PostRequestLoginEmailAndPasswordTo_ { get; set; }
         public string _StoredInTable_AndDatabase_ { get; set; }
         public string InternetConnectionRequiredFirstTimeConnecting { get; set; }
+        public string CSSPDBSearchIsEmpty { get; set; }
+        public string UpdatingCSSPDBSearchThisCanTakeSomeTime { get; set; }
+        public string ErrorWhileTryingToUpdateCSSPDBSearch { get; set; }
+        public string CSSPDBSearchHasBeenUpdated_TVItems { get; set; }
+        public string CSSPDBSearchIsNotEmpty { get; set; }
+        public string CSSPDBSearchHas_TVItems { get; set; }
     }
 }
