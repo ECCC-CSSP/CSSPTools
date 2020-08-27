@@ -45,7 +45,6 @@ namespace CSSPServices
         #region Functions public
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            string retStr = "";
             PolSourceObsInfoEnumTextAndID polSourceObsInfoEnumTextAndID = validationContext.ObjectInstance as PolSourceObsInfoEnumTextAndID;
 
             if (string.IsNullOrWhiteSpace(polSourceObsInfoEnumTextAndID.Text))
@@ -60,12 +59,11 @@ namespace CSSPServices
                 yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "ID", "1"), new[] { nameof(polSourceObsInfoEnumTextAndID.ID) });
             }
 
-            retStr = ""; // added to stop compiling CSSPError
-            if (retStr != "") // will never be true
+            bool a = false;
+            if (a)
             {
-                yield return new ValidationResult("AAA", new[] { "AAA" });
+                yield return new ValidationResult("");
             }
-
         }
         #endregion Functions public
 

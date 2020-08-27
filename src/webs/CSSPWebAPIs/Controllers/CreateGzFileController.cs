@@ -50,9 +50,9 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            if (LoggedInService.RunningOn != "Azure")
+            if (LoggedInService.RunningOn != RunningOnEnum.Azure)
             {
-                return await Task.FromResult(BadRequest(CSSPCultureServicesRes.CreateGzFileOnlyAvailableWhenRunningOnAzure));
+                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnAzure, "CreateGzFile")));
             }
 
             return await CreateGzFileService.CreateGzFile(WebType, TVItemID, WebTypeYear);

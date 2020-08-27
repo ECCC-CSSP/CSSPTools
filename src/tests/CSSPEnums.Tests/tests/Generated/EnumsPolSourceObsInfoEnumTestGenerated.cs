@@ -6,7 +6,6 @@
  */
 using CSSPCultureServices.Resources;
 using System;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace CSSPEnums.Tests
@@ -16,9 +15,9 @@ namespace CSSPEnums.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
-        public async Task GetResValueForTypeAndID_for_PolSourceObsInfoEnum_Test(string culture)
+        public void GetResValueForTypeAndID_for_PolSourceObsInfoEnum_Test(string culture)
         {
-            await SetupTest(culture);
+            SetupTest(culture);
 
             string retStr = enums.GetResValueForTypeAndID(typeof(PolSourceObsInfoEnum), null, null);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);

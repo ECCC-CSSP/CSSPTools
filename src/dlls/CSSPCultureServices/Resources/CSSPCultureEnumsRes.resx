@@ -2925,4 +2925,115 @@
   <data name="DBLocationEnumServer" xml:space="preserve">
     <value>Server</value>
   </data>
+  <data name="DBLocationEnumLogin" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="RunningOnEnumAzure" xml:space="preserve">
+    <value>Azure</value>
+  </data>
+  <data name="RunningOnEnumLocal" xml:space="preserve">
+    <value>Local</value>
+  </data>
+  <data name="WebTypeEnumWebArea" xml:space="preserve">
+    <value>WebArea</value>
+  </data>
+  <data name="WebTypeEnumWebClimateDataValue" xml:space="preserve">
+    <value>WebClimateDataValue</value>
+  </data>
+  <data name="WebTypeEnumWebClimateSite" xml:space="preserve">
+    <value>WebClimateSite</value>
+  </data>
+  <data name="WebTypeEnumWebContact" xml:space="preserve">
+    <value>WebContact</value>
+  </data>
+  <data name="WebTypeEnumWebCountry" xml:space="preserve">
+    <value>WebCountry</value>
+  </data>
+  <data name="WebTypeEnumWebDrogueRun" xml:space="preserve">
+    <value>WebDrogueRun</value>
+  </data>
+  <data name="WebTypeEnumWebHelpDoc" xml:space="preserve">
+    <value>WebHelpDoc</value>
+  </data>
+  <data name="WebTypeEnumWebHydrometricDataValue" xml:space="preserve">
+    <value>WebHydrometricDataValue</value>
+  </data>
+  <data name="WebTypeEnumWebHydrometricSite" xml:space="preserve">
+    <value>WebHydrometricSite</value>
+  </data>
+  <data name="WebTypeEnumWebMikeScenario" xml:space="preserve">
+    <value>WebMikeScenario</value>
+  </data>
+  <data name="WebTypeEnumWebMunicipalities" xml:space="preserve">
+    <value>WebMunicipalities</value>
+  </data>
+  <data name="WebTypeEnumWebMunicipality" xml:space="preserve">
+    <value>WebMunicipality</value>
+  </data>
+  <data name="WebTypeEnumWebMWQMLookupMPN" xml:space="preserve">
+    <value>WebMWQMLookupMPN</value>
+  </data>
+  <data name="WebTypeEnumWebMWQMRun" xml:space="preserve">
+    <value>WebMWQMRun</value>
+  </data>
+  <data name="WebTypeEnumWebMWQMSample" xml:space="preserve">
+    <value>WebMWQMSample</value>
+  </data>
+  <data name="WebTypeEnumWebMWQMSite" xml:space="preserve">
+    <value>WebMWQMSite</value>
+  </data>
+  <data name="WebTypeEnumWebPolSourceGrouping" xml:space="preserve">
+    <value>WebPolSourceGrouping</value>
+  </data>
+  <data name="WebTypeEnumWebPolSourceSite" xml:space="preserve">
+    <value>WebPolSourceSite</value>
+  </data>
+  <data name="WebTypeEnumWebProvince" xml:space="preserve">
+    <value>WebProvince</value>
+  </data>
+  <data name="WebTypeEnumWebReportType" xml:space="preserve">
+    <value>WebReportType</value>
+  </data>
+  <data name="WebTypeEnumWebRoot" xml:space="preserve">
+    <value>WebRoot</value>
+  </data>
+  <data name="WebTypeEnumWebSamplingPlan" xml:space="preserve">
+    <value>WebSamplingPlan</value>
+  </data>
+  <data name="WebTypeEnumWebSector" xml:space="preserve">
+    <value>WebSector</value>
+  </data>
+  <data name="WebTypeEnumWebSubsector" xml:space="preserve">
+    <value>WebSubsector</value>
+  </data>
+  <data name="WebTypeEnumWebTideLocation" xml:space="preserve">
+    <value>WebTideLocation</value>
+  </data>
+  <data name="WebTypeEnumWebTVItem" xml:space="preserve">
+    <value>WebTVItem</value>
+  </data>
+  <data name="WebTypeYearEnumYear1980" xml:space="preserve">
+    <value>WebTypeYear1980</value>
+  </data>
+  <data name="WebTypeYearEnumYear1990" xml:space="preserve">
+    <value>WebTypeYear1990</value>
+  </data>
+  <data name="WebTypeYearEnumYear2000" xml:space="preserve">
+    <value>WebTypeYear2000</value>
+  </data>
+  <data name="WebTypeYearEnumYear2010" xml:space="preserve">
+    <value>WebTypeYear2010</value>
+  </data>
+  <data name="WebTypeYearEnumYear2020" xml:space="preserve">
+    <value>WebTypeYear2020</value>
+  </data>
+  <data name="WebTypeYearEnumYear2030" xml:space="preserve">
+    <value>WebTypeYear2030</value>
+  </data>
+  <data name="WebTypeYearEnumYear2040" xml:space="preserve">
+    <value>WebTypeYear2040</value>
+  </data>
+  <data name="WebTypeYearEnumYear2050" xml:space="preserve">
+    <value>WebTypeYear2050</value>
+  </data>
 </root>

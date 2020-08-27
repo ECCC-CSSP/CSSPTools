@@ -11,6 +11,7 @@ export enum DBLocationEnum {
     Local = 1,
     Server = 2,
     InMemory = 3,
+    Login = 4,
 }
 
 export function DBLocationEnum_GetOrderedText(): EnumIDAndText[] {
@@ -19,11 +20,13 @@ export function DBLocationEnum_GetOrderedText(): EnumIDAndText[] {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'Locale' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'Serveur' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'En mémoire' });
+        enumTextOrderedList.push({ EnumID: 4, EnumText: 'Login (fr)' });
     }
     else {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'Local' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'Server' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'In Memory' });
+        enumTextOrderedList.push({ EnumID: 4, EnumText: 'Login' });
     }
 
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));

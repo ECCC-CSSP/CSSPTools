@@ -1658,6 +1658,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Login.
+        /// </summary>
+        public static string DBLocationEnumLogin {
+            get {
+                return ResourceManager.GetString("DBLocationEnumLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Server.
         /// </summary>
         public static string DBLocationEnumServer {
@@ -5718,6 +5727,24 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Azure.
+        /// </summary>
+        public static string RunningOnEnumAzure {
+            get {
+                return ResourceManager.GetString("RunningOnEnumAzure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Local.
+        /// </summary>
+        public static string RunningOnEnumLocal {
+            get {
+                return ResourceManager.GetString("RunningOnEnumLocal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to SameDayNextDay.
         /// </summary>
         public static string SameDayNextDay {
@@ -8486,6 +8513,312 @@ namespace CSSPCultureServices.Resources {
         public static string WebTideDataSetEnumvigf8 {
             get {
                 return ResourceManager.GetString("WebTideDataSetEnumvigf8", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebArea.
+        /// </summary>
+        public static string WebTypeEnumWebArea {
+            get {
+                return ResourceManager.GetString("WebTypeEnumWebArea", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebClimateDataValue.
+        /// </summary>
+        public static string WebTypeEnumWebClimateDataValue {
+            get {
+                return ResourceManager.GetString("WebTypeEnumWebClimateDataValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebClimateSite.
+        /// </summary>
+        public static string WebTypeEnumWebClimateSite {
+            get {
+                return ResourceManager.GetString("WebTypeEnumWebClimateSite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebContact.
+        /// </summary>
+        public static string WebTypeEnumWebContact {
+            get {
+                return ResourceManager.GetString("WebTypeEnumWebContact", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebCountry.
+        /// </summary>
+        public static string WebTypeEnumWebCountry {
+            get {
+                return ResourceManager.GetString("WebTypeEnumWebCountry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebDrogueRun.
+        /// </summary>
+        public static string WebTypeEnumWebDrogueRun {
+            get {
+                return ResourceManager.GetString("WebTypeEnumWebDrogueRun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebHelpDoc.
+        /// </summary>
+        public static string WebTypeEnumWebHelpDoc {
+            get {
+                return ResourceManager.GetString("WebTypeEnumWebHelpDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebHydrometricDataValue.
+        /// </summary>
+        public static string WebTypeEnumWebHydrometricDataValue {
+            get {
+                return ResourceManager.GetString("WebTypeEnumWebHydrometricDataValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebHydrometricSite.
+        /// </summary>
+        public static string WebTypeEnumWebHydrometricSite {
+            get {
+                return ResourceManager.GetString("WebTypeEnumWebHydrometricSite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebMikeScenario.
+        /// </summary>
+        public static string WebTypeEnumWebMikeScenario {
+            get {
+                return ResourceManager.GetString("WebTypeEnumWebMikeScenario", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebMunicipalities.
+        /// </summary>
+        public static string WebTypeEnumWebMunicipalities {
+            get {
+                return ResourceManager.GetString("WebTypeEnumWebMunicipalities", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebMunicipality.
+        /// </summary>
+        public static string WebTypeEnumWebMunicipality {
+            get {
+                return ResourceManager.GetString("WebTypeEnumWebMunicipality", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebMWQMLookupMPN.
+        /// </summary>
+        public static string WebTypeEnumWebMWQMLookupMPN {
+            get {
+                return ResourceManager.GetString("WebTypeEnumWebMWQMLookupMPN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebMWQMRun.
+        /// </summary>
+        public static string WebTypeEnumWebMWQMRun {
+            get {
+                return ResourceManager.GetString("WebTypeEnumWebMWQMRun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebMWQMSample.
+        /// </summary>
+        public static string WebTypeEnumWebMWQMSample {
+            get {
+                return ResourceManager.GetString("WebTypeEnumWebMWQMSample", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebMWQMSite.
+        /// </summary>
+        public static string WebTypeEnumWebMWQMSite {
+            get {
+                return ResourceManager.GetString("WebTypeEnumWebMWQMSite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebPolSourceGrouping.
+        /// </summary>
+        public static string WebTypeEnumWebPolSourceGrouping {
+            get {
+                return ResourceManager.GetString("WebTypeEnumWebPolSourceGrouping", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebPolSourceSite.
+        /// </summary>
+        public static string WebTypeEnumWebPolSourceSite {
+            get {
+                return ResourceManager.GetString("WebTypeEnumWebPolSourceSite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebProvince.
+        /// </summary>
+        public static string WebTypeEnumWebProvince {
+            get {
+                return ResourceManager.GetString("WebTypeEnumWebProvince", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebReportType.
+        /// </summary>
+        public static string WebTypeEnumWebReportType {
+            get {
+                return ResourceManager.GetString("WebTypeEnumWebReportType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebRoot.
+        /// </summary>
+        public static string WebTypeEnumWebRoot {
+            get {
+                return ResourceManager.GetString("WebTypeEnumWebRoot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebSamplingPlan.
+        /// </summary>
+        public static string WebTypeEnumWebSamplingPlan {
+            get {
+                return ResourceManager.GetString("WebTypeEnumWebSamplingPlan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebSector.
+        /// </summary>
+        public static string WebTypeEnumWebSector {
+            get {
+                return ResourceManager.GetString("WebTypeEnumWebSector", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebSubsector.
+        /// </summary>
+        public static string WebTypeEnumWebSubsector {
+            get {
+                return ResourceManager.GetString("WebTypeEnumWebSubsector", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebTideLocation.
+        /// </summary>
+        public static string WebTypeEnumWebTideLocation {
+            get {
+                return ResourceManager.GetString("WebTypeEnumWebTideLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebTVItem.
+        /// </summary>
+        public static string WebTypeEnumWebTVItem {
+            get {
+                return ResourceManager.GetString("WebTypeEnumWebTVItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebTypeYear1980.
+        /// </summary>
+        public static string WebTypeYearEnumYear1980 {
+            get {
+                return ResourceManager.GetString("WebTypeYearEnumYear1980", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebTypeYear1990.
+        /// </summary>
+        public static string WebTypeYearEnumYear1990 {
+            get {
+                return ResourceManager.GetString("WebTypeYearEnumYear1990", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebTypeYear2000.
+        /// </summary>
+        public static string WebTypeYearEnumYear2000 {
+            get {
+                return ResourceManager.GetString("WebTypeYearEnumYear2000", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebTypeYear2010.
+        /// </summary>
+        public static string WebTypeYearEnumYear2010 {
+            get {
+                return ResourceManager.GetString("WebTypeYearEnumYear2010", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebTypeYear2020.
+        /// </summary>
+        public static string WebTypeYearEnumYear2020 {
+            get {
+                return ResourceManager.GetString("WebTypeYearEnumYear2020", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebTypeYear2030.
+        /// </summary>
+        public static string WebTypeYearEnumYear2030 {
+            get {
+                return ResourceManager.GetString("WebTypeYearEnumYear2030", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebTypeYear2040.
+        /// </summary>
+        public static string WebTypeYearEnumYear2040 {
+            get {
+                return ResourceManager.GetString("WebTypeYearEnumYear2040", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebTypeYear2050.
+        /// </summary>
+        public static string WebTypeYearEnumYear2050 {
+            get {
+                return ResourceManager.GetString("WebTypeYearEnumYear2050", resourceCulture);
             }
         }
     }

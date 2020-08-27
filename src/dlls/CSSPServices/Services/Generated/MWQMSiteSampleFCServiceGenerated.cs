@@ -45,7 +45,6 @@ namespace CSSPServices
         #region Functions public
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            string retStr = "";
             MWQMSiteSampleFC mwqmSiteSampleFC = validationContext.ObjectInstance as MWQMSiteSampleFC;
 
             if (mwqmSiteSampleFC.SampleDate.Year == 1)
@@ -94,12 +93,11 @@ namespace CSSPServices
 
             //PercOver260 has no Range Attribute
 
-            retStr = ""; // added to stop compiling CSSPError
-            if (retStr != "") // will never be true
+            bool a = false;
+            if (a)
             {
-                yield return new ValidationResult("AAA", new[] { "AAA" });
+                yield return new ValidationResult("");
             }
-
         }
         #endregion Functions public
 

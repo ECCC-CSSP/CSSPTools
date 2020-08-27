@@ -613,12 +613,11 @@ namespace CSSPServices
                 //CSSPError: Type not implemented [LabSheetA1MeasurementList] of type [List`1]
 
                 //CSSPError: Type not implemented [LabSheetA1MeasurementList] of type [LabSheetA1Measurement]
-            retStr = ""; // added to stop compiling CSSPError
-            if (retStr != "") // will never be true
+            bool a = false;
+            if (a)
             {
-                yield return new ValidationResult("AAA", new[] { "AAA" });
+                yield return new ValidationResult("");
             }
-
         }
         #endregion Functions public
 

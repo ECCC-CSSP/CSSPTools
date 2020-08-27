@@ -728,6 +728,11 @@ namespace CSSPEnums
         ReportSubsectorSpecialTableType = 78,
         ReportMikeScenarioSpecialResultKMLType = 79,
     }
+    public enum RunningOnEnum
+    {
+        Local = 1,
+        Azure = 2,
+    }
     public enum SameDayNextDayEnum
     {
         SameDay = 1,

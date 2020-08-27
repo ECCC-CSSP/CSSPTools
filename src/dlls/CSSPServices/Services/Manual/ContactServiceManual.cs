@@ -39,15 +39,12 @@ namespace CSSPServices
         #endregion Constructors
 
         #region Functions public 
-        public async Task<ActionResult<Contact>> Register(RegisterModel registerModel)
+        public async Task<ActionResult<bool>> Register(RegisterModel registerModel)
         {
-            // before starting ... should verify
-            // - required FirstName, LastName, Password, ConfirmPassword, LoginEmail
-            // - min and max lengths
-            // - Password and ConfirmPassword are equal
-            // - email is unique -- not already taken
-            // - FirstName, Initial and LastName is unique -- not already taken
-            // - Password has at least 6 characters
+            if (LoggedInService.RunningOn != RunningOnEnum.Azure)
+            {
+                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnAzure, "Register")));
+            }
 
             ValidationResults = RegisterModelService.Validate(new ValidationContext(registerModel));
             if (ValidationResults.Count() > 0)
@@ -61,57 +58,6 @@ namespace CSSPServices
                 return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            // need to check if connected to the internet
-            // should only allow register to the CSSPDB on Azure
-            // Send a BadRequest, if not connected to the internet
-
-            AspNetUser aspNetUser = (from c in db.AspNetUsers
-                                     where c.UserName == registerModel.LoginEmail
-                                     select c).FirstOrDefault();
-
-            if (aspNetUser != null)
-            {
-                return BadRequest($"{ string.Format(CSSPCultureServicesRes.LoginEmail_IsAlreadyTaken, registerModel.LoginEmail) }");
-            }
-
-            Contact contact = (from c in db.Contacts
-                               where c.LoginEmail == registerModel.LoginEmail
-                               select c).FirstOrDefault();
-
-            if (contact != null)
-            {
-                return BadRequest($"{ string.Format(CSSPCultureServicesRes.LoginEmail_IsAlreadyTaken, registerModel.LoginEmail) }");
-            }
-
-            if (string.IsNullOrWhiteSpace(registerModel.Initial))
-            {
-                contact = (from c in db.Contacts
-                           where c.FirstName == registerModel.FirstName
-                           && c.LastName == registerModel.LastName
-                           select c).FirstOrDefault();
-
-                if (contact != null)
-                {
-                    string fullName = $"{ registerModel.FirstName } { registerModel.LastName }";
-                    return BadRequest($"{ string.Format(CSSPCultureServicesRes.FullName_IsAlreadyTaken, fullName) }");
-                }
-            }
-            else
-            {
-                contact = (from c in db.Contacts
-                           where c.FirstName == registerModel.FirstName
-                           && c.Initial == registerModel.Initial
-                           && c.LastName == registerModel.LastName
-                           select c).FirstOrDefault();
-
-                if (contact != null)
-                {
-                    string fullName = $"{ registerModel.FirstName } { registerModel.Initial }, { registerModel.LastName }";
-                    return BadRequest($"{ string.Format(CSSPCultureServicesRes.FullName_IsAlreadyTaken, fullName) }");
-                }
-            }
-
-            // creating user in AspNetUsers table
             var user = new ApplicationUser { UserName = registerModel.LoginEmail, Email = registerModel.LoginEmail };
             var result = await UserManager.CreateAsync(user, registerModel.Password);
 
@@ -124,10 +70,10 @@ namespace CSSPServices
             Contact contactNew = new Contact()
             {
                 Id = user.Id,
+                LoginEmail = registerModel.LoginEmail,
                 FirstName = registerModel.FirstName,
                 Initial = registerModel.Initial,
                 LastName = registerModel.LastName,
-                LoginEmail = registerModel.LoginEmail,
                 //etc...
 
             };
@@ -137,7 +83,7 @@ namespace CSSPServices
             // AspNetUsers, Contacts, TVItemUserAuthorization, TVTypeUserAuthorization
 
 
-            return Ok(true);
+            return await Task.FromResult(Ok(true));
         }
         #endregion Functions public
 
@@ -153,7 +99,7 @@ namespace CSSPServices
 
             if (string.IsNullOrWhiteSpace(registerModel.Initial))
             {
-                if ((from c in dbIM.Contacts.AsNoTracking()
+                if ((from c in db.Contacts.AsNoTracking()
                      where c.FirstName == registerModel.FirstName.Trim()
                      && c.LastName == registerModel.LastName.Trim()
                      select c).Any())
@@ -163,7 +109,7 @@ namespace CSSPServices
             }
             else
             {
-                if ((from c in dbIM.Contacts.AsNoTracking()
+                if ((from c in db.Contacts.AsNoTracking()
                      where c.FirstName == registerModel.FirstName.Trim()
                      && c.Initial == registerModel.Initial.Trim()
                      && c.LastName == registerModel.LastName.Trim()

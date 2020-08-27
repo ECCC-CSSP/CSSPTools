@@ -46,7 +46,7 @@ namespace CSSPServices
 
         #region Constructors
         public AspNetUserService(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, 
-           IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal = null,
+           IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal = null, 
            CSSPDBInMemoryContext dbIM = null, CSSPDBLoginContext dbLogin = null)
         {
             this.CSSPCultureService = CSSPCultureService;

@@ -38,7 +38,10 @@ namespace AuthController.Tests
         private ICSSPCultureService CSSPCultureService { get; set; }
         private Contact contact { get; set; }
         private IReadController ReadController { get; set; }
-        private string RunningOn { get; set; }
+        private RunningOnEnum RunningOn { get; set; }
+        private string LoginEmail { get; set; }
+        private string Password { get; set; }
+        private string CSSPAzureUrl { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -127,31 +130,6 @@ namespace AuthController.Tests
             Assert.NotNull(CSSPCultureService);
 
             CSSPCultureService.SetCulture(culture);
-
-            ContactService = Provider.GetService<IContactService>();
-            Assert.NotNull(ContactService);
-
-            string LoginEmail = Configuration.GetValue<string>("LoginEmail");
-            Assert.NotNull(LoginEmail);
-
-            string Password = Password = Configuration.GetValue<string>("Password");
-            Assert.NotNull(Password);
-
-            LoginModel loginModel = new LoginModel()
-            {
-                LoginEmail = LoginEmail,
-                Password = Password
-            };
-
-            var actionUserModel = await ContactService.Login(loginModel);
-            Assert.NotNull(actionUserModel.Value);
-            contact = actionUserModel.Value;
-
-            LoggedInService = Provider.GetService<ILoggedInService>();
-            Assert.NotNull(LoggedInService);
-
-            await LoggedInService.SetLoggedInContactInfo(contact.Id);
-            Assert.NotNull(LoggedInService.LoggedInContactInfo);
 
             return await Task.FromResult(true);
         }

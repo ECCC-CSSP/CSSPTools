@@ -26,7 +26,7 @@ namespace CSSPWebAPIs
 
         #region Properties
         private IConfiguration Configuration { get; }
-        private string RunningOn { get; set; }
+        private RunningOnEnum RunningOn { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -68,11 +68,11 @@ namespace CSSPWebAPIs
                 };
             });
 
-            RunningOn = Configuration.GetValue<string>("RunningOn"); // either "Local", "Azure"
+            RunningOn = Configuration.GetValue<string>("RunningOn") == "Local" ? RunningOnEnum.Local : RunningOnEnum.Azure;
 
             string DBConnStr = "";
 
-            if (RunningOn == "Azure")
+            if (RunningOn == RunningOnEnum.Azure)
             {
                 DBConnStr = Configuration.GetValue<string>("AzureCSSPDB");
 
@@ -168,7 +168,7 @@ namespace CSSPWebAPIs
             services.AddScoped<IDownloadGzFileService, DownloadGzFileService>();
             services.AddScoped<IReadGzFileService, ReadGzFileService>();
 
-            if (RunningOn == "Local")
+            if (RunningOn == RunningOnEnum.Local)
             {
                 services.AddSpaStaticFiles(configuration =>
                 {
@@ -191,7 +191,7 @@ namespace CSSPWebAPIs
 
             app.UseHttpsRedirection();
 
-            if (RunningOn == "Local")
+            if (RunningOn == RunningOnEnum.Local)
             {
                 app.UseStaticFiles();
 
@@ -216,7 +216,7 @@ namespace CSSPWebAPIs
                 endpoints.MapControllers();
             });
 
-            if (RunningOn == "Local")
+            if (RunningOn == RunningOnEnum.Local)
             {
                 app.UseSpa(spa =>
                 {

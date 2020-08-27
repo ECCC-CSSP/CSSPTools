@@ -45,7 +45,6 @@ namespace CSSPServices
         #region Functions public
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            string retStr = "";
             PolyPoint polyPoint = validationContext.ObjectInstance as PolyPoint;
 
             if (polyPoint.XCoord < -180 || polyPoint.XCoord > 180)
@@ -60,12 +59,11 @@ namespace CSSPServices
 
             //Z has no Range Attribute
 
-            retStr = ""; // added to stop compiling CSSPError
-            if (retStr != "") // will never be true
+            bool a = false;
+            if (a)
             {
-                yield return new ValidationResult("AAA", new[] { "AAA" });
+                yield return new ValidationResult("");
             }
-
         }
         #endregion Functions public
 

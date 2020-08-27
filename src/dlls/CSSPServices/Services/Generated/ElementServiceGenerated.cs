@@ -45,7 +45,6 @@ namespace CSSPServices
         #region Functions public
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            string retStr = "";
             Element element = validationContext.ObjectInstance as Element;
 
             if (element.ID < 1)
@@ -74,12 +73,11 @@ namespace CSSPServices
                 //CSSPError: Type not implemented [NodeList] of type [List`1]
 
                 //CSSPError: Type not implemented [NodeList] of type [Node]
-            retStr = ""; // added to stop compiling CSSPError
-            if (retStr != "") // will never be true
+            bool a = false;
+            if (a)
             {
-                yield return new ValidationResult("AAA", new[] { "AAA" });
+                yield return new ValidationResult("");
             }
-
         }
         #endregion Functions public
 

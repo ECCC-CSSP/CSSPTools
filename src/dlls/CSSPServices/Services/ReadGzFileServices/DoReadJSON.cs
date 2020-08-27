@@ -18,7 +18,6 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Azure;
 
 namespace CSSPServices
 {
@@ -32,6 +31,11 @@ namespace CSSPServices
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
+            }
+
+            if (LoggedInService.RunningOn != RunningOnEnum.Local)
+            {
+                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "ReadJSON")));
             }
 
             string fileName = await BaseGzFileService.GetFileName(webType, TVItemID, webTypeYear);

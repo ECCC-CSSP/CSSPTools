@@ -90,9 +90,38 @@ namespace ServicesClassNameServiceGeneratedServices.Services
         }
         private async Task<bool> CreateClassServiceFunctionsPrivateGenerateValidateNotMapped(DLLTypeInfo dllTypeInfoModels, string TypeName, string TypeNameLower, StringBuilder sb)
         {
+            bool EnumExist = false;
+            foreach (PropertyInfo prop in dllTypeInfoModels.Type.GetProperties())
+            {
+                if (prop.GetGetMethod().IsVirtual)
+                {
+                    continue;
+                }
+
+                if (prop.Name == "ValidationResults")
+                {
+                    continue;
+                }
+
+                CSSPProp csspProp = new CSSPProp();
+                if (!GenerateCodeBaseService.FillCSSPProp(prop, csspProp, dllTypeInfoModels.Type))
+                {
+                    return await Task.FromResult(false);
+                }
+
+                if (csspProp.HasCSSPEnumTypeAttribute)
+                {
+                    EnumExist = true;
+                    break;
+                }
+            }
+
             sb.AppendLine(@"        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)");
             sb.AppendLine(@"        {");
-            sb.AppendLine(@"            string retStr = """";");
+            if (EnumExist)
+            {
+                sb.AppendLine(@"            string retStr = """";");
+            }
             sb.AppendLine($@"            { TypeName } { TypeNameLower } = validationContext.ObjectInstance as { TypeName };");
             sb.AppendLine(@"");
 
@@ -128,12 +157,12 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                 if (!await CreateValidation_EnumType(prop, csspProp, dllTypeInfoModels.Type.Name, TypeNameLower, sb)) return await Task.FromResult(false);
             }
 
-            sb.AppendLine(@"            retStr = """"; // added to stop compiling CSSPError");
-            sb.AppendLine(@"            if (retStr != """") // will never be true");
+            sb.AppendLine(@"            bool a = false;");
+            sb.AppendLine(@"            if (a)");
             sb.AppendLine(@"            {");
-            sb.AppendLine(@"                yield return new ValidationResult(""AAA"", new[] { ""AAA"" });");
+            sb.AppendLine(@"                yield return new ValidationResult("""");");
             sb.AppendLine(@"            }");
-            sb.AppendLine(@"");
+
             sb.AppendLine(@"        }");
 
             return await Task.FromResult(true);

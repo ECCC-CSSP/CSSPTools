@@ -16,7 +16,7 @@ namespace CSSPServices
         LoggedInContactInfo LoggedInContactInfo { get; set; }
         bool HasInternetConnection { get; set; }
         DBLocationEnum DBLocation { get; set; }
-        string RunningOn { get; set; }
+        RunningOnEnum RunningOn { get; set; }
         string AzureToken { get; set; }
         string LocalToken { get; set; }
 
@@ -33,7 +33,7 @@ namespace CSSPServices
         public  LoggedInContactInfo LoggedInContactInfo { get; set; }
         public bool HasInternetConnection { get; set; } = true;
         public DBLocationEnum DBLocation { get; set; }
-        public string RunningOn { get; set; }
+        public RunningOnEnum RunningOn { get; set; } = RunningOnEnum.Local;
         public string AzureToken { get; set; }
         public string LocalToken { get; set; }
 
@@ -53,7 +53,7 @@ namespace CSSPServices
 
             LoggedInContactInfo = new LoggedInContactInfo();
 
-            RunningOn = Configuration.GetValue<string>("RunningOn");
+            RunningOn = Configuration.GetValue<string>("RunningOn") == "Local" ? RunningOnEnum.Local : RunningOnEnum.Azure;
         }
         #endregion Constructors
 

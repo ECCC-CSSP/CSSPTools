@@ -45,7 +45,6 @@ namespace CSSPServices
         #region Functions public
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            string retStr = "";
             URLNumberOfSamples uRLNumberOfSamples = validationContext.ObjectInstance as URLNumberOfSamples;
 
             if (string.IsNullOrWhiteSpace(uRLNumberOfSamples.url))
@@ -60,12 +59,11 @@ namespace CSSPServices
 
             //NumberOfSamples has no Range Attribute
 
-            retStr = ""; // added to stop compiling CSSPError
-            if (retStr != "") // will never be true
+            bool a = false;
+            if (a)
             {
-                yield return new ValidationResult("AAA", new[] { "AAA" });
+                yield return new ValidationResult("");
             }
-
         }
         #endregion Functions public
 

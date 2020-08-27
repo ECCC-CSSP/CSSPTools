@@ -45,7 +45,6 @@ namespace CSSPServices
         #region Functions public
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            string retStr = "";
             LoggedInContactInfo loggedInContactInfo = validationContext.ObjectInstance as LoggedInContactInfo;
 
                 //CSSPError: Type not implemented [LoggedInContact] of type [Contact]
@@ -57,12 +56,11 @@ namespace CSSPServices
                 //CSSPError: Type not implemented [TVItemUserAuthorizationList] of type [List`1]
 
                 //CSSPError: Type not implemented [TVItemUserAuthorizationList] of type [TVItemUserAuthorization]
-            retStr = ""; // added to stop compiling CSSPError
-            if (retStr != "") // will never be true
+            bool a = false;
+            if (a)
             {
-                yield return new ValidationResult("AAA", new[] { "AAA" });
+                yield return new ValidationResult("");
             }
-
         }
         #endregion Functions public
 

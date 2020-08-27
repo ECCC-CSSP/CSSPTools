@@ -45,7 +45,6 @@ namespace CSSPServices
         #region Functions public
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            string retStr = "";
             CSSPMPNTable cSSPMPNTable = validationContext.ObjectInstance as CSSPMPNTable;
 
             if (cSSPMPNTable.Tube10 < 0 || cSSPMPNTable.Tube10 > 5)
@@ -68,12 +67,11 @@ namespace CSSPServices
                 yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "MPN", "0", "100000000"), new[] { nameof(cSSPMPNTable.MPN) });
             }
 
-            retStr = ""; // added to stop compiling CSSPError
-            if (retStr != "") // will never be true
+            bool a = false;
+            if (a)
             {
-                yield return new ValidationResult("AAA", new[] { "AAA" });
+                yield return new ValidationResult("");
             }
-
         }
         #endregion Functions public
 

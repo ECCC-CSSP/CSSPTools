@@ -50,6 +50,7 @@ namespace CSSPServices.Tests
         public async Task CSSPDBSearch_Constructor_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
+            Assert.NotNull(LoggedInService);
             Assert.NotNull(CSSPDBSearchService);
         }
         [Theory]
@@ -97,6 +98,8 @@ namespace CSSPServices.Tests
             ServiceCollection.AddSingleton<ICSSPFileService, CSSPFileService>();
             ServiceCollection.AddSingleton<IDownloadGzFileService, DownloadGzFileService>();
             ServiceCollection.AddSingleton<IReadGzFileService, ReadGzFileService>();
+            ServiceCollection.AddSingleton<ITVItemService, TVItemService>();
+            ServiceCollection.AddSingleton<ITVItemLanguageService, TVItemLanguageService>();
 
             string CSSPDBConnString = Configuration.GetValue<string>("CSSPDB2");
             Assert.NotNull(CSSPDBConnString);
@@ -184,6 +187,9 @@ namespace CSSPServices.Tests
 
             await LoggedInService.SetLoggedInContactInfo(contact);
             Assert.NotNull(LoggedInService.LoggedInContactInfo);
+
+            LoggedInService.RunningOn = RunningOnEnum.Local;
+            Assert.Equal(RunningOnEnum.Local, LoggedInService.RunningOn);
 
             CSSPDBSearchService = ServiceProvider.GetService<ICSSPDBSearchService>();
             Assert.NotNull(CSSPDBSearchService);

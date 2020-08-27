@@ -103,7 +103,7 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Services
             {
                 sb.AppendLine(@"            await loggedInService.SetLoggedInContactInfo(contact.Id);");
             }
-            sb.AppendLine(@"            Assert.NotNull(loggedInService.GetLoggedInContactInfo());");
+            sb.AppendLine(@"            Assert.NotNull(loggedInService.LoggedInContactInfo);");
             sb.AppendLine(@"");
             sb.AppendLine($@"            { TypeNameLower }Service = Provider.GetService<I{ TypeName }Service>();");
             sb.AppendLine($@"            Assert.NotNull({ TypeNameLower }Service);");

@@ -128,7 +128,7 @@ namespace ActionCommandDBServices.Tests
 
             var actionActionCommandList = await actionCommandDBService.GetAll();
             Assert.Equal(200, ((ObjectResult)actionActionCommandList.Result).StatusCode);
-            Assert.Equal(108, ((List<ActionCommand>)((OkObjectResult)actionActionCommandList.Result).Value).Count);
+            Assert.Equal(106, ((List<ActionCommand>)((OkObjectResult)actionActionCommandList.Result).Value).Count);
         }
         [Theory]
         [InlineData("en-CA")]

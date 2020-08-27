@@ -42,12 +42,11 @@ namespace CSSPDesktopServices.Services
                 try
                 {
                     AzureStore = response.Content.ReadAsStringAsync().Result;
-
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-
-                    throw;
+                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes.CouldNotReadAzureStoreFrom_, $"{ CSSPAzureUrl }api/en-CA/Auth/AzureStore")));
+                    return await Task.FromResult(false);
                 }
 
                 List<Preference> preferenceToDeleteList = (from c in dbLogin.Preferences

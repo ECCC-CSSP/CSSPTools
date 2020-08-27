@@ -798,8 +798,8 @@
   <data name="ServerNotRespondingDoYouHaveInternetConnection" xml:space="preserve">
     <value>Server not responding. Do you have internet connection?</value>
   </data>
-  <data name="CreateGzFileOnlyAvailableWhenRunningOnAzure" xml:space="preserve">
-    <value>CreateGzFile only available when running on Azure</value>
+  <data name="_OnlyAvailableWhenRunningOnAzure" xml:space="preserve">
+    <value>{0} only available when running on Azure</value>
   </data>
   <data name="_OnlyAvailableWhenRunningOnLocal" xml:space="preserve">
     <value>{0} only available when running on Local</value>
@@ -809,5 +809,8 @@
   </data>
   <data name="CSSPDBSearchAlreadyFilled" xml:space="preserve">
     <value>CSSPDBSearch already filled</value>
+  </data>
+  <data name="CouldNotReadAzureStoreFrom_" xml:space="preserve">
+    <value>Could not read AzureStore from {0}</value>
   </data>
 </root>

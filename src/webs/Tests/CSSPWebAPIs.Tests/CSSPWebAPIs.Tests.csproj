@@ -35,7 +35,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\Helpers\" />
+    <Folder Include="Controllers\EmptyController\" />
+    <Folder Include="Controllers\TVTypeUserAuthorizationController\" />
+    <Folder Include="Controllers\TVItemUserAuthorizationController\" />
+    <Folder Include="Controllers\TVItemController\" />
+    <Folder Include="Controllers\ReadController\" />
+    <Folder Include="Controllers\TVItemLanguageController\" />
   </ItemGroup>
 
 </Project>

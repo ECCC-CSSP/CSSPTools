@@ -45,7 +45,6 @@ namespace CSSPServices
         #region Functions public
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            string retStr = "";
             LabSheetAndA1Sheet labSheetAndA1Sheet = validationContext.ObjectInstance as LabSheetAndA1Sheet;
 
                 //CSSPError: Type not implemented [LabSheet] of type [LabSheet]
@@ -54,12 +53,11 @@ namespace CSSPServices
                 //CSSPError: Type not implemented [LabSheetA1Sheet] of type [LabSheetA1Sheet]
 
                 //CSSPError: Type not implemented [LabSheetA1Sheet] of type [LabSheetA1Sheet]
-            retStr = ""; // added to stop compiling CSSPError
-            if (retStr != "") // will never be true
+            bool a = false;
+            if (a)
             {
-                yield return new ValidationResult("AAA", new[] { "AAA" });
+                yield return new ValidationResult("");
             }
-
         }
         #endregion Functions public
 

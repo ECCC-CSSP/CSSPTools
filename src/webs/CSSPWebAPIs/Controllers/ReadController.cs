@@ -75,7 +75,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            if (LoggedInService.RunningOn == "Azure")
+            if (LoggedInService.RunningOn != RunningOnEnum.Local)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebArea")));
             }
@@ -90,7 +90,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            if (LoggedInService.RunningOn == "Azure")
+            if (LoggedInService.RunningOn != RunningOnEnum.Local)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebClimateDataValue")));
             }
@@ -105,7 +105,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            if (LoggedInService.RunningOn == "Azure")
+            if (LoggedInService.RunningOn != RunningOnEnum.Local)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebClimateSite")));
             }
@@ -120,7 +120,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            if (LoggedInService.RunningOn == "Azure")
+            if (LoggedInService.RunningOn != RunningOnEnum.Local)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebContact")));
             }
@@ -135,7 +135,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            if (LoggedInService.RunningOn == "Azure")
+            if (LoggedInService.RunningOn != RunningOnEnum.Local)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebCountry")));
             }
@@ -150,7 +150,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            if (LoggedInService.RunningOn == "Azure")
+            if (LoggedInService.RunningOn != RunningOnEnum.Local)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebDrogueRun")));
             }
@@ -165,7 +165,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            if (LoggedInService.RunningOn == "Azure")
+            if (LoggedInService.RunningOn != RunningOnEnum.Local)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebHelpDoc")));
             }
@@ -180,7 +180,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            if (LoggedInService.RunningOn == "Azure")
+            if (LoggedInService.RunningOn != RunningOnEnum.Local)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebHydrometricDataValue")));
             }
@@ -195,7 +195,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            if (LoggedInService.RunningOn == "Azure")
+            if (LoggedInService.RunningOn != RunningOnEnum.Local)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebHydrometricSite")));
             }
@@ -210,7 +210,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            if (LoggedInService.RunningOn == "Azure")
+            if (LoggedInService.RunningOn != RunningOnEnum.Local)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebMikeScenario")));
             }
@@ -225,7 +225,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            if (LoggedInService.RunningOn == "Azure")
+            if (LoggedInService.RunningOn != RunningOnEnum.Local)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebMunicipalities")));
             }
@@ -240,7 +240,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            if (LoggedInService.RunningOn == "Azure")
+            if (LoggedInService.RunningOn != RunningOnEnum.Local)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebMunicipality")));
             }
@@ -255,7 +255,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            if (LoggedInService.RunningOn == "Azure")
+            if (LoggedInService.RunningOn != RunningOnEnum.Local)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebMWQMLookupMPN")));
             }
@@ -270,7 +270,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            if (LoggedInService.RunningOn == "Azure")
+            if (LoggedInService.RunningOn != RunningOnEnum.Local)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebMWQMRun")));
             }
@@ -285,7 +285,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            if (LoggedInService.RunningOn == "Azure")
+            if (LoggedInService.RunningOn != RunningOnEnum.Local)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebMWQMSample")));
             }
@@ -300,7 +300,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            if (LoggedInService.RunningOn == "Azure")
+            if (LoggedInService.RunningOn != RunningOnEnum.Local)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebMWQMSite")));
             }
@@ -315,7 +315,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            if (LoggedInService.RunningOn == "Azure")
+            if (LoggedInService.RunningOn != RunningOnEnum.Local)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebPolSourceGrouping")));
             }
@@ -330,7 +330,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            if (LoggedInService.RunningOn == "Azure")
+            if (LoggedInService.RunningOn != RunningOnEnum.Local)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebPolSourceSite")));
             }
@@ -345,7 +345,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            if (LoggedInService.RunningOn == "Azure")
+            if (LoggedInService.RunningOn != RunningOnEnum.Local)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebProvince")));
             }
@@ -360,7 +360,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            if (LoggedInService.RunningOn == "Azure")
+            if (LoggedInService.RunningOn != RunningOnEnum.Local)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebReportType")));
             }
@@ -375,7 +375,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            if (LoggedInService.RunningOn == "Azure")
+            if (LoggedInService.RunningOn != RunningOnEnum.Local)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebRoot")));
             }
@@ -390,7 +390,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            if (LoggedInService.RunningOn == "Azure")
+            if (LoggedInService.RunningOn != RunningOnEnum.Local)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebSamplingPlan")));
             }
@@ -405,7 +405,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            if (LoggedInService.RunningOn == "Azure")
+            if (LoggedInService.RunningOn != RunningOnEnum.Local)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebSector")));
             }
@@ -420,7 +420,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            if (LoggedInService.RunningOn == "Azure")
+            if (LoggedInService.RunningOn != RunningOnEnum.Local)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebSubsector")));
             }
@@ -435,7 +435,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            if (LoggedInService.RunningOn == "Azure")
+            if (LoggedInService.RunningOn != RunningOnEnum.Local)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebTideLocation")));
             }
@@ -450,7 +450,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            if (LoggedInService.RunningOn == "Azure")
+            if (LoggedInService.RunningOn != RunningOnEnum.Local)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebTVItem")));
             }

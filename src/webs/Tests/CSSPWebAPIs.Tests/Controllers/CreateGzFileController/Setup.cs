@@ -15,6 +15,10 @@ using System.IO;
 using System.Threading.Tasks;
 using Xunit;
 using CSSPWebAPIs.Controllers;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text.Json;
+using System.Text;
 
 namespace CreateGzFileControllers.Tests
 {
@@ -34,7 +38,10 @@ namespace CreateGzFileControllers.Tests
         private ICSSPCultureService CSSPCultureService { get; set; }
         private ICreateGzFileService CreateGzFileService { get; set; }
         private Contact contact { get; set; }
+        private string LoginEmail { get; set; }
+        private string Password { get; set; }
         private string CSSPAzureUrl { get; set; }
+        private LoginModel loginModel { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,7 +54,37 @@ namespace CreateGzFileControllers.Tests
         #endregion Functions public
 
         #region Functions private
-        protected async Task<bool> Setup(string culture)
+        private void LoginTest()
+        {
+            LoginEmail = Configuration.GetValue<string>("LoginEmail");
+            Assert.NotNull(LoginEmail);
+
+            Password = Password = Configuration.GetValue<string>("Password");
+            Assert.NotNull(Password);
+
+            loginModel = new LoginModel()
+            {
+                LoginEmail = LoginEmail,
+                Password = Password
+            };
+
+            CSSPAzureUrl = Configuration.GetValue<string>("CSSPAzureUrl");
+            Assert.NotNull(LoginEmail);
+
+            using (HttpClient httpClient = new HttpClient())
+            {
+                var contentType = new MediaTypeWithQualityHeaderValue("application/json");
+                httpClient.DefaultRequestHeaders.Accept.Add(contentType);
+
+                string stringData = JsonSerializer.Serialize(loginModel);
+                var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = httpClient.PostAsync($"{ CSSPAzureUrl }api/en-CA/auth/token", contentData).Result;
+                Assert.True((int)response.StatusCode == 200);
+
+                contact = JsonSerializer.Deserialize<Contact>(response.Content.ReadAsStringAsync().Result);
+            }
+        }
+        private async Task<bool> Setup(string culture)
         {
             Configuration = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
@@ -107,31 +144,6 @@ namespace CreateGzFileControllers.Tests
             Assert.NotNull(CSSPCultureService);
 
             CSSPCultureService.SetCulture(culture);
-
-            ContactService = Provider.GetService<IContactService>();
-            Assert.NotNull(ContactService);
-
-            string LoginEmail = Configuration.GetValue<string>("LoginEmail");
-            Assert.NotNull(LoginEmail);
-
-            string Password = Password = Configuration.GetValue<string>("Password");
-            Assert.NotNull(Password);
-
-            LoginModel loginModel = new LoginModel()
-            {
-                LoginEmail = LoginEmail,
-                Password = Password
-            };
-
-            var actionUserModel = await ContactService.Login(loginModel);
-            Assert.NotNull(actionUserModel.Value);
-            contact = actionUserModel.Value;
-
-            LoggedInService = Provider.GetService<ILoggedInService>();
-            Assert.NotNull(LoggedInService);
-
-            await LoggedInService.SetLoggedInContactInfo(contact.Id);
-            Assert.NotNull(LoggedInService.LoggedInContactInfo);
 
             CreateGzFileService = Provider.GetService<ICreateGzFileService>();
             Assert.NotNull(CreateGzFileService);

@@ -70,12 +70,11 @@ namespace CSSPServices
                 //CSSPError: Type not implemented [FlowTo] of type [TVItemInfrastructureTypeTVItemLink]
 
                 //CSSPError: Type not implemented [FlowTo] of type [TVItemInfrastructureTypeTVItemLink]
-            retStr = ""; // added to stop compiling CSSPError
-            if (retStr != "") // will never be true
+            bool a = false;
+            if (a)
             {
-                yield return new ValidationResult("AAA", new[] { "AAA" });
+                yield return new ValidationResult("");
             }
-
         }
         #endregion Functions public
 

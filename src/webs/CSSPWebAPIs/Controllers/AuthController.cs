@@ -19,6 +19,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Configuration;
+using CSSPEnums;
+using CSSPCultureServices.Resources;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -31,13 +34,17 @@ namespace CSSPWebAPIs.Controllers
         #endregion Variables
 
         #region Properties
+        private IConfiguration Configuration { get; }
+        private ILoggedInService LoggedInService { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private IContactService ContactService { get; }
         #endregion Properties
 
         #region Constructors
-        public AuthController(ICSSPCultureService CSSPCultureService, IContactService ContactService)
+        public AuthController(IConfiguration Configuration, ILoggedInService LoggedInService, ICSSPCultureService CSSPCultureService, IContactService ContactService)
         {
+            this.Configuration = Configuration;
+            this.LoggedInService = LoggedInService;
             this.CSSPCultureService = CSSPCultureService;
             this.ContactService = ContactService;
         }
@@ -50,6 +57,12 @@ namespace CSSPWebAPIs.Controllers
         public async Task<ActionResult<Contact>> Token(LoginModel loginModel)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
+
+            if (LoggedInService.RunningOn != RunningOnEnum.Azure)
+            {
+                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnAzure, "Token")));
+            }
+
             return await ContactService.Login(loginModel);
         }
         [Route("azurestore")]
@@ -57,18 +70,30 @@ namespace CSSPWebAPIs.Controllers
         public async Task<ActionResult<string>> AzureStore()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            if (LoggedInService.RunningOn != RunningOnEnum.Azure)
+            {
+                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnAzure, "AzureStore")));
+            }
+
             return await ContactService.AzureStore();
         }
-        //[Route("Register")]
-        //[HttpPost]
-        //public async Task<ActionResult<bool>> Register(RegisterModel registerModel)
-        //{
-        //    //Thread.Sleep(1000);
+        [Route("Register")]
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<ActionResult<bool>> Register(RegisterModel registerModel)
+        {
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
 
-        //    await userService.SetCulture(new CultureInfo(Request.RouteValues["culture"].ToString()));
+            if (LoggedInService.RunningOn != RunningOnEnum.Azure)
+            {
+                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnAzure, "Register")));
+            }
 
-        //    return await userService.Register(registerModel);
-        //}
+            return await Task.FromResult(true);
+            //return await ContactService.Register(registerModel);
+        }
         #endregion Functions public
 
         #region Functions private

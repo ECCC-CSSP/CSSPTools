@@ -45,7 +45,6 @@ namespace CSSPServices
         #region Functions public
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            string retStr = "";
             AppTaskParameter appTaskParameter = validationContext.ObjectInstance as AppTaskParameter;
 
             if (string.IsNullOrWhiteSpace(appTaskParameter.Name))
@@ -68,12 +67,11 @@ namespace CSSPServices
                 yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Value", "255"), new[] { nameof(appTaskParameter.Value) });
             }
 
-            retStr = ""; // added to stop compiling CSSPError
-            if (retStr != "") // will never be true
+            bool a = false;
+            if (a)
             {
-                yield return new ValidationResult("AAA", new[] { "AAA" });
+                yield return new ValidationResult("");
             }
-
         }
         #endregion Functions public
 

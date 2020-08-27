@@ -168,7 +168,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                     {
                         sb.AppendLine($@"       Task<ActionResult<{ dllTypeInfoModels.Type.Name }>> Login(LoginModel loginModel);");
                         sb.AppendLine($@"       Task<ActionResult<string>> AzureStore();");
-                        sb.AppendLine($@"       Task<ActionResult<{ dllTypeInfoModels.Type.Name }>> Register(RegisterModel registerModel);");
+                        sb.AppendLine($@"       Task<ActionResult<bool>> Register(RegisterModel registerModel);");
                     }
                     sb.AppendLine(@"    }");
                     #endregion Interface

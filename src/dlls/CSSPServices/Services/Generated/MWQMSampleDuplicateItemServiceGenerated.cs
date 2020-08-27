@@ -45,7 +45,6 @@ namespace CSSPServices
         #region Functions public
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            string retStr = "";
             MWQMSampleDuplicateItem mwqmSampleDuplicateItem = validationContext.ObjectInstance as MWQMSampleDuplicateItem;
 
             if (string.IsNullOrWhiteSpace(mwqmSampleDuplicateItem.ParentSite))
@@ -68,12 +67,11 @@ namespace CSSPServices
                 yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "DuplicateSite", "1", "200"), new[] { nameof(mwqmSampleDuplicateItem.DuplicateSite) });
             }
 
-            retStr = ""; // added to stop compiling CSSPError
-            if (retStr != "") // will never be true
+            bool a = false;
+            if (a)
             {
-                yield return new ValidationResult("AAA", new[] { "AAA" });
+                yield return new ValidationResult("");
             }
-
         }
         #endregion Functions public
 

@@ -45,7 +45,6 @@ namespace CSSPServices
         #region Functions public
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            string retStr = "";
             Vector vector = validationContext.ObjectInstance as Vector;
 
                 //CSSPError: Type not implemented [StartNode] of type [Node]
@@ -54,12 +53,11 @@ namespace CSSPServices
                 //CSSPError: Type not implemented [EndNode] of type [Node]
 
                 //CSSPError: Type not implemented [EndNode] of type [Node]
-            retStr = ""; // added to stop compiling CSSPError
-            if (retStr != "") // will never be true
+            bool a = false;
+            if (a)
             {
-                yield return new ValidationResult("AAA", new[] { "AAA" });
+                yield return new ValidationResult("");
             }
-
         }
         #endregion Functions public
 

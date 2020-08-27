@@ -349,6 +349,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} only available when running on Azure.
+        /// </summary>
+        public static string _OnlyAvailableWhenRunningOnAzure {
+            get {
+                return ResourceManager.GetString("_OnlyAvailableWhenRunningOnAzure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} only available when running on Local.
         /// </summary>
         public static string _OnlyAvailableWhenRunningOnLocal {
@@ -835,6 +844,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not read AzureStore from {0}.
+        /// </summary>
+        public static string CouldNotReadAzureStoreFrom_ {
+            get {
+                return ResourceManager.GetString("CouldNotReadAzureStoreFrom_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not read file [{0}].
         /// </summary>
         public static string CouldNotReadFile_ {
@@ -894,15 +912,6 @@ namespace CSSPCultureServices.Resources {
         public static string CreatedNew_ {
             get {
                 return ResourceManager.GetString("CreatedNew_", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to CreateGzFile only available when running on Azure.
-        /// </summary>
-        public static string CreateGzFileOnlyAvailableWhenRunningOnAzure {
-            get {
-                return ResourceManager.GetString("CreateGzFileOnlyAvailableWhenRunningOnAzure", resourceCulture);
             }
         }
         

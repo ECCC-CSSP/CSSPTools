@@ -20,8 +20,8 @@ namespace CSSPServices
 {
     public partial interface ICSSPDBSearchService
     {
-        Task<ActionResult<List<TVItemLanguage>>> Search(int TVItemID, string SearchTerm);
         Task<ActionResult<bool>> FillCSSDBSearch();
+        Task<ActionResult<List<TVItemLanguage>>> Search(int TVItemID, string SearchTerm);
         Task<ActionResult<bool>> UpdateCSSDBSearch(DateTime fromDate);
     }
     public partial class CSSPDBSearchService : ControllerBase, ICSSPDBSearchService
@@ -54,53 +54,78 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<bool>> FillCSSDBSearch()
         {
+            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            if (LoggedInService.RunningOn != RunningOnEnum.Local)
+            {
+                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "FillCSSPDBSearch")));
+            }
+
             WebTVItem webTVItem = null;
 
             TVItem tvItem = await (from c in dbSearch.TVItems
                                    select c).FirstOrDefaultAsync();
 
-            if (tvItem != null)
+            if (tvItem == null)
             {
-                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CSSPDBSearchAlreadyFilled)));
-            }
+                try
+                {
+                    var actionWebTVItem = await ReadGzFileService.ReadJSON<WebTVItem>(WebTypeEnum.WebTVItem, 0, WebTypeYearEnum.Year1980);
+                    if (((ObjectResult)actionWebTVItem.Result).StatusCode == 200)
+                    {
+                        webTVItem = (WebTVItem)((OkObjectResult)actionWebTVItem.Result).Value;
+                    }
+                    else
+                    {
+                        return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotUpdateCSSPDBSearchWithTVItemsAndTVItemLanguages)));
+                    }
 
-            var actionWebTVItem = await ReadGzFileService.ReadJSON<WebTVItem>(WebTypeEnum.WebTVItem, 0, WebTypeYearEnum.Year1980);
-            if (((ObjectResult)actionWebTVItem.Result).StatusCode == 200)
-            {
-                webTVItem = (WebTVItem)((OkObjectResult)actionWebTVItem.Result).Value;
-            }
-            else
-            {
-                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotUpdateCSSPDBSearchWithTVItemsAndTVItemLanguages)));
-            }
+                    await dbSearch.TVItems.AddRangeAsync(webTVItem.TVItemList);
 
-            await dbSearch.TVItems.AddRangeAsync(webTVItem.TVItemList);
+                    try
+                    {
+                        await dbSearch.SaveChangesAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "WebTVItem.TVItems", ex.Message)));
+                    }
 
-            try
-            {
-                await dbSearch.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "WebTVItem.TVItems", ex.Message)));
-            }
+                    await dbSearch.TVItemLanguages.AddRangeAsync(webTVItem.TVItemLanguageList);
 
-            await dbSearch.TVItemLanguages.AddRangeAsync(webTVItem.TVItemLanguageList);
+                    try
+                    {
+                        await dbSearch.SaveChangesAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "WebTVItem.TVItemLanguages", ex.Message)));
+                    }
 
-            try
-            {
-                await dbSearch.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "WebTVItem.TVItemLanguages", ex.Message)));
+                }
+                catch (Exception ex)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.UnmanagedServerError_, ex.Message)));
+                }
             }
 
             return await Task.FromResult(Ok(true));
         }
-
         public async Task<ActionResult<List<TVItemLanguage>>> Search(int TVItemID, string SearchTerm)
         {
+            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            if (LoggedInService.RunningOn != RunningOnEnum.Local)
+            {
+                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Search")));
+            }
+
             LanguageEnum LanguageRequest = LanguageEnum.en;
             if (CSSPCultureServicesRes.Culture.TwoLetterISOLanguageName == "fr")
             {
@@ -142,6 +167,16 @@ namespace CSSPServices
         }
         public async Task<ActionResult<bool>> UpdateCSSDBSearch(DateTime fromDate)
         {
+            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            if (LoggedInService.RunningOn != RunningOnEnum.Local)
+            {
+                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "UpdateCSSPDBSearch")));
+            }
+
             TVItem tvItem = await (from c in dbSearch.TVItems
                                    select c).FirstOrDefaultAsync();
 
@@ -184,7 +219,10 @@ namespace CSSPServices
                 }
                 else
                 {
-                    dbSearch.Update(TVItem2);
+                    if (TVItem2 != tvItemChanged)
+                    {
+                        dbSearch.Update(TVItem2);
+                    }
                 }
             }
 

@@ -45,7 +45,6 @@ namespace CSSPServices
         #region Functions public
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            string retStr = "";
             OtherFilesToUpload otherFilesToUpload = validationContext.ObjectInstance as OtherFilesToUpload;
 
             if (otherFilesToUpload.MikeScenarioID < 1)
@@ -56,12 +55,11 @@ namespace CSSPServices
                 //CSSPError: Type not implemented [TVFileList] of type [List`1]
 
                 //CSSPError: Type not implemented [TVFileList] of type [TVFile]
-            retStr = ""; // added to stop compiling CSSPError
-            if (retStr != "") // will never be true
+            bool a = false;
+            if (a)
             {
-                yield return new ValidationResult("AAA", new[] { "AAA" });
+                yield return new ValidationResult("");
             }
-
         }
         #endregion Functions public
 
