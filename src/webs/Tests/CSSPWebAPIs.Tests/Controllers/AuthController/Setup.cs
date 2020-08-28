@@ -36,6 +36,7 @@ namespace AuthController.Tests
         private IContactService ContactService { get; set; }
         private ILoggedInService LoggedInService { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
+        private ITVItemService TVItemService { get; set; }
         private Contact contact { get; set; }
         private IReadController ReadController { get; set; }
         private RunningOnEnum RunningOn { get; set; }
@@ -75,17 +76,17 @@ namespace AuthController.Tests
             string CSSPDBFilesManagementFileName = Configuration.GetValue<string>("CSSPDBFilesManagement");
             Assert.NotNull(CSSPDBFilesManagementFileName);
 
-            string TestDB = Configuration.GetValue<string>("CSSPDB2");
-            Assert.NotNull(TestDB);
+            string DBConnString = Configuration.GetValue<string>("AzureCSSPDB");
+            Assert.NotNull(DBConnString);
 
             Services.AddDbContext<CSSPDBContext>(options =>
             {
-                options.UseSqlServer(TestDB);
+                options.UseSqlServer(DBConnString);
             });
 
             Services.AddDbContext<CSSPDBInMemoryContext>(options =>
             {
-                options.UseInMemoryDatabase(TestDB);
+                options.UseInMemoryDatabase(DBConnString);
             });
 
             FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocalFileName);
@@ -113,7 +114,7 @@ namespace AuthController.Tests
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(TestDB));
+                options.UseSqlServer(DBConnString));
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
@@ -122,6 +123,9 @@ namespace AuthController.Tests
             Services.AddSingleton<ILoginModelService, LoginModelService>();
             Services.AddSingleton<IRegisterModelService, RegisterModelService>();
             Services.AddSingleton<IContactService, ContactService>();
+            Services.AddSingleton<ICreateGzFileService, CreateGzFileService>();
+            Services.AddSingleton<IContactService, ContactService>();
+            Services.AddSingleton<ITVItemService, TVItemService>();
 
             Provider = Services.BuildServiceProvider();
             Assert.NotNull(Provider);
@@ -130,6 +134,18 @@ namespace AuthController.Tests
             Assert.NotNull(CSSPCultureService);
 
             CSSPCultureService.SetCulture(culture);
+
+            ContactService = Provider.GetService<IContactService>();
+            Assert.NotNull(ContactService);
+
+            AspNetUserService = Provider.GetService<IAspNetUserService>();
+            Assert.NotNull(AspNetUserService);
+
+            TVItemService = Provider.GetService<ITVItemService>();
+            Assert.NotNull(TVItemService);
+
+            LoggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(LoggedInService);
 
             return await Task.FromResult(true);
         }

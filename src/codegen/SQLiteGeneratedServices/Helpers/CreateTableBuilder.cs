@@ -93,6 +93,7 @@ namespace SQLiteGeneratedServices.Services
                         string Unique = "";
                         string NotNull = "";
                         string FieldType = "";
+                        string CollateNoCase = "";
 
                         if (csspProp.IsKey)
                         {
@@ -125,6 +126,7 @@ namespace SQLiteGeneratedServices.Services
                             case "String":
                                 {
                                     FieldType = "TEXT";
+                                    //CollateNoCase = "COLLATE NOCASE";
                                 }
                                 break;
                             case "Byte[]":
@@ -146,7 +148,7 @@ namespace SQLiteGeneratedServices.Services
                                 break;
                         }
 
-                        TempStr = $@"                    ""{ csspProp.PropName } { FieldType } { NotNull } { Unique }, "" +";
+                        TempStr = $@"                    ""{ csspProp.PropName } { FieldType } { NotNull } { Unique } { CollateNoCase }, "" +";
 
                         if (csspProp.HasCSSPForeignKeyAttribute)
                         {

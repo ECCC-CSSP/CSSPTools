@@ -35,7 +35,7 @@ namespace CSSPServices
        Task<ActionResult<Contact>> Put(Contact contact);
        Task<ActionResult<Contact>> Login(LoginModel loginModel);
        Task<ActionResult<string>> AzureStore();
-       Task<ActionResult<bool>> Register(RegisterModel registerModel);
+       Task<ActionResult<Contact>> Register(RegisterModel registerModel);
     }
     public partial class ContactService : ControllerBase, IContactService
     {
@@ -52,6 +52,7 @@ namespace CSSPServices
         private IAspNetUserService AspNetUserService { get; }
         private ILoginModelService LoginModelService { get; }
         private IRegisterModelService RegisterModelService { get; }
+        private ICreateGzFileService CreateGzFileService { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -62,7 +63,8 @@ namespace CSSPServices
         public ContactService(IConfiguration Configuration, UserManager<ApplicationUser> UserManager, 
            ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IEnums enums, 
            IAspNetUserService AspNetUserService, ILoginModelService LoginModelService, 
-           IRegisterModelService RegisterModelService, CSSPDBContext db, CSSPDBLocalContext dbLocal = null, 
+           IRegisterModelService RegisterModelService, ICreateGzFileService CreateGzFileService, 
+           CSSPDBContext db, CSSPDBLocalContext dbLocal = null, 
            CSSPDBInMemoryContext dbIM = null, CSSPDBLoginContext dbLogin = null)
         {
             this.Configuration = Configuration;
@@ -70,6 +72,7 @@ namespace CSSPServices
             this.AspNetUserService = AspNetUserService;
             this.LoginModelService = LoginModelService;
             this.RegisterModelService = RegisterModelService;
+            this.CreateGzFileService = CreateGzFileService;
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
@@ -432,13 +435,13 @@ namespace CSSPServices
 
                 if (appUser == null)
                 {
-                    return BadRequest(String.Format(CSSPCultureServicesRes.__CouldNotBeFound, CSSPCultureServicesRes.Email, loginModel.LoginEmail));
+                    return await Task.FromResult(BadRequest(String.Format(CSSPCultureServicesRes.__CouldNotBeFound, CSSPCultureServicesRes.Email, loginModel.LoginEmail)));
                 }
 
                 bool HasPassword = await UserManager.CheckPasswordAsync(appUser, loginModel.Password);
                 if (!HasPassword)
                 {
-                    return BadRequest(String.Format(CSSPCultureServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail));
+                    return await Task.FromResult(BadRequest(String.Format(CSSPCultureServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail)));
                 }
 
                 if (HasPassword == true)
@@ -446,14 +449,14 @@ namespace CSSPServices
                     var actionContact = await GetContactWithId(appUser.Id);
                     if (((ObjectResult)actionContact.Result).StatusCode != 200)
                     {
-                        return BadRequest(String.Format(CSSPCultureServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail));
+                        return await Task.FromResult(BadRequest(String.Format(CSSPCultureServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail)));
                     }
 
                     Contact contact = (Contact)((OkObjectResult)actionContact.Result).Value;
 
                     if (contact == null)
                     {
-                        return BadRequest(String.Format(CSSPCultureServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail));
+                        return await Task.FromResult(BadRequest(String.Format(CSSPCultureServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail)));
                     }
 
                     byte[] key = Encoding.ASCII.GetBytes(Configuration.GetValue<string>("APISecret"));
@@ -463,7 +466,7 @@ namespace CSSPServices
                     {
                         Subject = new ClaimsIdentity(new Claim[]
                         {
-                        new Claim(ClaimTypes.Name, contact.Id.ToString())
+                            new Claim(ClaimTypes.Name, contact.Id.ToString())
                         }),
                         Expires = DateTime.UtcNow.AddDays(2),
                         SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -471,22 +474,22 @@ namespace CSSPServices
                     SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
                     contact.Token = tokenHandler.WriteToken(token);
 
-                    return contact;
+                    return await Task.FromResult(Ok(contact));
                 }
             }
             catch (Exception ex)
             {
-                return BadRequest(String.Format(CSSPCultureServicesRes.Error_, ex.Message));
+                return await Task.FromResult(BadRequest(String.Format(CSSPCultureServicesRes.Error_, ex.Message)));
             }
 
-            return BadRequest(String.Format(CSSPCultureServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail));
+            return await Task.FromResult(BadRequest(String.Format(CSSPCultureServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail)));
         }
         public async Task<ActionResult<string>> AzureStore()
         {
-            string sto = Configuration.GetValue<string>("AzureCSSPStorageConnectionString");
+            string sto = Configuration.GetValue<string>("AzureStoreConnectionString");
             if (string.IsNullOrWhiteSpace(sto))
             {
-                return await Task.FromResult(BadRequest(String.Format(CSSPCultureServicesRes.__CouldNotBeFound, "Configuration", "AzureCSSPStorageConnectionString")));
+                return await Task.FromResult(BadRequest(String.Format(CSSPCultureServicesRes.__CouldNotBeFound, "Configuration", "AzureStoreConnectionString")));
             }
 
             return await Task.FromResult(Ok(sto));

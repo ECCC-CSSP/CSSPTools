@@ -807,4 +807,10 @@
   <data name="CouldNotReadAzureStoreFrom_" xml:space="preserve">
     <value>Dans l'impossibilité de lire AzureStore de {0}</value>
   </data>
+  <data name="CouldNotUpdate_Error_" xml:space="preserve">
+    <value>Dans l'impossibilité de changer {0}. Erreur: {1}</value>
+  </data>
+  <data name="CouldNotLogin" xml:space="preserve">
+    <value>Dans l'impossibilité de connecter</value>
+  </data>
 </root>

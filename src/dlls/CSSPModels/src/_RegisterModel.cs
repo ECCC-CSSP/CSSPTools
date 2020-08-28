@@ -36,6 +36,9 @@ namespace CSSPModels
         [CSSPMaxLength(50)]
         [CSSPMinLength(5)]
         public string ConfirmPassword { get; set; }
+        [CSSPAllowNull]
+        [CSSPEnumType]
+        public ContactTitleEnum? ContactTitle { get; set; }
         #endregion Properties not in DB
 
         #region Constructors

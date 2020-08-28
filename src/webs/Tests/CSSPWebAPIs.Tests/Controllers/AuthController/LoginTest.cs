@@ -28,7 +28,7 @@ namespace AuthController.Tests
             LoginEmail = Configuration.GetValue<string>("LoginEmail");
             Assert.NotNull(LoginEmail);
 
-            Password = Password = Configuration.GetValue<string>("Password");
+            Password =  Configuration.GetValue<string>("Password");
             Assert.NotNull(Password);
 
             LoginModel loginModelGood = new LoginModel()

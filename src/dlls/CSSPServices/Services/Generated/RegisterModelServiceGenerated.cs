@@ -45,6 +45,7 @@ namespace CSSPServices
         #region Functions public
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
+            string retStr = "";
             RegisterModel registerModel = validationContext.ObjectInstance as RegisterModel;
 
             if (string.IsNullOrWhiteSpace(registerModel.FirstName))
@@ -100,6 +101,15 @@ namespace CSSPServices
             if (!string.IsNullOrWhiteSpace(registerModel.ConfirmPassword) && (registerModel.ConfirmPassword.Length < 5 || registerModel.ConfirmPassword.Length > 50))
             {
                 yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "ConfirmPassword", "5", "50"), new[] { nameof(registerModel.ConfirmPassword) });
+            }
+
+            if (registerModel.ContactTitle != null)
+            {
+                retStr = enums.EnumTypeOK(typeof(ContactTitleEnum), (int?)registerModel.ContactTitle);
+                if (registerModel.ContactTitle == null || !string.IsNullOrWhiteSpace(retStr))
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ContactTitle"), new[] { nameof(registerModel.ContactTitle) });
+                }
             }
 
             bool a = false;

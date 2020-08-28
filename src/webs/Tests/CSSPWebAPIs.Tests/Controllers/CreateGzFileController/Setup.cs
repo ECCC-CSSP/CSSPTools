@@ -100,33 +100,33 @@ namespace CreateGzFileControllers.Tests
             string CSSPDBLocalFileName = Configuration.GetValue<string>("CSSPDBLocal");
             Assert.NotNull(CSSPDBLocalFileName);
 
-            string TestDB = Configuration.GetValue<string>("CSSPDB2");
-            Assert.NotNull(TestDB);
+            string DBConnStr = Configuration.GetValue<string>("CSSPDB2");
+            Assert.NotNull(DBConnStr);
 
             Services.AddSingleton<IConfiguration>(Configuration);
 
             Services.AddDbContext<CSSPDBContext>(options =>
             {
-                options.UseSqlServer(TestDB);
+                options.UseSqlServer(DBConnStr);
             });
 
             Services.AddDbContext<CSSPDBInMemoryContext>(options =>
             {
-                options.UseInMemoryDatabase(TestDB);
+                options.UseInMemoryDatabase(DBConnStr);
             });
 
-            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName);
+            FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocalFileName);
 
             Services.AddDbContext<CSSPDBLocalContext>(options =>
             {
-                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
+                options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
             });
 
             Services.AddIdentityCore<ApplicationUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(TestDB));
+                options.UseSqlServer(DBConnStr));
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();

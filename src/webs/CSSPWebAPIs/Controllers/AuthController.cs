@@ -41,7 +41,8 @@ namespace CSSPWebAPIs.Controllers
         #endregion Properties
 
         #region Constructors
-        public AuthController(IConfiguration Configuration, ILoggedInService LoggedInService, ICSSPCultureService CSSPCultureService, IContactService ContactService)
+        public AuthController(IConfiguration Configuration, ILoggedInService LoggedInService, ICSSPCultureService CSSPCultureService, 
+            IContactService ContactService)
         {
             this.Configuration = Configuration;
             this.LoggedInService = LoggedInService;
@@ -82,7 +83,7 @@ namespace CSSPWebAPIs.Controllers
         [Route("Register")]
         [HttpPost]
         [AllowAnonymous]
-        public async Task<ActionResult<bool>> Register(RegisterModel registerModel)
+        public async Task<ActionResult<Contact>> Register(RegisterModel registerModel)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
 
@@ -91,8 +92,7 @@ namespace CSSPWebAPIs.Controllers
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnAzure, "Register")));
             }
 
-            return await Task.FromResult(true);
-            //return await ContactService.Register(registerModel);
+            return await ContactService.Register(registerModel);
         }
         #endregion Functions public
 

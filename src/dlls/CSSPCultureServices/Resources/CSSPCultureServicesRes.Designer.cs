@@ -835,6 +835,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not login.
+        /// </summary>
+        public static string CouldNotLogin {
+            get {
+                return ResourceManager.GetString("CouldNotLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not read appsettings.json parameter {0}. Should be somthing like [{1}].
         /// </summary>
         public static string CouldNotReadAppSettingsParameter_ShouldBeSomthingLike_ {
@@ -867,6 +876,15 @@ namespace CSSPCultureServices.Resources {
         public static string CouldNotReFillDB {
             get {
                 return ResourceManager.GetString("CouldNotReFillDB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not update {0}. Error: {1}.
+        /// </summary>
+        public static string CouldNotUpdate_Error_ {
+            get {
+                return ResourceManager.GetString("CouldNotUpdate_Error_", resourceCulture);
             }
         }
         

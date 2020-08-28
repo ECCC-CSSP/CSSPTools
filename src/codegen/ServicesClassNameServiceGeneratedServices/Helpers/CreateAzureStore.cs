@@ -11,10 +11,10 @@ namespace ServicesClassNameServiceGeneratedServices.Services
         {
             sb.AppendLine(@"        public async Task<ActionResult<string>> AzureStore()");
             sb.AppendLine(@"        {");
-            sb.AppendLine(@"            string sto = Configuration.GetValue<string>(""AzureCSSPStorageConnectionString"");");
+            sb.AppendLine(@"            string sto = Configuration.GetValue<string>(""AzureStoreConnectionString"");");
             sb.AppendLine(@"            if (string.IsNullOrWhiteSpace(sto))");
             sb.AppendLine(@"            {");
-            sb.AppendLine(@"                return await Task.FromResult(BadRequest(String.Format(CSSPCultureServicesRes.__CouldNotBeFound, ""Configuration"", ""AzureCSSPStorageConnectionString"")));");
+            sb.AppendLine(@"                return await Task.FromResult(BadRequest(String.Format(CSSPCultureServicesRes.__CouldNotBeFound, ""Configuration"", ""AzureStoreConnectionString"")));");
             sb.AppendLine(@"            }");
             sb.AppendLine(@"");
             sb.AppendLine(@"            return await Task.FromResult(Ok(sto));");

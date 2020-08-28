@@ -166,9 +166,9 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                     sb.AppendLine($@"       Task<ActionResult<{ dllTypeInfoModels.Type.Name }>> Put({ dllTypeInfoModels.Type.Name } { dllTypeInfoModels.Type.Name.ToLower() });");
                     if (dllTypeInfoModels.Type.Name == "Contact")
                     {
-                        sb.AppendLine($@"       Task<ActionResult<{ dllTypeInfoModels.Type.Name }>> Login(LoginModel loginModel);");
+                        sb.AppendLine($@"       Task<ActionResult<Contact>> Login(LoginModel loginModel);");
                         sb.AppendLine($@"       Task<ActionResult<string>> AzureStore();");
-                        sb.AppendLine($@"       Task<ActionResult<bool>> Register(RegisterModel registerModel);");
+                        sb.AppendLine($@"       Task<ActionResult<Contact>> Register(RegisterModel registerModel);");
                     }
                     sb.AppendLine(@"    }");
                     #endregion Interface
@@ -196,7 +196,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                         sb.AppendLine(@"        private IAspNetUserService AspNetUserService { get; }");
                         sb.AppendLine(@"        private ILoginModelService LoginModelService { get; }");
                         sb.AppendLine(@"        private IRegisterModelService RegisterModelService { get; }");
-
+                        sb.AppendLine(@"        private ICreateGzFileService CreateGzFileService { get; }");
                     }
                     sb.AppendLine(@"        private ICSSPCultureService CSSPCultureService { get; }");
                     sb.AppendLine(@"        private ILoggedInService LoggedInService { get; }");
@@ -218,7 +218,8 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                         sb.AppendLine($@"        public { dllTypeInfoModels.Type.Name }Service(IConfiguration Configuration, UserManager<ApplicationUser> UserManager, ");
                         sb.AppendLine($@"           ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IEnums enums, ");
                         sb.AppendLine($@"           IAspNetUserService AspNetUserService, ILoginModelService LoginModelService, ");
-                        sb.AppendLine($@"           IRegisterModelService RegisterModelService, CSSPDBContext db, CSSPDBLocalContext dbLocal = null, ");
+                        sb.AppendLine($@"           IRegisterModelService RegisterModelService, ICreateGzFileService CreateGzFileService, ");
+                        sb.AppendLine($@"           CSSPDBContext db, CSSPDBLocalContext dbLocal = null, ");
                         sb.AppendLine($@"           CSSPDBInMemoryContext dbIM = null, CSSPDBLoginContext dbLogin = null)");
                     }
                     else
@@ -234,6 +235,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                         sb.AppendLine(@"            this.AspNetUserService = AspNetUserService;");
                         sb.AppendLine(@"            this.LoginModelService = LoginModelService;");
                         sb.AppendLine(@"            this.RegisterModelService = RegisterModelService;");
+                        sb.AppendLine(@"            this.CreateGzFileService = CreateGzFileService;");
                     }
                     sb.AppendLine(@"            this.CSSPCultureService = CSSPCultureService;");
                     sb.AppendLine(@"            this.LoggedInService = LoggedInService;");

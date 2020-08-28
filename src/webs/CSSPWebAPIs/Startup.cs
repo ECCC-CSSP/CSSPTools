@@ -154,6 +154,19 @@ namespace CSSPWebAPIs
                 options.UseSqlite($"Data Source={ fiCSSPDBFilesManagement.FullName }");
             });
 
+            /* ---------------------------------------------------------------------------------
+             * using CSSPDBSearch
+             * ---------------------------------------------------------------------------------      
+             */
+            string CSSPDBSearchFileName = Configuration.GetValue<string>("CSSPDBSearch");
+
+            FileInfo fiCSSPDBSearch = new FileInfo(CSSPDBSearchFileName);
+
+            services.AddDbContext<CSSPDBSearchContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiCSSPDBSearch.FullName }");
+            });
+
             services.AddScoped<ICSSPCultureService, CSSPCultureService>();
             services.AddScoped<IEnums, Enums>();
             services.AddScoped<ILoginModelService, LoginModelService>();
@@ -167,6 +180,7 @@ namespace CSSPWebAPIs
             services.AddScoped<ICSSPFileService, CSSPFileService>();
             services.AddScoped<IDownloadGzFileService, DownloadGzFileService>();
             services.AddScoped<IReadGzFileService, ReadGzFileService>();
+            services.AddScoped<ICSSPDBSearchService, CSSPDBSearchService>();
 
             if (RunningOn == RunningOnEnum.Local)
             {

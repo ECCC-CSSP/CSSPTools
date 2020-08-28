@@ -32,6 +32,9 @@ namespace ContactServices.Tests
         private IServiceProvider ServiceProvider { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
         private IContactService ContactService { get; set; }
+        private IAspNetUserService AspNetUserService { get; set; }
+        private ITVItemService TVItemService { get; set; }
+        private ILoggedInService LoggedInService { get; set; }
         private LoginModel loginModel { get; set; } = new LoginModel();
         #endregion Properties
 
@@ -42,66 +45,6 @@ namespace ContactServices.Tests
         #endregion Constructors
 
         #region Functions public
-        [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task ContactService_Constructors_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            Assert.NotNull(Configuration);
-            Assert.NotNull(ServiceCollection);
-            Assert.NotNull(ContactService);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task ContactService_Login_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            var retValue = await ContactService.Login(loginModel);
-            Assert.IsType<Contact>(retValue.Value);
-            Assert.Null(retValue.Result);
-            Contact contact = retValue.Value;
-            Assert.Equal(2, contact.ContactTVItemID);
-            Assert.Equal("Charles".ToLower(), contact.FirstName.ToLower());
-            Assert.False(string.IsNullOrWhiteSpace(contact.Token));
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task ContactService_Login_Good_Return_EmailCouldNotBeFound_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            loginModel.LoginEmail = "NotFound@email.ca";
-
-            var retValue = await ContactService.Login(loginModel);
-            Assert.Null(retValue.Value);
-            Assert.Equal(400, ((BadRequestObjectResult)retValue.Result).StatusCode);
-            string expected = String.Format(CSSPCultureServicesRes.__CouldNotBeFound, CSSPCultureServicesRes.Email, loginModel.LoginEmail);
-            var value = ((BadRequestObjectResult)retValue.Result).Value;
-            Assert.Equal(expected, value);
-
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task ContactService_Login_Good_Return_Error_UnableToLoginAs_WithProvidedPassword_Test2(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            loginModel.Password = "NotAPassword!";
-
-            var retValue = await ContactService.Login(loginModel);
-            Assert.Null(retValue.Value);
-            Assert.Equal(400, ((BadRequestObjectResult)retValue.Result).StatusCode);
-            string expected = String.Format(CSSPCultureServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail);
-            var value = ((BadRequestObjectResult)retValue.Result).Value;
-            Assert.Equal(expected, value);
-
-        }
         #endregion Functions public
 
         #region Functions private
@@ -110,7 +53,7 @@ namespace ContactServices.Tests
             Configuration = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
                .AddJsonFile("appsettings_csspservicestests.json")
-               .AddUserSecrets("ec761e00-6d1e-461d-8ba9-0247177a97be")
+               .AddUserSecrets("6f27cbbe-6ffb-4154-b49b-d739597c4f60")
                .Build();
 
             Assert.NotNull(Configuration);
@@ -124,10 +67,12 @@ namespace ContactServices.Tests
             ServiceCollection.AddSingleton<IAspNetUserService, AspNetUserService>();
             ServiceCollection.AddSingleton<ILoginModelService, LoginModelService>();
             ServiceCollection.AddSingleton<IRegisterModelService, RegisterModelService>();
+            ServiceCollection.AddSingleton<ICreateGzFileService, CreateGzFileService>();
             ServiceCollection.AddSingleton<IContactService, ContactService>();
+            ServiceCollection.AddSingleton<ITVItemService, TVItemService>();
 
-            string TestDB = Configuration.GetValue<string>("TestDB");
-            Assert.NotNull(TestDB);
+            string DBConnString = Configuration.GetValue<string>("AzureCSSPDB");
+            Assert.NotNull(DBConnString);
 
             loginModel.LoginEmail = Configuration.GetValue<string>("LoginEmail");
             Assert.NotNull(loginModel.LoginEmail);
@@ -136,10 +81,10 @@ namespace ContactServices.Tests
             Assert.NotNull(loginModel.Password);
 
             ServiceCollection.AddDbContext<CSSPDBContext>(options =>
-                    options.UseSqlServer(TestDB));
+                    options.UseSqlServer(DBConnString));
 
             ServiceCollection.AddDbContext<CSSPDBInMemoryContext>(options =>
-                    options.UseInMemoryDatabase(TestDB));
+                    options.UseInMemoryDatabase(DBConnString));
 
             string CSSPDBLocalFileName = Configuration.GetValue<string>("CSSPDBLocal");
 
@@ -163,7 +108,7 @@ namespace ContactServices.Tests
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             ServiceCollection.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(TestDB));
+                options.UseSqlServer(DBConnString));
 
             ServiceProvider = ServiceCollection.BuildServiceProvider();
             Assert.NotNull(ServiceProvider);
@@ -175,6 +120,15 @@ namespace ContactServices.Tests
 
             ContactService = ServiceProvider.GetService<IContactService>();
             Assert.NotNull(ContactService);
+
+            AspNetUserService = ServiceProvider.GetService<IAspNetUserService>();
+            Assert.NotNull(AspNetUserService);
+
+            TVItemService = ServiceProvider.GetService<ITVItemService>();
+            Assert.NotNull(TVItemService);
+
+            LoggedInService = ServiceProvider.GetService<ILoggedInService>();
+            Assert.NotNull(LoggedInService);
 
             return await Task.FromResult(true);
         }

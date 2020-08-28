@@ -44,6 +44,7 @@ namespace CreateGzFileControllers.Tests
         public async Task CreateGzFileController_Constructor_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
             Assert.NotNull(CSSPCultureService);
             Assert.NotNull(ContactService);
             Assert.NotNull(LoggedInService);

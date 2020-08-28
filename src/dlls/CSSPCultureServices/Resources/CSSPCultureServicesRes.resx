@@ -813,4 +813,10 @@
   <data name="CouldNotReadAzureStoreFrom_" xml:space="preserve">
     <value>Could not read AzureStore from {0}</value>
   </data>
+  <data name="CouldNotUpdate_Error_" xml:space="preserve">
+    <value>Could not update {0}. Error: {1}</value>
+  </data>
+  <data name="CouldNotLogin" xml:space="preserve">
+    <value>Could not login</value>
+  </data>
 </root>

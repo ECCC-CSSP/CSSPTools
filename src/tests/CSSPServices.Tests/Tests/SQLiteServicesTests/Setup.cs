@@ -135,6 +135,7 @@ namespace CSSPSQLiteServices.Tests
             Services.AddSingleton<IRegisterModelService, RegisterModelService>();
             Services.AddSingleton<IContactService, ContactService>();
             Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
+            Services.AddSingleton<ICreateGzFileService, CreateGzFileService>();
 
             Provider = Services.BuildServiceProvider();
             Assert.NotNull(Provider);
