@@ -25,7 +25,7 @@ namespace CSSPServices
         {
             string FileName = await BaseGzFileService.GetFileName(webType, TVItemID, webTypeYear);
 
-            if (LoggedInService.LoggedInContactInfo == null || LoggedInService.LoggedInContactInfo.LoggedInContact == null)
+            if (LocalService.contact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }

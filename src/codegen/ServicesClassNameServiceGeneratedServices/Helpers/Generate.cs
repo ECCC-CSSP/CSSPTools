@@ -209,23 +209,23 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                         || dllTypeInfoModels.Type.Name == "TVItemUserAuthorization"
                         || dllTypeInfoModels.Type.Name == "TVTypeUserAuthorization")
                     {
-                        sb.AppendLine($@"        public { dllTypeInfoModels.Type.Name }Service(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, ");
-                        sb.AppendLine($@"           IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal = null, ");
+                        sb.AppendLine($@"        public { dllTypeInfoModels.Type.Name }Service(ICSSPCultureService CSSPCultureService, IEnums enums, ");
+                        sb.AppendLine($@"           ILoggedInService LoggedInService = null, CSSPDBContext db = null, CSSPDBLocalContext dbLocal = null, ");
                         sb.AppendLine($@"           CSSPDBInMemoryContext dbIM = null, CSSPDBLoginContext dbLogin = null)");
                     }
                     else if (dllTypeInfoModels.Type.Name == "Contact")
                     {
-                        sb.AppendLine($@"        public { dllTypeInfoModels.Type.Name }Service(IConfiguration Configuration, UserManager<ApplicationUser> UserManager, ");
-                        sb.AppendLine($@"           ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IEnums enums, ");
+                        sb.AppendLine($@"        public { dllTypeInfoModels.Type.Name }Service(IConfiguration Configuration, ");
+                        sb.AppendLine($@"           ICSSPCultureService CSSPCultureService, IEnums enums, ");
                         sb.AppendLine($@"           IAspNetUserService AspNetUserService, ILoginModelService LoginModelService, ");
-                        sb.AppendLine($@"           IRegisterModelService RegisterModelService, ICreateGzFileService CreateGzFileService, ");
-                        sb.AppendLine($@"           CSSPDBContext db, CSSPDBLocalContext dbLocal = null, ");
+                        sb.AppendLine($@"           IRegisterModelService RegisterModelService, ICreateGzFileService CreateGzFileService = null, ILoggedInService LoggedInService = null, ");
+                        sb.AppendLine($@"           CSSPDBContext db = null, UserManager<ApplicationUser> UserManager = null, CSSPDBLocalContext dbLocal = null, ");
                         sb.AppendLine($@"           CSSPDBInMemoryContext dbIM = null, CSSPDBLoginContext dbLogin = null)");
                     }
                     else
                     {
-                        sb.AppendLine($@"        public { dllTypeInfoModels.Type.Name }Service(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IEnums enums, ");
-                        sb.AppendLine($@"           CSSPDBContext db, CSSPDBLocalContext dbLocal = null, CSSPDBInMemoryContext dbIM = null)");
+                        sb.AppendLine($@"        public { dllTypeInfoModels.Type.Name }Service(ICSSPCultureService CSSPCultureService, IEnums enums, ILoggedInService LoggedInService = null, ");
+                        sb.AppendLine($@"           CSSPDBContext db = null, CSSPDBLocalContext dbLocal = null, CSSPDBInMemoryContext dbIM = null)");
                     }
                     sb.AppendLine(@"        {");
                     if (dllTypeInfoModels.Type.Name == "Contact")

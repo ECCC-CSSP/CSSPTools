@@ -3128,11 +3128,11 @@ namespace CSSPEnums.Tests
 
                 switch ((RunningOnEnum)i)
                 {
-                    case RunningOnEnum.Local:
-                        Assert.Equal(CSSPCultureEnumsRes.RunningOnEnumLocal, retStr);
-                        break;
                     case RunningOnEnum.Azure:
                         Assert.Equal(CSSPCultureEnumsRes.RunningOnEnumAzure, retStr);
+                        break;
+                    case RunningOnEnum.Local:
+                        Assert.Equal(CSSPCultureEnumsRes.RunningOnEnumLocal, retStr);
                         break;
                     default:
                         Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -6982,8 +6982,8 @@ namespace CSSPEnums.Tests
 
                 switch ((RunningOnEnum)i)
                 {
-                     case RunningOnEnum.Local:
                      case RunningOnEnum.Azure:
+                     case RunningOnEnum.Local:
                         Assert.Equal("", retStr);
                         break;
                     default:

@@ -17,11 +17,9 @@ namespace CSSPWebAPIs.Controllers
 {
     public partial interface ITVItemLanguageController
     {
-        Task<ActionResult<List<TVItemLanguage>>> GetTVItemLanguageStartDateList(DateTime StartDate);
+        Task<ActionResult<List<TVItemLanguage>>> GetTVItemLanguageStartDateList(int Year, int Month, int Day);
     }
 
-    [Route("api/{culture}/[controller]")]
-    [Authorize]
     public partial class TVItemLanguageController : ControllerBase, ITVItemLanguageController
     {
         #region Variables
@@ -34,13 +32,14 @@ namespace CSSPWebAPIs.Controllers
         #endregion Constructors
 
         #region Functions public
-        [HttpGet("GetTVItemLanguageStartDateList/{StartDate}")]
-        public async Task<ActionResult<List<TVItemLanguage>>> GetTVItemLanguageStartDateList(DateTime StartDate)
+        [Route("GetTVItemLanguageStartDateList/{Year}/{Month}/{Day}")]
+        [HttpGet]
+        public async Task<ActionResult<List<TVItemLanguage>>> GetTVItemLanguageStartDateList(int Year, int Month, int Day)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await TVItemLanguageService.GetTVItemLanguageStartDateList(StartDate);
+            return await TVItemLanguageService.GetTVItemLanguageStartDateList(Year, Month, Day);
         }
         #endregion Functions public
 

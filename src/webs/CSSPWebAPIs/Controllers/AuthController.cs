@@ -25,10 +25,17 @@ using CSSPCultureServices.Resources;
 
 namespace CSSPWebAPIs.Controllers
 {
+    public partial interface IAuthController
+    {
+        Task<ActionResult<Contact>> Token(LoginModel loginModel);
+        Task<ActionResult<string>> AzureStore();
+        Task<ActionResult<Contact>> Register(RegisterModel registerModel);
+    }
+
     [Route("api/{culture}/[controller]")]
     [ApiController]
     [Authorize]
-    public class AuthController : ControllerBase
+    public class AuthController : ControllerBase, IAuthController
     {
         #region Variables
         #endregion Variables
@@ -52,7 +59,7 @@ namespace CSSPWebAPIs.Controllers
         #endregion Constructors
 
         #region Functions public
-        [Route("token")]
+        [Route("Token")]
         [HttpPost]
         [AllowAnonymous]
         public async Task<ActionResult<Contact>> Token(LoginModel loginModel)
@@ -66,7 +73,7 @@ namespace CSSPWebAPIs.Controllers
 
             return await ContactService.Login(loginModel);
         }
-        [Route("azurestore")]
+        [Route("AzureStore")]
         [HttpGet]
         public async Task<ActionResult<string>> AzureStore()
         {

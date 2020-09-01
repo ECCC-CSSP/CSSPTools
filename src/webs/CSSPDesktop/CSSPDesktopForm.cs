@@ -15,6 +15,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -161,7 +162,49 @@ namespace CSSPDesktop
             butLogin.Text = CSSPDesktopService.appTextModel.butLoginText;
             butLogin.Enabled = true;
         }
+        private void textBoxLoginEmailLogin_TextChanged(object sender, EventArgs e)
+        {
+            EnabledOrDisableLoginButton();
+        }
+        private void textBoxPasswordLogin_TextChanged(object sender, EventArgs e)
+        {
+            EnabledOrDisableLoginButton();
+        }
         #endregion Login
+        #region Register
+        private void textBoxLoginEmailRegister_TextChanged(object sender, EventArgs e)
+        {
+            EnabledOrDisableRegisterButton();
+        }
+        private void textBoxFirstNameRegister_TextChanged(object sender, EventArgs e)
+        {
+            EnabledOrDisableRegisterButton();
+        }
+        private void textBoxLastNameRegister_TextChanged(object sender, EventArgs e)
+        {
+            EnabledOrDisableRegisterButton();
+        }
+        private void textBoxInitialRegister_TextChanged(object sender, EventArgs e)
+        {
+            EnabledOrDisableRegisterButton();
+        }
+        private void textBoxPasswordRegister_TextChanged(object sender, EventArgs e)
+        {
+            EnabledOrDisableRegisterButton();
+        }
+        private void textBoxConfirmPasswordRegister_TextChanged(object sender, EventArgs e)
+        {
+            EnabledOrDisableRegisterButton();
+        }
+        private void butRegister_Click(object sender, EventArgs e)
+        {
+            butRegister.Enabled = false;
+            butRegister.Text = CSSPDesktopService.appTextModel.RegisteringIn;
+            Register().GetAwaiter().GetResult();
+            butRegister.Text = CSSPDesktopService.appTextModel.butRegisterText;
+            butRegister.Enabled = true;
+        }
+        #endregion Register
         #endregion Events
 
         #region Functions public
@@ -186,9 +229,116 @@ namespace CSSPDesktop
 
             return await Task.FromResult(true);
         }
+        private void EnabledOrDisableLoginButton()
+        {
+            butLogin.Enabled = false;
+            bool CanEnableLoginButton = true;
+            if (textBoxLoginEmailLogin.Text.Length < 6)
+            {
+                CanEnableLoginButton = false;
+            }
+            if (textBoxPasswordLogin.Text.Length < 6)
+            {
+                CanEnableLoginButton = false;
+            }
+
+            Regex regex = new Regex(@"\A(?=[a-z0-9@.!#$%&'*+/=?^_'{|}~-]{6,254}\z)" +
+                @" (?=[a-z0-9.!#$%&'*+/=?^_‘{|}~-]{1,64}@)" +
+                @" [a-z0-9!#$%&'*+/=?^_‘{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_‘{|}~-]+)*" +
+                @" @ (?:(?=[a-z0-9-]{1,63}\.)[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+" +
+                @"  (?=[a-z0-9-]{1,63}\z)[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\z);");
+
+            Match match = regex.Match(textBoxLoginEmailLogin.Text);
+
+            if (!match.Success)
+            {
+                CanEnableLoginButton = false;
+            }
+
+            if (CanEnableLoginButton)
+            {
+                butLogin.Enabled = true;
+            }
+        }
+        private void EnabledOrDisableRegisterButton()
+        {
+            butRegister.Enabled = false;
+            bool CanEnableRegisterButton = true;
+            if (textBoxLoginEmailRegister.Text.Length < 6)
+            {
+                CanEnableRegisterButton = false;
+            }
+            if (textBoxFirstNameRegister.Text.Length < 1)
+            {
+                CanEnableRegisterButton = false;
+            }
+            if (textBoxLastNameRegister.Text.Length < 1)
+            {
+                CanEnableRegisterButton = false;
+            }
+            if (textBoxInitialRegister.Text.Length < 1)
+            {
+                CanEnableRegisterButton = false;
+            }
+            if (textBoxPasswordRegister.Text.Length < 6)
+            {
+                CanEnableRegisterButton = false;
+            }
+
+            if (textBoxConfirmPasswordRegister.Text.Length < 6)
+            {
+                CanEnableRegisterButton = false;
+            }
+
+            if (textBoxPasswordRegister.Text != textBoxConfirmPasswordRegister.Text)
+            {
+                CanEnableRegisterButton = false;
+            }
+
+            Regex regex = new Regex(@"\A(?=[a-z0-9@.!#$%&'*+/=?^_'{|}~-]{6,254}\z)" +
+                @" (?=[a-z0-9.!#$%&'*+/=?^_‘{|}~-]{1,64}@)" +
+                @" [a-z0-9!#$%&'*+/=?^_‘{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_‘{|}~-]+)*" +
+                @" @ (?:(?=[a-z0-9-]{1,63}\.)[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+" +
+                @"  (?=[a-z0-9-]{1,63}\z)[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\z);");
+
+            Match match = regex.Match(textBoxLoginEmailRegister.Text);
+
+            if (!match.Success)
+            {
+                CanEnableRegisterButton = false;
+            }
+
+            if (CanEnableRegisterButton)
+            {
+                butLogin.Enabled = true;
+            }
+        }
         private async Task<bool> Login()
         {
-            if (!await CSSPDesktopService.Login(textBoxLoginEmail.Text.Trim(), textBoxPassword.Text.Trim())) return await Task.FromResult(false);
+            LoginModel loginModel = new LoginModel()
+            {
+                LoginEmail = textBoxLoginEmailLogin.Text.Trim(),
+                Password = textBoxPasswordLogin.Text.Trim(),
+            };
+
+            if (!await CSSPDesktopService.Login(loginModel)) return await Task.FromResult(false);
+            if (!await StartTheAppWithLanguage()) return await Task.FromResult(false);
+
+            return await Task.FromResult(true);
+        }
+        private async Task<bool> Register()
+        {
+            RegisterModel registerModel = new RegisterModel()
+            {
+                LoginEmail = textBoxLoginEmailRegister.Text.Trim(),
+                FirstName = textBoxFirstNameRegister.Text.Trim(),
+                LastName = textBoxLastNameRegister.Text.Trim(),
+                Initial = textBoxInitialRegister.Text.Trim(),
+                Password = textBoxPasswordRegister.Text.Trim(),
+                ConfirmPassword = textBoxConfirmPasswordRegister.Text.Trim(),
+            };
+
+            if (!await CSSPDesktopService.Register(registerModel)) return await Task.FromResult(false);
             if (!await StartTheAppWithLanguage()) return await Task.FromResult(false);
 
             return await Task.FromResult(true);
@@ -196,7 +346,7 @@ namespace CSSPDesktop
         private void Logoff()
         {
             CSSPDesktopService.Logoff();
-            textBoxPassword.Text = "";
+            textBoxPasswordLogin.Text = "";
             ShowPanels(ShowPanel.Login);
         }
         private void RecenterPanels()
@@ -241,13 +391,13 @@ namespace CSSPDesktop
                 if (CSSPDesktopService.preference.HasInternetConnection == null || (bool)CSSPDesktopService.preference.HasInternetConnection == false)
                 {
                     butLogin.Enabled = false;
-                    lblInternetRequired.Visible = true;
+                    lblInternetRequiredLogin.Visible = true;
                     lblStatus.Text = CSSPDesktopService.appTextModel.InternetConnectionRequiredFirstTimeConnecting;
                 }
                 else
                 {
                     butLogin.Enabled = true;
-                    lblInternetRequired.Visible = false;
+                    lblInternetRequiredLogin.Visible = false;
                     lblStatus.Text = "";
                 }
             }
@@ -256,7 +406,7 @@ namespace CSSPDesktop
                 butLogoff.Visible = true;
                 butShowLoginPanel.Visible = false;
 
-                lblContactLoggedIn.Text = CSSPDesktopService.ContactLoggedIn.LoginEmail;
+                lblContactLoggedIn.Text = CSSPDesktopService.contact.LoginEmail;
                 ShowPanels(ShowPanel.Commands);
             }
 
@@ -291,6 +441,11 @@ namespace CSSPDesktop
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ICSSPDesktopService, CSSPDesktopService>();
+            Services.AddSingleton<ILocalService, LocalService>();
+            Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
+            Services.AddSingleton<IDownloadGzFileService, DownloadGzFileService>();
+            Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
 
             // doing CSSPLocal
             string CSSPDBLocal = Configuration.GetValue<string>("CSSPDBLocal");
@@ -351,10 +506,6 @@ namespace CSSPDesktop
             {
                 options.UseSqlite($"Data Source={ fiCSSPDBLogin.FullName }");
             });
-
-            Services.AddSingleton<ICSSPDesktopService, CSSPDesktopService>();
-            Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
-            Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
 
             Provider = Services.BuildServiceProvider();
             if (Provider == null)
@@ -467,7 +618,6 @@ namespace CSSPDesktop
             // PanelTop
             butShowLanguagePanel.Text = CSSPDesktopService.appTextModel.butShowLanguagePanelText;
             butShowHelpPanel.Text = CSSPDesktopService.appTextModel.butShowHelpPanelText;
-            lblLoginEmail.Text = CSSPDesktopService.appTextModel.lblLoginEmailText;
             butShowLoginPanel.Text = CSSPDesktopService.appTextModel.butShowLoginPanelText;
             butLogoff.Text = CSSPDesktopService.appTextModel.butLogoffText;
 
@@ -489,9 +639,21 @@ namespace CSSPDesktop
 
             // PanelLoginCenter
             lblCSSPWebToolsLoginOneTime.Text = CSSPDesktopService.appTextModel.lblCSSPWebToolsLoginOneTimeText;
-            lblPassword.Text = CSSPDesktopService.appTextModel.lblPasswordText;
+            lblLoginEmailLogin.Text = CSSPDesktopService.appTextModel.lblLoginEmailLoginText;
+            lblPasswordLogin.Text = CSSPDesktopService.appTextModel.lblPasswordLoginText;
             butLogin.Text = CSSPDesktopService.appTextModel.butLoginText;
-            lblInternetRequired.Text = CSSPDesktopService.appTextModel.lblInternetRequiredText;
+            lblInternetRequiredLogin.Text = CSSPDesktopService.appTextModel.lblInternetRequiredLoginText;
+
+            // PanelLoginCenter
+            lblCSSPWebToolsRegister.Text = CSSPDesktopService.appTextModel.lblCSSPWebToolsRegister;
+            lblLoginEmailRegister.Text = CSSPDesktopService.appTextModel.lblLoginEmailRegisterText;
+            lblFirstNameRegister.Text = CSSPDesktopService.appTextModel.lblFirstNameRegisterText;
+            lblLastNameRegister.Text = CSSPDesktopService.appTextModel.lblLastNameRegisterText;
+            lblInitialRegister.Text = CSSPDesktopService.appTextModel.lblInitialRegisterText;
+            lblPasswordRegister.Text = CSSPDesktopService.appTextModel.lblPasswordRegisterText;
+            lblConfirmPasswordRegister.Text = CSSPDesktopService.appTextModel.lblConfirmPasswordRegisterText;
+            butRegister.Text = CSSPDesktopService.appTextModel.butRegisterText;
+            lblInternetRequiredRegister.Text = CSSPDesktopService.appTextModel.lblInternetRequiredRegisterText;
 
             // PanelStatus
             lblStatusText.Text = CSSPDesktopService.appTextModel.lblStatusText;
@@ -592,7 +754,7 @@ namespace CSSPDesktop
                         panelTop.Visible = false;
                         panelLoginEmail.Visible = false;
                         panelLoginCenter.Visible = true;
-                        textBoxLoginEmail.Focus();
+                        textBoxLoginEmailLogin.Focus();
                     }
                     break;
                 case ShowPanel.Updates:
@@ -642,6 +804,5 @@ namespace CSSPDesktop
             Updates,
         }
         #endregion Enums
-
     }
 }

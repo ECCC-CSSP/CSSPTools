@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace CSSPModels
 {
-    public partial class TestDBContext : BaseContext
+    public partial class TestDBContext : CSSPDBBaseContext
     {
         public TestDBContext()
         {

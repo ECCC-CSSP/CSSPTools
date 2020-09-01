@@ -37,11 +37,23 @@ namespace CSSPDesktopServices.Models
 
             // PanelLoginCenter
             lblCSSPWebToolsLoginOneTimeText = "CSSP Web Tools Login (one time thing)";
-            lblLoginEmailText = "Login Email:";
-            lblPasswordText = "Password:";
+            lblLoginEmailLoginText = "Login Email:";
+            lblPasswordLoginText = "Password:";
             butLoginText = "Login";
-            lblInternetRequiredText = "Internet connection is required";
+            lblInternetRequiredLoginText = "Internet connection is required";
             LoggingIn = "Logging in ... ";
+
+            // PanelLoginCenter
+            lblCSSPWebToolsRegister = "CSSP Web Tools Register";
+            lblLoginEmailRegisterText = "Login Email:";
+            lblFirstNameRegisterText = "First Name:";
+            lblLastNameRegisterText = "Last Name:";
+            lblInitialRegisterText = "Initial:";
+            lblPasswordRegisterText = "Password:";
+            lblConfirmPasswordRegisterText = "Confirm password:";
+            butRegisterText = "Register";
+            lblInternetRequiredRegisterText = "Internet connection is required";
+            RegisteringIn = "Registering in...";
 
             // PanelStatus
             lblStatusText = "Status:";
@@ -87,7 +99,7 @@ namespace CSSPDesktopServices.Models
             InternetConnectionNotDetected = "Internet connection not detected";
             Executing_ = "Executing {0}";
             Stopping_ = "Stopping {0}";
-            DownloadingZipFileFromAzure_ = "Downloading zip file from Azure {0}";
+            DownloadingFileFromAzure_ = "Downloading zip file from Azure {0}";
             UnzippingDownloadedFile_ = "Unzipping downloaded file {0}";
             CSSPFilesManagementUpdateAzureStorage_AzureFileName_ = "CSSPFilesManagement.db Upate. AzureStorage {0} - AzureFileName {1}";
             PostRequestLoginEmailAndPasswordTo_ = "Post request with LoginEmail and Password to {0}";
@@ -100,6 +112,15 @@ namespace CSSPDesktopServices.Models
             CSSPDBSearchHasBeenUpdated_TVItems = "CSSPDBSearch has been updated with {0} items in TVItems";
             CSSPDBSearchIsNotEmpty = "CSSPDBSearch is not empty";
             CSSPDBSearchHas_TVItems = "CSSPDBSearch has {0} TVItems";
+            File_CreatedOnAzure = "File {0} created on Azure";
+            CouldNotCreateFile_OnAzure = "Could not create file {0} on Azure";
+            FillingCSSPDBSearchDatabaseWith_Info = "Filling CSSPDBSearch database with {0} information";
+            UpdatingCSSPDBSearchDatabase = "Updating CSSPDBSearch database";
+            ErrorWhileTryingToFillCSSPDBSearchDatabaseWith_Info = "Error while trying to fill CSSPDBSearch database with {0} information";
+            CSSPDBSearchDatabaseSuccessfullyFilled = "CSSPDBSearch database successfully filled";
+            ErrorWhileTryingToUpdateCSSPDBSearchDatabaseFrom_ = "Error while trying to update CSSPDBSearch database from {0}";
+            CSSPDBSearchDatabaseSuccessUpdated = "CSSPDBSearch database successfully updated";
+            Register = "Register";
         }
     }
     public class AppTextModelFR : AppTextModel
@@ -134,11 +155,23 @@ namespace CSSPDesktopServices.Models
 
             // PanelLoginCenter
             lblCSSPWebToolsLoginOneTimeText = "Connexion à l'outil PCCSM (une fois seulement)";
-            lblLoginEmailText = "Courriel de connextion:";
-            lblPasswordText = "Mot de passe:";
+            lblLoginEmailLoginText = "Courriel de connextion:";
+            lblPasswordLoginText = "Mot de passe:";
             butLoginText = "Ouvrir session";
-            lblInternetRequiredText = "Connexion internet est requis";
+            lblInternetRequiredLoginText = "Connexion internet est requis";
             LoggingIn = "Connexion en cours...";
+
+            // PanelLoginCenter
+            lblCSSPWebToolsRegister = "S'enregistrer à l'outil PCCSM";
+            lblLoginEmailRegisterText = "Courriel de connextion:";
+            lblFirstNameRegisterText = "Prénom:";
+            lblLastNameRegisterText = "Nom:";
+            lblInitialRegisterText = "Initial:";
+            lblPasswordRegisterText = "Mot de passe:";
+            lblConfirmPasswordRegisterText = "Confirmation du mot de passe:";
+            butRegisterText = "S'enregistrer";
+            lblInternetRequiredRegisterText = "Connexion internet est requis";
+            RegisteringIn = "S'enregistrer en cours...";
 
             // PanelStatus
             lblStatusText = "Etat:";
@@ -184,7 +217,7 @@ namespace CSSPDesktopServices.Models
             InternetConnectionNotDetected = "Connexion internet non détecté";
             Executing_ = "Exécution {0}";
             Stopping_ = "Arrêt de {0}";
-            DownloadingZipFileFromAzure_ = "Téléchargement de la filière .zip de Azure {0}";
+            DownloadingFileFromAzure_ = "Téléchargement de la filière .zip de Azure {0}";
             UnzippingDownloadedFile_ = "Décompression de la filière téléchargé {0}";
             CSSPFilesManagementUpdateAzureStorage_AzureFileName_ = "CSSPFilesManagement.db entré. AzureStorage {0} - AzureFileName {1}";
             PostRequestLoginEmailAndPasswordTo_ = "Requête 'POST' avec LoginEmail et Password à {0}";
@@ -197,6 +230,15 @@ namespace CSSPDesktopServices.Models
             CSSPDBSearchHasBeenUpdated_TVItems = "Mise-à-jour complété pour CSSPDBSearch avec {0} items de TVItems";
             CSSPDBSearchIsNotEmpty = "CSSPDBSearch n'est pas vide";
             CSSPDBSearchHas_TVItems = "CSSPDBSearch a {0} TVItems";
+            File_CreatedOnAzure = "Filière {0} créée dans Azure";
+            CouldNotCreateFile_OnAzure = "Dans l'impossibilité de créer la filière {0} dans Azure";
+            FillingCSSPDBSearchDatabaseWith_Info = "Remplissage de la base de données CSSPDBSearch avec l'information de {0}";
+            UpdatingCSSPDBSearchDatabase = "Mise-à-jour de la base de données CSSPDBSearch";
+            ErrorWhileTryingToFillCSSPDBSearchDatabaseWith_Info = "Erreur lors du remplissage de la base de données CSSPDBSearch avec l'information de {0}";
+            CSSPDBSearchDatabaseSuccessfullyFilled = "Remplissage de la base de données CSSPDBSearch avec success";
+            ErrorWhileTryingToUpdateCSSPDBSearchDatabaseFrom_ = "Erreur lors de la mise-à-jour de la base de données CSSPDBSearch à partir de {0}";
+            CSSPDBSearchDatabaseSuccessUpdated = "Mise-à-jour de la base de données CSSPDBSearch avec success";
+            Register = "S'enregistrer";
         }
     }
     public class AppTextModel
@@ -230,11 +272,24 @@ namespace CSSPDesktopServices.Models
 
         // PanelLoginCenter
         public string lblCSSPWebToolsLoginOneTimeText { get; set; }
-        public string lblLoginEmailText { get; set; }
-        public string lblPasswordText { get; set; }
+        public string lblLoginEmailLoginText { get; set; }
+        public string lblPasswordLoginText { get; set; }
         public string butLoginText { get; set; }
-        public string lblInternetRequiredText { get; set; }
+        public string lblInternetRequiredLoginText { get; set; }
         public string LoggingIn { get; set; }
+
+        // PanelRegisterCenter
+        public string lblCSSPWebToolsRegister { get; set; }
+        public string lblLoginEmailRegisterText { get; set; }
+        public string lblFirstNameRegisterText { get; set; }
+        public string lblLastNameRegisterText { get; set; }
+        public string lblInitialRegisterText { get; set; }
+        public string lblPasswordRegisterText { get; set; }
+        public string lblConfirmPasswordRegisterText { get; set; }
+        public string butRegisterText { get; set; }
+        public string lblInternetRequiredRegisterText { get; set; }
+        public string RegisteringIn { get; set; }
+
 
         // PanelStatus
         public string lblStatusText { get; set; }
@@ -281,7 +336,7 @@ namespace CSSPDesktopServices.Models
         public string InternetConnectionNotDetected { get; set; }
         public string Executing_ { get; set; }
         public string Stopping_ { get; set; }
-        public string DownloadingZipFileFromAzure_ { get; set; }
+        public string DownloadingFileFromAzure_ { get; set; }
         public string UnzippingDownloadedFile_ { get; set; }
         public string CSSPFilesManagementUpdateAzureStorage_AzureFileName_ { get; set; }
         public string PostRequestLoginEmailAndPasswordTo_ { get; set; }
@@ -293,5 +348,14 @@ namespace CSSPDesktopServices.Models
         public string CSSPDBSearchHasBeenUpdated_TVItems { get; set; }
         public string CSSPDBSearchIsNotEmpty { get; set; }
         public string CSSPDBSearchHas_TVItems { get; set; }
+        public string File_CreatedOnAzure { get; set; }
+        public string CouldNotCreateFile_OnAzure { get; set; }
+        public string FillingCSSPDBSearchDatabaseWith_Info { get; set; }
+        public string UpdatingCSSPDBSearchDatabase { get; set; }
+        public string ErrorWhileTryingToFillCSSPDBSearchDatabaseWith_Info { get; set; }
+        public string CSSPDBSearchDatabaseSuccessfullyFilled { get; set; }
+        public string ErrorWhileTryingToUpdateCSSPDBSearchDatabaseFrom_ { get; set; }
+        public string CSSPDBSearchDatabaseSuccessUpdated { get; set; }
+        public string Register { get; set; }
     }
 }

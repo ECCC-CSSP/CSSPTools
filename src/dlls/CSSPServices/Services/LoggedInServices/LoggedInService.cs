@@ -14,13 +14,9 @@ namespace CSSPServices
     public interface ILoggedInService
     {
         LoggedInContactInfo LoggedInContactInfo { get; set; }
-        bool HasInternetConnection { get; set; }
         DBLocationEnum DBLocation { get; set; }
         RunningOnEnum RunningOn { get; set; }
-        string AzureToken { get; set; }
-        string LocalToken { get; set; }
 
-        Task<bool> CheckInternetConnection();
         Task<bool> SetLoggedInContactInfo(Contact contact);
         Task<bool> SetLoggedInContactInfo(string Id);
     }
@@ -31,25 +27,20 @@ namespace CSSPServices
 
         #region Properties
         public  LoggedInContactInfo LoggedInContactInfo { get; set; }
-        public bool HasInternetConnection { get; set; } = true;
         public DBLocationEnum DBLocation { get; set; }
         public RunningOnEnum RunningOn { get; set; } = RunningOnEnum.Local;
-        public string AzureToken { get; set; }
-        public string LocalToken { get; set; }
 
         private ICSSPCultureService CSSPCultureService { get; }
         private CSSPDBContext db { get; }
         private CSSPDBInMemoryContext dbIM { get; }
-        private CSSPDBLoginContext dbLogin { get; }
         #endregion Properties
 
         #region Constructors
-        public LoggedInService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, CSSPDBContext db, CSSPDBInMemoryContext dbIM, CSSPDBLoginContext dbLogin = null)
+        public LoggedInService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, CSSPDBContext db, CSSPDBInMemoryContext dbIM)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.db = db;
+            this.db = this.db;
             this.dbIM = dbIM;
-            this.dbLogin = dbLogin;
 
             LoggedInContactInfo = new LoggedInContactInfo();
 
@@ -57,26 +48,6 @@ namespace CSSPServices
         }
         #endregion Constructors
 
-        public async Task<bool> CheckInternetConnection()
-        {
-            string url = "https://www.google.com/";
-
-            try
-            {
-                HttpClient httpClient = new HttpClient();
-                string ret = httpClient.GetStringAsync(url).GetAwaiter().GetResult();
-                if (!string.IsNullOrWhiteSpace(ret))
-                {
-                    HasInternetConnection = true;
-                }
-            }
-            catch (Exception)
-            {
-                HasInternetConnection = false;
-            }
-
-            return await Task.FromResult(true);
-        }
         #region Functions public
         public async Task<bool> SetLoggedInContactInfo(string Id)
         {
@@ -88,7 +59,7 @@ namespace CSSPServices
 
             if (LoggedInContactInfo.LoggedInContact == null)
             {
-                LoggedInContactInfo.LoggedInContact = (from c in db.Contacts
+                LoggedInContactInfo.LoggedInContact = (from c in dbLocal.Contacts
                                                        where c.Id == Id
                                                        select c).FirstOrDefault();
 
@@ -110,7 +81,7 @@ namespace CSSPServices
                         return await Task.FromResult(false);
                     }
 
-                    LoggedInContactInfo.TVTypeUserAuthorizationList = (from c in db.TVTypeUserAuthorizations
+                    LoggedInContactInfo.TVTypeUserAuthorizationList = (from c in dbLocal.TVTypeUserAuthorizations
                                                                        where c.ContactTVItemID == LoggedInContactInfo.LoggedInContact.ContactTVItemID
                                                                        select c).ToList();
 
@@ -128,7 +99,7 @@ namespace CSSPServices
                         }
                     }
 
-                    LoggedInContactInfo.TVItemUserAuthorizationList = (from c in db.TVItemUserAuthorizations
+                    LoggedInContactInfo.TVItemUserAuthorizationList = (from c in dbLocal.TVItemUserAuthorizations
                                                                        where c.ContactTVItemID == LoggedInContactInfo.LoggedInContact.ContactTVItemID
                                                                        select c).ToList();
 
@@ -170,7 +141,7 @@ namespace CSSPServices
 
             if (LoggedInContactInfo.LoggedInContact == null)
             {
-                LoggedInContactInfo.LoggedInContact = (from c in db.Contacts
+                LoggedInContactInfo.LoggedInContact = (from c in dbLocal.Contacts
                                                        where c.Id == contact.Id
                                                        select c).FirstOrDefault();
 
@@ -193,7 +164,7 @@ namespace CSSPServices
                         return await Task.FromResult(false);
                     }
 
-                    LoggedInContactInfo.TVTypeUserAuthorizationList = (from c in db.TVTypeUserAuthorizations
+                    LoggedInContactInfo.TVTypeUserAuthorizationList = (from c in dbLocal.TVTypeUserAuthorizations
                                                                        where c.ContactTVItemID == LoggedInContactInfo.LoggedInContact.ContactTVItemID
                                                                        select c).ToList();
 
@@ -211,7 +182,7 @@ namespace CSSPServices
                         }
                     }
 
-                    LoggedInContactInfo.TVItemUserAuthorizationList = (from c in db.TVItemUserAuthorizations
+                    LoggedInContactInfo.TVItemUserAuthorizationList = (from c in dbLocal.TVItemUserAuthorizations
                                                                        where c.ContactTVItemID == LoggedInContactInfo.LoggedInContact.ContactTVItemID
                                                                        select c).ToList();
 

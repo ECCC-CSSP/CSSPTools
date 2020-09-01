@@ -40,7 +40,7 @@ namespace SearchControllers.Tests
         private Contact contact { get; set; }
         private string LoginEmail { get; set; }
         private string Password { get; set; }
-        private string CSSPAzureUrl { get; set; }
+        private string CSSPLocalUrl { get; set; }
         private LoginModel loginModel { get; set; }
         #endregion Properties
 
@@ -68,7 +68,7 @@ namespace SearchControllers.Tests
                 Password = Password
             };
 
-            CSSPAzureUrl = Configuration.GetValue<string>("CSSPAzureUrl");
+            CSSPLocalUrl = Configuration.GetValue<string>("CSSPLocalUrl");
             Assert.NotNull(LoginEmail);
 
             using (HttpClient httpClient = new HttpClient())
@@ -78,7 +78,7 @@ namespace SearchControllers.Tests
 
                 string stringData = JsonSerializer.Serialize(loginModel);
                 var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = httpClient.PostAsync($"{ CSSPAzureUrl }api/en-CA/auth/token", contentData).Result;
+                HttpResponseMessage response = httpClient.PostAsync($"{ CSSPLocalUrl }api/en-CA/auth/tokenlocal", contentData).Result;
                 Assert.True((int)response.StatusCode == 200);
 
                 contact = JsonSerializer.Deserialize<Contact>(response.Content.ReadAsStringAsync().Result);

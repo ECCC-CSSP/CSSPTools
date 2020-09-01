@@ -60,11 +60,11 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public ContactService(IConfiguration Configuration, UserManager<ApplicationUser> UserManager, 
-           ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IEnums enums, 
+        public ContactService(IConfiguration Configuration, 
+           ICSSPCultureService CSSPCultureService, IEnums enums, 
            IAspNetUserService AspNetUserService, ILoginModelService LoginModelService, 
-           IRegisterModelService RegisterModelService, ICreateGzFileService CreateGzFileService, 
-           CSSPDBContext db, CSSPDBLocalContext dbLocal = null, 
+           IRegisterModelService RegisterModelService, ICreateGzFileService CreateGzFileService = null, ILoggedInService LoggedInService = null, 
+           CSSPDBContext db = null, UserManager<ApplicationUser> UserManager = null, CSSPDBLocalContext dbLocal = null, 
            CSSPDBInMemoryContext dbIM = null, CSSPDBLoginContext dbLogin = null)
         {
             this.Configuration = Configuration;

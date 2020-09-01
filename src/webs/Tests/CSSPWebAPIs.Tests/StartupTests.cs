@@ -118,11 +118,6 @@ namespace Startup.Tests
             {
                 string DBToUse = Configuration.GetValue<string>("DBToUse");
 
-                if (DBToUse == "CSSPDB")
-                {
-                    DBConnStr = Configuration.GetValue<string>("CSSPDB");
-                }
-
                 if (DBToUse == "CSSPDB2")
                 {
                     DBConnStr = Configuration.GetValue<string>("CSSPDB2");
@@ -143,8 +138,8 @@ namespace Startup.Tests
             Services.AddDbContext<CSSPDBContext>(options =>
                     options.UseSqlServer(DBConnStr));
 
-            Services.AddDbContext<CSSPDBInMemoryContext>(options =>
-                    options.UseInMemoryDatabase(DBConnStr));
+            //Services.AddDbContext<CSSPDBInMemoryContext>(options =>
+            //        options.UseInMemoryDatabase(DBConnStr));
 
             Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(DBConnStr));

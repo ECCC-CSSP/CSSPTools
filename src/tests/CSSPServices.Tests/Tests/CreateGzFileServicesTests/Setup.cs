@@ -182,9 +182,6 @@ namespace CSSPServices.Tests
             await LoggedInService.SetLoggedInContactInfo(contact);
             Assert.NotNull(LoggedInService.LoggedInContactInfo);
 
-            // will fill the LoggedInService.HasInternetConnection with true | false
-            await LoggedInService.CheckInternetConnection();
-
             LoggedInService.DBLocation = DBLocationEnum.Server;
 
             CSSPFileService = Provider.GetService<ICSSPFileService>();

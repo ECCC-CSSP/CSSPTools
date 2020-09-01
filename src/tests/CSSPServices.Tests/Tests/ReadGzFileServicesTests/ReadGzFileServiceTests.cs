@@ -40,7 +40,7 @@ namespace CSSPServices.Tests
                 // WebRoot.gz on Azure might not exist
                 var actionRes = await CreateGzFileService.DeleteGzFile(webType, TVItemID, webTypeYear);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // do nothing
             }
@@ -57,7 +57,7 @@ namespace CSSPServices.Tests
                 csspFile = (CSSPFile)((OkObjectResult)actionCSSPFile.Result).Value;
                 Assert.NotNull(csspFile);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // do nothing
             }
@@ -103,7 +103,7 @@ namespace CSSPServices.Tests
                 csspFile = (CSSPFile)((OkObjectResult)actionCSSPFile.Result).Value;
                 Assert.NotNull(csspFile);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // do nothing
             }

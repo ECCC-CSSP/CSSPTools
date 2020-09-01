@@ -67,7 +67,7 @@ namespace CSSPServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            var actionTVItemLanguage = await TVItemLanguageService.GetTVItemLanguageStartDateList(new DateTime(2020, 5, 26));
+            var actionTVItemLanguage = await TVItemLanguageService.GetTVItemLanguageStartDateList(2020, 5, 26);
             Assert.Equal(200, ((ObjectResult)actionTVItemLanguage.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionTVItemLanguage.Result).Value);
             List<TVItemLanguage> TVItemLanguageList = (List<TVItemLanguage>)((OkObjectResult)actionTVItemLanguage.Result).Value;

@@ -32,26 +32,25 @@ namespace CSSPDesktopServices.Services
         string CSSPAzureUrl { get; set; }
         string CSSPLocalUrl { get; set; }
         Preference preference { get; set; }
-        Contact ContactLoggedIn { get; set; }
         string LocalCSSPWebAPIsPath { get; set; }
+        Contact contact { get; set; }
 
         // Functions
         Task<bool> CheckIfHelpFilesExist();
         Task<bool> CheckIfLoginIsRequired();
-        Task<bool> CheckIfUpdateIsNeeded();
         Task<bool> CheckIfNewTVItemsOrTVItemLanguagesExist();
-        Task<bool> CreateAllRequiredDirectories();
+        Task<bool> CheckIfUpdateIsNeeded();
         Task<bool> CheckingInternetConnection();
+        Task<bool> CreateAllRequiredDirectories();
+        Task<bool> FillCSSPDBSearch();
         Task<bool> InstallUpdates();
-        Task<bool> Start();
-        Task<bool> Stop();
-        Task<bool> Login(string LoginEmail, string Password);
+        Task<bool> Login(LoginModel loginModel);
         Task<bool> Logoff();
         Task<bool> ReadConfiguration();
-        Task<string> Descramble(string Text);
-
-        //string Scramble(string Text);
-        //string Descramble(string Text);
+        Task<bool> Register(RegisterModel registerModel);
+        Task<bool> Start();
+        Task<bool> Stop();
+        Task<bool> UpdateCSSPDBSearch();
 
         // Events
         event EventHandler<ClearEventArgs> StatusClear;
@@ -78,8 +77,8 @@ namespace CSSPDesktopServices.Services
         public string CSSPAzureUrl { get; set; }
         public string CSSPLocalUrl { get; set; }
         public Preference preference { get; set; }
-        public Contact ContactLoggedIn { get; set; }
         public string LocalCSSPWebAPIsPath { get; set; }
+        public Contact contact { get; set; }
         #endregion Properties public
 
         #region Properties private
@@ -90,7 +89,9 @@ namespace CSSPDesktopServices.Services
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private IEnums enums { get; }
+        private ILocalService LocalService { get; }
         private ICSSPDBSearchService CSSPDBSearchService { get; }
+        private IReadGzFileService ReadGzFileService { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         private string LocalCSSPDesktopPath { get; set; }
         private string LocalCSSPDatabasesPath { get; set; }
@@ -101,22 +102,23 @@ namespace CSSPDesktopServices.Services
         private string AzureStoreCSSPFilesPath { get; set; }
         private Process processCSSPWebAPIs { get; set; }
         private Process processBrowser { get; set; }
-        private Contact contact { get; set; }
         #endregion Properties private
 
         #region Constructors
         public CSSPDesktopService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, 
-            CSSPDBLocalContext dbLocal, CSSPDBSearchContext dbSearch, CSSPDBLoginContext dbLogin, CSSPDBFilesManagementContext dbFM,
-            ICSSPDBSearchService CSSPDBSearchService)
+            ILocalService LocalService, CSSPDBLocalContext dbLocal, CSSPDBSearchContext dbSearch, 
+            CSSPDBLoginContext dbLogin, CSSPDBFilesManagementContext dbFM, IReadGzFileService ReadGzFileService)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.enums = enums;
+            this.LocalService = LocalService;
             this.dbLocal = dbLocal;
             this.dbSearch = dbSearch;
             this.dbLogin = dbLogin;
             this.dbFM = dbFM;
             this.CSSPDBSearchService = CSSPDBSearchService;
+            this.ReadGzFileService = ReadGzFileService;
 
             preference = new Preference();
             contact = new Contact();
@@ -160,23 +162,13 @@ namespace CSSPDesktopServices.Services
 
             return await Task.FromResult(true);
         }
-        public async Task<bool> ReadConfiguration()
+        public async Task<string> Descramble(string Text)
         {
-            if (!await DoReadConfiguration()) return await Task.FromResult(false);
-
-            return await Task.FromResult(true);
+            return await Task.FromResult(await LocalService.Descramble(Text));
         }
-        public async Task<bool> Start()
+        public async Task<bool> FillCSSPDBSearch()
         {
-            if (!await DoStart()) return await Task.FromResult(false);
-
-            return await Task.FromResult(true);
-        }
-        public async Task<bool> Stop()
-        {
-            if (!await DoStop()) return await Task.FromResult(false);
-
-            return await Task.FromResult(true);
+            return await DoFillCSSPDBSearch();
         }
         public async Task<bool> InstallUpdates()
         {
@@ -194,9 +186,9 @@ namespace CSSPDesktopServices.Services
 
             return await Task.FromResult(true);
         }
-        public async Task<bool> Login(string LoginEmail, string Password)
+        public async Task<bool> Login(LoginModel loginModel)
         {
-            if (!await DoLogin(LoginEmail, Password)) return await Task.FromResult(false);
+            if (!await DoLogin(loginModel)) return await Task.FromResult(false);
 
             return await Task.FromResult(true);
         }
@@ -206,9 +198,33 @@ namespace CSSPDesktopServices.Services
 
             return await Task.FromResult(true);
         }
-        public async Task<string> Descramble(string Text)
+        public async Task<bool> ReadConfiguration()
         {
-            return await Task.FromResult(DoDescramble(Text));
+            if (!await DoReadConfiguration()) return await Task.FromResult(false);
+
+            return await Task.FromResult(true);
+        }
+        public async Task<bool> Register(RegisterModel registerModel)
+        {
+            if (!await DoRegister(registerModel)) return await Task.FromResult(false);
+
+            return await Task.FromResult(true);
+        }
+        public async Task<bool> Start()
+        {
+            if (!await DoStart()) return await Task.FromResult(false);
+
+            return await Task.FromResult(true);
+        }
+        public async Task<bool> Stop()
+        {
+            if (!await DoStop()) return await Task.FromResult(false);
+
+            return await Task.FromResult(true);
+        }
+        public async Task<bool> UpdateCSSPDBSearch()
+        {
+            return await DoUpdateCSSPDBSearch();
         }
         #endregion Function public
     }

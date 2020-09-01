@@ -38,7 +38,7 @@ namespace CSSPModels.Tests
         [Fact]
         public void RegisterModel_Properties_Test()
         {
-            List<string> propNameList = new List<string>() { "FirstName", "Initial", "LastName", "LoginEmail", "Password", "ConfirmPassword",  }.OrderBy(c => c).ToList();
+            List<string> propNameList = new List<string>() { "FirstName", "Initial", "LastName", "LoginEmail", "Password", "ConfirmPassword", "ContactTitle",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(RegisterModel).GetProperties().Where(c => c.Name != "ValidationResults").OrderBy(c => c.Name).ToList())
@@ -70,6 +70,9 @@ namespace CSSPModels.Tests
                string val6 = "Some text";
                registerModel.ConfirmPassword = val6;
                Assert.Equal(val6, registerModel.ConfirmPassword);
+               ContactTitleEnum val7 = (ContactTitleEnum)3;
+               registerModel.ContactTitle = val7;
+               Assert.Equal(val7, registerModel.ContactTitle);
         }
         #endregion Tests Functions public
     }

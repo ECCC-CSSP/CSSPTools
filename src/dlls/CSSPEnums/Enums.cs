@@ -730,8 +730,8 @@ namespace CSSPEnums
     }
     public enum RunningOnEnum
     {
-        Local = 1,
-        Azure = 2,
+        Azure = 1,
+        Local = 2,
     }
     public enum SameDayNextDayEnum
     {

@@ -5,9 +5,11 @@
  *
  */
 
+import { ContactTitleEnum } from '../../enums/generated/ContactTitleEnum';
 
 export class RegisterModel {
     ConfirmPassword: string;
+    ContactTitle?: ContactTitleEnum;
     FirstName: string;
     Initial: string;
     LastName: string;

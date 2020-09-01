@@ -17,17 +17,13 @@ namespace CSSPDesktopServices.Services
     {
         private async Task<bool> DoCheckingInternetConnection()
         {
-            string url = "https://www.google.com/";
-
             AppendStatus(new AppendEventArgs(appTextModel.CheckingInternetConnection));
 
             try
             {
-                AppendStatus(new AppendEventArgs(string.Format(appTextModel.TryingToDownload_, url)));
+                AppendStatus(new AppendEventArgs(string.Format(appTextModel.TryingToDownload_, "https://www.google.com/")));
 
-                HttpClient httpClient = new HttpClient();
-                string ret = httpClient.GetStringAsync(url).GetAwaiter().GetResult();
-                if (!string.IsNullOrWhiteSpace(ret))
+                if (await LocalService.CheckInternetConnection())
                 {
                     AppendStatus(new AppendEventArgs(appTextModel.InternetConnectionDetected));
                     preference.HasInternetConnection = true;

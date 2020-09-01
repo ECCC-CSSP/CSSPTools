@@ -32,6 +32,30 @@
             this.butSetLanguageToFrancais = new System.Windows.Forms.Button();
             this.butSetLanguageToEnglish = new System.Windows.Forms.Button();
             this.splitContainerFirst = new System.Windows.Forms.SplitContainer();
+            this.panelRegisterCenter = new System.Windows.Forms.Panel();
+            this.textBoxConfirmPasswordRegister = new System.Windows.Forms.TextBox();
+            this.lblConfirmPasswordRegister = new System.Windows.Forms.Label();
+            this.textBoxInitialRegister = new System.Windows.Forms.TextBox();
+            this.lblInitialRegister = new System.Windows.Forms.Label();
+            this.textBoxLastNameRegister = new System.Windows.Forms.TextBox();
+            this.lblLastNameRegister = new System.Windows.Forms.Label();
+            this.textBoxFirstNameRegister = new System.Windows.Forms.TextBox();
+            this.lblFirstNameRegister = new System.Windows.Forms.Label();
+            this.lblInternetRequiredRegister = new System.Windows.Forms.Label();
+            this.butRegister = new System.Windows.Forms.Button();
+            this.textBoxPasswordRegister = new System.Windows.Forms.TextBox();
+            this.textBoxLoginEmailRegister = new System.Windows.Forms.TextBox();
+            this.lblPasswordRegister = new System.Windows.Forms.Label();
+            this.lblLoginEmailRegister = new System.Windows.Forms.Label();
+            this.lblCSSPWebToolsRegister = new System.Windows.Forms.Label();
+            this.panelLoginCenter = new System.Windows.Forms.Panel();
+            this.lblInternetRequiredLogin = new System.Windows.Forms.Label();
+            this.butLogin = new System.Windows.Forms.Button();
+            this.textBoxPasswordLogin = new System.Windows.Forms.TextBox();
+            this.textBoxLoginEmailLogin = new System.Windows.Forms.TextBox();
+            this.lblPasswordLogin = new System.Windows.Forms.Label();
+            this.lblLoginEmailLogin = new System.Windows.Forms.Label();
+            this.lblCSSPWebToolsLoginOneTime = new System.Windows.Forms.Label();
             this.panelLoginEmail = new System.Windows.Forms.Panel();
             this.lblContactLoggedIn = new System.Windows.Forms.Label();
             this.panelHelp = new System.Windows.Forms.Panel();
@@ -39,14 +63,6 @@
             this.panelHelpTop = new System.Windows.Forms.Panel();
             this.butHideHelpPanel = new System.Windows.Forms.Button();
             this.panelHelpSpace1 = new System.Windows.Forms.Panel();
-            this.panelLoginCenter = new System.Windows.Forms.Panel();
-            this.lblInternetRequired = new System.Windows.Forms.Label();
-            this.butLogin = new System.Windows.Forms.Button();
-            this.textBoxPassword = new System.Windows.Forms.TextBox();
-            this.textBoxLoginEmail = new System.Windows.Forms.TextBox();
-            this.lblPassword = new System.Windows.Forms.Label();
-            this.lblLoginEmail = new System.Windows.Forms.Label();
-            this.lblCSSPWebToolsLoginOneTime = new System.Windows.Forms.Label();
             this.panelUpdateCenter = new System.Windows.Forms.Panel();
             this.butCancelUpdate = new System.Windows.Forms.Button();
             this.butUpdate = new System.Windows.Forms.Button();
@@ -76,10 +92,11 @@
             this.splitContainerFirst.Panel1.SuspendLayout();
             this.splitContainerFirst.Panel2.SuspendLayout();
             this.splitContainerFirst.SuspendLayout();
+            this.panelRegisterCenter.SuspendLayout();
+            this.panelLoginCenter.SuspendLayout();
             this.panelLoginEmail.SuspendLayout();
             this.panelHelp.SuspendLayout();
             this.panelHelpTop.SuspendLayout();
-            this.panelLoginCenter.SuspendLayout();
             this.panelUpdateCenter.SuspendLayout();
             this.panelCommandsCenter.SuspendLayout();
             this.panelStatus.SuspendLayout();
@@ -90,7 +107,7 @@
             // 
             this.panelLanguageCenter.Controls.Add(this.butSetLanguageToFrancais);
             this.panelLanguageCenter.Controls.Add(this.butSetLanguageToEnglish);
-            this.panelLanguageCenter.Location = new System.Drawing.Point(555, 288);
+            this.panelLanguageCenter.Location = new System.Drawing.Point(383, 83);
             this.panelLanguageCenter.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.panelLanguageCenter.Name = "panelLanguageCenter";
             this.panelLanguageCenter.Size = new System.Drawing.Size(306, 120);
@@ -127,10 +144,11 @@
             // 
             // splitContainerFirst.Panel1
             // 
+            this.splitContainerFirst.Panel1.Controls.Add(this.panelRegisterCenter);
+            this.splitContainerFirst.Panel1.Controls.Add(this.panelLoginCenter);
             this.splitContainerFirst.Panel1.Controls.Add(this.panelLoginEmail);
             this.splitContainerFirst.Panel1.Controls.Add(this.panelLanguageCenter);
             this.splitContainerFirst.Panel1.Controls.Add(this.panelHelp);
-            this.splitContainerFirst.Panel1.Controls.Add(this.panelLoginCenter);
             this.splitContainerFirst.Panel1.Controls.Add(this.panelUpdateCenter);
             this.splitContainerFirst.Panel1.Controls.Add(this.panelCommandsCenter);
             this.splitContainerFirst.Panel1.Controls.Add(this.panelStatus);
@@ -143,6 +161,284 @@
             this.splitContainerFirst.SplitterDistance = 659;
             this.splitContainerFirst.SplitterWidth = 5;
             this.splitContainerFirst.TabIndex = 1;
+            // 
+            // panelRegisterCenter
+            // 
+            this.panelRegisterCenter.Controls.Add(this.textBoxConfirmPasswordRegister);
+            this.panelRegisterCenter.Controls.Add(this.lblConfirmPasswordRegister);
+            this.panelRegisterCenter.Controls.Add(this.textBoxInitialRegister);
+            this.panelRegisterCenter.Controls.Add(this.lblInitialRegister);
+            this.panelRegisterCenter.Controls.Add(this.textBoxLastNameRegister);
+            this.panelRegisterCenter.Controls.Add(this.lblLastNameRegister);
+            this.panelRegisterCenter.Controls.Add(this.textBoxFirstNameRegister);
+            this.panelRegisterCenter.Controls.Add(this.lblFirstNameRegister);
+            this.panelRegisterCenter.Controls.Add(this.lblInternetRequiredRegister);
+            this.panelRegisterCenter.Controls.Add(this.butRegister);
+            this.panelRegisterCenter.Controls.Add(this.textBoxPasswordRegister);
+            this.panelRegisterCenter.Controls.Add(this.textBoxLoginEmailRegister);
+            this.panelRegisterCenter.Controls.Add(this.lblPasswordRegister);
+            this.panelRegisterCenter.Controls.Add(this.lblLoginEmailRegister);
+            this.panelRegisterCenter.Controls.Add(this.lblCSSPWebToolsRegister);
+            this.panelRegisterCenter.Location = new System.Drawing.Point(439, 235);
+            this.panelRegisterCenter.Name = "panelRegisterCenter";
+            this.panelRegisterCenter.Size = new System.Drawing.Size(622, 360);
+            this.panelRegisterCenter.TabIndex = 12;
+            // 
+            // textBoxConfirmPasswordRegister
+            // 
+            this.textBoxConfirmPasswordRegister.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textBoxConfirmPasswordRegister.Location = new System.Drawing.Point(331, 222);
+            this.textBoxConfirmPasswordRegister.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.textBoxConfirmPasswordRegister.Name = "textBoxConfirmPasswordRegister";
+            this.textBoxConfirmPasswordRegister.PasswordChar = '*';
+            this.textBoxConfirmPasswordRegister.Size = new System.Drawing.Size(218, 26);
+            this.textBoxConfirmPasswordRegister.TabIndex = 5;
+            this.textBoxConfirmPasswordRegister.TextChanged += new System.EventHandler(this.textBoxConfirmPasswordRegister_TextChanged);
+            // 
+            // lblConfirmPasswordRegister
+            // 
+            this.lblConfirmPasswordRegister.AutoSize = true;
+            this.lblConfirmPasswordRegister.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblConfirmPasswordRegister.Location = new System.Drawing.Point(327, 195);
+            this.lblConfirmPasswordRegister.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblConfirmPasswordRegister.Name = "lblConfirmPasswordRegister";
+            this.lblConfirmPasswordRegister.Size = new System.Drawing.Size(141, 20);
+            this.lblConfirmPasswordRegister.TabIndex = 21;
+            this.lblConfirmPasswordRegister.Text = "Confirm Password:";
+            // 
+            // textBoxInitialRegister
+            // 
+            this.textBoxInitialRegister.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textBoxInitialRegister.Location = new System.Drawing.Point(331, 84);
+            this.textBoxInitialRegister.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.textBoxInitialRegister.Name = "textBoxInitialRegister";
+            this.textBoxInitialRegister.Size = new System.Drawing.Size(218, 26);
+            this.textBoxInitialRegister.TabIndex = 3;
+            this.textBoxInitialRegister.TextChanged += new System.EventHandler(this.textBoxInitialRegister_TextChanged);
+            // 
+            // lblInitialRegister
+            // 
+            this.lblInitialRegister.AutoSize = true;
+            this.lblInitialRegister.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblInitialRegister.Location = new System.Drawing.Point(327, 57);
+            this.lblInitialRegister.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblInitialRegister.Name = "lblInitialRegister";
+            this.lblInitialRegister.Size = new System.Drawing.Size(50, 20);
+            this.lblInitialRegister.TabIndex = 19;
+            this.lblInitialRegister.Text = "Initial:";
+            // 
+            // textBoxLastNameRegister
+            // 
+            this.textBoxLastNameRegister.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textBoxLastNameRegister.Location = new System.Drawing.Point(59, 222);
+            this.textBoxLastNameRegister.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.textBoxLastNameRegister.Name = "textBoxLastNameRegister";
+            this.textBoxLastNameRegister.Size = new System.Drawing.Size(218, 26);
+            this.textBoxLastNameRegister.TabIndex = 2;
+            this.textBoxLastNameRegister.TextChanged += new System.EventHandler(this.textBoxLastNameRegister_TextChanged);
+            // 
+            // lblLastNameRegister
+            // 
+            this.lblLastNameRegister.AutoSize = true;
+            this.lblLastNameRegister.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblLastNameRegister.Location = new System.Drawing.Point(55, 195);
+            this.lblLastNameRegister.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblLastNameRegister.Name = "lblLastNameRegister";
+            this.lblLastNameRegister.Size = new System.Drawing.Size(90, 20);
+            this.lblLastNameRegister.TabIndex = 17;
+            this.lblLastNameRegister.Text = "Last Name:";
+            // 
+            // textBoxFirstNameRegister
+            // 
+            this.textBoxFirstNameRegister.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textBoxFirstNameRegister.Location = new System.Drawing.Point(59, 152);
+            this.textBoxFirstNameRegister.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.textBoxFirstNameRegister.Name = "textBoxFirstNameRegister";
+            this.textBoxFirstNameRegister.Size = new System.Drawing.Size(218, 26);
+            this.textBoxFirstNameRegister.TabIndex = 1;
+            this.textBoxFirstNameRegister.TextChanged += new System.EventHandler(this.textBoxFirstNameRegister_TextChanged);
+            // 
+            // lblFirstNameRegister
+            // 
+            this.lblFirstNameRegister.AutoSize = true;
+            this.lblFirstNameRegister.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblFirstNameRegister.Location = new System.Drawing.Point(55, 125);
+            this.lblFirstNameRegister.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblFirstNameRegister.Name = "lblFirstNameRegister";
+            this.lblFirstNameRegister.Size = new System.Drawing.Size(90, 20);
+            this.lblFirstNameRegister.TabIndex = 15;
+            this.lblFirstNameRegister.Text = "First Name:";
+            // 
+            // lblInternetRequiredRegister
+            // 
+            this.lblInternetRequiredRegister.AutoSize = true;
+            this.lblInternetRequiredRegister.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblInternetRequiredRegister.ForeColor = System.Drawing.Color.Red;
+            this.lblInternetRequiredRegister.Location = new System.Drawing.Point(165, 325);
+            this.lblInternetRequiredRegister.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblInternetRequiredRegister.Name = "lblInternetRequiredRegister";
+            this.lblInternetRequiredRegister.Size = new System.Drawing.Size(279, 20);
+            this.lblInternetRequiredRegister.TabIndex = 13;
+            this.lblInternetRequiredRegister.Text = "Internet connection is required to login";
+            this.lblInternetRequiredRegister.Visible = false;
+            // 
+            // butRegister
+            // 
+            this.butRegister.AutoSize = true;
+            this.butRegister.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.butRegister.Location = new System.Drawing.Point(238, 265);
+            this.butRegister.Name = "butRegister";
+            this.butRegister.Size = new System.Drawing.Size(139, 44);
+            this.butRegister.TabIndex = 6;
+            this.butRegister.Text = "Register";
+            this.butRegister.Click += new System.EventHandler(this.butRegister_Click);
+            // 
+            // textBoxPasswordRegister
+            // 
+            this.textBoxPasswordRegister.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textBoxPasswordRegister.Location = new System.Drawing.Point(331, 152);
+            this.textBoxPasswordRegister.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.textBoxPasswordRegister.Name = "textBoxPasswordRegister";
+            this.textBoxPasswordRegister.PasswordChar = '*';
+            this.textBoxPasswordRegister.Size = new System.Drawing.Size(218, 26);
+            this.textBoxPasswordRegister.TabIndex = 4;
+            this.textBoxPasswordRegister.TextChanged += new System.EventHandler(this.textBoxPasswordRegister_TextChanged);
+            // 
+            // textBoxLoginEmailRegister
+            // 
+            this.textBoxLoginEmailRegister.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textBoxLoginEmailRegister.Location = new System.Drawing.Point(59, 84);
+            this.textBoxLoginEmailRegister.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.textBoxLoginEmailRegister.Name = "textBoxLoginEmailRegister";
+            this.textBoxLoginEmailRegister.Size = new System.Drawing.Size(218, 26);
+            this.textBoxLoginEmailRegister.TabIndex = 0;
+            this.textBoxLoginEmailRegister.TextChanged += new System.EventHandler(this.textBoxLoginEmailRegister_TextChanged);
+            // 
+            // lblPasswordRegister
+            // 
+            this.lblPasswordRegister.AutoSize = true;
+            this.lblPasswordRegister.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblPasswordRegister.Location = new System.Drawing.Point(327, 125);
+            this.lblPasswordRegister.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblPasswordRegister.Name = "lblPasswordRegister";
+            this.lblPasswordRegister.Size = new System.Drawing.Size(82, 20);
+            this.lblPasswordRegister.TabIndex = 12;
+            this.lblPasswordRegister.Text = "Password:";
+            // 
+            // lblLoginEmailRegister
+            // 
+            this.lblLoginEmailRegister.AutoSize = true;
+            this.lblLoginEmailRegister.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblLoginEmailRegister.Location = new System.Drawing.Point(55, 57);
+            this.lblLoginEmailRegister.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblLoginEmailRegister.Name = "lblLoginEmailRegister";
+            this.lblLoginEmailRegister.Size = new System.Drawing.Size(95, 20);
+            this.lblLoginEmailRegister.TabIndex = 11;
+            this.lblLoginEmailRegister.Text = "Login Email:";
+            // 
+            // lblCSSPWebToolsRegister
+            // 
+            this.lblCSSPWebToolsRegister.AutoSize = true;
+            this.lblCSSPWebToolsRegister.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblCSSPWebToolsRegister.Location = new System.Drawing.Point(214, 13);
+            this.lblCSSPWebToolsRegister.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblCSSPWebToolsRegister.Name = "lblCSSPWebToolsRegister";
+            this.lblCSSPWebToolsRegister.Size = new System.Drawing.Size(195, 20);
+            this.lblCSSPWebToolsRegister.TabIndex = 5;
+            this.lblCSSPWebToolsRegister.Text = "CSSP Web Tools Register";
+            // 
+            // panelLoginCenter
+            // 
+            this.panelLoginCenter.Controls.Add(this.lblInternetRequiredLogin);
+            this.panelLoginCenter.Controls.Add(this.butLogin);
+            this.panelLoginCenter.Controls.Add(this.textBoxPasswordLogin);
+            this.panelLoginCenter.Controls.Add(this.textBoxLoginEmailLogin);
+            this.panelLoginCenter.Controls.Add(this.lblPasswordLogin);
+            this.panelLoginCenter.Controls.Add(this.lblLoginEmailLogin);
+            this.panelLoginCenter.Controls.Add(this.lblCSSPWebToolsLoginOneTime);
+            this.panelLoginCenter.Location = new System.Drawing.Point(24, 297);
+            this.panelLoginCenter.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.panelLoginCenter.Name = "panelLoginCenter";
+            this.panelLoginCenter.Size = new System.Drawing.Size(484, 314);
+            this.panelLoginCenter.TabIndex = 9;
+            // 
+            // lblInternetRequiredLogin
+            // 
+            this.lblInternetRequiredLogin.AutoSize = true;
+            this.lblInternetRequiredLogin.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblInternetRequiredLogin.ForeColor = System.Drawing.Color.Red;
+            this.lblInternetRequiredLogin.Location = new System.Drawing.Point(60, 278);
+            this.lblInternetRequiredLogin.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblInternetRequiredLogin.Name = "lblInternetRequiredLogin";
+            this.lblInternetRequiredLogin.Size = new System.Drawing.Size(279, 20);
+            this.lblInternetRequiredLogin.TabIndex = 7;
+            this.lblInternetRequiredLogin.Text = "Internet connection is required to login";
+            this.lblInternetRequiredLogin.Visible = false;
+            // 
+            // butLogin
+            // 
+            this.butLogin.AutoSize = true;
+            this.butLogin.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.butLogin.Location = new System.Drawing.Point(150, 217);
+            this.butLogin.Name = "butLogin";
+            this.butLogin.Size = new System.Drawing.Size(139, 44);
+            this.butLogin.TabIndex = 2;
+            this.butLogin.Text = "Login";
+            this.butLogin.Click += new System.EventHandler(this.butLogin_Click);
+            // 
+            // textBoxPasswordLogin
+            // 
+            this.textBoxPasswordLogin.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textBoxPasswordLogin.Location = new System.Drawing.Point(59, 177);
+            this.textBoxPasswordLogin.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.textBoxPasswordLogin.Name = "textBoxPasswordLogin";
+            this.textBoxPasswordLogin.PasswordChar = '*';
+            this.textBoxPasswordLogin.Size = new System.Drawing.Size(311, 26);
+            this.textBoxPasswordLogin.TabIndex = 1;
+            this.textBoxPasswordLogin.TextChanged += new System.EventHandler(this.textBoxPasswordLogin_TextChanged);
+            // 
+            // textBoxLoginEmailLogin
+            // 
+            this.textBoxLoginEmailLogin.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textBoxLoginEmailLogin.Location = new System.Drawing.Point(59, 104);
+            this.textBoxLoginEmailLogin.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.textBoxLoginEmailLogin.Name = "textBoxLoginEmailLogin";
+            this.textBoxLoginEmailLogin.Size = new System.Drawing.Size(311, 26);
+            this.textBoxLoginEmailLogin.TabIndex = 0;
+            this.textBoxLoginEmailLogin.TextChanged += new System.EventHandler(this.textBoxLoginEmailLogin_TextChanged);
+            // 
+            // lblPasswordLogin
+            // 
+            this.lblPasswordLogin.AutoSize = true;
+            this.lblPasswordLogin.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblPasswordLogin.Location = new System.Drawing.Point(55, 150);
+            this.lblPasswordLogin.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblPasswordLogin.Name = "lblPasswordLogin";
+            this.lblPasswordLogin.Size = new System.Drawing.Size(82, 20);
+            this.lblPasswordLogin.TabIndex = 6;
+            this.lblPasswordLogin.Text = "Password:";
+            // 
+            // lblLoginEmailLogin
+            // 
+            this.lblLoginEmailLogin.AutoSize = true;
+            this.lblLoginEmailLogin.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblLoginEmailLogin.Location = new System.Drawing.Point(55, 77);
+            this.lblLoginEmailLogin.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblLoginEmailLogin.Name = "lblLoginEmailLogin";
+            this.lblLoginEmailLogin.Size = new System.Drawing.Size(95, 20);
+            this.lblLoginEmailLogin.TabIndex = 5;
+            this.lblLoginEmailLogin.Text = "Login Email:";
+            // 
+            // lblCSSPWebToolsLoginOneTime
+            // 
+            this.lblCSSPWebToolsLoginOneTime.AutoSize = true;
+            this.lblCSSPWebToolsLoginOneTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblCSSPWebToolsLoginOneTime.Location = new System.Drawing.Point(44, 23);
+            this.lblCSSPWebToolsLoginOneTime.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblCSSPWebToolsLoginOneTime.Name = "lblCSSPWebToolsLoginOneTime";
+            this.lblCSSPWebToolsLoginOneTime.Size = new System.Drawing.Size(292, 20);
+            this.lblCSSPWebToolsLoginOneTime.TabIndex = 4;
+            this.lblCSSPWebToolsLoginOneTime.Text = "CSSP Web Tools Login (one time thing) ";
             // 
             // panelLoginEmail
             // 
@@ -169,7 +465,7 @@
             // 
             this.panelHelp.Controls.Add(this.richTextBoxHelp);
             this.panelHelp.Controls.Add(this.panelHelpTop);
-            this.panelHelp.Location = new System.Drawing.Point(766, 433);
+            this.panelHelp.Location = new System.Drawing.Point(24, 199);
             this.panelHelp.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.panelHelp.Name = "panelHelp";
             this.panelHelp.Size = new System.Drawing.Size(322, 162);
@@ -214,97 +510,6 @@
             this.panelHelpSpace1.Size = new System.Drawing.Size(15, 37);
             this.panelHelpSpace1.TabIndex = 6;
             // 
-            // panelLoginCenter
-            // 
-            this.panelLoginCenter.Controls.Add(this.lblInternetRequired);
-            this.panelLoginCenter.Controls.Add(this.butLogin);
-            this.panelLoginCenter.Controls.Add(this.textBoxPassword);
-            this.panelLoginCenter.Controls.Add(this.textBoxLoginEmail);
-            this.panelLoginCenter.Controls.Add(this.lblPassword);
-            this.panelLoginCenter.Controls.Add(this.lblLoginEmail);
-            this.panelLoginCenter.Controls.Add(this.lblCSSPWebToolsLoginOneTime);
-            this.panelLoginCenter.Location = new System.Drawing.Point(24, 297);
-            this.panelLoginCenter.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.panelLoginCenter.Name = "panelLoginCenter";
-            this.panelLoginCenter.Size = new System.Drawing.Size(484, 314);
-            this.panelLoginCenter.TabIndex = 9;
-            // 
-            // lblInternetRequired
-            // 
-            this.lblInternetRequired.AutoSize = true;
-            this.lblInternetRequired.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblInternetRequired.ForeColor = System.Drawing.Color.Red;
-            this.lblInternetRequired.Location = new System.Drawing.Point(60, 278);
-            this.lblInternetRequired.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblInternetRequired.Name = "lblInternetRequired";
-            this.lblInternetRequired.Size = new System.Drawing.Size(279, 20);
-            this.lblInternetRequired.TabIndex = 7;
-            this.lblInternetRequired.Text = "Internet connection is required to login";
-            this.lblInternetRequired.Visible = false;
-            // 
-            // butLogin
-            // 
-            this.butLogin.AutoSize = true;
-            this.butLogin.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.butLogin.Location = new System.Drawing.Point(150, 217);
-            this.butLogin.Name = "butLogin";
-            this.butLogin.Size = new System.Drawing.Size(139, 44);
-            this.butLogin.TabIndex = 2;
-            this.butLogin.Text = "Login";
-            this.butLogin.Click += new System.EventHandler(this.butLogin_Click);
-            // 
-            // textBoxPassword
-            // 
-            this.textBoxPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.textBoxPassword.Location = new System.Drawing.Point(59, 177);
-            this.textBoxPassword.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.textBoxPassword.Name = "textBoxPassword";
-            this.textBoxPassword.PasswordChar = '*';
-            this.textBoxPassword.Size = new System.Drawing.Size(311, 26);
-            this.textBoxPassword.TabIndex = 1;
-            // 
-            // textBoxLoginEmail
-            // 
-            this.textBoxLoginEmail.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.textBoxLoginEmail.Location = new System.Drawing.Point(59, 104);
-            this.textBoxLoginEmail.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.textBoxLoginEmail.Name = "textBoxLoginEmail";
-            this.textBoxLoginEmail.Size = new System.Drawing.Size(311, 26);
-            this.textBoxLoginEmail.TabIndex = 0;
-            // 
-            // lblPassword
-            // 
-            this.lblPassword.AutoSize = true;
-            this.lblPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblPassword.Location = new System.Drawing.Point(55, 150);
-            this.lblPassword.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblPassword.Name = "lblPassword";
-            this.lblPassword.Size = new System.Drawing.Size(82, 20);
-            this.lblPassword.TabIndex = 6;
-            this.lblPassword.Text = "Password:";
-            // 
-            // lblLoginEmail
-            // 
-            this.lblLoginEmail.AutoSize = true;
-            this.lblLoginEmail.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblLoginEmail.Location = new System.Drawing.Point(55, 77);
-            this.lblLoginEmail.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblLoginEmail.Name = "lblLoginEmail";
-            this.lblLoginEmail.Size = new System.Drawing.Size(95, 20);
-            this.lblLoginEmail.TabIndex = 5;
-            this.lblLoginEmail.Text = "Login Email:";
-            // 
-            // lblCSSPWebToolsLoginOneTime
-            // 
-            this.lblCSSPWebToolsLoginOneTime.AutoSize = true;
-            this.lblCSSPWebToolsLoginOneTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblCSSPWebToolsLoginOneTime.Location = new System.Drawing.Point(44, 23);
-            this.lblCSSPWebToolsLoginOneTime.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblCSSPWebToolsLoginOneTime.Name = "lblCSSPWebToolsLoginOneTime";
-            this.lblCSSPWebToolsLoginOneTime.Size = new System.Drawing.Size(292, 20);
-            this.lblCSSPWebToolsLoginOneTime.TabIndex = 4;
-            this.lblCSSPWebToolsLoginOneTime.Text = "CSSP Web Tools Login (one time thing) ";
-            // 
             // panelUpdateCenter
             // 
             this.panelUpdateCenter.Controls.Add(this.butCancelUpdate);
@@ -312,7 +517,7 @@
             this.panelUpdateCenter.Controls.Add(this.butUpdateCompleted);
             this.panelUpdateCenter.Controls.Add(this.progressBarInstalling);
             this.panelUpdateCenter.Controls.Add(this.lblInstalling);
-            this.panelUpdateCenter.Location = new System.Drawing.Point(545, 95);
+            this.panelUpdateCenter.Location = new System.Drawing.Point(545, 69);
             this.panelUpdateCenter.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.panelUpdateCenter.Name = "panelUpdateCenter";
             this.panelUpdateCenter.Size = new System.Drawing.Size(588, 163);
@@ -377,7 +582,7 @@
             this.panelCommandsCenter.Controls.Add(this.butClose);
             this.panelCommandsCenter.Controls.Add(this.butStop);
             this.panelCommandsCenter.Controls.Add(this.butStart);
-            this.panelCommandsCenter.Location = new System.Drawing.Point(15, 95);
+            this.panelCommandsCenter.Location = new System.Drawing.Point(15, 69);
             this.panelCommandsCenter.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.panelCommandsCenter.Name = "panelCommandsCenter";
             this.panelCommandsCenter.Size = new System.Drawing.Size(417, 174);
@@ -585,13 +790,15 @@
             this.splitContainerFirst.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerFirst)).EndInit();
             this.splitContainerFirst.ResumeLayout(false);
+            this.panelRegisterCenter.ResumeLayout(false);
+            this.panelRegisterCenter.PerformLayout();
+            this.panelLoginCenter.ResumeLayout(false);
+            this.panelLoginCenter.PerformLayout();
             this.panelLoginEmail.ResumeLayout(false);
             this.panelLoginEmail.PerformLayout();
             this.panelHelp.ResumeLayout(false);
             this.panelHelpTop.ResumeLayout(false);
             this.panelHelpTop.PerformLayout();
-            this.panelLoginCenter.ResumeLayout(false);
-            this.panelLoginCenter.PerformLayout();
             this.panelUpdateCenter.ResumeLayout(false);
             this.panelUpdateCenter.PerformLayout();
             this.panelCommandsCenter.ResumeLayout(false);
@@ -618,10 +825,10 @@
         private System.Windows.Forms.ProgressBar progressBarInstalling;
         private System.Windows.Forms.Label lblInstalling;
         private System.Windows.Forms.Panel panelLoginCenter;
-        private System.Windows.Forms.TextBox textBoxPassword;
-        private System.Windows.Forms.TextBox textBoxLoginEmail;
-        private System.Windows.Forms.Label lblPassword;
-        private System.Windows.Forms.Label lblLoginEmail;
+        private System.Windows.Forms.TextBox textBoxPasswordLogin;
+        private System.Windows.Forms.TextBox textBoxLoginEmailLogin;
+        private System.Windows.Forms.Label lblPasswordLogin;
+        private System.Windows.Forms.Label lblLoginEmailLogin;
         private System.Windows.Forms.Label lblCSSPWebToolsLoginOneTime;
         private System.Windows.Forms.RichTextBox richTextBoxHelp;
         private System.Windows.Forms.Button butSetLanguageToFrancais;
@@ -647,7 +854,23 @@
         private System.Windows.Forms.Panel panelLoginEmail;
         private System.Windows.Forms.Label lblContactLoggedIn;
         private System.Windows.Forms.Panel panelHelpSpace1;
-        private System.Windows.Forms.Label lblInternetRequired;
+        private System.Windows.Forms.Label lblInternetRequiredLogin;
+        private System.Windows.Forms.Panel panelRegisterCenter;
+        private System.Windows.Forms.Label lblInternetRequiredRegister;
+        private System.Windows.Forms.Button butRegister;
+        private System.Windows.Forms.TextBox textBoxPasswordRegister;
+        private System.Windows.Forms.TextBox textBoxLoginEmailRegister;
+        private System.Windows.Forms.Label lblPasswordRegister;
+        private System.Windows.Forms.Label lblLoginEmailRegister;
+        private System.Windows.Forms.Label lblCSSPWebToolsRegister;
+        private System.Windows.Forms.TextBox textBoxInitialRegister;
+        private System.Windows.Forms.Label lblInitialRegister;
+        private System.Windows.Forms.TextBox textBoxLastNameRegister;
+        private System.Windows.Forms.Label lblLastNameRegister;
+        private System.Windows.Forms.TextBox textBoxFirstNameRegister;
+        private System.Windows.Forms.Label lblFirstNameRegister;
+        private System.Windows.Forms.TextBox textBoxConfirmPasswordRegister;
+        private System.Windows.Forms.Label lblConfirmPasswordRegister;
     }
 }
 

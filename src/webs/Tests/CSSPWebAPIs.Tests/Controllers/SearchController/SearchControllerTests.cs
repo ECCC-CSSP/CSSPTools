@@ -68,7 +68,7 @@ namespace SearchControllers.Tests
             {
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
 
-                string url = $"{ CSSPAzureUrl }api/{ culture }/Search/{ SearchTerm }/{ TVItemID }";
+                string url = $"{ CSSPLocalUrl }api/{ culture }/Search/{ SearchTerm }/{ TVItemID }";
                 var response = await httpClient.GetAsync(url);
                 Assert.Equal(HttpStatusCode.OK, response.StatusCode);
                 List<TVItemLanguage> tvItemLanguageList = JsonSerializer.Deserialize<List<TVItemLanguage>>(response.Content.ReadAsStringAsync().Result);

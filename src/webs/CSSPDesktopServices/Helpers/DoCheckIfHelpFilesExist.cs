@@ -21,6 +21,8 @@ namespace CSSPDesktopServices.Services
         {
             AppendStatus(new AppendEventArgs(appTextModel.CheckIfHelpFileExist));
 
+            HasHelpFiles = true;
+
             List<string> HelpFileList = new List<string>()
             {
                 $"{ LocalCSSPWebAPIsPath }HelpDocEN.rtf",
@@ -32,7 +34,6 @@ namespace CSSPDesktopServices.Services
                 FileInfo fi = new FileInfo(HelpFile);
                 if (fi.Exists)
                 {
-                    HasHelpFiles = true;
                     AppendStatus(new AppendEventArgs(string.Format(appTextModel.HelpFileFound_, HelpFile)));
                 }
                 else
@@ -44,6 +45,11 @@ namespace CSSPDesktopServices.Services
             }
 
             AppendStatus(new AppendEventArgs(""));
+
+            if (!HasHelpFiles)
+            {
+                return await Task.FromResult(false);
+            }
 
             return await Task.FromResult(true);
         }

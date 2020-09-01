@@ -20,7 +20,7 @@ namespace CSSPServices
 {
     public partial interface ITVItemService
     {
-        Task<ActionResult<List<TVItem>>> GetTVItemStartDateList(DateTime StartDate);
+        Task<ActionResult<List<TVItem>>> GetTVItemStartDateList(int Year, int Month, int Day);
         Task<ActionResult<TVItem>> GetTVItemRoot();
     }
     public partial class TVItemService : ControllerBase, ITVItemService
@@ -35,8 +35,10 @@ namespace CSSPServices
         #endregion Constructors
 
         #region Functions public 
-        public async Task<ActionResult<List<TVItem>>> GetTVItemStartDateList(DateTime StartDate)
+        public async Task<ActionResult<List<TVItem>>> GetTVItemStartDateList(int Year, int Month, int Day)
         {
+            DateTime StartDate = new DateTime(Year, Month, Day);
+
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());

@@ -57,30 +57,6 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task CSSPDBSearch_FillCSSDBSearch_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            var actionRes = await CSSPDBSearchService.FillCSSDBSearch();
-            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
-            Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task CSSPDBSearch_UpdateCSSPDBSearch_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            var actionRes = await CSSPDBSearchService.UpdateCSSDBSearch(new DateTime(2020, 5, 25));
-            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
-            Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
         public async Task CSSPDBSearch_Search_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));

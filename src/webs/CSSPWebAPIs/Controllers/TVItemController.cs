@@ -17,11 +17,9 @@ namespace CSSPWebAPIs.Controllers
 {
     public partial interface ITVItemController
     {
-        Task<ActionResult<List<TVItem>>> GetTVItemStartDateList(DateTime StartDate);
+        Task<ActionResult<List<TVItem>>> GetTVItemStartDateList(int Year, int Month, int Day);
     }
 
-    [Route("api/{culture}/[controller]")]
-    [Authorize]
     public partial class TVItemController : ControllerBase, ITVItemController
     {
         #region Variables
@@ -34,13 +32,14 @@ namespace CSSPWebAPIs.Controllers
         #endregion Constructors
 
         #region Functions public
-        [HttpGet("GetTVItemStartDateList/{StartDate}")]
-        public async Task<ActionResult<List<TVItem>>> GetTVItemStartDateList(DateTime StartDate)
+        [Route("GetTVItemStartDateList/{Year}/{Month}/{Day}")]
+        [HttpGet]
+        public async Task<ActionResult<List<TVItem>>> GetTVItemStartDateList(int Year, int Month, int Day)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await TVItemService.GetTVItemStartDateList(StartDate);
+            return await TVItemService.GetTVItemStartDateList(Year, Month, Day);
         }
         #endregion Functions public
 

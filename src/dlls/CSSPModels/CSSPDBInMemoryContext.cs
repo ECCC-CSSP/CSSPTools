@@ -8,7 +8,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace CSSPModels
 {
-    public partial class CSSPDBInMemoryContext : BaseContext
+    public partial class CSSPDBInMemoryContext : CSSPDBBaseContext
     {
         public CSSPDBInMemoryContext()
         {

@@ -21,8 +21,8 @@ namespace CSSPDesktopServices.Services
             AppendStatus(new AppendEventArgs(appTextModel.CheckIfLoginIsRequired));
 
             // doing Contact
-            Contact contact = (from c in dbLogin.Contacts
-                               select c).FirstOrDefault();
+            contact = (from c in dbLogin.Contacts
+                       select c).FirstOrDefault();
 
             if (contact == null)
             {
@@ -33,7 +33,6 @@ namespace CSSPDesktopServices.Services
             }
 
             AppendStatus(new AppendEventArgs(string.Format(appTextModel.Found_InDBLogin, "Contact")));
-            ContactLoggedIn = contact;
 
             // doing preference
             Preference preferenceInDB = (from c in dbLogin.Preferences
@@ -41,6 +40,7 @@ namespace CSSPDesktopServices.Services
 
             if (preferenceInDB == null)
             {
+                preference = null;
                 AppendStatus(new AppendEventArgs(string.Format(appTextModel.CouldNotFind_InDBLogin, "Preference")));
 
                 LoginRequired = true;

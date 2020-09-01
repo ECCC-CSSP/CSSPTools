@@ -17,7 +17,7 @@ namespace CSSPDesktopServices.Services
 {
     public partial class CSSPDesktopService : ICSSPDesktopService
     {
-        private async Task<bool> DoLoginPreference(string LoginEmail, string Password)
+        private async Task<bool> DoLoginPreference(LoginModel loginModel)
         {
             using (HttpClient httpClient = new HttpClient())
             {
@@ -69,12 +69,12 @@ namespace CSSPDesktopServices.Services
                 Preference preference = new Preference()
                 {
                     PreferenceID = 1,
-                    AzureStore = await Scramble(AzureStore),
-                    LoginEmail = await Scramble(LoginEmail),
-                    Password = await Scramble(Password),
+                    AzureStore = await LocalService.Scramble(AzureStore),
+                    LoginEmail = await LocalService.Scramble(loginModel.LoginEmail),
+                    Password = await LocalService.Scramble(loginModel.Password),
                     HasInternetConnection = true,
                     LoggedIn = true,
-                    Token = await Scramble(contact.Token),
+                    Token = await LocalService.Scramble(contact.Token),
                 };
 
                 try

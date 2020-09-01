@@ -33,6 +33,7 @@ namespace CSSPServices.Tests
         private IAspNetUserService AspNetUserService { get; set; }
         private IContactService ContactService { get; set; }
         private ILoggedInService LoggedInService { get; set; }
+        private ILocalService LocalService { get; set; }
         private ITVItemService TVItemService { get; set; }
         private CSSPDBContext db { get; set; }
         private string AzureStoreCSSPJSONPath { get; set; }
@@ -127,6 +128,7 @@ namespace CSSPServices.Tests
             Services.AddSingleton<ICSSPFileService, CSSPFileService>();
             Services.AddSingleton<IDownloadGzFileService, DownloadGzFileService>();
             Services.AddSingleton<ITVItemService, TVItemService>();
+            Services.AddSingleton<ILocalService, LocalService>();
 
             Provider = Services.BuildServiceProvider();
             Assert.NotNull(Provider);
@@ -182,8 +184,10 @@ namespace CSSPServices.Tests
             await LoggedInService.SetLoggedInContactInfo(contact);
             Assert.NotNull(LoggedInService.LoggedInContactInfo);
 
-            // will fill the LoggedInService.HasInternetConnection with true | false
-            await LoggedInService.CheckInternetConnection();
+            LocalService = Provider.GetService<ILocalService>();
+            Assert.NotNull(LocalService);
+
+            LoggedInService.HasInternetConnection = await LocalService.CheckInternetConnection();
 
             LoggedInService.DBLocation = DBLocationEnum.Server;
 

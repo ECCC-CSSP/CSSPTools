@@ -25,11 +25,10 @@ namespace CSSPServices
         #endregion Variables
 
         #region Properties
-        private CSSPDBContext db { get; }
         private CSSPDBFilesManagementContext dbFM { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
+        private ILocalService LocalService { get; }
         private IEnums enums { get; }
         private ICSSPFileService CSSPFileService { get; }
         private string AzureStoreConnectionString { get; set; }
@@ -40,14 +39,13 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public DownloadGzFileService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, 
-            IEnums enums, CSSPDBContext db, ICSSPFileService CSSPFileService) : base()
+        public DownloadGzFileService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, ILocalService LocalService, 
+            IEnums enums, ICSSPFileService CSSPFileService) : base()
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
+            this.LocalService = LocalService;
             this.enums = enums;
-            this.db = db;
             this.CSSPFileService = CSSPFileService;
 
             AzureStoreConnectionString = Configuration.GetValue<string>("AzureStoreConnectionString");

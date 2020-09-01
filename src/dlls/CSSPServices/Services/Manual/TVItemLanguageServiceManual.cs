@@ -22,7 +22,7 @@ namespace CSSPServices
 {
    public partial interface ITVItemLanguageService
     {
-       Task<ActionResult<List<TVItemLanguage>>> GetTVItemLanguageStartDateList(DateTime StartDate);
+       Task<ActionResult<List<TVItemLanguage>>> GetTVItemLanguageStartDateList(int Year, int Month, int Day);
     }
     public partial class TVItemLanguageService : ControllerBase, ITVItemLanguageService
     {
@@ -36,8 +36,10 @@ namespace CSSPServices
         #endregion Constructors
 
         #region Functions public 
-        public async Task<ActionResult<List<TVItemLanguage>>> GetTVItemLanguageStartDateList(DateTime StartDate)
+        public async Task<ActionResult<List<TVItemLanguage>>> GetTVItemLanguageStartDateList(int Year, int Month, int Day)
         {
+            DateTime StartDate = new DateTime(Year, Month, Day);
+
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());

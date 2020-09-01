@@ -100,6 +100,7 @@ namespace CSSPServices.Tests
             if (OmitPropName != "LoginEmail") registerModel.LoginEmail = GetRandomString("", 10);
             if (OmitPropName != "Password") registerModel.Password = GetRandomString("", 10);
             if (OmitPropName != "ConfirmPassword") registerModel.ConfirmPassword = GetRandomString("", 10);
+            if (OmitPropName != "ContactTitle") registerModel.ContactTitle = (ContactTitleEnum)GetRandomEnumType(typeof(ContactTitleEnum));
 
             return registerModel;
         }
@@ -114,6 +115,10 @@ namespace CSSPServices.Tests
             Assert.False(string.IsNullOrWhiteSpace(registerModelList[0].LoginEmail));
             Assert.False(string.IsNullOrWhiteSpace(registerModelList[0].Password));
             Assert.False(string.IsNullOrWhiteSpace(registerModelList[0].ConfirmPassword));
+            if (registerModelList[0].ContactTitle != null)
+            {
+                Assert.NotNull(registerModelList[0].ContactTitle);
+            }
         }
         #endregion Functions private
     }

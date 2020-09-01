@@ -22,12 +22,12 @@ namespace CSSPServices
     {
         private async Task<ActionResult<List<TVItemLanguage>>> DoSearch(string SearchTerm, int TVItemID)
         {
-            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
+            if (LocalService.contact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.RunningOn != RunningOnEnum.Local)
+            if (LocalService.RunningOn != RunningOnEnum.Local)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Search")));
             }

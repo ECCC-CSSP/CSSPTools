@@ -12,7 +12,7 @@ using Xunit;
 
 namespace CSSPServices.Tests
 {
-    public class LoggedInServiceServiceTests
+    public class LoggedInServicesTests
     {
         #region Variables
         #endregion Variables
@@ -28,7 +28,7 @@ namespace CSSPServices.Tests
         #endregion Properties
 
         #region Constructors
-        public LoggedInServiceServiceTests()
+        public LoggedInServicesTests()
         {
         }
         #endregion Constructors

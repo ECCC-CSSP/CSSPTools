@@ -45,8 +45,8 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public TVTypeUserAuthorizationService(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, 
-           IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal = null, 
+        public TVTypeUserAuthorizationService(ICSSPCultureService CSSPCultureService, IEnums enums, 
+           ILoggedInService LoggedInService = null, CSSPDBContext db = null, CSSPDBLocalContext dbLocal = null, 
            CSSPDBInMemoryContext dbIM = null, CSSPDBLoginContext dbLogin = null)
         {
             this.CSSPCultureService = CSSPCultureService;

@@ -15,17 +15,12 @@ using Xunit;
 
 namespace CSSPDesktopServices.Tests
 {
-    public class LoginTests
+    public partial class CSSPDesktopServiceTests
     {
         #region Variables
         #endregion Variables
 
         #region Properties
-        private IConfiguration Configuration { get; set; }
-        private IServiceProvider Provider { get; set; }
-        private IServiceCollection Services { get; set; }
-        private ICSSPDesktopService CSSPDesktopService { get; set; }
-        private ICSSPSQLiteService CSSPSQLiteService { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -34,98 +29,23 @@ namespace CSSPDesktopServices.Tests
         #region Tests
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task Login_Good_Test(string culture)
+        //[InlineData("fr-CA")]
+        public async Task CSSPDesktopService_Login_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            string LoginEmail = Configuration.GetValue<string>("LoginEmail");
-            string Password = Configuration.GetValue<string>("Password");
+            LoginModel loginModel = new LoginModel()
+            {
+                LoginEmail = Configuration.GetValue<string>("LoginEmail"),
+                Password = Configuration.GetValue<string>("Password"),
+            };
 
-            bool retBool = await CSSPDesktopService.Login(LoginEmail, Password);
+            bool retBool = await CSSPDesktopService.Login(loginModel);
             Assert.True(retBool);
         }
         #endregion Tests
 
         #region Functions private
-        private async Task<bool> Setup(string culture)
-        {
-            Configuration = new ConfigurationBuilder()
-               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-               .AddJsonFile("appsettings_csspdesktopservicestests.json")
-               .AddUserSecrets("6277018e-7198-41f3-9906-f8a6ccfa30e5")
-               .Build();
-
-            Services = new ServiceCollection();
-
-            Services.AddSingleton<IConfiguration>(Configuration);
-
-            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
-            Services.AddSingleton<IEnums, Enums>();
-            Services.AddSingleton<ICSSPDesktopService, CSSPDesktopService>();
-            Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
-
-            string CSSPDBLocal = Configuration.GetValue<string>("CSSPDBLocal");
-            Assert.NotNull(CSSPDBLocal);
-
-            FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocal);
-
-            Services.AddDbContext<CSSPDBLocalContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
-            });
-
-            string CSSPDBFilesManagement = Configuration.GetValue<string>("CSSPDBFilesManagement");
-            Assert.NotNull(CSSPDBFilesManagement);
-
-            FileInfo fiCSSPDBFileManagement = new FileInfo(CSSPDBFilesManagement);
-
-            Services.AddDbContext<CSSPDBFilesManagementContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiCSSPDBFileManagement.FullName }");
-            });
-
-            string CSSPDBLogin = Configuration.GetValue<string>("CSSPDBLogin");
-            Assert.NotNull(CSSPDBLogin);
-
-            FileInfo fiCSSPDBLogin = new FileInfo(CSSPDBLogin);
-
-            Services.AddDbContext<CSSPDBLoginContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiCSSPDBLogin.FullName }");
-            });
-
-            Provider = Services.BuildServiceProvider();
-            Assert.NotNull(Provider);
-
-            CSSPDesktopService = Provider.GetService<ICSSPDesktopService>();
-            Assert.NotNull(CSSPDesktopService);
-
-            CSSPSQLiteService = Provider.GetService<ICSSPSQLiteService>();
-            Assert.NotNull(CSSPSQLiteService);
-
-            if (culture == "fr_CA")
-            {
-                CSSPDesktopService.IsEnglish = false;
-            }
-            else
-            {
-                CSSPDesktopService.IsEnglish = true;
-            }
-
-            if (CSSPDesktopService.IsEnglish)
-            {
-                CSSPDesktopService.appTextModel = new AppTextModelEN();
-            }
-            else
-            {
-                CSSPDesktopService.appTextModel = new AppTextModelFR();
-            }
-
-            if (!CSSPDesktopService.ReadConfiguration().GetAwaiter().GetResult()) return false;
-
-            return await Task.FromResult(true);
-        }
         #endregion Functions private
     }
 }

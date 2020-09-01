@@ -1928,10 +1928,10 @@ namespace CSSPEnums
 
             switch (runningOn)
             {
-                case RunningOnEnum.Local:
-                    return CSSPCultureEnumsRes.RunningOnEnumLocal;
                 case RunningOnEnum.Azure:
                     return CSSPCultureEnumsRes.RunningOnEnumAzure;
+                case RunningOnEnum.Local:
+                    return CSSPCultureEnumsRes.RunningOnEnumLocal;
                 default:
                     return CSSPCultureEnumsRes.Empty;
             }

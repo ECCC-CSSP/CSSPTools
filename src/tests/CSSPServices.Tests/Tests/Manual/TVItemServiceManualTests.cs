@@ -65,7 +65,7 @@ namespace CSSPServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            var actionTVItem = await TVItemService.GetTVItemStartDateList(new DateTime(2020, 5, 26));
+            var actionTVItem = await TVItemService.GetTVItemStartDateList(2020, 5, 26);
             Assert.Equal(200, ((ObjectResult)actionTVItem.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionTVItem.Result).Value);
             List<TVItem> TVItemList = (List<TVItem>)((OkObjectResult)actionTVItem.Result).Value;

@@ -1,9 +1,0 @@
-﻿Requirements: 
-C:\\CSSPTools\\src\\dlls\\_package\\netcoreapp3.1\CSSPModels.dll
-
-Files created:
-C:\CSSPTools\src\tests\CSSPModels.Tests\tests\{TypeName}Test.cs
-
-Recompilation of project required
-
-C:\CSSPTools\src\dlls\CSSPModels\CSSPModels.csproj

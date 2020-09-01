@@ -21,17 +21,17 @@ namespace CSSPDesktopServices.Services
         #endregion Properties
 
         #region Functions private
-        private async Task<bool> DoLoginContact(string LoginEmail, string Password)
+        private async Task<bool> DoLoginContact(LoginModel loginModel)
         {
             AppendStatus(new AppendEventArgs(appTextModel.Login));
 
-            if (string.IsNullOrWhiteSpace(LoginEmail))
+            if (string.IsNullOrWhiteSpace(loginModel.LoginEmail))
             {
                 AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes._IsRequired, "LoginEmail")));
                 return await Task.FromResult(false);
             }
 
-            if (string.IsNullOrWhiteSpace(Password))
+            if (string.IsNullOrWhiteSpace(loginModel.Password))
             {
                 AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes._IsRequired, "Password")));
                 return await Task.FromResult(false);
@@ -41,12 +41,6 @@ namespace CSSPDesktopServices.Services
             {
                 var contentType = new MediaTypeWithQualityHeaderValue("application/json");
                 httpClient.DefaultRequestHeaders.Accept.Add(contentType);
-
-                LoginModel loginModel = new LoginModel()
-                {
-                    LoginEmail = LoginEmail,
-                    Password = Password
-                };
 
                 AppendStatus(new AppendEventArgs(string.Format(appTextModel.PostRequestLoginEmailAndPasswordTo_, $"{ CSSPAzureUrl }api/en-CA/auth/token")));
 
@@ -60,7 +54,7 @@ namespace CSSPDesktopServices.Services
                     {
                         if ((int)response.StatusCode == 400)
                         {
-                            AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes.UnableToLoginAs_WithProvidedPassword, LoginEmail)));
+                            AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail)));
                             return await Task.FromResult(false);
                         }
                         else
@@ -74,7 +68,7 @@ namespace CSSPDesktopServices.Services
 
                     if (contact == null)
                     {
-                        AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes.UnableToLoginAs_WithProvidedPassword, LoginEmail)));
+                        AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail)));
                         return await Task.FromResult(false);
                     }
 

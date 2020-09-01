@@ -28,12 +28,12 @@ namespace CSSPServices
             bool gzExistLocaly = false;
             bool gzLocalIsUpToDate = false;
 
-            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
+            if (LocalService.contact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.RunningOn != RunningOnEnum.Local)
+            if (LocalService.RunningOn != RunningOnEnum.Local)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "ReadJSON")));
             }
@@ -47,7 +47,7 @@ namespace CSSPServices
                 gzExistLocaly = true;
             }
 
-            if (LoggedInService.HasInternetConnection)
+            if (LocalService.HasInternetConnection)
             {
                 BlobClient blobClient = new BlobClient(AzureStoreConnectionString, AzureStoreCSSPJSONPath, fileName);
                 BlobProperties blobProperties = null;
@@ -63,9 +63,7 @@ namespace CSSPServices
                     {
                         using (HttpClient httpClient = new HttpClient())
                         {
-                            Contact contact = LoggedInService.LoggedInContactInfo.LoggedInContact;
-
-                            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
+                            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", LocalService.contact.Token);
                             var response = httpClient.GetAsync($"{ CSSPAzureUrl }api/en-CA/CreateGzFile/{ (int)webType }/{ TVItemID }/{ (int)webTypeYear }");
 
                             if ((int)response.Result.StatusCode != 200)
