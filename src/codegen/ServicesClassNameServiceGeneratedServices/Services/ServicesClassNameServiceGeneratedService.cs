@@ -81,7 +81,9 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                 new AppSettingParameter() { Parameter = "CSSPModels", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\_package\\netcoreapp3.1\\CSSPModels.dll", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "CSSPDB2", ExpectedValue = "Data Source=.\\sqlexpress;Initial Catalog=CSSPDB2;Integrated Security=True" },
                 new AppSettingParameter() { Parameter = "TestDB", ExpectedValue = "Data Source=.\\sqlexpress;Initial Catalog=TestDB;Integrated Security=True" },
-                new AppSettingParameter() { Parameter = "ClassNameFile", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPServices\\Services\\Generated\\{TypeName}ServiceGenerated.cs" },
+                new AppSettingParameter() { Parameter = "ClassNameDBFile", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPDBServices\\Services\\Generated\\{TypeName}DBServiceGenerated.cs" },
+                new AppSettingParameter() { Parameter = "ClassNameDBLocalFile", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPDBLocalServices\\Services\\Generated\\{TypeName}DBLocalServiceGenerated.cs" },
+                new AppSettingParameter() { Parameter = "ClassNameDBLocalIMFile", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPDBLocalIMServices\\Services\\Generated\\{TypeName}DBLocalIMServiceGenerated.cs" },
             };
 
             return await Task.FromResult(true);

@@ -9,8 +9,27 @@ namespace ServicesClassNameServiceGeneratedServices.Services
 {
     public partial class ServicesClassNameServiceGeneratedService : IServicesClassNameServiceGeneratedService
     {
-        private async Task<bool> CreateValidation_Exist(PropertyInfo prop, CSSPProp csspProp, string TypeName, string TypeNameLower, StringBuilder sb)
+        private async Task<bool> CreateValidation_Exist(PropertyInfo prop, CSSPProp csspProp, string TypeName, string TypeNameLower, StringBuilder sb, string DBType)
         {
+            string db = "";
+            if (DBType == "DB")
+            {
+                db = "db";
+            }
+            if (DBType == "DBLocal")
+            {
+                db = "dbLocal";
+            }
+            if (DBType == "DBLocalIM")
+            {
+                db = "dbLocalIM";
+            }
+            string plurial = "s";
+            if (TypeName == "Address")
+            {
+                plurial = "es";
+            }
+
             if (!string.IsNullOrWhiteSpace(csspProp.ExistTypeName) && !string.IsNullOrWhiteSpace(csspProp.ExistPlurial) && !string.IsNullOrWhiteSpace(csspProp.ExistFieldID))
             {
                 if (TypeName == "TVItem" && (csspProp.PropName == "ParentID" || csspProp.PropName == "LastUpdateContactTVItemID"))
@@ -18,22 +37,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                     sb.AppendLine(@"            if (tvItem.TVType != TVTypeEnum.Root)");
                     sb.AppendLine(@"            {");
                     sb.AppendLine($@"                { csspProp.ExistTypeName } { csspProp.ExistTypeName }{ csspProp.PropName } = null;");
-                    sb.AppendLine(@"                if (LoggedInService.DBLocation == DBLocationEnum.Local)");
-                    sb.AppendLine(@"                {");
-
-                    sb.AppendLine($@"                    { csspProp.ExistTypeName }{ csspProp.PropName } = (from c in dbLocal.{ csspProp.ExistTypeName }{ csspProp.ExistPlurial } where c.{ csspProp.ExistFieldID } == { TypeNameLower }.{ csspProp.PropName } select c).FirstOrDefault();");
-                    sb.AppendLine($@"                    if ({ csspProp.ExistTypeName }{ csspProp.PropName } == null)");
-                    sb.AppendLine(@"                    {");
-                    sb.AppendLine($@"                        { csspProp.ExistTypeName }{ csspProp.PropName } = (from c in dbIM.{ csspProp.ExistTypeName }{ csspProp.ExistPlurial } where c.{ csspProp.ExistFieldID } == { TypeNameLower }.{ csspProp.PropName } select c).FirstOrDefault();");
-                    sb.AppendLine(@"                    }");
-
-                    sb.AppendLine(@"                }");
-                    sb.AppendLine(@"                else");
-                    sb.AppendLine(@"                {");
-
-                    sb.AppendLine($@"                    { csspProp.ExistTypeName }{ csspProp.PropName } = (from c in db.{ csspProp.ExistTypeName }{ csspProp.ExistPlurial } where c.{ csspProp.ExistFieldID } == { TypeNameLower }.{ csspProp.PropName } select c).FirstOrDefault();");
-
-                    sb.AppendLine(@"                }");
+                    sb.AppendLine($@"                { csspProp.ExistTypeName }{ csspProp.PropName } = (from c in { db }.{ csspProp.ExistTypeName }{ csspProp.ExistPlurial } where c.{ csspProp.ExistFieldID } == { TypeNameLower }.{ csspProp.PropName } select c).FirstOrDefault();");
                     sb.AppendLine(@"");
                     sb.AppendLine($@"                if ({ csspProp.ExistTypeName }{ csspProp.PropName } == null)");
                     sb.AppendLine(@"                {");
@@ -66,22 +70,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                         sb.AppendLine($@"            if ({ TypeNameLower }.{ csspProp.PropName } != null)");
                         sb.AppendLine(@"            {");
                         sb.AppendLine($@"                { csspProp.ExistTypeName } { csspProp.ExistTypeName }{ csspProp.PropName } = null;");
-                        sb.AppendLine(@"                if (LoggedInService.DBLocation == DBLocationEnum.Local)");
-                        sb.AppendLine(@"                {");
-
-                        sb.AppendLine($@"                    { csspProp.ExistTypeName }{ csspProp.PropName } = (from c in dbLocal.{ csspProp.ExistTypeName }{ csspProp.ExistPlurial } where c.{ csspProp.ExistFieldID } == { TypeNameLower }.{ csspProp.PropName } select c).FirstOrDefault();");
-                        sb.AppendLine($@"                    if ({ csspProp.ExistTypeName }{ csspProp.PropName } == null)");
-                        sb.AppendLine(@"                    {");
-                        sb.AppendLine($@"                        { csspProp.ExistTypeName }{ csspProp.PropName } = (from c in dbIM.{ csspProp.ExistTypeName }{ csspProp.ExistPlurial } where c.{ csspProp.ExistFieldID } == { TypeNameLower }.{ csspProp.PropName } select c).FirstOrDefault();");
-                        sb.AppendLine(@"                    }");
-
-                        sb.AppendLine(@"                }");
-                        sb.AppendLine(@"                else");
-                        sb.AppendLine(@"                {");
-
-                        sb.AppendLine($@"                    { csspProp.ExistTypeName }{ csspProp.PropName } = (from c in db.{ csspProp.ExistTypeName }{ csspProp.ExistPlurial } where c.{ csspProp.ExistFieldID } == { TypeNameLower }.{ csspProp.PropName } select c).FirstOrDefault();");
-
-                        sb.AppendLine(@"                }");
+                        sb.AppendLine($@"                { csspProp.ExistTypeName }{ csspProp.PropName } = (from c in { db }.{ csspProp.ExistTypeName }{ csspProp.ExistPlurial } where c.{ csspProp.ExistFieldID } == { TypeNameLower }.{ csspProp.PropName } select c).FirstOrDefault();");
                         sb.AppendLine(@"");
                         sb.AppendLine($@"                if ({ csspProp.ExistTypeName }{ csspProp.PropName } == null)");
                         sb.AppendLine(@"                {");
@@ -110,22 +99,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                     else
                     {
                         sb.AppendLine($@"            { csspProp.ExistTypeName } { csspProp.ExistTypeName }{ csspProp.PropName } = null;");
-                        sb.AppendLine(@"            if (LoggedInService.DBLocation == DBLocationEnum.Local)");
-                        sb.AppendLine(@"            {");
-
-                        sb.AppendLine($@"                { csspProp.ExistTypeName }{ csspProp.PropName } = (from c in dbLocal.{ csspProp.ExistTypeName }{ csspProp.ExistPlurial } where c.{ csspProp.ExistFieldID } == { TypeNameLower }.{ csspProp.PropName } select c).FirstOrDefault();");
-                        sb.AppendLine($@"                if ({ csspProp.ExistTypeName }{ csspProp.PropName } == null)");
-                        sb.AppendLine(@"                {");
-                        sb.AppendLine($@"                    { csspProp.ExistTypeName }{ csspProp.PropName } = (from c in dbIM.{ csspProp.ExistTypeName }{ csspProp.ExistPlurial } where c.{ csspProp.ExistFieldID } == { TypeNameLower }.{ csspProp.PropName } select c).FirstOrDefault();");
-                        sb.AppendLine(@"                }");
-
-                        sb.AppendLine(@"            }");
-                        sb.AppendLine(@"            else");
-                        sb.AppendLine(@"            {");
-
-                        sb.AppendLine($@"                { csspProp.ExistTypeName }{ csspProp.PropName } = (from c in db.{ csspProp.ExistTypeName }{ csspProp.ExistPlurial } where c.{ csspProp.ExistFieldID } == { TypeNameLower }.{ csspProp.PropName } select c).FirstOrDefault();");
-
-                        sb.AppendLine(@"            }");
+                        sb.AppendLine($@"            { csspProp.ExistTypeName }{ csspProp.PropName } = (from c in { db }.{ csspProp.ExistTypeName }{ csspProp.ExistPlurial } where c.{ csspProp.ExistFieldID } == { TypeNameLower }.{ csspProp.PropName } select c).FirstOrDefault();");
                         sb.AppendLine(@"");
                         sb.AppendLine($@"            if ({ csspProp.ExistTypeName }{ csspProp.PropName } == null)");
                         sb.AppendLine(@"            {");

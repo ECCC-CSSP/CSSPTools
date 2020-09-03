@@ -6,7 +6,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
 {
     public partial class ServicesClassNameServiceTestGeneratedService : IServicesClassNameServiceTestGeneratedService
     {
-        private async Task<bool> CreateClass_Min_And_Max_Properties_Testing(CSSPProp csspProp, string TypeName, string TypeNameLower, StringBuilder sb)
+        private async Task<bool> CreateClass_Min_And_Max_Properties_Testing(CSSPProp csspProp, string TypeName, string TypeNameLower, StringBuilder sb, string DBType)
         {
             if (csspProp.IsVirtual || csspProp.IsKey || csspProp.PropName == "ValidationResults")
             {
@@ -42,11 +42,11 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                             sb.AppendLine($@"            { TypeNameLower }.{ csspProp.PropName } = { (csspProp.Min - 1).ToString() }{ numbExt };");
                             if (TypeName == "Contact")
                             {
-                                sb.AppendLine($@"            action{ TypeName } = await { TypeName }Service.Post({ TypeNameLower }, AddContactTypeEnum.First);");
+                                sb.AppendLine($@"            action{ TypeName } = await { TypeName }{ DBType }Service.Post({ TypeNameLower }, AddContactTypeEnum.First);");
                             }
                             else
                             {
-                                sb.AppendLine($@"            action{ TypeName } = await { TypeName }Service.Post({ TypeNameLower });");
+                                sb.AppendLine($@"            action{ TypeName } = await { TypeName }{ DBType }Service.Post({ TypeNameLower });");
                             }
                             if (csspProp.Max != null)
                             {
@@ -66,11 +66,11 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                             sb.AppendLine($@"            { TypeNameLower }.{ csspProp.PropName } = { csspProp.Max + 1 }{ numbExt };");
                             if (TypeName == "Contact")
                             {
-                                sb.AppendLine($@"            action{ TypeName } = await { TypeName }Service.Post({ TypeNameLower }, AddContactTypeEnum.First);");
+                                sb.AppendLine($@"            action{ TypeName } = await { TypeName }{ DBType }Service.Post({ TypeNameLower }, AddContactTypeEnum.First);");
                             }
                             else
                             {
-                                sb.AppendLine($@"            action{ TypeName } = await { TypeName }Service.Post({ TypeNameLower });");
+                                sb.AppendLine($@"            action{ TypeName } = await { TypeName }{ DBType }Service.Post({ TypeNameLower });");
                             }
                             if (csspProp.Min != null)
                             {
@@ -80,7 +80,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                             {
                                 sb.AppendLine($@"            Assert.IsType<BadRequestObjectResult>(action{ TypeName }.Result);");
                             }
-                            sb.AppendLine($@"            //Assert.AreEqual(count, { TypeNameLower }Service.Get{ TypeName }List().Count());");
+                            sb.AppendLine($@"            //Assert.AreEqual(count, { TypeNameLower }{ DBType }Service.Get{ TypeName }List().Count());");
                         }
                     }
                     break;
@@ -107,11 +107,11 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                 sb.AppendLine($@"            { TypeNameLower }.{ csspProp.PropName } = GetRandomString("""", { (csspProp.Min - 1).ToString() });");
                                 if (TypeName == "Contact")
                                 {
-                                    sb.AppendLine($@"            action{ TypeName } = await { TypeName }Service.Post({ TypeNameLower }, AddContactTypeEnum.First);");
+                                    sb.AppendLine($@"            action{ TypeName } = await { TypeName }{ DBType }Service.Post({ TypeNameLower }, AddContactTypeEnum.First);");
                                 }
                                 else
                                 {
-                                    sb.AppendLine($@"            action{ TypeName } = await { TypeName }Service.Post({ TypeNameLower });");
+                                    sb.AppendLine($@"            action{ TypeName } = await { TypeName }{ DBType }Service.Post({ TypeNameLower });");
                                 }
                                 if (csspProp.Max != null)
                                 {
@@ -121,7 +121,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                 {
                                     sb.AppendLine($@"            Assert.IsType<BadRequestObjectResult>(action{ TypeName }.Result);");
                                 }
-                                sb.AppendLine($@"            //Assert.AreEqual(count, { TypeNameLower }Service.Get{ TypeName }List().Count());");
+                                sb.AppendLine($@"            //Assert.AreEqual(count, { TypeNameLower }{ DBType }Service.Get{ TypeName }List().Count());");
                             }
                         }
                         if (csspProp.Max > 0)
@@ -132,11 +132,11 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                             sb.AppendLine($@"            { TypeNameLower }.{ csspProp.PropName } = GetRandomString("""", { csspProp.Max + 1 });");
                             if (TypeName == "Contact")
                             {
-                                sb.AppendLine($@"            action{ TypeName } = await { TypeName }Service.Post({ TypeNameLower }, AddContactTypeEnum.First);");
+                                sb.AppendLine($@"            action{ TypeName } = await { TypeName }{ DBType }Service.Post({ TypeNameLower }, AddContactTypeEnum.First);");
                             }
                             else
                             {
-                                sb.AppendLine($@"            action{ TypeName } = await { TypeName }Service.Post({ TypeNameLower });");
+                                sb.AppendLine($@"            action{ TypeName } = await { TypeName }{ DBType }Service.Post({ TypeNameLower });");
                             }
                             if (csspProp.Min != null)
                             {
@@ -146,7 +146,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                             {
                                 sb.AppendLine($@"            Assert.IsType<BadRequestObjectResult>(action{ TypeName }.Result);");
                             }
-                            sb.AppendLine($@"            //Assert.AreEqual(count, { TypeNameLower }Service.Get{ TypeName }List().Count());");
+                            sb.AppendLine($@"            //Assert.AreEqual(count, { TypeNameLower }{ DBType }Service.Get{ TypeName }List().Count());");
                         }
                     }
                     break;

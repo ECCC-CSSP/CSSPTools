@@ -6,7 +6,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
 {
     public partial class ServicesClassNameServiceTestGeneratedService : IServicesClassNameServiceTestGeneratedService
     {
-        private async Task<bool> CreateClass_Required_Properties_Testing(CSSPProp csspProp, string TypeName, string TypeNameLower, StringBuilder sb)
+        private async Task<bool> CreateClass_Required_Properties_Testing(CSSPProp csspProp, string TypeName, string TypeNameLower, StringBuilder sb, string DBType)
         {
             if (csspProp.IsVirtual || csspProp.IsKey || csspProp.PropName == "ValidationResults")
             {
@@ -31,11 +31,11 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                             sb.AppendLine($@"            { TypeNameLower }.{ csspProp.PropName } = new DateTime();");
                             if (TypeName == "Contact")
                             {
-                                sb.AppendLine($@"            action{ TypeName } = await { TypeName }Service.Post({ TypeNameLower }, AddContactTypeEnum.LoggedIn);");
+                                sb.AppendLine($@"            action{ TypeName } = await { TypeName }{ DBType }Service.Post({ TypeNameLower }, AddContactTypeEnum.LoggedIn);");
                             }
                             else
                             {
-                                sb.AppendLine($@"            action{ TypeName } = await { TypeName }Service.Post({ TypeNameLower });");
+                                sb.AppendLine($@"            action{ TypeName } = await { TypeName }{ DBType }Service.Post({ TypeNameLower });");
                             }
                             sb.AppendLine($@"            Assert.IsType<BadRequestObjectResult>(action{ TypeName }.Result);");
                         }
@@ -49,11 +49,11 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                             sb.AppendLine($@"            { TypeNameLower } = GetFilledRandom{ TypeName }(""{ csspProp.PropName }"");");
                             if (TypeName == "Contact")
                             {
-                                sb.AppendLine($@"            action{ TypeName } = await { TypeName }Service.Post({ TypeNameLower }, AddContactTypeEnum.LoggedIn);");
+                                sb.AppendLine($@"            action{ TypeName } = await { TypeName }{ DBType }Service.Post({ TypeNameLower }, AddContactTypeEnum.LoggedIn);");
                             }
                             else
                             {
-                                sb.AppendLine($@"            action{ TypeName } = await { TypeName }Service.Post({ TypeNameLower });");
+                                sb.AppendLine($@"            action{ TypeName } = await { TypeName }{ DBType }Service.Post({ TypeNameLower });");
                             }
                             sb.AppendLine($@"            Assert.IsType<BadRequestObjectResult>(action{ TypeName }.Result);");
                             sb.AppendLine(@"");

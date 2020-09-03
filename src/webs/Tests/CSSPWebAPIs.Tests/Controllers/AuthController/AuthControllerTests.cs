@@ -163,7 +163,7 @@ namespace AuthController.Tests
                 contact = JsonSerializer.Deserialize<Contact>(response.Content.ReadAsStringAsync().Result);
             }
 
-            await LoggedInService.SetLoggedInContactInfo(contact);
+            await LoggedInService.SetLoggedInContactInfo(contact.Id);
             LoggedInService.DBLocation = DBLocationEnum.Server;
             LoggedInService.RunningOn = RunningOnEnum.Azure;
 

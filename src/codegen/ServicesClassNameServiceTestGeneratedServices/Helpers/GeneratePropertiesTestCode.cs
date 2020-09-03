@@ -1,5 +1,6 @@
 ﻿using GenerateCodeBaseServices.Models;
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,25 +9,15 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
 {
     public partial class ServicesClassNameServiceTestGeneratedService : IServicesClassNameServiceTestGeneratedService
     {
-        private async Task<bool> GeneratePropertiesTestCode(string TypeName, string TypeNameLower, Type type, StringBuilder sb)
+        private async Task<bool> GeneratePropertiesTestCode(string TypeName, string TypeNameLower, Type type, StringBuilder sb, string DBType)
         {
             sb.AppendLine(@"        #region Tests Generated Properties");
             sb.AppendLine(@"        [Theory]");
-            sb.AppendLine(@"        [InlineData(""en-CA"", DBLocationEnum.Local)]");
-            sb.AppendLine(@"        [InlineData(""fr-CA"", DBLocationEnum.Local)]");
-            sb.AppendLine(@"        [InlineData(""en-CA"", DBLocationEnum.Server)]");
-            sb.AppendLine(@"        [InlineData(""fr-CA"", DBLocationEnum.Server)]");
-            sb.AppendLine($@"        public async Task { TypeName }_Properties_Test(string culture, DBLocationEnum DBLocation)");
+            sb.AppendLine(@"        [InlineData(""en-CA"")]");
+            sb.AppendLine(@"        //[InlineData(""fr-CA"")]");
+            sb.AppendLine($@"        public async Task { TypeName }_Properties_Test(string culture)");
             sb.AppendLine(@"        {");
-            sb.AppendLine(@"            // -------------------------------");
-            sb.AppendLine(@"            // -------------------------------");
-            sb.AppendLine(@"            // Properties testing");
-            sb.AppendLine(@"            // -------------------------------");
-            sb.AppendLine(@"            // -------------------------------");
-            sb.AppendLine(@"");
             sb.AppendLine(@"            Assert.True(await Setup(culture));");
-            sb.AppendLine(@"");
-            sb.AppendLine(@"            LoggedInService.DBLocation = DBLocation;");
             sb.AppendLine(@"");
             sb.AppendLine(@"            int count = 0;");
             sb.AppendLine(@"            if (count == 1)");
@@ -34,7 +25,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
             sb.AppendLine(@"                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]");
             sb.AppendLine(@"            }");
             sb.AppendLine(@"");
-            sb.AppendLine($@"            var action{ TypeName }List = await { TypeName }Service.Get{ TypeName }List();");
+            sb.AppendLine($@"            var action{ TypeName }List = await { TypeName }{ DBType }Service.Get{ TypeName }List();");
             sb.AppendLine($@"            Assert.Equal(200, ((ObjectResult)action{ TypeName }List.Result).StatusCode);");
             sb.AppendLine($@"            Assert.NotNull(((OkObjectResult)action{ TypeName }List.Result).Value);");
             sb.AppendLine($@"            List<{ TypeName }> { TypeNameLower }List = (List<{ TypeName }>)((OkObjectResult)action{ TypeName }List.Result).Value;");
@@ -131,14 +122,14 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                 }
                 if (csspProp.IsKey)
                 {
-                    if (!await CreateClass_Key_Testing(csspProp, TypeName, TypeNameLower, sb)) return await Task.FromResult(false);
+                    if (!await CreateClass_Key_Testing(csspProp, TypeName, TypeNameLower, sb, DBType)) return await Task.FromResult(false);
                 }
 
-                if (!await CreateClass_CSSPExist_Testing(csspProp, TypeName, TypeNameLower, sb)) return await Task.FromResult(false);
-                if (!await CreateClass_CSSPEnumType_Testing(csspProp, TypeName, TypeNameLower, sb)) return await Task.FromResult(false);
-                if (!await CreateClass_Required_Properties_Testing(csspProp, TypeName, TypeNameLower, sb)) return await Task.FromResult(false);
-                if (!await CreateClass_CSSPAfter_Testing(csspProp, TypeName, TypeNameLower, sb)) return await Task.FromResult(false);
-                if (!await CreateClass_Min_And_Max_Properties_Testing(csspProp, TypeName, TypeNameLower, sb)) return await Task.FromResult(false);
+                if (!await CreateClass_CSSPExist_Testing(csspProp, TypeName, TypeNameLower, sb, DBType)) return await Task.FromResult(false);
+                if (!await CreateClass_CSSPEnumType_Testing(csspProp, TypeName, TypeNameLower, sb, DBType)) return await Task.FromResult(false);
+                if (!await CreateClass_Required_Properties_Testing(csspProp, TypeName, TypeNameLower, sb, DBType)) return await Task.FromResult(false);
+                if (!await CreateClass_CSSPAfter_Testing(csspProp, TypeName, TypeNameLower, sb, DBType)) return await Task.FromResult(false);
+                if (!await CreateClass_Min_And_Max_Properties_Testing(csspProp, TypeName, TypeNameLower, sb, DBType)) return await Task.FromResult(false);
             }
 
             sb.AppendLine(@"        }");

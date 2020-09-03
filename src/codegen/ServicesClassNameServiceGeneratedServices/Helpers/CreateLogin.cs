@@ -11,11 +11,6 @@ namespace ServicesClassNameServiceGeneratedServices.Services
         {
             sb.AppendLine(@"        public async Task<ActionResult<Contact>> Login(LoginModel loginModel)");
             sb.AppendLine(@"        {");
-            sb.AppendLine(@"            if (LoggedInService.RunningOn != RunningOnEnum.Azure)");
-            sb.AppendLine(@"            {");
-            sb.AppendLine(@"                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnAzure, ""Login"")));");
-            sb.AppendLine(@"            }");
-            sb.AppendLine(@"");
             sb.AppendLine(@"            ValidationResults = LoginModelService.Validate(new ValidationContext(loginModel));");
             sb.AppendLine(@"            if (ValidationResults.Count() > 0)");
             sb.AppendLine(@"            {");

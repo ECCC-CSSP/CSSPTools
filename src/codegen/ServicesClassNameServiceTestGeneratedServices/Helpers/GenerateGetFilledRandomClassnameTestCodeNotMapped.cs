@@ -31,7 +31,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                     continue;
                 }
 
-                if (!await CreateGetFilledRandomClass(prop, csspProp, TypeName, TypeNameLower, sb, sbInMemory)) return await Task.FromResult(false);
+                if (!await CreateGetFilledRandomClass(prop, csspProp, TypeName, TypeNameLower, sb)) return await Task.FromResult(false);
             }
 
             sb.AppendLine(@"");

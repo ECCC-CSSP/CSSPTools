@@ -8,7 +8,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
 {
     public partial class ServicesClassNameServiceGeneratedService : IServicesClassNameServiceGeneratedService
     {
-        private async Task<bool> CreateClassServiceFunctionsPrivateGenerateValidate(DLLTypeInfo dllTypeInfoModels, string TypeName, string TypeNameLower, StringBuilder sb)
+        private async Task<bool> CreateClassServiceFunctionsPrivateGenerateValidate(DLLTypeInfo dllTypeInfoModels, string TypeName, string TypeNameLower, StringBuilder sb, string DBType)
         {
             bool EnumExist = false;
             foreach (PropertyInfo prop in dllTypeInfoModels.Type.GetProperties())
@@ -72,7 +72,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
 
                 if (!dllTypeInfoModels.HasNotMappedAttribute)
                 {
-                    if (!await CreateValidation_Key(prop, csspProp, dllTypeInfoModels.Type.Name, TypeNameLower, sb)) return await Task.FromResult(false);
+                    if (!await CreateValidation_Key(prop, csspProp, dllTypeInfoModels.Type.Name, TypeNameLower, sb, DBType)) return await Task.FromResult(false);
                 }
 
                 if (!await CreateValidation_NotNullable(prop, csspProp, dllTypeInfoModels.Type.Name, TypeNameLower, sb)) return await Task.FromResult(false);
@@ -80,7 +80,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                 if (!await CreateValidation_Email(prop, csspProp, dllTypeInfoModels.Type.Name, TypeNameLower, sb)) return await Task.FromResult(false);
                 if (!await CreateValidation_AfterYear(prop, csspProp, dllTypeInfoModels.Type.Name, TypeNameLower, sb)) return await Task.FromResult(false);
                 if (!await CreateValidation_Bigger(prop, csspProp, dllTypeInfoModels.Type.Name, TypeNameLower, sb)) return await Task.FromResult(false);
-                if (!await CreateValidation_Exist(prop, csspProp, dllTypeInfoModels.Type.Name, TypeNameLower, sb)) return await Task.FromResult(false);
+                if (!await CreateValidation_Exist(prop, csspProp, dllTypeInfoModels.Type.Name, TypeNameLower, sb, DBType)) return await Task.FromResult(false);
                 if (!await CreateValidation_EnumType(prop, csspProp, dllTypeInfoModels.Type.Name, TypeNameLower, sb)) return await Task.FromResult(false);
             }
 
@@ -88,7 +88,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
 
             return await Task.FromResult(true);
         }
-        private async Task<bool> CreateClassServiceFunctionsPrivateGenerateValidateNotMapped(DLLTypeInfo dllTypeInfoModels, string TypeName, string TypeNameLower, StringBuilder sb)
+        private async Task<bool> CreateClassServiceFunctionsPrivateGenerateValidateNotMapped(DLLTypeInfo dllTypeInfoModels, string TypeName, string TypeNameLower, StringBuilder sb, string DBType)
         {
             bool EnumExist = false;
             foreach (PropertyInfo prop in dllTypeInfoModels.Type.GetProperties())
@@ -145,7 +145,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
 
                 if (!dllTypeInfoModels.HasNotMappedAttribute)
                 {
-                    if (!await CreateValidation_Key(prop, csspProp, dllTypeInfoModels.Type.Name, TypeNameLower, sb)) return await Task.FromResult(false);
+                    if (!await CreateValidation_Key(prop, csspProp, dllTypeInfoModels.Type.Name, TypeNameLower, sb, DBType)) return await Task.FromResult(false);
                 }
 
                 if (!await CreateValidation_NotNullable(prop, csspProp, dllTypeInfoModels.Type.Name, TypeNameLower, sb)) return await Task.FromResult(false);
@@ -153,7 +153,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                 if (!await CreateValidation_Email(prop, csspProp, dllTypeInfoModels.Type.Name, TypeNameLower, sb)) return await Task.FromResult(false);
                 if (!await CreateValidation_AfterYear(prop, csspProp, dllTypeInfoModels.Type.Name, TypeNameLower, sb)) return await Task.FromResult(false);
                 if (!await CreateValidation_Bigger(prop, csspProp, dllTypeInfoModels.Type.Name, TypeNameLower, sb)) return await Task.FromResult(false);
-                if (!await CreateValidation_Exist(prop, csspProp, dllTypeInfoModels.Type.Name, TypeNameLower, sb)) return await Task.FromResult(false);
+                if (!await CreateValidation_Exist(prop, csspProp, dllTypeInfoModels.Type.Name, TypeNameLower, sb, DBType)) return await Task.FromResult(false);
                 if (!await CreateValidation_EnumType(prop, csspProp, dllTypeInfoModels.Type.Name, TypeNameLower, sb)) return await Task.FromResult(false);
             }
 

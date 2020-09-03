@@ -1,52 +1,85 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace ServicesClassNameServiceTestGeneratedServices.Services
 {
     public partial class ServicesClassNameServiceTestGeneratedService : IServicesClassNameServiceTestGeneratedService
     {
-        private async Task<bool> GenerateSetupTestCode(string TypeName, string TypeNameLower, StringBuilder sb)
+        private async Task<bool> GenerateSetupTestCode(string TypeName, string TypeNameLower, StringBuilder sb, string DBType)
         {
             sb.AppendLine(@"        private async Task<bool> Setup(string culture)");
             sb.AppendLine(@"        {");
             sb.AppendLine(@"            Config = new ConfigurationBuilder()");
             sb.AppendLine(@"               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)");
-            sb.AppendLine(@"               .AddJsonFile(""appsettings_csspservicestests.json"")");
-            sb.AppendLine(@"               .AddUserSecrets(""6f27cbbe-6ffb-4154-b49b-d739597c4f60"")");
+            if (DBType == "DB")
+            {
+                sb.AppendLine(@"               .AddJsonFile(""appsettings_csspdbservicestests.json"")");
+                sb.AppendLine(@"               .AddUserSecrets(""70c662c1-a1a8-4b2c-b594-d7834bb5e6db"")");
+            }
+            if (DBType == "DBLocal")
+            {
+                sb.AppendLine(@"               .AddJsonFile(""appsettings_csspdblocalservicestests.json"")");
+                sb.AppendLine(@"               .AddUserSecrets(""91a273aa-0169-4298-82eb-86ff2429a2f8"")");
+            }
+            if (DBType == "DBLocalIM")
+            {
+                sb.AppendLine(@"               .AddJsonFile(""appsettings_csspdblocalimservicestests.json"")");
+                sb.AppendLine(@"               .AddUserSecrets(""64a6d1e4-0d0c-4e59-9c2e-640182417704"")");
+            }
             sb.AppendLine(@"               .Build();");
             sb.AppendLine(@"");
             sb.AppendLine(@"            Services = new ServiceCollection();");
             sb.AppendLine(@"");
             sb.AppendLine(@"            Services.AddSingleton<IConfiguration>(Config);");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            string CSSPDBLocalFileName = Config.GetValue<string>(""CSSPDBLocal"");");
-            sb.AppendLine(@"            Assert.NotNull(CSSPDBLocalFileName);");
-            sb.AppendLine(@"");
-            sb.AppendLine(@"            string TestDBConnString = Config.GetValue<string>(""TestDB"");");
-            sb.AppendLine(@"            Assert.NotNull(TestDBConnString);");
-            sb.AppendLine(@"");
-            sb.AppendLine(@"            Services.AddDbContext<CSSPDBContext>(options =>");
-            sb.AppendLine(@"            {");
-            sb.AppendLine(@"                options.UseSqlServer(TestDBConnString);");
-            sb.AppendLine(@"            });");
-            sb.AppendLine(@"");
-            sb.AppendLine(@"            Services.AddDbContext<CSSPDBInMemoryContext>(options =>");
-            sb.AppendLine(@"            {");
-            sb.AppendLine(@"                options.UseInMemoryDatabase(TestDBConnString);");
-            sb.AppendLine(@"            });");
-            sb.AppendLine(@"");
-            sb.AppendLine(@"            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName);");
-            sb.AppendLine(@"");
-            sb.AppendLine(@"            Services.AddDbContext<CSSPDBLocalContext>(options =>");
-            sb.AppendLine(@"            {");
-            sb.AppendLine(@"                options.UseSqlite($""Data Source={ fiAppDataPath.FullName }"");");
-            sb.AppendLine(@"            });");
-            sb.AppendLine(@"");
+            if (DBType == "DB")
+            {
+                sb.AppendLine(@"            string CSSPDBConnString = Config.GetValue<string>(""TestDB"");");
+                sb.AppendLine(@"            Assert.NotNull(CSSPDBConnString);");
+                sb.AppendLine(@"");
+                sb.AppendLine(@"            Services.AddDbContext<CSSPDBContext>(options =>");
+                sb.AppendLine(@"            {");
+                sb.AppendLine(@"                options.UseSqlServer(CSSPDBConnString);");
+                sb.AppendLine(@"            });");
+                sb.AppendLine(@"");
+                sb.AppendLine(@"            Services.AddDbContext<CSSPDBInMemoryContext>(options =>");
+                sb.AppendLine(@"            {");
+                sb.AppendLine(@"                options.UseInMemoryDatabase(CSSPDBConnString);");
+                sb.AppendLine(@"            });");
+                sb.AppendLine(@"");
+            }
+            if (DBType == "DBLocal")
+            {
+                sb.AppendLine(@"            string CSSPDBLocalFileName = Config.GetValue<string>(""CSSPDBLocal"");");
+                sb.AppendLine(@"            Assert.NotNull(CSSPDBLocalFileName);");
+                sb.AppendLine(@"");
+                sb.AppendLine(@"            FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocalFileName);");
+                sb.AppendLine(@"");
+                sb.AppendLine(@"            Services.AddDbContext<CSSPDBLocalContext>(options =>");
+                sb.AppendLine(@"            {");
+                sb.AppendLine(@"                options.UseSqlite($""Data Source={ fiCSSPDBLocal.FullName }"");");
+                sb.AppendLine(@"            });");
+                sb.AppendLine(@"");
+            }
+            if (DBType == "DBLocalIM")
+            {
+                sb.AppendLine(@"            string CSSPDBLocalIMFileName = Config.GetValue<string>(""CSSPDBLocalIM"");");
+                sb.AppendLine(@"            Assert.NotNull(CSSPDBLocalFileName);");
+                sb.AppendLine(@"");
+                sb.AppendLine(@"            FileInfo fiCSSPDBLocalIM = new FileInfo(CSSPDBLocalIMFileName);");
+                sb.AppendLine(@"");
+                sb.AppendLine(@"            Services.AddDbContext<CSSPDBLocalInMemoryContext>(options =>");
+                sb.AppendLine(@"            {");
+                sb.AppendLine(@"                options.UseInMemoryDatabase($""Data Source={ fiCSSPDBLocalIM.FullName }"");");
+                sb.AppendLine(@"            });");
+                sb.AppendLine(@"");
+            }
             if (TypeName == "Contact")
             {
                 sb.AppendLine(@"            Services.AddDbContext<ApplicationDbContext>(options =>");
                 sb.AppendLine(@"            {");
-                sb.AppendLine(@"                options.UseSqlServer(TestDBConnString);");
+                sb.AppendLine(@"                options.UseSqlServer(CSSPDBConnString);");
                 sb.AppendLine(@"            });");
                 sb.AppendLine(@"");
                 sb.AppendLine(@"            Services.AddIdentityCore<ApplicationUser>()");
@@ -57,7 +90,18 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
             {
             }
             sb.AppendLine(@"            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();");
-            sb.AppendLine(@"            Services.AddSingleton<ILoggedInService, LoggedInService>();");
+            if (DBType == "DB")
+            {
+                sb.AppendLine(@"            Services.AddSingleton<ILoggedInService, LoggedInService>();");
+            }
+            if (DBType == "DBLocal")
+            {
+                sb.AppendLine(@"            Services.AddSingleton<ILocalService, LocalService>();");
+            }
+            if (DBType == "DBLocalIM")
+            {
+                sb.AppendLine(@"            Services.AddSingleton<ILocalService, LocalService>();");
+            }
             sb.AppendLine(@"            Services.AddSingleton<IEnums, Enums>();");
             if (TypeName == "Contact")
             {
@@ -68,7 +112,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
             else
             {
             }
-            sb.AppendLine($@"            Services.AddSingleton<I{ TypeName }Service, { TypeName }Service>();");
+            sb.AppendLine($@"            Services.AddSingleton<I{ TypeName }{ DBType }Service, { TypeName }{ DBType }Service>();");
             sb.AppendLine(@"");
             sb.AppendLine(@"            Provider = Services.BuildServiceProvider();");
             sb.AppendLine(@"            Assert.NotNull(Provider);");
@@ -78,22 +122,54 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
             sb.AppendLine(@"");
             sb.AppendLine(@"            CSSPCultureService.SetCulture(culture);");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            LoggedInService = Provider.GetService<ILoggedInService>();");
-            sb.AppendLine(@"            Assert.NotNull(LoggedInService);");
+            if (DBType == "DB")
+            {
+                sb.AppendLine(@"            LoggedInService = Provider.GetService<ILoggedInService>();");
+                sb.AppendLine(@"            Assert.NotNull(LoggedInService);");
+            }
+            if (DBType == "DBLocal")
+            {
+                sb.AppendLine(@"            LocalService = Provider.GetService<ILocalService>();");
+                sb.AppendLine(@"            Assert.NotNull(LocalService);");
+            }
+            if (DBType == "DBLocalIM")
+            {
+                sb.AppendLine(@"            LocalService = Provider.GetService<ILocalService>();");
+                sb.AppendLine(@"            Assert.NotNull(LocalService);");
+            }
             sb.AppendLine(@"");
-            sb.AppendLine(@"            string Id = Config.GetValue<string>(""Id"");");
-            sb.AppendLine(@"            Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));");
+            if (DBType == "DB")
+            {
+                sb.AppendLine(@"            string Id = Config.GetValue<string>(""Id"");");
+                sb.AppendLine(@"            Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));");
+            }
+            if (DBType == "DBLocal")
+            {
+                sb.AppendLine(@"            Assert.True(await LocalService.SetLoggedInContactInfo());");
+            }
+            if (DBType == "DBLocalIM")
+            {
+                sb.AppendLine(@"            Assert.True(await LocalService.SetLoggedInContactInfo());");
+            }
             sb.AppendLine(@"");
-            sb.AppendLine(@"            LoggedInService.DBLocation = DBLocationEnum.Local;");
+            if (DBType == "DB")
+            {
+                sb.AppendLine(@"            db = Provider.GetService<CSSPDBContext>();");
+                sb.AppendLine(@"            Assert.NotNull(db);");
+            }
+            if (DBType == "DBLocal")
+            {
+                sb.AppendLine(@"            dbLocal = Provider.GetService<CSSPDBLocalContext>();");
+                sb.AppendLine(@"            Assert.NotNull(dbLocal);");
+            }
+            if (DBType == "DBLocalIM")
+            {
+                sb.AppendLine(@"            dbLocalIM = Provider.GetService<CSSPDBLocalInMemoryContext>();");
+                sb.AppendLine(@"            Assert.NotNull(dbLocalIM);");
+            }
             sb.AppendLine(@"");
-            sb.AppendLine(@"            dbIM = Provider.GetService<CSSPDBInMemoryContext>();");
-            sb.AppendLine(@"            Assert.NotNull(dbIM);");
-            sb.AppendLine(@"");
-            sb.AppendLine(@"            dbLocal = Provider.GetService<CSSPDBLocalContext>();");
-            sb.AppendLine(@"            Assert.NotNull(dbLocal);");
-            sb.AppendLine(@"");
-            sb.AppendLine($@"            { TypeName }Service = Provider.GetService<I{ TypeName }Service>();");
-            sb.AppendLine($@"            Assert.NotNull({ TypeName }Service);");
+            sb.AppendLine($@"            { TypeName }{ DBType }Service = Provider.GetService<I{ TypeName }{ DBType }Service>();");
+            sb.AppendLine($@"            Assert.NotNull({ TypeName }{ DBType }Service);");
             sb.AppendLine(@"");
             sb.AppendLine(@"            return await Task.FromResult(true);");
             sb.AppendLine(@"        }");

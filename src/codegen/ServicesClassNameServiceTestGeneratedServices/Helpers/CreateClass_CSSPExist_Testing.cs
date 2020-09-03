@@ -1,6 +1,7 @@
 ﻿using CSSPModels;
 using GenerateCodeBaseServices.Models;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
 {
     public partial class ServicesClassNameServiceTestGeneratedService : IServicesClassNameServiceTestGeneratedService
     {
-        private async Task<bool> CreateClass_CSSPExist_Testing(CSSPProp csspProp, string TypeName, string TypeNameLower, StringBuilder sb)
+        private async Task<bool> CreateClass_CSSPExist_Testing(CSSPProp csspProp, string TypeName, string TypeNameLower, StringBuilder sb, string DBType)
         {
             if (csspProp.IsVirtual || csspProp.IsKey || csspProp.PropName == "ValidationResults")
             {
@@ -37,11 +38,11 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                             sb.AppendLine($@"            { TypeNameLower }.{ csspProp.PropName } = 0;");
                             if (TypeName == "Contact")
                             {
-                                sb.AppendLine($@"            action{ TypeName } = await { TypeName }Service.Post({ TypeNameLower }, AddContactTypeEnum.LoggedIn);");
+                                sb.AppendLine($@"            action{ TypeName } = await { TypeName }{ DBType }Service.Post({ TypeNameLower }, AddContactTypeEnum.LoggedIn);");
                             }
                             else
                             {
-                                sb.AppendLine($@"            action{ TypeName } = await { TypeName }Service.Post({ TypeNameLower });");
+                                sb.AppendLine($@"            action{ TypeName } = await { TypeName }{ DBType }Service.Post({ TypeNameLower });");
                             }
                             sb.AppendLine($@"            Assert.IsType<BadRequestObjectResult>(action{ TypeName }.Result);");
                             sb.AppendLine(@"");
@@ -64,11 +65,11 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                 sb.AppendLine($@"            { TypeNameLower }.{ csspProp.PropName } = { TVItemIDNotGoodType };");
                                 if (TypeName == "Contact")
                                 {
-                                    sb.AppendLine($@"            action{ TypeName } = await { TypeName }Service.Post({ TypeNameLower }, AddContactTypeEnum.LoggedIn);");
+                                    sb.AppendLine($@"            action{ TypeName } = await { TypeName }{ DBType }Service.Post({ TypeNameLower }, AddContactTypeEnum.LoggedIn);");
                                 }
                                 else
                                 {
-                                    sb.AppendLine($@"            action{ TypeName } = await { TypeName }Service.Post({ TypeNameLower });");
+                                    sb.AppendLine($@"            action{ TypeName } = await { TypeName }{ DBType }Service.Post({ TypeNameLower });");
                                 }
                                 sb.AppendLine($@"            Assert.IsType<BadRequestObjectResult>(action{ TypeName }.Result);");
                                 sb.AppendLine(@"");

@@ -1,22 +1,23 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace ServicesClassNameServiceTestGeneratedServices.Services
 {
     public partial class ServicesClassNameServiceTestGeneratedService : IServicesClassNameServiceTestGeneratedService
     {
-        private async Task<bool> GenerateDoCRUDTest(string TypeName, string TypeNameLower, StringBuilder sb)
+        private async Task<bool> GenerateDoCRUDTest(string TypeName, string TypeNameLower, StringBuilder sb, string DBType)
         {
             sb.AppendLine(@"        private async Task DoCRUDTest()");
             sb.AppendLine(@"        {");
             sb.AppendLine($@"            // Post { TypeName }");
             if (TypeName == "Contact") 
             {                          
-                sb.AppendLine($@"            var action{ TypeName }Added = await { TypeName }Service.Post({ TypeNameLower }, AddContactTypeEnum.Register);");
+                sb.AppendLine($@"            var action{ TypeName }Added = await { TypeName }{ DBType }Service.Post({ TypeNameLower }, AddContactTypeEnum.Register);");
             }                          
             else                       
             {                          
-                sb.AppendLine($@"            var action{ TypeName }Added = await { TypeName }Service.Post({ TypeNameLower });");
+                sb.AppendLine($@"            var action{ TypeName }Added = await { TypeName }{ DBType }Service.Post({ TypeNameLower });");
             }                          
             sb.AppendLine($@"            Assert.Equal(200, ((ObjectResult)action{ TypeName }Added.Result).StatusCode);");
             sb.AppendLine($@"            Assert.NotNull(((OkObjectResult)action{ TypeName }Added.Result).Value);");
@@ -24,7 +25,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
             sb.AppendLine($@"            Assert.NotNull({ TypeNameLower }Added);");
             sb.AppendLine(@"");        
             sb.AppendLine($@"            // List<{ TypeName }>");
-            sb.AppendLine($@"            var action{ TypeName }List = await { TypeName }Service.Get{ TypeName }List();");
+            sb.AppendLine($@"            var action{ TypeName }List = await { TypeName }{ DBType }Service.Get{ TypeName }List();");
             sb.AppendLine($@"            Assert.Equal(200, ((ObjectResult)action{ TypeName }List.Result).StatusCode);");
             sb.AppendLine($@"            Assert.NotNull(((OkObjectResult)action{ TypeName }List.Result).Value);");
             sb.AppendLine($@"            List<{ TypeName }> { TypeNameLower }List = (List<{ TypeName }>)((OkObjectResult)action{ TypeName }List.Result).Value;");
@@ -32,36 +33,33 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
             sb.AppendLine($@"            int count = ((List<{ TypeName }>)((OkObjectResult)action{ TypeName }List.Result).Value).Count();");
             sb.AppendLine(@"            Assert.True(count > 0);");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            if (LoggedInService.DBLocation == DBLocationEnum.Server)");
-            sb.AppendLine(@"            {");
-            sb.AppendLine($@"                // List<{ TypeName }> with skip and take");
-            sb.AppendLine($@"                var action{ TypeName }ListSkipAndTake = await { TypeName }Service.Get{ TypeName }List(1, 1);");
-            sb.AppendLine($@"                Assert.Equal(200, ((ObjectResult)action{ TypeName }ListSkipAndTake.Result).StatusCode);");
-            sb.AppendLine($@"                Assert.NotNull(((OkObjectResult)action{ TypeName }ListSkipAndTake.Result).Value);");
-            sb.AppendLine($@"                List<{ TypeName }> { TypeNameLower }ListSkipAndTake = (List<{ TypeName }>)((OkObjectResult)action{ TypeName }ListSkipAndTake.Result).Value;");
+            sb.AppendLine($@"            // List<{ TypeName }> with skip and take");
+            sb.AppendLine($@"            var action{ TypeName }ListSkipAndTake = await { TypeName }{ DBType }Service.Get{ TypeName }List(1, 1);");
+            sb.AppendLine($@"            Assert.Equal(200, ((ObjectResult)action{ TypeName }ListSkipAndTake.Result).StatusCode);");
+            sb.AppendLine($@"            Assert.NotNull(((OkObjectResult)action{ TypeName }ListSkipAndTake.Result).Value);");
+            sb.AppendLine($@"            List<{ TypeName }> { TypeNameLower }ListSkipAndTake = (List<{ TypeName }>)((OkObjectResult)action{ TypeName }ListSkipAndTake.Result).Value;");
             sb.AppendLine(@"");
-            sb.AppendLine($@"                int countSkipAndTake = ((List<{ TypeName }>)((OkObjectResult)action{ TypeName }ListSkipAndTake.Result).Value).Count();");
-            sb.AppendLine(@"                Assert.True(countSkipAndTake == 1);");
+            sb.AppendLine($@"            int countSkipAndTake = ((List<{ TypeName }>)((OkObjectResult)action{ TypeName }ListSkipAndTake.Result).Value).Count();");
+            sb.AppendLine(@"            Assert.True(countSkipAndTake == 1);");
             sb.AppendLine(@"");
             if (TypeName == "AspNetUser")
             {
-                sb.AppendLine($@"                Assert.False({ TypeNameLower }List[0].Id == { TypeNameLower }ListSkipAndTake[0].Id);");
+                sb.AppendLine($@"            Assert.False({ TypeNameLower }List[0].Id == { TypeNameLower }ListSkipAndTake[0].Id);");
             }
             else
             {
-                sb.AppendLine($@"                Assert.False({ TypeNameLower }List[0].{ TypeName }ID == { TypeNameLower }ListSkipAndTake[0].{ TypeName }ID);");
+                sb.AppendLine($@"            Assert.False({ TypeNameLower }List[0].{ TypeName }ID == { TypeNameLower }ListSkipAndTake[0].{ TypeName }ID);");
             }
-            sb.AppendLine(@"            }");
             sb.AppendLine(@"");
             if (TypeName == "AspNetUser")
             {
                 sb.AppendLine($@"            // Get { TypeName } With Id");
-                sb.AppendLine($@"            var action{ TypeName }Get = await { TypeName }Service.Get{ TypeName }WithId({ TypeNameLower }List[0].Id);");
+                sb.AppendLine($@"            var action{ TypeName }Get = await { TypeName }{ DBType }Service.Get{ TypeName }WithId({ TypeNameLower }List[0].Id);");
             }
             else
             {
                 sb.AppendLine($@"            // Get { TypeName } With { TypeName }ID");
-                sb.AppendLine($@"            var action{ TypeName }Get = await { TypeName }Service.Get{ TypeName }With{ TypeName }ID({ TypeNameLower }List[0].{ TypeName }ID);");
+                sb.AppendLine($@"            var action{ TypeName }Get = await { TypeName }{ DBType }Service.Get{ TypeName }With{ TypeName }ID({ TypeNameLower }List[0].{ TypeName }ID);");
             }
             sb.AppendLine($@"            Assert.Equal(200, ((ObjectResult)action{ TypeName }Get.Result).StatusCode);");
             sb.AppendLine($@"            Assert.NotNull(((OkObjectResult)action{ TypeName }Get.Result).Value);");
@@ -77,7 +75,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
             }
             sb.AppendLine(@"");        
             sb.AppendLine($@"            // Put { TypeName }");
-            sb.AppendLine($@"            var action{ TypeName }Updated = await { TypeName }Service.Put({ TypeNameLower });");
+            sb.AppendLine($@"            var action{ TypeName }Updated = await { TypeName }{ DBType }Service.Put({ TypeNameLower });");
             sb.AppendLine($@"            Assert.Equal(200, ((ObjectResult)action{ TypeName }Updated.Result).StatusCode);");
             sb.AppendLine($@"            Assert.NotNull(((OkObjectResult)action{ TypeName }Updated.Result).Value);");
             sb.AppendLine($@"            { TypeName } { TypeNameLower }Updated = ({ TypeName })((OkObjectResult)action{ TypeName }Updated.Result).Value;");
@@ -86,11 +84,11 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
             sb.AppendLine($@"            // Delete { TypeName }");
             if (TypeName == "AspNetUser")
             {
-                sb.AppendLine($@"            var action{ TypeName }Deleted = await { TypeName }Service.Delete({ TypeNameLower }.Id);");
+                sb.AppendLine($@"            var action{ TypeName }Deleted = await { TypeName }{ DBType }Service.Delete({ TypeNameLower }.Id);");
             }
             else
             {
-                sb.AppendLine($@"            var action{ TypeName }Deleted = await { TypeName }Service.Delete({ TypeNameLower }.{ TypeName }ID);");
+                sb.AppendLine($@"            var action{ TypeName }Deleted = await { TypeName }{ DBType }Service.Delete({ TypeNameLower }.{ TypeName }ID);");
             }
             sb.AppendLine($@"            Assert.Equal(200, ((ObjectResult)action{ TypeName }Deleted.Result).StatusCode);");
             sb.AppendLine($@"            Assert.NotNull(((OkObjectResult)action{ TypeName }Deleted.Result).Value);");

@@ -6,7 +6,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
 {
     public partial class ServicesClassNameServiceTestGeneratedService : IServicesClassNameServiceTestGeneratedService
     {
-        private async Task<bool> CreateClass_Key_Testing(CSSPProp csspProp, string TypeName, string TypeNameLower, StringBuilder sb)
+        private async Task<bool> CreateClass_Key_Testing(CSSPProp csspProp, string TypeName, string TypeNameLower, StringBuilder sb, string DBType)
         {
             sb.AppendLine($@"            { TypeNameLower } = null;");
             sb.AppendLine($@"            { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
@@ -19,7 +19,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                 sb.AppendLine($@"            { TypeNameLower }.{ csspProp.PropName } = 0;");
             }
             sb.AppendLine(@"");
-            sb.AppendLine($@"            var action{ TypeName } = await { TypeName }Service.Put({ TypeNameLower });");
+            sb.AppendLine($@"            var action{ TypeName } = await { TypeName }{ DBType }Service.Put({ TypeNameLower });");
             sb.AppendLine($@"            Assert.IsType<BadRequestObjectResult>(action{ TypeName }.Result);");
             sb.AppendLine(@"");
             sb.AppendLine($@"            { TypeNameLower } = null;");
@@ -32,7 +32,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
             {
                 sb.AppendLine($@"            { TypeNameLower }.{ csspProp.PropName } = 10000000;");
             }
-            sb.AppendLine($@"            action{ TypeName } = await { TypeName }Service.Put({ TypeNameLower });");
+            sb.AppendLine($@"            action{ TypeName } = await { TypeName }{ DBType }Service.Put({ TypeNameLower });");
             sb.AppendLine($@"            Assert.IsType<BadRequestObjectResult>(action{ TypeName }.Result);");
             sb.AppendLine(@"");
 
