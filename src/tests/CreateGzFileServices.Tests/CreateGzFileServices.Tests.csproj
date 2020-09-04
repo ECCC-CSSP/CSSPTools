@@ -5,7 +5,8 @@
 
     <IsPackable>false</IsPackable>
 
-    <UserSecretsId>6f27cbbe-6ffb-4154-b49b-d739597c4f60</UserSecretsId>
+    <UserSecretsId>724bc44d-9408-48dc-8513-1d2816ee63f9</UserSecretsId>
+
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -29,11 +30,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\dlls\CSSPServices\CSSPServices.csproj" />
+    <ProjectReference Include="..\..\dlls\CreateGzFileServices\CreateGzFileServices.csproj" />
+    <ProjectReference Include="..\..\dlls\CSSPDBServices\CSSPDBServices.csproj" />
+    <ProjectReference Include="..\..\dlls\CSSPFileServices\CSSPFileServices.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Tests\" />
+    <None Update="appsettings_creategzfileservicestests.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

@@ -5,7 +5,8 @@
 
     <IsPackable>false</IsPackable>
 
-    <UserSecretsId>6f27cbbe-6ffb-4154-b49b-d739597c4f60</UserSecretsId>
+    <UserSecretsId>82e4fd10-d824-4d2a-afef-8a95e0902d75</UserSecretsId>
+
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -29,11 +30,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\dlls\CSSPServices\CSSPServices.csproj" />
+    <ProjectReference Include="..\..\dlls\DownloadGzFileServices\DownloadGzFileServices.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Tests\SQLiteServicesTests\Generated\" />
+    <None Update="appsettings_downloadgzfileservicestests.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

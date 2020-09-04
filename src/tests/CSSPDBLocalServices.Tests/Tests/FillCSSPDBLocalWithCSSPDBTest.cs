@@ -57,6 +57,7 @@ namespace CSSPDBLocalServices.Tests
         {
             Assert.True(await Setup(culture));
 
+            // add a comment in front of the return to populate CSSPDBLocal with CSSPDBTest information
             return;
 
             // Logs

@@ -64,10 +64,13 @@ namespace CSSPWebAPIsLocalLocal
              * using CSSPDBLocalInMemory 
              * ---------------------------------------------------------------------------------      
              */
+            string DBConnStr = "";
 
-            services.AddDbContext<CSSPDBLocalInMemoryContext>(options =>
+            DBConnStr = Configuration.GetValue<string>("AzureCSSPDB");
+
+            services.AddDbContext<CSSPDBInMemoryContext>(options =>
             {
-                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBLocal.FullName }");
+                options.UseInMemoryDatabase(DBConnStr);
             });
 
             /* ---------------------------------------------------------------------------------

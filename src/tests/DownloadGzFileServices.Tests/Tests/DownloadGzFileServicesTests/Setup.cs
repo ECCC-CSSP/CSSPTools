@@ -1,6 +1,5 @@
 using CSSPEnums;
 using CSSPModels;
-using CSSPServices;
 using CSSPCultureServices.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -15,8 +14,10 @@ using System.Text.Json;
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
+using CSSPFileServices;
+using LocalServices;
 
-namespace CSSPServices.Tests
+namespace DownloadGzFileServices.Tests
 {
     public partial class DownloadGzFileServiceTests
     {
@@ -30,11 +31,7 @@ namespace CSSPServices.Tests
         private ICSSPCultureService CSSPCultureService { get; set; }
         private ICSSPFileService CSSPFileService { get; set; }
         private IDownloadGzFileService DownloadGzFileService { get; set; }
-        private IAspNetUserService AspNetUserService { get; set; }
-        private IContactService ContactService { get; set; }
-        private ILoggedInService LoggedInService { get; set; }
         private ILocalService LocalService { get; set; }
-        private ITVItemService TVItemService { get; set; }
         private CSSPDBContext db { get; set; }
         private string AzureStoreCSSPJSONPath { get; set; }
         private string LocalCSSPJSONPath { get; set; }
@@ -55,8 +52,8 @@ namespace CSSPServices.Tests
         {
             Configuration = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-               .AddJsonFile("appsettings_csspservicestests.json")
-               .AddUserSecrets("6f27cbbe-6ffb-4154-b49b-d739597c4f60")
+               .AddJsonFile("appsettings_downloadgzfileservicestests.json")
+               .AddUserSecrets("82e4fd10-d824-4d2a-afef-8a95e0902d75")
                .Build();
 
             Services = new ServiceCollection();
@@ -118,16 +115,15 @@ namespace CSSPServices.Tests
                 options.UseSqlite($"Data Source={ fiCSSPDBLoginFileName.FullName }");
             });
 
+            Services.AddDbContext<CSSPDBLoginInMemoryContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiCSSPDBLoginFileName.FullName }");
+            });
+
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
-            Services.AddSingleton<IAspNetUserService, AspNetUserService>();
-            Services.AddSingleton<ILoginModelService, LoginModelService>();
-            Services.AddSingleton<IRegisterModelService, RegisterModelService>();
-            Services.AddSingleton<IContactService, ContactService>();
-            Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<ICSSPFileService, CSSPFileService>();
             Services.AddSingleton<IDownloadGzFileService, DownloadGzFileService>();
-            Services.AddSingleton<ITVItemService, TVItemService>();
             Services.AddSingleton<ILocalService, LocalService>();
 
             Provider = Services.BuildServiceProvider();
@@ -138,67 +134,23 @@ namespace CSSPServices.Tests
 
             CSSPCultureService.SetCulture(culture);
 
-            ContactService = Provider.GetService<IContactService>();
-            Assert.NotNull(ContactService);
-
             CSSPAzureUrl = Configuration.GetValue<string>("CSSPAzureUrl");
             Assert.NotNull(CSSPAzureUrl);
-
-            string LoginEmail = Configuration.GetValue<string>("LoginEmail");
-            Assert.NotNull(LoginEmail);
-
-            string Password = Password = Configuration.GetValue<string>("Password");
-            Assert.NotNull(Password);
-
-            LoginModel loginModel = new LoginModel()
-            {
-                LoginEmail = LoginEmail,
-                Password = Password
-            };
-
-            if (contact != null)
-            {
-                Assert.True(true);
-            }
-
-            using (HttpClient httpClient = new HttpClient())
-            {
-                var contentType = new MediaTypeWithQualityHeaderValue("application/json");
-                httpClient.DefaultRequestHeaders.Accept.Add(contentType);
-
-                // trying to login
-                string stringData = JsonSerializer.Serialize(loginModel);
-                var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = httpClient.PostAsync($"{ CSSPAzureUrl }api/en-CA/auth/token", contentData).Result;
-                if ((int)response.StatusCode != 200)
-                {
-                    Assert.True(false, ((int)response.StatusCode).ToString());
-                }
-
-                contact = JsonSerializer.Deserialize<Contact>(response.Content.ReadAsStringAsync().Result);
-            }
-
-            LoggedInService = Provider.GetService<ILoggedInService>();
-            Assert.NotNull(LoggedInService);
-
-            await LoggedInService.SetLoggedInContactInfo(contact.Id);
-            Assert.NotNull(LoggedInService.LoggedInContactInfo);
 
             LocalService = Provider.GetService<ILocalService>();
             Assert.NotNull(LocalService);
 
-            //LoggedInService.HasInternetConnection = await LocalService.CheckInternetConnection();
+            await LocalService.SetLoggedInContactInfo();
+            Assert.NotNull(LocalService.LoggedInContactInfo);
 
-            LoggedInService.DBLocation = DBLocationEnum.Server;
+            LocalService = Provider.GetService<ILocalService>();
+            Assert.NotNull(LocalService);
 
             CSSPFileService = Provider.GetService<ICSSPFileService>();
             Assert.NotNull(CSSPFileService);
 
             DownloadGzFileService = Provider.GetService<IDownloadGzFileService>();
             Assert.NotNull(DownloadGzFileService);
-
-            TVItemService = Provider.GetService<ITVItemService>();
-            Assert.NotNull(TVItemService);
 
             return await Task.FromResult(true);
         }

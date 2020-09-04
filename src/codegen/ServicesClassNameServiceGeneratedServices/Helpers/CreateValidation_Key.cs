@@ -31,6 +31,38 @@ namespace ServicesClassNameServiceGeneratedServices.Services
             }
             if (prop.CustomAttributes.Where(c => c.AttributeType.Name.StartsWith("KeyAttribute")).Any())
             {
+                if (DBType == "DB")
+                {
+                }
+                if (DBType == "DBLocal")
+                {
+                }
+                if (DBType == "DBLocalIM")
+                {
+                    sb.AppendLine($@"            if (actionDBType == ActionDBTypeEnum.Create)");
+                    sb.AppendLine($@"            {{");
+                    if (TypeName == "AspNetUser")
+                    {
+                        sb.AppendLine($@"                if ({ TypeNameLower }.{ prop.Name } == """")");
+                    }
+                    else
+                    {
+                        sb.AppendLine($@"                if ({ TypeNameLower }.{ prop.Name } == 0)");
+                    }
+                    sb.AppendLine($@"                {{");
+                    if (TypeName == "AspNetUser")
+                    {
+                        sb.AppendLine($@"                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, ""{ prop.Name }""), new[] {{ nameof({ TypeNameLower }.Id) }});");
+                    }
+                    else
+                    {
+                        sb.AppendLine($@"                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, ""{ prop.Name }""), new[] {{ nameof({ TypeNameLower }.{ TypeName }ID) }});");
+                    }
+                    sb.AppendLine($@"                }}");
+                    sb.AppendLine($@"            }}");
+                    sb.AppendLine($@"");
+                }
+
                 sb.AppendLine(@"            if (actionDBType == ActionDBTypeEnum.Update || actionDBType == ActionDBTypeEnum.Delete)");
                 sb.AppendLine(@"            {");
                 if (TypeName == "AspNetUser")

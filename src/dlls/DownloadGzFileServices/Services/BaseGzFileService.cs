@@ -13,7 +13,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
-namespace CSSPServices
+namespace DownloadGzFileServices
 {
     public partial class BaseGzFileService
     {

@@ -51,6 +51,21 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
             }
             if (DBType == "DBLocal")
             {
+                sb.AppendLine(@"            string CSSPDBLoginFileName = Config.GetValue<string>(""CSSPDBLogin"");");
+                sb.AppendLine(@"            Assert.NotNull(CSSPDBLoginFileName);");
+                sb.AppendLine(@"");
+                sb.AppendLine(@"            FileInfo fiCSSPDBLogin = new FileInfo(CSSPDBLoginFileName);");
+                sb.AppendLine(@"");
+                sb.AppendLine(@"            Services.AddDbContext<CSSPDBLoginContext>(options =>");
+                sb.AppendLine(@"            {");
+                sb.AppendLine(@"                options.UseSqlite($""Data Source={ fiCSSPDBLogin.FullName }"");");
+                sb.AppendLine(@"            });");
+                sb.AppendLine(@"");
+                sb.AppendLine(@"            Services.AddDbContext<CSSPDBLoginInMemoryContext>(options =>");
+                sb.AppendLine(@"            {");
+                sb.AppendLine(@"                options.UseSqlite($""Data Source={ fiCSSPDBLogin.FullName }"");");
+                sb.AppendLine(@"            });");
+                sb.AppendLine(@"");
                 sb.AppendLine(@"            string CSSPDBLocalFileName = Config.GetValue<string>(""CSSPDBLocal"");");
                 sb.AppendLine(@"            Assert.NotNull(CSSPDBLocalFileName);");
                 sb.AppendLine(@"");
@@ -64,14 +79,29 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
             }
             if (DBType == "DBLocalIM")
             {
-                sb.AppendLine(@"            string CSSPDBLocalIMFileName = Config.GetValue<string>(""CSSPDBLocalIM"");");
+                sb.AppendLine(@"            string CSSPDBLoginFileName = Config.GetValue<string>(""CSSPDBLogin"");");
+                sb.AppendLine(@"            Assert.NotNull(CSSPDBLoginFileName);");
+                sb.AppendLine(@"");
+                sb.AppendLine(@"            FileInfo fiCSSPDBLogin = new FileInfo(CSSPDBLoginFileName);");
+                sb.AppendLine(@"");
+                sb.AppendLine(@"            Services.AddDbContext<CSSPDBLoginContext>(options =>");
+                sb.AppendLine(@"            {");
+                sb.AppendLine(@"                options.UseSqlite($""Data Source={ fiCSSPDBLogin.FullName }"");");
+                sb.AppendLine(@"            });");
+                sb.AppendLine(@"");
+                sb.AppendLine(@"            Services.AddDbContext<CSSPDBLoginInMemoryContext>(options =>");
+                sb.AppendLine(@"            {");
+                sb.AppendLine(@"                options.UseSqlite($""Data Source={ fiCSSPDBLogin.FullName }"");");
+                sb.AppendLine(@"            });");
+                sb.AppendLine(@"");
+                sb.AppendLine(@"            string CSSPDBLocalFileName = Config.GetValue<string>(""CSSPDBLocal"");");
                 sb.AppendLine(@"            Assert.NotNull(CSSPDBLocalFileName);");
                 sb.AppendLine(@"");
-                sb.AppendLine(@"            FileInfo fiCSSPDBLocalIM = new FileInfo(CSSPDBLocalIMFileName);");
+                sb.AppendLine(@"            FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocalFileName);");
                 sb.AppendLine(@"");
-                sb.AppendLine(@"            Services.AddDbContext<CSSPDBLocalInMemoryContext>(options =>");
+                sb.AppendLine(@"            Services.AddDbContext<CSSPDBInMemoryContext>(options =>");
                 sb.AppendLine(@"            {");
-                sb.AppendLine(@"                options.UseInMemoryDatabase($""Data Source={ fiCSSPDBLocalIM.FullName }"");");
+                sb.AppendLine(@"                options.UseInMemoryDatabase($""Data Source={ fiCSSPDBLocal.FullName }"");");
                 sb.AppendLine(@"            });");
                 sb.AppendLine(@"");
             }
@@ -164,7 +194,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
             }
             if (DBType == "DBLocalIM")
             {
-                sb.AppendLine(@"            dbLocalIM = Provider.GetService<CSSPDBLocalInMemoryContext>();");
+                sb.AppendLine(@"            dbLocalIM = Provider.GetService<CSSPDBInMemoryContext>();");
                 sb.AppendLine(@"            Assert.NotNull(dbLocalIM);");
             }
             sb.AppendLine(@"");

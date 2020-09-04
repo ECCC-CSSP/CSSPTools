@@ -1,11 +1,10 @@
 using CSSPEnums;
 using CSSPModels;
-using CSSPServices;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace CSSPServices.Tests
+namespace ReadGzFileServices.Tests
 {
     public partial class ReadGzFileServiceTests
     {
@@ -23,11 +22,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebArea_Unauthorized_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebArea_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
+            LocalService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebArea;
             int TVItemID = 629;
@@ -40,11 +39,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebClimateDataValue_Unauthorized_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebClimateDataValue_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
+            LocalService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebClimateDataValue;
             int TVItemID = 229465;
@@ -57,11 +56,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebClimateSite_Unauthorized_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebClimateSite_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
+            LocalService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebClimateSite;
             int TVItemID = 7;
@@ -74,11 +73,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebContact_Unauthorized_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebContact_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
+            LocalService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebContact;
             int TVItemID = 0;
@@ -91,11 +90,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebCountry_Unauthorized_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebCountry_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
+            LocalService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebCountry;
             int TVItemID = 5;
@@ -108,11 +107,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebDrogueRun_Unauthorized_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebDrogueRun_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
+            LocalService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebDrogueRun;
             int TVItemID = 556;
@@ -125,11 +124,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebHelpDoc_Unauthorized_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebHelpDoc_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
+            LocalService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebHelpDoc;
             int TVItemID = 0;
@@ -142,11 +141,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebHydrometricDataValue_Unauthorized_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebHydrometricDataValue_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
+            LocalService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebHydrometricDataValue;
             int TVItemID = 51705;
@@ -159,11 +158,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebHydrometricSite_Unauthorized_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebHydrometricSite_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
+            LocalService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebHydrometricSite;
             int TVItemID = 7;
@@ -176,11 +175,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebMikeScenario_Unauthorized_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebMikeScenario_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
+            LocalService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebMikeScenario;
             int TVItemID = 12281;
@@ -193,11 +192,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebMunicipalities_Unauthorized_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebMunicipalities_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
+            LocalService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebMunicipalities;
             int TVItemID = 7;
@@ -210,11 +209,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebMunicipality_Unauthorized_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebMunicipality_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
+            LocalService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebMunicipality;
             int TVItemID = 12110;
@@ -227,11 +226,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebMWQMLookupMPN_Unauthorized_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebMWQMLookupMPN_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
+            LocalService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebMWQMLookupMPN;
             int TVItemID = 0;
@@ -244,11 +243,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebMWQMRun_Unauthorized_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebMWQMRun_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
+            LocalService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebMWQMRun;
             int TVItemID = 635;
@@ -261,11 +260,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWeb10YearOfSample1980_1989FromSubsector_Unauthorized_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWeb10YearOfSample1980_1989FromSubsector_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
+            LocalService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebMWQMSample;
             int TVItemID = 635;
@@ -278,11 +277,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWeb10YearOfSample1990_1999FromSubsector_Unauthorized_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWeb10YearOfSample1990_1999FromSubsector_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
+            LocalService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebMWQMSample;
             int TVItemID = 635;
@@ -295,11 +294,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWeb10YearOfSample2000_2009FromSubsector_Unauthorized_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWeb10YearOfSample2000_2009FromSubsector_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
+            LocalService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebMWQMSample;
             int TVItemID = 635;
@@ -312,11 +311,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWeb10YearOfSample2010_2019FromSubsector_Unauthorized_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWeb10YearOfSample2010_2019FromSubsector_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
+            LocalService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebMWQMSample;
             int TVItemID = 635;
@@ -329,11 +328,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWeb10YearOfSample2020_2029FromSubsector_Unauthorized_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWeb10YearOfSample2020_2029FromSubsector_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
+            LocalService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebMWQMSample;
             int TVItemID = 635;
@@ -346,11 +345,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWeb10YearOfSample2030_2039FromSubsector_Unauthorized_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWeb10YearOfSample2030_2039FromSubsector_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
+            LocalService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebMWQMSample;
             int TVItemID = 635;
@@ -363,11 +362,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWeb10YearOfSample2040_2049FromSubsector_Unauthorized_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWeb10YearOfSample2040_2049FromSubsector_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
+            LocalService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebMWQMSample;
             int TVItemID = 635;
@@ -380,11 +379,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWeb10YearOfSample2050_2059FromSubsector_Unauthorized_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWeb10YearOfSample2050_2059FromSubsector_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
+            LocalService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebMWQMSample;
             int TVItemID = 635;
@@ -397,11 +396,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebMWQMSite_Unauthorized_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebMWQMSite_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
+            LocalService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebMWQMSite;
             int TVItemID = 635;
@@ -414,11 +413,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebPolSourceGrouping_Unauthorized_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebPolSourceGrouping_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
+            LocalService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebPolSourceGrouping;
             int TVItemID = 0;
@@ -431,11 +430,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebPolSourceSite_Unauthorized_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebPolSourceSite_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
+            LocalService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebPolSourceSite;
             int TVItemID = 635;
@@ -448,11 +447,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebProvince_Unauthorized_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebProvince_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
+            LocalService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebProvince;
             int TVItemID = 7;
@@ -465,11 +464,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebReportType_Unauthorized_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebReportType_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
+            LocalService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebReportType;
             int TVItemID = 0;
@@ -482,11 +481,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebRoot_Unauthorized_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebRoot_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
+            LocalService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebRoot;
             int TVItemID = 0;
@@ -499,11 +498,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebSamplingPlan_Unauthorized_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebSamplingPlan_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
+            LocalService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebSamplingPlan;
             int TVItemID = 8; // which is SamplingPlanID in reality
@@ -516,11 +515,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebSector_Unauthorized_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebSector_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
+            LocalService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebSector;
             int TVItemID = 633;
@@ -533,11 +532,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebSubsector_Unauthorized_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebSubsector_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
+            LocalService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebSubsector;
             int TVItemID = 635;
@@ -550,11 +549,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebTideLocation_Unauthorized_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebTideLocation_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
+            LocalService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebTideLocation;
             int TVItemID = 0;
@@ -567,11 +566,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebTVItem_Unauthorized_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebTVItem_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
+            LocalService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebTVItem;
             int TVItemID = 0;

@@ -1,6 +1,5 @@
 using CSSPEnums;
 using CSSPModels;
-using CSSPServices;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.IO;
@@ -8,7 +7,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace CSSPServices.Tests
+namespace ReadGzFileServices.Tests
 {
     [Collection("Sequential")]
     public partial class ReadGzFileServiceTests
@@ -27,120 +26,14 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebRootGzFile_All_Scenarios_Good_Test(string culture)
+        public async Task ReadGzFileService_Constructor_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
-
-            WebTypeEnum webType = WebTypeEnum.WebRoot;
-            int TVItemID = 0;
-            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
-
-            try
-            {
-                // WebRoot.gz on Azure might not exist
-                var actionRes = await CreateGzFileService.DeleteGzFile(webType, TVItemID, webTypeYear);
-            }
-            catch (Exception)
-            {
-                // do nothing
-            }
-
-            string fileName = await BaseGzFileService.GetFileName(webType, TVItemID, webTypeYear);
-
-            CSSPFile csspFile = null;
-            try
-            {
-                // it's possible that the CSSPFile item in (CSSPDBFileManagement) does not exist
-                var actionCSSPFile = await CSSPFileService.GetWithAzureStorageAndAzureFileName(AzureStoreCSSPJSONPath, fileName);
-                Assert.Equal(200, ((ObjectResult)actionCSSPFile.Result).StatusCode);
-                Assert.NotNull(((OkObjectResult)actionCSSPFile.Result).Value);
-                csspFile = (CSSPFile)((OkObjectResult)actionCSSPFile.Result).Value;
-                Assert.NotNull(csspFile);
-            }
-            catch (Exception)
-            {
-                // do nothing
-            }
-
-            if (csspFile != null)
-            {
-                var actionRet = await CSSPFileService.Delete(csspFile.CSSPFileID);
-                Assert.Equal(200, ((ObjectResult)actionRet.Result).StatusCode);
-                Assert.NotNull(((OkObjectResult)actionRet.Result).Value);
-                Assert.True((bool)((OkObjectResult)actionRet.Result).Value);
-            }
-
-            FileInfo fi = new FileInfo($"{ LocalCSSPJSONPath }{ fileName }");
-            if (fi.Exists)
-            {
-                try
-                {
-                    fi.Delete();
-                }
-                catch (Exception ex)
-                {
-                    Assert.Empty(ex.Message);
-                }
-            }
-
-            // now everything is cleared for WebRoot.gz
-
-            var actionRes2 = await ReadGzFileService.ReadJSON<WebRoot>(webType, TVItemID, webTypeYear);
-            Assert.Equal(200, ((ObjectResult)actionRes2.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionRes2.Result).Value);
-            WebRoot webRoot = (WebRoot)((OkObjectResult)actionRes2.Result).Value;
-            Assert.NotNull(webRoot);
-            Assert.NotNull(webRoot.TVItem);
-
-            // keep Azure file but delete local info
-            csspFile = null;
-            try
-            {
-                // it's possible that the CSSPFile item in (CSSPDBFileManagement) does not exist
-                var actionCSSPFile = await CSSPFileService.GetWithAzureStorageAndAzureFileName(AzureStoreCSSPJSONPath, fileName);
-                Assert.Equal(200, ((ObjectResult)actionCSSPFile.Result).StatusCode);
-                Assert.NotNull(((OkObjectResult)actionCSSPFile.Result).Value);
-                csspFile = (CSSPFile)((OkObjectResult)actionCSSPFile.Result).Value;
-                Assert.NotNull(csspFile);
-            }
-            catch (Exception)
-            {
-                // do nothing
-            }
-
-            if (csspFile != null)
-            {
-                var actionRet = await CSSPFileService.Delete(csspFile.CSSPFileID);
-                Assert.Equal(200, ((ObjectResult)actionRet.Result).StatusCode);
-                Assert.NotNull(((OkObjectResult)actionRet.Result).Value);
-                Assert.True((bool)((OkObjectResult)actionRet.Result).Value);
-            }
-
-            fi = new FileInfo($"{ LocalCSSPJSONPath }{ fileName }");
-            if (fi.Exists)
-            {
-                try
-                {
-                    fi.Delete();
-                }
-                catch (Exception ex)
-                {
-                    Assert.Empty(ex.Message);
-                }
-            }
-
-            actionRes2 = await ReadGzFileService.ReadJSON<WebRoot>(webType, TVItemID, webTypeYear);
-            Assert.Equal(200, ((ObjectResult)actionRes2.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionRes2.Result).Value);
-            webRoot = (WebRoot)((OkObjectResult)actionRes2.Result).Value;
-            Assert.NotNull(webRoot);
-            Assert.NotNull(webRoot.TVItem);
-
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebAreaGzFile_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebAreaGzFile_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -159,7 +52,7 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebClimateDataValue_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebClimateDataValue_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -178,7 +71,7 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebClimateSite_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebClimateSite_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -197,7 +90,7 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebContact_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebContact_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -216,7 +109,7 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebCountry_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebCountry_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -235,7 +128,7 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebDrogueRun_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebDrogueRun_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -254,7 +147,7 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebHelpDoc_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebHelpDoc_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -273,7 +166,7 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebHydrometricDataValue_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebHydrometricDataValue_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -292,7 +185,7 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebHydrometricSite_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebHydrometricSite_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -311,7 +204,7 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebMikeScenario_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebMikeScenario_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -330,7 +223,7 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebMunicipalities_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebMunicipalities_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -349,7 +242,7 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebMunicipality_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebMunicipality_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -368,7 +261,7 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebMWQMLookupMPN_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebMWQMLookupMPN_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -387,7 +280,7 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebMWQMRun_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebMWQMRun_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -406,7 +299,7 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWeb10YearOfSample1980_1989FromSubsector_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWeb10YearOfSample1980_1989FromSubsector_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -425,7 +318,7 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWeb10YearOfSample1990_1999FromSubsector(string culture)
+        public async Task ReadGzFileService_ReadWeb10YearOfSample1990_1999FromSubsector(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -444,7 +337,7 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWeb10YearOfSample2000_2009FromSubsector(string culture)
+        public async Task ReadGzFileService_ReadWeb10YearOfSample2000_2009FromSubsector(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -463,7 +356,7 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWeb10YearOfSample2010_2019FromSubsector(string culture)
+        public async Task ReadGzFileService_ReadWeb10YearOfSample2010_2019FromSubsector(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -482,7 +375,7 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWeb10YearOfSample2020_2029FromSubsector(string culture)
+        public async Task ReadGzFileService_ReadWeb10YearOfSample2020_2029FromSubsector(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -501,7 +394,7 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWeb10YearOfSample2030_2039FromSubsector(string culture)
+        public async Task ReadGzFileService_ReadWeb10YearOfSample2030_2039FromSubsector(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -520,7 +413,7 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWeb10YearOfSample2040_2049FromSubsector(string culture)
+        public async Task ReadGzFileService_ReadWeb10YearOfSample2040_2049FromSubsector(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -539,7 +432,7 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWeb10YearOfSample2050_2059FromSubsector(string culture)
+        public async Task ReadGzFileService_ReadWeb10YearOfSample2050_2059FromSubsector(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -558,7 +451,7 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebMWQMSite_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebMWQMSite_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -577,7 +470,7 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebPolSourceGrouping_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebPolSourceGrouping_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -596,7 +489,7 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebPolSourceSite_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebPolSourceSite_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -615,7 +508,7 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebProvince_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebProvince_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -634,7 +527,7 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebReportType_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebReportType_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -653,7 +546,7 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebRoot_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebRoot_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -672,7 +565,7 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebSamplingPlan_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebSamplingPlan_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -691,7 +584,7 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebSector_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebSector_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -710,7 +603,7 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebSubsector_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebSubsector_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -729,7 +622,7 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebTideLocation_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebTideLocation_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -748,7 +641,7 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadWebTVItem_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebTVItem_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 

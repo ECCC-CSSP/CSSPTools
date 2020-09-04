@@ -140,7 +140,7 @@ namespace CSSPDesktopServices.Tests
 
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
                 throw;

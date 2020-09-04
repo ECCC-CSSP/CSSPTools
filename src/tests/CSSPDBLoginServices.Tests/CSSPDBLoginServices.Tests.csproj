@@ -36,4 +36,10 @@
     <ProjectReference Include="..\..\dlls\CSSPDBLoginServices\CSSPDBLoginServices.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="appsettings_csspdbloginservicestests.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

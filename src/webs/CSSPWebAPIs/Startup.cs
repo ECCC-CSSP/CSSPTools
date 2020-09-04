@@ -75,7 +75,6 @@ namespace CSSPWebAPIs
             if (RunningOn == RunningOnEnum.Azure)
             {
                 DBConnStr = Configuration.GetValue<string>("AzureCSSPDB");
-
             }
             else if (RunningOn == RunningOnEnum.Local)
             {
@@ -136,9 +135,11 @@ namespace CSSPWebAPIs
                  * ---------------------------------------------------------------------------------      
                  */
 
-                services.AddDbContext<CSSPDBLocalInMemoryContext>(options =>
+                DBConnStr = Configuration.GetValue<string>("AzureCSSPDB");
+
+                services.AddDbContext<CSSPDBInMemoryContext>(options =>
                 {
-                    options.UseInMemoryDatabase($"Data Source={ fiCSSPDBLocal.FullName }");
+                    options.UseInMemoryDatabase(DBConnStr);
                 });
 
                 /* ---------------------------------------------------------------------------------

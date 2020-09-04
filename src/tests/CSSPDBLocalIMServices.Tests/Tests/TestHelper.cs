@@ -3,7 +3,7 @@ using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPModels;
-using CSSPServices;
+using CSSPDBLocalIMServices;
 using Microsoft.EntityFrameworkCore.Metadata;
 using System.Reflection;
 using System.Text;
@@ -13,7 +13,7 @@ using System.Threading;
 using System.Globalization;
 using Microsoft.EntityFrameworkCore;
 
-namespace CSSPServices.Tests
+namespace CSSPDBLocalIMServices.Tests
 {
     public partial class TestHelper
     {

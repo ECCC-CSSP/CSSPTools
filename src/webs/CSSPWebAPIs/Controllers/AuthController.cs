@@ -12,7 +12,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using CSSPModels;
-using CSSPServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -22,6 +21,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Configuration;
 using CSSPEnums;
 using CSSPCultureServices.Resources;
+using LoggedInServices;
+using CSSPDBServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -44,17 +45,17 @@ namespace CSSPWebAPIs.Controllers
         private IConfiguration Configuration { get; }
         private ILoggedInService LoggedInService { get; }
         private ICSSPCultureService CSSPCultureService { get; }
-        private IContactService ContactService { get; }
+        private IContactDBService ContactDBService { get; }
         #endregion Properties
 
         #region Constructors
         public AuthController(IConfiguration Configuration, ILoggedInService LoggedInService, ICSSPCultureService CSSPCultureService, 
-            IContactService ContactService)
+            IContactDBService ContactDBService)
         {
             this.Configuration = Configuration;
             this.LoggedInService = LoggedInService;
             this.CSSPCultureService = CSSPCultureService;
-            this.ContactService = ContactService;
+            this.ContactDBService = ContactDBService;
         }
         #endregion Constructors
 
@@ -66,12 +67,7 @@ namespace CSSPWebAPIs.Controllers
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
 
-            if (LoggedInService.RunningOn != RunningOnEnum.Azure)
-            {
-                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnAzure, "Token")));
-            }
-
-            return await ContactService.Login(loginModel);
+            return await ContactDBService.Login(loginModel);
         }
         [Route("AzureStore")]
         [HttpGet]
@@ -80,12 +76,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            if (LoggedInService.RunningOn != RunningOnEnum.Azure)
-            {
-                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnAzure, "AzureStore")));
-            }
-
-            return await ContactService.AzureStore();
+            return await ContactDBService.AzureStore();
         }
         [Route("Register")]
         [HttpPost]
@@ -94,12 +85,7 @@ namespace CSSPWebAPIs.Controllers
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
 
-            if (LoggedInService.RunningOn != RunningOnEnum.Azure)
-            {
-                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnAzure, "Register")));
-            }
-
-            return await ContactService.Register(registerModel);
+            return await ContactDBService.Register(registerModel);
         }
         #endregion Functions public
 

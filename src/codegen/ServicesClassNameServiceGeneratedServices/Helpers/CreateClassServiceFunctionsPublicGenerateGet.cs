@@ -104,7 +104,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                     sb.AppendLine(@"");
                     sb.AppendLine($@"            if ({ TypeNameLower } == null)");
                     sb.AppendLine(@"            {");
-                    sb.AppendLine(@"               return await Task.FromResult(NotFound(""""));");
+                    sb.AppendLine(@"                return await Task.FromResult(NotFound(""""));");
                     sb.AppendLine(@"            }");
                     sb.AppendLine(@"");
                     sb.AppendLine($@"            return await Task.FromResult(Ok({ TypeNameLower }));");

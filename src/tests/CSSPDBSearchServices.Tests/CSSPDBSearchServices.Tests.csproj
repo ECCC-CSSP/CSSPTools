@@ -36,4 +36,10 @@
     <Folder Include="Tests\SQLiteServicesTests\Generated\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="appsettings_csspdbsearchservicestests.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
