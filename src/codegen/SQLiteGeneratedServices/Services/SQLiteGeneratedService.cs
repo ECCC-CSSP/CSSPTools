@@ -72,8 +72,8 @@ namespace SQLiteGeneratedServices.Services
                 new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "C:\\CSSPTools\\src\\assets\\ActionCommandDB.db", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "CSSPEnums", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\_package\\netcoreapp3.1\\CSSPEnums.dll", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "CSSPModels", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\_package\\netcoreapp3.1\\CSSPModels.dll", IsFile = true, CheckExist = true },
-                new AppSettingParameter() { Parameter = "CreateTableBuilder", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPServices\\Services\\CSSPSQLiteServices\\Generated\\CreateTableBuilder.cs" },
-                new AppSettingParameter() { Parameter = "FillListTableToDelete", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPServices\\Services\\CSSPSQLiteServices\\Generated\\FillListTableToDelete.cs" },
+                new AppSettingParameter() { Parameter = "CreateTableBuilder", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPSQLiteServices\\Services\\Generated\\CreateTableBuilder.cs" },
+                new AppSettingParameter() { Parameter = "FillListTableToDelete", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPSQLiteServices\\Services\\Generated\\FillListTableToDelete.cs" },
                 new AppSettingParameter() { Parameter = "CreateTableBuilderTests", ExpectedValue = "C:\\CSSPTools\\src\\tests\\CSSPServices.Tests\\Tests\\SQLiteServices\\Generated\\SQLiteCreateCSSPDBLocalTests.cs" },
             };
 

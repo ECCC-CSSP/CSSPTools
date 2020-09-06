@@ -16,8 +16,9 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using LocalServices;
 
-namespace CSSPServices
+namespace CSSPDBSearchServices
 {
     public partial interface ICSSPDBSearchService
     {
@@ -33,18 +34,16 @@ namespace CSSPServices
         private CSSPDBSearchContext dbSearch { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILocalService LocalService { get; }
-        private IReadGzFileService ReadGzFileService { get; }
         #endregion Properties
 
         #region Constructors
         public CSSPDBSearchService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, ILocalService LocalService, IEnums enums,
-            CSSPDBSearchContext dbSearch, IReadGzFileService ReadGzFileService)
+            CSSPDBSearchContext dbSearch)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LocalService = LocalService;
             this.dbSearch = dbSearch;
-            this.ReadGzFileService = ReadGzFileService;
         }
         #endregion Constructors
 

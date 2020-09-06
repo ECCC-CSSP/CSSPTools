@@ -8,7 +8,7 @@
     ".NETCoreApp,Version=v3.1": {
       "CSSPSQLiteServices.Tests/1.0.0": {
         "dependencies": {
-          "CSSPServices": "1.0.0",
+          "CSSPSQLiteServices": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.6",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.6",
           "Microsoft.EntityFrameworkCore.InMemory": "3.1.6",
@@ -2017,6 +2017,66 @@
           }
         }
       },
+      "CSSPDBLocalServices/1.0.0": {
+        "dependencies": {
+          "Azure.Storage.Blobs": "12.4.4",
+          "CSSPModels": "1.0.0",
+          "LocalServices": "1.0.0",
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.6",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.6",
+          "Microsoft.EntityFrameworkCore": "3.1.6",
+          "Microsoft.EntityFrameworkCore.Design": "3.1.6",
+          "Microsoft.EntityFrameworkCore.InMemory": "3.1.6",
+          "Microsoft.EntityFrameworkCore.SqlServer": "3.1.6",
+          "Microsoft.EntityFrameworkCore.Sqlite": "3.1.6",
+          "Microsoft.EntityFrameworkCore.Tools": "3.1.6",
+          "Microsoft.Extensions.Configuration": "3.1.6",
+          "Microsoft.Extensions.Configuration.Json": "3.1.6"
+        },
+        "runtime": {
+          "CSSPDBLocalServices.dll": {}
+        }
+      },
+      "CSSPDBLoginServices/1.0.0": {
+        "dependencies": {
+          "Azure.Storage.Blobs": "12.4.4",
+          "CSSPModels": "1.0.0",
+          "LocalServices": "1.0.0",
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.6",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.6",
+          "Microsoft.EntityFrameworkCore": "3.1.6",
+          "Microsoft.EntityFrameworkCore.Design": "3.1.6",
+          "Microsoft.EntityFrameworkCore.InMemory": "3.1.6",
+          "Microsoft.EntityFrameworkCore.SqlServer": "3.1.6",
+          "Microsoft.EntityFrameworkCore.Sqlite": "3.1.6",
+          "Microsoft.EntityFrameworkCore.Tools": "3.1.6",
+          "Microsoft.Extensions.Configuration": "3.1.6",
+          "Microsoft.Extensions.Configuration.Json": "3.1.6"
+        },
+        "runtime": {
+          "CSSPDBLoginServices.dll": {}
+        }
+      },
+      "CSSPDBSearchServices/1.0.0": {
+        "dependencies": {
+          "Azure.Storage.Blobs": "12.4.4",
+          "CSSPModels": "1.0.0",
+          "LocalServices": "1.0.0",
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.6",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.6",
+          "Microsoft.EntityFrameworkCore": "3.1.6",
+          "Microsoft.EntityFrameworkCore.Design": "3.1.6",
+          "Microsoft.EntityFrameworkCore.InMemory": "3.1.6",
+          "Microsoft.EntityFrameworkCore.SqlServer": "3.1.6",
+          "Microsoft.EntityFrameworkCore.Sqlite": "3.1.6",
+          "Microsoft.EntityFrameworkCore.Tools": "3.1.6",
+          "Microsoft.Extensions.Configuration": "3.1.6",
+          "Microsoft.Extensions.Configuration.Json": "3.1.6"
+        },
+        "runtime": {
+          "CSSPDBSearchServices.dll": {}
+        }
+      },
       "CSSPEnums/1.0.0": {
         "dependencies": {
           "CSSPCultureServices": "1.0.0",
@@ -2025,6 +2085,26 @@
         },
         "runtime": {
           "CSSPEnums.dll": {}
+        }
+      },
+      "CSSPFileServices/1.0.0": {
+        "dependencies": {
+          "Azure.Storage.Blobs": "12.4.4",
+          "CSSPModels": "1.0.0",
+          "LocalServices": "1.0.0",
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.6",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.6",
+          "Microsoft.EntityFrameworkCore": "3.1.6",
+          "Microsoft.EntityFrameworkCore.Design": "3.1.6",
+          "Microsoft.EntityFrameworkCore.InMemory": "3.1.6",
+          "Microsoft.EntityFrameworkCore.SqlServer": "3.1.6",
+          "Microsoft.EntityFrameworkCore.Sqlite": "3.1.6",
+          "Microsoft.EntityFrameworkCore.Tools": "3.1.6",
+          "Microsoft.Extensions.Configuration": "3.1.6",
+          "Microsoft.Extensions.Configuration.Json": "3.1.6"
+        },
+        "runtime": {
+          "CSSPFileServices.dll": {}
         }
       },
       "CSSPModels/1.0.0": {
@@ -2045,11 +2125,15 @@
           "CSSPModels.dll": {}
         }
       },
-      "CSSPServices/1.0.0": {
+      "CSSPSQLiteServices/1.0.0": {
         "dependencies": {
           "Azure.Storage.Blobs": "12.4.4",
+          "CSSPDBLocalServices": "1.0.0",
+          "CSSPDBLoginServices": "1.0.0",
+          "CSSPDBSearchServices": "1.0.0",
+          "CSSPFileServices": "1.0.0",
           "CSSPModels": "1.0.0",
-          "LoggedInServices": "1.0.0",
+          "LocalServices": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.6",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.6",
           "Microsoft.EntityFrameworkCore": "3.1.6",
@@ -2062,10 +2146,10 @@
           "Microsoft.Extensions.Configuration.Json": "3.1.6"
         },
         "runtime": {
-          "CSSPServices.dll": {}
+          "CSSPSQLiteServices.dll": {}
         }
       },
-      "LoggedInServices/1.0.0": {
+      "LocalServices/1.0.0": {
         "dependencies": {
           "Azure.Storage.Blobs": "12.4.4",
           "CSSPModels": "1.0.0",
@@ -2081,7 +2165,7 @@
           "Microsoft.Extensions.Configuration.Json": "3.1.6"
         },
         "runtime": {
-          "LoggedInServices.dll": {}
+          "LocalServices.dll": {}
         }
       }
     }
@@ -3301,7 +3385,27 @@
       "serviceable": false,
       "sha512": ""
     },
+    "CSSPDBLocalServices/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "CSSPDBLoginServices/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "CSSPDBSearchServices/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
     "CSSPEnums/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "CSSPFileServices/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -3311,12 +3415,12 @@
       "serviceable": false,
       "sha512": ""
     },
-    "CSSPServices/1.0.0": {
+    "CSSPSQLiteServices/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "LoggedInServices/1.0.0": {
+    "LocalServices/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

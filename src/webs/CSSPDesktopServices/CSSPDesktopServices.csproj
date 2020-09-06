@@ -32,9 +32,5 @@
     <PackageReference Include="Azure.Storage.Blobs" Version="12.4.4" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\dlls\CSSPServices\CSSPServices.csproj" />
-  </ItemGroup>
-
 
 </Project>

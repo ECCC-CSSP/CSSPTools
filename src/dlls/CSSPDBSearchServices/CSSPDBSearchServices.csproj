@@ -33,6 +33,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CSSPModels\CSSPModels.csproj" />
+    <ProjectReference Include="..\LocalServices\LocalServices.csproj" />
   </ItemGroup>
 
 </Project>

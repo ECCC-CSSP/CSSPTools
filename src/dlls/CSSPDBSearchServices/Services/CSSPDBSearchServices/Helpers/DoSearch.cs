@@ -16,20 +16,15 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace CSSPServices
+namespace CSSPDBSearchServices
 {
     public partial class CSSPDBSearchService : ControllerBase, ICSSPDBSearchService
     {
         private async Task<ActionResult<List<TVItemLanguage>>> DoSearch(string SearchTerm, int TVItemID)
         {
-            if (LocalService.contact == null)
+            if (LocalService.LoggedInContactInfo == null)
             {
                 return await Task.FromResult(Unauthorized());
-            }
-
-            if (LocalService.RunningOn != RunningOnEnum.Local)
-            {
-                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Search")));
             }
 
             LanguageEnum LanguageRequest = LanguageEnum.en;

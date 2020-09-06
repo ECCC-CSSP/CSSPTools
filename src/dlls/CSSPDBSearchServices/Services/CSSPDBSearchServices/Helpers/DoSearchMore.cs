@@ -16,7 +16,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace CSSPServices
+namespace CSSPDBSearchServices
 {
     public partial class CSSPDBSearchService : ControllerBase, ICSSPDBSearchService
     {

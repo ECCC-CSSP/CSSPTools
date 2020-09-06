@@ -50,7 +50,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\dlls\CSSPServices\CSSPServices.csproj" />
     <ProjectReference Include="..\CSSPDesktopServices\CSSPDesktopServices.csproj" />
   </ItemGroup>
 
