@@ -21,7 +21,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
             {
                 db = "dbLocalIM";
             }
-            sb.AppendLine(@"        private async Task DoCRUDTest()");
+            sb.AppendLine($@"        private async Task DoCRUD{ DBType }Test()");
             sb.AppendLine(@"        {");
             if (DBType == "DB")
             {

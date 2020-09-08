@@ -37,12 +37,7 @@ namespace GenerateCodeBaseServices.Services
                 || type.Name.StartsWith("CSSPRequiredAttribute")
                 || type.Name.StartsWith("CSSPRegularExpressionAttribute")
                 || type.Name == "LastUpdate"
-                || type.Name.StartsWith("AspNetRoleClaim")
-                || type.Name.StartsWith("AspNetRole")
-                || type.Name.StartsWith("AspNetUserClaim")
-                || type.Name.StartsWith("AspNetUserLogin")
-                || type.Name.StartsWith("AspNetUserRole")
-                || type.Name.StartsWith("AspNetUserToken")
+                || type.Name.StartsWith("AspNet")
                 || type.Name.StartsWith("Persisted")
                 || type.Name.StartsWith("Device")
                 || type.Name.StartsWith("Preference")

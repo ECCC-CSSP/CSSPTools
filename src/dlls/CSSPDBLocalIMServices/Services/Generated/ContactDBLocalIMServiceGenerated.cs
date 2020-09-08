@@ -43,7 +43,6 @@ namespace CSSPDBLocalIMServices
         #region Properties
         private CSSPDBInMemoryContext dbLocalIM { get; }
         private IConfiguration Configuration { get; }
-        private IAspNetUserDBLocalIMService AspNetUserDBLocalIMService { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILocalService LocalService { get; }
         private IEnums enums { get; }

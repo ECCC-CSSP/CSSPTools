@@ -33,7 +33,7 @@ namespace CreateGzFileServices.Tests
         private ICSSPCultureService CSSPCultureService { get; set; }
         private ICSSPFileService CSSPFileService { get; set; }
         private ICreateGzFileService CreateGzFileService { get; set; }
-        private IAspNetUserDBService AspNetUserDBService { get; set; }
+        //private IAspNetUserDBService AspNetUserDBService { get; set; }
         private IContactDBService ContactDBService { get; set; }
         private ILoggedInService LoggedInService { get; set; }
         private ITVItemDBService TVItemDBService { get; set; }
@@ -121,7 +121,7 @@ namespace CreateGzFileServices.Tests
             });
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
-            Services.AddSingleton<IAspNetUserDBService, AspNetUserDBService>();
+            //Services.AddSingleton<IAspNetUserDBService, AspNetUserDBService>();
             Services.AddSingleton<ILoginModelService, LoginModelService>();
             Services.AddSingleton<IRegisterModelService, RegisterModelService>();
             Services.AddSingleton<IContactDBService, ContactDBService>();

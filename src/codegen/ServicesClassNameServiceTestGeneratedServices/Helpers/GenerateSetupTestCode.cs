@@ -135,7 +135,6 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
             sb.AppendLine(@"            Services.AddSingleton<IEnums, Enums>();");
             if (TypeName == "Contact")
             {
-                sb.AppendLine(@"            Services.AddSingleton<IAspNetUserService, AspNetUserService>();");
                 sb.AppendLine(@"            Services.AddSingleton<ILoginModelService, LoginModelService>();");
                 sb.AppendLine(@"            Services.AddSingleton<IRegisterModelService, RegisterModelService>();");
             }

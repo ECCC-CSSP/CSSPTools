@@ -35,7 +35,6 @@ namespace CSSPDBServices.Tests
         private IServiceCollection Services { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
         private ILoggedInService LoggedInService { get; set; }
-        private IAspNetUserDBService AspNetUserDBService { get; set; }
         private IContactDBService ContactDBService { get; set; }
         private CSSPDBContext db { get; set; }
         private CSSPDBLocalContext dbLocal { get; set; }
@@ -57,6 +56,7 @@ namespace CSSPDBServices.Tests
         public async Task ContactServiceManual_Constructor_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
+            
             Assert.NotNull(CSSPCultureService);
             Assert.NotNull(LoggedInService);
             Assert.NotNull(ContactDBService);
@@ -87,7 +87,6 @@ namespace CSSPDBServices.Tests
         }
         #endregion Tests 
 
-
         #region Functions private
         private async Task<bool> Setup(string culture)
         {
@@ -101,32 +100,22 @@ namespace CSSPDBServices.Tests
 
             Services.AddSingleton<IConfiguration>(Configuration);
 
-            string CSSPDBLocalFileName = Configuration.GetValue<string>("CSSPDBLocal");
-            Assert.NotNull(CSSPDBLocalFileName);
-
-            string AzureCSSPDBConnString = Configuration.GetValue<string>("AzureCSSPDB");
-            Assert.NotNull(AzureCSSPDBConnString);
+            string CSSPDBConnString = Configuration.GetValue<string>("TestDB");
+            Assert.NotNull(CSSPDBConnString);
 
             Services.AddDbContext<CSSPDBContext>(options =>
             {
-                options.UseSqlServer(AzureCSSPDBConnString);
+                options.UseSqlServer(CSSPDBConnString);
             });
 
             Services.AddDbContext<CSSPDBInMemoryContext>(options =>
             {
-                options.UseInMemoryDatabase(AzureCSSPDBConnString);
-            });
-
-            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName);
-
-            Services.AddDbContext<CSSPDBLocalContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
+                options.UseInMemoryDatabase(CSSPDBConnString);
             });
 
             Services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseSqlServer(AzureCSSPDBConnString);
+                options.UseSqlServer(CSSPDBConnString);
             });
 
             Services.AddIdentityCore<ApplicationUser>()
@@ -135,7 +124,6 @@ namespace CSSPDBServices.Tests
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IEnums, Enums>();
-            Services.AddSingleton<IAspNetUserDBService, AspNetUserDBService>();
             Services.AddSingleton<ILoginModelService, LoginModelService>();
             Services.AddSingleton<IRegisterModelService, RegisterModelService>();
             Services.AddSingleton<IContactDBService, ContactDBService>();

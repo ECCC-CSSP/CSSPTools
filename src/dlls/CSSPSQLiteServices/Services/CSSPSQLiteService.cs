@@ -47,8 +47,8 @@ namespace CSSPSQLiteServices
 
         #region Constructors
         public CSSPSQLiteService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, 
-            IEnums enums, CSSPDBLocalContext dbLocal = null, CSSPDBSearchContext dbSearch = null,
-            CSSPDBLoginContext dbLogin = null, CSSPDBFilesManagementContext dbFM = null)
+            CSSPDBLocalContext dbLocal, CSSPDBSearchContext dbSearch,
+            CSSPDBLoginContext dbLogin, CSSPDBFilesManagementContext dbFM)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;

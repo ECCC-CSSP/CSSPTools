@@ -26,12 +26,19 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                     return await Task.FromResult(false);
                 }
 
-                if (csspProp.IsKey || prop.GetGetMethod().IsVirtual || prop.Name == "ValidationResults")
+                if (TypeName == "AspNetUser" && prop.Name == "Id")
                 {
-                    continue;
+                    if (!await CreateGetFilledRandomClass(prop, csspProp, TypeName, TypeNameLower, sb, sbInMemory, DBType)) return await Task.FromResult(false);
                 }
+                else
+                {
+                    if (csspProp.IsKey || prop.GetGetMethod().IsVirtual || prop.Name == "ValidationResults")
+                    {
+                        continue;
+                    }
 
-                if (!await CreateGetFilledRandomClass(prop, csspProp, TypeName, TypeNameLower, sb, sbInMemory, DBType)) return await Task.FromResult(false);
+                    if (!await CreateGetFilledRandomClass(prop, csspProp, TypeName, TypeNameLower, sb, sbInMemory, DBType)) return await Task.FromResult(false);
+                }
             }
 
             sb.AppendLine(@"");

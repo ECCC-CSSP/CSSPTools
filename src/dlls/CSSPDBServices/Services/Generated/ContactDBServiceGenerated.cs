@@ -47,7 +47,6 @@ namespace CSSPDBServices
         private CSSPDBContext db { get; }
         private IConfiguration Configuration { get; }
         private UserManager<ApplicationUser> UserManager { get; }
-        private IAspNetUserDBService AspNetUserDBService { get; }
         private ILoginModelService LoginModelService { get; }
         private IRegisterModelService RegisterModelService { get; }
         private ICSSPCultureService CSSPCultureService { get; }
@@ -59,14 +58,12 @@ namespace CSSPDBServices
         #region Constructors
         public ContactDBService(IConfiguration Configuration,
            ICSSPCultureService CSSPCultureService, IEnums enums,
-           IAspNetUserDBService AspNetUserDBService,
            ILoginModelService LoginModelService,
            IRegisterModelService RegisterModelService,
            ILoggedInService LoggedInService,
            CSSPDBContext db, UserManager<ApplicationUser> UserManager)
         {
             this.UserManager = UserManager;
-            this.AspNetUserDBService = AspNetUserDBService;
             this.LoginModelService = LoginModelService;
             this.RegisterModelService = RegisterModelService;
             this.Configuration = Configuration;

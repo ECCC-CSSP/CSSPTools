@@ -23,13 +23,13 @@ namespace CSSPSQLiteServices
 
             FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocalText);
 
+            if (!await CheckAndCreateMissingDirectoriesAndFiles(new List<FileInfo>() { fiCSSPDBLocal })) return await Task.FromResult(false);
+
             if (!await CSSPDBLocalIsEmpty())
             {
                 Error = string.Format(CSSPCultureServicesRes.Database_ContainsInfo, fiCSSPDBLocal.FullName);
                 return await Task.FromResult(false);
             }
-
-            if (!await CheckAndCreateMissingDirectoriesAndFiles(new List<FileInfo>() { fiCSSPDBLocal })) return await Task.FromResult(false);
 
             if (!await CreateCSSPDBLocal()) return await Task.FromResult(false);
 

@@ -23,13 +23,13 @@ namespace CSSPSQLiteServices
 
             FileInfo fiCSSPLoginDB = new FileInfo(CSSPLoginDB);
 
+            if (!await CheckAndCreateMissingDirectoriesAndFiles(new List<FileInfo>() { fiCSSPLoginDB })) return await Task.FromResult(false);
+
             if (!await CSSPDBLoginIsEmpty())
             {
                 Error = string.Format(CSSPCultureServicesRes.Database_ContainsInfo, fiCSSPLoginDB.FullName);
                 return await Task.FromResult(false);
             }
-
-            if (!await CheckAndCreateMissingDirectoriesAndFiles(new List<FileInfo>() { fiCSSPLoginDB })) return await Task.FromResult(false);
 
             if (!await CreateCSSPDBLogin()) return await Task.FromResult(false);
 

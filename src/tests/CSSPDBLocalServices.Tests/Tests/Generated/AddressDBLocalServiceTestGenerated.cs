@@ -49,17 +49,17 @@ namespace CSSPDBLocalServices.Tests
         }
         #endregion Constructors
 
-        #region Tests Generated CRUD
+        #region Tests Generated [DBLocal]CRUD
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task Address_CRUD_Good_Test(string culture)
+        public async Task AddressDBLocal_CRUD_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
             address = GetFilledRandomAddress("");
 
-            await DoCRUDTest();
+            await DoCRUDDBLocalTest();
         }
         #endregion Tests Generated CRUD
 
@@ -314,7 +314,7 @@ namespace CSSPDBLocalServices.Tests
         #endregion Tests Generated Properties
 
         #region Functions private
-        private async Task DoCRUDTest()
+        private async Task DoCRUDDBLocalTest()
         {
             dbLocal.Database.BeginTransaction();
             // Post Address
@@ -448,6 +448,51 @@ namespace CSSPDBLocalServices.Tests
             if (OmitPropName != "LastUpdateDate_UTC") address.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") address.LastUpdateContactTVItemID = 2;
 
+            try
+            {
+                dbLocal.TVItems.Add(new TVItem() { TVItemID = 46, TVLevel = 1, TVPath = "p1p46", TVType = (TVTypeEnum)2, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2015, 9, 8, 17, 8, 14), LastUpdateContactTVItemID = 2 });
+                dbLocal.SaveChanges();
+            }
+            catch (Exception)
+            {
+                // Assert.True(false, ex.Message);
+            }
+            try
+            {
+                dbLocal.TVItems.Add(new TVItem() { TVItemID = 5, TVLevel = 1, TVPath = "p1p5", TVType = (TVTypeEnum)6, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2017, 8, 8, 16, 36, 15), LastUpdateContactTVItemID = 2 });
+                dbLocal.SaveChanges();
+            }
+            catch (Exception)
+            {
+                // Assert.True(false, ex.Message);
+            }
+            try
+            {
+                dbLocal.TVItems.Add(new TVItem() { TVItemID = 6, TVLevel = 2, TVPath = "p1p5p6", TVType = (TVTypeEnum)18, ParentID = 5, IsActive = true, LastUpdateDate_UTC = new DateTime(2015, 2, 17, 14, 14, 24), LastUpdateContactTVItemID = 2 });
+                dbLocal.SaveChanges();
+            }
+            catch (Exception)
+            {
+                // Assert.True(false, ex.Message);
+            }
+            try
+            {
+                dbLocal.TVItems.Add(new TVItem() { TVItemID = 39, TVLevel = 3, TVPath = "p1p5p6p39", TVType = (TVTypeEnum)15, ParentID = 6, IsActive = true, LastUpdateDate_UTC = new DateTime(2015, 2, 22, 14, 12, 19), LastUpdateContactTVItemID = 2 });
+                dbLocal.SaveChanges();
+            }
+            catch (Exception)
+            {
+                // Assert.True(false, ex.Message);
+            }
+            try
+            {
+                dbLocal.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2 });
+                dbLocal.SaveChanges();
+            }
+            catch (Exception)
+            {
+                // Assert.True(false, ex.Message);
+            }
 
 
             return address;

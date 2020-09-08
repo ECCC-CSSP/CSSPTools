@@ -49,17 +49,17 @@ namespace CSSPDBServices.Tests
         }
         #endregion Constructors
 
-        #region Tests Generated CRUD
+        #region Tests Generated [DB]CRUD
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task Address_CRUD_Good_Test(string culture)
+        public async Task AddressDB_CRUD_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
             address = GetFilledRandomAddress("");
 
-            await DoCRUDTest();
+            await DoCRUDDBTest();
         }
         #endregion Tests Generated CRUD
 
@@ -314,7 +314,7 @@ namespace CSSPDBServices.Tests
         #endregion Tests Generated Properties
 
         #region Functions private
-        private async Task DoCRUDTest()
+        private async Task DoCRUDDBTest()
         {
             db.Database.BeginTransaction();
             // Post Address

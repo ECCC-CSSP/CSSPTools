@@ -43,7 +43,6 @@ namespace CSSPDBLocalServices
         #region Properties
         private CSSPDBLocalContext dbLocal { get; }
         private IConfiguration Configuration { get; }
-        private IAspNetUserDBLocalService AspNetUserDBLocalService { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILocalService LocalService { get; }
         private IEnums enums { get; }

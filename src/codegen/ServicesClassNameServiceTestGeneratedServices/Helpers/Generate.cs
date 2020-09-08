@@ -78,10 +78,10 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                         }
                     }
 
-                    if (TypeName != "Address")
-                    {
-                        continue;
-                    }
+                    //if (TypeName != "AspNetUser")
+                    //{
+                    //    continue;
+                    //}
 
                     sb.AppendLine($@"/* Auto generated from { AppDomain.CurrentDomain.BaseDirectory }{ AppDomain.CurrentDomain.FriendlyName}.exe");
                     sb.AppendLine(@" *");
@@ -151,7 +151,15 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                         }
                         if (TypeName == "Contact")
                         {
-                            sb.AppendLine(@"        private IAspNetUserService AspNetUserService { get; set; }");
+                            if (DBType == "DB")
+                            {
+                            }
+                            if (DBType == "DBLocal")
+                            {
+                            }
+                            if (DBType == "DBLocalIM")
+                            {
+                            }
                         }
                         else
                         {
@@ -191,7 +199,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                     sb.AppendLine(@"");
                     if (!ClassNotMapped)
                     {
-                        if (!await GenerateCRUDTestCode(TypeName, TypeNameLower, sb)) return await Task.FromResult(false);
+                        if (!await GenerateCRUDTestCode(TypeName, TypeNameLower, sb, DBType)) return await Task.FromResult(false);
                         if (!await GeneratePropertiesTestCode(TypeName, TypeNameLower, type, sb, DBType)) return await Task.FromResult(false);
                     }
                     else

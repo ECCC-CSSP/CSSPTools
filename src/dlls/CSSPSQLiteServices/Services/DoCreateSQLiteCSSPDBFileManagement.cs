@@ -23,13 +23,13 @@ namespace CSSPSQLiteServices
 
             FileInfo fiCSSPDBFilesManagement = new FileInfo(CSSPDBFilesManagement);
 
+            if (!await CheckAndCreateMissingDirectoriesAndFiles(new List<FileInfo>() { fiCSSPDBFilesManagement })) return await Task.FromResult(false);
+
             if (!await CSSPDBFilesManagementIsEmpty())
             {
                 Error = string.Format(CSSPCultureServicesRes.Database_ContainsInfo, fiCSSPDBFilesManagement.FullName);
                 return await Task.FromResult(false);
             }
-
-            if (!await CheckAndCreateMissingDirectoriesAndFiles(new List<FileInfo>() { fiCSSPDBFilesManagement })) return await Task.FromResult(false);
 
             if (!await CreateCSSPDBFilesManagement()) return await Task.FromResult(false);
 

@@ -205,17 +205,14 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                             if (DBType == "DB")
                             {
                                 sb.AppendLine(@"        private UserManager<ApplicationUser> UserManager { get; }");
-                                sb.AppendLine(@"        private IAspNetUserDBService AspNetUserDBService { get; }");
                                 sb.AppendLine(@"        private ILoginModelService LoginModelService { get; }");
                                 sb.AppendLine(@"        private IRegisterModelService RegisterModelService { get; }");
                             }
                             if (DBType == "DBLocal")
                             {
-                                sb.AppendLine(@"        private IAspNetUserDBLocalService AspNetUserDBLocalService { get; }");
                             }
                             if (DBType == "DBLocalIM")
                             {
-                                sb.AppendLine(@"        private IAspNetUserDBLocalIMService AspNetUserDBLocalIMService { get; }");
                             }
                         }
                         sb.AppendLine(@"        private ICSSPCultureService CSSPCultureService { get; }");
@@ -265,15 +262,12 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                                 sb.AppendLine($@"           ICSSPCultureService CSSPCultureService, IEnums enums,");
                                 if (DBType == "DB")
                                 {
-                                    sb.AppendLine($@"           IAspNetUserDBService AspNetUserDBService,");
                                 }
                                 if (DBType == "DBLocal")
                                 {
-                                    sb.AppendLine($@"           IAspNetUserDBLocalService AspNetUserDBLocalService,");
                                 }
                                 if (DBType == "DBLocalIM")
                                 {
-                                    sb.AppendLine($@"           IAspNetUserDBLocalIMService AspNetUserDBLocalIMService,");
                                 }
                                 sb.AppendLine($@"           ILoginModelService LoginModelService,");
                                 sb.AppendLine($@"           IRegisterModelService RegisterModelService,");
@@ -323,15 +317,12 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                                 sb.AppendLine(@"            this.UserManager = UserManager;");
                                 if (DBType == "DB")
                                 {
-                                    sb.AppendLine(@"            this.AspNetUserDBService = AspNetUserDBService;");
                                 }
                                 if (DBType == "DBLocal")
                                 {
-                                    sb.AppendLine(@"            this.AspNetUserDBLocalService = AspNetUserLocalDBService;");
                                 }
                                 if (DBType == "DBLocalIM")
                                 {
-                                    sb.AppendLine(@"            this.AspNetUserDBLocalIMService = AspNetUserLocalIMDBService;");
                                 }
                                 sb.AppendLine(@"            this.LoginModelService = LoginModelService;");
                                 sb.AppendLine(@"            this.RegisterModelService = RegisterModelService;");
