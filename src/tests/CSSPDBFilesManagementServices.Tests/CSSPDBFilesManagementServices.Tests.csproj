@@ -30,11 +30,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\dlls\CSSPFileServices\CSSPFileServices.csproj" />
+    <ProjectReference Include="..\..\dlls\CSSPDBFilesManagementServices\CSSPDBFilesManagementServices.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="appsettings_csspfileservicestests.json">
+    <None Update="appsettings_CSSPDBFilesManagementServicestests.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

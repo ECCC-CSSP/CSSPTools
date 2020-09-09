@@ -5,7 +5,7 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -38,7 +38,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await TVItemUserAuthorizationService.GetTVItemUserAuthorizationWithContactTVItemID(ContactTVItemID);
+            return await TVItemUserAuthorizationDBService.GetTVItemUserAuthorizationWithContactTVItemID(ContactTVItemID);
         }
         #endregion Functions public
 

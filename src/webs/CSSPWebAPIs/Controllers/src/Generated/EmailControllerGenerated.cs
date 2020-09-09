@@ -5,12 +5,13 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -34,15 +35,15 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IEmailService EmailService { get; }
+        private IEmailDBService EmailDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public EmailController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IEmailService EmailService)
+        public EmailController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IEmailDBService EmailDBService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.EmailService = EmailService;
+            this.EmailDBService = EmailDBService;
         }
         #endregion Constructors
 
@@ -53,7 +54,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await EmailService.GetEmailList();
+            return await EmailDBService.GetEmailList();
         }
         [HttpGet("{EmailID}")]
         public async Task<ActionResult<Email>> Get(int EmailID)
@@ -61,7 +62,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await EmailService.GetEmailWithEmailID(EmailID);
+            return await EmailDBService.GetEmailWithEmailID(EmailID);
         }
         [HttpPost]
         public async Task<ActionResult<Email>> Post(Email Email)
@@ -69,7 +70,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await EmailService.Post(Email);
+            return await EmailDBService.Post(Email);
         }
         [HttpPut]
         public async Task<ActionResult<Email>> Put(Email Email)
@@ -77,7 +78,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await EmailService.Put(Email);
+            return await EmailDBService.Put(Email);
         }
         [HttpDelete("{EmailID}")]
         public async Task<ActionResult<bool>> Delete(int EmailID)
@@ -85,7 +86,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await EmailService.Delete(EmailID);
+            return await EmailDBService.Delete(EmailID);
         }
         #endregion Functions public
 

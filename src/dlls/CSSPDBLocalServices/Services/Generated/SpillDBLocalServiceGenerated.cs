@@ -97,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            Spill spill = (from c in dbLocal.Spills.Local
+            Spill spill = (from c in dbLocal.Spills
                     where c.SpillID == SpillID
                     select c).FirstOrDefault();
 
@@ -109,6 +109,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.Spills.Remove(spill);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -142,6 +143,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.Spills.Add(spill);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -166,6 +168,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.Spills.Update(spill);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {

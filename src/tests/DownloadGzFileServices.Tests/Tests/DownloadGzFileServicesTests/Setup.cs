@@ -14,7 +14,7 @@ using System.Text.Json;
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using CSSPFileServices;
+using CSSPDBFilesManagementServices;
 using LocalServices;
 
 namespace DownloadGzFileServices.Tests
@@ -29,7 +29,7 @@ namespace DownloadGzFileServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
-        private ICSSPFileService CSSPFileService { get; set; }
+        private ICSSPDBFilesManagementService CSSPDBFilesManagementService { get; set; }
         private IDownloadGzFileService DownloadGzFileService { get; set; }
         private ILocalService LocalService { get; set; }
         private CSSPDBContext db { get; set; }
@@ -122,7 +122,7 @@ namespace DownloadGzFileServices.Tests
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
-            Services.AddSingleton<ICSSPFileService, CSSPFileService>();
+            Services.AddSingleton<ICSSPDBFilesManagementService, CSSPDBFilesManagementService>();
             Services.AddSingleton<IDownloadGzFileService, DownloadGzFileService>();
             Services.AddSingleton<ILocalService, LocalService>();
 
@@ -146,8 +146,8 @@ namespace DownloadGzFileServices.Tests
             LocalService = Provider.GetService<ILocalService>();
             Assert.NotNull(LocalService);
 
-            CSSPFileService = Provider.GetService<ICSSPFileService>();
-            Assert.NotNull(CSSPFileService);
+            CSSPDBFilesManagementService = Provider.GetService<ICSSPDBFilesManagementService>();
+            Assert.NotNull(CSSPDBFilesManagementService);
 
             DownloadGzFileService = Provider.GetService<IDownloadGzFileService>();
             Assert.NotNull(DownloadGzFileService);

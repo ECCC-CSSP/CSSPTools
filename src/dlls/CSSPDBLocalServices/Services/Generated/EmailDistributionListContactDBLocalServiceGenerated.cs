@@ -97,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            EmailDistributionListContact emailDistributionListContact = (from c in dbLocal.EmailDistributionListContacts.Local
+            EmailDistributionListContact emailDistributionListContact = (from c in dbLocal.EmailDistributionListContacts
                     where c.EmailDistributionListContactID == EmailDistributionListContactID
                     select c).FirstOrDefault();
 
@@ -109,6 +109,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.EmailDistributionListContacts.Remove(emailDistributionListContact);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -142,6 +143,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.EmailDistributionListContacts.Add(emailDistributionListContact);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -166,6 +168,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.EmailDistributionListContacts.Update(emailDistributionListContact);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {

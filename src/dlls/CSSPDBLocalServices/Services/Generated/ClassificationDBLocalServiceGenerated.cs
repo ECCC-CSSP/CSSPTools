@@ -97,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            Classification classification = (from c in dbLocal.Classifications.Local
+            Classification classification = (from c in dbLocal.Classifications
                     where c.ClassificationID == ClassificationID
                     select c).FirstOrDefault();
 
@@ -109,6 +109,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.Classifications.Remove(classification);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -142,6 +143,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.Classifications.Add(classification);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -166,6 +168,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.Classifications.Update(classification);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {

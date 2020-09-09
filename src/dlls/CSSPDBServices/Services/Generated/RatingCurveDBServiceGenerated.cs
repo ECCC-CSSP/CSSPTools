@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            RatingCurve ratingCurve = (from c in db.RatingCurves.Local
+            RatingCurve ratingCurve = (from c in db.RatingCurves
                     where c.RatingCurveID == RatingCurveID
                     select c).FirstOrDefault();
 
@@ -106,6 +106,7 @@ namespace CSSPDBServices
             try
             {
                 db.RatingCurves.Remove(ratingCurve);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -130,6 +131,7 @@ namespace CSSPDBServices
             try
             {
                 db.RatingCurves.Add(ratingCurve);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -154,6 +156,7 @@ namespace CSSPDBServices
             try
             {
                 db.RatingCurves.Update(ratingCurve);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {

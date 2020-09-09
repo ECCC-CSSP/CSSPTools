@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            VPScenarioLanguage vpScenarioLanguage = (from c in db.VPScenarioLanguages.Local
+            VPScenarioLanguage vpScenarioLanguage = (from c in db.VPScenarioLanguages
                     where c.VPScenarioLanguageID == VPScenarioLanguageID
                     select c).FirstOrDefault();
 
@@ -106,6 +106,7 @@ namespace CSSPDBServices
             try
             {
                 db.VPScenarioLanguages.Remove(vpScenarioLanguage);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -130,6 +131,7 @@ namespace CSSPDBServices
             try
             {
                 db.VPScenarioLanguages.Add(vpScenarioLanguage);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -154,6 +156,7 @@ namespace CSSPDBServices
             try
             {
                 db.VPScenarioLanguages.Update(vpScenarioLanguage);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {

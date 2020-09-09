@@ -5,12 +5,13 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -34,15 +35,15 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IVPScenarioLanguageService VPScenarioLanguageService { get; }
+        private IVPScenarioLanguageDBService VPScenarioLanguageDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public VPScenarioLanguageController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IVPScenarioLanguageService VPScenarioLanguageService)
+        public VPScenarioLanguageController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IVPScenarioLanguageDBService VPScenarioLanguageDBService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.VPScenarioLanguageService = VPScenarioLanguageService;
+            this.VPScenarioLanguageDBService = VPScenarioLanguageDBService;
         }
         #endregion Constructors
 
@@ -53,7 +54,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await VPScenarioLanguageService.GetVPScenarioLanguageList();
+            return await VPScenarioLanguageDBService.GetVPScenarioLanguageList();
         }
         [HttpGet("{VPScenarioLanguageID}")]
         public async Task<ActionResult<VPScenarioLanguage>> Get(int VPScenarioLanguageID)
@@ -61,7 +62,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await VPScenarioLanguageService.GetVPScenarioLanguageWithVPScenarioLanguageID(VPScenarioLanguageID);
+            return await VPScenarioLanguageDBService.GetVPScenarioLanguageWithVPScenarioLanguageID(VPScenarioLanguageID);
         }
         [HttpPost]
         public async Task<ActionResult<VPScenarioLanguage>> Post(VPScenarioLanguage VPScenarioLanguage)
@@ -69,7 +70,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await VPScenarioLanguageService.Post(VPScenarioLanguage);
+            return await VPScenarioLanguageDBService.Post(VPScenarioLanguage);
         }
         [HttpPut]
         public async Task<ActionResult<VPScenarioLanguage>> Put(VPScenarioLanguage VPScenarioLanguage)
@@ -77,7 +78,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await VPScenarioLanguageService.Put(VPScenarioLanguage);
+            return await VPScenarioLanguageDBService.Put(VPScenarioLanguage);
         }
         [HttpDelete("{VPScenarioLanguageID}")]
         public async Task<ActionResult<bool>> Delete(int VPScenarioLanguageID)
@@ -85,7 +86,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await VPScenarioLanguageService.Delete(VPScenarioLanguageID);
+            return await VPScenarioLanguageDBService.Delete(VPScenarioLanguageID);
         }
         #endregion Functions public
 

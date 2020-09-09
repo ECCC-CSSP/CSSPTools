@@ -5,12 +5,13 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -34,15 +35,15 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IInfrastructureService InfrastructureService { get; }
+        private IInfrastructureDBService InfrastructureDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public InfrastructureController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IInfrastructureService InfrastructureService)
+        public InfrastructureController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IInfrastructureDBService InfrastructureDBService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.InfrastructureService = InfrastructureService;
+            this.InfrastructureDBService = InfrastructureDBService;
         }
         #endregion Constructors
 
@@ -53,7 +54,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await InfrastructureService.GetInfrastructureList();
+            return await InfrastructureDBService.GetInfrastructureList();
         }
         [HttpGet("{InfrastructureID}")]
         public async Task<ActionResult<Infrastructure>> Get(int InfrastructureID)
@@ -61,7 +62,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await InfrastructureService.GetInfrastructureWithInfrastructureID(InfrastructureID);
+            return await InfrastructureDBService.GetInfrastructureWithInfrastructureID(InfrastructureID);
         }
         [HttpPost]
         public async Task<ActionResult<Infrastructure>> Post(Infrastructure Infrastructure)
@@ -69,7 +70,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await InfrastructureService.Post(Infrastructure);
+            return await InfrastructureDBService.Post(Infrastructure);
         }
         [HttpPut]
         public async Task<ActionResult<Infrastructure>> Put(Infrastructure Infrastructure)
@@ -77,7 +78,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await InfrastructureService.Put(Infrastructure);
+            return await InfrastructureDBService.Put(Infrastructure);
         }
         [HttpDelete("{InfrastructureID}")]
         public async Task<ActionResult<bool>> Delete(int InfrastructureID)
@@ -85,7 +86,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await InfrastructureService.Delete(InfrastructureID);
+            return await InfrastructureDBService.Delete(InfrastructureID);
         }
         #endregion Functions public
 

@@ -33,7 +33,7 @@ namespace CSSPSQLiteServices.Tests
         private CSSPDBContext db { get; set; }
         private CSSPDBLocalContext dbLocal { get; set; }
         private CSSPDBInMemoryContext dbIM { get; set; }
-        private ICSSPFileService CSSPFileService { get; set; }
+        private ICSSPDBFilesManagementService CSSPDBFilesManagementService { get; set; }
         private ICSSPSQLiteService CSSPSQLiteService { get; set; }
         private IAspNetUserService AspNetUserService { get; set; }
         private ILoginModelService LoginModelService { get; set; }
@@ -129,7 +129,7 @@ namespace CSSPSQLiteServices.Tests
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<IAddressService, AddressService>();
             Services.AddSingleton<ITVItemService, TVItemService>();
-            Services.AddSingleton<ICSSPFileService, CSSPFileService>();
+            Services.AddSingleton<ICSSPDBFilesManagementService, CSSPDBFilesManagementService>();
             Services.AddSingleton<IAspNetUserService, AspNetUserService>();
             Services.AddSingleton<ILoginModelService, LoginModelService>();
             Services.AddSingleton<IRegisterModelService, RegisterModelService>();
@@ -165,8 +165,8 @@ namespace CSSPSQLiteServices.Tests
             TVItemService = Provider.GetService<ITVItemService>();
             Assert.NotNull(TVItemService);
 
-            CSSPFileService = Provider.GetService<ICSSPFileService>();
-            Assert.NotNull(CSSPFileService);
+            CSSPDBFilesManagementService = Provider.GetService<ICSSPDBFilesManagementService>();
+            Assert.NotNull(CSSPDBFilesManagementService);
 
             AspNetUserService = Provider.GetService<IAspNetUserService>();
             Assert.NotNull(AspNetUserService);

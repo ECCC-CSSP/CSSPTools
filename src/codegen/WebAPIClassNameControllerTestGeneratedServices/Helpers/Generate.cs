@@ -80,7 +80,7 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Services
                     sb.AppendLine(@"");
                     sb.AppendLine(@"using CSSPEnums;");
                     sb.AppendLine(@"using CSSPModels;");
-                    sb.AppendLine(@"using CSSPServices;");
+                    sb.AppendLine(@"using CSSPDBServices;");
                     sb.AppendLine(@"using CSSPWebAPIs.Controllers;");
                     sb.AppendLine(@"using CSSPCultureServices.Services;");
                     sb.AppendLine(@"using Microsoft.AspNetCore.Mvc;");
@@ -98,6 +98,7 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Services
                     sb.AppendLine(@"using System.Threading.Tasks;");
                     sb.AppendLine(@"using System.Transactions;");
                     sb.AppendLine(@"using Xunit;");
+                    sb.AppendLine(@"using LoggedInServices;");
                     sb.AppendLine(@"");
                     sb.AppendLine(@"namespace CSSPWebAPIs.Tests.Controllers");
                     sb.AppendLine(@"{");
@@ -110,13 +111,13 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Services
                     sb.AppendLine(@"        private IConfiguration Config { get; set; }");
                     sb.AppendLine(@"        private IServiceProvider Provider { get; set; }");
                     sb.AppendLine(@"        private IServiceCollection Services { get; set; }");
-                    sb.AppendLine(@"        private CSSPDBContext db { get; set; }");
-                    sb.AppendLine(@"        private IContactService ContactService { get; set; }");
-                    sb.AppendLine(@"        private ILoggedInService loggedInService { get; set; }");
+                    sb.AppendLine(@"        private IContactDBService ContactDBService { get; set; }");
+                    sb.AppendLine(@"        private ILoggedInService LoggedInService { get; set; }");
                     sb.AppendLine(@"        private ICSSPCultureService CSSPCultureService { get; set; }");
-                    sb.AppendLine($@"        private I{ TypeName }Service { TypeNameLower }Service {{ get; set; }}");
+                    sb.AppendLine($@"        private I{ TypeName }DBService { TypeNameLower }DBService {{ get; set; }}");
                     sb.AppendLine($@"        private I{ TypeName }Controller { TypeNameLower }Controller {{ get; set; }}");
                     sb.AppendLine(@"        private Contact contact { get; set; }");
+                    sb.AppendLine(@"        private string CSSPAzureUrl { get; set; }");
                     if (TypeName == "Contact")
                     {
                         sb.AppendLine(@"        private Contact contact2 { get; set; }");

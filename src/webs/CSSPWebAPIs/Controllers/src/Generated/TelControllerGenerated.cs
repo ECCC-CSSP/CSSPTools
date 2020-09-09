@@ -5,12 +5,13 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -34,15 +35,15 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private ITelService TelService { get; }
+        private ITelDBService TelDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public TelController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, ITelService TelService)
+        public TelController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, ITelDBService TelDBService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.TelService = TelService;
+            this.TelDBService = TelDBService;
         }
         #endregion Constructors
 
@@ -53,7 +54,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await TelService.GetTelList();
+            return await TelDBService.GetTelList();
         }
         [HttpGet("{TelID}")]
         public async Task<ActionResult<Tel>> Get(int TelID)
@@ -61,7 +62,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await TelService.GetTelWithTelID(TelID);
+            return await TelDBService.GetTelWithTelID(TelID);
         }
         [HttpPost]
         public async Task<ActionResult<Tel>> Post(Tel Tel)
@@ -69,7 +70,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await TelService.Post(Tel);
+            return await TelDBService.Post(Tel);
         }
         [HttpPut]
         public async Task<ActionResult<Tel>> Put(Tel Tel)
@@ -77,7 +78,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await TelService.Put(Tel);
+            return await TelDBService.Put(Tel);
         }
         [HttpDelete("{TelID}")]
         public async Task<ActionResult<bool>> Delete(int TelID)
@@ -85,7 +86,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await TelService.Delete(TelID);
+            return await TelDBService.Delete(TelID);
         }
         #endregion Functions public
 

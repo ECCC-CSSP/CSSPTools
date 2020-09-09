@@ -97,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MWQMSample mwqmSample = (from c in dbLocal.MWQMSamples.Local
+            MWQMSample mwqmSample = (from c in dbLocal.MWQMSamples
                     where c.MWQMSampleID == MWQMSampleID
                     select c).FirstOrDefault();
 
@@ -109,6 +109,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.MWQMSamples.Remove(mwqmSample);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -142,6 +143,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.MWQMSamples.Add(mwqmSample);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -166,6 +168,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.MWQMSamples.Update(mwqmSample);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {

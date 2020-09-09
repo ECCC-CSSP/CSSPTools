@@ -5,7 +5,8 @@
 
     <IsPackable>false</IsPackable>
 
-    <UserSecretsId>9d65c001-b7bc-4922-a0fc-1558b9ef927e</UserSecretsId>
+    <UserSecretsId>e43608c0-3ec4-4b6c-b995-a4be7848ec8b</UserSecretsId>
+
   </PropertyGroup>
 
   <ItemGroup>
@@ -39,7 +40,6 @@
     <Folder Include="Controllers\TVTypeUserAuthorizationController\" />
     <Folder Include="Controllers\TVItemUserAuthorizationController\" />
     <Folder Include="Controllers\TVItemController\" />
-    <Folder Include="Controllers\ReadController\" />
     <Folder Include="Controllers\TVItemLanguageController\" />
   </ItemGroup>
 

@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MWQMLookupMPN mwqmLookupMPN = (from c in db.MWQMLookupMPNs.Local
+            MWQMLookupMPN mwqmLookupMPN = (from c in db.MWQMLookupMPNs
                     where c.MWQMLookupMPNID == MWQMLookupMPNID
                     select c).FirstOrDefault();
 
@@ -106,6 +106,7 @@ namespace CSSPDBServices
             try
             {
                 db.MWQMLookupMPNs.Remove(mwqmLookupMPN);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -130,6 +131,7 @@ namespace CSSPDBServices
             try
             {
                 db.MWQMLookupMPNs.Add(mwqmLookupMPN);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -154,6 +156,7 @@ namespace CSSPDBServices
             try
             {
                 db.MWQMLookupMPNs.Update(mwqmLookupMPN);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {

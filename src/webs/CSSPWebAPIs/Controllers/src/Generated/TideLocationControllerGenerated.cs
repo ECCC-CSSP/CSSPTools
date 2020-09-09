@@ -5,12 +5,13 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -34,15 +35,15 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private ITideLocationService TideLocationService { get; }
+        private ITideLocationDBService TideLocationDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public TideLocationController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, ITideLocationService TideLocationService)
+        public TideLocationController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, ITideLocationDBService TideLocationDBService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.TideLocationService = TideLocationService;
+            this.TideLocationDBService = TideLocationDBService;
         }
         #endregion Constructors
 
@@ -53,7 +54,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await TideLocationService.GetTideLocationList();
+            return await TideLocationDBService.GetTideLocationList();
         }
         [HttpGet("{TideLocationID}")]
         public async Task<ActionResult<TideLocation>> Get(int TideLocationID)
@@ -61,7 +62,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await TideLocationService.GetTideLocationWithTideLocationID(TideLocationID);
+            return await TideLocationDBService.GetTideLocationWithTideLocationID(TideLocationID);
         }
         [HttpPost]
         public async Task<ActionResult<TideLocation>> Post(TideLocation TideLocation)
@@ -69,7 +70,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await TideLocationService.Post(TideLocation);
+            return await TideLocationDBService.Post(TideLocation);
         }
         [HttpPut]
         public async Task<ActionResult<TideLocation>> Put(TideLocation TideLocation)
@@ -77,7 +78,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await TideLocationService.Put(TideLocation);
+            return await TideLocationDBService.Put(TideLocation);
         }
         [HttpDelete("{TideLocationID}")]
         public async Task<ActionResult<bool>> Delete(int TideLocationID)
@@ -85,7 +86,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await TideLocationService.Delete(TideLocationID);
+            return await TideLocationDBService.Delete(TideLocationID);
         }
         #endregion Functions public
 

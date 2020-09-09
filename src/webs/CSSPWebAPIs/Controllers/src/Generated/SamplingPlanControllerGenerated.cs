@@ -5,12 +5,13 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -34,15 +35,15 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private ISamplingPlanService SamplingPlanService { get; }
+        private ISamplingPlanDBService SamplingPlanDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public SamplingPlanController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, ISamplingPlanService SamplingPlanService)
+        public SamplingPlanController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, ISamplingPlanDBService SamplingPlanDBService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.SamplingPlanService = SamplingPlanService;
+            this.SamplingPlanDBService = SamplingPlanDBService;
         }
         #endregion Constructors
 
@@ -53,7 +54,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await SamplingPlanService.GetSamplingPlanList();
+            return await SamplingPlanDBService.GetSamplingPlanList();
         }
         [HttpGet("{SamplingPlanID}")]
         public async Task<ActionResult<SamplingPlan>> Get(int SamplingPlanID)
@@ -61,7 +62,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await SamplingPlanService.GetSamplingPlanWithSamplingPlanID(SamplingPlanID);
+            return await SamplingPlanDBService.GetSamplingPlanWithSamplingPlanID(SamplingPlanID);
         }
         [HttpPost]
         public async Task<ActionResult<SamplingPlan>> Post(SamplingPlan SamplingPlan)
@@ -69,7 +70,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await SamplingPlanService.Post(SamplingPlan);
+            return await SamplingPlanDBService.Post(SamplingPlan);
         }
         [HttpPut]
         public async Task<ActionResult<SamplingPlan>> Put(SamplingPlan SamplingPlan)
@@ -77,7 +78,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await SamplingPlanService.Put(SamplingPlan);
+            return await SamplingPlanDBService.Put(SamplingPlan);
         }
         [HttpDelete("{SamplingPlanID}")]
         public async Task<ActionResult<bool>> Delete(int SamplingPlanID)
@@ -85,7 +86,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await SamplingPlanService.Delete(SamplingPlanID);
+            return await SamplingPlanDBService.Delete(SamplingPlanID);
         }
         #endregion Functions public
 

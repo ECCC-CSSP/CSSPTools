@@ -15,7 +15,6 @@ using System.Text.Json;
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using CSSPFileServices;
 using CSSPDBServices;
 using LoggedInServices;
 
@@ -31,7 +30,6 @@ namespace CreateGzFileServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
-        private ICSSPFileService CSSPFileService { get; set; }
         private ICreateGzFileService CreateGzFileService { get; set; }
         //private IAspNetUserDBService AspNetUserDBService { get; set; }
         private IContactDBService ContactDBService { get; set; }

@@ -5,12 +5,13 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -34,15 +35,15 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IRainExceedanceClimateSiteService RainExceedanceClimateSiteService { get; }
+        private IRainExceedanceClimateSiteDBService RainExceedanceClimateSiteDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public RainExceedanceClimateSiteController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IRainExceedanceClimateSiteService RainExceedanceClimateSiteService)
+        public RainExceedanceClimateSiteController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IRainExceedanceClimateSiteDBService RainExceedanceClimateSiteDBService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.RainExceedanceClimateSiteService = RainExceedanceClimateSiteService;
+            this.RainExceedanceClimateSiteDBService = RainExceedanceClimateSiteDBService;
         }
         #endregion Constructors
 
@@ -53,7 +54,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await RainExceedanceClimateSiteService.GetRainExceedanceClimateSiteList();
+            return await RainExceedanceClimateSiteDBService.GetRainExceedanceClimateSiteList();
         }
         [HttpGet("{RainExceedanceClimateSiteID}")]
         public async Task<ActionResult<RainExceedanceClimateSite>> Get(int RainExceedanceClimateSiteID)
@@ -61,7 +62,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await RainExceedanceClimateSiteService.GetRainExceedanceClimateSiteWithRainExceedanceClimateSiteID(RainExceedanceClimateSiteID);
+            return await RainExceedanceClimateSiteDBService.GetRainExceedanceClimateSiteWithRainExceedanceClimateSiteID(RainExceedanceClimateSiteID);
         }
         [HttpPost]
         public async Task<ActionResult<RainExceedanceClimateSite>> Post(RainExceedanceClimateSite RainExceedanceClimateSite)
@@ -69,7 +70,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await RainExceedanceClimateSiteService.Post(RainExceedanceClimateSite);
+            return await RainExceedanceClimateSiteDBService.Post(RainExceedanceClimateSite);
         }
         [HttpPut]
         public async Task<ActionResult<RainExceedanceClimateSite>> Put(RainExceedanceClimateSite RainExceedanceClimateSite)
@@ -77,7 +78,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await RainExceedanceClimateSiteService.Put(RainExceedanceClimateSite);
+            return await RainExceedanceClimateSiteDBService.Put(RainExceedanceClimateSite);
         }
         [HttpDelete("{RainExceedanceClimateSiteID}")]
         public async Task<ActionResult<bool>> Delete(int RainExceedanceClimateSiteID)
@@ -85,7 +86,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await RainExceedanceClimateSiteService.Delete(RainExceedanceClimateSiteID);
+            return await RainExceedanceClimateSiteDBService.Delete(RainExceedanceClimateSiteID);
         }
         #endregion Functions public
 

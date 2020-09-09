@@ -5,12 +5,13 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -34,15 +35,15 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IBoxModelResultService BoxModelResultService { get; }
+        private IBoxModelResultDBService BoxModelResultDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public BoxModelResultController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IBoxModelResultService BoxModelResultService)
+        public BoxModelResultController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IBoxModelResultDBService BoxModelResultDBService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.BoxModelResultService = BoxModelResultService;
+            this.BoxModelResultDBService = BoxModelResultDBService;
         }
         #endregion Constructors
 
@@ -53,7 +54,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await BoxModelResultService.GetBoxModelResultList();
+            return await BoxModelResultDBService.GetBoxModelResultList();
         }
         [HttpGet("{BoxModelResultID}")]
         public async Task<ActionResult<BoxModelResult>> Get(int BoxModelResultID)
@@ -61,7 +62,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await BoxModelResultService.GetBoxModelResultWithBoxModelResultID(BoxModelResultID);
+            return await BoxModelResultDBService.GetBoxModelResultWithBoxModelResultID(BoxModelResultID);
         }
         [HttpPost]
         public async Task<ActionResult<BoxModelResult>> Post(BoxModelResult BoxModelResult)
@@ -69,7 +70,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await BoxModelResultService.Post(BoxModelResult);
+            return await BoxModelResultDBService.Post(BoxModelResult);
         }
         [HttpPut]
         public async Task<ActionResult<BoxModelResult>> Put(BoxModelResult BoxModelResult)
@@ -77,7 +78,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await BoxModelResultService.Put(BoxModelResult);
+            return await BoxModelResultDBService.Put(BoxModelResult);
         }
         [HttpDelete("{BoxModelResultID}")]
         public async Task<ActionResult<bool>> Delete(int BoxModelResultID)
@@ -85,7 +86,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await BoxModelResultService.Delete(BoxModelResultID);
+            return await BoxModelResultDBService.Delete(BoxModelResultID);
         }
         #endregion Functions public
 

@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            VPAmbient vpAmbient = (from c in db.VPAmbients.Local
+            VPAmbient vpAmbient = (from c in db.VPAmbients
                     where c.VPAmbientID == VPAmbientID
                     select c).FirstOrDefault();
 
@@ -106,6 +106,7 @@ namespace CSSPDBServices
             try
             {
                 db.VPAmbients.Remove(vpAmbient);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -130,6 +131,7 @@ namespace CSSPDBServices
             try
             {
                 db.VPAmbients.Add(vpAmbient);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -154,6 +156,7 @@ namespace CSSPDBServices
             try
             {
                 db.VPAmbients.Update(vpAmbient);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {

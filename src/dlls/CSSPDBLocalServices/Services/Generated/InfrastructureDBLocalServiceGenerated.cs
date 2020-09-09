@@ -97,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            Infrastructure infrastructure = (from c in dbLocal.Infrastructures.Local
+            Infrastructure infrastructure = (from c in dbLocal.Infrastructures
                     where c.InfrastructureID == InfrastructureID
                     select c).FirstOrDefault();
 
@@ -109,6 +109,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.Infrastructures.Remove(infrastructure);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -142,6 +143,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.Infrastructures.Add(infrastructure);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -166,6 +168,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.Infrastructures.Update(infrastructure);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {

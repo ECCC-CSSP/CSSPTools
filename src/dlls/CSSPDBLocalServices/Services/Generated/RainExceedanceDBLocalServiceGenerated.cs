@@ -97,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            RainExceedance rainExceedance = (from c in dbLocal.RainExceedances.Local
+            RainExceedance rainExceedance = (from c in dbLocal.RainExceedances
                     where c.RainExceedanceID == RainExceedanceID
                     select c).FirstOrDefault();
 
@@ -109,6 +109,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.RainExceedances.Remove(rainExceedance);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -142,6 +143,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.RainExceedances.Add(rainExceedance);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -166,6 +168,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.RainExceedances.Update(rainExceedance);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {

@@ -5,12 +5,13 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -34,15 +35,15 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IDocTemplateService DocTemplateService { get; }
+        private IDocTemplateDBService DocTemplateDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public DocTemplateController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IDocTemplateService DocTemplateService)
+        public DocTemplateController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IDocTemplateDBService DocTemplateDBService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.DocTemplateService = DocTemplateService;
+            this.DocTemplateDBService = DocTemplateDBService;
         }
         #endregion Constructors
 
@@ -53,7 +54,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await DocTemplateService.GetDocTemplateList();
+            return await DocTemplateDBService.GetDocTemplateList();
         }
         [HttpGet("{DocTemplateID}")]
         public async Task<ActionResult<DocTemplate>> Get(int DocTemplateID)
@@ -61,7 +62,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await DocTemplateService.GetDocTemplateWithDocTemplateID(DocTemplateID);
+            return await DocTemplateDBService.GetDocTemplateWithDocTemplateID(DocTemplateID);
         }
         [HttpPost]
         public async Task<ActionResult<DocTemplate>> Post(DocTemplate DocTemplate)
@@ -69,7 +70,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await DocTemplateService.Post(DocTemplate);
+            return await DocTemplateDBService.Post(DocTemplate);
         }
         [HttpPut]
         public async Task<ActionResult<DocTemplate>> Put(DocTemplate DocTemplate)
@@ -77,7 +78,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await DocTemplateService.Put(DocTemplate);
+            return await DocTemplateDBService.Put(DocTemplate);
         }
         [HttpDelete("{DocTemplateID}")]
         public async Task<ActionResult<bool>> Delete(int DocTemplateID)
@@ -85,7 +86,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await DocTemplateService.Delete(DocTemplateID);
+            return await DocTemplateDBService.Delete(DocTemplateID);
         }
         #endregion Functions public
 

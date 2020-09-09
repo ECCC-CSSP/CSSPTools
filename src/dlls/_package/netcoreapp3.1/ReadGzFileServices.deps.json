@@ -9,7 +9,6 @@
       "ReadGzFileServices/1.0.0": {
         "dependencies": {
           "Azure.Storage.Blobs": "12.4.4",
-          "CSSPFileServices": "1.0.0",
           "CSSPModels": "1.0.0",
           "DownloadGzFileServices": "1.0.0",
           "LocalServices": "1.0.0",
@@ -1376,17 +1375,7 @@
           }
         }
       },
-      "CSSPEnums/1.0.0": {
-        "dependencies": {
-          "CSSPCultureServices": "1.0.0",
-          "Microsoft.EntityFrameworkCore.Design": "3.1.6",
-          "Microsoft.EntityFrameworkCore.Tools": "3.1.6"
-        },
-        "runtime": {
-          "CSSPEnums.dll": {}
-        }
-      },
-      "CSSPFileServices/1.0.0": {
+      "CSSPDBFilesManagementServices/1.0.0": {
         "dependencies": {
           "Azure.Storage.Blobs": "12.4.4",
           "CSSPModels": "1.0.0",
@@ -1403,7 +1392,17 @@
           "Microsoft.Extensions.Configuration.Json": "3.1.6"
         },
         "runtime": {
-          "CSSPFileServices.dll": {}
+          "CSSPDBFilesManagementServices.dll": {}
+        }
+      },
+      "CSSPEnums/1.0.0": {
+        "dependencies": {
+          "CSSPCultureServices": "1.0.0",
+          "Microsoft.EntityFrameworkCore.Design": "3.1.6",
+          "Microsoft.EntityFrameworkCore.Tools": "3.1.6"
+        },
+        "runtime": {
+          "CSSPEnums.dll": {}
         }
       },
       "CSSPModels/1.0.0": {
@@ -1427,7 +1426,7 @@
       "DownloadGzFileServices/1.0.0": {
         "dependencies": {
           "Azure.Storage.Blobs": "12.4.4",
-          "CSSPFileServices": "1.0.0",
+          "CSSPDBFilesManagementServices": "1.0.0",
           "CSSPModels": "1.0.0",
           "LocalServices": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.6",
@@ -2373,12 +2372,12 @@
       "serviceable": false,
       "sha512": ""
     },
-    "CSSPEnums/1.0.0": {
+    "CSSPDBFilesManagementServices/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "CSSPFileServices/1.0.0": {
+    "CSSPEnums/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

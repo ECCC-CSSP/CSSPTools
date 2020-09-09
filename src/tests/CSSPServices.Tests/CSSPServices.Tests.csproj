@@ -37,10 +37,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\dlls\CSSPServices\CSSPServices.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Tests\SQLiteServicesTests\Generated\" />
   </ItemGroup>
 

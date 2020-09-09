@@ -103,7 +103,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            Contact contact = (from c in dbLocal.Contacts.Local
+            Contact contact = (from c in dbLocal.Contacts
                     where c.ContactID == ContactID
                     select c).FirstOrDefault();
 
@@ -115,6 +115,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.Contacts.Remove(contact);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -148,6 +149,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.Contacts.Add(contact);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -172,6 +174,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.Contacts.Update(contact);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {

@@ -97,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            VPResult vpResult = (from c in dbLocal.VPResults.Local
+            VPResult vpResult = (from c in dbLocal.VPResults
                     where c.VPResultID == VPResultID
                     select c).FirstOrDefault();
 
@@ -109,6 +109,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.VPResults.Remove(vpResult);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -142,6 +143,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.VPResults.Add(vpResult);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -166,6 +168,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.VPResults.Update(vpResult);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {

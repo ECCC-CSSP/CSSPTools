@@ -5,7 +5,7 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -39,7 +39,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await TVItemLanguageService.GetTVItemLanguageStartDateList(Year, Month, Day);
+            return await TVItemLanguageDBService.GetTVItemLanguageStartDateList(Year, Month, Day);
         }
         #endregion Functions public
 

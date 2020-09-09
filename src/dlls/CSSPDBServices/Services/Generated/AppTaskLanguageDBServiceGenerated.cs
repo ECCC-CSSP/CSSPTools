@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            AppTaskLanguage appTaskLanguage = (from c in db.AppTaskLanguages.Local
+            AppTaskLanguage appTaskLanguage = (from c in db.AppTaskLanguages
                     where c.AppTaskLanguageID == AppTaskLanguageID
                     select c).FirstOrDefault();
 
@@ -106,6 +106,7 @@ namespace CSSPDBServices
             try
             {
                 db.AppTaskLanguages.Remove(appTaskLanguage);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -130,6 +131,7 @@ namespace CSSPDBServices
             try
             {
                 db.AppTaskLanguages.Add(appTaskLanguage);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -154,6 +156,7 @@ namespace CSSPDBServices
             try
             {
                 db.AppTaskLanguages.Update(appTaskLanguage);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {

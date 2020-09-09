@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            RainExceedanceClimateSite rainExceedanceClimateSite = (from c in db.RainExceedanceClimateSites.Local
+            RainExceedanceClimateSite rainExceedanceClimateSite = (from c in db.RainExceedanceClimateSites
                     where c.RainExceedanceClimateSiteID == RainExceedanceClimateSiteID
                     select c).FirstOrDefault();
 
@@ -106,6 +106,7 @@ namespace CSSPDBServices
             try
             {
                 db.RainExceedanceClimateSites.Remove(rainExceedanceClimateSite);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -130,6 +131,7 @@ namespace CSSPDBServices
             try
             {
                 db.RainExceedanceClimateSites.Add(rainExceedanceClimateSite);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -154,6 +156,7 @@ namespace CSSPDBServices
             try
             {
                 db.RainExceedanceClimateSites.Update(rainExceedanceClimateSite);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {

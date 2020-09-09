@@ -5,12 +5,13 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -34,15 +35,15 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IAppErrLogService AppErrLogService { get; }
+        private IAppErrLogDBService AppErrLogDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public AppErrLogController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IAppErrLogService AppErrLogService)
+        public AppErrLogController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IAppErrLogDBService AppErrLogDBService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.AppErrLogService = AppErrLogService;
+            this.AppErrLogDBService = AppErrLogDBService;
         }
         #endregion Constructors
 
@@ -53,7 +54,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await AppErrLogService.GetAppErrLogList();
+            return await AppErrLogDBService.GetAppErrLogList();
         }
         [HttpGet("{AppErrLogID}")]
         public async Task<ActionResult<AppErrLog>> Get(int AppErrLogID)
@@ -61,7 +62,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await AppErrLogService.GetAppErrLogWithAppErrLogID(AppErrLogID);
+            return await AppErrLogDBService.GetAppErrLogWithAppErrLogID(AppErrLogID);
         }
         [HttpPost]
         public async Task<ActionResult<AppErrLog>> Post(AppErrLog AppErrLog)
@@ -69,7 +70,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await AppErrLogService.Post(AppErrLog);
+            return await AppErrLogDBService.Post(AppErrLog);
         }
         [HttpPut]
         public async Task<ActionResult<AppErrLog>> Put(AppErrLog AppErrLog)
@@ -77,7 +78,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await AppErrLogService.Put(AppErrLog);
+            return await AppErrLogDBService.Put(AppErrLog);
         }
         [HttpDelete("{AppErrLogID}")]
         public async Task<ActionResult<bool>> Delete(int AppErrLogID)
@@ -85,7 +86,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await AppErrLogService.Delete(AppErrLogID);
+            return await AppErrLogDBService.Delete(AppErrLogID);
         }
         #endregion Functions public
 

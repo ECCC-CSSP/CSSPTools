@@ -97,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MWQMRunLanguage mwqmRunLanguage = (from c in dbLocal.MWQMRunLanguages.Local
+            MWQMRunLanguage mwqmRunLanguage = (from c in dbLocal.MWQMRunLanguages
                     where c.MWQMRunLanguageID == MWQMRunLanguageID
                     select c).FirstOrDefault();
 
@@ -109,6 +109,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.MWQMRunLanguages.Remove(mwqmRunLanguage);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -142,6 +143,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.MWQMRunLanguages.Add(mwqmRunLanguage);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -166,6 +168,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.MWQMRunLanguages.Update(mwqmRunLanguage);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {

@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MikeScenarioResult mikeScenarioResult = (from c in db.MikeScenarioResults.Local
+            MikeScenarioResult mikeScenarioResult = (from c in db.MikeScenarioResults
                     where c.MikeScenarioResultID == MikeScenarioResultID
                     select c).FirstOrDefault();
 
@@ -106,6 +106,7 @@ namespace CSSPDBServices
             try
             {
                 db.MikeScenarioResults.Remove(mikeScenarioResult);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -130,6 +131,7 @@ namespace CSSPDBServices
             try
             {
                 db.MikeScenarioResults.Add(mikeScenarioResult);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -154,6 +156,7 @@ namespace CSSPDBServices
             try
             {
                 db.MikeScenarioResults.Update(mikeScenarioResult);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {

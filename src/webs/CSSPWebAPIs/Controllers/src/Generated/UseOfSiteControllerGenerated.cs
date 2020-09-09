@@ -5,12 +5,13 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -34,15 +35,15 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IUseOfSiteService UseOfSiteService { get; }
+        private IUseOfSiteDBService UseOfSiteDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public UseOfSiteController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IUseOfSiteService UseOfSiteService)
+        public UseOfSiteController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IUseOfSiteDBService UseOfSiteDBService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.UseOfSiteService = UseOfSiteService;
+            this.UseOfSiteDBService = UseOfSiteDBService;
         }
         #endregion Constructors
 
@@ -53,7 +54,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await UseOfSiteService.GetUseOfSiteList();
+            return await UseOfSiteDBService.GetUseOfSiteList();
         }
         [HttpGet("{UseOfSiteID}")]
         public async Task<ActionResult<UseOfSite>> Get(int UseOfSiteID)
@@ -61,7 +62,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await UseOfSiteService.GetUseOfSiteWithUseOfSiteID(UseOfSiteID);
+            return await UseOfSiteDBService.GetUseOfSiteWithUseOfSiteID(UseOfSiteID);
         }
         [HttpPost]
         public async Task<ActionResult<UseOfSite>> Post(UseOfSite UseOfSite)
@@ -69,7 +70,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await UseOfSiteService.Post(UseOfSite);
+            return await UseOfSiteDBService.Post(UseOfSite);
         }
         [HttpPut]
         public async Task<ActionResult<UseOfSite>> Put(UseOfSite UseOfSite)
@@ -77,7 +78,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await UseOfSiteService.Put(UseOfSite);
+            return await UseOfSiteDBService.Put(UseOfSite);
         }
         [HttpDelete("{UseOfSiteID}")]
         public async Task<ActionResult<bool>> Delete(int UseOfSiteID)
@@ -85,7 +86,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await UseOfSiteService.Delete(UseOfSiteID);
+            return await UseOfSiteDBService.Delete(UseOfSiteID);
         }
         #endregion Functions public
 

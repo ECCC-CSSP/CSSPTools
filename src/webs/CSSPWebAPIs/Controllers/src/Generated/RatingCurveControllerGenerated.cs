@@ -5,12 +5,13 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -34,15 +35,15 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IRatingCurveService RatingCurveService { get; }
+        private IRatingCurveDBService RatingCurveDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public RatingCurveController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IRatingCurveService RatingCurveService)
+        public RatingCurveController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IRatingCurveDBService RatingCurveDBService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.RatingCurveService = RatingCurveService;
+            this.RatingCurveDBService = RatingCurveDBService;
         }
         #endregion Constructors
 
@@ -53,7 +54,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await RatingCurveService.GetRatingCurveList();
+            return await RatingCurveDBService.GetRatingCurveList();
         }
         [HttpGet("{RatingCurveID}")]
         public async Task<ActionResult<RatingCurve>> Get(int RatingCurveID)
@@ -61,7 +62,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await RatingCurveService.GetRatingCurveWithRatingCurveID(RatingCurveID);
+            return await RatingCurveDBService.GetRatingCurveWithRatingCurveID(RatingCurveID);
         }
         [HttpPost]
         public async Task<ActionResult<RatingCurve>> Post(RatingCurve RatingCurve)
@@ -69,7 +70,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await RatingCurveService.Post(RatingCurve);
+            return await RatingCurveDBService.Post(RatingCurve);
         }
         [HttpPut]
         public async Task<ActionResult<RatingCurve>> Put(RatingCurve RatingCurve)
@@ -77,7 +78,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await RatingCurveService.Put(RatingCurve);
+            return await RatingCurveDBService.Put(RatingCurve);
         }
         [HttpDelete("{RatingCurveID}")]
         public async Task<ActionResult<bool>> Delete(int RatingCurveID)
@@ -85,7 +86,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await RatingCurveService.Delete(RatingCurveID);
+            return await RatingCurveDBService.Delete(RatingCurveID);
         }
         #endregion Functions public
 

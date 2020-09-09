@@ -3,7 +3,7 @@
  * 
  */
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +11,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using CSSPEnums;
 using CSSPCultureServices.Resources;
+using LoggedInServices;
+using CreateGzFileServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -49,11 +51,6 @@ namespace CSSPWebAPIs.Controllers
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
-
-            if (LoggedInService.RunningOn != RunningOnEnum.Azure)
-            {
-                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnAzure, "CreateGzFile")));
-            }
 
             return await CreateGzFileService.CreateGzFile(WebType, TVItemID, WebTypeYear);
         }

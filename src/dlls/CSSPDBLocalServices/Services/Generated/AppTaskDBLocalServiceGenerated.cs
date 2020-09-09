@@ -97,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            AppTask appTask = (from c in dbLocal.AppTasks.Local
+            AppTask appTask = (from c in dbLocal.AppTasks
                     where c.AppTaskID == AppTaskID
                     select c).FirstOrDefault();
 
@@ -109,6 +109,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.AppTasks.Remove(appTask);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -142,6 +143,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.AppTasks.Add(appTask);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -166,6 +168,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.AppTasks.Update(appTask);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {

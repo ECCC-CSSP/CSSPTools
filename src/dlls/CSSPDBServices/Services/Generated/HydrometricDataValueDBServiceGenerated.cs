@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            HydrometricDataValue hydrometricDataValue = (from c in db.HydrometricDataValues.Local
+            HydrometricDataValue hydrometricDataValue = (from c in db.HydrometricDataValues
                     where c.HydrometricDataValueID == HydrometricDataValueID
                     select c).FirstOrDefault();
 
@@ -106,6 +106,7 @@ namespace CSSPDBServices
             try
             {
                 db.HydrometricDataValues.Remove(hydrometricDataValue);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -130,6 +131,7 @@ namespace CSSPDBServices
             try
             {
                 db.HydrometricDataValues.Add(hydrometricDataValue);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -154,6 +156,7 @@ namespace CSSPDBServices
             try
             {
                 db.HydrometricDataValues.Update(hydrometricDataValue);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {

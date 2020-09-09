@@ -13,7 +13,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using LocalServices;
-using CSSPFileServices;
+using CSSPDBFilesManagementServices;
 
 namespace DownloadGzFileServices
 {
@@ -32,7 +32,7 @@ namespace DownloadGzFileServices
         private ICSSPCultureService CSSPCultureService { get; }
         private ILocalService LocalService { get; }
         private IEnums enums { get; }
-        private ICSSPFileService CSSPFileService { get; }
+        private ICSSPDBFilesManagementService CSSPDBFilesManagementService { get; }
         private string AzureStoreConnectionString { get; set; }
         private string AzureStoreCSSPJSONPath { get; set; }
         private string LocalCSSPJSONPath { get; set; }
@@ -42,13 +42,13 @@ namespace DownloadGzFileServices
 
         #region Constructors
         public DownloadGzFileService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, ILocalService LocalService, 
-            IEnums enums, ICSSPFileService CSSPFileService) : base()
+            IEnums enums, ICSSPDBFilesManagementService CSSPDBFilesManagementService) : base()
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LocalService = LocalService;
             this.enums = enums;
-            this.CSSPFileService = CSSPFileService;
+            this.CSSPDBFilesManagementService = CSSPDBFilesManagementService;
 
             AzureStoreConnectionString = Configuration.GetValue<string>("AzureStoreConnectionString");
             AzureStoreCSSPJSONPath = Configuration.GetValue<string>("AzureStoreCSSPJSONPath");

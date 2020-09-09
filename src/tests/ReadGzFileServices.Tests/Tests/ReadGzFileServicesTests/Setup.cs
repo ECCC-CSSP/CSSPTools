@@ -15,7 +15,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using LocalServices;
-using CSSPFileServices;
+using CSSPDBFilesManagementServices;
 using DownloadGzFileServices;
 
 namespace ReadGzFileServices.Tests
@@ -30,7 +30,7 @@ namespace ReadGzFileServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
-        private ICSSPFileService CSSPFileService { get; set; }
+        private ICSSPDBFilesManagementService CSSPDBFilesManagementService { get; set; }
         private IReadGzFileService ReadGzFileService { get; set; }
         private ILocalService LocalService { get; set; }
         private CSSPDBContext db { get; set; }
@@ -123,7 +123,7 @@ namespace ReadGzFileServices.Tests
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
-            Services.AddSingleton<ICSSPFileService, CSSPFileService>();
+            Services.AddSingleton<ICSSPDBFilesManagementService, CSSPDBFilesManagementService>();
             Services.AddSingleton<IDownloadGzFileService, DownloadGzFileService>();
             Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
             Services.AddSingleton<ILocalService, LocalService>();
@@ -144,8 +144,8 @@ namespace ReadGzFileServices.Tests
 
             await LocalService.SetLoggedInContactInfo();
 
-            CSSPFileService = Provider.GetService<ICSSPFileService>();
-            Assert.NotNull(CSSPFileService);
+            CSSPDBFilesManagementService = Provider.GetService<ICSSPDBFilesManagementService>();
+            Assert.NotNull(CSSPDBFilesManagementService);
 
             ReadGzFileService = Provider.GetService<IReadGzFileService>();
             Assert.NotNull(ReadGzFileService);

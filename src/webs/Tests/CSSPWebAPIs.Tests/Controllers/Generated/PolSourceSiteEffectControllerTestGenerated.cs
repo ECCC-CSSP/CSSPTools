@@ -6,7 +6,7 @@
 
 using CSSPEnums;
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPWebAPIs.Controllers;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -24,6 +24,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Tests.Controllers
 {
@@ -36,13 +37,13 @@ namespace CSSPWebAPIs.Tests.Controllers
         private IConfiguration Config { get; set; }
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
-        private CSSPDBContext db { get; set; }
-        private IContactService ContactService { get; set; }
-        private ILoggedInService loggedInService { get; set; }
+        private IContactDBService ContactDBService { get; set; }
+        private ILoggedInService LoggedInService { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
-        private IPolSourceSiteEffectService polSourceSiteEffectService { get; set; }
+        private IPolSourceSiteEffectDBService polSourceSiteEffectDBService { get; set; }
         private IPolSourceSiteEffectController polSourceSiteEffectController { get; set; }
         private Contact contact { get; set; }
+        private string CSSPAzureUrl { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -54,73 +55,76 @@ namespace CSSPWebAPIs.Tests.Controllers
         #region Functions public
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task PolSourceSiteEffectController_Constructor_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
-            Assert.NotNull(loggedInService);
-            Assert.NotNull(polSourceSiteEffectService);
+
+            Assert.NotNull(LoggedInService);
+            Assert.NotNull(polSourceSiteEffectDBService);
             Assert.NotNull(polSourceSiteEffectController);
         }
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task PolSourceSiteEffectController_CRUD_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            HttpClient httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
+            using (HttpClient httpClient = new HttpClient())
+            {
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
 
-            // testing Get
-            string url = "https://localhost:4447/api/" + culture + "/PolSourceSiteEffect";
-            var response = await httpClient.GetAsync(url);
-            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
-            List<PolSourceSiteEffect> polSourceSiteEffectList = JsonSerializer.Deserialize<List<PolSourceSiteEffect>>(responseContent);
-            Assert.True(polSourceSiteEffectList.Count > 0);
+                // testing Get
+                string url = $"{ CSSPAzureUrl }api/{ culture }/PolSourceSiteEffect";
+                var response = await httpClient.GetAsync(url);
+                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+                string responseContent = await response.Content.ReadAsStringAsync();
+                Assert.NotEmpty(responseContent);
+                List<PolSourceSiteEffect> polSourceSiteEffectList = JsonSerializer.Deserialize<List<PolSourceSiteEffect>>(responseContent);
+                Assert.True(polSourceSiteEffectList.Count > 0);
 
-            // testing Get(PolSourceSiteEffectID)
-            string urlID = url + "/" + polSourceSiteEffectList[0].PolSourceSiteEffectID;
-            response = await httpClient.GetAsync(urlID);
-            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-            responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
-            PolSourceSiteEffect polSourceSiteEffect = JsonSerializer.Deserialize<PolSourceSiteEffect>(responseContent);
-            Assert.Equal(polSourceSiteEffectList[0].PolSourceSiteEffectID, polSourceSiteEffect.PolSourceSiteEffectID);
+                // testing Get(PolSourceSiteEffectID)
+                string urlID = url + "/" + polSourceSiteEffectList[0].PolSourceSiteEffectID;
+                response = await httpClient.GetAsync(urlID);
+                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+                responseContent = await response.Content.ReadAsStringAsync();
+                Assert.NotEmpty(responseContent);
+                PolSourceSiteEffect polSourceSiteEffect = JsonSerializer.Deserialize<PolSourceSiteEffect>(responseContent);
+                Assert.Equal(polSourceSiteEffectList[0].PolSourceSiteEffectID, polSourceSiteEffect.PolSourceSiteEffectID);
 
-            // testing Post(PolSourceSiteEffect)
-            polSourceSiteEffect.PolSourceSiteEffectID = 0;
-            string content = JsonSerializer.Serialize<PolSourceSiteEffect>(polSourceSiteEffect);
-            HttpContent httpContent = new StringContent(content);
-            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            response = await httpClient.PostAsync(url, httpContent);
-            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-            responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
-            polSourceSiteEffect = JsonSerializer.Deserialize<PolSourceSiteEffect>(responseContent);
-            Assert.NotNull(polSourceSiteEffect);
+                // testing Post(PolSourceSiteEffect)
+                polSourceSiteEffect.PolSourceSiteEffectID = 0;
+                string content = JsonSerializer.Serialize<PolSourceSiteEffect>(polSourceSiteEffect);
+                HttpContent httpContent = new StringContent(content);
+                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                response = await httpClient.PostAsync(url, httpContent);
+                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+                responseContent = await response.Content.ReadAsStringAsync();
+                Assert.NotEmpty(responseContent);
+                polSourceSiteEffect = JsonSerializer.Deserialize<PolSourceSiteEffect>(responseContent);
+                Assert.NotNull(polSourceSiteEffect);
 
-            // testing Put(PolSourceSiteEffect)
-            content = JsonSerializer.Serialize<PolSourceSiteEffect>(polSourceSiteEffect);
-            httpContent = new StringContent(content);
-            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            response = await httpClient.PutAsync(url, httpContent);
-            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-            responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
-            polSourceSiteEffect = JsonSerializer.Deserialize<PolSourceSiteEffect>(responseContent);
-            Assert.NotNull(polSourceSiteEffect);
+                // testing Put(PolSourceSiteEffect)
+                content = JsonSerializer.Serialize<PolSourceSiteEffect>(polSourceSiteEffect);
+                httpContent = new StringContent(content);
+                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                response = await httpClient.PutAsync(url, httpContent);
+                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+                responseContent = await response.Content.ReadAsStringAsync();
+                Assert.NotEmpty(responseContent);
+                polSourceSiteEffect = JsonSerializer.Deserialize<PolSourceSiteEffect>(responseContent);
+                Assert.NotNull(polSourceSiteEffect);
 
-            // testing Delete(PolSourceSiteEffectID)
-            urlID = url + "/" + polSourceSiteEffect.PolSourceSiteEffectID;
-            response = await httpClient.DeleteAsync(urlID);
-            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-            responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
-            bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
-            Assert.True(retBool);
+                // testing Delete(PolSourceSiteEffectID)
+                urlID = url + "/" + polSourceSiteEffect.PolSourceSiteEffectID;
+                response = await httpClient.DeleteAsync(urlID);
+                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+                responseContent = await response.Content.ReadAsStringAsync();
+                Assert.NotEmpty(responseContent);
+                bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
+                Assert.True(retBool);
+            }
         }
         #endregion Functions public
 
@@ -130,13 +134,13 @@ namespace CSSPWebAPIs.Tests.Controllers
             Config = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
                .AddJsonFile("appsettings_csspwebapistests.json")
-               .AddUserSecrets("9d65c001-b7bc-4922-a0fc-1558b9ef927e")
+               .AddUserSecrets("e43608c0-3ec4-4b6c-b995-a4be7848ec8b")
                .Build();
 
             Services = new ServiceCollection();
 
-            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
-            Assert.NotNull(CSSPDBLocalFileName);
+            CSSPAzureUrl = Config.GetValue<string>("CSSPAzureUrl");
+            Assert.NotNull(CSSPAzureUrl);
 
             string TestDB = Config.GetValue<string>("TestDB");
             Assert.NotNull(TestDB);
@@ -153,13 +157,6 @@ namespace CSSPWebAPIs.Tests.Controllers
                 options.UseInMemoryDatabase(TestDB);
             });
 
-            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName);
-
-            Services.AddDbContext<CSSPDBLocalContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
-            });
-
             Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(TestDB));
 
@@ -171,9 +168,8 @@ namespace CSSPWebAPIs.Tests.Controllers
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<ILoginModelService, LoginModelService>();
             Services.AddSingleton<IRegisterModelService, RegisterModelService>();
-            Services.AddSingleton<IAspNetUserService, AspNetUserService>();
-            Services.AddSingleton<IContactService, ContactService>();
-            Services.AddSingleton<IPolSourceSiteEffectService, PolSourceSiteEffectService>();
+            Services.AddSingleton<IContactDBService, ContactDBService>();
+            Services.AddSingleton<IPolSourceSiteEffectDBService, PolSourceSiteEffectDBService>();
             Services.AddSingleton<IPolSourceSiteEffectController, PolSourceSiteEffectController>();
 
             Provider = Services.BuildServiceProvider();
@@ -184,8 +180,8 @@ namespace CSSPWebAPIs.Tests.Controllers
 
             CSSPCultureService.SetCulture(culture);
 
-            ContactService = Provider.GetService<IContactService>();
-            Assert.NotNull(ContactService);
+            ContactDBService = Provider.GetService<IContactDBService>();
+            Assert.NotNull(ContactDBService);
 
             string LoginEmail = Config.GetValue<string>("LoginEmail");
             Assert.NotNull(LoginEmail);
@@ -199,18 +195,32 @@ namespace CSSPWebAPIs.Tests.Controllers
                 Password = Password
             };
 
-            var actionContact = await ContactService.Login(loginModel);
-            Assert.NotNull(actionContact.Value);
-            contact = actionContact.Value;
+            using (HttpClient httpClient = new HttpClient())
+            {
+                string url = $"{ CSSPAzureUrl }api/{ culture}/Auth/Token";
 
-            loggedInService = Provider.GetService<ILoggedInService>();
-            Assert.NotNull(loggedInService);
+                string content = JsonSerializer.Serialize<LoginModel>(loginModel);
+                HttpContent httpContent = new StringContent(content);
+                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-            await loggedInService.SetLoggedInContactInfo(contact.Id);
-            Assert.NotNull(loggedInService.LoggedInContactInfo);
+                var response = await httpClient.PostAsync(url, httpContent);
 
-            polSourceSiteEffectService = Provider.GetService<IPolSourceSiteEffectService>();
-            Assert.NotNull(polSourceSiteEffectService);
+                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+                string responseContent = await response.Content.ReadAsStringAsync();
+                Assert.NotEmpty(responseContent);
+                contact = JsonSerializer.Deserialize<Contact>(responseContent);
+                Assert.NotNull(contact);
+                Assert.NotEmpty(contact.Token);
+            }
+
+            LoggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(LoggedInService);
+
+            await LoggedInService.SetLoggedInContactInfo(contact.Id);
+            Assert.NotNull(LoggedInService.LoggedInContactInfo);
+
+            polSourceSiteEffectDBService = Provider.GetService<IPolSourceSiteEffectDBService>();
+            Assert.NotNull(polSourceSiteEffectDBService);
 
             polSourceSiteEffectController = Provider.GetService<IPolSourceSiteEffectController>();
             Assert.NotNull(polSourceSiteEffectController);

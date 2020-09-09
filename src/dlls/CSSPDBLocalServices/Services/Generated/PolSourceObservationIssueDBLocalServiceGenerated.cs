@@ -97,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            PolSourceObservationIssue polSourceObservationIssue = (from c in dbLocal.PolSourceObservationIssues.Local
+            PolSourceObservationIssue polSourceObservationIssue = (from c in dbLocal.PolSourceObservationIssues
                     where c.PolSourceObservationIssueID == PolSourceObservationIssueID
                     select c).FirstOrDefault();
 
@@ -109,6 +109,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.PolSourceObservationIssues.Remove(polSourceObservationIssue);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -142,6 +143,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.PolSourceObservationIssues.Add(polSourceObservationIssue);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -166,6 +168,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.PolSourceObservationIssues.Update(polSourceObservationIssue);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {

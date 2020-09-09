@@ -5,12 +5,13 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -34,15 +35,15 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IEmailDistributionListContactService EmailDistributionListContactService { get; }
+        private IEmailDistributionListContactDBService EmailDistributionListContactDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public EmailDistributionListContactController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IEmailDistributionListContactService EmailDistributionListContactService)
+        public EmailDistributionListContactController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IEmailDistributionListContactDBService EmailDistributionListContactDBService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.EmailDistributionListContactService = EmailDistributionListContactService;
+            this.EmailDistributionListContactDBService = EmailDistributionListContactDBService;
         }
         #endregion Constructors
 
@@ -53,7 +54,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await EmailDistributionListContactService.GetEmailDistributionListContactList();
+            return await EmailDistributionListContactDBService.GetEmailDistributionListContactList();
         }
         [HttpGet("{EmailDistributionListContactID}")]
         public async Task<ActionResult<EmailDistributionListContact>> Get(int EmailDistributionListContactID)
@@ -61,7 +62,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await EmailDistributionListContactService.GetEmailDistributionListContactWithEmailDistributionListContactID(EmailDistributionListContactID);
+            return await EmailDistributionListContactDBService.GetEmailDistributionListContactWithEmailDistributionListContactID(EmailDistributionListContactID);
         }
         [HttpPost]
         public async Task<ActionResult<EmailDistributionListContact>> Post(EmailDistributionListContact EmailDistributionListContact)
@@ -69,7 +70,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await EmailDistributionListContactService.Post(EmailDistributionListContact);
+            return await EmailDistributionListContactDBService.Post(EmailDistributionListContact);
         }
         [HttpPut]
         public async Task<ActionResult<EmailDistributionListContact>> Put(EmailDistributionListContact EmailDistributionListContact)
@@ -77,7 +78,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await EmailDistributionListContactService.Put(EmailDistributionListContact);
+            return await EmailDistributionListContactDBService.Put(EmailDistributionListContact);
         }
         [HttpDelete("{EmailDistributionListContactID}")]
         public async Task<ActionResult<bool>> Delete(int EmailDistributionListContactID)
@@ -85,7 +86,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await EmailDistributionListContactService.Delete(EmailDistributionListContactID);
+            return await EmailDistributionListContactDBService.Delete(EmailDistributionListContactID);
         }
         #endregion Functions public
 

@@ -97,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            AppTaskLanguage appTaskLanguage = (from c in dbLocal.AppTaskLanguages.Local
+            AppTaskLanguage appTaskLanguage = (from c in dbLocal.AppTaskLanguages
                     where c.AppTaskLanguageID == AppTaskLanguageID
                     select c).FirstOrDefault();
 
@@ -109,6 +109,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.AppTaskLanguages.Remove(appTaskLanguage);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -142,6 +143,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.AppTaskLanguages.Add(appTaskLanguage);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -166,6 +168,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.AppTaskLanguages.Update(appTaskLanguage);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {

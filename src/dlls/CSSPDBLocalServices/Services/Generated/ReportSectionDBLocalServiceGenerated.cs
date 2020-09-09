@@ -97,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            ReportSection reportSection = (from c in dbLocal.ReportSections.Local
+            ReportSection reportSection = (from c in dbLocal.ReportSections
                     where c.ReportSectionID == ReportSectionID
                     select c).FirstOrDefault();
 
@@ -109,6 +109,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.ReportSections.Remove(reportSection);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -142,6 +143,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.ReportSections.Add(reportSection);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -166,6 +168,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.ReportSections.Update(reportSection);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {

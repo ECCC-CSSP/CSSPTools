@@ -98,7 +98,7 @@ namespace ReadGzFileServices
                 {
                     CSSPFile csspFile = null;
 
-                    var actionCSSPFile = await CSSPFileService.GetWithAzureStorageAndAzureFileName(AzureStoreCSSPJSONPath, fiGZ.Name);
+                    var actionCSSPFile = await CSSPDBFilesManagementService.GetWithAzureStorageAndAzureFileName(AzureStoreCSSPJSONPath, fiGZ.Name);
                     if (((ObjectResult)actionCSSPFile.Result).StatusCode == 200)
                     {
                         csspFile = (CSSPFile)((OkObjectResult)actionCSSPFile.Result).Value;

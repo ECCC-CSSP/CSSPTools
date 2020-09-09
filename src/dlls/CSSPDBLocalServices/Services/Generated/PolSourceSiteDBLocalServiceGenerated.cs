@@ -97,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            PolSourceSite polSourceSite = (from c in dbLocal.PolSourceSites.Local
+            PolSourceSite polSourceSite = (from c in dbLocal.PolSourceSites
                     where c.PolSourceSiteID == PolSourceSiteID
                     select c).FirstOrDefault();
 
@@ -109,6 +109,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.PolSourceSites.Remove(polSourceSite);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -142,6 +143,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.PolSourceSites.Add(polSourceSite);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -166,6 +168,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.PolSourceSites.Update(polSourceSite);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {

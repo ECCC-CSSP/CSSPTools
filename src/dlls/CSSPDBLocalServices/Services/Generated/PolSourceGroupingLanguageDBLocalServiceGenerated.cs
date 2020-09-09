@@ -97,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            PolSourceGroupingLanguage polSourceGroupingLanguage = (from c in dbLocal.PolSourceGroupingLanguages.Local
+            PolSourceGroupingLanguage polSourceGroupingLanguage = (from c in dbLocal.PolSourceGroupingLanguages
                     where c.PolSourceGroupingLanguageID == PolSourceGroupingLanguageID
                     select c).FirstOrDefault();
 
@@ -109,6 +109,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.PolSourceGroupingLanguages.Remove(polSourceGroupingLanguage);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -142,6 +143,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.PolSourceGroupingLanguages.Add(polSourceGroupingLanguage);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -166,6 +168,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.PolSourceGroupingLanguages.Update(polSourceGroupingLanguage);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {

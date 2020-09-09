@@ -5,12 +5,13 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -34,15 +35,15 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IReportTypeService ReportTypeService { get; }
+        private IReportTypeDBService ReportTypeDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public ReportTypeController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IReportTypeService ReportTypeService)
+        public ReportTypeController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IReportTypeDBService ReportTypeDBService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.ReportTypeService = ReportTypeService;
+            this.ReportTypeDBService = ReportTypeDBService;
         }
         #endregion Constructors
 
@@ -53,7 +54,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await ReportTypeService.GetReportTypeList();
+            return await ReportTypeDBService.GetReportTypeList();
         }
         [HttpGet("{ReportTypeID}")]
         public async Task<ActionResult<ReportType>> Get(int ReportTypeID)
@@ -61,7 +62,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await ReportTypeService.GetReportTypeWithReportTypeID(ReportTypeID);
+            return await ReportTypeDBService.GetReportTypeWithReportTypeID(ReportTypeID);
         }
         [HttpPost]
         public async Task<ActionResult<ReportType>> Post(ReportType ReportType)
@@ -69,7 +70,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await ReportTypeService.Post(ReportType);
+            return await ReportTypeDBService.Post(ReportType);
         }
         [HttpPut]
         public async Task<ActionResult<ReportType>> Put(ReportType ReportType)
@@ -77,7 +78,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await ReportTypeService.Put(ReportType);
+            return await ReportTypeDBService.Put(ReportType);
         }
         [HttpDelete("{ReportTypeID}")]
         public async Task<ActionResult<bool>> Delete(int ReportTypeID)
@@ -85,7 +86,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await ReportTypeService.Delete(ReportTypeID);
+            return await ReportTypeDBService.Delete(ReportTypeID);
         }
         #endregion Functions public
 

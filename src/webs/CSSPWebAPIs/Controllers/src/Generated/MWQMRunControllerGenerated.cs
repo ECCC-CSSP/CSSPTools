@@ -5,12 +5,13 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -34,15 +35,15 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IMWQMRunService MWQMRunService { get; }
+        private IMWQMRunDBService MWQMRunDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public MWQMRunController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IMWQMRunService MWQMRunService)
+        public MWQMRunController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IMWQMRunDBService MWQMRunDBService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.MWQMRunService = MWQMRunService;
+            this.MWQMRunDBService = MWQMRunDBService;
         }
         #endregion Constructors
 
@@ -53,7 +54,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MWQMRunService.GetMWQMRunList();
+            return await MWQMRunDBService.GetMWQMRunList();
         }
         [HttpGet("{MWQMRunID}")]
         public async Task<ActionResult<MWQMRun>> Get(int MWQMRunID)
@@ -61,7 +62,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MWQMRunService.GetMWQMRunWithMWQMRunID(MWQMRunID);
+            return await MWQMRunDBService.GetMWQMRunWithMWQMRunID(MWQMRunID);
         }
         [HttpPost]
         public async Task<ActionResult<MWQMRun>> Post(MWQMRun MWQMRun)
@@ -69,7 +70,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MWQMRunService.Post(MWQMRun);
+            return await MWQMRunDBService.Post(MWQMRun);
         }
         [HttpPut]
         public async Task<ActionResult<MWQMRun>> Put(MWQMRun MWQMRun)
@@ -77,7 +78,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MWQMRunService.Put(MWQMRun);
+            return await MWQMRunDBService.Put(MWQMRun);
         }
         [HttpDelete("{MWQMRunID}")]
         public async Task<ActionResult<bool>> Delete(int MWQMRunID)
@@ -85,7 +86,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MWQMRunService.Delete(MWQMRunID);
+            return await MWQMRunDBService.Delete(MWQMRunID);
         }
         #endregion Functions public
 

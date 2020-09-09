@@ -6,7 +6,7 @@
 
 using CSSPEnums;
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPWebAPIs.Controllers;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -24,6 +24,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Tests.Controllers
 {
@@ -36,13 +37,13 @@ namespace CSSPWebAPIs.Tests.Controllers
         private IConfiguration Config { get; set; }
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
-        private CSSPDBContext db { get; set; }
-        private IContactService ContactService { get; set; }
-        private ILoggedInService loggedInService { get; set; }
+        private IContactDBService ContactDBService { get; set; }
+        private ILoggedInService LoggedInService { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
-        private IContactService contactService { get; set; }
+        private IContactDBService contactDBService { get; set; }
         private IContactController contactController { get; set; }
         private Contact contact { get; set; }
+        private string CSSPAzureUrl { get; set; }
         private Contact contact2 { get; set; }
         #endregion Properties
 
@@ -55,73 +56,76 @@ namespace CSSPWebAPIs.Tests.Controllers
         #region Functions public
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task ContactController_Constructor_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
-            Assert.NotNull(loggedInService);
-            Assert.NotNull(contactService);
+
+            Assert.NotNull(LoggedInService);
+            Assert.NotNull(contactDBService);
             Assert.NotNull(contactController);
         }
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task ContactController_CRUD_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            HttpClient httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact2.Token);
+            using (HttpClient httpClient = new HttpClient())
+            {
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact2.Token);
 
-            // testing Get
-            string url = "https://localhost:4447/api/" + culture + "/Contact";
-            var response = await httpClient.GetAsync(url);
-            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
-            List<Contact> contactList = JsonSerializer.Deserialize<List<Contact>>(responseContent);
-            Assert.True(contactList.Count > 0);
+                // testing Get
+                string url = $"{ CSSPAzureUrl }api/{ culture }/Contact";
+                var response = await httpClient.GetAsync(url);
+                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+                string responseContent = await response.Content.ReadAsStringAsync();
+                Assert.NotEmpty(responseContent);
+                List<Contact> contactList = JsonSerializer.Deserialize<List<Contact>>(responseContent);
+                Assert.True(contactList.Count > 0);
 
-            // testing Get(ContactID)
-            string urlID = url + "/" + contactList[0].ContactID;
-            response = await httpClient.GetAsync(urlID);
-            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-            responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
-            Contact contact = JsonSerializer.Deserialize<Contact>(responseContent);
-            Assert.Equal(contactList[0].ContactID, contact.ContactID);
+                // testing Get(ContactID)
+                string urlID = url + "/" + contactList[0].ContactID;
+                response = await httpClient.GetAsync(urlID);
+                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+                responseContent = await response.Content.ReadAsStringAsync();
+                Assert.NotEmpty(responseContent);
+                Contact contact = JsonSerializer.Deserialize<Contact>(responseContent);
+                Assert.Equal(contactList[0].ContactID, contact.ContactID);
 
-            // testing Post(Contact)
-            contact.ContactID = 0;
-            string content = JsonSerializer.Serialize<Contact>(contact);
-            HttpContent httpContent = new StringContent(content);
-            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            response = await httpClient.PostAsync(url, httpContent);
-            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-            responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
-            contact = JsonSerializer.Deserialize<Contact>(responseContent);
-            Assert.NotNull(contact);
+                // testing Post(Contact)
+                contact.ContactID = 0;
+                string content = JsonSerializer.Serialize<Contact>(contact);
+                HttpContent httpContent = new StringContent(content);
+                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                response = await httpClient.PostAsync(url, httpContent);
+                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+                responseContent = await response.Content.ReadAsStringAsync();
+                Assert.NotEmpty(responseContent);
+                contact = JsonSerializer.Deserialize<Contact>(responseContent);
+                Assert.NotNull(contact);
 
-            // testing Put(Contact)
-            content = JsonSerializer.Serialize<Contact>(contact);
-            httpContent = new StringContent(content);
-            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            response = await httpClient.PutAsync(url, httpContent);
-            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-            responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
-            contact = JsonSerializer.Deserialize<Contact>(responseContent);
-            Assert.NotNull(contact);
+                // testing Put(Contact)
+                content = JsonSerializer.Serialize<Contact>(contact);
+                httpContent = new StringContent(content);
+                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                response = await httpClient.PutAsync(url, httpContent);
+                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+                responseContent = await response.Content.ReadAsStringAsync();
+                Assert.NotEmpty(responseContent);
+                contact = JsonSerializer.Deserialize<Contact>(responseContent);
+                Assert.NotNull(contact);
 
-            // testing Delete(ContactID)
-            urlID = url + "/" + contact.ContactID;
-            response = await httpClient.DeleteAsync(urlID);
-            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-            responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
-            bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
-            Assert.True(retBool);
+                // testing Delete(ContactID)
+                urlID = url + "/" + contact.ContactID;
+                response = await httpClient.DeleteAsync(urlID);
+                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+                responseContent = await response.Content.ReadAsStringAsync();
+                Assert.NotEmpty(responseContent);
+                bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
+                Assert.True(retBool);
+            }
         }
         #endregion Functions public
 
@@ -131,13 +135,13 @@ namespace CSSPWebAPIs.Tests.Controllers
             Config = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
                .AddJsonFile("appsettings_csspwebapistests.json")
-               .AddUserSecrets("9d65c001-b7bc-4922-a0fc-1558b9ef927e")
+               .AddUserSecrets("e43608c0-3ec4-4b6c-b995-a4be7848ec8b")
                .Build();
 
             Services = new ServiceCollection();
 
-            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
-            Assert.NotNull(CSSPDBLocalFileName);
+            CSSPAzureUrl = Config.GetValue<string>("CSSPAzureUrl");
+            Assert.NotNull(CSSPAzureUrl);
 
             string TestDB = Config.GetValue<string>("TestDB");
             Assert.NotNull(TestDB);
@@ -154,13 +158,6 @@ namespace CSSPWebAPIs.Tests.Controllers
                 options.UseInMemoryDatabase(TestDB);
             });
 
-            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName);
-
-            Services.AddDbContext<CSSPDBLocalContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
-            });
-
             Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(TestDB));
 
@@ -172,9 +169,8 @@ namespace CSSPWebAPIs.Tests.Controllers
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<ILoginModelService, LoginModelService>();
             Services.AddSingleton<IRegisterModelService, RegisterModelService>();
-            Services.AddSingleton<IAspNetUserService, AspNetUserService>();
-            Services.AddSingleton<IContactService, ContactService>();
-            Services.AddSingleton<IContactService, ContactService>();
+            Services.AddSingleton<IContactDBService, ContactDBService>();
+            Services.AddSingleton<IContactDBService, ContactDBService>();
             Services.AddSingleton<IContactController, ContactController>();
 
             Provider = Services.BuildServiceProvider();
@@ -185,8 +181,8 @@ namespace CSSPWebAPIs.Tests.Controllers
 
             CSSPCultureService.SetCulture(culture);
 
-            ContactService = Provider.GetService<IContactService>();
-            Assert.NotNull(ContactService);
+            ContactDBService = Provider.GetService<IContactDBService>();
+            Assert.NotNull(ContactDBService);
 
             string LoginEmail = Config.GetValue<string>("LoginEmail");
             Assert.NotNull(LoginEmail);
@@ -200,18 +196,32 @@ namespace CSSPWebAPIs.Tests.Controllers
                 Password = Password
             };
 
-            var actionContact = await ContactService.Login(loginModel);
-            Assert.NotNull(actionContact.Value);
-            contact2 = actionContact.Value;
+            using (HttpClient httpClient = new HttpClient())
+            {
+                string url = $"{ CSSPAzureUrl }api/{ culture}/Auth/Token";
 
-            loggedInService = Provider.GetService<ILoggedInService>();
-            Assert.NotNull(loggedInService);
+                string content = JsonSerializer.Serialize<LoginModel>(loginModel);
+                HttpContent httpContent = new StringContent(content);
+                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-            await loggedInService.SetLoggedInContactInfo(contact2.Id);
-            Assert.NotNull(loggedInService.LoggedInContactInfo);
+                var response = await httpClient.PostAsync(url, httpContent);
 
-            contactService = Provider.GetService<IContactService>();
-            Assert.NotNull(contactService);
+                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+                string responseContent = await response.Content.ReadAsStringAsync();
+                Assert.NotEmpty(responseContent);
+                contact2 = JsonSerializer.Deserialize<Contact>(responseContent);
+                Assert.NotNull(contact2);
+                Assert.NotEmpty(contact2.Token);
+            }
+
+            LoggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(LoggedInService);
+
+            await LoggedInService.SetLoggedInContactInfo(contact2.Id);
+            Assert.NotNull(LoggedInService.LoggedInContactInfo);
+
+            contactDBService = Provider.GetService<IContactDBService>();
+            Assert.NotNull(contactDBService);
 
             contactController = Provider.GetService<IContactController>();
             Assert.NotNull(contactController);

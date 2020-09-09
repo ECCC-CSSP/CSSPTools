@@ -97,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            InfrastructureLanguage infrastructureLanguage = (from c in dbLocal.InfrastructureLanguages.Local
+            InfrastructureLanguage infrastructureLanguage = (from c in dbLocal.InfrastructureLanguages
                     where c.InfrastructureLanguageID == InfrastructureLanguageID
                     select c).FirstOrDefault();
 
@@ -109,6 +109,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.InfrastructureLanguages.Remove(infrastructureLanguage);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -142,6 +143,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.InfrastructureLanguages.Add(infrastructureLanguage);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -166,6 +168,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.InfrastructureLanguages.Update(infrastructureLanguage);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {

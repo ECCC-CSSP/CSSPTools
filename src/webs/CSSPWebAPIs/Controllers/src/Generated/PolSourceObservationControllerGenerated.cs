@@ -5,12 +5,13 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -34,15 +35,15 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IPolSourceObservationService PolSourceObservationService { get; }
+        private IPolSourceObservationDBService PolSourceObservationDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public PolSourceObservationController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IPolSourceObservationService PolSourceObservationService)
+        public PolSourceObservationController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IPolSourceObservationDBService PolSourceObservationDBService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.PolSourceObservationService = PolSourceObservationService;
+            this.PolSourceObservationDBService = PolSourceObservationDBService;
         }
         #endregion Constructors
 
@@ -53,7 +54,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await PolSourceObservationService.GetPolSourceObservationList();
+            return await PolSourceObservationDBService.GetPolSourceObservationList();
         }
         [HttpGet("{PolSourceObservationID}")]
         public async Task<ActionResult<PolSourceObservation>> Get(int PolSourceObservationID)
@@ -61,7 +62,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await PolSourceObservationService.GetPolSourceObservationWithPolSourceObservationID(PolSourceObservationID);
+            return await PolSourceObservationDBService.GetPolSourceObservationWithPolSourceObservationID(PolSourceObservationID);
         }
         [HttpPost]
         public async Task<ActionResult<PolSourceObservation>> Post(PolSourceObservation PolSourceObservation)
@@ -69,7 +70,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await PolSourceObservationService.Post(PolSourceObservation);
+            return await PolSourceObservationDBService.Post(PolSourceObservation);
         }
         [HttpPut]
         public async Task<ActionResult<PolSourceObservation>> Put(PolSourceObservation PolSourceObservation)
@@ -77,7 +78,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await PolSourceObservationService.Put(PolSourceObservation);
+            return await PolSourceObservationDBService.Put(PolSourceObservation);
         }
         [HttpDelete("{PolSourceObservationID}")]
         public async Task<ActionResult<bool>> Delete(int PolSourceObservationID)
@@ -85,7 +86,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await PolSourceObservationService.Delete(PolSourceObservationID);
+            return await PolSourceObservationDBService.Delete(PolSourceObservationID);
         }
         #endregion Functions public
 

@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            DocTemplate docTemplate = (from c in db.DocTemplates.Local
+            DocTemplate docTemplate = (from c in db.DocTemplates
                     where c.DocTemplateID == DocTemplateID
                     select c).FirstOrDefault();
 
@@ -106,6 +106,7 @@ namespace CSSPDBServices
             try
             {
                 db.DocTemplates.Remove(docTemplate);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -130,6 +131,7 @@ namespace CSSPDBServices
             try
             {
                 db.DocTemplates.Add(docTemplate);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -154,6 +156,7 @@ namespace CSSPDBServices
             try
             {
                 db.DocTemplates.Update(docTemplate);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {

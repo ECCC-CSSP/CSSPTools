@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            Spill spill = (from c in db.Spills.Local
+            Spill spill = (from c in db.Spills
                     where c.SpillID == SpillID
                     select c).FirstOrDefault();
 
@@ -106,6 +106,7 @@ namespace CSSPDBServices
             try
             {
                 db.Spills.Remove(spill);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -130,6 +131,7 @@ namespace CSSPDBServices
             try
             {
                 db.Spills.Add(spill);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -154,6 +156,7 @@ namespace CSSPDBServices
             try
             {
                 db.Spills.Update(spill);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {

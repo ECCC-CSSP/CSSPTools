@@ -5,12 +5,13 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -34,15 +35,15 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private ITVItemLinkService TVItemLinkService { get; }
+        private ITVItemLinkDBService TVItemLinkDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public TVItemLinkController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, ITVItemLinkService TVItemLinkService)
+        public TVItemLinkController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, ITVItemLinkDBService TVItemLinkDBService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.TVItemLinkService = TVItemLinkService;
+            this.TVItemLinkDBService = TVItemLinkDBService;
         }
         #endregion Constructors
 
@@ -53,7 +54,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await TVItemLinkService.GetTVItemLinkList();
+            return await TVItemLinkDBService.GetTVItemLinkList();
         }
         [HttpGet("{TVItemLinkID}")]
         public async Task<ActionResult<TVItemLink>> Get(int TVItemLinkID)
@@ -61,7 +62,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await TVItemLinkService.GetTVItemLinkWithTVItemLinkID(TVItemLinkID);
+            return await TVItemLinkDBService.GetTVItemLinkWithTVItemLinkID(TVItemLinkID);
         }
         [HttpPost]
         public async Task<ActionResult<TVItemLink>> Post(TVItemLink TVItemLink)
@@ -69,7 +70,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await TVItemLinkService.Post(TVItemLink);
+            return await TVItemLinkDBService.Post(TVItemLink);
         }
         [HttpPut]
         public async Task<ActionResult<TVItemLink>> Put(TVItemLink TVItemLink)
@@ -77,7 +78,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await TVItemLinkService.Put(TVItemLink);
+            return await TVItemLinkDBService.Put(TVItemLink);
         }
         [HttpDelete("{TVItemLinkID}")]
         public async Task<ActionResult<bool>> Delete(int TVItemLinkID)
@@ -85,7 +86,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await TVItemLinkService.Delete(TVItemLinkID);
+            return await TVItemLinkDBService.Delete(TVItemLinkID);
         }
         #endregion Functions public
 

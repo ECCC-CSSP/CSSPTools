@@ -5,12 +5,13 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -34,15 +35,15 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IClimateDataValueService ClimateDataValueService { get; }
+        private IClimateDataValueDBService ClimateDataValueDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public ClimateDataValueController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IClimateDataValueService ClimateDataValueService)
+        public ClimateDataValueController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IClimateDataValueDBService ClimateDataValueDBService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.ClimateDataValueService = ClimateDataValueService;
+            this.ClimateDataValueDBService = ClimateDataValueDBService;
         }
         #endregion Constructors
 
@@ -53,7 +54,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await ClimateDataValueService.GetClimateDataValueList();
+            return await ClimateDataValueDBService.GetClimateDataValueList();
         }
         [HttpGet("{ClimateDataValueID}")]
         public async Task<ActionResult<ClimateDataValue>> Get(int ClimateDataValueID)
@@ -61,7 +62,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await ClimateDataValueService.GetClimateDataValueWithClimateDataValueID(ClimateDataValueID);
+            return await ClimateDataValueDBService.GetClimateDataValueWithClimateDataValueID(ClimateDataValueID);
         }
         [HttpPost]
         public async Task<ActionResult<ClimateDataValue>> Post(ClimateDataValue ClimateDataValue)
@@ -69,7 +70,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await ClimateDataValueService.Post(ClimateDataValue);
+            return await ClimateDataValueDBService.Post(ClimateDataValue);
         }
         [HttpPut]
         public async Task<ActionResult<ClimateDataValue>> Put(ClimateDataValue ClimateDataValue)
@@ -77,7 +78,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await ClimateDataValueService.Put(ClimateDataValue);
+            return await ClimateDataValueDBService.Put(ClimateDataValue);
         }
         [HttpDelete("{ClimateDataValueID}")]
         public async Task<ActionResult<bool>> Delete(int ClimateDataValueID)
@@ -85,7 +86,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await ClimateDataValueService.Delete(ClimateDataValueID);
+            return await ClimateDataValueDBService.Delete(ClimateDataValueID);
         }
         #endregion Functions public
 

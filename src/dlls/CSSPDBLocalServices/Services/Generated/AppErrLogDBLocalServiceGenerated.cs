@@ -97,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            AppErrLog appErrLog = (from c in dbLocal.AppErrLogs.Local
+            AppErrLog appErrLog = (from c in dbLocal.AppErrLogs
                     where c.AppErrLogID == AppErrLogID
                     select c).FirstOrDefault();
 
@@ -109,6 +109,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.AppErrLogs.Remove(appErrLog);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -142,6 +143,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.AppErrLogs.Add(appErrLog);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -166,6 +168,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.AppErrLogs.Update(appErrLog);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {

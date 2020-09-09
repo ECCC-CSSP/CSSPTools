@@ -5,12 +5,13 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -34,15 +35,15 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private ITVFileService TVFileService { get; }
+        private ITVFileDBService TVFileDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public TVFileController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, ITVFileService TVFileService)
+        public TVFileController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, ITVFileDBService TVFileDBService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.TVFileService = TVFileService;
+            this.TVFileDBService = TVFileDBService;
         }
         #endregion Constructors
 
@@ -53,7 +54,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await TVFileService.GetTVFileList();
+            return await TVFileDBService.GetTVFileList();
         }
         [HttpGet("{TVFileID}")]
         public async Task<ActionResult<TVFile>> Get(int TVFileID)
@@ -61,7 +62,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await TVFileService.GetTVFileWithTVFileID(TVFileID);
+            return await TVFileDBService.GetTVFileWithTVFileID(TVFileID);
         }
         [HttpPost]
         public async Task<ActionResult<TVFile>> Post(TVFile TVFile)
@@ -69,7 +70,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await TVFileService.Post(TVFile);
+            return await TVFileDBService.Post(TVFile);
         }
         [HttpPut]
         public async Task<ActionResult<TVFile>> Put(TVFile TVFile)
@@ -77,7 +78,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await TVFileService.Put(TVFile);
+            return await TVFileDBService.Put(TVFile);
         }
         [HttpDelete("{TVFileID}")]
         public async Task<ActionResult<bool>> Delete(int TVFileID)
@@ -85,7 +86,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await TVFileService.Delete(TVFileID);
+            return await TVFileDBService.Delete(TVFileID);
         }
         #endregion Functions public
 

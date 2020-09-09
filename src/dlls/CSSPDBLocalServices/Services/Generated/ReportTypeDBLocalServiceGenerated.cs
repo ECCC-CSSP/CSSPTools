@@ -97,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            ReportType reportType = (from c in dbLocal.ReportTypes.Local
+            ReportType reportType = (from c in dbLocal.ReportTypes
                     where c.ReportTypeID == ReportTypeID
                     select c).FirstOrDefault();
 
@@ -109,6 +109,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.ReportTypes.Remove(reportType);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -142,6 +143,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.ReportTypes.Add(reportType);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -166,6 +168,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.ReportTypes.Update(reportType);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {

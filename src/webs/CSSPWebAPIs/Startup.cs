@@ -1,6 +1,6 @@
 using CSSPEnums;
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -16,6 +16,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using LoggedInServices;
+using CreateGzFileServices;
 
 namespace CSSPWebAPIs
 {
@@ -26,7 +28,6 @@ namespace CSSPWebAPIs
 
         #region Properties
         private IConfiguration Configuration { get; }
-        private RunningOnEnum RunningOn { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -68,148 +69,19 @@ namespace CSSPWebAPIs
                 };
             });
 
-            RunningOn = Configuration.GetValue<string>("RunningOn") == "Local" ? RunningOnEnum.Local : RunningOnEnum.Azure;
+            string DBConnStr = Configuration.GetValue<string>("AzureCSSPDB");
 
-            string DBConnStr = "";
+            services.AddDbContext<CSSPDBContext>(options =>
+                options.UseSqlServer(DBConnStr));
 
-            if (RunningOn == RunningOnEnum.Azure)
-            {
-                DBConnStr = Configuration.GetValue<string>("AzureCSSPDB");
-            }
-            else if (RunningOn == RunningOnEnum.Local)
-            {
-            }
-            else // this would automatically fall into RunningOnEnum.Test
-            {
-                string DBToUse = Configuration.GetValue<string>("DBToUse");
+            services.AddDbContext<CSSPDBInMemoryContext>(options =>
+                options.UseInMemoryDatabase(DBConnStr));
 
-                if (DBToUse == "CSSPDB2")
-                {
-                    DBConnStr = Configuration.GetValue<string>("CSSPDB2");
-                }
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(DBConnStr));
 
-                if (DBToUse == "TestDB")
-                {
-                    DBConnStr = Configuration.GetValue<string>("TestDB");
-
-                }
-            }
-
-            /* ---------------------------------------------------------------------------------
-             * Setting up the required CSSPDB2, TestDB or AzureCSSPDB with ApplicationUser
-             * ---------------------------------------------------------------------------------      
-             */
-
-            if (RunningOn == RunningOnEnum.Azure)
-            {
-                services.AddDbContext<CSSPDBContext>(options =>
-                        options.UseSqlServer(DBConnStr));
-
-                services.AddDbContext<CSSPDBInMemoryContext>(options =>
-                    options.UseInMemoryDatabase(DBConnStr));
-
-                services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlServer(DBConnStr));
-
-                services.AddIdentityCore<ApplicationUser>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
-            }
-
-            if (RunningOn == RunningOnEnum.Local)
-            {
-                /* ---------------------------------------------------------------------------------
-                 * using CSSPDBLocal 
-                 * ---------------------------------------------------------------------------------      
-                 */
-                string CSSPDBLocalFileName = Configuration.GetValue<string>("CSSPDBLocal");
-
-                FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocalFileName);
-
-                services.AddDbContext<CSSPDBLocalContext>(options =>
-                {
-                    options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
-                });
-
-                /* ---------------------------------------------------------------------------------
-                 * using CSSPDBLocalInMemory 
-                 * ---------------------------------------------------------------------------------      
-                 */
-
-                DBConnStr = Configuration.GetValue<string>("AzureCSSPDB");
-
-                services.AddDbContext<CSSPDBInMemoryContext>(options =>
-                {
-                    options.UseInMemoryDatabase(DBConnStr);
-                });
-
-                /* ---------------------------------------------------------------------------------
-                 * using CSSPDBLogin
-                 * ---------------------------------------------------------------------------------      
-                 */
-                string CSSPDBLoginFileName = Configuration.GetValue<string>("CSSPDBLogin");
-
-                FileInfo fiCSSPDBLogin = new FileInfo(CSSPDBLoginFileName);
-
-                services.AddDbContext<CSSPDBLoginContext>(options =>
-                {
-                    options.UseSqlite($"Data Source={ fiCSSPDBLogin.FullName }");
-                });
-
-                /* ---------------------------------------------------------------------------------
-                 * using CSSPDBLoginInMemory
-                 * ---------------------------------------------------------------------------------      
-                 */
-
-                services.AddDbContext<CSSPDBLoginInMemoryContext>(options =>
-                {
-                    options.UseInMemoryDatabase($"Data Source={ fiCSSPDBLogin.FullName }");
-                });
-
-                /* ---------------------------------------------------------------------------------
-                 * using CSSPDBFileManagement
-                 * ---------------------------------------------------------------------------------      
-                 */
-                string CSSPDBFilesManagementFileName = Configuration.GetValue<string>("CSSPDBFilesManagement");
-
-                FileInfo fiCSSPDBFilesManagement = new FileInfo(CSSPDBFilesManagementFileName);
-
-                services.AddDbContext<CSSPDBFilesManagementContext>(options =>
-                {
-                    options.UseSqlite($"Data Source={ fiCSSPDBFilesManagement.FullName }");
-                });
-
-                /* ---------------------------------------------------------------------------------
-                 * using CSSPDBFileManagementInMemmory
-                 * ---------------------------------------------------------------------------------      
-                 */
-                services.AddDbContext<CSSPDBFilesManagementInMemoryContext>(options =>
-                {
-                    options.UseInMemoryDatabase($"Data Source={ fiCSSPDBFilesManagement.FullName }");
-                });
-
-                /* ---------------------------------------------------------------------------------
-                 * using CSSPDBSearch
-                 * ---------------------------------------------------------------------------------      
-                 */
-                string CSSPDBSearchFileName = Configuration.GetValue<string>("CSSPDBSearch");
-
-                FileInfo fiCSSPDBSearch = new FileInfo(CSSPDBSearchFileName);
-
-                services.AddDbContext<CSSPDBSearchContext>(options =>
-                {
-                    options.UseSqlite($"Data Source={ fiCSSPDBSearch.FullName }");
-                });
-
-                /* ---------------------------------------------------------------------------------
-                 * using CSSPDBSearchInMemory
-                 * ---------------------------------------------------------------------------------      
-                 */
-                services.AddDbContext<CSSPDBSearchInMemoryContext>(options =>
-                {
-                    options.UseInMemoryDatabase($"Data Source={ fiCSSPDBSearch.FullName }");
-                });
-
-            }
+            services.AddIdentityCore<ApplicationUser>()
+            .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddScoped<ICSSPCultureService, CSSPCultureService>();
             services.AddScoped<IEnums, Enums>();
@@ -219,28 +91,8 @@ namespace CSSPWebAPIs
 
             LoadAllDBServices(services);
 
-            if (RunningOn == RunningOnEnum.Azure)
-            {
-                services.AddScoped<ILoggedInService, LoggedInService>();
-                services.AddScoped<ICreateGzFileService, CreateGzFileService>();
-            }
-
-            if (RunningOn == RunningOnEnum.Local)
-            {
-                services.AddScoped<LocalService, LocalService>();
-                services.AddScoped<ICSSPFileService, CSSPFileService>();
-                services.AddScoped<IDownloadGzFileService, DownloadGzFileService>();
-                services.AddScoped<IReadGzFileService, ReadGzFileService>();
-                services.AddScoped<ICSSPDBSearchService, CSSPDBSearchService>();
-            }
-
-            if (RunningOn == RunningOnEnum.Local)
-            {
-                services.AddSpaStaticFiles(configuration =>
-                {
-                    configuration.RootPath = "csspclient";
-                });
-            }
+            services.AddScoped<ILoggedInService, LoggedInService>();
+            services.AddScoped<ICreateGzFileService, CreateGzFileService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -257,16 +109,6 @@ namespace CSSPWebAPIs
 
             app.UseHttpsRedirection();
 
-            if (RunningOn == RunningOnEnum.Local)
-            {
-                app.UseStaticFiles();
-
-                if (!env.IsDevelopment())
-                {
-                    app.UseSpaStaticFiles();
-                }
-            }
-
             app.UseRouting();
 
             app.UseCors(x => x
@@ -281,14 +123,6 @@ namespace CSSPWebAPIs
             {
                 endpoints.MapControllers();
             });
-
-            if (RunningOn == RunningOnEnum.Local)
-            {
-                app.UseSpa(spa =>
-                {
-                    spa.Options.SourcePath = "csspclient";
-                });
-            }
         }
         #endregion Functions public
     }

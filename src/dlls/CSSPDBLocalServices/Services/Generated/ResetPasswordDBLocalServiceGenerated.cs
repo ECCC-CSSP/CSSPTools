@@ -97,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            ResetPassword resetPassword = (from c in dbLocal.ResetPasswords.Local
+            ResetPassword resetPassword = (from c in dbLocal.ResetPasswords
                     where c.ResetPasswordID == ResetPasswordID
                     select c).FirstOrDefault();
 
@@ -109,6 +109,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.ResetPasswords.Remove(resetPassword);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -142,6 +143,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.ResetPasswords.Add(resetPassword);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -166,6 +168,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.ResetPasswords.Update(resetPassword);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {

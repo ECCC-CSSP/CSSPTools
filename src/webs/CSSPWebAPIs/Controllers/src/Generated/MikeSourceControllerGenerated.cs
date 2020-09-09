@@ -5,12 +5,13 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -34,15 +35,15 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IMikeSourceService MikeSourceService { get; }
+        private IMikeSourceDBService MikeSourceDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public MikeSourceController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IMikeSourceService MikeSourceService)
+        public MikeSourceController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IMikeSourceDBService MikeSourceDBService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.MikeSourceService = MikeSourceService;
+            this.MikeSourceDBService = MikeSourceDBService;
         }
         #endregion Constructors
 
@@ -53,7 +54,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MikeSourceService.GetMikeSourceList();
+            return await MikeSourceDBService.GetMikeSourceList();
         }
         [HttpGet("{MikeSourceID}")]
         public async Task<ActionResult<MikeSource>> Get(int MikeSourceID)
@@ -61,7 +62,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MikeSourceService.GetMikeSourceWithMikeSourceID(MikeSourceID);
+            return await MikeSourceDBService.GetMikeSourceWithMikeSourceID(MikeSourceID);
         }
         [HttpPost]
         public async Task<ActionResult<MikeSource>> Post(MikeSource MikeSource)
@@ -69,7 +70,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MikeSourceService.Post(MikeSource);
+            return await MikeSourceDBService.Post(MikeSource);
         }
         [HttpPut]
         public async Task<ActionResult<MikeSource>> Put(MikeSource MikeSource)
@@ -77,7 +78,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MikeSourceService.Put(MikeSource);
+            return await MikeSourceDBService.Put(MikeSource);
         }
         [HttpDelete("{MikeSourceID}")]
         public async Task<ActionResult<bool>> Delete(int MikeSourceID)
@@ -85,7 +86,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MikeSourceService.Delete(MikeSourceID);
+            return await MikeSourceDBService.Delete(MikeSourceID);
         }
         #endregion Functions public
 

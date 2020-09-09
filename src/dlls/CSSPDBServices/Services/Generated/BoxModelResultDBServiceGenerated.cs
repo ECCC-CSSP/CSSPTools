@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            BoxModelResult boxModelResult = (from c in db.BoxModelResults.Local
+            BoxModelResult boxModelResult = (from c in db.BoxModelResults
                     where c.BoxModelResultID == BoxModelResultID
                     select c).FirstOrDefault();
 
@@ -106,6 +106,7 @@ namespace CSSPDBServices
             try
             {
                 db.BoxModelResults.Remove(boxModelResult);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -130,6 +131,7 @@ namespace CSSPDBServices
             try
             {
                 db.BoxModelResults.Add(boxModelResult);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -154,6 +156,7 @@ namespace CSSPDBServices
             try
             {
                 db.BoxModelResults.Update(boxModelResult);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {

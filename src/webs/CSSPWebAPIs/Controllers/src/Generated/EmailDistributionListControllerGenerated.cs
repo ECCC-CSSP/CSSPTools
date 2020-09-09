@@ -5,12 +5,13 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -34,15 +35,15 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IEmailDistributionListService EmailDistributionListService { get; }
+        private IEmailDistributionListDBService EmailDistributionListDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public EmailDistributionListController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IEmailDistributionListService EmailDistributionListService)
+        public EmailDistributionListController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IEmailDistributionListDBService EmailDistributionListDBService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.EmailDistributionListService = EmailDistributionListService;
+            this.EmailDistributionListDBService = EmailDistributionListDBService;
         }
         #endregion Constructors
 
@@ -53,7 +54,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await EmailDistributionListService.GetEmailDistributionListList();
+            return await EmailDistributionListDBService.GetEmailDistributionListList();
         }
         [HttpGet("{EmailDistributionListID}")]
         public async Task<ActionResult<EmailDistributionList>> Get(int EmailDistributionListID)
@@ -61,7 +62,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await EmailDistributionListService.GetEmailDistributionListWithEmailDistributionListID(EmailDistributionListID);
+            return await EmailDistributionListDBService.GetEmailDistributionListWithEmailDistributionListID(EmailDistributionListID);
         }
         [HttpPost]
         public async Task<ActionResult<EmailDistributionList>> Post(EmailDistributionList EmailDistributionList)
@@ -69,7 +70,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await EmailDistributionListService.Post(EmailDistributionList);
+            return await EmailDistributionListDBService.Post(EmailDistributionList);
         }
         [HttpPut]
         public async Task<ActionResult<EmailDistributionList>> Put(EmailDistributionList EmailDistributionList)
@@ -77,7 +78,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await EmailDistributionListService.Put(EmailDistributionList);
+            return await EmailDistributionListDBService.Put(EmailDistributionList);
         }
         [HttpDelete("{EmailDistributionListID}")]
         public async Task<ActionResult<bool>> Delete(int EmailDistributionListID)
@@ -85,7 +86,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await EmailDistributionListService.Delete(EmailDistributionListID);
+            return await EmailDistributionListDBService.Delete(EmailDistributionListID);
         }
         #endregion Functions public
 

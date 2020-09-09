@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            Classification classification = (from c in db.Classifications.Local
+            Classification classification = (from c in db.Classifications
                     where c.ClassificationID == ClassificationID
                     select c).FirstOrDefault();
 
@@ -106,6 +106,7 @@ namespace CSSPDBServices
             try
             {
                 db.Classifications.Remove(classification);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -130,6 +131,7 @@ namespace CSSPDBServices
             try
             {
                 db.Classifications.Add(classification);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -154,6 +156,7 @@ namespace CSSPDBServices
             try
             {
                 db.Classifications.Update(classification);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {

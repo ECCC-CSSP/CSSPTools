@@ -9,12 +9,13 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Services
         {
             sb.AppendLine(@"        [Theory]");
             sb.AppendLine(@"        [InlineData(""en-CA"")]");
-            sb.AppendLine(@"        [InlineData(""fr-CA"")]");
+            sb.AppendLine(@"        //[InlineData(""fr-CA"")]");
             sb.AppendLine($@"        public async Task { TypeName }Controller_Constructor_Good_Test(string culture)");
             sb.AppendLine(@"        {");
             sb.AppendLine(@"            Assert.True(await Setup(culture));");
-            sb.AppendLine(@"            Assert.NotNull(loggedInService);");
-            sb.AppendLine($@"            Assert.NotNull({ TypeNameLower }Service);");
+            sb.AppendLine(@"");
+            sb.AppendLine(@"            Assert.NotNull(LoggedInService);");
+            sb.AppendLine($@"            Assert.NotNull({ TypeNameLower }DBService);");
             sb.AppendLine($@"            Assert.NotNull({ TypeNameLower }Controller);");
             sb.AppendLine(@"        }");
 

@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            VPScenario vpScenario = (from c in db.VPScenarios.Local
+            VPScenario vpScenario = (from c in db.VPScenarios
                     where c.VPScenarioID == VPScenarioID
                     select c).FirstOrDefault();
 
@@ -106,6 +106,7 @@ namespace CSSPDBServices
             try
             {
                 db.VPScenarios.Remove(vpScenario);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -130,6 +131,7 @@ namespace CSSPDBServices
             try
             {
                 db.VPScenarios.Add(vpScenario);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -154,6 +156,7 @@ namespace CSSPDBServices
             try
             {
                 db.VPScenarios.Update(vpScenario);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {

@@ -75,7 +75,7 @@ namespace WebAPIClassNameControllerGeneratedServices.Services
 
                 if (!ClassNotMapped)
                 {
-                    sbForDBServices.AppendLine($"            services.AddScoped<I{ TypeName }Service, { TypeName }Service>();");
+                    sbForDBServices.AppendLine($"            services.AddScoped<I{ TypeName }DBService, { TypeName }DBService>();");
 
                     sb.AppendLine($@"/* Auto generated from { AppDomain.CurrentDomain.BaseDirectory }{ AppDomain.CurrentDomain.FriendlyName}.exe");
                     sb.AppendLine(@" *");
@@ -89,12 +89,13 @@ namespace WebAPIClassNameControllerGeneratedServices.Services
                         sb.AppendLine(@"using CSSPEnums;");
                     }
                     sb.AppendLine(@"using CSSPModels;");
-                    sb.AppendLine(@"using CSSPServices;");
+                    sb.AppendLine(@"using CSSPDBServices;");
                     sb.AppendLine(@"using CSSPCultureServices.Services;");
                     sb.AppendLine(@"using Microsoft.AspNetCore.Authorization;");
                     sb.AppendLine(@"using Microsoft.AspNetCore.Mvc;");
                     sb.AppendLine(@"using System.Collections.Generic;");
                     sb.AppendLine(@"using System.Threading.Tasks;");
+                    sb.AppendLine(@"using LoggedInServices;");
                     sb.AppendLine(@"");
                     sb.AppendLine(@"namespace CSSPWebAPIs.Controllers");
                     sb.AppendLine(@"{");
@@ -132,15 +133,15 @@ namespace WebAPIClassNameControllerGeneratedServices.Services
                     sb.AppendLine(@"        #region Properties");
                     sb.AppendLine(@"        private ICSSPCultureService CSSPCultureService { get; }");
                     sb.AppendLine(@"        private ILoggedInService LoggedInService { get; }");
-                    sb.AppendLine($@"        private I{ TypeName }Service { TypeName }Service {{ get; }}");
+                    sb.AppendLine($@"        private I{ TypeName }DBService { TypeName }DBService {{ get; }}");
                     sb.AppendLine(@"        #endregion Properties");
                     sb.AppendLine(@"");
                     sb.AppendLine(@"        #region Constructors");
-                    sb.AppendLine($@"        public { TypeName }Controller(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, I{ TypeName }Service { TypeName }Service)");
+                    sb.AppendLine($@"        public { TypeName }Controller(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, I{ TypeName }DBService { TypeName }DBService)");
                     sb.AppendLine(@"        {");
                     sb.AppendLine(@"            this.CSSPCultureService = CSSPCultureService;");
                     sb.AppendLine(@"            this.LoggedInService = LoggedInService;");
-                    sb.AppendLine($@"            this.{ TypeName }Service = { TypeName }Service;");
+                    sb.AppendLine($@"            this.{ TypeName }DBService = { TypeName }DBService;");
                     sb.AppendLine(@"        }");
                     sb.AppendLine(@"        #endregion Constructors");
                     sb.AppendLine(@"");
@@ -152,7 +153,7 @@ namespace WebAPIClassNameControllerGeneratedServices.Services
                     sb.AppendLine($@"            CSSPCultureService.SetCulture((string)RouteData.Values[""culture""]);");
                     sb.AppendLine($@"            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);");
                     sb.AppendLine(@"");
-                    sb.AppendLine($@"            return await { TypeName }Service.Get{ TypeName }List();");
+                    sb.AppendLine($@"            return await { TypeName }DBService.Get{ TypeName }List();");
                     sb.AppendLine(@"        }");
 
                     if (TypeName == "AspNetUser")
@@ -171,11 +172,11 @@ namespace WebAPIClassNameControllerGeneratedServices.Services
                     sb.AppendLine(@"");
                     if (TypeName == "AspNetUser")
                     {
-                        sb.AppendLine($@"            return await { TypeName }Service.Get{ TypeName }WithId(Id);");
+                        sb.AppendLine($@"            return await { TypeName }DBService.Get{ TypeName }WithId(Id);");
                     }
                     else
                     {
-                        sb.AppendLine($@"            return await { TypeName }Service.Get{ TypeName }With{ TypeName }ID({ TypeName }ID);");
+                        sb.AppendLine($@"            return await { TypeName }DBService.Get{ TypeName }With{ TypeName }ID({ TypeName }ID);");
                     }
                     sb.AppendLine(@"        }");
 
@@ -187,11 +188,11 @@ namespace WebAPIClassNameControllerGeneratedServices.Services
                     sb.AppendLine(@"");
                     if (TypeName == "Contact")
                     {
-                        sb.AppendLine($@"            return await { TypeName }Service.Post({ TypeName }, AddContactTypeEnum.Register);");
+                        sb.AppendLine($@"            return await { TypeName }DBService.Post({ TypeName }, AddContactTypeEnum.Register);");
                     }
                     else
                     {
-                        sb.AppendLine($@"            return await { TypeName }Service.Post({ TypeName });");
+                        sb.AppendLine($@"            return await { TypeName }DBService.Post({ TypeName });");
                     }
                     sb.AppendLine(@"        }");
 
@@ -201,7 +202,7 @@ namespace WebAPIClassNameControllerGeneratedServices.Services
                     sb.AppendLine($@"            CSSPCultureService.SetCulture((string)RouteData.Values[""culture""]);");
                     sb.AppendLine($@"            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);");
                     sb.AppendLine(@"");
-                    sb.AppendLine($@"            return await { TypeName }Service.Put({ TypeName });");
+                    sb.AppendLine($@"            return await { TypeName }DBService.Put({ TypeName });");
                     sb.AppendLine(@"        }");
 
                     if (TypeName == "AspNetUser")
@@ -220,11 +221,11 @@ namespace WebAPIClassNameControllerGeneratedServices.Services
                     sb.AppendLine(@"");
                     if (TypeName == "AspNetUser")
                     {
-                        sb.AppendLine($@"            return await { TypeName }Service.Delete(Id);");
+                        sb.AppendLine($@"            return await { TypeName }DBService.Delete(Id);");
                     }
                     else
                     {
-                        sb.AppendLine($@"            return await { TypeName }Service.Delete({ TypeName }ID);");
+                        sb.AppendLine($@"            return await { TypeName }DBService.Delete({ TypeName }ID);");
                     }
                     sb.AppendLine(@"        }");
 
@@ -267,7 +268,7 @@ namespace WebAPIClassNameControllerGeneratedServices.Services
             sb2.AppendLine(@" *");
             sb2.AppendLine(@" */");
             sb2.AppendLine(@"");
-            sb2.AppendLine(@"using CSSPServices;");
+            sb2.AppendLine(@"using CSSPDBServices;");
             sb2.AppendLine(@"using Microsoft.Extensions.DependencyInjection;");
             sb2.AppendLine(@"");
             sb2.AppendLine(@"namespace CSSPWebAPIs");

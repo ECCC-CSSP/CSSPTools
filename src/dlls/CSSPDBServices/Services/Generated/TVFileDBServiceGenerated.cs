@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            TVFile tvFile = (from c in db.TVFiles.Local
+            TVFile tvFile = (from c in db.TVFiles
                     where c.TVFileID == TVFileID
                     select c).FirstOrDefault();
 
@@ -106,6 +106,7 @@ namespace CSSPDBServices
             try
             {
                 db.TVFiles.Remove(tvFile);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -130,6 +131,7 @@ namespace CSSPDBServices
             try
             {
                 db.TVFiles.Add(tvFile);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -154,6 +156,7 @@ namespace CSSPDBServices
             try
             {
                 db.TVFiles.Update(tvFile);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {

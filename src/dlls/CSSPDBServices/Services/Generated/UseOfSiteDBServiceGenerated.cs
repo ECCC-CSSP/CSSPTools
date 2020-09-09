@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            UseOfSite useOfSite = (from c in db.UseOfSites.Local
+            UseOfSite useOfSite = (from c in db.UseOfSites
                     where c.UseOfSiteID == UseOfSiteID
                     select c).FirstOrDefault();
 
@@ -106,6 +106,7 @@ namespace CSSPDBServices
             try
             {
                 db.UseOfSites.Remove(useOfSite);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -130,6 +131,7 @@ namespace CSSPDBServices
             try
             {
                 db.UseOfSites.Add(useOfSite);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -154,6 +156,7 @@ namespace CSSPDBServices
             try
             {
                 db.UseOfSites.Update(useOfSite);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {

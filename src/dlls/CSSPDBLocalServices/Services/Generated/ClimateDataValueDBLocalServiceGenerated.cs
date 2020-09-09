@@ -97,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            ClimateDataValue climateDataValue = (from c in dbLocal.ClimateDataValues.Local
+            ClimateDataValue climateDataValue = (from c in dbLocal.ClimateDataValues
                     where c.ClimateDataValueID == ClimateDataValueID
                     select c).FirstOrDefault();
 
@@ -109,6 +109,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.ClimateDataValues.Remove(climateDataValue);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -142,6 +143,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.ClimateDataValues.Add(climateDataValue);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -166,6 +168,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.ClimateDataValues.Update(climateDataValue);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {

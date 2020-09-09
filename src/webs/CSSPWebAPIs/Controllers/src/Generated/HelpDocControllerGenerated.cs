@@ -5,12 +5,13 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -34,15 +35,15 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IHelpDocService HelpDocService { get; }
+        private IHelpDocDBService HelpDocDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public HelpDocController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IHelpDocService HelpDocService)
+        public HelpDocController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IHelpDocDBService HelpDocDBService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.HelpDocService = HelpDocService;
+            this.HelpDocDBService = HelpDocDBService;
         }
         #endregion Constructors
 
@@ -53,7 +54,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await HelpDocService.GetHelpDocList();
+            return await HelpDocDBService.GetHelpDocList();
         }
         [HttpGet("{HelpDocID}")]
         public async Task<ActionResult<HelpDoc>> Get(int HelpDocID)
@@ -61,7 +62,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await HelpDocService.GetHelpDocWithHelpDocID(HelpDocID);
+            return await HelpDocDBService.GetHelpDocWithHelpDocID(HelpDocID);
         }
         [HttpPost]
         public async Task<ActionResult<HelpDoc>> Post(HelpDoc HelpDoc)
@@ -69,7 +70,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await HelpDocService.Post(HelpDoc);
+            return await HelpDocDBService.Post(HelpDoc);
         }
         [HttpPut]
         public async Task<ActionResult<HelpDoc>> Put(HelpDoc HelpDoc)
@@ -77,7 +78,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await HelpDocService.Put(HelpDoc);
+            return await HelpDocDBService.Put(HelpDoc);
         }
         [HttpDelete("{HelpDocID}")]
         public async Task<ActionResult<bool>> Delete(int HelpDocID)
@@ -85,7 +86,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await HelpDocService.Delete(HelpDocID);
+            return await HelpDocDBService.Delete(HelpDocID);
         }
         #endregion Functions public
 

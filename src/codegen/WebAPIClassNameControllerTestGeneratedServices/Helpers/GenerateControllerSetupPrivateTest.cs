@@ -12,13 +12,13 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Services
             sb.AppendLine(@"            Config = new ConfigurationBuilder()");
             sb.AppendLine(@"               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)");
             sb.AppendLine(@"               .AddJsonFile(""appsettings_csspwebapistests.json"")");
-            sb.AppendLine(@"               .AddUserSecrets(""9d65c001-b7bc-4922-a0fc-1558b9ef927e"")");
+            sb.AppendLine(@"               .AddUserSecrets(""e43608c0-3ec4-4b6c-b995-a4be7848ec8b"")");
             sb.AppendLine(@"               .Build();");
             sb.AppendLine(@"");
             sb.AppendLine(@"            Services = new ServiceCollection();");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            string CSSPDBLocalFileName = Config.GetValue<string>(""CSSPDBLocal"");");
-            sb.AppendLine(@"            Assert.NotNull(CSSPDBLocalFileName);");
+            sb.AppendLine(@"            CSSPAzureUrl = Config.GetValue<string>(""CSSPAzureUrl"");");
+            sb.AppendLine(@"            Assert.NotNull(CSSPAzureUrl);");
             sb.AppendLine(@"");
             sb.AppendLine(@"            string TestDB = Config.GetValue<string>(""TestDB"");");
             sb.AppendLine(@"            Assert.NotNull(TestDB);");
@@ -35,13 +35,6 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Services
             sb.AppendLine(@"                options.UseInMemoryDatabase(TestDB);");
             sb.AppendLine(@"            });");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName);");
-            sb.AppendLine(@"");
-            sb.AppendLine(@"            Services.AddDbContext<CSSPDBLocalContext>(options =>");
-            sb.AppendLine(@"            {");
-            sb.AppendLine(@"                options.UseSqlite($""Data Source={ fiAppDataPath.FullName }"");");
-            sb.AppendLine(@"            });");
-            sb.AppendLine(@"");
             sb.AppendLine(@"            Services.AddDbContext<ApplicationDbContext>(options =>");
             sb.AppendLine(@"                options.UseSqlServer(TestDB));");
             sb.AppendLine(@"");
@@ -53,9 +46,8 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Services
             sb.AppendLine(@"            Services.AddSingleton<ILoggedInService, LoggedInService>();");
             sb.AppendLine(@"            Services.AddSingleton<ILoginModelService, LoginModelService>();");
             sb.AppendLine(@"            Services.AddSingleton<IRegisterModelService, RegisterModelService>();");
-            sb.AppendLine(@"            Services.AddSingleton<IAspNetUserService, AspNetUserService>();");
-            sb.AppendLine(@"            Services.AddSingleton<IContactService, ContactService>();");
-            sb.AppendLine($@"            Services.AddSingleton<I{ TypeName }Service, { TypeName }Service>();");
+            sb.AppendLine(@"            Services.AddSingleton<IContactDBService, ContactDBService>();");
+            sb.AppendLine($@"            Services.AddSingleton<I{ TypeName }DBService, { TypeName }DBService>();");
             sb.AppendLine($@"            Services.AddSingleton<I{ TypeName }Controller, { TypeName }Controller>();");
             sb.AppendLine(@"");
             sb.AppendLine(@"            Provider = Services.BuildServiceProvider();");
@@ -66,8 +58,8 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Services
             sb.AppendLine(@"");
             sb.AppendLine(@"            CSSPCultureService.SetCulture(culture);");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            ContactService = Provider.GetService<IContactService>();");
-            sb.AppendLine(@"            Assert.NotNull(ContactService);");
+            sb.AppendLine(@"            ContactDBService = Provider.GetService<IContactDBService>();");
+            sb.AppendLine(@"            Assert.NotNull(ContactDBService);");
             sb.AppendLine(@"");
             sb.AppendLine(@"            string LoginEmail = Config.GetValue<string>(""LoginEmail"");");
             sb.AppendLine(@"            Assert.NotNull(LoginEmail);");
@@ -81,32 +73,49 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Services
             sb.AppendLine(@"                Password = Password");
             sb.AppendLine(@"            };");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            var actionContact = await ContactService.Login(loginModel);");
-            sb.AppendLine(@"            Assert.NotNull(actionContact.Value);");
+            sb.AppendLine(@"            using (HttpClient httpClient = new HttpClient())");
+            sb.AppendLine(@"            {");
+            sb.AppendLine($@"                string url = $""{{ CSSPAzureUrl }}api/{{ culture}}/Auth/Token"";");
+            sb.AppendLine(@"");
+            sb.AppendLine(@"                string content = JsonSerializer.Serialize<LoginModel>(loginModel);");
+            sb.AppendLine(@"                HttpContent httpContent = new StringContent(content);");
+            sb.AppendLine(@"                httpContent.Headers.ContentType = new MediaTypeHeaderValue(""application/json"");");
+            sb.AppendLine(@"");
+            sb.AppendLine(@"                var response = await httpClient.PostAsync(url, httpContent);");
+            sb.AppendLine(@"");
+            sb.AppendLine(@"                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);");
+            sb.AppendLine(@"                string responseContent = await response.Content.ReadAsStringAsync();");
+            sb.AppendLine(@"                Assert.NotEmpty(responseContent);");
             if (TypeName == "Contact")
             {
-                sb.AppendLine(@"            contact2 = actionContact.Value;");
+                sb.AppendLine(@"                contact2 = JsonSerializer.Deserialize<Contact>(responseContent);");
+                sb.AppendLine(@"                Assert.NotNull(contact2);");
+                sb.AppendLine(@"                Assert.NotEmpty(contact2.Token);");
             }
             else
             {
-                sb.AppendLine(@"            contact = actionContact.Value;");
+                sb.AppendLine(@"                contact = JsonSerializer.Deserialize<Contact>(responseContent);");
+                sb.AppendLine(@"                Assert.NotNull(contact);");
+                sb.AppendLine(@"                Assert.NotEmpty(contact.Token);");
             }
+            sb.AppendLine(@"            }");
+
             sb.AppendLine(@"");
-            sb.AppendLine(@"            loggedInService = Provider.GetService<ILoggedInService>();");
-            sb.AppendLine(@"            Assert.NotNull(loggedInService);");
+            sb.AppendLine(@"            LoggedInService = Provider.GetService<ILoggedInService>();");
+            sb.AppendLine(@"            Assert.NotNull(LoggedInService);");
             sb.AppendLine(@"");
             if (TypeName == "Contact")
             {
-                sb.AppendLine(@"            await loggedInService.SetLoggedInContactInfo(contact2.Id);");
+                sb.AppendLine(@"            await LoggedInService.SetLoggedInContactInfo(contact2.Id);");
             }
             else
             {
-                sb.AppendLine(@"            await loggedInService.SetLoggedInContactInfo(contact.Id);");
+                sb.AppendLine(@"            await LoggedInService.SetLoggedInContactInfo(contact.Id);");
             }
-            sb.AppendLine(@"            Assert.NotNull(loggedInService.LoggedInContactInfo);");
+            sb.AppendLine(@"            Assert.NotNull(LoggedInService.LoggedInContactInfo);");
             sb.AppendLine(@"");
-            sb.AppendLine($@"            { TypeNameLower }Service = Provider.GetService<I{ TypeName }Service>();");
-            sb.AppendLine($@"            Assert.NotNull({ TypeNameLower }Service);");
+            sb.AppendLine($@"            { TypeNameLower }DBService = Provider.GetService<I{ TypeName }DBService>();");
+            sb.AppendLine($@"            Assert.NotNull({ TypeNameLower }DBService);");
             sb.AppendLine(@"");
             sb.AppendLine($@"            { TypeNameLower }Controller = Provider.GetService<I{ TypeName }Controller>();");
             sb.AppendLine($@"            Assert.NotNull({ TypeNameLower }Controller);");

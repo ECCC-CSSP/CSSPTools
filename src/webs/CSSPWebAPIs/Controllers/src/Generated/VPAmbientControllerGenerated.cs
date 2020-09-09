@@ -5,12 +5,13 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -34,15 +35,15 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IVPAmbientService VPAmbientService { get; }
+        private IVPAmbientDBService VPAmbientDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public VPAmbientController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IVPAmbientService VPAmbientService)
+        public VPAmbientController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IVPAmbientDBService VPAmbientDBService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.VPAmbientService = VPAmbientService;
+            this.VPAmbientDBService = VPAmbientDBService;
         }
         #endregion Constructors
 
@@ -53,7 +54,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await VPAmbientService.GetVPAmbientList();
+            return await VPAmbientDBService.GetVPAmbientList();
         }
         [HttpGet("{VPAmbientID}")]
         public async Task<ActionResult<VPAmbient>> Get(int VPAmbientID)
@@ -61,7 +62,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await VPAmbientService.GetVPAmbientWithVPAmbientID(VPAmbientID);
+            return await VPAmbientDBService.GetVPAmbientWithVPAmbientID(VPAmbientID);
         }
         [HttpPost]
         public async Task<ActionResult<VPAmbient>> Post(VPAmbient VPAmbient)
@@ -69,7 +70,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await VPAmbientService.Post(VPAmbient);
+            return await VPAmbientDBService.Post(VPAmbient);
         }
         [HttpPut]
         public async Task<ActionResult<VPAmbient>> Put(VPAmbient VPAmbient)
@@ -77,7 +78,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await VPAmbientService.Put(VPAmbient);
+            return await VPAmbientDBService.Put(VPAmbient);
         }
         [HttpDelete("{VPAmbientID}")]
         public async Task<ActionResult<bool>> Delete(int VPAmbientID)
@@ -85,7 +86,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await VPAmbientService.Delete(VPAmbientID);
+            return await VPAmbientDBService.Delete(VPAmbientID);
         }
         #endregion Functions public
 

@@ -97,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MapInfoPoint mapInfoPoint = (from c in dbLocal.MapInfoPoints.Local
+            MapInfoPoint mapInfoPoint = (from c in dbLocal.MapInfoPoints
                     where c.MapInfoPointID == MapInfoPointID
                     select c).FirstOrDefault();
 
@@ -109,6 +109,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.MapInfoPoints.Remove(mapInfoPoint);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -142,6 +143,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.MapInfoPoints.Add(mapInfoPoint);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -166,6 +168,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.MapInfoPoints.Update(mapInfoPoint);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {

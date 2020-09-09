@@ -5,12 +5,13 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -34,15 +35,15 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IHydrometricDataValueService HydrometricDataValueService { get; }
+        private IHydrometricDataValueDBService HydrometricDataValueDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public HydrometricDataValueController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IHydrometricDataValueService HydrometricDataValueService)
+        public HydrometricDataValueController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IHydrometricDataValueDBService HydrometricDataValueDBService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.HydrometricDataValueService = HydrometricDataValueService;
+            this.HydrometricDataValueDBService = HydrometricDataValueDBService;
         }
         #endregion Constructors
 
@@ -53,7 +54,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await HydrometricDataValueService.GetHydrometricDataValueList();
+            return await HydrometricDataValueDBService.GetHydrometricDataValueList();
         }
         [HttpGet("{HydrometricDataValueID}")]
         public async Task<ActionResult<HydrometricDataValue>> Get(int HydrometricDataValueID)
@@ -61,7 +62,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await HydrometricDataValueService.GetHydrometricDataValueWithHydrometricDataValueID(HydrometricDataValueID);
+            return await HydrometricDataValueDBService.GetHydrometricDataValueWithHydrometricDataValueID(HydrometricDataValueID);
         }
         [HttpPost]
         public async Task<ActionResult<HydrometricDataValue>> Post(HydrometricDataValue HydrometricDataValue)
@@ -69,7 +70,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await HydrometricDataValueService.Post(HydrometricDataValue);
+            return await HydrometricDataValueDBService.Post(HydrometricDataValue);
         }
         [HttpPut]
         public async Task<ActionResult<HydrometricDataValue>> Put(HydrometricDataValue HydrometricDataValue)
@@ -77,7 +78,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await HydrometricDataValueService.Put(HydrometricDataValue);
+            return await HydrometricDataValueDBService.Put(HydrometricDataValue);
         }
         [HttpDelete("{HydrometricDataValueID}")]
         public async Task<ActionResult<bool>> Delete(int HydrometricDataValueID)
@@ -85,7 +86,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await HydrometricDataValueService.Delete(HydrometricDataValueID);
+            return await HydrometricDataValueDBService.Delete(HydrometricDataValueID);
         }
         #endregion Functions public
 

@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            SamplingPlanSubsectorSite samplingPlanSubsectorSite = (from c in db.SamplingPlanSubsectorSites.Local
+            SamplingPlanSubsectorSite samplingPlanSubsectorSite = (from c in db.SamplingPlanSubsectorSites
                     where c.SamplingPlanSubsectorSiteID == SamplingPlanSubsectorSiteID
                     select c).FirstOrDefault();
 
@@ -106,6 +106,7 @@ namespace CSSPDBServices
             try
             {
                 db.SamplingPlanSubsectorSites.Remove(samplingPlanSubsectorSite);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -130,6 +131,7 @@ namespace CSSPDBServices
             try
             {
                 db.SamplingPlanSubsectorSites.Add(samplingPlanSubsectorSite);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -154,6 +156,7 @@ namespace CSSPDBServices
             try
             {
                 db.SamplingPlanSubsectorSites.Update(samplingPlanSubsectorSite);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {

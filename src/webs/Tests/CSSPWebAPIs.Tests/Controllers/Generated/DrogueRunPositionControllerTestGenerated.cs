@@ -6,7 +6,7 @@
 
 using CSSPEnums;
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPWebAPIs.Controllers;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -24,6 +24,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Tests.Controllers
 {
@@ -36,13 +37,13 @@ namespace CSSPWebAPIs.Tests.Controllers
         private IConfiguration Config { get; set; }
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
-        private CSSPDBContext db { get; set; }
-        private IContactService ContactService { get; set; }
-        private ILoggedInService loggedInService { get; set; }
+        private IContactDBService ContactDBService { get; set; }
+        private ILoggedInService LoggedInService { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
-        private IDrogueRunPositionService drogueRunPositionService { get; set; }
+        private IDrogueRunPositionDBService drogueRunPositionDBService { get; set; }
         private IDrogueRunPositionController drogueRunPositionController { get; set; }
         private Contact contact { get; set; }
+        private string CSSPAzureUrl { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -54,73 +55,76 @@ namespace CSSPWebAPIs.Tests.Controllers
         #region Functions public
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task DrogueRunPositionController_Constructor_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
-            Assert.NotNull(loggedInService);
-            Assert.NotNull(drogueRunPositionService);
+
+            Assert.NotNull(LoggedInService);
+            Assert.NotNull(drogueRunPositionDBService);
             Assert.NotNull(drogueRunPositionController);
         }
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task DrogueRunPositionController_CRUD_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            HttpClient httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
+            using (HttpClient httpClient = new HttpClient())
+            {
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
 
-            // testing Get
-            string url = "https://localhost:4447/api/" + culture + "/DrogueRunPosition";
-            var response = await httpClient.GetAsync(url);
-            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
-            List<DrogueRunPosition> drogueRunPositionList = JsonSerializer.Deserialize<List<DrogueRunPosition>>(responseContent);
-            Assert.True(drogueRunPositionList.Count > 0);
+                // testing Get
+                string url = $"{ CSSPAzureUrl }api/{ culture }/DrogueRunPosition";
+                var response = await httpClient.GetAsync(url);
+                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+                string responseContent = await response.Content.ReadAsStringAsync();
+                Assert.NotEmpty(responseContent);
+                List<DrogueRunPosition> drogueRunPositionList = JsonSerializer.Deserialize<List<DrogueRunPosition>>(responseContent);
+                Assert.True(drogueRunPositionList.Count > 0);
 
-            // testing Get(DrogueRunPositionID)
-            string urlID = url + "/" + drogueRunPositionList[0].DrogueRunPositionID;
-            response = await httpClient.GetAsync(urlID);
-            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-            responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
-            DrogueRunPosition drogueRunPosition = JsonSerializer.Deserialize<DrogueRunPosition>(responseContent);
-            Assert.Equal(drogueRunPositionList[0].DrogueRunPositionID, drogueRunPosition.DrogueRunPositionID);
+                // testing Get(DrogueRunPositionID)
+                string urlID = url + "/" + drogueRunPositionList[0].DrogueRunPositionID;
+                response = await httpClient.GetAsync(urlID);
+                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+                responseContent = await response.Content.ReadAsStringAsync();
+                Assert.NotEmpty(responseContent);
+                DrogueRunPosition drogueRunPosition = JsonSerializer.Deserialize<DrogueRunPosition>(responseContent);
+                Assert.Equal(drogueRunPositionList[0].DrogueRunPositionID, drogueRunPosition.DrogueRunPositionID);
 
-            // testing Post(DrogueRunPosition)
-            drogueRunPosition.DrogueRunPositionID = 0;
-            string content = JsonSerializer.Serialize<DrogueRunPosition>(drogueRunPosition);
-            HttpContent httpContent = new StringContent(content);
-            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            response = await httpClient.PostAsync(url, httpContent);
-            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-            responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
-            drogueRunPosition = JsonSerializer.Deserialize<DrogueRunPosition>(responseContent);
-            Assert.NotNull(drogueRunPosition);
+                // testing Post(DrogueRunPosition)
+                drogueRunPosition.DrogueRunPositionID = 0;
+                string content = JsonSerializer.Serialize<DrogueRunPosition>(drogueRunPosition);
+                HttpContent httpContent = new StringContent(content);
+                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                response = await httpClient.PostAsync(url, httpContent);
+                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+                responseContent = await response.Content.ReadAsStringAsync();
+                Assert.NotEmpty(responseContent);
+                drogueRunPosition = JsonSerializer.Deserialize<DrogueRunPosition>(responseContent);
+                Assert.NotNull(drogueRunPosition);
 
-            // testing Put(DrogueRunPosition)
-            content = JsonSerializer.Serialize<DrogueRunPosition>(drogueRunPosition);
-            httpContent = new StringContent(content);
-            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            response = await httpClient.PutAsync(url, httpContent);
-            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-            responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
-            drogueRunPosition = JsonSerializer.Deserialize<DrogueRunPosition>(responseContent);
-            Assert.NotNull(drogueRunPosition);
+                // testing Put(DrogueRunPosition)
+                content = JsonSerializer.Serialize<DrogueRunPosition>(drogueRunPosition);
+                httpContent = new StringContent(content);
+                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                response = await httpClient.PutAsync(url, httpContent);
+                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+                responseContent = await response.Content.ReadAsStringAsync();
+                Assert.NotEmpty(responseContent);
+                drogueRunPosition = JsonSerializer.Deserialize<DrogueRunPosition>(responseContent);
+                Assert.NotNull(drogueRunPosition);
 
-            // testing Delete(DrogueRunPositionID)
-            urlID = url + "/" + drogueRunPosition.DrogueRunPositionID;
-            response = await httpClient.DeleteAsync(urlID);
-            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-            responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
-            bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
-            Assert.True(retBool);
+                // testing Delete(DrogueRunPositionID)
+                urlID = url + "/" + drogueRunPosition.DrogueRunPositionID;
+                response = await httpClient.DeleteAsync(urlID);
+                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+                responseContent = await response.Content.ReadAsStringAsync();
+                Assert.NotEmpty(responseContent);
+                bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
+                Assert.True(retBool);
+            }
         }
         #endregion Functions public
 
@@ -130,13 +134,13 @@ namespace CSSPWebAPIs.Tests.Controllers
             Config = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
                .AddJsonFile("appsettings_csspwebapistests.json")
-               .AddUserSecrets("9d65c001-b7bc-4922-a0fc-1558b9ef927e")
+               .AddUserSecrets("e43608c0-3ec4-4b6c-b995-a4be7848ec8b")
                .Build();
 
             Services = new ServiceCollection();
 
-            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
-            Assert.NotNull(CSSPDBLocalFileName);
+            CSSPAzureUrl = Config.GetValue<string>("CSSPAzureUrl");
+            Assert.NotNull(CSSPAzureUrl);
 
             string TestDB = Config.GetValue<string>("TestDB");
             Assert.NotNull(TestDB);
@@ -153,13 +157,6 @@ namespace CSSPWebAPIs.Tests.Controllers
                 options.UseInMemoryDatabase(TestDB);
             });
 
-            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName);
-
-            Services.AddDbContext<CSSPDBLocalContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
-            });
-
             Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(TestDB));
 
@@ -171,9 +168,8 @@ namespace CSSPWebAPIs.Tests.Controllers
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<ILoginModelService, LoginModelService>();
             Services.AddSingleton<IRegisterModelService, RegisterModelService>();
-            Services.AddSingleton<IAspNetUserService, AspNetUserService>();
-            Services.AddSingleton<IContactService, ContactService>();
-            Services.AddSingleton<IDrogueRunPositionService, DrogueRunPositionService>();
+            Services.AddSingleton<IContactDBService, ContactDBService>();
+            Services.AddSingleton<IDrogueRunPositionDBService, DrogueRunPositionDBService>();
             Services.AddSingleton<IDrogueRunPositionController, DrogueRunPositionController>();
 
             Provider = Services.BuildServiceProvider();
@@ -184,8 +180,8 @@ namespace CSSPWebAPIs.Tests.Controllers
 
             CSSPCultureService.SetCulture(culture);
 
-            ContactService = Provider.GetService<IContactService>();
-            Assert.NotNull(ContactService);
+            ContactDBService = Provider.GetService<IContactDBService>();
+            Assert.NotNull(ContactDBService);
 
             string LoginEmail = Config.GetValue<string>("LoginEmail");
             Assert.NotNull(LoginEmail);
@@ -199,18 +195,32 @@ namespace CSSPWebAPIs.Tests.Controllers
                 Password = Password
             };
 
-            var actionContact = await ContactService.Login(loginModel);
-            Assert.NotNull(actionContact.Value);
-            contact = actionContact.Value;
+            using (HttpClient httpClient = new HttpClient())
+            {
+                string url = $"{ CSSPAzureUrl }api/{ culture}/Auth/Token";
 
-            loggedInService = Provider.GetService<ILoggedInService>();
-            Assert.NotNull(loggedInService);
+                string content = JsonSerializer.Serialize<LoginModel>(loginModel);
+                HttpContent httpContent = new StringContent(content);
+                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-            await loggedInService.SetLoggedInContactInfo(contact.Id);
-            Assert.NotNull(loggedInService.LoggedInContactInfo);
+                var response = await httpClient.PostAsync(url, httpContent);
 
-            drogueRunPositionService = Provider.GetService<IDrogueRunPositionService>();
-            Assert.NotNull(drogueRunPositionService);
+                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+                string responseContent = await response.Content.ReadAsStringAsync();
+                Assert.NotEmpty(responseContent);
+                contact = JsonSerializer.Deserialize<Contact>(responseContent);
+                Assert.NotNull(contact);
+                Assert.NotEmpty(contact.Token);
+            }
+
+            LoggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(LoggedInService);
+
+            await LoggedInService.SetLoggedInContactInfo(contact.Id);
+            Assert.NotNull(LoggedInService.LoggedInContactInfo);
+
+            drogueRunPositionDBService = Provider.GetService<IDrogueRunPositionDBService>();
+            Assert.NotNull(drogueRunPositionDBService);
 
             drogueRunPositionController = Provider.GetService<IDrogueRunPositionController>();
             Assert.NotNull(drogueRunPositionController);

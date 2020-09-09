@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MWQMSite mwqmSite = (from c in db.MWQMSites.Local
+            MWQMSite mwqmSite = (from c in db.MWQMSites
                     where c.MWQMSiteID == MWQMSiteID
                     select c).FirstOrDefault();
 
@@ -106,6 +106,7 @@ namespace CSSPDBServices
             try
             {
                 db.MWQMSites.Remove(mwqmSite);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -130,6 +131,7 @@ namespace CSSPDBServices
             try
             {
                 db.MWQMSites.Add(mwqmSite);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -154,6 +156,7 @@ namespace CSSPDBServices
             try
             {
                 db.MWQMSites.Update(mwqmSite);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {

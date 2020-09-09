@@ -5,12 +5,13 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -34,15 +35,15 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IMapInfoPointService MapInfoPointService { get; }
+        private IMapInfoPointDBService MapInfoPointDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public MapInfoPointController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IMapInfoPointService MapInfoPointService)
+        public MapInfoPointController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IMapInfoPointDBService MapInfoPointDBService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.MapInfoPointService = MapInfoPointService;
+            this.MapInfoPointDBService = MapInfoPointDBService;
         }
         #endregion Constructors
 
@@ -53,7 +54,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MapInfoPointService.GetMapInfoPointList();
+            return await MapInfoPointDBService.GetMapInfoPointList();
         }
         [HttpGet("{MapInfoPointID}")]
         public async Task<ActionResult<MapInfoPoint>> Get(int MapInfoPointID)
@@ -61,7 +62,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MapInfoPointService.GetMapInfoPointWithMapInfoPointID(MapInfoPointID);
+            return await MapInfoPointDBService.GetMapInfoPointWithMapInfoPointID(MapInfoPointID);
         }
         [HttpPost]
         public async Task<ActionResult<MapInfoPoint>> Post(MapInfoPoint MapInfoPoint)
@@ -69,7 +70,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MapInfoPointService.Post(MapInfoPoint);
+            return await MapInfoPointDBService.Post(MapInfoPoint);
         }
         [HttpPut]
         public async Task<ActionResult<MapInfoPoint>> Put(MapInfoPoint MapInfoPoint)
@@ -77,7 +78,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MapInfoPointService.Put(MapInfoPoint);
+            return await MapInfoPointDBService.Put(MapInfoPoint);
         }
         [HttpDelete("{MapInfoPointID}")]
         public async Task<ActionResult<bool>> Delete(int MapInfoPointID)
@@ -85,7 +86,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MapInfoPointService.Delete(MapInfoPointID);
+            return await MapInfoPointDBService.Delete(MapInfoPointID);
         }
         #endregion Functions public
 

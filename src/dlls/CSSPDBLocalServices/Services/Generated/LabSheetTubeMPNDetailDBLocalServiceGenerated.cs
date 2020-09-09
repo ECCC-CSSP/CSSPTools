@@ -97,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            LabSheetTubeMPNDetail labSheetTubeMPNDetail = (from c in dbLocal.LabSheetTubeMPNDetails.Local
+            LabSheetTubeMPNDetail labSheetTubeMPNDetail = (from c in dbLocal.LabSheetTubeMPNDetails
                     where c.LabSheetTubeMPNDetailID == LabSheetTubeMPNDetailID
                     select c).FirstOrDefault();
 
@@ -109,6 +109,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.LabSheetTubeMPNDetails.Remove(labSheetTubeMPNDetail);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -142,6 +143,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.LabSheetTubeMPNDetails.Add(labSheetTubeMPNDetail);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -166,6 +168,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.LabSheetTubeMPNDetails.Update(labSheetTubeMPNDetail);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {

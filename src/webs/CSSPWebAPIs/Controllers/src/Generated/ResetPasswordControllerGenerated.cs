@@ -5,12 +5,13 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -34,15 +35,15 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IResetPasswordService ResetPasswordService { get; }
+        private IResetPasswordDBService ResetPasswordDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public ResetPasswordController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IResetPasswordService ResetPasswordService)
+        public ResetPasswordController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IResetPasswordDBService ResetPasswordDBService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.ResetPasswordService = ResetPasswordService;
+            this.ResetPasswordDBService = ResetPasswordDBService;
         }
         #endregion Constructors
 
@@ -53,7 +54,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await ResetPasswordService.GetResetPasswordList();
+            return await ResetPasswordDBService.GetResetPasswordList();
         }
         [HttpGet("{ResetPasswordID}")]
         public async Task<ActionResult<ResetPassword>> Get(int ResetPasswordID)
@@ -61,7 +62,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await ResetPasswordService.GetResetPasswordWithResetPasswordID(ResetPasswordID);
+            return await ResetPasswordDBService.GetResetPasswordWithResetPasswordID(ResetPasswordID);
         }
         [HttpPost]
         public async Task<ActionResult<ResetPassword>> Post(ResetPassword ResetPassword)
@@ -69,7 +70,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await ResetPasswordService.Post(ResetPassword);
+            return await ResetPasswordDBService.Post(ResetPassword);
         }
         [HttpPut]
         public async Task<ActionResult<ResetPassword>> Put(ResetPassword ResetPassword)
@@ -77,7 +78,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await ResetPasswordService.Put(ResetPassword);
+            return await ResetPasswordDBService.Put(ResetPassword);
         }
         [HttpDelete("{ResetPasswordID}")]
         public async Task<ActionResult<bool>> Delete(int ResetPasswordID)
@@ -85,7 +86,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await ResetPasswordService.Delete(ResetPasswordID);
+            return await ResetPasswordDBService.Delete(ResetPasswordID);
         }
         #endregion Functions public
 

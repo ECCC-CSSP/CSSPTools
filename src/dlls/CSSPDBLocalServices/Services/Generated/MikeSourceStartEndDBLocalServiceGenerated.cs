@@ -97,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MikeSourceStartEnd mikeSourceStartEnd = (from c in dbLocal.MikeSourceStartEnds.Local
+            MikeSourceStartEnd mikeSourceStartEnd = (from c in dbLocal.MikeSourceStartEnds
                     where c.MikeSourceStartEndID == MikeSourceStartEndID
                     select c).FirstOrDefault();
 
@@ -109,6 +109,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.MikeSourceStartEnds.Remove(mikeSourceStartEnd);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -142,6 +143,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.MikeSourceStartEnds.Add(mikeSourceStartEnd);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -166,6 +168,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.MikeSourceStartEnds.Update(mikeSourceStartEnd);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {

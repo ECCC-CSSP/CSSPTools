@@ -97,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            RatingCurveValue ratingCurveValue = (from c in dbLocal.RatingCurveValues.Local
+            RatingCurveValue ratingCurveValue = (from c in dbLocal.RatingCurveValues
                     where c.RatingCurveValueID == RatingCurveValueID
                     select c).FirstOrDefault();
 
@@ -109,6 +109,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.RatingCurveValues.Remove(ratingCurveValue);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -142,6 +143,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.RatingCurveValues.Add(ratingCurveValue);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -166,6 +168,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.RatingCurveValues.Update(ratingCurveValue);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {

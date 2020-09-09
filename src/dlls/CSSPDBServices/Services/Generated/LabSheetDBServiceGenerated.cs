@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            LabSheet labSheet = (from c in db.LabSheets.Local
+            LabSheet labSheet = (from c in db.LabSheets
                     where c.LabSheetID == LabSheetID
                     select c).FirstOrDefault();
 
@@ -106,6 +106,7 @@ namespace CSSPDBServices
             try
             {
                 db.LabSheets.Remove(labSheet);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -130,6 +131,7 @@ namespace CSSPDBServices
             try
             {
                 db.LabSheets.Add(labSheet);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -154,6 +156,7 @@ namespace CSSPDBServices
             try
             {
                 db.LabSheets.Update(labSheet);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {

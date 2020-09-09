@@ -5,12 +5,13 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -34,15 +35,15 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IDrogueRunPositionService DrogueRunPositionService { get; }
+        private IDrogueRunPositionDBService DrogueRunPositionDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public DrogueRunPositionController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IDrogueRunPositionService DrogueRunPositionService)
+        public DrogueRunPositionController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IDrogueRunPositionDBService DrogueRunPositionDBService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.DrogueRunPositionService = DrogueRunPositionService;
+            this.DrogueRunPositionDBService = DrogueRunPositionDBService;
         }
         #endregion Constructors
 
@@ -53,7 +54,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await DrogueRunPositionService.GetDrogueRunPositionList();
+            return await DrogueRunPositionDBService.GetDrogueRunPositionList();
         }
         [HttpGet("{DrogueRunPositionID}")]
         public async Task<ActionResult<DrogueRunPosition>> Get(int DrogueRunPositionID)
@@ -61,7 +62,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await DrogueRunPositionService.GetDrogueRunPositionWithDrogueRunPositionID(DrogueRunPositionID);
+            return await DrogueRunPositionDBService.GetDrogueRunPositionWithDrogueRunPositionID(DrogueRunPositionID);
         }
         [HttpPost]
         public async Task<ActionResult<DrogueRunPosition>> Post(DrogueRunPosition DrogueRunPosition)
@@ -69,7 +70,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await DrogueRunPositionService.Post(DrogueRunPosition);
+            return await DrogueRunPositionDBService.Post(DrogueRunPosition);
         }
         [HttpPut]
         public async Task<ActionResult<DrogueRunPosition>> Put(DrogueRunPosition DrogueRunPosition)
@@ -77,7 +78,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await DrogueRunPositionService.Put(DrogueRunPosition);
+            return await DrogueRunPositionDBService.Put(DrogueRunPosition);
         }
         [HttpDelete("{DrogueRunPositionID}")]
         public async Task<ActionResult<bool>> Delete(int DrogueRunPositionID)
@@ -85,7 +86,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await DrogueRunPositionService.Delete(DrogueRunPositionID);
+            return await DrogueRunPositionDBService.Delete(DrogueRunPositionID);
         }
         #endregion Functions public
 

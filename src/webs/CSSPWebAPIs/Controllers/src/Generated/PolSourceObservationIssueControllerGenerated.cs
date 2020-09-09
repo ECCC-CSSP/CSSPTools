@@ -5,12 +5,13 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -34,15 +35,15 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IPolSourceObservationIssueService PolSourceObservationIssueService { get; }
+        private IPolSourceObservationIssueDBService PolSourceObservationIssueDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public PolSourceObservationIssueController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IPolSourceObservationIssueService PolSourceObservationIssueService)
+        public PolSourceObservationIssueController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IPolSourceObservationIssueDBService PolSourceObservationIssueDBService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.PolSourceObservationIssueService = PolSourceObservationIssueService;
+            this.PolSourceObservationIssueDBService = PolSourceObservationIssueDBService;
         }
         #endregion Constructors
 
@@ -53,7 +54,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await PolSourceObservationIssueService.GetPolSourceObservationIssueList();
+            return await PolSourceObservationIssueDBService.GetPolSourceObservationIssueList();
         }
         [HttpGet("{PolSourceObservationIssueID}")]
         public async Task<ActionResult<PolSourceObservationIssue>> Get(int PolSourceObservationIssueID)
@@ -61,7 +62,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await PolSourceObservationIssueService.GetPolSourceObservationIssueWithPolSourceObservationIssueID(PolSourceObservationIssueID);
+            return await PolSourceObservationIssueDBService.GetPolSourceObservationIssueWithPolSourceObservationIssueID(PolSourceObservationIssueID);
         }
         [HttpPost]
         public async Task<ActionResult<PolSourceObservationIssue>> Post(PolSourceObservationIssue PolSourceObservationIssue)
@@ -69,7 +70,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await PolSourceObservationIssueService.Post(PolSourceObservationIssue);
+            return await PolSourceObservationIssueDBService.Post(PolSourceObservationIssue);
         }
         [HttpPut]
         public async Task<ActionResult<PolSourceObservationIssue>> Put(PolSourceObservationIssue PolSourceObservationIssue)
@@ -77,7 +78,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await PolSourceObservationIssueService.Put(PolSourceObservationIssue);
+            return await PolSourceObservationIssueDBService.Put(PolSourceObservationIssue);
         }
         [HttpDelete("{PolSourceObservationIssueID}")]
         public async Task<ActionResult<bool>> Delete(int PolSourceObservationIssueID)
@@ -85,7 +86,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await PolSourceObservationIssueService.Delete(PolSourceObservationIssueID);
+            return await PolSourceObservationIssueDBService.Delete(PolSourceObservationIssueID);
         }
         #endregion Functions public
 

@@ -97,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MikeScenario mikeScenario = (from c in dbLocal.MikeScenarios.Local
+            MikeScenario mikeScenario = (from c in dbLocal.MikeScenarios
                     where c.MikeScenarioID == MikeScenarioID
                     select c).FirstOrDefault();
 
@@ -109,6 +109,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.MikeScenarios.Remove(mikeScenario);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -142,6 +143,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.MikeScenarios.Add(mikeScenario);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -166,6 +168,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.MikeScenarios.Update(mikeScenario);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {

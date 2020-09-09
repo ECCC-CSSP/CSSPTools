@@ -5,12 +5,13 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -34,15 +35,15 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private ILogService LogService { get; }
+        private ILogDBService LogDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public LogController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, ILogService LogService)
+        public LogController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, ILogDBService LogDBService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.LogService = LogService;
+            this.LogDBService = LogDBService;
         }
         #endregion Constructors
 
@@ -53,7 +54,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await LogService.GetLogList();
+            return await LogDBService.GetLogList();
         }
         [HttpGet("{LogID}")]
         public async Task<ActionResult<Log>> Get(int LogID)
@@ -61,7 +62,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await LogService.GetLogWithLogID(LogID);
+            return await LogDBService.GetLogWithLogID(LogID);
         }
         [HttpPost]
         public async Task<ActionResult<Log>> Post(Log Log)
@@ -69,7 +70,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await LogService.Post(Log);
+            return await LogDBService.Post(Log);
         }
         [HttpPut]
         public async Task<ActionResult<Log>> Put(Log Log)
@@ -77,7 +78,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await LogService.Put(Log);
+            return await LogDBService.Put(Log);
         }
         [HttpDelete("{LogID}")]
         public async Task<ActionResult<bool>> Delete(int LogID)
@@ -85,7 +86,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await LogService.Delete(LogID);
+            return await LogDBService.Delete(LogID);
         }
         #endregion Functions public
 

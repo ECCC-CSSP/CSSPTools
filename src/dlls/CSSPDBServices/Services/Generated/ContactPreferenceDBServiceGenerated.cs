@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            ContactPreference contactPreference = (from c in db.ContactPreferences.Local
+            ContactPreference contactPreference = (from c in db.ContactPreferences
                     where c.ContactPreferenceID == ContactPreferenceID
                     select c).FirstOrDefault();
 
@@ -106,6 +106,7 @@ namespace CSSPDBServices
             try
             {
                 db.ContactPreferences.Remove(contactPreference);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -130,6 +131,7 @@ namespace CSSPDBServices
             try
             {
                 db.ContactPreferences.Add(contactPreference);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -154,6 +156,7 @@ namespace CSSPDBServices
             try
             {
                 db.ContactPreferences.Update(contactPreference);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {

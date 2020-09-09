@@ -5,12 +5,13 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -34,15 +35,15 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IPolSourceSiteService PolSourceSiteService { get; }
+        private IPolSourceSiteDBService PolSourceSiteDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public PolSourceSiteController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IPolSourceSiteService PolSourceSiteService)
+        public PolSourceSiteController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IPolSourceSiteDBService PolSourceSiteDBService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.PolSourceSiteService = PolSourceSiteService;
+            this.PolSourceSiteDBService = PolSourceSiteDBService;
         }
         #endregion Constructors
 
@@ -53,7 +54,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await PolSourceSiteService.GetPolSourceSiteList();
+            return await PolSourceSiteDBService.GetPolSourceSiteList();
         }
         [HttpGet("{PolSourceSiteID}")]
         public async Task<ActionResult<PolSourceSite>> Get(int PolSourceSiteID)
@@ -61,7 +62,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await PolSourceSiteService.GetPolSourceSiteWithPolSourceSiteID(PolSourceSiteID);
+            return await PolSourceSiteDBService.GetPolSourceSiteWithPolSourceSiteID(PolSourceSiteID);
         }
         [HttpPost]
         public async Task<ActionResult<PolSourceSite>> Post(PolSourceSite PolSourceSite)
@@ -69,7 +70,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await PolSourceSiteService.Post(PolSourceSite);
+            return await PolSourceSiteDBService.Post(PolSourceSite);
         }
         [HttpPut]
         public async Task<ActionResult<PolSourceSite>> Put(PolSourceSite PolSourceSite)
@@ -77,7 +78,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await PolSourceSiteService.Put(PolSourceSite);
+            return await PolSourceSiteDBService.Put(PolSourceSite);
         }
         [HttpDelete("{PolSourceSiteID}")]
         public async Task<ActionResult<bool>> Delete(int PolSourceSiteID)
@@ -85,7 +86,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await PolSourceSiteService.Delete(PolSourceSiteID);
+            return await PolSourceSiteDBService.Delete(PolSourceSiteID);
         }
         #endregion Functions public
 

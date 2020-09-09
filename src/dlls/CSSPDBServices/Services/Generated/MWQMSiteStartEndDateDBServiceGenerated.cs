@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MWQMSiteStartEndDate mwqmSiteStartEndDate = (from c in db.MWQMSiteStartEndDates.Local
+            MWQMSiteStartEndDate mwqmSiteStartEndDate = (from c in db.MWQMSiteStartEndDates
                     where c.MWQMSiteStartEndDateID == MWQMSiteStartEndDateID
                     select c).FirstOrDefault();
 
@@ -106,6 +106,7 @@ namespace CSSPDBServices
             try
             {
                 db.MWQMSiteStartEndDates.Remove(mwqmSiteStartEndDate);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -130,6 +131,7 @@ namespace CSSPDBServices
             try
             {
                 db.MWQMSiteStartEndDates.Add(mwqmSiteStartEndDate);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -154,6 +156,7 @@ namespace CSSPDBServices
             try
             {
                 db.MWQMSiteStartEndDates.Update(mwqmSiteStartEndDate);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {

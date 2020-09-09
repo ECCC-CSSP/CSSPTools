@@ -11,9 +11,9 @@ using System.Threading.Tasks;
 using Xunit;
 using LocalServices;
 
-namespace CSSPFileServices.Tests
+namespace CSSPDBFilesManagementServices.Tests
 {
-    public partial class CSSPFileServicesTests
+    public partial class CSSPDBFilesManagementServicesTests
     {
         #region Variables
         #endregion Variables
@@ -23,7 +23,7 @@ namespace CSSPFileServices.Tests
         private IServiceCollection ServiceCollection { get; set; }
         private IServiceProvider ServiceProvider { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
-        private ICSSPFileService CSSPFileService { get; set; }
+        private ICSSPDBFilesManagementService CSSPDBFilesManagementService { get; set; }
         private ILocalService LocalService { get; set; }
         private string CSSPDBFilesManagementFileName { get; set; }
         private string CSSPDBLoginFileName { get; set; }
@@ -31,7 +31,7 @@ namespace CSSPFileServices.Tests
         #endregion Properties
 
         #region Constructors
-        public CSSPFileServicesTests()
+        public CSSPDBFilesManagementServicesTests()
         {
         }
         #endregion Constructors
@@ -44,7 +44,7 @@ namespace CSSPFileServices.Tests
         {
             Configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-                .AddJsonFile("appsettings_csspfileservicestests.json")
+                .AddJsonFile("appsettings_CSSPDBFilesManagementServicestests.json")
                 .AddUserSecrets("27667b6d-6208-4074-be00-1041ba61f0c0")
                 .Build();
 
@@ -53,7 +53,7 @@ namespace CSSPFileServices.Tests
             ServiceCollection.AddSingleton<IConfiguration>(Configuration);
             ServiceCollection.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             ServiceCollection.AddSingleton<ILocalService, LocalService>();
-            ServiceCollection.AddSingleton<ICSSPFileService, CSSPFileService>();
+            ServiceCollection.AddSingleton<ICSSPDBFilesManagementService, CSSPDBFilesManagementService>();
 
             /* ---------------------------------------------------------------------------------
              * using CSSPDBLogin
@@ -99,8 +99,8 @@ namespace CSSPFileServices.Tests
 
             CSSPCultureService.SetCulture(culture);
 
-            CSSPFileService = ServiceProvider.GetService<ICSSPFileService>();
-            Assert.NotNull(CSSPFileService);
+            CSSPDBFilesManagementService = ServiceProvider.GetService<ICSSPDBFilesManagementService>();
+            Assert.NotNull(CSSPDBFilesManagementService);
 
             LocalService = ServiceProvider.GetService<ILocalService>();
             Assert.NotNull(LocalService);

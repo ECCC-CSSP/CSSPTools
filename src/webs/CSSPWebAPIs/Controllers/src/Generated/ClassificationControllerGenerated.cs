@@ -5,12 +5,13 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -34,15 +35,15 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IClassificationService ClassificationService { get; }
+        private IClassificationDBService ClassificationDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public ClassificationController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IClassificationService ClassificationService)
+        public ClassificationController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IClassificationDBService ClassificationDBService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.ClassificationService = ClassificationService;
+            this.ClassificationDBService = ClassificationDBService;
         }
         #endregion Constructors
 
@@ -53,7 +54,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await ClassificationService.GetClassificationList();
+            return await ClassificationDBService.GetClassificationList();
         }
         [HttpGet("{ClassificationID}")]
         public async Task<ActionResult<Classification>> Get(int ClassificationID)
@@ -61,7 +62,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await ClassificationService.GetClassificationWithClassificationID(ClassificationID);
+            return await ClassificationDBService.GetClassificationWithClassificationID(ClassificationID);
         }
         [HttpPost]
         public async Task<ActionResult<Classification>> Post(Classification Classification)
@@ -69,7 +70,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await ClassificationService.Post(Classification);
+            return await ClassificationDBService.Post(Classification);
         }
         [HttpPut]
         public async Task<ActionResult<Classification>> Put(Classification Classification)
@@ -77,7 +78,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await ClassificationService.Put(Classification);
+            return await ClassificationDBService.Put(Classification);
         }
         [HttpDelete("{ClassificationID}")]
         public async Task<ActionResult<bool>> Delete(int ClassificationID)
@@ -85,7 +86,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await ClassificationService.Delete(ClassificationID);
+            return await ClassificationDBService.Delete(ClassificationID);
         }
         #endregion Functions public
 

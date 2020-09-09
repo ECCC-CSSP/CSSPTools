@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            SpillLanguage spillLanguage = (from c in db.SpillLanguages.Local
+            SpillLanguage spillLanguage = (from c in db.SpillLanguages
                     where c.SpillLanguageID == SpillLanguageID
                     select c).FirstOrDefault();
 
@@ -106,6 +106,7 @@ namespace CSSPDBServices
             try
             {
                 db.SpillLanguages.Remove(spillLanguage);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -130,6 +131,7 @@ namespace CSSPDBServices
             try
             {
                 db.SpillLanguages.Add(spillLanguage);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -154,6 +156,7 @@ namespace CSSPDBServices
             try
             {
                 db.SpillLanguages.Update(spillLanguage);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {

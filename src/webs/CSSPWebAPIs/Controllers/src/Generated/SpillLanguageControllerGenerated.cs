@@ -5,12 +5,13 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -34,15 +35,15 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private ISpillLanguageService SpillLanguageService { get; }
+        private ISpillLanguageDBService SpillLanguageDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public SpillLanguageController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, ISpillLanguageService SpillLanguageService)
+        public SpillLanguageController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, ISpillLanguageDBService SpillLanguageDBService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.SpillLanguageService = SpillLanguageService;
+            this.SpillLanguageDBService = SpillLanguageDBService;
         }
         #endregion Constructors
 
@@ -53,7 +54,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await SpillLanguageService.GetSpillLanguageList();
+            return await SpillLanguageDBService.GetSpillLanguageList();
         }
         [HttpGet("{SpillLanguageID}")]
         public async Task<ActionResult<SpillLanguage>> Get(int SpillLanguageID)
@@ -61,7 +62,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await SpillLanguageService.GetSpillLanguageWithSpillLanguageID(SpillLanguageID);
+            return await SpillLanguageDBService.GetSpillLanguageWithSpillLanguageID(SpillLanguageID);
         }
         [HttpPost]
         public async Task<ActionResult<SpillLanguage>> Post(SpillLanguage SpillLanguage)
@@ -69,7 +70,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await SpillLanguageService.Post(SpillLanguage);
+            return await SpillLanguageDBService.Post(SpillLanguage);
         }
         [HttpPut]
         public async Task<ActionResult<SpillLanguage>> Put(SpillLanguage SpillLanguage)
@@ -77,7 +78,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await SpillLanguageService.Put(SpillLanguage);
+            return await SpillLanguageDBService.Put(SpillLanguage);
         }
         [HttpDelete("{SpillLanguageID}")]
         public async Task<ActionResult<bool>> Delete(int SpillLanguageID)
@@ -85,7 +86,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await SpillLanguageService.Delete(SpillLanguageID);
+            return await SpillLanguageDBService.Delete(SpillLanguageID);
         }
         #endregion Functions public
 

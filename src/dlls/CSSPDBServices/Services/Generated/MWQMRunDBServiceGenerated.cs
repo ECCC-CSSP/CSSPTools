@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MWQMRun mwqmRun = (from c in db.MWQMRuns.Local
+            MWQMRun mwqmRun = (from c in db.MWQMRuns
                     where c.MWQMRunID == MWQMRunID
                     select c).FirstOrDefault();
 
@@ -106,6 +106,7 @@ namespace CSSPDBServices
             try
             {
                 db.MWQMRuns.Remove(mwqmRun);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -130,6 +131,7 @@ namespace CSSPDBServices
             try
             {
                 db.MWQMRuns.Add(mwqmRun);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -154,6 +156,7 @@ namespace CSSPDBServices
             try
             {
                 db.MWQMRuns.Update(mwqmRun);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {

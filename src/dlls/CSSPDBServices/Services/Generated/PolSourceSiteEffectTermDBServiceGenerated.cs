@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            PolSourceSiteEffectTerm polSourceSiteEffectTerm = (from c in db.PolSourceSiteEffectTerms.Local
+            PolSourceSiteEffectTerm polSourceSiteEffectTerm = (from c in db.PolSourceSiteEffectTerms
                     where c.PolSourceSiteEffectTermID == PolSourceSiteEffectTermID
                     select c).FirstOrDefault();
 
@@ -106,6 +106,7 @@ namespace CSSPDBServices
             try
             {
                 db.PolSourceSiteEffectTerms.Remove(polSourceSiteEffectTerm);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -130,6 +131,7 @@ namespace CSSPDBServices
             try
             {
                 db.PolSourceSiteEffectTerms.Add(polSourceSiteEffectTerm);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -154,6 +156,7 @@ namespace CSSPDBServices
             try
             {
                 db.PolSourceSiteEffectTerms.Update(polSourceSiteEffectTerm);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {

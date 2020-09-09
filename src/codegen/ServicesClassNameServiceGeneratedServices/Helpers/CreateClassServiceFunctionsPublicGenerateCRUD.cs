@@ -56,7 +56,18 @@ namespace ServicesClassNameServiceGeneratedServices.Services
             sb.AppendLine(@"                return await Task.FromResult(Unauthorized());");
             sb.AppendLine(@"            }");
             sb.AppendLine(@"");
-            sb.AppendLine($@"            { TypeName } { TypeNameLower } = (from c in { db }.{ TypeName }{ Plurial }.Local");
+            if (DBType == "DB")
+            {
+                sb.AppendLine($@"            { TypeName } { TypeNameLower } = (from c in { db }.{ TypeName }{ Plurial }");
+            }
+            if (DBType == "DBLocal")
+            {
+                sb.AppendLine($@"            { TypeName } { TypeNameLower } = (from c in { db }.{ TypeName }{ Plurial }");
+            }
+            if (DBType == "DBLocalIM")
+            {
+                sb.AppendLine($@"            { TypeName } { TypeNameLower } = (from c in { db }.{ TypeName }{ Plurial }.Local");
+            }
             if (TypeName == "AspNetUser")
             {
                 sb.AppendLine($@"                    where c.Id == Id");
@@ -82,7 +93,18 @@ namespace ServicesClassNameServiceGeneratedServices.Services
             sb.AppendLine($@"            try");
             sb.AppendLine(@"            {");
             sb.AppendLine($@"                { db }.{ TypeName }{ Plurial }.Remove({ TypeNameLower });");
-            //sb.AppendLine($@"                { db }.SaveChanges();");
+            if (DBType == "DB")
+            {
+                sb.AppendLine($@"                { db }.SaveChanges();");
+            }
+            if (DBType == "DBLocal")
+            {
+                sb.AppendLine($@"                { db }.SaveChanges();");
+            }
+            if (DBType == "DBLocalIM")
+            {
+                //sb.AppendLine($@"                { db }.SaveChanges();");
+            }
             sb.AppendLine(@"            }");
             sb.AppendLine($@"            catch (Exception ex)");
             sb.AppendLine(@"            {");
@@ -166,7 +188,18 @@ namespace ServicesClassNameServiceGeneratedServices.Services
             sb.AppendLine($@"            try");
             sb.AppendLine(@"            {");
             sb.AppendLine($@"                { db }.{ TypeName }{ Plurial }.Add({ TypeNameLower });");
-            //sb.AppendLine($@"                { db }.SaveChanges();");
+            if (DBType == "DB")
+            {
+                sb.AppendLine($@"                { db }.SaveChanges();");
+            }
+            if (DBType == "DBLocal")
+            {
+                sb.AppendLine($@"                { db }.SaveChanges();");
+            }
+            if (DBType == "DBLocalIM")
+            {
+                //sb.AppendLine($@"                { db }.SaveChanges();");
+            }
             sb.AppendLine(@"            }");
             sb.AppendLine($@"            catch (Exception ex)");
             sb.AppendLine(@"            {");
@@ -212,7 +245,18 @@ namespace ServicesClassNameServiceGeneratedServices.Services
             sb.AppendLine($@"            try");
             sb.AppendLine(@"            {");
             sb.AppendLine($@"                { db }.{ TypeName }{ Plurial }.Update({ TypeNameLower });");
-            //sb.AppendLine($@"                { db }.SaveChanges();");
+            if (DBType == "DB")
+            {
+                sb.AppendLine($@"                { db }.SaveChanges();");
+            }
+            if (DBType == "DBLocal")
+            {
+                sb.AppendLine($@"                { db }.SaveChanges();");
+            }
+            if (DBType == "DBLocalIM")
+            {
+                //sb.AppendLine($@"                { db }.SaveChanges();");
+            }
             sb.AppendLine(@"            }");
             sb.AppendLine($@"            catch (Exception ex)");
             sb.AppendLine(@"            {");

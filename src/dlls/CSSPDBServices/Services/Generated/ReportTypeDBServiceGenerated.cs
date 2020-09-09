@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            ReportType reportType = (from c in db.ReportTypes.Local
+            ReportType reportType = (from c in db.ReportTypes
                     where c.ReportTypeID == ReportTypeID
                     select c).FirstOrDefault();
 
@@ -106,6 +106,7 @@ namespace CSSPDBServices
             try
             {
                 db.ReportTypes.Remove(reportType);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -130,6 +131,7 @@ namespace CSSPDBServices
             try
             {
                 db.ReportTypes.Add(reportType);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -154,6 +156,7 @@ namespace CSSPDBServices
             try
             {
                 db.ReportTypes.Update(reportType);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {

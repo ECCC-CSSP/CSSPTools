@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            HelpDoc helpDoc = (from c in db.HelpDocs.Local
+            HelpDoc helpDoc = (from c in db.HelpDocs
                     where c.HelpDocID == HelpDocID
                     select c).FirstOrDefault();
 
@@ -106,6 +106,7 @@ namespace CSSPDBServices
             try
             {
                 db.HelpDocs.Remove(helpDoc);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -130,6 +131,7 @@ namespace CSSPDBServices
             try
             {
                 db.HelpDocs.Add(helpDoc);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -154,6 +156,7 @@ namespace CSSPDBServices
             try
             {
                 db.HelpDocs.Update(helpDoc);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {

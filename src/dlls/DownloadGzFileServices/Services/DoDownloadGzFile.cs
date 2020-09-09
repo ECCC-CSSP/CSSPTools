@@ -39,11 +39,11 @@ namespace DownloadGzFileServices
                 {
                     CSSPFile csspFile = null;
 
-                    var actionCSSPFile = await CSSPFileService.GetWithAzureStorageAndAzureFileName(AzureStoreCSSPJSONPath, FileName);
+                    var actionCSSPFile = await CSSPDBFilesManagementService.GetWithAzureStorageAndAzureFileName(AzureStoreCSSPJSONPath, FileName);
                     if (((ObjectResult)actionCSSPFile.Result).StatusCode == 400)
                     {
                         int NextIndex = -1;
-                        var actionInt = await CSSPFileService.GetCSSPFileNextIndexToUse();
+                        var actionInt = await CSSPDBFilesManagementService.GetCSSPFileNextIndexToUse();
                         if (((ObjectResult)actionInt.Result).StatusCode == 200)
                         {
                             NextIndex = (int)((OkObjectResult)actionInt.Result).Value;
@@ -58,7 +58,7 @@ namespace DownloadGzFileServices
                             AzureCreationTimeUTC = DateTime.Parse(response.Headers.Date.ToString()),
                         };
 
-                        var actionCSSPFileAdded = await CSSPFileService.Post(csspFile);
+                        var actionCSSPFileAdded = await CSSPDBFilesManagementService.Post(csspFile);
                         if (((ObjectResult)actionCSSPFileAdded.Result).StatusCode == 200)
                         {
                             csspFile = (CSSPFile)((OkObjectResult)actionCSSPFileAdded.Result).Value;
@@ -81,7 +81,7 @@ namespace DownloadGzFileServices
                             csspFile.AzureETag = response.Headers.ETag.ToString();
                             csspFile.AzureCreationTimeUTC = DateTime.Parse(response.Headers.Date.ToString());
 
-                            var actionCSSPFilePut = await CSSPFileService.Put(csspFile);
+                            var actionCSSPFilePut = await CSSPDBFilesManagementService.Put(csspFile);
                             if (((ObjectResult)actionCSSPFilePut.Result).StatusCode == 200)
                             {
                                 csspFile = (CSSPFile)((OkObjectResult)actionCSSPFilePut.Result).Value;

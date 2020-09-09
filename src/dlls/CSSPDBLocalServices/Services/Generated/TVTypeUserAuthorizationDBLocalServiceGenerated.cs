@@ -97,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            TVTypeUserAuthorization tvTypeUserAuthorization = (from c in dbLocal.TVTypeUserAuthorizations.Local
+            TVTypeUserAuthorization tvTypeUserAuthorization = (from c in dbLocal.TVTypeUserAuthorizations
                     where c.TVTypeUserAuthorizationID == TVTypeUserAuthorizationID
                     select c).FirstOrDefault();
 
@@ -109,6 +109,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.TVTypeUserAuthorizations.Remove(tvTypeUserAuthorization);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -142,6 +143,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.TVTypeUserAuthorizations.Add(tvTypeUserAuthorization);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -166,6 +168,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.TVTypeUserAuthorizations.Update(tvTypeUserAuthorization);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {

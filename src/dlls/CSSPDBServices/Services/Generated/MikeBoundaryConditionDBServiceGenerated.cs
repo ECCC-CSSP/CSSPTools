@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MikeBoundaryCondition mikeBoundaryCondition = (from c in db.MikeBoundaryConditions.Local
+            MikeBoundaryCondition mikeBoundaryCondition = (from c in db.MikeBoundaryConditions
                     where c.MikeBoundaryConditionID == MikeBoundaryConditionID
                     select c).FirstOrDefault();
 
@@ -106,6 +106,7 @@ namespace CSSPDBServices
             try
             {
                 db.MikeBoundaryConditions.Remove(mikeBoundaryCondition);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -130,6 +131,7 @@ namespace CSSPDBServices
             try
             {
                 db.MikeBoundaryConditions.Add(mikeBoundaryCondition);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -154,6 +156,7 @@ namespace CSSPDBServices
             try
             {
                 db.MikeBoundaryConditions.Update(mikeBoundaryCondition);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {

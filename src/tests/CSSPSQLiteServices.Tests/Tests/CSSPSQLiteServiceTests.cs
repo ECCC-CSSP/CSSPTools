@@ -211,7 +211,7 @@ namespace CSSPSQLiteServices.Tests
 
             // will need to add some information to CSSPDBLocal to fully check if CSSPDBFilesManagementIsEmpty is really working
 
-            //var actionCSSPFile = await CSSPFileService.Post(csspFileNew);
+            //var actionCSSPFile = await CSSPDBFilesManagementService.Post(csspFileNew);
             //Assert.Equal(200, ((ObjectResult)actionCSSPFile.Result).StatusCode);
             //Assert.NotNull(((OkObjectResult)actionCSSPFile.Result).Value);
             //CSSPFile csspFile = (CSSPFile)((OkObjectResult)actionCSSPFile.Result).Value;
@@ -220,7 +220,7 @@ namespace CSSPSQLiteServices.Tests
             //retBool = await CSSPSQLiteService.CSSPDBFilesManagementIsEmpty();
             //Assert.False(retBool);
 
-            //var actionCSSPFileDelete = await CSSPFileService.Delete(csspFile.CSSPFileID);
+            //var actionCSSPFileDelete = await CSSPDBFilesManagementService.Delete(csspFile.CSSPFileID);
             //Assert.Equal(200, ((ObjectResult)actionCSSPFileDelete.Result).StatusCode);
             //Assert.NotNull(((OkObjectResult)actionCSSPFileDelete.Result).Value);
             //retBool = (bool)((OkObjectResult)actionCSSPFileDelete.Result).Value;

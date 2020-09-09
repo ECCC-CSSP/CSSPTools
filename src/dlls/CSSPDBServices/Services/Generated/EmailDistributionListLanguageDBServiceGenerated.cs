@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            EmailDistributionListLanguage emailDistributionListLanguage = (from c in db.EmailDistributionListLanguages.Local
+            EmailDistributionListLanguage emailDistributionListLanguage = (from c in db.EmailDistributionListLanguages
                     where c.EmailDistributionListLanguageID == EmailDistributionListLanguageID
                     select c).FirstOrDefault();
 
@@ -106,6 +106,7 @@ namespace CSSPDBServices
             try
             {
                 db.EmailDistributionListLanguages.Remove(emailDistributionListLanguage);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -130,6 +131,7 @@ namespace CSSPDBServices
             try
             {
                 db.EmailDistributionListLanguages.Add(emailDistributionListLanguage);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -154,6 +156,7 @@ namespace CSSPDBServices
             try
             {
                 db.EmailDistributionListLanguages.Update(emailDistributionListLanguage);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {

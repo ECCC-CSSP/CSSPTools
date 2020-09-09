@@ -97,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            BoxModelLanguage boxModelLanguage = (from c in dbLocal.BoxModelLanguages.Local
+            BoxModelLanguage boxModelLanguage = (from c in dbLocal.BoxModelLanguages
                     where c.BoxModelLanguageID == BoxModelLanguageID
                     select c).FirstOrDefault();
 
@@ -109,6 +109,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.BoxModelLanguages.Remove(boxModelLanguage);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -142,6 +143,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.BoxModelLanguages.Add(boxModelLanguage);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -166,6 +168,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.BoxModelLanguages.Update(boxModelLanguage);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {

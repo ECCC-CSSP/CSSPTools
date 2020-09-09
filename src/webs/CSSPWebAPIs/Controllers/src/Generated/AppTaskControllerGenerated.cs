@@ -5,6 +5,7 @@
  */
 
 using CSSPModels;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -34,15 +35,15 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IAppTaskService AppTaskService { get; }
+        private IAppTaskDBService AppTaskDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public AppTaskController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IAppTaskService AppTaskService)
+        public AppTaskController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IAppTaskDBService AppTaskDBService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.AppTaskService = AppTaskService;
+            this.AppTaskDBService = AppTaskDBService;
         }
         #endregion Constructors
 
@@ -53,7 +54,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await AppTaskService.GetAppTaskList();
+            return await AppTaskDBService.GetAppTaskList();
         }
         [HttpGet("{AppTaskID}")]
         public async Task<ActionResult<AppTask>> Get(int AppTaskID)
@@ -61,7 +62,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await AppTaskService.GetAppTaskWithAppTaskID(AppTaskID);
+            return await AppTaskDBService.GetAppTaskWithAppTaskID(AppTaskID);
         }
         [HttpPost]
         public async Task<ActionResult<AppTask>> Post(AppTask AppTask)
@@ -69,7 +70,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await AppTaskService.Post(AppTask);
+            return await AppTaskDBService.Post(AppTask);
         }
         [HttpPut]
         public async Task<ActionResult<AppTask>> Put(AppTask AppTask)
@@ -77,7 +78,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await AppTaskService.Put(AppTask);
+            return await AppTaskDBService.Put(AppTask);
         }
         [HttpDelete("{AppTaskID}")]
         public async Task<ActionResult<bool>> Delete(int AppTaskID)
@@ -85,7 +86,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await AppTaskService.Delete(AppTaskID);
+            return await AppTaskDBService.Delete(AppTaskID);
         }
         #endregion Functions public
 

@@ -97,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            DrogueRunPosition drogueRunPosition = (from c in dbLocal.DrogueRunPositions.Local
+            DrogueRunPosition drogueRunPosition = (from c in dbLocal.DrogueRunPositions
                     where c.DrogueRunPositionID == DrogueRunPositionID
                     select c).FirstOrDefault();
 
@@ -109,6 +109,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.DrogueRunPositions.Remove(drogueRunPosition);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -142,6 +143,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.DrogueRunPositions.Add(drogueRunPosition);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -166,6 +168,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.DrogueRunPositions.Update(drogueRunPosition);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {

@@ -5,12 +5,13 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -34,15 +35,15 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private ILabSheetTubeMPNDetailService LabSheetTubeMPNDetailService { get; }
+        private ILabSheetTubeMPNDetailDBService LabSheetTubeMPNDetailDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public LabSheetTubeMPNDetailController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, ILabSheetTubeMPNDetailService LabSheetTubeMPNDetailService)
+        public LabSheetTubeMPNDetailController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, ILabSheetTubeMPNDetailDBService LabSheetTubeMPNDetailDBService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.LabSheetTubeMPNDetailService = LabSheetTubeMPNDetailService;
+            this.LabSheetTubeMPNDetailDBService = LabSheetTubeMPNDetailDBService;
         }
         #endregion Constructors
 
@@ -53,7 +54,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await LabSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList();
+            return await LabSheetTubeMPNDetailDBService.GetLabSheetTubeMPNDetailList();
         }
         [HttpGet("{LabSheetTubeMPNDetailID}")]
         public async Task<ActionResult<LabSheetTubeMPNDetail>> Get(int LabSheetTubeMPNDetailID)
@@ -61,7 +62,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await LabSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailWithLabSheetTubeMPNDetailID(LabSheetTubeMPNDetailID);
+            return await LabSheetTubeMPNDetailDBService.GetLabSheetTubeMPNDetailWithLabSheetTubeMPNDetailID(LabSheetTubeMPNDetailID);
         }
         [HttpPost]
         public async Task<ActionResult<LabSheetTubeMPNDetail>> Post(LabSheetTubeMPNDetail LabSheetTubeMPNDetail)
@@ -69,7 +70,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await LabSheetTubeMPNDetailService.Post(LabSheetTubeMPNDetail);
+            return await LabSheetTubeMPNDetailDBService.Post(LabSheetTubeMPNDetail);
         }
         [HttpPut]
         public async Task<ActionResult<LabSheetTubeMPNDetail>> Put(LabSheetTubeMPNDetail LabSheetTubeMPNDetail)
@@ -77,7 +78,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await LabSheetTubeMPNDetailService.Put(LabSheetTubeMPNDetail);
+            return await LabSheetTubeMPNDetailDBService.Put(LabSheetTubeMPNDetail);
         }
         [HttpDelete("{LabSheetTubeMPNDetailID}")]
         public async Task<ActionResult<bool>> Delete(int LabSheetTubeMPNDetailID)
@@ -85,7 +86,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await LabSheetTubeMPNDetailService.Delete(LabSheetTubeMPNDetailID);
+            return await LabSheetTubeMPNDetailDBService.Delete(LabSheetTubeMPNDetailID);
         }
         #endregion Functions public
 

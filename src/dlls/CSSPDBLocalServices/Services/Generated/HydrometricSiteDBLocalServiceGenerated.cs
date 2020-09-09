@@ -97,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            HydrometricSite hydrometricSite = (from c in dbLocal.HydrometricSites.Local
+            HydrometricSite hydrometricSite = (from c in dbLocal.HydrometricSites
                     where c.HydrometricSiteID == HydrometricSiteID
                     select c).FirstOrDefault();
 
@@ -109,6 +109,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.HydrometricSites.Remove(hydrometricSite);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -142,6 +143,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.HydrometricSites.Add(hydrometricSite);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -166,6 +168,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.HydrometricSites.Update(hydrometricSite);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {

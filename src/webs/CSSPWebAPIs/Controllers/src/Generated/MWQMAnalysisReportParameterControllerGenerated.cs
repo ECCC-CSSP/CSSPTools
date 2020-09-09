@@ -5,12 +5,13 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -34,15 +35,15 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IMWQMAnalysisReportParameterService MWQMAnalysisReportParameterService { get; }
+        private IMWQMAnalysisReportParameterDBService MWQMAnalysisReportParameterDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public MWQMAnalysisReportParameterController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IMWQMAnalysisReportParameterService MWQMAnalysisReportParameterService)
+        public MWQMAnalysisReportParameterController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IMWQMAnalysisReportParameterDBService MWQMAnalysisReportParameterDBService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.MWQMAnalysisReportParameterService = MWQMAnalysisReportParameterService;
+            this.MWQMAnalysisReportParameterDBService = MWQMAnalysisReportParameterDBService;
         }
         #endregion Constructors
 
@@ -53,7 +54,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MWQMAnalysisReportParameterService.GetMWQMAnalysisReportParameterList();
+            return await MWQMAnalysisReportParameterDBService.GetMWQMAnalysisReportParameterList();
         }
         [HttpGet("{MWQMAnalysisReportParameterID}")]
         public async Task<ActionResult<MWQMAnalysisReportParameter>> Get(int MWQMAnalysisReportParameterID)
@@ -61,7 +62,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MWQMAnalysisReportParameterService.GetMWQMAnalysisReportParameterWithMWQMAnalysisReportParameterID(MWQMAnalysisReportParameterID);
+            return await MWQMAnalysisReportParameterDBService.GetMWQMAnalysisReportParameterWithMWQMAnalysisReportParameterID(MWQMAnalysisReportParameterID);
         }
         [HttpPost]
         public async Task<ActionResult<MWQMAnalysisReportParameter>> Post(MWQMAnalysisReportParameter MWQMAnalysisReportParameter)
@@ -69,7 +70,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MWQMAnalysisReportParameterService.Post(MWQMAnalysisReportParameter);
+            return await MWQMAnalysisReportParameterDBService.Post(MWQMAnalysisReportParameter);
         }
         [HttpPut]
         public async Task<ActionResult<MWQMAnalysisReportParameter>> Put(MWQMAnalysisReportParameter MWQMAnalysisReportParameter)
@@ -77,7 +78,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MWQMAnalysisReportParameterService.Put(MWQMAnalysisReportParameter);
+            return await MWQMAnalysisReportParameterDBService.Put(MWQMAnalysisReportParameter);
         }
         [HttpDelete("{MWQMAnalysisReportParameterID}")]
         public async Task<ActionResult<bool>> Delete(int MWQMAnalysisReportParameterID)
@@ -85,7 +86,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MWQMAnalysisReportParameterService.Delete(MWQMAnalysisReportParameterID);
+            return await MWQMAnalysisReportParameterDBService.Delete(MWQMAnalysisReportParameterID);
         }
         #endregion Functions public
 

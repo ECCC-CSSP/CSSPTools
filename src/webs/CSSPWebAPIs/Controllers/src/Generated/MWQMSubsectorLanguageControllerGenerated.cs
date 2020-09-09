@@ -5,12 +5,13 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -34,15 +35,15 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IMWQMSubsectorLanguageService MWQMSubsectorLanguageService { get; }
+        private IMWQMSubsectorLanguageDBService MWQMSubsectorLanguageDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public MWQMSubsectorLanguageController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IMWQMSubsectorLanguageService MWQMSubsectorLanguageService)
+        public MWQMSubsectorLanguageController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IMWQMSubsectorLanguageDBService MWQMSubsectorLanguageDBService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.MWQMSubsectorLanguageService = MWQMSubsectorLanguageService;
+            this.MWQMSubsectorLanguageDBService = MWQMSubsectorLanguageDBService;
         }
         #endregion Constructors
 
@@ -53,7 +54,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MWQMSubsectorLanguageService.GetMWQMSubsectorLanguageList();
+            return await MWQMSubsectorLanguageDBService.GetMWQMSubsectorLanguageList();
         }
         [HttpGet("{MWQMSubsectorLanguageID}")]
         public async Task<ActionResult<MWQMSubsectorLanguage>> Get(int MWQMSubsectorLanguageID)
@@ -61,7 +62,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MWQMSubsectorLanguageService.GetMWQMSubsectorLanguageWithMWQMSubsectorLanguageID(MWQMSubsectorLanguageID);
+            return await MWQMSubsectorLanguageDBService.GetMWQMSubsectorLanguageWithMWQMSubsectorLanguageID(MWQMSubsectorLanguageID);
         }
         [HttpPost]
         public async Task<ActionResult<MWQMSubsectorLanguage>> Post(MWQMSubsectorLanguage MWQMSubsectorLanguage)
@@ -69,7 +70,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MWQMSubsectorLanguageService.Post(MWQMSubsectorLanguage);
+            return await MWQMSubsectorLanguageDBService.Post(MWQMSubsectorLanguage);
         }
         [HttpPut]
         public async Task<ActionResult<MWQMSubsectorLanguage>> Put(MWQMSubsectorLanguage MWQMSubsectorLanguage)
@@ -77,7 +78,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MWQMSubsectorLanguageService.Put(MWQMSubsectorLanguage);
+            return await MWQMSubsectorLanguageDBService.Put(MWQMSubsectorLanguage);
         }
         [HttpDelete("{MWQMSubsectorLanguageID}")]
         public async Task<ActionResult<bool>> Delete(int MWQMSubsectorLanguageID)
@@ -85,7 +86,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MWQMSubsectorLanguageService.Delete(MWQMSubsectorLanguageID);
+            return await MWQMSubsectorLanguageDBService.Delete(MWQMSubsectorLanguageID);
         }
         #endregion Functions public
 

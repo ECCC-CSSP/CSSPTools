@@ -97,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            HelpDoc helpDoc = (from c in dbLocal.HelpDocs.Local
+            HelpDoc helpDoc = (from c in dbLocal.HelpDocs
                     where c.HelpDocID == HelpDocID
                     select c).FirstOrDefault();
 
@@ -109,6 +109,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.HelpDocs.Remove(helpDoc);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -142,6 +143,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.HelpDocs.Add(helpDoc);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -166,6 +168,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.HelpDocs.Update(helpDoc);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {

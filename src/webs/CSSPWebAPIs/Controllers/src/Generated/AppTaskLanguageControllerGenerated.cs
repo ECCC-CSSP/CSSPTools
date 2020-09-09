@@ -5,12 +5,13 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -34,15 +35,15 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IAppTaskLanguageService AppTaskLanguageService { get; }
+        private IAppTaskLanguageDBService AppTaskLanguageDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public AppTaskLanguageController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IAppTaskLanguageService AppTaskLanguageService)
+        public AppTaskLanguageController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IAppTaskLanguageDBService AppTaskLanguageDBService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.AppTaskLanguageService = AppTaskLanguageService;
+            this.AppTaskLanguageDBService = AppTaskLanguageDBService;
         }
         #endregion Constructors
 
@@ -53,7 +54,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await AppTaskLanguageService.GetAppTaskLanguageList();
+            return await AppTaskLanguageDBService.GetAppTaskLanguageList();
         }
         [HttpGet("{AppTaskLanguageID}")]
         public async Task<ActionResult<AppTaskLanguage>> Get(int AppTaskLanguageID)
@@ -61,7 +62,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await AppTaskLanguageService.GetAppTaskLanguageWithAppTaskLanguageID(AppTaskLanguageID);
+            return await AppTaskLanguageDBService.GetAppTaskLanguageWithAppTaskLanguageID(AppTaskLanguageID);
         }
         [HttpPost]
         public async Task<ActionResult<AppTaskLanguage>> Post(AppTaskLanguage AppTaskLanguage)
@@ -69,7 +70,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await AppTaskLanguageService.Post(AppTaskLanguage);
+            return await AppTaskLanguageDBService.Post(AppTaskLanguage);
         }
         [HttpPut]
         public async Task<ActionResult<AppTaskLanguage>> Put(AppTaskLanguage AppTaskLanguage)
@@ -77,7 +78,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await AppTaskLanguageService.Put(AppTaskLanguage);
+            return await AppTaskLanguageDBService.Put(AppTaskLanguage);
         }
         [HttpDelete("{AppTaskLanguageID}")]
         public async Task<ActionResult<bool>> Delete(int AppTaskLanguageID)
@@ -85,7 +86,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await AppTaskLanguageService.Delete(AppTaskLanguageID);
+            return await AppTaskLanguageDBService.Delete(AppTaskLanguageID);
         }
         #endregion Functions public
 

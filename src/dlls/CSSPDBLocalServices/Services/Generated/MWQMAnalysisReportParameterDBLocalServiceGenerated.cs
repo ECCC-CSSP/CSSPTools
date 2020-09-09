@@ -97,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MWQMAnalysisReportParameter mwqmAnalysisReportParameter = (from c in dbLocal.MWQMAnalysisReportParameters.Local
+            MWQMAnalysisReportParameter mwqmAnalysisReportParameter = (from c in dbLocal.MWQMAnalysisReportParameters
                     where c.MWQMAnalysisReportParameterID == MWQMAnalysisReportParameterID
                     select c).FirstOrDefault();
 
@@ -109,6 +109,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.MWQMAnalysisReportParameters.Remove(mwqmAnalysisReportParameter);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -142,6 +143,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.MWQMAnalysisReportParameters.Add(mwqmAnalysisReportParameter);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -166,6 +168,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.MWQMAnalysisReportParameters.Update(mwqmAnalysisReportParameter);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {

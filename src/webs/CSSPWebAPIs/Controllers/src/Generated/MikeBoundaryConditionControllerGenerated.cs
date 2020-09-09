@@ -5,12 +5,13 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -34,15 +35,15 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IMikeBoundaryConditionService MikeBoundaryConditionService { get; }
+        private IMikeBoundaryConditionDBService MikeBoundaryConditionDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public MikeBoundaryConditionController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IMikeBoundaryConditionService MikeBoundaryConditionService)
+        public MikeBoundaryConditionController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IMikeBoundaryConditionDBService MikeBoundaryConditionDBService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.MikeBoundaryConditionService = MikeBoundaryConditionService;
+            this.MikeBoundaryConditionDBService = MikeBoundaryConditionDBService;
         }
         #endregion Constructors
 
@@ -53,7 +54,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MikeBoundaryConditionService.GetMikeBoundaryConditionList();
+            return await MikeBoundaryConditionDBService.GetMikeBoundaryConditionList();
         }
         [HttpGet("{MikeBoundaryConditionID}")]
         public async Task<ActionResult<MikeBoundaryCondition>> Get(int MikeBoundaryConditionID)
@@ -61,7 +62,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MikeBoundaryConditionService.GetMikeBoundaryConditionWithMikeBoundaryConditionID(MikeBoundaryConditionID);
+            return await MikeBoundaryConditionDBService.GetMikeBoundaryConditionWithMikeBoundaryConditionID(MikeBoundaryConditionID);
         }
         [HttpPost]
         public async Task<ActionResult<MikeBoundaryCondition>> Post(MikeBoundaryCondition MikeBoundaryCondition)
@@ -69,7 +70,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MikeBoundaryConditionService.Post(MikeBoundaryCondition);
+            return await MikeBoundaryConditionDBService.Post(MikeBoundaryCondition);
         }
         [HttpPut]
         public async Task<ActionResult<MikeBoundaryCondition>> Put(MikeBoundaryCondition MikeBoundaryCondition)
@@ -77,7 +78,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MikeBoundaryConditionService.Put(MikeBoundaryCondition);
+            return await MikeBoundaryConditionDBService.Put(MikeBoundaryCondition);
         }
         [HttpDelete("{MikeBoundaryConditionID}")]
         public async Task<ActionResult<bool>> Delete(int MikeBoundaryConditionID)
@@ -85,7 +86,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MikeBoundaryConditionService.Delete(MikeBoundaryConditionID);
+            return await MikeBoundaryConditionDBService.Delete(MikeBoundaryConditionID);
         }
         #endregion Functions public
 

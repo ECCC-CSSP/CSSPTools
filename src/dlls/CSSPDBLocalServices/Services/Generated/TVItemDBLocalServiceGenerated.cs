@@ -97,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            TVItem tvItem = (from c in dbLocal.TVItems.Local
+            TVItem tvItem = (from c in dbLocal.TVItems
                     where c.TVItemID == TVItemID
                     select c).FirstOrDefault();
 
@@ -109,6 +109,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.TVItems.Remove(tvItem);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -142,6 +143,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.TVItems.Add(tvItem);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -166,6 +168,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.TVItems.Update(tvItem);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {

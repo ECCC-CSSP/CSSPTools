@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            TVItemLanguage tvItemLanguage = (from c in db.TVItemLanguages.Local
+            TVItemLanguage tvItemLanguage = (from c in db.TVItemLanguages
                     where c.TVItemLanguageID == TVItemLanguageID
                     select c).FirstOrDefault();
 
@@ -106,6 +106,7 @@ namespace CSSPDBServices
             try
             {
                 db.TVItemLanguages.Remove(tvItemLanguage);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -130,6 +131,7 @@ namespace CSSPDBServices
             try
             {
                 db.TVItemLanguages.Add(tvItemLanguage);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -154,6 +156,7 @@ namespace CSSPDBServices
             try
             {
                 db.TVItemLanguages.Update(tvItemLanguage);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {

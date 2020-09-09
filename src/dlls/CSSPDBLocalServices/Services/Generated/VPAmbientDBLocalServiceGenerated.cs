@@ -97,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            VPAmbient vpAmbient = (from c in dbLocal.VPAmbients.Local
+            VPAmbient vpAmbient = (from c in dbLocal.VPAmbients
                     where c.VPAmbientID == VPAmbientID
                     select c).FirstOrDefault();
 
@@ -109,6 +109,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.VPAmbients.Remove(vpAmbient);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -142,6 +143,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.VPAmbients.Add(vpAmbient);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -166,6 +168,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.VPAmbients.Update(vpAmbient);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {

@@ -97,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MWQMSubsectorLanguage mwqmSubsectorLanguage = (from c in dbLocal.MWQMSubsectorLanguages.Local
+            MWQMSubsectorLanguage mwqmSubsectorLanguage = (from c in dbLocal.MWQMSubsectorLanguages
                     where c.MWQMSubsectorLanguageID == MWQMSubsectorLanguageID
                     select c).FirstOrDefault();
 
@@ -109,6 +109,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.MWQMSubsectorLanguages.Remove(mwqmSubsectorLanguage);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -142,6 +143,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.MWQMSubsectorLanguages.Add(mwqmSubsectorLanguage);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -166,6 +168,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.MWQMSubsectorLanguages.Update(mwqmSubsectorLanguage);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {

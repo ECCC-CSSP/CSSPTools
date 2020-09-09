@@ -5,12 +5,13 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -34,15 +35,15 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IMWQMRunLanguageService MWQMRunLanguageService { get; }
+        private IMWQMRunLanguageDBService MWQMRunLanguageDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public MWQMRunLanguageController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IMWQMRunLanguageService MWQMRunLanguageService)
+        public MWQMRunLanguageController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IMWQMRunLanguageDBService MWQMRunLanguageDBService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.MWQMRunLanguageService = MWQMRunLanguageService;
+            this.MWQMRunLanguageDBService = MWQMRunLanguageDBService;
         }
         #endregion Constructors
 
@@ -53,7 +54,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MWQMRunLanguageService.GetMWQMRunLanguageList();
+            return await MWQMRunLanguageDBService.GetMWQMRunLanguageList();
         }
         [HttpGet("{MWQMRunLanguageID}")]
         public async Task<ActionResult<MWQMRunLanguage>> Get(int MWQMRunLanguageID)
@@ -61,7 +62,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MWQMRunLanguageService.GetMWQMRunLanguageWithMWQMRunLanguageID(MWQMRunLanguageID);
+            return await MWQMRunLanguageDBService.GetMWQMRunLanguageWithMWQMRunLanguageID(MWQMRunLanguageID);
         }
         [HttpPost]
         public async Task<ActionResult<MWQMRunLanguage>> Post(MWQMRunLanguage MWQMRunLanguage)
@@ -69,7 +70,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MWQMRunLanguageService.Post(MWQMRunLanguage);
+            return await MWQMRunLanguageDBService.Post(MWQMRunLanguage);
         }
         [HttpPut]
         public async Task<ActionResult<MWQMRunLanguage>> Put(MWQMRunLanguage MWQMRunLanguage)
@@ -77,7 +78,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MWQMRunLanguageService.Put(MWQMRunLanguage);
+            return await MWQMRunLanguageDBService.Put(MWQMRunLanguage);
         }
         [HttpDelete("{MWQMRunLanguageID}")]
         public async Task<ActionResult<bool>> Delete(int MWQMRunLanguageID)
@@ -85,7 +86,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MWQMRunLanguageService.Delete(MWQMRunLanguageID);
+            return await MWQMRunLanguageDBService.Delete(MWQMRunLanguageID);
         }
         #endregion Functions public
 

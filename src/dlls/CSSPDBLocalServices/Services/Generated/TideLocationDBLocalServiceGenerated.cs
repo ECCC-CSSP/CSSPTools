@@ -97,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            TideLocation tideLocation = (from c in dbLocal.TideLocations.Local
+            TideLocation tideLocation = (from c in dbLocal.TideLocations
                     where c.TideLocationID == TideLocationID
                     select c).FirstOrDefault();
 
@@ -109,6 +109,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.TideLocations.Remove(tideLocation);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -142,6 +143,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.TideLocations.Add(tideLocation);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -166,6 +168,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.TideLocations.Update(tideLocation);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {

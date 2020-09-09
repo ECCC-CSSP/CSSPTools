@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MWQMSubsector mwqmSubsector = (from c in db.MWQMSubsectors.Local
+            MWQMSubsector mwqmSubsector = (from c in db.MWQMSubsectors
                     where c.MWQMSubsectorID == MWQMSubsectorID
                     select c).FirstOrDefault();
 
@@ -106,6 +106,7 @@ namespace CSSPDBServices
             try
             {
                 db.MWQMSubsectors.Remove(mwqmSubsector);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -130,6 +131,7 @@ namespace CSSPDBServices
             try
             {
                 db.MWQMSubsectors.Add(mwqmSubsector);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -154,6 +156,7 @@ namespace CSSPDBServices
             try
             {
                 db.MWQMSubsectors.Update(mwqmSubsector);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {

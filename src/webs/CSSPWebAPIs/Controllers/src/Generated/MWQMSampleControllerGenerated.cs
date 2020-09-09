@@ -5,12 +5,13 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -34,15 +35,15 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IMWQMSampleService MWQMSampleService { get; }
+        private IMWQMSampleDBService MWQMSampleDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public MWQMSampleController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IMWQMSampleService MWQMSampleService)
+        public MWQMSampleController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IMWQMSampleDBService MWQMSampleDBService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.MWQMSampleService = MWQMSampleService;
+            this.MWQMSampleDBService = MWQMSampleDBService;
         }
         #endregion Constructors
 
@@ -53,7 +54,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MWQMSampleService.GetMWQMSampleList();
+            return await MWQMSampleDBService.GetMWQMSampleList();
         }
         [HttpGet("{MWQMSampleID}")]
         public async Task<ActionResult<MWQMSample>> Get(int MWQMSampleID)
@@ -61,7 +62,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MWQMSampleService.GetMWQMSampleWithMWQMSampleID(MWQMSampleID);
+            return await MWQMSampleDBService.GetMWQMSampleWithMWQMSampleID(MWQMSampleID);
         }
         [HttpPost]
         public async Task<ActionResult<MWQMSample>> Post(MWQMSample MWQMSample)
@@ -69,7 +70,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MWQMSampleService.Post(MWQMSample);
+            return await MWQMSampleDBService.Post(MWQMSample);
         }
         [HttpPut]
         public async Task<ActionResult<MWQMSample>> Put(MWQMSample MWQMSample)
@@ -77,7 +78,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MWQMSampleService.Put(MWQMSample);
+            return await MWQMSampleDBService.Put(MWQMSample);
         }
         [HttpDelete("{MWQMSampleID}")]
         public async Task<ActionResult<bool>> Delete(int MWQMSampleID)
@@ -85,7 +86,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MWQMSampleService.Delete(MWQMSampleID);
+            return await MWQMSampleDBService.Delete(MWQMSampleID);
         }
         #endregion Functions public
 

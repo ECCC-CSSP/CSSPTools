@@ -32,7 +32,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CSSPFileServices\CSSPFileServices.csproj" />
     <ProjectReference Include="..\CSSPModels\CSSPModels.csproj" />
     <ProjectReference Include="..\DownloadGzFileServices\DownloadGzFileServices.csproj" />
     <ProjectReference Include="..\LocalServices\LocalServices.csproj" />

@@ -5,12 +5,13 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -34,15 +35,15 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private ISamplingPlanSubsectorService SamplingPlanSubsectorService { get; }
+        private ISamplingPlanSubsectorDBService SamplingPlanSubsectorDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public SamplingPlanSubsectorController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, ISamplingPlanSubsectorService SamplingPlanSubsectorService)
+        public SamplingPlanSubsectorController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, ISamplingPlanSubsectorDBService SamplingPlanSubsectorDBService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.SamplingPlanSubsectorService = SamplingPlanSubsectorService;
+            this.SamplingPlanSubsectorDBService = SamplingPlanSubsectorDBService;
         }
         #endregion Constructors
 
@@ -53,7 +54,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await SamplingPlanSubsectorService.GetSamplingPlanSubsectorList();
+            return await SamplingPlanSubsectorDBService.GetSamplingPlanSubsectorList();
         }
         [HttpGet("{SamplingPlanSubsectorID}")]
         public async Task<ActionResult<SamplingPlanSubsector>> Get(int SamplingPlanSubsectorID)
@@ -61,7 +62,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await SamplingPlanSubsectorService.GetSamplingPlanSubsectorWithSamplingPlanSubsectorID(SamplingPlanSubsectorID);
+            return await SamplingPlanSubsectorDBService.GetSamplingPlanSubsectorWithSamplingPlanSubsectorID(SamplingPlanSubsectorID);
         }
         [HttpPost]
         public async Task<ActionResult<SamplingPlanSubsector>> Post(SamplingPlanSubsector SamplingPlanSubsector)
@@ -69,7 +70,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await SamplingPlanSubsectorService.Post(SamplingPlanSubsector);
+            return await SamplingPlanSubsectorDBService.Post(SamplingPlanSubsector);
         }
         [HttpPut]
         public async Task<ActionResult<SamplingPlanSubsector>> Put(SamplingPlanSubsector SamplingPlanSubsector)
@@ -77,7 +78,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await SamplingPlanSubsectorService.Put(SamplingPlanSubsector);
+            return await SamplingPlanSubsectorDBService.Put(SamplingPlanSubsector);
         }
         [HttpDelete("{SamplingPlanSubsectorID}")]
         public async Task<ActionResult<bool>> Delete(int SamplingPlanSubsectorID)
@@ -85,7 +86,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await SamplingPlanSubsectorService.Delete(SamplingPlanSubsectorID);
+            return await SamplingPlanSubsectorDBService.Delete(SamplingPlanSubsectorID);
         }
         #endregion Functions public
 

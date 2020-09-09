@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            ClimateDataValue climateDataValue = (from c in db.ClimateDataValues.Local
+            ClimateDataValue climateDataValue = (from c in db.ClimateDataValues
                     where c.ClimateDataValueID == ClimateDataValueID
                     select c).FirstOrDefault();
 
@@ -106,6 +106,7 @@ namespace CSSPDBServices
             try
             {
                 db.ClimateDataValues.Remove(climateDataValue);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -130,6 +131,7 @@ namespace CSSPDBServices
             try
             {
                 db.ClimateDataValues.Add(climateDataValue);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -154,6 +156,7 @@ namespace CSSPDBServices
             try
             {
                 db.ClimateDataValues.Update(climateDataValue);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {

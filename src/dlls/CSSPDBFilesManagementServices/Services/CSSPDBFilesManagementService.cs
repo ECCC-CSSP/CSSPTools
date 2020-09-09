@@ -17,9 +17,9 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using LocalServices;
 
-namespace CSSPFileServices
+namespace CSSPDBFilesManagementServices
 {
-    public partial interface ICSSPFileService
+    public partial interface ICSSPDBFilesManagementService
     {
         Task<ActionResult<bool>> Delete(int CSSPFileID);
         Task<ActionResult<List<CSSPFile>>> GetCSSPFileList(int skip = 0, int take = 100);
@@ -30,7 +30,7 @@ namespace CSSPFileServices
         Task<ActionResult<CSSPFile>> Put(CSSPFile csspFile);
         CSSPDBFilesManagementContext dbFM { get; set; }
     }
-    public partial class CSSPFileService : ControllerBase, ICSSPFileService
+    public partial class CSSPDBFilesManagementService : ControllerBase, ICSSPDBFilesManagementService
     {
         #region Variables
         #endregion Variables
@@ -44,7 +44,7 @@ namespace CSSPFileServices
         #endregion Properties
 
         #region Constructors
-        public CSSPFileService(ICSSPCultureService CSSPCultureService, ILocalService LocalService, CSSPDBFilesManagementContext dbFM)
+        public CSSPDBFilesManagementService(ICSSPCultureService CSSPCultureService, ILocalService LocalService, CSSPDBFilesManagementContext dbFM)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LocalService = LocalService;

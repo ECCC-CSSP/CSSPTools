@@ -5,12 +5,13 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -34,15 +35,15 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IMWQMLookupMPNService MWQMLookupMPNService { get; }
+        private IMWQMLookupMPNDBService MWQMLookupMPNDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public MWQMLookupMPNController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IMWQMLookupMPNService MWQMLookupMPNService)
+        public MWQMLookupMPNController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IMWQMLookupMPNDBService MWQMLookupMPNDBService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.MWQMLookupMPNService = MWQMLookupMPNService;
+            this.MWQMLookupMPNDBService = MWQMLookupMPNDBService;
         }
         #endregion Constructors
 
@@ -53,7 +54,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MWQMLookupMPNService.GetMWQMLookupMPNList();
+            return await MWQMLookupMPNDBService.GetMWQMLookupMPNList();
         }
         [HttpGet("{MWQMLookupMPNID}")]
         public async Task<ActionResult<MWQMLookupMPN>> Get(int MWQMLookupMPNID)
@@ -61,7 +62,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MWQMLookupMPNService.GetMWQMLookupMPNWithMWQMLookupMPNID(MWQMLookupMPNID);
+            return await MWQMLookupMPNDBService.GetMWQMLookupMPNWithMWQMLookupMPNID(MWQMLookupMPNID);
         }
         [HttpPost]
         public async Task<ActionResult<MWQMLookupMPN>> Post(MWQMLookupMPN MWQMLookupMPN)
@@ -69,7 +70,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MWQMLookupMPNService.Post(MWQMLookupMPN);
+            return await MWQMLookupMPNDBService.Post(MWQMLookupMPN);
         }
         [HttpPut]
         public async Task<ActionResult<MWQMLookupMPN>> Put(MWQMLookupMPN MWQMLookupMPN)
@@ -77,7 +78,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MWQMLookupMPNService.Put(MWQMLookupMPN);
+            return await MWQMLookupMPNDBService.Put(MWQMLookupMPN);
         }
         [HttpDelete("{MWQMLookupMPNID}")]
         public async Task<ActionResult<bool>> Delete(int MWQMLookupMPNID)
@@ -85,7 +86,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MWQMLookupMPNService.Delete(MWQMLookupMPNID);
+            return await MWQMLookupMPNDBService.Delete(MWQMLookupMPNID);
         }
         #endregion Functions public
 

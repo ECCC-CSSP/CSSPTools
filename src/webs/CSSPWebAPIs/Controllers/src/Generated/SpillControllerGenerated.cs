@@ -5,12 +5,13 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -34,15 +35,15 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private ISpillService SpillService { get; }
+        private ISpillDBService SpillDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public SpillController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, ISpillService SpillService)
+        public SpillController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, ISpillDBService SpillDBService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.SpillService = SpillService;
+            this.SpillDBService = SpillDBService;
         }
         #endregion Constructors
 
@@ -53,7 +54,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await SpillService.GetSpillList();
+            return await SpillDBService.GetSpillList();
         }
         [HttpGet("{SpillID}")]
         public async Task<ActionResult<Spill>> Get(int SpillID)
@@ -61,7 +62,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await SpillService.GetSpillWithSpillID(SpillID);
+            return await SpillDBService.GetSpillWithSpillID(SpillID);
         }
         [HttpPost]
         public async Task<ActionResult<Spill>> Post(Spill Spill)
@@ -69,7 +70,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await SpillService.Post(Spill);
+            return await SpillDBService.Post(Spill);
         }
         [HttpPut]
         public async Task<ActionResult<Spill>> Put(Spill Spill)
@@ -77,7 +78,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await SpillService.Put(Spill);
+            return await SpillDBService.Put(Spill);
         }
         [HttpDelete("{SpillID}")]
         public async Task<ActionResult<bool>> Delete(int SpillID)
@@ -85,7 +86,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await SpillService.Delete(SpillID);
+            return await SpillDBService.Delete(SpillID);
         }
         #endregion Functions public
 

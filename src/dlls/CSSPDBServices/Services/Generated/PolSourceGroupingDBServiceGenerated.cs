@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            PolSourceGrouping polSourceGrouping = (from c in db.PolSourceGroupings.Local
+            PolSourceGrouping polSourceGrouping = (from c in db.PolSourceGroupings
                     where c.PolSourceGroupingID == PolSourceGroupingID
                     select c).FirstOrDefault();
 
@@ -106,6 +106,7 @@ namespace CSSPDBServices
             try
             {
                 db.PolSourceGroupings.Remove(polSourceGrouping);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -130,6 +131,7 @@ namespace CSSPDBServices
             try
             {
                 db.PolSourceGroupings.Add(polSourceGrouping);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -154,6 +156,7 @@ namespace CSSPDBServices
             try
             {
                 db.PolSourceGroupings.Update(polSourceGrouping);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {

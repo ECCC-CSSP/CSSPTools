@@ -5,12 +5,13 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -34,15 +35,15 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IVPScenarioService VPScenarioService { get; }
+        private IVPScenarioDBService VPScenarioDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public VPScenarioController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IVPScenarioService VPScenarioService)
+        public VPScenarioController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IVPScenarioDBService VPScenarioDBService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.VPScenarioService = VPScenarioService;
+            this.VPScenarioDBService = VPScenarioDBService;
         }
         #endregion Constructors
 
@@ -53,7 +54,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await VPScenarioService.GetVPScenarioList();
+            return await VPScenarioDBService.GetVPScenarioList();
         }
         [HttpGet("{VPScenarioID}")]
         public async Task<ActionResult<VPScenario>> Get(int VPScenarioID)
@@ -61,7 +62,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await VPScenarioService.GetVPScenarioWithVPScenarioID(VPScenarioID);
+            return await VPScenarioDBService.GetVPScenarioWithVPScenarioID(VPScenarioID);
         }
         [HttpPost]
         public async Task<ActionResult<VPScenario>> Post(VPScenario VPScenario)
@@ -69,7 +70,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await VPScenarioService.Post(VPScenario);
+            return await VPScenarioDBService.Post(VPScenario);
         }
         [HttpPut]
         public async Task<ActionResult<VPScenario>> Put(VPScenario VPScenario)
@@ -77,7 +78,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await VPScenarioService.Put(VPScenario);
+            return await VPScenarioDBService.Put(VPScenario);
         }
         [HttpDelete("{VPScenarioID}")]
         public async Task<ActionResult<bool>> Delete(int VPScenarioID)
@@ -85,7 +86,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await VPScenarioService.Delete(VPScenarioID);
+            return await VPScenarioDBService.Delete(VPScenarioID);
         }
         #endregion Functions public
 

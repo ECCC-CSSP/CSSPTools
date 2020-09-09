@@ -5,12 +5,13 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -34,15 +35,15 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IMikeScenarioResultService MikeScenarioResultService { get; }
+        private IMikeScenarioResultDBService MikeScenarioResultDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public MikeScenarioResultController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IMikeScenarioResultService MikeScenarioResultService)
+        public MikeScenarioResultController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IMikeScenarioResultDBService MikeScenarioResultDBService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.MikeScenarioResultService = MikeScenarioResultService;
+            this.MikeScenarioResultDBService = MikeScenarioResultDBService;
         }
         #endregion Constructors
 
@@ -53,7 +54,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MikeScenarioResultService.GetMikeScenarioResultList();
+            return await MikeScenarioResultDBService.GetMikeScenarioResultList();
         }
         [HttpGet("{MikeScenarioResultID}")]
         public async Task<ActionResult<MikeScenarioResult>> Get(int MikeScenarioResultID)
@@ -61,7 +62,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MikeScenarioResultService.GetMikeScenarioResultWithMikeScenarioResultID(MikeScenarioResultID);
+            return await MikeScenarioResultDBService.GetMikeScenarioResultWithMikeScenarioResultID(MikeScenarioResultID);
         }
         [HttpPost]
         public async Task<ActionResult<MikeScenarioResult>> Post(MikeScenarioResult MikeScenarioResult)
@@ -69,7 +70,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MikeScenarioResultService.Post(MikeScenarioResult);
+            return await MikeScenarioResultDBService.Post(MikeScenarioResult);
         }
         [HttpPut]
         public async Task<ActionResult<MikeScenarioResult>> Put(MikeScenarioResult MikeScenarioResult)
@@ -77,7 +78,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MikeScenarioResultService.Put(MikeScenarioResult);
+            return await MikeScenarioResultDBService.Put(MikeScenarioResult);
         }
         [HttpDelete("{MikeScenarioResultID}")]
         public async Task<ActionResult<bool>> Delete(int MikeScenarioResultID)
@@ -85,7 +86,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await MikeScenarioResultService.Delete(MikeScenarioResultID);
+            return await MikeScenarioResultDBService.Delete(MikeScenarioResultID);
         }
         #endregion Functions public
 

@@ -97,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            ContactShortcut contactShortcut = (from c in dbLocal.ContactShortcuts.Local
+            ContactShortcut contactShortcut = (from c in dbLocal.ContactShortcuts
                     where c.ContactShortcutID == ContactShortcutID
                     select c).FirstOrDefault();
 
@@ -109,6 +109,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.ContactShortcuts.Remove(contactShortcut);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -142,6 +143,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.ContactShortcuts.Add(contactShortcut);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -166,6 +168,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.ContactShortcuts.Update(contactShortcut);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {

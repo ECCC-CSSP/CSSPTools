@@ -5,12 +5,13 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -34,15 +35,15 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IRainExceedanceService RainExceedanceService { get; }
+        private IRainExceedanceDBService RainExceedanceDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public RainExceedanceController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IRainExceedanceService RainExceedanceService)
+        public RainExceedanceController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IRainExceedanceDBService RainExceedanceDBService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.RainExceedanceService = RainExceedanceService;
+            this.RainExceedanceDBService = RainExceedanceDBService;
         }
         #endregion Constructors
 
@@ -53,7 +54,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await RainExceedanceService.GetRainExceedanceList();
+            return await RainExceedanceDBService.GetRainExceedanceList();
         }
         [HttpGet("{RainExceedanceID}")]
         public async Task<ActionResult<RainExceedance>> Get(int RainExceedanceID)
@@ -61,7 +62,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await RainExceedanceService.GetRainExceedanceWithRainExceedanceID(RainExceedanceID);
+            return await RainExceedanceDBService.GetRainExceedanceWithRainExceedanceID(RainExceedanceID);
         }
         [HttpPost]
         public async Task<ActionResult<RainExceedance>> Post(RainExceedance RainExceedance)
@@ -69,7 +70,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await RainExceedanceService.Post(RainExceedance);
+            return await RainExceedanceDBService.Post(RainExceedance);
         }
         [HttpPut]
         public async Task<ActionResult<RainExceedance>> Put(RainExceedance RainExceedance)
@@ -77,7 +78,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await RainExceedanceService.Put(RainExceedance);
+            return await RainExceedanceDBService.Put(RainExceedance);
         }
         [HttpDelete("{RainExceedanceID}")]
         public async Task<ActionResult<bool>> Delete(int RainExceedanceID)
@@ -85,7 +86,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await RainExceedanceService.Delete(RainExceedanceID);
+            return await RainExceedanceDBService.Delete(RainExceedanceID);
         }
         #endregion Functions public
 

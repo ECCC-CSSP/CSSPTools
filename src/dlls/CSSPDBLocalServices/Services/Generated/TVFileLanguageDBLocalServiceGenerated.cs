@@ -97,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            TVFileLanguage tvFileLanguage = (from c in dbLocal.TVFileLanguages.Local
+            TVFileLanguage tvFileLanguage = (from c in dbLocal.TVFileLanguages
                     where c.TVFileLanguageID == TVFileLanguageID
                     select c).FirstOrDefault();
 
@@ -109,6 +109,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.TVFileLanguages.Remove(tvFileLanguage);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -142,6 +143,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.TVFileLanguages.Add(tvFileLanguage);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -166,6 +168,7 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.TVFileLanguages.Update(tvFileLanguage);
+                dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {

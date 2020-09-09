@@ -5,12 +5,13 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -34,15 +35,15 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private ITVItemStatService TVItemStatService { get; }
+        private ITVItemStatDBService TVItemStatDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public TVItemStatController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, ITVItemStatService TVItemStatService)
+        public TVItemStatController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, ITVItemStatDBService TVItemStatDBService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.TVItemStatService = TVItemStatService;
+            this.TVItemStatDBService = TVItemStatDBService;
         }
         #endregion Constructors
 
@@ -53,7 +54,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await TVItemStatService.GetTVItemStatList();
+            return await TVItemStatDBService.GetTVItemStatList();
         }
         [HttpGet("{TVItemStatID}")]
         public async Task<ActionResult<TVItemStat>> Get(int TVItemStatID)
@@ -61,7 +62,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await TVItemStatService.GetTVItemStatWithTVItemStatID(TVItemStatID);
+            return await TVItemStatDBService.GetTVItemStatWithTVItemStatID(TVItemStatID);
         }
         [HttpPost]
         public async Task<ActionResult<TVItemStat>> Post(TVItemStat TVItemStat)
@@ -69,7 +70,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await TVItemStatService.Post(TVItemStat);
+            return await TVItemStatDBService.Post(TVItemStat);
         }
         [HttpPut]
         public async Task<ActionResult<TVItemStat>> Put(TVItemStat TVItemStat)
@@ -77,7 +78,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await TVItemStatService.Put(TVItemStat);
+            return await TVItemStatDBService.Put(TVItemStat);
         }
         [HttpDelete("{TVItemStatID}")]
         public async Task<ActionResult<bool>> Delete(int TVItemStatID)
@@ -85,7 +86,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await TVItemStatService.Delete(TVItemStatID);
+            return await TVItemStatDBService.Delete(TVItemStatID);
         }
         #endregion Functions public
 

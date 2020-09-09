@@ -5,12 +5,13 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -34,15 +35,15 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IInfrastructureLanguageService InfrastructureLanguageService { get; }
+        private IInfrastructureLanguageDBService InfrastructureLanguageDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public InfrastructureLanguageController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IInfrastructureLanguageService InfrastructureLanguageService)
+        public InfrastructureLanguageController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IInfrastructureLanguageDBService InfrastructureLanguageDBService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.InfrastructureLanguageService = InfrastructureLanguageService;
+            this.InfrastructureLanguageDBService = InfrastructureLanguageDBService;
         }
         #endregion Constructors
 
@@ -53,7 +54,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await InfrastructureLanguageService.GetInfrastructureLanguageList();
+            return await InfrastructureLanguageDBService.GetInfrastructureLanguageList();
         }
         [HttpGet("{InfrastructureLanguageID}")]
         public async Task<ActionResult<InfrastructureLanguage>> Get(int InfrastructureLanguageID)
@@ -61,7 +62,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await InfrastructureLanguageService.GetInfrastructureLanguageWithInfrastructureLanguageID(InfrastructureLanguageID);
+            return await InfrastructureLanguageDBService.GetInfrastructureLanguageWithInfrastructureLanguageID(InfrastructureLanguageID);
         }
         [HttpPost]
         public async Task<ActionResult<InfrastructureLanguage>> Post(InfrastructureLanguage InfrastructureLanguage)
@@ -69,7 +70,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await InfrastructureLanguageService.Post(InfrastructureLanguage);
+            return await InfrastructureLanguageDBService.Post(InfrastructureLanguage);
         }
         [HttpPut]
         public async Task<ActionResult<InfrastructureLanguage>> Put(InfrastructureLanguage InfrastructureLanguage)
@@ -77,7 +78,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await InfrastructureLanguageService.Put(InfrastructureLanguage);
+            return await InfrastructureLanguageDBService.Put(InfrastructureLanguage);
         }
         [HttpDelete("{InfrastructureLanguageID}")]
         public async Task<ActionResult<bool>> Delete(int InfrastructureLanguageID)
@@ -85,7 +86,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await InfrastructureLanguageService.Delete(InfrastructureLanguageID);
+            return await InfrastructureLanguageDBService.Delete(InfrastructureLanguageID);
         }
         #endregion Functions public
 
