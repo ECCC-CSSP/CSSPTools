@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MapInfo mapInfo = (from c in db.MapInfos
+            MapInfo mapInfo = (from c in db.MapInfos.Local
                     where c.MapInfoID == MapInfoID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBServices
             try
             {
                 db.MapInfos.Remove(mapInfo);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBServices
             try
             {
                 db.MapInfos.Add(mapInfo);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBServices
             try
             {
                 db.MapInfos.Update(mapInfo);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -180,14 +177,14 @@ namespace CSSPDBServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "MapInfoID"), new[] { nameof(mapInfo.MapInfoID) });
                 }
 
-                if (!(from c in db.MapInfos select c).Where(c => c.MapInfoID == mapInfo.MapInfoID).Any())
+                if (!(from c in db.MapInfos.AsNoTracking() select c).Where(c => c.MapInfoID == mapInfo.MapInfoID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "MapInfo", "MapInfoID", mapInfo.MapInfoID.ToString()), new[] { nameof(mapInfo.MapInfoID) });
                 }
             }
 
             TVItem TVItemTVItemID = null;
-            TVItemTVItemID = (from c in db.TVItems where c.TVItemID == mapInfo.TVItemID select c).FirstOrDefault();
+            TVItemTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == mapInfo.TVItemID select c).FirstOrDefault();
 
             if (TVItemTVItemID == null)
             {
@@ -280,7 +277,7 @@ namespace CSSPDBServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == mapInfo.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == mapInfo.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

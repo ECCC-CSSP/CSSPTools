@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            SpillLanguage spillLanguage = (from c in dbLocalIM.SpillLanguages.AsNoTracking()
+            SpillLanguage spillLanguage = (from c in dbLocalIM.SpillLanguages.Local
                     where c.SpillLanguageID == SpillLanguageID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<SpillLanguage> spillLanguageList = (from c in dbLocalIM.SpillLanguages.AsNoTracking() orderby c.SpillLanguageID select c).Skip(skip).Take(take).ToList();
+            List<SpillLanguage> spillLanguageList = (from c in dbLocalIM.SpillLanguages.Local orderby c.SpillLanguageID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(spillLanguageList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            SpillLanguage spillLanguage = (from c in dbLocalIM.SpillLanguages
+            SpillLanguage spillLanguage = (from c in dbLocalIM.SpillLanguages.Local
                     where c.SpillLanguageID == SpillLanguageID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.SpillLanguages.Remove(spillLanguage);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.SpillLanguages.Add(spillLanguage);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.SpillLanguages.Update(spillLanguage);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -188,14 +185,14 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SpillLanguageID"), new[] { nameof(spillLanguage.SpillLanguageID) });
                 }
 
-                if (!(from c in dbLocalIM.SpillLanguages select c).Where(c => c.SpillLanguageID == spillLanguage.SpillLanguageID).Any())
+                if (!(from c in dbLocalIM.SpillLanguages.Local select c).Where(c => c.SpillLanguageID == spillLanguage.SpillLanguageID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "SpillLanguage", "SpillLanguageID", spillLanguage.SpillLanguageID.ToString()), new[] { nameof(spillLanguage.SpillLanguageID) });
                 }
             }
 
             Spill SpillSpillID = null;
-            SpillSpillID = (from c in dbLocalIM.Spills where c.SpillID == spillLanguage.SpillID select c).FirstOrDefault();
+            SpillSpillID = (from c in dbLocalIM.Spills.Local where c.SpillID == spillLanguage.SpillID select c).FirstOrDefault();
 
             if (SpillSpillID == null)
             {
@@ -234,7 +231,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == spillLanguage.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == spillLanguage.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

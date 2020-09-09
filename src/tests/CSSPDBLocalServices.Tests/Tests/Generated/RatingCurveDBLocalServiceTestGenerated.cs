@@ -22,6 +22,7 @@ using Xunit;
 using System.ComponentModel.DataAnnotations;
 using CSSPCultureServices.Resources;
 using LocalServices;
+using System.Threading;
 
 namespace CSSPDBLocalServices.Tests
 {
@@ -39,6 +40,7 @@ namespace CSSPDBLocalServices.Tests
         private ILocalService LocalService { get; set; }
         private IRatingCurveDBLocalService RatingCurveDBLocalService { get; set; }
         private CSSPDBLocalContext dbLocal { get; set; }
+        private CSSPDBInMemoryContext dbLocalIM { get; set; }
         private RatingCurve ratingCurve { get; set; }
         #endregion Properties
 
@@ -49,7 +51,17 @@ namespace CSSPDBLocalServices.Tests
         }
         #endregion Constructors
 
-        #region Tests Generated [DBLocal]CRUD
+        #region Tests Generated Constructor [DBLocal]
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task RatingCurveDBLocal_Constructor_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+        }
+        #endregion Tests Generated Constructor [DBLocal]
+
+        #region Tests Generated [DBLocal] CRUD
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
@@ -61,7 +73,7 @@ namespace CSSPDBLocalServices.Tests
 
             await DoCRUDDBLocalTest();
         }
-        #endregion Tests Generated CRUD
+        #endregion Tests Generated [DBLocal] CRUD
 
         #region Tests Generated Properties
         [Theory]
@@ -196,17 +208,6 @@ namespace CSSPDBLocalServices.Tests
             int count = ((List<RatingCurve>)((OkObjectResult)actionRatingCurveList.Result).Value).Count();
             Assert.True(count > 0);
 
-            // List<RatingCurve> with skip and take
-            var actionRatingCurveListSkipAndTake = await RatingCurveDBLocalService.GetRatingCurveList(1, 1);
-            Assert.Equal(200, ((ObjectResult)actionRatingCurveListSkipAndTake.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionRatingCurveListSkipAndTake.Result).Value);
-            List<RatingCurve> ratingCurveListSkipAndTake = (List<RatingCurve>)((OkObjectResult)actionRatingCurveListSkipAndTake.Result).Value;
-
-            int countSkipAndTake = ((List<RatingCurve>)((OkObjectResult)actionRatingCurveListSkipAndTake.Result).Value).Count();
-            Assert.True(countSkipAndTake == 1);
-
-            Assert.False(ratingCurveList[0].RatingCurveID == ratingCurveListSkipAndTake[0].RatingCurveID);
-
             // Get RatingCurve With RatingCurveID
             var actionRatingCurveGet = await RatingCurveDBLocalService.GetRatingCurveWithRatingCurveID(ratingCurveList[0].RatingCurveID);
             Assert.Equal(200, ((ObjectResult)actionRatingCurveGet.Result).StatusCode);
@@ -268,6 +269,11 @@ namespace CSSPDBLocalServices.Tests
                 options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
             });
 
+            Services.AddDbContext<CSSPDBInMemoryContext>(options =>
+            {
+                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBLocal.FullName }");
+            });
+
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<ILocalService, LocalService>();
             Services.AddSingleton<IEnums, Enums>();
@@ -289,6 +295,9 @@ namespace CSSPDBLocalServices.Tests
             dbLocal = Provider.GetService<CSSPDBLocalContext>();
             Assert.NotNull(dbLocal);
 
+            dbLocalIM = Provider.GetService<CSSPDBInMemoryContext>();
+            Assert.NotNull(dbLocalIM);
+
             RatingCurveDBLocalService = Provider.GetService<IRatingCurveDBLocalService>();
             Assert.NotNull(RatingCurveDBLocalService);
 
@@ -305,8 +314,8 @@ namespace CSSPDBLocalServices.Tests
 
             try
             {
-                dbLocal.HydrometricSites.Add(new HydrometricSite() { HydrometricSiteID = 1, HydrometricSiteTVItemID = 8, FedSiteNumber = "01BL003", QuebecSiteNumber = "null", HydrometricSiteName = "BIG TRACADIE RIVER AT MURCHY BRIDGE CROSSING", Description = "null", Province = "NB", Elevation_m = null, StartDate_Local = new DateTime(1970, 1, 1, 0, 0, 0), EndDate_Local = new DateTime(2028, 12, 31, 0, 0, 0), TimeOffset_hour = -4D, DrainageArea_km2 = 383, IsNatural = true, IsActive = true, Sediment = false, RHBN = false, RealTime = true, HasDischarge = true, HasLevel = true, HasRatingCurve = true, LastUpdateDate_UTC = new DateTime(2018, 9, 13, 16, 56, 10), LastUpdateContactTVItemID = 2 });
-                dbLocal.SaveChanges();
+                dbLocalIM.HydrometricSites.Add(new HydrometricSite() { HydrometricSiteID = 1, HydrometricSiteTVItemID = 8, FedSiteNumber = "01BL003", QuebecSiteNumber = "null", HydrometricSiteName = "BIG TRACADIE RIVER AT MURCHY BRIDGE CROSSING", Description = "null", Province = "NB", Elevation_m = null, StartDate_Local = new DateTime(1970, 1, 1, 0, 0, 0), EndDate_Local = new DateTime(2028, 12, 31, 0, 0, 0), TimeOffset_hour = -4D, DrainageArea_km2 = 383, IsNatural = true, IsActive = true, Sediment = false, RHBN = false, RealTime = true, HasDischarge = true, HasLevel = true, HasRatingCurve = true, LastUpdateDate_UTC = new DateTime(2018, 9, 13, 16, 56, 10), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
             }
             catch (Exception)
             {
@@ -314,8 +323,8 @@ namespace CSSPDBLocalServices.Tests
             }
             try
             {
-                dbLocal.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2 });
-                dbLocal.SaveChanges();
+                dbLocalIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
             }
             catch (Exception)
             {

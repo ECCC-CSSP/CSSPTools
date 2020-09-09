@@ -22,6 +22,7 @@ using Xunit;
 using System.ComponentModel.DataAnnotations;
 using CSSPCultureServices.Resources;
 using LocalServices;
+using System.Threading;
 
 namespace CSSPDBLocalServices.Tests
 {
@@ -39,6 +40,7 @@ namespace CSSPDBLocalServices.Tests
         private ILocalService LocalService { get; set; }
         private IEmailDistributionListDBLocalService EmailDistributionListDBLocalService { get; set; }
         private CSSPDBLocalContext dbLocal { get; set; }
+        private CSSPDBInMemoryContext dbLocalIM { get; set; }
         private EmailDistributionList emailDistributionList { get; set; }
         #endregion Properties
 
@@ -49,7 +51,17 @@ namespace CSSPDBLocalServices.Tests
         }
         #endregion Constructors
 
-        #region Tests Generated [DBLocal]CRUD
+        #region Tests Generated Constructor [DBLocal]
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task EmailDistributionListDBLocal_Constructor_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+        }
+        #endregion Tests Generated Constructor [DBLocal]
+
+        #region Tests Generated [DBLocal] CRUD
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
@@ -61,7 +73,7 @@ namespace CSSPDBLocalServices.Tests
 
             await DoCRUDDBLocalTest();
         }
-        #endregion Tests Generated CRUD
+        #endregion Tests Generated [DBLocal] CRUD
 
         #region Tests Generated Properties
         [Theory]
@@ -203,17 +215,6 @@ namespace CSSPDBLocalServices.Tests
             int count = ((List<EmailDistributionList>)((OkObjectResult)actionEmailDistributionListList.Result).Value).Count();
             Assert.True(count > 0);
 
-            // List<EmailDistributionList> with skip and take
-            var actionEmailDistributionListListSkipAndTake = await EmailDistributionListDBLocalService.GetEmailDistributionListList(1, 1);
-            Assert.Equal(200, ((ObjectResult)actionEmailDistributionListListSkipAndTake.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionEmailDistributionListListSkipAndTake.Result).Value);
-            List<EmailDistributionList> emailDistributionListListSkipAndTake = (List<EmailDistributionList>)((OkObjectResult)actionEmailDistributionListListSkipAndTake.Result).Value;
-
-            int countSkipAndTake = ((List<EmailDistributionList>)((OkObjectResult)actionEmailDistributionListListSkipAndTake.Result).Value).Count();
-            Assert.True(countSkipAndTake == 1);
-
-            Assert.False(emailDistributionListList[0].EmailDistributionListID == emailDistributionListListSkipAndTake[0].EmailDistributionListID);
-
             // Get EmailDistributionList With EmailDistributionListID
             var actionEmailDistributionListGet = await EmailDistributionListDBLocalService.GetEmailDistributionListWithEmailDistributionListID(emailDistributionListList[0].EmailDistributionListID);
             Assert.Equal(200, ((ObjectResult)actionEmailDistributionListGet.Result).StatusCode);
@@ -275,6 +276,11 @@ namespace CSSPDBLocalServices.Tests
                 options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
             });
 
+            Services.AddDbContext<CSSPDBInMemoryContext>(options =>
+            {
+                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBLocal.FullName }");
+            });
+
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<ILocalService, LocalService>();
             Services.AddSingleton<IEnums, Enums>();
@@ -296,6 +302,9 @@ namespace CSSPDBLocalServices.Tests
             dbLocal = Provider.GetService<CSSPDBLocalContext>();
             Assert.NotNull(dbLocal);
 
+            dbLocalIM = Provider.GetService<CSSPDBInMemoryContext>();
+            Assert.NotNull(dbLocalIM);
+
             EmailDistributionListDBLocalService = Provider.GetService<IEmailDistributionListDBLocalService>();
             Assert.NotNull(EmailDistributionListDBLocalService);
 
@@ -312,8 +321,8 @@ namespace CSSPDBLocalServices.Tests
 
             try
             {
-                dbLocal.TVItems.Add(new TVItem() { TVItemID = 5, TVLevel = 1, TVPath = "p1p5", TVType = (TVTypeEnum)6, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2017, 8, 8, 16, 36, 15), LastUpdateContactTVItemID = 2 });
-                dbLocal.SaveChanges();
+                dbLocalIM.TVItems.Add(new TVItem() { TVItemID = 5, TVLevel = 1, TVPath = "p1p5", TVType = (TVTypeEnum)6, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2017, 8, 8, 16, 36, 15), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
             }
             catch (Exception)
             {
@@ -321,8 +330,8 @@ namespace CSSPDBLocalServices.Tests
             }
             try
             {
-                dbLocal.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2 });
-                dbLocal.SaveChanges();
+                dbLocalIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
             }
             catch (Exception)
             {

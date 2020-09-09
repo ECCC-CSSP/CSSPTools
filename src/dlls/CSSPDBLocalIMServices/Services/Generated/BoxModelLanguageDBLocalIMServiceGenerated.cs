@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            BoxModelLanguage boxModelLanguage = (from c in dbLocalIM.BoxModelLanguages.AsNoTracking()
+            BoxModelLanguage boxModelLanguage = (from c in dbLocalIM.BoxModelLanguages.Local
                     where c.BoxModelLanguageID == BoxModelLanguageID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<BoxModelLanguage> boxModelLanguageList = (from c in dbLocalIM.BoxModelLanguages.AsNoTracking() orderby c.BoxModelLanguageID select c).Skip(skip).Take(take).ToList();
+            List<BoxModelLanguage> boxModelLanguageList = (from c in dbLocalIM.BoxModelLanguages.Local orderby c.BoxModelLanguageID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(boxModelLanguageList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            BoxModelLanguage boxModelLanguage = (from c in dbLocalIM.BoxModelLanguages
+            BoxModelLanguage boxModelLanguage = (from c in dbLocalIM.BoxModelLanguages.Local
                     where c.BoxModelLanguageID == BoxModelLanguageID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.BoxModelLanguages.Remove(boxModelLanguage);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.BoxModelLanguages.Add(boxModelLanguage);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.BoxModelLanguages.Update(boxModelLanguage);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -188,14 +185,14 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "BoxModelLanguageID"), new[] { nameof(boxModelLanguage.BoxModelLanguageID) });
                 }
 
-                if (!(from c in dbLocalIM.BoxModelLanguages select c).Where(c => c.BoxModelLanguageID == boxModelLanguage.BoxModelLanguageID).Any())
+                if (!(from c in dbLocalIM.BoxModelLanguages.Local select c).Where(c => c.BoxModelLanguageID == boxModelLanguage.BoxModelLanguageID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "BoxModelLanguage", "BoxModelLanguageID", boxModelLanguage.BoxModelLanguageID.ToString()), new[] { nameof(boxModelLanguage.BoxModelLanguageID) });
                 }
             }
 
             BoxModel BoxModelBoxModelID = null;
-            BoxModelBoxModelID = (from c in dbLocalIM.BoxModels where c.BoxModelID == boxModelLanguage.BoxModelID select c).FirstOrDefault();
+            BoxModelBoxModelID = (from c in dbLocalIM.BoxModels.Local where c.BoxModelID == boxModelLanguage.BoxModelID select c).FirstOrDefault();
 
             if (BoxModelBoxModelID == null)
             {
@@ -237,7 +234,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == boxModelLanguage.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == boxModelLanguage.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

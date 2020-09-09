@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            AppErrLog appErrLog = (from c in db.AppErrLogs
+            AppErrLog appErrLog = (from c in db.AppErrLogs.Local
                     where c.AppErrLogID == AppErrLogID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBServices
             try
             {
                 db.AppErrLogs.Remove(appErrLog);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBServices
             try
             {
                 db.AppErrLogs.Add(appErrLog);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBServices
             try
             {
                 db.AppErrLogs.Update(appErrLog);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -179,7 +176,7 @@ namespace CSSPDBServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "AppErrLogID"), new[] { nameof(appErrLog.AppErrLogID) });
                 }
 
-                if (!(from c in db.AppErrLogs select c).Where(c => c.AppErrLogID == appErrLog.AppErrLogID).Any())
+                if (!(from c in db.AppErrLogs.AsNoTracking() select c).Where(c => c.AppErrLogID == appErrLog.AppErrLogID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AppErrLog", "AppErrLogID", appErrLog.AppErrLogID.ToString()), new[] { nameof(appErrLog.AppErrLogID) });
                 }
@@ -239,7 +236,7 @@ namespace CSSPDBServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == appErrLog.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == appErrLog.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

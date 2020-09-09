@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            VPResult vpResult = (from c in db.VPResults
+            VPResult vpResult = (from c in db.VPResults.Local
                     where c.VPResultID == VPResultID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBServices
             try
             {
                 db.VPResults.Remove(vpResult);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBServices
             try
             {
                 db.VPResults.Add(vpResult);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBServices
             try
             {
                 db.VPResults.Update(vpResult);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -179,14 +176,14 @@ namespace CSSPDBServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "VPResultID"), new[] { nameof(vpResult.VPResultID) });
                 }
 
-                if (!(from c in db.VPResults select c).Where(c => c.VPResultID == vpResult.VPResultID).Any())
+                if (!(from c in db.VPResults.AsNoTracking() select c).Where(c => c.VPResultID == vpResult.VPResultID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "VPResult", "VPResultID", vpResult.VPResultID.ToString()), new[] { nameof(vpResult.VPResultID) });
                 }
             }
 
             VPScenario VPScenarioVPScenarioID = null;
-            VPScenarioVPScenarioID = (from c in db.VPScenarios where c.VPScenarioID == vpResult.VPScenarioID select c).FirstOrDefault();
+            VPScenarioVPScenarioID = (from c in db.VPScenarios.AsNoTracking() where c.VPScenarioID == vpResult.VPScenarioID select c).FirstOrDefault();
 
             if (VPScenarioVPScenarioID == null)
             {
@@ -236,7 +233,7 @@ namespace CSSPDBServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == vpResult.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == vpResult.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

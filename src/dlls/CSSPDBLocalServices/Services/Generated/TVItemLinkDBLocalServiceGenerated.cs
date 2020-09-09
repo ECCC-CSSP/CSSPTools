@@ -37,6 +37,7 @@ namespace CSSPDBLocalServices
 
         #region Properties
         private CSSPDBLocalContext dbLocal { get; }
+        private CSSPDBInMemoryContext dbLocalIM { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILocalService LocalService { get; }
@@ -47,13 +48,15 @@ namespace CSSPDBLocalServices
         #region Constructors
         public TVItemLinkDBLocalService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums,
            ILocalService LocalService,
-           CSSPDBLocalContext dbLocal)
+           CSSPDBLocalContext dbLocal,
+           CSSPDBInMemoryContext dbLocalIM)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LocalService = LocalService;
             this.enums = enums;
             this.dbLocal = dbLocal;
+            this.dbLocalIM = dbLocalIM;
         }
         #endregion Constructors
 
@@ -94,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            TVItemLink tvItemLink = (from c in dbLocal.TVItemLinks
+            TVItemLink tvItemLink = (from c in dbLocal.TVItemLinks.Local
                     where c.TVItemLinkID == TVItemLinkID
                     select c).FirstOrDefault();
 
@@ -106,9 +109,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.TVItemLinks.Remove(tvItemLink);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -130,7 +132,7 @@ namespace CSSPDBLocalServices
 
             if (tvItemLink.TVItemLinkID == 0)
             {
-                int LastTVItemLinkID = (from c in dbLocal.TVItemLinks
+                int LastTVItemLinkID = (from c in dbLocal.TVItemLinks.AsNoTracking()
                           orderby c.TVItemLinkID descending
                           select c.TVItemLinkID).FirstOrDefault();
 
@@ -140,9 +142,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.TVItemLinks.Add(tvItemLink);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -165,9 +166,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.TVItemLinks.Update(tvItemLink);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -189,18 +189,68 @@ namespace CSSPDBLocalServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVItemLinkID"), new[] { nameof(tvItemLink.TVItemLinkID) });
                 }
 
-                if (!(from c in dbLocal.TVItemLinks select c).Where(c => c.TVItemLinkID == tvItemLink.TVItemLinkID).Any())
+                if (!(from c in dbLocal.TVItemLinks.AsNoTracking() select c).Where(c => c.TVItemLinkID == tvItemLink.TVItemLinkID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItemLink", "TVItemLinkID", tvItemLink.TVItemLinkID.ToString()), new[] { nameof(tvItemLink.TVItemLinkID) });
                 }
             }
 
             TVItem TVItemFromTVItemID = null;
-            TVItemFromTVItemID = (from c in dbLocal.TVItems where c.TVItemID == tvItemLink.FromTVItemID select c).FirstOrDefault();
+            TVItemFromTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == tvItemLink.FromTVItemID select c).FirstOrDefault();
 
             if (TVItemFromTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "FromTVItemID", tvItemLink.FromTVItemID.ToString()), new[] { nameof(tvItemLink.FromTVItemID) });
+                TVItemFromTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == tvItemLink.FromTVItemID select c).FirstOrDefault();
+
+                if (TVItemFromTVItemID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "FromTVItemID", tvItemLink.FromTVItemID.ToString()), new[] { nameof(tvItemLink.FromTVItemID) });
+                }
+                else
+                {
+                    List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                    {
+                        TVTypeEnum.Root,
+                        TVTypeEnum.Address,
+                        TVTypeEnum.Area,
+                        TVTypeEnum.ClimateSite,
+                        TVTypeEnum.Contact,
+                        TVTypeEnum.Country,
+                        TVTypeEnum.Email,
+                        TVTypeEnum.File,
+                        TVTypeEnum.HydrometricSite,
+                        TVTypeEnum.Infrastructure,
+                        TVTypeEnum.MikeScenario,
+                        TVTypeEnum.MikeSource,
+                        TVTypeEnum.Municipality,
+                        TVTypeEnum.MWQMSite,
+                        TVTypeEnum.PolSourceSite,
+                        TVTypeEnum.Province,
+                        TVTypeEnum.Sector,
+                        TVTypeEnum.Subsector,
+                        TVTypeEnum.Tel,
+                        TVTypeEnum.TideSite,
+                        TVTypeEnum.WasteWaterTreatmentPlant,
+                        TVTypeEnum.LiftStation,
+                        TVTypeEnum.Spill,
+                        TVTypeEnum.BoxModel,
+                        TVTypeEnum.VisualPlumesScenario,
+                        TVTypeEnum.OtherInfrastructure,
+                        TVTypeEnum.MWQMRun,
+                        TVTypeEnum.MeshNode,
+                        TVTypeEnum.WebTideNode,
+                        TVTypeEnum.SamplingPlan,
+                        TVTypeEnum.SeeOtherMunicipality,
+                        TVTypeEnum.LineOverflow,
+                        TVTypeEnum.MapInfo,
+                        TVTypeEnum.MapInfoPoint,
+                    };
+                    if (!AllowableTVTypes.Contains(TVItemFromTVItemID.TVType))
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "FromTVItemID", "Root,Address,Area,ClimateSite,Contact,Country,Email,File,HydrometricSite,Infrastructure,MikeScenario,MikeSource,Municipality,MWQMSite,PolSourceSite,Province,Sector,Subsector,Tel,TideSite,WasteWaterTreatmentPlant,LiftStation,Spill,BoxModel,VisualPlumesScenario,OtherInfrastructure,MWQMRun,MeshNode,WebTideNode,SamplingPlan,SeeOtherMunicipality,LineOverflow,MapInfo,MapInfoPoint"), new[] { nameof(tvItemLink.FromTVItemID) });
+                    }
+                }
+
             }
             else
             {
@@ -248,11 +298,61 @@ namespace CSSPDBLocalServices
             }
 
             TVItem TVItemToTVItemID = null;
-            TVItemToTVItemID = (from c in dbLocal.TVItems where c.TVItemID == tvItemLink.ToTVItemID select c).FirstOrDefault();
+            TVItemToTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == tvItemLink.ToTVItemID select c).FirstOrDefault();
 
             if (TVItemToTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "ToTVItemID", tvItemLink.ToTVItemID.ToString()), new[] { nameof(tvItemLink.ToTVItemID) });
+                TVItemToTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == tvItemLink.ToTVItemID select c).FirstOrDefault();
+
+                if (TVItemToTVItemID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "ToTVItemID", tvItemLink.ToTVItemID.ToString()), new[] { nameof(tvItemLink.ToTVItemID) });
+                }
+                else
+                {
+                    List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                    {
+                        TVTypeEnum.Root,
+                        TVTypeEnum.Address,
+                        TVTypeEnum.Area,
+                        TVTypeEnum.ClimateSite,
+                        TVTypeEnum.Contact,
+                        TVTypeEnum.Country,
+                        TVTypeEnum.Email,
+                        TVTypeEnum.File,
+                        TVTypeEnum.HydrometricSite,
+                        TVTypeEnum.Infrastructure,
+                        TVTypeEnum.MikeScenario,
+                        TVTypeEnum.MikeSource,
+                        TVTypeEnum.Municipality,
+                        TVTypeEnum.MWQMSite,
+                        TVTypeEnum.PolSourceSite,
+                        TVTypeEnum.Province,
+                        TVTypeEnum.Sector,
+                        TVTypeEnum.Subsector,
+                        TVTypeEnum.Tel,
+                        TVTypeEnum.TideSite,
+                        TVTypeEnum.WasteWaterTreatmentPlant,
+                        TVTypeEnum.LiftStation,
+                        TVTypeEnum.Spill,
+                        TVTypeEnum.BoxModel,
+                        TVTypeEnum.VisualPlumesScenario,
+                        TVTypeEnum.OtherInfrastructure,
+                        TVTypeEnum.MWQMRun,
+                        TVTypeEnum.MeshNode,
+                        TVTypeEnum.WebTideNode,
+                        TVTypeEnum.SamplingPlan,
+                        TVTypeEnum.SeeOtherMunicipality,
+                        TVTypeEnum.LineOverflow,
+                        TVTypeEnum.MapInfo,
+                        TVTypeEnum.MapInfoPoint,
+                    };
+                    if (!AllowableTVTypes.Contains(TVItemToTVItemID.TVType))
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "ToTVItemID", "Root,Address,Area,ClimateSite,Contact,Country,Email,File,HydrometricSite,Infrastructure,MikeScenario,MikeSource,Municipality,MWQMSite,PolSourceSite,Province,Sector,Subsector,Tel,TideSite,WasteWaterTreatmentPlant,LiftStation,Spill,BoxModel,VisualPlumesScenario,OtherInfrastructure,MWQMRun,MeshNode,WebTideNode,SamplingPlan,SeeOtherMunicipality,LineOverflow,MapInfo,MapInfoPoint"), new[] { nameof(tvItemLink.ToTVItemID) });
+                    }
+                }
+
             }
             else
             {
@@ -349,11 +449,19 @@ namespace CSSPDBLocalServices
             if (tvItemLink.ParentTVItemLinkID != null)
             {
                 TVItemLink TVItemLinkParentTVItemLinkID = null;
-                TVItemLinkParentTVItemLinkID = (from c in dbLocal.TVItemLinks where c.TVItemLinkID == tvItemLink.ParentTVItemLinkID select c).FirstOrDefault();
+                TVItemLinkParentTVItemLinkID = (from c in dbLocal.TVItemLinks.AsNoTracking() where c.TVItemLinkID == tvItemLink.ParentTVItemLinkID select c).FirstOrDefault();
 
                 if (TVItemLinkParentTVItemLinkID == null)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItemLink", "ParentTVItemLinkID", (tvItemLink.ParentTVItemLinkID == null ? "" : tvItemLink.ParentTVItemLinkID.ToString())), new[] { nameof(tvItemLink.ParentTVItemLinkID) });
+                    if (tvItemLink.ParentTVItemLinkID != null)
+                    {
+                        TVItemLinkParentTVItemLinkID = (from c in dbLocalIM.TVItemLinks.Local where c.TVItemLinkID == tvItemLink.ParentTVItemLinkID select c).FirstOrDefault();
+
+                        if (TVItemLinkParentTVItemLinkID == null)
+                        {
+                            yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItemLink", "ParentTVItemLinkID", (tvItemLink.ParentTVItemLinkID == null ? "" : tvItemLink.ParentTVItemLinkID.ToString())), new[] { nameof(tvItemLink.ParentTVItemLinkID) });
+                        }
+                    }
                 }
             }
 
@@ -370,11 +478,28 @@ namespace CSSPDBLocalServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == tvItemLink.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == tvItemLink.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", tvItemLink.LastUpdateContactTVItemID.ToString()), new[] { nameof(tvItemLink.LastUpdateContactTVItemID) });
+                TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == tvItemLink.LastUpdateContactTVItemID select c).FirstOrDefault();
+
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", tvItemLink.LastUpdateContactTVItemID.ToString()), new[] { nameof(tvItemLink.LastUpdateContactTVItemID) });
+                }
+                else
+                {
+                    List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                    {
+                        TVTypeEnum.Contact,
+                    };
+                    if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(tvItemLink.LastUpdateContactTVItemID) });
+                    }
+                }
+
             }
             else
             {

@@ -22,6 +22,7 @@ using Xunit;
 using System.ComponentModel.DataAnnotations;
 using CSSPCultureServices.Resources;
 using LocalServices;
+using System.Threading;
 
 namespace CSSPDBLocalServices.Tests
 {
@@ -39,6 +40,7 @@ namespace CSSPDBLocalServices.Tests
         private ILocalService LocalService { get; set; }
         private IBoxModelResultDBLocalService BoxModelResultDBLocalService { get; set; }
         private CSSPDBLocalContext dbLocal { get; set; }
+        private CSSPDBInMemoryContext dbLocalIM { get; set; }
         private BoxModelResult boxModelResult { get; set; }
         #endregion Properties
 
@@ -49,7 +51,17 @@ namespace CSSPDBLocalServices.Tests
         }
         #endregion Constructors
 
-        #region Tests Generated [DBLocal]CRUD
+        #region Tests Generated Constructor [DBLocal]
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task BoxModelResultDBLocal_Constructor_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+        }
+        #endregion Tests Generated Constructor [DBLocal]
+
+        #region Tests Generated [DBLocal] CRUD
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
@@ -61,7 +73,7 @@ namespace CSSPDBLocalServices.Tests
 
             await DoCRUDDBLocalTest();
         }
-        #endregion Tests Generated CRUD
+        #endregion Tests Generated [DBLocal] CRUD
 
         #region Tests Generated Properties
         [Theory]
@@ -444,17 +456,6 @@ namespace CSSPDBLocalServices.Tests
             int count = ((List<BoxModelResult>)((OkObjectResult)actionBoxModelResultList.Result).Value).Count();
             Assert.True(count > 0);
 
-            // List<BoxModelResult> with skip and take
-            var actionBoxModelResultListSkipAndTake = await BoxModelResultDBLocalService.GetBoxModelResultList(1, 1);
-            Assert.Equal(200, ((ObjectResult)actionBoxModelResultListSkipAndTake.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionBoxModelResultListSkipAndTake.Result).Value);
-            List<BoxModelResult> boxModelResultListSkipAndTake = (List<BoxModelResult>)((OkObjectResult)actionBoxModelResultListSkipAndTake.Result).Value;
-
-            int countSkipAndTake = ((List<BoxModelResult>)((OkObjectResult)actionBoxModelResultListSkipAndTake.Result).Value).Count();
-            Assert.True(countSkipAndTake == 1);
-
-            Assert.False(boxModelResultList[0].BoxModelResultID == boxModelResultListSkipAndTake[0].BoxModelResultID);
-
             // Get BoxModelResult With BoxModelResultID
             var actionBoxModelResultGet = await BoxModelResultDBLocalService.GetBoxModelResultWithBoxModelResultID(boxModelResultList[0].BoxModelResultID);
             Assert.Equal(200, ((ObjectResult)actionBoxModelResultGet.Result).StatusCode);
@@ -516,6 +517,11 @@ namespace CSSPDBLocalServices.Tests
                 options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
             });
 
+            Services.AddDbContext<CSSPDBInMemoryContext>(options =>
+            {
+                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBLocal.FullName }");
+            });
+
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<ILocalService, LocalService>();
             Services.AddSingleton<IEnums, Enums>();
@@ -536,6 +542,9 @@ namespace CSSPDBLocalServices.Tests
 
             dbLocal = Provider.GetService<CSSPDBLocalContext>();
             Assert.NotNull(dbLocal);
+
+            dbLocalIM = Provider.GetService<CSSPDBInMemoryContext>();
+            Assert.NotNull(dbLocalIM);
 
             BoxModelResultDBLocalService = Provider.GetService<IBoxModelResultDBLocalService>();
             Assert.NotNull(BoxModelResultDBLocalService);
@@ -566,8 +575,8 @@ namespace CSSPDBLocalServices.Tests
 
             try
             {
-                dbLocal.BoxModels.Add(new BoxModel() { BoxModelID = 1, InfrastructureTVItemID = 41, Discharge_m3_day = 1021, Depth_m = 1.2, Temperature_C = 10, Dilution = 1000, DecayRate_per_day = 4.6821, FCUntreated_MPN_100ml = 2500000, FCPreDisinfection_MPN_100ml = 357, Concentration_MPN_100ml = 14, T90_hour = 6, DischargeDuration_hour = 24, LastUpdateDate_UTC = new DateTime(2018, 10, 29, 12, 42, 9), LastUpdateContactTVItemID = 2 });
-                dbLocal.SaveChanges();
+                dbLocalIM.BoxModels.Add(new BoxModel() { BoxModelID = 1, InfrastructureTVItemID = 41, Discharge_m3_day = 1021, Depth_m = 1.2, Temperature_C = 10, Dilution = 1000, DecayRate_per_day = 4.6821, FCUntreated_MPN_100ml = 2500000, FCPreDisinfection_MPN_100ml = 357, Concentration_MPN_100ml = 14, T90_hour = 6, DischargeDuration_hour = 24, LastUpdateDate_UTC = new DateTime(2018, 10, 29, 12, 42, 9), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
             }
             catch (Exception)
             {
@@ -575,8 +584,8 @@ namespace CSSPDBLocalServices.Tests
             }
             try
             {
-                dbLocal.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2 });
-                dbLocal.SaveChanges();
+                dbLocalIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
             }
             catch (Exception)
             {

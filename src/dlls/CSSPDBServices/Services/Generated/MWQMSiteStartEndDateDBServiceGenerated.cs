@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MWQMSiteStartEndDate mwqmSiteStartEndDate = (from c in db.MWQMSiteStartEndDates
+            MWQMSiteStartEndDate mwqmSiteStartEndDate = (from c in db.MWQMSiteStartEndDates.Local
                     where c.MWQMSiteStartEndDateID == MWQMSiteStartEndDateID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBServices
             try
             {
                 db.MWQMSiteStartEndDates.Remove(mwqmSiteStartEndDate);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBServices
             try
             {
                 db.MWQMSiteStartEndDates.Add(mwqmSiteStartEndDate);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBServices
             try
             {
                 db.MWQMSiteStartEndDates.Update(mwqmSiteStartEndDate);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -179,14 +176,14 @@ namespace CSSPDBServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "MWQMSiteStartEndDateID"), new[] { nameof(mwqmSiteStartEndDate.MWQMSiteStartEndDateID) });
                 }
 
-                if (!(from c in db.MWQMSiteStartEndDates select c).Where(c => c.MWQMSiteStartEndDateID == mwqmSiteStartEndDate.MWQMSiteStartEndDateID).Any())
+                if (!(from c in db.MWQMSiteStartEndDates.AsNoTracking() select c).Where(c => c.MWQMSiteStartEndDateID == mwqmSiteStartEndDate.MWQMSiteStartEndDateID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "MWQMSiteStartEndDate", "MWQMSiteStartEndDateID", mwqmSiteStartEndDate.MWQMSiteStartEndDateID.ToString()), new[] { nameof(mwqmSiteStartEndDate.MWQMSiteStartEndDateID) });
                 }
             }
 
             TVItem TVItemMWQMSiteTVItemID = null;
-            TVItemMWQMSiteTVItemID = (from c in db.TVItems where c.TVItemID == mwqmSiteStartEndDate.MWQMSiteTVItemID select c).FirstOrDefault();
+            TVItemMWQMSiteTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == mwqmSiteStartEndDate.MWQMSiteTVItemID select c).FirstOrDefault();
 
             if (TVItemMWQMSiteTVItemID == null)
             {
@@ -239,7 +236,7 @@ namespace CSSPDBServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == mwqmSiteStartEndDate.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == mwqmSiteStartEndDate.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

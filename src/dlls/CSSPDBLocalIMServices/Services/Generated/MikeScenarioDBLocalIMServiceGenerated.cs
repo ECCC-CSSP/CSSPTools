@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            MikeScenario mikeScenario = (from c in dbLocalIM.MikeScenarios.AsNoTracking()
+            MikeScenario mikeScenario = (from c in dbLocalIM.MikeScenarios.Local
                     where c.MikeScenarioID == MikeScenarioID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<MikeScenario> mikeScenarioList = (from c in dbLocalIM.MikeScenarios.AsNoTracking() orderby c.MikeScenarioID select c).Skip(skip).Take(take).ToList();
+            List<MikeScenario> mikeScenarioList = (from c in dbLocalIM.MikeScenarios.Local orderby c.MikeScenarioID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(mikeScenarioList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MikeScenario mikeScenario = (from c in dbLocalIM.MikeScenarios
+            MikeScenario mikeScenario = (from c in dbLocalIM.MikeScenarios.Local
                     where c.MikeScenarioID == MikeScenarioID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.MikeScenarios.Remove(mikeScenario);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.MikeScenarios.Add(mikeScenario);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.MikeScenarios.Update(mikeScenario);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -188,14 +185,14 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "MikeScenarioID"), new[] { nameof(mikeScenario.MikeScenarioID) });
                 }
 
-                if (!(from c in dbLocalIM.MikeScenarios select c).Where(c => c.MikeScenarioID == mikeScenario.MikeScenarioID).Any())
+                if (!(from c in dbLocalIM.MikeScenarios.Local select c).Where(c => c.MikeScenarioID == mikeScenario.MikeScenarioID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "MikeScenario", "MikeScenarioID", mikeScenario.MikeScenarioID.ToString()), new[] { nameof(mikeScenario.MikeScenarioID) });
                 }
             }
 
             TVItem TVItemMikeScenarioTVItemID = null;
-            TVItemMikeScenarioTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == mikeScenario.MikeScenarioTVItemID select c).FirstOrDefault();
+            TVItemMikeScenarioTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == mikeScenario.MikeScenarioTVItemID select c).FirstOrDefault();
 
             if (TVItemMikeScenarioTVItemID == null)
             {
@@ -216,7 +213,7 @@ namespace CSSPDBLocalIMServices
             if (mikeScenario.ParentMikeScenarioID != null)
             {
                 MikeScenario MikeScenarioParentMikeScenarioID = null;
-                MikeScenarioParentMikeScenarioID = (from c in dbLocalIM.MikeScenarios where c.MikeScenarioID == mikeScenario.ParentMikeScenarioID select c).FirstOrDefault();
+                MikeScenarioParentMikeScenarioID = (from c in dbLocalIM.MikeScenarios.Local where c.MikeScenarioID == mikeScenario.ParentMikeScenarioID select c).FirstOrDefault();
 
                 if (MikeScenarioParentMikeScenarioID == null)
                 {
@@ -307,7 +304,7 @@ namespace CSSPDBLocalIMServices
             if (mikeScenario.UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID != null)
             {
                 TVItem TVItemUseSalinityAndTemperatureInitialConditionFromTVFileTVItemID = null;
-                TVItemUseSalinityAndTemperatureInitialConditionFromTVFileTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == mikeScenario.UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID select c).FirstOrDefault();
+                TVItemUseSalinityAndTemperatureInitialConditionFromTVFileTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == mikeScenario.UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID select c).FirstOrDefault();
 
                 if (TVItemUseSalinityAndTemperatureInitialConditionFromTVFileTVItemID == null)
                 {
@@ -329,7 +326,7 @@ namespace CSSPDBLocalIMServices
             if (mikeScenario.ForSimulatingMWQMRunTVItemID != null)
             {
                 TVItem TVItemForSimulatingMWQMRunTVItemID = null;
-                TVItemForSimulatingMWQMRunTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == mikeScenario.ForSimulatingMWQMRunTVItemID select c).FirstOrDefault();
+                TVItemForSimulatingMWQMRunTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == mikeScenario.ForSimulatingMWQMRunTVItemID select c).FirstOrDefault();
 
                 if (TVItemForSimulatingMWQMRunTVItemID == null)
                 {
@@ -430,7 +427,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == mikeScenario.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == mikeScenario.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

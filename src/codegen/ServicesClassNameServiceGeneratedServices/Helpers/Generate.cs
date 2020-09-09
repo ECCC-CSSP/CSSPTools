@@ -194,6 +194,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                         if (DBType == "DBLocal")
                         {
                             sb.AppendLine(@"        private CSSPDBLocalContext dbLocal { get; }");
+                            sb.AppendLine(@"        private CSSPDBInMemoryContext dbLocalIM { get; }");
                         }
                         if (DBType == "DBLocalIM")
                         {
@@ -246,7 +247,8 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                             if (DBType == "DBLocal")
                             {
                                 sb.AppendLine($@"           ILocalService LocalService,");
-                                sb.AppendLine($@"           CSSPDBLocalContext dbLocal)");
+                                sb.AppendLine($@"           CSSPDBLocalContext dbLocal,");
+                                sb.AppendLine($@"           CSSPDBInMemoryContext dbLocalIM)");
                             }
                             if (DBType == "DBLocalIM")
                             {
@@ -279,7 +281,8 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                                 sb.AppendLine($@"        public { dllTypeInfoModels.Type.Name }{ DBType }Service(IConfiguration Configuration,");
                                 sb.AppendLine($@"           ICSSPCultureService CSSPCultureService, IEnums enums,");
                                 sb.AppendLine($@"           ILocalService LocalService,");
-                                sb.AppendLine($@"           CSSPDBLocalContext dbLocal)");
+                                sb.AppendLine($@"           CSSPDBLocalContext dbLocal,");
+                                sb.AppendLine($@"           CSSPDBInMemoryContext dbLocalIM)");
                             }
                             if (DBType == "DBLocalIM")
                             {
@@ -301,7 +304,8 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                             if (DBType == "DBLocal")
                             {
                                 sb.AppendLine($@"           ILocalService LocalService,");
-                                sb.AppendLine($@"           CSSPDBLocalContext dbLocal)");
+                                sb.AppendLine($@"           CSSPDBLocalContext dbLocal,");
+                                sb.AppendLine($@"           CSSPDBInMemoryContext dbLocalIM)");
                             }
                             if (DBType == "DBLocalIM")
                             {
@@ -356,6 +360,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                         if (DBType == "DBLocal")
                         {
                             sb.AppendLine(@"            this.dbLocal = dbLocal;");
+                            sb.AppendLine(@"            this.dbLocalIM = dbLocalIM;");
                         }
                         if (DBType == "DBLocalIM")
                         {

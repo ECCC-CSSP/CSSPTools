@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            Tel tel = (from c in db.Tels
+            Tel tel = (from c in db.Tels.Local
                     where c.TelID == TelID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBServices
             try
             {
                 db.Tels.Remove(tel);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBServices
             try
             {
                 db.Tels.Add(tel);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBServices
             try
             {
                 db.Tels.Update(tel);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -180,14 +177,14 @@ namespace CSSPDBServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TelID"), new[] { nameof(tel.TelID) });
                 }
 
-                if (!(from c in db.Tels select c).Where(c => c.TelID == tel.TelID).Any())
+                if (!(from c in db.Tels.AsNoTracking() select c).Where(c => c.TelID == tel.TelID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "Tel", "TelID", tel.TelID.ToString()), new[] { nameof(tel.TelID) });
                 }
             }
 
             TVItem TVItemTelTVItemID = null;
-            TVItemTelTVItemID = (from c in db.TVItems where c.TVItemID == tel.TelTVItemID select c).FirstOrDefault();
+            TVItemTelTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == tel.TelTVItemID select c).FirstOrDefault();
 
             if (TVItemTelTVItemID == null)
             {
@@ -234,7 +231,7 @@ namespace CSSPDBServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == tel.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == tel.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

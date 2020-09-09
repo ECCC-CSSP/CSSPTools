@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            SamplingPlanSubsectorSite samplingPlanSubsectorSite = (from c in dbLocalIM.SamplingPlanSubsectorSites.AsNoTracking()
+            SamplingPlanSubsectorSite samplingPlanSubsectorSite = (from c in dbLocalIM.SamplingPlanSubsectorSites.Local
                     where c.SamplingPlanSubsectorSiteID == SamplingPlanSubsectorSiteID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<SamplingPlanSubsectorSite> samplingPlanSubsectorSiteList = (from c in dbLocalIM.SamplingPlanSubsectorSites.AsNoTracking() orderby c.SamplingPlanSubsectorSiteID select c).Skip(skip).Take(take).ToList();
+            List<SamplingPlanSubsectorSite> samplingPlanSubsectorSiteList = (from c in dbLocalIM.SamplingPlanSubsectorSites.Local orderby c.SamplingPlanSubsectorSiteID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(samplingPlanSubsectorSiteList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            SamplingPlanSubsectorSite samplingPlanSubsectorSite = (from c in dbLocalIM.SamplingPlanSubsectorSites
+            SamplingPlanSubsectorSite samplingPlanSubsectorSite = (from c in dbLocalIM.SamplingPlanSubsectorSites.Local
                     where c.SamplingPlanSubsectorSiteID == SamplingPlanSubsectorSiteID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.SamplingPlanSubsectorSites.Remove(samplingPlanSubsectorSite);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.SamplingPlanSubsectorSites.Add(samplingPlanSubsectorSite);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.SamplingPlanSubsectorSites.Update(samplingPlanSubsectorSite);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -187,14 +184,14 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SamplingPlanSubsectorSiteID"), new[] { nameof(samplingPlanSubsectorSite.SamplingPlanSubsectorSiteID) });
                 }
 
-                if (!(from c in dbLocalIM.SamplingPlanSubsectorSites select c).Where(c => c.SamplingPlanSubsectorSiteID == samplingPlanSubsectorSite.SamplingPlanSubsectorSiteID).Any())
+                if (!(from c in dbLocalIM.SamplingPlanSubsectorSites.Local select c).Where(c => c.SamplingPlanSubsectorSiteID == samplingPlanSubsectorSite.SamplingPlanSubsectorSiteID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "SamplingPlanSubsectorSite", "SamplingPlanSubsectorSiteID", samplingPlanSubsectorSite.SamplingPlanSubsectorSiteID.ToString()), new[] { nameof(samplingPlanSubsectorSite.SamplingPlanSubsectorSiteID) });
                 }
             }
 
             SamplingPlanSubsector SamplingPlanSubsectorSamplingPlanSubsectorID = null;
-            SamplingPlanSubsectorSamplingPlanSubsectorID = (from c in dbLocalIM.SamplingPlanSubsectors where c.SamplingPlanSubsectorID == samplingPlanSubsectorSite.SamplingPlanSubsectorID select c).FirstOrDefault();
+            SamplingPlanSubsectorSamplingPlanSubsectorID = (from c in dbLocalIM.SamplingPlanSubsectors.Local where c.SamplingPlanSubsectorID == samplingPlanSubsectorSite.SamplingPlanSubsectorID select c).FirstOrDefault();
 
             if (SamplingPlanSubsectorSamplingPlanSubsectorID == null)
             {
@@ -202,7 +199,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemMWQMSiteTVItemID = null;
-            TVItemMWQMSiteTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == samplingPlanSubsectorSite.MWQMSiteTVItemID select c).FirstOrDefault();
+            TVItemMWQMSiteTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == samplingPlanSubsectorSite.MWQMSiteTVItemID select c).FirstOrDefault();
 
             if (TVItemMWQMSiteTVItemID == null)
             {
@@ -233,7 +230,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == samplingPlanSubsectorSite.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == samplingPlanSubsectorSite.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

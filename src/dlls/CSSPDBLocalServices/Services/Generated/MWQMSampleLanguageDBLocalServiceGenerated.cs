@@ -37,6 +37,7 @@ namespace CSSPDBLocalServices
 
         #region Properties
         private CSSPDBLocalContext dbLocal { get; }
+        private CSSPDBInMemoryContext dbLocalIM { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILocalService LocalService { get; }
@@ -47,13 +48,15 @@ namespace CSSPDBLocalServices
         #region Constructors
         public MWQMSampleLanguageDBLocalService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums,
            ILocalService LocalService,
-           CSSPDBLocalContext dbLocal)
+           CSSPDBLocalContext dbLocal,
+           CSSPDBInMemoryContext dbLocalIM)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LocalService = LocalService;
             this.enums = enums;
             this.dbLocal = dbLocal;
+            this.dbLocalIM = dbLocalIM;
         }
         #endregion Constructors
 
@@ -94,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MWQMSampleLanguage mwqmSampleLanguage = (from c in dbLocal.MWQMSampleLanguages
+            MWQMSampleLanguage mwqmSampleLanguage = (from c in dbLocal.MWQMSampleLanguages.Local
                     where c.MWQMSampleLanguageID == MWQMSampleLanguageID
                     select c).FirstOrDefault();
 
@@ -106,9 +109,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.MWQMSampleLanguages.Remove(mwqmSampleLanguage);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -130,7 +132,7 @@ namespace CSSPDBLocalServices
 
             if (mwqmSampleLanguage.MWQMSampleLanguageID == 0)
             {
-                int LastMWQMSampleLanguageID = (from c in dbLocal.MWQMSampleLanguages
+                int LastMWQMSampleLanguageID = (from c in dbLocal.MWQMSampleLanguages.AsNoTracking()
                           orderby c.MWQMSampleLanguageID descending
                           select c.MWQMSampleLanguageID).FirstOrDefault();
 
@@ -140,9 +142,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.MWQMSampleLanguages.Add(mwqmSampleLanguage);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -165,9 +166,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.MWQMSampleLanguages.Update(mwqmSampleLanguage);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -189,18 +189,24 @@ namespace CSSPDBLocalServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "MWQMSampleLanguageID"), new[] { nameof(mwqmSampleLanguage.MWQMSampleLanguageID) });
                 }
 
-                if (!(from c in dbLocal.MWQMSampleLanguages select c).Where(c => c.MWQMSampleLanguageID == mwqmSampleLanguage.MWQMSampleLanguageID).Any())
+                if (!(from c in dbLocal.MWQMSampleLanguages.AsNoTracking() select c).Where(c => c.MWQMSampleLanguageID == mwqmSampleLanguage.MWQMSampleLanguageID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "MWQMSampleLanguage", "MWQMSampleLanguageID", mwqmSampleLanguage.MWQMSampleLanguageID.ToString()), new[] { nameof(mwqmSampleLanguage.MWQMSampleLanguageID) });
                 }
             }
 
             MWQMSample MWQMSampleMWQMSampleID = null;
-            MWQMSampleMWQMSampleID = (from c in dbLocal.MWQMSamples where c.MWQMSampleID == mwqmSampleLanguage.MWQMSampleID select c).FirstOrDefault();
+            MWQMSampleMWQMSampleID = (from c in dbLocal.MWQMSamples.AsNoTracking() where c.MWQMSampleID == mwqmSampleLanguage.MWQMSampleID select c).FirstOrDefault();
 
             if (MWQMSampleMWQMSampleID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "MWQMSample", "MWQMSampleID", mwqmSampleLanguage.MWQMSampleID.ToString()), new[] { nameof(mwqmSampleLanguage.MWQMSampleID) });
+                MWQMSampleMWQMSampleID = (from c in dbLocalIM.MWQMSamples.Local where c.MWQMSampleID == mwqmSampleLanguage.MWQMSampleID select c).FirstOrDefault();
+
+                if (MWQMSampleMWQMSampleID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "MWQMSample", "MWQMSampleID", mwqmSampleLanguage.MWQMSampleID.ToString()), new[] { nameof(mwqmSampleLanguage.MWQMSampleID) });
+                }
+
             }
 
             retStr = enums.EnumTypeOK(typeof(LanguageEnum), (int?)mwqmSampleLanguage.Language);
@@ -235,11 +241,28 @@ namespace CSSPDBLocalServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == mwqmSampleLanguage.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == mwqmSampleLanguage.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", mwqmSampleLanguage.LastUpdateContactTVItemID.ToString()), new[] { nameof(mwqmSampleLanguage.LastUpdateContactTVItemID) });
+                TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == mwqmSampleLanguage.LastUpdateContactTVItemID select c).FirstOrDefault();
+
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", mwqmSampleLanguage.LastUpdateContactTVItemID.ToString()), new[] { nameof(mwqmSampleLanguage.LastUpdateContactTVItemID) });
+                }
+                else
+                {
+                    List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                    {
+                        TVTypeEnum.Contact,
+                    };
+                    if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(mwqmSampleLanguage.LastUpdateContactTVItemID) });
+                    }
+                }
+
             }
             else
             {

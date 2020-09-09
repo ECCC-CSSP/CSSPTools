@@ -23,6 +23,7 @@ using LoggedInServices;
 
 namespace CSSPDBServices.Tests
 {
+    [Collection("Sequential")]
     public partial class TVTypeUserAuthorizationDBServiceManualTests
     {
         #region Variables

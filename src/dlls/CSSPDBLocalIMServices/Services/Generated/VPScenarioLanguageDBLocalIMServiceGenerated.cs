@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            VPScenarioLanguage vpScenarioLanguage = (from c in dbLocalIM.VPScenarioLanguages.AsNoTracking()
+            VPScenarioLanguage vpScenarioLanguage = (from c in dbLocalIM.VPScenarioLanguages.Local
                     where c.VPScenarioLanguageID == VPScenarioLanguageID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<VPScenarioLanguage> vpScenarioLanguageList = (from c in dbLocalIM.VPScenarioLanguages.AsNoTracking() orderby c.VPScenarioLanguageID select c).Skip(skip).Take(take).ToList();
+            List<VPScenarioLanguage> vpScenarioLanguageList = (from c in dbLocalIM.VPScenarioLanguages.Local orderby c.VPScenarioLanguageID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(vpScenarioLanguageList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            VPScenarioLanguage vpScenarioLanguage = (from c in dbLocalIM.VPScenarioLanguages
+            VPScenarioLanguage vpScenarioLanguage = (from c in dbLocalIM.VPScenarioLanguages.Local
                     where c.VPScenarioLanguageID == VPScenarioLanguageID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.VPScenarioLanguages.Remove(vpScenarioLanguage);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.VPScenarioLanguages.Add(vpScenarioLanguage);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.VPScenarioLanguages.Update(vpScenarioLanguage);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -188,14 +185,14 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "VPScenarioLanguageID"), new[] { nameof(vpScenarioLanguage.VPScenarioLanguageID) });
                 }
 
-                if (!(from c in dbLocalIM.VPScenarioLanguages select c).Where(c => c.VPScenarioLanguageID == vpScenarioLanguage.VPScenarioLanguageID).Any())
+                if (!(from c in dbLocalIM.VPScenarioLanguages.Local select c).Where(c => c.VPScenarioLanguageID == vpScenarioLanguage.VPScenarioLanguageID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "VPScenarioLanguage", "VPScenarioLanguageID", vpScenarioLanguage.VPScenarioLanguageID.ToString()), new[] { nameof(vpScenarioLanguage.VPScenarioLanguageID) });
                 }
             }
 
             VPScenario VPScenarioVPScenarioID = null;
-            VPScenarioVPScenarioID = (from c in dbLocalIM.VPScenarios where c.VPScenarioID == vpScenarioLanguage.VPScenarioID select c).FirstOrDefault();
+            VPScenarioVPScenarioID = (from c in dbLocalIM.VPScenarios.Local where c.VPScenarioID == vpScenarioLanguage.VPScenarioID select c).FirstOrDefault();
 
             if (VPScenarioVPScenarioID == null)
             {
@@ -237,7 +234,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == vpScenarioLanguage.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == vpScenarioLanguage.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

@@ -22,6 +22,7 @@ using Xunit;
 using System.ComponentModel.DataAnnotations;
 using CSSPCultureServices.Resources;
 using LocalServices;
+using System.Threading;
 
 namespace CSSPDBLocalServices.Tests
 {
@@ -39,6 +40,7 @@ namespace CSSPDBLocalServices.Tests
         private ILocalService LocalService { get; set; }
         private ITVFileLanguageDBLocalService TVFileLanguageDBLocalService { get; set; }
         private CSSPDBLocalContext dbLocal { get; set; }
+        private CSSPDBInMemoryContext dbLocalIM { get; set; }
         private TVFileLanguage tvFileLanguage { get; set; }
         #endregion Properties
 
@@ -49,7 +51,17 @@ namespace CSSPDBLocalServices.Tests
         }
         #endregion Constructors
 
-        #region Tests Generated [DBLocal]CRUD
+        #region Tests Generated Constructor [DBLocal]
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task TVFileLanguageDBLocal_Constructor_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+        }
+        #endregion Tests Generated Constructor [DBLocal]
+
+        #region Tests Generated [DBLocal] CRUD
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
@@ -61,7 +73,7 @@ namespace CSSPDBLocalServices.Tests
 
             await DoCRUDDBLocalTest();
         }
-        #endregion Tests Generated CRUD
+        #endregion Tests Generated [DBLocal] CRUD
 
         #region Tests Generated Properties
         [Theory]
@@ -210,17 +222,6 @@ namespace CSSPDBLocalServices.Tests
             int count = ((List<TVFileLanguage>)((OkObjectResult)actionTVFileLanguageList.Result).Value).Count();
             Assert.True(count > 0);
 
-            // List<TVFileLanguage> with skip and take
-            var actionTVFileLanguageListSkipAndTake = await TVFileLanguageDBLocalService.GetTVFileLanguageList(1, 1);
-            Assert.Equal(200, ((ObjectResult)actionTVFileLanguageListSkipAndTake.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionTVFileLanguageListSkipAndTake.Result).Value);
-            List<TVFileLanguage> tvFileLanguageListSkipAndTake = (List<TVFileLanguage>)((OkObjectResult)actionTVFileLanguageListSkipAndTake.Result).Value;
-
-            int countSkipAndTake = ((List<TVFileLanguage>)((OkObjectResult)actionTVFileLanguageListSkipAndTake.Result).Value).Count();
-            Assert.True(countSkipAndTake == 1);
-
-            Assert.False(tvFileLanguageList[0].TVFileLanguageID == tvFileLanguageListSkipAndTake[0].TVFileLanguageID);
-
             // Get TVFileLanguage With TVFileLanguageID
             var actionTVFileLanguageGet = await TVFileLanguageDBLocalService.GetTVFileLanguageWithTVFileLanguageID(tvFileLanguageList[0].TVFileLanguageID);
             Assert.Equal(200, ((ObjectResult)actionTVFileLanguageGet.Result).StatusCode);
@@ -282,6 +283,11 @@ namespace CSSPDBLocalServices.Tests
                 options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
             });
 
+            Services.AddDbContext<CSSPDBInMemoryContext>(options =>
+            {
+                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBLocal.FullName }");
+            });
+
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<ILocalService, LocalService>();
             Services.AddSingleton<IEnums, Enums>();
@@ -303,6 +309,9 @@ namespace CSSPDBLocalServices.Tests
             dbLocal = Provider.GetService<CSSPDBLocalContext>();
             Assert.NotNull(dbLocal);
 
+            dbLocalIM = Provider.GetService<CSSPDBInMemoryContext>();
+            Assert.NotNull(dbLocalIM);
+
             TVFileLanguageDBLocalService = Provider.GetService<ITVFileLanguageDBLocalService>();
             Assert.NotNull(TVFileLanguageDBLocalService);
 
@@ -321,8 +330,8 @@ namespace CSSPDBLocalServices.Tests
 
             try
             {
-                dbLocal.TVFiles.Add(new TVFile() { TVFileID = 1, TVFileTVItemID = 42, TemplateTVType = null, ReportTypeID = null, Parameters = null, Year = null, Language = (LanguageEnum)3, FilePurpose = (FilePurposeEnum)7, FileType = (FileTypeEnum)13, FileSize_kb = 3806224, FileInfo = "Uploaded file", FileCreatedDate_UTC = new DateTime(2016, 5, 5, 14, 18, 26), FromWater = null, ClientFilePath = @"DSCF6003.JPG", ServerFileName = @"TP - Bouctouche Lagoon.JPG", ServerFilePath = @"E:\inetpub\wwwroot\csspwebtools\App_Data\28689\", LastUpdateDate_UTC = new DateTime(2016, 5, 5, 17, 18, 26), LastUpdateContactTVItemID = 2 });
-                dbLocal.SaveChanges();
+                dbLocalIM.TVFiles.Add(new TVFile() { TVFileID = 1, TVFileTVItemID = 42, TemplateTVType = null, ReportTypeID = null, Parameters = null, Year = null, Language = (LanguageEnum)3, FilePurpose = (FilePurposeEnum)7, FileType = (FileTypeEnum)13, FileSize_kb = 3806224, FileInfo = "Uploaded file", FileCreatedDate_UTC = new DateTime(2016, 5, 5, 14, 18, 26), FromWater = null, ClientFilePath = @"DSCF6003.JPG", ServerFileName = @"TP - Bouctouche Lagoon.JPG", ServerFilePath = @"E:\inetpub\wwwroot\csspwebtools\App_Data\28689\", LastUpdateDate_UTC = new DateTime(2016, 5, 5, 17, 18, 26), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
             }
             catch (Exception)
             {
@@ -330,8 +339,8 @@ namespace CSSPDBLocalServices.Tests
             }
             try
             {
-                dbLocal.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2 });
-                dbLocal.SaveChanges();
+                dbLocalIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
             }
             catch (Exception)
             {

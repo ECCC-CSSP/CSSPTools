@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            DrogueRun drogueRun = (from c in dbLocalIM.DrogueRuns.AsNoTracking()
+            DrogueRun drogueRun = (from c in dbLocalIM.DrogueRuns.Local
                     where c.DrogueRunID == DrogueRunID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<DrogueRun> drogueRunList = (from c in dbLocalIM.DrogueRuns.AsNoTracking() orderby c.DrogueRunID select c).Skip(skip).Take(take).ToList();
+            List<DrogueRun> drogueRunList = (from c in dbLocalIM.DrogueRuns.Local orderby c.DrogueRunID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(drogueRunList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            DrogueRun drogueRun = (from c in dbLocalIM.DrogueRuns
+            DrogueRun drogueRun = (from c in dbLocalIM.DrogueRuns.Local
                     where c.DrogueRunID == DrogueRunID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.DrogueRuns.Remove(drogueRun);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.DrogueRuns.Add(drogueRun);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.DrogueRuns.Update(drogueRun);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -188,14 +185,14 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DrogueRunID"), new[] { nameof(drogueRun.DrogueRunID) });
                 }
 
-                if (!(from c in dbLocalIM.DrogueRuns select c).Where(c => c.DrogueRunID == drogueRun.DrogueRunID).Any())
+                if (!(from c in dbLocalIM.DrogueRuns.Local select c).Where(c => c.DrogueRunID == drogueRun.DrogueRunID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "DrogueRun", "DrogueRunID", drogueRun.DrogueRunID.ToString()), new[] { nameof(drogueRun.DrogueRunID) });
                 }
             }
 
             TVItem TVItemSubsectorTVItemID = null;
-            TVItemSubsectorTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == drogueRun.SubsectorTVItemID select c).FirstOrDefault();
+            TVItemSubsectorTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == drogueRun.SubsectorTVItemID select c).FirstOrDefault();
 
             if (TVItemSubsectorTVItemID == null)
             {
@@ -249,7 +246,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == drogueRun.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == drogueRun.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

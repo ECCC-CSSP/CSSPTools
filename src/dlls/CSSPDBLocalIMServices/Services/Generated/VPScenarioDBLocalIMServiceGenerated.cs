@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            VPScenario vpScenario = (from c in dbLocalIM.VPScenarios.AsNoTracking()
+            VPScenario vpScenario = (from c in dbLocalIM.VPScenarios.Local
                     where c.VPScenarioID == VPScenarioID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<VPScenario> vpScenarioList = (from c in dbLocalIM.VPScenarios.AsNoTracking() orderby c.VPScenarioID select c).Skip(skip).Take(take).ToList();
+            List<VPScenario> vpScenarioList = (from c in dbLocalIM.VPScenarios.Local orderby c.VPScenarioID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(vpScenarioList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            VPScenario vpScenario = (from c in dbLocalIM.VPScenarios
+            VPScenario vpScenario = (from c in dbLocalIM.VPScenarios.Local
                     where c.VPScenarioID == VPScenarioID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.VPScenarios.Remove(vpScenario);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.VPScenarios.Add(vpScenario);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.VPScenarios.Update(vpScenario);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -188,14 +185,14 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "VPScenarioID"), new[] { nameof(vpScenario.VPScenarioID) });
                 }
 
-                if (!(from c in dbLocalIM.VPScenarios select c).Where(c => c.VPScenarioID == vpScenario.VPScenarioID).Any())
+                if (!(from c in dbLocalIM.VPScenarios.Local select c).Where(c => c.VPScenarioID == vpScenario.VPScenarioID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "VPScenario", "VPScenarioID", vpScenario.VPScenarioID.ToString()), new[] { nameof(vpScenario.VPScenarioID) });
                 }
             }
 
             TVItem TVItemInfrastructureTVItemID = null;
-            TVItemInfrastructureTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == vpScenario.InfrastructureTVItemID select c).FirstOrDefault();
+            TVItemInfrastructureTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == vpScenario.InfrastructureTVItemID select c).FirstOrDefault();
 
             if (TVItemInfrastructureTVItemID == null)
             {
@@ -354,7 +351,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == vpScenario.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == vpScenario.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

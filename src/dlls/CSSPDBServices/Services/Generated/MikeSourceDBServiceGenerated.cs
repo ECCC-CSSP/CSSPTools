@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MikeSource mikeSource = (from c in db.MikeSources
+            MikeSource mikeSource = (from c in db.MikeSources.Local
                     where c.MikeSourceID == MikeSourceID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBServices
             try
             {
                 db.MikeSources.Remove(mikeSource);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBServices
             try
             {
                 db.MikeSources.Add(mikeSource);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBServices
             try
             {
                 db.MikeSources.Update(mikeSource);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -179,14 +176,14 @@ namespace CSSPDBServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "MikeSourceID"), new[] { nameof(mikeSource.MikeSourceID) });
                 }
 
-                if (!(from c in db.MikeSources select c).Where(c => c.MikeSourceID == mikeSource.MikeSourceID).Any())
+                if (!(from c in db.MikeSources.AsNoTracking() select c).Where(c => c.MikeSourceID == mikeSource.MikeSourceID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "MikeSource", "MikeSourceID", mikeSource.MikeSourceID.ToString()), new[] { nameof(mikeSource.MikeSourceID) });
                 }
             }
 
             TVItem TVItemMikeSourceTVItemID = null;
-            TVItemMikeSourceTVItemID = (from c in db.TVItems where c.TVItemID == mikeSource.MikeSourceTVItemID select c).FirstOrDefault();
+            TVItemMikeSourceTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == mikeSource.MikeSourceTVItemID select c).FirstOrDefault();
 
             if (TVItemMikeSourceTVItemID == null)
             {
@@ -207,7 +204,7 @@ namespace CSSPDBServices
             if (mikeSource.HydrometricTVItemID != null)
             {
                 TVItem TVItemHydrometricTVItemID = null;
-                TVItemHydrometricTVItemID = (from c in db.TVItems where c.TVItemID == mikeSource.HydrometricTVItemID select c).FirstOrDefault();
+                TVItemHydrometricTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == mikeSource.HydrometricTVItemID select c).FirstOrDefault();
 
                 if (TVItemHydrometricTVItemID == null)
                 {
@@ -265,7 +262,7 @@ namespace CSSPDBServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == mikeSource.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == mikeSource.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            DocTemplate docTemplate = (from c in dbLocalIM.DocTemplates.AsNoTracking()
+            DocTemplate docTemplate = (from c in dbLocalIM.DocTemplates.Local
                     where c.DocTemplateID == DocTemplateID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<DocTemplate> docTemplateList = (from c in dbLocalIM.DocTemplates.AsNoTracking() orderby c.DocTemplateID select c).Skip(skip).Take(take).ToList();
+            List<DocTemplate> docTemplateList = (from c in dbLocalIM.DocTemplates.Local orderby c.DocTemplateID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(docTemplateList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            DocTemplate docTemplate = (from c in dbLocalIM.DocTemplates
+            DocTemplate docTemplate = (from c in dbLocalIM.DocTemplates.Local
                     where c.DocTemplateID == DocTemplateID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.DocTemplates.Remove(docTemplate);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.DocTemplates.Add(docTemplate);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.DocTemplates.Update(docTemplate);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -188,7 +185,7 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DocTemplateID"), new[] { nameof(docTemplate.DocTemplateID) });
                 }
 
-                if (!(from c in dbLocalIM.DocTemplates select c).Where(c => c.DocTemplateID == docTemplate.DocTemplateID).Any())
+                if (!(from c in dbLocalIM.DocTemplates.Local select c).Where(c => c.DocTemplateID == docTemplate.DocTemplateID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "DocTemplate", "DocTemplateID", docTemplate.DocTemplateID.ToString()), new[] { nameof(docTemplate.DocTemplateID) });
                 }
@@ -207,7 +204,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemTVFileTVItemID = null;
-            TVItemTVFileTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == docTemplate.TVFileTVItemID select c).FirstOrDefault();
+            TVItemTVFileTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == docTemplate.TVFileTVItemID select c).FirstOrDefault();
 
             if (TVItemTVFileTVItemID == null)
             {
@@ -248,7 +245,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == docTemplate.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == docTemplate.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

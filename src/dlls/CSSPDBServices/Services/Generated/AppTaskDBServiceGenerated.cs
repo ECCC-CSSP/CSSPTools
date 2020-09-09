@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            AppTask appTask = (from c in db.AppTasks
+            AppTask appTask = (from c in db.AppTasks.Local
                     where c.AppTaskID == AppTaskID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBServices
             try
             {
                 db.AppTasks.Remove(appTask);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBServices
             try
             {
                 db.AppTasks.Add(appTask);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBServices
             try
             {
                 db.AppTasks.Update(appTask);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -180,14 +177,14 @@ namespace CSSPDBServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "AppTaskID"), new[] { nameof(appTask.AppTaskID) });
                 }
 
-                if (!(from c in db.AppTasks select c).Where(c => c.AppTaskID == appTask.AppTaskID).Any())
+                if (!(from c in db.AppTasks.AsNoTracking() select c).Where(c => c.AppTaskID == appTask.AppTaskID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AppTask", "AppTaskID", appTask.AppTaskID.ToString()), new[] { nameof(appTask.AppTaskID) });
                 }
             }
 
             TVItem TVItemTVItemID = null;
-            TVItemTVItemID = (from c in db.TVItems where c.TVItemID == appTask.TVItemID select c).FirstOrDefault();
+            TVItemTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == appTask.TVItemID select c).FirstOrDefault();
 
             if (TVItemTVItemID == null)
             {
@@ -229,7 +226,7 @@ namespace CSSPDBServices
             }
 
             TVItem TVItemTVItemID2 = null;
-            TVItemTVItemID2 = (from c in db.TVItems where c.TVItemID == appTask.TVItemID2 select c).FirstOrDefault();
+            TVItemTVItemID2 = (from c in db.TVItems.AsNoTracking() where c.TVItemID == appTask.TVItemID2 select c).FirstOrDefault();
 
             if (TVItemTVItemID2 == null)
             {
@@ -351,7 +348,7 @@ namespace CSSPDBServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == appTask.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == appTask.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

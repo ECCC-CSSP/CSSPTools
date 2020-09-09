@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            ContactShortcut contactShortcut = (from c in db.ContactShortcuts
+            ContactShortcut contactShortcut = (from c in db.ContactShortcuts.Local
                     where c.ContactShortcutID == ContactShortcutID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBServices
             try
             {
                 db.ContactShortcuts.Remove(contactShortcut);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBServices
             try
             {
                 db.ContactShortcuts.Add(contactShortcut);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBServices
             try
             {
                 db.ContactShortcuts.Update(contactShortcut);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -179,14 +176,14 @@ namespace CSSPDBServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ContactShortcutID"), new[] { nameof(contactShortcut.ContactShortcutID) });
                 }
 
-                if (!(from c in db.ContactShortcuts select c).Where(c => c.ContactShortcutID == contactShortcut.ContactShortcutID).Any())
+                if (!(from c in db.ContactShortcuts.AsNoTracking() select c).Where(c => c.ContactShortcutID == contactShortcut.ContactShortcutID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "ContactShortcut", "ContactShortcutID", contactShortcut.ContactShortcutID.ToString()), new[] { nameof(contactShortcut.ContactShortcutID) });
                 }
             }
 
             Contact ContactContactID = null;
-            ContactContactID = (from c in db.Contacts where c.ContactID == contactShortcut.ContactID select c).FirstOrDefault();
+            ContactContactID = (from c in db.Contacts.AsNoTracking() where c.ContactID == contactShortcut.ContactID select c).FirstOrDefault();
 
             if (ContactContactID == null)
             {
@@ -226,7 +223,7 @@ namespace CSSPDBServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == contactShortcut.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == contactShortcut.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

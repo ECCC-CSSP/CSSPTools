@@ -37,6 +37,7 @@ namespace CSSPDBLocalServices
 
         #region Properties
         private CSSPDBLocalContext dbLocal { get; }
+        private CSSPDBInMemoryContext dbLocalIM { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILocalService LocalService { get; }
@@ -47,13 +48,15 @@ namespace CSSPDBLocalServices
         #region Constructors
         public BoxModelDBLocalService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums,
            ILocalService LocalService,
-           CSSPDBLocalContext dbLocal)
+           CSSPDBLocalContext dbLocal,
+           CSSPDBInMemoryContext dbLocalIM)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LocalService = LocalService;
             this.enums = enums;
             this.dbLocal = dbLocal;
+            this.dbLocalIM = dbLocalIM;
         }
         #endregion Constructors
 
@@ -94,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            BoxModel boxModel = (from c in dbLocal.BoxModels
+            BoxModel boxModel = (from c in dbLocal.BoxModels.Local
                     where c.BoxModelID == BoxModelID
                     select c).FirstOrDefault();
 
@@ -106,9 +109,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.BoxModels.Remove(boxModel);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -130,7 +132,7 @@ namespace CSSPDBLocalServices
 
             if (boxModel.BoxModelID == 0)
             {
-                int LastBoxModelID = (from c in dbLocal.BoxModels
+                int LastBoxModelID = (from c in dbLocal.BoxModels.AsNoTracking()
                           orderby c.BoxModelID descending
                           select c.BoxModelID).FirstOrDefault();
 
@@ -140,9 +142,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.BoxModels.Add(boxModel);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -165,9 +166,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.BoxModels.Update(boxModel);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -188,18 +188,35 @@ namespace CSSPDBLocalServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "BoxModelID"), new[] { nameof(boxModel.BoxModelID) });
                 }
 
-                if (!(from c in dbLocal.BoxModels select c).Where(c => c.BoxModelID == boxModel.BoxModelID).Any())
+                if (!(from c in dbLocal.BoxModels.AsNoTracking() select c).Where(c => c.BoxModelID == boxModel.BoxModelID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "BoxModel", "BoxModelID", boxModel.BoxModelID.ToString()), new[] { nameof(boxModel.BoxModelID) });
                 }
             }
 
             TVItem TVItemInfrastructureTVItemID = null;
-            TVItemInfrastructureTVItemID = (from c in dbLocal.TVItems where c.TVItemID == boxModel.InfrastructureTVItemID select c).FirstOrDefault();
+            TVItemInfrastructureTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == boxModel.InfrastructureTVItemID select c).FirstOrDefault();
 
             if (TVItemInfrastructureTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "InfrastructureTVItemID", boxModel.InfrastructureTVItemID.ToString()), new[] { nameof(boxModel.InfrastructureTVItemID) });
+                TVItemInfrastructureTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == boxModel.InfrastructureTVItemID select c).FirstOrDefault();
+
+                if (TVItemInfrastructureTVItemID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "InfrastructureTVItemID", boxModel.InfrastructureTVItemID.ToString()), new[] { nameof(boxModel.InfrastructureTVItemID) });
+                }
+                else
+                {
+                    List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                    {
+                        TVTypeEnum.Infrastructure,
+                    };
+                    if (!AllowableTVTypes.Contains(TVItemInfrastructureTVItemID.TVType))
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "InfrastructureTVItemID", "Infrastructure"), new[] { nameof(boxModel.InfrastructureTVItemID) });
+                    }
+                }
+
             }
             else
             {
@@ -276,11 +293,28 @@ namespace CSSPDBLocalServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == boxModel.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == boxModel.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", boxModel.LastUpdateContactTVItemID.ToString()), new[] { nameof(boxModel.LastUpdateContactTVItemID) });
+                TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == boxModel.LastUpdateContactTVItemID select c).FirstOrDefault();
+
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", boxModel.LastUpdateContactTVItemID.ToString()), new[] { nameof(boxModel.LastUpdateContactTVItemID) });
+                }
+                else
+                {
+                    List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                    {
+                        TVTypeEnum.Contact,
+                    };
+                    if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(boxModel.LastUpdateContactTVItemID) });
+                    }
+                }
+
             }
             else
             {

@@ -22,6 +22,7 @@ using Xunit;
 using System.ComponentModel.DataAnnotations;
 using CSSPCultureServices.Resources;
 using LocalServices;
+using System.Threading;
 
 namespace CSSPDBLocalServices.Tests
 {
@@ -39,6 +40,7 @@ namespace CSSPDBLocalServices.Tests
         private ILocalService LocalService { get; set; }
         private ISamplingPlanEmailDBLocalService SamplingPlanEmailDBLocalService { get; set; }
         private CSSPDBLocalContext dbLocal { get; set; }
+        private CSSPDBInMemoryContext dbLocalIM { get; set; }
         private SamplingPlanEmail samplingPlanEmail { get; set; }
         #endregion Properties
 
@@ -49,7 +51,17 @@ namespace CSSPDBLocalServices.Tests
         }
         #endregion Constructors
 
-        #region Tests Generated [DBLocal]CRUD
+        #region Tests Generated Constructor [DBLocal]
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task SamplingPlanEmailDBLocal_Constructor_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+        }
+        #endregion Tests Generated Constructor [DBLocal]
+
+        #region Tests Generated [DBLocal] CRUD
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
@@ -61,7 +73,7 @@ namespace CSSPDBLocalServices.Tests
 
             await DoCRUDDBLocalTest();
         }
-        #endregion Tests Generated CRUD
+        #endregion Tests Generated [DBLocal] CRUD
 
         #region Tests Generated Properties
         [Theory]
@@ -227,17 +239,6 @@ namespace CSSPDBLocalServices.Tests
             int count = ((List<SamplingPlanEmail>)((OkObjectResult)actionSamplingPlanEmailList.Result).Value).Count();
             Assert.True(count > 0);
 
-            // List<SamplingPlanEmail> with skip and take
-            var actionSamplingPlanEmailListSkipAndTake = await SamplingPlanEmailDBLocalService.GetSamplingPlanEmailList(1, 1);
-            Assert.Equal(200, ((ObjectResult)actionSamplingPlanEmailListSkipAndTake.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionSamplingPlanEmailListSkipAndTake.Result).Value);
-            List<SamplingPlanEmail> samplingPlanEmailListSkipAndTake = (List<SamplingPlanEmail>)((OkObjectResult)actionSamplingPlanEmailListSkipAndTake.Result).Value;
-
-            int countSkipAndTake = ((List<SamplingPlanEmail>)((OkObjectResult)actionSamplingPlanEmailListSkipAndTake.Result).Value).Count();
-            Assert.True(countSkipAndTake == 1);
-
-            Assert.False(samplingPlanEmailList[0].SamplingPlanEmailID == samplingPlanEmailListSkipAndTake[0].SamplingPlanEmailID);
-
             // Get SamplingPlanEmail With SamplingPlanEmailID
             var actionSamplingPlanEmailGet = await SamplingPlanEmailDBLocalService.GetSamplingPlanEmailWithSamplingPlanEmailID(samplingPlanEmailList[0].SamplingPlanEmailID);
             Assert.Equal(200, ((ObjectResult)actionSamplingPlanEmailGet.Result).StatusCode);
@@ -299,6 +300,11 @@ namespace CSSPDBLocalServices.Tests
                 options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
             });
 
+            Services.AddDbContext<CSSPDBInMemoryContext>(options =>
+            {
+                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBLocal.FullName }");
+            });
+
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<ILocalService, LocalService>();
             Services.AddSingleton<IEnums, Enums>();
@@ -319,6 +325,9 @@ namespace CSSPDBLocalServices.Tests
 
             dbLocal = Provider.GetService<CSSPDBLocalContext>();
             Assert.NotNull(dbLocal);
+
+            dbLocalIM = Provider.GetService<CSSPDBInMemoryContext>();
+            Assert.NotNull(dbLocalIM);
 
             SamplingPlanEmailDBLocalService = Provider.GetService<ISamplingPlanEmailDBLocalService>();
             Assert.NotNull(SamplingPlanEmailDBLocalService);
@@ -341,8 +350,8 @@ namespace CSSPDBLocalServices.Tests
 
             try
             {
-                dbLocal.SamplingPlans.Add(new SamplingPlan() { SamplingPlanID = 1, IsActive = false, SamplingPlanName = @"C:\CSSPLabSheets\SamplingPlan_Subsector_Routine_A1_2019_a_aa.txt", ForGroupName = "a_aa", SampleType = (SampleTypeEnum)109, SamplingPlanType = (SamplingPlanTypeEnum)1, LabSheetType = (LabSheetTypeEnum)1, ProvinceTVItemID = 6, CreatorTVItemID = 2, Year = 2019, AccessCode = "Microlab12", DailyDuplicatePrecisionCriteria = 0.6872000098228455, IntertechDuplicatePrecisionCriteria = 0.09300000220537186, IncludeLaboratoryQAQC = false, ApprovalCode = "aaabbb", SamplingPlanFileTVItemID = 49, AnalyzeMethodDefault = (AnalyzeMethodEnum)6, SampleMatrixDefault = (SampleMatrixEnum)7, LaboratoryDefault = (LaboratoryEnum)19, BackupDirectory = @"\\Atlantic.int.ec.gc.ca\shares\Branches\EPB\ShellFish\CSSPTools\CSSPLabSheets\", LastUpdateDate_UTC = new DateTime(2019, 1, 28, 15, 15, 42), LastUpdateContactTVItemID = 2 });
-                dbLocal.SaveChanges();
+                dbLocalIM.SamplingPlans.Add(new SamplingPlan() { SamplingPlanID = 1, IsActive = false, SamplingPlanName = @"C:\CSSPLabSheets\SamplingPlan_Subsector_Routine_A1_2019_a_aa.txt", ForGroupName = "a_aa", SampleType = (SampleTypeEnum)109, SamplingPlanType = (SamplingPlanTypeEnum)1, LabSheetType = (LabSheetTypeEnum)1, ProvinceTVItemID = 6, CreatorTVItemID = 2, Year = 2019, AccessCode = "Microlab12", DailyDuplicatePrecisionCriteria = 0.6872000098228455, IntertechDuplicatePrecisionCriteria = 0.09300000220537186, IncludeLaboratoryQAQC = false, ApprovalCode = "aaabbb", SamplingPlanFileTVItemID = 49, AnalyzeMethodDefault = (AnalyzeMethodEnum)6, SampleMatrixDefault = (SampleMatrixEnum)7, LaboratoryDefault = (LaboratoryEnum)19, BackupDirectory = @"\\Atlantic.int.ec.gc.ca\shares\Branches\EPB\ShellFish\CSSPTools\CSSPLabSheets\", LastUpdateDate_UTC = new DateTime(2019, 1, 28, 15, 15, 42), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
             }
             catch (Exception)
             {
@@ -350,8 +359,8 @@ namespace CSSPDBLocalServices.Tests
             }
             try
             {
-                dbLocal.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2 });
-                dbLocal.SaveChanges();
+                dbLocalIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
             }
             catch (Exception)
             {

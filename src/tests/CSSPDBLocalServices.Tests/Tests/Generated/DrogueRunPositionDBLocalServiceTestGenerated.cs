@@ -22,6 +22,7 @@ using Xunit;
 using System.ComponentModel.DataAnnotations;
 using CSSPCultureServices.Resources;
 using LocalServices;
+using System.Threading;
 
 namespace CSSPDBLocalServices.Tests
 {
@@ -39,6 +40,7 @@ namespace CSSPDBLocalServices.Tests
         private ILocalService LocalService { get; set; }
         private IDrogueRunPositionDBLocalService DrogueRunPositionDBLocalService { get; set; }
         private CSSPDBLocalContext dbLocal { get; set; }
+        private CSSPDBInMemoryContext dbLocalIM { get; set; }
         private DrogueRunPosition drogueRunPosition { get; set; }
         #endregion Properties
 
@@ -49,7 +51,17 @@ namespace CSSPDBLocalServices.Tests
         }
         #endregion Constructors
 
-        #region Tests Generated [DBLocal]CRUD
+        #region Tests Generated Constructor [DBLocal]
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task DrogueRunPositionDBLocal_Constructor_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+        }
+        #endregion Tests Generated Constructor [DBLocal]
+
+        #region Tests Generated [DBLocal] CRUD
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
@@ -61,7 +73,7 @@ namespace CSSPDBLocalServices.Tests
 
             await DoCRUDDBLocalTest();
         }
-        #endregion Tests Generated CRUD
+        #endregion Tests Generated [DBLocal] CRUD
 
         #region Tests Generated Properties
         [Theory]
@@ -306,17 +318,6 @@ namespace CSSPDBLocalServices.Tests
             int count = ((List<DrogueRunPosition>)((OkObjectResult)actionDrogueRunPositionList.Result).Value).Count();
             Assert.True(count > 0);
 
-            // List<DrogueRunPosition> with skip and take
-            var actionDrogueRunPositionListSkipAndTake = await DrogueRunPositionDBLocalService.GetDrogueRunPositionList(1, 1);
-            Assert.Equal(200, ((ObjectResult)actionDrogueRunPositionListSkipAndTake.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionDrogueRunPositionListSkipAndTake.Result).Value);
-            List<DrogueRunPosition> drogueRunPositionListSkipAndTake = (List<DrogueRunPosition>)((OkObjectResult)actionDrogueRunPositionListSkipAndTake.Result).Value;
-
-            int countSkipAndTake = ((List<DrogueRunPosition>)((OkObjectResult)actionDrogueRunPositionListSkipAndTake.Result).Value).Count();
-            Assert.True(countSkipAndTake == 1);
-
-            Assert.False(drogueRunPositionList[0].DrogueRunPositionID == drogueRunPositionListSkipAndTake[0].DrogueRunPositionID);
-
             // Get DrogueRunPosition With DrogueRunPositionID
             var actionDrogueRunPositionGet = await DrogueRunPositionDBLocalService.GetDrogueRunPositionWithDrogueRunPositionID(drogueRunPositionList[0].DrogueRunPositionID);
             Assert.Equal(200, ((ObjectResult)actionDrogueRunPositionGet.Result).StatusCode);
@@ -378,6 +379,11 @@ namespace CSSPDBLocalServices.Tests
                 options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
             });
 
+            Services.AddDbContext<CSSPDBInMemoryContext>(options =>
+            {
+                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBLocal.FullName }");
+            });
+
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<ILocalService, LocalService>();
             Services.AddSingleton<IEnums, Enums>();
@@ -398,6 +404,9 @@ namespace CSSPDBLocalServices.Tests
 
             dbLocal = Provider.GetService<CSSPDBLocalContext>();
             Assert.NotNull(dbLocal);
+
+            dbLocalIM = Provider.GetService<CSSPDBInMemoryContext>();
+            Assert.NotNull(dbLocalIM);
 
             DrogueRunPositionDBLocalService = Provider.GetService<IDrogueRunPositionDBLocalService>();
             Assert.NotNull(DrogueRunPositionDBLocalService);
@@ -420,8 +429,8 @@ namespace CSSPDBLocalServices.Tests
 
             try
             {
-                dbLocal.DrogueRuns.Add(new DrogueRun() { DrogueRunID = 1, SubsectorTVItemID = 12, DrogueNumber = 12, DrogueType = (DrogueTypeEnum)2, RunStartDateTime = new DateTime(2018, 10, 11, 12, 42, 7), IsRisingTide = true, LastUpdateDate_UTC = new DateTime(2019, 2, 11, 16, 27, 53), LastUpdateContactTVItemID = 2 });
-                dbLocal.SaveChanges();
+                dbLocalIM.DrogueRuns.Add(new DrogueRun() { DrogueRunID = 1, SubsectorTVItemID = 12, DrogueNumber = 12, DrogueType = (DrogueTypeEnum)2, RunStartDateTime = new DateTime(2018, 10, 11, 12, 42, 7), IsRisingTide = true, LastUpdateDate_UTC = new DateTime(2019, 2, 11, 16, 27, 53), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
             }
             catch (Exception)
             {
@@ -429,8 +438,8 @@ namespace CSSPDBLocalServices.Tests
             }
             try
             {
-                dbLocal.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2 });
-                dbLocal.SaveChanges();
+                dbLocalIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
             }
             catch (Exception)
             {

@@ -37,6 +37,7 @@ namespace CSSPDBLocalServices
 
         #region Properties
         private CSSPDBLocalContext dbLocal { get; }
+        private CSSPDBInMemoryContext dbLocalIM { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILocalService LocalService { get; }
@@ -47,13 +48,15 @@ namespace CSSPDBLocalServices
         #region Constructors
         public SamplingPlanSubsectorDBLocalService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums,
            ILocalService LocalService,
-           CSSPDBLocalContext dbLocal)
+           CSSPDBLocalContext dbLocal,
+           CSSPDBInMemoryContext dbLocalIM)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LocalService = LocalService;
             this.enums = enums;
             this.dbLocal = dbLocal;
+            this.dbLocalIM = dbLocalIM;
         }
         #endregion Constructors
 
@@ -94,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            SamplingPlanSubsector samplingPlanSubsector = (from c in dbLocal.SamplingPlanSubsectors
+            SamplingPlanSubsector samplingPlanSubsector = (from c in dbLocal.SamplingPlanSubsectors.Local
                     where c.SamplingPlanSubsectorID == SamplingPlanSubsectorID
                     select c).FirstOrDefault();
 
@@ -106,9 +109,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.SamplingPlanSubsectors.Remove(samplingPlanSubsector);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -130,7 +132,7 @@ namespace CSSPDBLocalServices
 
             if (samplingPlanSubsector.SamplingPlanSubsectorID == 0)
             {
-                int LastSamplingPlanSubsectorID = (from c in dbLocal.SamplingPlanSubsectors
+                int LastSamplingPlanSubsectorID = (from c in dbLocal.SamplingPlanSubsectors.AsNoTracking()
                           orderby c.SamplingPlanSubsectorID descending
                           select c.SamplingPlanSubsectorID).FirstOrDefault();
 
@@ -140,9 +142,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.SamplingPlanSubsectors.Add(samplingPlanSubsector);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -165,9 +166,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.SamplingPlanSubsectors.Update(samplingPlanSubsector);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -188,26 +188,49 @@ namespace CSSPDBLocalServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SamplingPlanSubsectorID"), new[] { nameof(samplingPlanSubsector.SamplingPlanSubsectorID) });
                 }
 
-                if (!(from c in dbLocal.SamplingPlanSubsectors select c).Where(c => c.SamplingPlanSubsectorID == samplingPlanSubsector.SamplingPlanSubsectorID).Any())
+                if (!(from c in dbLocal.SamplingPlanSubsectors.AsNoTracking() select c).Where(c => c.SamplingPlanSubsectorID == samplingPlanSubsector.SamplingPlanSubsectorID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "SamplingPlanSubsector", "SamplingPlanSubsectorID", samplingPlanSubsector.SamplingPlanSubsectorID.ToString()), new[] { nameof(samplingPlanSubsector.SamplingPlanSubsectorID) });
                 }
             }
 
             SamplingPlan SamplingPlanSamplingPlanID = null;
-            SamplingPlanSamplingPlanID = (from c in dbLocal.SamplingPlans where c.SamplingPlanID == samplingPlanSubsector.SamplingPlanID select c).FirstOrDefault();
+            SamplingPlanSamplingPlanID = (from c in dbLocal.SamplingPlans.AsNoTracking() where c.SamplingPlanID == samplingPlanSubsector.SamplingPlanID select c).FirstOrDefault();
 
             if (SamplingPlanSamplingPlanID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "SamplingPlan", "SamplingPlanID", samplingPlanSubsector.SamplingPlanID.ToString()), new[] { nameof(samplingPlanSubsector.SamplingPlanID) });
+                SamplingPlanSamplingPlanID = (from c in dbLocalIM.SamplingPlans.Local where c.SamplingPlanID == samplingPlanSubsector.SamplingPlanID select c).FirstOrDefault();
+
+                if (SamplingPlanSamplingPlanID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "SamplingPlan", "SamplingPlanID", samplingPlanSubsector.SamplingPlanID.ToString()), new[] { nameof(samplingPlanSubsector.SamplingPlanID) });
+                }
+
             }
 
             TVItem TVItemSubsectorTVItemID = null;
-            TVItemSubsectorTVItemID = (from c in dbLocal.TVItems where c.TVItemID == samplingPlanSubsector.SubsectorTVItemID select c).FirstOrDefault();
+            TVItemSubsectorTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == samplingPlanSubsector.SubsectorTVItemID select c).FirstOrDefault();
 
             if (TVItemSubsectorTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "SubsectorTVItemID", samplingPlanSubsector.SubsectorTVItemID.ToString()), new[] { nameof(samplingPlanSubsector.SubsectorTVItemID) });
+                TVItemSubsectorTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == samplingPlanSubsector.SubsectorTVItemID select c).FirstOrDefault();
+
+                if (TVItemSubsectorTVItemID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "SubsectorTVItemID", samplingPlanSubsector.SubsectorTVItemID.ToString()), new[] { nameof(samplingPlanSubsector.SubsectorTVItemID) });
+                }
+                else
+                {
+                    List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                    {
+                        TVTypeEnum.Subsector,
+                    };
+                    if (!AllowableTVTypes.Contains(TVItemSubsectorTVItemID.TVType))
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "SubsectorTVItemID", "Subsector"), new[] { nameof(samplingPlanSubsector.SubsectorTVItemID) });
+                    }
+                }
+
             }
             else
             {
@@ -234,11 +257,28 @@ namespace CSSPDBLocalServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == samplingPlanSubsector.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == samplingPlanSubsector.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", samplingPlanSubsector.LastUpdateContactTVItemID.ToString()), new[] { nameof(samplingPlanSubsector.LastUpdateContactTVItemID) });
+                TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == samplingPlanSubsector.LastUpdateContactTVItemID select c).FirstOrDefault();
+
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", samplingPlanSubsector.LastUpdateContactTVItemID.ToString()), new[] { nameof(samplingPlanSubsector.LastUpdateContactTVItemID) });
+                }
+                else
+                {
+                    List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                    {
+                        TVTypeEnum.Contact,
+                    };
+                    if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(samplingPlanSubsector.LastUpdateContactTVItemID) });
+                    }
+                }
+
             }
             else
             {

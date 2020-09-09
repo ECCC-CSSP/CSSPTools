@@ -49,7 +49,17 @@ namespace CSSPDBLocalIMServices.Tests
         }
         #endregion Constructors
 
-        #region Tests Generated [DBLocalIM]CRUD
+        #region Tests Generated Constructor [DBLocalIM]
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task MWQMSampleLanguageDBLocalIM_Constructor_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+        }
+        #endregion Tests Generated Constructor [DBLocalIM]
+
+        #region Tests Generated [DBLocalIM] CRUD
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
@@ -61,7 +71,7 @@ namespace CSSPDBLocalIMServices.Tests
 
             await DoCRUDDBLocalIMTest();
         }
-        #endregion Tests Generated CRUD
+        #endregion Tests Generated [DBLocalIM] CRUD
 
         #region Tests Generated Properties
         [Theory]
@@ -313,6 +323,24 @@ namespace CSSPDBLocalIMServices.Tests
             if (OmitPropName != "LastUpdateDate_UTC") mwqmSampleLanguage.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") mwqmSampleLanguage.LastUpdateContactTVItemID = 2;
 
+            try
+            {
+                dbLocalIM.MWQMSamples.Add(new MWQMSample() { MWQMSampleID = 1, MWQMSiteTVItemID = 44, MWQMRunTVItemID = 50, SampleDateTime_Local = new DateTime(2017, 6, 21, 7, 59, 0), TimeText = null, Depth_m = null, FecCol_MPN_100ml = 49, Salinity_PPT = 12, WaterTemp_C = 19, PH = null, SampleTypesText = "109,", SampleType_old = null, Tube_10 = 5, Tube_1_0 = 1, Tube_0_1 = 0, ProcessedBy = null, UseForOpenData = true, LastUpdateDate_UTC = new DateTime(2017, 6, 28, 12, 41, 37), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
+            }
+            catch (Exception)
+            {
+                // Assert.True(false, ex.Message);
+            }
+            try
+            {
+                dbLocalIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
+            }
+            catch (Exception)
+            {
+                // Assert.True(false, ex.Message);
+            }
 
 
             return mwqmSampleLanguage;

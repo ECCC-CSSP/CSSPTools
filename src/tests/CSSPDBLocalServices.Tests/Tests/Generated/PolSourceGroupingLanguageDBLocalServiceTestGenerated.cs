@@ -22,6 +22,7 @@ using Xunit;
 using System.ComponentModel.DataAnnotations;
 using CSSPCultureServices.Resources;
 using LocalServices;
+using System.Threading;
 
 namespace CSSPDBLocalServices.Tests
 {
@@ -39,6 +40,7 @@ namespace CSSPDBLocalServices.Tests
         private ILocalService LocalService { get; set; }
         private IPolSourceGroupingLanguageDBLocalService PolSourceGroupingLanguageDBLocalService { get; set; }
         private CSSPDBLocalContext dbLocal { get; set; }
+        private CSSPDBInMemoryContext dbLocalIM { get; set; }
         private PolSourceGroupingLanguage polSourceGroupingLanguage { get; set; }
         #endregion Properties
 
@@ -49,7 +51,17 @@ namespace CSSPDBLocalServices.Tests
         }
         #endregion Constructors
 
-        #region Tests Generated [DBLocal]CRUD
+        #region Tests Generated Constructor [DBLocal]
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task PolSourceGroupingLanguageDBLocal_Constructor_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+        }
+        #endregion Tests Generated Constructor [DBLocal]
+
+        #region Tests Generated [DBLocal] CRUD
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
@@ -61,7 +73,7 @@ namespace CSSPDBLocalServices.Tests
 
             await DoCRUDDBLocalTest();
         }
-        #endregion Tests Generated CRUD
+        #endregion Tests Generated [DBLocal] CRUD
 
         #region Tests Generated Properties
         [Theory]
@@ -365,17 +377,6 @@ namespace CSSPDBLocalServices.Tests
             int count = ((List<PolSourceGroupingLanguage>)((OkObjectResult)actionPolSourceGroupingLanguageList.Result).Value).Count();
             Assert.True(count > 0);
 
-            // List<PolSourceGroupingLanguage> with skip and take
-            var actionPolSourceGroupingLanguageListSkipAndTake = await PolSourceGroupingLanguageDBLocalService.GetPolSourceGroupingLanguageList(1, 1);
-            Assert.Equal(200, ((ObjectResult)actionPolSourceGroupingLanguageListSkipAndTake.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionPolSourceGroupingLanguageListSkipAndTake.Result).Value);
-            List<PolSourceGroupingLanguage> polSourceGroupingLanguageListSkipAndTake = (List<PolSourceGroupingLanguage>)((OkObjectResult)actionPolSourceGroupingLanguageListSkipAndTake.Result).Value;
-
-            int countSkipAndTake = ((List<PolSourceGroupingLanguage>)((OkObjectResult)actionPolSourceGroupingLanguageListSkipAndTake.Result).Value).Count();
-            Assert.True(countSkipAndTake == 1);
-
-            Assert.False(polSourceGroupingLanguageList[0].PolSourceGroupingLanguageID == polSourceGroupingLanguageListSkipAndTake[0].PolSourceGroupingLanguageID);
-
             // Get PolSourceGroupingLanguage With PolSourceGroupingLanguageID
             var actionPolSourceGroupingLanguageGet = await PolSourceGroupingLanguageDBLocalService.GetPolSourceGroupingLanguageWithPolSourceGroupingLanguageID(polSourceGroupingLanguageList[0].PolSourceGroupingLanguageID);
             Assert.Equal(200, ((ObjectResult)actionPolSourceGroupingLanguageGet.Result).StatusCode);
@@ -437,6 +438,11 @@ namespace CSSPDBLocalServices.Tests
                 options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
             });
 
+            Services.AddDbContext<CSSPDBInMemoryContext>(options =>
+            {
+                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBLocal.FullName }");
+            });
+
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<ILocalService, LocalService>();
             Services.AddSingleton<IEnums, Enums>();
@@ -457,6 +463,9 @@ namespace CSSPDBLocalServices.Tests
 
             dbLocal = Provider.GetService<CSSPDBLocalContext>();
             Assert.NotNull(dbLocal);
+
+            dbLocalIM = Provider.GetService<CSSPDBInMemoryContext>();
+            Assert.NotNull(dbLocalIM);
 
             PolSourceGroupingLanguageDBLocalService = Provider.GetService<IPolSourceGroupingLanguageDBLocalService>();
             Assert.NotNull(PolSourceGroupingLanguageDBLocalService);
@@ -485,8 +494,8 @@ namespace CSSPDBLocalServices.Tests
 
             try
             {
-                dbLocal.PolSourceGroupings.Add(new PolSourceGrouping() { PolSourceGroupingID = 1, CSSPID = 10003, GroupName = "FirstGroupName", Child = "FirstChild", Hide = "FirstHide", LastUpdateDate_UTC = new DateTime(2020, 9, 3, 9, 17, 8), LastUpdateContactTVItemID = 2 });
-                dbLocal.SaveChanges();
+                dbLocalIM.PolSourceGroupings.Add(new PolSourceGrouping() { PolSourceGroupingID = 1, CSSPID = 10003, GroupName = "FirstGroupName", Child = "FirstChild", Hide = "FirstHide", LastUpdateDate_UTC = new DateTime(2020, 9, 3, 9, 17, 8), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
             }
             catch (Exception)
             {
@@ -494,8 +503,8 @@ namespace CSSPDBLocalServices.Tests
             }
             try
             {
-                dbLocal.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2 });
-                dbLocal.SaveChanges();
+                dbLocalIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
             }
             catch (Exception)
             {

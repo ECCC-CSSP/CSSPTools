@@ -22,6 +22,7 @@ using Xunit;
 using System.ComponentModel.DataAnnotations;
 using CSSPCultureServices.Resources;
 using LocalServices;
+using System.Threading;
 
 namespace CSSPDBLocalServices.Tests
 {
@@ -39,6 +40,7 @@ namespace CSSPDBLocalServices.Tests
         private ILocalService LocalService { get; set; }
         private IInfrastructureLanguageDBLocalService InfrastructureLanguageDBLocalService { get; set; }
         private CSSPDBLocalContext dbLocal { get; set; }
+        private CSSPDBInMemoryContext dbLocalIM { get; set; }
         private InfrastructureLanguage infrastructureLanguage { get; set; }
         #endregion Properties
 
@@ -49,7 +51,17 @@ namespace CSSPDBLocalServices.Tests
         }
         #endregion Constructors
 
-        #region Tests Generated [DBLocal]CRUD
+        #region Tests Generated Constructor [DBLocal]
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task InfrastructureLanguageDBLocal_Constructor_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+        }
+        #endregion Tests Generated Constructor [DBLocal]
+
+        #region Tests Generated [DBLocal] CRUD
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
@@ -61,7 +73,7 @@ namespace CSSPDBLocalServices.Tests
 
             await DoCRUDDBLocalTest();
         }
-        #endregion Tests Generated CRUD
+        #endregion Tests Generated [DBLocal] CRUD
 
         #region Tests Generated Properties
         [Theory]
@@ -215,17 +227,6 @@ namespace CSSPDBLocalServices.Tests
             int count = ((List<InfrastructureLanguage>)((OkObjectResult)actionInfrastructureLanguageList.Result).Value).Count();
             Assert.True(count > 0);
 
-            // List<InfrastructureLanguage> with skip and take
-            var actionInfrastructureLanguageListSkipAndTake = await InfrastructureLanguageDBLocalService.GetInfrastructureLanguageList(1, 1);
-            Assert.Equal(200, ((ObjectResult)actionInfrastructureLanguageListSkipAndTake.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionInfrastructureLanguageListSkipAndTake.Result).Value);
-            List<InfrastructureLanguage> infrastructureLanguageListSkipAndTake = (List<InfrastructureLanguage>)((OkObjectResult)actionInfrastructureLanguageListSkipAndTake.Result).Value;
-
-            int countSkipAndTake = ((List<InfrastructureLanguage>)((OkObjectResult)actionInfrastructureLanguageListSkipAndTake.Result).Value).Count();
-            Assert.True(countSkipAndTake == 1);
-
-            Assert.False(infrastructureLanguageList[0].InfrastructureLanguageID == infrastructureLanguageListSkipAndTake[0].InfrastructureLanguageID);
-
             // Get InfrastructureLanguage With InfrastructureLanguageID
             var actionInfrastructureLanguageGet = await InfrastructureLanguageDBLocalService.GetInfrastructureLanguageWithInfrastructureLanguageID(infrastructureLanguageList[0].InfrastructureLanguageID);
             Assert.Equal(200, ((ObjectResult)actionInfrastructureLanguageGet.Result).StatusCode);
@@ -287,6 +288,11 @@ namespace CSSPDBLocalServices.Tests
                 options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
             });
 
+            Services.AddDbContext<CSSPDBInMemoryContext>(options =>
+            {
+                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBLocal.FullName }");
+            });
+
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<ILocalService, LocalService>();
             Services.AddSingleton<IEnums, Enums>();
@@ -308,6 +314,9 @@ namespace CSSPDBLocalServices.Tests
             dbLocal = Provider.GetService<CSSPDBLocalContext>();
             Assert.NotNull(dbLocal);
 
+            dbLocalIM = Provider.GetService<CSSPDBInMemoryContext>();
+            Assert.NotNull(dbLocalIM);
+
             InfrastructureLanguageDBLocalService = Provider.GetService<IInfrastructureLanguageDBLocalService>();
             Assert.NotNull(InfrastructureLanguageDBLocalService);
 
@@ -326,8 +335,8 @@ namespace CSSPDBLocalServices.Tests
 
             try
             {
-                dbLocal.Infrastructures.Add(new Infrastructure() { InfrastructureID = 1, InfrastructureTVItemID = 41, PrismID = null, TPID = 64, LSID = null, SiteID = 1593, Site = 14, InfrastructureCategory = "null", InfrastructureType = (InfrastructureTypeEnum)1, FacilityType = (FacilityTypeEnum)1, HasBackupPower = null, IsMechanicallyAerated = true, NumberOfCells = null, NumberOfAeratedCells = 2, AerationType = (AerationTypeEnum)1, PreliminaryTreatmentType = null, PrimaryTreatmentType = null, SecondaryTreatmentType = null, TertiaryTreatmentType = null, TreatmentType = (TreatmentTypeEnum)9, DisinfectionType = (DisinfectionTypeEnum)2, CollectionSystemType = null, AlarmSystemType = null, DesignFlow_m3_day = 2280, AverageFlow_m3_day = 1021, PeakFlow_m3_day = 2347, PopServed = 2383, CanOverflow = false, ValveType = null, PercFlowOfTotal = 100, TimeOffset_hour = -4, TempCatchAllRemoveLater = "               Year of assessment:	[]---              Design flow in m3/d:	2280---             Average flow in m3/d:	1021---                Peak flow in m3/d:	2347---           Estimated flow in m3/d:	[]---             Date of construction:	[]---           Date of recent upgrade:	[]---Number of visit to plant per week:	[]---                 Has alarm system:	[]---              Combined percentage:	[]---------Please add the contact info in the system------ Operator name:	Denny Richard---  Operator tel:	(506)  743-7318, Cell (506) 744-0837---Operator email:	---Infrastructure type:	WWTP------Disinfection Type Text---Chlorination and Dechlorination------Infrastructure Type Text---WWTP------Treatment Type Text---2 Cell Aerated Lagoon---", AverageDepth_m = 1, NumberOfPorts = 1, PortDiameter_m = 0.4, PortSpacing_m = 1000, PortElevation_m = 0.5, VerticalAngle_deg = null, HorizontalAngle_deg = 90, DecayRate_per_day = 4.6821, NearFieldVelocity_m_s = null, FarFieldVelocity_m_s = 0.18, ReceivingWaterSalinity_PSU = 28, ReceivingWaterTemperature_C = null, ReceivingWater_MPN_per_100ml = 2500000, DistanceFromShore_m = null, SeeOtherMunicipalityTVItemID = null, CivicAddressTVItemID = null, LastUpdateDate_UTC = new DateTime(2018, 7, 5, 19, 20, 50), LastUpdateContactTVItemID = 2 });
-                dbLocal.SaveChanges();
+                dbLocalIM.Infrastructures.Add(new Infrastructure() { InfrastructureID = 1, InfrastructureTVItemID = 41, PrismID = null, TPID = 64, LSID = null, SiteID = 1593, Site = 14, InfrastructureCategory = "null", InfrastructureType = (InfrastructureTypeEnum)1, FacilityType = (FacilityTypeEnum)1, HasBackupPower = null, IsMechanicallyAerated = true, NumberOfCells = null, NumberOfAeratedCells = 2, AerationType = (AerationTypeEnum)1, PreliminaryTreatmentType = null, PrimaryTreatmentType = null, SecondaryTreatmentType = null, TertiaryTreatmentType = null, TreatmentType = (TreatmentTypeEnum)9, DisinfectionType = (DisinfectionTypeEnum)2, CollectionSystemType = null, AlarmSystemType = null, DesignFlow_m3_day = 2280, AverageFlow_m3_day = 1021, PeakFlow_m3_day = 2347, PopServed = 2383, CanOverflow = false, ValveType = null, PercFlowOfTotal = 100, TimeOffset_hour = -4, TempCatchAllRemoveLater = "               Year of assessment:	[]---              Design flow in m3/d:	2280---             Average flow in m3/d:	1021---                Peak flow in m3/d:	2347---           Estimated flow in m3/d:	[]---             Date of construction:	[]---           Date of recent upgrade:	[]---Number of visit to plant per week:	[]---                 Has alarm system:	[]---              Combined percentage:	[]---------Please add the contact info in the system------ Operator name:	Denny Richard---  Operator tel:	(506)  743-7318, Cell (506) 744-0837---Operator email:	---Infrastructure type:	WWTP------Disinfection Type Text---Chlorination and Dechlorination------Infrastructure Type Text---WWTP------Treatment Type Text---2 Cell Aerated Lagoon---", AverageDepth_m = 1, NumberOfPorts = 1, PortDiameter_m = 0.4, PortSpacing_m = 1000, PortElevation_m = 0.5, VerticalAngle_deg = null, HorizontalAngle_deg = 90, DecayRate_per_day = 4.6821, NearFieldVelocity_m_s = null, FarFieldVelocity_m_s = 0.18, ReceivingWaterSalinity_PSU = 28, ReceivingWaterTemperature_C = null, ReceivingWater_MPN_per_100ml = 2500000, DistanceFromShore_m = null, SeeOtherMunicipalityTVItemID = null, CivicAddressTVItemID = null, LastUpdateDate_UTC = new DateTime(2018, 7, 5, 19, 20, 50), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
             }
             catch (Exception)
             {
@@ -335,8 +344,8 @@ namespace CSSPDBLocalServices.Tests
             }
             try
             {
-                dbLocal.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2 });
-                dbLocal.SaveChanges();
+                dbLocalIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
             }
             catch (Exception)
             {

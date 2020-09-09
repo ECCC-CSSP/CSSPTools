@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            PolSourceSiteEffectTerm polSourceSiteEffectTerm = (from c in dbLocalIM.PolSourceSiteEffectTerms.AsNoTracking()
+            PolSourceSiteEffectTerm polSourceSiteEffectTerm = (from c in dbLocalIM.PolSourceSiteEffectTerms.Local
                     where c.PolSourceSiteEffectTermID == PolSourceSiteEffectTermID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<PolSourceSiteEffectTerm> polSourceSiteEffectTermList = (from c in dbLocalIM.PolSourceSiteEffectTerms.AsNoTracking() orderby c.PolSourceSiteEffectTermID select c).Skip(skip).Take(take).ToList();
+            List<PolSourceSiteEffectTerm> polSourceSiteEffectTermList = (from c in dbLocalIM.PolSourceSiteEffectTerms.Local orderby c.PolSourceSiteEffectTermID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(polSourceSiteEffectTermList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            PolSourceSiteEffectTerm polSourceSiteEffectTerm = (from c in dbLocalIM.PolSourceSiteEffectTerms
+            PolSourceSiteEffectTerm polSourceSiteEffectTerm = (from c in dbLocalIM.PolSourceSiteEffectTerms.Local
                     where c.PolSourceSiteEffectTermID == PolSourceSiteEffectTermID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.PolSourceSiteEffectTerms.Remove(polSourceSiteEffectTerm);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.PolSourceSiteEffectTerms.Add(polSourceSiteEffectTerm);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.PolSourceSiteEffectTerms.Update(polSourceSiteEffectTerm);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -187,7 +184,7 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "PolSourceSiteEffectTermID"), new[] { nameof(polSourceSiteEffectTerm.PolSourceSiteEffectTermID) });
                 }
 
-                if (!(from c in dbLocalIM.PolSourceSiteEffectTerms select c).Where(c => c.PolSourceSiteEffectTermID == polSourceSiteEffectTerm.PolSourceSiteEffectTermID).Any())
+                if (!(from c in dbLocalIM.PolSourceSiteEffectTerms.Local select c).Where(c => c.PolSourceSiteEffectTermID == polSourceSiteEffectTerm.PolSourceSiteEffectTermID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "PolSourceSiteEffectTerm", "PolSourceSiteEffectTermID", polSourceSiteEffectTerm.PolSourceSiteEffectTermID.ToString()), new[] { nameof(polSourceSiteEffectTerm.PolSourceSiteEffectTermID) });
                 }
@@ -196,7 +193,7 @@ namespace CSSPDBLocalIMServices
             if (polSourceSiteEffectTerm.UnderGroupID != null)
             {
                 PolSourceSiteEffectTerm PolSourceSiteEffectTermUnderGroupID = null;
-                PolSourceSiteEffectTermUnderGroupID = (from c in dbLocalIM.PolSourceSiteEffectTerms where c.PolSourceSiteEffectTermID == polSourceSiteEffectTerm.UnderGroupID select c).FirstOrDefault();
+                PolSourceSiteEffectTermUnderGroupID = (from c in dbLocalIM.PolSourceSiteEffectTerms.Local where c.PolSourceSiteEffectTermID == polSourceSiteEffectTerm.UnderGroupID select c).FirstOrDefault();
 
                 if (PolSourceSiteEffectTermUnderGroupID == null)
                 {
@@ -237,7 +234,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == polSourceSiteEffectTerm.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == polSourceSiteEffectTerm.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

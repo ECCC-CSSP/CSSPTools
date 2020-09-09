@@ -22,6 +22,7 @@ using Xunit;
 using System.ComponentModel.DataAnnotations;
 using CSSPCultureServices.Resources;
 using LocalServices;
+using System.Threading;
 
 namespace CSSPDBLocalServices.Tests
 {
@@ -39,6 +40,7 @@ namespace CSSPDBLocalServices.Tests
         private ILocalService LocalService { get; set; }
         private IClimateDataValueDBLocalService ClimateDataValueDBLocalService { get; set; }
         private CSSPDBLocalContext dbLocal { get; set; }
+        private CSSPDBInMemoryContext dbLocalIM { get; set; }
         private ClimateDataValue climateDataValue { get; set; }
         #endregion Properties
 
@@ -49,7 +51,17 @@ namespace CSSPDBLocalServices.Tests
         }
         #endregion Constructors
 
-        #region Tests Generated [DBLocal]CRUD
+        #region Tests Generated Constructor [DBLocal]
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task ClimateDataValueDBLocal_Constructor_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+        }
+        #endregion Tests Generated Constructor [DBLocal]
+
+        #region Tests Generated [DBLocal] CRUD
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
@@ -61,7 +73,7 @@ namespace CSSPDBLocalServices.Tests
 
             await DoCRUDDBLocalTest();
         }
-        #endregion Tests Generated CRUD
+        #endregion Tests Generated [DBLocal] CRUD
 
         #region Tests Generated Properties
         [Theory]
@@ -479,17 +491,6 @@ namespace CSSPDBLocalServices.Tests
             int count = ((List<ClimateDataValue>)((OkObjectResult)actionClimateDataValueList.Result).Value).Count();
             Assert.True(count > 0);
 
-            // List<ClimateDataValue> with skip and take
-            var actionClimateDataValueListSkipAndTake = await ClimateDataValueDBLocalService.GetClimateDataValueList(1, 1);
-            Assert.Equal(200, ((ObjectResult)actionClimateDataValueListSkipAndTake.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionClimateDataValueListSkipAndTake.Result).Value);
-            List<ClimateDataValue> climateDataValueListSkipAndTake = (List<ClimateDataValue>)((OkObjectResult)actionClimateDataValueListSkipAndTake.Result).Value;
-
-            int countSkipAndTake = ((List<ClimateDataValue>)((OkObjectResult)actionClimateDataValueListSkipAndTake.Result).Value).Count();
-            Assert.True(countSkipAndTake == 1);
-
-            Assert.False(climateDataValueList[0].ClimateDataValueID == climateDataValueListSkipAndTake[0].ClimateDataValueID);
-
             // Get ClimateDataValue With ClimateDataValueID
             var actionClimateDataValueGet = await ClimateDataValueDBLocalService.GetClimateDataValueWithClimateDataValueID(climateDataValueList[0].ClimateDataValueID);
             Assert.Equal(200, ((ObjectResult)actionClimateDataValueGet.Result).StatusCode);
@@ -551,6 +552,11 @@ namespace CSSPDBLocalServices.Tests
                 options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
             });
 
+            Services.AddDbContext<CSSPDBInMemoryContext>(options =>
+            {
+                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBLocal.FullName }");
+            });
+
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<ILocalService, LocalService>();
             Services.AddSingleton<IEnums, Enums>();
@@ -571,6 +577,9 @@ namespace CSSPDBLocalServices.Tests
 
             dbLocal = Provider.GetService<CSSPDBLocalContext>();
             Assert.NotNull(dbLocal);
+
+            dbLocalIM = Provider.GetService<CSSPDBInMemoryContext>();
+            Assert.NotNull(dbLocalIM);
 
             ClimateDataValueDBLocalService = Provider.GetService<IClimateDataValueDBLocalService>();
             Assert.NotNull(ClimateDataValueDBLocalService);
@@ -603,8 +612,8 @@ namespace CSSPDBLocalServices.Tests
 
             try
             {
-                dbLocal.ClimateSites.Add(new ClimateSite() { ClimateSiteID = 1, ClimateSiteTVItemID = 7, ECDBID = 6918, ClimateSiteName = "BOUCTOUCHE CDA CS", Province = "NB", Elevation_m = 35.9, ClimateID = "8100593", WMOID = 71666, TCID = "ABT", IsQuebecSite = null, IsCoCoRaHS = null, TimeOffset_hour = -4, File_desc = null, HourlyStartDate_Local = new DateTime(2005, 7, 13, 0, 0, 0), HourlyEndDate_Local = new DateTime(2029, 12, 11, 0, 0, 0), HourlyNow = true, DailyStartDate_Local = new DateTime(1991, 8, 1, 0, 0, 0), DailyEndDate_Local = new DateTime(2029, 12, 11, 0, 0, 0), DailyNow = true, MonthlyStartDate_Local = new DateTime(1991, 1, 1, 0, 0, 0), MonthlyEndDate_Local = new DateTime(2007, 7, 1, 0, 0, 0), MonthlyNow = null, LastUpdateDate_UTC = new DateTime(2018, 9, 14, 13, 4, 35), LastUpdateContactTVItemID = 2 });
-                dbLocal.SaveChanges();
+                dbLocalIM.ClimateSites.Add(new ClimateSite() { ClimateSiteID = 1, ClimateSiteTVItemID = 7, ECDBID = 6918, ClimateSiteName = "BOUCTOUCHE CDA CS", Province = "NB", Elevation_m = 35.9, ClimateID = "8100593", WMOID = 71666, TCID = "ABT", IsQuebecSite = null, IsCoCoRaHS = null, TimeOffset_hour = -4, File_desc = null, HourlyStartDate_Local = new DateTime(2005, 7, 13, 0, 0, 0), HourlyEndDate_Local = new DateTime(2029, 12, 11, 0, 0, 0), HourlyNow = true, DailyStartDate_Local = new DateTime(1991, 8, 1, 0, 0, 0), DailyEndDate_Local = new DateTime(2029, 12, 11, 0, 0, 0), DailyNow = true, MonthlyStartDate_Local = new DateTime(1991, 1, 1, 0, 0, 0), MonthlyEndDate_Local = new DateTime(2007, 7, 1, 0, 0, 0), MonthlyNow = null, LastUpdateDate_UTC = new DateTime(2018, 9, 14, 13, 4, 35), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
             }
             catch (Exception)
             {
@@ -612,8 +621,8 @@ namespace CSSPDBLocalServices.Tests
             }
             try
             {
-                dbLocal.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2 });
-                dbLocal.SaveChanges();
+                dbLocalIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
             }
             catch (Exception)
             {

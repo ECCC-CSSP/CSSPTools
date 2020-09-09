@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            RatingCurveValue ratingCurveValue = (from c in db.RatingCurveValues
+            RatingCurveValue ratingCurveValue = (from c in db.RatingCurveValues.Local
                     where c.RatingCurveValueID == RatingCurveValueID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBServices
             try
             {
                 db.RatingCurveValues.Remove(ratingCurveValue);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBServices
             try
             {
                 db.RatingCurveValues.Add(ratingCurveValue);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBServices
             try
             {
                 db.RatingCurveValues.Update(ratingCurveValue);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -179,14 +176,14 @@ namespace CSSPDBServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "RatingCurveValueID"), new[] { nameof(ratingCurveValue.RatingCurveValueID) });
                 }
 
-                if (!(from c in db.RatingCurveValues select c).Where(c => c.RatingCurveValueID == ratingCurveValue.RatingCurveValueID).Any())
+                if (!(from c in db.RatingCurveValues.AsNoTracking() select c).Where(c => c.RatingCurveValueID == ratingCurveValue.RatingCurveValueID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "RatingCurveValue", "RatingCurveValueID", ratingCurveValue.RatingCurveValueID.ToString()), new[] { nameof(ratingCurveValue.RatingCurveValueID) });
                 }
             }
 
             RatingCurve RatingCurveRatingCurveID = null;
-            RatingCurveRatingCurveID = (from c in db.RatingCurves where c.RatingCurveID == ratingCurveValue.RatingCurveID select c).FirstOrDefault();
+            RatingCurveRatingCurveID = (from c in db.RatingCurves.AsNoTracking() where c.RatingCurveID == ratingCurveValue.RatingCurveID select c).FirstOrDefault();
 
             if (RatingCurveRatingCurveID == null)
             {
@@ -216,7 +213,7 @@ namespace CSSPDBServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == ratingCurveValue.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == ratingCurveValue.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

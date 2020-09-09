@@ -15,7 +15,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
             sb.AppendLine(@"            {");
             sb.AppendLine(@"                db.SaveChanges();");
             sb.AppendLine(@"            }");
-            sb.AppendLine(@"            catch (DbUpdateException ex)");
+            sb.AppendLine(@"            catch (Exception ex)");
             sb.AppendLine(@"            {");
             sb.AppendLine($@"                { TypeNameLower }.ValidationResults = new List<ValidationResult>() {{ new ValidationResult(ex.Message + (ex.InnerException != null ? "" Inner: "" + ex.InnerException.Message : """")) }}.AsEnumerable();");
             sb.AppendLine(@"                return false;");

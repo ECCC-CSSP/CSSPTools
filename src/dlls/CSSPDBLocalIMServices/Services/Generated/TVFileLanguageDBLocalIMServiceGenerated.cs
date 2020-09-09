@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            TVFileLanguage tvFileLanguage = (from c in dbLocalIM.TVFileLanguages.AsNoTracking()
+            TVFileLanguage tvFileLanguage = (from c in dbLocalIM.TVFileLanguages.Local
                     where c.TVFileLanguageID == TVFileLanguageID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<TVFileLanguage> tvFileLanguageList = (from c in dbLocalIM.TVFileLanguages.AsNoTracking() orderby c.TVFileLanguageID select c).Skip(skip).Take(take).ToList();
+            List<TVFileLanguage> tvFileLanguageList = (from c in dbLocalIM.TVFileLanguages.Local orderby c.TVFileLanguageID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(tvFileLanguageList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            TVFileLanguage tvFileLanguage = (from c in dbLocalIM.TVFileLanguages
+            TVFileLanguage tvFileLanguage = (from c in dbLocalIM.TVFileLanguages.Local
                     where c.TVFileLanguageID == TVFileLanguageID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.TVFileLanguages.Remove(tvFileLanguage);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.TVFileLanguages.Add(tvFileLanguage);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.TVFileLanguages.Update(tvFileLanguage);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -188,14 +185,14 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVFileLanguageID"), new[] { nameof(tvFileLanguage.TVFileLanguageID) });
                 }
 
-                if (!(from c in dbLocalIM.TVFileLanguages select c).Where(c => c.TVFileLanguageID == tvFileLanguage.TVFileLanguageID).Any())
+                if (!(from c in dbLocalIM.TVFileLanguages.Local select c).Where(c => c.TVFileLanguageID == tvFileLanguage.TVFileLanguageID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVFileLanguage", "TVFileLanguageID", tvFileLanguage.TVFileLanguageID.ToString()), new[] { nameof(tvFileLanguage.TVFileLanguageID) });
                 }
             }
 
             TVFile TVFileTVFileID = null;
-            TVFileTVFileID = (from c in dbLocalIM.TVFiles where c.TVFileID == tvFileLanguage.TVFileID select c).FirstOrDefault();
+            TVFileTVFileID = (from c in dbLocalIM.TVFiles.Local where c.TVFileID == tvFileLanguage.TVFileID select c).FirstOrDefault();
 
             if (TVFileTVFileID == null)
             {
@@ -229,7 +226,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == tvFileLanguage.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == tvFileLanguage.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

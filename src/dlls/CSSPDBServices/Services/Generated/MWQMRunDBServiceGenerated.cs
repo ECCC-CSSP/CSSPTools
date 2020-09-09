@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MWQMRun mwqmRun = (from c in db.MWQMRuns
+            MWQMRun mwqmRun = (from c in db.MWQMRuns.Local
                     where c.MWQMRunID == MWQMRunID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBServices
             try
             {
                 db.MWQMRuns.Remove(mwqmRun);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBServices
             try
             {
                 db.MWQMRuns.Add(mwqmRun);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBServices
             try
             {
                 db.MWQMRuns.Update(mwqmRun);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -180,14 +177,14 @@ namespace CSSPDBServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "MWQMRunID"), new[] { nameof(mwqmRun.MWQMRunID) });
                 }
 
-                if (!(from c in db.MWQMRuns select c).Where(c => c.MWQMRunID == mwqmRun.MWQMRunID).Any())
+                if (!(from c in db.MWQMRuns.AsNoTracking() select c).Where(c => c.MWQMRunID == mwqmRun.MWQMRunID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "MWQMRun", "MWQMRunID", mwqmRun.MWQMRunID.ToString()), new[] { nameof(mwqmRun.MWQMRunID) });
                 }
             }
 
             TVItem TVItemSubsectorTVItemID = null;
-            TVItemSubsectorTVItemID = (from c in db.TVItems where c.TVItemID == mwqmRun.SubsectorTVItemID select c).FirstOrDefault();
+            TVItemSubsectorTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == mwqmRun.SubsectorTVItemID select c).FirstOrDefault();
 
             if (TVItemSubsectorTVItemID == null)
             {
@@ -206,7 +203,7 @@ namespace CSSPDBServices
             }
 
             TVItem TVItemMWQMRunTVItemID = null;
-            TVItemMWQMRunTVItemID = (from c in db.TVItems where c.TVItemID == mwqmRun.MWQMRunTVItemID select c).FirstOrDefault();
+            TVItemMWQMRunTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == mwqmRun.MWQMRunTVItemID select c).FirstOrDefault();
 
             if (TVItemMWQMRunTVItemID == null)
             {
@@ -369,7 +366,7 @@ namespace CSSPDBServices
             if (mwqmRun.LabSampleApprovalContactTVItemID != null)
             {
                 TVItem TVItemLabSampleApprovalContactTVItemID = null;
-                TVItemLabSampleApprovalContactTVItemID = (from c in db.TVItems where c.TVItemID == mwqmRun.LabSampleApprovalContactTVItemID select c).FirstOrDefault();
+                TVItemLabSampleApprovalContactTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == mwqmRun.LabSampleApprovalContactTVItemID select c).FirstOrDefault();
 
                 if (TVItemLabSampleApprovalContactTVItemID == null)
                 {
@@ -527,7 +524,7 @@ namespace CSSPDBServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == mwqmRun.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == mwqmRun.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

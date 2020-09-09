@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            MapInfo mapInfo = (from c in dbLocalIM.MapInfos.AsNoTracking()
+            MapInfo mapInfo = (from c in dbLocalIM.MapInfos.Local
                     where c.MapInfoID == MapInfoID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<MapInfo> mapInfoList = (from c in dbLocalIM.MapInfos.AsNoTracking() orderby c.MapInfoID select c).Skip(skip).Take(take).ToList();
+            List<MapInfo> mapInfoList = (from c in dbLocalIM.MapInfos.Local orderby c.MapInfoID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(mapInfoList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MapInfo mapInfo = (from c in dbLocalIM.MapInfos
+            MapInfo mapInfo = (from c in dbLocalIM.MapInfos.Local
                     where c.MapInfoID == MapInfoID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.MapInfos.Remove(mapInfo);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.MapInfos.Add(mapInfo);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.MapInfos.Update(mapInfo);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -188,14 +185,14 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "MapInfoID"), new[] { nameof(mapInfo.MapInfoID) });
                 }
 
-                if (!(from c in dbLocalIM.MapInfos select c).Where(c => c.MapInfoID == mapInfo.MapInfoID).Any())
+                if (!(from c in dbLocalIM.MapInfos.Local select c).Where(c => c.MapInfoID == mapInfo.MapInfoID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "MapInfo", "MapInfoID", mapInfo.MapInfoID.ToString()), new[] { nameof(mapInfo.MapInfoID) });
                 }
             }
 
             TVItem TVItemTVItemID = null;
-            TVItemTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == mapInfo.TVItemID select c).FirstOrDefault();
+            TVItemTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == mapInfo.TVItemID select c).FirstOrDefault();
 
             if (TVItemTVItemID == null)
             {
@@ -288,7 +285,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == mapInfo.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == mapInfo.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

@@ -22,6 +22,7 @@ using Xunit;
 using System.ComponentModel.DataAnnotations;
 using CSSPCultureServices.Resources;
 using LocalServices;
+using System.Threading;
 
 namespace CSSPDBLocalServices.Tests
 {
@@ -39,6 +40,7 @@ namespace CSSPDBLocalServices.Tests
         private ILocalService LocalService { get; set; }
         private IAppTaskLanguageDBLocalService AppTaskLanguageDBLocalService { get; set; }
         private CSSPDBLocalContext dbLocal { get; set; }
+        private CSSPDBInMemoryContext dbLocalIM { get; set; }
         private AppTaskLanguage appTaskLanguage { get; set; }
         #endregion Properties
 
@@ -49,7 +51,17 @@ namespace CSSPDBLocalServices.Tests
         }
         #endregion Constructors
 
-        #region Tests Generated [DBLocal]CRUD
+        #region Tests Generated Constructor [DBLocal]
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task AppTaskLanguageDBLocal_Constructor_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+        }
+        #endregion Tests Generated Constructor [DBLocal]
+
+        #region Tests Generated [DBLocal] CRUD
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
@@ -61,7 +73,7 @@ namespace CSSPDBLocalServices.Tests
 
             await DoCRUDDBLocalTest();
         }
-        #endregion Tests Generated CRUD
+        #endregion Tests Generated [DBLocal] CRUD
 
         #region Tests Generated Properties
         [Theory]
@@ -230,17 +242,6 @@ namespace CSSPDBLocalServices.Tests
             int count = ((List<AppTaskLanguage>)((OkObjectResult)actionAppTaskLanguageList.Result).Value).Count();
             Assert.True(count > 0);
 
-            // List<AppTaskLanguage> with skip and take
-            var actionAppTaskLanguageListSkipAndTake = await AppTaskLanguageDBLocalService.GetAppTaskLanguageList(1, 1);
-            Assert.Equal(200, ((ObjectResult)actionAppTaskLanguageListSkipAndTake.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionAppTaskLanguageListSkipAndTake.Result).Value);
-            List<AppTaskLanguage> appTaskLanguageListSkipAndTake = (List<AppTaskLanguage>)((OkObjectResult)actionAppTaskLanguageListSkipAndTake.Result).Value;
-
-            int countSkipAndTake = ((List<AppTaskLanguage>)((OkObjectResult)actionAppTaskLanguageListSkipAndTake.Result).Value).Count();
-            Assert.True(countSkipAndTake == 1);
-
-            Assert.False(appTaskLanguageList[0].AppTaskLanguageID == appTaskLanguageListSkipAndTake[0].AppTaskLanguageID);
-
             // Get AppTaskLanguage With AppTaskLanguageID
             var actionAppTaskLanguageGet = await AppTaskLanguageDBLocalService.GetAppTaskLanguageWithAppTaskLanguageID(appTaskLanguageList[0].AppTaskLanguageID);
             Assert.Equal(200, ((ObjectResult)actionAppTaskLanguageGet.Result).StatusCode);
@@ -302,6 +303,11 @@ namespace CSSPDBLocalServices.Tests
                 options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
             });
 
+            Services.AddDbContext<CSSPDBInMemoryContext>(options =>
+            {
+                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBLocal.FullName }");
+            });
+
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<ILocalService, LocalService>();
             Services.AddSingleton<IEnums, Enums>();
@@ -323,6 +329,9 @@ namespace CSSPDBLocalServices.Tests
             dbLocal = Provider.GetService<CSSPDBLocalContext>();
             Assert.NotNull(dbLocal);
 
+            dbLocalIM = Provider.GetService<CSSPDBInMemoryContext>();
+            Assert.NotNull(dbLocalIM);
+
             AppTaskLanguageDBLocalService = Provider.GetService<IAppTaskLanguageDBLocalService>();
             Assert.NotNull(AppTaskLanguageDBLocalService);
 
@@ -342,8 +351,8 @@ namespace CSSPDBLocalServices.Tests
 
             try
             {
-                dbLocal.AppTasks.Add(new AppTask() { AppTaskID = 1, TVItemID = 5, TVItemID2 = 5, AppTaskCommand = (AppTaskCommandEnum)1, AppTaskStatus = (AppTaskStatusEnum)1, PercentCompleted = 1, Parameters = "a,a", Language = (LanguageEnum)1, StartDateTime_UTC = new DateTime(2015, 9, 3, 9, 17, 7), EndDateTime_UTC = new DateTime(2015, 9, 3, 13, 17, 7), EstimatedLength_second = 1201, RemainingTime_second = 234, LastUpdateDate_UTC = new DateTime(2020, 9, 3, 9, 17, 7), LastUpdateContactTVItemID = 2 });
-                dbLocal.SaveChanges();
+                dbLocalIM.AppTasks.Add(new AppTask() { AppTaskID = 1, TVItemID = 5, TVItemID2 = 5, AppTaskCommand = (AppTaskCommandEnum)1, AppTaskStatus = (AppTaskStatusEnum)1, PercentCompleted = 1, Parameters = "a,a", Language = (LanguageEnum)1, StartDateTime_UTC = new DateTime(2015, 9, 3, 9, 17, 7), EndDateTime_UTC = new DateTime(2015, 9, 3, 13, 17, 7), EstimatedLength_second = 1201, RemainingTime_second = 234, LastUpdateDate_UTC = new DateTime(2020, 9, 3, 9, 17, 7), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
             }
             catch (Exception)
             {
@@ -351,8 +360,8 @@ namespace CSSPDBLocalServices.Tests
             }
             try
             {
-                dbLocal.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2 });
-                dbLocal.SaveChanges();
+                dbLocalIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
             }
             catch (Exception)
             {

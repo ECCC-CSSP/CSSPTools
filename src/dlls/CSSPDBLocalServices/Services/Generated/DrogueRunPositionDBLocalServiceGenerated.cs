@@ -37,6 +37,7 @@ namespace CSSPDBLocalServices
 
         #region Properties
         private CSSPDBLocalContext dbLocal { get; }
+        private CSSPDBInMemoryContext dbLocalIM { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILocalService LocalService { get; }
@@ -47,13 +48,15 @@ namespace CSSPDBLocalServices
         #region Constructors
         public DrogueRunPositionDBLocalService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums,
            ILocalService LocalService,
-           CSSPDBLocalContext dbLocal)
+           CSSPDBLocalContext dbLocal,
+           CSSPDBInMemoryContext dbLocalIM)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LocalService = LocalService;
             this.enums = enums;
             this.dbLocal = dbLocal;
+            this.dbLocalIM = dbLocalIM;
         }
         #endregion Constructors
 
@@ -94,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            DrogueRunPosition drogueRunPosition = (from c in dbLocal.DrogueRunPositions
+            DrogueRunPosition drogueRunPosition = (from c in dbLocal.DrogueRunPositions.Local
                     where c.DrogueRunPositionID == DrogueRunPositionID
                     select c).FirstOrDefault();
 
@@ -106,9 +109,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.DrogueRunPositions.Remove(drogueRunPosition);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -130,7 +132,7 @@ namespace CSSPDBLocalServices
 
             if (drogueRunPosition.DrogueRunPositionID == 0)
             {
-                int LastDrogueRunPositionID = (from c in dbLocal.DrogueRunPositions
+                int LastDrogueRunPositionID = (from c in dbLocal.DrogueRunPositions.AsNoTracking()
                           orderby c.DrogueRunPositionID descending
                           select c.DrogueRunPositionID).FirstOrDefault();
 
@@ -140,9 +142,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.DrogueRunPositions.Add(drogueRunPosition);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -165,9 +166,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.DrogueRunPositions.Update(drogueRunPosition);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -188,18 +188,24 @@ namespace CSSPDBLocalServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DrogueRunPositionID"), new[] { nameof(drogueRunPosition.DrogueRunPositionID) });
                 }
 
-                if (!(from c in dbLocal.DrogueRunPositions select c).Where(c => c.DrogueRunPositionID == drogueRunPosition.DrogueRunPositionID).Any())
+                if (!(from c in dbLocal.DrogueRunPositions.AsNoTracking() select c).Where(c => c.DrogueRunPositionID == drogueRunPosition.DrogueRunPositionID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "DrogueRunPosition", "DrogueRunPositionID", drogueRunPosition.DrogueRunPositionID.ToString()), new[] { nameof(drogueRunPosition.DrogueRunPositionID) });
                 }
             }
 
             DrogueRun DrogueRunDrogueRunID = null;
-            DrogueRunDrogueRunID = (from c in dbLocal.DrogueRuns where c.DrogueRunID == drogueRunPosition.DrogueRunID select c).FirstOrDefault();
+            DrogueRunDrogueRunID = (from c in dbLocal.DrogueRuns.AsNoTracking() where c.DrogueRunID == drogueRunPosition.DrogueRunID select c).FirstOrDefault();
 
             if (DrogueRunDrogueRunID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "DrogueRun", "DrogueRunID", drogueRunPosition.DrogueRunID.ToString()), new[] { nameof(drogueRunPosition.DrogueRunID) });
+                DrogueRunDrogueRunID = (from c in dbLocalIM.DrogueRuns.Local where c.DrogueRunID == drogueRunPosition.DrogueRunID select c).FirstOrDefault();
+
+                if (DrogueRunDrogueRunID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "DrogueRun", "DrogueRunID", drogueRunPosition.DrogueRunID.ToString()), new[] { nameof(drogueRunPosition.DrogueRunID) });
+                }
+
             }
 
             if (drogueRunPosition.Ordinal < 0 || drogueRunPosition.Ordinal > 100000)
@@ -252,11 +258,28 @@ namespace CSSPDBLocalServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == drogueRunPosition.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == drogueRunPosition.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", drogueRunPosition.LastUpdateContactTVItemID.ToString()), new[] { nameof(drogueRunPosition.LastUpdateContactTVItemID) });
+                TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == drogueRunPosition.LastUpdateContactTVItemID select c).FirstOrDefault();
+
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", drogueRunPosition.LastUpdateContactTVItemID.ToString()), new[] { nameof(drogueRunPosition.LastUpdateContactTVItemID) });
+                }
+                else
+                {
+                    List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                    {
+                        TVTypeEnum.Contact,
+                    };
+                    if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(drogueRunPosition.LastUpdateContactTVItemID) });
+                    }
+                }
+
             }
             else
             {

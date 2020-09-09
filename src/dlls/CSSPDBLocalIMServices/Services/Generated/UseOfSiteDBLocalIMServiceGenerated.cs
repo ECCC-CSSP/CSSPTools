@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            UseOfSite useOfSite = (from c in dbLocalIM.UseOfSites.AsNoTracking()
+            UseOfSite useOfSite = (from c in dbLocalIM.UseOfSites.Local
                     where c.UseOfSiteID == UseOfSiteID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<UseOfSite> useOfSiteList = (from c in dbLocalIM.UseOfSites.AsNoTracking() orderby c.UseOfSiteID select c).Skip(skip).Take(take).ToList();
+            List<UseOfSite> useOfSiteList = (from c in dbLocalIM.UseOfSites.Local orderby c.UseOfSiteID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(useOfSiteList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            UseOfSite useOfSite = (from c in dbLocalIM.UseOfSites
+            UseOfSite useOfSite = (from c in dbLocalIM.UseOfSites.Local
                     where c.UseOfSiteID == UseOfSiteID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.UseOfSites.Remove(useOfSite);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.UseOfSites.Add(useOfSite);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.UseOfSites.Update(useOfSite);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -188,14 +185,14 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "UseOfSiteID"), new[] { nameof(useOfSite.UseOfSiteID) });
                 }
 
-                if (!(from c in dbLocalIM.UseOfSites select c).Where(c => c.UseOfSiteID == useOfSite.UseOfSiteID).Any())
+                if (!(from c in dbLocalIM.UseOfSites.Local select c).Where(c => c.UseOfSiteID == useOfSite.UseOfSiteID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "UseOfSite", "UseOfSiteID", useOfSite.UseOfSiteID.ToString()), new[] { nameof(useOfSite.UseOfSiteID) });
                 }
             }
 
             TVItem TVItemSiteTVItemID = null;
-            TVItemSiteTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == useOfSite.SiteTVItemID select c).FirstOrDefault();
+            TVItemSiteTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == useOfSite.SiteTVItemID select c).FirstOrDefault();
 
             if (TVItemSiteTVItemID == null)
             {
@@ -216,7 +213,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemSubsectorTVItemID = null;
-            TVItemSubsectorTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == useOfSite.SubsectorTVItemID select c).FirstOrDefault();
+            TVItemSubsectorTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == useOfSite.SubsectorTVItemID select c).FirstOrDefault();
 
             if (TVItemSubsectorTVItemID == null)
             {
@@ -311,7 +308,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == useOfSite.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == useOfSite.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

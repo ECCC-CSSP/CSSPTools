@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            ReportSection reportSection = (from c in dbLocalIM.ReportSections.AsNoTracking()
+            ReportSection reportSection = (from c in dbLocalIM.ReportSections.Local
                     where c.ReportSectionID == ReportSectionID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<ReportSection> reportSectionList = (from c in dbLocalIM.ReportSections.AsNoTracking() orderby c.ReportSectionID select c).Skip(skip).Take(take).ToList();
+            List<ReportSection> reportSectionList = (from c in dbLocalIM.ReportSections.Local orderby c.ReportSectionID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(reportSectionList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            ReportSection reportSection = (from c in dbLocalIM.ReportSections
+            ReportSection reportSection = (from c in dbLocalIM.ReportSections.Local
                     where c.ReportSectionID == ReportSectionID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.ReportSections.Remove(reportSection);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.ReportSections.Add(reportSection);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.ReportSections.Update(reportSection);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -188,14 +185,14 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ReportSectionID"), new[] { nameof(reportSection.ReportSectionID) });
                 }
 
-                if (!(from c in dbLocalIM.ReportSections select c).Where(c => c.ReportSectionID == reportSection.ReportSectionID).Any())
+                if (!(from c in dbLocalIM.ReportSections.Local select c).Where(c => c.ReportSectionID == reportSection.ReportSectionID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "ReportSection", "ReportSectionID", reportSection.ReportSectionID.ToString()), new[] { nameof(reportSection.ReportSectionID) });
                 }
             }
 
             ReportType ReportTypeReportTypeID = null;
-            ReportTypeReportTypeID = (from c in dbLocalIM.ReportTypes where c.ReportTypeID == reportSection.ReportTypeID select c).FirstOrDefault();
+            ReportTypeReportTypeID = (from c in dbLocalIM.ReportTypes.Local where c.ReportTypeID == reportSection.ReportTypeID select c).FirstOrDefault();
 
             if (ReportTypeReportTypeID == null)
             {
@@ -205,7 +202,7 @@ namespace CSSPDBLocalIMServices
             if (reportSection.TVItemID != null)
             {
                 TVItem TVItemTVItemID = null;
-                TVItemTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == reportSection.TVItemID select c).FirstOrDefault();
+                TVItemTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == reportSection.TVItemID select c).FirstOrDefault();
 
                 if (TVItemTVItemID == null)
                 {
@@ -240,7 +237,7 @@ namespace CSSPDBLocalIMServices
             if (reportSection.ParentReportSectionID != null)
             {
                 ReportSection ReportSectionParentReportSectionID = null;
-                ReportSectionParentReportSectionID = (from c in dbLocalIM.ReportSections where c.ReportSectionID == reportSection.ParentReportSectionID select c).FirstOrDefault();
+                ReportSectionParentReportSectionID = (from c in dbLocalIM.ReportSections.Local where c.ReportSectionID == reportSection.ParentReportSectionID select c).FirstOrDefault();
 
                 if (ReportSectionParentReportSectionID == null)
                 {
@@ -259,7 +256,7 @@ namespace CSSPDBLocalIMServices
             if (reportSection.TemplateReportSectionID != null)
             {
                 ReportSection ReportSectionTemplateReportSectionID = null;
-                ReportSectionTemplateReportSectionID = (from c in dbLocalIM.ReportSections where c.ReportSectionID == reportSection.TemplateReportSectionID select c).FirstOrDefault();
+                ReportSectionTemplateReportSectionID = (from c in dbLocalIM.ReportSections.Local where c.ReportSectionID == reportSection.TemplateReportSectionID select c).FirstOrDefault();
 
                 if (ReportSectionTemplateReportSectionID == null)
                 {
@@ -290,7 +287,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == reportSection.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == reportSection.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

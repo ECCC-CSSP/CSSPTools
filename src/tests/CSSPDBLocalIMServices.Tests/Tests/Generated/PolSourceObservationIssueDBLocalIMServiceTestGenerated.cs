@@ -49,7 +49,17 @@ namespace CSSPDBLocalIMServices.Tests
         }
         #endregion Constructors
 
-        #region Tests Generated [DBLocalIM]CRUD
+        #region Tests Generated Constructor [DBLocalIM]
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task PolSourceObservationIssueDBLocalIM_Constructor_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+        }
+        #endregion Tests Generated Constructor [DBLocalIM]
+
+        #region Tests Generated [DBLocalIM] CRUD
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
@@ -61,7 +71,7 @@ namespace CSSPDBLocalIMServices.Tests
 
             await DoCRUDDBLocalIMTest();
         }
-        #endregion Tests Generated CRUD
+        #endregion Tests Generated [DBLocalIM] CRUD
 
         #region Tests Generated Properties
         [Theory]
@@ -319,6 +329,24 @@ namespace CSSPDBLocalIMServices.Tests
             if (OmitPropName != "LastUpdateDate_UTC") polSourceObservationIssue.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") polSourceObservationIssue.LastUpdateContactTVItemID = 2;
 
+            try
+            {
+                dbLocalIM.PolSourceObservations.Add(new PolSourceObservation() { PolSourceObservationID = 1, PolSourceSiteID = 1, ObservationDate_Local = new DateTime(2007, 4, 24, 0, 0, 0), ContactTVItemID = 2, DesktopReviewed = false, Observation_ToBeDeleted = "NP Farm area, 20+ animals observed and manure piled 4m high behind barn approx. 350m from shore. Drainage ditches lead to river with a heavy slope.", LastUpdateDate_UTC = new DateTime(2015, 4, 13, 20, 1, 31), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
+            }
+            catch (Exception)
+            {
+                // Assert.True(false, ex.Message);
+            }
+            try
+            {
+                dbLocalIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
+            }
+            catch (Exception)
+            {
+                // Assert.True(false, ex.Message);
+            }
 
 
             return polSourceObservationIssue;

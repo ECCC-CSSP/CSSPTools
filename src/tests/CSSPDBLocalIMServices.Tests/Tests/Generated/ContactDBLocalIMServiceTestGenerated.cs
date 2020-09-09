@@ -49,7 +49,17 @@ namespace CSSPDBLocalIMServices.Tests
         }
         #endregion Constructors
 
-        #region Tests Generated [DBLocalIM]CRUD
+        #region Tests Generated Constructor [DBLocalIM]
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task ContactDBLocalIM_Constructor_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+        }
+        #endregion Tests Generated Constructor [DBLocalIM]
+
+        #region Tests Generated [DBLocalIM] CRUD
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
@@ -61,7 +71,7 @@ namespace CSSPDBLocalIMServices.Tests
 
             await DoCRUDDBLocalIMTest();
         }
-        #endregion Tests Generated CRUD
+        #endregion Tests Generated [DBLocalIM] CRUD
 
         #region Tests Generated Properties
         [Theory]
@@ -420,14 +430,6 @@ namespace CSSPDBLocalIMServices.Tests
                 options.UseInMemoryDatabase($"Data Source={ fiCSSPDBLocal.FullName }");
             });
 
-            Services.AddDbContext<ApplicationDbContext>(options =>
-            {
-                options.UseSqlServer(CSSPDBConnString);
-            });
-
-            Services.AddIdentityCore<ApplicationUser>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
-
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<ILocalService, LocalService>();
             Services.AddSingleton<IEnums, Enums>();
@@ -477,6 +479,24 @@ namespace CSSPDBLocalIMServices.Tests
             if (OmitPropName != "LastUpdateDate_UTC") contact.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") contact.LastUpdateContactTVItemID = 2;
 
+            try
+            {
+                dbLocalIM.AspNetUsers.Add(new AspNetUser() { Id = "023566a4-4a25-4484-88f5-584aa8e1da38", Email = "Test.User1@Canada.ca", UserName = "Test.User1@Canada.ca", });
+                dbLocalIM.SaveChanges();
+            }
+            catch (Exception)
+            {
+                // Assert.True(false, ex.Message);
+            }
+            try
+            {
+                dbLocalIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
+            }
+            catch (Exception)
+            {
+                // Assert.True(false, ex.Message);
+            }
 
 
             return contact;

@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            BoxModelResult boxModelResult = (from c in dbLocalIM.BoxModelResults.AsNoTracking()
+            BoxModelResult boxModelResult = (from c in dbLocalIM.BoxModelResults.Local
                     where c.BoxModelResultID == BoxModelResultID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<BoxModelResult> boxModelResultList = (from c in dbLocalIM.BoxModelResults.AsNoTracking() orderby c.BoxModelResultID select c).Skip(skip).Take(take).ToList();
+            List<BoxModelResult> boxModelResultList = (from c in dbLocalIM.BoxModelResults.Local orderby c.BoxModelResultID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(boxModelResultList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            BoxModelResult boxModelResult = (from c in dbLocalIM.BoxModelResults
+            BoxModelResult boxModelResult = (from c in dbLocalIM.BoxModelResults.Local
                     where c.BoxModelResultID == BoxModelResultID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.BoxModelResults.Remove(boxModelResult);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.BoxModelResults.Add(boxModelResult);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.BoxModelResults.Update(boxModelResult);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -188,14 +185,14 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "BoxModelResultID"), new[] { nameof(boxModelResult.BoxModelResultID) });
                 }
 
-                if (!(from c in dbLocalIM.BoxModelResults select c).Where(c => c.BoxModelResultID == boxModelResult.BoxModelResultID).Any())
+                if (!(from c in dbLocalIM.BoxModelResults.Local select c).Where(c => c.BoxModelResultID == boxModelResult.BoxModelResultID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "BoxModelResult", "BoxModelResultID", boxModelResult.BoxModelResultID.ToString()), new[] { nameof(boxModelResult.BoxModelResultID) });
                 }
             }
 
             BoxModel BoxModelBoxModelID = null;
-            BoxModelBoxModelID = (from c in dbLocalIM.BoxModels where c.BoxModelID == boxModelResult.BoxModelID select c).FirstOrDefault();
+            BoxModelBoxModelID = (from c in dbLocalIM.BoxModels.Local where c.BoxModelID == boxModelResult.BoxModelID select c).FirstOrDefault();
 
             if (BoxModelBoxModelID == null)
             {
@@ -294,7 +291,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == boxModelResult.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == boxModelResult.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

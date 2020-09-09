@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            MWQMSubsectorLanguage mwqmSubsectorLanguage = (from c in dbLocalIM.MWQMSubsectorLanguages.AsNoTracking()
+            MWQMSubsectorLanguage mwqmSubsectorLanguage = (from c in dbLocalIM.MWQMSubsectorLanguages.Local
                     where c.MWQMSubsectorLanguageID == MWQMSubsectorLanguageID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<MWQMSubsectorLanguage> mwqmSubsectorLanguageList = (from c in dbLocalIM.MWQMSubsectorLanguages.AsNoTracking() orderby c.MWQMSubsectorLanguageID select c).Skip(skip).Take(take).ToList();
+            List<MWQMSubsectorLanguage> mwqmSubsectorLanguageList = (from c in dbLocalIM.MWQMSubsectorLanguages.Local orderby c.MWQMSubsectorLanguageID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(mwqmSubsectorLanguageList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MWQMSubsectorLanguage mwqmSubsectorLanguage = (from c in dbLocalIM.MWQMSubsectorLanguages
+            MWQMSubsectorLanguage mwqmSubsectorLanguage = (from c in dbLocalIM.MWQMSubsectorLanguages.Local
                     where c.MWQMSubsectorLanguageID == MWQMSubsectorLanguageID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.MWQMSubsectorLanguages.Remove(mwqmSubsectorLanguage);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.MWQMSubsectorLanguages.Add(mwqmSubsectorLanguage);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.MWQMSubsectorLanguages.Update(mwqmSubsectorLanguage);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -188,14 +185,14 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "MWQMSubsectorLanguageID"), new[] { nameof(mwqmSubsectorLanguage.MWQMSubsectorLanguageID) });
                 }
 
-                if (!(from c in dbLocalIM.MWQMSubsectorLanguages select c).Where(c => c.MWQMSubsectorLanguageID == mwqmSubsectorLanguage.MWQMSubsectorLanguageID).Any())
+                if (!(from c in dbLocalIM.MWQMSubsectorLanguages.Local select c).Where(c => c.MWQMSubsectorLanguageID == mwqmSubsectorLanguage.MWQMSubsectorLanguageID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "MWQMSubsectorLanguage", "MWQMSubsectorLanguageID", mwqmSubsectorLanguage.MWQMSubsectorLanguageID.ToString()), new[] { nameof(mwqmSubsectorLanguage.MWQMSubsectorLanguageID) });
                 }
             }
 
             MWQMSubsector MWQMSubsectorMWQMSubsectorID = null;
-            MWQMSubsectorMWQMSubsectorID = (from c in dbLocalIM.MWQMSubsectors where c.MWQMSubsectorID == mwqmSubsectorLanguage.MWQMSubsectorID select c).FirstOrDefault();
+            MWQMSubsectorMWQMSubsectorID = (from c in dbLocalIM.MWQMSubsectors.Local where c.MWQMSubsectorID == mwqmSubsectorLanguage.MWQMSubsectorID select c).FirstOrDefault();
 
             if (MWQMSubsectorMWQMSubsectorID == null)
             {
@@ -248,7 +245,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == mwqmSubsectorLanguage.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == mwqmSubsectorLanguage.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

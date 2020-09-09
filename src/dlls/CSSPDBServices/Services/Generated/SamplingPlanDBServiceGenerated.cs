@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            SamplingPlan samplingPlan = (from c in db.SamplingPlans
+            SamplingPlan samplingPlan = (from c in db.SamplingPlans.Local
                     where c.SamplingPlanID == SamplingPlanID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBServices
             try
             {
                 db.SamplingPlans.Remove(samplingPlan);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBServices
             try
             {
                 db.SamplingPlans.Add(samplingPlan);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBServices
             try
             {
                 db.SamplingPlans.Update(samplingPlan);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -180,7 +177,7 @@ namespace CSSPDBServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SamplingPlanID"), new[] { nameof(samplingPlan.SamplingPlanID) });
                 }
 
-                if (!(from c in db.SamplingPlans select c).Where(c => c.SamplingPlanID == samplingPlan.SamplingPlanID).Any())
+                if (!(from c in db.SamplingPlans.AsNoTracking() select c).Where(c => c.SamplingPlanID == samplingPlan.SamplingPlanID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "SamplingPlan", "SamplingPlanID", samplingPlan.SamplingPlanID.ToString()), new[] { nameof(samplingPlan.SamplingPlanID) });
                 }
@@ -225,7 +222,7 @@ namespace CSSPDBServices
             }
 
             TVItem TVItemProvinceTVItemID = null;
-            TVItemProvinceTVItemID = (from c in db.TVItems where c.TVItemID == samplingPlan.ProvinceTVItemID select c).FirstOrDefault();
+            TVItemProvinceTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == samplingPlan.ProvinceTVItemID select c).FirstOrDefault();
 
             if (TVItemProvinceTVItemID == null)
             {
@@ -244,7 +241,7 @@ namespace CSSPDBServices
             }
 
             TVItem TVItemCreatorTVItemID = null;
-            TVItemCreatorTVItemID = (from c in db.TVItems where c.TVItemID == samplingPlan.CreatorTVItemID select c).FirstOrDefault();
+            TVItemCreatorTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == samplingPlan.CreatorTVItemID select c).FirstOrDefault();
 
             if (TVItemCreatorTVItemID == null)
             {
@@ -300,7 +297,7 @@ namespace CSSPDBServices
             if (samplingPlan.SamplingPlanFileTVItemID != null)
             {
                 TVItem TVItemSamplingPlanFileTVItemID = null;
-                TVItemSamplingPlanFileTVItemID = (from c in db.TVItems where c.TVItemID == samplingPlan.SamplingPlanFileTVItemID select c).FirstOrDefault();
+                TVItemSamplingPlanFileTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == samplingPlan.SamplingPlanFileTVItemID select c).FirstOrDefault();
 
                 if (TVItemSamplingPlanFileTVItemID == null)
                 {
@@ -369,7 +366,7 @@ namespace CSSPDBServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == samplingPlan.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == samplingPlan.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

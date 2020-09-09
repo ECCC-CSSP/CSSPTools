@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            Classification classification = (from c in dbLocalIM.Classifications.AsNoTracking()
+            Classification classification = (from c in dbLocalIM.Classifications.Local
                     where c.ClassificationID == ClassificationID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<Classification> classificationList = (from c in dbLocalIM.Classifications.AsNoTracking() orderby c.ClassificationID select c).Skip(skip).Take(take).ToList();
+            List<Classification> classificationList = (from c in dbLocalIM.Classifications.Local orderby c.ClassificationID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(classificationList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            Classification classification = (from c in dbLocalIM.Classifications
+            Classification classification = (from c in dbLocalIM.Classifications.Local
                     where c.ClassificationID == ClassificationID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.Classifications.Remove(classification);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.Classifications.Add(classification);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.Classifications.Update(classification);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -188,14 +185,14 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ClassificationID"), new[] { nameof(classification.ClassificationID) });
                 }
 
-                if (!(from c in dbLocalIM.Classifications select c).Where(c => c.ClassificationID == classification.ClassificationID).Any())
+                if (!(from c in dbLocalIM.Classifications.Local select c).Where(c => c.ClassificationID == classification.ClassificationID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "Classification", "ClassificationID", classification.ClassificationID.ToString()), new[] { nameof(classification.ClassificationID) });
                 }
             }
 
             TVItem TVItemClassificationTVItemID = null;
-            TVItemClassificationTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == classification.ClassificationTVItemID select c).FirstOrDefault();
+            TVItemClassificationTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == classification.ClassificationTVItemID select c).FirstOrDefault();
 
             if (TVItemClassificationTVItemID == null)
             {
@@ -237,7 +234,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == classification.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == classification.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

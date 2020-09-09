@@ -15,10 +15,6 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
     {
         private async Task<bool> CreateGetFilledRandomClass(PropertyInfo prop, CSSPProp csspProp, string TypeName, string TypeNameLower, StringBuilder sb, StringBuilder sbInMemory, string DBType)
         {
-            if (prop.Name == "Id")
-            {
-                int lsef = 34;
-            }
             switch (csspProp.PropType)
             {
                 case "Int16":
@@ -68,7 +64,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                 if (DBType == "DB")
                                                 {
                                                 }
-                                                if (DBType == "DBLocal")
+                                                if (DBType == "DBLocal" || DBType == "DBLocalIM")
                                                 {
                                                     string AppTaskCommand = ((int)appTask.AppTaskCommand).ToString();
                                                     string AppTaskStatus = ((int)appTask.AppTaskStatus).ToString();
@@ -107,9 +103,6 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                         sbInMemory.AppendLine($@"            }}");
                                                     }
                                                 }
-                                                if (DBType == "DBLocalIM")
-                                                {
-                                                }
                                             }
                                         }
                                         break;
@@ -126,7 +119,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                 if (DBType == "DB")
                                                 {
                                                 }
-                                                if (DBType == "DBLocal")
+                                                if (DBType == "DBLocal" || DBType == "DBLocalIM")
                                                 {
                                                     string LastUpdateDateStr = $@"new DateTime({ boxModel.LastUpdateDate_UTC.Year }, { boxModel.LastUpdateDate_UTC.Month }, { boxModel.LastUpdateDate_UTC.Day }, { boxModel.LastUpdateDate_UTC.Hour }, { boxModel.LastUpdateDate_UTC.Minute }, { boxModel.LastUpdateDate_UTC.Second })";
                                                     string TempStr = $@"                dbLocalIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
@@ -158,9 +151,6 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                         sbInMemory.AppendLine($@"            }}");
                                                     }
                                                 }
-                                                if (DBType == "DBLocalIM")
-                                                {
-                                                }
                                             }
                                         }
                                         break;
@@ -177,7 +167,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                 if (DBType == "DB")
                                                 {
                                                 }
-                                                if (DBType == "DBLocal")
+                                                if (DBType == "DBLocal" || DBType == "DBLocalIM")
                                                 {
                                                     string ECDBID = climateSite.ECDBID == null ? "null" : climateSite.ECDBID.ToString();
                                                     string Elevation_m = climateSite.Elevation_m == null ? "null" : climateSite.Elevation_m.ToString();
@@ -237,9 +227,6 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                         sbInMemory.AppendLine($@"            }}");
                                                     }
                                                 }
-                                                if (DBType == "DBLocalIM")
-                                                {
-                                                }
                                             }
                                         }
                                         break;
@@ -256,7 +243,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                 if (DBType == "DB")
                                                 {
                                                 }
-                                                if (DBType == "DBLocal")
+                                                if (DBType == "DBLocal" || DBType == "DBLocalIM")
                                                 {
                                                     string DateStr = $@"new DateTime({ contact.LastUpdateDate_UTC.Year }, { contact.LastUpdateDate_UTC.Month }, { contact.LastUpdateDate_UTC.Day }, { contact.LastUpdateDate_UTC.Hour }, { contact.LastUpdateDate_UTC.Minute }, { contact.LastUpdateDate_UTC.Second })";
                                                     string Id = contact.Id ?? "";
@@ -300,9 +287,6 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                         sbInMemory.AppendLine($@"            }}");
                                                     }
                                                 }
-                                                if (DBType == "DBLocalIM")
-                                                {
-                                                }
                                             }
                                         }
                                         break;
@@ -319,7 +303,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                 if (DBType == "DB")
                                                 {
                                                 }
-                                                if (DBType == "DBLocal")
+                                                if (DBType == "DBLocal" || DBType == "DBLocalIM")
                                                 {
                                                     string RunStartDateTime = $@"new DateTime({ drogueRun.RunStartDateTime.Year }, { drogueRun.RunStartDateTime.Month }, { drogueRun.RunStartDateTime.Day }, { drogueRun.RunStartDateTime.Hour }, { drogueRun.RunStartDateTime.Minute }, { drogueRun.RunStartDateTime.Second })";
                                                     string LastUpdateDate_UTC = $@"new DateTime({ drogueRun.LastUpdateDate_UTC.Year }, { drogueRun.LastUpdateDate_UTC.Month }, { drogueRun.LastUpdateDate_UTC.Day }, { drogueRun.LastUpdateDate_UTC.Hour }, { drogueRun.LastUpdateDate_UTC.Minute }, { drogueRun.LastUpdateDate_UTC.Second })";
@@ -346,9 +330,6 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                         sbInMemory.AppendLine($@"            }}");
                                                     }
                                                 }
-                                                if (DBType == "DBLocalIM")
-                                                {
-                                                }
                                             }
                                         }
                                         break;
@@ -365,7 +346,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                 if (DBType == "DB")
                                                 {
                                                 }
-                                                if (DBType == "DBLocal")
+                                                if (DBType == "DBLocal" || DBType == "DBLocalIM")
                                                 {
                                                     string LastUpdateDate_UTC = $@"new DateTime({ emailDistributionList.LastUpdateDate_UTC.Year }, { emailDistributionList.LastUpdateDate_UTC.Month }, { emailDistributionList.LastUpdateDate_UTC.Day }, { emailDistributionList.LastUpdateDate_UTC.Hour }, { emailDistributionList.LastUpdateDate_UTC.Minute }, { emailDistributionList.LastUpdateDate_UTC.Second })";
                                                     string TempStr = $@"                dbLocalIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
@@ -388,9 +369,6 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                         sbInMemory.AppendLine($@"            }}");
                                                     }
                                                 }
-                                                if (DBType == "DBLocalIM")
-                                                {
-                                                }
                                             }
                                         }
                                         break;
@@ -407,7 +385,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                 if (DBType == "DB")
                                                 {
                                                 }
-                                                if (DBType == "DBLocal")
+                                                if (DBType == "DBLocal" || DBType == "DBLocalIM")
                                                 {
                                                     string LastUpdateDate_UTC = $@"new DateTime({ emailDistributionListContact.LastUpdateDate_UTC.Year }, { emailDistributionListContact.LastUpdateDate_UTC.Month }, { emailDistributionListContact.LastUpdateDate_UTC.Day }, { emailDistributionListContact.LastUpdateDate_UTC.Hour }, { emailDistributionListContact.LastUpdateDate_UTC.Minute }, { emailDistributionListContact.LastUpdateDate_UTC.Second })";
                                                     string TempStr = $@"                dbLocalIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
@@ -437,9 +415,6 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                         sbInMemory.AppendLine($@"            }}");
                                                     }
                                                 }
-                                                if (DBType == "DBLocalIM")
-                                                {
-                                                }
                                             }
                                         }
                                         break;
@@ -456,7 +431,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                 if (DBType == "DB")
                                                 {
                                                 }
-                                                if (DBType == "DBLocal")
+                                                if (DBType == "DBLocal" || DBType == "DBLocalIM")
                                                 {
                                                     string FedSiteNumber = hydrometricSite.FedSiteNumber == null ? "null" : hydrometricSite.FedSiteNumber.ToString();
                                                     string QuebecSiteNumber = hydrometricSite.QuebecSiteNumber == null ? "null" : hydrometricSite.QuebecSiteNumber.ToString();
@@ -512,9 +487,6 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                         sbInMemory.AppendLine($@"            }}");
                                                     }
                                                 }
-                                                if (DBType == "DBLocalIM")
-                                                {
-                                                }
                                             }
                                         }
                                         break;
@@ -531,7 +503,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                 if (DBType == "DB")
                                                 {
                                                 }
-                                                if (DBType == "DBLocal")
+                                                if (DBType == "DBLocal" || DBType == "DBLocalIM")
                                                 {
                                                     string PrismID = infrastructure.PrismID == null ? "null" : infrastructure.PrismID.ToString();
                                                     string TPID = infrastructure.TPID == null ? "null" : infrastructure.TPID.ToString();
@@ -645,9 +617,6 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                         sbInMemory.AppendLine($@"            }}");
                                                     }
                                                 }
-                                                if (DBType == "DBLocalIM")
-                                                {
-                                                }
                                             }
                                         }
                                         break;
@@ -664,7 +633,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                 if (DBType == "DB")
                                                 {
                                                 }
-                                                if (DBType == "DBLocal")
+                                                if (DBType == "DBLocal" || DBType == "DBLocalIM")
                                                 {
                                                     string MWQMRunTVItemID = labSheet.MWQMRunTVItemID == null ? "null" : labSheet.MWQMRunTVItemID.ToString();
                                                     string FileLastModifiedDate_Local = $@"new DateTime({ labSheet.FileLastModifiedDate_Local.Year }, { labSheet.FileLastModifiedDate_Local.Month }, { labSheet.FileLastModifiedDate_Local.Day }, { labSheet.FileLastModifiedDate_Local.Hour }, { labSheet.FileLastModifiedDate_Local.Minute }, { labSheet.FileLastModifiedDate_Local.Second })";
@@ -708,9 +677,6 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                         sbInMemory.AppendLine($@"            }}");
                                                     }
                                                 }
-                                                if (DBType == "DBLocalIM")
-                                                {
-                                                }
                                             }
                                         }
                                         break;
@@ -727,7 +693,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                 if (DBType == "DB")
                                                 {
                                                 }
-                                                if (DBType == "DBLocal")
+                                                if (DBType == "DBLocal" || DBType == "DBLocalIM")
                                                 {
                                                     string RunDate = labSheetDetail.RunDate == null ? "null" : $@"new DateTime({ ((DateTime)labSheetDetail.RunDate).Year }, { ((DateTime)labSheetDetail.RunDate).Month }, { ((DateTime)labSheetDetail.RunDate).Day }, { ((DateTime)labSheetDetail.RunDate).Hour }, { ((DateTime)labSheetDetail.RunDate).Minute }, { ((DateTime)labSheetDetail.RunDate).Second })";
                                                     string WaterBathCount = labSheetDetail.WaterBathCount == null ? "null" : labSheetDetail.WaterBathCount.ToString();
@@ -863,9 +829,6 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                         sbInMemory.AppendLine($@"            }}");
                                                     }
                                                 }
-                                                if (DBType == "DBLocalIM")
-                                                {
-                                                }
                                             }
                                         }
                                         break;
@@ -882,7 +845,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                 if (DBType == "DB")
                                                 {
                                                 }
-                                                if (DBType == "DBLocal")
+                                                if (DBType == "DBLocal" || DBType == "DBLocalIM")
                                                 {
                                                     string LastUpdateDate_UTC = $@"new DateTime({ mapInfo.LastUpdateDate_UTC.Year }, { mapInfo.LastUpdateDate_UTC.Month }, { mapInfo.LastUpdateDate_UTC.Day }, { mapInfo.LastUpdateDate_UTC.Hour }, { mapInfo.LastUpdateDate_UTC.Minute }, { mapInfo.LastUpdateDate_UTC.Second })";
                                                     string TempStr = $@"                dbLocalIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
@@ -909,9 +872,6 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                         sbInMemory.AppendLine($@"            }}");
                                                     }
                                                 }
-                                                if (DBType == "DBLocalIM")
-                                                {
-                                                }
                                             }
                                         }
                                         break;
@@ -928,7 +888,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                 if (DBType == "DB")
                                                 {
                                                 }
-                                                if (DBType == "DBLocal")
+                                                if (DBType == "DBLocal" || DBType == "DBLocalIM")
                                                 {
                                                     string HydrometricTVItemID = mikeSource.HydrometricTVItemID == null ? "null" : ((int)mikeSource.HydrometricTVItemID).ToString();
                                                     string DrainageArea_km2 = mikeSource.DrainageArea_km2 == null ? "null" : ((float)mikeSource.DrainageArea_km2).ToString();
@@ -961,9 +921,6 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                         sbInMemory.AppendLine($@"            }}");
                                                     }
                                                 }
-                                                if (DBType == "DBLocalIM")
-                                                {
-                                                }
                                             }
                                         }
                                         break;
@@ -980,7 +937,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                 if (DBType == "DB")
                                                 {
                                                 }
-                                                if (DBType == "DBLocal")
+                                                if (DBType == "DBLocal" || DBType == "DBLocalIM")
                                                 {
                                                     string AnalysisReportYear = mwqmAnalysisReportParameter.AnalysisReportYear == null ? "null" : ((int)mwqmAnalysisReportParameter.AnalysisReportYear).ToString();
                                                     string ShowDataTypes = mwqmAnalysisReportParameter.ShowDataTypes == null ? "null" : mwqmAnalysisReportParameter.ShowDataTypes;
@@ -1029,9 +986,6 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                         sbInMemory.AppendLine($@"            }}");
                                                     }
                                                 }
-                                                if (DBType == "DBLocalIM")
-                                                {
-                                                }
                                             }
                                         }
                                         break;
@@ -1048,7 +1002,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                 if (DBType == "DB")
                                                 {
                                                 }
-                                                if (DBType == "DBLocal")
+                                                if (DBType == "DBLocal" || DBType == "DBLocalIM")
                                                 {
                                                     string DateTime_Local = $@"new DateTime({ mwqmRun.DateTime_Local.Year }, { mwqmRun.DateTime_Local.Month }, { mwqmRun.DateTime_Local.Day }, { mwqmRun.DateTime_Local.Hour }, { mwqmRun.DateTime_Local.Minute }, { mwqmRun.DateTime_Local.Second })";
                                                     string StartDateTime_Local = mwqmRun.StartDateTime_Local == null ? "null" : $@"new DateTime({ ((DateTime)mwqmRun.StartDateTime_Local).Year }, { ((DateTime)mwqmRun.StartDateTime_Local).Month }, { ((DateTime)mwqmRun.StartDateTime_Local).Day }, { ((DateTime)mwqmRun.StartDateTime_Local).Hour }, { ((DateTime)mwqmRun.StartDateTime_Local).Minute }, { ((DateTime)mwqmRun.StartDateTime_Local).Second })";
@@ -1143,9 +1097,6 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                         sbInMemory.AppendLine($@"            }}");
                                                     }
                                                 }
-                                                if (DBType == "DBLocalIM")
-                                                {
-                                                }
                                             }
                                         }
                                         break;
@@ -1162,7 +1113,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                 if (DBType == "DB")
                                                 {
                                                 }
-                                                if (DBType == "DBLocal")
+                                                if (DBType == "DBLocal" || DBType == "DBLocalIM")
                                                 {
                                                     string SampleDateTime_Local = $@"new DateTime({ mwqmSample.SampleDateTime_Local.Year }, { mwqmSample.SampleDateTime_Local.Month }, { mwqmSample.SampleDateTime_Local.Day }, { mwqmSample.SampleDateTime_Local.Hour }, { mwqmSample.SampleDateTime_Local.Minute }, { mwqmSample.SampleDateTime_Local.Second })";
                                                     string TimeText = mwqmSample.TimeText == null ? "null" : mwqmSample.TimeText.ToString();
@@ -1210,9 +1161,6 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                         sbInMemory.AppendLine($@"            }}");
                                                     }
                                                 }
-                                                if (DBType == "DBLocalIM")
-                                                {
-                                                }
                                             }
                                         }
                                         break;
@@ -1229,7 +1177,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                 if (DBType == "DB")
                                                 {
                                                 }
-                                                if (DBType == "DBLocal")
+                                                if (DBType == "DBLocal" || DBType == "DBLocalIM")
                                                 {
                                                     string TideLocationSIDText = mwqmSubsector.TideLocationSIDText == null ? "null" : mwqmSubsector.TideLocationSIDText.ToString();
                                                     string LastUpdateDate_UTC = $@"new DateTime({ mwqmSubsector.LastUpdateDate_UTC.Year }, { mwqmSubsector.LastUpdateDate_UTC.Month }, { mwqmSubsector.LastUpdateDate_UTC.Day }, { mwqmSubsector.LastUpdateDate_UTC.Hour }, { mwqmSubsector.LastUpdateDate_UTC.Minute }, { mwqmSubsector.LastUpdateDate_UTC.Second })";
@@ -1254,9 +1202,6 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                         sbInMemory.AppendLine($@"            }}");
                                                     }
                                                 }
-                                                if (DBType == "DBLocalIM")
-                                                {
-                                                }
                                             }
                                         }
                                         break;
@@ -1273,7 +1218,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                 if (DBType == "DB")
                                                 {
                                                 }
-                                                if (DBType == "DBLocal")
+                                                if (DBType == "DBLocal" || DBType == "DBLocalIM")
                                                 {
                                                     string LastUpdateDate_UTC = $@"new DateTime({ polSourceGrouping.LastUpdateDate_UTC.Year }, { polSourceGrouping.LastUpdateDate_UTC.Month }, { polSourceGrouping.LastUpdateDate_UTC.Day }, { polSourceGrouping.LastUpdateDate_UTC.Hour }, { polSourceGrouping.LastUpdateDate_UTC.Minute }, { polSourceGrouping.LastUpdateDate_UTC.Second })";
                                                     string TempStr = $@"                dbLocalIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
@@ -1298,9 +1243,6 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                         sbInMemory.AppendLine($@"            }}");
                                                     }
                                                 }
-                                                if (DBType == "DBLocalIM")
-                                                {
-                                                }
                                             }
                                         }
                                         break;
@@ -1317,7 +1259,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                 if (DBType == "DB")
                                                 {
                                                 }
-                                                if (DBType == "DBLocal")
+                                                if (DBType == "DBLocal" || DBType == "DBLocalIM")
                                                 {
                                                     string ObservationDate_Local = $@"new DateTime({ polSourceObservation.ObservationDate_Local.Year }, { polSourceObservation.ObservationDate_Local.Month }, { polSourceObservation.ObservationDate_Local.Day }, { polSourceObservation.ObservationDate_Local.Hour }, { polSourceObservation.ObservationDate_Local.Minute }, { polSourceObservation.ObservationDate_Local.Second })";
                                                     string LastUpdateDate_UTC = $@"new DateTime({ polSourceObservation.LastUpdateDate_UTC.Year }, { polSourceObservation.LastUpdateDate_UTC.Month }, { polSourceObservation.LastUpdateDate_UTC.Day }, { polSourceObservation.LastUpdateDate_UTC.Hour }, { polSourceObservation.LastUpdateDate_UTC.Minute }, { polSourceObservation.LastUpdateDate_UTC.Second })";
@@ -1344,9 +1286,6 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                         sbInMemory.AppendLine($@"            }}");
                                                     }
                                                 }
-                                                if (DBType == "DBLocalIM")
-                                                {
-                                                }
                                             }
                                         }
                                         break;
@@ -1363,7 +1302,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                 if (DBType == "DB")
                                                 {
                                                 }
-                                                if (DBType == "DBLocal")
+                                                if (DBType == "DBLocal" || DBType == "DBLocalIM")
                                                 {
                                                     string Temp_Locator_CanDelete = polSourceSite.Temp_Locator_CanDelete == null ? null : polSourceSite.Temp_Locator_CanDelete.ToString();
                                                     string Oldsiteid = polSourceSite.Oldsiteid == null ? "null" : polSourceSite.Oldsiteid.ToString();
@@ -1398,9 +1337,6 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                         sbInMemory.AppendLine($@"            }}");
                                                     }
                                                 }
-                                                if (DBType == "DBLocalIM")
-                                                {
-                                                }
                                             }
                                         }
                                         break;
@@ -1417,7 +1353,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                 if (DBType == "DB")
                                                 {
                                                 }
-                                                if (DBType == "DBLocal")
+                                                if (DBType == "DBLocal" || DBType == "DBLocalIM")
                                                 {
                                                     string LastUpdateDate_UTC = $@"new DateTime({ ratingCurve.LastUpdateDate_UTC.Year }, { ratingCurve.LastUpdateDate_UTC.Month }, { ratingCurve.LastUpdateDate_UTC.Day }, { ratingCurve.LastUpdateDate_UTC.Hour }, { ratingCurve.LastUpdateDate_UTC.Minute }, { ratingCurve.LastUpdateDate_UTC.Second })";
                                                     string TempStr = $@"                dbLocalIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
@@ -1440,9 +1376,6 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                         sbInMemory.AppendLine($@"            }}");
                                                     }
                                                 }
-                                                if (DBType == "DBLocalIM")
-                                                {
-                                                }
                                             }
                                         }
                                         break;
@@ -1459,7 +1392,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                 if (DBType == "DB")
                                                 {
                                                 }
-                                                if (DBType == "DBLocal")
+                                                if (DBType == "DBLocal" || DBType == "DBLocalIM")
                                                 {
                                                     string Language = reportType.Language == null ? "null" : "(LanguageEnum)" + ((int)reportType.Language).ToString();
                                                     string Name = reportType.Name == null ? "null" : reportType.Name;
@@ -1491,9 +1424,6 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                         sbInMemory.AppendLine($@"            }}");
                                                     }
                                                 }
-                                                if (DBType == "DBLocalIM")
-                                                {
-                                                }
                                             }
                                         }
                                         break;
@@ -1510,7 +1440,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                 if (DBType == "DB")
                                                 {
                                                 }
-                                                if (DBType == "DBLocal")
+                                                if (DBType == "DBLocal" || DBType == "DBLocalIM")
                                                 {
                                                     string LastUpdateDate_UTC = $@"new DateTime({ samplingPlanSubsector.LastUpdateDate_UTC.Year }, { samplingPlanSubsector.LastUpdateDate_UTC.Month }, { samplingPlanSubsector.LastUpdateDate_UTC.Day }, { samplingPlanSubsector.LastUpdateDate_UTC.Hour }, { samplingPlanSubsector.LastUpdateDate_UTC.Minute }, { samplingPlanSubsector.LastUpdateDate_UTC.Second })";
                                                     string TempStr = $@"                dbLocalIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
@@ -1533,9 +1463,6 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                         sbInMemory.AppendLine($@"            }}");
                                                     }
                                                 }
-                                                if (DBType == "DBLocalIM")
-                                                {
-                                                }
                                             }
                                         }
                                         break;
@@ -1552,7 +1479,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                 if (DBType == "DB")
                                                 {
                                                 }
-                                                if (DBType == "DBLocal")
+                                                if (DBType == "DBLocal" || DBType == "DBLocalIM")
                                                 {
                                                     string SamplingPlanFileTVItemID = samplingPlan.SamplingPlanFileTVItemID == null ? "null" : samplingPlan.SamplingPlanFileTVItemID.ToString();
                                                     string AnalyzeMethodDefault = samplingPlan.AnalyzeMethodDefault == null ? "null" : "(AnalyzeMethodEnum)" + ((int)samplingPlan.AnalyzeMethodDefault).ToString();
@@ -1596,9 +1523,6 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                         sbInMemory.AppendLine($@"            }}");
                                                     }
                                                 }
-                                                if (DBType == "DBLocalIM")
-                                                {
-                                                }
                                             }
                                         }
                                         break;
@@ -1615,7 +1539,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                 if (DBType == "DB")
                                                 {
                                                 }
-                                                if (DBType == "DBLocal")
+                                                if (DBType == "DBLocal" || DBType == "DBLocalIM")
                                                 {
                                                     string InfrastructureTVItemID = spill.InfrastructureTVItemID == null ? "null" : spill.InfrastructureTVItemID.ToString();
                                                     string StartDateTime_Local = $@"new DateTime({ spill.StartDateTime_Local.Year }, { spill.StartDateTime_Local.Month }, { spill.StartDateTime_Local.Day }, { spill.StartDateTime_Local.Hour }, { spill.StartDateTime_Local.Minute }, { spill.StartDateTime_Local.Second })";
@@ -1644,9 +1568,6 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                         sbInMemory.AppendLine($@"            }}");
                                                     }
                                                 }
-                                                if (DBType == "DBLocalIM")
-                                                {
-                                                }
                                             }
                                         }
                                         break;
@@ -1663,7 +1584,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                 if (DBType == "DB")
                                                 {
                                                 }
-                                                if (DBType == "DBLocal")
+                                                if (DBType == "DBLocal" || DBType == "DBLocalIM")
                                                 {
                                                     string TemplateTVType = tvFile.TemplateTVType == null ? "null" : "(TVTypeEnum)" + ((int)tvFile.TemplateTVType).ToString();
                                                     string ReportTypeID = tvFile.ReportTypeID == null ? "null" : tvFile.ReportTypeID.ToString();
@@ -1707,9 +1628,6 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                         sbInMemory.AppendLine($@"            }}");
                                                     }
                                                 }
-                                                if (DBType == "DBLocalIM")
-                                                {
-                                                }
                                             }
                                         }
                                         break;
@@ -1726,7 +1644,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                 if (DBType == "DB")
                                                 {
                                                 }
-                                                if (DBType == "DBLocal")
+                                                if (DBType == "DBLocal" || DBType == "DBLocalIM")
                                                 {
                                                     string EffluentFlow_m3_s = vpScenario.EffluentFlow_m3_s == null ? "null" : vpScenario.EffluentFlow_m3_s.ToString();
                                                     string EffluentConcentration_MPN_100ml = vpScenario.EffluentConcentration_MPN_100ml == null ? "null" : vpScenario.EffluentConcentration_MPN_100ml.ToString();
@@ -1782,9 +1700,6 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                         sbInMemory.AppendLine($@"            }}");
                                                     }
                                                 }
-                                                if (DBType == "DBLocalIM")
-                                                {
-                                                }
                                             }
                                         }
                                         break;
@@ -1813,7 +1728,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                         if (DBType == "DB")
                                                         {
                                                         }
-                                                        if (DBType == "DBLocal")
+                                                        if (DBType == "DBLocal" || DBType == "DBLocalIM")
                                                         {
                                                             string DateStr = $@"new DateTime({ tvItem.LastUpdateDate_UTC.Year }, { tvItem.LastUpdateDate_UTC.Month }, { tvItem.LastUpdateDate_UTC.Day }, { tvItem.LastUpdateDate_UTC.Hour }, { tvItem.LastUpdateDate_UTC.Minute }, { tvItem.LastUpdateDate_UTC.Second })";
                                                             string TempStr = $@"                dbLocalIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
@@ -1838,9 +1753,6 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                                 sbInMemory.AppendLine($@"                // Assert.True(false, ex.Message);");
                                                                 sbInMemory.AppendLine($@"            }}");
                                                             }
-                                                        }
-                                                        if (DBType == "DBLocalIM")
-                                                        {
                                                         }
                                                     }
                                                 }
@@ -1962,7 +1874,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                             if (DBType == "DB")
                                             {
                                             }
-                                            if (DBType == "DBLocal")
+                                            if (DBType == "DBLocal" || DBType == "DBLocalIM")
                                             {
                                                 string TempStr = $@"                dbLocalIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
                                                     $@"Id = ""{ appTask.Id }"", " +
@@ -1981,9 +1893,6 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                     sbInMemory.AppendLine($@"                // Assert.True(false, ex.Message);");
                                                     sbInMemory.AppendLine($@"            }}");
                                                 }
-                                            }
-                                            if (DBType == "DBLocalIM")
-                                            {
                                             }
                                         }
                                     }

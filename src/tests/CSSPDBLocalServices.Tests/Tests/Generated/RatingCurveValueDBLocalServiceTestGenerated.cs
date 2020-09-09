@@ -22,6 +22,7 @@ using Xunit;
 using System.ComponentModel.DataAnnotations;
 using CSSPCultureServices.Resources;
 using LocalServices;
+using System.Threading;
 
 namespace CSSPDBLocalServices.Tests
 {
@@ -39,6 +40,7 @@ namespace CSSPDBLocalServices.Tests
         private ILocalService LocalService { get; set; }
         private IRatingCurveValueDBLocalService RatingCurveValueDBLocalService { get; set; }
         private CSSPDBLocalContext dbLocal { get; set; }
+        private CSSPDBInMemoryContext dbLocalIM { get; set; }
         private RatingCurveValue ratingCurveValue { get; set; }
         #endregion Properties
 
@@ -49,7 +51,17 @@ namespace CSSPDBLocalServices.Tests
         }
         #endregion Constructors
 
-        #region Tests Generated [DBLocal]CRUD
+        #region Tests Generated Constructor [DBLocal]
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task RatingCurveValueDBLocal_Constructor_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+        }
+        #endregion Tests Generated Constructor [DBLocal]
+
+        #region Tests Generated [DBLocal] CRUD
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
@@ -61,7 +73,7 @@ namespace CSSPDBLocalServices.Tests
 
             await DoCRUDDBLocalTest();
         }
-        #endregion Tests Generated CRUD
+        #endregion Tests Generated [DBLocal] CRUD
 
         #region Tests Generated Properties
         [Theory]
@@ -224,17 +236,6 @@ namespace CSSPDBLocalServices.Tests
             int count = ((List<RatingCurveValue>)((OkObjectResult)actionRatingCurveValueList.Result).Value).Count();
             Assert.True(count > 0);
 
-            // List<RatingCurveValue> with skip and take
-            var actionRatingCurveValueListSkipAndTake = await RatingCurveValueDBLocalService.GetRatingCurveValueList(1, 1);
-            Assert.Equal(200, ((ObjectResult)actionRatingCurveValueListSkipAndTake.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionRatingCurveValueListSkipAndTake.Result).Value);
-            List<RatingCurveValue> ratingCurveValueListSkipAndTake = (List<RatingCurveValue>)((OkObjectResult)actionRatingCurveValueListSkipAndTake.Result).Value;
-
-            int countSkipAndTake = ((List<RatingCurveValue>)((OkObjectResult)actionRatingCurveValueListSkipAndTake.Result).Value).Count();
-            Assert.True(countSkipAndTake == 1);
-
-            Assert.False(ratingCurveValueList[0].RatingCurveValueID == ratingCurveValueListSkipAndTake[0].RatingCurveValueID);
-
             // Get RatingCurveValue With RatingCurveValueID
             var actionRatingCurveValueGet = await RatingCurveValueDBLocalService.GetRatingCurveValueWithRatingCurveValueID(ratingCurveValueList[0].RatingCurveValueID);
             Assert.Equal(200, ((ObjectResult)actionRatingCurveValueGet.Result).StatusCode);
@@ -296,6 +297,11 @@ namespace CSSPDBLocalServices.Tests
                 options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
             });
 
+            Services.AddDbContext<CSSPDBInMemoryContext>(options =>
+            {
+                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBLocal.FullName }");
+            });
+
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<ILocalService, LocalService>();
             Services.AddSingleton<IEnums, Enums>();
@@ -317,6 +323,9 @@ namespace CSSPDBLocalServices.Tests
             dbLocal = Provider.GetService<CSSPDBLocalContext>();
             Assert.NotNull(dbLocal);
 
+            dbLocalIM = Provider.GetService<CSSPDBInMemoryContext>();
+            Assert.NotNull(dbLocalIM);
+
             RatingCurveValueDBLocalService = Provider.GetService<IRatingCurveValueDBLocalService>();
             Assert.NotNull(RatingCurveValueDBLocalService);
 
@@ -334,8 +343,8 @@ namespace CSSPDBLocalServices.Tests
 
             try
             {
-                dbLocal.RatingCurves.Add(new RatingCurve() { RatingCurveID = 1, HydrometricSiteID = 1, RatingCurveNumber = "17", LastUpdateDate_UTC = new DateTime(2014, 12, 3, 20, 45, 2), LastUpdateContactTVItemID = 2 });
-                dbLocal.SaveChanges();
+                dbLocalIM.RatingCurves.Add(new RatingCurve() { RatingCurveID = 1, HydrometricSiteID = 1, RatingCurveNumber = "17", LastUpdateDate_UTC = new DateTime(2014, 12, 3, 20, 45, 2), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
             }
             catch (Exception)
             {
@@ -343,8 +352,8 @@ namespace CSSPDBLocalServices.Tests
             }
             try
             {
-                dbLocal.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2 });
-                dbLocal.SaveChanges();
+                dbLocalIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
             }
             catch (Exception)
             {

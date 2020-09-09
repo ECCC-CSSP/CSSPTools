@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            TVFile tvFile = (from c in dbLocalIM.TVFiles.AsNoTracking()
+            TVFile tvFile = (from c in dbLocalIM.TVFiles.Local
                     where c.TVFileID == TVFileID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<TVFile> tvFileList = (from c in dbLocalIM.TVFiles.AsNoTracking() orderby c.TVFileID select c).Skip(skip).Take(take).ToList();
+            List<TVFile> tvFileList = (from c in dbLocalIM.TVFiles.Local orderby c.TVFileID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(tvFileList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            TVFile tvFile = (from c in dbLocalIM.TVFiles
+            TVFile tvFile = (from c in dbLocalIM.TVFiles.Local
                     where c.TVFileID == TVFileID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.TVFiles.Remove(tvFile);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.TVFiles.Add(tvFile);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.TVFiles.Update(tvFile);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -188,14 +185,14 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVFileID"), new[] { nameof(tvFile.TVFileID) });
                 }
 
-                if (!(from c in dbLocalIM.TVFiles select c).Where(c => c.TVFileID == tvFile.TVFileID).Any())
+                if (!(from c in dbLocalIM.TVFiles.Local select c).Where(c => c.TVFileID == tvFile.TVFileID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVFile", "TVFileID", tvFile.TVFileID.ToString()), new[] { nameof(tvFile.TVFileID) });
                 }
             }
 
             TVItem TVItemTVFileTVItemID = null;
-            TVItemTVFileTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == tvFile.TVFileTVItemID select c).FirstOrDefault();
+            TVItemTVFileTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == tvFile.TVFileTVItemID select c).FirstOrDefault();
 
             if (TVItemTVFileTVItemID == null)
             {
@@ -225,7 +222,7 @@ namespace CSSPDBLocalIMServices
             if (tvFile.ReportTypeID != null)
             {
                 ReportType ReportTypeReportTypeID = null;
-                ReportTypeReportTypeID = (from c in dbLocalIM.ReportTypes where c.ReportTypeID == tvFile.ReportTypeID select c).FirstOrDefault();
+                ReportTypeReportTypeID = (from c in dbLocalIM.ReportTypes.Local where c.ReportTypeID == tvFile.ReportTypeID select c).FirstOrDefault();
 
                 if (ReportTypeReportTypeID == null)
                 {
@@ -318,7 +315,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == tvFile.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == tvFile.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

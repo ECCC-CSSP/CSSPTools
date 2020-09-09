@@ -37,6 +37,7 @@ namespace CSSPDBLocalServices
 
         #region Properties
         private CSSPDBLocalContext dbLocal { get; }
+        private CSSPDBInMemoryContext dbLocalIM { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILocalService LocalService { get; }
@@ -47,13 +48,15 @@ namespace CSSPDBLocalServices
         #region Constructors
         public MWQMSubsectorDBLocalService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums,
            ILocalService LocalService,
-           CSSPDBLocalContext dbLocal)
+           CSSPDBLocalContext dbLocal,
+           CSSPDBInMemoryContext dbLocalIM)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LocalService = LocalService;
             this.enums = enums;
             this.dbLocal = dbLocal;
+            this.dbLocalIM = dbLocalIM;
         }
         #endregion Constructors
 
@@ -94,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MWQMSubsector mwqmSubsector = (from c in dbLocal.MWQMSubsectors
+            MWQMSubsector mwqmSubsector = (from c in dbLocal.MWQMSubsectors.Local
                     where c.MWQMSubsectorID == MWQMSubsectorID
                     select c).FirstOrDefault();
 
@@ -106,9 +109,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.MWQMSubsectors.Remove(mwqmSubsector);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -130,7 +132,7 @@ namespace CSSPDBLocalServices
 
             if (mwqmSubsector.MWQMSubsectorID == 0)
             {
-                int LastMWQMSubsectorID = (from c in dbLocal.MWQMSubsectors
+                int LastMWQMSubsectorID = (from c in dbLocal.MWQMSubsectors.AsNoTracking()
                           orderby c.MWQMSubsectorID descending
                           select c.MWQMSubsectorID).FirstOrDefault();
 
@@ -140,9 +142,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.MWQMSubsectors.Add(mwqmSubsector);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -165,9 +166,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.MWQMSubsectors.Update(mwqmSubsector);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -188,18 +188,35 @@ namespace CSSPDBLocalServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "MWQMSubsectorID"), new[] { nameof(mwqmSubsector.MWQMSubsectorID) });
                 }
 
-                if (!(from c in dbLocal.MWQMSubsectors select c).Where(c => c.MWQMSubsectorID == mwqmSubsector.MWQMSubsectorID).Any())
+                if (!(from c in dbLocal.MWQMSubsectors.AsNoTracking() select c).Where(c => c.MWQMSubsectorID == mwqmSubsector.MWQMSubsectorID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "MWQMSubsector", "MWQMSubsectorID", mwqmSubsector.MWQMSubsectorID.ToString()), new[] { nameof(mwqmSubsector.MWQMSubsectorID) });
                 }
             }
 
             TVItem TVItemMWQMSubsectorTVItemID = null;
-            TVItemMWQMSubsectorTVItemID = (from c in dbLocal.TVItems where c.TVItemID == mwqmSubsector.MWQMSubsectorTVItemID select c).FirstOrDefault();
+            TVItemMWQMSubsectorTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == mwqmSubsector.MWQMSubsectorTVItemID select c).FirstOrDefault();
 
             if (TVItemMWQMSubsectorTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "MWQMSubsectorTVItemID", mwqmSubsector.MWQMSubsectorTVItemID.ToString()), new[] { nameof(mwqmSubsector.MWQMSubsectorTVItemID) });
+                TVItemMWQMSubsectorTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == mwqmSubsector.MWQMSubsectorTVItemID select c).FirstOrDefault();
+
+                if (TVItemMWQMSubsectorTVItemID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "MWQMSubsectorTVItemID", mwqmSubsector.MWQMSubsectorTVItemID.ToString()), new[] { nameof(mwqmSubsector.MWQMSubsectorTVItemID) });
+                }
+                else
+                {
+                    List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                    {
+                        TVTypeEnum.Subsector,
+                    };
+                    if (!AllowableTVTypes.Contains(TVItemMWQMSubsectorTVItemID.TVType))
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "MWQMSubsectorTVItemID", "Subsector"), new[] { nameof(mwqmSubsector.MWQMSubsectorTVItemID) });
+                    }
+                }
+
             }
             else
             {
@@ -241,11 +258,28 @@ namespace CSSPDBLocalServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == mwqmSubsector.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == mwqmSubsector.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", mwqmSubsector.LastUpdateContactTVItemID.ToString()), new[] { nameof(mwqmSubsector.LastUpdateContactTVItemID) });
+                TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == mwqmSubsector.LastUpdateContactTVItemID select c).FirstOrDefault();
+
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", mwqmSubsector.LastUpdateContactTVItemID.ToString()), new[] { nameof(mwqmSubsector.LastUpdateContactTVItemID) });
+                }
+                else
+                {
+                    List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                    {
+                        TVTypeEnum.Contact,
+                    };
+                    if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(mwqmSubsector.LastUpdateContactTVItemID) });
+                    }
+                }
+
             }
             else
             {

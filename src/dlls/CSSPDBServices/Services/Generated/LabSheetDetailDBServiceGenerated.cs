@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            LabSheetDetail labSheetDetail = (from c in db.LabSheetDetails
+            LabSheetDetail labSheetDetail = (from c in db.LabSheetDetails.Local
                     where c.LabSheetDetailID == LabSheetDetailID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBServices
             try
             {
                 db.LabSheetDetails.Remove(labSheetDetail);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBServices
             try
             {
                 db.LabSheetDetails.Add(labSheetDetail);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBServices
             try
             {
                 db.LabSheetDetails.Update(labSheetDetail);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -179,14 +176,14 @@ namespace CSSPDBServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LabSheetDetailID"), new[] { nameof(labSheetDetail.LabSheetDetailID) });
                 }
 
-                if (!(from c in db.LabSheetDetails select c).Where(c => c.LabSheetDetailID == labSheetDetail.LabSheetDetailID).Any())
+                if (!(from c in db.LabSheetDetails.AsNoTracking() select c).Where(c => c.LabSheetDetailID == labSheetDetail.LabSheetDetailID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "LabSheetDetail", "LabSheetDetailID", labSheetDetail.LabSheetDetailID.ToString()), new[] { nameof(labSheetDetail.LabSheetDetailID) });
                 }
             }
 
             LabSheet LabSheetLabSheetID = null;
-            LabSheetLabSheetID = (from c in db.LabSheets where c.LabSheetID == labSheetDetail.LabSheetID select c).FirstOrDefault();
+            LabSheetLabSheetID = (from c in db.LabSheets.AsNoTracking() where c.LabSheetID == labSheetDetail.LabSheetID select c).FirstOrDefault();
 
             if (LabSheetLabSheetID == null)
             {
@@ -194,7 +191,7 @@ namespace CSSPDBServices
             }
 
             SamplingPlan SamplingPlanSamplingPlanID = null;
-            SamplingPlanSamplingPlanID = (from c in db.SamplingPlans where c.SamplingPlanID == labSheetDetail.SamplingPlanID select c).FirstOrDefault();
+            SamplingPlanSamplingPlanID = (from c in db.SamplingPlans.AsNoTracking() where c.SamplingPlanID == labSheetDetail.SamplingPlanID select c).FirstOrDefault();
 
             if (SamplingPlanSamplingPlanID == null)
             {
@@ -202,7 +199,7 @@ namespace CSSPDBServices
             }
 
             TVItem TVItemSubsectorTVItemID = null;
-            TVItemSubsectorTVItemID = (from c in db.TVItems where c.TVItemID == labSheetDetail.SubsectorTVItemID select c).FirstOrDefault();
+            TVItemSubsectorTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == labSheetDetail.SubsectorTVItemID select c).FirstOrDefault();
 
             if (TVItemSubsectorTVItemID == null)
             {
@@ -567,7 +564,7 @@ namespace CSSPDBServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == labSheetDetail.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == labSheetDetail.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

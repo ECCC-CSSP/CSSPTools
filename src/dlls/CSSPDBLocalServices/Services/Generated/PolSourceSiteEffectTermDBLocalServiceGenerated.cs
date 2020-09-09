@@ -37,6 +37,7 @@ namespace CSSPDBLocalServices
 
         #region Properties
         private CSSPDBLocalContext dbLocal { get; }
+        private CSSPDBInMemoryContext dbLocalIM { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILocalService LocalService { get; }
@@ -47,13 +48,15 @@ namespace CSSPDBLocalServices
         #region Constructors
         public PolSourceSiteEffectTermDBLocalService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums,
            ILocalService LocalService,
-           CSSPDBLocalContext dbLocal)
+           CSSPDBLocalContext dbLocal,
+           CSSPDBInMemoryContext dbLocalIM)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LocalService = LocalService;
             this.enums = enums;
             this.dbLocal = dbLocal;
+            this.dbLocalIM = dbLocalIM;
         }
         #endregion Constructors
 
@@ -94,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            PolSourceSiteEffectTerm polSourceSiteEffectTerm = (from c in dbLocal.PolSourceSiteEffectTerms
+            PolSourceSiteEffectTerm polSourceSiteEffectTerm = (from c in dbLocal.PolSourceSiteEffectTerms.Local
                     where c.PolSourceSiteEffectTermID == PolSourceSiteEffectTermID
                     select c).FirstOrDefault();
 
@@ -106,9 +109,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.PolSourceSiteEffectTerms.Remove(polSourceSiteEffectTerm);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -130,7 +132,7 @@ namespace CSSPDBLocalServices
 
             if (polSourceSiteEffectTerm.PolSourceSiteEffectTermID == 0)
             {
-                int LastPolSourceSiteEffectTermID = (from c in dbLocal.PolSourceSiteEffectTerms
+                int LastPolSourceSiteEffectTermID = (from c in dbLocal.PolSourceSiteEffectTerms.AsNoTracking()
                           orderby c.PolSourceSiteEffectTermID descending
                           select c.PolSourceSiteEffectTermID).FirstOrDefault();
 
@@ -140,9 +142,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.PolSourceSiteEffectTerms.Add(polSourceSiteEffectTerm);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -165,9 +166,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.PolSourceSiteEffectTerms.Update(polSourceSiteEffectTerm);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -188,7 +188,7 @@ namespace CSSPDBLocalServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "PolSourceSiteEffectTermID"), new[] { nameof(polSourceSiteEffectTerm.PolSourceSiteEffectTermID) });
                 }
 
-                if (!(from c in dbLocal.PolSourceSiteEffectTerms select c).Where(c => c.PolSourceSiteEffectTermID == polSourceSiteEffectTerm.PolSourceSiteEffectTermID).Any())
+                if (!(from c in dbLocal.PolSourceSiteEffectTerms.AsNoTracking() select c).Where(c => c.PolSourceSiteEffectTermID == polSourceSiteEffectTerm.PolSourceSiteEffectTermID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "PolSourceSiteEffectTerm", "PolSourceSiteEffectTermID", polSourceSiteEffectTerm.PolSourceSiteEffectTermID.ToString()), new[] { nameof(polSourceSiteEffectTerm.PolSourceSiteEffectTermID) });
                 }
@@ -197,11 +197,19 @@ namespace CSSPDBLocalServices
             if (polSourceSiteEffectTerm.UnderGroupID != null)
             {
                 PolSourceSiteEffectTerm PolSourceSiteEffectTermUnderGroupID = null;
-                PolSourceSiteEffectTermUnderGroupID = (from c in dbLocal.PolSourceSiteEffectTerms where c.PolSourceSiteEffectTermID == polSourceSiteEffectTerm.UnderGroupID select c).FirstOrDefault();
+                PolSourceSiteEffectTermUnderGroupID = (from c in dbLocal.PolSourceSiteEffectTerms.AsNoTracking() where c.PolSourceSiteEffectTermID == polSourceSiteEffectTerm.UnderGroupID select c).FirstOrDefault();
 
                 if (PolSourceSiteEffectTermUnderGroupID == null)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "PolSourceSiteEffectTerm", "UnderGroupID", (polSourceSiteEffectTerm.UnderGroupID == null ? "" : polSourceSiteEffectTerm.UnderGroupID.ToString())), new[] { nameof(polSourceSiteEffectTerm.UnderGroupID) });
+                    if (polSourceSiteEffectTerm.UnderGroupID != null)
+                    {
+                        PolSourceSiteEffectTermUnderGroupID = (from c in dbLocalIM.PolSourceSiteEffectTerms.Local where c.PolSourceSiteEffectTermID == polSourceSiteEffectTerm.UnderGroupID select c).FirstOrDefault();
+
+                        if (PolSourceSiteEffectTermUnderGroupID == null)
+                        {
+                            yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "PolSourceSiteEffectTerm", "UnderGroupID", (polSourceSiteEffectTerm.UnderGroupID == null ? "" : polSourceSiteEffectTerm.UnderGroupID.ToString())), new[] { nameof(polSourceSiteEffectTerm.UnderGroupID) });
+                        }
+                    }
                 }
             }
 
@@ -238,11 +246,28 @@ namespace CSSPDBLocalServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == polSourceSiteEffectTerm.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == polSourceSiteEffectTerm.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", polSourceSiteEffectTerm.LastUpdateContactTVItemID.ToString()), new[] { nameof(polSourceSiteEffectTerm.LastUpdateContactTVItemID) });
+                TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == polSourceSiteEffectTerm.LastUpdateContactTVItemID select c).FirstOrDefault();
+
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", polSourceSiteEffectTerm.LastUpdateContactTVItemID.ToString()), new[] { nameof(polSourceSiteEffectTerm.LastUpdateContactTVItemID) });
+                }
+                else
+                {
+                    List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                    {
+                        TVTypeEnum.Contact,
+                    };
+                    if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(polSourceSiteEffectTerm.LastUpdateContactTVItemID) });
+                    }
+                }
+
             }
             else
             {

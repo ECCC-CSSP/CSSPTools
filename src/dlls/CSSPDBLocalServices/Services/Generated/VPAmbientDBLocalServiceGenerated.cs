@@ -37,6 +37,7 @@ namespace CSSPDBLocalServices
 
         #region Properties
         private CSSPDBLocalContext dbLocal { get; }
+        private CSSPDBInMemoryContext dbLocalIM { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILocalService LocalService { get; }
@@ -47,13 +48,15 @@ namespace CSSPDBLocalServices
         #region Constructors
         public VPAmbientDBLocalService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums,
            ILocalService LocalService,
-           CSSPDBLocalContext dbLocal)
+           CSSPDBLocalContext dbLocal,
+           CSSPDBInMemoryContext dbLocalIM)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LocalService = LocalService;
             this.enums = enums;
             this.dbLocal = dbLocal;
+            this.dbLocalIM = dbLocalIM;
         }
         #endregion Constructors
 
@@ -94,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            VPAmbient vpAmbient = (from c in dbLocal.VPAmbients
+            VPAmbient vpAmbient = (from c in dbLocal.VPAmbients.Local
                     where c.VPAmbientID == VPAmbientID
                     select c).FirstOrDefault();
 
@@ -106,9 +109,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.VPAmbients.Remove(vpAmbient);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -130,7 +132,7 @@ namespace CSSPDBLocalServices
 
             if (vpAmbient.VPAmbientID == 0)
             {
-                int LastVPAmbientID = (from c in dbLocal.VPAmbients
+                int LastVPAmbientID = (from c in dbLocal.VPAmbients.AsNoTracking()
                           orderby c.VPAmbientID descending
                           select c.VPAmbientID).FirstOrDefault();
 
@@ -140,9 +142,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.VPAmbients.Add(vpAmbient);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -165,9 +166,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.VPAmbients.Update(vpAmbient);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -188,18 +188,24 @@ namespace CSSPDBLocalServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "VPAmbientID"), new[] { nameof(vpAmbient.VPAmbientID) });
                 }
 
-                if (!(from c in dbLocal.VPAmbients select c).Where(c => c.VPAmbientID == vpAmbient.VPAmbientID).Any())
+                if (!(from c in dbLocal.VPAmbients.AsNoTracking() select c).Where(c => c.VPAmbientID == vpAmbient.VPAmbientID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "VPAmbient", "VPAmbientID", vpAmbient.VPAmbientID.ToString()), new[] { nameof(vpAmbient.VPAmbientID) });
                 }
             }
 
             VPScenario VPScenarioVPScenarioID = null;
-            VPScenarioVPScenarioID = (from c in dbLocal.VPScenarios where c.VPScenarioID == vpAmbient.VPScenarioID select c).FirstOrDefault();
+            VPScenarioVPScenarioID = (from c in dbLocal.VPScenarios.AsNoTracking() where c.VPScenarioID == vpAmbient.VPScenarioID select c).FirstOrDefault();
 
             if (VPScenarioVPScenarioID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "VPScenario", "VPScenarioID", vpAmbient.VPScenarioID.ToString()), new[] { nameof(vpAmbient.VPScenarioID) });
+                VPScenarioVPScenarioID = (from c in dbLocalIM.VPScenarios.Local where c.VPScenarioID == vpAmbient.VPScenarioID select c).FirstOrDefault();
+
+                if (VPScenarioVPScenarioID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "VPScenario", "VPScenarioID", vpAmbient.VPScenarioID.ToString()), new[] { nameof(vpAmbient.VPScenarioID) });
+                }
+
             }
 
             if (vpAmbient.Row < 0 || vpAmbient.Row > 10)
@@ -300,11 +306,28 @@ namespace CSSPDBLocalServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == vpAmbient.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == vpAmbient.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", vpAmbient.LastUpdateContactTVItemID.ToString()), new[] { nameof(vpAmbient.LastUpdateContactTVItemID) });
+                TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == vpAmbient.LastUpdateContactTVItemID select c).FirstOrDefault();
+
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", vpAmbient.LastUpdateContactTVItemID.ToString()), new[] { nameof(vpAmbient.LastUpdateContactTVItemID) });
+                }
+                else
+                {
+                    List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                    {
+                        TVTypeEnum.Contact,
+                    };
+                    if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(vpAmbient.LastUpdateContactTVItemID) });
+                    }
+                }
+
             }
             else
             {

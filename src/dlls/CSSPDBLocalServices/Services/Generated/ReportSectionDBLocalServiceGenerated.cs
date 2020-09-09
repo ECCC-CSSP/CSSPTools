@@ -37,6 +37,7 @@ namespace CSSPDBLocalServices
 
         #region Properties
         private CSSPDBLocalContext dbLocal { get; }
+        private CSSPDBInMemoryContext dbLocalIM { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILocalService LocalService { get; }
@@ -47,13 +48,15 @@ namespace CSSPDBLocalServices
         #region Constructors
         public ReportSectionDBLocalService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums,
            ILocalService LocalService,
-           CSSPDBLocalContext dbLocal)
+           CSSPDBLocalContext dbLocal,
+           CSSPDBInMemoryContext dbLocalIM)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LocalService = LocalService;
             this.enums = enums;
             this.dbLocal = dbLocal;
+            this.dbLocalIM = dbLocalIM;
         }
         #endregion Constructors
 
@@ -94,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            ReportSection reportSection = (from c in dbLocal.ReportSections
+            ReportSection reportSection = (from c in dbLocal.ReportSections.Local
                     where c.ReportSectionID == ReportSectionID
                     select c).FirstOrDefault();
 
@@ -106,9 +109,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.ReportSections.Remove(reportSection);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -130,7 +132,7 @@ namespace CSSPDBLocalServices
 
             if (reportSection.ReportSectionID == 0)
             {
-                int LastReportSectionID = (from c in dbLocal.ReportSections
+                int LastReportSectionID = (from c in dbLocal.ReportSections.AsNoTracking()
                           orderby c.ReportSectionID descending
                           select c.ReportSectionID).FirstOrDefault();
 
@@ -140,9 +142,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.ReportSections.Add(reportSection);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -165,9 +166,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.ReportSections.Update(reportSection);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -189,28 +189,52 @@ namespace CSSPDBLocalServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ReportSectionID"), new[] { nameof(reportSection.ReportSectionID) });
                 }
 
-                if (!(from c in dbLocal.ReportSections select c).Where(c => c.ReportSectionID == reportSection.ReportSectionID).Any())
+                if (!(from c in dbLocal.ReportSections.AsNoTracking() select c).Where(c => c.ReportSectionID == reportSection.ReportSectionID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "ReportSection", "ReportSectionID", reportSection.ReportSectionID.ToString()), new[] { nameof(reportSection.ReportSectionID) });
                 }
             }
 
             ReportType ReportTypeReportTypeID = null;
-            ReportTypeReportTypeID = (from c in dbLocal.ReportTypes where c.ReportTypeID == reportSection.ReportTypeID select c).FirstOrDefault();
+            ReportTypeReportTypeID = (from c in dbLocal.ReportTypes.AsNoTracking() where c.ReportTypeID == reportSection.ReportTypeID select c).FirstOrDefault();
 
             if (ReportTypeReportTypeID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "ReportType", "ReportTypeID", reportSection.ReportTypeID.ToString()), new[] { nameof(reportSection.ReportTypeID) });
+                ReportTypeReportTypeID = (from c in dbLocalIM.ReportTypes.Local where c.ReportTypeID == reportSection.ReportTypeID select c).FirstOrDefault();
+
+                if (ReportTypeReportTypeID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "ReportType", "ReportTypeID", reportSection.ReportTypeID.ToString()), new[] { nameof(reportSection.ReportTypeID) });
+                }
+
             }
 
             if (reportSection.TVItemID != null)
             {
                 TVItem TVItemTVItemID = null;
-                TVItemTVItemID = (from c in dbLocal.TVItems where c.TVItemID == reportSection.TVItemID select c).FirstOrDefault();
+                TVItemTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == reportSection.TVItemID select c).FirstOrDefault();
 
                 if (TVItemTVItemID == null)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "TVItemID", (reportSection.TVItemID == null ? "" : reportSection.TVItemID.ToString())), new[] { nameof(reportSection.TVItemID) });
+                    if (reportSection.TVItemID != null)
+                    {
+                        TVItemTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == reportSection.TVItemID select c).FirstOrDefault();
+
+                        if (TVItemTVItemID == null)
+                        {
+                            yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "TVItemID", (reportSection.TVItemID == null ? "" : reportSection.TVItemID.ToString())), new[] { nameof(reportSection.TVItemID) });
+                        }
+                        else
+                        {
+                            List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                            {
+                            };
+                            if (!AllowableTVTypes.Contains(TVItemTVItemID.TVType))
+                            {
+                                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "TVItemID", ""), new[] { nameof(reportSection.TVItemID) });
+                            }
+                        }
+                    }
                 }
                 else
                 {
@@ -241,11 +265,19 @@ namespace CSSPDBLocalServices
             if (reportSection.ParentReportSectionID != null)
             {
                 ReportSection ReportSectionParentReportSectionID = null;
-                ReportSectionParentReportSectionID = (from c in dbLocal.ReportSections where c.ReportSectionID == reportSection.ParentReportSectionID select c).FirstOrDefault();
+                ReportSectionParentReportSectionID = (from c in dbLocal.ReportSections.AsNoTracking() where c.ReportSectionID == reportSection.ParentReportSectionID select c).FirstOrDefault();
 
                 if (ReportSectionParentReportSectionID == null)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "ReportSection", "ParentReportSectionID", (reportSection.ParentReportSectionID == null ? "" : reportSection.ParentReportSectionID.ToString())), new[] { nameof(reportSection.ParentReportSectionID) });
+                    if (reportSection.ParentReportSectionID != null)
+                    {
+                        ReportSectionParentReportSectionID = (from c in dbLocalIM.ReportSections.Local where c.ReportSectionID == reportSection.ParentReportSectionID select c).FirstOrDefault();
+
+                        if (ReportSectionParentReportSectionID == null)
+                        {
+                            yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "ReportSection", "ParentReportSectionID", (reportSection.ParentReportSectionID == null ? "" : reportSection.ParentReportSectionID.ToString())), new[] { nameof(reportSection.ParentReportSectionID) });
+                        }
+                    }
                 }
             }
 
@@ -260,11 +292,19 @@ namespace CSSPDBLocalServices
             if (reportSection.TemplateReportSectionID != null)
             {
                 ReportSection ReportSectionTemplateReportSectionID = null;
-                ReportSectionTemplateReportSectionID = (from c in dbLocal.ReportSections where c.ReportSectionID == reportSection.TemplateReportSectionID select c).FirstOrDefault();
+                ReportSectionTemplateReportSectionID = (from c in dbLocal.ReportSections.AsNoTracking() where c.ReportSectionID == reportSection.TemplateReportSectionID select c).FirstOrDefault();
 
                 if (ReportSectionTemplateReportSectionID == null)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "ReportSection", "TemplateReportSectionID", (reportSection.TemplateReportSectionID == null ? "" : reportSection.TemplateReportSectionID.ToString())), new[] { nameof(reportSection.TemplateReportSectionID) });
+                    if (reportSection.TemplateReportSectionID != null)
+                    {
+                        ReportSectionTemplateReportSectionID = (from c in dbLocalIM.ReportSections.Local where c.ReportSectionID == reportSection.TemplateReportSectionID select c).FirstOrDefault();
+
+                        if (ReportSectionTemplateReportSectionID == null)
+                        {
+                            yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "ReportSection", "TemplateReportSectionID", (reportSection.TemplateReportSectionID == null ? "" : reportSection.TemplateReportSectionID.ToString())), new[] { nameof(reportSection.TemplateReportSectionID) });
+                        }
+                    }
                 }
             }
 
@@ -291,11 +331,28 @@ namespace CSSPDBLocalServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == reportSection.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == reportSection.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", reportSection.LastUpdateContactTVItemID.ToString()), new[] { nameof(reportSection.LastUpdateContactTVItemID) });
+                TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == reportSection.LastUpdateContactTVItemID select c).FirstOrDefault();
+
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", reportSection.LastUpdateContactTVItemID.ToString()), new[] { nameof(reportSection.LastUpdateContactTVItemID) });
+                }
+                else
+                {
+                    List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                    {
+                        TVTypeEnum.Contact,
+                    };
+                    if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(reportSection.LastUpdateContactTVItemID) });
+                    }
+                }
+
             }
             else
             {

@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            MikeBoundaryCondition mikeBoundaryCondition = (from c in dbLocalIM.MikeBoundaryConditions.AsNoTracking()
+            MikeBoundaryCondition mikeBoundaryCondition = (from c in dbLocalIM.MikeBoundaryConditions.Local
                     where c.MikeBoundaryConditionID == MikeBoundaryConditionID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<MikeBoundaryCondition> mikeBoundaryConditionList = (from c in dbLocalIM.MikeBoundaryConditions.AsNoTracking() orderby c.MikeBoundaryConditionID select c).Skip(skip).Take(take).ToList();
+            List<MikeBoundaryCondition> mikeBoundaryConditionList = (from c in dbLocalIM.MikeBoundaryConditions.Local orderby c.MikeBoundaryConditionID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(mikeBoundaryConditionList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MikeBoundaryCondition mikeBoundaryCondition = (from c in dbLocalIM.MikeBoundaryConditions
+            MikeBoundaryCondition mikeBoundaryCondition = (from c in dbLocalIM.MikeBoundaryConditions.Local
                     where c.MikeBoundaryConditionID == MikeBoundaryConditionID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.MikeBoundaryConditions.Remove(mikeBoundaryCondition);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.MikeBoundaryConditions.Add(mikeBoundaryCondition);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.MikeBoundaryConditions.Update(mikeBoundaryCondition);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -188,14 +185,14 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "MikeBoundaryConditionID"), new[] { nameof(mikeBoundaryCondition.MikeBoundaryConditionID) });
                 }
 
-                if (!(from c in dbLocalIM.MikeBoundaryConditions select c).Where(c => c.MikeBoundaryConditionID == mikeBoundaryCondition.MikeBoundaryConditionID).Any())
+                if (!(from c in dbLocalIM.MikeBoundaryConditions.Local select c).Where(c => c.MikeBoundaryConditionID == mikeBoundaryCondition.MikeBoundaryConditionID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "MikeBoundaryCondition", "MikeBoundaryConditionID", mikeBoundaryCondition.MikeBoundaryConditionID.ToString()), new[] { nameof(mikeBoundaryCondition.MikeBoundaryConditionID) });
                 }
             }
 
             TVItem TVItemMikeBoundaryConditionTVItemID = null;
-            TVItemMikeBoundaryConditionTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == mikeBoundaryCondition.MikeBoundaryConditionTVItemID select c).FirstOrDefault();
+            TVItemMikeBoundaryConditionTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == mikeBoundaryCondition.MikeBoundaryConditionTVItemID select c).FirstOrDefault();
 
             if (TVItemMikeBoundaryConditionTVItemID == null)
             {
@@ -292,7 +289,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == mikeBoundaryCondition.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == mikeBoundaryCondition.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

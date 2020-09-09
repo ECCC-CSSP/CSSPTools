@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            MWQMLookupMPN mwqmLookupMPN = (from c in dbLocalIM.MWQMLookupMPNs.AsNoTracking()
+            MWQMLookupMPN mwqmLookupMPN = (from c in dbLocalIM.MWQMLookupMPNs.Local
                     where c.MWQMLookupMPNID == MWQMLookupMPNID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<MWQMLookupMPN> mwqmLookupMPNList = (from c in dbLocalIM.MWQMLookupMPNs.AsNoTracking() orderby c.MWQMLookupMPNID select c).Skip(skip).Take(take).ToList();
+            List<MWQMLookupMPN> mwqmLookupMPNList = (from c in dbLocalIM.MWQMLookupMPNs.Local orderby c.MWQMLookupMPNID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(mwqmLookupMPNList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MWQMLookupMPN mwqmLookupMPN = (from c in dbLocalIM.MWQMLookupMPNs
+            MWQMLookupMPN mwqmLookupMPN = (from c in dbLocalIM.MWQMLookupMPNs.Local
                     where c.MWQMLookupMPNID == MWQMLookupMPNID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.MWQMLookupMPNs.Remove(mwqmLookupMPN);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.MWQMLookupMPNs.Add(mwqmLookupMPN);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.MWQMLookupMPNs.Update(mwqmLookupMPN);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -187,7 +184,7 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "MWQMLookupMPNID"), new[] { nameof(mwqmLookupMPN.MWQMLookupMPNID) });
                 }
 
-                if (!(from c in dbLocalIM.MWQMLookupMPNs select c).Where(c => c.MWQMLookupMPNID == mwqmLookupMPN.MWQMLookupMPNID).Any())
+                if (!(from c in dbLocalIM.MWQMLookupMPNs.Local select c).Where(c => c.MWQMLookupMPNID == mwqmLookupMPN.MWQMLookupMPNID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "MWQMLookupMPN", "MWQMLookupMPNID", mwqmLookupMPN.MWQMLookupMPNID.ToString()), new[] { nameof(mwqmLookupMPN.MWQMLookupMPNID) });
                 }
@@ -226,7 +223,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == mwqmLookupMPN.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == mwqmLookupMPN.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

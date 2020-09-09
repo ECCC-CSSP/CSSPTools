@@ -49,7 +49,17 @@ namespace CSSPDBLocalIMServices.Tests
         }
         #endregion Constructors
 
-        #region Tests Generated [DBLocalIM]CRUD
+        #region Tests Generated Constructor [DBLocalIM]
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task RatingCurveDBLocalIM_Constructor_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+        }
+        #endregion Tests Generated Constructor [DBLocalIM]
+
+        #region Tests Generated [DBLocalIM] CRUD
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
@@ -61,7 +71,7 @@ namespace CSSPDBLocalIMServices.Tests
 
             await DoCRUDDBLocalIMTest();
         }
-        #endregion Tests Generated CRUD
+        #endregion Tests Generated [DBLocalIM] CRUD
 
         #region Tests Generated Properties
         [Theory]
@@ -292,6 +302,24 @@ namespace CSSPDBLocalIMServices.Tests
             if (OmitPropName != "LastUpdateDate_UTC") ratingCurve.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") ratingCurve.LastUpdateContactTVItemID = 2;
 
+            try
+            {
+                dbLocalIM.HydrometricSites.Add(new HydrometricSite() { HydrometricSiteID = 1, HydrometricSiteTVItemID = 8, FedSiteNumber = "01BL003", QuebecSiteNumber = "null", HydrometricSiteName = "BIG TRACADIE RIVER AT MURCHY BRIDGE CROSSING", Description = "null", Province = "NB", Elevation_m = null, StartDate_Local = new DateTime(1970, 1, 1, 0, 0, 0), EndDate_Local = new DateTime(2028, 12, 31, 0, 0, 0), TimeOffset_hour = -4D, DrainageArea_km2 = 383, IsNatural = true, IsActive = true, Sediment = false, RHBN = false, RealTime = true, HasDischarge = true, HasLevel = true, HasRatingCurve = true, LastUpdateDate_UTC = new DateTime(2018, 9, 13, 16, 56, 10), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
+            }
+            catch (Exception)
+            {
+                // Assert.True(false, ex.Message);
+            }
+            try
+            {
+                dbLocalIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
+            }
+            catch (Exception)
+            {
+                // Assert.True(false, ex.Message);
+            }
 
 
             return ratingCurve;

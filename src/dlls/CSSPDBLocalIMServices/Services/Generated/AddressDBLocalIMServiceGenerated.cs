@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            Address address = (from c in dbLocalIM.Addresses.AsNoTracking()
+            Address address = (from c in dbLocalIM.Addresses.Local
                     where c.AddressID == AddressID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<Address> addressList = (from c in dbLocalIM.Addresses.AsNoTracking() orderby c.AddressID select c).Skip(skip).Take(take).ToList();
+            List<Address> addressList = (from c in dbLocalIM.Addresses.Local orderby c.AddressID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(addressList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            Address address = (from c in dbLocalIM.Addresses
+            Address address = (from c in dbLocalIM.Addresses.Local
                     where c.AddressID == AddressID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.Addresses.Remove(address);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.Addresses.Add(address);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.Addresses.Update(address);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -188,14 +185,14 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "AddressID"), new[] { nameof(address.AddressID) });
                 }
 
-                if (!(from c in dbLocalIM.Addresses select c).Where(c => c.AddressID == address.AddressID).Any())
+                if (!(from c in dbLocalIM.Addresses.Local select c).Where(c => c.AddressID == address.AddressID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "Address", "AddressID", address.AddressID.ToString()), new[] { nameof(address.AddressID) });
                 }
             }
 
             TVItem TVItemAddressTVItemID = null;
-            TVItemAddressTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == address.AddressTVItemID select c).FirstOrDefault();
+            TVItemAddressTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == address.AddressTVItemID select c).FirstOrDefault();
 
             if (TVItemAddressTVItemID == null)
             {
@@ -220,7 +217,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemCountryTVItemID = null;
-            TVItemCountryTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == address.CountryTVItemID select c).FirstOrDefault();
+            TVItemCountryTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == address.CountryTVItemID select c).FirstOrDefault();
 
             if (TVItemCountryTVItemID == null)
             {
@@ -239,7 +236,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemProvinceTVItemID = null;
-            TVItemProvinceTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == address.ProvinceTVItemID select c).FirstOrDefault();
+            TVItemProvinceTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == address.ProvinceTVItemID select c).FirstOrDefault();
 
             if (TVItemProvinceTVItemID == null)
             {
@@ -258,7 +255,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemMunicipalityTVItemID = null;
-            TVItemMunicipalityTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == address.MunicipalityTVItemID select c).FirstOrDefault();
+            TVItemMunicipalityTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == address.MunicipalityTVItemID select c).FirstOrDefault();
 
             if (TVItemMunicipalityTVItemID == null)
             {
@@ -318,7 +315,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == address.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == address.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

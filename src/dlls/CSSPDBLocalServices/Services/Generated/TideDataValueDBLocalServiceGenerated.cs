@@ -37,6 +37,7 @@ namespace CSSPDBLocalServices
 
         #region Properties
         private CSSPDBLocalContext dbLocal { get; }
+        private CSSPDBInMemoryContext dbLocalIM { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILocalService LocalService { get; }
@@ -47,13 +48,15 @@ namespace CSSPDBLocalServices
         #region Constructors
         public TideDataValueDBLocalService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums,
            ILocalService LocalService,
-           CSSPDBLocalContext dbLocal)
+           CSSPDBLocalContext dbLocal,
+           CSSPDBInMemoryContext dbLocalIM)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LocalService = LocalService;
             this.enums = enums;
             this.dbLocal = dbLocal;
+            this.dbLocalIM = dbLocalIM;
         }
         #endregion Constructors
 
@@ -94,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            TideDataValue tideDataValue = (from c in dbLocal.TideDataValues
+            TideDataValue tideDataValue = (from c in dbLocal.TideDataValues.Local
                     where c.TideDataValueID == TideDataValueID
                     select c).FirstOrDefault();
 
@@ -106,9 +109,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.TideDataValues.Remove(tideDataValue);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -130,7 +132,7 @@ namespace CSSPDBLocalServices
 
             if (tideDataValue.TideDataValueID == 0)
             {
-                int LastTideDataValueID = (from c in dbLocal.TideDataValues
+                int LastTideDataValueID = (from c in dbLocal.TideDataValues.AsNoTracking()
                           orderby c.TideDataValueID descending
                           select c.TideDataValueID).FirstOrDefault();
 
@@ -140,9 +142,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.TideDataValues.Add(tideDataValue);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -165,9 +166,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.TideDataValues.Update(tideDataValue);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -189,18 +189,35 @@ namespace CSSPDBLocalServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TideDataValueID"), new[] { nameof(tideDataValue.TideDataValueID) });
                 }
 
-                if (!(from c in dbLocal.TideDataValues select c).Where(c => c.TideDataValueID == tideDataValue.TideDataValueID).Any())
+                if (!(from c in dbLocal.TideDataValues.AsNoTracking() select c).Where(c => c.TideDataValueID == tideDataValue.TideDataValueID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TideDataValue", "TideDataValueID", tideDataValue.TideDataValueID.ToString()), new[] { nameof(tideDataValue.TideDataValueID) });
                 }
             }
 
             TVItem TVItemTideSiteTVItemID = null;
-            TVItemTideSiteTVItemID = (from c in dbLocal.TVItems where c.TVItemID == tideDataValue.TideSiteTVItemID select c).FirstOrDefault();
+            TVItemTideSiteTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == tideDataValue.TideSiteTVItemID select c).FirstOrDefault();
 
             if (TVItemTideSiteTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "TideSiteTVItemID", tideDataValue.TideSiteTVItemID.ToString()), new[] { nameof(tideDataValue.TideSiteTVItemID) });
+                TVItemTideSiteTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == tideDataValue.TideSiteTVItemID select c).FirstOrDefault();
+
+                if (TVItemTideSiteTVItemID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "TideSiteTVItemID", tideDataValue.TideSiteTVItemID.ToString()), new[] { nameof(tideDataValue.TideSiteTVItemID) });
+                }
+                else
+                {
+                    List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                    {
+                        TVTypeEnum.TideSite,
+                    };
+                    if (!AllowableTVTypes.Contains(TVItemTideSiteTVItemID.TVType))
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "TideSiteTVItemID", "TideSite"), new[] { nameof(tideDataValue.TideSiteTVItemID) });
+                    }
+                }
+
             }
             else
             {
@@ -284,11 +301,28 @@ namespace CSSPDBLocalServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == tideDataValue.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == tideDataValue.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", tideDataValue.LastUpdateContactTVItemID.ToString()), new[] { nameof(tideDataValue.LastUpdateContactTVItemID) });
+                TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == tideDataValue.LastUpdateContactTVItemID select c).FirstOrDefault();
+
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", tideDataValue.LastUpdateContactTVItemID.ToString()), new[] { nameof(tideDataValue.LastUpdateContactTVItemID) });
+                }
+                else
+                {
+                    List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                    {
+                        TVTypeEnum.Contact,
+                    };
+                    if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(tideDataValue.LastUpdateContactTVItemID) });
+                    }
+                }
+
             }
             else
             {

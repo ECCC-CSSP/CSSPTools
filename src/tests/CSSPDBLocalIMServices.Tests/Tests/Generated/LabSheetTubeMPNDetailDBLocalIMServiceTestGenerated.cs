@@ -49,7 +49,17 @@ namespace CSSPDBLocalIMServices.Tests
         }
         #endregion Constructors
 
-        #region Tests Generated [DBLocalIM]CRUD
+        #region Tests Generated Constructor [DBLocalIM]
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task LabSheetTubeMPNDetailDBLocalIM_Constructor_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+        }
+        #endregion Tests Generated Constructor [DBLocalIM]
+
+        #region Tests Generated [DBLocalIM] CRUD
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
@@ -61,7 +71,7 @@ namespace CSSPDBLocalIMServices.Tests
 
             await DoCRUDDBLocalIMTest();
         }
-        #endregion Tests Generated CRUD
+        #endregion Tests Generated [DBLocalIM] CRUD
 
         #region Tests Generated Properties
         [Theory]
@@ -496,6 +506,33 @@ namespace CSSPDBLocalIMServices.Tests
             if (OmitPropName != "LastUpdateDate_UTC") labSheetTubeMPNDetail.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") labSheetTubeMPNDetail.LastUpdateContactTVItemID = 2;
 
+            try
+            {
+                dbLocalIM.LabSheetDetails.Add(new LabSheetDetail() { LabSheetDetailID = 1, LabSheetID = 1, SamplingPlanID = 1, SubsectorTVItemID = 12, Version = 1, RunDate = new DateTime(2017, 6, 21, 0, 0, 0), Tides = @"HT / HF", SampleCrewInitials = "", WaterBathCount = null, IncubationBath1StartTime = null, IncubationBath2StartTime = null, IncubationBath3StartTime = null, IncubationBath1EndTime = null, IncubationBath2EndTime = null, IncubationBath3EndTime = null, IncubationBath1TimeCalculated_minutes = null, IncubationBath2TimeCalculated_minutes = null, IncubationBath3TimeCalculated_minutes = null, WaterBath1 = "", WaterBath2 = "", WaterBath3 = "", TCField1 = null, TCLab1 = null, TCField2 = null, TCLab2 = null, TCFirst = null, TCAverage = null, ControlLot = "null", Positive35 = "null", NonTarget35 = "null", Negative35 = "null", Bath1Positive44_5 = "null", Bath2Positive44_5 = "null", Bath3Positive44_5 = "null", Bath1NonTarget44_5 = "null", Bath2NonTarget44_5 = "null", Bath3NonTarget44_5 = "null", Bath1Negative44_5 = "null", Bath2Negative44_5 = "null", Bath3Negative44_5 = "null", Blank35 = null, Bath1Blank44_5 = "null", Bath2Blank44_5 = "null", Bath3Blank44_5 = "null", Lot35 = "null", Lot44_5 = "null", Weather = "null", RunComment = "null", RunWeatherComment = "null", SampleBottleLotNumber = "null", SalinitiesReadBy = "null", SalinitiesReadDate = null, ResultsReadBy = "null", ResultsReadDate = null, ResultsRecordedBy = "null", ResultsRecordedDate = null, DailyDuplicateRLog = null, DailyDuplicatePrecisionCriteria = null, DailyDuplicateAcceptable = null, IntertechDuplicateRLog = null, IntertechDuplicatePrecisionCriteria = null, IntertechDuplicateAcceptable = null, IntertechReadAcceptable = null, LastUpdateDate_UTC = new DateTime(2017, 6, 26, 18, 38, 21), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
+            }
+            catch (Exception)
+            {
+                // Assert.True(false, ex.Message);
+            }
+            try
+            {
+                dbLocalIM.TVItems.Add(new TVItem() { TVItemID = 44, TVLevel = 6, TVPath = "p1p5p6p9p10p12p44", TVType = (TVTypeEnum)16, ParentID = 12, IsActive = true, LastUpdateDate_UTC = new DateTime(2017, 10, 12, 17, 39, 34), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
+            }
+            catch (Exception)
+            {
+                // Assert.True(false, ex.Message);
+            }
+            try
+            {
+                dbLocalIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
+            }
+            catch (Exception)
+            {
+                // Assert.True(false, ex.Message);
+            }
 
 
             return labSheetTubeMPNDetail;

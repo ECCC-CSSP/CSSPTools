@@ -37,6 +37,7 @@ namespace CSSPDBLocalServices
 
         #region Properties
         private CSSPDBLocalContext dbLocal { get; }
+        private CSSPDBInMemoryContext dbLocalIM { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILocalService LocalService { get; }
@@ -47,13 +48,15 @@ namespace CSSPDBLocalServices
         #region Constructors
         public SamplingPlanEmailDBLocalService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums,
            ILocalService LocalService,
-           CSSPDBLocalContext dbLocal)
+           CSSPDBLocalContext dbLocal,
+           CSSPDBInMemoryContext dbLocalIM)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LocalService = LocalService;
             this.enums = enums;
             this.dbLocal = dbLocal;
+            this.dbLocalIM = dbLocalIM;
         }
         #endregion Constructors
 
@@ -94,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            SamplingPlanEmail samplingPlanEmail = (from c in dbLocal.SamplingPlanEmails
+            SamplingPlanEmail samplingPlanEmail = (from c in dbLocal.SamplingPlanEmails.Local
                     where c.SamplingPlanEmailID == SamplingPlanEmailID
                     select c).FirstOrDefault();
 
@@ -106,9 +109,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.SamplingPlanEmails.Remove(samplingPlanEmail);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -130,7 +132,7 @@ namespace CSSPDBLocalServices
 
             if (samplingPlanEmail.SamplingPlanEmailID == 0)
             {
-                int LastSamplingPlanEmailID = (from c in dbLocal.SamplingPlanEmails
+                int LastSamplingPlanEmailID = (from c in dbLocal.SamplingPlanEmails.AsNoTracking()
                           orderby c.SamplingPlanEmailID descending
                           select c.SamplingPlanEmailID).FirstOrDefault();
 
@@ -140,9 +142,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.SamplingPlanEmails.Add(samplingPlanEmail);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -165,9 +166,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.SamplingPlanEmails.Update(samplingPlanEmail);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -188,18 +188,24 @@ namespace CSSPDBLocalServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SamplingPlanEmailID"), new[] { nameof(samplingPlanEmail.SamplingPlanEmailID) });
                 }
 
-                if (!(from c in dbLocal.SamplingPlanEmails select c).Where(c => c.SamplingPlanEmailID == samplingPlanEmail.SamplingPlanEmailID).Any())
+                if (!(from c in dbLocal.SamplingPlanEmails.AsNoTracking() select c).Where(c => c.SamplingPlanEmailID == samplingPlanEmail.SamplingPlanEmailID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "SamplingPlanEmail", "SamplingPlanEmailID", samplingPlanEmail.SamplingPlanEmailID.ToString()), new[] { nameof(samplingPlanEmail.SamplingPlanEmailID) });
                 }
             }
 
             SamplingPlan SamplingPlanSamplingPlanID = null;
-            SamplingPlanSamplingPlanID = (from c in dbLocal.SamplingPlans where c.SamplingPlanID == samplingPlanEmail.SamplingPlanID select c).FirstOrDefault();
+            SamplingPlanSamplingPlanID = (from c in dbLocal.SamplingPlans.AsNoTracking() where c.SamplingPlanID == samplingPlanEmail.SamplingPlanID select c).FirstOrDefault();
 
             if (SamplingPlanSamplingPlanID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "SamplingPlan", "SamplingPlanID", samplingPlanEmail.SamplingPlanID.ToString()), new[] { nameof(samplingPlanEmail.SamplingPlanID) });
+                SamplingPlanSamplingPlanID = (from c in dbLocalIM.SamplingPlans.Local where c.SamplingPlanID == samplingPlanEmail.SamplingPlanID select c).FirstOrDefault();
+
+                if (SamplingPlanSamplingPlanID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "SamplingPlan", "SamplingPlanID", samplingPlanEmail.SamplingPlanID.ToString()), new[] { nameof(samplingPlanEmail.SamplingPlanID) });
+                }
+
             }
 
             if (string.IsNullOrWhiteSpace(samplingPlanEmail.Email))
@@ -234,11 +240,28 @@ namespace CSSPDBLocalServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == samplingPlanEmail.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == samplingPlanEmail.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", samplingPlanEmail.LastUpdateContactTVItemID.ToString()), new[] { nameof(samplingPlanEmail.LastUpdateContactTVItemID) });
+                TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == samplingPlanEmail.LastUpdateContactTVItemID select c).FirstOrDefault();
+
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", samplingPlanEmail.LastUpdateContactTVItemID.ToString()), new[] { nameof(samplingPlanEmail.LastUpdateContactTVItemID) });
+                }
+                else
+                {
+                    List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                    {
+                        TVTypeEnum.Contact,
+                    };
+                    if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(samplingPlanEmail.LastUpdateContactTVItemID) });
+                    }
+                }
+
             }
             else
             {

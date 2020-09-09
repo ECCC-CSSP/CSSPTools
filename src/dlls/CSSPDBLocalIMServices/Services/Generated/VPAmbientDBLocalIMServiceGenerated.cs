@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            VPAmbient vpAmbient = (from c in dbLocalIM.VPAmbients.AsNoTracking()
+            VPAmbient vpAmbient = (from c in dbLocalIM.VPAmbients.Local
                     where c.VPAmbientID == VPAmbientID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<VPAmbient> vpAmbientList = (from c in dbLocalIM.VPAmbients.AsNoTracking() orderby c.VPAmbientID select c).Skip(skip).Take(take).ToList();
+            List<VPAmbient> vpAmbientList = (from c in dbLocalIM.VPAmbients.Local orderby c.VPAmbientID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(vpAmbientList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            VPAmbient vpAmbient = (from c in dbLocalIM.VPAmbients
+            VPAmbient vpAmbient = (from c in dbLocalIM.VPAmbients.Local
                     where c.VPAmbientID == VPAmbientID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.VPAmbients.Remove(vpAmbient);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.VPAmbients.Add(vpAmbient);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.VPAmbients.Update(vpAmbient);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -187,14 +184,14 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "VPAmbientID"), new[] { nameof(vpAmbient.VPAmbientID) });
                 }
 
-                if (!(from c in dbLocalIM.VPAmbients select c).Where(c => c.VPAmbientID == vpAmbient.VPAmbientID).Any())
+                if (!(from c in dbLocalIM.VPAmbients.Local select c).Where(c => c.VPAmbientID == vpAmbient.VPAmbientID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "VPAmbient", "VPAmbientID", vpAmbient.VPAmbientID.ToString()), new[] { nameof(vpAmbient.VPAmbientID) });
                 }
             }
 
             VPScenario VPScenarioVPScenarioID = null;
-            VPScenarioVPScenarioID = (from c in dbLocalIM.VPScenarios where c.VPScenarioID == vpAmbient.VPScenarioID select c).FirstOrDefault();
+            VPScenarioVPScenarioID = (from c in dbLocalIM.VPScenarios.Local where c.VPScenarioID == vpAmbient.VPScenarioID select c).FirstOrDefault();
 
             if (VPScenarioVPScenarioID == null)
             {
@@ -299,7 +296,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == vpAmbient.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == vpAmbient.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

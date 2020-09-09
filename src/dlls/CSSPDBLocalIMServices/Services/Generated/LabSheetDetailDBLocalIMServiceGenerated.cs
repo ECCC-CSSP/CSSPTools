@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            LabSheetDetail labSheetDetail = (from c in dbLocalIM.LabSheetDetails.AsNoTracking()
+            LabSheetDetail labSheetDetail = (from c in dbLocalIM.LabSheetDetails.Local
                     where c.LabSheetDetailID == LabSheetDetailID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<LabSheetDetail> labSheetDetailList = (from c in dbLocalIM.LabSheetDetails.AsNoTracking() orderby c.LabSheetDetailID select c).Skip(skip).Take(take).ToList();
+            List<LabSheetDetail> labSheetDetailList = (from c in dbLocalIM.LabSheetDetails.Local orderby c.LabSheetDetailID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(labSheetDetailList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            LabSheetDetail labSheetDetail = (from c in dbLocalIM.LabSheetDetails
+            LabSheetDetail labSheetDetail = (from c in dbLocalIM.LabSheetDetails.Local
                     where c.LabSheetDetailID == LabSheetDetailID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.LabSheetDetails.Remove(labSheetDetail);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.LabSheetDetails.Add(labSheetDetail);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.LabSheetDetails.Update(labSheetDetail);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -187,14 +184,14 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LabSheetDetailID"), new[] { nameof(labSheetDetail.LabSheetDetailID) });
                 }
 
-                if (!(from c in dbLocalIM.LabSheetDetails select c).Where(c => c.LabSheetDetailID == labSheetDetail.LabSheetDetailID).Any())
+                if (!(from c in dbLocalIM.LabSheetDetails.Local select c).Where(c => c.LabSheetDetailID == labSheetDetail.LabSheetDetailID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "LabSheetDetail", "LabSheetDetailID", labSheetDetail.LabSheetDetailID.ToString()), new[] { nameof(labSheetDetail.LabSheetDetailID) });
                 }
             }
 
             LabSheet LabSheetLabSheetID = null;
-            LabSheetLabSheetID = (from c in dbLocalIM.LabSheets where c.LabSheetID == labSheetDetail.LabSheetID select c).FirstOrDefault();
+            LabSheetLabSheetID = (from c in dbLocalIM.LabSheets.Local where c.LabSheetID == labSheetDetail.LabSheetID select c).FirstOrDefault();
 
             if (LabSheetLabSheetID == null)
             {
@@ -202,7 +199,7 @@ namespace CSSPDBLocalIMServices
             }
 
             SamplingPlan SamplingPlanSamplingPlanID = null;
-            SamplingPlanSamplingPlanID = (from c in dbLocalIM.SamplingPlans where c.SamplingPlanID == labSheetDetail.SamplingPlanID select c).FirstOrDefault();
+            SamplingPlanSamplingPlanID = (from c in dbLocalIM.SamplingPlans.Local where c.SamplingPlanID == labSheetDetail.SamplingPlanID select c).FirstOrDefault();
 
             if (SamplingPlanSamplingPlanID == null)
             {
@@ -210,7 +207,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemSubsectorTVItemID = null;
-            TVItemSubsectorTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == labSheetDetail.SubsectorTVItemID select c).FirstOrDefault();
+            TVItemSubsectorTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == labSheetDetail.SubsectorTVItemID select c).FirstOrDefault();
 
             if (TVItemSubsectorTVItemID == null)
             {
@@ -575,7 +572,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == labSheetDetail.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == labSheetDetail.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

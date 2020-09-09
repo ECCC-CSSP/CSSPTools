@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            TVFile tvFile = (from c in db.TVFiles
+            TVFile tvFile = (from c in db.TVFiles.Local
                     where c.TVFileID == TVFileID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBServices
             try
             {
                 db.TVFiles.Remove(tvFile);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBServices
             try
             {
                 db.TVFiles.Add(tvFile);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBServices
             try
             {
                 db.TVFiles.Update(tvFile);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -180,14 +177,14 @@ namespace CSSPDBServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVFileID"), new[] { nameof(tvFile.TVFileID) });
                 }
 
-                if (!(from c in db.TVFiles select c).Where(c => c.TVFileID == tvFile.TVFileID).Any())
+                if (!(from c in db.TVFiles.AsNoTracking() select c).Where(c => c.TVFileID == tvFile.TVFileID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVFile", "TVFileID", tvFile.TVFileID.ToString()), new[] { nameof(tvFile.TVFileID) });
                 }
             }
 
             TVItem TVItemTVFileTVItemID = null;
-            TVItemTVFileTVItemID = (from c in db.TVItems where c.TVItemID == tvFile.TVFileTVItemID select c).FirstOrDefault();
+            TVItemTVFileTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == tvFile.TVFileTVItemID select c).FirstOrDefault();
 
             if (TVItemTVFileTVItemID == null)
             {
@@ -217,7 +214,7 @@ namespace CSSPDBServices
             if (tvFile.ReportTypeID != null)
             {
                 ReportType ReportTypeReportTypeID = null;
-                ReportTypeReportTypeID = (from c in db.ReportTypes where c.ReportTypeID == tvFile.ReportTypeID select c).FirstOrDefault();
+                ReportTypeReportTypeID = (from c in db.ReportTypes.AsNoTracking() where c.ReportTypeID == tvFile.ReportTypeID select c).FirstOrDefault();
 
                 if (ReportTypeReportTypeID == null)
                 {
@@ -310,7 +307,7 @@ namespace CSSPDBServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == tvFile.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == tvFile.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

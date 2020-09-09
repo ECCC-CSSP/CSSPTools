@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            PolSourceObservation polSourceObservation = (from c in db.PolSourceObservations
+            PolSourceObservation polSourceObservation = (from c in db.PolSourceObservations.Local
                     where c.PolSourceObservationID == PolSourceObservationID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBServices
             try
             {
                 db.PolSourceObservations.Remove(polSourceObservation);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBServices
             try
             {
                 db.PolSourceObservations.Add(polSourceObservation);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBServices
             try
             {
                 db.PolSourceObservations.Update(polSourceObservation);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -179,14 +176,14 @@ namespace CSSPDBServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "PolSourceObservationID"), new[] { nameof(polSourceObservation.PolSourceObservationID) });
                 }
 
-                if (!(from c in db.PolSourceObservations select c).Where(c => c.PolSourceObservationID == polSourceObservation.PolSourceObservationID).Any())
+                if (!(from c in db.PolSourceObservations.AsNoTracking() select c).Where(c => c.PolSourceObservationID == polSourceObservation.PolSourceObservationID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "PolSourceObservation", "PolSourceObservationID", polSourceObservation.PolSourceObservationID.ToString()), new[] { nameof(polSourceObservation.PolSourceObservationID) });
                 }
             }
 
             PolSourceSite PolSourceSitePolSourceSiteID = null;
-            PolSourceSitePolSourceSiteID = (from c in db.PolSourceSites where c.PolSourceSiteID == polSourceObservation.PolSourceSiteID select c).FirstOrDefault();
+            PolSourceSitePolSourceSiteID = (from c in db.PolSourceSites.AsNoTracking() where c.PolSourceSiteID == polSourceObservation.PolSourceSiteID select c).FirstOrDefault();
 
             if (PolSourceSitePolSourceSiteID == null)
             {
@@ -206,7 +203,7 @@ namespace CSSPDBServices
             }
 
             TVItem TVItemContactTVItemID = null;
-            TVItemContactTVItemID = (from c in db.TVItems where c.TVItemID == polSourceObservation.ContactTVItemID select c).FirstOrDefault();
+            TVItemContactTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == polSourceObservation.ContactTVItemID select c).FirstOrDefault();
 
             if (TVItemContactTVItemID == null)
             {
@@ -244,7 +241,7 @@ namespace CSSPDBServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == polSourceObservation.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == polSourceObservation.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

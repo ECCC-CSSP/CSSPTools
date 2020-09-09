@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            RatingCurveValue ratingCurveValue = (from c in dbLocalIM.RatingCurveValues.AsNoTracking()
+            RatingCurveValue ratingCurveValue = (from c in dbLocalIM.RatingCurveValues.Local
                     where c.RatingCurveValueID == RatingCurveValueID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<RatingCurveValue> ratingCurveValueList = (from c in dbLocalIM.RatingCurveValues.AsNoTracking() orderby c.RatingCurveValueID select c).Skip(skip).Take(take).ToList();
+            List<RatingCurveValue> ratingCurveValueList = (from c in dbLocalIM.RatingCurveValues.Local orderby c.RatingCurveValueID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(ratingCurveValueList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            RatingCurveValue ratingCurveValue = (from c in dbLocalIM.RatingCurveValues
+            RatingCurveValue ratingCurveValue = (from c in dbLocalIM.RatingCurveValues.Local
                     where c.RatingCurveValueID == RatingCurveValueID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.RatingCurveValues.Remove(ratingCurveValue);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.RatingCurveValues.Add(ratingCurveValue);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.RatingCurveValues.Update(ratingCurveValue);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -187,14 +184,14 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "RatingCurveValueID"), new[] { nameof(ratingCurveValue.RatingCurveValueID) });
                 }
 
-                if (!(from c in dbLocalIM.RatingCurveValues select c).Where(c => c.RatingCurveValueID == ratingCurveValue.RatingCurveValueID).Any())
+                if (!(from c in dbLocalIM.RatingCurveValues.Local select c).Where(c => c.RatingCurveValueID == ratingCurveValue.RatingCurveValueID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "RatingCurveValue", "RatingCurveValueID", ratingCurveValue.RatingCurveValueID.ToString()), new[] { nameof(ratingCurveValue.RatingCurveValueID) });
                 }
             }
 
             RatingCurve RatingCurveRatingCurveID = null;
-            RatingCurveRatingCurveID = (from c in dbLocalIM.RatingCurves where c.RatingCurveID == ratingCurveValue.RatingCurveID select c).FirstOrDefault();
+            RatingCurveRatingCurveID = (from c in dbLocalIM.RatingCurves.Local where c.RatingCurveID == ratingCurveValue.RatingCurveID select c).FirstOrDefault();
 
             if (RatingCurveRatingCurveID == null)
             {
@@ -224,7 +221,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == ratingCurveValue.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == ratingCurveValue.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

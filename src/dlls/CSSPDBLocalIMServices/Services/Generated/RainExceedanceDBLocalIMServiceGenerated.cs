@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            RainExceedance rainExceedance = (from c in dbLocalIM.RainExceedances.AsNoTracking()
+            RainExceedance rainExceedance = (from c in dbLocalIM.RainExceedances.Local
                     where c.RainExceedanceID == RainExceedanceID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<RainExceedance> rainExceedanceList = (from c in dbLocalIM.RainExceedances.AsNoTracking() orderby c.RainExceedanceID select c).Skip(skip).Take(take).ToList();
+            List<RainExceedance> rainExceedanceList = (from c in dbLocalIM.RainExceedances.Local orderby c.RainExceedanceID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(rainExceedanceList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            RainExceedance rainExceedance = (from c in dbLocalIM.RainExceedances
+            RainExceedance rainExceedance = (from c in dbLocalIM.RainExceedances.Local
                     where c.RainExceedanceID == RainExceedanceID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.RainExceedances.Remove(rainExceedance);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.RainExceedances.Add(rainExceedance);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.RainExceedances.Update(rainExceedance);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -187,14 +184,14 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "RainExceedanceID"), new[] { nameof(rainExceedance.RainExceedanceID) });
                 }
 
-                if (!(from c in dbLocalIM.RainExceedances select c).Where(c => c.RainExceedanceID == rainExceedance.RainExceedanceID).Any())
+                if (!(from c in dbLocalIM.RainExceedances.Local select c).Where(c => c.RainExceedanceID == rainExceedance.RainExceedanceID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "RainExceedance", "RainExceedanceID", rainExceedance.RainExceedanceID.ToString()), new[] { nameof(rainExceedance.RainExceedanceID) });
                 }
             }
 
             TVItem TVItemRainExceedanceTVItemID = null;
-            TVItemRainExceedanceTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == rainExceedance.RainExceedanceTVItemID select c).FirstOrDefault();
+            TVItemRainExceedanceTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == rainExceedance.RainExceedanceTVItemID select c).FirstOrDefault();
 
             if (TVItemRainExceedanceTVItemID == null)
             {
@@ -240,7 +237,7 @@ namespace CSSPDBLocalIMServices
             if (rainExceedance.StakeholdersEmailDistributionListID != null)
             {
                 EmailDistributionList EmailDistributionListStakeholdersEmailDistributionListID = null;
-                EmailDistributionListStakeholdersEmailDistributionListID = (from c in dbLocalIM.EmailDistributionLists where c.EmailDistributionListID == rainExceedance.StakeholdersEmailDistributionListID select c).FirstOrDefault();
+                EmailDistributionListStakeholdersEmailDistributionListID = (from c in dbLocalIM.EmailDistributionLists.Local where c.EmailDistributionListID == rainExceedance.StakeholdersEmailDistributionListID select c).FirstOrDefault();
 
                 if (EmailDistributionListStakeholdersEmailDistributionListID == null)
                 {
@@ -251,7 +248,7 @@ namespace CSSPDBLocalIMServices
             if (rainExceedance.OnlyStaffEmailDistributionListID != null)
             {
                 EmailDistributionList EmailDistributionListOnlyStaffEmailDistributionListID = null;
-                EmailDistributionListOnlyStaffEmailDistributionListID = (from c in dbLocalIM.EmailDistributionLists where c.EmailDistributionListID == rainExceedance.OnlyStaffEmailDistributionListID select c).FirstOrDefault();
+                EmailDistributionListOnlyStaffEmailDistributionListID = (from c in dbLocalIM.EmailDistributionLists.Local where c.EmailDistributionListID == rainExceedance.OnlyStaffEmailDistributionListID select c).FirstOrDefault();
 
                 if (EmailDistributionListOnlyStaffEmailDistributionListID == null)
                 {
@@ -272,7 +269,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == rainExceedance.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == rainExceedance.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

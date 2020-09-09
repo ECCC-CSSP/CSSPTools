@@ -37,6 +37,7 @@ namespace CSSPDBLocalServices
 
         #region Properties
         private CSSPDBLocalContext dbLocal { get; }
+        private CSSPDBInMemoryContext dbLocalIM { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILocalService LocalService { get; }
@@ -47,13 +48,15 @@ namespace CSSPDBLocalServices
         #region Constructors
         public TVItemLanguageDBLocalService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums,
            ILocalService LocalService,
-           CSSPDBLocalContext dbLocal)
+           CSSPDBLocalContext dbLocal,
+           CSSPDBInMemoryContext dbLocalIM)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LocalService = LocalService;
             this.enums = enums;
             this.dbLocal = dbLocal;
+            this.dbLocalIM = dbLocalIM;
         }
         #endregion Constructors
 
@@ -94,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            TVItemLanguage tvItemLanguage = (from c in dbLocal.TVItemLanguages
+            TVItemLanguage tvItemLanguage = (from c in dbLocal.TVItemLanguages.Local
                     where c.TVItemLanguageID == TVItemLanguageID
                     select c).FirstOrDefault();
 
@@ -106,9 +109,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.TVItemLanguages.Remove(tvItemLanguage);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -130,7 +132,7 @@ namespace CSSPDBLocalServices
 
             if (tvItemLanguage.TVItemLanguageID == 0)
             {
-                int LastTVItemLanguageID = (from c in dbLocal.TVItemLanguages
+                int LastTVItemLanguageID = (from c in dbLocal.TVItemLanguages.AsNoTracking()
                           orderby c.TVItemLanguageID descending
                           select c.TVItemLanguageID).FirstOrDefault();
 
@@ -140,9 +142,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.TVItemLanguages.Add(tvItemLanguage);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -165,9 +166,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.TVItemLanguages.Update(tvItemLanguage);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -189,18 +189,56 @@ namespace CSSPDBLocalServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVItemLanguageID"), new[] { nameof(tvItemLanguage.TVItemLanguageID) });
                 }
 
-                if (!(from c in dbLocal.TVItemLanguages select c).Where(c => c.TVItemLanguageID == tvItemLanguage.TVItemLanguageID).Any())
+                if (!(from c in dbLocal.TVItemLanguages.AsNoTracking() select c).Where(c => c.TVItemLanguageID == tvItemLanguage.TVItemLanguageID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItemLanguage", "TVItemLanguageID", tvItemLanguage.TVItemLanguageID.ToString()), new[] { nameof(tvItemLanguage.TVItemLanguageID) });
                 }
             }
 
             TVItem TVItemTVItemID = null;
-            TVItemTVItemID = (from c in dbLocal.TVItems where c.TVItemID == tvItemLanguage.TVItemID select c).FirstOrDefault();
+            TVItemTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == tvItemLanguage.TVItemID select c).FirstOrDefault();
 
             if (TVItemTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "TVItemID", tvItemLanguage.TVItemID.ToString()), new[] { nameof(tvItemLanguage.TVItemID) });
+                TVItemTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == tvItemLanguage.TVItemID select c).FirstOrDefault();
+
+                if (TVItemTVItemID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "TVItemID", tvItemLanguage.TVItemID.ToString()), new[] { nameof(tvItemLanguage.TVItemID) });
+                }
+                else
+                {
+                    List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                    {
+                        TVTypeEnum.Root,
+                        TVTypeEnum.Address,
+                        TVTypeEnum.Area,
+                        TVTypeEnum.ClimateSite,
+                        TVTypeEnum.Contact,
+                        TVTypeEnum.Country,
+                        TVTypeEnum.Email,
+                        TVTypeEnum.HydrometricSite,
+                        TVTypeEnum.Infrastructure,
+                        TVTypeEnum.MikeBoundaryConditionWebTide,
+                        TVTypeEnum.MikeBoundaryConditionMesh,
+                        TVTypeEnum.MikeScenario,
+                        TVTypeEnum.MikeSource,
+                        TVTypeEnum.Municipality,
+                        TVTypeEnum.MWQMSite,
+                        TVTypeEnum.PolSourceSite,
+                        TVTypeEnum.Province,
+                        TVTypeEnum.Sector,
+                        TVTypeEnum.Subsector,
+                        TVTypeEnum.Tel,
+                        TVTypeEnum.MWQMRun,
+                        TVTypeEnum.Classification,
+                    };
+                    if (!AllowableTVTypes.Contains(TVItemTVItemID.TVType))
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "TVItemID", "Root,Address,Area,ClimateSite,Contact,Country,Email,HydrometricSite,Infrastructure,MikeBoundaryConditionWebTide,MikeBoundaryConditionMesh,MikeScenario,MikeSource,Municipality,MWQMSite,PolSourceSite,Province,Sector,Subsector,Tel,MWQMRun,Classification"), new[] { nameof(tvItemLanguage.TVItemID) });
+                    }
+                }
+
             }
             else
             {
@@ -270,11 +308,28 @@ namespace CSSPDBLocalServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == tvItemLanguage.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == tvItemLanguage.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", tvItemLanguage.LastUpdateContactTVItemID.ToString()), new[] { nameof(tvItemLanguage.LastUpdateContactTVItemID) });
+                TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == tvItemLanguage.LastUpdateContactTVItemID select c).FirstOrDefault();
+
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", tvItemLanguage.LastUpdateContactTVItemID.ToString()), new[] { nameof(tvItemLanguage.LastUpdateContactTVItemID) });
+                }
+                else
+                {
+                    List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                    {
+                        TVTypeEnum.Contact,
+                    };
+                    if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(tvItemLanguage.LastUpdateContactTVItemID) });
+                    }
+                }
+
             }
             else
             {

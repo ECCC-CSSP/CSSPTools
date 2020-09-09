@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            PolSourceSite polSourceSite = (from c in db.PolSourceSites
+            PolSourceSite polSourceSite = (from c in db.PolSourceSites.Local
                     where c.PolSourceSiteID == PolSourceSiteID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBServices
             try
             {
                 db.PolSourceSites.Remove(polSourceSite);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBServices
             try
             {
                 db.PolSourceSites.Add(polSourceSite);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBServices
             try
             {
                 db.PolSourceSites.Update(polSourceSite);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -180,14 +177,14 @@ namespace CSSPDBServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "PolSourceSiteID"), new[] { nameof(polSourceSite.PolSourceSiteID) });
                 }
 
-                if (!(from c in db.PolSourceSites select c).Where(c => c.PolSourceSiteID == polSourceSite.PolSourceSiteID).Any())
+                if (!(from c in db.PolSourceSites.AsNoTracking() select c).Where(c => c.PolSourceSiteID == polSourceSite.PolSourceSiteID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "PolSourceSite", "PolSourceSiteID", polSourceSite.PolSourceSiteID.ToString()), new[] { nameof(polSourceSite.PolSourceSiteID) });
                 }
             }
 
             TVItem TVItemPolSourceSiteTVItemID = null;
-            TVItemPolSourceSiteTVItemID = (from c in db.TVItems where c.TVItemID == polSourceSite.PolSourceSiteTVItemID select c).FirstOrDefault();
+            TVItemPolSourceSiteTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == polSourceSite.PolSourceSiteTVItemID select c).FirstOrDefault();
 
             if (TVItemPolSourceSiteTVItemID == null)
             {
@@ -246,7 +243,7 @@ namespace CSSPDBServices
             if (polSourceSite.CivicAddressTVItemID != null)
             {
                 TVItem TVItemCivicAddressTVItemID = null;
-                TVItemCivicAddressTVItemID = (from c in db.TVItems where c.TVItemID == polSourceSite.CivicAddressTVItemID select c).FirstOrDefault();
+                TVItemCivicAddressTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == polSourceSite.CivicAddressTVItemID select c).FirstOrDefault();
 
                 if (TVItemCivicAddressTVItemID == null)
                 {
@@ -278,7 +275,7 @@ namespace CSSPDBServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == polSourceSite.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == polSourceSite.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

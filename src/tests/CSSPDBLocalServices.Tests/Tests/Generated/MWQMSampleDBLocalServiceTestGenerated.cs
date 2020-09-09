@@ -22,6 +22,7 @@ using Xunit;
 using System.ComponentModel.DataAnnotations;
 using CSSPCultureServices.Resources;
 using LocalServices;
+using System.Threading;
 
 namespace CSSPDBLocalServices.Tests
 {
@@ -39,6 +40,7 @@ namespace CSSPDBLocalServices.Tests
         private ILocalService LocalService { get; set; }
         private IMWQMSampleDBLocalService MWQMSampleDBLocalService { get; set; }
         private CSSPDBLocalContext dbLocal { get; set; }
+        private CSSPDBInMemoryContext dbLocalIM { get; set; }
         private MWQMSample mwqmSample { get; set; }
         #endregion Properties
 
@@ -49,7 +51,17 @@ namespace CSSPDBLocalServices.Tests
         }
         #endregion Constructors
 
-        #region Tests Generated [DBLocal]CRUD
+        #region Tests Generated Constructor [DBLocal]
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task MWQMSampleDBLocal_Constructor_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+        }
+        #endregion Tests Generated Constructor [DBLocal]
+
+        #region Tests Generated [DBLocal] CRUD
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
@@ -61,7 +73,7 @@ namespace CSSPDBLocalServices.Tests
 
             await DoCRUDDBLocalTest();
         }
-        #endregion Tests Generated CRUD
+        #endregion Tests Generated [DBLocal] CRUD
 
         #region Tests Generated Properties
         [Theory]
@@ -451,17 +463,6 @@ namespace CSSPDBLocalServices.Tests
             int count = ((List<MWQMSample>)((OkObjectResult)actionMWQMSampleList.Result).Value).Count();
             Assert.True(count > 0);
 
-            // List<MWQMSample> with skip and take
-            var actionMWQMSampleListSkipAndTake = await MWQMSampleDBLocalService.GetMWQMSampleList(1, 1);
-            Assert.Equal(200, ((ObjectResult)actionMWQMSampleListSkipAndTake.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionMWQMSampleListSkipAndTake.Result).Value);
-            List<MWQMSample> mwqmSampleListSkipAndTake = (List<MWQMSample>)((OkObjectResult)actionMWQMSampleListSkipAndTake.Result).Value;
-
-            int countSkipAndTake = ((List<MWQMSample>)((OkObjectResult)actionMWQMSampleListSkipAndTake.Result).Value).Count();
-            Assert.True(countSkipAndTake == 1);
-
-            Assert.False(mwqmSampleList[0].MWQMSampleID == mwqmSampleListSkipAndTake[0].MWQMSampleID);
-
             // Get MWQMSample With MWQMSampleID
             var actionMWQMSampleGet = await MWQMSampleDBLocalService.GetMWQMSampleWithMWQMSampleID(mwqmSampleList[0].MWQMSampleID);
             Assert.Equal(200, ((ObjectResult)actionMWQMSampleGet.Result).StatusCode);
@@ -523,6 +524,11 @@ namespace CSSPDBLocalServices.Tests
                 options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
             });
 
+            Services.AddDbContext<CSSPDBInMemoryContext>(options =>
+            {
+                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBLocal.FullName }");
+            });
+
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<ILocalService, LocalService>();
             Services.AddSingleton<IEnums, Enums>();
@@ -543,6 +549,9 @@ namespace CSSPDBLocalServices.Tests
 
             dbLocal = Provider.GetService<CSSPDBLocalContext>();
             Assert.NotNull(dbLocal);
+
+            dbLocalIM = Provider.GetService<CSSPDBInMemoryContext>();
+            Assert.NotNull(dbLocalIM);
 
             MWQMSampleDBLocalService = Provider.GetService<IMWQMSampleDBLocalService>();
             Assert.NotNull(MWQMSampleDBLocalService);
@@ -574,8 +583,8 @@ namespace CSSPDBLocalServices.Tests
 
             try
             {
-                dbLocal.TVItems.Add(new TVItem() { TVItemID = 44, TVLevel = 6, TVPath = "p1p5p6p9p10p12p44", TVType = (TVTypeEnum)16, ParentID = 12, IsActive = true, LastUpdateDate_UTC = new DateTime(2017, 10, 12, 17, 39, 34), LastUpdateContactTVItemID = 2 });
-                dbLocal.SaveChanges();
+                dbLocalIM.TVItems.Add(new TVItem() { TVItemID = 44, TVLevel = 6, TVPath = "p1p5p6p9p10p12p44", TVType = (TVTypeEnum)16, ParentID = 12, IsActive = true, LastUpdateDate_UTC = new DateTime(2017, 10, 12, 17, 39, 34), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
             }
             catch (Exception)
             {
@@ -583,8 +592,8 @@ namespace CSSPDBLocalServices.Tests
             }
             try
             {
-                dbLocal.TVItems.Add(new TVItem() { TVItemID = 50, TVLevel = 6, TVPath = "p1p5p6p9p10p12p50", TVType = (TVTypeEnum)31, ParentID = 12, IsActive = true, LastUpdateDate_UTC = new DateTime(2017, 6, 28, 12, 41, 23), LastUpdateContactTVItemID = 2 });
-                dbLocal.SaveChanges();
+                dbLocalIM.TVItems.Add(new TVItem() { TVItemID = 50, TVLevel = 6, TVPath = "p1p5p6p9p10p12p50", TVType = (TVTypeEnum)31, ParentID = 12, IsActive = true, LastUpdateDate_UTC = new DateTime(2017, 6, 28, 12, 41, 23), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
             }
             catch (Exception)
             {
@@ -592,8 +601,8 @@ namespace CSSPDBLocalServices.Tests
             }
             try
             {
-                dbLocal.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2 });
-                dbLocal.SaveChanges();
+                dbLocalIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
             }
             catch (Exception)
             {

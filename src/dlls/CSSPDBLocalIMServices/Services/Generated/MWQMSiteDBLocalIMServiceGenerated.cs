@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            MWQMSite mwqmSite = (from c in dbLocalIM.MWQMSites.AsNoTracking()
+            MWQMSite mwqmSite = (from c in dbLocalIM.MWQMSites.Local
                     where c.MWQMSiteID == MWQMSiteID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<MWQMSite> mwqmSiteList = (from c in dbLocalIM.MWQMSites.AsNoTracking() orderby c.MWQMSiteID select c).Skip(skip).Take(take).ToList();
+            List<MWQMSite> mwqmSiteList = (from c in dbLocalIM.MWQMSites.Local orderby c.MWQMSiteID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(mwqmSiteList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MWQMSite mwqmSite = (from c in dbLocalIM.MWQMSites
+            MWQMSite mwqmSite = (from c in dbLocalIM.MWQMSites.Local
                     where c.MWQMSiteID == MWQMSiteID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.MWQMSites.Remove(mwqmSite);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.MWQMSites.Add(mwqmSite);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.MWQMSites.Update(mwqmSite);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -188,14 +185,14 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "MWQMSiteID"), new[] { nameof(mwqmSite.MWQMSiteID) });
                 }
 
-                if (!(from c in dbLocalIM.MWQMSites select c).Where(c => c.MWQMSiteID == mwqmSite.MWQMSiteID).Any())
+                if (!(from c in dbLocalIM.MWQMSites.Local select c).Where(c => c.MWQMSiteID == mwqmSite.MWQMSiteID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "MWQMSite", "MWQMSiteID", mwqmSite.MWQMSiteID.ToString()), new[] { nameof(mwqmSite.MWQMSiteID) });
                 }
             }
 
             TVItem TVItemMWQMSiteTVItemID = null;
-            TVItemMWQMSiteTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == mwqmSite.MWQMSiteTVItemID select c).FirstOrDefault();
+            TVItemMWQMSiteTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == mwqmSite.MWQMSiteTVItemID select c).FirstOrDefault();
 
             if (TVItemMWQMSiteTVItemID == null)
             {
@@ -257,7 +254,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == mwqmSite.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == mwqmSite.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

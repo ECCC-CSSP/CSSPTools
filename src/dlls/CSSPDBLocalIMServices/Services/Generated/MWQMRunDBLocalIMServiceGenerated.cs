@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            MWQMRun mwqmRun = (from c in dbLocalIM.MWQMRuns.AsNoTracking()
+            MWQMRun mwqmRun = (from c in dbLocalIM.MWQMRuns.Local
                     where c.MWQMRunID == MWQMRunID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<MWQMRun> mwqmRunList = (from c in dbLocalIM.MWQMRuns.AsNoTracking() orderby c.MWQMRunID select c).Skip(skip).Take(take).ToList();
+            List<MWQMRun> mwqmRunList = (from c in dbLocalIM.MWQMRuns.Local orderby c.MWQMRunID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(mwqmRunList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MWQMRun mwqmRun = (from c in dbLocalIM.MWQMRuns
+            MWQMRun mwqmRun = (from c in dbLocalIM.MWQMRuns.Local
                     where c.MWQMRunID == MWQMRunID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.MWQMRuns.Remove(mwqmRun);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.MWQMRuns.Add(mwqmRun);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.MWQMRuns.Update(mwqmRun);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -188,14 +185,14 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "MWQMRunID"), new[] { nameof(mwqmRun.MWQMRunID) });
                 }
 
-                if (!(from c in dbLocalIM.MWQMRuns select c).Where(c => c.MWQMRunID == mwqmRun.MWQMRunID).Any())
+                if (!(from c in dbLocalIM.MWQMRuns.Local select c).Where(c => c.MWQMRunID == mwqmRun.MWQMRunID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "MWQMRun", "MWQMRunID", mwqmRun.MWQMRunID.ToString()), new[] { nameof(mwqmRun.MWQMRunID) });
                 }
             }
 
             TVItem TVItemSubsectorTVItemID = null;
-            TVItemSubsectorTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == mwqmRun.SubsectorTVItemID select c).FirstOrDefault();
+            TVItemSubsectorTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == mwqmRun.SubsectorTVItemID select c).FirstOrDefault();
 
             if (TVItemSubsectorTVItemID == null)
             {
@@ -214,7 +211,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemMWQMRunTVItemID = null;
-            TVItemMWQMRunTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == mwqmRun.MWQMRunTVItemID select c).FirstOrDefault();
+            TVItemMWQMRunTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == mwqmRun.MWQMRunTVItemID select c).FirstOrDefault();
 
             if (TVItemMWQMRunTVItemID == null)
             {
@@ -377,7 +374,7 @@ namespace CSSPDBLocalIMServices
             if (mwqmRun.LabSampleApprovalContactTVItemID != null)
             {
                 TVItem TVItemLabSampleApprovalContactTVItemID = null;
-                TVItemLabSampleApprovalContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == mwqmRun.LabSampleApprovalContactTVItemID select c).FirstOrDefault();
+                TVItemLabSampleApprovalContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == mwqmRun.LabSampleApprovalContactTVItemID select c).FirstOrDefault();
 
                 if (TVItemLabSampleApprovalContactTVItemID == null)
                 {
@@ -535,7 +532,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == mwqmRun.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == mwqmRun.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

@@ -37,6 +37,7 @@ namespace CSSPDBLocalServices
 
         #region Properties
         private CSSPDBLocalContext dbLocal { get; }
+        private CSSPDBInMemoryContext dbLocalIM { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILocalService LocalService { get; }
@@ -47,13 +48,15 @@ namespace CSSPDBLocalServices
         #region Constructors
         public MikeScenarioDBLocalService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums,
            ILocalService LocalService,
-           CSSPDBLocalContext dbLocal)
+           CSSPDBLocalContext dbLocal,
+           CSSPDBInMemoryContext dbLocalIM)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LocalService = LocalService;
             this.enums = enums;
             this.dbLocal = dbLocal;
+            this.dbLocalIM = dbLocalIM;
         }
         #endregion Constructors
 
@@ -94,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MikeScenario mikeScenario = (from c in dbLocal.MikeScenarios
+            MikeScenario mikeScenario = (from c in dbLocal.MikeScenarios.Local
                     where c.MikeScenarioID == MikeScenarioID
                     select c).FirstOrDefault();
 
@@ -106,9 +109,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.MikeScenarios.Remove(mikeScenario);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -130,7 +132,7 @@ namespace CSSPDBLocalServices
 
             if (mikeScenario.MikeScenarioID == 0)
             {
-                int LastMikeScenarioID = (from c in dbLocal.MikeScenarios
+                int LastMikeScenarioID = (from c in dbLocal.MikeScenarios.AsNoTracking()
                           orderby c.MikeScenarioID descending
                           select c.MikeScenarioID).FirstOrDefault();
 
@@ -140,9 +142,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.MikeScenarios.Add(mikeScenario);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -165,9 +166,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.MikeScenarios.Update(mikeScenario);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -189,18 +189,35 @@ namespace CSSPDBLocalServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "MikeScenarioID"), new[] { nameof(mikeScenario.MikeScenarioID) });
                 }
 
-                if (!(from c in dbLocal.MikeScenarios select c).Where(c => c.MikeScenarioID == mikeScenario.MikeScenarioID).Any())
+                if (!(from c in dbLocal.MikeScenarios.AsNoTracking() select c).Where(c => c.MikeScenarioID == mikeScenario.MikeScenarioID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "MikeScenario", "MikeScenarioID", mikeScenario.MikeScenarioID.ToString()), new[] { nameof(mikeScenario.MikeScenarioID) });
                 }
             }
 
             TVItem TVItemMikeScenarioTVItemID = null;
-            TVItemMikeScenarioTVItemID = (from c in dbLocal.TVItems where c.TVItemID == mikeScenario.MikeScenarioTVItemID select c).FirstOrDefault();
+            TVItemMikeScenarioTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == mikeScenario.MikeScenarioTVItemID select c).FirstOrDefault();
 
             if (TVItemMikeScenarioTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "MikeScenarioTVItemID", mikeScenario.MikeScenarioTVItemID.ToString()), new[] { nameof(mikeScenario.MikeScenarioTVItemID) });
+                TVItemMikeScenarioTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == mikeScenario.MikeScenarioTVItemID select c).FirstOrDefault();
+
+                if (TVItemMikeScenarioTVItemID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "MikeScenarioTVItemID", mikeScenario.MikeScenarioTVItemID.ToString()), new[] { nameof(mikeScenario.MikeScenarioTVItemID) });
+                }
+                else
+                {
+                    List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                    {
+                        TVTypeEnum.MikeScenario,
+                    };
+                    if (!AllowableTVTypes.Contains(TVItemMikeScenarioTVItemID.TVType))
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "MikeScenarioTVItemID", "MikeScenario"), new[] { nameof(mikeScenario.MikeScenarioTVItemID) });
+                    }
+                }
+
             }
             else
             {
@@ -217,11 +234,19 @@ namespace CSSPDBLocalServices
             if (mikeScenario.ParentMikeScenarioID != null)
             {
                 MikeScenario MikeScenarioParentMikeScenarioID = null;
-                MikeScenarioParentMikeScenarioID = (from c in dbLocal.MikeScenarios where c.MikeScenarioID == mikeScenario.ParentMikeScenarioID select c).FirstOrDefault();
+                MikeScenarioParentMikeScenarioID = (from c in dbLocal.MikeScenarios.AsNoTracking() where c.MikeScenarioID == mikeScenario.ParentMikeScenarioID select c).FirstOrDefault();
 
                 if (MikeScenarioParentMikeScenarioID == null)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "MikeScenario", "ParentMikeScenarioID", (mikeScenario.ParentMikeScenarioID == null ? "" : mikeScenario.ParentMikeScenarioID.ToString())), new[] { nameof(mikeScenario.ParentMikeScenarioID) });
+                    if (mikeScenario.ParentMikeScenarioID != null)
+                    {
+                        MikeScenarioParentMikeScenarioID = (from c in dbLocalIM.MikeScenarios.Local where c.MikeScenarioID == mikeScenario.ParentMikeScenarioID select c).FirstOrDefault();
+
+                        if (MikeScenarioParentMikeScenarioID == null)
+                        {
+                            yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "MikeScenario", "ParentMikeScenarioID", (mikeScenario.ParentMikeScenarioID == null ? "" : mikeScenario.ParentMikeScenarioID.ToString())), new[] { nameof(mikeScenario.ParentMikeScenarioID) });
+                        }
+                    }
                 }
             }
 
@@ -308,11 +333,30 @@ namespace CSSPDBLocalServices
             if (mikeScenario.UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID != null)
             {
                 TVItem TVItemUseSalinityAndTemperatureInitialConditionFromTVFileTVItemID = null;
-                TVItemUseSalinityAndTemperatureInitialConditionFromTVFileTVItemID = (from c in dbLocal.TVItems where c.TVItemID == mikeScenario.UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID select c).FirstOrDefault();
+                TVItemUseSalinityAndTemperatureInitialConditionFromTVFileTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == mikeScenario.UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID select c).FirstOrDefault();
 
                 if (TVItemUseSalinityAndTemperatureInitialConditionFromTVFileTVItemID == null)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID", (mikeScenario.UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID == null ? "" : mikeScenario.UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID.ToString())), new[] { nameof(mikeScenario.UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID) });
+                    if (mikeScenario.UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID != null)
+                    {
+                        TVItemUseSalinityAndTemperatureInitialConditionFromTVFileTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == mikeScenario.UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID select c).FirstOrDefault();
+
+                        if (TVItemUseSalinityAndTemperatureInitialConditionFromTVFileTVItemID == null)
+                        {
+                            yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID", (mikeScenario.UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID == null ? "" : mikeScenario.UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID.ToString())), new[] { nameof(mikeScenario.UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID) });
+                        }
+                        else
+                        {
+                            List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                            {
+                                TVTypeEnum.File,
+                            };
+                            if (!AllowableTVTypes.Contains(TVItemUseSalinityAndTemperatureInitialConditionFromTVFileTVItemID.TVType))
+                            {
+                                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID", "File"), new[] { nameof(mikeScenario.UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID) });
+                            }
+                        }
+                    }
                 }
                 else
                 {
@@ -330,11 +374,30 @@ namespace CSSPDBLocalServices
             if (mikeScenario.ForSimulatingMWQMRunTVItemID != null)
             {
                 TVItem TVItemForSimulatingMWQMRunTVItemID = null;
-                TVItemForSimulatingMWQMRunTVItemID = (from c in dbLocal.TVItems where c.TVItemID == mikeScenario.ForSimulatingMWQMRunTVItemID select c).FirstOrDefault();
+                TVItemForSimulatingMWQMRunTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == mikeScenario.ForSimulatingMWQMRunTVItemID select c).FirstOrDefault();
 
                 if (TVItemForSimulatingMWQMRunTVItemID == null)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "ForSimulatingMWQMRunTVItemID", (mikeScenario.ForSimulatingMWQMRunTVItemID == null ? "" : mikeScenario.ForSimulatingMWQMRunTVItemID.ToString())), new[] { nameof(mikeScenario.ForSimulatingMWQMRunTVItemID) });
+                    if (mikeScenario.ForSimulatingMWQMRunTVItemID != null)
+                    {
+                        TVItemForSimulatingMWQMRunTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == mikeScenario.ForSimulatingMWQMRunTVItemID select c).FirstOrDefault();
+
+                        if (TVItemForSimulatingMWQMRunTVItemID == null)
+                        {
+                            yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "ForSimulatingMWQMRunTVItemID", (mikeScenario.ForSimulatingMWQMRunTVItemID == null ? "" : mikeScenario.ForSimulatingMWQMRunTVItemID.ToString())), new[] { nameof(mikeScenario.ForSimulatingMWQMRunTVItemID) });
+                        }
+                        else
+                        {
+                            List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                            {
+                                TVTypeEnum.MWQMRun,
+                            };
+                            if (!AllowableTVTypes.Contains(TVItemForSimulatingMWQMRunTVItemID.TVType))
+                            {
+                                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "ForSimulatingMWQMRunTVItemID", "MWQMRun"), new[] { nameof(mikeScenario.ForSimulatingMWQMRunTVItemID) });
+                            }
+                        }
+                    }
                 }
                 else
                 {
@@ -431,11 +494,28 @@ namespace CSSPDBLocalServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == mikeScenario.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == mikeScenario.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", mikeScenario.LastUpdateContactTVItemID.ToString()), new[] { nameof(mikeScenario.LastUpdateContactTVItemID) });
+                TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == mikeScenario.LastUpdateContactTVItemID select c).FirstOrDefault();
+
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", mikeScenario.LastUpdateContactTVItemID.ToString()), new[] { nameof(mikeScenario.LastUpdateContactTVItemID) });
+                }
+                else
+                {
+                    List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                    {
+                        TVTypeEnum.Contact,
+                    };
+                    if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(mikeScenario.LastUpdateContactTVItemID) });
+                    }
+                }
+
             }
             else
             {

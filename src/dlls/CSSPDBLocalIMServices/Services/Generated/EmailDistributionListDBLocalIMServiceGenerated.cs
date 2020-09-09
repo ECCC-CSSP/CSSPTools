@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            EmailDistributionList emailDistributionList = (from c in dbLocalIM.EmailDistributionLists.AsNoTracking()
+            EmailDistributionList emailDistributionList = (from c in dbLocalIM.EmailDistributionLists.Local
                     where c.EmailDistributionListID == EmailDistributionListID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<EmailDistributionList> emailDistributionListList = (from c in dbLocalIM.EmailDistributionLists.AsNoTracking() orderby c.EmailDistributionListID select c).Skip(skip).Take(take).ToList();
+            List<EmailDistributionList> emailDistributionListList = (from c in dbLocalIM.EmailDistributionLists.Local orderby c.EmailDistributionListID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(emailDistributionListList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            EmailDistributionList emailDistributionList = (from c in dbLocalIM.EmailDistributionLists
+            EmailDistributionList emailDistributionList = (from c in dbLocalIM.EmailDistributionLists.Local
                     where c.EmailDistributionListID == EmailDistributionListID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.EmailDistributionLists.Remove(emailDistributionList);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.EmailDistributionLists.Add(emailDistributionList);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.EmailDistributionLists.Update(emailDistributionList);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -187,14 +184,14 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "EmailDistributionListID"), new[] { nameof(emailDistributionList.EmailDistributionListID) });
                 }
 
-                if (!(from c in dbLocalIM.EmailDistributionLists select c).Where(c => c.EmailDistributionListID == emailDistributionList.EmailDistributionListID).Any())
+                if (!(from c in dbLocalIM.EmailDistributionLists.Local select c).Where(c => c.EmailDistributionListID == emailDistributionList.EmailDistributionListID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "EmailDistributionList", "EmailDistributionListID", emailDistributionList.EmailDistributionListID.ToString()), new[] { nameof(emailDistributionList.EmailDistributionListID) });
                 }
             }
 
             TVItem TVItemParentTVItemID = null;
-            TVItemParentTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == emailDistributionList.ParentTVItemID select c).FirstOrDefault();
+            TVItemParentTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == emailDistributionList.ParentTVItemID select c).FirstOrDefault();
 
             if (TVItemParentTVItemID == null)
             {
@@ -230,7 +227,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == emailDistributionList.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == emailDistributionList.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

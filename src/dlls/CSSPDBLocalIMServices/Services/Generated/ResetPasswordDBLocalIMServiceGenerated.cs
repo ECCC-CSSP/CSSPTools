@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            ResetPassword resetPassword = (from c in dbLocalIM.ResetPasswords.AsNoTracking()
+            ResetPassword resetPassword = (from c in dbLocalIM.ResetPasswords.Local
                     where c.ResetPasswordID == ResetPasswordID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<ResetPassword> resetPasswordList = (from c in dbLocalIM.ResetPasswords.AsNoTracking() orderby c.ResetPasswordID select c).Skip(skip).Take(take).ToList();
+            List<ResetPassword> resetPasswordList = (from c in dbLocalIM.ResetPasswords.Local orderby c.ResetPasswordID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(resetPasswordList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            ResetPassword resetPassword = (from c in dbLocalIM.ResetPasswords
+            ResetPassword resetPassword = (from c in dbLocalIM.ResetPasswords.Local
                     where c.ResetPasswordID == ResetPasswordID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.ResetPasswords.Remove(resetPassword);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.ResetPasswords.Add(resetPassword);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.ResetPasswords.Update(resetPassword);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -187,7 +184,7 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ResetPasswordID"), new[] { nameof(resetPassword.ResetPasswordID) });
                 }
 
-                if (!(from c in dbLocalIM.ResetPasswords select c).Where(c => c.ResetPasswordID == resetPassword.ResetPasswordID).Any())
+                if (!(from c in dbLocalIM.ResetPasswords.Local select c).Where(c => c.ResetPasswordID == resetPassword.ResetPasswordID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "ResetPassword", "ResetPasswordID", resetPassword.ResetPasswordID.ToString()), new[] { nameof(resetPassword.ResetPasswordID) });
                 }
@@ -247,7 +244,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == resetPassword.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == resetPassword.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

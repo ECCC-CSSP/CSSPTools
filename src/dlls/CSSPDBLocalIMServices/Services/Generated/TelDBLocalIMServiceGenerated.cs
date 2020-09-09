@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            Tel tel = (from c in dbLocalIM.Tels.AsNoTracking()
+            Tel tel = (from c in dbLocalIM.Tels.Local
                     where c.TelID == TelID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<Tel> telList = (from c in dbLocalIM.Tels.AsNoTracking() orderby c.TelID select c).Skip(skip).Take(take).ToList();
+            List<Tel> telList = (from c in dbLocalIM.Tels.Local orderby c.TelID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(telList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            Tel tel = (from c in dbLocalIM.Tels
+            Tel tel = (from c in dbLocalIM.Tels.Local
                     where c.TelID == TelID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.Tels.Remove(tel);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.Tels.Add(tel);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.Tels.Update(tel);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -188,14 +185,14 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TelID"), new[] { nameof(tel.TelID) });
                 }
 
-                if (!(from c in dbLocalIM.Tels select c).Where(c => c.TelID == tel.TelID).Any())
+                if (!(from c in dbLocalIM.Tels.Local select c).Where(c => c.TelID == tel.TelID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "Tel", "TelID", tel.TelID.ToString()), new[] { nameof(tel.TelID) });
                 }
             }
 
             TVItem TVItemTelTVItemID = null;
-            TVItemTelTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == tel.TelTVItemID select c).FirstOrDefault();
+            TVItemTelTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == tel.TelTVItemID select c).FirstOrDefault();
 
             if (TVItemTelTVItemID == null)
             {
@@ -242,7 +239,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == tel.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == tel.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

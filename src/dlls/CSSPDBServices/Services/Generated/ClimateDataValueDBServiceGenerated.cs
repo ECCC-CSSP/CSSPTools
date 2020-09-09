@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            ClimateDataValue climateDataValue = (from c in db.ClimateDataValues
+            ClimateDataValue climateDataValue = (from c in db.ClimateDataValues.Local
                     where c.ClimateDataValueID == ClimateDataValueID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBServices
             try
             {
                 db.ClimateDataValues.Remove(climateDataValue);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBServices
             try
             {
                 db.ClimateDataValues.Add(climateDataValue);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBServices
             try
             {
                 db.ClimateDataValues.Update(climateDataValue);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -180,14 +177,14 @@ namespace CSSPDBServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ClimateDataValueID"), new[] { nameof(climateDataValue.ClimateDataValueID) });
                 }
 
-                if (!(from c in db.ClimateDataValues select c).Where(c => c.ClimateDataValueID == climateDataValue.ClimateDataValueID).Any())
+                if (!(from c in db.ClimateDataValues.AsNoTracking() select c).Where(c => c.ClimateDataValueID == climateDataValue.ClimateDataValueID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "ClimateDataValue", "ClimateDataValueID", climateDataValue.ClimateDataValueID.ToString()), new[] { nameof(climateDataValue.ClimateDataValueID) });
                 }
             }
 
             ClimateSite ClimateSiteClimateSiteID = null;
-            ClimateSiteClimateSiteID = (from c in db.ClimateSites where c.ClimateSiteID == climateDataValue.ClimateSiteID select c).FirstOrDefault();
+            ClimateSiteClimateSiteID = (from c in db.ClimateSites.AsNoTracking() where c.ClimateSiteID == climateDataValue.ClimateSiteID select c).FirstOrDefault();
 
             if (ClimateSiteClimateSiteID == null)
             {
@@ -315,7 +312,7 @@ namespace CSSPDBServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == climateDataValue.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == climateDataValue.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

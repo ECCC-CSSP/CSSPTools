@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            ReportSection reportSection = (from c in db.ReportSections
+            ReportSection reportSection = (from c in db.ReportSections.Local
                     where c.ReportSectionID == ReportSectionID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBServices
             try
             {
                 db.ReportSections.Remove(reportSection);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBServices
             try
             {
                 db.ReportSections.Add(reportSection);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBServices
             try
             {
                 db.ReportSections.Update(reportSection);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -180,14 +177,14 @@ namespace CSSPDBServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ReportSectionID"), new[] { nameof(reportSection.ReportSectionID) });
                 }
 
-                if (!(from c in db.ReportSections select c).Where(c => c.ReportSectionID == reportSection.ReportSectionID).Any())
+                if (!(from c in db.ReportSections.AsNoTracking() select c).Where(c => c.ReportSectionID == reportSection.ReportSectionID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "ReportSection", "ReportSectionID", reportSection.ReportSectionID.ToString()), new[] { nameof(reportSection.ReportSectionID) });
                 }
             }
 
             ReportType ReportTypeReportTypeID = null;
-            ReportTypeReportTypeID = (from c in db.ReportTypes where c.ReportTypeID == reportSection.ReportTypeID select c).FirstOrDefault();
+            ReportTypeReportTypeID = (from c in db.ReportTypes.AsNoTracking() where c.ReportTypeID == reportSection.ReportTypeID select c).FirstOrDefault();
 
             if (ReportTypeReportTypeID == null)
             {
@@ -197,7 +194,7 @@ namespace CSSPDBServices
             if (reportSection.TVItemID != null)
             {
                 TVItem TVItemTVItemID = null;
-                TVItemTVItemID = (from c in db.TVItems where c.TVItemID == reportSection.TVItemID select c).FirstOrDefault();
+                TVItemTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == reportSection.TVItemID select c).FirstOrDefault();
 
                 if (TVItemTVItemID == null)
                 {
@@ -232,7 +229,7 @@ namespace CSSPDBServices
             if (reportSection.ParentReportSectionID != null)
             {
                 ReportSection ReportSectionParentReportSectionID = null;
-                ReportSectionParentReportSectionID = (from c in db.ReportSections where c.ReportSectionID == reportSection.ParentReportSectionID select c).FirstOrDefault();
+                ReportSectionParentReportSectionID = (from c in db.ReportSections.AsNoTracking() where c.ReportSectionID == reportSection.ParentReportSectionID select c).FirstOrDefault();
 
                 if (ReportSectionParentReportSectionID == null)
                 {
@@ -251,7 +248,7 @@ namespace CSSPDBServices
             if (reportSection.TemplateReportSectionID != null)
             {
                 ReportSection ReportSectionTemplateReportSectionID = null;
-                ReportSectionTemplateReportSectionID = (from c in db.ReportSections where c.ReportSectionID == reportSection.TemplateReportSectionID select c).FirstOrDefault();
+                ReportSectionTemplateReportSectionID = (from c in db.ReportSections.AsNoTracking() where c.ReportSectionID == reportSection.TemplateReportSectionID select c).FirstOrDefault();
 
                 if (ReportSectionTemplateReportSectionID == null)
                 {
@@ -282,7 +279,7 @@ namespace CSSPDBServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == reportSection.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == reportSection.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

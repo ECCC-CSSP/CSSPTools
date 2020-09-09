@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            HydrometricDataValue hydrometricDataValue = (from c in dbLocalIM.HydrometricDataValues.AsNoTracking()
+            HydrometricDataValue hydrometricDataValue = (from c in dbLocalIM.HydrometricDataValues.Local
                     where c.HydrometricDataValueID == HydrometricDataValueID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<HydrometricDataValue> hydrometricDataValueList = (from c in dbLocalIM.HydrometricDataValues.AsNoTracking() orderby c.HydrometricDataValueID select c).Skip(skip).Take(take).ToList();
+            List<HydrometricDataValue> hydrometricDataValueList = (from c in dbLocalIM.HydrometricDataValues.Local orderby c.HydrometricDataValueID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(hydrometricDataValueList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            HydrometricDataValue hydrometricDataValue = (from c in dbLocalIM.HydrometricDataValues
+            HydrometricDataValue hydrometricDataValue = (from c in dbLocalIM.HydrometricDataValues.Local
                     where c.HydrometricDataValueID == HydrometricDataValueID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.HydrometricDataValues.Remove(hydrometricDataValue);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.HydrometricDataValues.Add(hydrometricDataValue);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.HydrometricDataValues.Update(hydrometricDataValue);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -188,14 +185,14 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "HydrometricDataValueID"), new[] { nameof(hydrometricDataValue.HydrometricDataValueID) });
                 }
 
-                if (!(from c in dbLocalIM.HydrometricDataValues select c).Where(c => c.HydrometricDataValueID == hydrometricDataValue.HydrometricDataValueID).Any())
+                if (!(from c in dbLocalIM.HydrometricDataValues.Local select c).Where(c => c.HydrometricDataValueID == hydrometricDataValue.HydrometricDataValueID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "HydrometricDataValue", "HydrometricDataValueID", hydrometricDataValue.HydrometricDataValueID.ToString()), new[] { nameof(hydrometricDataValue.HydrometricDataValueID) });
                 }
             }
 
             HydrometricSite HydrometricSiteHydrometricSiteID = null;
-            HydrometricSiteHydrometricSiteID = (from c in dbLocalIM.HydrometricSites where c.HydrometricSiteID == hydrometricDataValue.HydrometricSiteID select c).FirstOrDefault();
+            HydrometricSiteHydrometricSiteID = (from c in dbLocalIM.HydrometricSites.Local where c.HydrometricSiteID == hydrometricDataValue.HydrometricSiteID select c).FirstOrDefault();
 
             if (HydrometricSiteHydrometricSiteID == null)
             {
@@ -259,7 +256,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == hydrometricDataValue.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == hydrometricDataValue.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

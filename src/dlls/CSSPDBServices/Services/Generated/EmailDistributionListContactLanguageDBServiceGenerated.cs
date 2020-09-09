@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            EmailDistributionListContactLanguage emailDistributionListContactLanguage = (from c in db.EmailDistributionListContactLanguages
+            EmailDistributionListContactLanguage emailDistributionListContactLanguage = (from c in db.EmailDistributionListContactLanguages.Local
                     where c.EmailDistributionListContactLanguageID == EmailDistributionListContactLanguageID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBServices
             try
             {
                 db.EmailDistributionListContactLanguages.Remove(emailDistributionListContactLanguage);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBServices
             try
             {
                 db.EmailDistributionListContactLanguages.Add(emailDistributionListContactLanguage);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBServices
             try
             {
                 db.EmailDistributionListContactLanguages.Update(emailDistributionListContactLanguage);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -180,14 +177,14 @@ namespace CSSPDBServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "EmailDistributionListContactLanguageID"), new[] { nameof(emailDistributionListContactLanguage.EmailDistributionListContactLanguageID) });
                 }
 
-                if (!(from c in db.EmailDistributionListContactLanguages select c).Where(c => c.EmailDistributionListContactLanguageID == emailDistributionListContactLanguage.EmailDistributionListContactLanguageID).Any())
+                if (!(from c in db.EmailDistributionListContactLanguages.AsNoTracking() select c).Where(c => c.EmailDistributionListContactLanguageID == emailDistributionListContactLanguage.EmailDistributionListContactLanguageID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "EmailDistributionListContactLanguage", "EmailDistributionListContactLanguageID", emailDistributionListContactLanguage.EmailDistributionListContactLanguageID.ToString()), new[] { nameof(emailDistributionListContactLanguage.EmailDistributionListContactLanguageID) });
                 }
             }
 
             EmailDistributionListContact EmailDistributionListContactEmailDistributionListContactID = null;
-            EmailDistributionListContactEmailDistributionListContactID = (from c in db.EmailDistributionListContacts where c.EmailDistributionListContactID == emailDistributionListContactLanguage.EmailDistributionListContactID select c).FirstOrDefault();
+            EmailDistributionListContactEmailDistributionListContactID = (from c in db.EmailDistributionListContacts.AsNoTracking() where c.EmailDistributionListContactID == emailDistributionListContactLanguage.EmailDistributionListContactID select c).FirstOrDefault();
 
             if (EmailDistributionListContactEmailDistributionListContactID == null)
             {
@@ -229,7 +226,7 @@ namespace CSSPDBServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == emailDistributionListContactLanguage.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == emailDistributionListContactLanguage.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

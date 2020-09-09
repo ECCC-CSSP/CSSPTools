@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            Infrastructure infrastructure = (from c in db.Infrastructures
+            Infrastructure infrastructure = (from c in db.Infrastructures.Local
                     where c.InfrastructureID == InfrastructureID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBServices
             try
             {
                 db.Infrastructures.Remove(infrastructure);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBServices
             try
             {
                 db.Infrastructures.Add(infrastructure);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBServices
             try
             {
                 db.Infrastructures.Update(infrastructure);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -180,14 +177,14 @@ namespace CSSPDBServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "InfrastructureID"), new[] { nameof(infrastructure.InfrastructureID) });
                 }
 
-                if (!(from c in db.Infrastructures select c).Where(c => c.InfrastructureID == infrastructure.InfrastructureID).Any())
+                if (!(from c in db.Infrastructures.AsNoTracking() select c).Where(c => c.InfrastructureID == infrastructure.InfrastructureID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "Infrastructure", "InfrastructureID", infrastructure.InfrastructureID.ToString()), new[] { nameof(infrastructure.InfrastructureID) });
                 }
             }
 
             TVItem TVItemInfrastructureTVItemID = null;
-            TVItemInfrastructureTVItemID = (from c in db.TVItems where c.TVItemID == infrastructure.InfrastructureTVItemID select c).FirstOrDefault();
+            TVItemInfrastructureTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == infrastructure.InfrastructureTVItemID select c).FirstOrDefault();
 
             if (TVItemInfrastructureTVItemID == null)
             {
@@ -539,7 +536,7 @@ namespace CSSPDBServices
             if (infrastructure.SeeOtherMunicipalityTVItemID != null)
             {
                 TVItem TVItemSeeOtherMunicipalityTVItemID = null;
-                TVItemSeeOtherMunicipalityTVItemID = (from c in db.TVItems where c.TVItemID == infrastructure.SeeOtherMunicipalityTVItemID select c).FirstOrDefault();
+                TVItemSeeOtherMunicipalityTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == infrastructure.SeeOtherMunicipalityTVItemID select c).FirstOrDefault();
 
                 if (TVItemSeeOtherMunicipalityTVItemID == null)
                 {
@@ -561,7 +558,7 @@ namespace CSSPDBServices
             if (infrastructure.CivicAddressTVItemID != null)
             {
                 TVItem TVItemCivicAddressTVItemID = null;
-                TVItemCivicAddressTVItemID = (from c in db.TVItems where c.TVItemID == infrastructure.CivicAddressTVItemID select c).FirstOrDefault();
+                TVItemCivicAddressTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == infrastructure.CivicAddressTVItemID select c).FirstOrDefault();
 
                 if (TVItemCivicAddressTVItemID == null)
                 {
@@ -593,7 +590,7 @@ namespace CSSPDBServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == infrastructure.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == infrastructure.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

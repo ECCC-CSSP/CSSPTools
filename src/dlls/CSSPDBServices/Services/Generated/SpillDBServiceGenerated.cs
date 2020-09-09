@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            Spill spill = (from c in db.Spills
+            Spill spill = (from c in db.Spills.Local
                     where c.SpillID == SpillID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBServices
             try
             {
                 db.Spills.Remove(spill);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBServices
             try
             {
                 db.Spills.Add(spill);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBServices
             try
             {
                 db.Spills.Update(spill);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -179,14 +176,14 @@ namespace CSSPDBServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SpillID"), new[] { nameof(spill.SpillID) });
                 }
 
-                if (!(from c in db.Spills select c).Where(c => c.SpillID == spill.SpillID).Any())
+                if (!(from c in db.Spills.AsNoTracking() select c).Where(c => c.SpillID == spill.SpillID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "Spill", "SpillID", spill.SpillID.ToString()), new[] { nameof(spill.SpillID) });
                 }
             }
 
             TVItem TVItemMunicipalityTVItemID = null;
-            TVItemMunicipalityTVItemID = (from c in db.TVItems where c.TVItemID == spill.MunicipalityTVItemID select c).FirstOrDefault();
+            TVItemMunicipalityTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == spill.MunicipalityTVItemID select c).FirstOrDefault();
 
             if (TVItemMunicipalityTVItemID == null)
             {
@@ -207,7 +204,7 @@ namespace CSSPDBServices
             if (spill.InfrastructureTVItemID != null)
             {
                 TVItem TVItemInfrastructureTVItemID = null;
-                TVItemInfrastructureTVItemID = (from c in db.TVItems where c.TVItemID == spill.InfrastructureTVItemID select c).FirstOrDefault();
+                TVItemInfrastructureTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == spill.InfrastructureTVItemID select c).FirstOrDefault();
 
                 if (TVItemInfrastructureTVItemID == null)
                 {
@@ -266,7 +263,7 @@ namespace CSSPDBServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == spill.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == spill.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

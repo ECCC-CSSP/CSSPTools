@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            AppTask appTask = (from c in dbLocalIM.AppTasks.AsNoTracking()
+            AppTask appTask = (from c in dbLocalIM.AppTasks.Local
                     where c.AppTaskID == AppTaskID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<AppTask> appTaskList = (from c in dbLocalIM.AppTasks.AsNoTracking() orderby c.AppTaskID select c).Skip(skip).Take(take).ToList();
+            List<AppTask> appTaskList = (from c in dbLocalIM.AppTasks.Local orderby c.AppTaskID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(appTaskList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            AppTask appTask = (from c in dbLocalIM.AppTasks
+            AppTask appTask = (from c in dbLocalIM.AppTasks.Local
                     where c.AppTaskID == AppTaskID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.AppTasks.Remove(appTask);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.AppTasks.Add(appTask);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.AppTasks.Update(appTask);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -188,14 +185,14 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "AppTaskID"), new[] { nameof(appTask.AppTaskID) });
                 }
 
-                if (!(from c in dbLocalIM.AppTasks select c).Where(c => c.AppTaskID == appTask.AppTaskID).Any())
+                if (!(from c in dbLocalIM.AppTasks.Local select c).Where(c => c.AppTaskID == appTask.AppTaskID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AppTask", "AppTaskID", appTask.AppTaskID.ToString()), new[] { nameof(appTask.AppTaskID) });
                 }
             }
 
             TVItem TVItemTVItemID = null;
-            TVItemTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == appTask.TVItemID select c).FirstOrDefault();
+            TVItemTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == appTask.TVItemID select c).FirstOrDefault();
 
             if (TVItemTVItemID == null)
             {
@@ -237,7 +234,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemTVItemID2 = null;
-            TVItemTVItemID2 = (from c in dbLocalIM.TVItems where c.TVItemID == appTask.TVItemID2 select c).FirstOrDefault();
+            TVItemTVItemID2 = (from c in dbLocalIM.TVItems.Local where c.TVItemID == appTask.TVItemID2 select c).FirstOrDefault();
 
             if (TVItemTVItemID2 == null)
             {
@@ -359,7 +356,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == appTask.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == appTask.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

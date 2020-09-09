@@ -37,6 +37,7 @@ namespace CSSPDBLocalServices
 
         #region Properties
         private CSSPDBLocalContext dbLocal { get; }
+        private CSSPDBInMemoryContext dbLocalIM { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILocalService LocalService { get; }
@@ -47,13 +48,15 @@ namespace CSSPDBLocalServices
         #region Constructors
         public PolSourceGroupingLanguageDBLocalService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums,
            ILocalService LocalService,
-           CSSPDBLocalContext dbLocal)
+           CSSPDBLocalContext dbLocal,
+           CSSPDBInMemoryContext dbLocalIM)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LocalService = LocalService;
             this.enums = enums;
             this.dbLocal = dbLocal;
+            this.dbLocalIM = dbLocalIM;
         }
         #endregion Constructors
 
@@ -94,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            PolSourceGroupingLanguage polSourceGroupingLanguage = (from c in dbLocal.PolSourceGroupingLanguages
+            PolSourceGroupingLanguage polSourceGroupingLanguage = (from c in dbLocal.PolSourceGroupingLanguages.Local
                     where c.PolSourceGroupingLanguageID == PolSourceGroupingLanguageID
                     select c).FirstOrDefault();
 
@@ -106,9 +109,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.PolSourceGroupingLanguages.Remove(polSourceGroupingLanguage);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -130,7 +132,7 @@ namespace CSSPDBLocalServices
 
             if (polSourceGroupingLanguage.PolSourceGroupingLanguageID == 0)
             {
-                int LastPolSourceGroupingLanguageID = (from c in dbLocal.PolSourceGroupingLanguages
+                int LastPolSourceGroupingLanguageID = (from c in dbLocal.PolSourceGroupingLanguages.AsNoTracking()
                           orderby c.PolSourceGroupingLanguageID descending
                           select c.PolSourceGroupingLanguageID).FirstOrDefault();
 
@@ -140,9 +142,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.PolSourceGroupingLanguages.Add(polSourceGroupingLanguage);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -165,9 +166,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.PolSourceGroupingLanguages.Update(polSourceGroupingLanguage);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -189,18 +189,24 @@ namespace CSSPDBLocalServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "PolSourceGroupingLanguageID"), new[] { nameof(polSourceGroupingLanguage.PolSourceGroupingLanguageID) });
                 }
 
-                if (!(from c in dbLocal.PolSourceGroupingLanguages select c).Where(c => c.PolSourceGroupingLanguageID == polSourceGroupingLanguage.PolSourceGroupingLanguageID).Any())
+                if (!(from c in dbLocal.PolSourceGroupingLanguages.AsNoTracking() select c).Where(c => c.PolSourceGroupingLanguageID == polSourceGroupingLanguage.PolSourceGroupingLanguageID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "PolSourceGroupingLanguage", "PolSourceGroupingLanguageID", polSourceGroupingLanguage.PolSourceGroupingLanguageID.ToString()), new[] { nameof(polSourceGroupingLanguage.PolSourceGroupingLanguageID) });
                 }
             }
 
             PolSourceGrouping PolSourceGroupingPolSourceGroupingID = null;
-            PolSourceGroupingPolSourceGroupingID = (from c in dbLocal.PolSourceGroupings where c.PolSourceGroupingID == polSourceGroupingLanguage.PolSourceGroupingID select c).FirstOrDefault();
+            PolSourceGroupingPolSourceGroupingID = (from c in dbLocal.PolSourceGroupings.AsNoTracking() where c.PolSourceGroupingID == polSourceGroupingLanguage.PolSourceGroupingID select c).FirstOrDefault();
 
             if (PolSourceGroupingPolSourceGroupingID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "PolSourceGrouping", "PolSourceGroupingID", polSourceGroupingLanguage.PolSourceGroupingID.ToString()), new[] { nameof(polSourceGroupingLanguage.PolSourceGroupingID) });
+                PolSourceGroupingPolSourceGroupingID = (from c in dbLocalIM.PolSourceGroupings.Local where c.PolSourceGroupingID == polSourceGroupingLanguage.PolSourceGroupingID select c).FirstOrDefault();
+
+                if (PolSourceGroupingPolSourceGroupingID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "PolSourceGrouping", "PolSourceGroupingID", polSourceGroupingLanguage.PolSourceGroupingID.ToString()), new[] { nameof(polSourceGroupingLanguage.PolSourceGroupingID) });
+                }
+
             }
 
             retStr = enums.EnumTypeOK(typeof(LanguageEnum), (int?)polSourceGroupingLanguage.Language);
@@ -307,11 +313,28 @@ namespace CSSPDBLocalServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == polSourceGroupingLanguage.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == polSourceGroupingLanguage.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", polSourceGroupingLanguage.LastUpdateContactTVItemID.ToString()), new[] { nameof(polSourceGroupingLanguage.LastUpdateContactTVItemID) });
+                TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == polSourceGroupingLanguage.LastUpdateContactTVItemID select c).FirstOrDefault();
+
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", polSourceGroupingLanguage.LastUpdateContactTVItemID.ToString()), new[] { nameof(polSourceGroupingLanguage.LastUpdateContactTVItemID) });
+                }
+                else
+                {
+                    List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                    {
+                        TVTypeEnum.Contact,
+                    };
+                    if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(polSourceGroupingLanguage.LastUpdateContactTVItemID) });
+                    }
+                }
+
             }
             else
             {

@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            MapInfoPoint mapInfoPoint = (from c in dbLocalIM.MapInfoPoints.AsNoTracking()
+            MapInfoPoint mapInfoPoint = (from c in dbLocalIM.MapInfoPoints.Local
                     where c.MapInfoPointID == MapInfoPointID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<MapInfoPoint> mapInfoPointList = (from c in dbLocalIM.MapInfoPoints.AsNoTracking() orderby c.MapInfoPointID select c).Skip(skip).Take(take).ToList();
+            List<MapInfoPoint> mapInfoPointList = (from c in dbLocalIM.MapInfoPoints.Local orderby c.MapInfoPointID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(mapInfoPointList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MapInfoPoint mapInfoPoint = (from c in dbLocalIM.MapInfoPoints
+            MapInfoPoint mapInfoPoint = (from c in dbLocalIM.MapInfoPoints.Local
                     where c.MapInfoPointID == MapInfoPointID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.MapInfoPoints.Remove(mapInfoPoint);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.MapInfoPoints.Add(mapInfoPoint);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.MapInfoPoints.Update(mapInfoPoint);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -187,14 +184,14 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "MapInfoPointID"), new[] { nameof(mapInfoPoint.MapInfoPointID) });
                 }
 
-                if (!(from c in dbLocalIM.MapInfoPoints select c).Where(c => c.MapInfoPointID == mapInfoPoint.MapInfoPointID).Any())
+                if (!(from c in dbLocalIM.MapInfoPoints.Local select c).Where(c => c.MapInfoPointID == mapInfoPoint.MapInfoPointID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "MapInfoPoint", "MapInfoPointID", mapInfoPoint.MapInfoPointID.ToString()), new[] { nameof(mapInfoPoint.MapInfoPointID) });
                 }
             }
 
             MapInfo MapInfoMapInfoID = null;
-            MapInfoMapInfoID = (from c in dbLocalIM.MapInfos where c.MapInfoID == mapInfoPoint.MapInfoID select c).FirstOrDefault();
+            MapInfoMapInfoID = (from c in dbLocalIM.MapInfos.Local where c.MapInfoID == mapInfoPoint.MapInfoID select c).FirstOrDefault();
 
             if (MapInfoMapInfoID == null)
             {
@@ -229,7 +226,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == mapInfoPoint.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == mapInfoPoint.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

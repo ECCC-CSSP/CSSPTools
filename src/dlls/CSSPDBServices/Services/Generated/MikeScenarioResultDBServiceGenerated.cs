@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MikeScenarioResult mikeScenarioResult = (from c in db.MikeScenarioResults
+            MikeScenarioResult mikeScenarioResult = (from c in db.MikeScenarioResults.Local
                     where c.MikeScenarioResultID == MikeScenarioResultID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBServices
             try
             {
                 db.MikeScenarioResults.Remove(mikeScenarioResult);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBServices
             try
             {
                 db.MikeScenarioResults.Add(mikeScenarioResult);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBServices
             try
             {
                 db.MikeScenarioResults.Update(mikeScenarioResult);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -179,14 +176,14 @@ namespace CSSPDBServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "MikeScenarioResultID"), new[] { nameof(mikeScenarioResult.MikeScenarioResultID) });
                 }
 
-                if (!(from c in db.MikeScenarioResults select c).Where(c => c.MikeScenarioResultID == mikeScenarioResult.MikeScenarioResultID).Any())
+                if (!(from c in db.MikeScenarioResults.AsNoTracking() select c).Where(c => c.MikeScenarioResultID == mikeScenarioResult.MikeScenarioResultID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "MikeScenarioResult", "MikeScenarioResultID", mikeScenarioResult.MikeScenarioResultID.ToString()), new[] { nameof(mikeScenarioResult.MikeScenarioResultID) });
                 }
             }
 
             TVItem TVItemMikeScenarioTVItemID = null;
-            TVItemMikeScenarioTVItemID = (from c in db.TVItems where c.TVItemID == mikeScenarioResult.MikeScenarioTVItemID select c).FirstOrDefault();
+            TVItemMikeScenarioTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == mikeScenarioResult.MikeScenarioTVItemID select c).FirstOrDefault();
 
             if (TVItemMikeScenarioTVItemID == null)
             {
@@ -219,7 +216,7 @@ namespace CSSPDBServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == mikeScenarioResult.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == mikeScenarioResult.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

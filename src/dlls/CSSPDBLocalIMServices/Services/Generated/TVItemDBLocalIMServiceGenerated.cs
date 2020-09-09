@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            TVItem tvItem = (from c in dbLocalIM.TVItems.AsNoTracking()
+            TVItem tvItem = (from c in dbLocalIM.TVItems.Local
                     where c.TVItemID == TVItemID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<TVItem> tvItemList = (from c in dbLocalIM.TVItems.AsNoTracking() orderby c.TVItemID select c).Skip(skip).Take(take).ToList();
+            List<TVItem> tvItemList = (from c in dbLocalIM.TVItems.Local orderby c.TVItemID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(tvItemList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            TVItem tvItem = (from c in dbLocalIM.TVItems
+            TVItem tvItem = (from c in dbLocalIM.TVItems.Local
                     where c.TVItemID == TVItemID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.TVItems.Remove(tvItem);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.TVItems.Add(tvItem);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.TVItems.Update(tvItem);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -188,7 +185,7 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVItemID"), new[] { nameof(tvItem.TVItemID) });
                 }
 
-                if (!(from c in dbLocalIM.TVItems select c).Where(c => c.TVItemID == tvItem.TVItemID).Any())
+                if (!(from c in dbLocalIM.TVItems.Local select c).Where(c => c.TVItemID == tvItem.TVItemID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "TVItemID", tvItem.TVItemID.ToString()), new[] { nameof(tvItem.TVItemID) });
                 }
@@ -227,7 +224,7 @@ namespace CSSPDBLocalIMServices
             if (tvItem.TVType != TVTypeEnum.Root)
             {
                 TVItem TVItemParentID = null;
-                TVItemParentID = (from c in dbLocalIM.TVItems where c.TVItemID == tvItem.ParentID select c).FirstOrDefault();
+                TVItemParentID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == tvItem.ParentID select c).FirstOrDefault();
 
                 if (TVItemParentID == null)
                 {
@@ -283,7 +280,7 @@ namespace CSSPDBLocalIMServices
             if (tvItem.TVType != TVTypeEnum.Root)
             {
                 TVItem TVItemLastUpdateContactTVItemID = null;
-                TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == tvItem.LastUpdateContactTVItemID select c).FirstOrDefault();
+                TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == tvItem.LastUpdateContactTVItemID select c).FirstOrDefault();
 
                 if (TVItemLastUpdateContactTVItemID == null)
                 {

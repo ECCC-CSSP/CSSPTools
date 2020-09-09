@@ -22,6 +22,7 @@ using Xunit;
 using System.ComponentModel.DataAnnotations;
 using CSSPCultureServices.Resources;
 using LocalServices;
+using System.Threading;
 
 namespace CSSPDBLocalServices.Tests
 {
@@ -39,6 +40,7 @@ namespace CSSPDBLocalServices.Tests
         private ILocalService LocalService { get; set; }
         private ILabSheetTubeMPNDetailDBLocalService LabSheetTubeMPNDetailDBLocalService { get; set; }
         private CSSPDBLocalContext dbLocal { get; set; }
+        private CSSPDBInMemoryContext dbLocalIM { get; set; }
         private LabSheetTubeMPNDetail labSheetTubeMPNDetail { get; set; }
         #endregion Properties
 
@@ -49,7 +51,17 @@ namespace CSSPDBLocalServices.Tests
         }
         #endregion Constructors
 
-        #region Tests Generated [DBLocal]CRUD
+        #region Tests Generated Constructor [DBLocal]
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task LabSheetTubeMPNDetailDBLocal_Constructor_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+        }
+        #endregion Tests Generated Constructor [DBLocal]
+
+        #region Tests Generated [DBLocal] CRUD
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
@@ -61,7 +73,7 @@ namespace CSSPDBLocalServices.Tests
 
             await DoCRUDDBLocalTest();
         }
-        #endregion Tests Generated CRUD
+        #endregion Tests Generated [DBLocal] CRUD
 
         #region Tests Generated Properties
         [Theory]
@@ -389,17 +401,6 @@ namespace CSSPDBLocalServices.Tests
             int count = ((List<LabSheetTubeMPNDetail>)((OkObjectResult)actionLabSheetTubeMPNDetailList.Result).Value).Count();
             Assert.True(count > 0);
 
-            // List<LabSheetTubeMPNDetail> with skip and take
-            var actionLabSheetTubeMPNDetailListSkipAndTake = await LabSheetTubeMPNDetailDBLocalService.GetLabSheetTubeMPNDetailList(1, 1);
-            Assert.Equal(200, ((ObjectResult)actionLabSheetTubeMPNDetailListSkipAndTake.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionLabSheetTubeMPNDetailListSkipAndTake.Result).Value);
-            List<LabSheetTubeMPNDetail> labSheetTubeMPNDetailListSkipAndTake = (List<LabSheetTubeMPNDetail>)((OkObjectResult)actionLabSheetTubeMPNDetailListSkipAndTake.Result).Value;
-
-            int countSkipAndTake = ((List<LabSheetTubeMPNDetail>)((OkObjectResult)actionLabSheetTubeMPNDetailListSkipAndTake.Result).Value).Count();
-            Assert.True(countSkipAndTake == 1);
-
-            Assert.False(labSheetTubeMPNDetailList[0].LabSheetTubeMPNDetailID == labSheetTubeMPNDetailListSkipAndTake[0].LabSheetTubeMPNDetailID);
-
             // Get LabSheetTubeMPNDetail With LabSheetTubeMPNDetailID
             var actionLabSheetTubeMPNDetailGet = await LabSheetTubeMPNDetailDBLocalService.GetLabSheetTubeMPNDetailWithLabSheetTubeMPNDetailID(labSheetTubeMPNDetailList[0].LabSheetTubeMPNDetailID);
             Assert.Equal(200, ((ObjectResult)actionLabSheetTubeMPNDetailGet.Result).StatusCode);
@@ -461,6 +462,11 @@ namespace CSSPDBLocalServices.Tests
                 options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
             });
 
+            Services.AddDbContext<CSSPDBInMemoryContext>(options =>
+            {
+                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBLocal.FullName }");
+            });
+
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<ILocalService, LocalService>();
             Services.AddSingleton<IEnums, Enums>();
@@ -481,6 +487,9 @@ namespace CSSPDBLocalServices.Tests
 
             dbLocal = Provider.GetService<CSSPDBLocalContext>();
             Assert.NotNull(dbLocal);
+
+            dbLocalIM = Provider.GetService<CSSPDBInMemoryContext>();
+            Assert.NotNull(dbLocalIM);
 
             LabSheetTubeMPNDetailDBLocalService = Provider.GetService<ILabSheetTubeMPNDetailDBLocalService>();
             Assert.NotNull(LabSheetTubeMPNDetailDBLocalService);
@@ -509,8 +518,8 @@ namespace CSSPDBLocalServices.Tests
 
             try
             {
-                dbLocal.LabSheetDetails.Add(new LabSheetDetail() { LabSheetDetailID = 1, LabSheetID = 1, SamplingPlanID = 1, SubsectorTVItemID = 12, Version = 1, RunDate = new DateTime(2017, 6, 21, 0, 0, 0), Tides = @"HT / HF", SampleCrewInitials = "", WaterBathCount = null, IncubationBath1StartTime = null, IncubationBath2StartTime = null, IncubationBath3StartTime = null, IncubationBath1EndTime = null, IncubationBath2EndTime = null, IncubationBath3EndTime = null, IncubationBath1TimeCalculated_minutes = null, IncubationBath2TimeCalculated_minutes = null, IncubationBath3TimeCalculated_minutes = null, WaterBath1 = "", WaterBath2 = "", WaterBath3 = "", TCField1 = null, TCLab1 = null, TCField2 = null, TCLab2 = null, TCFirst = null, TCAverage = null, ControlLot = "null", Positive35 = "null", NonTarget35 = "null", Negative35 = "null", Bath1Positive44_5 = "null", Bath2Positive44_5 = "null", Bath3Positive44_5 = "null", Bath1NonTarget44_5 = "null", Bath2NonTarget44_5 = "null", Bath3NonTarget44_5 = "null", Bath1Negative44_5 = "null", Bath2Negative44_5 = "null", Bath3Negative44_5 = "null", Blank35 = null, Bath1Blank44_5 = "null", Bath2Blank44_5 = "null", Bath3Blank44_5 = "null", Lot35 = "null", Lot44_5 = "null", Weather = "null", RunComment = "null", RunWeatherComment = "null", SampleBottleLotNumber = "null", SalinitiesReadBy = "null", SalinitiesReadDate = null, ResultsReadBy = "null", ResultsReadDate = null, ResultsRecordedBy = "null", ResultsRecordedDate = null, DailyDuplicateRLog = null, DailyDuplicatePrecisionCriteria = null, DailyDuplicateAcceptable = null, IntertechDuplicateRLog = null, IntertechDuplicatePrecisionCriteria = null, IntertechDuplicateAcceptable = null, IntertechReadAcceptable = null, LastUpdateDate_UTC = new DateTime(2017, 6, 26, 18, 38, 21), LastUpdateContactTVItemID = 2 });
-                dbLocal.SaveChanges();
+                dbLocalIM.LabSheetDetails.Add(new LabSheetDetail() { LabSheetDetailID = 1, LabSheetID = 1, SamplingPlanID = 1, SubsectorTVItemID = 12, Version = 1, RunDate = new DateTime(2017, 6, 21, 0, 0, 0), Tides = @"HT / HF", SampleCrewInitials = "", WaterBathCount = null, IncubationBath1StartTime = null, IncubationBath2StartTime = null, IncubationBath3StartTime = null, IncubationBath1EndTime = null, IncubationBath2EndTime = null, IncubationBath3EndTime = null, IncubationBath1TimeCalculated_minutes = null, IncubationBath2TimeCalculated_minutes = null, IncubationBath3TimeCalculated_minutes = null, WaterBath1 = "", WaterBath2 = "", WaterBath3 = "", TCField1 = null, TCLab1 = null, TCField2 = null, TCLab2 = null, TCFirst = null, TCAverage = null, ControlLot = "null", Positive35 = "null", NonTarget35 = "null", Negative35 = "null", Bath1Positive44_5 = "null", Bath2Positive44_5 = "null", Bath3Positive44_5 = "null", Bath1NonTarget44_5 = "null", Bath2NonTarget44_5 = "null", Bath3NonTarget44_5 = "null", Bath1Negative44_5 = "null", Bath2Negative44_5 = "null", Bath3Negative44_5 = "null", Blank35 = null, Bath1Blank44_5 = "null", Bath2Blank44_5 = "null", Bath3Blank44_5 = "null", Lot35 = "null", Lot44_5 = "null", Weather = "null", RunComment = "null", RunWeatherComment = "null", SampleBottleLotNumber = "null", SalinitiesReadBy = "null", SalinitiesReadDate = null, ResultsReadBy = "null", ResultsReadDate = null, ResultsRecordedBy = "null", ResultsRecordedDate = null, DailyDuplicateRLog = null, DailyDuplicatePrecisionCriteria = null, DailyDuplicateAcceptable = null, IntertechDuplicateRLog = null, IntertechDuplicatePrecisionCriteria = null, IntertechDuplicateAcceptable = null, IntertechReadAcceptable = null, LastUpdateDate_UTC = new DateTime(2017, 6, 26, 18, 38, 21), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
             }
             catch (Exception)
             {
@@ -518,8 +527,8 @@ namespace CSSPDBLocalServices.Tests
             }
             try
             {
-                dbLocal.TVItems.Add(new TVItem() { TVItemID = 44, TVLevel = 6, TVPath = "p1p5p6p9p10p12p44", TVType = (TVTypeEnum)16, ParentID = 12, IsActive = true, LastUpdateDate_UTC = new DateTime(2017, 10, 12, 17, 39, 34), LastUpdateContactTVItemID = 2 });
-                dbLocal.SaveChanges();
+                dbLocalIM.TVItems.Add(new TVItem() { TVItemID = 44, TVLevel = 6, TVPath = "p1p5p6p9p10p12p44", TVType = (TVTypeEnum)16, ParentID = 12, IsActive = true, LastUpdateDate_UTC = new DateTime(2017, 10, 12, 17, 39, 34), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
             }
             catch (Exception)
             {
@@ -527,8 +536,8 @@ namespace CSSPDBLocalServices.Tests
             }
             try
             {
-                dbLocal.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2 });
-                dbLocal.SaveChanges();
+                dbLocalIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
             }
             catch (Exception)
             {

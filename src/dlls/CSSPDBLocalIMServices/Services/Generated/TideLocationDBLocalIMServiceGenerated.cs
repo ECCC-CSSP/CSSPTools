@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            TideLocation tideLocation = (from c in dbLocalIM.TideLocations.AsNoTracking()
+            TideLocation tideLocation = (from c in dbLocalIM.TideLocations.Local
                     where c.TideLocationID == TideLocationID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<TideLocation> tideLocationList = (from c in dbLocalIM.TideLocations.AsNoTracking() orderby c.TideLocationID select c).Skip(skip).Take(take).ToList();
+            List<TideLocation> tideLocationList = (from c in dbLocalIM.TideLocations.Local orderby c.TideLocationID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(tideLocationList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            TideLocation tideLocation = (from c in dbLocalIM.TideLocations
+            TideLocation tideLocation = (from c in dbLocalIM.TideLocations.Local
                     where c.TideLocationID == TideLocationID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.TideLocations.Remove(tideLocation);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.TideLocations.Add(tideLocation);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.TideLocations.Update(tideLocation);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -187,7 +184,7 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TideLocationID"), new[] { nameof(tideLocation.TideLocationID) });
                 }
 
-                if (!(from c in dbLocalIM.TideLocations select c).Where(c => c.TideLocationID == tideLocation.TideLocationID).Any())
+                if (!(from c in dbLocalIM.TideLocations.Local select c).Where(c => c.TideLocationID == tideLocation.TideLocationID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TideLocation", "TideLocationID", tideLocation.TideLocationID.ToString()), new[] { nameof(tideLocation.TideLocationID) });
                 }
@@ -246,7 +243,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == tideLocation.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == tideLocation.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

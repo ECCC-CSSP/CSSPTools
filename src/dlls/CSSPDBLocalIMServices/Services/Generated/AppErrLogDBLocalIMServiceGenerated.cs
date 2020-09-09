@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            AppErrLog appErrLog = (from c in dbLocalIM.AppErrLogs.AsNoTracking()
+            AppErrLog appErrLog = (from c in dbLocalIM.AppErrLogs.Local
                     where c.AppErrLogID == AppErrLogID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<AppErrLog> appErrLogList = (from c in dbLocalIM.AppErrLogs.AsNoTracking() orderby c.AppErrLogID select c).Skip(skip).Take(take).ToList();
+            List<AppErrLog> appErrLogList = (from c in dbLocalIM.AppErrLogs.Local orderby c.AppErrLogID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(appErrLogList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            AppErrLog appErrLog = (from c in dbLocalIM.AppErrLogs
+            AppErrLog appErrLog = (from c in dbLocalIM.AppErrLogs.Local
                     where c.AppErrLogID == AppErrLogID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.AppErrLogs.Remove(appErrLog);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.AppErrLogs.Add(appErrLog);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.AppErrLogs.Update(appErrLog);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -187,7 +184,7 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "AppErrLogID"), new[] { nameof(appErrLog.AppErrLogID) });
                 }
 
-                if (!(from c in dbLocalIM.AppErrLogs select c).Where(c => c.AppErrLogID == appErrLog.AppErrLogID).Any())
+                if (!(from c in dbLocalIM.AppErrLogs.Local select c).Where(c => c.AppErrLogID == appErrLog.AppErrLogID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AppErrLog", "AppErrLogID", appErrLog.AppErrLogID.ToString()), new[] { nameof(appErrLog.AppErrLogID) });
                 }
@@ -247,7 +244,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == appErrLog.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == appErrLog.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            LabSheet labSheet = (from c in dbLocalIM.LabSheets.AsNoTracking()
+            LabSheet labSheet = (from c in dbLocalIM.LabSheets.Local
                     where c.LabSheetID == LabSheetID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<LabSheet> labSheetList = (from c in dbLocalIM.LabSheets.AsNoTracking() orderby c.LabSheetID select c).Skip(skip).Take(take).ToList();
+            List<LabSheet> labSheetList = (from c in dbLocalIM.LabSheets.Local orderby c.LabSheetID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(labSheetList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            LabSheet labSheet = (from c in dbLocalIM.LabSheets
+            LabSheet labSheet = (from c in dbLocalIM.LabSheets.Local
                     where c.LabSheetID == LabSheetID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.LabSheets.Remove(labSheet);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.LabSheets.Add(labSheet);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.LabSheets.Update(labSheet);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -188,7 +185,7 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LabSheetID"), new[] { nameof(labSheet.LabSheetID) });
                 }
 
-                if (!(from c in dbLocalIM.LabSheets select c).Where(c => c.LabSheetID == labSheet.LabSheetID).Any())
+                if (!(from c in dbLocalIM.LabSheets.Local select c).Where(c => c.LabSheetID == labSheet.LabSheetID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "LabSheet", "LabSheetID", labSheet.LabSheetID.ToString()), new[] { nameof(labSheet.LabSheetID) });
                 }
@@ -200,7 +197,7 @@ namespace CSSPDBLocalIMServices
             }
 
             SamplingPlan SamplingPlanSamplingPlanID = null;
-            SamplingPlanSamplingPlanID = (from c in dbLocalIM.SamplingPlans where c.SamplingPlanID == labSheet.SamplingPlanID select c).FirstOrDefault();
+            SamplingPlanSamplingPlanID = (from c in dbLocalIM.SamplingPlans.Local where c.SamplingPlanID == labSheet.SamplingPlanID select c).FirstOrDefault();
 
             if (SamplingPlanSamplingPlanID == null)
             {
@@ -238,7 +235,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemSubsectorTVItemID = null;
-            TVItemSubsectorTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == labSheet.SubsectorTVItemID select c).FirstOrDefault();
+            TVItemSubsectorTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == labSheet.SubsectorTVItemID select c).FirstOrDefault();
 
             if (TVItemSubsectorTVItemID == null)
             {
@@ -259,7 +256,7 @@ namespace CSSPDBLocalIMServices
             if (labSheet.MWQMRunTVItemID != null)
             {
                 TVItem TVItemMWQMRunTVItemID = null;
-                TVItemMWQMRunTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == labSheet.MWQMRunTVItemID select c).FirstOrDefault();
+                TVItemMWQMRunTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == labSheet.MWQMRunTVItemID select c).FirstOrDefault();
 
                 if (TVItemMWQMRunTVItemID == null)
                 {
@@ -334,7 +331,7 @@ namespace CSSPDBLocalIMServices
             if (labSheet.AcceptedOrRejectedByContactTVItemID != null)
             {
                 TVItem TVItemAcceptedOrRejectedByContactTVItemID = null;
-                TVItemAcceptedOrRejectedByContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == labSheet.AcceptedOrRejectedByContactTVItemID select c).FirstOrDefault();
+                TVItemAcceptedOrRejectedByContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == labSheet.AcceptedOrRejectedByContactTVItemID select c).FirstOrDefault();
 
                 if (TVItemAcceptedOrRejectedByContactTVItemID == null)
                 {
@@ -376,7 +373,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == labSheet.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == labSheet.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

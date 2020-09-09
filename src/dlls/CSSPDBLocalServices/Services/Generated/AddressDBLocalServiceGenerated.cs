@@ -37,6 +37,7 @@ namespace CSSPDBLocalServices
 
         #region Properties
         private CSSPDBLocalContext dbLocal { get; }
+        private CSSPDBInMemoryContext dbLocalIM { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILocalService LocalService { get; }
@@ -47,13 +48,15 @@ namespace CSSPDBLocalServices
         #region Constructors
         public AddressDBLocalService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums,
            ILocalService LocalService,
-           CSSPDBLocalContext dbLocal)
+           CSSPDBLocalContext dbLocal,
+           CSSPDBInMemoryContext dbLocalIM)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LocalService = LocalService;
             this.enums = enums;
             this.dbLocal = dbLocal;
+            this.dbLocalIM = dbLocalIM;
         }
         #endregion Constructors
 
@@ -94,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            Address address = (from c in dbLocal.Addresses
+            Address address = (from c in dbLocal.Addresses.Local
                     where c.AddressID == AddressID
                     select c).FirstOrDefault();
 
@@ -106,9 +109,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.Addresses.Remove(address);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -130,7 +132,7 @@ namespace CSSPDBLocalServices
 
             if (address.AddressID == 0)
             {
-                int LastAddressID = (from c in dbLocal.Addresses
+                int LastAddressID = (from c in dbLocal.Addresses.AsNoTracking()
                           orderby c.AddressID descending
                           select c.AddressID).FirstOrDefault();
 
@@ -140,9 +142,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.Addresses.Add(address);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -165,9 +166,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.Addresses.Update(address);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -189,18 +189,35 @@ namespace CSSPDBLocalServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "AddressID"), new[] { nameof(address.AddressID) });
                 }
 
-                if (!(from c in dbLocal.Addresses select c).Where(c => c.AddressID == address.AddressID).Any())
+                if (!(from c in dbLocal.Addresses.AsNoTracking() select c).Where(c => c.AddressID == address.AddressID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "Address", "AddressID", address.AddressID.ToString()), new[] { nameof(address.AddressID) });
                 }
             }
 
             TVItem TVItemAddressTVItemID = null;
-            TVItemAddressTVItemID = (from c in dbLocal.TVItems where c.TVItemID == address.AddressTVItemID select c).FirstOrDefault();
+            TVItemAddressTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == address.AddressTVItemID select c).FirstOrDefault();
 
             if (TVItemAddressTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "AddressTVItemID", address.AddressTVItemID.ToString()), new[] { nameof(address.AddressTVItemID) });
+                TVItemAddressTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == address.AddressTVItemID select c).FirstOrDefault();
+
+                if (TVItemAddressTVItemID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "AddressTVItemID", address.AddressTVItemID.ToString()), new[] { nameof(address.AddressTVItemID) });
+                }
+                else
+                {
+                    List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                    {
+                        TVTypeEnum.Address,
+                    };
+                    if (!AllowableTVTypes.Contains(TVItemAddressTVItemID.TVType))
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "AddressTVItemID", "Address"), new[] { nameof(address.AddressTVItemID) });
+                    }
+                }
+
             }
             else
             {
@@ -221,11 +238,28 @@ namespace CSSPDBLocalServices
             }
 
             TVItem TVItemCountryTVItemID = null;
-            TVItemCountryTVItemID = (from c in dbLocal.TVItems where c.TVItemID == address.CountryTVItemID select c).FirstOrDefault();
+            TVItemCountryTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == address.CountryTVItemID select c).FirstOrDefault();
 
             if (TVItemCountryTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "CountryTVItemID", address.CountryTVItemID.ToString()), new[] { nameof(address.CountryTVItemID) });
+                TVItemCountryTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == address.CountryTVItemID select c).FirstOrDefault();
+
+                if (TVItemCountryTVItemID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "CountryTVItemID", address.CountryTVItemID.ToString()), new[] { nameof(address.CountryTVItemID) });
+                }
+                else
+                {
+                    List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                    {
+                        TVTypeEnum.Country,
+                    };
+                    if (!AllowableTVTypes.Contains(TVItemCountryTVItemID.TVType))
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "CountryTVItemID", "Country"), new[] { nameof(address.CountryTVItemID) });
+                    }
+                }
+
             }
             else
             {
@@ -240,11 +274,28 @@ namespace CSSPDBLocalServices
             }
 
             TVItem TVItemProvinceTVItemID = null;
-            TVItemProvinceTVItemID = (from c in dbLocal.TVItems where c.TVItemID == address.ProvinceTVItemID select c).FirstOrDefault();
+            TVItemProvinceTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == address.ProvinceTVItemID select c).FirstOrDefault();
 
             if (TVItemProvinceTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "ProvinceTVItemID", address.ProvinceTVItemID.ToString()), new[] { nameof(address.ProvinceTVItemID) });
+                TVItemProvinceTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == address.ProvinceTVItemID select c).FirstOrDefault();
+
+                if (TVItemProvinceTVItemID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "ProvinceTVItemID", address.ProvinceTVItemID.ToString()), new[] { nameof(address.ProvinceTVItemID) });
+                }
+                else
+                {
+                    List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                    {
+                        TVTypeEnum.Province,
+                    };
+                    if (!AllowableTVTypes.Contains(TVItemProvinceTVItemID.TVType))
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "ProvinceTVItemID", "Province"), new[] { nameof(address.ProvinceTVItemID) });
+                    }
+                }
+
             }
             else
             {
@@ -259,11 +310,28 @@ namespace CSSPDBLocalServices
             }
 
             TVItem TVItemMunicipalityTVItemID = null;
-            TVItemMunicipalityTVItemID = (from c in dbLocal.TVItems where c.TVItemID == address.MunicipalityTVItemID select c).FirstOrDefault();
+            TVItemMunicipalityTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == address.MunicipalityTVItemID select c).FirstOrDefault();
 
             if (TVItemMunicipalityTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "MunicipalityTVItemID", address.MunicipalityTVItemID.ToString()), new[] { nameof(address.MunicipalityTVItemID) });
+                TVItemMunicipalityTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == address.MunicipalityTVItemID select c).FirstOrDefault();
+
+                if (TVItemMunicipalityTVItemID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "MunicipalityTVItemID", address.MunicipalityTVItemID.ToString()), new[] { nameof(address.MunicipalityTVItemID) });
+                }
+                else
+                {
+                    List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                    {
+                        TVTypeEnum.Municipality,
+                    };
+                    if (!AllowableTVTypes.Contains(TVItemMunicipalityTVItemID.TVType))
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "MunicipalityTVItemID", "Municipality"), new[] { nameof(address.MunicipalityTVItemID) });
+                    }
+                }
+
             }
             else
             {
@@ -319,11 +387,28 @@ namespace CSSPDBLocalServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == address.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == address.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", address.LastUpdateContactTVItemID.ToString()), new[] { nameof(address.LastUpdateContactTVItemID) });
+                TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == address.LastUpdateContactTVItemID select c).FirstOrDefault();
+
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", address.LastUpdateContactTVItemID.ToString()), new[] { nameof(address.LastUpdateContactTVItemID) });
+                }
+                else
+                {
+                    List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                    {
+                        TVTypeEnum.Contact,
+                    };
+                    if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(address.LastUpdateContactTVItemID) });
+                    }
+                }
+
             }
             else
             {

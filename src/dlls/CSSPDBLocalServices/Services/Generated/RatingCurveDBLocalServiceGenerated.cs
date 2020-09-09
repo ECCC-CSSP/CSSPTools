@@ -37,6 +37,7 @@ namespace CSSPDBLocalServices
 
         #region Properties
         private CSSPDBLocalContext dbLocal { get; }
+        private CSSPDBInMemoryContext dbLocalIM { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILocalService LocalService { get; }
@@ -47,13 +48,15 @@ namespace CSSPDBLocalServices
         #region Constructors
         public RatingCurveDBLocalService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums,
            ILocalService LocalService,
-           CSSPDBLocalContext dbLocal)
+           CSSPDBLocalContext dbLocal,
+           CSSPDBInMemoryContext dbLocalIM)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LocalService = LocalService;
             this.enums = enums;
             this.dbLocal = dbLocal;
+            this.dbLocalIM = dbLocalIM;
         }
         #endregion Constructors
 
@@ -94,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            RatingCurve ratingCurve = (from c in dbLocal.RatingCurves
+            RatingCurve ratingCurve = (from c in dbLocal.RatingCurves.Local
                     where c.RatingCurveID == RatingCurveID
                     select c).FirstOrDefault();
 
@@ -106,9 +109,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.RatingCurves.Remove(ratingCurve);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -130,7 +132,7 @@ namespace CSSPDBLocalServices
 
             if (ratingCurve.RatingCurveID == 0)
             {
-                int LastRatingCurveID = (from c in dbLocal.RatingCurves
+                int LastRatingCurveID = (from c in dbLocal.RatingCurves.AsNoTracking()
                           orderby c.RatingCurveID descending
                           select c.RatingCurveID).FirstOrDefault();
 
@@ -140,9 +142,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.RatingCurves.Add(ratingCurve);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -165,9 +166,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.RatingCurves.Update(ratingCurve);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -188,18 +188,24 @@ namespace CSSPDBLocalServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "RatingCurveID"), new[] { nameof(ratingCurve.RatingCurveID) });
                 }
 
-                if (!(from c in dbLocal.RatingCurves select c).Where(c => c.RatingCurveID == ratingCurve.RatingCurveID).Any())
+                if (!(from c in dbLocal.RatingCurves.AsNoTracking() select c).Where(c => c.RatingCurveID == ratingCurve.RatingCurveID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "RatingCurve", "RatingCurveID", ratingCurve.RatingCurveID.ToString()), new[] { nameof(ratingCurve.RatingCurveID) });
                 }
             }
 
             HydrometricSite HydrometricSiteHydrometricSiteID = null;
-            HydrometricSiteHydrometricSiteID = (from c in dbLocal.HydrometricSites where c.HydrometricSiteID == ratingCurve.HydrometricSiteID select c).FirstOrDefault();
+            HydrometricSiteHydrometricSiteID = (from c in dbLocal.HydrometricSites.AsNoTracking() where c.HydrometricSiteID == ratingCurve.HydrometricSiteID select c).FirstOrDefault();
 
             if (HydrometricSiteHydrometricSiteID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "HydrometricSite", "HydrometricSiteID", ratingCurve.HydrometricSiteID.ToString()), new[] { nameof(ratingCurve.HydrometricSiteID) });
+                HydrometricSiteHydrometricSiteID = (from c in dbLocalIM.HydrometricSites.Local where c.HydrometricSiteID == ratingCurve.HydrometricSiteID select c).FirstOrDefault();
+
+                if (HydrometricSiteHydrometricSiteID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "HydrometricSite", "HydrometricSiteID", ratingCurve.HydrometricSiteID.ToString()), new[] { nameof(ratingCurve.HydrometricSiteID) });
+                }
+
             }
 
             if (string.IsNullOrWhiteSpace(ratingCurve.RatingCurveNumber))
@@ -225,11 +231,28 @@ namespace CSSPDBLocalServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == ratingCurve.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == ratingCurve.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", ratingCurve.LastUpdateContactTVItemID.ToString()), new[] { nameof(ratingCurve.LastUpdateContactTVItemID) });
+                TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == ratingCurve.LastUpdateContactTVItemID select c).FirstOrDefault();
+
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", ratingCurve.LastUpdateContactTVItemID.ToString()), new[] { nameof(ratingCurve.LastUpdateContactTVItemID) });
+                }
+                else
+                {
+                    List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                    {
+                        TVTypeEnum.Contact,
+                    };
+                    if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(ratingCurve.LastUpdateContactTVItemID) });
+                    }
+                }
+
             }
             else
             {

@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            TVItemStat tvItemStat = (from c in dbLocalIM.TVItemStats.AsNoTracking()
+            TVItemStat tvItemStat = (from c in dbLocalIM.TVItemStats.Local
                     where c.TVItemStatID == TVItemStatID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<TVItemStat> tvItemStatList = (from c in dbLocalIM.TVItemStats.AsNoTracking() orderby c.TVItemStatID select c).Skip(skip).Take(take).ToList();
+            List<TVItemStat> tvItemStatList = (from c in dbLocalIM.TVItemStats.Local orderby c.TVItemStatID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(tvItemStatList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            TVItemStat tvItemStat = (from c in dbLocalIM.TVItemStats
+            TVItemStat tvItemStat = (from c in dbLocalIM.TVItemStats.Local
                     where c.TVItemStatID == TVItemStatID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.TVItemStats.Remove(tvItemStat);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.TVItemStats.Add(tvItemStat);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.TVItemStats.Update(tvItemStat);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -188,14 +185,14 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVItemStatID"), new[] { nameof(tvItemStat.TVItemStatID) });
                 }
 
-                if (!(from c in dbLocalIM.TVItemStats select c).Where(c => c.TVItemStatID == tvItemStat.TVItemStatID).Any())
+                if (!(from c in dbLocalIM.TVItemStats.Local select c).Where(c => c.TVItemStatID == tvItemStat.TVItemStatID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItemStat", "TVItemStatID", tvItemStat.TVItemStatID.ToString()), new[] { nameof(tvItemStat.TVItemStatID) });
                 }
             }
 
             TVItem TVItemTVItemID = null;
-            TVItemTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == tvItemStat.TVItemID select c).FirstOrDefault();
+            TVItemTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == tvItemStat.TVItemID select c).FirstOrDefault();
 
             if (TVItemTVItemID == null)
             {
@@ -270,7 +267,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == tvItemStat.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == tvItemStat.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

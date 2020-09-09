@@ -49,7 +49,17 @@ namespace CSSPDBServices.Tests
         }
         #endregion Constructors
 
-        #region Tests Generated [DB]CRUD
+        #region Tests Generated Constructor [DB]
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task PolSourceSiteEffectTermDB_Constructor_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+        }
+        #endregion Tests Generated Constructor [DB]
+
+        #region Tests Generated [DB] CRUD
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
@@ -61,7 +71,7 @@ namespace CSSPDBServices.Tests
 
             await DoCRUDDBTest();
         }
-        #endregion Tests Generated CRUD
+        #endregion Tests Generated [DB] CRUD
 
         #region Tests Generated Properties
         [Theory]
@@ -279,6 +289,14 @@ namespace CSSPDBServices.Tests
             {
                 options.UseInMemoryDatabase(CSSPDBConnString);
             });
+
+            Services.AddDbContext<ApplicationDbContext>(options =>
+            {
+                options.UseSqlServer(CSSPDBConnString);
+            });
+
+            Services.AddIdentityCore<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();

@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            EmailDistributionListContactLanguage emailDistributionListContactLanguage = (from c in dbLocalIM.EmailDistributionListContactLanguages.AsNoTracking()
+            EmailDistributionListContactLanguage emailDistributionListContactLanguage = (from c in dbLocalIM.EmailDistributionListContactLanguages.Local
                     where c.EmailDistributionListContactLanguageID == EmailDistributionListContactLanguageID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<EmailDistributionListContactLanguage> emailDistributionListContactLanguageList = (from c in dbLocalIM.EmailDistributionListContactLanguages.AsNoTracking() orderby c.EmailDistributionListContactLanguageID select c).Skip(skip).Take(take).ToList();
+            List<EmailDistributionListContactLanguage> emailDistributionListContactLanguageList = (from c in dbLocalIM.EmailDistributionListContactLanguages.Local orderby c.EmailDistributionListContactLanguageID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(emailDistributionListContactLanguageList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            EmailDistributionListContactLanguage emailDistributionListContactLanguage = (from c in dbLocalIM.EmailDistributionListContactLanguages
+            EmailDistributionListContactLanguage emailDistributionListContactLanguage = (from c in dbLocalIM.EmailDistributionListContactLanguages.Local
                     where c.EmailDistributionListContactLanguageID == EmailDistributionListContactLanguageID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.EmailDistributionListContactLanguages.Remove(emailDistributionListContactLanguage);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.EmailDistributionListContactLanguages.Add(emailDistributionListContactLanguage);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.EmailDistributionListContactLanguages.Update(emailDistributionListContactLanguage);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -188,14 +185,14 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "EmailDistributionListContactLanguageID"), new[] { nameof(emailDistributionListContactLanguage.EmailDistributionListContactLanguageID) });
                 }
 
-                if (!(from c in dbLocalIM.EmailDistributionListContactLanguages select c).Where(c => c.EmailDistributionListContactLanguageID == emailDistributionListContactLanguage.EmailDistributionListContactLanguageID).Any())
+                if (!(from c in dbLocalIM.EmailDistributionListContactLanguages.Local select c).Where(c => c.EmailDistributionListContactLanguageID == emailDistributionListContactLanguage.EmailDistributionListContactLanguageID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "EmailDistributionListContactLanguage", "EmailDistributionListContactLanguageID", emailDistributionListContactLanguage.EmailDistributionListContactLanguageID.ToString()), new[] { nameof(emailDistributionListContactLanguage.EmailDistributionListContactLanguageID) });
                 }
             }
 
             EmailDistributionListContact EmailDistributionListContactEmailDistributionListContactID = null;
-            EmailDistributionListContactEmailDistributionListContactID = (from c in dbLocalIM.EmailDistributionListContacts where c.EmailDistributionListContactID == emailDistributionListContactLanguage.EmailDistributionListContactID select c).FirstOrDefault();
+            EmailDistributionListContactEmailDistributionListContactID = (from c in dbLocalIM.EmailDistributionListContacts.Local where c.EmailDistributionListContactID == emailDistributionListContactLanguage.EmailDistributionListContactID select c).FirstOrDefault();
 
             if (EmailDistributionListContactEmailDistributionListContactID == null)
             {
@@ -237,7 +234,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == emailDistributionListContactLanguage.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == emailDistributionListContactLanguage.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

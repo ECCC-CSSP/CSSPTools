@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            TVItemLink tvItemLink = (from c in db.TVItemLinks
+            TVItemLink tvItemLink = (from c in db.TVItemLinks.Local
                     where c.TVItemLinkID == TVItemLinkID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBServices
             try
             {
                 db.TVItemLinks.Remove(tvItemLink);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBServices
             try
             {
                 db.TVItemLinks.Add(tvItemLink);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBServices
             try
             {
                 db.TVItemLinks.Update(tvItemLink);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -180,14 +177,14 @@ namespace CSSPDBServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVItemLinkID"), new[] { nameof(tvItemLink.TVItemLinkID) });
                 }
 
-                if (!(from c in db.TVItemLinks select c).Where(c => c.TVItemLinkID == tvItemLink.TVItemLinkID).Any())
+                if (!(from c in db.TVItemLinks.AsNoTracking() select c).Where(c => c.TVItemLinkID == tvItemLink.TVItemLinkID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItemLink", "TVItemLinkID", tvItemLink.TVItemLinkID.ToString()), new[] { nameof(tvItemLink.TVItemLinkID) });
                 }
             }
 
             TVItem TVItemFromTVItemID = null;
-            TVItemFromTVItemID = (from c in db.TVItems where c.TVItemID == tvItemLink.FromTVItemID select c).FirstOrDefault();
+            TVItemFromTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == tvItemLink.FromTVItemID select c).FirstOrDefault();
 
             if (TVItemFromTVItemID == null)
             {
@@ -239,7 +236,7 @@ namespace CSSPDBServices
             }
 
             TVItem TVItemToTVItemID = null;
-            TVItemToTVItemID = (from c in db.TVItems where c.TVItemID == tvItemLink.ToTVItemID select c).FirstOrDefault();
+            TVItemToTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == tvItemLink.ToTVItemID select c).FirstOrDefault();
 
             if (TVItemToTVItemID == null)
             {
@@ -340,7 +337,7 @@ namespace CSSPDBServices
             if (tvItemLink.ParentTVItemLinkID != null)
             {
                 TVItemLink TVItemLinkParentTVItemLinkID = null;
-                TVItemLinkParentTVItemLinkID = (from c in db.TVItemLinks where c.TVItemLinkID == tvItemLink.ParentTVItemLinkID select c).FirstOrDefault();
+                TVItemLinkParentTVItemLinkID = (from c in db.TVItemLinks.AsNoTracking() where c.TVItemLinkID == tvItemLink.ParentTVItemLinkID select c).FirstOrDefault();
 
                 if (TVItemLinkParentTVItemLinkID == null)
                 {
@@ -361,7 +358,7 @@ namespace CSSPDBServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == tvItemLink.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == tvItemLink.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

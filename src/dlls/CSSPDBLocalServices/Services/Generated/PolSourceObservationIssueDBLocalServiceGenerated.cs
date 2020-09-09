@@ -37,6 +37,7 @@ namespace CSSPDBLocalServices
 
         #region Properties
         private CSSPDBLocalContext dbLocal { get; }
+        private CSSPDBInMemoryContext dbLocalIM { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILocalService LocalService { get; }
@@ -47,13 +48,15 @@ namespace CSSPDBLocalServices
         #region Constructors
         public PolSourceObservationIssueDBLocalService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums,
            ILocalService LocalService,
-           CSSPDBLocalContext dbLocal)
+           CSSPDBLocalContext dbLocal,
+           CSSPDBInMemoryContext dbLocalIM)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LocalService = LocalService;
             this.enums = enums;
             this.dbLocal = dbLocal;
+            this.dbLocalIM = dbLocalIM;
         }
         #endregion Constructors
 
@@ -94,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            PolSourceObservationIssue polSourceObservationIssue = (from c in dbLocal.PolSourceObservationIssues
+            PolSourceObservationIssue polSourceObservationIssue = (from c in dbLocal.PolSourceObservationIssues.Local
                     where c.PolSourceObservationIssueID == PolSourceObservationIssueID
                     select c).FirstOrDefault();
 
@@ -106,9 +109,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.PolSourceObservationIssues.Remove(polSourceObservationIssue);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -130,7 +132,7 @@ namespace CSSPDBLocalServices
 
             if (polSourceObservationIssue.PolSourceObservationIssueID == 0)
             {
-                int LastPolSourceObservationIssueID = (from c in dbLocal.PolSourceObservationIssues
+                int LastPolSourceObservationIssueID = (from c in dbLocal.PolSourceObservationIssues.AsNoTracking()
                           orderby c.PolSourceObservationIssueID descending
                           select c.PolSourceObservationIssueID).FirstOrDefault();
 
@@ -140,9 +142,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.PolSourceObservationIssues.Add(polSourceObservationIssue);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -165,9 +166,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.PolSourceObservationIssues.Update(polSourceObservationIssue);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -188,18 +188,24 @@ namespace CSSPDBLocalServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "PolSourceObservationIssueID"), new[] { nameof(polSourceObservationIssue.PolSourceObservationIssueID) });
                 }
 
-                if (!(from c in dbLocal.PolSourceObservationIssues select c).Where(c => c.PolSourceObservationIssueID == polSourceObservationIssue.PolSourceObservationIssueID).Any())
+                if (!(from c in dbLocal.PolSourceObservationIssues.AsNoTracking() select c).Where(c => c.PolSourceObservationIssueID == polSourceObservationIssue.PolSourceObservationIssueID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "PolSourceObservationIssue", "PolSourceObservationIssueID", polSourceObservationIssue.PolSourceObservationIssueID.ToString()), new[] { nameof(polSourceObservationIssue.PolSourceObservationIssueID) });
                 }
             }
 
             PolSourceObservation PolSourceObservationPolSourceObservationID = null;
-            PolSourceObservationPolSourceObservationID = (from c in dbLocal.PolSourceObservations where c.PolSourceObservationID == polSourceObservationIssue.PolSourceObservationID select c).FirstOrDefault();
+            PolSourceObservationPolSourceObservationID = (from c in dbLocal.PolSourceObservations.AsNoTracking() where c.PolSourceObservationID == polSourceObservationIssue.PolSourceObservationID select c).FirstOrDefault();
 
             if (PolSourceObservationPolSourceObservationID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "PolSourceObservation", "PolSourceObservationID", polSourceObservationIssue.PolSourceObservationID.ToString()), new[] { nameof(polSourceObservationIssue.PolSourceObservationID) });
+                PolSourceObservationPolSourceObservationID = (from c in dbLocalIM.PolSourceObservations.Local where c.PolSourceObservationID == polSourceObservationIssue.PolSourceObservationID select c).FirstOrDefault();
+
+                if (PolSourceObservationPolSourceObservationID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "PolSourceObservation", "PolSourceObservationID", polSourceObservationIssue.PolSourceObservationID.ToString()), new[] { nameof(polSourceObservationIssue.PolSourceObservationID) });
+                }
+
             }
 
             if (string.IsNullOrWhiteSpace(polSourceObservationIssue.ObservationInfo))
@@ -232,11 +238,28 @@ namespace CSSPDBLocalServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == polSourceObservationIssue.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == polSourceObservationIssue.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", polSourceObservationIssue.LastUpdateContactTVItemID.ToString()), new[] { nameof(polSourceObservationIssue.LastUpdateContactTVItemID) });
+                TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == polSourceObservationIssue.LastUpdateContactTVItemID select c).FirstOrDefault();
+
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", polSourceObservationIssue.LastUpdateContactTVItemID.ToString()), new[] { nameof(polSourceObservationIssue.LastUpdateContactTVItemID) });
+                }
+                else
+                {
+                    List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                    {
+                        TVTypeEnum.Contact,
+                    };
+                    if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(polSourceObservationIssue.LastUpdateContactTVItemID) });
+                    }
+                }
+
             }
             else
             {

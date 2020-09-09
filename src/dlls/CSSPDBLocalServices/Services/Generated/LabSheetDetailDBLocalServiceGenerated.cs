@@ -37,6 +37,7 @@ namespace CSSPDBLocalServices
 
         #region Properties
         private CSSPDBLocalContext dbLocal { get; }
+        private CSSPDBInMemoryContext dbLocalIM { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILocalService LocalService { get; }
@@ -47,13 +48,15 @@ namespace CSSPDBLocalServices
         #region Constructors
         public LabSheetDetailDBLocalService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums,
            ILocalService LocalService,
-           CSSPDBLocalContext dbLocal)
+           CSSPDBLocalContext dbLocal,
+           CSSPDBInMemoryContext dbLocalIM)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LocalService = LocalService;
             this.enums = enums;
             this.dbLocal = dbLocal;
+            this.dbLocalIM = dbLocalIM;
         }
         #endregion Constructors
 
@@ -94,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            LabSheetDetail labSheetDetail = (from c in dbLocal.LabSheetDetails
+            LabSheetDetail labSheetDetail = (from c in dbLocal.LabSheetDetails.Local
                     where c.LabSheetDetailID == LabSheetDetailID
                     select c).FirstOrDefault();
 
@@ -106,9 +109,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.LabSheetDetails.Remove(labSheetDetail);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -130,7 +132,7 @@ namespace CSSPDBLocalServices
 
             if (labSheetDetail.LabSheetDetailID == 0)
             {
-                int LastLabSheetDetailID = (from c in dbLocal.LabSheetDetails
+                int LastLabSheetDetailID = (from c in dbLocal.LabSheetDetails.AsNoTracking()
                           orderby c.LabSheetDetailID descending
                           select c.LabSheetDetailID).FirstOrDefault();
 
@@ -140,9 +142,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.LabSheetDetails.Add(labSheetDetail);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -165,9 +166,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.LabSheetDetails.Update(labSheetDetail);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -188,34 +188,63 @@ namespace CSSPDBLocalServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LabSheetDetailID"), new[] { nameof(labSheetDetail.LabSheetDetailID) });
                 }
 
-                if (!(from c in dbLocal.LabSheetDetails select c).Where(c => c.LabSheetDetailID == labSheetDetail.LabSheetDetailID).Any())
+                if (!(from c in dbLocal.LabSheetDetails.AsNoTracking() select c).Where(c => c.LabSheetDetailID == labSheetDetail.LabSheetDetailID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "LabSheetDetail", "LabSheetDetailID", labSheetDetail.LabSheetDetailID.ToString()), new[] { nameof(labSheetDetail.LabSheetDetailID) });
                 }
             }
 
             LabSheet LabSheetLabSheetID = null;
-            LabSheetLabSheetID = (from c in dbLocal.LabSheets where c.LabSheetID == labSheetDetail.LabSheetID select c).FirstOrDefault();
+            LabSheetLabSheetID = (from c in dbLocal.LabSheets.AsNoTracking() where c.LabSheetID == labSheetDetail.LabSheetID select c).FirstOrDefault();
 
             if (LabSheetLabSheetID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "LabSheet", "LabSheetID", labSheetDetail.LabSheetID.ToString()), new[] { nameof(labSheetDetail.LabSheetID) });
+                LabSheetLabSheetID = (from c in dbLocalIM.LabSheets.Local where c.LabSheetID == labSheetDetail.LabSheetID select c).FirstOrDefault();
+
+                if (LabSheetLabSheetID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "LabSheet", "LabSheetID", labSheetDetail.LabSheetID.ToString()), new[] { nameof(labSheetDetail.LabSheetID) });
+                }
+
             }
 
             SamplingPlan SamplingPlanSamplingPlanID = null;
-            SamplingPlanSamplingPlanID = (from c in dbLocal.SamplingPlans where c.SamplingPlanID == labSheetDetail.SamplingPlanID select c).FirstOrDefault();
+            SamplingPlanSamplingPlanID = (from c in dbLocal.SamplingPlans.AsNoTracking() where c.SamplingPlanID == labSheetDetail.SamplingPlanID select c).FirstOrDefault();
 
             if (SamplingPlanSamplingPlanID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "SamplingPlan", "SamplingPlanID", labSheetDetail.SamplingPlanID.ToString()), new[] { nameof(labSheetDetail.SamplingPlanID) });
+                SamplingPlanSamplingPlanID = (from c in dbLocalIM.SamplingPlans.Local where c.SamplingPlanID == labSheetDetail.SamplingPlanID select c).FirstOrDefault();
+
+                if (SamplingPlanSamplingPlanID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "SamplingPlan", "SamplingPlanID", labSheetDetail.SamplingPlanID.ToString()), new[] { nameof(labSheetDetail.SamplingPlanID) });
+                }
+
             }
 
             TVItem TVItemSubsectorTVItemID = null;
-            TVItemSubsectorTVItemID = (from c in dbLocal.TVItems where c.TVItemID == labSheetDetail.SubsectorTVItemID select c).FirstOrDefault();
+            TVItemSubsectorTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == labSheetDetail.SubsectorTVItemID select c).FirstOrDefault();
 
             if (TVItemSubsectorTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "SubsectorTVItemID", labSheetDetail.SubsectorTVItemID.ToString()), new[] { nameof(labSheetDetail.SubsectorTVItemID) });
+                TVItemSubsectorTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == labSheetDetail.SubsectorTVItemID select c).FirstOrDefault();
+
+                if (TVItemSubsectorTVItemID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "SubsectorTVItemID", labSheetDetail.SubsectorTVItemID.ToString()), new[] { nameof(labSheetDetail.SubsectorTVItemID) });
+                }
+                else
+                {
+                    List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                    {
+                        TVTypeEnum.Subsector,
+                    };
+                    if (!AllowableTVTypes.Contains(TVItemSubsectorTVItemID.TVType))
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "SubsectorTVItemID", "Subsector"), new[] { nameof(labSheetDetail.SubsectorTVItemID) });
+                    }
+                }
+
             }
             else
             {
@@ -576,11 +605,28 @@ namespace CSSPDBLocalServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == labSheetDetail.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == labSheetDetail.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", labSheetDetail.LastUpdateContactTVItemID.ToString()), new[] { nameof(labSheetDetail.LastUpdateContactTVItemID) });
+                TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == labSheetDetail.LastUpdateContactTVItemID select c).FirstOrDefault();
+
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", labSheetDetail.LastUpdateContactTVItemID.ToString()), new[] { nameof(labSheetDetail.LastUpdateContactTVItemID) });
+                }
+                else
+                {
+                    List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                    {
+                        TVTypeEnum.Contact,
+                    };
+                    if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(labSheetDetail.LastUpdateContactTVItemID) });
+                    }
+                }
+
             }
             else
             {

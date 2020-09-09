@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            DocTemplate docTemplate = (from c in db.DocTemplates
+            DocTemplate docTemplate = (from c in db.DocTemplates.Local
                     where c.DocTemplateID == DocTemplateID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBServices
             try
             {
                 db.DocTemplates.Remove(docTemplate);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBServices
             try
             {
                 db.DocTemplates.Add(docTemplate);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBServices
             try
             {
                 db.DocTemplates.Update(docTemplate);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -180,7 +177,7 @@ namespace CSSPDBServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DocTemplateID"), new[] { nameof(docTemplate.DocTemplateID) });
                 }
 
-                if (!(from c in db.DocTemplates select c).Where(c => c.DocTemplateID == docTemplate.DocTemplateID).Any())
+                if (!(from c in db.DocTemplates.AsNoTracking() select c).Where(c => c.DocTemplateID == docTemplate.DocTemplateID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "DocTemplate", "DocTemplateID", docTemplate.DocTemplateID.ToString()), new[] { nameof(docTemplate.DocTemplateID) });
                 }
@@ -199,7 +196,7 @@ namespace CSSPDBServices
             }
 
             TVItem TVItemTVFileTVItemID = null;
-            TVItemTVFileTVItemID = (from c in db.TVItems where c.TVItemID == docTemplate.TVFileTVItemID select c).FirstOrDefault();
+            TVItemTVFileTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == docTemplate.TVFileTVItemID select c).FirstOrDefault();
 
             if (TVItemTVFileTVItemID == null)
             {
@@ -240,7 +237,7 @@ namespace CSSPDBServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == docTemplate.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == docTemplate.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

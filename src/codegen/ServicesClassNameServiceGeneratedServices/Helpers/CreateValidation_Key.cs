@@ -79,13 +79,38 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                 sb.AppendLine(@"");
 
 
-                if (TypeName == "AspNetUser")
+                if (DBType == "DB")
                 {
-                    sb.AppendLine($@"                if (!(from c in { db }.{ TypeName }s select c).Where(c => c.Id == { TypeNameLower }.Id).Any())");
+                    if (TypeName == "AspNetUser")
+                    {
+                        sb.AppendLine($@"                if (!(from c in { db }.{ TypeName }s.AsNoTracking() select c).Where(c => c.Id == { TypeNameLower }.Id).Any())");
+                    }
+                    else
+                    {
+                        sb.AppendLine($@"                if (!(from c in { db }.{ TypeName }{ plurial }.AsNoTracking() select c).Where(c => c.{ TypeName }ID == { TypeNameLower }.{ TypeName }ID).Any())");
+                    }
                 }
-                else
+                if (DBType == "DBLocal")
                 {
-                    sb.AppendLine($@"                if (!(from c in { db }.{ TypeName }{ plurial } select c).Where(c => c.{ TypeName }ID == { TypeNameLower }.{ TypeName }ID).Any())");
+                    if (TypeName == "AspNetUser")
+                    {
+                        sb.AppendLine($@"                if (!(from c in { db }.{ TypeName }s.AsNoTracking() select c).Where(c => c.Id == { TypeNameLower }.Id).Any())");
+                    }
+                    else
+                    {
+                        sb.AppendLine($@"                if (!(from c in { db }.{ TypeName }{ plurial }.AsNoTracking() select c).Where(c => c.{ TypeName }ID == { TypeNameLower }.{ TypeName }ID).Any())");
+                    }
+                }
+                if (DBType == "DBLocalIM")
+                {
+                    if (TypeName == "AspNetUser")
+                    {
+                        sb.AppendLine($@"                if (!(from c in { db }.{ TypeName }s.Local select c).Where(c => c.Id == { TypeNameLower }.Id).Any())");
+                    }
+                    else
+                    {
+                        sb.AppendLine($@"                if (!(from c in { db }.{ TypeName }{ plurial }.Local select c).Where(c => c.{ TypeName }ID == { TypeNameLower }.{ TypeName }ID).Any())");
+                    }
                 }
                 sb.AppendLine(@"                {");
                 if (TypeName == "AspNetUser")

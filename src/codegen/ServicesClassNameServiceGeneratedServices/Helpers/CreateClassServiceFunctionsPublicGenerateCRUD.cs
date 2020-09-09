@@ -56,7 +56,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
             sb.AppendLine(@"                return await Task.FromResult(Unauthorized());");
             sb.AppendLine(@"            }");
             sb.AppendLine(@"");
-            sb.AppendLine($@"            { TypeName } { TypeNameLower } = (from c in { db }.{ TypeName }{ Plurial }");
+            sb.AppendLine($@"            { TypeName } { TypeNameLower } = (from c in { db }.{ TypeName }{ Plurial }.Local");
             if (TypeName == "AspNetUser")
             {
                 sb.AppendLine($@"                    where c.Id == Id");
@@ -82,9 +82,9 @@ namespace ServicesClassNameServiceGeneratedServices.Services
             sb.AppendLine($@"            try");
             sb.AppendLine(@"            {");
             sb.AppendLine($@"                { db }.{ TypeName }{ Plurial }.Remove({ TypeNameLower });");
-            sb.AppendLine($@"                { db }.SaveChanges();");
+            //sb.AppendLine($@"                { db }.SaveChanges();");
             sb.AppendLine(@"            }");
-            sb.AppendLine($@"            catch (DbUpdateException ex)");
+            sb.AppendLine($@"            catch (Exception ex)");
             sb.AppendLine(@"            {");
             sb.AppendLine($@"                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? "" Inner: "" + ex.InnerException.Message : """")));");
             sb.AppendLine(@"            }");
@@ -151,7 +151,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                 {
                     sb.AppendLine($@"            if ({ TypeNameLower }.{ TypeName }ID == 0)");
                     sb.AppendLine($@"            {{");
-                    sb.AppendLine($@"                int Last{ TypeName }ID = (from c in { db }.{ TypeName }{ Plurial }");
+                    sb.AppendLine($@"                int Last{ TypeName }ID = (from c in { db }.{ TypeName }{ Plurial }.AsNoTracking()");
                     sb.AppendLine($@"                          orderby c.{ TypeName }ID descending");
                     sb.AppendLine($@"                          select c.{ TypeName }ID).FirstOrDefault();");
                     sb.AppendLine($@"");
@@ -166,9 +166,9 @@ namespace ServicesClassNameServiceGeneratedServices.Services
             sb.AppendLine($@"            try");
             sb.AppendLine(@"            {");
             sb.AppendLine($@"                { db }.{ TypeName }{ Plurial }.Add({ TypeNameLower });");
-            sb.AppendLine($@"                { db }.SaveChanges();");
+            //sb.AppendLine($@"                { db }.SaveChanges();");
             sb.AppendLine(@"            }");
-            sb.AppendLine($@"            catch (DbUpdateException ex)");
+            sb.AppendLine($@"            catch (Exception ex)");
             sb.AppendLine(@"            {");
             sb.AppendLine($@"                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? "" Inner: "" + ex.InnerException.Message : """")));");
             sb.AppendLine(@"            }");
@@ -212,9 +212,9 @@ namespace ServicesClassNameServiceGeneratedServices.Services
             sb.AppendLine($@"            try");
             sb.AppendLine(@"            {");
             sb.AppendLine($@"                { db }.{ TypeName }{ Plurial }.Update({ TypeNameLower });");
-            sb.AppendLine($@"                { db }.SaveChanges();");
+            //sb.AppendLine($@"                { db }.SaveChanges();");
             sb.AppendLine(@"            }");
-            sb.AppendLine($@"            catch (DbUpdateException ex)");
+            sb.AppendLine($@"            catch (Exception ex)");
             sb.AppendLine(@"            {");
             sb.AppendLine($@"                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? "" Inner: "" + ex.InnerException.Message : """")));");
             sb.AppendLine(@"            }");

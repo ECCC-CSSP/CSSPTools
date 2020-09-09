@@ -22,6 +22,7 @@ using Xunit;
 using System.ComponentModel.DataAnnotations;
 using CSSPCultureServices.Resources;
 using LocalServices;
+using System.Threading;
 
 namespace CSSPDBLocalServices.Tests
 {
@@ -39,6 +40,7 @@ namespace CSSPDBLocalServices.Tests
         private ILocalService LocalService { get; set; }
         private IRainExceedanceDBLocalService RainExceedanceDBLocalService { get; set; }
         private CSSPDBLocalContext dbLocal { get; set; }
+        private CSSPDBInMemoryContext dbLocalIM { get; set; }
         private RainExceedance rainExceedance { get; set; }
         #endregion Properties
 
@@ -49,7 +51,17 @@ namespace CSSPDBLocalServices.Tests
         }
         #endregion Constructors
 
-        #region Tests Generated [DBLocal]CRUD
+        #region Tests Generated Constructor [DBLocal]
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task RainExceedanceDBLocal_Constructor_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+        }
+        #endregion Tests Generated Constructor [DBLocal]
+
+        #region Tests Generated [DBLocal] CRUD
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
@@ -61,7 +73,7 @@ namespace CSSPDBLocalServices.Tests
 
             await DoCRUDDBLocalTest();
         }
-        #endregion Tests Generated CRUD
+        #endregion Tests Generated [DBLocal] CRUD
 
         #region Tests Generated Properties
         [Theory]
@@ -315,17 +327,6 @@ namespace CSSPDBLocalServices.Tests
             int count = ((List<RainExceedance>)((OkObjectResult)actionRainExceedanceList.Result).Value).Count();
             Assert.True(count > 0);
 
-            // List<RainExceedance> with skip and take
-            var actionRainExceedanceListSkipAndTake = await RainExceedanceDBLocalService.GetRainExceedanceList(1, 1);
-            Assert.Equal(200, ((ObjectResult)actionRainExceedanceListSkipAndTake.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionRainExceedanceListSkipAndTake.Result).Value);
-            List<RainExceedance> rainExceedanceListSkipAndTake = (List<RainExceedance>)((OkObjectResult)actionRainExceedanceListSkipAndTake.Result).Value;
-
-            int countSkipAndTake = ((List<RainExceedance>)((OkObjectResult)actionRainExceedanceListSkipAndTake.Result).Value).Count();
-            Assert.True(countSkipAndTake == 1);
-
-            Assert.False(rainExceedanceList[0].RainExceedanceID == rainExceedanceListSkipAndTake[0].RainExceedanceID);
-
             // Get RainExceedance With RainExceedanceID
             var actionRainExceedanceGet = await RainExceedanceDBLocalService.GetRainExceedanceWithRainExceedanceID(rainExceedanceList[0].RainExceedanceID);
             Assert.Equal(200, ((ObjectResult)actionRainExceedanceGet.Result).StatusCode);
@@ -387,6 +388,11 @@ namespace CSSPDBLocalServices.Tests
                 options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
             });
 
+            Services.AddDbContext<CSSPDBInMemoryContext>(options =>
+            {
+                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBLocal.FullName }");
+            });
+
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<ILocalService, LocalService>();
             Services.AddSingleton<IEnums, Enums>();
@@ -407,6 +413,9 @@ namespace CSSPDBLocalServices.Tests
 
             dbLocal = Provider.GetService<CSSPDBLocalContext>();
             Assert.NotNull(dbLocal);
+
+            dbLocalIM = Provider.GetService<CSSPDBInMemoryContext>();
+            Assert.NotNull(dbLocalIM);
 
             RainExceedanceDBLocalService = Provider.GetService<IRainExceedanceDBLocalService>();
             Assert.NotNull(RainExceedanceDBLocalService);
@@ -431,8 +440,8 @@ namespace CSSPDBLocalServices.Tests
 
             try
             {
-                dbLocal.TVItems.Add(new TVItem() { TVItemID = 56, TVLevel = 2, TVPath = "p1p5p56", TVType = (TVTypeEnum)75, ParentID = 5, IsActive = true, LastUpdateDate_UTC = new DateTime(2019, 8, 16, 14, 13, 49), LastUpdateContactTVItemID = 2 });
-                dbLocal.SaveChanges();
+                dbLocalIM.TVItems.Add(new TVItem() { TVItemID = 56, TVLevel = 2, TVPath = "p1p5p56", TVType = (TVTypeEnum)75, ParentID = 5, IsActive = true, LastUpdateDate_UTC = new DateTime(2019, 8, 16, 14, 13, 49), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
             }
             catch (Exception)
             {
@@ -440,8 +449,8 @@ namespace CSSPDBLocalServices.Tests
             }
             try
             {
-                dbLocal.EmailDistributionLists.Add(new EmailDistributionList() { EmailDistributionListID = 1, ParentTVItemID = 5, Ordinal = 1, LastUpdateDate_UTC = new DateTime(2017, 6, 14, 18, 7, 57), LastUpdateContactTVItemID = 2 });
-                dbLocal.SaveChanges();
+                dbLocalIM.EmailDistributionLists.Add(new EmailDistributionList() { EmailDistributionListID = 1, ParentTVItemID = 5, Ordinal = 1, LastUpdateDate_UTC = new DateTime(2017, 6, 14, 18, 7, 57), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
             }
             catch (Exception)
             {
@@ -449,8 +458,8 @@ namespace CSSPDBLocalServices.Tests
             }
             try
             {
-                dbLocal.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2 });
-                dbLocal.SaveChanges();
+                dbLocalIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
             }
             catch (Exception)
             {

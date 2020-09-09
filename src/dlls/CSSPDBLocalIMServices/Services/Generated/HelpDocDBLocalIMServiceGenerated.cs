@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            HelpDoc helpDoc = (from c in dbLocalIM.HelpDocs.AsNoTracking()
+            HelpDoc helpDoc = (from c in dbLocalIM.HelpDocs.Local
                     where c.HelpDocID == HelpDocID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<HelpDoc> helpDocList = (from c in dbLocalIM.HelpDocs.AsNoTracking() orderby c.HelpDocID select c).Skip(skip).Take(take).ToList();
+            List<HelpDoc> helpDocList = (from c in dbLocalIM.HelpDocs.Local orderby c.HelpDocID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(helpDocList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            HelpDoc helpDoc = (from c in dbLocalIM.HelpDocs
+            HelpDoc helpDoc = (from c in dbLocalIM.HelpDocs.Local
                     where c.HelpDocID == HelpDocID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.HelpDocs.Remove(helpDoc);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.HelpDocs.Add(helpDoc);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.HelpDocs.Update(helpDoc);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -188,7 +185,7 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "HelpDocID"), new[] { nameof(helpDoc.HelpDocID) });
                 }
 
-                if (!(from c in dbLocalIM.HelpDocs select c).Where(c => c.HelpDocID == helpDoc.HelpDocID).Any())
+                if (!(from c in dbLocalIM.HelpDocs.Local select c).Where(c => c.HelpDocID == helpDoc.HelpDocID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "HelpDoc", "HelpDocID", helpDoc.HelpDocID.ToString()), new[] { nameof(helpDoc.HelpDocID) });
                 }
@@ -233,7 +230,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == helpDoc.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == helpDoc.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

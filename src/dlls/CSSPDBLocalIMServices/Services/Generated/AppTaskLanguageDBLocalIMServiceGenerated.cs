@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            AppTaskLanguage appTaskLanguage = (from c in dbLocalIM.AppTaskLanguages.AsNoTracking()
+            AppTaskLanguage appTaskLanguage = (from c in dbLocalIM.AppTaskLanguages.Local
                     where c.AppTaskLanguageID == AppTaskLanguageID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<AppTaskLanguage> appTaskLanguageList = (from c in dbLocalIM.AppTaskLanguages.AsNoTracking() orderby c.AppTaskLanguageID select c).Skip(skip).Take(take).ToList();
+            List<AppTaskLanguage> appTaskLanguageList = (from c in dbLocalIM.AppTaskLanguages.Local orderby c.AppTaskLanguageID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(appTaskLanguageList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            AppTaskLanguage appTaskLanguage = (from c in dbLocalIM.AppTaskLanguages
+            AppTaskLanguage appTaskLanguage = (from c in dbLocalIM.AppTaskLanguages.Local
                     where c.AppTaskLanguageID == AppTaskLanguageID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.AppTaskLanguages.Remove(appTaskLanguage);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.AppTaskLanguages.Add(appTaskLanguage);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.AppTaskLanguages.Update(appTaskLanguage);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -188,14 +185,14 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "AppTaskLanguageID"), new[] { nameof(appTaskLanguage.AppTaskLanguageID) });
                 }
 
-                if (!(from c in dbLocalIM.AppTaskLanguages select c).Where(c => c.AppTaskLanguageID == appTaskLanguage.AppTaskLanguageID).Any())
+                if (!(from c in dbLocalIM.AppTaskLanguages.Local select c).Where(c => c.AppTaskLanguageID == appTaskLanguage.AppTaskLanguageID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AppTaskLanguage", "AppTaskLanguageID", appTaskLanguage.AppTaskLanguageID.ToString()), new[] { nameof(appTaskLanguage.AppTaskLanguageID) });
                 }
             }
 
             AppTask AppTaskAppTaskID = null;
-            AppTaskAppTaskID = (from c in dbLocalIM.AppTasks where c.AppTaskID == appTaskLanguage.AppTaskID select c).FirstOrDefault();
+            AppTaskAppTaskID = (from c in dbLocalIM.AppTasks.Local where c.AppTaskID == appTaskLanguage.AppTaskID select c).FirstOrDefault();
 
             if (AppTaskAppTaskID == null)
             {
@@ -237,7 +234,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == appTaskLanguage.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == appTaskLanguage.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

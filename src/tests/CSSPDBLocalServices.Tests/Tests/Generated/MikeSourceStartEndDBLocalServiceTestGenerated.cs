@@ -22,6 +22,7 @@ using Xunit;
 using System.ComponentModel.DataAnnotations;
 using CSSPCultureServices.Resources;
 using LocalServices;
+using System.Threading;
 
 namespace CSSPDBLocalServices.Tests
 {
@@ -39,6 +40,7 @@ namespace CSSPDBLocalServices.Tests
         private ILocalService LocalService { get; set; }
         private IMikeSourceStartEndDBLocalService MikeSourceStartEndDBLocalService { get; set; }
         private CSSPDBLocalContext dbLocal { get; set; }
+        private CSSPDBInMemoryContext dbLocalIM { get; set; }
         private MikeSourceStartEnd mikeSourceStartEnd { get; set; }
         #endregion Properties
 
@@ -49,7 +51,17 @@ namespace CSSPDBLocalServices.Tests
         }
         #endregion Constructors
 
-        #region Tests Generated [DBLocal]CRUD
+        #region Tests Generated Constructor [DBLocal]
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task MikeSourceStartEndDBLocal_Constructor_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+        }
+        #endregion Tests Generated Constructor [DBLocal]
+
+        #region Tests Generated [DBLocal] CRUD
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
@@ -61,7 +73,7 @@ namespace CSSPDBLocalServices.Tests
 
             await DoCRUDDBLocalTest();
         }
-        #endregion Tests Generated CRUD
+        #endregion Tests Generated [DBLocal] CRUD
 
         #region Tests Generated Properties
         [Theory]
@@ -389,17 +401,6 @@ namespace CSSPDBLocalServices.Tests
             int count = ((List<MikeSourceStartEnd>)((OkObjectResult)actionMikeSourceStartEndList.Result).Value).Count();
             Assert.True(count > 0);
 
-            // List<MikeSourceStartEnd> with skip and take
-            var actionMikeSourceStartEndListSkipAndTake = await MikeSourceStartEndDBLocalService.GetMikeSourceStartEndList(1, 1);
-            Assert.Equal(200, ((ObjectResult)actionMikeSourceStartEndListSkipAndTake.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionMikeSourceStartEndListSkipAndTake.Result).Value);
-            List<MikeSourceStartEnd> mikeSourceStartEndListSkipAndTake = (List<MikeSourceStartEnd>)((OkObjectResult)actionMikeSourceStartEndListSkipAndTake.Result).Value;
-
-            int countSkipAndTake = ((List<MikeSourceStartEnd>)((OkObjectResult)actionMikeSourceStartEndListSkipAndTake.Result).Value).Count();
-            Assert.True(countSkipAndTake == 1);
-
-            Assert.False(mikeSourceStartEndList[0].MikeSourceStartEndID == mikeSourceStartEndListSkipAndTake[0].MikeSourceStartEndID);
-
             // Get MikeSourceStartEnd With MikeSourceStartEndID
             var actionMikeSourceStartEndGet = await MikeSourceStartEndDBLocalService.GetMikeSourceStartEndWithMikeSourceStartEndID(mikeSourceStartEndList[0].MikeSourceStartEndID);
             Assert.Equal(200, ((ObjectResult)actionMikeSourceStartEndGet.Result).StatusCode);
@@ -461,6 +462,11 @@ namespace CSSPDBLocalServices.Tests
                 options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
             });
 
+            Services.AddDbContext<CSSPDBInMemoryContext>(options =>
+            {
+                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBLocal.FullName }");
+            });
+
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<ILocalService, LocalService>();
             Services.AddSingleton<IEnums, Enums>();
@@ -481,6 +487,9 @@ namespace CSSPDBLocalServices.Tests
 
             dbLocal = Provider.GetService<CSSPDBLocalContext>();
             Assert.NotNull(dbLocal);
+
+            dbLocalIM = Provider.GetService<CSSPDBInMemoryContext>();
+            Assert.NotNull(dbLocalIM);
 
             MikeSourceStartEndDBLocalService = Provider.GetService<IMikeSourceStartEndDBLocalService>();
             Assert.NotNull(MikeSourceStartEndDBLocalService);
@@ -507,8 +516,8 @@ namespace CSSPDBLocalServices.Tests
 
             try
             {
-                dbLocal.MikeSources.Add(new MikeSource() { MikeSourceID = 1, MikeSourceTVItemID = 53, IsContinuous = true, Include = false, IsRiver = false, UseHydrometric = false, HydrometricTVItemID = null, DrainageArea_km2 = null, Factor = null, SourceNumberString = "SOURCE_1", LastUpdateDate_UTC = new DateTime(2014, 12, 2, 21, 28, 56), LastUpdateContactTVItemID = 2 });
-                dbLocal.SaveChanges();
+                dbLocalIM.MikeSources.Add(new MikeSource() { MikeSourceID = 1, MikeSourceTVItemID = 53, IsContinuous = true, Include = false, IsRiver = false, UseHydrometric = false, HydrometricTVItemID = null, DrainageArea_km2 = null, Factor = null, SourceNumberString = "SOURCE_1", LastUpdateDate_UTC = new DateTime(2014, 12, 2, 21, 28, 56), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
             }
             catch (Exception)
             {
@@ -516,8 +525,8 @@ namespace CSSPDBLocalServices.Tests
             }
             try
             {
-                dbLocal.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2 });
-                dbLocal.SaveChanges();
+                dbLocalIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
             }
             catch (Exception)
             {

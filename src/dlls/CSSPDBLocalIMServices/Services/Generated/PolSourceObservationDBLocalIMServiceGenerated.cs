@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            PolSourceObservation polSourceObservation = (from c in dbLocalIM.PolSourceObservations.AsNoTracking()
+            PolSourceObservation polSourceObservation = (from c in dbLocalIM.PolSourceObservations.Local
                     where c.PolSourceObservationID == PolSourceObservationID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<PolSourceObservation> polSourceObservationList = (from c in dbLocalIM.PolSourceObservations.AsNoTracking() orderby c.PolSourceObservationID select c).Skip(skip).Take(take).ToList();
+            List<PolSourceObservation> polSourceObservationList = (from c in dbLocalIM.PolSourceObservations.Local orderby c.PolSourceObservationID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(polSourceObservationList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            PolSourceObservation polSourceObservation = (from c in dbLocalIM.PolSourceObservations
+            PolSourceObservation polSourceObservation = (from c in dbLocalIM.PolSourceObservations.Local
                     where c.PolSourceObservationID == PolSourceObservationID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.PolSourceObservations.Remove(polSourceObservation);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.PolSourceObservations.Add(polSourceObservation);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.PolSourceObservations.Update(polSourceObservation);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -187,14 +184,14 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "PolSourceObservationID"), new[] { nameof(polSourceObservation.PolSourceObservationID) });
                 }
 
-                if (!(from c in dbLocalIM.PolSourceObservations select c).Where(c => c.PolSourceObservationID == polSourceObservation.PolSourceObservationID).Any())
+                if (!(from c in dbLocalIM.PolSourceObservations.Local select c).Where(c => c.PolSourceObservationID == polSourceObservation.PolSourceObservationID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "PolSourceObservation", "PolSourceObservationID", polSourceObservation.PolSourceObservationID.ToString()), new[] { nameof(polSourceObservation.PolSourceObservationID) });
                 }
             }
 
             PolSourceSite PolSourceSitePolSourceSiteID = null;
-            PolSourceSitePolSourceSiteID = (from c in dbLocalIM.PolSourceSites where c.PolSourceSiteID == polSourceObservation.PolSourceSiteID select c).FirstOrDefault();
+            PolSourceSitePolSourceSiteID = (from c in dbLocalIM.PolSourceSites.Local where c.PolSourceSiteID == polSourceObservation.PolSourceSiteID select c).FirstOrDefault();
 
             if (PolSourceSitePolSourceSiteID == null)
             {
@@ -214,7 +211,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemContactTVItemID = null;
-            TVItemContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == polSourceObservation.ContactTVItemID select c).FirstOrDefault();
+            TVItemContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == polSourceObservation.ContactTVItemID select c).FirstOrDefault();
 
             if (TVItemContactTVItemID == null)
             {
@@ -252,7 +249,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == polSourceObservation.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == polSourceObservation.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

@@ -37,6 +37,7 @@ namespace CSSPDBLocalServices
 
         #region Properties
         private CSSPDBLocalContext dbLocal { get; }
+        private CSSPDBInMemoryContext dbLocalIM { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILocalService LocalService { get; }
@@ -47,13 +48,15 @@ namespace CSSPDBLocalServices
         #region Constructors
         public UseOfSiteDBLocalService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums,
            ILocalService LocalService,
-           CSSPDBLocalContext dbLocal)
+           CSSPDBLocalContext dbLocal,
+           CSSPDBInMemoryContext dbLocalIM)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LocalService = LocalService;
             this.enums = enums;
             this.dbLocal = dbLocal;
+            this.dbLocalIM = dbLocalIM;
         }
         #endregion Constructors
 
@@ -94,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            UseOfSite useOfSite = (from c in dbLocal.UseOfSites
+            UseOfSite useOfSite = (from c in dbLocal.UseOfSites.Local
                     where c.UseOfSiteID == UseOfSiteID
                     select c).FirstOrDefault();
 
@@ -106,9 +109,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.UseOfSites.Remove(useOfSite);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -130,7 +132,7 @@ namespace CSSPDBLocalServices
 
             if (useOfSite.UseOfSiteID == 0)
             {
-                int LastUseOfSiteID = (from c in dbLocal.UseOfSites
+                int LastUseOfSiteID = (from c in dbLocal.UseOfSites.AsNoTracking()
                           orderby c.UseOfSiteID descending
                           select c.UseOfSiteID).FirstOrDefault();
 
@@ -140,9 +142,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.UseOfSites.Add(useOfSite);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -165,9 +166,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.UseOfSites.Update(useOfSite);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -189,18 +189,37 @@ namespace CSSPDBLocalServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "UseOfSiteID"), new[] { nameof(useOfSite.UseOfSiteID) });
                 }
 
-                if (!(from c in dbLocal.UseOfSites select c).Where(c => c.UseOfSiteID == useOfSite.UseOfSiteID).Any())
+                if (!(from c in dbLocal.UseOfSites.AsNoTracking() select c).Where(c => c.UseOfSiteID == useOfSite.UseOfSiteID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "UseOfSite", "UseOfSiteID", useOfSite.UseOfSiteID.ToString()), new[] { nameof(useOfSite.UseOfSiteID) });
                 }
             }
 
             TVItem TVItemSiteTVItemID = null;
-            TVItemSiteTVItemID = (from c in dbLocal.TVItems where c.TVItemID == useOfSite.SiteTVItemID select c).FirstOrDefault();
+            TVItemSiteTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == useOfSite.SiteTVItemID select c).FirstOrDefault();
 
             if (TVItemSiteTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "SiteTVItemID", useOfSite.SiteTVItemID.ToString()), new[] { nameof(useOfSite.SiteTVItemID) });
+                TVItemSiteTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == useOfSite.SiteTVItemID select c).FirstOrDefault();
+
+                if (TVItemSiteTVItemID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "SiteTVItemID", useOfSite.SiteTVItemID.ToString()), new[] { nameof(useOfSite.SiteTVItemID) });
+                }
+                else
+                {
+                    List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                    {
+                        TVTypeEnum.ClimateSite,
+                        TVTypeEnum.HydrometricSite,
+                        TVTypeEnum.TideSite,
+                    };
+                    if (!AllowableTVTypes.Contains(TVItemSiteTVItemID.TVType))
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "SiteTVItemID", "ClimateSite,HydrometricSite,TideSite"), new[] { nameof(useOfSite.SiteTVItemID) });
+                    }
+                }
+
             }
             else
             {
@@ -217,11 +236,28 @@ namespace CSSPDBLocalServices
             }
 
             TVItem TVItemSubsectorTVItemID = null;
-            TVItemSubsectorTVItemID = (from c in dbLocal.TVItems where c.TVItemID == useOfSite.SubsectorTVItemID select c).FirstOrDefault();
+            TVItemSubsectorTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == useOfSite.SubsectorTVItemID select c).FirstOrDefault();
 
             if (TVItemSubsectorTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "SubsectorTVItemID", useOfSite.SubsectorTVItemID.ToString()), new[] { nameof(useOfSite.SubsectorTVItemID) });
+                TVItemSubsectorTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == useOfSite.SubsectorTVItemID select c).FirstOrDefault();
+
+                if (TVItemSubsectorTVItemID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "SubsectorTVItemID", useOfSite.SubsectorTVItemID.ToString()), new[] { nameof(useOfSite.SubsectorTVItemID) });
+                }
+                else
+                {
+                    List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                    {
+                        TVTypeEnum.Subsector,
+                    };
+                    if (!AllowableTVTypes.Contains(TVItemSubsectorTVItemID.TVType))
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "SubsectorTVItemID", "Subsector"), new[] { nameof(useOfSite.SubsectorTVItemID) });
+                    }
+                }
+
             }
             else
             {
@@ -312,11 +348,28 @@ namespace CSSPDBLocalServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == useOfSite.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == useOfSite.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", useOfSite.LastUpdateContactTVItemID.ToString()), new[] { nameof(useOfSite.LastUpdateContactTVItemID) });
+                TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == useOfSite.LastUpdateContactTVItemID select c).FirstOrDefault();
+
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", useOfSite.LastUpdateContactTVItemID.ToString()), new[] { nameof(useOfSite.LastUpdateContactTVItemID) });
+                }
+                else
+                {
+                    List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                    {
+                        TVTypeEnum.Contact,
+                    };
+                    if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(useOfSite.LastUpdateContactTVItemID) });
+                    }
+                }
+
             }
             else
             {

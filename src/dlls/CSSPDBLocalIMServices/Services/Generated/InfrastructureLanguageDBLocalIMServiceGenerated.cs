@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            InfrastructureLanguage infrastructureLanguage = (from c in dbLocalIM.InfrastructureLanguages.AsNoTracking()
+            InfrastructureLanguage infrastructureLanguage = (from c in dbLocalIM.InfrastructureLanguages.Local
                     where c.InfrastructureLanguageID == InfrastructureLanguageID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<InfrastructureLanguage> infrastructureLanguageList = (from c in dbLocalIM.InfrastructureLanguages.AsNoTracking() orderby c.InfrastructureLanguageID select c).Skip(skip).Take(take).ToList();
+            List<InfrastructureLanguage> infrastructureLanguageList = (from c in dbLocalIM.InfrastructureLanguages.Local orderby c.InfrastructureLanguageID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(infrastructureLanguageList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            InfrastructureLanguage infrastructureLanguage = (from c in dbLocalIM.InfrastructureLanguages
+            InfrastructureLanguage infrastructureLanguage = (from c in dbLocalIM.InfrastructureLanguages.Local
                     where c.InfrastructureLanguageID == InfrastructureLanguageID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.InfrastructureLanguages.Remove(infrastructureLanguage);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.InfrastructureLanguages.Add(infrastructureLanguage);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.InfrastructureLanguages.Update(infrastructureLanguage);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -188,14 +185,14 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "InfrastructureLanguageID"), new[] { nameof(infrastructureLanguage.InfrastructureLanguageID) });
                 }
 
-                if (!(from c in dbLocalIM.InfrastructureLanguages select c).Where(c => c.InfrastructureLanguageID == infrastructureLanguage.InfrastructureLanguageID).Any())
+                if (!(from c in dbLocalIM.InfrastructureLanguages.Local select c).Where(c => c.InfrastructureLanguageID == infrastructureLanguage.InfrastructureLanguageID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "InfrastructureLanguage", "InfrastructureLanguageID", infrastructureLanguage.InfrastructureLanguageID.ToString()), new[] { nameof(infrastructureLanguage.InfrastructureLanguageID) });
                 }
             }
 
             Infrastructure InfrastructureInfrastructureID = null;
-            InfrastructureInfrastructureID = (from c in dbLocalIM.Infrastructures where c.InfrastructureID == infrastructureLanguage.InfrastructureID select c).FirstOrDefault();
+            InfrastructureInfrastructureID = (from c in dbLocalIM.Infrastructures.Local where c.InfrastructureID == infrastructureLanguage.InfrastructureID select c).FirstOrDefault();
 
             if (InfrastructureInfrastructureID == null)
             {
@@ -234,7 +231,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == infrastructureLanguage.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == infrastructureLanguage.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

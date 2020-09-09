@@ -37,6 +37,7 @@ namespace CSSPDBLocalServices
 
         #region Properties
         private CSSPDBLocalContext dbLocal { get; }
+        private CSSPDBInMemoryContext dbLocalIM { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILocalService LocalService { get; }
@@ -47,13 +48,15 @@ namespace CSSPDBLocalServices
         #region Constructors
         public SpillDBLocalService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums,
            ILocalService LocalService,
-           CSSPDBLocalContext dbLocal)
+           CSSPDBLocalContext dbLocal,
+           CSSPDBInMemoryContext dbLocalIM)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LocalService = LocalService;
             this.enums = enums;
             this.dbLocal = dbLocal;
+            this.dbLocalIM = dbLocalIM;
         }
         #endregion Constructors
 
@@ -94,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            Spill spill = (from c in dbLocal.Spills
+            Spill spill = (from c in dbLocal.Spills.Local
                     where c.SpillID == SpillID
                     select c).FirstOrDefault();
 
@@ -106,9 +109,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.Spills.Remove(spill);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -130,7 +132,7 @@ namespace CSSPDBLocalServices
 
             if (spill.SpillID == 0)
             {
-                int LastSpillID = (from c in dbLocal.Spills
+                int LastSpillID = (from c in dbLocal.Spills.AsNoTracking()
                           orderby c.SpillID descending
                           select c.SpillID).FirstOrDefault();
 
@@ -140,9 +142,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.Spills.Add(spill);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -165,9 +166,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.Spills.Update(spill);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -188,18 +188,35 @@ namespace CSSPDBLocalServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SpillID"), new[] { nameof(spill.SpillID) });
                 }
 
-                if (!(from c in dbLocal.Spills select c).Where(c => c.SpillID == spill.SpillID).Any())
+                if (!(from c in dbLocal.Spills.AsNoTracking() select c).Where(c => c.SpillID == spill.SpillID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "Spill", "SpillID", spill.SpillID.ToString()), new[] { nameof(spill.SpillID) });
                 }
             }
 
             TVItem TVItemMunicipalityTVItemID = null;
-            TVItemMunicipalityTVItemID = (from c in dbLocal.TVItems where c.TVItemID == spill.MunicipalityTVItemID select c).FirstOrDefault();
+            TVItemMunicipalityTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == spill.MunicipalityTVItemID select c).FirstOrDefault();
 
             if (TVItemMunicipalityTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "MunicipalityTVItemID", spill.MunicipalityTVItemID.ToString()), new[] { nameof(spill.MunicipalityTVItemID) });
+                TVItemMunicipalityTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == spill.MunicipalityTVItemID select c).FirstOrDefault();
+
+                if (TVItemMunicipalityTVItemID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "MunicipalityTVItemID", spill.MunicipalityTVItemID.ToString()), new[] { nameof(spill.MunicipalityTVItemID) });
+                }
+                else
+                {
+                    List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                    {
+                        TVTypeEnum.Municipality,
+                    };
+                    if (!AllowableTVTypes.Contains(TVItemMunicipalityTVItemID.TVType))
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "MunicipalityTVItemID", "Municipality"), new[] { nameof(spill.MunicipalityTVItemID) });
+                    }
+                }
+
             }
             else
             {
@@ -216,11 +233,30 @@ namespace CSSPDBLocalServices
             if (spill.InfrastructureTVItemID != null)
             {
                 TVItem TVItemInfrastructureTVItemID = null;
-                TVItemInfrastructureTVItemID = (from c in dbLocal.TVItems where c.TVItemID == spill.InfrastructureTVItemID select c).FirstOrDefault();
+                TVItemInfrastructureTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == spill.InfrastructureTVItemID select c).FirstOrDefault();
 
                 if (TVItemInfrastructureTVItemID == null)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "InfrastructureTVItemID", (spill.InfrastructureTVItemID == null ? "" : spill.InfrastructureTVItemID.ToString())), new[] { nameof(spill.InfrastructureTVItemID) });
+                    if (spill.InfrastructureTVItemID != null)
+                    {
+                        TVItemInfrastructureTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == spill.InfrastructureTVItemID select c).FirstOrDefault();
+
+                        if (TVItemInfrastructureTVItemID == null)
+                        {
+                            yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "InfrastructureTVItemID", (spill.InfrastructureTVItemID == null ? "" : spill.InfrastructureTVItemID.ToString())), new[] { nameof(spill.InfrastructureTVItemID) });
+                        }
+                        else
+                        {
+                            List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                            {
+                                TVTypeEnum.Infrastructure,
+                            };
+                            if (!AllowableTVTypes.Contains(TVItemInfrastructureTVItemID.TVType))
+                            {
+                                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "InfrastructureTVItemID", "Infrastructure"), new[] { nameof(spill.InfrastructureTVItemID) });
+                            }
+                        }
+                    }
                 }
                 else
                 {
@@ -275,11 +311,28 @@ namespace CSSPDBLocalServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == spill.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == spill.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", spill.LastUpdateContactTVItemID.ToString()), new[] { nameof(spill.LastUpdateContactTVItemID) });
+                TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == spill.LastUpdateContactTVItemID select c).FirstOrDefault();
+
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", spill.LastUpdateContactTVItemID.ToString()), new[] { nameof(spill.LastUpdateContactTVItemID) });
+                }
+                else
+                {
+                    List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                    {
+                        TVTypeEnum.Contact,
+                    };
+                    if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(spill.LastUpdateContactTVItemID) });
+                    }
+                }
+
             }
             else
             {

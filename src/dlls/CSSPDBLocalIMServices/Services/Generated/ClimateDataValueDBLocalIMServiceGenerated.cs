@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            ClimateDataValue climateDataValue = (from c in dbLocalIM.ClimateDataValues.AsNoTracking()
+            ClimateDataValue climateDataValue = (from c in dbLocalIM.ClimateDataValues.Local
                     where c.ClimateDataValueID == ClimateDataValueID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<ClimateDataValue> climateDataValueList = (from c in dbLocalIM.ClimateDataValues.AsNoTracking() orderby c.ClimateDataValueID select c).Skip(skip).Take(take).ToList();
+            List<ClimateDataValue> climateDataValueList = (from c in dbLocalIM.ClimateDataValues.Local orderby c.ClimateDataValueID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(climateDataValueList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            ClimateDataValue climateDataValue = (from c in dbLocalIM.ClimateDataValues
+            ClimateDataValue climateDataValue = (from c in dbLocalIM.ClimateDataValues.Local
                     where c.ClimateDataValueID == ClimateDataValueID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.ClimateDataValues.Remove(climateDataValue);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.ClimateDataValues.Add(climateDataValue);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.ClimateDataValues.Update(climateDataValue);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -188,14 +185,14 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ClimateDataValueID"), new[] { nameof(climateDataValue.ClimateDataValueID) });
                 }
 
-                if (!(from c in dbLocalIM.ClimateDataValues select c).Where(c => c.ClimateDataValueID == climateDataValue.ClimateDataValueID).Any())
+                if (!(from c in dbLocalIM.ClimateDataValues.Local select c).Where(c => c.ClimateDataValueID == climateDataValue.ClimateDataValueID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "ClimateDataValue", "ClimateDataValueID", climateDataValue.ClimateDataValueID.ToString()), new[] { nameof(climateDataValue.ClimateDataValueID) });
                 }
             }
 
             ClimateSite ClimateSiteClimateSiteID = null;
-            ClimateSiteClimateSiteID = (from c in dbLocalIM.ClimateSites where c.ClimateSiteID == climateDataValue.ClimateSiteID select c).FirstOrDefault();
+            ClimateSiteClimateSiteID = (from c in dbLocalIM.ClimateSites.Local where c.ClimateSiteID == climateDataValue.ClimateSiteID select c).FirstOrDefault();
 
             if (ClimateSiteClimateSiteID == null)
             {
@@ -323,7 +320,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == climateDataValue.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == climateDataValue.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

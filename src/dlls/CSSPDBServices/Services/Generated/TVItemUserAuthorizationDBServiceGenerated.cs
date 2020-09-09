@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            TVItemUserAuthorization tvItemUserAuthorization = (from c in db.TVItemUserAuthorizations
+            TVItemUserAuthorization tvItemUserAuthorization = (from c in db.TVItemUserAuthorizations.Local
                     where c.TVItemUserAuthorizationID == TVItemUserAuthorizationID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBServices
             try
             {
                 db.TVItemUserAuthorizations.Remove(tvItemUserAuthorization);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBServices
             try
             {
                 db.TVItemUserAuthorizations.Add(tvItemUserAuthorization);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBServices
             try
             {
                 db.TVItemUserAuthorizations.Update(tvItemUserAuthorization);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -180,14 +177,14 @@ namespace CSSPDBServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVItemUserAuthorizationID"), new[] { nameof(tvItemUserAuthorization.TVItemUserAuthorizationID) });
                 }
 
-                if (!(from c in db.TVItemUserAuthorizations select c).Where(c => c.TVItemUserAuthorizationID == tvItemUserAuthorization.TVItemUserAuthorizationID).Any())
+                if (!(from c in db.TVItemUserAuthorizations.AsNoTracking() select c).Where(c => c.TVItemUserAuthorizationID == tvItemUserAuthorization.TVItemUserAuthorizationID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItemUserAuthorization", "TVItemUserAuthorizationID", tvItemUserAuthorization.TVItemUserAuthorizationID.ToString()), new[] { nameof(tvItemUserAuthorization.TVItemUserAuthorizationID) });
                 }
             }
 
             TVItem TVItemContactTVItemID = null;
-            TVItemContactTVItemID = (from c in db.TVItems where c.TVItemID == tvItemUserAuthorization.ContactTVItemID select c).FirstOrDefault();
+            TVItemContactTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == tvItemUserAuthorization.ContactTVItemID select c).FirstOrDefault();
 
             if (TVItemContactTVItemID == null)
             {
@@ -206,7 +203,7 @@ namespace CSSPDBServices
             }
 
             TVItem TVItemTVItemID1 = null;
-            TVItemTVItemID1 = (from c in db.TVItems where c.TVItemID == tvItemUserAuthorization.TVItemID1 select c).FirstOrDefault();
+            TVItemTVItemID1 = (from c in db.TVItems.AsNoTracking() where c.TVItemID == tvItemUserAuthorization.TVItemID1 select c).FirstOrDefault();
 
             if (TVItemTVItemID1 == null)
             {
@@ -260,7 +257,7 @@ namespace CSSPDBServices
             if (tvItemUserAuthorization.TVItemID2 != null)
             {
                 TVItem TVItemTVItemID2 = null;
-                TVItemTVItemID2 = (from c in db.TVItems where c.TVItemID == tvItemUserAuthorization.TVItemID2 select c).FirstOrDefault();
+                TVItemTVItemID2 = (from c in db.TVItems.AsNoTracking() where c.TVItemID == tvItemUserAuthorization.TVItemID2 select c).FirstOrDefault();
 
                 if (TVItemTVItemID2 == null)
                 {
@@ -315,7 +312,7 @@ namespace CSSPDBServices
             if (tvItemUserAuthorization.TVItemID3 != null)
             {
                 TVItem TVItemTVItemID3 = null;
-                TVItemTVItemID3 = (from c in db.TVItems where c.TVItemID == tvItemUserAuthorization.TVItemID3 select c).FirstOrDefault();
+                TVItemTVItemID3 = (from c in db.TVItems.AsNoTracking() where c.TVItemID == tvItemUserAuthorization.TVItemID3 select c).FirstOrDefault();
 
                 if (TVItemTVItemID3 == null)
                 {
@@ -370,7 +367,7 @@ namespace CSSPDBServices
             if (tvItemUserAuthorization.TVItemID4 != null)
             {
                 TVItem TVItemTVItemID4 = null;
-                TVItemTVItemID4 = (from c in db.TVItems where c.TVItemID == tvItemUserAuthorization.TVItemID4 select c).FirstOrDefault();
+                TVItemTVItemID4 = (from c in db.TVItems.AsNoTracking() where c.TVItemID == tvItemUserAuthorization.TVItemID4 select c).FirstOrDefault();
 
                 if (TVItemTVItemID4 == null)
                 {
@@ -441,7 +438,7 @@ namespace CSSPDBServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == tvItemUserAuthorization.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == tvItemUserAuthorization.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

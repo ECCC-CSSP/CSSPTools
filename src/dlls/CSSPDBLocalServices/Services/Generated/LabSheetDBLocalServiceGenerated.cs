@@ -37,6 +37,7 @@ namespace CSSPDBLocalServices
 
         #region Properties
         private CSSPDBLocalContext dbLocal { get; }
+        private CSSPDBInMemoryContext dbLocalIM { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILocalService LocalService { get; }
@@ -47,13 +48,15 @@ namespace CSSPDBLocalServices
         #region Constructors
         public LabSheetDBLocalService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums,
            ILocalService LocalService,
-           CSSPDBLocalContext dbLocal)
+           CSSPDBLocalContext dbLocal,
+           CSSPDBInMemoryContext dbLocalIM)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LocalService = LocalService;
             this.enums = enums;
             this.dbLocal = dbLocal;
+            this.dbLocalIM = dbLocalIM;
         }
         #endregion Constructors
 
@@ -94,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            LabSheet labSheet = (from c in dbLocal.LabSheets
+            LabSheet labSheet = (from c in dbLocal.LabSheets.Local
                     where c.LabSheetID == LabSheetID
                     select c).FirstOrDefault();
 
@@ -106,9 +109,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.LabSheets.Remove(labSheet);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -130,7 +132,7 @@ namespace CSSPDBLocalServices
 
             if (labSheet.LabSheetID == 0)
             {
-                int LastLabSheetID = (from c in dbLocal.LabSheets
+                int LastLabSheetID = (from c in dbLocal.LabSheets.AsNoTracking()
                           orderby c.LabSheetID descending
                           select c.LabSheetID).FirstOrDefault();
 
@@ -140,9 +142,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.LabSheets.Add(labSheet);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -165,9 +166,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.LabSheets.Update(labSheet);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -189,7 +189,7 @@ namespace CSSPDBLocalServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LabSheetID"), new[] { nameof(labSheet.LabSheetID) });
                 }
 
-                if (!(from c in dbLocal.LabSheets select c).Where(c => c.LabSheetID == labSheet.LabSheetID).Any())
+                if (!(from c in dbLocal.LabSheets.AsNoTracking() select c).Where(c => c.LabSheetID == labSheet.LabSheetID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "LabSheet", "LabSheetID", labSheet.LabSheetID.ToString()), new[] { nameof(labSheet.LabSheetID) });
                 }
@@ -201,11 +201,17 @@ namespace CSSPDBLocalServices
             }
 
             SamplingPlan SamplingPlanSamplingPlanID = null;
-            SamplingPlanSamplingPlanID = (from c in dbLocal.SamplingPlans where c.SamplingPlanID == labSheet.SamplingPlanID select c).FirstOrDefault();
+            SamplingPlanSamplingPlanID = (from c in dbLocal.SamplingPlans.AsNoTracking() where c.SamplingPlanID == labSheet.SamplingPlanID select c).FirstOrDefault();
 
             if (SamplingPlanSamplingPlanID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "SamplingPlan", "SamplingPlanID", labSheet.SamplingPlanID.ToString()), new[] { nameof(labSheet.SamplingPlanID) });
+                SamplingPlanSamplingPlanID = (from c in dbLocalIM.SamplingPlans.Local where c.SamplingPlanID == labSheet.SamplingPlanID select c).FirstOrDefault();
+
+                if (SamplingPlanSamplingPlanID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "SamplingPlan", "SamplingPlanID", labSheet.SamplingPlanID.ToString()), new[] { nameof(labSheet.SamplingPlanID) });
+                }
+
             }
 
             if (string.IsNullOrWhiteSpace(labSheet.SamplingPlanName))
@@ -239,11 +245,28 @@ namespace CSSPDBLocalServices
             }
 
             TVItem TVItemSubsectorTVItemID = null;
-            TVItemSubsectorTVItemID = (from c in dbLocal.TVItems where c.TVItemID == labSheet.SubsectorTVItemID select c).FirstOrDefault();
+            TVItemSubsectorTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == labSheet.SubsectorTVItemID select c).FirstOrDefault();
 
             if (TVItemSubsectorTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "SubsectorTVItemID", labSheet.SubsectorTVItemID.ToString()), new[] { nameof(labSheet.SubsectorTVItemID) });
+                TVItemSubsectorTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == labSheet.SubsectorTVItemID select c).FirstOrDefault();
+
+                if (TVItemSubsectorTVItemID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "SubsectorTVItemID", labSheet.SubsectorTVItemID.ToString()), new[] { nameof(labSheet.SubsectorTVItemID) });
+                }
+                else
+                {
+                    List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                    {
+                        TVTypeEnum.Subsector,
+                    };
+                    if (!AllowableTVTypes.Contains(TVItemSubsectorTVItemID.TVType))
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "SubsectorTVItemID", "Subsector"), new[] { nameof(labSheet.SubsectorTVItemID) });
+                    }
+                }
+
             }
             else
             {
@@ -260,11 +283,30 @@ namespace CSSPDBLocalServices
             if (labSheet.MWQMRunTVItemID != null)
             {
                 TVItem TVItemMWQMRunTVItemID = null;
-                TVItemMWQMRunTVItemID = (from c in dbLocal.TVItems where c.TVItemID == labSheet.MWQMRunTVItemID select c).FirstOrDefault();
+                TVItemMWQMRunTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == labSheet.MWQMRunTVItemID select c).FirstOrDefault();
 
                 if (TVItemMWQMRunTVItemID == null)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "MWQMRunTVItemID", (labSheet.MWQMRunTVItemID == null ? "" : labSheet.MWQMRunTVItemID.ToString())), new[] { nameof(labSheet.MWQMRunTVItemID) });
+                    if (labSheet.MWQMRunTVItemID != null)
+                    {
+                        TVItemMWQMRunTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == labSheet.MWQMRunTVItemID select c).FirstOrDefault();
+
+                        if (TVItemMWQMRunTVItemID == null)
+                        {
+                            yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "MWQMRunTVItemID", (labSheet.MWQMRunTVItemID == null ? "" : labSheet.MWQMRunTVItemID.ToString())), new[] { nameof(labSheet.MWQMRunTVItemID) });
+                        }
+                        else
+                        {
+                            List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                            {
+                                TVTypeEnum.MWQMRun,
+                            };
+                            if (!AllowableTVTypes.Contains(TVItemMWQMRunTVItemID.TVType))
+                            {
+                                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "MWQMRunTVItemID", "MWQMRun"), new[] { nameof(labSheet.MWQMRunTVItemID) });
+                            }
+                        }
+                    }
                 }
                 else
                 {
@@ -335,11 +377,30 @@ namespace CSSPDBLocalServices
             if (labSheet.AcceptedOrRejectedByContactTVItemID != null)
             {
                 TVItem TVItemAcceptedOrRejectedByContactTVItemID = null;
-                TVItemAcceptedOrRejectedByContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == labSheet.AcceptedOrRejectedByContactTVItemID select c).FirstOrDefault();
+                TVItemAcceptedOrRejectedByContactTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == labSheet.AcceptedOrRejectedByContactTVItemID select c).FirstOrDefault();
 
                 if (TVItemAcceptedOrRejectedByContactTVItemID == null)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "AcceptedOrRejectedByContactTVItemID", (labSheet.AcceptedOrRejectedByContactTVItemID == null ? "" : labSheet.AcceptedOrRejectedByContactTVItemID.ToString())), new[] { nameof(labSheet.AcceptedOrRejectedByContactTVItemID) });
+                    if (labSheet.AcceptedOrRejectedByContactTVItemID != null)
+                    {
+                        TVItemAcceptedOrRejectedByContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == labSheet.AcceptedOrRejectedByContactTVItemID select c).FirstOrDefault();
+
+                        if (TVItemAcceptedOrRejectedByContactTVItemID == null)
+                        {
+                            yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "AcceptedOrRejectedByContactTVItemID", (labSheet.AcceptedOrRejectedByContactTVItemID == null ? "" : labSheet.AcceptedOrRejectedByContactTVItemID.ToString())), new[] { nameof(labSheet.AcceptedOrRejectedByContactTVItemID) });
+                        }
+                        else
+                        {
+                            List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                            {
+                                TVTypeEnum.Contact,
+                            };
+                            if (!AllowableTVTypes.Contains(TVItemAcceptedOrRejectedByContactTVItemID.TVType))
+                            {
+                                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "AcceptedOrRejectedByContactTVItemID", "Contact"), new[] { nameof(labSheet.AcceptedOrRejectedByContactTVItemID) });
+                            }
+                        }
+                    }
                 }
                 else
                 {
@@ -377,11 +438,28 @@ namespace CSSPDBLocalServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == labSheet.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == labSheet.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", labSheet.LastUpdateContactTVItemID.ToString()), new[] { nameof(labSheet.LastUpdateContactTVItemID) });
+                TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == labSheet.LastUpdateContactTVItemID select c).FirstOrDefault();
+
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", labSheet.LastUpdateContactTVItemID.ToString()), new[] { nameof(labSheet.LastUpdateContactTVItemID) });
+                }
+                else
+                {
+                    List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                    {
+                        TVTypeEnum.Contact,
+                    };
+                    if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(labSheet.LastUpdateContactTVItemID) });
+                    }
+                }
+
             }
             else
             {

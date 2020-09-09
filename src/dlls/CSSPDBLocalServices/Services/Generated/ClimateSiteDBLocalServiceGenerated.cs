@@ -37,6 +37,7 @@ namespace CSSPDBLocalServices
 
         #region Properties
         private CSSPDBLocalContext dbLocal { get; }
+        private CSSPDBInMemoryContext dbLocalIM { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILocalService LocalService { get; }
@@ -47,13 +48,15 @@ namespace CSSPDBLocalServices
         #region Constructors
         public ClimateSiteDBLocalService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums,
            ILocalService LocalService,
-           CSSPDBLocalContext dbLocal)
+           CSSPDBLocalContext dbLocal,
+           CSSPDBInMemoryContext dbLocalIM)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LocalService = LocalService;
             this.enums = enums;
             this.dbLocal = dbLocal;
+            this.dbLocalIM = dbLocalIM;
         }
         #endregion Constructors
 
@@ -94,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            ClimateSite climateSite = (from c in dbLocal.ClimateSites
+            ClimateSite climateSite = (from c in dbLocal.ClimateSites.Local
                     where c.ClimateSiteID == ClimateSiteID
                     select c).FirstOrDefault();
 
@@ -106,9 +109,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.ClimateSites.Remove(climateSite);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -130,7 +132,7 @@ namespace CSSPDBLocalServices
 
             if (climateSite.ClimateSiteID == 0)
             {
-                int LastClimateSiteID = (from c in dbLocal.ClimateSites
+                int LastClimateSiteID = (from c in dbLocal.ClimateSites.AsNoTracking()
                           orderby c.ClimateSiteID descending
                           select c.ClimateSiteID).FirstOrDefault();
 
@@ -140,9 +142,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.ClimateSites.Add(climateSite);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -165,9 +166,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.ClimateSites.Update(climateSite);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -188,18 +188,35 @@ namespace CSSPDBLocalServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ClimateSiteID"), new[] { nameof(climateSite.ClimateSiteID) });
                 }
 
-                if (!(from c in dbLocal.ClimateSites select c).Where(c => c.ClimateSiteID == climateSite.ClimateSiteID).Any())
+                if (!(from c in dbLocal.ClimateSites.AsNoTracking() select c).Where(c => c.ClimateSiteID == climateSite.ClimateSiteID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "ClimateSite", "ClimateSiteID", climateSite.ClimateSiteID.ToString()), new[] { nameof(climateSite.ClimateSiteID) });
                 }
             }
 
             TVItem TVItemClimateSiteTVItemID = null;
-            TVItemClimateSiteTVItemID = (from c in dbLocal.TVItems where c.TVItemID == climateSite.ClimateSiteTVItemID select c).FirstOrDefault();
+            TVItemClimateSiteTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == climateSite.ClimateSiteTVItemID select c).FirstOrDefault();
 
             if (TVItemClimateSiteTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "ClimateSiteTVItemID", climateSite.ClimateSiteTVItemID.ToString()), new[] { nameof(climateSite.ClimateSiteTVItemID) });
+                TVItemClimateSiteTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == climateSite.ClimateSiteTVItemID select c).FirstOrDefault();
+
+                if (TVItemClimateSiteTVItemID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "ClimateSiteTVItemID", climateSite.ClimateSiteTVItemID.ToString()), new[] { nameof(climateSite.ClimateSiteTVItemID) });
+                }
+                else
+                {
+                    List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                    {
+                        TVTypeEnum.ClimateSite,
+                    };
+                    if (!AllowableTVTypes.Contains(TVItemClimateSiteTVItemID.TVType))
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "ClimateSiteTVItemID", "ClimateSite"), new[] { nameof(climateSite.ClimateSiteTVItemID) });
+                    }
+                }
+
             }
             else
             {
@@ -323,11 +340,28 @@ namespace CSSPDBLocalServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == climateSite.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == climateSite.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", climateSite.LastUpdateContactTVItemID.ToString()), new[] { nameof(climateSite.LastUpdateContactTVItemID) });
+                TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == climateSite.LastUpdateContactTVItemID select c).FirstOrDefault();
+
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", climateSite.LastUpdateContactTVItemID.ToString()), new[] { nameof(climateSite.LastUpdateContactTVItemID) });
+                }
+                else
+                {
+                    List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                    {
+                        TVTypeEnum.Contact,
+                    };
+                    if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(climateSite.LastUpdateContactTVItemID) });
+                    }
+                }
+
             }
             else
             {

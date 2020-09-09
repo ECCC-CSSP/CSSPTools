@@ -22,6 +22,7 @@ using Xunit;
 using System.ComponentModel.DataAnnotations;
 using CSSPCultureServices.Resources;
 using LocalServices;
+using System.Threading;
 
 namespace CSSPDBLocalServices.Tests
 {
@@ -39,6 +40,7 @@ namespace CSSPDBLocalServices.Tests
         private ILocalService LocalService { get; set; }
         private IMikeBoundaryConditionDBLocalService MikeBoundaryConditionDBLocalService { get; set; }
         private CSSPDBLocalContext dbLocal { get; set; }
+        private CSSPDBInMemoryContext dbLocalIM { get; set; }
         private MikeBoundaryCondition mikeBoundaryCondition { get; set; }
         #endregion Properties
 
@@ -49,7 +51,17 @@ namespace CSSPDBLocalServices.Tests
         }
         #endregion Constructors
 
-        #region Tests Generated [DBLocal]CRUD
+        #region Tests Generated Constructor [DBLocal]
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task MikeBoundaryConditionDBLocal_Constructor_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+        }
+        #endregion Tests Generated Constructor [DBLocal]
+
+        #region Tests Generated [DBLocal] CRUD
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
@@ -61,7 +73,7 @@ namespace CSSPDBLocalServices.Tests
 
             await DoCRUDDBLocalTest();
         }
-        #endregion Tests Generated CRUD
+        #endregion Tests Generated [DBLocal] CRUD
 
         #region Tests Generated Properties
         [Theory]
@@ -330,17 +342,6 @@ namespace CSSPDBLocalServices.Tests
             int count = ((List<MikeBoundaryCondition>)((OkObjectResult)actionMikeBoundaryConditionList.Result).Value).Count();
             Assert.True(count > 0);
 
-            // List<MikeBoundaryCondition> with skip and take
-            var actionMikeBoundaryConditionListSkipAndTake = await MikeBoundaryConditionDBLocalService.GetMikeBoundaryConditionList(1, 1);
-            Assert.Equal(200, ((ObjectResult)actionMikeBoundaryConditionListSkipAndTake.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionMikeBoundaryConditionListSkipAndTake.Result).Value);
-            List<MikeBoundaryCondition> mikeBoundaryConditionListSkipAndTake = (List<MikeBoundaryCondition>)((OkObjectResult)actionMikeBoundaryConditionListSkipAndTake.Result).Value;
-
-            int countSkipAndTake = ((List<MikeBoundaryCondition>)((OkObjectResult)actionMikeBoundaryConditionListSkipAndTake.Result).Value).Count();
-            Assert.True(countSkipAndTake == 1);
-
-            Assert.False(mikeBoundaryConditionList[0].MikeBoundaryConditionID == mikeBoundaryConditionListSkipAndTake[0].MikeBoundaryConditionID);
-
             // Get MikeBoundaryCondition With MikeBoundaryConditionID
             var actionMikeBoundaryConditionGet = await MikeBoundaryConditionDBLocalService.GetMikeBoundaryConditionWithMikeBoundaryConditionID(mikeBoundaryConditionList[0].MikeBoundaryConditionID);
             Assert.Equal(200, ((ObjectResult)actionMikeBoundaryConditionGet.Result).StatusCode);
@@ -402,6 +403,11 @@ namespace CSSPDBLocalServices.Tests
                 options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
             });
 
+            Services.AddDbContext<CSSPDBInMemoryContext>(options =>
+            {
+                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBLocal.FullName }");
+            });
+
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<ILocalService, LocalService>();
             Services.AddSingleton<IEnums, Enums>();
@@ -422,6 +428,9 @@ namespace CSSPDBLocalServices.Tests
 
             dbLocal = Provider.GetService<CSSPDBLocalContext>();
             Assert.NotNull(dbLocal);
+
+            dbLocalIM = Provider.GetService<CSSPDBInMemoryContext>();
+            Assert.NotNull(dbLocalIM);
 
             MikeBoundaryConditionDBLocalService = Provider.GetService<IMikeBoundaryConditionDBLocalService>();
             Assert.NotNull(MikeBoundaryConditionDBLocalService);
@@ -447,8 +456,8 @@ namespace CSSPDBLocalServices.Tests
 
             try
             {
-                dbLocal.TVItems.Add(new TVItem() { TVItemID = 52, TVLevel = 5, TVPath = "p1p5p6p39p51p52", TVType = (TVTypeEnum)12, ParentID = 51, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 11, 15, 58, 29), LastUpdateContactTVItemID = 2 });
-                dbLocal.SaveChanges();
+                dbLocalIM.TVItems.Add(new TVItem() { TVItemID = 52, TVLevel = 5, TVPath = "p1p5p6p39p51p52", TVType = (TVTypeEnum)12, ParentID = 51, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 11, 15, 58, 29), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
             }
             catch (Exception)
             {
@@ -456,8 +465,8 @@ namespace CSSPDBLocalServices.Tests
             }
             try
             {
-                dbLocal.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2 });
-                dbLocal.SaveChanges();
+                dbLocalIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
             }
             catch (Exception)
             {

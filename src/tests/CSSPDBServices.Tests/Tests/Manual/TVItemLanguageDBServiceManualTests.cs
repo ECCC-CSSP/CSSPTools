@@ -25,6 +25,7 @@ using LoggedInServices;
 
 namespace CSSPDBServices.Tests
 {
+    [Collection("Sequential")]
     public partial class TVItemLanguageDBServiceManualTests
     {
         #region Variables

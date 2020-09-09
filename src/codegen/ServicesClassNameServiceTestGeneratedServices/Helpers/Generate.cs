@@ -113,6 +113,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                     if (DBType == "DBLocal")
                     {
                         sb.AppendLine(@"using LocalServices;");
+                        sb.AppendLine(@"using System.Threading;");
                     }
                     if (DBType == "DBLocalIM")
                     {
@@ -172,6 +173,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                         if (DBType == "DBLocal")
                         {
                             sb.AppendLine(@"        private CSSPDBLocalContext dbLocal { get; set; }");
+                            sb.AppendLine(@"        private CSSPDBInMemoryContext dbLocalIM { get; set; }");
                         }
                         if (DBType == "DBLocalIM")
                         {

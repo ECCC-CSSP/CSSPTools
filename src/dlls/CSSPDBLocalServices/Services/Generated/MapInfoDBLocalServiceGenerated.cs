@@ -37,6 +37,7 @@ namespace CSSPDBLocalServices
 
         #region Properties
         private CSSPDBLocalContext dbLocal { get; }
+        private CSSPDBInMemoryContext dbLocalIM { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILocalService LocalService { get; }
@@ -47,13 +48,15 @@ namespace CSSPDBLocalServices
         #region Constructors
         public MapInfoDBLocalService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums,
            ILocalService LocalService,
-           CSSPDBLocalContext dbLocal)
+           CSSPDBLocalContext dbLocal,
+           CSSPDBInMemoryContext dbLocalIM)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LocalService = LocalService;
             this.enums = enums;
             this.dbLocal = dbLocal;
+            this.dbLocalIM = dbLocalIM;
         }
         #endregion Constructors
 
@@ -94,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MapInfo mapInfo = (from c in dbLocal.MapInfos
+            MapInfo mapInfo = (from c in dbLocal.MapInfos.Local
                     where c.MapInfoID == MapInfoID
                     select c).FirstOrDefault();
 
@@ -106,9 +109,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.MapInfos.Remove(mapInfo);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -130,7 +132,7 @@ namespace CSSPDBLocalServices
 
             if (mapInfo.MapInfoID == 0)
             {
-                int LastMapInfoID = (from c in dbLocal.MapInfos
+                int LastMapInfoID = (from c in dbLocal.MapInfos.AsNoTracking()
                           orderby c.MapInfoID descending
                           select c.MapInfoID).FirstOrDefault();
 
@@ -140,9 +142,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.MapInfos.Add(mapInfo);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -165,9 +166,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.MapInfos.Update(mapInfo);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -189,18 +189,65 @@ namespace CSSPDBLocalServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "MapInfoID"), new[] { nameof(mapInfo.MapInfoID) });
                 }
 
-                if (!(from c in dbLocal.MapInfos select c).Where(c => c.MapInfoID == mapInfo.MapInfoID).Any())
+                if (!(from c in dbLocal.MapInfos.AsNoTracking() select c).Where(c => c.MapInfoID == mapInfo.MapInfoID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "MapInfo", "MapInfoID", mapInfo.MapInfoID.ToString()), new[] { nameof(mapInfo.MapInfoID) });
                 }
             }
 
             TVItem TVItemTVItemID = null;
-            TVItemTVItemID = (from c in dbLocal.TVItems where c.TVItemID == mapInfo.TVItemID select c).FirstOrDefault();
+            TVItemTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == mapInfo.TVItemID select c).FirstOrDefault();
 
             if (TVItemTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "TVItemID", mapInfo.TVItemID.ToString()), new[] { nameof(mapInfo.TVItemID) });
+                TVItemTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == mapInfo.TVItemID select c).FirstOrDefault();
+
+                if (TVItemTVItemID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "TVItemID", mapInfo.TVItemID.ToString()), new[] { nameof(mapInfo.TVItemID) });
+                }
+                else
+                {
+                    List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                    {
+                        TVTypeEnum.Root,
+                        TVTypeEnum.Address,
+                        TVTypeEnum.Area,
+                        TVTypeEnum.ClimateSite,
+                        TVTypeEnum.Country,
+                        TVTypeEnum.File,
+                        TVTypeEnum.HydrometricSite,
+                        TVTypeEnum.MikeBoundaryConditionWebTide,
+                        TVTypeEnum.MikeBoundaryConditionMesh,
+                        TVTypeEnum.MikeSource,
+                        TVTypeEnum.Municipality,
+                        TVTypeEnum.MWQMSite,
+                        TVTypeEnum.PolSourceSite,
+                        TVTypeEnum.Province,
+                        TVTypeEnum.Sector,
+                        TVTypeEnum.Subsector,
+                        TVTypeEnum.TideSite,
+                        TVTypeEnum.WasteWaterTreatmentPlant,
+                        TVTypeEnum.LiftStation,
+                        TVTypeEnum.Spill,
+                        TVTypeEnum.Outfall,
+                        TVTypeEnum.OtherInfrastructure,
+                        TVTypeEnum.SeeOtherMunicipality,
+                        TVTypeEnum.LineOverflow,
+                        TVTypeEnum.RainExceedance,
+                        TVTypeEnum.Classification,
+                        TVTypeEnum.Approved,
+                        TVTypeEnum.Restricted,
+                        TVTypeEnum.Prohibited,
+                        TVTypeEnum.ConditionallyApproved,
+                        TVTypeEnum.ConditionallyRestricted,
+                    };
+                    if (!AllowableTVTypes.Contains(TVItemTVItemID.TVType))
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "TVItemID", "Root,Address,Area,ClimateSite,Country,File,HydrometricSite,MikeBoundaryConditionWebTide,MikeBoundaryConditionMesh,MikeSource,Municipality,MWQMSite,PolSourceSite,Province,Sector,Subsector,TideSite,WasteWaterTreatmentPlant,LiftStation,Spill,Outfall,OtherInfrastructure,SeeOtherMunicipality,LineOverflow,RainExceedance,Classification,Approved,Restricted,Prohibited,ConditionallyApproved,ConditionallyRestricted"), new[] { nameof(mapInfo.TVItemID) });
+                    }
+                }
+
             }
             else
             {
@@ -289,11 +336,28 @@ namespace CSSPDBLocalServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == mapInfo.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == mapInfo.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", mapInfo.LastUpdateContactTVItemID.ToString()), new[] { nameof(mapInfo.LastUpdateContactTVItemID) });
+                TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == mapInfo.LastUpdateContactTVItemID select c).FirstOrDefault();
+
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", mapInfo.LastUpdateContactTVItemID.ToString()), new[] { nameof(mapInfo.LastUpdateContactTVItemID) });
+                }
+                else
+                {
+                    List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                    {
+                        TVTypeEnum.Contact,
+                    };
+                    if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(mapInfo.LastUpdateContactTVItemID) });
+                    }
+                }
+
             }
             else
             {

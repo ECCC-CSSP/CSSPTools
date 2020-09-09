@@ -48,6 +48,14 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                 sb.AppendLine(@"                options.UseInMemoryDatabase(CSSPDBConnString);");
                 sb.AppendLine(@"            });");
                 sb.AppendLine(@"");
+                sb.AppendLine(@"            Services.AddDbContext<ApplicationDbContext>(options =>");
+                sb.AppendLine(@"            {");
+                sb.AppendLine(@"                options.UseSqlServer(CSSPDBConnString);");
+                sb.AppendLine(@"            });");
+                sb.AppendLine(@"");
+                sb.AppendLine(@"            Services.AddIdentityCore<ApplicationUser>()");
+                sb.AppendLine(@"                .AddEntityFrameworkStores<ApplicationDbContext>();");
+                sb.AppendLine(@"");
             }
             if (DBType == "DBLocal")
             {
@@ -74,6 +82,11 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                 sb.AppendLine(@"            Services.AddDbContext<CSSPDBLocalContext>(options =>");
                 sb.AppendLine(@"            {");
                 sb.AppendLine(@"                options.UseSqlite($""Data Source={ fiCSSPDBLocal.FullName }"");");
+                sb.AppendLine(@"            });");
+                sb.AppendLine(@"");
+                sb.AppendLine(@"            Services.AddDbContext<CSSPDBInMemoryContext>(options =>");
+                sb.AppendLine(@"            {");
+                sb.AppendLine(@"                options.UseInMemoryDatabase($""Data Source={ fiCSSPDBLocal.FullName }"");");
                 sb.AppendLine(@"            });");
                 sb.AppendLine(@"");
             }
@@ -104,20 +117,6 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                 sb.AppendLine(@"                options.UseInMemoryDatabase($""Data Source={ fiCSSPDBLocal.FullName }"");");
                 sb.AppendLine(@"            });");
                 sb.AppendLine(@"");
-            }
-            if (TypeName == "Contact")
-            {
-                sb.AppendLine(@"            Services.AddDbContext<ApplicationDbContext>(options =>");
-                sb.AppendLine(@"            {");
-                sb.AppendLine(@"                options.UseSqlServer(CSSPDBConnString);");
-                sb.AppendLine(@"            });");
-                sb.AppendLine(@"");
-                sb.AppendLine(@"            Services.AddIdentityCore<ApplicationUser>()");
-                sb.AppendLine(@"                .AddEntityFrameworkStores<ApplicationDbContext>();");
-                sb.AppendLine(@"");
-            }
-            else
-            {
             }
             sb.AppendLine(@"            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();");
             if (DBType == "DB")
@@ -190,6 +189,9 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
             {
                 sb.AppendLine(@"            dbLocal = Provider.GetService<CSSPDBLocalContext>();");
                 sb.AppendLine(@"            Assert.NotNull(dbLocal);");
+                sb.AppendLine(@"");
+                sb.AppendLine(@"            dbLocalIM = Provider.GetService<CSSPDBInMemoryContext>();");
+                sb.AppendLine(@"            Assert.NotNull(dbLocalIM);");
             }
             if (DBType == "DBLocalIM")
             {

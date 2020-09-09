@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MWQMSubsector mwqmSubsector = (from c in db.MWQMSubsectors
+            MWQMSubsector mwqmSubsector = (from c in db.MWQMSubsectors.Local
                     where c.MWQMSubsectorID == MWQMSubsectorID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBServices
             try
             {
                 db.MWQMSubsectors.Remove(mwqmSubsector);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBServices
             try
             {
                 db.MWQMSubsectors.Add(mwqmSubsector);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBServices
             try
             {
                 db.MWQMSubsectors.Update(mwqmSubsector);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -179,14 +176,14 @@ namespace CSSPDBServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "MWQMSubsectorID"), new[] { nameof(mwqmSubsector.MWQMSubsectorID) });
                 }
 
-                if (!(from c in db.MWQMSubsectors select c).Where(c => c.MWQMSubsectorID == mwqmSubsector.MWQMSubsectorID).Any())
+                if (!(from c in db.MWQMSubsectors.AsNoTracking() select c).Where(c => c.MWQMSubsectorID == mwqmSubsector.MWQMSubsectorID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "MWQMSubsector", "MWQMSubsectorID", mwqmSubsector.MWQMSubsectorID.ToString()), new[] { nameof(mwqmSubsector.MWQMSubsectorID) });
                 }
             }
 
             TVItem TVItemMWQMSubsectorTVItemID = null;
-            TVItemMWQMSubsectorTVItemID = (from c in db.TVItems where c.TVItemID == mwqmSubsector.MWQMSubsectorTVItemID select c).FirstOrDefault();
+            TVItemMWQMSubsectorTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == mwqmSubsector.MWQMSubsectorTVItemID select c).FirstOrDefault();
 
             if (TVItemMWQMSubsectorTVItemID == null)
             {
@@ -232,7 +229,7 @@ namespace CSSPDBServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == mwqmSubsector.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == mwqmSubsector.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

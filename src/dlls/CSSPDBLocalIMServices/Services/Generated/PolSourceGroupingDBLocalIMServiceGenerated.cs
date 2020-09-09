@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            PolSourceGrouping polSourceGrouping = (from c in dbLocalIM.PolSourceGroupings.AsNoTracking()
+            PolSourceGrouping polSourceGrouping = (from c in dbLocalIM.PolSourceGroupings.Local
                     where c.PolSourceGroupingID == PolSourceGroupingID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<PolSourceGrouping> polSourceGroupingList = (from c in dbLocalIM.PolSourceGroupings.AsNoTracking() orderby c.PolSourceGroupingID select c).Skip(skip).Take(take).ToList();
+            List<PolSourceGrouping> polSourceGroupingList = (from c in dbLocalIM.PolSourceGroupings.Local orderby c.PolSourceGroupingID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(polSourceGroupingList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            PolSourceGrouping polSourceGrouping = (from c in dbLocalIM.PolSourceGroupings
+            PolSourceGrouping polSourceGrouping = (from c in dbLocalIM.PolSourceGroupings.Local
                     where c.PolSourceGroupingID == PolSourceGroupingID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.PolSourceGroupings.Remove(polSourceGrouping);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.PolSourceGroupings.Add(polSourceGrouping);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.PolSourceGroupings.Update(polSourceGrouping);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -187,7 +184,7 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "PolSourceGroupingID"), new[] { nameof(polSourceGrouping.PolSourceGroupingID) });
                 }
 
-                if (!(from c in dbLocalIM.PolSourceGroupings select c).Where(c => c.PolSourceGroupingID == polSourceGrouping.PolSourceGroupingID).Any())
+                if (!(from c in dbLocalIM.PolSourceGroupings.Local select c).Where(c => c.PolSourceGroupingID == polSourceGrouping.PolSourceGroupingID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "PolSourceGrouping", "PolSourceGroupingID", polSourceGrouping.PolSourceGroupingID.ToString()), new[] { nameof(polSourceGrouping.PolSourceGroupingID) });
                 }
@@ -241,7 +238,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == polSourceGrouping.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == polSourceGrouping.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

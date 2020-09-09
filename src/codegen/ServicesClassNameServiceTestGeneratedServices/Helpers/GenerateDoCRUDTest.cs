@@ -89,24 +89,24 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
             }
             if (DBType == "DBLocal")
             {
-                sb.AppendLine(@"");
-                sb.AppendLine($@"            // List<{ TypeName }> with skip and take");
-                sb.AppendLine($@"            var action{ TypeName }ListSkipAndTake = await { TypeName }{ DBType }Service.Get{ TypeName }List(1, 1);");
-                sb.AppendLine($@"            Assert.Equal(200, ((ObjectResult)action{ TypeName }ListSkipAndTake.Result).StatusCode);");
-                sb.AppendLine($@"            Assert.NotNull(((OkObjectResult)action{ TypeName }ListSkipAndTake.Result).Value);");
-                sb.AppendLine($@"            List<{ TypeName }> { TypeNameLower }ListSkipAndTake = (List<{ TypeName }>)((OkObjectResult)action{ TypeName }ListSkipAndTake.Result).Value;");
-                sb.AppendLine(@"");
-                sb.AppendLine($@"            int countSkipAndTake = ((List<{ TypeName }>)((OkObjectResult)action{ TypeName }ListSkipAndTake.Result).Value).Count();");
-                sb.AppendLine(@"            Assert.True(countSkipAndTake == 1);");
-                sb.AppendLine(@"");
-                if (TypeName == "AspNetUser")
-                {
-                    sb.AppendLine($@"            Assert.False({ TypeNameLower }List[0].Id == { TypeNameLower }ListSkipAndTake[0].Id);");
-                }
-                else
-                {
-                    sb.AppendLine($@"            Assert.False({ TypeNameLower }List[0].{ TypeName }ID == { TypeNameLower }ListSkipAndTake[0].{ TypeName }ID);");
-                }
+                //sb.AppendLine(@"");
+                //sb.AppendLine($@"            // List<{ TypeName }> with skip and take");
+                //sb.AppendLine($@"            var action{ TypeName }ListSkipAndTake = await { TypeName }{ DBType }Service.Get{ TypeName }List(1, 1);");
+                //sb.AppendLine($@"            Assert.Equal(200, ((ObjectResult)action{ TypeName }ListSkipAndTake.Result).StatusCode);");
+                //sb.AppendLine($@"            Assert.NotNull(((OkObjectResult)action{ TypeName }ListSkipAndTake.Result).Value);");
+                //sb.AppendLine($@"            List<{ TypeName }> { TypeNameLower }ListSkipAndTake = (List<{ TypeName }>)((OkObjectResult)action{ TypeName }ListSkipAndTake.Result).Value;");
+                //sb.AppendLine(@"");
+                //sb.AppendLine($@"            int countSkipAndTake = ((List<{ TypeName }>)((OkObjectResult)action{ TypeName }ListSkipAndTake.Result).Value).Count();");
+                //sb.AppendLine(@"            Assert.True(countSkipAndTake == 1);");
+                //sb.AppendLine(@"");
+                //if (TypeName == "AspNetUser")
+                //{
+                //    sb.AppendLine($@"            Assert.False({ TypeNameLower }List[0].Id == { TypeNameLower }ListSkipAndTake[0].Id);");
+                //}
+                //else
+                //{
+                //    sb.AppendLine($@"            Assert.False({ TypeNameLower }List[0].{ TypeName }ID == { TypeNameLower }ListSkipAndTake[0].{ TypeName }ID);");
+                //}
             }
             if (DBType == "DBLocalIM")
             {

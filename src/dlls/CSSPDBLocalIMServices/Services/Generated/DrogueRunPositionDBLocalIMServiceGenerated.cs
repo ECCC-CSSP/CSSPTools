@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            DrogueRunPosition drogueRunPosition = (from c in dbLocalIM.DrogueRunPositions.AsNoTracking()
+            DrogueRunPosition drogueRunPosition = (from c in dbLocalIM.DrogueRunPositions.Local
                     where c.DrogueRunPositionID == DrogueRunPositionID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<DrogueRunPosition> drogueRunPositionList = (from c in dbLocalIM.DrogueRunPositions.AsNoTracking() orderby c.DrogueRunPositionID select c).Skip(skip).Take(take).ToList();
+            List<DrogueRunPosition> drogueRunPositionList = (from c in dbLocalIM.DrogueRunPositions.Local orderby c.DrogueRunPositionID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(drogueRunPositionList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            DrogueRunPosition drogueRunPosition = (from c in dbLocalIM.DrogueRunPositions
+            DrogueRunPosition drogueRunPosition = (from c in dbLocalIM.DrogueRunPositions.Local
                     where c.DrogueRunPositionID == DrogueRunPositionID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.DrogueRunPositions.Remove(drogueRunPosition);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.DrogueRunPositions.Add(drogueRunPosition);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.DrogueRunPositions.Update(drogueRunPosition);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -187,14 +184,14 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DrogueRunPositionID"), new[] { nameof(drogueRunPosition.DrogueRunPositionID) });
                 }
 
-                if (!(from c in dbLocalIM.DrogueRunPositions select c).Where(c => c.DrogueRunPositionID == drogueRunPosition.DrogueRunPositionID).Any())
+                if (!(from c in dbLocalIM.DrogueRunPositions.Local select c).Where(c => c.DrogueRunPositionID == drogueRunPosition.DrogueRunPositionID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "DrogueRunPosition", "DrogueRunPositionID", drogueRunPosition.DrogueRunPositionID.ToString()), new[] { nameof(drogueRunPosition.DrogueRunPositionID) });
                 }
             }
 
             DrogueRun DrogueRunDrogueRunID = null;
-            DrogueRunDrogueRunID = (from c in dbLocalIM.DrogueRuns where c.DrogueRunID == drogueRunPosition.DrogueRunID select c).FirstOrDefault();
+            DrogueRunDrogueRunID = (from c in dbLocalIM.DrogueRuns.Local where c.DrogueRunID == drogueRunPosition.DrogueRunID select c).FirstOrDefault();
 
             if (DrogueRunDrogueRunID == null)
             {
@@ -251,7 +248,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == drogueRunPosition.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == drogueRunPosition.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

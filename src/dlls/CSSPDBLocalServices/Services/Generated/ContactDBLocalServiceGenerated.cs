@@ -42,6 +42,7 @@ namespace CSSPDBLocalServices
 
         #region Properties
         private CSSPDBLocalContext dbLocal { get; }
+        private CSSPDBInMemoryContext dbLocalIM { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILocalService LocalService { get; }
@@ -53,13 +54,15 @@ namespace CSSPDBLocalServices
         public ContactDBLocalService(IConfiguration Configuration,
            ICSSPCultureService CSSPCultureService, IEnums enums,
            ILocalService LocalService,
-           CSSPDBLocalContext dbLocal)
+           CSSPDBLocalContext dbLocal,
+           CSSPDBInMemoryContext dbLocalIM)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LocalService = LocalService;
             this.enums = enums;
             this.dbLocal = dbLocal;
+            this.dbLocalIM = dbLocalIM;
         }
         #endregion Constructors
 
@@ -100,7 +103,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            Contact contact = (from c in dbLocal.Contacts
+            Contact contact = (from c in dbLocal.Contacts.Local
                     where c.ContactID == ContactID
                     select c).FirstOrDefault();
 
@@ -112,9 +115,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.Contacts.Remove(contact);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -136,7 +138,7 @@ namespace CSSPDBLocalServices
 
             if (contact.ContactID == 0)
             {
-                int LastContactID = (from c in dbLocal.Contacts
+                int LastContactID = (from c in dbLocal.Contacts.AsNoTracking()
                           orderby c.ContactID descending
                           select c.ContactID).FirstOrDefault();
 
@@ -146,9 +148,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.Contacts.Add(contact);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -171,9 +172,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.Contacts.Update(contact);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -195,7 +195,7 @@ namespace CSSPDBLocalServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ContactID"), new[] { nameof(contact.ContactID) });
                 }
 
-                if (!(from c in dbLocal.Contacts select c).Where(c => c.ContactID == contact.ContactID).Any())
+                if (!(from c in dbLocal.Contacts.AsNoTracking() select c).Where(c => c.ContactID == contact.ContactID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "Contact", "ContactID", contact.ContactID.ToString()), new[] { nameof(contact.ContactID) });
                 }
@@ -212,19 +212,42 @@ namespace CSSPDBLocalServices
             }
 
             AspNetUser AspNetUserId = null;
-            AspNetUserId = (from c in dbLocal.AspNetUsers where c.Id == contact.Id select c).FirstOrDefault();
+            AspNetUserId = (from c in dbLocal.AspNetUsers.AsNoTracking() where c.Id == contact.Id select c).FirstOrDefault();
 
             if (AspNetUserId == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AspNetUser", "Id", (contact.Id == null ? "" : contact.Id.ToString())), new[] { nameof(contact.Id) });
+                AspNetUserId = (from c in dbLocalIM.AspNetUsers.Local where c.Id == contact.Id select c).FirstOrDefault();
+
+                if (AspNetUserId == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AspNetUser", "Id", (contact.Id == null ? "" : contact.Id.ToString())), new[] { nameof(contact.Id) });
+                }
+
             }
 
             TVItem TVItemContactTVItemID = null;
-            TVItemContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == contact.ContactTVItemID select c).FirstOrDefault();
+            TVItemContactTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == contact.ContactTVItemID select c).FirstOrDefault();
 
             if (TVItemContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "ContactTVItemID", contact.ContactTVItemID.ToString()), new[] { nameof(contact.ContactTVItemID) });
+                TVItemContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == contact.ContactTVItemID select c).FirstOrDefault();
+
+                if (TVItemContactTVItemID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "ContactTVItemID", contact.ContactTVItemID.ToString()), new[] { nameof(contact.ContactTVItemID) });
+                }
+                else
+                {
+                    List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                    {
+                        TVTypeEnum.Contact,
+                    };
+                    if (!AllowableTVTypes.Contains(TVItemContactTVItemID.TVType))
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "ContactTVItemID", "Contact"), new[] { nameof(contact.ContactTVItemID) });
+                    }
+                }
+
             }
             else
             {
@@ -324,11 +347,28 @@ namespace CSSPDBLocalServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == contact.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == contact.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", contact.LastUpdateContactTVItemID.ToString()), new[] { nameof(contact.LastUpdateContactTVItemID) });
+                TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == contact.LastUpdateContactTVItemID select c).FirstOrDefault();
+
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", contact.LastUpdateContactTVItemID.ToString()), new[] { nameof(contact.LastUpdateContactTVItemID) });
+                }
+                else
+                {
+                    List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                    {
+                        TVTypeEnum.Contact,
+                    };
+                    if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(contact.LastUpdateContactTVItemID) });
+                    }
+                }
+
             }
             else
             {

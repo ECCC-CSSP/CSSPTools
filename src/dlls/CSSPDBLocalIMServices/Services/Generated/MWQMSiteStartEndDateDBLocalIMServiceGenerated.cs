@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            MWQMSiteStartEndDate mwqmSiteStartEndDate = (from c in dbLocalIM.MWQMSiteStartEndDates.AsNoTracking()
+            MWQMSiteStartEndDate mwqmSiteStartEndDate = (from c in dbLocalIM.MWQMSiteStartEndDates.Local
                     where c.MWQMSiteStartEndDateID == MWQMSiteStartEndDateID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<MWQMSiteStartEndDate> mwqmSiteStartEndDateList = (from c in dbLocalIM.MWQMSiteStartEndDates.AsNoTracking() orderby c.MWQMSiteStartEndDateID select c).Skip(skip).Take(take).ToList();
+            List<MWQMSiteStartEndDate> mwqmSiteStartEndDateList = (from c in dbLocalIM.MWQMSiteStartEndDates.Local orderby c.MWQMSiteStartEndDateID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(mwqmSiteStartEndDateList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MWQMSiteStartEndDate mwqmSiteStartEndDate = (from c in dbLocalIM.MWQMSiteStartEndDates
+            MWQMSiteStartEndDate mwqmSiteStartEndDate = (from c in dbLocalIM.MWQMSiteStartEndDates.Local
                     where c.MWQMSiteStartEndDateID == MWQMSiteStartEndDateID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.MWQMSiteStartEndDates.Remove(mwqmSiteStartEndDate);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.MWQMSiteStartEndDates.Add(mwqmSiteStartEndDate);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.MWQMSiteStartEndDates.Update(mwqmSiteStartEndDate);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -187,14 +184,14 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "MWQMSiteStartEndDateID"), new[] { nameof(mwqmSiteStartEndDate.MWQMSiteStartEndDateID) });
                 }
 
-                if (!(from c in dbLocalIM.MWQMSiteStartEndDates select c).Where(c => c.MWQMSiteStartEndDateID == mwqmSiteStartEndDate.MWQMSiteStartEndDateID).Any())
+                if (!(from c in dbLocalIM.MWQMSiteStartEndDates.Local select c).Where(c => c.MWQMSiteStartEndDateID == mwqmSiteStartEndDate.MWQMSiteStartEndDateID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "MWQMSiteStartEndDate", "MWQMSiteStartEndDateID", mwqmSiteStartEndDate.MWQMSiteStartEndDateID.ToString()), new[] { nameof(mwqmSiteStartEndDate.MWQMSiteStartEndDateID) });
                 }
             }
 
             TVItem TVItemMWQMSiteTVItemID = null;
-            TVItemMWQMSiteTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == mwqmSiteStartEndDate.MWQMSiteTVItemID select c).FirstOrDefault();
+            TVItemMWQMSiteTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == mwqmSiteStartEndDate.MWQMSiteTVItemID select c).FirstOrDefault();
 
             if (TVItemMWQMSiteTVItemID == null)
             {
@@ -247,7 +244,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == mwqmSiteStartEndDate.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == mwqmSiteStartEndDate.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

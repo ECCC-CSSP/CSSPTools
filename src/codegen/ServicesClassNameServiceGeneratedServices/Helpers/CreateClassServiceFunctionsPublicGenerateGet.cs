@@ -90,7 +90,18 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                     sb.AppendLine(@"            }");
                     sb.AppendLine(@"");
 
-                    sb.AppendLine($@"            { TypeName } { TypeNameLower } = (from c in { db }.{ TypeName }{ Plurial }.AsNoTracking()");
+                    if (DBType == "DB")
+                    {
+                        sb.AppendLine($@"            { TypeName } { TypeNameLower } = (from c in { db }.{ TypeName }{ Plurial }.AsNoTracking()");
+                    }
+                    if (DBType == "DBLocal")
+                    {
+                        sb.AppendLine($@"            { TypeName } { TypeNameLower } = (from c in { db }.{ TypeName }{ Plurial }.AsNoTracking()");
+                    }
+                    if (DBType == "DBLocalIM")
+                    {
+                        sb.AppendLine($@"            { TypeName } { TypeNameLower } = (from c in { db }.{ TypeName }{ Plurial }.Local");
+                    }
 
                     if (currentDLLTypeInfo.Name == "AspNetUser")
                     {
@@ -130,13 +141,38 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                     sb.AppendLine(@"            }");
                     sb.AppendLine(@"");
 
-                    if (TypeName == "AspNetUser")
+                    if (DBType == "DB")
                     {
-                        sb.AppendLine($@"            List<{ TypeName }> { TypeNameLower }List = (from c in { db }.{ TypeName }{ Plurial }.AsNoTracking() orderby c.Email select c).Skip(skip).Take(take).ToList();");
+                        if (TypeName == "AspNetUser")
+                        {
+                            sb.AppendLine($@"            List<{ TypeName }> { TypeNameLower }List = (from c in { db }.{ TypeName }{ Plurial }.AsNoTracking() orderby c.Email select c).Skip(skip).Take(take).ToList();");
+                        }
+                        else
+                        {
+                            sb.AppendLine($@"            List<{ TypeName }> { TypeNameLower }List = (from c in { db }.{ TypeName }{ Plurial }.AsNoTracking() orderby c.{ TypeName }ID select c).Skip(skip).Take(take).ToList();");
+                        }
                     }
-                    else
+                    if (DBType == "DBLocal")
                     {
-                        sb.AppendLine($@"            List<{ TypeName }> { TypeNameLower }List = (from c in { db }.{ TypeName }{ Plurial }.AsNoTracking() orderby c.{ TypeName }ID select c).Skip(skip).Take(take).ToList();");
+                        if (TypeName == "AspNetUser")
+                        {
+                            sb.AppendLine($@"            List<{ TypeName }> { TypeNameLower }List = (from c in { db }.{ TypeName }{ Plurial }.AsNoTracking() orderby c.Email select c).Skip(skip).Take(take).ToList();");
+                        }
+                        else
+                        {
+                            sb.AppendLine($@"            List<{ TypeName }> { TypeNameLower }List = (from c in { db }.{ TypeName }{ Plurial }.AsNoTracking() orderby c.{ TypeName }ID select c).Skip(skip).Take(take).ToList();");
+                        }
+                    }
+                    if (DBType == "DBLocalIM")
+                    {
+                        if (TypeName == "AspNetUser")
+                        {
+                            sb.AppendLine($@"            List<{ TypeName }> { TypeNameLower }List = (from c in { db }.{ TypeName }{ Plurial }.Local orderby c.Email select c).Skip(skip).Take(take).ToList();");
+                        }
+                        else
+                        {
+                            sb.AppendLine($@"            List<{ TypeName }> { TypeNameLower }List = (from c in { db }.{ TypeName }{ Plurial }.Local orderby c.{ TypeName }ID select c).Skip(skip).Take(take).ToList();");
+                        }
                     }
                     sb.AppendLine(@"");
                     sb.AppendLine($@"            return await Task.FromResult(Ok({ TypeNameLower }List));");

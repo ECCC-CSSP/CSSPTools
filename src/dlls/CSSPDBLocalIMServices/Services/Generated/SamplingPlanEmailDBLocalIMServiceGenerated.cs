@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            SamplingPlanEmail samplingPlanEmail = (from c in dbLocalIM.SamplingPlanEmails.AsNoTracking()
+            SamplingPlanEmail samplingPlanEmail = (from c in dbLocalIM.SamplingPlanEmails.Local
                     where c.SamplingPlanEmailID == SamplingPlanEmailID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<SamplingPlanEmail> samplingPlanEmailList = (from c in dbLocalIM.SamplingPlanEmails.AsNoTracking() orderby c.SamplingPlanEmailID select c).Skip(skip).Take(take).ToList();
+            List<SamplingPlanEmail> samplingPlanEmailList = (from c in dbLocalIM.SamplingPlanEmails.Local orderby c.SamplingPlanEmailID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(samplingPlanEmailList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            SamplingPlanEmail samplingPlanEmail = (from c in dbLocalIM.SamplingPlanEmails
+            SamplingPlanEmail samplingPlanEmail = (from c in dbLocalIM.SamplingPlanEmails.Local
                     where c.SamplingPlanEmailID == SamplingPlanEmailID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.SamplingPlanEmails.Remove(samplingPlanEmail);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.SamplingPlanEmails.Add(samplingPlanEmail);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.SamplingPlanEmails.Update(samplingPlanEmail);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -187,14 +184,14 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SamplingPlanEmailID"), new[] { nameof(samplingPlanEmail.SamplingPlanEmailID) });
                 }
 
-                if (!(from c in dbLocalIM.SamplingPlanEmails select c).Where(c => c.SamplingPlanEmailID == samplingPlanEmail.SamplingPlanEmailID).Any())
+                if (!(from c in dbLocalIM.SamplingPlanEmails.Local select c).Where(c => c.SamplingPlanEmailID == samplingPlanEmail.SamplingPlanEmailID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "SamplingPlanEmail", "SamplingPlanEmailID", samplingPlanEmail.SamplingPlanEmailID.ToString()), new[] { nameof(samplingPlanEmail.SamplingPlanEmailID) });
                 }
             }
 
             SamplingPlan SamplingPlanSamplingPlanID = null;
-            SamplingPlanSamplingPlanID = (from c in dbLocalIM.SamplingPlans where c.SamplingPlanID == samplingPlanEmail.SamplingPlanID select c).FirstOrDefault();
+            SamplingPlanSamplingPlanID = (from c in dbLocalIM.SamplingPlans.Local where c.SamplingPlanID == samplingPlanEmail.SamplingPlanID select c).FirstOrDefault();
 
             if (SamplingPlanSamplingPlanID == null)
             {
@@ -233,7 +230,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == samplingPlanEmail.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == samplingPlanEmail.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

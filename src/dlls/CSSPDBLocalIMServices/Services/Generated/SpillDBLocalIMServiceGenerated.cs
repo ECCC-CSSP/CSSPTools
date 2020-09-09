@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            Spill spill = (from c in dbLocalIM.Spills.AsNoTracking()
+            Spill spill = (from c in dbLocalIM.Spills.Local
                     where c.SpillID == SpillID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<Spill> spillList = (from c in dbLocalIM.Spills.AsNoTracking() orderby c.SpillID select c).Skip(skip).Take(take).ToList();
+            List<Spill> spillList = (from c in dbLocalIM.Spills.Local orderby c.SpillID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(spillList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            Spill spill = (from c in dbLocalIM.Spills
+            Spill spill = (from c in dbLocalIM.Spills.Local
                     where c.SpillID == SpillID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.Spills.Remove(spill);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.Spills.Add(spill);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.Spills.Update(spill);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -187,14 +184,14 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SpillID"), new[] { nameof(spill.SpillID) });
                 }
 
-                if (!(from c in dbLocalIM.Spills select c).Where(c => c.SpillID == spill.SpillID).Any())
+                if (!(from c in dbLocalIM.Spills.Local select c).Where(c => c.SpillID == spill.SpillID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "Spill", "SpillID", spill.SpillID.ToString()), new[] { nameof(spill.SpillID) });
                 }
             }
 
             TVItem TVItemMunicipalityTVItemID = null;
-            TVItemMunicipalityTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == spill.MunicipalityTVItemID select c).FirstOrDefault();
+            TVItemMunicipalityTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == spill.MunicipalityTVItemID select c).FirstOrDefault();
 
             if (TVItemMunicipalityTVItemID == null)
             {
@@ -215,7 +212,7 @@ namespace CSSPDBLocalIMServices
             if (spill.InfrastructureTVItemID != null)
             {
                 TVItem TVItemInfrastructureTVItemID = null;
-                TVItemInfrastructureTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == spill.InfrastructureTVItemID select c).FirstOrDefault();
+                TVItemInfrastructureTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == spill.InfrastructureTVItemID select c).FirstOrDefault();
 
                 if (TVItemInfrastructureTVItemID == null)
                 {
@@ -274,7 +271,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == spill.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == spill.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

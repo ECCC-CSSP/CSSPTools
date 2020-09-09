@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            Email email = (from c in dbLocalIM.Emails.AsNoTracking()
+            Email email = (from c in dbLocalIM.Emails.Local
                     where c.EmailID == EmailID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<Email> emailList = (from c in dbLocalIM.Emails.AsNoTracking() orderby c.EmailID select c).Skip(skip).Take(take).ToList();
+            List<Email> emailList = (from c in dbLocalIM.Emails.Local orderby c.EmailID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(emailList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            Email email = (from c in dbLocalIM.Emails
+            Email email = (from c in dbLocalIM.Emails.Local
                     where c.EmailID == EmailID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.Emails.Remove(email);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.Emails.Add(email);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.Emails.Update(email);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -188,14 +185,14 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "EmailID"), new[] { nameof(email.EmailID) });
                 }
 
-                if (!(from c in dbLocalIM.Emails select c).Where(c => c.EmailID == email.EmailID).Any())
+                if (!(from c in dbLocalIM.Emails.Local select c).Where(c => c.EmailID == email.EmailID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "Email", "EmailID", email.EmailID.ToString()), new[] { nameof(email.EmailID) });
                 }
             }
 
             TVItem TVItemEmailTVItemID = null;
-            TVItemEmailTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == email.EmailTVItemID select c).FirstOrDefault();
+            TVItemEmailTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == email.EmailTVItemID select c).FirstOrDefault();
 
             if (TVItemEmailTVItemID == null)
             {
@@ -251,7 +248,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == email.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == email.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

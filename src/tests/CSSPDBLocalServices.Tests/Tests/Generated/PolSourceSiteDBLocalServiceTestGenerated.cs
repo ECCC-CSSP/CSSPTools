@@ -22,6 +22,7 @@ using Xunit;
 using System.ComponentModel.DataAnnotations;
 using CSSPCultureServices.Resources;
 using LocalServices;
+using System.Threading;
 
 namespace CSSPDBLocalServices.Tests
 {
@@ -39,6 +40,7 @@ namespace CSSPDBLocalServices.Tests
         private ILocalService LocalService { get; set; }
         private IPolSourceSiteDBLocalService PolSourceSiteDBLocalService { get; set; }
         private CSSPDBLocalContext dbLocal { get; set; }
+        private CSSPDBInMemoryContext dbLocalIM { get; set; }
         private PolSourceSite polSourceSite { get; set; }
         #endregion Properties
 
@@ -49,7 +51,17 @@ namespace CSSPDBLocalServices.Tests
         }
         #endregion Constructors
 
-        #region Tests Generated [DBLocal]CRUD
+        #region Tests Generated Constructor [DBLocal]
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task PolSourceSiteDBLocal_Constructor_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+        }
+        #endregion Tests Generated Constructor [DBLocal]
+
+        #region Tests Generated [DBLocal] CRUD
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
@@ -61,7 +73,7 @@ namespace CSSPDBLocalServices.Tests
 
             await DoCRUDDBLocalTest();
         }
-        #endregion Tests Generated CRUD
+        #endregion Tests Generated [DBLocal] CRUD
 
         #region Tests Generated Properties
         [Theory]
@@ -292,17 +304,6 @@ namespace CSSPDBLocalServices.Tests
             int count = ((List<PolSourceSite>)((OkObjectResult)actionPolSourceSiteList.Result).Value).Count();
             Assert.True(count > 0);
 
-            // List<PolSourceSite> with skip and take
-            var actionPolSourceSiteListSkipAndTake = await PolSourceSiteDBLocalService.GetPolSourceSiteList(1, 1);
-            Assert.Equal(200, ((ObjectResult)actionPolSourceSiteListSkipAndTake.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionPolSourceSiteListSkipAndTake.Result).Value);
-            List<PolSourceSite> polSourceSiteListSkipAndTake = (List<PolSourceSite>)((OkObjectResult)actionPolSourceSiteListSkipAndTake.Result).Value;
-
-            int countSkipAndTake = ((List<PolSourceSite>)((OkObjectResult)actionPolSourceSiteListSkipAndTake.Result).Value).Count();
-            Assert.True(countSkipAndTake == 1);
-
-            Assert.False(polSourceSiteList[0].PolSourceSiteID == polSourceSiteListSkipAndTake[0].PolSourceSiteID);
-
             // Get PolSourceSite With PolSourceSiteID
             var actionPolSourceSiteGet = await PolSourceSiteDBLocalService.GetPolSourceSiteWithPolSourceSiteID(polSourceSiteList[0].PolSourceSiteID);
             Assert.Equal(200, ((ObjectResult)actionPolSourceSiteGet.Result).StatusCode);
@@ -364,6 +365,11 @@ namespace CSSPDBLocalServices.Tests
                 options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
             });
 
+            Services.AddDbContext<CSSPDBInMemoryContext>(options =>
+            {
+                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBLocal.FullName }");
+            });
+
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<ILocalService, LocalService>();
             Services.AddSingleton<IEnums, Enums>();
@@ -384,6 +390,9 @@ namespace CSSPDBLocalServices.Tests
 
             dbLocal = Provider.GetService<CSSPDBLocalContext>();
             Assert.NotNull(dbLocal);
+
+            dbLocalIM = Provider.GetService<CSSPDBInMemoryContext>();
+            Assert.NotNull(dbLocalIM);
 
             PolSourceSiteDBLocalService = Provider.GetService<IPolSourceSiteDBLocalService>();
             Assert.NotNull(PolSourceSiteDBLocalService);
@@ -407,8 +416,8 @@ namespace CSSPDBLocalServices.Tests
 
             try
             {
-                dbLocal.TVItems.Add(new TVItem() { TVItemID = 47, TVLevel = 6, TVPath = "p1p5p6p9p10p12p47", TVType = (TVTypeEnum)17, ParentID = 12, IsActive = true, LastUpdateDate_UTC = new DateTime(2016, 5, 2, 14, 44, 28), LastUpdateContactTVItemID = 2 });
-                dbLocal.SaveChanges();
+                dbLocalIM.TVItems.Add(new TVItem() { TVItemID = 47, TVLevel = 6, TVPath = "p1p5p6p9p10p12p47", TVType = (TVTypeEnum)17, ParentID = 12, IsActive = true, LastUpdateDate_UTC = new DateTime(2016, 5, 2, 14, 44, 28), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
             }
             catch (Exception)
             {
@@ -416,8 +425,8 @@ namespace CSSPDBLocalServices.Tests
             }
             try
             {
-                dbLocal.TVItems.Add(new TVItem() { TVItemID = 46, TVLevel = 1, TVPath = "p1p46", TVType = (TVTypeEnum)2, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2015, 9, 8, 17, 8, 14), LastUpdateContactTVItemID = 2 });
-                dbLocal.SaveChanges();
+                dbLocalIM.TVItems.Add(new TVItem() { TVItemID = 46, TVLevel = 1, TVPath = "p1p46", TVType = (TVTypeEnum)2, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2015, 9, 8, 17, 8, 14), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
             }
             catch (Exception)
             {
@@ -425,8 +434,8 @@ namespace CSSPDBLocalServices.Tests
             }
             try
             {
-                dbLocal.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2 });
-                dbLocal.SaveChanges();
+                dbLocalIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
             }
             catch (Exception)
             {

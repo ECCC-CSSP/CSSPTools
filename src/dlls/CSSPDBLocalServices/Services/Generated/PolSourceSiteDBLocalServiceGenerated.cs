@@ -37,6 +37,7 @@ namespace CSSPDBLocalServices
 
         #region Properties
         private CSSPDBLocalContext dbLocal { get; }
+        private CSSPDBInMemoryContext dbLocalIM { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILocalService LocalService { get; }
@@ -47,13 +48,15 @@ namespace CSSPDBLocalServices
         #region Constructors
         public PolSourceSiteDBLocalService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums,
            ILocalService LocalService,
-           CSSPDBLocalContext dbLocal)
+           CSSPDBLocalContext dbLocal,
+           CSSPDBInMemoryContext dbLocalIM)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LocalService = LocalService;
             this.enums = enums;
             this.dbLocal = dbLocal;
+            this.dbLocalIM = dbLocalIM;
         }
         #endregion Constructors
 
@@ -94,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            PolSourceSite polSourceSite = (from c in dbLocal.PolSourceSites
+            PolSourceSite polSourceSite = (from c in dbLocal.PolSourceSites.Local
                     where c.PolSourceSiteID == PolSourceSiteID
                     select c).FirstOrDefault();
 
@@ -106,9 +109,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.PolSourceSites.Remove(polSourceSite);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -130,7 +132,7 @@ namespace CSSPDBLocalServices
 
             if (polSourceSite.PolSourceSiteID == 0)
             {
-                int LastPolSourceSiteID = (from c in dbLocal.PolSourceSites
+                int LastPolSourceSiteID = (from c in dbLocal.PolSourceSites.AsNoTracking()
                           orderby c.PolSourceSiteID descending
                           select c.PolSourceSiteID).FirstOrDefault();
 
@@ -140,9 +142,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.PolSourceSites.Add(polSourceSite);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -165,9 +166,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.PolSourceSites.Update(polSourceSite);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -189,18 +189,35 @@ namespace CSSPDBLocalServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "PolSourceSiteID"), new[] { nameof(polSourceSite.PolSourceSiteID) });
                 }
 
-                if (!(from c in dbLocal.PolSourceSites select c).Where(c => c.PolSourceSiteID == polSourceSite.PolSourceSiteID).Any())
+                if (!(from c in dbLocal.PolSourceSites.AsNoTracking() select c).Where(c => c.PolSourceSiteID == polSourceSite.PolSourceSiteID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "PolSourceSite", "PolSourceSiteID", polSourceSite.PolSourceSiteID.ToString()), new[] { nameof(polSourceSite.PolSourceSiteID) });
                 }
             }
 
             TVItem TVItemPolSourceSiteTVItemID = null;
-            TVItemPolSourceSiteTVItemID = (from c in dbLocal.TVItems where c.TVItemID == polSourceSite.PolSourceSiteTVItemID select c).FirstOrDefault();
+            TVItemPolSourceSiteTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == polSourceSite.PolSourceSiteTVItemID select c).FirstOrDefault();
 
             if (TVItemPolSourceSiteTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "PolSourceSiteTVItemID", polSourceSite.PolSourceSiteTVItemID.ToString()), new[] { nameof(polSourceSite.PolSourceSiteTVItemID) });
+                TVItemPolSourceSiteTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == polSourceSite.PolSourceSiteTVItemID select c).FirstOrDefault();
+
+                if (TVItemPolSourceSiteTVItemID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "PolSourceSiteTVItemID", polSourceSite.PolSourceSiteTVItemID.ToString()), new[] { nameof(polSourceSite.PolSourceSiteTVItemID) });
+                }
+                else
+                {
+                    List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                    {
+                        TVTypeEnum.PolSourceSite,
+                    };
+                    if (!AllowableTVTypes.Contains(TVItemPolSourceSiteTVItemID.TVType))
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "PolSourceSiteTVItemID", "PolSourceSite"), new[] { nameof(polSourceSite.PolSourceSiteTVItemID) });
+                    }
+                }
+
             }
             else
             {
@@ -255,11 +272,30 @@ namespace CSSPDBLocalServices
             if (polSourceSite.CivicAddressTVItemID != null)
             {
                 TVItem TVItemCivicAddressTVItemID = null;
-                TVItemCivicAddressTVItemID = (from c in dbLocal.TVItems where c.TVItemID == polSourceSite.CivicAddressTVItemID select c).FirstOrDefault();
+                TVItemCivicAddressTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == polSourceSite.CivicAddressTVItemID select c).FirstOrDefault();
 
                 if (TVItemCivicAddressTVItemID == null)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "CivicAddressTVItemID", (polSourceSite.CivicAddressTVItemID == null ? "" : polSourceSite.CivicAddressTVItemID.ToString())), new[] { nameof(polSourceSite.CivicAddressTVItemID) });
+                    if (polSourceSite.CivicAddressTVItemID != null)
+                    {
+                        TVItemCivicAddressTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == polSourceSite.CivicAddressTVItemID select c).FirstOrDefault();
+
+                        if (TVItemCivicAddressTVItemID == null)
+                        {
+                            yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "CivicAddressTVItemID", (polSourceSite.CivicAddressTVItemID == null ? "" : polSourceSite.CivicAddressTVItemID.ToString())), new[] { nameof(polSourceSite.CivicAddressTVItemID) });
+                        }
+                        else
+                        {
+                            List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                            {
+                                TVTypeEnum.Address,
+                            };
+                            if (!AllowableTVTypes.Contains(TVItemCivicAddressTVItemID.TVType))
+                            {
+                                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "CivicAddressTVItemID", "Address"), new[] { nameof(polSourceSite.CivicAddressTVItemID) });
+                            }
+                        }
+                    }
                 }
                 else
                 {
@@ -287,11 +323,28 @@ namespace CSSPDBLocalServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == polSourceSite.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == polSourceSite.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", polSourceSite.LastUpdateContactTVItemID.ToString()), new[] { nameof(polSourceSite.LastUpdateContactTVItemID) });
+                TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == polSourceSite.LastUpdateContactTVItemID select c).FirstOrDefault();
+
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", polSourceSite.LastUpdateContactTVItemID.ToString()), new[] { nameof(polSourceSite.LastUpdateContactTVItemID) });
+                }
+                else
+                {
+                    List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                    {
+                        TVTypeEnum.Contact,
+                    };
+                    if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(polSourceSite.LastUpdateContactTVItemID) });
+                    }
+                }
+
             }
             else
             {

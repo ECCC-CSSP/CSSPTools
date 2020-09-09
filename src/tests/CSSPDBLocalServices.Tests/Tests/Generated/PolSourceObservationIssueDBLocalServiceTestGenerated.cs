@@ -22,6 +22,7 @@ using Xunit;
 using System.ComponentModel.DataAnnotations;
 using CSSPCultureServices.Resources;
 using LocalServices;
+using System.Threading;
 
 namespace CSSPDBLocalServices.Tests
 {
@@ -39,6 +40,7 @@ namespace CSSPDBLocalServices.Tests
         private ILocalService LocalService { get; set; }
         private IPolSourceObservationIssueDBLocalService PolSourceObservationIssueDBLocalService { get; set; }
         private CSSPDBLocalContext dbLocal { get; set; }
+        private CSSPDBInMemoryContext dbLocalIM { get; set; }
         private PolSourceObservationIssue polSourceObservationIssue { get; set; }
         #endregion Properties
 
@@ -49,7 +51,17 @@ namespace CSSPDBLocalServices.Tests
         }
         #endregion Constructors
 
-        #region Tests Generated [DBLocal]CRUD
+        #region Tests Generated Constructor [DBLocal]
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task PolSourceObservationIssueDBLocal_Constructor_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+        }
+        #endregion Tests Generated Constructor [DBLocal]
+
+        #region Tests Generated [DBLocal] CRUD
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
@@ -61,7 +73,7 @@ namespace CSSPDBLocalServices.Tests
 
             await DoCRUDDBLocalTest();
         }
-        #endregion Tests Generated CRUD
+        #endregion Tests Generated [DBLocal] CRUD
 
         #region Tests Generated Properties
         [Theory]
@@ -221,17 +233,6 @@ namespace CSSPDBLocalServices.Tests
             int count = ((List<PolSourceObservationIssue>)((OkObjectResult)actionPolSourceObservationIssueList.Result).Value).Count();
             Assert.True(count > 0);
 
-            // List<PolSourceObservationIssue> with skip and take
-            var actionPolSourceObservationIssueListSkipAndTake = await PolSourceObservationIssueDBLocalService.GetPolSourceObservationIssueList(1, 1);
-            Assert.Equal(200, ((ObjectResult)actionPolSourceObservationIssueListSkipAndTake.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionPolSourceObservationIssueListSkipAndTake.Result).Value);
-            List<PolSourceObservationIssue> polSourceObservationIssueListSkipAndTake = (List<PolSourceObservationIssue>)((OkObjectResult)actionPolSourceObservationIssueListSkipAndTake.Result).Value;
-
-            int countSkipAndTake = ((List<PolSourceObservationIssue>)((OkObjectResult)actionPolSourceObservationIssueListSkipAndTake.Result).Value).Count();
-            Assert.True(countSkipAndTake == 1);
-
-            Assert.False(polSourceObservationIssueList[0].PolSourceObservationIssueID == polSourceObservationIssueListSkipAndTake[0].PolSourceObservationIssueID);
-
             // Get PolSourceObservationIssue With PolSourceObservationIssueID
             var actionPolSourceObservationIssueGet = await PolSourceObservationIssueDBLocalService.GetPolSourceObservationIssueWithPolSourceObservationIssueID(polSourceObservationIssueList[0].PolSourceObservationIssueID);
             Assert.Equal(200, ((ObjectResult)actionPolSourceObservationIssueGet.Result).StatusCode);
@@ -293,6 +294,11 @@ namespace CSSPDBLocalServices.Tests
                 options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
             });
 
+            Services.AddDbContext<CSSPDBInMemoryContext>(options =>
+            {
+                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBLocal.FullName }");
+            });
+
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<ILocalService, LocalService>();
             Services.AddSingleton<IEnums, Enums>();
@@ -314,6 +320,9 @@ namespace CSSPDBLocalServices.Tests
             dbLocal = Provider.GetService<CSSPDBLocalContext>();
             Assert.NotNull(dbLocal);
 
+            dbLocalIM = Provider.GetService<CSSPDBInMemoryContext>();
+            Assert.NotNull(dbLocalIM);
+
             PolSourceObservationIssueDBLocalService = Provider.GetService<IPolSourceObservationIssueDBLocalService>();
             Assert.NotNull(PolSourceObservationIssueDBLocalService);
 
@@ -332,8 +341,8 @@ namespace CSSPDBLocalServices.Tests
 
             try
             {
-                dbLocal.PolSourceObservations.Add(new PolSourceObservation() { PolSourceObservationID = 1, PolSourceSiteID = 1, ObservationDate_Local = new DateTime(2007, 4, 24, 0, 0, 0), ContactTVItemID = 2, DesktopReviewed = false, Observation_ToBeDeleted = "NP Farm area, 20+ animals observed and manure piled 4m high behind barn approx. 350m from shore. Drainage ditches lead to river with a heavy slope.", LastUpdateDate_UTC = new DateTime(2015, 4, 13, 20, 1, 31), LastUpdateContactTVItemID = 2 });
-                dbLocal.SaveChanges();
+                dbLocalIM.PolSourceObservations.Add(new PolSourceObservation() { PolSourceObservationID = 1, PolSourceSiteID = 1, ObservationDate_Local = new DateTime(2007, 4, 24, 0, 0, 0), ContactTVItemID = 2, DesktopReviewed = false, Observation_ToBeDeleted = "NP Farm area, 20+ animals observed and manure piled 4m high behind barn approx. 350m from shore. Drainage ditches lead to river with a heavy slope.", LastUpdateDate_UTC = new DateTime(2015, 4, 13, 20, 1, 31), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
             }
             catch (Exception)
             {
@@ -341,8 +350,8 @@ namespace CSSPDBLocalServices.Tests
             }
             try
             {
-                dbLocal.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2 });
-                dbLocal.SaveChanges();
+                dbLocalIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
             }
             catch (Exception)
             {

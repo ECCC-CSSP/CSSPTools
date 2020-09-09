@@ -22,6 +22,7 @@ using Xunit;
 using System.ComponentModel.DataAnnotations;
 using CSSPCultureServices.Resources;
 using LocalServices;
+using System.Threading;
 
 namespace CSSPDBLocalServices.Tests
 {
@@ -39,6 +40,7 @@ namespace CSSPDBLocalServices.Tests
         private ILocalService LocalService { get; set; }
         private IContactDBLocalService ContactDBLocalService { get; set; }
         private CSSPDBLocalContext dbLocal { get; set; }
+        private CSSPDBInMemoryContext dbLocalIM { get; set; }
         private Contact contact { get; set; }
         #endregion Properties
 
@@ -49,7 +51,17 @@ namespace CSSPDBLocalServices.Tests
         }
         #endregion Constructors
 
-        #region Tests Generated [DBLocal]CRUD
+        #region Tests Generated Constructor [DBLocal]
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task ContactDBLocal_Constructor_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+        }
+        #endregion Tests Generated Constructor [DBLocal]
+
+        #region Tests Generated [DBLocal] CRUD
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
@@ -61,7 +73,7 @@ namespace CSSPDBLocalServices.Tests
 
             await DoCRUDDBLocalTest();
         }
-        #endregion Tests Generated CRUD
+        #endregion Tests Generated [DBLocal] CRUD
 
         #region Tests Generated Properties
         [Theory]
@@ -359,17 +371,6 @@ namespace CSSPDBLocalServices.Tests
             int count = ((List<Contact>)((OkObjectResult)actionContactList.Result).Value).Count();
             Assert.True(count > 0);
 
-            // List<Contact> with skip and take
-            var actionContactListSkipAndTake = await ContactDBLocalService.GetContactList(1, 1);
-            Assert.Equal(200, ((ObjectResult)actionContactListSkipAndTake.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionContactListSkipAndTake.Result).Value);
-            List<Contact> contactListSkipAndTake = (List<Contact>)((OkObjectResult)actionContactListSkipAndTake.Result).Value;
-
-            int countSkipAndTake = ((List<Contact>)((OkObjectResult)actionContactListSkipAndTake.Result).Value).Count();
-            Assert.True(countSkipAndTake == 1);
-
-            Assert.False(contactList[0].ContactID == contactListSkipAndTake[0].ContactID);
-
             // Get Contact With ContactID
             var actionContactGet = await ContactDBLocalService.GetContactWithContactID(contactList[0].ContactID);
             Assert.Equal(200, ((ObjectResult)actionContactGet.Result).StatusCode);
@@ -431,6 +432,11 @@ namespace CSSPDBLocalServices.Tests
                 options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
             });
 
+            Services.AddDbContext<CSSPDBInMemoryContext>(options =>
+            {
+                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBLocal.FullName }");
+            });
+
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<ILocalService, LocalService>();
             Services.AddSingleton<IEnums, Enums>();
@@ -453,6 +459,9 @@ namespace CSSPDBLocalServices.Tests
 
             dbLocal = Provider.GetService<CSSPDBLocalContext>();
             Assert.NotNull(dbLocal);
+
+            dbLocalIM = Provider.GetService<CSSPDBInMemoryContext>();
+            Assert.NotNull(dbLocalIM);
 
             ContactDBLocalService = Provider.GetService<IContactDBLocalService>();
             Assert.NotNull(ContactDBLocalService);
@@ -482,8 +491,8 @@ namespace CSSPDBLocalServices.Tests
 
             try
             {
-                dbLocal.AspNetUsers.Add(new AspNetUser() { Id = "023566a4-4a25-4484-88f5-584aa8e1da38", Email = "Test.User1@Canada.ca", UserName = "Test.User1@Canada.ca", });
-                dbLocal.SaveChanges();
+                dbLocalIM.AspNetUsers.Add(new AspNetUser() { Id = "023566a4-4a25-4484-88f5-584aa8e1da38", Email = "Test.User1@Canada.ca", UserName = "Test.User1@Canada.ca", });
+                dbLocalIM.SaveChanges();
             }
             catch (Exception)
             {
@@ -491,8 +500,8 @@ namespace CSSPDBLocalServices.Tests
             }
             try
             {
-                dbLocal.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2 });
-                dbLocal.SaveChanges();
+                dbLocalIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
             }
             catch (Exception)
             {

@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            RainExceedanceClimateSite rainExceedanceClimateSite = (from c in db.RainExceedanceClimateSites
+            RainExceedanceClimateSite rainExceedanceClimateSite = (from c in db.RainExceedanceClimateSites.Local
                     where c.RainExceedanceClimateSiteID == RainExceedanceClimateSiteID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBServices
             try
             {
                 db.RainExceedanceClimateSites.Remove(rainExceedanceClimateSite);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBServices
             try
             {
                 db.RainExceedanceClimateSites.Add(rainExceedanceClimateSite);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBServices
             try
             {
                 db.RainExceedanceClimateSites.Update(rainExceedanceClimateSite);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -179,14 +176,14 @@ namespace CSSPDBServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "RainExceedanceClimateSiteID"), new[] { nameof(rainExceedanceClimateSite.RainExceedanceClimateSiteID) });
                 }
 
-                if (!(from c in db.RainExceedanceClimateSites select c).Where(c => c.RainExceedanceClimateSiteID == rainExceedanceClimateSite.RainExceedanceClimateSiteID).Any())
+                if (!(from c in db.RainExceedanceClimateSites.AsNoTracking() select c).Where(c => c.RainExceedanceClimateSiteID == rainExceedanceClimateSite.RainExceedanceClimateSiteID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "RainExceedanceClimateSite", "RainExceedanceClimateSiteID", rainExceedanceClimateSite.RainExceedanceClimateSiteID.ToString()), new[] { nameof(rainExceedanceClimateSite.RainExceedanceClimateSiteID) });
                 }
             }
 
             TVItem TVItemRainExceedanceTVItemID = null;
-            TVItemRainExceedanceTVItemID = (from c in db.TVItems where c.TVItemID == rainExceedanceClimateSite.RainExceedanceTVItemID select c).FirstOrDefault();
+            TVItemRainExceedanceTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == rainExceedanceClimateSite.RainExceedanceTVItemID select c).FirstOrDefault();
 
             if (TVItemRainExceedanceTVItemID == null)
             {
@@ -205,7 +202,7 @@ namespace CSSPDBServices
             }
 
             TVItem TVItemClimateSiteTVItemID = null;
-            TVItemClimateSiteTVItemID = (from c in db.TVItems where c.TVItemID == rainExceedanceClimateSite.ClimateSiteTVItemID select c).FirstOrDefault();
+            TVItemClimateSiteTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == rainExceedanceClimateSite.ClimateSiteTVItemID select c).FirstOrDefault();
 
             if (TVItemClimateSiteTVItemID == null)
             {
@@ -236,7 +233,7 @@ namespace CSSPDBServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == rainExceedanceClimateSite.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == rainExceedanceClimateSite.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

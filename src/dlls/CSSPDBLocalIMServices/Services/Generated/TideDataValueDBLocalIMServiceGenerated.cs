@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            TideDataValue tideDataValue = (from c in dbLocalIM.TideDataValues.AsNoTracking()
+            TideDataValue tideDataValue = (from c in dbLocalIM.TideDataValues.Local
                     where c.TideDataValueID == TideDataValueID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<TideDataValue> tideDataValueList = (from c in dbLocalIM.TideDataValues.AsNoTracking() orderby c.TideDataValueID select c).Skip(skip).Take(take).ToList();
+            List<TideDataValue> tideDataValueList = (from c in dbLocalIM.TideDataValues.Local orderby c.TideDataValueID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(tideDataValueList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            TideDataValue tideDataValue = (from c in dbLocalIM.TideDataValues
+            TideDataValue tideDataValue = (from c in dbLocalIM.TideDataValues.Local
                     where c.TideDataValueID == TideDataValueID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.TideDataValues.Remove(tideDataValue);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.TideDataValues.Add(tideDataValue);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.TideDataValues.Update(tideDataValue);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -188,14 +185,14 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TideDataValueID"), new[] { nameof(tideDataValue.TideDataValueID) });
                 }
 
-                if (!(from c in dbLocalIM.TideDataValues select c).Where(c => c.TideDataValueID == tideDataValue.TideDataValueID).Any())
+                if (!(from c in dbLocalIM.TideDataValues.Local select c).Where(c => c.TideDataValueID == tideDataValue.TideDataValueID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TideDataValue", "TideDataValueID", tideDataValue.TideDataValueID.ToString()), new[] { nameof(tideDataValue.TideDataValueID) });
                 }
             }
 
             TVItem TVItemTideSiteTVItemID = null;
-            TVItemTideSiteTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == tideDataValue.TideSiteTVItemID select c).FirstOrDefault();
+            TVItemTideSiteTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == tideDataValue.TideSiteTVItemID select c).FirstOrDefault();
 
             if (TVItemTideSiteTVItemID == null)
             {
@@ -283,7 +280,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == tideDataValue.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == tideDataValue.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

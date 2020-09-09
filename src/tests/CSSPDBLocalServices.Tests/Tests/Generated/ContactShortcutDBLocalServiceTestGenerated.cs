@@ -22,6 +22,7 @@ using Xunit;
 using System.ComponentModel.DataAnnotations;
 using CSSPCultureServices.Resources;
 using LocalServices;
+using System.Threading;
 
 namespace CSSPDBLocalServices.Tests
 {
@@ -39,6 +40,7 @@ namespace CSSPDBLocalServices.Tests
         private ILocalService LocalService { get; set; }
         private IContactShortcutDBLocalService ContactShortcutDBLocalService { get; set; }
         private CSSPDBLocalContext dbLocal { get; set; }
+        private CSSPDBInMemoryContext dbLocalIM { get; set; }
         private ContactShortcut contactShortcut { get; set; }
         #endregion Properties
 
@@ -49,7 +51,17 @@ namespace CSSPDBLocalServices.Tests
         }
         #endregion Constructors
 
-        #region Tests Generated [DBLocal]CRUD
+        #region Tests Generated Constructor [DBLocal]
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task ContactShortcutDBLocal_Constructor_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+        }
+        #endregion Tests Generated Constructor [DBLocal]
+
+        #region Tests Generated [DBLocal] CRUD
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
@@ -61,7 +73,7 @@ namespace CSSPDBLocalServices.Tests
 
             await DoCRUDDBLocalTest();
         }
-        #endregion Tests Generated CRUD
+        #endregion Tests Generated [DBLocal] CRUD
 
         #region Tests Generated Properties
         [Theory]
@@ -214,17 +226,6 @@ namespace CSSPDBLocalServices.Tests
             int count = ((List<ContactShortcut>)((OkObjectResult)actionContactShortcutList.Result).Value).Count();
             Assert.True(count > 0);
 
-            // List<ContactShortcut> with skip and take
-            var actionContactShortcutListSkipAndTake = await ContactShortcutDBLocalService.GetContactShortcutList(1, 1);
-            Assert.Equal(200, ((ObjectResult)actionContactShortcutListSkipAndTake.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionContactShortcutListSkipAndTake.Result).Value);
-            List<ContactShortcut> contactShortcutListSkipAndTake = (List<ContactShortcut>)((OkObjectResult)actionContactShortcutListSkipAndTake.Result).Value;
-
-            int countSkipAndTake = ((List<ContactShortcut>)((OkObjectResult)actionContactShortcutListSkipAndTake.Result).Value).Count();
-            Assert.True(countSkipAndTake == 1);
-
-            Assert.False(contactShortcutList[0].ContactShortcutID == contactShortcutListSkipAndTake[0].ContactShortcutID);
-
             // Get ContactShortcut With ContactShortcutID
             var actionContactShortcutGet = await ContactShortcutDBLocalService.GetContactShortcutWithContactShortcutID(contactShortcutList[0].ContactShortcutID);
             Assert.Equal(200, ((ObjectResult)actionContactShortcutGet.Result).StatusCode);
@@ -286,6 +287,11 @@ namespace CSSPDBLocalServices.Tests
                 options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
             });
 
+            Services.AddDbContext<CSSPDBInMemoryContext>(options =>
+            {
+                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBLocal.FullName }");
+            });
+
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<ILocalService, LocalService>();
             Services.AddSingleton<IEnums, Enums>();
@@ -307,6 +313,9 @@ namespace CSSPDBLocalServices.Tests
             dbLocal = Provider.GetService<CSSPDBLocalContext>();
             Assert.NotNull(dbLocal);
 
+            dbLocalIM = Provider.GetService<CSSPDBInMemoryContext>();
+            Assert.NotNull(dbLocalIM);
+
             ContactShortcutDBLocalService = Provider.GetService<IContactShortcutDBLocalService>();
             Assert.NotNull(ContactShortcutDBLocalService);
 
@@ -324,8 +333,8 @@ namespace CSSPDBLocalServices.Tests
 
             try
             {
-                dbLocal.Contacts.Add(new Contact() { ContactID = 1, Id = "f837a0d7-783e-498e-b821-de9c9bd981de" ?? "", ContactTVItemID = 2, LoginEmail = "Charles.LeBlanc2@Canada.ca", FirstName = "Charles", LastName = "LeBlanc", Initial = "G", WebName = "Charles", ContactTitle = (ContactTitleEnum)0, IsAdmin = true, EmailValidated = true, Disabled = false, IsNew = false, SamplingPlanner_ProvincesTVItemID = "7,8,9,10,11,12,", Token = "", LastUpdateDate_UTC = new DateTime(2015, 5, 25, 14, 51, 31), LastUpdateContactTVItemID = 2});
-                dbLocal.SaveChanges();
+                dbLocalIM.Contacts.Add(new Contact() { ContactID = 1, Id = "f837a0d7-783e-498e-b821-de9c9bd981de" ?? "", ContactTVItemID = 2, LoginEmail = "Charles.LeBlanc2@Canada.ca", FirstName = "Charles", LastName = "LeBlanc", Initial = "G", WebName = "Charles", ContactTitle = (ContactTitleEnum)0, IsAdmin = true, EmailValidated = true, Disabled = false, IsNew = false, SamplingPlanner_ProvincesTVItemID = "7,8,9,10,11,12,", Token = "", LastUpdateDate_UTC = new DateTime(2015, 5, 25, 14, 51, 31), LastUpdateContactTVItemID = 2});
+                dbLocalIM.SaveChanges();
             }
             catch (Exception)
             {
@@ -333,8 +342,8 @@ namespace CSSPDBLocalServices.Tests
             }
             try
             {
-                dbLocal.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2 });
-                dbLocal.SaveChanges();
+                dbLocalIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
             }
             catch (Exception)
             {

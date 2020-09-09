@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            ContactPreference contactPreference = (from c in dbLocalIM.ContactPreferences.AsNoTracking()
+            ContactPreference contactPreference = (from c in dbLocalIM.ContactPreferences.Local
                     where c.ContactPreferenceID == ContactPreferenceID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<ContactPreference> contactPreferenceList = (from c in dbLocalIM.ContactPreferences.AsNoTracking() orderby c.ContactPreferenceID select c).Skip(skip).Take(take).ToList();
+            List<ContactPreference> contactPreferenceList = (from c in dbLocalIM.ContactPreferences.Local orderby c.ContactPreferenceID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(contactPreferenceList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            ContactPreference contactPreference = (from c in dbLocalIM.ContactPreferences
+            ContactPreference contactPreference = (from c in dbLocalIM.ContactPreferences.Local
                     where c.ContactPreferenceID == ContactPreferenceID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.ContactPreferences.Remove(contactPreference);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.ContactPreferences.Add(contactPreference);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.ContactPreferences.Update(contactPreference);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -188,14 +185,14 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ContactPreferenceID"), new[] { nameof(contactPreference.ContactPreferenceID) });
                 }
 
-                if (!(from c in dbLocalIM.ContactPreferences select c).Where(c => c.ContactPreferenceID == contactPreference.ContactPreferenceID).Any())
+                if (!(from c in dbLocalIM.ContactPreferences.Local select c).Where(c => c.ContactPreferenceID == contactPreference.ContactPreferenceID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "ContactPreference", "ContactPreferenceID", contactPreference.ContactPreferenceID.ToString()), new[] { nameof(contactPreference.ContactPreferenceID) });
                 }
             }
 
             Contact ContactContactID = null;
-            ContactContactID = (from c in dbLocalIM.Contacts where c.ContactID == contactPreference.ContactID select c).FirstOrDefault();
+            ContactContactID = (from c in dbLocalIM.Contacts.Local where c.ContactID == contactPreference.ContactID select c).FirstOrDefault();
 
             if (ContactContactID == null)
             {
@@ -226,7 +223,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == contactPreference.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == contactPreference.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

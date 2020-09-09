@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            MikeSource mikeSource = (from c in dbLocalIM.MikeSources.AsNoTracking()
+            MikeSource mikeSource = (from c in dbLocalIM.MikeSources.Local
                     where c.MikeSourceID == MikeSourceID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<MikeSource> mikeSourceList = (from c in dbLocalIM.MikeSources.AsNoTracking() orderby c.MikeSourceID select c).Skip(skip).Take(take).ToList();
+            List<MikeSource> mikeSourceList = (from c in dbLocalIM.MikeSources.Local orderby c.MikeSourceID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(mikeSourceList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MikeSource mikeSource = (from c in dbLocalIM.MikeSources
+            MikeSource mikeSource = (from c in dbLocalIM.MikeSources.Local
                     where c.MikeSourceID == MikeSourceID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.MikeSources.Remove(mikeSource);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.MikeSources.Add(mikeSource);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.MikeSources.Update(mikeSource);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -187,14 +184,14 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "MikeSourceID"), new[] { nameof(mikeSource.MikeSourceID) });
                 }
 
-                if (!(from c in dbLocalIM.MikeSources select c).Where(c => c.MikeSourceID == mikeSource.MikeSourceID).Any())
+                if (!(from c in dbLocalIM.MikeSources.Local select c).Where(c => c.MikeSourceID == mikeSource.MikeSourceID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "MikeSource", "MikeSourceID", mikeSource.MikeSourceID.ToString()), new[] { nameof(mikeSource.MikeSourceID) });
                 }
             }
 
             TVItem TVItemMikeSourceTVItemID = null;
-            TVItemMikeSourceTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == mikeSource.MikeSourceTVItemID select c).FirstOrDefault();
+            TVItemMikeSourceTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == mikeSource.MikeSourceTVItemID select c).FirstOrDefault();
 
             if (TVItemMikeSourceTVItemID == null)
             {
@@ -215,7 +212,7 @@ namespace CSSPDBLocalIMServices
             if (mikeSource.HydrometricTVItemID != null)
             {
                 TVItem TVItemHydrometricTVItemID = null;
-                TVItemHydrometricTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == mikeSource.HydrometricTVItemID select c).FirstOrDefault();
+                TVItemHydrometricTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == mikeSource.HydrometricTVItemID select c).FirstOrDefault();
 
                 if (TVItemHydrometricTVItemID == null)
                 {
@@ -273,7 +270,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == mikeSource.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == mikeSource.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

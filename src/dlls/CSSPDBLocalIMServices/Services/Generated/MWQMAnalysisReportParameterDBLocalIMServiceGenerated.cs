@@ -65,7 +65,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            MWQMAnalysisReportParameter mwqmAnalysisReportParameter = (from c in dbLocalIM.MWQMAnalysisReportParameters.AsNoTracking()
+            MWQMAnalysisReportParameter mwqmAnalysisReportParameter = (from c in dbLocalIM.MWQMAnalysisReportParameters.Local
                     where c.MWQMAnalysisReportParameterID == MWQMAnalysisReportParameterID
                     select c).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            List<MWQMAnalysisReportParameter> mwqmAnalysisReportParameterList = (from c in dbLocalIM.MWQMAnalysisReportParameters.AsNoTracking() orderby c.MWQMAnalysisReportParameterID select c).Skip(skip).Take(take).ToList();
+            List<MWQMAnalysisReportParameter> mwqmAnalysisReportParameterList = (from c in dbLocalIM.MWQMAnalysisReportParameters.Local orderby c.MWQMAnalysisReportParameterID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(mwqmAnalysisReportParameterList));
         }
@@ -94,7 +94,7 @@ namespace CSSPDBLocalIMServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MWQMAnalysisReportParameter mwqmAnalysisReportParameter = (from c in dbLocalIM.MWQMAnalysisReportParameters
+            MWQMAnalysisReportParameter mwqmAnalysisReportParameter = (from c in dbLocalIM.MWQMAnalysisReportParameters.Local
                     where c.MWQMAnalysisReportParameterID == MWQMAnalysisReportParameterID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.MWQMAnalysisReportParameters.Remove(mwqmAnalysisReportParameter);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.MWQMAnalysisReportParameters.Add(mwqmAnalysisReportParameter);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBLocalIMServices
             try
             {
                 dbLocalIM.MWQMAnalysisReportParameters.Update(mwqmAnalysisReportParameter);
-                dbLocalIM.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -188,14 +185,14 @@ namespace CSSPDBLocalIMServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "MWQMAnalysisReportParameterID"), new[] { nameof(mwqmAnalysisReportParameter.MWQMAnalysisReportParameterID) });
                 }
 
-                if (!(from c in dbLocalIM.MWQMAnalysisReportParameters select c).Where(c => c.MWQMAnalysisReportParameterID == mwqmAnalysisReportParameter.MWQMAnalysisReportParameterID).Any())
+                if (!(from c in dbLocalIM.MWQMAnalysisReportParameters.Local select c).Where(c => c.MWQMAnalysisReportParameterID == mwqmAnalysisReportParameter.MWQMAnalysisReportParameterID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "MWQMAnalysisReportParameter", "MWQMAnalysisReportParameterID", mwqmAnalysisReportParameter.MWQMAnalysisReportParameterID.ToString()), new[] { nameof(mwqmAnalysisReportParameter.MWQMAnalysisReportParameterID) });
                 }
             }
 
             TVItem TVItemSubsectorTVItemID = null;
-            TVItemSubsectorTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == mwqmAnalysisReportParameter.SubsectorTVItemID select c).FirstOrDefault();
+            TVItemSubsectorTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == mwqmAnalysisReportParameter.SubsectorTVItemID select c).FirstOrDefault();
 
             if (TVItemSubsectorTVItemID == null)
             {
@@ -344,7 +341,7 @@ namespace CSSPDBLocalIMServices
             if (mwqmAnalysisReportParameter.ExcelTVFileTVItemID != null)
             {
                 TVItem TVItemExcelTVFileTVItemID = null;
-                TVItemExcelTVFileTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == mwqmAnalysisReportParameter.ExcelTVFileTVItemID select c).FirstOrDefault();
+                TVItemExcelTVFileTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == mwqmAnalysisReportParameter.ExcelTVFileTVItemID select c).FirstOrDefault();
 
                 if (TVItemExcelTVFileTVItemID == null)
                 {
@@ -382,7 +379,7 @@ namespace CSSPDBLocalIMServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems where c.TVItemID == mwqmAnalysisReportParameter.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == mwqmAnalysisReportParameter.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

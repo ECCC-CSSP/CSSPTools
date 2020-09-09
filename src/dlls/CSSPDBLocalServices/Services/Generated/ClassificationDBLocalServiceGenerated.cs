@@ -37,6 +37,7 @@ namespace CSSPDBLocalServices
 
         #region Properties
         private CSSPDBLocalContext dbLocal { get; }
+        private CSSPDBInMemoryContext dbLocalIM { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILocalService LocalService { get; }
@@ -47,13 +48,15 @@ namespace CSSPDBLocalServices
         #region Constructors
         public ClassificationDBLocalService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums,
            ILocalService LocalService,
-           CSSPDBLocalContext dbLocal)
+           CSSPDBLocalContext dbLocal,
+           CSSPDBInMemoryContext dbLocalIM)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LocalService = LocalService;
             this.enums = enums;
             this.dbLocal = dbLocal;
+            this.dbLocalIM = dbLocalIM;
         }
         #endregion Constructors
 
@@ -94,7 +97,7 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            Classification classification = (from c in dbLocal.Classifications
+            Classification classification = (from c in dbLocal.Classifications.Local
                     where c.ClassificationID == ClassificationID
                     select c).FirstOrDefault();
 
@@ -106,9 +109,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.Classifications.Remove(classification);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -130,7 +132,7 @@ namespace CSSPDBLocalServices
 
             if (classification.ClassificationID == 0)
             {
-                int LastClassificationID = (from c in dbLocal.Classifications
+                int LastClassificationID = (from c in dbLocal.Classifications.AsNoTracking()
                           orderby c.ClassificationID descending
                           select c.ClassificationID).FirstOrDefault();
 
@@ -140,9 +142,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.Classifications.Add(classification);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -165,9 +166,8 @@ namespace CSSPDBLocalServices
             try
             {
                 dbLocal.Classifications.Update(classification);
-                dbLocal.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -189,18 +189,35 @@ namespace CSSPDBLocalServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ClassificationID"), new[] { nameof(classification.ClassificationID) });
                 }
 
-                if (!(from c in dbLocal.Classifications select c).Where(c => c.ClassificationID == classification.ClassificationID).Any())
+                if (!(from c in dbLocal.Classifications.AsNoTracking() select c).Where(c => c.ClassificationID == classification.ClassificationID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "Classification", "ClassificationID", classification.ClassificationID.ToString()), new[] { nameof(classification.ClassificationID) });
                 }
             }
 
             TVItem TVItemClassificationTVItemID = null;
-            TVItemClassificationTVItemID = (from c in dbLocal.TVItems where c.TVItemID == classification.ClassificationTVItemID select c).FirstOrDefault();
+            TVItemClassificationTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == classification.ClassificationTVItemID select c).FirstOrDefault();
 
             if (TVItemClassificationTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "ClassificationTVItemID", classification.ClassificationTVItemID.ToString()), new[] { nameof(classification.ClassificationTVItemID) });
+                TVItemClassificationTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == classification.ClassificationTVItemID select c).FirstOrDefault();
+
+                if (TVItemClassificationTVItemID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "ClassificationTVItemID", classification.ClassificationTVItemID.ToString()), new[] { nameof(classification.ClassificationTVItemID) });
+                }
+                else
+                {
+                    List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                    {
+                        TVTypeEnum.Classification,
+                    };
+                    if (!AllowableTVTypes.Contains(TVItemClassificationTVItemID.TVType))
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "ClassificationTVItemID", "Classification"), new[] { nameof(classification.ClassificationTVItemID) });
+                    }
+                }
+
             }
             else
             {
@@ -238,11 +255,28 @@ namespace CSSPDBLocalServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == classification.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems.AsNoTracking() where c.TVItemID == classification.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", classification.LastUpdateContactTVItemID.ToString()), new[] { nameof(classification.LastUpdateContactTVItemID) });
+                TVItemLastUpdateContactTVItemID = (from c in dbLocalIM.TVItems.Local where c.TVItemID == classification.LastUpdateContactTVItemID select c).FirstOrDefault();
+
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", classification.LastUpdateContactTVItemID.ToString()), new[] { nameof(classification.LastUpdateContactTVItemID) });
+                }
+                else
+                {
+                    List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                    {
+                        TVTypeEnum.Contact,
+                    };
+                    if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(classification.LastUpdateContactTVItemID) });
+                    }
+                }
+
             }
             else
             {

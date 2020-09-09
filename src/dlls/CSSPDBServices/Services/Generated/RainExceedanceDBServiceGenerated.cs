@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            RainExceedance rainExceedance = (from c in db.RainExceedances
+            RainExceedance rainExceedance = (from c in db.RainExceedances.Local
                     where c.RainExceedanceID == RainExceedanceID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBServices
             try
             {
                 db.RainExceedances.Remove(rainExceedance);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBServices
             try
             {
                 db.RainExceedances.Add(rainExceedance);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBServices
             try
             {
                 db.RainExceedances.Update(rainExceedance);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -179,14 +176,14 @@ namespace CSSPDBServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "RainExceedanceID"), new[] { nameof(rainExceedance.RainExceedanceID) });
                 }
 
-                if (!(from c in db.RainExceedances select c).Where(c => c.RainExceedanceID == rainExceedance.RainExceedanceID).Any())
+                if (!(from c in db.RainExceedances.AsNoTracking() select c).Where(c => c.RainExceedanceID == rainExceedance.RainExceedanceID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "RainExceedance", "RainExceedanceID", rainExceedance.RainExceedanceID.ToString()), new[] { nameof(rainExceedance.RainExceedanceID) });
                 }
             }
 
             TVItem TVItemRainExceedanceTVItemID = null;
-            TVItemRainExceedanceTVItemID = (from c in db.TVItems where c.TVItemID == rainExceedance.RainExceedanceTVItemID select c).FirstOrDefault();
+            TVItemRainExceedanceTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == rainExceedance.RainExceedanceTVItemID select c).FirstOrDefault();
 
             if (TVItemRainExceedanceTVItemID == null)
             {
@@ -232,7 +229,7 @@ namespace CSSPDBServices
             if (rainExceedance.StakeholdersEmailDistributionListID != null)
             {
                 EmailDistributionList EmailDistributionListStakeholdersEmailDistributionListID = null;
-                EmailDistributionListStakeholdersEmailDistributionListID = (from c in db.EmailDistributionLists where c.EmailDistributionListID == rainExceedance.StakeholdersEmailDistributionListID select c).FirstOrDefault();
+                EmailDistributionListStakeholdersEmailDistributionListID = (from c in db.EmailDistributionLists.AsNoTracking() where c.EmailDistributionListID == rainExceedance.StakeholdersEmailDistributionListID select c).FirstOrDefault();
 
                 if (EmailDistributionListStakeholdersEmailDistributionListID == null)
                 {
@@ -243,7 +240,7 @@ namespace CSSPDBServices
             if (rainExceedance.OnlyStaffEmailDistributionListID != null)
             {
                 EmailDistributionList EmailDistributionListOnlyStaffEmailDistributionListID = null;
-                EmailDistributionListOnlyStaffEmailDistributionListID = (from c in db.EmailDistributionLists where c.EmailDistributionListID == rainExceedance.OnlyStaffEmailDistributionListID select c).FirstOrDefault();
+                EmailDistributionListOnlyStaffEmailDistributionListID = (from c in db.EmailDistributionLists.AsNoTracking() where c.EmailDistributionListID == rainExceedance.OnlyStaffEmailDistributionListID select c).FirstOrDefault();
 
                 if (EmailDistributionListOnlyStaffEmailDistributionListID == null)
                 {
@@ -264,7 +261,7 @@ namespace CSSPDBServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == rainExceedance.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == rainExceedance.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

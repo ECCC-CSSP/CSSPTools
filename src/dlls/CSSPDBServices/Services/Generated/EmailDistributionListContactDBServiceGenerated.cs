@@ -94,7 +94,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            EmailDistributionListContact emailDistributionListContact = (from c in db.EmailDistributionListContacts
+            EmailDistributionListContact emailDistributionListContact = (from c in db.EmailDistributionListContacts.Local
                     where c.EmailDistributionListContactID == EmailDistributionListContactID
                     select c).FirstOrDefault();
 
@@ -106,9 +106,8 @@ namespace CSSPDBServices
             try
             {
                 db.EmailDistributionListContacts.Remove(emailDistributionListContact);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -131,9 +130,8 @@ namespace CSSPDBServices
             try
             {
                 db.EmailDistributionListContacts.Add(emailDistributionListContact);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -156,9 +154,8 @@ namespace CSSPDBServices
             try
             {
                 db.EmailDistributionListContacts.Update(emailDistributionListContact);
-                db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
@@ -179,14 +176,14 @@ namespace CSSPDBServices
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "EmailDistributionListContactID"), new[] { nameof(emailDistributionListContact.EmailDistributionListContactID) });
                 }
 
-                if (!(from c in db.EmailDistributionListContacts select c).Where(c => c.EmailDistributionListContactID == emailDistributionListContact.EmailDistributionListContactID).Any())
+                if (!(from c in db.EmailDistributionListContacts.AsNoTracking() select c).Where(c => c.EmailDistributionListContactID == emailDistributionListContact.EmailDistributionListContactID).Any())
                 {
                     yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "EmailDistributionListContact", "EmailDistributionListContactID", emailDistributionListContact.EmailDistributionListContactID.ToString()), new[] { nameof(emailDistributionListContact.EmailDistributionListContactID) });
                 }
             }
 
             EmailDistributionList EmailDistributionListEmailDistributionListID = null;
-            EmailDistributionListEmailDistributionListID = (from c in db.EmailDistributionLists where c.EmailDistributionListID == emailDistributionListContact.EmailDistributionListID select c).FirstOrDefault();
+            EmailDistributionListEmailDistributionListID = (from c in db.EmailDistributionLists.AsNoTracking() where c.EmailDistributionListID == emailDistributionListContact.EmailDistributionListID select c).FirstOrDefault();
 
             if (EmailDistributionListEmailDistributionListID == null)
             {
@@ -235,7 +232,7 @@ namespace CSSPDBServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == emailDistributionListContact.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItemLastUpdateContactTVItemID = (from c in db.TVItems.AsNoTracking() where c.TVItemID == emailDistributionListContact.LastUpdateContactTVItemID select c).FirstOrDefault();
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

@@ -22,6 +22,7 @@ using Xunit;
 using System.ComponentModel.DataAnnotations;
 using CSSPCultureServices.Resources;
 using LocalServices;
+using System.Threading;
 
 namespace CSSPDBLocalServices.Tests
 {
@@ -39,6 +40,7 @@ namespace CSSPDBLocalServices.Tests
         private ILocalService LocalService { get; set; }
         private ITideLocationDBLocalService TideLocationDBLocalService { get; set; }
         private CSSPDBLocalContext dbLocal { get; set; }
+        private CSSPDBInMemoryContext dbLocalIM { get; set; }
         private TideLocation tideLocation { get; set; }
         #endregion Properties
 
@@ -49,7 +51,17 @@ namespace CSSPDBLocalServices.Tests
         }
         #endregion Constructors
 
-        #region Tests Generated [DBLocal]CRUD
+        #region Tests Generated Constructor [DBLocal]
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task TideLocationDBLocal_Constructor_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+        }
+        #endregion Tests Generated Constructor [DBLocal]
+
+        #region Tests Generated [DBLocal] CRUD
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
@@ -61,7 +73,7 @@ namespace CSSPDBLocalServices.Tests
 
             await DoCRUDDBLocalTest();
         }
-        #endregion Tests Generated CRUD
+        #endregion Tests Generated [DBLocal] CRUD
 
         #region Tests Generated Properties
         [Theory]
@@ -285,17 +297,6 @@ namespace CSSPDBLocalServices.Tests
             int count = ((List<TideLocation>)((OkObjectResult)actionTideLocationList.Result).Value).Count();
             Assert.True(count > 0);
 
-            // List<TideLocation> with skip and take
-            var actionTideLocationListSkipAndTake = await TideLocationDBLocalService.GetTideLocationList(1, 1);
-            Assert.Equal(200, ((ObjectResult)actionTideLocationListSkipAndTake.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionTideLocationListSkipAndTake.Result).Value);
-            List<TideLocation> tideLocationListSkipAndTake = (List<TideLocation>)((OkObjectResult)actionTideLocationListSkipAndTake.Result).Value;
-
-            int countSkipAndTake = ((List<TideLocation>)((OkObjectResult)actionTideLocationListSkipAndTake.Result).Value).Count();
-            Assert.True(countSkipAndTake == 1);
-
-            Assert.False(tideLocationList[0].TideLocationID == tideLocationListSkipAndTake[0].TideLocationID);
-
             // Get TideLocation With TideLocationID
             var actionTideLocationGet = await TideLocationDBLocalService.GetTideLocationWithTideLocationID(tideLocationList[0].TideLocationID);
             Assert.Equal(200, ((ObjectResult)actionTideLocationGet.Result).StatusCode);
@@ -357,6 +358,11 @@ namespace CSSPDBLocalServices.Tests
                 options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
             });
 
+            Services.AddDbContext<CSSPDBInMemoryContext>(options =>
+            {
+                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBLocal.FullName }");
+            });
+
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<ILocalService, LocalService>();
             Services.AddSingleton<IEnums, Enums>();
@@ -378,6 +384,9 @@ namespace CSSPDBLocalServices.Tests
             dbLocal = Provider.GetService<CSSPDBLocalContext>();
             Assert.NotNull(dbLocal);
 
+            dbLocalIM = Provider.GetService<CSSPDBInMemoryContext>();
+            Assert.NotNull(dbLocalIM);
+
             TideLocationDBLocalService = Provider.GetService<ITideLocationDBLocalService>();
             Assert.NotNull(TideLocationDBLocalService);
 
@@ -398,8 +407,8 @@ namespace CSSPDBLocalServices.Tests
 
             try
             {
-                dbLocal.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2 });
-                dbLocal.SaveChanges();
+                dbLocalIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2 });
+                dbLocalIM.SaveChanges();
             }
             catch (Exception)
             {
