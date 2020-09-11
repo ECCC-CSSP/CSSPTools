@@ -73,6 +73,7 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Services
                 new AppSettingParameter() { Parameter = "CSSPEnums", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\_package\\netcoreapp3.1\\CSSPEnums.dll", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "CSSPModels", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\_package\\netcoreapp3.1\\CSSPModels.dll", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "TypeNameFile", ExpectedValue = "C:\\CSSPTools\\src\\webs\\tests\\CSSPWebAPIs.Tests\\Controllers\\Generated\\{TypeName}ControllerTestGenerated.cs" },
+                new AppSettingParameter() { Parameter = "TypeNameFileLocal", ExpectedValue = "C:\\CSSPTools\\src\\webs\\tests\\CSSPWebAPIsLocal.Tests\\Controllers\\Generated\\{TypeName}ControllerTestGenerated.cs" },
             };
 
             return await Task.FromResult(true);

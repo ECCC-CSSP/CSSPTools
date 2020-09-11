@@ -6,8 +6,8 @@
 
 using CSSPEnums;
 using CSSPModels;
-using CSSPServices;
-using CSSPWebAPIsLocal.Controllers;
+using CSSPDBLocalServices;
+using CSSPWebAPIs.Controllers;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,8 +24,9 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using LocalServices;
 
-namespace CSSPWebAPIsLocal.Tests.Controllers
+namespace CSSPWebAPIs.Tests.Controllers
 {
     public partial class MWQMSampleLanguageControllerTest
     {
@@ -36,13 +37,12 @@ namespace CSSPWebAPIsLocal.Tests.Controllers
         private IConfiguration Config { get; set; }
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
-        private CSSPDBContext db { get; set; }
-        private IContactService ContactService { get; set; }
-        private ILoggedInService loggedInService { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
-        private IMWQMSampleLanguageService mwqmSampleLanguageService { get; set; }
-        private IMWQMSampleLanguageController mwqmSampleLanguageController { get; set; }
-        private Contact contact { get; set; }
+        private ILocalService LocalService { get; set; }
+        private IMWQMSampleLanguageDBLocalService MWQMSampleLanguageDBLocalService { get; set; }
+        private string CSSPAzureUrl { get; set; }
+        private string LocalUrl { get; set; }
+        private IMWQMSampleLanguageController MWQMSampleLanguageController { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -54,73 +54,76 @@ namespace CSSPWebAPIsLocal.Tests.Controllers
         #region Functions public
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task MWQMSampleLanguageController_Constructor_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
-            Assert.NotNull(loggedInService);
-            Assert.NotNull(mwqmSampleLanguageService);
-            Assert.NotNull(mwqmSampleLanguageController);
+
+            Assert.NotNull(LocalService);
+            Assert.NotNull(MWQMSampleLanguageDBLocalService);
+            Assert.NotNull(MWQMSampleLanguageController);
         }
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task MWQMSampleLanguageController_CRUD_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            HttpClient httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
+            using (HttpClient httpClient = new HttpClient())
+            {
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", LocalService.LoggedInContactInfo.LoggedInContact.Token);
 
-            // testing Get
-            string url = "https://localhost:4447/api/" + culture + "/MWQMSampleLanguage";
-            var response = await httpClient.GetAsync(url);
-            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
-            List<MWQMSampleLanguage> mwqmSampleLanguageList = JsonSerializer.Deserialize<List<MWQMSampleLanguage>>(responseContent);
-            Assert.True(mwqmSampleLanguageList.Count > 0);
+                // testing Get
+                string url = $"{ LocalUrl }api/{ culture }/MWQMSampleLanguage";
+                var response = await httpClient.GetAsync(url);
+                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+                string responseContent = await response.Content.ReadAsStringAsync();
+                Assert.NotEmpty(responseContent);
+                List<MWQMSampleLanguage> mwqmSampleLanguageList = JsonSerializer.Deserialize<List<MWQMSampleLanguage>>(responseContent);
+                Assert.True(mwqmSampleLanguageList.Count > 0);
 
-            // testing Get(MWQMSampleLanguageID)
-            string urlID = url + "/" + mwqmSampleLanguageList[0].MWQMSampleLanguageID;
-            response = await httpClient.GetAsync(urlID);
-            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-            responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
-            MWQMSampleLanguage mwqmSampleLanguage = JsonSerializer.Deserialize<MWQMSampleLanguage>(responseContent);
-            Assert.Equal(mwqmSampleLanguageList[0].MWQMSampleLanguageID, mwqmSampleLanguage.MWQMSampleLanguageID);
+                // testing Get(MWQMSampleLanguageID)
+                string urlID = url + "/" + mwqmSampleLanguageList[0].MWQMSampleLanguageID;
+                response = await httpClient.GetAsync(urlID);
+                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+                responseContent = await response.Content.ReadAsStringAsync();
+                Assert.NotEmpty(responseContent);
+                MWQMSampleLanguage mwqmSampleLanguage = JsonSerializer.Deserialize<MWQMSampleLanguage>(responseContent);
+                Assert.Equal(mwqmSampleLanguageList[0].MWQMSampleLanguageID, mwqmSampleLanguage.MWQMSampleLanguageID);
 
-            // testing Post(MWQMSampleLanguage)
-            mwqmSampleLanguage.MWQMSampleLanguageID = 0;
-            string content = JsonSerializer.Serialize<MWQMSampleLanguage>(mwqmSampleLanguage);
-            HttpContent httpContent = new StringContent(content);
-            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            response = await httpClient.PostAsync(url, httpContent);
-            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-            responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
-            mwqmSampleLanguage = JsonSerializer.Deserialize<MWQMSampleLanguage>(responseContent);
-            Assert.NotNull(mwqmSampleLanguage);
+                // testing Post(MWQMSampleLanguage)
+                mwqmSampleLanguage.MWQMSampleLanguageID = 0;
+                string content = JsonSerializer.Serialize<MWQMSampleLanguage>(mwqmSampleLanguage);
+                HttpContent httpContent = new StringContent(content);
+                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                response = await httpClient.PostAsync(url, httpContent);
+                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+                responseContent = await response.Content.ReadAsStringAsync();
+                Assert.NotEmpty(responseContent);
+                mwqmSampleLanguage = JsonSerializer.Deserialize<MWQMSampleLanguage>(responseContent);
+                Assert.NotNull(mwqmSampleLanguage);
 
-            // testing Put(MWQMSampleLanguage)
-            content = JsonSerializer.Serialize<MWQMSampleLanguage>(mwqmSampleLanguage);
-            httpContent = new StringContent(content);
-            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            response = await httpClient.PutAsync(url, httpContent);
-            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-            responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
-            mwqmSampleLanguage = JsonSerializer.Deserialize<MWQMSampleLanguage>(responseContent);
-            Assert.NotNull(mwqmSampleLanguage);
+                // testing Put(MWQMSampleLanguage)
+                content = JsonSerializer.Serialize<MWQMSampleLanguage>(mwqmSampleLanguage);
+                httpContent = new StringContent(content);
+                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                response = await httpClient.PutAsync(url, httpContent);
+                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+                responseContent = await response.Content.ReadAsStringAsync();
+                Assert.NotEmpty(responseContent);
+                mwqmSampleLanguage = JsonSerializer.Deserialize<MWQMSampleLanguage>(responseContent);
+                Assert.NotNull(mwqmSampleLanguage);
 
-            // testing Delete(MWQMSampleLanguageID)
-            urlID = url + "/" + mwqmSampleLanguage.MWQMSampleLanguageID;
-            response = await httpClient.DeleteAsync(urlID);
-            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-            responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
-            bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
-            Assert.True(retBool);
+                // testing Delete(MWQMSampleLanguageID)
+                urlID = url + "/" + mwqmSampleLanguage.MWQMSampleLanguageID;
+                response = await httpClient.DeleteAsync(urlID);
+                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+                responseContent = await response.Content.ReadAsStringAsync();
+                Assert.NotEmpty(responseContent);
+                bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
+                Assert.True(retBool);
+            }
         }
         #endregion Functions public
 
@@ -129,51 +132,25 @@ namespace CSSPWebAPIsLocal.Tests.Controllers
         {
             Config = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-               .AddJsonFile("appsettings_csspwebapistests.json")
-               .AddUserSecrets("9d65c001-b7bc-4922-a0fc-1558b9ef927e")
+               .AddJsonFile("appsettings_csspwebapislocaltests.json")
+               .AddUserSecrets("61f396b6-8b79-4328-a2b7-a07921135f96")
                .Build();
 
             Services = new ServiceCollection();
 
-            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
-            Assert.NotNull(CSSPDBLocalFileName);
-
-            string TestDB = Config.GetValue<string>("TestDB");
-            Assert.NotNull(TestDB);
-
             Services.AddSingleton<IConfiguration>(Config);
 
-            Services.AddDbContext<CSSPDBContext>(options =>
-            {
-                options.UseSqlServer(TestDB);
-            });
+            CSSPAzureUrl = Config.GetValue<string>("CSSPAzureUrl");
+            Assert.NotNull(CSSPAzureUrl);
 
-            Services.AddDbContext<CSSPDBInMemoryContext>(options =>
-            {
-                options.UseInMemoryDatabase(TestDB);
-            });
-
-            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName);
-
-            Services.AddDbContext<CSSPDBLocalContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
-            });
-
-            Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(TestDB));
-
-            Services.AddIdentityCore<ApplicationUser>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            LocalUrl = Config.GetValue<string>("LocalUrl");
+            Assert.NotNull(LocalUrl);
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
-            Services.AddSingleton<ILoggedInService, LoggedInService>();
-            Services.AddSingleton<ILoginModelService, LoginModelService>();
-            Services.AddSingleton<IRegisterModelService, RegisterModelService>();
-            Services.AddSingleton<IAspNetUserService, AspNetUserService>();
-            Services.AddSingleton<IContactService, ContactService>();
-            Services.AddSingleton<IMWQMSampleLanguageService, MWQMSampleLanguageService>();
+            Services.AddSingleton<ILocalService, LocalService>();
+            Services.AddSingleton<IContactDBLocalService, ContactDBLocalService>();
+            Services.AddSingleton<IMWQMSampleLanguageDBLocalService, MWQMSampleLanguageDBLocalService>();
             Services.AddSingleton<IMWQMSampleLanguageController, MWQMSampleLanguageController>();
 
             Provider = Services.BuildServiceProvider();
@@ -184,36 +161,17 @@ namespace CSSPWebAPIsLocal.Tests.Controllers
 
             CSSPCultureService.SetCulture(culture);
 
-            ContactService = Provider.GetService<IContactService>();
-            Assert.NotNull(ContactService);
+            LocalService = Provider.GetService<ILocalService>();
+            Assert.NotNull(LocalService);
 
-            string LoginEmail = Config.GetValue<string>("LoginEmail");
-            Assert.NotNull(LoginEmail);
+            await LocalService.SetLoggedInContactInfo();
+            Assert.NotNull(LocalService.LoggedInContactInfo);
 
-            string Password = Password = Config.GetValue<string>("Password");
-            Assert.NotNull(Password);
+            MWQMSampleLanguageDBLocalService = Provider.GetService<IMWQMSampleLanguageDBLocalService>();
+            Assert.NotNull(MWQMSampleLanguageDBLocalService);
 
-            LoginModel loginModel = new LoginModel()
-            {
-                LoginEmail = LoginEmail,
-                Password = Password
-            };
-
-            var actionContact = await ContactService.Login(loginModel);
-            Assert.NotNull(actionContact.Value);
-            contact = actionContact.Value;
-
-            loggedInService = Provider.GetService<ILoggedInService>();
-            Assert.NotNull(loggedInService);
-
-            await loggedInService.SetLoggedInContactInfo(contact.Id);
-            Assert.NotNull(loggedInService.LoggedInContactInfo);
-
-            mwqmSampleLanguageService = Provider.GetService<IMWQMSampleLanguageService>();
-            Assert.NotNull(mwqmSampleLanguageService);
-
-            mwqmSampleLanguageController = Provider.GetService<IMWQMSampleLanguageController>();
-            Assert.NotNull(mwqmSampleLanguageController);
+            MWQMSampleLanguageController = Provider.GetService<IMWQMSampleLanguageController>();
+            Assert.NotNull(MWQMSampleLanguageController);
 
             return await Task.FromResult(true);
         }

@@ -5,14 +5,15 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBLocalServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LocalServices;
 
-namespace CSSPWebAPIsLocal.Controllers
+namespace CSSPWebAPIs.Controllers
 {
     public partial interface IAppTaskController
     {
@@ -25,7 +26,6 @@ namespace CSSPWebAPIsLocal.Controllers
 
     [Route("api/{culture}/[controller]")]
     [ApiController]
-    [Authorize]
     public partial class AppTaskController : ControllerBase, IAppTaskController
     {
         #region Variables
@@ -33,16 +33,16 @@ namespace CSSPWebAPIsLocal.Controllers
 
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
-        private IAppTaskService AppTaskService { get; }
+        private ILocalService LocalService { get; }
+        private IAppTaskDBLocalService AppTaskDBLocalService { get; }
         #endregion Properties
 
         #region Constructors
-        public AppTaskController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IAppTaskService AppTaskService)
+        public AppTaskController(ICSSPCultureService CSSPCultureService, ILocalService LocalService, IAppTaskDBLocalService AppTaskDBLocalService)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
-            this.AppTaskService = AppTaskService;
+            this.LocalService = LocalService;
+            this.AppTaskDBLocalService = AppTaskDBLocalService;
         }
         #endregion Constructors
 
@@ -51,41 +51,41 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<List<AppTask>>> Get()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await AppTaskService.GetAppTaskList();
+            return await AppTaskDBLocalService.GetAppTaskList();
         }
         [HttpGet("{AppTaskID}")]
         public async Task<ActionResult<AppTask>> Get(int AppTaskID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await AppTaskService.GetAppTaskWithAppTaskID(AppTaskID);
+            return await AppTaskDBLocalService.GetAppTaskWithAppTaskID(AppTaskID);
         }
         [HttpPost]
         public async Task<ActionResult<AppTask>> Post(AppTask AppTask)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await AppTaskService.Post(AppTask);
+            return await AppTaskDBLocalService.Post(AppTask);
         }
         [HttpPut]
         public async Task<ActionResult<AppTask>> Put(AppTask AppTask)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await AppTaskService.Put(AppTask);
+            return await AppTaskDBLocalService.Put(AppTask);
         }
         [HttpDelete("{AppTaskID}")]
         public async Task<ActionResult<bool>> Delete(int AppTaskID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await AppTaskService.Delete(AppTaskID);
+            return await AppTaskDBLocalService.Delete(AppTaskID);
         }
         #endregion Functions public
 

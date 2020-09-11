@@ -73,7 +73,9 @@ namespace WebAPIClassNameControllerGeneratedServices.Services
                 new AppSettingParameter() { Parameter = "CSSPEnums", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\_package\\netcoreapp3.1\\CSSPEnums.dll", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "CSSPModels", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\_package\\netcoreapp3.1\\CSSPModels.dll", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "TypeNameFile", ExpectedValue = "C:\\CSSPTools\\src\\webs\\CSSPWebAPIs\\Controllers\\src\\Generated\\{TypeName}ControllerGenerated.cs" },
+                new AppSettingParameter() { Parameter = "TypeNameFileLocal", ExpectedValue = "C:\\CSSPTools\\src\\webs\\CSSPWebAPIsLocal\\Controllers\\src\\Generated\\{TypeName}ControllerGenerated.cs" },
                 new AppSettingParameter() { Parameter = "LoadAllDBServices", ExpectedValue = "C:\\CSSPTools\\src\\webs\\CSSPWebAPIs\\LoadAllDBServicesGenerated.cs" },
+                new AppSettingParameter() { Parameter = "LoadAllDBServicesLocal", ExpectedValue = "C:\\CSSPTools\\src\\webs\\CSSPWebAPIsLocal\\LoadAllDBLocalServicesGenerated.cs" },
             };
 
             return await Task.FromResult(true);

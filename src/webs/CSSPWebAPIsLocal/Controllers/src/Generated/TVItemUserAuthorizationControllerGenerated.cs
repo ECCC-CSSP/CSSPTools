@@ -5,14 +5,15 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBLocalServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LocalServices;
 
-namespace CSSPWebAPIsLocal.Controllers
+namespace CSSPWebAPIs.Controllers
 {
     public partial interface ITVItemUserAuthorizationController
     {
@@ -25,7 +26,6 @@ namespace CSSPWebAPIsLocal.Controllers
 
     [Route("api/{culture}/[controller]")]
     [ApiController]
-    [Authorize]
     public partial class TVItemUserAuthorizationController : ControllerBase, ITVItemUserAuthorizationController
     {
         #region Variables
@@ -33,16 +33,16 @@ namespace CSSPWebAPIsLocal.Controllers
 
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
-        private ITVItemUserAuthorizationService TVItemUserAuthorizationService { get; }
+        private ILocalService LocalService { get; }
+        private ITVItemUserAuthorizationDBLocalService TVItemUserAuthorizationDBLocalService { get; }
         #endregion Properties
 
         #region Constructors
-        public TVItemUserAuthorizationController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, ITVItemUserAuthorizationService TVItemUserAuthorizationService)
+        public TVItemUserAuthorizationController(ICSSPCultureService CSSPCultureService, ILocalService LocalService, ITVItemUserAuthorizationDBLocalService TVItemUserAuthorizationDBLocalService)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
-            this.TVItemUserAuthorizationService = TVItemUserAuthorizationService;
+            this.LocalService = LocalService;
+            this.TVItemUserAuthorizationDBLocalService = TVItemUserAuthorizationDBLocalService;
         }
         #endregion Constructors
 
@@ -51,41 +51,41 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<List<TVItemUserAuthorization>>> Get()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await TVItemUserAuthorizationService.GetTVItemUserAuthorizationList();
+            return await TVItemUserAuthorizationDBLocalService.GetTVItemUserAuthorizationList();
         }
         [HttpGet("{TVItemUserAuthorizationID}")]
         public async Task<ActionResult<TVItemUserAuthorization>> Get(int TVItemUserAuthorizationID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await TVItemUserAuthorizationService.GetTVItemUserAuthorizationWithTVItemUserAuthorizationID(TVItemUserAuthorizationID);
+            return await TVItemUserAuthorizationDBLocalService.GetTVItemUserAuthorizationWithTVItemUserAuthorizationID(TVItemUserAuthorizationID);
         }
         [HttpPost]
         public async Task<ActionResult<TVItemUserAuthorization>> Post(TVItemUserAuthorization TVItemUserAuthorization)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await TVItemUserAuthorizationService.Post(TVItemUserAuthorization);
+            return await TVItemUserAuthorizationDBLocalService.Post(TVItemUserAuthorization);
         }
         [HttpPut]
         public async Task<ActionResult<TVItemUserAuthorization>> Put(TVItemUserAuthorization TVItemUserAuthorization)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await TVItemUserAuthorizationService.Put(TVItemUserAuthorization);
+            return await TVItemUserAuthorizationDBLocalService.Put(TVItemUserAuthorization);
         }
         [HttpDelete("{TVItemUserAuthorizationID}")]
         public async Task<ActionResult<bool>> Delete(int TVItemUserAuthorizationID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await TVItemUserAuthorizationService.Delete(TVItemUserAuthorizationID);
+            return await TVItemUserAuthorizationDBLocalService.Delete(TVItemUserAuthorizationID);
         }
         #endregion Functions public
 

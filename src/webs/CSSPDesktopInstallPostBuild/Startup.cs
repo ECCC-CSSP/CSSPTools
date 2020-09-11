@@ -11,7 +11,7 @@ namespace CSSPDesktopInstallPostBuild
         #region Properties
         private IConfiguration Configuration { get; set; }
         private string AzureStoreConnectionString { get; set; }
-        private string AzureStoreCSSPWebAPIsPath { get; set; }
+        private string AzureStoreCSSPWebAPIsLocalPath { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -26,7 +26,7 @@ namespace CSSPDesktopInstallPostBuild
         {
             if (!await FillVariables()) return await Task.FromResult(false);
             if (!await HelpDocsCompressAndSendToAzure()) return await Task.FromResult(false);
-            if (!await CSSPWebAPIsCompressAndSendToAzure()) return await Task.FromResult(false);
+            if (!await CSSPWebAPIsLocalCompressAndSendToAzure()) return await Task.FromResult(false);
             if (!await CSSPClientCompressAndSendToAzure()) return await Task.FromResult(false);
 
             return await Task.FromResult(true);

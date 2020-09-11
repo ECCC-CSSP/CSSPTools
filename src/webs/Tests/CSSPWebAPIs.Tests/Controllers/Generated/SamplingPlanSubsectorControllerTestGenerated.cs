@@ -37,13 +37,12 @@ namespace CSSPWebAPIs.Tests.Controllers
         private IConfiguration Config { get; set; }
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
-        private IContactDBService ContactDBService { get; set; }
-        private ILoggedInService LoggedInService { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
-        private ISamplingPlanSubsectorDBService samplingPlanSubsectorDBService { get; set; }
-        private ISamplingPlanSubsectorController samplingPlanSubsectorController { get; set; }
+        private ILoggedInService LoggedInService { get; set; }
+        private ISamplingPlanSubsectorDBService SamplingPlanSubsectorDBService { get; set; }
         private Contact contact { get; set; }
         private string CSSPAzureUrl { get; set; }
+        private ISamplingPlanSubsectorController SamplingPlanSubsectorController { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -61,8 +60,8 @@ namespace CSSPWebAPIs.Tests.Controllers
             Assert.True(await Setup(culture));
 
             Assert.NotNull(LoggedInService);
-            Assert.NotNull(samplingPlanSubsectorDBService);
-            Assert.NotNull(samplingPlanSubsectorController);
+            Assert.NotNull(SamplingPlanSubsectorDBService);
+            Assert.NotNull(SamplingPlanSubsectorController);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -139,13 +138,13 @@ namespace CSSPWebAPIs.Tests.Controllers
 
             Services = new ServiceCollection();
 
+            Services.AddSingleton<IConfiguration>(Config);
+
             CSSPAzureUrl = Config.GetValue<string>("CSSPAzureUrl");
             Assert.NotNull(CSSPAzureUrl);
 
             string TestDB = Config.GetValue<string>("TestDB");
             Assert.NotNull(TestDB);
-
-            Services.AddSingleton<IConfiguration>(Config);
 
             Services.AddDbContext<CSSPDBContext>(options =>
             {
@@ -165,9 +164,9 @@ namespace CSSPWebAPIs.Tests.Controllers
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
-            Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<ILoginModelService, LoginModelService>();
             Services.AddSingleton<IRegisterModelService, RegisterModelService>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IContactDBService, ContactDBService>();
             Services.AddSingleton<ISamplingPlanSubsectorDBService, SamplingPlanSubsectorDBService>();
             Services.AddSingleton<ISamplingPlanSubsectorController, SamplingPlanSubsectorController>();
@@ -179,9 +178,6 @@ namespace CSSPWebAPIs.Tests.Controllers
             Assert.NotNull(CSSPCultureService);
 
             CSSPCultureService.SetCulture(culture);
-
-            ContactDBService = Provider.GetService<IContactDBService>();
-            Assert.NotNull(ContactDBService);
 
             string LoginEmail = Config.GetValue<string>("LoginEmail");
             Assert.NotNull(LoginEmail);
@@ -219,11 +215,11 @@ namespace CSSPWebAPIs.Tests.Controllers
             await LoggedInService.SetLoggedInContactInfo(contact.Id);
             Assert.NotNull(LoggedInService.LoggedInContactInfo);
 
-            samplingPlanSubsectorDBService = Provider.GetService<ISamplingPlanSubsectorDBService>();
-            Assert.NotNull(samplingPlanSubsectorDBService);
+            SamplingPlanSubsectorDBService = Provider.GetService<ISamplingPlanSubsectorDBService>();
+            Assert.NotNull(SamplingPlanSubsectorDBService);
 
-            samplingPlanSubsectorController = Provider.GetService<ISamplingPlanSubsectorController>();
-            Assert.NotNull(samplingPlanSubsectorController);
+            SamplingPlanSubsectorController = Provider.GetService<ISamplingPlanSubsectorController>();
+            Assert.NotNull(SamplingPlanSubsectorController);
 
             return await Task.FromResult(true);
         }

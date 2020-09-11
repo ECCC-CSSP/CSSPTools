@@ -6,8 +6,8 @@
 
 using CSSPEnums;
 using CSSPModels;
-using CSSPServices;
-using CSSPWebAPIsLocal.Controllers;
+using CSSPDBLocalServices;
+using CSSPWebAPIs.Controllers;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,8 +24,9 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using LocalServices;
 
-namespace CSSPWebAPIsLocal.Tests.Controllers
+namespace CSSPWebAPIs.Tests.Controllers
 {
     public partial class TVItemControllerTest
     {
@@ -36,13 +37,12 @@ namespace CSSPWebAPIsLocal.Tests.Controllers
         private IConfiguration Config { get; set; }
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
-        private CSSPDBContext db { get; set; }
-        private IContactService ContactService { get; set; }
-        private ILoggedInService loggedInService { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
-        private ITVItemService tvItemService { get; set; }
-        private ITVItemController tvItemController { get; set; }
-        private Contact contact { get; set; }
+        private ILocalService LocalService { get; set; }
+        private ITVItemDBLocalService TVItemDBLocalService { get; set; }
+        private string CSSPAzureUrl { get; set; }
+        private string LocalUrl { get; set; }
+        private ITVItemController TVItemController { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -54,77 +54,80 @@ namespace CSSPWebAPIsLocal.Tests.Controllers
         #region Functions public
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task TVItemController_Constructor_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
-            Assert.NotNull(loggedInService);
-            Assert.NotNull(tvItemService);
-            Assert.NotNull(tvItemController);
+
+            Assert.NotNull(LocalService);
+            Assert.NotNull(TVItemDBLocalService);
+            Assert.NotNull(TVItemController);
         }
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task TVItemController_CRUD_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            HttpClient httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
+            using (HttpClient httpClient = new HttpClient())
+            {
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", LocalService.LoggedInContactInfo.LoggedInContact.Token);
 
-            // testing Get
-            string url = "https://localhost:4447/api/" + culture + "/TVItem";
-            var response = await httpClient.GetAsync(url);
-            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
-            List<TVItem> tvItemList = JsonSerializer.Deserialize<List<TVItem>>(responseContent);
-            Assert.True(tvItemList.Count > 0);
+                // testing Get
+                string url = $"{ LocalUrl }api/{ culture }/TVItem";
+                var response = await httpClient.GetAsync(url);
+                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+                string responseContent = await response.Content.ReadAsStringAsync();
+                Assert.NotEmpty(responseContent);
+                List<TVItem> tvItemList = JsonSerializer.Deserialize<List<TVItem>>(responseContent);
+                Assert.True(tvItemList.Count > 0);
 
-            // testing Get(TVItemID)
-            string urlID = url + "/" + tvItemList[0].TVItemID;
-            response = await httpClient.GetAsync(urlID);
-            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-            responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
-            TVItem tvItem = JsonSerializer.Deserialize<TVItem>(responseContent);
-            Assert.Equal(tvItemList[0].TVItemID, tvItem.TVItemID);
+                // testing Get(TVItemID)
+                string urlID = url + "/" + tvItemList[0].TVItemID;
+                response = await httpClient.GetAsync(urlID);
+                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+                responseContent = await response.Content.ReadAsStringAsync();
+                Assert.NotEmpty(responseContent);
+                TVItem tvItem = JsonSerializer.Deserialize<TVItem>(responseContent);
+                Assert.Equal(tvItemList[0].TVItemID, tvItem.TVItemID);
 
-            // testing Post(TVItem)
-            tvItem.TVItemID = 0;
-            tvItem.ParentID = tvItemList[1].ParentID;
-            tvItem.TVLevel = 1; 
-            tvItem.TVPath = "Timbucto";
-            tvItem.TVType = TVTypeEnum.Country;
-            string content = JsonSerializer.Serialize<TVItem>(tvItem);
-            HttpContent httpContent = new StringContent(content);
-            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            response = await httpClient.PostAsync(url, httpContent);
-            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-            responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
-            tvItem = JsonSerializer.Deserialize<TVItem>(responseContent);
-            Assert.NotNull(tvItem);
+                // testing Post(TVItem)
+                tvItem.TVItemID = 0;
+                tvItem.ParentID = tvItemList[1].ParentID;
+                tvItem.TVLevel = 1; 
+                tvItem.TVPath = "Timbucto";
+                tvItem.TVType = TVTypeEnum.Country;
+                string content = JsonSerializer.Serialize<TVItem>(tvItem);
+                HttpContent httpContent = new StringContent(content);
+                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                response = await httpClient.PostAsync(url, httpContent);
+                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+                responseContent = await response.Content.ReadAsStringAsync();
+                Assert.NotEmpty(responseContent);
+                tvItem = JsonSerializer.Deserialize<TVItem>(responseContent);
+                Assert.NotNull(tvItem);
 
-            // testing Put(TVItem)
-            content = JsonSerializer.Serialize<TVItem>(tvItem);
-            httpContent = new StringContent(content);
-            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            response = await httpClient.PutAsync(url, httpContent);
-            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-            responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
-            tvItem = JsonSerializer.Deserialize<TVItem>(responseContent);
-            Assert.NotNull(tvItem);
+                // testing Put(TVItem)
+                content = JsonSerializer.Serialize<TVItem>(tvItem);
+                httpContent = new StringContent(content);
+                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                response = await httpClient.PutAsync(url, httpContent);
+                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+                responseContent = await response.Content.ReadAsStringAsync();
+                Assert.NotEmpty(responseContent);
+                tvItem = JsonSerializer.Deserialize<TVItem>(responseContent);
+                Assert.NotNull(tvItem);
 
-            // testing Delete(TVItemID)
-            urlID = url + "/" + tvItem.TVItemID;
-            response = await httpClient.DeleteAsync(urlID);
-            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-            responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
-            bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
-            Assert.True(retBool);
+                // testing Delete(TVItemID)
+                urlID = url + "/" + tvItem.TVItemID;
+                response = await httpClient.DeleteAsync(urlID);
+                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+                responseContent = await response.Content.ReadAsStringAsync();
+                Assert.NotEmpty(responseContent);
+                bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
+                Assert.True(retBool);
+            }
         }
         #endregion Functions public
 
@@ -133,51 +136,25 @@ namespace CSSPWebAPIsLocal.Tests.Controllers
         {
             Config = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-               .AddJsonFile("appsettings_csspwebapistests.json")
-               .AddUserSecrets("9d65c001-b7bc-4922-a0fc-1558b9ef927e")
+               .AddJsonFile("appsettings_csspwebapislocaltests.json")
+               .AddUserSecrets("61f396b6-8b79-4328-a2b7-a07921135f96")
                .Build();
 
             Services = new ServiceCollection();
 
-            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
-            Assert.NotNull(CSSPDBLocalFileName);
-
-            string TestDB = Config.GetValue<string>("TestDB");
-            Assert.NotNull(TestDB);
-
             Services.AddSingleton<IConfiguration>(Config);
 
-            Services.AddDbContext<CSSPDBContext>(options =>
-            {
-                options.UseSqlServer(TestDB);
-            });
+            CSSPAzureUrl = Config.GetValue<string>("CSSPAzureUrl");
+            Assert.NotNull(CSSPAzureUrl);
 
-            Services.AddDbContext<CSSPDBInMemoryContext>(options =>
-            {
-                options.UseInMemoryDatabase(TestDB);
-            });
-
-            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName);
-
-            Services.AddDbContext<CSSPDBLocalContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
-            });
-
-            Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(TestDB));
-
-            Services.AddIdentityCore<ApplicationUser>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            LocalUrl = Config.GetValue<string>("LocalUrl");
+            Assert.NotNull(LocalUrl);
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
-            Services.AddSingleton<ILoggedInService, LoggedInService>();
-            Services.AddSingleton<ILoginModelService, LoginModelService>();
-            Services.AddSingleton<IRegisterModelService, RegisterModelService>();
-            Services.AddSingleton<IAspNetUserService, AspNetUserService>();
-            Services.AddSingleton<IContactService, ContactService>();
-            Services.AddSingleton<ITVItemService, TVItemService>();
+            Services.AddSingleton<ILocalService, LocalService>();
+            Services.AddSingleton<IContactDBLocalService, ContactDBLocalService>();
+            Services.AddSingleton<ITVItemDBLocalService, TVItemDBLocalService>();
             Services.AddSingleton<ITVItemController, TVItemController>();
 
             Provider = Services.BuildServiceProvider();
@@ -188,36 +165,17 @@ namespace CSSPWebAPIsLocal.Tests.Controllers
 
             CSSPCultureService.SetCulture(culture);
 
-            ContactService = Provider.GetService<IContactService>();
-            Assert.NotNull(ContactService);
+            LocalService = Provider.GetService<ILocalService>();
+            Assert.NotNull(LocalService);
 
-            string LoginEmail = Config.GetValue<string>("LoginEmail");
-            Assert.NotNull(LoginEmail);
+            await LocalService.SetLoggedInContactInfo();
+            Assert.NotNull(LocalService.LoggedInContactInfo);
 
-            string Password = Password = Config.GetValue<string>("Password");
-            Assert.NotNull(Password);
+            TVItemDBLocalService = Provider.GetService<ITVItemDBLocalService>();
+            Assert.NotNull(TVItemDBLocalService);
 
-            LoginModel loginModel = new LoginModel()
-            {
-                LoginEmail = LoginEmail,
-                Password = Password
-            };
-
-            var actionContact = await ContactService.Login(loginModel);
-            Assert.NotNull(actionContact.Value);
-            contact = actionContact.Value;
-
-            loggedInService = Provider.GetService<ILoggedInService>();
-            Assert.NotNull(loggedInService);
-
-            await loggedInService.SetLoggedInContactInfo(contact.Id);
-            Assert.NotNull(loggedInService.LoggedInContactInfo);
-
-            tvItemService = Provider.GetService<ITVItemService>();
-            Assert.NotNull(tvItemService);
-
-            tvItemController = Provider.GetService<ITVItemController>();
-            Assert.NotNull(tvItemController);
+            TVItemController = Provider.GetService<ITVItemController>();
+            Assert.NotNull(TVItemController);
 
             return await Task.FromResult(true);
         }

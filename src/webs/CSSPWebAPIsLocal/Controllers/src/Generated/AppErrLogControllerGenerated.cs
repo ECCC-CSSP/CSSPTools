@@ -5,14 +5,15 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBLocalServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LocalServices;
 
-namespace CSSPWebAPIsLocal.Controllers
+namespace CSSPWebAPIs.Controllers
 {
     public partial interface IAppErrLogController
     {
@@ -25,7 +26,6 @@ namespace CSSPWebAPIsLocal.Controllers
 
     [Route("api/{culture}/[controller]")]
     [ApiController]
-    [Authorize]
     public partial class AppErrLogController : ControllerBase, IAppErrLogController
     {
         #region Variables
@@ -33,16 +33,16 @@ namespace CSSPWebAPIsLocal.Controllers
 
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
-        private IAppErrLogService AppErrLogService { get; }
+        private ILocalService LocalService { get; }
+        private IAppErrLogDBLocalService AppErrLogDBLocalService { get; }
         #endregion Properties
 
         #region Constructors
-        public AppErrLogController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IAppErrLogService AppErrLogService)
+        public AppErrLogController(ICSSPCultureService CSSPCultureService, ILocalService LocalService, IAppErrLogDBLocalService AppErrLogDBLocalService)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
-            this.AppErrLogService = AppErrLogService;
+            this.LocalService = LocalService;
+            this.AppErrLogDBLocalService = AppErrLogDBLocalService;
         }
         #endregion Constructors
 
@@ -51,41 +51,41 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<List<AppErrLog>>> Get()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await AppErrLogService.GetAppErrLogList();
+            return await AppErrLogDBLocalService.GetAppErrLogList();
         }
         [HttpGet("{AppErrLogID}")]
         public async Task<ActionResult<AppErrLog>> Get(int AppErrLogID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await AppErrLogService.GetAppErrLogWithAppErrLogID(AppErrLogID);
+            return await AppErrLogDBLocalService.GetAppErrLogWithAppErrLogID(AppErrLogID);
         }
         [HttpPost]
         public async Task<ActionResult<AppErrLog>> Post(AppErrLog AppErrLog)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await AppErrLogService.Post(AppErrLog);
+            return await AppErrLogDBLocalService.Post(AppErrLog);
         }
         [HttpPut]
         public async Task<ActionResult<AppErrLog>> Put(AppErrLog AppErrLog)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await AppErrLogService.Put(AppErrLog);
+            return await AppErrLogDBLocalService.Put(AppErrLog);
         }
         [HttpDelete("{AppErrLogID}")]
         public async Task<ActionResult<bool>> Delete(int AppErrLogID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await AppErrLogService.Delete(AppErrLogID);
+            return await AppErrLogDBLocalService.Delete(AppErrLogID);
         }
         #endregion Functions public
 

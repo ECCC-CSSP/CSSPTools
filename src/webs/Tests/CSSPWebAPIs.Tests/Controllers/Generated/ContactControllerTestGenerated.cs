@@ -37,13 +37,12 @@ namespace CSSPWebAPIs.Tests.Controllers
         private IConfiguration Config { get; set; }
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
-        private IContactDBService ContactDBService { get; set; }
-        private ILoggedInService LoggedInService { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
-        private IContactDBService contactDBService { get; set; }
-        private IContactController contactController { get; set; }
+        private ILoggedInService LoggedInService { get; set; }
+        private IContactDBService ContactDBService { get; set; }
         private Contact contact { get; set; }
         private string CSSPAzureUrl { get; set; }
+        private IContactController ContactController { get; set; }
         private Contact contact2 { get; set; }
         #endregion Properties
 
@@ -62,8 +61,8 @@ namespace CSSPWebAPIs.Tests.Controllers
             Assert.True(await Setup(culture));
 
             Assert.NotNull(LoggedInService);
-            Assert.NotNull(contactDBService);
-            Assert.NotNull(contactController);
+            Assert.NotNull(ContactDBService);
+            Assert.NotNull(ContactController);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -140,13 +139,13 @@ namespace CSSPWebAPIs.Tests.Controllers
 
             Services = new ServiceCollection();
 
+            Services.AddSingleton<IConfiguration>(Config);
+
             CSSPAzureUrl = Config.GetValue<string>("CSSPAzureUrl");
             Assert.NotNull(CSSPAzureUrl);
 
             string TestDB = Config.GetValue<string>("TestDB");
             Assert.NotNull(TestDB);
-
-            Services.AddSingleton<IConfiguration>(Config);
 
             Services.AddDbContext<CSSPDBContext>(options =>
             {
@@ -166,9 +165,9 @@ namespace CSSPWebAPIs.Tests.Controllers
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
-            Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<ILoginModelService, LoginModelService>();
             Services.AddSingleton<IRegisterModelService, RegisterModelService>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IContactDBService, ContactDBService>();
             Services.AddSingleton<IContactDBService, ContactDBService>();
             Services.AddSingleton<IContactController, ContactController>();
@@ -180,9 +179,6 @@ namespace CSSPWebAPIs.Tests.Controllers
             Assert.NotNull(CSSPCultureService);
 
             CSSPCultureService.SetCulture(culture);
-
-            ContactDBService = Provider.GetService<IContactDBService>();
-            Assert.NotNull(ContactDBService);
 
             string LoginEmail = Config.GetValue<string>("LoginEmail");
             Assert.NotNull(LoginEmail);
@@ -220,11 +216,11 @@ namespace CSSPWebAPIs.Tests.Controllers
             await LoggedInService.SetLoggedInContactInfo(contact2.Id);
             Assert.NotNull(LoggedInService.LoggedInContactInfo);
 
-            contactDBService = Provider.GetService<IContactDBService>();
-            Assert.NotNull(contactDBService);
+            ContactDBService = Provider.GetService<IContactDBService>();
+            Assert.NotNull(ContactDBService);
 
-            contactController = Provider.GetService<IContactController>();
-            Assert.NotNull(contactController);
+            ContactController = Provider.GetService<IContactController>();
+            Assert.NotNull(ContactController);
 
             return await Task.FromResult(true);
         }

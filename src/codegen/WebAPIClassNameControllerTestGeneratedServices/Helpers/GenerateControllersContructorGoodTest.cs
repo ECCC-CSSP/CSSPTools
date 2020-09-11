@@ -5,7 +5,7 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Services
 {
     public partial class WebAPIClassNameControllerTestGeneratedService : IWebAPIClassNameControllerTestGeneratedService
     {
-        private async Task<bool> GenerateControllersContructorGoodTest(string TypeName, string TypeNameLower, StringBuilder sb)
+        private async Task<bool> GenerateControllersContructorGoodTest(string TypeName, string TypeNameLower, StringBuilder sb, string WebApiType)
         {
             sb.AppendLine(@"        [Theory]");
             sb.AppendLine(@"        [InlineData(""en-CA"")]");
@@ -14,9 +14,17 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Services
             sb.AppendLine(@"        {");
             sb.AppendLine(@"            Assert.True(await Setup(culture));");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            Assert.NotNull(LoggedInService);");
-            sb.AppendLine($@"            Assert.NotNull({ TypeNameLower }DBService);");
-            sb.AppendLine($@"            Assert.NotNull({ TypeNameLower }Controller);");
+            if (WebApiType == "")
+            {
+                sb.AppendLine(@"            Assert.NotNull(LoggedInService);");
+                sb.AppendLine($@"            Assert.NotNull({ TypeName }DBService);");
+            }
+            if (WebApiType == "Local")
+            {
+                sb.AppendLine(@"            Assert.NotNull(LocalService);");
+                sb.AppendLine($@"            Assert.NotNull({ TypeName }DBLocalService);");
+            }
+            sb.AppendLine($@"            Assert.NotNull({ TypeName }Controller);");
             sb.AppendLine(@"        }");
 
             return await Task.FromResult(true);

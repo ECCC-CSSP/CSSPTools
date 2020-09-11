@@ -5,14 +5,15 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBLocalServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LocalServices;
 
-namespace CSSPWebAPIsLocal.Controllers
+namespace CSSPWebAPIs.Controllers
 {
     public partial interface IBoxModelLanguageController
     {
@@ -25,7 +26,6 @@ namespace CSSPWebAPIsLocal.Controllers
 
     [Route("api/{culture}/[controller]")]
     [ApiController]
-    [Authorize]
     public partial class BoxModelLanguageController : ControllerBase, IBoxModelLanguageController
     {
         #region Variables
@@ -33,16 +33,16 @@ namespace CSSPWebAPIsLocal.Controllers
 
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
-        private IBoxModelLanguageService BoxModelLanguageService { get; }
+        private ILocalService LocalService { get; }
+        private IBoxModelLanguageDBLocalService BoxModelLanguageDBLocalService { get; }
         #endregion Properties
 
         #region Constructors
-        public BoxModelLanguageController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IBoxModelLanguageService BoxModelLanguageService)
+        public BoxModelLanguageController(ICSSPCultureService CSSPCultureService, ILocalService LocalService, IBoxModelLanguageDBLocalService BoxModelLanguageDBLocalService)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
-            this.BoxModelLanguageService = BoxModelLanguageService;
+            this.LocalService = LocalService;
+            this.BoxModelLanguageDBLocalService = BoxModelLanguageDBLocalService;
         }
         #endregion Constructors
 
@@ -51,41 +51,41 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<List<BoxModelLanguage>>> Get()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await BoxModelLanguageService.GetBoxModelLanguageList();
+            return await BoxModelLanguageDBLocalService.GetBoxModelLanguageList();
         }
         [HttpGet("{BoxModelLanguageID}")]
         public async Task<ActionResult<BoxModelLanguage>> Get(int BoxModelLanguageID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await BoxModelLanguageService.GetBoxModelLanguageWithBoxModelLanguageID(BoxModelLanguageID);
+            return await BoxModelLanguageDBLocalService.GetBoxModelLanguageWithBoxModelLanguageID(BoxModelLanguageID);
         }
         [HttpPost]
         public async Task<ActionResult<BoxModelLanguage>> Post(BoxModelLanguage BoxModelLanguage)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await BoxModelLanguageService.Post(BoxModelLanguage);
+            return await BoxModelLanguageDBLocalService.Post(BoxModelLanguage);
         }
         [HttpPut]
         public async Task<ActionResult<BoxModelLanguage>> Put(BoxModelLanguage BoxModelLanguage)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await BoxModelLanguageService.Put(BoxModelLanguage);
+            return await BoxModelLanguageDBLocalService.Put(BoxModelLanguage);
         }
         [HttpDelete("{BoxModelLanguageID}")]
         public async Task<ActionResult<bool>> Delete(int BoxModelLanguageID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await BoxModelLanguageService.Delete(BoxModelLanguageID);
+            return await BoxModelLanguageDBLocalService.Delete(BoxModelLanguageID);
         }
         #endregion Functions public
 

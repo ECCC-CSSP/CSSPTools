@@ -6,8 +6,8 @@
 
 using CSSPEnums;
 using CSSPModels;
-using CSSPServices;
-using CSSPWebAPIsLocal.Controllers;
+using CSSPDBLocalServices;
+using CSSPWebAPIs.Controllers;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,8 +24,9 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using LocalServices;
 
-namespace CSSPWebAPIsLocal.Tests.Controllers
+namespace CSSPWebAPIs.Tests.Controllers
 {
     public partial class MapInfoPointControllerTest
     {
@@ -36,13 +37,12 @@ namespace CSSPWebAPIsLocal.Tests.Controllers
         private IConfiguration Config { get; set; }
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
-        private CSSPDBContext db { get; set; }
-        private IContactService ContactService { get; set; }
-        private ILoggedInService loggedInService { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
-        private IMapInfoPointService mapInfoPointService { get; set; }
-        private IMapInfoPointController mapInfoPointController { get; set; }
-        private Contact contact { get; set; }
+        private ILocalService LocalService { get; set; }
+        private IMapInfoPointDBLocalService MapInfoPointDBLocalService { get; set; }
+        private string CSSPAzureUrl { get; set; }
+        private string LocalUrl { get; set; }
+        private IMapInfoPointController MapInfoPointController { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -54,73 +54,76 @@ namespace CSSPWebAPIsLocal.Tests.Controllers
         #region Functions public
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task MapInfoPointController_Constructor_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
-            Assert.NotNull(loggedInService);
-            Assert.NotNull(mapInfoPointService);
-            Assert.NotNull(mapInfoPointController);
+
+            Assert.NotNull(LocalService);
+            Assert.NotNull(MapInfoPointDBLocalService);
+            Assert.NotNull(MapInfoPointController);
         }
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task MapInfoPointController_CRUD_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            HttpClient httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
+            using (HttpClient httpClient = new HttpClient())
+            {
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", LocalService.LoggedInContactInfo.LoggedInContact.Token);
 
-            // testing Get
-            string url = "https://localhost:4447/api/" + culture + "/MapInfoPoint";
-            var response = await httpClient.GetAsync(url);
-            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
-            List<MapInfoPoint> mapInfoPointList = JsonSerializer.Deserialize<List<MapInfoPoint>>(responseContent);
-            Assert.True(mapInfoPointList.Count > 0);
+                // testing Get
+                string url = $"{ LocalUrl }api/{ culture }/MapInfoPoint";
+                var response = await httpClient.GetAsync(url);
+                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+                string responseContent = await response.Content.ReadAsStringAsync();
+                Assert.NotEmpty(responseContent);
+                List<MapInfoPoint> mapInfoPointList = JsonSerializer.Deserialize<List<MapInfoPoint>>(responseContent);
+                Assert.True(mapInfoPointList.Count > 0);
 
-            // testing Get(MapInfoPointID)
-            string urlID = url + "/" + mapInfoPointList[0].MapInfoPointID;
-            response = await httpClient.GetAsync(urlID);
-            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-            responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
-            MapInfoPoint mapInfoPoint = JsonSerializer.Deserialize<MapInfoPoint>(responseContent);
-            Assert.Equal(mapInfoPointList[0].MapInfoPointID, mapInfoPoint.MapInfoPointID);
+                // testing Get(MapInfoPointID)
+                string urlID = url + "/" + mapInfoPointList[0].MapInfoPointID;
+                response = await httpClient.GetAsync(urlID);
+                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+                responseContent = await response.Content.ReadAsStringAsync();
+                Assert.NotEmpty(responseContent);
+                MapInfoPoint mapInfoPoint = JsonSerializer.Deserialize<MapInfoPoint>(responseContent);
+                Assert.Equal(mapInfoPointList[0].MapInfoPointID, mapInfoPoint.MapInfoPointID);
 
-            // testing Post(MapInfoPoint)
-            mapInfoPoint.MapInfoPointID = 0;
-            string content = JsonSerializer.Serialize<MapInfoPoint>(mapInfoPoint);
-            HttpContent httpContent = new StringContent(content);
-            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            response = await httpClient.PostAsync(url, httpContent);
-            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-            responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
-            mapInfoPoint = JsonSerializer.Deserialize<MapInfoPoint>(responseContent);
-            Assert.NotNull(mapInfoPoint);
+                // testing Post(MapInfoPoint)
+                mapInfoPoint.MapInfoPointID = 0;
+                string content = JsonSerializer.Serialize<MapInfoPoint>(mapInfoPoint);
+                HttpContent httpContent = new StringContent(content);
+                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                response = await httpClient.PostAsync(url, httpContent);
+                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+                responseContent = await response.Content.ReadAsStringAsync();
+                Assert.NotEmpty(responseContent);
+                mapInfoPoint = JsonSerializer.Deserialize<MapInfoPoint>(responseContent);
+                Assert.NotNull(mapInfoPoint);
 
-            // testing Put(MapInfoPoint)
-            content = JsonSerializer.Serialize<MapInfoPoint>(mapInfoPoint);
-            httpContent = new StringContent(content);
-            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            response = await httpClient.PutAsync(url, httpContent);
-            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-            responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
-            mapInfoPoint = JsonSerializer.Deserialize<MapInfoPoint>(responseContent);
-            Assert.NotNull(mapInfoPoint);
+                // testing Put(MapInfoPoint)
+                content = JsonSerializer.Serialize<MapInfoPoint>(mapInfoPoint);
+                httpContent = new StringContent(content);
+                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                response = await httpClient.PutAsync(url, httpContent);
+                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+                responseContent = await response.Content.ReadAsStringAsync();
+                Assert.NotEmpty(responseContent);
+                mapInfoPoint = JsonSerializer.Deserialize<MapInfoPoint>(responseContent);
+                Assert.NotNull(mapInfoPoint);
 
-            // testing Delete(MapInfoPointID)
-            urlID = url + "/" + mapInfoPoint.MapInfoPointID;
-            response = await httpClient.DeleteAsync(urlID);
-            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-            responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
-            bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
-            Assert.True(retBool);
+                // testing Delete(MapInfoPointID)
+                urlID = url + "/" + mapInfoPoint.MapInfoPointID;
+                response = await httpClient.DeleteAsync(urlID);
+                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+                responseContent = await response.Content.ReadAsStringAsync();
+                Assert.NotEmpty(responseContent);
+                bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
+                Assert.True(retBool);
+            }
         }
         #endregion Functions public
 
@@ -129,51 +132,25 @@ namespace CSSPWebAPIsLocal.Tests.Controllers
         {
             Config = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-               .AddJsonFile("appsettings_csspwebapistests.json")
-               .AddUserSecrets("9d65c001-b7bc-4922-a0fc-1558b9ef927e")
+               .AddJsonFile("appsettings_csspwebapislocaltests.json")
+               .AddUserSecrets("61f396b6-8b79-4328-a2b7-a07921135f96")
                .Build();
 
             Services = new ServiceCollection();
 
-            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
-            Assert.NotNull(CSSPDBLocalFileName);
-
-            string TestDB = Config.GetValue<string>("TestDB");
-            Assert.NotNull(TestDB);
-
             Services.AddSingleton<IConfiguration>(Config);
 
-            Services.AddDbContext<CSSPDBContext>(options =>
-            {
-                options.UseSqlServer(TestDB);
-            });
+            CSSPAzureUrl = Config.GetValue<string>("CSSPAzureUrl");
+            Assert.NotNull(CSSPAzureUrl);
 
-            Services.AddDbContext<CSSPDBInMemoryContext>(options =>
-            {
-                options.UseInMemoryDatabase(TestDB);
-            });
-
-            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName);
-
-            Services.AddDbContext<CSSPDBLocalContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
-            });
-
-            Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(TestDB));
-
-            Services.AddIdentityCore<ApplicationUser>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            LocalUrl = Config.GetValue<string>("LocalUrl");
+            Assert.NotNull(LocalUrl);
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
-            Services.AddSingleton<ILoggedInService, LoggedInService>();
-            Services.AddSingleton<ILoginModelService, LoginModelService>();
-            Services.AddSingleton<IRegisterModelService, RegisterModelService>();
-            Services.AddSingleton<IAspNetUserService, AspNetUserService>();
-            Services.AddSingleton<IContactService, ContactService>();
-            Services.AddSingleton<IMapInfoPointService, MapInfoPointService>();
+            Services.AddSingleton<ILocalService, LocalService>();
+            Services.AddSingleton<IContactDBLocalService, ContactDBLocalService>();
+            Services.AddSingleton<IMapInfoPointDBLocalService, MapInfoPointDBLocalService>();
             Services.AddSingleton<IMapInfoPointController, MapInfoPointController>();
 
             Provider = Services.BuildServiceProvider();
@@ -184,36 +161,17 @@ namespace CSSPWebAPIsLocal.Tests.Controllers
 
             CSSPCultureService.SetCulture(culture);
 
-            ContactService = Provider.GetService<IContactService>();
-            Assert.NotNull(ContactService);
+            LocalService = Provider.GetService<ILocalService>();
+            Assert.NotNull(LocalService);
 
-            string LoginEmail = Config.GetValue<string>("LoginEmail");
-            Assert.NotNull(LoginEmail);
+            await LocalService.SetLoggedInContactInfo();
+            Assert.NotNull(LocalService.LoggedInContactInfo);
 
-            string Password = Password = Config.GetValue<string>("Password");
-            Assert.NotNull(Password);
+            MapInfoPointDBLocalService = Provider.GetService<IMapInfoPointDBLocalService>();
+            Assert.NotNull(MapInfoPointDBLocalService);
 
-            LoginModel loginModel = new LoginModel()
-            {
-                LoginEmail = LoginEmail,
-                Password = Password
-            };
-
-            var actionContact = await ContactService.Login(loginModel);
-            Assert.NotNull(actionContact.Value);
-            contact = actionContact.Value;
-
-            loggedInService = Provider.GetService<ILoggedInService>();
-            Assert.NotNull(loggedInService);
-
-            await loggedInService.SetLoggedInContactInfo(contact.Id);
-            Assert.NotNull(loggedInService.LoggedInContactInfo);
-
-            mapInfoPointService = Provider.GetService<IMapInfoPointService>();
-            Assert.NotNull(mapInfoPointService);
-
-            mapInfoPointController = Provider.GetService<IMapInfoPointController>();
-            Assert.NotNull(mapInfoPointController);
+            MapInfoPointController = Provider.GetService<IMapInfoPointController>();
+            Assert.NotNull(MapInfoPointController);
 
             return await Task.FromResult(true);
         }

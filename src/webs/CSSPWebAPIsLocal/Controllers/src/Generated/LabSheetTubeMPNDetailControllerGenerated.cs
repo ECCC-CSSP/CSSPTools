@@ -5,14 +5,15 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBLocalServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LocalServices;
 
-namespace CSSPWebAPIsLocal.Controllers
+namespace CSSPWebAPIs.Controllers
 {
     public partial interface ILabSheetTubeMPNDetailController
     {
@@ -25,7 +26,6 @@ namespace CSSPWebAPIsLocal.Controllers
 
     [Route("api/{culture}/[controller]")]
     [ApiController]
-    [Authorize]
     public partial class LabSheetTubeMPNDetailController : ControllerBase, ILabSheetTubeMPNDetailController
     {
         #region Variables
@@ -33,16 +33,16 @@ namespace CSSPWebAPIsLocal.Controllers
 
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
-        private ILabSheetTubeMPNDetailService LabSheetTubeMPNDetailService { get; }
+        private ILocalService LocalService { get; }
+        private ILabSheetTubeMPNDetailDBLocalService LabSheetTubeMPNDetailDBLocalService { get; }
         #endregion Properties
 
         #region Constructors
-        public LabSheetTubeMPNDetailController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, ILabSheetTubeMPNDetailService LabSheetTubeMPNDetailService)
+        public LabSheetTubeMPNDetailController(ICSSPCultureService CSSPCultureService, ILocalService LocalService, ILabSheetTubeMPNDetailDBLocalService LabSheetTubeMPNDetailDBLocalService)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
-            this.LabSheetTubeMPNDetailService = LabSheetTubeMPNDetailService;
+            this.LocalService = LocalService;
+            this.LabSheetTubeMPNDetailDBLocalService = LabSheetTubeMPNDetailDBLocalService;
         }
         #endregion Constructors
 
@@ -51,41 +51,41 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<List<LabSheetTubeMPNDetail>>> Get()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await LabSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList();
+            return await LabSheetTubeMPNDetailDBLocalService.GetLabSheetTubeMPNDetailList();
         }
         [HttpGet("{LabSheetTubeMPNDetailID}")]
         public async Task<ActionResult<LabSheetTubeMPNDetail>> Get(int LabSheetTubeMPNDetailID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await LabSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailWithLabSheetTubeMPNDetailID(LabSheetTubeMPNDetailID);
+            return await LabSheetTubeMPNDetailDBLocalService.GetLabSheetTubeMPNDetailWithLabSheetTubeMPNDetailID(LabSheetTubeMPNDetailID);
         }
         [HttpPost]
         public async Task<ActionResult<LabSheetTubeMPNDetail>> Post(LabSheetTubeMPNDetail LabSheetTubeMPNDetail)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await LabSheetTubeMPNDetailService.Post(LabSheetTubeMPNDetail);
+            return await LabSheetTubeMPNDetailDBLocalService.Post(LabSheetTubeMPNDetail);
         }
         [HttpPut]
         public async Task<ActionResult<LabSheetTubeMPNDetail>> Put(LabSheetTubeMPNDetail LabSheetTubeMPNDetail)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await LabSheetTubeMPNDetailService.Put(LabSheetTubeMPNDetail);
+            return await LabSheetTubeMPNDetailDBLocalService.Put(LabSheetTubeMPNDetail);
         }
         [HttpDelete("{LabSheetTubeMPNDetailID}")]
         public async Task<ActionResult<bool>> Delete(int LabSheetTubeMPNDetailID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await LabSheetTubeMPNDetailService.Delete(LabSheetTubeMPNDetailID);
+            return await LabSheetTubeMPNDetailDBLocalService.Delete(LabSheetTubeMPNDetailID);
         }
         #endregion Functions public
 

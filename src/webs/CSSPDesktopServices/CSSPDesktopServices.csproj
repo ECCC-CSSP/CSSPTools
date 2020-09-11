@@ -32,5 +32,12 @@
     <PackageReference Include="Azure.Storage.Blobs" Version="12.4.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\dlls\CSSPCultureServices\CSSPCultureServices.csproj" />
+    <ProjectReference Include="..\..\dlls\CSSPDBSearchServices\CSSPDBSearchServices.csproj" />
+    <ProjectReference Include="..\..\dlls\CSSPSQLiteServices\CSSPSQLiteServices.csproj" />
+    <ProjectReference Include="..\..\dlls\ReadGzFileServices\ReadGzFileServices.csproj" />
+  </ItemGroup>
+
 
 </Project>

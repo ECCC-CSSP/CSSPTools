@@ -5,14 +5,15 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBLocalServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LocalServices;
 
-namespace CSSPWebAPIsLocal.Controllers
+namespace CSSPWebAPIs.Controllers
 {
     public partial interface IPolSourceSiteEffectTermController
     {
@@ -25,7 +26,6 @@ namespace CSSPWebAPIsLocal.Controllers
 
     [Route("api/{culture}/[controller]")]
     [ApiController]
-    [Authorize]
     public partial class PolSourceSiteEffectTermController : ControllerBase, IPolSourceSiteEffectTermController
     {
         #region Variables
@@ -33,16 +33,16 @@ namespace CSSPWebAPIsLocal.Controllers
 
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
-        private IPolSourceSiteEffectTermService PolSourceSiteEffectTermService { get; }
+        private ILocalService LocalService { get; }
+        private IPolSourceSiteEffectTermDBLocalService PolSourceSiteEffectTermDBLocalService { get; }
         #endregion Properties
 
         #region Constructors
-        public PolSourceSiteEffectTermController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IPolSourceSiteEffectTermService PolSourceSiteEffectTermService)
+        public PolSourceSiteEffectTermController(ICSSPCultureService CSSPCultureService, ILocalService LocalService, IPolSourceSiteEffectTermDBLocalService PolSourceSiteEffectTermDBLocalService)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
-            this.PolSourceSiteEffectTermService = PolSourceSiteEffectTermService;
+            this.LocalService = LocalService;
+            this.PolSourceSiteEffectTermDBLocalService = PolSourceSiteEffectTermDBLocalService;
         }
         #endregion Constructors
 
@@ -51,41 +51,41 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<List<PolSourceSiteEffectTerm>>> Get()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await PolSourceSiteEffectTermService.GetPolSourceSiteEffectTermList();
+            return await PolSourceSiteEffectTermDBLocalService.GetPolSourceSiteEffectTermList();
         }
         [HttpGet("{PolSourceSiteEffectTermID}")]
         public async Task<ActionResult<PolSourceSiteEffectTerm>> Get(int PolSourceSiteEffectTermID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await PolSourceSiteEffectTermService.GetPolSourceSiteEffectTermWithPolSourceSiteEffectTermID(PolSourceSiteEffectTermID);
+            return await PolSourceSiteEffectTermDBLocalService.GetPolSourceSiteEffectTermWithPolSourceSiteEffectTermID(PolSourceSiteEffectTermID);
         }
         [HttpPost]
         public async Task<ActionResult<PolSourceSiteEffectTerm>> Post(PolSourceSiteEffectTerm PolSourceSiteEffectTerm)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await PolSourceSiteEffectTermService.Post(PolSourceSiteEffectTerm);
+            return await PolSourceSiteEffectTermDBLocalService.Post(PolSourceSiteEffectTerm);
         }
         [HttpPut]
         public async Task<ActionResult<PolSourceSiteEffectTerm>> Put(PolSourceSiteEffectTerm PolSourceSiteEffectTerm)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await PolSourceSiteEffectTermService.Put(PolSourceSiteEffectTerm);
+            return await PolSourceSiteEffectTermDBLocalService.Put(PolSourceSiteEffectTerm);
         }
         [HttpDelete("{PolSourceSiteEffectTermID}")]
         public async Task<ActionResult<bool>> Delete(int PolSourceSiteEffectTermID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await PolSourceSiteEffectTermService.Delete(PolSourceSiteEffectTermID);
+            return await PolSourceSiteEffectTermDBLocalService.Delete(PolSourceSiteEffectTermID);
         }
         #endregion Functions public
 

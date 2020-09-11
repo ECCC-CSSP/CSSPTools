@@ -3,7 +3,7 @@
  * 
  */
 using CSSPModels;
-using CSSPServices;
+using CSSPDBLocalServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +11,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using CSSPEnums;
 using CSSPCultureServices.Resources;
+using LocalServices;
+using ReadGzFileServices;
 
 namespace CSSPWebAPIsLocal.Controllers
 {
@@ -53,15 +55,15 @@ namespace CSSPWebAPIsLocal.Controllers
 
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
+        private ILocalService LocalService { get; }
         private IReadGzFileService ReadGzFileService { get; }
         #endregion Properties
 
         #region Constructors
-        public ReadController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IReadGzFileService ReadGzFileService)
+        public ReadController(ICSSPCultureService CSSPCultureService, ILocalService LocalService, IReadGzFileService ReadGzFileService)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
+            this.LocalService = LocalService;
             this.ReadGzFileService = ReadGzFileService;
         }
         #endregion Constructors
@@ -73,12 +75,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = AreaTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
-
-            if (LoggedInService.RunningOn != RunningOnEnum.Local)
-            {
-                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebArea")));
-            }
+            await LocalService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebArea>(WebType, TVItemID, WebTypeYear);
         }
@@ -88,12 +85,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = ClimateSiteTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
-
-            if (LoggedInService.RunningOn != RunningOnEnum.Local)
-            {
-                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebClimateDataValue")));
-            }
+            await LocalService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebClimateDataValue>(WebType, TVItemID, WebTypeYear);
         }
@@ -103,12 +95,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = ProvinceTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
-
-            if (LoggedInService.RunningOn != RunningOnEnum.Local)
-            {
-                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebClimateSite")));
-            }
+            await LocalService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebClimateSite>(WebType, TVItemID, WebTypeYear);
         }
@@ -118,12 +105,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = 0 -- not used
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
-
-            if (LoggedInService.RunningOn != RunningOnEnum.Local)
-            {
-                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebContact")));
-            }
+            await LocalService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebContact>(WebType, TVItemID, WebTypeYear);
         }
@@ -133,12 +115,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = CountryTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
-
-            if (LoggedInService.RunningOn != RunningOnEnum.Local)
-            {
-                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebCountry")));
-            }
+            await LocalService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebCountry>(WebType, TVItemID, WebTypeYear);
         }
@@ -148,12 +125,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = SubsectorTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
-
-            if (LoggedInService.RunningOn != RunningOnEnum.Local)
-            {
-                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebDrogueRun")));
-            }
+            await LocalService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebDrogueRun>(WebType, TVItemID, WebTypeYear);
         }
@@ -163,12 +135,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = 0 -- not used
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
-
-            if (LoggedInService.RunningOn != RunningOnEnum.Local)
-            {
-                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebHelpDoc")));
-            }
+            await LocalService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebHelpDoc>(WebType, TVItemID, WebTypeYear);
         }
@@ -178,12 +145,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = HydrometricSiteTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
-
-            if (LoggedInService.RunningOn != RunningOnEnum.Local)
-            {
-                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebHydrometricDataValue")));
-            }
+            await LocalService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebHydrometricDataValue>(WebType, TVItemID, WebTypeYear);
         }
@@ -193,12 +155,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = ProvinceTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
-
-            if (LoggedInService.RunningOn != RunningOnEnum.Local)
-            {
-                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebHydrometricSite")));
-            }
+            await LocalService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebHydrometricSite>(WebType, TVItemID, WebTypeYear);
         }
@@ -208,12 +165,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = MikeScenarioTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
-
-            if (LoggedInService.RunningOn != RunningOnEnum.Local)
-            {
-                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebMikeScenario")));
-            }
+            await LocalService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebMikeScenario>(WebType, TVItemID, WebTypeYear);
         }
@@ -223,12 +175,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = ProvinceTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
-
-            if (LoggedInService.RunningOn != RunningOnEnum.Local)
-            {
-                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebMunicipalities")));
-            }
+            await LocalService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebMunicipalities>(WebType, TVItemID, WebTypeYear);
         }
@@ -238,12 +185,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = MunicipalityTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
-
-            if (LoggedInService.RunningOn != RunningOnEnum.Local)
-            {
-                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebMunicipality")));
-            }
+            await LocalService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebMunicipality>(WebType, TVItemID, WebTypeYear);
         }
@@ -253,12 +195,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = 0 -- not used
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
-
-            if (LoggedInService.RunningOn != RunningOnEnum.Local)
-            {
-                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebMWQMLookupMPN")));
-            }
+            await LocalService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebMWQMLookupMPN>(WebType, TVItemID, WebTypeYear);
         }
@@ -268,12 +205,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = SubsectorTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
-
-            if (LoggedInService.RunningOn != RunningOnEnum.Local)
-            {
-                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebMWQMRun")));
-            }
+            await LocalService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebMWQMRun>(WebType, TVItemID, WebTypeYear);
         }
@@ -283,12 +215,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = SubsectorTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
-
-            if (LoggedInService.RunningOn != RunningOnEnum.Local)
-            {
-                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebMWQMSample")));
-            }
+            await LocalService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebMWQMSample>(WebType, TVItemID, WebTypeYear);
         }
@@ -298,12 +225,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = SubsectorTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
-
-            if (LoggedInService.RunningOn != RunningOnEnum.Local)
-            {
-                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebMWQMSite")));
-            }
+            await LocalService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebMWQMSite>(WebType, TVItemID, WebTypeYear);
         }
@@ -313,12 +235,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = 0 -- not used
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
-
-            if (LoggedInService.RunningOn != RunningOnEnum.Local)
-            {
-                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebPolSourceGrouping")));
-            }
+            await LocalService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebPolSourceGrouping>(WebType, TVItemID, WebTypeYear);
         }
@@ -328,12 +245,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = SubsectorTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
-
-            if (LoggedInService.RunningOn != RunningOnEnum.Local)
-            {
-                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebPolSourceSite")));
-            }
+            await LocalService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebPolSourceSite>(WebType, TVItemID, WebTypeYear);
         }
@@ -343,12 +255,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = ProvinceTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
-
-            if (LoggedInService.RunningOn != RunningOnEnum.Local)
-            {
-                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebProvince")));
-            }
+            await LocalService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebProvince>(WebType, TVItemID, WebTypeYear);
         }
@@ -358,12 +265,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = 0 -- not used
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
-
-            if (LoggedInService.RunningOn != RunningOnEnum.Local)
-            {
-                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebReportType")));
-            }
+            await LocalService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebReportType>(WebType, TVItemID, WebTypeYear);
         }
@@ -373,12 +275,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = 0 -- not used
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
-
-            if (LoggedInService.RunningOn != RunningOnEnum.Local)
-            {
-                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebRoot")));
-            }
+            await LocalService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebRoot>(WebType, TVItemID, WebTypeYear);
         }
@@ -388,12 +285,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = SamplingPlanID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
-
-            if (LoggedInService.RunningOn != RunningOnEnum.Local)
-            {
-                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebSamplingPlan")));
-            }
+            await LocalService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebSamplingPlan>(WebType, TVItemID, WebTypeYear);
         }
@@ -403,12 +295,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = SectorTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
-
-            if (LoggedInService.RunningOn != RunningOnEnum.Local)
-            {
-                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebSector")));
-            }
+            await LocalService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebSector>(WebType, TVItemID, WebTypeYear);
         }
@@ -418,12 +305,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = SubsectorTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
-
-            if (LoggedInService.RunningOn != RunningOnEnum.Local)
-            {
-                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebSubsector")));
-            }
+            await LocalService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebSubsector>(WebType, TVItemID, WebTypeYear);
         }
@@ -433,12 +315,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = 0 -- not used
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
-
-            if (LoggedInService.RunningOn != RunningOnEnum.Local)
-            {
-                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebTideLocation")));
-            }
+            await LocalService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebTideLocation>(WebType, TVItemID, WebTypeYear);
         }
@@ -448,12 +325,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = 0 -- not used
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
-
-            if (LoggedInService.RunningOn != RunningOnEnum.Local)
-            {
-                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._OnlyAvailableWhenRunningOnLocal, "Read/WebTVItem")));
-            }
+            await LocalService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebTVItem>(WebType, TVItemID, WebTypeYear);
         }

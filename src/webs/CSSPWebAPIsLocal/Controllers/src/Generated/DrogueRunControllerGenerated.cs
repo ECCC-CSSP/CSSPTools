@@ -5,14 +5,15 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBLocalServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LocalServices;
 
-namespace CSSPWebAPIsLocal.Controllers
+namespace CSSPWebAPIs.Controllers
 {
     public partial interface IDrogueRunController
     {
@@ -25,7 +26,6 @@ namespace CSSPWebAPIsLocal.Controllers
 
     [Route("api/{culture}/[controller]")]
     [ApiController]
-    [Authorize]
     public partial class DrogueRunController : ControllerBase, IDrogueRunController
     {
         #region Variables
@@ -33,16 +33,16 @@ namespace CSSPWebAPIsLocal.Controllers
 
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
-        private IDrogueRunService DrogueRunService { get; }
+        private ILocalService LocalService { get; }
+        private IDrogueRunDBLocalService DrogueRunDBLocalService { get; }
         #endregion Properties
 
         #region Constructors
-        public DrogueRunController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IDrogueRunService DrogueRunService)
+        public DrogueRunController(ICSSPCultureService CSSPCultureService, ILocalService LocalService, IDrogueRunDBLocalService DrogueRunDBLocalService)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
-            this.DrogueRunService = DrogueRunService;
+            this.LocalService = LocalService;
+            this.DrogueRunDBLocalService = DrogueRunDBLocalService;
         }
         #endregion Constructors
 
@@ -51,41 +51,41 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<List<DrogueRun>>> Get()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await DrogueRunService.GetDrogueRunList();
+            return await DrogueRunDBLocalService.GetDrogueRunList();
         }
         [HttpGet("{DrogueRunID}")]
         public async Task<ActionResult<DrogueRun>> Get(int DrogueRunID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await DrogueRunService.GetDrogueRunWithDrogueRunID(DrogueRunID);
+            return await DrogueRunDBLocalService.GetDrogueRunWithDrogueRunID(DrogueRunID);
         }
         [HttpPost]
         public async Task<ActionResult<DrogueRun>> Post(DrogueRun DrogueRun)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await DrogueRunService.Post(DrogueRun);
+            return await DrogueRunDBLocalService.Post(DrogueRun);
         }
         [HttpPut]
         public async Task<ActionResult<DrogueRun>> Put(DrogueRun DrogueRun)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await DrogueRunService.Put(DrogueRun);
+            return await DrogueRunDBLocalService.Put(DrogueRun);
         }
         [HttpDelete("{DrogueRunID}")]
         public async Task<ActionResult<bool>> Delete(int DrogueRunID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await DrogueRunService.Delete(DrogueRunID);
+            return await DrogueRunDBLocalService.Delete(DrogueRunID);
         }
         #endregion Functions public
 

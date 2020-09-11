@@ -5,14 +5,15 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBLocalServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LocalServices;
 
-namespace CSSPWebAPIsLocal.Controllers
+namespace CSSPWebAPIs.Controllers
 {
     public partial interface ITideDataValueController
     {
@@ -25,7 +26,6 @@ namespace CSSPWebAPIsLocal.Controllers
 
     [Route("api/{culture}/[controller]")]
     [ApiController]
-    [Authorize]
     public partial class TideDataValueController : ControllerBase, ITideDataValueController
     {
         #region Variables
@@ -33,16 +33,16 @@ namespace CSSPWebAPIsLocal.Controllers
 
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
-        private ITideDataValueService TideDataValueService { get; }
+        private ILocalService LocalService { get; }
+        private ITideDataValueDBLocalService TideDataValueDBLocalService { get; }
         #endregion Properties
 
         #region Constructors
-        public TideDataValueController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, ITideDataValueService TideDataValueService)
+        public TideDataValueController(ICSSPCultureService CSSPCultureService, ILocalService LocalService, ITideDataValueDBLocalService TideDataValueDBLocalService)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
-            this.TideDataValueService = TideDataValueService;
+            this.LocalService = LocalService;
+            this.TideDataValueDBLocalService = TideDataValueDBLocalService;
         }
         #endregion Constructors
 
@@ -51,41 +51,41 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<List<TideDataValue>>> Get()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await TideDataValueService.GetTideDataValueList();
+            return await TideDataValueDBLocalService.GetTideDataValueList();
         }
         [HttpGet("{TideDataValueID}")]
         public async Task<ActionResult<TideDataValue>> Get(int TideDataValueID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await TideDataValueService.GetTideDataValueWithTideDataValueID(TideDataValueID);
+            return await TideDataValueDBLocalService.GetTideDataValueWithTideDataValueID(TideDataValueID);
         }
         [HttpPost]
         public async Task<ActionResult<TideDataValue>> Post(TideDataValue TideDataValue)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await TideDataValueService.Post(TideDataValue);
+            return await TideDataValueDBLocalService.Post(TideDataValue);
         }
         [HttpPut]
         public async Task<ActionResult<TideDataValue>> Put(TideDataValue TideDataValue)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await TideDataValueService.Put(TideDataValue);
+            return await TideDataValueDBLocalService.Put(TideDataValue);
         }
         [HttpDelete("{TideDataValueID}")]
         public async Task<ActionResult<bool>> Delete(int TideDataValueID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await TideDataValueService.Delete(TideDataValueID);
+            return await TideDataValueDBLocalService.Delete(TideDataValueID);
         }
         #endregion Functions public
 

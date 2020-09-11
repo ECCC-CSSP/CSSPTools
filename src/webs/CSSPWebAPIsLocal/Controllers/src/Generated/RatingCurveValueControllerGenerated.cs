@@ -5,14 +5,15 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBLocalServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LocalServices;
 
-namespace CSSPWebAPIsLocal.Controllers
+namespace CSSPWebAPIs.Controllers
 {
     public partial interface IRatingCurveValueController
     {
@@ -25,7 +26,6 @@ namespace CSSPWebAPIsLocal.Controllers
 
     [Route("api/{culture}/[controller]")]
     [ApiController]
-    [Authorize]
     public partial class RatingCurveValueController : ControllerBase, IRatingCurveValueController
     {
         #region Variables
@@ -33,16 +33,16 @@ namespace CSSPWebAPIsLocal.Controllers
 
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
-        private IRatingCurveValueService RatingCurveValueService { get; }
+        private ILocalService LocalService { get; }
+        private IRatingCurveValueDBLocalService RatingCurveValueDBLocalService { get; }
         #endregion Properties
 
         #region Constructors
-        public RatingCurveValueController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IRatingCurveValueService RatingCurveValueService)
+        public RatingCurveValueController(ICSSPCultureService CSSPCultureService, ILocalService LocalService, IRatingCurveValueDBLocalService RatingCurveValueDBLocalService)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
-            this.RatingCurveValueService = RatingCurveValueService;
+            this.LocalService = LocalService;
+            this.RatingCurveValueDBLocalService = RatingCurveValueDBLocalService;
         }
         #endregion Constructors
 
@@ -51,41 +51,41 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<List<RatingCurveValue>>> Get()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await RatingCurveValueService.GetRatingCurveValueList();
+            return await RatingCurveValueDBLocalService.GetRatingCurveValueList();
         }
         [HttpGet("{RatingCurveValueID}")]
         public async Task<ActionResult<RatingCurveValue>> Get(int RatingCurveValueID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await RatingCurveValueService.GetRatingCurveValueWithRatingCurveValueID(RatingCurveValueID);
+            return await RatingCurveValueDBLocalService.GetRatingCurveValueWithRatingCurveValueID(RatingCurveValueID);
         }
         [HttpPost]
         public async Task<ActionResult<RatingCurveValue>> Post(RatingCurveValue RatingCurveValue)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await RatingCurveValueService.Post(RatingCurveValue);
+            return await RatingCurveValueDBLocalService.Post(RatingCurveValue);
         }
         [HttpPut]
         public async Task<ActionResult<RatingCurveValue>> Put(RatingCurveValue RatingCurveValue)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await RatingCurveValueService.Put(RatingCurveValue);
+            return await RatingCurveValueDBLocalService.Put(RatingCurveValue);
         }
         [HttpDelete("{RatingCurveValueID}")]
         public async Task<ActionResult<bool>> Delete(int RatingCurveValueID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await RatingCurveValueService.Delete(RatingCurveValueID);
+            return await RatingCurveValueDBLocalService.Delete(RatingCurveValueID);
         }
         #endregion Functions public
 

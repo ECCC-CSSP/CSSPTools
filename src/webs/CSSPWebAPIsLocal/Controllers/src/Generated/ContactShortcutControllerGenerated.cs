@@ -5,14 +5,15 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBLocalServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LocalServices;
 
-namespace CSSPWebAPIsLocal.Controllers
+namespace CSSPWebAPIs.Controllers
 {
     public partial interface IContactShortcutController
     {
@@ -25,7 +26,6 @@ namespace CSSPWebAPIsLocal.Controllers
 
     [Route("api/{culture}/[controller]")]
     [ApiController]
-    [Authorize]
     public partial class ContactShortcutController : ControllerBase, IContactShortcutController
     {
         #region Variables
@@ -33,16 +33,16 @@ namespace CSSPWebAPIsLocal.Controllers
 
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
-        private IContactShortcutService ContactShortcutService { get; }
+        private ILocalService LocalService { get; }
+        private IContactShortcutDBLocalService ContactShortcutDBLocalService { get; }
         #endregion Properties
 
         #region Constructors
-        public ContactShortcutController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IContactShortcutService ContactShortcutService)
+        public ContactShortcutController(ICSSPCultureService CSSPCultureService, ILocalService LocalService, IContactShortcutDBLocalService ContactShortcutDBLocalService)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
-            this.ContactShortcutService = ContactShortcutService;
+            this.LocalService = LocalService;
+            this.ContactShortcutDBLocalService = ContactShortcutDBLocalService;
         }
         #endregion Constructors
 
@@ -51,41 +51,41 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<List<ContactShortcut>>> Get()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await ContactShortcutService.GetContactShortcutList();
+            return await ContactShortcutDBLocalService.GetContactShortcutList();
         }
         [HttpGet("{ContactShortcutID}")]
         public async Task<ActionResult<ContactShortcut>> Get(int ContactShortcutID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await ContactShortcutService.GetContactShortcutWithContactShortcutID(ContactShortcutID);
+            return await ContactShortcutDBLocalService.GetContactShortcutWithContactShortcutID(ContactShortcutID);
         }
         [HttpPost]
         public async Task<ActionResult<ContactShortcut>> Post(ContactShortcut ContactShortcut)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await ContactShortcutService.Post(ContactShortcut);
+            return await ContactShortcutDBLocalService.Post(ContactShortcut);
         }
         [HttpPut]
         public async Task<ActionResult<ContactShortcut>> Put(ContactShortcut ContactShortcut)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await ContactShortcutService.Put(ContactShortcut);
+            return await ContactShortcutDBLocalService.Put(ContactShortcut);
         }
         [HttpDelete("{ContactShortcutID}")]
         public async Task<ActionResult<bool>> Delete(int ContactShortcutID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await ContactShortcutService.Delete(ContactShortcutID);
+            return await ContactShortcutDBLocalService.Delete(ContactShortcutID);
         }
         #endregion Functions public
 

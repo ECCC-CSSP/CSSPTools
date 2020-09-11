@@ -5,14 +5,15 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBLocalServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LocalServices;
 
-namespace CSSPWebAPIsLocal.Controllers
+namespace CSSPWebAPIs.Controllers
 {
     public partial interface ISpillLanguageController
     {
@@ -25,7 +26,6 @@ namespace CSSPWebAPIsLocal.Controllers
 
     [Route("api/{culture}/[controller]")]
     [ApiController]
-    [Authorize]
     public partial class SpillLanguageController : ControllerBase, ISpillLanguageController
     {
         #region Variables
@@ -33,16 +33,16 @@ namespace CSSPWebAPIsLocal.Controllers
 
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
-        private ISpillLanguageService SpillLanguageService { get; }
+        private ILocalService LocalService { get; }
+        private ISpillLanguageDBLocalService SpillLanguageDBLocalService { get; }
         #endregion Properties
 
         #region Constructors
-        public SpillLanguageController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, ISpillLanguageService SpillLanguageService)
+        public SpillLanguageController(ICSSPCultureService CSSPCultureService, ILocalService LocalService, ISpillLanguageDBLocalService SpillLanguageDBLocalService)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
-            this.SpillLanguageService = SpillLanguageService;
+            this.LocalService = LocalService;
+            this.SpillLanguageDBLocalService = SpillLanguageDBLocalService;
         }
         #endregion Constructors
 
@@ -51,41 +51,41 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<List<SpillLanguage>>> Get()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await SpillLanguageService.GetSpillLanguageList();
+            return await SpillLanguageDBLocalService.GetSpillLanguageList();
         }
         [HttpGet("{SpillLanguageID}")]
         public async Task<ActionResult<SpillLanguage>> Get(int SpillLanguageID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await SpillLanguageService.GetSpillLanguageWithSpillLanguageID(SpillLanguageID);
+            return await SpillLanguageDBLocalService.GetSpillLanguageWithSpillLanguageID(SpillLanguageID);
         }
         [HttpPost]
         public async Task<ActionResult<SpillLanguage>> Post(SpillLanguage SpillLanguage)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await SpillLanguageService.Post(SpillLanguage);
+            return await SpillLanguageDBLocalService.Post(SpillLanguage);
         }
         [HttpPut]
         public async Task<ActionResult<SpillLanguage>> Put(SpillLanguage SpillLanguage)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await SpillLanguageService.Put(SpillLanguage);
+            return await SpillLanguageDBLocalService.Put(SpillLanguage);
         }
         [HttpDelete("{SpillLanguageID}")]
         public async Task<ActionResult<bool>> Delete(int SpillLanguageID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await SpillLanguageService.Delete(SpillLanguageID);
+            return await SpillLanguageDBLocalService.Delete(SpillLanguageID);
         }
         #endregion Functions public
 

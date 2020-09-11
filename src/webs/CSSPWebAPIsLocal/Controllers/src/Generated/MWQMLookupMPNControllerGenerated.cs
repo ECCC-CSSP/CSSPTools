@@ -5,14 +5,15 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBLocalServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LocalServices;
 
-namespace CSSPWebAPIsLocal.Controllers
+namespace CSSPWebAPIs.Controllers
 {
     public partial interface IMWQMLookupMPNController
     {
@@ -25,7 +26,6 @@ namespace CSSPWebAPIsLocal.Controllers
 
     [Route("api/{culture}/[controller]")]
     [ApiController]
-    [Authorize]
     public partial class MWQMLookupMPNController : ControllerBase, IMWQMLookupMPNController
     {
         #region Variables
@@ -33,16 +33,16 @@ namespace CSSPWebAPIsLocal.Controllers
 
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
-        private IMWQMLookupMPNService MWQMLookupMPNService { get; }
+        private ILocalService LocalService { get; }
+        private IMWQMLookupMPNDBLocalService MWQMLookupMPNDBLocalService { get; }
         #endregion Properties
 
         #region Constructors
-        public MWQMLookupMPNController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IMWQMLookupMPNService MWQMLookupMPNService)
+        public MWQMLookupMPNController(ICSSPCultureService CSSPCultureService, ILocalService LocalService, IMWQMLookupMPNDBLocalService MWQMLookupMPNDBLocalService)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
-            this.MWQMLookupMPNService = MWQMLookupMPNService;
+            this.LocalService = LocalService;
+            this.MWQMLookupMPNDBLocalService = MWQMLookupMPNDBLocalService;
         }
         #endregion Constructors
 
@@ -51,41 +51,41 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<List<MWQMLookupMPN>>> Get()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await MWQMLookupMPNService.GetMWQMLookupMPNList();
+            return await MWQMLookupMPNDBLocalService.GetMWQMLookupMPNList();
         }
         [HttpGet("{MWQMLookupMPNID}")]
         public async Task<ActionResult<MWQMLookupMPN>> Get(int MWQMLookupMPNID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await MWQMLookupMPNService.GetMWQMLookupMPNWithMWQMLookupMPNID(MWQMLookupMPNID);
+            return await MWQMLookupMPNDBLocalService.GetMWQMLookupMPNWithMWQMLookupMPNID(MWQMLookupMPNID);
         }
         [HttpPost]
         public async Task<ActionResult<MWQMLookupMPN>> Post(MWQMLookupMPN MWQMLookupMPN)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await MWQMLookupMPNService.Post(MWQMLookupMPN);
+            return await MWQMLookupMPNDBLocalService.Post(MWQMLookupMPN);
         }
         [HttpPut]
         public async Task<ActionResult<MWQMLookupMPN>> Put(MWQMLookupMPN MWQMLookupMPN)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await MWQMLookupMPNService.Put(MWQMLookupMPN);
+            return await MWQMLookupMPNDBLocalService.Put(MWQMLookupMPN);
         }
         [HttpDelete("{MWQMLookupMPNID}")]
         public async Task<ActionResult<bool>> Delete(int MWQMLookupMPNID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await MWQMLookupMPNService.Delete(MWQMLookupMPNID);
+            return await MWQMLookupMPNDBLocalService.Delete(MWQMLookupMPNID);
         }
         #endregion Functions public
 

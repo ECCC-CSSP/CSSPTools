@@ -5,14 +5,15 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBLocalServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LocalServices;
 
-namespace CSSPWebAPIsLocal.Controllers
+namespace CSSPWebAPIs.Controllers
 {
     public partial interface IResetPasswordController
     {
@@ -25,7 +26,6 @@ namespace CSSPWebAPIsLocal.Controllers
 
     [Route("api/{culture}/[controller]")]
     [ApiController]
-    [Authorize]
     public partial class ResetPasswordController : ControllerBase, IResetPasswordController
     {
         #region Variables
@@ -33,16 +33,16 @@ namespace CSSPWebAPIsLocal.Controllers
 
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
-        private IResetPasswordService ResetPasswordService { get; }
+        private ILocalService LocalService { get; }
+        private IResetPasswordDBLocalService ResetPasswordDBLocalService { get; }
         #endregion Properties
 
         #region Constructors
-        public ResetPasswordController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IResetPasswordService ResetPasswordService)
+        public ResetPasswordController(ICSSPCultureService CSSPCultureService, ILocalService LocalService, IResetPasswordDBLocalService ResetPasswordDBLocalService)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
-            this.ResetPasswordService = ResetPasswordService;
+            this.LocalService = LocalService;
+            this.ResetPasswordDBLocalService = ResetPasswordDBLocalService;
         }
         #endregion Constructors
 
@@ -51,41 +51,41 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<List<ResetPassword>>> Get()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await ResetPasswordService.GetResetPasswordList();
+            return await ResetPasswordDBLocalService.GetResetPasswordList();
         }
         [HttpGet("{ResetPasswordID}")]
         public async Task<ActionResult<ResetPassword>> Get(int ResetPasswordID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await ResetPasswordService.GetResetPasswordWithResetPasswordID(ResetPasswordID);
+            return await ResetPasswordDBLocalService.GetResetPasswordWithResetPasswordID(ResetPasswordID);
         }
         [HttpPost]
         public async Task<ActionResult<ResetPassword>> Post(ResetPassword ResetPassword)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await ResetPasswordService.Post(ResetPassword);
+            return await ResetPasswordDBLocalService.Post(ResetPassword);
         }
         [HttpPut]
         public async Task<ActionResult<ResetPassword>> Put(ResetPassword ResetPassword)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await ResetPasswordService.Put(ResetPassword);
+            return await ResetPasswordDBLocalService.Put(ResetPassword);
         }
         [HttpDelete("{ResetPasswordID}")]
         public async Task<ActionResult<bool>> Delete(int ResetPasswordID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await ResetPasswordService.Delete(ResetPasswordID);
+            return await ResetPasswordDBLocalService.Delete(ResetPasswordID);
         }
         #endregion Functions public
 

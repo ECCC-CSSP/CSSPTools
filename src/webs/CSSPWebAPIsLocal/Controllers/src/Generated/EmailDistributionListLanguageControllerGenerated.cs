@@ -5,14 +5,15 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBLocalServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LocalServices;
 
-namespace CSSPWebAPIsLocal.Controllers
+namespace CSSPWebAPIs.Controllers
 {
     public partial interface IEmailDistributionListLanguageController
     {
@@ -25,7 +26,6 @@ namespace CSSPWebAPIsLocal.Controllers
 
     [Route("api/{culture}/[controller]")]
     [ApiController]
-    [Authorize]
     public partial class EmailDistributionListLanguageController : ControllerBase, IEmailDistributionListLanguageController
     {
         #region Variables
@@ -33,16 +33,16 @@ namespace CSSPWebAPIsLocal.Controllers
 
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
-        private IEmailDistributionListLanguageService EmailDistributionListLanguageService { get; }
+        private ILocalService LocalService { get; }
+        private IEmailDistributionListLanguageDBLocalService EmailDistributionListLanguageDBLocalService { get; }
         #endregion Properties
 
         #region Constructors
-        public EmailDistributionListLanguageController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IEmailDistributionListLanguageService EmailDistributionListLanguageService)
+        public EmailDistributionListLanguageController(ICSSPCultureService CSSPCultureService, ILocalService LocalService, IEmailDistributionListLanguageDBLocalService EmailDistributionListLanguageDBLocalService)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
-            this.EmailDistributionListLanguageService = EmailDistributionListLanguageService;
+            this.LocalService = LocalService;
+            this.EmailDistributionListLanguageDBLocalService = EmailDistributionListLanguageDBLocalService;
         }
         #endregion Constructors
 
@@ -51,41 +51,41 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<List<EmailDistributionListLanguage>>> Get()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await EmailDistributionListLanguageService.GetEmailDistributionListLanguageList();
+            return await EmailDistributionListLanguageDBLocalService.GetEmailDistributionListLanguageList();
         }
         [HttpGet("{EmailDistributionListLanguageID}")]
         public async Task<ActionResult<EmailDistributionListLanguage>> Get(int EmailDistributionListLanguageID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await EmailDistributionListLanguageService.GetEmailDistributionListLanguageWithEmailDistributionListLanguageID(EmailDistributionListLanguageID);
+            return await EmailDistributionListLanguageDBLocalService.GetEmailDistributionListLanguageWithEmailDistributionListLanguageID(EmailDistributionListLanguageID);
         }
         [HttpPost]
         public async Task<ActionResult<EmailDistributionListLanguage>> Post(EmailDistributionListLanguage EmailDistributionListLanguage)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await EmailDistributionListLanguageService.Post(EmailDistributionListLanguage);
+            return await EmailDistributionListLanguageDBLocalService.Post(EmailDistributionListLanguage);
         }
         [HttpPut]
         public async Task<ActionResult<EmailDistributionListLanguage>> Put(EmailDistributionListLanguage EmailDistributionListLanguage)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await EmailDistributionListLanguageService.Put(EmailDistributionListLanguage);
+            return await EmailDistributionListLanguageDBLocalService.Put(EmailDistributionListLanguage);
         }
         [HttpDelete("{EmailDistributionListLanguageID}")]
         public async Task<ActionResult<bool>> Delete(int EmailDistributionListLanguageID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await EmailDistributionListLanguageService.Delete(EmailDistributionListLanguageID);
+            return await EmailDistributionListLanguageDBLocalService.Delete(EmailDistributionListLanguageID);
         }
         #endregion Functions public
 

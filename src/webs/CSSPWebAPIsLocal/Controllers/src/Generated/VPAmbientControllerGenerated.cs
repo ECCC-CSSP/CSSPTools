@@ -5,14 +5,15 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBLocalServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LocalServices;
 
-namespace CSSPWebAPIsLocal.Controllers
+namespace CSSPWebAPIs.Controllers
 {
     public partial interface IVPAmbientController
     {
@@ -25,7 +26,6 @@ namespace CSSPWebAPIsLocal.Controllers
 
     [Route("api/{culture}/[controller]")]
     [ApiController]
-    [Authorize]
     public partial class VPAmbientController : ControllerBase, IVPAmbientController
     {
         #region Variables
@@ -33,16 +33,16 @@ namespace CSSPWebAPIsLocal.Controllers
 
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
-        private IVPAmbientService VPAmbientService { get; }
+        private ILocalService LocalService { get; }
+        private IVPAmbientDBLocalService VPAmbientDBLocalService { get; }
         #endregion Properties
 
         #region Constructors
-        public VPAmbientController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IVPAmbientService VPAmbientService)
+        public VPAmbientController(ICSSPCultureService CSSPCultureService, ILocalService LocalService, IVPAmbientDBLocalService VPAmbientDBLocalService)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
-            this.VPAmbientService = VPAmbientService;
+            this.LocalService = LocalService;
+            this.VPAmbientDBLocalService = VPAmbientDBLocalService;
         }
         #endregion Constructors
 
@@ -51,41 +51,41 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<List<VPAmbient>>> Get()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await VPAmbientService.GetVPAmbientList();
+            return await VPAmbientDBLocalService.GetVPAmbientList();
         }
         [HttpGet("{VPAmbientID}")]
         public async Task<ActionResult<VPAmbient>> Get(int VPAmbientID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await VPAmbientService.GetVPAmbientWithVPAmbientID(VPAmbientID);
+            return await VPAmbientDBLocalService.GetVPAmbientWithVPAmbientID(VPAmbientID);
         }
         [HttpPost]
         public async Task<ActionResult<VPAmbient>> Post(VPAmbient VPAmbient)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await VPAmbientService.Post(VPAmbient);
+            return await VPAmbientDBLocalService.Post(VPAmbient);
         }
         [HttpPut]
         public async Task<ActionResult<VPAmbient>> Put(VPAmbient VPAmbient)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await VPAmbientService.Put(VPAmbient);
+            return await VPAmbientDBLocalService.Put(VPAmbient);
         }
         [HttpDelete("{VPAmbientID}")]
         public async Task<ActionResult<bool>> Delete(int VPAmbientID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await VPAmbientService.Delete(VPAmbientID);
+            return await VPAmbientDBLocalService.Delete(VPAmbientID);
         }
         #endregion Functions public
 

@@ -5,14 +5,15 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBLocalServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LocalServices;
 
-namespace CSSPWebAPIsLocal.Controllers
+namespace CSSPWebAPIs.Controllers
 {
     public partial interface IDocTemplateController
     {
@@ -25,7 +26,6 @@ namespace CSSPWebAPIsLocal.Controllers
 
     [Route("api/{culture}/[controller]")]
     [ApiController]
-    [Authorize]
     public partial class DocTemplateController : ControllerBase, IDocTemplateController
     {
         #region Variables
@@ -33,16 +33,16 @@ namespace CSSPWebAPIsLocal.Controllers
 
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
-        private IDocTemplateService DocTemplateService { get; }
+        private ILocalService LocalService { get; }
+        private IDocTemplateDBLocalService DocTemplateDBLocalService { get; }
         #endregion Properties
 
         #region Constructors
-        public DocTemplateController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IDocTemplateService DocTemplateService)
+        public DocTemplateController(ICSSPCultureService CSSPCultureService, ILocalService LocalService, IDocTemplateDBLocalService DocTemplateDBLocalService)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
-            this.DocTemplateService = DocTemplateService;
+            this.LocalService = LocalService;
+            this.DocTemplateDBLocalService = DocTemplateDBLocalService;
         }
         #endregion Constructors
 
@@ -51,41 +51,41 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<List<DocTemplate>>> Get()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await DocTemplateService.GetDocTemplateList();
+            return await DocTemplateDBLocalService.GetDocTemplateList();
         }
         [HttpGet("{DocTemplateID}")]
         public async Task<ActionResult<DocTemplate>> Get(int DocTemplateID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await DocTemplateService.GetDocTemplateWithDocTemplateID(DocTemplateID);
+            return await DocTemplateDBLocalService.GetDocTemplateWithDocTemplateID(DocTemplateID);
         }
         [HttpPost]
         public async Task<ActionResult<DocTemplate>> Post(DocTemplate DocTemplate)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await DocTemplateService.Post(DocTemplate);
+            return await DocTemplateDBLocalService.Post(DocTemplate);
         }
         [HttpPut]
         public async Task<ActionResult<DocTemplate>> Put(DocTemplate DocTemplate)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await DocTemplateService.Put(DocTemplate);
+            return await DocTemplateDBLocalService.Put(DocTemplate);
         }
         [HttpDelete("{DocTemplateID}")]
         public async Task<ActionResult<bool>> Delete(int DocTemplateID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await DocTemplateService.Delete(DocTemplateID);
+            return await DocTemplateDBLocalService.Delete(DocTemplateID);
         }
         #endregion Functions public
 

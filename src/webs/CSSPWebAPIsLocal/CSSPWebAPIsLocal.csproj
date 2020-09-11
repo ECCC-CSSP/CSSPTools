@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\_packageCSSPWebAPIs\</OutputPath>
+    <OutputPath>..\_packageCSSPWebAPIsLocal\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -33,7 +33,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\dlls\CSSPServices\CSSPServices.csproj" />
+    <Folder Include="Controllers\src\Generated\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\dlls\CSSPDBLocalServices\CSSPDBLocalServices.csproj" />
+    <ProjectReference Include="..\..\dlls\CSSPDBSearchServices\CSSPDBSearchServices.csproj" />
+    <ProjectReference Include="..\..\dlls\ReadGzFileServices\ReadGzFileServices.csproj" />
   </ItemGroup>
 
 </Project>

@@ -5,14 +5,15 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBLocalServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LocalServices;
 
-namespace CSSPWebAPIsLocal.Controllers
+namespace CSSPWebAPIs.Controllers
 {
     public partial interface ITVItemLanguageController
     {
@@ -25,7 +26,6 @@ namespace CSSPWebAPIsLocal.Controllers
 
     [Route("api/{culture}/[controller]")]
     [ApiController]
-    [Authorize]
     public partial class TVItemLanguageController : ControllerBase, ITVItemLanguageController
     {
         #region Variables
@@ -33,16 +33,16 @@ namespace CSSPWebAPIsLocal.Controllers
 
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
-        private ITVItemLanguageService TVItemLanguageService { get; }
+        private ILocalService LocalService { get; }
+        private ITVItemLanguageDBLocalService TVItemLanguageDBLocalService { get; }
         #endregion Properties
 
         #region Constructors
-        public TVItemLanguageController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, ITVItemLanguageService TVItemLanguageService)
+        public TVItemLanguageController(ICSSPCultureService CSSPCultureService, ILocalService LocalService, ITVItemLanguageDBLocalService TVItemLanguageDBLocalService)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
-            this.TVItemLanguageService = TVItemLanguageService;
+            this.LocalService = LocalService;
+            this.TVItemLanguageDBLocalService = TVItemLanguageDBLocalService;
         }
         #endregion Constructors
 
@@ -51,41 +51,41 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<List<TVItemLanguage>>> Get()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await TVItemLanguageService.GetTVItemLanguageList();
+            return await TVItemLanguageDBLocalService.GetTVItemLanguageList();
         }
         [HttpGet("{TVItemLanguageID}")]
         public async Task<ActionResult<TVItemLanguage>> Get(int TVItemLanguageID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await TVItemLanguageService.GetTVItemLanguageWithTVItemLanguageID(TVItemLanguageID);
+            return await TVItemLanguageDBLocalService.GetTVItemLanguageWithTVItemLanguageID(TVItemLanguageID);
         }
         [HttpPost]
         public async Task<ActionResult<TVItemLanguage>> Post(TVItemLanguage TVItemLanguage)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await TVItemLanguageService.Post(TVItemLanguage);
+            return await TVItemLanguageDBLocalService.Post(TVItemLanguage);
         }
         [HttpPut]
         public async Task<ActionResult<TVItemLanguage>> Put(TVItemLanguage TVItemLanguage)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await TVItemLanguageService.Put(TVItemLanguage);
+            return await TVItemLanguageDBLocalService.Put(TVItemLanguage);
         }
         [HttpDelete("{TVItemLanguageID}")]
         public async Task<ActionResult<bool>> Delete(int TVItemLanguageID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await TVItemLanguageService.Delete(TVItemLanguageID);
+            return await TVItemLanguageDBLocalService.Delete(TVItemLanguageID);
         }
         #endregion Functions public
 

@@ -17,10 +17,10 @@ namespace CSSPDesktopInstallPostBuild
                 return await Task.FromResult(false);
             }
 
-            AzureStoreCSSPWebAPIsPath = Configuration.GetValue<string>("AzureStoreCSSPWebAPIsPath");
-            if (string.IsNullOrWhiteSpace(AzureStoreCSSPWebAPIsPath))
+            AzureStoreCSSPWebAPIsLocalPath = Configuration.GetValue<string>("AzureStoreCSSPWebAPIsLocalPath");
+            if (string.IsNullOrWhiteSpace(AzureStoreCSSPWebAPIsLocalPath))
             {
-                Console.WriteLine("Could not read AzureStoreCSSPWebAPIsPath from Configuration");
+                Console.WriteLine("Could not read AzureStoreCSSPWebAPIsLocalPath from Configuration");
                 return await Task.FromResult(false);
             }
 

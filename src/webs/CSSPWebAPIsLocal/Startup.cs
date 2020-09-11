@@ -1,6 +1,5 @@
 using CSSPEnums;
 using CSSPModels;
-using CSSPServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -16,8 +15,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using LocalServices;
+using CSSPDBFilesManagementServices;
+using DownloadGzFileServices;
+using ReadGzFileServices;
+using CSSPDBSearchServices;
 
-namespace CSSPWebAPIsLocalLocal
+namespace CSSPWebAPIsLocal
 {
     public partial class Startup
     {
@@ -26,7 +30,6 @@ namespace CSSPWebAPIsLocalLocal
 
         #region Properties
         private IConfiguration Configuration { get; }
-        private RunningOnEnum RunningOn { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -64,13 +67,9 @@ namespace CSSPWebAPIsLocalLocal
              * using CSSPDBLocalInMemory 
              * ---------------------------------------------------------------------------------      
              */
-            string DBConnStr = "";
-
-            DBConnStr = Configuration.GetValue<string>("AzureCSSPDB");
-
             services.AddDbContext<CSSPDBInMemoryContext>(options =>
             {
-                options.UseInMemoryDatabase(DBConnStr);
+                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBLocal.FullName }");
             });
 
             /* ---------------------------------------------------------------------------------
@@ -144,10 +143,10 @@ namespace CSSPWebAPIsLocalLocal
             services.AddScoped<ICSSPCultureService, CSSPCultureService>();
             services.AddScoped<IEnums, Enums>();
 
-            //LoadAllDBServices(services);
+            LoadAllDBLocalServices(services);
 
             services.AddScoped<ILocalService, LocalService>();
-            services.AddScoped<ICSSPFileService, CSSPFileService>();
+            services.AddScoped<ICSSPDBFilesManagementService, CSSPDBFilesManagementService>();
             services.AddScoped<IDownloadGzFileService, DownloadGzFileService>();
             services.AddScoped<IReadGzFileService, ReadGzFileService>();
             services.AddScoped<ICSSPDBSearchService, CSSPDBSearchService>();

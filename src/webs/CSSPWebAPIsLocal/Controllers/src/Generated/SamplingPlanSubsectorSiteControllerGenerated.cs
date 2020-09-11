@@ -5,14 +5,15 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBLocalServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LocalServices;
 
-namespace CSSPWebAPIsLocal.Controllers
+namespace CSSPWebAPIs.Controllers
 {
     public partial interface ISamplingPlanSubsectorSiteController
     {
@@ -25,7 +26,6 @@ namespace CSSPWebAPIsLocal.Controllers
 
     [Route("api/{culture}/[controller]")]
     [ApiController]
-    [Authorize]
     public partial class SamplingPlanSubsectorSiteController : ControllerBase, ISamplingPlanSubsectorSiteController
     {
         #region Variables
@@ -33,16 +33,16 @@ namespace CSSPWebAPIsLocal.Controllers
 
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
-        private ISamplingPlanSubsectorSiteService SamplingPlanSubsectorSiteService { get; }
+        private ILocalService LocalService { get; }
+        private ISamplingPlanSubsectorSiteDBLocalService SamplingPlanSubsectorSiteDBLocalService { get; }
         #endregion Properties
 
         #region Constructors
-        public SamplingPlanSubsectorSiteController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, ISamplingPlanSubsectorSiteService SamplingPlanSubsectorSiteService)
+        public SamplingPlanSubsectorSiteController(ICSSPCultureService CSSPCultureService, ILocalService LocalService, ISamplingPlanSubsectorSiteDBLocalService SamplingPlanSubsectorSiteDBLocalService)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
-            this.SamplingPlanSubsectorSiteService = SamplingPlanSubsectorSiteService;
+            this.LocalService = LocalService;
+            this.SamplingPlanSubsectorSiteDBLocalService = SamplingPlanSubsectorSiteDBLocalService;
         }
         #endregion Constructors
 
@@ -51,41 +51,41 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<List<SamplingPlanSubsectorSite>>> Get()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await SamplingPlanSubsectorSiteService.GetSamplingPlanSubsectorSiteList();
+            return await SamplingPlanSubsectorSiteDBLocalService.GetSamplingPlanSubsectorSiteList();
         }
         [HttpGet("{SamplingPlanSubsectorSiteID}")]
         public async Task<ActionResult<SamplingPlanSubsectorSite>> Get(int SamplingPlanSubsectorSiteID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await SamplingPlanSubsectorSiteService.GetSamplingPlanSubsectorSiteWithSamplingPlanSubsectorSiteID(SamplingPlanSubsectorSiteID);
+            return await SamplingPlanSubsectorSiteDBLocalService.GetSamplingPlanSubsectorSiteWithSamplingPlanSubsectorSiteID(SamplingPlanSubsectorSiteID);
         }
         [HttpPost]
         public async Task<ActionResult<SamplingPlanSubsectorSite>> Post(SamplingPlanSubsectorSite SamplingPlanSubsectorSite)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await SamplingPlanSubsectorSiteService.Post(SamplingPlanSubsectorSite);
+            return await SamplingPlanSubsectorSiteDBLocalService.Post(SamplingPlanSubsectorSite);
         }
         [HttpPut]
         public async Task<ActionResult<SamplingPlanSubsectorSite>> Put(SamplingPlanSubsectorSite SamplingPlanSubsectorSite)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await SamplingPlanSubsectorSiteService.Put(SamplingPlanSubsectorSite);
+            return await SamplingPlanSubsectorSiteDBLocalService.Put(SamplingPlanSubsectorSite);
         }
         [HttpDelete("{SamplingPlanSubsectorSiteID}")]
         public async Task<ActionResult<bool>> Delete(int SamplingPlanSubsectorSiteID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await SamplingPlanSubsectorSiteService.Delete(SamplingPlanSubsectorSiteID);
+            return await SamplingPlanSubsectorSiteDBLocalService.Delete(SamplingPlanSubsectorSiteID);
         }
         #endregion Functions public
 

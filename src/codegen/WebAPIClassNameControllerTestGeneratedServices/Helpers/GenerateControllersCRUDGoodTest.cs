@@ -5,7 +5,7 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Services
 {
     public partial class WebAPIClassNameControllerTestGeneratedService : IWebAPIClassNameControllerTestGeneratedService
     {
-        private async Task<bool> GenerateControllersCRUDGoodTest(string TypeName, string TypeNameLower, StringBuilder sb)
+        private async Task<bool> GenerateControllersCRUDGoodTest(string TypeName, string TypeNameLower, StringBuilder sb, string WebApiType)
         {
             sb.AppendLine(@"        [Theory]");
             sb.AppendLine(@"        [InlineData(""en-CA"")]");
@@ -16,17 +16,38 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Services
             sb.AppendLine(@"");
             sb.AppendLine(@"            using (HttpClient httpClient = new HttpClient())");
             sb.AppendLine(@"            {");
-            if (TypeName == "Contact")
+            if (WebApiType == "")
             {
-                sb.AppendLine(@"                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(""Bearer"", contact2.Token);");
-            }                         
-            else                      
-            {                         
-                sb.AppendLine(@"                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(""Bearer"", contact.Token);");
-            }                         
+                if (TypeName == "Contact")
+                {
+                    sb.AppendLine(@"                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(""Bearer"", contact2.Token);");
+                }
+                else
+                {
+                    sb.AppendLine(@"                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(""Bearer"", contact.Token);");
+                }
+            }
+            if (WebApiType == "Local")
+            {
+                if (TypeName == "Contact")
+                {
+                    sb.AppendLine(@"                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(""Bearer"", LocalService.LoggedInContactInfo.LoggedInContact.Token);");
+                }
+                else
+                {
+                    sb.AppendLine(@"                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(""Bearer"", LocalService.LoggedInContactInfo.LoggedInContact.Token);");
+                }
+            }
             sb.AppendLine(@"");       
             sb.AppendLine(@"                // testing Get");
-            sb.AppendLine($@"                string url = $""{{ CSSPAzureUrl }}api/{{ culture }}/{ TypeName }"";");
+            if (WebApiType == "")
+            {
+                sb.AppendLine($@"                string url = $""{{ CSSPAzureUrl }}api/{{ culture }}/{ TypeName }"";");
+            }
+            if (WebApiType == "Local")
+            {
+                sb.AppendLine($@"                string url = $""{{ LocalUrl }}api/{{ culture }}/{ TypeName }"";");
+            }
             sb.AppendLine($@"                var response = await httpClient.GetAsync(url);");
             sb.AppendLine($@"                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);");
             sb.AppendLine($@"                string responseContent = await response.Content.ReadAsStringAsync();");

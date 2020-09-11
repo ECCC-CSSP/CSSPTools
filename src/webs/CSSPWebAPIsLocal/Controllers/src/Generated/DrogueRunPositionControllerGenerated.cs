@@ -5,14 +5,15 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBLocalServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LocalServices;
 
-namespace CSSPWebAPIsLocal.Controllers
+namespace CSSPWebAPIs.Controllers
 {
     public partial interface IDrogueRunPositionController
     {
@@ -25,7 +26,6 @@ namespace CSSPWebAPIsLocal.Controllers
 
     [Route("api/{culture}/[controller]")]
     [ApiController]
-    [Authorize]
     public partial class DrogueRunPositionController : ControllerBase, IDrogueRunPositionController
     {
         #region Variables
@@ -33,16 +33,16 @@ namespace CSSPWebAPIsLocal.Controllers
 
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
-        private IDrogueRunPositionService DrogueRunPositionService { get; }
+        private ILocalService LocalService { get; }
+        private IDrogueRunPositionDBLocalService DrogueRunPositionDBLocalService { get; }
         #endregion Properties
 
         #region Constructors
-        public DrogueRunPositionController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IDrogueRunPositionService DrogueRunPositionService)
+        public DrogueRunPositionController(ICSSPCultureService CSSPCultureService, ILocalService LocalService, IDrogueRunPositionDBLocalService DrogueRunPositionDBLocalService)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
-            this.DrogueRunPositionService = DrogueRunPositionService;
+            this.LocalService = LocalService;
+            this.DrogueRunPositionDBLocalService = DrogueRunPositionDBLocalService;
         }
         #endregion Constructors
 
@@ -51,41 +51,41 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<List<DrogueRunPosition>>> Get()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await DrogueRunPositionService.GetDrogueRunPositionList();
+            return await DrogueRunPositionDBLocalService.GetDrogueRunPositionList();
         }
         [HttpGet("{DrogueRunPositionID}")]
         public async Task<ActionResult<DrogueRunPosition>> Get(int DrogueRunPositionID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await DrogueRunPositionService.GetDrogueRunPositionWithDrogueRunPositionID(DrogueRunPositionID);
+            return await DrogueRunPositionDBLocalService.GetDrogueRunPositionWithDrogueRunPositionID(DrogueRunPositionID);
         }
         [HttpPost]
         public async Task<ActionResult<DrogueRunPosition>> Post(DrogueRunPosition DrogueRunPosition)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await DrogueRunPositionService.Post(DrogueRunPosition);
+            return await DrogueRunPositionDBLocalService.Post(DrogueRunPosition);
         }
         [HttpPut]
         public async Task<ActionResult<DrogueRunPosition>> Put(DrogueRunPosition DrogueRunPosition)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await DrogueRunPositionService.Put(DrogueRunPosition);
+            return await DrogueRunPositionDBLocalService.Put(DrogueRunPosition);
         }
         [HttpDelete("{DrogueRunPositionID}")]
         public async Task<ActionResult<bool>> Delete(int DrogueRunPositionID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await DrogueRunPositionService.Delete(DrogueRunPositionID);
+            return await DrogueRunPositionDBLocalService.Delete(DrogueRunPositionID);
         }
         #endregion Functions public
 

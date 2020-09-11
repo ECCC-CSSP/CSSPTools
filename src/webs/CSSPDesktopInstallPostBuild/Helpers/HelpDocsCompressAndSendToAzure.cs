@@ -46,7 +46,7 @@ namespace CSSPDesktopInstallPostBuild
 
             try
             {
-                BlobClient blobClient = new BlobClient(AzureStoreConnectionString, AzureStoreCSSPWebAPIsPath, fi.Name);
+                BlobClient blobClient = new BlobClient(AzureStoreConnectionString, AzureStoreCSSPWebAPIsLocalPath, fi.Name);
                 await blobClient.UploadAsync(fi.FullName, true);
             }
             catch (Exception ex)

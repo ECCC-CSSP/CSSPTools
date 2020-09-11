@@ -5,14 +5,15 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBLocalServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LocalServices;
 
-namespace CSSPWebAPIsLocal.Controllers
+namespace CSSPWebAPIs.Controllers
 {
     public partial interface ITVItemController
     {
@@ -25,7 +26,6 @@ namespace CSSPWebAPIsLocal.Controllers
 
     [Route("api/{culture}/[controller]")]
     [ApiController]
-    [Authorize]
     public partial class TVItemController : ControllerBase, ITVItemController
     {
         #region Variables
@@ -33,16 +33,16 @@ namespace CSSPWebAPIsLocal.Controllers
 
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
-        private ITVItemService TVItemService { get; }
+        private ILocalService LocalService { get; }
+        private ITVItemDBLocalService TVItemDBLocalService { get; }
         #endregion Properties
 
         #region Constructors
-        public TVItemController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, ITVItemService TVItemService)
+        public TVItemController(ICSSPCultureService CSSPCultureService, ILocalService LocalService, ITVItemDBLocalService TVItemDBLocalService)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
-            this.TVItemService = TVItemService;
+            this.LocalService = LocalService;
+            this.TVItemDBLocalService = TVItemDBLocalService;
         }
         #endregion Constructors
 
@@ -51,41 +51,41 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<List<TVItem>>> Get()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await TVItemService.GetTVItemList();
+            return await TVItemDBLocalService.GetTVItemList();
         }
         [HttpGet("{TVItemID}")]
         public async Task<ActionResult<TVItem>> Get(int TVItemID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await TVItemService.GetTVItemWithTVItemID(TVItemID);
+            return await TVItemDBLocalService.GetTVItemWithTVItemID(TVItemID);
         }
         [HttpPost]
         public async Task<ActionResult<TVItem>> Post(TVItem TVItem)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await TVItemService.Post(TVItem);
+            return await TVItemDBLocalService.Post(TVItem);
         }
         [HttpPut]
         public async Task<ActionResult<TVItem>> Put(TVItem TVItem)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await TVItemService.Put(TVItem);
+            return await TVItemDBLocalService.Put(TVItem);
         }
         [HttpDelete("{TVItemID}")]
         public async Task<ActionResult<bool>> Delete(int TVItemID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await TVItemService.Delete(TVItemID);
+            return await TVItemDBLocalService.Delete(TVItemID);
         }
         #endregion Functions public
 

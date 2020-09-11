@@ -5,14 +5,15 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBLocalServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LocalServices;
 
-namespace CSSPWebAPIsLocal.Controllers
+namespace CSSPWebAPIs.Controllers
 {
     public partial interface IMWQMSubsectorController
     {
@@ -25,7 +26,6 @@ namespace CSSPWebAPIsLocal.Controllers
 
     [Route("api/{culture}/[controller]")]
     [ApiController]
-    [Authorize]
     public partial class MWQMSubsectorController : ControllerBase, IMWQMSubsectorController
     {
         #region Variables
@@ -33,16 +33,16 @@ namespace CSSPWebAPIsLocal.Controllers
 
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
-        private IMWQMSubsectorService MWQMSubsectorService { get; }
+        private ILocalService LocalService { get; }
+        private IMWQMSubsectorDBLocalService MWQMSubsectorDBLocalService { get; }
         #endregion Properties
 
         #region Constructors
-        public MWQMSubsectorController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IMWQMSubsectorService MWQMSubsectorService)
+        public MWQMSubsectorController(ICSSPCultureService CSSPCultureService, ILocalService LocalService, IMWQMSubsectorDBLocalService MWQMSubsectorDBLocalService)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
-            this.MWQMSubsectorService = MWQMSubsectorService;
+            this.LocalService = LocalService;
+            this.MWQMSubsectorDBLocalService = MWQMSubsectorDBLocalService;
         }
         #endregion Constructors
 
@@ -51,41 +51,41 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<List<MWQMSubsector>>> Get()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await MWQMSubsectorService.GetMWQMSubsectorList();
+            return await MWQMSubsectorDBLocalService.GetMWQMSubsectorList();
         }
         [HttpGet("{MWQMSubsectorID}")]
         public async Task<ActionResult<MWQMSubsector>> Get(int MWQMSubsectorID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await MWQMSubsectorService.GetMWQMSubsectorWithMWQMSubsectorID(MWQMSubsectorID);
+            return await MWQMSubsectorDBLocalService.GetMWQMSubsectorWithMWQMSubsectorID(MWQMSubsectorID);
         }
         [HttpPost]
         public async Task<ActionResult<MWQMSubsector>> Post(MWQMSubsector MWQMSubsector)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await MWQMSubsectorService.Post(MWQMSubsector);
+            return await MWQMSubsectorDBLocalService.Post(MWQMSubsector);
         }
         [HttpPut]
         public async Task<ActionResult<MWQMSubsector>> Put(MWQMSubsector MWQMSubsector)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await MWQMSubsectorService.Put(MWQMSubsector);
+            return await MWQMSubsectorDBLocalService.Put(MWQMSubsector);
         }
         [HttpDelete("{MWQMSubsectorID}")]
         public async Task<ActionResult<bool>> Delete(int MWQMSubsectorID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await MWQMSubsectorService.Delete(MWQMSubsectorID);
+            return await MWQMSubsectorDBLocalService.Delete(MWQMSubsectorID);
         }
         #endregion Functions public
 

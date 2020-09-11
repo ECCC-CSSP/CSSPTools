@@ -5,14 +5,15 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBLocalServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LocalServices;
 
-namespace CSSPWebAPIsLocal.Controllers
+namespace CSSPWebAPIs.Controllers
 {
     public partial interface IBoxModelResultController
     {
@@ -25,7 +26,6 @@ namespace CSSPWebAPIsLocal.Controllers
 
     [Route("api/{culture}/[controller]")]
     [ApiController]
-    [Authorize]
     public partial class BoxModelResultController : ControllerBase, IBoxModelResultController
     {
         #region Variables
@@ -33,16 +33,16 @@ namespace CSSPWebAPIsLocal.Controllers
 
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
-        private IBoxModelResultService BoxModelResultService { get; }
+        private ILocalService LocalService { get; }
+        private IBoxModelResultDBLocalService BoxModelResultDBLocalService { get; }
         #endregion Properties
 
         #region Constructors
-        public BoxModelResultController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IBoxModelResultService BoxModelResultService)
+        public BoxModelResultController(ICSSPCultureService CSSPCultureService, ILocalService LocalService, IBoxModelResultDBLocalService BoxModelResultDBLocalService)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
-            this.BoxModelResultService = BoxModelResultService;
+            this.LocalService = LocalService;
+            this.BoxModelResultDBLocalService = BoxModelResultDBLocalService;
         }
         #endregion Constructors
 
@@ -51,41 +51,41 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<List<BoxModelResult>>> Get()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await BoxModelResultService.GetBoxModelResultList();
+            return await BoxModelResultDBLocalService.GetBoxModelResultList();
         }
         [HttpGet("{BoxModelResultID}")]
         public async Task<ActionResult<BoxModelResult>> Get(int BoxModelResultID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await BoxModelResultService.GetBoxModelResultWithBoxModelResultID(BoxModelResultID);
+            return await BoxModelResultDBLocalService.GetBoxModelResultWithBoxModelResultID(BoxModelResultID);
         }
         [HttpPost]
         public async Task<ActionResult<BoxModelResult>> Post(BoxModelResult BoxModelResult)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await BoxModelResultService.Post(BoxModelResult);
+            return await BoxModelResultDBLocalService.Post(BoxModelResult);
         }
         [HttpPut]
         public async Task<ActionResult<BoxModelResult>> Put(BoxModelResult BoxModelResult)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await BoxModelResultService.Put(BoxModelResult);
+            return await BoxModelResultDBLocalService.Put(BoxModelResult);
         }
         [HttpDelete("{BoxModelResultID}")]
         public async Task<ActionResult<bool>> Delete(int BoxModelResultID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await BoxModelResultService.Delete(BoxModelResultID);
+            return await BoxModelResultDBLocalService.Delete(BoxModelResultID);
         }
         #endregion Functions public
 

@@ -1,12 +1,16 @@
 ﻿using CSSPCultureServices.Services;
+using CSSPDBFilesManagementServices;
 using CSSPDesktopServices.Models;
 using CSSPDesktopServices.Services;
 using CSSPEnums;
 using CSSPModels;
-using CSSPServices;
+using CSSPSQLiteServices;
+using DownloadGzFileServices;
+using LocalServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ReadGzFileServices;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -30,7 +34,7 @@ namespace CSSPDesktop
         private IConfiguration Configuration { get; set; }
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
-        private ICSSPFileService CSSPFileService { get; set; }
+        private ICSSPDBFilesManagementService CSSPDBFilesManagementService { get; set; }
         private ICSSPDesktopService CSSPDesktopService { get; set; }
         private ICSSPSQLiteService CSSPSQLiteService { get; set; }
         bool IsEnglish { get; set; } = true;

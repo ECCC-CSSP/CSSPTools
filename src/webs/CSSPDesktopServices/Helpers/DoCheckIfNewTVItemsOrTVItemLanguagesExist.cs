@@ -1,9 +1,4 @@
-﻿using CSSPEnums;
-using CSSPModels;
-using CSSPCultureServices.Resources;
-using CSSPCultureServices.Services;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -14,7 +9,7 @@ using Azure.Storage.Blobs;
 using System.IO;
 using Azure.Storage.Blobs.Models;
 using CSSPDesktopServices.Models;
-using CSSPServices;
+using CSSPModels;
 
 namespace CSSPDesktopServices.Services
 {

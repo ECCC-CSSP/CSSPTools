@@ -5,14 +5,15 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBLocalServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LocalServices;
 
-namespace CSSPWebAPIsLocal.Controllers
+namespace CSSPWebAPIs.Controllers
 {
     public partial interface ILabSheetDetailController
     {
@@ -25,7 +26,6 @@ namespace CSSPWebAPIsLocal.Controllers
 
     [Route("api/{culture}/[controller]")]
     [ApiController]
-    [Authorize]
     public partial class LabSheetDetailController : ControllerBase, ILabSheetDetailController
     {
         #region Variables
@@ -33,16 +33,16 @@ namespace CSSPWebAPIsLocal.Controllers
 
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
-        private ILabSheetDetailService LabSheetDetailService { get; }
+        private ILocalService LocalService { get; }
+        private ILabSheetDetailDBLocalService LabSheetDetailDBLocalService { get; }
         #endregion Properties
 
         #region Constructors
-        public LabSheetDetailController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, ILabSheetDetailService LabSheetDetailService)
+        public LabSheetDetailController(ICSSPCultureService CSSPCultureService, ILocalService LocalService, ILabSheetDetailDBLocalService LabSheetDetailDBLocalService)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
-            this.LabSheetDetailService = LabSheetDetailService;
+            this.LocalService = LocalService;
+            this.LabSheetDetailDBLocalService = LabSheetDetailDBLocalService;
         }
         #endregion Constructors
 
@@ -51,41 +51,41 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<List<LabSheetDetail>>> Get()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await LabSheetDetailService.GetLabSheetDetailList();
+            return await LabSheetDetailDBLocalService.GetLabSheetDetailList();
         }
         [HttpGet("{LabSheetDetailID}")]
         public async Task<ActionResult<LabSheetDetail>> Get(int LabSheetDetailID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await LabSheetDetailService.GetLabSheetDetailWithLabSheetDetailID(LabSheetDetailID);
+            return await LabSheetDetailDBLocalService.GetLabSheetDetailWithLabSheetDetailID(LabSheetDetailID);
         }
         [HttpPost]
         public async Task<ActionResult<LabSheetDetail>> Post(LabSheetDetail LabSheetDetail)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await LabSheetDetailService.Post(LabSheetDetail);
+            return await LabSheetDetailDBLocalService.Post(LabSheetDetail);
         }
         [HttpPut]
         public async Task<ActionResult<LabSheetDetail>> Put(LabSheetDetail LabSheetDetail)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await LabSheetDetailService.Put(LabSheetDetail);
+            return await LabSheetDetailDBLocalService.Put(LabSheetDetail);
         }
         [HttpDelete("{LabSheetDetailID}")]
         public async Task<ActionResult<bool>> Delete(int LabSheetDetailID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await LabSheetDetailService.Delete(LabSheetDetailID);
+            return await LabSheetDetailDBLocalService.Delete(LabSheetDetailID);
         }
         #endregion Functions public
 

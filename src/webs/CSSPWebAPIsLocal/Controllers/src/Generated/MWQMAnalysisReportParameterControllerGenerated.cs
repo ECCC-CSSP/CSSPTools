@@ -5,14 +5,15 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBLocalServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LocalServices;
 
-namespace CSSPWebAPIsLocal.Controllers
+namespace CSSPWebAPIs.Controllers
 {
     public partial interface IMWQMAnalysisReportParameterController
     {
@@ -25,7 +26,6 @@ namespace CSSPWebAPIsLocal.Controllers
 
     [Route("api/{culture}/[controller]")]
     [ApiController]
-    [Authorize]
     public partial class MWQMAnalysisReportParameterController : ControllerBase, IMWQMAnalysisReportParameterController
     {
         #region Variables
@@ -33,16 +33,16 @@ namespace CSSPWebAPIsLocal.Controllers
 
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
-        private IMWQMAnalysisReportParameterService MWQMAnalysisReportParameterService { get; }
+        private ILocalService LocalService { get; }
+        private IMWQMAnalysisReportParameterDBLocalService MWQMAnalysisReportParameterDBLocalService { get; }
         #endregion Properties
 
         #region Constructors
-        public MWQMAnalysisReportParameterController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IMWQMAnalysisReportParameterService MWQMAnalysisReportParameterService)
+        public MWQMAnalysisReportParameterController(ICSSPCultureService CSSPCultureService, ILocalService LocalService, IMWQMAnalysisReportParameterDBLocalService MWQMAnalysisReportParameterDBLocalService)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
-            this.MWQMAnalysisReportParameterService = MWQMAnalysisReportParameterService;
+            this.LocalService = LocalService;
+            this.MWQMAnalysisReportParameterDBLocalService = MWQMAnalysisReportParameterDBLocalService;
         }
         #endregion Constructors
 
@@ -51,41 +51,41 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<List<MWQMAnalysisReportParameter>>> Get()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await MWQMAnalysisReportParameterService.GetMWQMAnalysisReportParameterList();
+            return await MWQMAnalysisReportParameterDBLocalService.GetMWQMAnalysisReportParameterList();
         }
         [HttpGet("{MWQMAnalysisReportParameterID}")]
         public async Task<ActionResult<MWQMAnalysisReportParameter>> Get(int MWQMAnalysisReportParameterID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await MWQMAnalysisReportParameterService.GetMWQMAnalysisReportParameterWithMWQMAnalysisReportParameterID(MWQMAnalysisReportParameterID);
+            return await MWQMAnalysisReportParameterDBLocalService.GetMWQMAnalysisReportParameterWithMWQMAnalysisReportParameterID(MWQMAnalysisReportParameterID);
         }
         [HttpPost]
         public async Task<ActionResult<MWQMAnalysisReportParameter>> Post(MWQMAnalysisReportParameter MWQMAnalysisReportParameter)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await MWQMAnalysisReportParameterService.Post(MWQMAnalysisReportParameter);
+            return await MWQMAnalysisReportParameterDBLocalService.Post(MWQMAnalysisReportParameter);
         }
         [HttpPut]
         public async Task<ActionResult<MWQMAnalysisReportParameter>> Put(MWQMAnalysisReportParameter MWQMAnalysisReportParameter)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await MWQMAnalysisReportParameterService.Put(MWQMAnalysisReportParameter);
+            return await MWQMAnalysisReportParameterDBLocalService.Put(MWQMAnalysisReportParameter);
         }
         [HttpDelete("{MWQMAnalysisReportParameterID}")]
         public async Task<ActionResult<bool>> Delete(int MWQMAnalysisReportParameterID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await MWQMAnalysisReportParameterService.Delete(MWQMAnalysisReportParameterID);
+            return await MWQMAnalysisReportParameterDBLocalService.Delete(MWQMAnalysisReportParameterID);
         }
         #endregion Functions public
 

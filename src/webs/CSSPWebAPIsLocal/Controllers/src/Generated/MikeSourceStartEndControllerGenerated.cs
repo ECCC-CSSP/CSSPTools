@@ -5,14 +5,15 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBLocalServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LocalServices;
 
-namespace CSSPWebAPIsLocal.Controllers
+namespace CSSPWebAPIs.Controllers
 {
     public partial interface IMikeSourceStartEndController
     {
@@ -25,7 +26,6 @@ namespace CSSPWebAPIsLocal.Controllers
 
     [Route("api/{culture}/[controller]")]
     [ApiController]
-    [Authorize]
     public partial class MikeSourceStartEndController : ControllerBase, IMikeSourceStartEndController
     {
         #region Variables
@@ -33,16 +33,16 @@ namespace CSSPWebAPIsLocal.Controllers
 
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
-        private IMikeSourceStartEndService MikeSourceStartEndService { get; }
+        private ILocalService LocalService { get; }
+        private IMikeSourceStartEndDBLocalService MikeSourceStartEndDBLocalService { get; }
         #endregion Properties
 
         #region Constructors
-        public MikeSourceStartEndController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IMikeSourceStartEndService MikeSourceStartEndService)
+        public MikeSourceStartEndController(ICSSPCultureService CSSPCultureService, ILocalService LocalService, IMikeSourceStartEndDBLocalService MikeSourceStartEndDBLocalService)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
-            this.MikeSourceStartEndService = MikeSourceStartEndService;
+            this.LocalService = LocalService;
+            this.MikeSourceStartEndDBLocalService = MikeSourceStartEndDBLocalService;
         }
         #endregion Constructors
 
@@ -51,41 +51,41 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<List<MikeSourceStartEnd>>> Get()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await MikeSourceStartEndService.GetMikeSourceStartEndList();
+            return await MikeSourceStartEndDBLocalService.GetMikeSourceStartEndList();
         }
         [HttpGet("{MikeSourceStartEndID}")]
         public async Task<ActionResult<MikeSourceStartEnd>> Get(int MikeSourceStartEndID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await MikeSourceStartEndService.GetMikeSourceStartEndWithMikeSourceStartEndID(MikeSourceStartEndID);
+            return await MikeSourceStartEndDBLocalService.GetMikeSourceStartEndWithMikeSourceStartEndID(MikeSourceStartEndID);
         }
         [HttpPost]
         public async Task<ActionResult<MikeSourceStartEnd>> Post(MikeSourceStartEnd MikeSourceStartEnd)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await MikeSourceStartEndService.Post(MikeSourceStartEnd);
+            return await MikeSourceStartEndDBLocalService.Post(MikeSourceStartEnd);
         }
         [HttpPut]
         public async Task<ActionResult<MikeSourceStartEnd>> Put(MikeSourceStartEnd MikeSourceStartEnd)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await MikeSourceStartEndService.Put(MikeSourceStartEnd);
+            return await MikeSourceStartEndDBLocalService.Put(MikeSourceStartEnd);
         }
         [HttpDelete("{MikeSourceStartEndID}")]
         public async Task<ActionResult<bool>> Delete(int MikeSourceStartEndID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await MikeSourceStartEndService.Delete(MikeSourceStartEndID);
+            return await MikeSourceStartEndDBLocalService.Delete(MikeSourceStartEndID);
         }
         #endregion Functions public
 

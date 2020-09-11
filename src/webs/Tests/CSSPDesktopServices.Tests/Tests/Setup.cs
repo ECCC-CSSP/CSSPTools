@@ -3,14 +3,18 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using CSSPCultureServices.Services;
+using CSSPDBFilesManagementServices;
 using CSSPDesktopServices.Models;
 using CSSPDesktopServices.Services;
 using CSSPEnums;
 using CSSPModels;
-using CSSPServices;
+using CSSPSQLiteServices;
+using DownloadGzFileServices;
+using LocalServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ReadGzFileServices;
 using Xunit;
 
 namespace CSSPDesktopServices.Tests
@@ -58,7 +62,7 @@ namespace CSSPDesktopServices.Tests
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<ICSSPDesktopService, CSSPDesktopService>();
             Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
-            Services.AddSingleton<ICSSPFileService, CSSPFileService>();
+            Services.AddSingleton<ICSSPDBFilesManagementService, CSSPDBFilesManagementService>();
             Services.AddSingleton<IDownloadGzFileService, DownloadGzFileService>();
             Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
             Services.AddSingleton<ILocalService, LocalService>();

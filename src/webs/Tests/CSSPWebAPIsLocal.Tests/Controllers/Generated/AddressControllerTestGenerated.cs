@@ -6,8 +6,8 @@
 
 using CSSPEnums;
 using CSSPModels;
-using CSSPServices;
-using CSSPWebAPIsLocal.Controllers;
+using CSSPDBLocalServices;
+using CSSPWebAPIs.Controllers;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,8 +24,9 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using LocalServices;
 
-namespace CSSPWebAPIsLocal.Tests.Controllers
+namespace CSSPWebAPIs.Tests.Controllers
 {
     public partial class AddressControllerTest
     {
@@ -36,13 +37,12 @@ namespace CSSPWebAPIsLocal.Tests.Controllers
         private IConfiguration Config { get; set; }
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
-        private CSSPDBContext db { get; set; }
-        private IContactService ContactService { get; set; }
-        private ILoggedInService loggedInService { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
-        private IAddressService addressService { get; set; }
-        private IAddressController addressController { get; set; }
-        private Contact contact { get; set; }
+        private ILocalService LocalService { get; set; }
+        private IAddressDBLocalService AddressDBLocalService { get; set; }
+        private string CSSPAzureUrl { get; set; }
+        private string LocalUrl { get; set; }
+        private IAddressController AddressController { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -54,73 +54,74 @@ namespace CSSPWebAPIsLocal.Tests.Controllers
         #region Functions public
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task AddressController_Constructor_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
-            Assert.NotNull(loggedInService);
-            Assert.NotNull(addressService);
-            Assert.NotNull(addressController);
+
+            Assert.NotNull(LocalService);
+            Assert.NotNull(AddressDBLocalService);
+            Assert.NotNull(AddressController);
         }
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task AddressController_CRUD_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            HttpClient httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
+            using (HttpClient httpClient = new HttpClient())
+            {
+                // testing Get
+                string url = $"{ LocalUrl }api/{ culture }/Address";
+                var response = await httpClient.GetAsync(url);
+                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+                string responseContent = await response.Content.ReadAsStringAsync();
+                Assert.NotEmpty(responseContent);
+                List<Address> addressList = JsonSerializer.Deserialize<List<Address>>(responseContent);
+                Assert.True(addressList.Count > 0);
 
-            // testing Get
-            string url = "https://localhost:4447/api/" + culture + "/Address";
-            var response = await httpClient.GetAsync(url);
-            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
-            List<Address> addressList = JsonSerializer.Deserialize<List<Address>>(responseContent);
-            Assert.True(addressList.Count > 0);
+                // testing Get(AddressID)
+                string urlID = url + "/" + addressList[0].AddressID;
+                response = await httpClient.GetAsync(urlID);
+                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+                responseContent = await response.Content.ReadAsStringAsync();
+                Assert.NotEmpty(responseContent);
+                Address address = JsonSerializer.Deserialize<Address>(responseContent);
+                Assert.Equal(addressList[0].AddressID, address.AddressID);
 
-            // testing Get(AddressID)
-            string urlID = url + "/" + addressList[0].AddressID;
-            response = await httpClient.GetAsync(urlID);
-            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-            responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
-            Address address = JsonSerializer.Deserialize<Address>(responseContent);
-            Assert.Equal(addressList[0].AddressID, address.AddressID);
+                // testing Post(Address)
+                address.AddressID = 0;
+                string content = JsonSerializer.Serialize<Address>(address);
+                HttpContent httpContent = new StringContent(content);
+                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                response = await httpClient.PostAsync(url, httpContent);
+                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+                responseContent = await response.Content.ReadAsStringAsync();
+                Assert.NotEmpty(responseContent);
+                address = JsonSerializer.Deserialize<Address>(responseContent);
+                Assert.NotNull(address);
 
-            // testing Post(Address)
-            address.AddressID = 0;
-            string content = JsonSerializer.Serialize<Address>(address);
-            HttpContent httpContent = new StringContent(content);
-            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            response = await httpClient.PostAsync(url, httpContent);
-            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-            responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
-            address = JsonSerializer.Deserialize<Address>(responseContent);
-            Assert.NotNull(address);
+                // testing Put(Address)
+                content = JsonSerializer.Serialize<Address>(address);
+                httpContent = new StringContent(content);
+                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                response = await httpClient.PutAsync(url, httpContent);
+                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+                responseContent = await response.Content.ReadAsStringAsync();
+                Assert.NotEmpty(responseContent);
+                address = JsonSerializer.Deserialize<Address>(responseContent);
+                Assert.NotNull(address);
 
-            // testing Put(Address)
-            content = JsonSerializer.Serialize<Address>(address);
-            httpContent = new StringContent(content);
-            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            response = await httpClient.PutAsync(url, httpContent);
-            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-            responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
-            address = JsonSerializer.Deserialize<Address>(responseContent);
-            Assert.NotNull(address);
-
-            // testing Delete(AddressID)
-            urlID = url + "/" + address.AddressID;
-            response = await httpClient.DeleteAsync(urlID);
-            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-            responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
-            bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
-            Assert.True(retBool);
+                // testing Delete(AddressID)
+                urlID = url + "/" + address.AddressID;
+                response = await httpClient.DeleteAsync(urlID);
+                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+                responseContent = await response.Content.ReadAsStringAsync();
+                Assert.NotEmpty(responseContent);
+                bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
+                Assert.True(retBool);
+            }
         }
         #endregion Functions public
 
@@ -129,51 +130,118 @@ namespace CSSPWebAPIsLocal.Tests.Controllers
         {
             Config = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-               .AddJsonFile("appsettings_csspwebapistests.json")
-               .AddUserSecrets("9d65c001-b7bc-4922-a0fc-1558b9ef927e")
+               .AddJsonFile("appsettings_csspwebapislocaltests.json")
+               .AddUserSecrets("61f396b6-8b79-4328-a2b7-a07921135f96")
                .Build();
 
             Services = new ServiceCollection();
 
-            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
-            Assert.NotNull(CSSPDBLocalFileName);
-
-            string TestDB = Config.GetValue<string>("TestDB");
-            Assert.NotNull(TestDB);
-
             Services.AddSingleton<IConfiguration>(Config);
 
-            Services.AddDbContext<CSSPDBContext>(options =>
-            {
-                options.UseSqlServer(TestDB);
-            });
+            CSSPAzureUrl = Config.GetValue<string>("CSSPAzureUrl");
+            Assert.NotNull(CSSPAzureUrl);
 
-            Services.AddDbContext<CSSPDBInMemoryContext>(options =>
-            {
-                options.UseInMemoryDatabase(TestDB);
-            });
+            LocalUrl = Config.GetValue<string>("LocalUrl");
+            Assert.NotNull(LocalUrl);
 
-            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName);
+            /* ---------------------------------------------------------------------------------
+             * using CSSPDBLocal 
+             * ---------------------------------------------------------------------------------      
+             */
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+
+            FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocalFileName);
 
             Services.AddDbContext<CSSPDBLocalContext>(options =>
             {
-                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
+                options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
             });
 
-            Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(TestDB));
+            /* ---------------------------------------------------------------------------------
+             * using CSSPDBLocalInMemory 
+             * ---------------------------------------------------------------------------------      
+             */
+            string DBConnStr = "";
 
-            Services.AddIdentityCore<ApplicationUser>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            DBConnStr = Config.GetValue<string>("AzureCSSPDB");
+
+            Services.AddDbContext<CSSPDBInMemoryContext>(options =>
+            {
+                options.UseInMemoryDatabase(DBConnStr);
+            });
+
+            /* ---------------------------------------------------------------------------------
+             * using CSSPDBLogin
+             * ---------------------------------------------------------------------------------      
+             */
+            string CSSPDBLoginFileName = Config.GetValue<string>("CSSPDBLogin");
+
+            FileInfo fiCSSPDBLogin = new FileInfo(CSSPDBLoginFileName);
+
+            Services.AddDbContext<CSSPDBLoginContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiCSSPDBLogin.FullName }");
+            });
+
+            /* ---------------------------------------------------------------------------------
+             * using CSSPDBLoginInMemory
+             * ---------------------------------------------------------------------------------      
+             */
+
+            Services.AddDbContext<CSSPDBLoginInMemoryContext>(options =>
+            {
+                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBLogin.FullName }");
+            });
+
+            /* ---------------------------------------------------------------------------------
+             * using CSSPDBFileManagement
+             * ---------------------------------------------------------------------------------      
+             */
+            string CSSPDBFilesManagementFileName = Config.GetValue<string>("CSSPDBFilesManagement");
+
+            FileInfo fiCSSPDBFilesManagement = new FileInfo(CSSPDBFilesManagementFileName);
+
+            Services.AddDbContext<CSSPDBFilesManagementContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiCSSPDBFilesManagement.FullName }");
+            });
+
+            /* ---------------------------------------------------------------------------------
+             * using CSSPDBFileManagementInMemmory
+             * ---------------------------------------------------------------------------------      
+             */
+            Services.AddDbContext<CSSPDBFilesManagementInMemoryContext>(options =>
+            {
+                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBFilesManagement.FullName }");
+            });
+
+            /* ---------------------------------------------------------------------------------
+             * using CSSPDBSearch
+             * ---------------------------------------------------------------------------------      
+             */
+            string CSSPDBSearchFileName = Config.GetValue<string>("CSSPDBSearch");
+
+            FileInfo fiCSSPDBSearch = new FileInfo(CSSPDBSearchFileName);
+
+            Services.AddDbContext<CSSPDBSearchContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiCSSPDBSearch.FullName }");
+            });
+
+            /* ---------------------------------------------------------------------------------
+             * using CSSPDBSearchInMemory
+             * ---------------------------------------------------------------------------------      
+             */
+            Services.AddDbContext<CSSPDBSearchInMemoryContext>(options =>
+            {
+                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBSearch.FullName }");
+            });
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
-            Services.AddSingleton<ILoggedInService, LoggedInService>();
-            Services.AddSingleton<ILoginModelService, LoginModelService>();
-            Services.AddSingleton<IRegisterModelService, RegisterModelService>();
-            Services.AddSingleton<IAspNetUserService, AspNetUserService>();
-            Services.AddSingleton<IContactService, ContactService>();
-            Services.AddSingleton<IAddressService, AddressService>();
+            Services.AddSingleton<ILocalService, LocalService>();
+            Services.AddSingleton<IContactDBLocalService, ContactDBLocalService>();
+            Services.AddSingleton<IAddressDBLocalService, AddressDBLocalService>();
             Services.AddSingleton<IAddressController, AddressController>();
 
             Provider = Services.BuildServiceProvider();
@@ -184,36 +252,17 @@ namespace CSSPWebAPIsLocal.Tests.Controllers
 
             CSSPCultureService.SetCulture(culture);
 
-            ContactService = Provider.GetService<IContactService>();
-            Assert.NotNull(ContactService);
+            LocalService = Provider.GetService<ILocalService>();
+            Assert.NotNull(LocalService);
 
-            string LoginEmail = Config.GetValue<string>("LoginEmail");
-            Assert.NotNull(LoginEmail);
+            await LocalService.SetLoggedInContactInfo();
+            Assert.NotNull(LocalService.LoggedInContactInfo);
 
-            string Password = Password = Config.GetValue<string>("Password");
-            Assert.NotNull(Password);
+            AddressDBLocalService = Provider.GetService<IAddressDBLocalService>();
+            Assert.NotNull(AddressDBLocalService);
 
-            LoginModel loginModel = new LoginModel()
-            {
-                LoginEmail = LoginEmail,
-                Password = Password
-            };
-
-            var actionContact = await ContactService.Login(loginModel);
-            Assert.NotNull(actionContact.Value);
-            contact = actionContact.Value;
-
-            loggedInService = Provider.GetService<ILoggedInService>();
-            Assert.NotNull(loggedInService);
-
-            await loggedInService.SetLoggedInContactInfo(contact.Id);
-            Assert.NotNull(loggedInService.LoggedInContactInfo);
-
-            addressService = Provider.GetService<IAddressService>();
-            Assert.NotNull(addressService);
-
-            addressController = Provider.GetService<IAddressController>();
-            Assert.NotNull(addressController);
+            AddressController = Provider.GetService<IAddressController>();
+            Assert.NotNull(AddressController);
 
             return await Task.FromResult(true);
         }

@@ -5,14 +5,15 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBLocalServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LocalServices;
 
-namespace CSSPWebAPIsLocal.Controllers
+namespace CSSPWebAPIs.Controllers
 {
     public partial interface IVPResultController
     {
@@ -25,7 +26,6 @@ namespace CSSPWebAPIsLocal.Controllers
 
     [Route("api/{culture}/[controller]")]
     [ApiController]
-    [Authorize]
     public partial class VPResultController : ControllerBase, IVPResultController
     {
         #region Variables
@@ -33,16 +33,16 @@ namespace CSSPWebAPIsLocal.Controllers
 
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
-        private IVPResultService VPResultService { get; }
+        private ILocalService LocalService { get; }
+        private IVPResultDBLocalService VPResultDBLocalService { get; }
         #endregion Properties
 
         #region Constructors
-        public VPResultController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IVPResultService VPResultService)
+        public VPResultController(ICSSPCultureService CSSPCultureService, ILocalService LocalService, IVPResultDBLocalService VPResultDBLocalService)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
-            this.VPResultService = VPResultService;
+            this.LocalService = LocalService;
+            this.VPResultDBLocalService = VPResultDBLocalService;
         }
         #endregion Constructors
 
@@ -51,41 +51,41 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<List<VPResult>>> Get()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await VPResultService.GetVPResultList();
+            return await VPResultDBLocalService.GetVPResultList();
         }
         [HttpGet("{VPResultID}")]
         public async Task<ActionResult<VPResult>> Get(int VPResultID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await VPResultService.GetVPResultWithVPResultID(VPResultID);
+            return await VPResultDBLocalService.GetVPResultWithVPResultID(VPResultID);
         }
         [HttpPost]
         public async Task<ActionResult<VPResult>> Post(VPResult VPResult)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await VPResultService.Post(VPResult);
+            return await VPResultDBLocalService.Post(VPResult);
         }
         [HttpPut]
         public async Task<ActionResult<VPResult>> Put(VPResult VPResult)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await VPResultService.Put(VPResult);
+            return await VPResultDBLocalService.Put(VPResult);
         }
         [HttpDelete("{VPResultID}")]
         public async Task<ActionResult<bool>> Delete(int VPResultID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await VPResultService.Delete(VPResultID);
+            return await VPResultDBLocalService.Delete(VPResultID);
         }
         #endregion Functions public
 

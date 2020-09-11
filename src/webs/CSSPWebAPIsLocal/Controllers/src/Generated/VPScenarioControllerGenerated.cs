@@ -5,14 +5,15 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBLocalServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LocalServices;
 
-namespace CSSPWebAPIsLocal.Controllers
+namespace CSSPWebAPIs.Controllers
 {
     public partial interface IVPScenarioController
     {
@@ -25,7 +26,6 @@ namespace CSSPWebAPIsLocal.Controllers
 
     [Route("api/{culture}/[controller]")]
     [ApiController]
-    [Authorize]
     public partial class VPScenarioController : ControllerBase, IVPScenarioController
     {
         #region Variables
@@ -33,16 +33,16 @@ namespace CSSPWebAPIsLocal.Controllers
 
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
-        private IVPScenarioService VPScenarioService { get; }
+        private ILocalService LocalService { get; }
+        private IVPScenarioDBLocalService VPScenarioDBLocalService { get; }
         #endregion Properties
 
         #region Constructors
-        public VPScenarioController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IVPScenarioService VPScenarioService)
+        public VPScenarioController(ICSSPCultureService CSSPCultureService, ILocalService LocalService, IVPScenarioDBLocalService VPScenarioDBLocalService)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
-            this.VPScenarioService = VPScenarioService;
+            this.LocalService = LocalService;
+            this.VPScenarioDBLocalService = VPScenarioDBLocalService;
         }
         #endregion Constructors
 
@@ -51,41 +51,41 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<List<VPScenario>>> Get()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await VPScenarioService.GetVPScenarioList();
+            return await VPScenarioDBLocalService.GetVPScenarioList();
         }
         [HttpGet("{VPScenarioID}")]
         public async Task<ActionResult<VPScenario>> Get(int VPScenarioID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await VPScenarioService.GetVPScenarioWithVPScenarioID(VPScenarioID);
+            return await VPScenarioDBLocalService.GetVPScenarioWithVPScenarioID(VPScenarioID);
         }
         [HttpPost]
         public async Task<ActionResult<VPScenario>> Post(VPScenario VPScenario)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await VPScenarioService.Post(VPScenario);
+            return await VPScenarioDBLocalService.Post(VPScenario);
         }
         [HttpPut]
         public async Task<ActionResult<VPScenario>> Put(VPScenario VPScenario)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await VPScenarioService.Put(VPScenario);
+            return await VPScenarioDBLocalService.Put(VPScenario);
         }
         [HttpDelete("{VPScenarioID}")]
         public async Task<ActionResult<bool>> Delete(int VPScenarioID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await VPScenarioService.Delete(VPScenarioID);
+            return await VPScenarioDBLocalService.Delete(VPScenarioID);
         }
         #endregion Functions public
 

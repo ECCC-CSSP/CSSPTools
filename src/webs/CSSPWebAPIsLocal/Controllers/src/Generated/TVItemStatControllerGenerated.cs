@@ -5,14 +5,15 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBLocalServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LocalServices;
 
-namespace CSSPWebAPIsLocal.Controllers
+namespace CSSPWebAPIs.Controllers
 {
     public partial interface ITVItemStatController
     {
@@ -25,7 +26,6 @@ namespace CSSPWebAPIsLocal.Controllers
 
     [Route("api/{culture}/[controller]")]
     [ApiController]
-    [Authorize]
     public partial class TVItemStatController : ControllerBase, ITVItemStatController
     {
         #region Variables
@@ -33,16 +33,16 @@ namespace CSSPWebAPIsLocal.Controllers
 
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
-        private ITVItemStatService TVItemStatService { get; }
+        private ILocalService LocalService { get; }
+        private ITVItemStatDBLocalService TVItemStatDBLocalService { get; }
         #endregion Properties
 
         #region Constructors
-        public TVItemStatController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, ITVItemStatService TVItemStatService)
+        public TVItemStatController(ICSSPCultureService CSSPCultureService, ILocalService LocalService, ITVItemStatDBLocalService TVItemStatDBLocalService)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
-            this.TVItemStatService = TVItemStatService;
+            this.LocalService = LocalService;
+            this.TVItemStatDBLocalService = TVItemStatDBLocalService;
         }
         #endregion Constructors
 
@@ -51,41 +51,41 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<List<TVItemStat>>> Get()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await TVItemStatService.GetTVItemStatList();
+            return await TVItemStatDBLocalService.GetTVItemStatList();
         }
         [HttpGet("{TVItemStatID}")]
         public async Task<ActionResult<TVItemStat>> Get(int TVItemStatID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await TVItemStatService.GetTVItemStatWithTVItemStatID(TVItemStatID);
+            return await TVItemStatDBLocalService.GetTVItemStatWithTVItemStatID(TVItemStatID);
         }
         [HttpPost]
         public async Task<ActionResult<TVItemStat>> Post(TVItemStat TVItemStat)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await TVItemStatService.Post(TVItemStat);
+            return await TVItemStatDBLocalService.Post(TVItemStat);
         }
         [HttpPut]
         public async Task<ActionResult<TVItemStat>> Put(TVItemStat TVItemStat)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await TVItemStatService.Put(TVItemStat);
+            return await TVItemStatDBLocalService.Put(TVItemStat);
         }
         [HttpDelete("{TVItemStatID}")]
         public async Task<ActionResult<bool>> Delete(int TVItemStatID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await TVItemStatService.Delete(TVItemStatID);
+            return await TVItemStatDBLocalService.Delete(TVItemStatID);
         }
         #endregion Functions public
 

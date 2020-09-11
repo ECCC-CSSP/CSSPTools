@@ -5,14 +5,15 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBLocalServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LocalServices;
 
-namespace CSSPWebAPIsLocal.Controllers
+namespace CSSPWebAPIs.Controllers
 {
     public partial interface IInfrastructureLanguageController
     {
@@ -25,7 +26,6 @@ namespace CSSPWebAPIsLocal.Controllers
 
     [Route("api/{culture}/[controller]")]
     [ApiController]
-    [Authorize]
     public partial class InfrastructureLanguageController : ControllerBase, IInfrastructureLanguageController
     {
         #region Variables
@@ -33,16 +33,16 @@ namespace CSSPWebAPIsLocal.Controllers
 
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
-        private IInfrastructureLanguageService InfrastructureLanguageService { get; }
+        private ILocalService LocalService { get; }
+        private IInfrastructureLanguageDBLocalService InfrastructureLanguageDBLocalService { get; }
         #endregion Properties
 
         #region Constructors
-        public InfrastructureLanguageController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IInfrastructureLanguageService InfrastructureLanguageService)
+        public InfrastructureLanguageController(ICSSPCultureService CSSPCultureService, ILocalService LocalService, IInfrastructureLanguageDBLocalService InfrastructureLanguageDBLocalService)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
-            this.InfrastructureLanguageService = InfrastructureLanguageService;
+            this.LocalService = LocalService;
+            this.InfrastructureLanguageDBLocalService = InfrastructureLanguageDBLocalService;
         }
         #endregion Constructors
 
@@ -51,41 +51,41 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<List<InfrastructureLanguage>>> Get()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await InfrastructureLanguageService.GetInfrastructureLanguageList();
+            return await InfrastructureLanguageDBLocalService.GetInfrastructureLanguageList();
         }
         [HttpGet("{InfrastructureLanguageID}")]
         public async Task<ActionResult<InfrastructureLanguage>> Get(int InfrastructureLanguageID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await InfrastructureLanguageService.GetInfrastructureLanguageWithInfrastructureLanguageID(InfrastructureLanguageID);
+            return await InfrastructureLanguageDBLocalService.GetInfrastructureLanguageWithInfrastructureLanguageID(InfrastructureLanguageID);
         }
         [HttpPost]
         public async Task<ActionResult<InfrastructureLanguage>> Post(InfrastructureLanguage InfrastructureLanguage)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await InfrastructureLanguageService.Post(InfrastructureLanguage);
+            return await InfrastructureLanguageDBLocalService.Post(InfrastructureLanguage);
         }
         [HttpPut]
         public async Task<ActionResult<InfrastructureLanguage>> Put(InfrastructureLanguage InfrastructureLanguage)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await InfrastructureLanguageService.Put(InfrastructureLanguage);
+            return await InfrastructureLanguageDBLocalService.Put(InfrastructureLanguage);
         }
         [HttpDelete("{InfrastructureLanguageID}")]
         public async Task<ActionResult<bool>> Delete(int InfrastructureLanguageID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await InfrastructureLanguageService.Delete(InfrastructureLanguageID);
+            return await InfrastructureLanguageDBLocalService.Delete(InfrastructureLanguageID);
         }
         #endregion Functions public
 

@@ -6,8 +6,8 @@
 
 using CSSPEnums;
 using CSSPModels;
-using CSSPServices;
-using CSSPWebAPIsLocal.Controllers;
+using CSSPDBLocalServices;
+using CSSPWebAPIs.Controllers;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,8 +24,9 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using LocalServices;
 
-namespace CSSPWebAPIsLocal.Tests.Controllers
+namespace CSSPWebAPIs.Tests.Controllers
 {
     public partial class InfrastructureLanguageControllerTest
     {
@@ -36,13 +37,12 @@ namespace CSSPWebAPIsLocal.Tests.Controllers
         private IConfiguration Config { get; set; }
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
-        private CSSPDBContext db { get; set; }
-        private IContactService ContactService { get; set; }
-        private ILoggedInService loggedInService { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
-        private IInfrastructureLanguageService infrastructureLanguageService { get; set; }
-        private IInfrastructureLanguageController infrastructureLanguageController { get; set; }
-        private Contact contact { get; set; }
+        private ILocalService LocalService { get; set; }
+        private IInfrastructureLanguageDBLocalService InfrastructureLanguageDBLocalService { get; set; }
+        private string CSSPAzureUrl { get; set; }
+        private string LocalUrl { get; set; }
+        private IInfrastructureLanguageController InfrastructureLanguageController { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -54,73 +54,76 @@ namespace CSSPWebAPIsLocal.Tests.Controllers
         #region Functions public
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task InfrastructureLanguageController_Constructor_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
-            Assert.NotNull(loggedInService);
-            Assert.NotNull(infrastructureLanguageService);
-            Assert.NotNull(infrastructureLanguageController);
+
+            Assert.NotNull(LocalService);
+            Assert.NotNull(InfrastructureLanguageDBLocalService);
+            Assert.NotNull(InfrastructureLanguageController);
         }
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task InfrastructureLanguageController_CRUD_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            HttpClient httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
+            using (HttpClient httpClient = new HttpClient())
+            {
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", LocalService.LoggedInContactInfo.LoggedInContact.Token);
 
-            // testing Get
-            string url = "https://localhost:4447/api/" + culture + "/InfrastructureLanguage";
-            var response = await httpClient.GetAsync(url);
-            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
-            List<InfrastructureLanguage> infrastructureLanguageList = JsonSerializer.Deserialize<List<InfrastructureLanguage>>(responseContent);
-            Assert.True(infrastructureLanguageList.Count > 0);
+                // testing Get
+                string url = $"{ LocalUrl }api/{ culture }/InfrastructureLanguage";
+                var response = await httpClient.GetAsync(url);
+                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+                string responseContent = await response.Content.ReadAsStringAsync();
+                Assert.NotEmpty(responseContent);
+                List<InfrastructureLanguage> infrastructureLanguageList = JsonSerializer.Deserialize<List<InfrastructureLanguage>>(responseContent);
+                Assert.True(infrastructureLanguageList.Count > 0);
 
-            // testing Get(InfrastructureLanguageID)
-            string urlID = url + "/" + infrastructureLanguageList[0].InfrastructureLanguageID;
-            response = await httpClient.GetAsync(urlID);
-            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-            responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
-            InfrastructureLanguage infrastructureLanguage = JsonSerializer.Deserialize<InfrastructureLanguage>(responseContent);
-            Assert.Equal(infrastructureLanguageList[0].InfrastructureLanguageID, infrastructureLanguage.InfrastructureLanguageID);
+                // testing Get(InfrastructureLanguageID)
+                string urlID = url + "/" + infrastructureLanguageList[0].InfrastructureLanguageID;
+                response = await httpClient.GetAsync(urlID);
+                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+                responseContent = await response.Content.ReadAsStringAsync();
+                Assert.NotEmpty(responseContent);
+                InfrastructureLanguage infrastructureLanguage = JsonSerializer.Deserialize<InfrastructureLanguage>(responseContent);
+                Assert.Equal(infrastructureLanguageList[0].InfrastructureLanguageID, infrastructureLanguage.InfrastructureLanguageID);
 
-            // testing Post(InfrastructureLanguage)
-            infrastructureLanguage.InfrastructureLanguageID = 0;
-            string content = JsonSerializer.Serialize<InfrastructureLanguage>(infrastructureLanguage);
-            HttpContent httpContent = new StringContent(content);
-            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            response = await httpClient.PostAsync(url, httpContent);
-            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-            responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
-            infrastructureLanguage = JsonSerializer.Deserialize<InfrastructureLanguage>(responseContent);
-            Assert.NotNull(infrastructureLanguage);
+                // testing Post(InfrastructureLanguage)
+                infrastructureLanguage.InfrastructureLanguageID = 0;
+                string content = JsonSerializer.Serialize<InfrastructureLanguage>(infrastructureLanguage);
+                HttpContent httpContent = new StringContent(content);
+                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                response = await httpClient.PostAsync(url, httpContent);
+                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+                responseContent = await response.Content.ReadAsStringAsync();
+                Assert.NotEmpty(responseContent);
+                infrastructureLanguage = JsonSerializer.Deserialize<InfrastructureLanguage>(responseContent);
+                Assert.NotNull(infrastructureLanguage);
 
-            // testing Put(InfrastructureLanguage)
-            content = JsonSerializer.Serialize<InfrastructureLanguage>(infrastructureLanguage);
-            httpContent = new StringContent(content);
-            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            response = await httpClient.PutAsync(url, httpContent);
-            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-            responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
-            infrastructureLanguage = JsonSerializer.Deserialize<InfrastructureLanguage>(responseContent);
-            Assert.NotNull(infrastructureLanguage);
+                // testing Put(InfrastructureLanguage)
+                content = JsonSerializer.Serialize<InfrastructureLanguage>(infrastructureLanguage);
+                httpContent = new StringContent(content);
+                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                response = await httpClient.PutAsync(url, httpContent);
+                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+                responseContent = await response.Content.ReadAsStringAsync();
+                Assert.NotEmpty(responseContent);
+                infrastructureLanguage = JsonSerializer.Deserialize<InfrastructureLanguage>(responseContent);
+                Assert.NotNull(infrastructureLanguage);
 
-            // testing Delete(InfrastructureLanguageID)
-            urlID = url + "/" + infrastructureLanguage.InfrastructureLanguageID;
-            response = await httpClient.DeleteAsync(urlID);
-            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-            responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
-            bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
-            Assert.True(retBool);
+                // testing Delete(InfrastructureLanguageID)
+                urlID = url + "/" + infrastructureLanguage.InfrastructureLanguageID;
+                response = await httpClient.DeleteAsync(urlID);
+                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+                responseContent = await response.Content.ReadAsStringAsync();
+                Assert.NotEmpty(responseContent);
+                bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
+                Assert.True(retBool);
+            }
         }
         #endregion Functions public
 
@@ -129,51 +132,25 @@ namespace CSSPWebAPIsLocal.Tests.Controllers
         {
             Config = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-               .AddJsonFile("appsettings_csspwebapistests.json")
-               .AddUserSecrets("9d65c001-b7bc-4922-a0fc-1558b9ef927e")
+               .AddJsonFile("appsettings_csspwebapislocaltests.json")
+               .AddUserSecrets("61f396b6-8b79-4328-a2b7-a07921135f96")
                .Build();
 
             Services = new ServiceCollection();
 
-            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
-            Assert.NotNull(CSSPDBLocalFileName);
-
-            string TestDB = Config.GetValue<string>("TestDB");
-            Assert.NotNull(TestDB);
-
             Services.AddSingleton<IConfiguration>(Config);
 
-            Services.AddDbContext<CSSPDBContext>(options =>
-            {
-                options.UseSqlServer(TestDB);
-            });
+            CSSPAzureUrl = Config.GetValue<string>("CSSPAzureUrl");
+            Assert.NotNull(CSSPAzureUrl);
 
-            Services.AddDbContext<CSSPDBInMemoryContext>(options =>
-            {
-                options.UseInMemoryDatabase(TestDB);
-            });
-
-            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName);
-
-            Services.AddDbContext<CSSPDBLocalContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
-            });
-
-            Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(TestDB));
-
-            Services.AddIdentityCore<ApplicationUser>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            LocalUrl = Config.GetValue<string>("LocalUrl");
+            Assert.NotNull(LocalUrl);
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
-            Services.AddSingleton<ILoggedInService, LoggedInService>();
-            Services.AddSingleton<ILoginModelService, LoginModelService>();
-            Services.AddSingleton<IRegisterModelService, RegisterModelService>();
-            Services.AddSingleton<IAspNetUserService, AspNetUserService>();
-            Services.AddSingleton<IContactService, ContactService>();
-            Services.AddSingleton<IInfrastructureLanguageService, InfrastructureLanguageService>();
+            Services.AddSingleton<ILocalService, LocalService>();
+            Services.AddSingleton<IContactDBLocalService, ContactDBLocalService>();
+            Services.AddSingleton<IInfrastructureLanguageDBLocalService, InfrastructureLanguageDBLocalService>();
             Services.AddSingleton<IInfrastructureLanguageController, InfrastructureLanguageController>();
 
             Provider = Services.BuildServiceProvider();
@@ -184,36 +161,17 @@ namespace CSSPWebAPIsLocal.Tests.Controllers
 
             CSSPCultureService.SetCulture(culture);
 
-            ContactService = Provider.GetService<IContactService>();
-            Assert.NotNull(ContactService);
+            LocalService = Provider.GetService<ILocalService>();
+            Assert.NotNull(LocalService);
 
-            string LoginEmail = Config.GetValue<string>("LoginEmail");
-            Assert.NotNull(LoginEmail);
+            await LocalService.SetLoggedInContactInfo();
+            Assert.NotNull(LocalService.LoggedInContactInfo);
 
-            string Password = Password = Config.GetValue<string>("Password");
-            Assert.NotNull(Password);
+            InfrastructureLanguageDBLocalService = Provider.GetService<IInfrastructureLanguageDBLocalService>();
+            Assert.NotNull(InfrastructureLanguageDBLocalService);
 
-            LoginModel loginModel = new LoginModel()
-            {
-                LoginEmail = LoginEmail,
-                Password = Password
-            };
-
-            var actionContact = await ContactService.Login(loginModel);
-            Assert.NotNull(actionContact.Value);
-            contact = actionContact.Value;
-
-            loggedInService = Provider.GetService<ILoggedInService>();
-            Assert.NotNull(loggedInService);
-
-            await loggedInService.SetLoggedInContactInfo(contact.Id);
-            Assert.NotNull(loggedInService.LoggedInContactInfo);
-
-            infrastructureLanguageService = Provider.GetService<IInfrastructureLanguageService>();
-            Assert.NotNull(infrastructureLanguageService);
-
-            infrastructureLanguageController = Provider.GetService<IInfrastructureLanguageController>();
-            Assert.NotNull(infrastructureLanguageController);
+            InfrastructureLanguageController = Provider.GetService<IInfrastructureLanguageController>();
+            Assert.NotNull(InfrastructureLanguageController);
 
             return await Task.FromResult(true);
         }

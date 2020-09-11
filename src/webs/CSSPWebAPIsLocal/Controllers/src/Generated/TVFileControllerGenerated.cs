@@ -5,14 +5,15 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBLocalServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LocalServices;
 
-namespace CSSPWebAPIsLocal.Controllers
+namespace CSSPWebAPIs.Controllers
 {
     public partial interface ITVFileController
     {
@@ -25,7 +26,6 @@ namespace CSSPWebAPIsLocal.Controllers
 
     [Route("api/{culture}/[controller]")]
     [ApiController]
-    [Authorize]
     public partial class TVFileController : ControllerBase, ITVFileController
     {
         #region Variables
@@ -33,16 +33,16 @@ namespace CSSPWebAPIsLocal.Controllers
 
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
-        private ITVFileService TVFileService { get; }
+        private ILocalService LocalService { get; }
+        private ITVFileDBLocalService TVFileDBLocalService { get; }
         #endregion Properties
 
         #region Constructors
-        public TVFileController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, ITVFileService TVFileService)
+        public TVFileController(ICSSPCultureService CSSPCultureService, ILocalService LocalService, ITVFileDBLocalService TVFileDBLocalService)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
-            this.TVFileService = TVFileService;
+            this.LocalService = LocalService;
+            this.TVFileDBLocalService = TVFileDBLocalService;
         }
         #endregion Constructors
 
@@ -51,41 +51,41 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<List<TVFile>>> Get()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await TVFileService.GetTVFileList();
+            return await TVFileDBLocalService.GetTVFileList();
         }
         [HttpGet("{TVFileID}")]
         public async Task<ActionResult<TVFile>> Get(int TVFileID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await TVFileService.GetTVFileWithTVFileID(TVFileID);
+            return await TVFileDBLocalService.GetTVFileWithTVFileID(TVFileID);
         }
         [HttpPost]
         public async Task<ActionResult<TVFile>> Post(TVFile TVFile)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await TVFileService.Post(TVFile);
+            return await TVFileDBLocalService.Post(TVFile);
         }
         [HttpPut]
         public async Task<ActionResult<TVFile>> Put(TVFile TVFile)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await TVFileService.Put(TVFile);
+            return await TVFileDBLocalService.Put(TVFile);
         }
         [HttpDelete("{TVFileID}")]
         public async Task<ActionResult<bool>> Delete(int TVFileID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await TVFileService.Delete(TVFileID);
+            return await TVFileDBLocalService.Delete(TVFileID);
         }
         #endregion Functions public
 

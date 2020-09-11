@@ -5,14 +5,15 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBLocalServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LocalServices;
 
-namespace CSSPWebAPIsLocal.Controllers
+namespace CSSPWebAPIs.Controllers
 {
     public partial interface IRainExceedanceClimateSiteController
     {
@@ -25,7 +26,6 @@ namespace CSSPWebAPIsLocal.Controllers
 
     [Route("api/{culture}/[controller]")]
     [ApiController]
-    [Authorize]
     public partial class RainExceedanceClimateSiteController : ControllerBase, IRainExceedanceClimateSiteController
     {
         #region Variables
@@ -33,16 +33,16 @@ namespace CSSPWebAPIsLocal.Controllers
 
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
-        private IRainExceedanceClimateSiteService RainExceedanceClimateSiteService { get; }
+        private ILocalService LocalService { get; }
+        private IRainExceedanceClimateSiteDBLocalService RainExceedanceClimateSiteDBLocalService { get; }
         #endregion Properties
 
         #region Constructors
-        public RainExceedanceClimateSiteController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IRainExceedanceClimateSiteService RainExceedanceClimateSiteService)
+        public RainExceedanceClimateSiteController(ICSSPCultureService CSSPCultureService, ILocalService LocalService, IRainExceedanceClimateSiteDBLocalService RainExceedanceClimateSiteDBLocalService)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
-            this.RainExceedanceClimateSiteService = RainExceedanceClimateSiteService;
+            this.LocalService = LocalService;
+            this.RainExceedanceClimateSiteDBLocalService = RainExceedanceClimateSiteDBLocalService;
         }
         #endregion Constructors
 
@@ -51,41 +51,41 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<List<RainExceedanceClimateSite>>> Get()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await RainExceedanceClimateSiteService.GetRainExceedanceClimateSiteList();
+            return await RainExceedanceClimateSiteDBLocalService.GetRainExceedanceClimateSiteList();
         }
         [HttpGet("{RainExceedanceClimateSiteID}")]
         public async Task<ActionResult<RainExceedanceClimateSite>> Get(int RainExceedanceClimateSiteID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await RainExceedanceClimateSiteService.GetRainExceedanceClimateSiteWithRainExceedanceClimateSiteID(RainExceedanceClimateSiteID);
+            return await RainExceedanceClimateSiteDBLocalService.GetRainExceedanceClimateSiteWithRainExceedanceClimateSiteID(RainExceedanceClimateSiteID);
         }
         [HttpPost]
         public async Task<ActionResult<RainExceedanceClimateSite>> Post(RainExceedanceClimateSite RainExceedanceClimateSite)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await RainExceedanceClimateSiteService.Post(RainExceedanceClimateSite);
+            return await RainExceedanceClimateSiteDBLocalService.Post(RainExceedanceClimateSite);
         }
         [HttpPut]
         public async Task<ActionResult<RainExceedanceClimateSite>> Put(RainExceedanceClimateSite RainExceedanceClimateSite)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await RainExceedanceClimateSiteService.Put(RainExceedanceClimateSite);
+            return await RainExceedanceClimateSiteDBLocalService.Put(RainExceedanceClimateSite);
         }
         [HttpDelete("{RainExceedanceClimateSiteID}")]
         public async Task<ActionResult<bool>> Delete(int RainExceedanceClimateSiteID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await RainExceedanceClimateSiteService.Delete(RainExceedanceClimateSiteID);
+            return await RainExceedanceClimateSiteDBLocalService.Delete(RainExceedanceClimateSiteID);
         }
         #endregion Functions public
 

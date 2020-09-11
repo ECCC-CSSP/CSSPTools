@@ -5,14 +5,15 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBLocalServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LocalServices;
 
-namespace CSSPWebAPIsLocal.Controllers
+namespace CSSPWebAPIs.Controllers
 {
     public partial interface IMapInfoController
     {
@@ -25,7 +26,6 @@ namespace CSSPWebAPIsLocal.Controllers
 
     [Route("api/{culture}/[controller]")]
     [ApiController]
-    [Authorize]
     public partial class MapInfoController : ControllerBase, IMapInfoController
     {
         #region Variables
@@ -33,16 +33,16 @@ namespace CSSPWebAPIsLocal.Controllers
 
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
-        private IMapInfoService MapInfoService { get; }
+        private ILocalService LocalService { get; }
+        private IMapInfoDBLocalService MapInfoDBLocalService { get; }
         #endregion Properties
 
         #region Constructors
-        public MapInfoController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IMapInfoService MapInfoService)
+        public MapInfoController(ICSSPCultureService CSSPCultureService, ILocalService LocalService, IMapInfoDBLocalService MapInfoDBLocalService)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
-            this.MapInfoService = MapInfoService;
+            this.LocalService = LocalService;
+            this.MapInfoDBLocalService = MapInfoDBLocalService;
         }
         #endregion Constructors
 
@@ -51,41 +51,41 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<List<MapInfo>>> Get()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await MapInfoService.GetMapInfoList();
+            return await MapInfoDBLocalService.GetMapInfoList();
         }
         [HttpGet("{MapInfoID}")]
         public async Task<ActionResult<MapInfo>> Get(int MapInfoID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await MapInfoService.GetMapInfoWithMapInfoID(MapInfoID);
+            return await MapInfoDBLocalService.GetMapInfoWithMapInfoID(MapInfoID);
         }
         [HttpPost]
         public async Task<ActionResult<MapInfo>> Post(MapInfo MapInfo)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await MapInfoService.Post(MapInfo);
+            return await MapInfoDBLocalService.Post(MapInfo);
         }
         [HttpPut]
         public async Task<ActionResult<MapInfo>> Put(MapInfo MapInfo)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await MapInfoService.Put(MapInfo);
+            return await MapInfoDBLocalService.Put(MapInfo);
         }
         [HttpDelete("{MapInfoID}")]
         public async Task<ActionResult<bool>> Delete(int MapInfoID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await MapInfoService.Delete(MapInfoID);
+            return await MapInfoDBLocalService.Delete(MapInfoID);
         }
         #endregion Functions public
 

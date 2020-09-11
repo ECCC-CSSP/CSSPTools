@@ -5,15 +5,15 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBLocalServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using CSSPEnums;
+using LocalServices;
 
-namespace CSSPWebAPIsLocal.Controllers
+namespace CSSPWebAPIs.Controllers
 {
     public partial interface IAddressController
     {
@@ -26,7 +26,6 @@ namespace CSSPWebAPIsLocal.Controllers
 
     [Route("api/{culture}/[controller]")]
     [ApiController]
-    [Authorize]
     public partial class AddressController : ControllerBase, IAddressController
     {
         #region Variables
@@ -34,16 +33,16 @@ namespace CSSPWebAPIsLocal.Controllers
 
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
-        private IAddressService AddressService { get; }
+        private ILocalService LocalService { get; }
+        private IAddressDBLocalService AddressDBLocalService { get; }
         #endregion Properties
 
         #region Constructors
-        public AddressController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IAddressService AddressService)
+        public AddressController(ICSSPCultureService CSSPCultureService, ILocalService LocalService, IAddressDBLocalService AddressDBLocalService)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
-            this.AddressService = AddressService;
+            this.LocalService = LocalService;
+            this.AddressDBLocalService = AddressDBLocalService;
         }
         #endregion Constructors
 
@@ -52,41 +51,41 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<List<Address>>> Get()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await AddressService.GetAddressList();
+            return await AddressDBLocalService.GetAddressList();
         }
         [HttpGet("{AddressID}")]
         public async Task<ActionResult<Address>> Get(int AddressID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await AddressService.GetAddressWithAddressID(AddressID);
+            return await AddressDBLocalService.GetAddressWithAddressID(AddressID);
         }
         [HttpPost]
         public async Task<ActionResult<Address>> Post(Address Address)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await AddressService.Post(Address);
+            return await AddressDBLocalService.Post(Address);
         }
         [HttpPut]
         public async Task<ActionResult<Address>> Put(Address Address)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await AddressService.Put(Address);
+            return await AddressDBLocalService.Put(Address);
         }
         [HttpDelete("{AddressID}")]
         public async Task<ActionResult<bool>> Delete(int AddressID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await AddressService.Delete(AddressID);
+            return await AddressDBLocalService.Delete(AddressID);
         }
         #endregion Functions public
 

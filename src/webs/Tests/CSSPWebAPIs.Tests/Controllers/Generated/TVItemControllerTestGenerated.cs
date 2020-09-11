@@ -37,13 +37,12 @@ namespace CSSPWebAPIs.Tests.Controllers
         private IConfiguration Config { get; set; }
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
-        private IContactDBService ContactDBService { get; set; }
-        private ILoggedInService LoggedInService { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
-        private ITVItemDBService tvItemDBService { get; set; }
-        private ITVItemController tvItemController { get; set; }
+        private ILoggedInService LoggedInService { get; set; }
+        private ITVItemDBService TVItemDBService { get; set; }
         private Contact contact { get; set; }
         private string CSSPAzureUrl { get; set; }
+        private ITVItemController TVItemController { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -61,8 +60,8 @@ namespace CSSPWebAPIs.Tests.Controllers
             Assert.True(await Setup(culture));
 
             Assert.NotNull(LoggedInService);
-            Assert.NotNull(tvItemDBService);
-            Assert.NotNull(tvItemController);
+            Assert.NotNull(TVItemDBService);
+            Assert.NotNull(TVItemController);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -143,13 +142,13 @@ namespace CSSPWebAPIs.Tests.Controllers
 
             Services = new ServiceCollection();
 
+            Services.AddSingleton<IConfiguration>(Config);
+
             CSSPAzureUrl = Config.GetValue<string>("CSSPAzureUrl");
             Assert.NotNull(CSSPAzureUrl);
 
             string TestDB = Config.GetValue<string>("TestDB");
             Assert.NotNull(TestDB);
-
-            Services.AddSingleton<IConfiguration>(Config);
 
             Services.AddDbContext<CSSPDBContext>(options =>
             {
@@ -169,9 +168,9 @@ namespace CSSPWebAPIs.Tests.Controllers
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
-            Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<ILoginModelService, LoginModelService>();
             Services.AddSingleton<IRegisterModelService, RegisterModelService>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IContactDBService, ContactDBService>();
             Services.AddSingleton<ITVItemDBService, TVItemDBService>();
             Services.AddSingleton<ITVItemController, TVItemController>();
@@ -183,9 +182,6 @@ namespace CSSPWebAPIs.Tests.Controllers
             Assert.NotNull(CSSPCultureService);
 
             CSSPCultureService.SetCulture(culture);
-
-            ContactDBService = Provider.GetService<IContactDBService>();
-            Assert.NotNull(ContactDBService);
 
             string LoginEmail = Config.GetValue<string>("LoginEmail");
             Assert.NotNull(LoginEmail);
@@ -223,11 +219,11 @@ namespace CSSPWebAPIs.Tests.Controllers
             await LoggedInService.SetLoggedInContactInfo(contact.Id);
             Assert.NotNull(LoggedInService.LoggedInContactInfo);
 
-            tvItemDBService = Provider.GetService<ITVItemDBService>();
-            Assert.NotNull(tvItemDBService);
+            TVItemDBService = Provider.GetService<ITVItemDBService>();
+            Assert.NotNull(TVItemDBService);
 
-            tvItemController = Provider.GetService<ITVItemController>();
-            Assert.NotNull(tvItemController);
+            TVItemController = Provider.GetService<ITVItemController>();
+            Assert.NotNull(TVItemController);
 
             return await Task.FromResult(true);
         }

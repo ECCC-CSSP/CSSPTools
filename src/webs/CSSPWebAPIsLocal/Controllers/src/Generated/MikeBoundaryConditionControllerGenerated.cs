@@ -5,14 +5,15 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBLocalServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LocalServices;
 
-namespace CSSPWebAPIsLocal.Controllers
+namespace CSSPWebAPIs.Controllers
 {
     public partial interface IMikeBoundaryConditionController
     {
@@ -25,7 +26,6 @@ namespace CSSPWebAPIsLocal.Controllers
 
     [Route("api/{culture}/[controller]")]
     [ApiController]
-    [Authorize]
     public partial class MikeBoundaryConditionController : ControllerBase, IMikeBoundaryConditionController
     {
         #region Variables
@@ -33,16 +33,16 @@ namespace CSSPWebAPIsLocal.Controllers
 
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
-        private IMikeBoundaryConditionService MikeBoundaryConditionService { get; }
+        private ILocalService LocalService { get; }
+        private IMikeBoundaryConditionDBLocalService MikeBoundaryConditionDBLocalService { get; }
         #endregion Properties
 
         #region Constructors
-        public MikeBoundaryConditionController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IMikeBoundaryConditionService MikeBoundaryConditionService)
+        public MikeBoundaryConditionController(ICSSPCultureService CSSPCultureService, ILocalService LocalService, IMikeBoundaryConditionDBLocalService MikeBoundaryConditionDBLocalService)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
-            this.MikeBoundaryConditionService = MikeBoundaryConditionService;
+            this.LocalService = LocalService;
+            this.MikeBoundaryConditionDBLocalService = MikeBoundaryConditionDBLocalService;
         }
         #endregion Constructors
 
@@ -51,41 +51,41 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<List<MikeBoundaryCondition>>> Get()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await MikeBoundaryConditionService.GetMikeBoundaryConditionList();
+            return await MikeBoundaryConditionDBLocalService.GetMikeBoundaryConditionList();
         }
         [HttpGet("{MikeBoundaryConditionID}")]
         public async Task<ActionResult<MikeBoundaryCondition>> Get(int MikeBoundaryConditionID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await MikeBoundaryConditionService.GetMikeBoundaryConditionWithMikeBoundaryConditionID(MikeBoundaryConditionID);
+            return await MikeBoundaryConditionDBLocalService.GetMikeBoundaryConditionWithMikeBoundaryConditionID(MikeBoundaryConditionID);
         }
         [HttpPost]
         public async Task<ActionResult<MikeBoundaryCondition>> Post(MikeBoundaryCondition MikeBoundaryCondition)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await MikeBoundaryConditionService.Post(MikeBoundaryCondition);
+            return await MikeBoundaryConditionDBLocalService.Post(MikeBoundaryCondition);
         }
         [HttpPut]
         public async Task<ActionResult<MikeBoundaryCondition>> Put(MikeBoundaryCondition MikeBoundaryCondition)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await MikeBoundaryConditionService.Put(MikeBoundaryCondition);
+            return await MikeBoundaryConditionDBLocalService.Put(MikeBoundaryCondition);
         }
         [HttpDelete("{MikeBoundaryConditionID}")]
         public async Task<ActionResult<bool>> Delete(int MikeBoundaryConditionID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await MikeBoundaryConditionService.Delete(MikeBoundaryConditionID);
+            return await MikeBoundaryConditionDBLocalService.Delete(MikeBoundaryConditionID);
         }
         #endregion Functions public
 

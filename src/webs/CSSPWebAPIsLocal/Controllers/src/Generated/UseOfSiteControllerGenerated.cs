@@ -5,14 +5,15 @@
  */
 
 using CSSPModels;
-using CSSPServices;
+using CSSPDBLocalServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LocalServices;
 
-namespace CSSPWebAPIsLocal.Controllers
+namespace CSSPWebAPIs.Controllers
 {
     public partial interface IUseOfSiteController
     {
@@ -25,7 +26,6 @@ namespace CSSPWebAPIsLocal.Controllers
 
     [Route("api/{culture}/[controller]")]
     [ApiController]
-    [Authorize]
     public partial class UseOfSiteController : ControllerBase, IUseOfSiteController
     {
         #region Variables
@@ -33,16 +33,16 @@ namespace CSSPWebAPIsLocal.Controllers
 
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
-        private IUseOfSiteService UseOfSiteService { get; }
+        private ILocalService LocalService { get; }
+        private IUseOfSiteDBLocalService UseOfSiteDBLocalService { get; }
         #endregion Properties
 
         #region Constructors
-        public UseOfSiteController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IUseOfSiteService UseOfSiteService)
+        public UseOfSiteController(ICSSPCultureService CSSPCultureService, ILocalService LocalService, IUseOfSiteDBLocalService UseOfSiteDBLocalService)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
-            this.UseOfSiteService = UseOfSiteService;
+            this.LocalService = LocalService;
+            this.UseOfSiteDBLocalService = UseOfSiteDBLocalService;
         }
         #endregion Constructors
 
@@ -51,41 +51,41 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<List<UseOfSite>>> Get()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await UseOfSiteService.GetUseOfSiteList();
+            return await UseOfSiteDBLocalService.GetUseOfSiteList();
         }
         [HttpGet("{UseOfSiteID}")]
         public async Task<ActionResult<UseOfSite>> Get(int UseOfSiteID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await UseOfSiteService.GetUseOfSiteWithUseOfSiteID(UseOfSiteID);
+            return await UseOfSiteDBLocalService.GetUseOfSiteWithUseOfSiteID(UseOfSiteID);
         }
         [HttpPost]
         public async Task<ActionResult<UseOfSite>> Post(UseOfSite UseOfSite)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await UseOfSiteService.Post(UseOfSite);
+            return await UseOfSiteDBLocalService.Post(UseOfSite);
         }
         [HttpPut]
         public async Task<ActionResult<UseOfSite>> Put(UseOfSite UseOfSite)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await UseOfSiteService.Put(UseOfSite);
+            return await UseOfSiteDBLocalService.Put(UseOfSite);
         }
         [HttpDelete("{UseOfSiteID}")]
         public async Task<ActionResult<bool>> Delete(int UseOfSiteID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await LocalService.SetLoggedInContactInfo();
 
-            return await UseOfSiteService.Delete(UseOfSiteID);
+            return await UseOfSiteDBLocalService.Delete(UseOfSiteID);
         }
         #endregion Functions public
 

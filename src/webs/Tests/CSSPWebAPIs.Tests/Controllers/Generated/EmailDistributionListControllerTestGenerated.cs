@@ -37,13 +37,12 @@ namespace CSSPWebAPIs.Tests.Controllers
         private IConfiguration Config { get; set; }
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
-        private IContactDBService ContactDBService { get; set; }
-        private ILoggedInService LoggedInService { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
-        private IEmailDistributionListDBService emailDistributionListDBService { get; set; }
-        private IEmailDistributionListController emailDistributionListController { get; set; }
+        private ILoggedInService LoggedInService { get; set; }
+        private IEmailDistributionListDBService EmailDistributionListDBService { get; set; }
         private Contact contact { get; set; }
         private string CSSPAzureUrl { get; set; }
+        private IEmailDistributionListController EmailDistributionListController { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -61,8 +60,8 @@ namespace CSSPWebAPIs.Tests.Controllers
             Assert.True(await Setup(culture));
 
             Assert.NotNull(LoggedInService);
-            Assert.NotNull(emailDistributionListDBService);
-            Assert.NotNull(emailDistributionListController);
+            Assert.NotNull(EmailDistributionListDBService);
+            Assert.NotNull(EmailDistributionListController);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -139,13 +138,13 @@ namespace CSSPWebAPIs.Tests.Controllers
 
             Services = new ServiceCollection();
 
+            Services.AddSingleton<IConfiguration>(Config);
+
             CSSPAzureUrl = Config.GetValue<string>("CSSPAzureUrl");
             Assert.NotNull(CSSPAzureUrl);
 
             string TestDB = Config.GetValue<string>("TestDB");
             Assert.NotNull(TestDB);
-
-            Services.AddSingleton<IConfiguration>(Config);
 
             Services.AddDbContext<CSSPDBContext>(options =>
             {
@@ -165,9 +164,9 @@ namespace CSSPWebAPIs.Tests.Controllers
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
-            Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<ILoginModelService, LoginModelService>();
             Services.AddSingleton<IRegisterModelService, RegisterModelService>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IContactDBService, ContactDBService>();
             Services.AddSingleton<IEmailDistributionListDBService, EmailDistributionListDBService>();
             Services.AddSingleton<IEmailDistributionListController, EmailDistributionListController>();
@@ -179,9 +178,6 @@ namespace CSSPWebAPIs.Tests.Controllers
             Assert.NotNull(CSSPCultureService);
 
             CSSPCultureService.SetCulture(culture);
-
-            ContactDBService = Provider.GetService<IContactDBService>();
-            Assert.NotNull(ContactDBService);
 
             string LoginEmail = Config.GetValue<string>("LoginEmail");
             Assert.NotNull(LoginEmail);
@@ -219,11 +215,11 @@ namespace CSSPWebAPIs.Tests.Controllers
             await LoggedInService.SetLoggedInContactInfo(contact.Id);
             Assert.NotNull(LoggedInService.LoggedInContactInfo);
 
-            emailDistributionListDBService = Provider.GetService<IEmailDistributionListDBService>();
-            Assert.NotNull(emailDistributionListDBService);
+            EmailDistributionListDBService = Provider.GetService<IEmailDistributionListDBService>();
+            Assert.NotNull(EmailDistributionListDBService);
 
-            emailDistributionListController = Provider.GetService<IEmailDistributionListController>();
-            Assert.NotNull(emailDistributionListController);
+            EmailDistributionListController = Provider.GetService<IEmailDistributionListController>();
+            Assert.NotNull(EmailDistributionListController);
 
             return await Task.FromResult(true);
         }
