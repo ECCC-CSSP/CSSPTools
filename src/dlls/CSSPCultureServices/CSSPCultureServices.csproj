@@ -18,10 +18,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Update="Resources\CSSPCultureEnumsRes.Designer.cs">
+    <Compile Update="Resources\CSSPCultureEnumsRes - Copy.Designer.cs">
+      <DependentUpon>CSSPCultureEnumsRes.resx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>CSSPCultureEnumsRes.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\CSSPCultureDesktopRes.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CSSPCultureDesktopRes.resx</DependentUpon>
     </Compile>
     <Compile Update="Resources\CSSPCultureModelsRes.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -46,6 +51,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Resources\CSSPCultureDesktopRes.fr.resx">
+      <LastGenOutput>CSSPCultureDesktopRes.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\CSSPCultureDesktopRes.resx">
+      <LastGenOutput>CSSPCultureDesktopRes.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Resources\CSSPCultureModelsRes.resx">
       <LastGenOutput>CSSPCultureModelsRes.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -57,7 +70,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\CSSPCultureEnumsRes.resx">
-      <LastGenOutput>CSSPCultureEnumsRes.Designer.cs</LastGenOutput>
+      <LastGenOutput>CSSPCultureDesktopRes.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\CSSPCulturePolSourcesRes.fr.resx">

@@ -1,0 +1,435 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AzureFile_Changed" xml:space="preserve">
+    <value>Filière de Azure {0} a changé</value>
+  </data>
+  <data name="AzureFile_DidNotChanged" xml:space="preserve">
+    <value>Filière de Azure {0} n'a pas changé</value>
+  </data>
+  <data name="butCancelUpdateText" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
+  <data name="butCloseText" xml:space="preserve">
+    <value>Fermer</value>
+  </data>
+  <data name="butHideHelpPanelText" xml:space="preserve">
+    <value>Fermer l'aide</value>
+  </data>
+  <data name="butLoginText" xml:space="preserve">
+    <value>Ouvrir session</value>
+  </data>
+  <data name="butLogoffText" xml:space="preserve">
+    <value>Déconnextion</value>
+  </data>
+  <data name="butRegisterText" xml:space="preserve">
+    <value>S'enregistrer</value>
+  </data>
+  <data name="butShowHelpPanelText" xml:space="preserve">
+    <value>Aide</value>
+  </data>
+  <data name="butShowLanguagePanelText" xml:space="preserve">
+    <value>Langage</value>
+  </data>
+  <data name="butStartText" xml:space="preserve">
+    <value>Commencer</value>
+  </data>
+  <data name="butStopText" xml:space="preserve">
+    <value>Arrêter</value>
+  </data>
+  <data name="butUpdateCompletedText" xml:space="preserve">
+    <value>Mise à jour complété</value>
+  </data>
+  <data name="butUpdatesAvailableText" xml:space="preserve">
+    <value>Mise à jour disponible</value>
+  </data>
+  <data name="butUpdateText" xml:space="preserve">
+    <value>Mise à jour</value>
+  </data>
+  <data name="CheckIfHelpFileExist" xml:space="preserve">
+    <value>Vérification si les filières d'aide existes</value>
+  </data>
+  <data name="CheckIfLoginIsRequired" xml:space="preserve">
+    <value>Vérification si une connexion est requise</value>
+  </data>
+  <data name="CheckIfNewTVItemsOrTVItemLanguagesExist" xml:space="preserve">
+    <value>Vérification et collection de nouvelles informations 'TVItems' ou 'TVItemLanguage'</value>
+  </data>
+  <data name="CheckIfUpdateIsNeeded" xml:space="preserve">
+    <value>Vérification si une mise-à-jour est disponible</value>
+  </data>
+  <data name="CheckingInternetConnection" xml:space="preserve">
+    <value>Vérification d'une connextion internet</value>
+  </data>
+  <data name="ConnectedOnInternet" xml:space="preserve">
+    <value>Connexion internet exist</value>
+  </data>
+  <data name="CouldNotAddOrModifyCSSPDBFilesManagement_dbFor_" xml:space="preserve">
+    <value>Dans l'ipossibilité d'ajouter ou modifier CSSPDBFilesManagement.db pour [{0}]</value>
+  </data>
+  <data name="CouldNotAdd_Error_" xml:space="preserve">
+    <value>Impossible d'ajouter {0}. Erreur: {1}</value>
+  </data>
+  <data name="CouldNotCreateDirectory_Error_" xml:space="preserve">
+    <value>Dans l'impossibilité de créer le répertoire [{0}]. Erreur: [{1}]</value>
+  </data>
+  <data name="CouldNotCreateFile_OnAzure" xml:space="preserve">
+    <value>Dans l'impossibilité de créer la filière {0} dans Azure</value>
+  </data>
+  <data name="CouldNotDeleteDirectory_Error_" xml:space="preserve">
+    <value>Dans l'impossibilité d'effacer le répertoire [{0}]. Erreur: [{1}]</value>
+  </data>
+  <data name="CouldNotDeleteFile_Error_" xml:space="preserve">
+    <value>Dans l'impossibilité d'effacer la filière [{0}]. Erreur: [{1}]</value>
+  </data>
+  <data name="CouldNotDelete_Error_" xml:space="preserve">
+    <value>Dans l'impossibilité d'effacer {0}. Erreur: [{1}]</value>
+  </data>
+  <data name="CouldNotFindFile_" xml:space="preserve">
+    <value>Dans l'impossibilité de trouver la filière [{0}]</value>
+  </data>
+  <data name="CouldNotFind_InDBLogin" xml:space="preserve">
+    <value>{0} introuvable dans dbLogin</value>
+  </data>
+  <data name="CouldNotGetPropertiesFromAzureStore_AndFile_" xml:space="preserve">
+    <value>Dans l'impossibilité de lire les propriétés de Azure Store {0} et la filière {1}</value>
+  </data>
+  <data name="CouldNotLogin" xml:space="preserve">
+    <value>Dans l'impossibilité d'ouvrir une session</value>
+  </data>
+  <data name="CouldNotMoveDirectory_To_Error_" xml:space="preserve">
+    <value>Dans l'impossibilité de déplacer le répertoire [{0}] au répertoire [{1}]. Erreur: [{2}]</value>
+  </data>
+  <data name="CouldNotReadAzureStoreFrom_" xml:space="preserve">
+    <value>Dans l'impossibilité de lire AzureStore de {0}</value>
+  </data>
+  <data name="CouldNotUnzip_Error_" xml:space="preserve">
+    <value>Dans l'impossibilité de décompresser la filière [{0}]. Erreur [{1}]</value>
+  </data>
+  <data name="CouldNotUpdateCSSPDBSearchWithTVItemsAndTVItemLanguages" xml:space="preserve">
+    <value>Dans l'impossibilité de mettre la base de données CSSPDBSearch avec TVItems et TVItemLanguages</value>
+  </data>
+  <data name="CreatingAllRequiredDirectories" xml:space="preserve">
+    <value>Création de tous les répertoires requis</value>
+  </data>
+  <data name="CSSPDBSearchDatabaseSuccessfullyFilled" xml:space="preserve">
+    <value>Remplissage de la base de données CSSPDBSearch avec success</value>
+  </data>
+  <data name="CSSPDBSearchDatabaseSuccessUpdated" xml:space="preserve">
+    <value>Mise-à-jour de la base de données CSSPDBSearch avec success</value>
+  </data>
+  <data name="CSSPDBSearchHasBeenUpdated_TVItems" xml:space="preserve">
+    <value>Mise-à-jour complété pour CSSPDBSearch avec {0} items de TVItems</value>
+  </data>
+  <data name="CSSPDBSearchHas_TVItems" xml:space="preserve">
+    <value>CSSPDBSearch a {0} TVItems</value>
+  </data>
+  <data name="CSSPDBSearchIsEmpty" xml:space="preserve">
+    <value>CSSPDBSearch est vide</value>
+  </data>
+  <data name="CSSPDBSearchIsNotEmpty" xml:space="preserve">
+    <value>CSSPDBSearch n'est pas vide</value>
+  </data>
+  <data name="CSSPFilesManagementUpdateAzureStorage_AzureFileName_" xml:space="preserve">
+    <value>CSSPFilesManagement.db entré. AzureStorage {0} - AzureFileName {1}</value>
+  </data>
+  <data name="DirectoryCreated_" xml:space="preserve">
+    <value>Répertoire créé {0}</value>
+  </data>
+  <data name="Directory_ShouldExist" xml:space="preserve">
+    <value>Le répertoire [{0}] devrait exister</value>
+  </data>
+  <data name="Done" xml:space="preserve">
+    <value>Complèté ... </value>
+  </data>
+  <data name="DownloadingFileFromAzure_" xml:space="preserve">
+    <value>Téléchargement de la filière .zip de Azure {0}</value>
+  </data>
+  <data name="Downloading_" xml:space="preserve">
+    <value>Téléchargement de {0}</value>
+  </data>
+  <data name="ErrorWhileTryingToFillCSSPDBSearchDatabaseWith_Info" xml:space="preserve">
+    <value>Erreur lors du remplissage de la base de données CSSPDBSearch avec l'information de {0}</value>
+  </data>
+  <data name="ErrorWhileTryingToLogin" xml:space="preserve">
+    <value>Erreur pendant l'essay d'ouvrir une session</value>
+  </data>
+  <data name="ErrorWhileTryingToUpdateCSSPDBSearch" xml:space="preserve">
+    <value>Erreur lors de la mise-à-jour de CSSPDBSearch</value>
+  </data>
+  <data name="ErrorWhileTryingToUpdateCSSPDBSearchDatabaseFrom_" xml:space="preserve">
+    <value>Erreur lors de la mise-à-jour de la base de données CSSPDBSearch à partir de {0}</value>
+  </data>
+  <data name="ExecutingBackgroundApps" xml:space="preserve">
+    <value>Exécution des applications d'arrière-plan</value>
+  </data>
+  <data name="Executing_" xml:space="preserve">
+    <value>Exécution {0}</value>
+  </data>
+  <data name="File_CreatedOnAzure" xml:space="preserve">
+    <value>Filière {0} créée dans Azure</value>
+  </data>
+  <data name="FillingCSSPDBSearchDatabaseWith_Info" xml:space="preserve">
+    <value>Remplissage de la base de données CSSPDBSearch avec l'information de {0}</value>
+  </data>
+  <data name="FormTitleText" xml:space="preserve">
+    <value>Application PCCSM de bureau</value>
+  </data>
+  <data name="Found_InDBLogin" xml:space="preserve">
+    <value>{0} trouvé dans dbLogin</value>
+  </data>
+  <data name="HelpFileFound_" xml:space="preserve">
+    <value>Filière d'aide trouvé {0}</value>
+  </data>
+  <data name="HelpFileNotFound_" xml:space="preserve">
+    <value>Filière d'aide non trouvé {0}</value>
+  </data>
+  <data name="InstallUpdates" xml:space="preserve">
+    <value>Installation de mise-à-jour</value>
+  </data>
+  <data name="InternetConnectionDetected" xml:space="preserve">
+    <value>Connexion internet détecté</value>
+  </data>
+  <data name="InternetConnectionNotDetected" xml:space="preserve">
+    <value>Connexion internet non détecté</value>
+  </data>
+  <data name="InternetConnectionRequiredFirstTimeConnecting" xml:space="preserve">
+    <value>Une connexion internet est requise pour se connecter la première fois</value>
+  </data>
+  <data name="lblConfirmPasswordRegisterText" xml:space="preserve">
+    <value>Confirmation du mot de passe:</value>
+  </data>
+  <data name="lblCSSPWebToolsLoginOneTimeText" xml:space="preserve">
+    <value>Connexion à l'outil PCCSM (une fois seulement)</value>
+  </data>
+  <data name="lblCSSPWebToolsRegister" xml:space="preserve">
+    <value>S'enregistrer à l'outil PCCSM</value>
+  </data>
+  <data name="lblFirstNameRegisterText" xml:space="preserve">
+    <value>Prénom:</value>
+  </data>
+  <data name="lblInitialRegisterText" xml:space="preserve">
+    <value>Initial:</value>
+  </data>
+  <data name="lblInstallingText" xml:space="preserve">
+    <value>Installation en cours ...</value>
+  </data>
+  <data name="lblInternetRequiredLoginText" xml:space="preserve">
+    <value>Connexion internet est requis</value>
+  </data>
+  <data name="lblInternetRequiredRegisterText" xml:space="preserve">
+    <value>Connexion internet est requis</value>
+  </data>
+  <data name="lblLastNameRegisterText" xml:space="preserve">
+    <value>Nom:</value>
+  </data>
+  <data name="lblLoginEmailLoginText" xml:space="preserve">
+    <value>Courriel de connextion:</value>
+  </data>
+  <data name="lblLoginEmailRegisterText" xml:space="preserve">
+    <value>Courriel de connextion:</value>
+  </data>
+  <data name="lblPasswordLoginText" xml:space="preserve">
+    <value>Mot de passe:</value>
+  </data>
+  <data name="lblPasswordRegisterText" xml:space="preserve">
+    <value>Mot de passe:</value>
+  </data>
+  <data name="lblStatusText" xml:space="preserve">
+    <value>Etat:</value>
+  </data>
+  <data name="linkLabelGoToLoginText" xml:space="preserve">
+    <value>Allez à connexion</value>
+  </data>
+  <data name="linkLabelGoToRegisterText" xml:space="preserve">
+    <value>Allez à enregistrer</value>
+  </data>
+  <data name="LoggingIn" xml:space="preserve">
+    <value>Connexion en cours ...</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Connexion</value>
+  </data>
+  <data name="Logoff" xml:space="preserve">
+    <value>Déconnexion</value>
+  </data>
+  <data name="NeedToBeLoggedIn" xml:space="preserve">
+    <value>Doit établir la connexion</value>
+  </data>
+  <data name="NoInternetConnection" xml:space="preserve">
+    <value>Aucune connexion internet</value>
+  </data>
+  <data name="PostRequestLoginEmailAndPasswordTo_" xml:space="preserve">
+    <value>Requête 'POST' avec LoginEmail et Password à {0}</value>
+  </data>
+  <data name="ReadingConfiguration" xml:space="preserve">
+    <value>Lecture de configuration</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>S'enregistrer</value>
+  </data>
+  <data name="RegisteringIn" xml:space="preserve">
+    <value>S'enregistrer en cours ...</value>
+  </data>
+  <data name="ServerNotRespondingDoYouHaveInternetConnection" xml:space="preserve">
+    <value>Le serveur ne répond pas. Avez-vous une connexion Internet?</value>
+  </data>
+  <data name="StoppingBrowserAndCSSPWebAPIsLocalProcesses" xml:space="preserve">
+    <value>Arrêt des processus 'Browser' et CSSPWebAPIsLocal</value>
+  </data>
+  <data name="Stopping_" xml:space="preserve">
+    <value>Arrêt de {0}</value>
+  </data>
+  <data name="TryingToDownload_" xml:space="preserve">
+    <value>Essayer de télécharger {0}</value>
+  </data>
+  <data name="UnableToLoginAs_WithProvidedPassword" xml:space="preserve">
+    <value>Impossible de se connecter en tant que [{0}] avec le mot de passe fourni</value>
+  </data>
+  <data name="UnmanagedServerError_" xml:space="preserve">
+    <value>Erreur au serveur non géré: [{0}]</value>
+  </data>
+  <data name="UnzippingDownloadedFile_" xml:space="preserve">
+    <value>Décompression de la filière téléchargé {0}</value>
+  </data>
+  <data name="Unzipping_" xml:space="preserve">
+    <value>Décompression de {0}</value>
+  </data>
+  <data name="UpdateCompleted" xml:space="preserve">
+    <value>Mise-à-jour complétée</value>
+  </data>
+  <data name="UpdatingCSSPDBSearchDatabase" xml:space="preserve">
+    <value>Mise-à-jour de la base de données CSSPDBSearch</value>
+  </data>
+  <data name="UpdatingCSSPDBSearchThisCanTakeSomeTime" xml:space="preserve">
+    <value>Mise-à-jour de CSSPDBSearch. Cette tâche peut prendre un peu de temps.</value>
+  </data>
+  <data name="_CouldNotBeFoundInConfigurationFile_" xml:space="preserve">
+    <value>Dans l'impossibilité de trouver {0} dans la filière de configuration {1}</value>
+  </data>
+  <data name="_IsRequired" xml:space="preserve">
+    <value>{0} est nécessaire</value>
+  </data>
+  <data name="_ShouldNotBeNull" xml:space="preserve">
+    <value>{0} ne devrais pas être null</value>
+  </data>
+  <data name="_StoredInTable_AndDatabase_" xml:space="preserve">
+    <value>{0} sauvegardé dans la table {1} et la base de données {2}</value>
+  </data>
+</root>

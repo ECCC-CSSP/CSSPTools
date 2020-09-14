@@ -10,6 +10,7 @@ using System.IO;
 using Azure.Storage.Blobs.Models;
 using CSSPDesktopServices.Models;
 using CSSPModels;
+using CSSPCultureServices.Resources;
 
 namespace CSSPDesktopServices.Services
 {
@@ -17,7 +18,7 @@ namespace CSSPDesktopServices.Services
     {
         private async Task<bool> DoCheckIfNewTVItemsOrTVItemLanguagesExist()
         {
-            AppendStatus(new AppendEventArgs(appTextModel.CheckIfNewTVItemsOrTVItemLanguagesExist));
+            AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.CheckIfNewTVItemsOrTVItemLanguagesExist));
 
             HasNewTVItemsOrTVItemLanguages = false;
 
@@ -32,32 +33,32 @@ namespace CSSPDesktopServices.Services
 
             if (LastTVItem == null)
             {
-                AppendStatus(new AppendEventArgs(appTextModel.CSSPDBSearchIsEmpty));
-                AppendStatus(new AppendEventArgs(appTextModel.UpdatingCSSPDBSearchThisCanTakeSomeTime));
+                AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.CSSPDBSearchIsEmpty));
+                AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.UpdatingCSSPDBSearchThisCanTakeSomeTime));
 
                 if (!await FillCSSPDBSearch()) return await Task.FromResult(false);
 
                 int numberOfTVItem = await (from c in dbSearch.TVItems
                                             select c).CountAsync();
 
-                AppendStatus(new AppendEventArgs(string.Format(appTextModel.CSSPDBSearchHasBeenUpdated_TVItems, numberOfTVItem.ToString())));
+                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CSSPDBSearchHasBeenUpdated_TVItems, numberOfTVItem.ToString())));
             }
             else
             {
-                AppendStatus(new AppendEventArgs(appTextModel.CSSPDBSearchIsNotEmpty));
-                AppendStatus(new AppendEventArgs(appTextModel.UpdatingCSSPDBSearchThisCanTakeSomeTime));
+                AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.CSSPDBSearchIsNotEmpty));
+                AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.UpdatingCSSPDBSearchThisCanTakeSomeTime));
 
                 int numberOfTVItem = await (from c in dbSearch.TVItems
                                             select c).CountAsync();
 
-                AppendStatus(new AppendEventArgs(string.Format(appTextModel.CSSPDBSearchHas_TVItems, numberOfTVItem.ToString())));
+                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CSSPDBSearchHas_TVItems, numberOfTVItem.ToString())));
 
                 if (!await UpdateCSSPDBSearch()) return await Task.FromResult(false);
 
                 numberOfTVItem = await (from c in dbSearch.TVItems
                                         select c).CountAsync();
 
-                AppendStatus(new AppendEventArgs(string.Format(appTextModel.CSSPDBSearchHasBeenUpdated_TVItems, numberOfTVItem.ToString())));
+                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CSSPDBSearchHasBeenUpdated_TVItems, numberOfTVItem.ToString())));
             }
 
             AppendStatus(new AppendEventArgs(""));

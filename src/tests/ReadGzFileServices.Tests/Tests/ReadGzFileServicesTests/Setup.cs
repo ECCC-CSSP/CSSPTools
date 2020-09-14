@@ -35,7 +35,7 @@ namespace ReadGzFileServices.Tests
         private ILocalService LocalService { get; set; }
         private CSSPDBContext db { get; set; }
         private string AzureStoreCSSPJSONPath { get; set; }
-        private string LocalCSSPJSONPath { get; set; }
+        private string CSSPJSONPath { get; set; }
         private string CSSPAzureUrl { get; set; }
         private Contact contact { get; set; }
         private string LoginEmail { get; set; }
@@ -64,8 +64,8 @@ namespace ReadGzFileServices.Tests
             AzureStoreCSSPJSONPath = Configuration.GetValue<string>("AzureStoreCSSPJSONPath");
             Assert.NotNull(AzureStoreCSSPJSONPath);
 
-            LocalCSSPJSONPath = Configuration.GetValue<string>("LocalCSSPJSONPath");
-            Assert.NotNull(LocalCSSPJSONPath);
+            CSSPJSONPath = Configuration.GetValue<string>("CSSPJSONPath");
+            Assert.NotNull(CSSPJSONPath);
 
             string CSSPDBConnString = Configuration.GetValue<string>("CSSPDB2");
             Assert.NotNull(CSSPDBConnString);

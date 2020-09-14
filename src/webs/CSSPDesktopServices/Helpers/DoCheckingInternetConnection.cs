@@ -17,21 +17,26 @@ namespace CSSPDesktopServices.Services
     {
         private async Task<bool> DoCheckingInternetConnection()
         {
-            AppendStatus(new AppendEventArgs(appTextModel.CheckingInternetConnection));
+            AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.CheckingInternetConnection));
 
             try
             {
-                AppendStatus(new AppendEventArgs(string.Format(appTextModel.TryingToDownload_, "https://www.google.com/")));
+                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.TryingToDownload_, "https://www.google.com/")));
 
                 if (await LocalService.CheckInternetConnection())
                 {
-                    AppendStatus(new AppendEventArgs(appTextModel.InternetConnectionDetected));
+                    AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.InternetConnectionDetected));
                     preference.HasInternetConnection = true;
+                }
+                else
+                {
+                    AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.InternetConnectionNotDetected));
+                    preference.HasInternetConnection = false;
                 }
             }
             catch (Exception)
             {
-                AppendStatus(new AppendEventArgs(appTextModel.InternetConnectionNotDetected));
+                AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.InternetConnectionNotDetected));
                 preference.HasInternetConnection = false;
             }
 
@@ -62,11 +67,11 @@ namespace CSSPDesktopServices.Services
             {
                 dbLogin.SaveChanges();
 
-                AppendStatus(new AppendEventArgs(string.Format(appTextModel._StoredInTable_AndDatabase_, "Preference", "Preferences", "CSSPDBLogin.db")));
+                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes._StoredInTable_AndDatabase_, "Preference", "Preferences", "CSSPDBLogin.db")));
             }
             catch (Exception ex)
             {
-                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "Preference", ex.Message)));
+                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotAdd_Error_, "Preference", ex.Message)));
                 return await Task.FromResult(false);
             }
 

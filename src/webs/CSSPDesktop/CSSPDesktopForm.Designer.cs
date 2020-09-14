@@ -32,7 +32,11 @@
             this.butSetLanguageToFrancais = new System.Windows.Forms.Button();
             this.butSetLanguageToEnglish = new System.Windows.Forms.Button();
             this.splitContainerFirst = new System.Windows.Forms.SplitContainer();
+            this.panelStatus = new System.Windows.Forms.Panel();
+            this.lblStatus = new System.Windows.Forms.Label();
+            this.lblStatusText = new System.Windows.Forms.Label();
             this.panelRegisterCenter = new System.Windows.Forms.Panel();
+            this.linkLabelGoToLogin = new System.Windows.Forms.LinkLabel();
             this.textBoxConfirmPasswordRegister = new System.Windows.Forms.TextBox();
             this.lblConfirmPasswordRegister = new System.Windows.Forms.Label();
             this.textBoxInitialRegister = new System.Windows.Forms.TextBox();
@@ -49,6 +53,7 @@
             this.lblLoginEmailRegister = new System.Windows.Forms.Label();
             this.lblCSSPWebToolsRegister = new System.Windows.Forms.Label();
             this.panelLoginCenter = new System.Windows.Forms.Panel();
+            this.linkLabelGotoRegister = new System.Windows.Forms.LinkLabel();
             this.lblInternetRequiredLogin = new System.Windows.Forms.Label();
             this.butLogin = new System.Windows.Forms.Button();
             this.textBoxPasswordLogin = new System.Windows.Forms.TextBox();
@@ -74,15 +79,11 @@
             this.butClose = new System.Windows.Forms.Button();
             this.butStop = new System.Windows.Forms.Button();
             this.butStart = new System.Windows.Forms.Button();
-            this.panelStatus = new System.Windows.Forms.Panel();
-            this.lblStatus = new System.Windows.Forms.Label();
-            this.lblStatusText = new System.Windows.Forms.Label();
             this.panelTop = new System.Windows.Forms.Panel();
             this.butShowHelpPanel = new System.Windows.Forms.Button();
             this.panelTopSpace4 = new System.Windows.Forms.Panel();
             this.butShowLanguagePanel = new System.Windows.Forms.Button();
             this.panelToSpace3 = new System.Windows.Forms.Panel();
-            this.butShowLoginPanel = new System.Windows.Forms.Button();
             this.panelTopSpace2 = new System.Windows.Forms.Panel();
             this.butLogoff = new System.Windows.Forms.Button();
             this.panelTopSpace1 = new System.Windows.Forms.Panel();
@@ -92,6 +93,7 @@
             this.splitContainerFirst.Panel1.SuspendLayout();
             this.splitContainerFirst.Panel2.SuspendLayout();
             this.splitContainerFirst.SuspendLayout();
+            this.panelStatus.SuspendLayout();
             this.panelRegisterCenter.SuspendLayout();
             this.panelLoginCenter.SuspendLayout();
             this.panelLoginEmail.SuspendLayout();
@@ -99,7 +101,6 @@
             this.panelHelpTop.SuspendLayout();
             this.panelUpdateCenter.SuspendLayout();
             this.panelCommandsCenter.SuspendLayout();
-            this.panelStatus.SuspendLayout();
             this.panelTop.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -144,6 +145,7 @@
             // 
             // splitContainerFirst.Panel1
             // 
+            this.splitContainerFirst.Panel1.Controls.Add(this.panelStatus);
             this.splitContainerFirst.Panel1.Controls.Add(this.panelRegisterCenter);
             this.splitContainerFirst.Panel1.Controls.Add(this.panelLoginCenter);
             this.splitContainerFirst.Panel1.Controls.Add(this.panelLoginEmail);
@@ -151,7 +153,6 @@
             this.splitContainerFirst.Panel1.Controls.Add(this.panelHelp);
             this.splitContainerFirst.Panel1.Controls.Add(this.panelUpdateCenter);
             this.splitContainerFirst.Panel1.Controls.Add(this.panelCommandsCenter);
-            this.splitContainerFirst.Panel1.Controls.Add(this.panelStatus);
             this.splitContainerFirst.Panel1.Controls.Add(this.panelTop);
             // 
             // splitContainerFirst.Panel2
@@ -162,8 +163,42 @@
             this.splitContainerFirst.SplitterWidth = 5;
             this.splitContainerFirst.TabIndex = 1;
             // 
+            // panelStatus
+            // 
+            this.panelStatus.Controls.Add(this.lblStatus);
+            this.panelStatus.Controls.Add(this.lblStatusText);
+            this.panelStatus.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panelStatus.Location = new System.Drawing.Point(0, 617);
+            this.panelStatus.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.panelStatus.Name = "panelStatus";
+            this.panelStatus.Size = new System.Drawing.Size(1148, 42);
+            this.panelStatus.TabIndex = 1;
+            // 
+            // lblStatus
+            // 
+            this.lblStatus.AutoSize = true;
+            this.lblStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblStatus.Location = new System.Drawing.Point(80, 9);
+            this.lblStatus.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(60, 20);
+            this.lblStatus.TabIndex = 1;
+            this.lblStatus.Text = "[empty]";
+            // 
+            // lblStatusText
+            // 
+            this.lblStatusText.AutoSize = true;
+            this.lblStatusText.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblStatusText.Location = new System.Drawing.Point(10, 10);
+            this.lblStatusText.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblStatusText.Name = "lblStatusText";
+            this.lblStatusText.Size = new System.Drawing.Size(55, 20);
+            this.lblStatusText.TabIndex = 0;
+            this.lblStatusText.Text = "Satus:";
+            // 
             // panelRegisterCenter
             // 
+            this.panelRegisterCenter.Controls.Add(this.linkLabelGoToLogin);
             this.panelRegisterCenter.Controls.Add(this.textBoxConfirmPasswordRegister);
             this.panelRegisterCenter.Controls.Add(this.lblConfirmPasswordRegister);
             this.panelRegisterCenter.Controls.Add(this.textBoxInitialRegister);
@@ -183,6 +218,18 @@
             this.panelRegisterCenter.Name = "panelRegisterCenter";
             this.panelRegisterCenter.Size = new System.Drawing.Size(622, 360);
             this.panelRegisterCenter.TabIndex = 12;
+            // 
+            // linkLabelGoToLogin
+            // 
+            this.linkLabelGoToLogin.AutoSize = true;
+            this.linkLabelGoToLogin.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.linkLabelGoToLogin.Location = new System.Drawing.Point(327, 277);
+            this.linkLabelGoToLogin.Name = "linkLabelGoToLogin";
+            this.linkLabelGoToLogin.Size = new System.Drawing.Size(87, 21);
+            this.linkLabelGoToLogin.TabIndex = 22;
+            this.linkLabelGoToLogin.TabStop = true;
+            this.linkLabelGoToLogin.Text = "Go to login";
+            this.linkLabelGoToLogin.Click += new System.EventHandler(this.linkLabelGoToLogin_Click);
             // 
             // textBoxConfirmPasswordRegister
             // 
@@ -286,7 +333,7 @@
             // 
             this.butRegister.AutoSize = true;
             this.butRegister.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.butRegister.Location = new System.Drawing.Point(238, 265);
+            this.butRegister.Location = new System.Drawing.Point(120, 265);
             this.butRegister.Name = "butRegister";
             this.butRegister.Size = new System.Drawing.Size(139, 44);
             this.butRegister.TabIndex = 6;
@@ -349,6 +396,7 @@
             // 
             // panelLoginCenter
             // 
+            this.panelLoginCenter.Controls.Add(this.linkLabelGotoRegister);
             this.panelLoginCenter.Controls.Add(this.lblInternetRequiredLogin);
             this.panelLoginCenter.Controls.Add(this.butLogin);
             this.panelLoginCenter.Controls.Add(this.textBoxPasswordLogin);
@@ -361,6 +409,18 @@
             this.panelLoginCenter.Name = "panelLoginCenter";
             this.panelLoginCenter.Size = new System.Drawing.Size(484, 314);
             this.panelLoginCenter.TabIndex = 9;
+            // 
+            // linkLabelGotoRegister
+            // 
+            this.linkLabelGotoRegister.AutoSize = true;
+            this.linkLabelGotoRegister.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.linkLabelGotoRegister.Location = new System.Drawing.Point(240, 229);
+            this.linkLabelGotoRegister.Name = "linkLabelGotoRegister";
+            this.linkLabelGotoRegister.Size = new System.Drawing.Size(105, 21);
+            this.linkLabelGotoRegister.TabIndex = 8;
+            this.linkLabelGotoRegister.TabStop = true;
+            this.linkLabelGotoRegister.Text = "Go to register";
+            this.linkLabelGotoRegister.Click += new System.EventHandler(this.linkLabelGotoRegister_Click);
             // 
             // lblInternetRequiredLogin
             // 
@@ -379,7 +439,7 @@
             // 
             this.butLogin.AutoSize = true;
             this.butLogin.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.butLogin.Location = new System.Drawing.Point(150, 217);
+            this.butLogin.Location = new System.Drawing.Point(79, 217);
             this.butLogin.Name = "butLogin";
             this.butLogin.Size = new System.Drawing.Size(139, 44);
             this.butLogin.TabIndex = 2;
@@ -633,46 +693,12 @@
             this.butStart.Text = "Start";
             this.butStart.Click += new System.EventHandler(this.butStart_Click);
             // 
-            // panelStatus
-            // 
-            this.panelStatus.Controls.Add(this.lblStatus);
-            this.panelStatus.Controls.Add(this.lblStatusText);
-            this.panelStatus.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelStatus.Location = new System.Drawing.Point(0, 617);
-            this.panelStatus.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.panelStatus.Name = "panelStatus";
-            this.panelStatus.Size = new System.Drawing.Size(1148, 42);
-            this.panelStatus.TabIndex = 1;
-            // 
-            // lblStatus
-            // 
-            this.lblStatus.AutoSize = true;
-            this.lblStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblStatus.Location = new System.Drawing.Point(80, 9);
-            this.lblStatus.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(60, 20);
-            this.lblStatus.TabIndex = 1;
-            this.lblStatus.Text = "[empty]";
-            // 
-            // lblStatusText
-            // 
-            this.lblStatusText.AutoSize = true;
-            this.lblStatusText.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblStatusText.Location = new System.Drawing.Point(10, 10);
-            this.lblStatusText.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblStatusText.Name = "lblStatusText";
-            this.lblStatusText.Size = new System.Drawing.Size(55, 20);
-            this.lblStatusText.TabIndex = 0;
-            this.lblStatusText.Text = "Satus:";
-            // 
             // panelTop
             // 
             this.panelTop.Controls.Add(this.butShowHelpPanel);
             this.panelTop.Controls.Add(this.panelTopSpace4);
             this.panelTop.Controls.Add(this.butShowLanguagePanel);
             this.panelTop.Controls.Add(this.panelToSpace3);
-            this.panelTop.Controls.Add(this.butShowLoginPanel);
             this.panelTop.Controls.Add(this.panelTopSpace2);
             this.panelTop.Controls.Add(this.butLogoff);
             this.panelTop.Controls.Add(this.panelTopSpace1);
@@ -723,17 +749,6 @@
             this.panelToSpace3.Size = new System.Drawing.Size(15, 36);
             this.panelToSpace3.TabIndex = 5;
             // 
-            // butShowLoginPanel
-            // 
-            this.butShowLoginPanel.AutoSize = true;
-            this.butShowLoginPanel.Dock = System.Windows.Forms.DockStyle.Right;
-            this.butShowLoginPanel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.butShowLoginPanel.Location = new System.Drawing.Point(834, 0);
-            this.butShowLoginPanel.Name = "butShowLoginPanel";
-            this.butShowLoginPanel.Size = new System.Drawing.Size(140, 36);
-            this.butShowLoginPanel.TabIndex = 2;
-            this.butShowLoginPanel.Text = "Login";
-            // 
             // panelTopSpace2
             // 
             this.panelTopSpace2.Dock = System.Windows.Forms.DockStyle.Right;
@@ -777,7 +792,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1219, 793);
+            this.ClientSize = new System.Drawing.Size(1251, 779);
             this.Controls.Add(this.splitContainerFirst);
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.Name = "CSSPDesktopForm";
@@ -790,6 +805,8 @@
             this.splitContainerFirst.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerFirst)).EndInit();
             this.splitContainerFirst.ResumeLayout(false);
+            this.panelStatus.ResumeLayout(false);
+            this.panelStatus.PerformLayout();
             this.panelRegisterCenter.ResumeLayout(false);
             this.panelRegisterCenter.PerformLayout();
             this.panelLoginCenter.ResumeLayout(false);
@@ -803,8 +820,6 @@
             this.panelUpdateCenter.PerformLayout();
             this.panelCommandsCenter.ResumeLayout(false);
             this.panelCommandsCenter.PerformLayout();
-            this.panelStatus.ResumeLayout(false);
-            this.panelStatus.PerformLayout();
             this.panelTop.ResumeLayout(false);
             this.panelTop.PerformLayout();
             this.ResumeLayout(false);
@@ -838,7 +853,6 @@
         private System.Windows.Forms.Panel panelTopSpace4;
         private System.Windows.Forms.Panel panelToSpace3;
         private System.Windows.Forms.Button butSetLanguageToEnglish;
-        private System.Windows.Forms.Button butShowLoginPanel;
         private System.Windows.Forms.Button butLogoff;
         private System.Windows.Forms.Button butHideHelpPanel;
         private System.Windows.Forms.Button butLogin;
@@ -871,6 +885,8 @@
         private System.Windows.Forms.Label lblFirstNameRegister;
         private System.Windows.Forms.TextBox textBoxConfirmPasswordRegister;
         private System.Windows.Forms.Label lblConfirmPasswordRegister;
+        private System.Windows.Forms.LinkLabel linkLabelGoToLogin;
+        private System.Windows.Forms.LinkLabel linkLabelGotoRegister;
     }
 }
 

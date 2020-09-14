@@ -9,7 +9,7 @@
   <Identity
     Name="9fbb535d-0b67-4040-b743-94b1ce49eb94"
     Publisher="CN=Charles LeBlanc"
-    Version="1.0.54.0" />
+    Version="1.0.59.0" />
 
   <Properties>
     <DisplayName>CSSP Desktop</DisplayName>

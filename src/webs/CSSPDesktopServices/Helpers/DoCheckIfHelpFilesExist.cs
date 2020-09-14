@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.IO;
 using CSSPDesktopServices.Models;
+using CSSPCultureServices.Resources;
 
 namespace CSSPDesktopServices.Services
 {
@@ -14,14 +15,14 @@ namespace CSSPDesktopServices.Services
     {
         private async Task<bool> DoCheckIfHelpFilesExist()
         {
-            AppendStatus(new AppendEventArgs(appTextModel.CheckIfHelpFileExist));
+            AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.CheckIfHelpFileExist));
 
             HasHelpFiles = true;
 
             List<string> HelpFileList = new List<string>()
             {
-                $"{ LocalCSSPWebAPIsPath }HelpDocEN.rtf",
-                $"{ LocalCSSPWebAPIsPath }HelpDocFR.rtf"
+                $"{ CSSPWebAPIsLocalPath }HelpDocEN.rtf",
+                $"{ CSSPWebAPIsLocalPath }HelpDocFR.rtf"
             };
 
             foreach (string HelpFile in HelpFileList)
@@ -29,12 +30,12 @@ namespace CSSPDesktopServices.Services
                 FileInfo fi = new FileInfo(HelpFile);
                 if (fi.Exists)
                 {
-                    AppendStatus(new AppendEventArgs(string.Format(appTextModel.HelpFileFound_, HelpFile)));
+                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.HelpFileFound_, HelpFile)));
                 }
                 else
                 {
                     HasHelpFiles = false;
-                    AppendStatus(new AppendEventArgs(string.Format(appTextModel.HelpFileNotFound_, HelpFile)));
+                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.HelpFileNotFound_, HelpFile)));
                 }
 
             }

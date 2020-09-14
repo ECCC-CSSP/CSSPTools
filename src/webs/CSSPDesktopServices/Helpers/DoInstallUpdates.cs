@@ -27,20 +27,20 @@ namespace CSSPDesktopServices.Services
     {
         private async Task<bool> DoInstallUpdates()
         {
-            AppendStatus(new AppendEventArgs(appTextModel.InstallUpdates));
+            AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.InstallUpdates));
 
-            DirectoryInfo di = new DirectoryInfo(LocalCSSPDesktopPath);
+            DirectoryInfo di = new DirectoryInfo(CSSPDesktopPath);
 
             if (!di.Exists)
             {
-                AppendStatus(new AppendEventArgs(string.Format(appTextModel.Directory_ShouldExist, di.FullName)));
+                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.Directory_ShouldExist, di.FullName)));
                 return await Task.FromResult(false);
             }
 
-            // Doing csspwebapis container 
+            // Doing csspwebapislocal container 
             List<string> zipFileNameList = new List<string>()
             {
-                "helpdocs.zip", "csspwebapis.zip", "csspclient.zip"
+                "helpdocs.zip", "csspwebapislocal.zip", "csspclient.zip"
             };
 
             int zipCount = 0;
@@ -48,7 +48,7 @@ namespace CSSPDesktopServices.Services
             {
                 zipCount += 1;
                 InstallingStatus(new InstallingEventArgs(20 * zipCount));
-                AppendStatus(new AppendEventArgs(string.Format(appTextModel.Downloading_, zipFileName)));
+                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.Downloading_, zipFileName)));
 
                 if (!await DownloadZipFilesFromAzure(zipFileName)) return await Task.FromResult(false);
             }
@@ -65,11 +65,10 @@ namespace CSSPDesktopServices.Services
             {
                 zipCount += 1;
                 InstallingStatus(new InstallingEventArgs(60 + (5 * jsonCount)));
-                AppendStatus(new AppendEventArgs(string.Format(appTextModel.Downloading_, jsonFileName)));
+                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.Downloading_, jsonFileName)));
 
                 if (!await DownloadJsonFilesFromAzure(jsonFileName)) return await Task.FromResult(false);
             }
-
 
             InstallingStatus(new InstallingEventArgs(100));
             AppendStatus(new AppendEventArgs(""));
@@ -79,11 +78,17 @@ namespace CSSPDesktopServices.Services
 
         private async Task<bool> DownloadJsonFilesFromAzure(string jsonFileName)
         {
-            AppendStatus(new AppendEventArgs(string.Format(appTextModel.DownloadingFileFromAzure_, jsonFileName)));
+            string culture = "fr-CA";
+            if (IsEnglish)
+            {
+                culture = "en-CA";
+            }
 
-            FileInfo fi = new FileInfo($"{ LocalCSSPDesktopPath }{ jsonFileName }");
+            AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.DownloadingFileFromAzure_, jsonFileName)));
 
-            BlobClient blobClient = new BlobClient(preference.AzureStore, AzureStoreCSSPWebAPIsPath, jsonFileName);
+            FileInfo fi = new FileInfo($"{ CSSPJSONPath }{ jsonFileName }");
+
+            BlobClient blobClient = new BlobClient(preference.AzureStore, AzureStoreCSSPJSONPath, jsonFileName);
             BlobProperties blobProperties = blobClient.GetProperties();
             if (blobProperties == null)
             {
@@ -143,20 +148,15 @@ namespace CSSPDesktopServices.Services
                 using (HttpClient httpClient = new HttpClient())
                 {
                     httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
-                    string culture = "fr-CA";
-                    if (IsEnglish)
-                    {
-                        culture = "en-CA";
-                    }
                     string url = $"{ CSSPAzureUrl }api/{ culture }/CreateGzFile/{ (int)webType }/{ TVItemID }/{ (int)webTypeYear }";
                     var response = await httpClient.GetAsync(url);
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
-                        AppendStatus(new AppendEventArgs(string.Format(appTextModel.File_CreatedOnAzure, jsonFileName)));
+                        AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.File_CreatedOnAzure, jsonFileName)));
                     }
                     else
                     {
-                        AppendStatus(new AppendEventArgs(string.Format(appTextModel.CouldNotCreateFile_OnAzure, jsonFileName)));
+                        AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotCreateFile_OnAzure, jsonFileName)));
                         return await Task.FromResult(false);
                     }
                 }
@@ -171,9 +171,42 @@ namespace CSSPDesktopServices.Services
             {
                 Response response = blobClient.DownloadTo(fi.FullName);
 
+                if (csspFile == null)
+                {
+                    int LastID = (from c in dbFM.CSSPFiles
+                                  orderby c.CSSPFileID descending
+                                  select c.CSSPFileID).FirstOrDefault();
+
+                    csspFile = new CSSPFile()
+                    {
+                        CSSPFileID = LastID + 1,
+                        AzureStorage = AzureStoreCSSPJSONPath,
+                        AzureFileName = jsonFileName,
+                        AzureETag = response.Headers.ETag.ToString(),
+                        AzureCreationTimeUTC = DateTime.Parse(response.Headers.Date.ToString()),
+                    };
+
+                    dbFM.CSSPFiles.Add(csspFile);
+                }
+                else
+                {
+                    csspFile.AzureETag = response.Headers.ETag.ToString();
+                }
+
+                try
+                {
+                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CSSPFilesManagementUpdateAzureStorage_AzureFileName_, AzureStoreCSSPJSONPath, jsonFileName)));
+                    dbFM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotAddOrModifyCSSPDBFilesManagement_dbFor_, AzureStoreCSSPJSONPath, jsonFileName)));
+                    return await Task.FromResult(false);
+                }
+
                 if (jsonFileName == "WebTVItem.gz")
                 {
-                    AppendStatus(new AppendEventArgs(string.Format(appTextModel.FillingCSSPDBSearchDatabaseWith_Info, jsonFileName)));
+                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.FillingCSSPDBSearchDatabaseWith_Info, jsonFileName)));
                     
                     if (!await FillCSSPDBSearch()) return await Task.FromResult(false);
                 }
@@ -182,7 +215,7 @@ namespace CSSPDesktopServices.Services
             {
                 if (jsonFileName == "WebTVItem.gz")
                 {
-                    AppendStatus(new AppendEventArgs(string.Format(appTextModel.UpdatingCSSPDBSearchDatabase)));
+                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.UpdatingCSSPDBSearchDatabase)));
 
                     if (!await UpdateCSSPDBSearch()) return await Task.FromResult(false);
                 }
@@ -192,20 +225,20 @@ namespace CSSPDesktopServices.Services
         }
         private async Task<bool> DownloadZipFilesFromAzure(string zipFileName)
         {
-            AppendStatus(new AppendEventArgs(string.Format(appTextModel.DownloadingFileFromAzure_, zipFileName)));
+            AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.DownloadingFileFromAzure_, zipFileName)));
 
-            FileInfo fi = new FileInfo($"{ LocalCSSPDesktopPath }{ zipFileName }");
+            FileInfo fi = new FileInfo($"{ CSSPDesktopPath }{ zipFileName }");
 
-            BlobClient blobClient = new BlobClient(preference.AzureStore, AzureStoreCSSPWebAPIsPath, zipFileName);
+            BlobClient blobClient = new BlobClient(preference.AzureStore, AzureStoreCSSPWebAPIsLocalPath, zipFileName);
             BlobProperties blobProperties = blobClient.GetProperties();
             if (blobProperties == null)
             {
-                AppendStatus(new AppendEventArgs(string.Format(appTextModel.CouldNotGetPropertiesFromAzureStore_AndFile_, "csspwebapis", zipFileName)));
+                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotGetPropertiesFromAzureStore_AndFile_, AzureStoreCSSPWebAPIsLocalPath, zipFileName)));
                 return await Task.FromResult(false);
             }
 
             CSSPFile csspFile = (from c in dbFM.CSSPFiles
-                                 where c.AzureStorage == "csspwebapis"
+                                 where c.AzureStorage == AzureStoreCSSPWebAPIsLocalPath
                                  && c.AzureFileName == zipFileName
                                  select c).FirstOrDefault();
 
@@ -213,7 +246,7 @@ namespace CSSPDesktopServices.Services
             {
                 Response response = blobClient.DownloadTo(fi.FullName);
 
-                AppendStatus(new AppendEventArgs(string.Format(appTextModel.Unzipping_, zipFileName)));
+                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.Unzipping_, zipFileName)));
                 if (!await UnzipDownloadedFile(zipFileName, response)) return await Task.FromResult(false);
             }
 
@@ -221,35 +254,35 @@ namespace CSSPDesktopServices.Services
         }
         private async Task<bool> UnzipDownloadedFile(string zipFileName, Response response)
         {
-            FileInfo fiLocal = new FileInfo($"{ LocalCSSPDesktopPath }{ zipFileName }");
+            FileInfo fiLocal = new FileInfo($"{ CSSPDesktopPath }{ zipFileName }");
 
             if (!fiLocal.Exists)
             {
-                AppendStatus(new AppendEventArgs(string.Format(appTextModel.CouldNotFindFile_, fiLocal.FullName)));
+                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotFindFile_, fiLocal.FullName)));
                 return await Task.FromResult(false);
             }
 
             try
             {
-                AppendStatus(new AppendEventArgs(string.Format(appTextModel.UnzippingDownloadedFile_, zipFileName)));
+                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.UnzippingDownloadedFile_, zipFileName)));
 
                 if (zipFileName.Contains("csspclient"))
                 {
-                    ZipFile.ExtractToDirectory(fiLocal.FullName, LocalCSSPWebAPIsPath + "\\csspclient", true);
+                    ZipFile.ExtractToDirectory(fiLocal.FullName, CSSPWebAPIsLocalPath + "\\csspclient", true);
                 }
                 else
                 {
-                    ZipFile.ExtractToDirectory(fiLocal.FullName, LocalCSSPWebAPIsPath, true);
+                    ZipFile.ExtractToDirectory(fiLocal.FullName, CSSPWebAPIsLocalPath, true);
                 }
             }
             catch (Exception ex)
             {
-                AppendStatus(new AppendEventArgs(string.Format(appTextModel.CouldNotUnzip_Error_, fiLocal.FullName, ex.Message)));
+                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotUnzip_Error_, fiLocal.FullName, ex.Message)));
                 return await Task.FromResult(false);
             }
 
             CSSPFile csspFile = (from c in dbFM.CSSPFiles
-                                 where c.AzureStorage == "csspwebapis"
+                                 where c.AzureStorage == AzureStoreCSSPWebAPIsLocalPath
                                  && c.AzureFileName == zipFileName
                                  select c).FirstOrDefault();
 
@@ -262,7 +295,7 @@ namespace CSSPDesktopServices.Services
                 csspFile = new CSSPFile()
                 {
                     CSSPFileID = LastID + 1,
-                    AzureStorage = "csspwebapis",
+                    AzureStorage = AzureStoreCSSPWebAPIsLocalPath,
                     AzureFileName = zipFileName,
                     AzureETag = response.Headers.ETag.ToString(),
                     AzureCreationTimeUTC = DateTime.Parse(response.Headers.Date.ToString()),
@@ -277,12 +310,12 @@ namespace CSSPDesktopServices.Services
 
             try
             {
-                AppendStatus(new AppendEventArgs(string.Format(appTextModel.CSSPFilesManagementUpdateAzureStorage_AzureFileName_, "csspwebapis", zipFileName)));
+                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CSSPFilesManagementUpdateAzureStorage_AzureFileName_, AzureStoreCSSPWebAPIsLocalPath, zipFileName)));
                 dbFM.SaveChanges();
             }
             catch (Exception)
             {
-                AppendStatus(new AppendEventArgs(string.Format(appTextModel.CouldNotAddOrModifyCSSPDBFilesManagement_dbFor_, "csspwebapis", zipFileName)));
+                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotAddOrModifyCSSPDBFilesManagement_dbFor_, AzureStoreCSSPWebAPIsLocalPath, zipFileName)));
                 return await Task.FromResult(false);
             }
 

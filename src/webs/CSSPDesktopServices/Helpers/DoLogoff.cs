@@ -22,7 +22,7 @@ namespace CSSPDesktopServices.Services
         #region Functions private
         private async Task<bool> DoLogoff()
         {
-            AppendStatus(new AppendEventArgs(appTextModel.Logoff));
+            AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.Logoff));
 
             if (preference.LoggedIn != null && !(bool)preference.LoggedIn) return await Task.FromResult(false);
 

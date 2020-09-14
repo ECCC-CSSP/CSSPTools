@@ -22,7 +22,7 @@ namespace CSSPDesktopServices.Services
     {
         // Properties
         bool IsEnglish { get; set; }
-        AppTextModel appTextModel { get; set; }
+        //AppTextModel appTextModel { get; set; }
         bool LoginRequired { get; set; }
         bool UpdateIsNeeded { get; set; }
         bool HasNewTVItemsOrTVItemLanguages { get; set; }
@@ -34,7 +34,7 @@ namespace CSSPDesktopServices.Services
         string CSSPAzureUrl { get; set; }
         string CSSPLocalUrl { get; set; }
         Preference preference { get; set; }
-        string LocalCSSPWebAPIsPath { get; set; }
+        string CSSPWebAPIsLocalPath { get; set; }
         Contact contact { get; set; }
 
         // Functions
@@ -66,7 +66,7 @@ namespace CSSPDesktopServices.Services
         #endregion Variables
 
         #region Properties public
-        public AppTextModel appTextModel { get; set; }
+        //public AppTextModel appTextModel { get; set; }
         public bool IsEnglish { get; set; }
         public bool LoginRequired { get; set; } = false;
         public bool UpdateIsNeeded { get; set; } = false;
@@ -79,7 +79,7 @@ namespace CSSPDesktopServices.Services
         public string CSSPAzureUrl { get; set; }
         public string CSSPLocalUrl { get; set; }
         public Preference preference { get; set; }
-        public string LocalCSSPWebAPIsPath { get; set; }
+        public string CSSPWebAPIsLocalPath { get; set; }
         public Contact contact { get; set; }
         #endregion Properties public
 
@@ -95,14 +95,14 @@ namespace CSSPDesktopServices.Services
         private ICSSPDBSearchService CSSPDBSearchService { get; }
         private IReadGzFileService ReadGzFileService { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
-        private string LocalCSSPDesktopPath { get; set; }
-        private string LocalCSSPDatabasesPath { get; set; }
-        private string LocalCSSPJSONPath { get; set; }
-        private string LocalCSSPFilesPath { get; set; }
-        private string AzureStoreCSSPWebAPIsPath { get; set; }
+        private string CSSPDesktopPath { get; set; }
+        private string CSSPDatabasesPath { get; set; }
+        private string CSSPJSONPath { get; set; }
+        private string CSSPFilesPath { get; set; }
+        private string AzureStoreCSSPWebAPIsLocalPath { get; set; }
         private string AzureStoreCSSPJSONPath { get; set; }
         private string AzureStoreCSSPFilesPath { get; set; }
-        private Process processCSSPWebAPIs { get; set; }
+        private Process processCSSPWebAPIsLocal { get; set; }
         private Process processBrowser { get; set; }
         #endregion Properties private
 
@@ -174,17 +174,19 @@ namespace CSSPDesktopServices.Services
         }
         public async Task<bool> InstallUpdates()
         {
-            // need to stop CSSPWebAPIs so we can copy over some files 
-            foreach (var process in Process.GetProcessesByName("CSSPWebAPIs"))
+            // need to stop CSSPWebAPIsLocal so we can copy over some files 
+            foreach (var process in Process.GetProcessesByName("CSSPWebAPIsLocal"))
             {
                 process.Kill();
             }
 
             if (!await Stop()) await Task.FromResult(false);
 
+            if (!await LocalService.SetLoggedInContactInfo()) await Task.FromResult(false);           
+
             if (!await DoInstallUpdates()) return await Task.FromResult(false);
 
-            if (!OpenCSSPWebAPIs()) return await Task.FromResult(false);
+            //if (!OpenCSSPWebAPIsLocal()) return await Task.FromResult(false);
 
             return await Task.FromResult(true);
         }

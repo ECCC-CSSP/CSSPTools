@@ -34,21 +34,27 @@ namespace CSSPDesktopServices.Services
 
         private async Task<bool> DoGetTVItems()
         {
-            TVItem tvItem = await(from c in dbSearch.TVItems
-                                  select c).FirstOrDefaultAsync();
+            string culture = "fr-CA";
+            if (IsEnglish)
+            {
+                culture = "en-CA";
+            }
+
+            TVItem tvItem = await (from c in dbSearch.TVItems
+                                   select c).FirstOrDefaultAsync();
 
             if (tvItem == null)
             {
                 if (!await FillCSSPDBSearch()) return await Task.FromResult(false);
             }
 
-            tvItem = await(from c in dbSearch.TVItems
-                           orderby c.LastUpdateDate_UTC descending
-                           select c).FirstOrDefaultAsync();
+            tvItem = await (from c in dbSearch.TVItems
+                            orderby c.LastUpdateDate_UTC descending
+                            select c).FirstOrDefaultAsync();
 
             if (tvItem == null)
             {
-                AppendStatus(new AppendEventArgs(CSSPCultureServicesRes.CouldNotUpdateCSSPDBSearchWithTVItemsAndTVItemLanguages));
+                AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.CouldNotUpdateCSSPDBSearchWithTVItemsAndTVItemLanguages));
                 return await Task.FromResult(false);
             }
 
@@ -56,34 +62,33 @@ namespace CSSPDesktopServices.Services
             using (HttpClient httpClient = new HttpClient())
             {
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
-                response = await httpClient.GetAsync($"{ CSSPAzureUrl }api/en-CA/TVItem/GetTVItemStartDateList/{ tvItem.LastUpdateDate_UTC.Year }/{ tvItem.LastUpdateDate_UTC.Month }/{ tvItem.LastUpdateDate_UTC.Day }");
+                response = httpClient.GetAsync($"{ CSSPAzureUrl }api/{ culture }/TVItem/GetTVItemStartDateList/{ tvItem.LastUpdateDate_UTC.Year }/{ tvItem.LastUpdateDate_UTC.Month }/{ tvItem.LastUpdateDate_UTC.Day }").Result;
                 if ((int)response.StatusCode != 200)
                 {
                     if ((int)response.StatusCode == 401)
                     {
-                        AppendStatus(new AppendEventArgs(CSSPCultureServicesRes.NeedToBeLoggedIn));
+                        AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.NeedToBeLoggedIn));
                         return await Task.FromResult(false);
                     }
                     else if ((int)response.StatusCode == 500)
                     {
-                        AppendStatus(new AppendEventArgs(CSSPCultureServicesRes.ServerNotRespondingDoYouHaveInternetConnection));
+                        AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.ServerNotRespondingDoYouHaveInternetConnection));
                         return await Task.FromResult(false);
                     }
                 }
-
             }
 
             List<TVItem> tvItemList = JsonSerializer.Deserialize<List<TVItem>>(response.Content.ReadAsStringAsync().Result);
 
             foreach (TVItem tvItemChanged in tvItemList)
             {
-                TVItem TVItem2 = await(from c in dbSearch.TVItems
-                                       where c.TVItemID == tvItemChanged.TVItemID
-                                       select c).FirstOrDefaultAsync();
+                TVItem TVItem2 = await (from c in dbSearch.TVItems
+                                        where c.TVItemID == tvItemChanged.TVItemID
+                                        select c).FirstOrDefaultAsync();
 
                 if (TVItem2 == null)
                 {
-                    dbSearch.Add(TVItem2);
+                    dbSearch.Add(tvItemChanged);
                 }
                 else
                 {
@@ -100,7 +105,7 @@ namespace CSSPDesktopServices.Services
             }
             catch (Exception ex)
             {
-                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "TVItems", ex.Message)));
+                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotAdd_Error_, "TVItems", ex.Message)));
                 return await Task.FromResult(false);
             }
 
@@ -110,13 +115,19 @@ namespace CSSPDesktopServices.Services
 
         private async Task<bool> DoGetTVItemLanguages()
         {
-            TVItemLanguage tvItemLanguage = await(from c in dbSearch.TVItemLanguages
-                                                  orderby c.LastUpdateDate_UTC descending
-                                                  select c).FirstOrDefaultAsync();
+            string culture = "fr-CA";
+            if (IsEnglish)
+            {
+                culture = "en-CA";
+            }
+
+            TVItemLanguage tvItemLanguage = await (from c in dbSearch.TVItemLanguages
+                                                   orderby c.LastUpdateDate_UTC descending
+                                                   select c).FirstOrDefaultAsync();
 
             if (tvItemLanguage == null)
             {
-                AppendStatus(new AppendEventArgs(CSSPCultureServicesRes.CouldNotUpdateCSSPDBSearchWithTVItemsAndTVItemLanguages));
+                AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.CouldNotUpdateCSSPDBSearchWithTVItemsAndTVItemLanguages));
                 return await Task.FromResult(false);
             }
 
@@ -125,17 +136,17 @@ namespace CSSPDesktopServices.Services
             {
 
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
-                response = await httpClient.GetAsync($"{ CSSPAzureUrl }api/en-CA/TVItemLanguage/GetTVItemLanguageStartDateList/{ tvItemLanguage.LastUpdateDate_UTC.Year }/{ tvItemLanguage.LastUpdateDate_UTC.Month }/{ tvItemLanguage.LastUpdateDate_UTC.Day }");
+                response = httpClient.GetAsync($"{ CSSPAzureUrl }api/{ culture }/TVItemLanguage/GetTVItemLanguageStartDateList/{ tvItemLanguage.LastUpdateDate_UTC.Year }/{ tvItemLanguage.LastUpdateDate_UTC.Month }/{ tvItemLanguage.LastUpdateDate_UTC.Day }").Result;
                 if ((int)response.StatusCode != 200)
                 {
                     if ((int)response.StatusCode == 401)
                     {
-                        AppendStatus(new AppendEventArgs(CSSPCultureServicesRes.NeedToBeLoggedIn));
+                        AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.NeedToBeLoggedIn));
                         return await Task.FromResult(false);
                     }
                     else if ((int)response.StatusCode == 500)
                     {
-                        AppendStatus(new AppendEventArgs(CSSPCultureServicesRes.ServerNotRespondingDoYouHaveInternetConnection));
+                        AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.ServerNotRespondingDoYouHaveInternetConnection));
                         return await Task.FromResult(false);
                     }
                 }
@@ -146,13 +157,13 @@ namespace CSSPDesktopServices.Services
 
             foreach (TVItemLanguage tvItemLanguageChanged in tvItemLanguageList)
             {
-                TVItemLanguage TVItemLanguage2 = await(from c in dbSearch.TVItemLanguages
-                                                       where c.TVItemLanguageID == tvItemLanguageChanged.TVItemLanguageID
-                                                       select c).FirstOrDefaultAsync();
+                TVItemLanguage TVItemLanguage2 = await (from c in dbSearch.TVItemLanguages
+                                                        where c.TVItemLanguageID == tvItemLanguageChanged.TVItemLanguageID
+                                                        select c).FirstOrDefaultAsync();
 
                 if (TVItemLanguage2 == null)
                 {
-                    dbSearch.Add(TVItemLanguage2);
+                    dbSearch.Add(tvItemLanguageChanged);
                 }
                 else
                 {
@@ -166,7 +177,7 @@ namespace CSSPDesktopServices.Services
             }
             catch (Exception ex)
             {
-                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "TVItemLanguages", ex.Message)));
+                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotAdd_Error_, "TVItemLanguages", ex.Message)));
                 return await Task.FromResult(false);
             }
 

@@ -16,9 +16,9 @@ export class ApiInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     request = request.clone({
-      setHeaders: {
-        Authorization: `Bearer ${this.userService.userModel$.value.Token}`
-      },
+      // setHeaders: {
+      //   Authorization: `Bearer ${this.userService.userModel$.value.Token}`
+      // },
       url: request.url.replace('/api/', this.appService.appModel$.value.BaseApiUrl + $localize.locale + '/'),
     });
 

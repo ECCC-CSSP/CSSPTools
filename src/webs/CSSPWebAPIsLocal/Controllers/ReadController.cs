@@ -47,7 +47,6 @@ namespace CSSPWebAPIsLocal.Controllers
 
     [Route("api/{culture}/[controller]")]
     [ApiController]
-    [Authorize]
     public partial class ReadController : ControllerBase, IReadController
     {
         #region Variables

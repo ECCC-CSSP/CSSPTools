@@ -1,4 +1,5 @@
-﻿using CSSPDesktopServices.Models;
+﻿using CSSPCultureServices.Resources;
+using CSSPDesktopServices.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,23 +11,23 @@ namespace CSSPDesktopServices.Services
     {
         private async Task<bool> DoStop()
         {
-            AppendStatus(new AppendEventArgs(appTextModel.StoppingBrowserAndCSSPWebAPIsProcesses));
+            AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.StoppingBrowserAndCSSPWebAPIsLocalProcesses));
 
             if (processBrowser != null)
             {
                 if (!processBrowser.HasExited)
                 {
-                    AppendStatus(new AppendEventArgs(string.Format(appTextModel.Stopping_, processBrowser.ProcessName)));
+                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.Stopping_, processBrowser.ProcessName)));
                     processBrowser.Kill();
                 }
             }
 
-            if (processCSSPWebAPIs != null)
+            if (processCSSPWebAPIsLocal != null)
             {
-                if (!processCSSPWebAPIs.HasExited)
+                if (!processCSSPWebAPIsLocal.HasExited)
                 {
-                    AppendStatus(new AppendEventArgs(string.Format(appTextModel.Stopping_, processBrowser.ProcessName)));
-                    processCSSPWebAPIs.Kill();
+                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.Stopping_, processBrowser.ProcessName)));
+                    processCSSPWebAPIsLocal.Kill();
                 }
             }
 

@@ -34,7 +34,7 @@ namespace DownloadGzFileServices
             {
                 BlobClient blobClient = new BlobClient(AzureStoreConnectionString, AzureStoreCSSPJSONPath, FileName);
 
-                Response response = blobClient.DownloadTo($"{ LocalCSSPJSONPath }{ FileName }");
+                Response response = blobClient.DownloadTo($"{ CSSPJSONPath }{ FileName }");
                 if (response.Status == 206)
                 {
                     CSSPFile csspFile = null;

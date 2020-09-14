@@ -24,6 +24,8 @@ namespace CSSPDesktopServices.Services
         private async Task<bool> DoFillCSSPDBSearch()
         {
             WebTVItem webTVItem = null;
+            int skip = 0;
+            int take = 50000;
 
             TVItem tvItem = await (from c in dbSearch.TVItems
                                    select c).FirstOrDefaultAsync();
@@ -39,37 +41,89 @@ namespace CSSPDesktopServices.Services
                     }
                     else
                     {
-                        AppendStatus(new AppendEventArgs(CSSPCultureServicesRes.CouldNotUpdateCSSPDBSearchWithTVItemsAndTVItemLanguages));
+                        AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.CouldNotUpdateCSSPDBSearchWithTVItemsAndTVItemLanguages));
                         return await Task.FromResult(false);
                     }
 
-                    await dbSearch.TVItems.AddRangeAsync(webTVItem.TVItemList);
+                    int count = 1;
+                    int total = webTVItem.TVItemList.Count;
 
-                    try
+                    while (count > 0)
                     {
-                        await dbSearch.SaveChangesAsync();
-                    }
-                    catch (Exception ex)
-                    {
-                        AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "WebTVItem.TVItems", ex.Message)));
-                        return await Task.FromResult(false);
+                        List<TVItem> tvItemList = webTVItem.TVItemList.Skip(skip).Take(take).ToList();
+
+                        count = tvItemList.Count;
+
+                        if (tvItemList.Count == 0)
+                        {
+                            break;
+                        }
+
+                        skip += take;
+
+                        await dbSearch.TVItems.AddRangeAsync(tvItemList);
+
+                        try
+                        {
+                            await dbSearch.SaveChangesAsync();
+                        }
+                        catch (Exception ex)
+                        {
+                            AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotAdd_Error_, "WebTVItem.TVItems", ex.Message)));
+                            return await Task.FromResult(false);
+                        }
+
+                        if (count < take)
+                        {
+                            AppendStatus(new AppendEventArgs($"{ string.Format(CSSPCultureDesktopRes.Done) } TVItems ({ total }/{ total })"));
+                        }
+                        else
+                        {
+                            AppendStatus(new AppendEventArgs($"{ string.Format(CSSPCultureDesktopRes.Done) } TVItems ({ skip }/{ total })"));
+                        }
                     }
 
-                    await dbSearch.TVItemLanguages.AddRangeAsync(webTVItem.TVItemLanguageList);
+                    skip = 0;
+                    count = 1;
+                    total = webTVItem.TVItemLanguageList.Count;
+                    while (count > 0)
+                    {
+                        List<TVItemLanguage> tvItemLanguageList = webTVItem.TVItemLanguageList.Skip(skip).Take(take).ToList();
 
-                    try
-                    {
-                        await dbSearch.SaveChangesAsync();
-                    }
-                    catch (Exception ex)
-                    {
-                        AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "WebTVItem.TVItemLanguages", ex.Message)));
-                        return await Task.FromResult(false);
+                        count = tvItemLanguageList.Count;
+
+                        if (tvItemLanguageList.Count == 0)
+                        {
+                            break;
+                        }
+
+                        skip += take;
+
+                        await dbSearch.TVItemLanguages.AddRangeAsync(tvItemLanguageList);
+
+                        try
+                        {
+                            await dbSearch.SaveChangesAsync();
+                        }
+                        catch (Exception ex)
+                        {
+                            AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotAdd_Error_, "WebTVItem.TVItemLanguages", ex.Message)));
+                            return await Task.FromResult(false);
+                        }
+
+                        if (count < take)
+                        {
+                            AppendStatus(new AppendEventArgs($"{ string.Format(CSSPCultureDesktopRes.Done) } TVItemLanguages ({ total }/{ total })"));
+                        }
+                        else
+                        {
+                            AppendStatus(new AppendEventArgs($"{ string.Format(CSSPCultureDesktopRes.Done) } TVItemLanguages ({ skip }/{ total })"));
+                        }
                     }
                 }
                 catch (Exception ex)
                 {
-                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes.UnmanagedServerError_, ex.Message)));
+                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.UnmanagedServerError_, ex.Message)));
                     return await Task.FromResult(false);
                 }
             }

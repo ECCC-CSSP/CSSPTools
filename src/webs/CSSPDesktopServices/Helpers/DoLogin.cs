@@ -22,11 +22,11 @@ namespace CSSPDesktopServices.Services
         #region Functions private
         private async Task<bool> DoLogin(LoginModel loginModel)
         {
-            AppendStatus(new AppendEventArgs(appTextModel.Login));
+            AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.Login));
 
             if (!await DoLoginContact(loginModel)) return await Task.FromResult(false);
 
-            if (!await DoLoginAspNetUser()) return await Task.FromResult(false);
+            //if (!await DoLoginAspNetUser()) return await Task.FromResult(false);
 
             if (!await DoLoginTVItemUserAuthorization()) return await Task.FromResult(false);
 

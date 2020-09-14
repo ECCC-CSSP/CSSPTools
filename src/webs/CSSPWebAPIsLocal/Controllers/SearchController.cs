@@ -22,7 +22,6 @@ namespace CSSPWebAPIsLocal.Controllers
 
     [Route("api/{culture}/[controller]")]
     [ApiController]
-    //[Authorize]
     public partial class SearchController : ControllerBase, ISearchController
     {
         #region Variables

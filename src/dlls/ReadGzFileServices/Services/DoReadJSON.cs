@@ -35,7 +35,7 @@ namespace ReadGzFileServices
 
             string fileName = await BaseGzFileService.GetFileName(webType, TVItemID, webTypeYear);
 
-            FileInfo fiGZ = new FileInfo(LocalCSSPJSONPath + string.Format(fileName, TVItemID));
+            FileInfo fiGZ = new FileInfo(CSSPJSONPath + string.Format(fileName, TVItemID));
 
             if (fiGZ.Exists)
             {

@@ -18,21 +18,27 @@ namespace CSSPDesktopServices.Services
     {
         private async Task<bool> DoLoginTVTypeUserAuthorization()
         {
+            string culture = "fr-CA";
+            if (IsEnglish)
+            {
+                culture = "en-CA";
+            }
+
             using (HttpClient httpClient = new HttpClient())
             {
 
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
-                HttpResponseMessage response = httpClient.GetAsync($"{ CSSPAzureUrl }api/en-CA/TVTypeUserAuthorization/GetWithContactTVItemID?ContactTVItemID={ contact.ContactTVItemID }").Result;
+                HttpResponseMessage response = httpClient.GetAsync($"{ CSSPAzureUrl }api/{ culture }/TVTypeUserAuthorization/GetWithContactTVItemID?ContactTVItemID={ contact.ContactTVItemID }").Result;
                 if ((int)response.StatusCode != 200)
                 {
                     if ((int)response.StatusCode == 401)
                     {
-                        AppendStatus(new AppendEventArgs(CSSPCultureServicesRes.NeedToBeLoggedIn));
+                        AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.NeedToBeLoggedIn));
                         return await Task.FromResult(false);
                     }
                     else if ((int)response.StatusCode == 500)
                     {
-                        AppendStatus(new AppendEventArgs(CSSPCultureServicesRes.ServerNotRespondingDoYouHaveInternetConnection));
+                        AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.ServerNotRespondingDoYouHaveInternetConnection));
                         return await Task.FromResult(false);
                     }
 
@@ -53,7 +59,7 @@ namespace CSSPDesktopServices.Services
                     }
                     catch (Exception ex)
                     {
-                        AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes.CouldNotDelete_Error_, "TVTypeUserAuthorizationList", ex.Message)));
+                        AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotDelete_Error_, "TVTypeUserAuthorizationList", ex.Message)));
                         return await Task.FromResult(false);
                     }
                 }
@@ -63,11 +69,11 @@ namespace CSSPDesktopServices.Services
                     dbLogin.TVTypeUserAuthorizations.AddRange(TVTypeUserAuthorizationList);
                     dbLogin.SaveChanges();
 
-                    AppendStatus(new AppendEventArgs(string.Format(appTextModel._StoredInTable_AndDatabase_, "TVTypeUserAuthorization", "TVTypeUserAuthorizations", "CSSPDBLogin.db")));
+                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes._StoredInTable_AndDatabase_, "TVTypeUserAuthorization", "TVTypeUserAuthorizations", "CSSPDBLogin.db")));
                 }
                 catch (Exception ex)
                 {
-                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "TVTypeUserAuthorizationList", ex.Message)));
+                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotAdd_Error_, "TVTypeUserAuthorizationList", ex.Message)));
                     return await Task.FromResult(false);
                 }
 

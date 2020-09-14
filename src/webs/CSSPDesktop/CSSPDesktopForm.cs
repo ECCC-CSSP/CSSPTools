@@ -1,4 +1,5 @@
-﻿using CSSPCultureServices.Services;
+﻿using CSSPCultureServices.Resources;
+using CSSPCultureServices.Services;
 using CSSPDBFilesManagementServices;
 using CSSPDesktopServices.Models;
 using CSSPDesktopServices.Services;
@@ -35,6 +36,7 @@ namespace CSSPDesktop
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICSSPDBFilesManagementService CSSPDBFilesManagementService { get; set; }
+        private ICSSPCultureService CSSPCultureService { get; set; }
         private ICSSPDesktopService CSSPDesktopService { get; set; }
         private ICSSPSQLiteService CSSPSQLiteService { get; set; }
         bool IsEnglish { get; set; } = true;
@@ -161,10 +163,14 @@ namespace CSSPDesktop
         private void butLogin_Click(object sender, EventArgs e)
         {
             butLogin.Enabled = false;
-            butLogin.Text = CSSPDesktopService.appTextModel.LoggingIn;
+            butLogin.Text = CSSPCultureDesktopRes.LoggingIn;
             Login().GetAwaiter().GetResult();
-            butLogin.Text = CSSPDesktopService.appTextModel.butLoginText;
+            butLogin.Text = CSSPCultureDesktopRes.butLoginText;
             butLogin.Enabled = true;
+        }
+        private void linkLabelGotoRegister_Click(object sender, EventArgs e)
+        {
+            ShowPanels(ShowPanel.Register);
         }
         private void textBoxLoginEmailLogin_TextChanged(object sender, EventArgs e)
         {
@@ -176,6 +182,18 @@ namespace CSSPDesktop
         }
         #endregion Login
         #region Register
+        private void butRegister_Click(object sender, EventArgs e)
+        {
+            butRegister.Enabled = false;
+            butRegister.Text = CSSPCultureDesktopRes.RegisteringIn;
+            Register().GetAwaiter().GetResult();
+            butRegister.Text = CSSPCultureDesktopRes.butRegisterText;
+            butRegister.Enabled = true;
+        }
+        private void linkLabelGoToLogin_Click(object sender, EventArgs e)
+        {
+            ShowPanels(ShowPanel.Login);
+        }
         private void textBoxLoginEmailRegister_TextChanged(object sender, EventArgs e)
         {
             EnabledOrDisableRegisterButton();
@@ -200,14 +218,6 @@ namespace CSSPDesktop
         {
             EnabledOrDisableRegisterButton();
         }
-        private void butRegister_Click(object sender, EventArgs e)
-        {
-            butRegister.Enabled = false;
-            butRegister.Text = CSSPDesktopService.appTextModel.RegisteringIn;
-            Register().GetAwaiter().GetResult();
-            butRegister.Text = CSSPDesktopService.appTextModel.butRegisterText;
-            butRegister.Enabled = true;
-        }
         #endregion Register
         #endregion Events
 
@@ -223,11 +233,12 @@ namespace CSSPDesktop
             {
                 if ((bool)CSSPDesktopService.preference.HasInternetConnection)
                 {
-                    Text = CSSPDesktopService.appTextModel.FormTitleText + $" --- ({ CSSPDesktopService.appTextModel.ConnectedOnInternet })";
+                    Text = CSSPCultureDesktopRes.FormTitleText + $" --- ({ CSSPCultureDesktopRes.ConnectedOnInternet })";
                 }
                 else
                 {
-                    Text = CSSPDesktopService.appTextModel.FormTitleText + $" --- ({ CSSPDesktopService.appTextModel.NoInternetConnection })";
+                    Text = CSSPCultureDesktopRes.FormTitleText + $" --- ({ CSSPCultureDesktopRes.NoInternetConnection })";
+                    butLogoff.Visible = false;
                 }
             }
 
@@ -246,11 +257,7 @@ namespace CSSPDesktop
                 CanEnableLoginButton = false;
             }
 
-            Regex regex = new Regex(@"\A(?=[a-z0-9@.!#$%&'*+/=?^_'{|}~-]{6,254}\z)" +
-                @" (?=[a-z0-9.!#$%&'*+/=?^_‘{|}~-]{1,64}@)" +
-                @" [a-z0-9!#$%&'*+/=?^_‘{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_‘{|}~-]+)*" +
-                @" @ (?:(?=[a-z0-9-]{1,63}\.)[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+" +
-                @"  (?=[a-z0-9-]{1,63}\z)[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\z);");
+              Regex regex = new Regex(@"^([\w\!\#$\%\&\'*\+\-\/\=\?\^`{\|\}\~]+\.)*[\w\!\#$\%\&\'‌​*\+\-\/\=\?\^`{\|\}\~]+@((((([a-zA-Z0-9]{1}[a-zA-Z0-9\-]{0,62}[a-zA-Z0-9]{1})|[‌​a-zA-Z])\.)+[a-zA-Z]{2,6})|(\d{1,3}\.){3}\d{1,3}(\:\d{1,5})?)$");
 
             Match match = regex.Match(textBoxLoginEmailLogin.Text);
 
@@ -299,11 +306,7 @@ namespace CSSPDesktop
                 CanEnableRegisterButton = false;
             }
 
-            Regex regex = new Regex(@"\A(?=[a-z0-9@.!#$%&'*+/=?^_'{|}~-]{6,254}\z)" +
-                @" (?=[a-z0-9.!#$%&'*+/=?^_‘{|}~-]{1,64}@)" +
-                @" [a-z0-9!#$%&'*+/=?^_‘{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_‘{|}~-]+)*" +
-                @" @ (?:(?=[a-z0-9-]{1,63}\.)[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+" +
-                @"  (?=[a-z0-9-]{1,63}\z)[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\z);");
+            Regex regex = new Regex(@"^([\w\!\#$\%\&\'*\+\-\/\=\?\^`{\|\}\~]+\.)*[\w\!\#$\%\&\'‌​*\+\-\/\=\?\^`{\|\}\~]+@((((([a-zA-Z0-9]{1}[a-zA-Z0-9\-]{0,62}[a-zA-Z0-9]{1})|[‌​a-zA-Z])\.)+[a-zA-Z]{2,6})|(\d{1,3}\.){3}\d{1,3}(\:\d{1,5})?)$");
 
             Match match = regex.Match(textBoxLoginEmailRegister.Text);
 
@@ -355,8 +358,6 @@ namespace CSSPDesktop
         }
         private void RecenterPanels()
         {
-            this.Width = 600;
-            this.Height = 500;
             panelCommandsCenter.Top = panelCommandsCenter.Parent.Height / 2 - panelCommandsCenter.Height / 2;
             panelCommandsCenter.Left = panelCommandsCenter.Parent.Width / 2 - panelCommandsCenter.Width / 2;
 
@@ -365,6 +366,9 @@ namespace CSSPDesktop
 
             panelLoginCenter.Top = panelLoginCenter.Parent.Height / 2 - panelLoginCenter.Height / 2;
             panelLoginCenter.Left = panelLoginCenter.Parent.Width / 2 - panelLoginCenter.Width / 2;
+
+            panelRegisterCenter.Top = panelRegisterCenter.Parent.Height / 2 - panelRegisterCenter.Height / 2;
+            panelRegisterCenter.Left = panelRegisterCenter.Parent.Width / 2 - panelRegisterCenter.Width / 2;
 
             panelLanguageCenter.Top = panelLanguageCenter.Parent.Height / 2 - panelLanguageCenter.Height / 2;
             panelLanguageCenter.Left = panelLanguageCenter.Parent.Width / 2 - panelLanguageCenter.Width / 2;
@@ -387,7 +391,6 @@ namespace CSSPDesktop
             if (CSSPDesktopService.LoginRequired)
             {
                 butLogoff.Visible = false;
-                butShowLoginPanel.Visible = true;
 
                 lblContactLoggedIn.Text = "";
                 ShowPanels(ShowPanel.Login);
@@ -396,19 +399,20 @@ namespace CSSPDesktop
                 {
                     butLogin.Enabled = false;
                     lblInternetRequiredLogin.Visible = true;
-                    lblStatus.Text = CSSPDesktopService.appTextModel.InternetConnectionRequiredFirstTimeConnecting;
+                    lblInternetRequiredRegister.Visible = true;
+                    lblStatus.Text = CSSPCultureDesktopRes.InternetConnectionRequiredFirstTimeConnecting;
                 }
                 else
                 {
                     butLogin.Enabled = true;
                     lblInternetRequiredLogin.Visible = false;
+                    lblInternetRequiredRegister.Visible = false;
                     lblStatus.Text = "";
                 }
             }
             else
             {
                 butLogoff.Visible = true;
-                butShowLoginPanel.Visible = false;
 
                 lblContactLoggedIn.Text = CSSPDesktopService.contact.LoginEmail;
                 ShowPanels(ShowPanel.Commands);
@@ -448,6 +452,7 @@ namespace CSSPDesktop
             Services.AddSingleton<ICSSPDesktopService, CSSPDesktopService>();
             Services.AddSingleton<ILocalService, LocalService>();
             Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
+            Services.AddSingleton<ICSSPDBFilesManagementService, CSSPDBFilesManagementService>();
             Services.AddSingleton<IDownloadGzFileService, DownloadGzFileService>();
             Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
 
@@ -464,6 +469,11 @@ namespace CSSPDesktop
             Services.AddDbContext<CSSPDBLocalContext>(options =>
             {
                 options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
+            });
+
+            Services.AddDbContext<CSSPDBInMemoryContext>(options =>
+            {
+                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBLocal.FullName }");
             });
 
             // doing CSSPSearch
@@ -511,12 +521,26 @@ namespace CSSPDesktop
                 options.UseSqlite($"Data Source={ fiCSSPDBLogin.FullName }");
             });
 
+            Services.AddDbContext<CSSPDBLoginInMemoryContext>(options =>
+            {
+                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBLogin.FullName }");
+            });
+
             Provider = Services.BuildServiceProvider();
             if (Provider == null)
             {
                 richTextBoxStatus.AppendText("Provider should not be null\r\n");
                 return await Task.FromResult(false);
             }
+
+            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
+            if (CSSPCultureService == null)
+            {
+                richTextBoxStatus.AppendText("CSSPCultureService should not be null\r\n");
+                return await Task.FromResult(false);
+            }
+
+            CSSPCultureService.SetCulture("en-CA");
 
             CSSPDesktopService = Provider.GetService<ICSSPDesktopService>();
             if (CSSPDesktopService == null)
@@ -536,7 +560,7 @@ namespace CSSPDesktop
             CSSPSQLiteService = Provider.GetService<ICSSPSQLiteService>();
             if (CSSPSQLiteService == null)
             {
-                richTextBoxStatus.AppendText(string.Format(CSSPDesktopService.appTextModel._ShouldNotBeNull, "CSSPSQLiteService"));
+                richTextBoxStatus.AppendText(string.Format(CSSPCultureDesktopRes._ShouldNotBeNull, "CSSPSQLiteService"));
             }
 
             if (!await CSSPDesktopService.CreateAllRequiredDirectories()) return await Task.FromResult(false);
@@ -581,11 +605,14 @@ namespace CSSPDesktop
 
             RecenterPanels();
 
-            if (!await CSSPDesktopService.CheckIfHelpFilesExist()) return await Task.FromResult(false);
-
             if (!await CheckInternetConnection()) return await Task.FromResult(false);
 
+            if (!await CSSPDesktopService.CheckIfHelpFilesExist()) return await Task.FromResult(false);
+
             lblStatus.Text = "";
+
+            butLogin.Enabled = false;
+            butRegister.Enabled = false;
 
             return await Task.FromResult(true);
         }
@@ -595,72 +622,73 @@ namespace CSSPDesktop
 
             if (IsEnglish)
             {
-                CSSPDesktopService.appTextModel = new AppTextModelEN();
+                CSSPCultureService.SetCulture("en-CA");
             }
             else
             {
-                CSSPDesktopService.appTextModel = new AppTextModelFR();
+                CSSPCultureService.SetCulture("fr-CA");
             }
 
             // Form
             if (CSSPDesktopService.preference.HasInternetConnection == null)
             {
-                Text = CSSPDesktopService.appTextModel.FormTitleText;
+                Text = CSSPCultureDesktopRes.FormTitleText;
             }
             else
             {
                 if ((bool)CSSPDesktopService.preference.HasInternetConnection)
                 {
-                    Text = CSSPDesktopService.appTextModel.FormTitleText + $" --- ({ CSSPDesktopService.appTextModel.ConnectedOnInternet })";
+                    Text = CSSPCultureDesktopRes.FormTitleText + $" --- ({ CSSPCultureDesktopRes.ConnectedOnInternet })";
                 }
                 else
                 {
-                    Text = CSSPDesktopService.appTextModel.FormTitleText + $" --- ({ CSSPDesktopService.appTextModel.NoInternetConnection })";
+                    Text = CSSPCultureDesktopRes.FormTitleText + $" --- ({ CSSPCultureDesktopRes.NoInternetConnection })";
                 }
             }
 
             // PanelTop
-            butShowLanguagePanel.Text = CSSPDesktopService.appTextModel.butShowLanguagePanelText;
-            butShowHelpPanel.Text = CSSPDesktopService.appTextModel.butShowHelpPanelText;
-            butShowLoginPanel.Text = CSSPDesktopService.appTextModel.butShowLoginPanelText;
-            butLogoff.Text = CSSPDesktopService.appTextModel.butLogoffText;
+            butShowLanguagePanel.Text = CSSPCultureDesktopRes.butShowLanguagePanelText;
+            butShowHelpPanel.Text = CSSPCultureDesktopRes.butShowHelpPanelText;
+            butLogoff.Text = CSSPCultureDesktopRes.butLogoffText;
 
 
             // PanelButtonsCenter
-            butStart.Text = CSSPDesktopService.appTextModel.butStartText;
-            butStop.Text = CSSPDesktopService.appTextModel.butStopText;
-            butClose.Text = CSSPDesktopService.appTextModel.butCloseText;
-            butShowUpdatePanel.Text = CSSPDesktopService.appTextModel.butUpdatesAvailableText;
+            butStart.Text = CSSPCultureDesktopRes.butStartText;
+            butStop.Text = CSSPCultureDesktopRes.butStopText;
+            butClose.Text = CSSPCultureDesktopRes.butCloseText;
+            butShowUpdatePanel.Text = CSSPCultureDesktopRes.butUpdatesAvailableText;
 
             // PanelHelpCenter
-            butHideHelpPanel.Text = CSSPDesktopService.appTextModel.butHideHelpPanelText;
+            butHideHelpPanel.Text = CSSPCultureDesktopRes.butHideHelpPanelText;
 
             // PanelUpdateCenter
-            butUpdate.Text = CSSPDesktopService.appTextModel.butUpdateText;
-            butCancelUpdate.Text = CSSPDesktopService.appTextModel.butCancelUpdateText;
-            butUpdateCompleted.Text = CSSPDesktopService.appTextModel.butUpdateCompletedText;
-            lblInstalling.Text = CSSPDesktopService.appTextModel.lblInstallingText;
+            butUpdate.Text = CSSPCultureDesktopRes.butUpdateText;
+            butCancelUpdate.Text = CSSPCultureDesktopRes.butCancelUpdateText;
+            butUpdateCompleted.Text = CSSPCultureDesktopRes.butUpdateCompletedText;
+            lblInstalling.Text = CSSPCultureDesktopRes.lblInstallingText;
 
             // PanelLoginCenter
-            lblCSSPWebToolsLoginOneTime.Text = CSSPDesktopService.appTextModel.lblCSSPWebToolsLoginOneTimeText;
-            lblLoginEmailLogin.Text = CSSPDesktopService.appTextModel.lblLoginEmailLoginText;
-            lblPasswordLogin.Text = CSSPDesktopService.appTextModel.lblPasswordLoginText;
-            butLogin.Text = CSSPDesktopService.appTextModel.butLoginText;
-            lblInternetRequiredLogin.Text = CSSPDesktopService.appTextModel.lblInternetRequiredLoginText;
+            lblCSSPWebToolsLoginOneTime.Text = CSSPCultureDesktopRes.lblCSSPWebToolsLoginOneTimeText;
+            lblLoginEmailLogin.Text = CSSPCultureDesktopRes.lblLoginEmailLoginText;
+            lblPasswordLogin.Text = CSSPCultureDesktopRes.lblPasswordLoginText;
+            butLogin.Text = CSSPCultureDesktopRes.butLoginText;
+            lblInternetRequiredLogin.Text = CSSPCultureDesktopRes.lblInternetRequiredLoginText;
+            linkLabelGotoRegister.Text = CSSPCultureDesktopRes.linkLabelGoToRegisterText;
 
-            // PanelLoginCenter
-            lblCSSPWebToolsRegister.Text = CSSPDesktopService.appTextModel.lblCSSPWebToolsRegister;
-            lblLoginEmailRegister.Text = CSSPDesktopService.appTextModel.lblLoginEmailRegisterText;
-            lblFirstNameRegister.Text = CSSPDesktopService.appTextModel.lblFirstNameRegisterText;
-            lblLastNameRegister.Text = CSSPDesktopService.appTextModel.lblLastNameRegisterText;
-            lblInitialRegister.Text = CSSPDesktopService.appTextModel.lblInitialRegisterText;
-            lblPasswordRegister.Text = CSSPDesktopService.appTextModel.lblPasswordRegisterText;
-            lblConfirmPasswordRegister.Text = CSSPDesktopService.appTextModel.lblConfirmPasswordRegisterText;
-            butRegister.Text = CSSPDesktopService.appTextModel.butRegisterText;
-            lblInternetRequiredRegister.Text = CSSPDesktopService.appTextModel.lblInternetRequiredRegisterText;
+            // PanelRegisterCenter
+            lblCSSPWebToolsRegister.Text = CSSPCultureDesktopRes.lblCSSPWebToolsRegister;
+            lblLoginEmailRegister.Text = CSSPCultureDesktopRes.lblLoginEmailRegisterText;
+            lblFirstNameRegister.Text = CSSPCultureDesktopRes.lblFirstNameRegisterText;
+            lblLastNameRegister.Text = CSSPCultureDesktopRes.lblLastNameRegisterText;
+            lblInitialRegister.Text = CSSPCultureDesktopRes.lblInitialRegisterText;
+            lblPasswordRegister.Text = CSSPCultureDesktopRes.lblPasswordRegisterText;
+            lblConfirmPasswordRegister.Text = CSSPCultureDesktopRes.lblConfirmPasswordRegisterText;
+            butRegister.Text = CSSPCultureDesktopRes.butRegisterText;
+            lblInternetRequiredRegister.Text = CSSPCultureDesktopRes.lblInternetRequiredRegisterText;
+            linkLabelGoToLogin.Text = CSSPCultureDesktopRes.linkLabelGoToLoginText;
 
             // PanelStatus
-            lblStatusText.Text = CSSPDesktopService.appTextModel.lblStatusText;
+            lblStatusText.Text = CSSPCultureDesktopRes.lblStatusText;
             lblStatus.Text = "";
         }
         private void ShowPanels(ShowPanel showPanel)
@@ -668,6 +696,7 @@ namespace CSSPDesktop
             panelLanguageCenter.Visible = false;
             panelUpdateCenter.Visible = false;
             panelLoginCenter.Visible = false;
+            panelRegisterCenter.Visible = false;
             panelHelp.Visible = false;
             panelCommandsCenter.Visible = false;
 
@@ -738,7 +767,7 @@ namespace CSSPDesktop
                         panelTop.Visible = false;
                         panelLoginEmail.Visible = false;
                         string fileToOpen = IsEnglish ? "HelpDocEN.rtf" : "HelpDocFR.rtf";
-                        richTextBoxHelp.LoadFile($"{ CSSPDesktopService.LocalCSSPWebAPIsPath }{ fileToOpen }");
+                        richTextBoxHelp.LoadFile($"{ CSSPDesktopService.CSSPWebAPIsLocalPath }{ fileToOpen }");
                         panelHelp.Visible = true;
 
                         butHideHelpPanel.Focus();
@@ -759,6 +788,23 @@ namespace CSSPDesktop
                         panelLoginEmail.Visible = false;
                         panelLoginCenter.Visible = true;
                         textBoxLoginEmailLogin.Focus();
+                    }
+                    break;
+                case ShowPanel.Register:
+                    {
+                        if (IsEnglish)
+                        {
+                            CSSPDesktopService_StatusAppend(this, new AppendEventArgs("Register visible"));
+                        }
+                        else
+                        {
+                            CSSPDesktopService_StatusAppend(this, new AppendEventArgs("Enregistrer visible"));
+                        }
+
+                        panelTop.Visible = false;
+                        panelLoginEmail.Visible = false;
+                        panelRegisterCenter.Visible = true;
+                        textBoxLoginEmailRegister.Focus();
                     }
                     break;
                 case ShowPanel.Updates:
@@ -806,7 +852,10 @@ namespace CSSPDesktop
             Help,
             Login,
             Updates,
+            Register,
         }
         #endregion Enums
+
+
     }
 }

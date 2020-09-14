@@ -47,10 +47,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="tests\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\dlls\CSSPCultureServices\CSSPCultureServices.csproj" />
   </ItemGroup>
 

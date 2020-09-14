@@ -1,4 +1,5 @@
-﻿using CSSPDesktopServices.Models;
+﻿using CSSPCultureServices.Resources;
+using CSSPDesktopServices.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -10,17 +11,17 @@ namespace CSSPDesktopServices.Services
 {
     public partial class CSSPDesktopService : ICSSPDesktopService
     {
-        private bool OpenCSSPWebAPIs()
+        private bool OpenCSSPWebAPIsLocal()
         {
-            AppendStatus(new AppendEventArgs(string.Format(appTextModel.Executing_, $"{ LocalCSSPWebAPIsPath }CSSPWebAPIs.exe")));
+            AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.Executing_, $"{ CSSPWebAPIsLocalPath }CSSPWebAPIsLocal.exe")));
 
             ProcessStartInfo processStartInfo = new ProcessStartInfo();
-            processStartInfo.FileName = $"{ LocalCSSPWebAPIsPath }CSSPWebAPIs.exe";
+            processStartInfo.FileName = $"{ CSSPWebAPIsLocalPath }CSSPWebAPIsLocal.exe";
             processStartInfo.Arguments = "";
             processStartInfo.UseShellExecute = true;
             processStartInfo.CreateNoWindow = true;
             processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            processCSSPWebAPIs = Process.Start(processStartInfo);
+            processCSSPWebAPIsLocal = Process.Start(processStartInfo);
 
             return true;
         }

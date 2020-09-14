@@ -1,4 +1,5 @@
-﻿using CSSPDesktopServices.Models;
+﻿using CSSPCultureServices.Resources;
+using CSSPDesktopServices.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,11 +12,11 @@ namespace CSSPDesktopServices.Services
     {
         private async Task<bool> DoStart()
         {
-            AppendStatus(new AppendEventArgs(appTextModel.ExecutingBackgroundApps));
+            AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.ExecutingBackgroundApps));
 
-            Directory.SetCurrentDirectory(LocalCSSPWebAPIsPath);
+            Directory.SetCurrentDirectory(CSSPWebAPIsLocalPath);
 
-            if (!OpenCSSPWebAPIs()) return await Task.FromResult(false);
+            if (!OpenCSSPWebAPIsLocal()) return await Task.FromResult(false);
             if (!OpenBrowser()) return await Task.FromResult(false);
 
             AppendStatus(new AppendEventArgs(""));

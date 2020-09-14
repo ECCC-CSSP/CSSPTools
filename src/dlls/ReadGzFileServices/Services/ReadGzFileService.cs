@@ -37,8 +37,7 @@ namespace ReadGzFileServices
         private ICSSPDBFilesManagementService CSSPDBFilesManagementService { get; }
         private string AzureStoreConnectionString { get; set; }
         private string AzureStoreCSSPJSONPath { get; set; }
-        private string LocalCSSPJSONPath { get; set; }
-        private string LocalFilesPath { get; set; }
+        private string CSSPJSONPath { get; set; }
         private string CSSPAzureUrl { get; set; }
         #endregion Properties
 
@@ -55,8 +54,7 @@ namespace ReadGzFileServices
 
             AzureStoreConnectionString = Configuration.GetValue<string>("AzureStoreConnectionString");
             AzureStoreCSSPJSONPath = Configuration.GetValue<string>("AzureStoreCSSPJSONPath");
-            LocalCSSPJSONPath = Configuration.GetValue<string>("LocalCSSPJSONPath");
-            LocalFilesPath = Configuration.GetValue<string>("LocalFilesPath");
+            CSSPJSONPath = Configuration.GetValue<string>("CSSPJSONPath");
             CSSPAzureUrl = Configuration.GetValue<string>("CSSPAzureUrl");
         }
         #endregion Constructors

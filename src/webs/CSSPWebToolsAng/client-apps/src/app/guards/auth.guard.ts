@@ -12,15 +12,16 @@ export class AuthGuard implements CanActivate {
     ) {}
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        const currentUser: UserModel = this.userService.userModel$.getValue();
-        if (currentUser.ContactID) {
-            // authorised so return true
-            return true;
-        }
+        return true;
+        // const currentUser: UserModel = this.userService.userModel$.getValue();
+        // if (currentUser.ContactID) {
+        //     // authorised so return true
+        //     return true;
+        // }
 
-        // not logged in so redirect to login page with the return url
-        const url = `${ $localize.locale }/login`;
-        this.router.navigate([url], { queryParams: { returnUrl: state.url }});
-        return false;
+        // // not logged in so redirect to login page with the return url
+        // const url = `${ $localize.locale }/login`;
+        // this.router.navigate([url], { queryParams: { returnUrl: state.url }});
+        // return false;
     }
 }

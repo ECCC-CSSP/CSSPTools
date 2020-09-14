@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using CSSPDesktopServices.Models;
 using CSSPModels;
+using CSSPCultureServices.Resources;
 
 namespace CSSPDesktopServices.Services
 {
@@ -14,7 +15,7 @@ namespace CSSPDesktopServices.Services
     {
         private async Task<bool> DoCheckIfLoginIsRequired()
         {
-            AppendStatus(new AppendEventArgs(appTextModel.CheckIfLoginIsRequired));
+            AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.CheckIfLoginIsRequired));
 
             // doing Contact
             contact = (from c in dbLogin.Contacts
@@ -22,13 +23,13 @@ namespace CSSPDesktopServices.Services
 
             if (contact == null)
             {
-                AppendStatus(new AppendEventArgs(string.Format(appTextModel.CouldNotFind_InDBLogin, "Contact")));
+                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotFind_InDBLogin, "Contact")));
 
                 LoginRequired = true;
                 return await Task.FromResult(true);
             }
 
-            AppendStatus(new AppendEventArgs(string.Format(appTextModel.Found_InDBLogin, "Contact")));
+            AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.Found_InDBLogin, "Contact")));
 
             // doing preference
             Preference preferenceInDB = (from c in dbLogin.Preferences
@@ -37,13 +38,13 @@ namespace CSSPDesktopServices.Services
             if (preferenceInDB == null)
             {
                 preference = null;
-                AppendStatus(new AppendEventArgs(string.Format(appTextModel.CouldNotFind_InDBLogin, "Preference")));
+                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotFind_InDBLogin, "Preference")));
 
                 LoginRequired = true;
                 return await Task.FromResult(true);
             }
 
-            AppendStatus(new AppendEventArgs(string.Format(appTextModel.Found_InDBLogin, "Preference")));
+            AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.Found_InDBLogin, "Preference")));
             preference.PreferenceID = preferenceInDB.PreferenceID;
             preference.AzureStore = await Descramble(preferenceInDB.AzureStore);
             preference.LoginEmail = await Descramble(preferenceInDB.LoginEmail);

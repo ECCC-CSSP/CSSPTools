@@ -1,4 +1,5 @@
-﻿using CSSPDesktopServices.Models;
+﻿using CSSPCultureServices.Resources;
+using CSSPDesktopServices.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,11 +12,11 @@ namespace CSSPDesktopServices.Services
     {
         private async Task<bool> DoCreateAllRequiredDirectories()
         {
-            AppendStatus(new AppendEventArgs(appTextModel.CreatingAllRequiredDirectories));
+            AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.CreatingAllRequiredDirectories));
 
             List<string> DirectoryToCreateList = new List<string>()
             {
-               LocalCSSPDesktopPath, LocalCSSPDatabasesPath, LocalCSSPWebAPIsPath, LocalCSSPJSONPath, LocalCSSPFilesPath
+               CSSPDesktopPath, CSSPDatabasesPath, CSSPWebAPIsLocalPath, CSSPJSONPath, CSSPFilesPath
             };
 
             foreach (string dirStr in DirectoryToCreateList)
@@ -26,11 +27,11 @@ namespace CSSPDesktopServices.Services
                     try
                     {
                         di.Create();
-                        AppendStatus(new AppendEventArgs(string.Format(appTextModel.DirectoryCreated_, di.FullName)));
+                        AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.DirectoryCreated_, di.FullName)));
                     }
                     catch (Exception ex)
                     {
-                        AppendStatus(new AppendEventArgs(string.Format(appTextModel.CouldNotCreateDirectory_Error_, di.FullName, ex.Message)));
+                        AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotCreateDirectory_Error_, di.FullName, ex.Message)));
                         return await Task.FromResult(false);
                     }
                 }

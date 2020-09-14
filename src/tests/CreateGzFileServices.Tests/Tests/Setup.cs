@@ -37,11 +37,8 @@ namespace CreateGzFileServices.Tests
         private ITVItemDBService TVItemDBService { get; set; }
         private CSSPDBContext db { get; set; }
         private string AzureStoreCSSPJSONPath { get; set; }
-        private string LocalCSSPJSONPath { get; set; }
         private string CSSPAzureUrl { get; set; }
         private Contact contact { get; set; }
-        private string LoginEmail { get; set; }
-        private string Password { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -65,9 +62,6 @@ namespace CreateGzFileServices.Tests
 
             AzureStoreCSSPJSONPath = Configuration.GetValue<string>("AzureStoreCSSPJSONPath");
             Assert.NotNull(AzureStoreCSSPJSONPath);
-
-            LocalCSSPJSONPath = Configuration.GetValue<string>("LocalCSSPJSONPath");
-            Assert.NotNull(LocalCSSPJSONPath);
 
             string CSSPDBConnString = Configuration.GetValue<string>("CSSPDB2");
             Assert.NotNull(CSSPDBConnString);

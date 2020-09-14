@@ -22,17 +22,23 @@ namespace CSSPDesktopServices.Services
         #region Functions private
         private async Task<bool> DoLoginContact(LoginModel loginModel)
         {
-            AppendStatus(new AppendEventArgs(appTextModel.Login));
+            string culture = "fr-CA";
+            if (IsEnglish)
+            {
+                culture = "en-CA";
+            }
+
+            AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.Login));
 
             if (string.IsNullOrWhiteSpace(loginModel.LoginEmail))
             {
-                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes._IsRequired, "LoginEmail")));
+                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes._IsRequired, "LoginEmail")));
                 return await Task.FromResult(false);
             }
 
             if (string.IsNullOrWhiteSpace(loginModel.Password))
             {
-                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes._IsRequired, "Password")));
+                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes._IsRequired, "Password")));
                 return await Task.FromResult(false);
             }
 
@@ -40,25 +46,24 @@ namespace CSSPDesktopServices.Services
             {
                 var contentType = new MediaTypeWithQualityHeaderValue("application/json");
                 httpClient.DefaultRequestHeaders.Accept.Add(contentType);
-
-                AppendStatus(new AppendEventArgs(string.Format(appTextModel.PostRequestLoginEmailAndPasswordTo_, $"{ CSSPAzureUrl }api/en-CA/auth/token")));
+                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.PostRequestLoginEmailAndPasswordTo_, $"{ CSSPAzureUrl }api/{ culture }/auth/token")));
 
                 try
                 {
                     // trying to login
                     string stringData = JsonSerializer.Serialize(loginModel);
                     var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = httpClient.PostAsync($"{ CSSPAzureUrl }api/en-CA/auth/token", contentData).Result;
+                    HttpResponseMessage response = httpClient.PostAsync($"{ CSSPAzureUrl }api/{ culture }/auth/token", contentData).Result;
                     if ((int)response.StatusCode != 200)
                     {
                         if ((int)response.StatusCode == 400)
                         {
-                            AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail)));
+                            AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail)));
                             return await Task.FromResult(false);
                         }
                         else
                         {
-                            AppendStatus(new AppendEventArgs(CSSPCultureServicesRes.ServerNotRespondingDoYouHaveInternetConnection));
+                            AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.ServerNotRespondingDoYouHaveInternetConnection));
                             return await Task.FromResult(false);
                         }
                     }
@@ -67,7 +72,7 @@ namespace CSSPDesktopServices.Services
 
                     if (contact == null)
                     {
-                        AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail)));
+                        AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail)));
                         return await Task.FromResult(false);
                     }
 
@@ -91,7 +96,7 @@ namespace CSSPDesktopServices.Services
                     }
                     catch (Exception ex)
                     {
-                        AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes.CouldNotDelete_Error_, "Contacts", ex.Message)));
+                        AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotDelete_Error_, "Contacts", ex.Message)));
                         return await Task.FromResult(false);
                     }
                 }
@@ -101,11 +106,11 @@ namespace CSSPDesktopServices.Services
                     dbLogin.Contacts.Add(contact);
                     dbLogin.SaveChanges();
 
-                    AppendStatus(new AppendEventArgs(string.Format(appTextModel._StoredInTable_AndDatabase_, "Contact", "Contacts", "CSSPDBLogin.db")));
+                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes._StoredInTable_AndDatabase_, "Contact", "Contacts", "CSSPDBLogin.db")));
                 }
                 catch (Exception ex)
                 {
-                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "Contact", ex.Message)));
+                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotAdd_Error_, "Contact", ex.Message)));
                     return await Task.FromResult(false);
                 }
             }
