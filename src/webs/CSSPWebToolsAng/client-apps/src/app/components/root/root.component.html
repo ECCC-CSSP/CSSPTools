@@ -1,0 +1,30 @@
+<p>root works! {{ rootService.rootTextModel$.getValue().Title }}</p>
+<hr />
+<ng-template>
+    {{ (rootService.webRootModel$ | async) }}
+    {{ (shellService.shellModel$ | async) }}
+</ng-template>
+<hr />
+{{ rootService.webRootModel$.getValue().WebRoot.TVItemModel.TVItemLanguageEN.TVText }}
+<hr />
+<ul *ngFor="let tvItemModel of rootService.webRootModel$.getValue().WebRoot.TVItemCountryList">
+    <li *ngIf="shellService.shellModel$.getValue().Language == 1">
+        {{ tvItemModel.TVItemModel.TVItemLanguageEN.TVText }}
+
+        <ul *ngFor="let mapInfoModel of tvItemModel.TVItemModel.MapInfoModelList">
+            <li>
+                {{ mapInfoModel.MapInfo.MapInfoID }} {{ mapInfoModel.MapInfo.TVType }}
+                <ul>
+                    <li *ngFor="let mapInfoPointModel of mapInfoModel.MapInfoPointList">
+                        {{ mapInfoPointModel.Lat }} {{ mapInfoPointModel.Lng }}
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+    <li *ngIf="shellService.shellModel$.getValue().Language == 2">
+        {{ tvItemModel.TVItemModel.TVItemLanguageFR.TVText }}
+    </li>
+</ul>
+
+<router-outlet></router-outlet>

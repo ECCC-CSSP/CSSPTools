@@ -18,31 +18,31 @@ namespace CSSPWebAPIsLocal.Controllers
 {
     public partial interface IReadController
     {
-        Task<ActionResult<WebArea>> WebArea(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear);
-        Task<ActionResult<WebClimateDataValue>> WebClimateDataValue(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear);
-        Task<ActionResult<WebClimateSite>> WebClimateSite(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear);
-        Task<ActionResult<WebContact>> WebContact(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear);
-        Task<ActionResult<WebCountry>> WebCountry(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear);
-        Task<ActionResult<WebDrogueRun>> WebDrogueRun(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear);
-        Task<ActionResult<WebHelpDoc>> WebHelpDoc(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear);
-        Task<ActionResult<WebHydrometricDataValue>> WebHydrometricDataValue(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear);
-        Task<ActionResult<WebHydrometricSite>> WebHydrometricSite(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear);
-        Task<ActionResult<WebMikeScenario>> WebMikeScenario(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear);
-        Task<ActionResult<WebMunicipalities>> WebMunicipalities(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear);
-        Task<ActionResult<WebMunicipality>> WebMunicipality(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear);
-        Task<ActionResult<WebMWQMLookupMPN>> WebMWQMLookupMPN(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear);
-        Task<ActionResult<WebMWQMRun>> WebMWQMRun(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear);
-        Task<ActionResult<WebMWQMSample>> WebMWQMSample(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear);
-        Task<ActionResult<WebMWQMSite>> WebMWQMSite(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear);
-        Task<ActionResult<WebPolSourceGrouping>> WebPolSourceGrouping(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear);
-        Task<ActionResult<WebPolSourceSite>> WebPolSourceSite(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear);
-        Task<ActionResult<WebProvince>> WebProvince(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear);
-        Task<ActionResult<WebReportType>> WebReportType(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear);
-        Task<ActionResult<WebRoot>> WebRoot(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear);
-        Task<ActionResult<WebSamplingPlan>> WebSamplingPlan(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear);
-        Task<ActionResult<WebSector>> WebSector(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear);
-        Task<ActionResult<WebSubsector>> WebSubsector(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear);
-        Task<ActionResult<WebTideLocation>> WebTideLocation(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear);
+        Task<ActionResult<WebArea>> WebArea(int TVItemID, WebTypeYearEnum WebTypeYear);
+        Task<ActionResult<WebClimateDataValue>> WebClimateDataValue(int TVItemID, WebTypeYearEnum WebTypeYear);
+        Task<ActionResult<WebClimateSite>> WebClimateSite(int TVItemID, WebTypeYearEnum WebTypeYear);
+        Task<ActionResult<WebContact>> WebContact(int TVItemID, WebTypeYearEnum WebTypeYear);
+        Task<ActionResult<WebCountry>> WebCountry(int TVItemID, WebTypeYearEnum WebTypeYear);
+        Task<ActionResult<WebDrogueRun>> WebDrogueRun(int TVItemID, WebTypeYearEnum WebTypeYear);
+        Task<ActionResult<WebHelpDoc>> WebHelpDoc(int TVItemID, WebTypeYearEnum WebTypeYear);
+        Task<ActionResult<WebHydrometricDataValue>> WebHydrometricDataValue(int TVItemID, WebTypeYearEnum WebTypeYear);
+        Task<ActionResult<WebHydrometricSite>> WebHydrometricSite(int TVItemID, WebTypeYearEnum WebTypeYear);
+        Task<ActionResult<WebMikeScenario>> WebMikeScenario(int TVItemID, WebTypeYearEnum WebTypeYear);
+        Task<ActionResult<WebMunicipalities>> WebMunicipalities(int TVItemID, WebTypeYearEnum WebTypeYear);
+        Task<ActionResult<WebMunicipality>> WebMunicipality(int TVItemID, WebTypeYearEnum WebTypeYear);
+        Task<ActionResult<WebMWQMLookupMPN>> WebMWQMLookupMPN(int TVItemID, WebTypeYearEnum WebTypeYear);
+        Task<ActionResult<WebMWQMRun>> WebMWQMRun(int TVItemID, WebTypeYearEnum WebTypeYear);
+        Task<ActionResult<WebMWQMSample>> WebMWQMSample(int TVItemID, WebTypeYearEnum WebTypeYear);
+        Task<ActionResult<WebMWQMSite>> WebMWQMSite(int TVItemID, WebTypeYearEnum WebTypeYear);
+        Task<ActionResult<WebPolSourceGrouping>> WebPolSourceGrouping(int TVItemID, WebTypeYearEnum WebTypeYear);
+        Task<ActionResult<WebPolSourceSite>> WebPolSourceSite(int TVItemID, WebTypeYearEnum WebTypeYear);
+        Task<ActionResult<WebProvince>> WebProvince(int TVItemID, WebTypeYearEnum WebTypeYear);
+        Task<ActionResult<WebReportType>> WebReportType(int TVItemID, WebTypeYearEnum WebTypeYear);
+        Task<ActionResult<WebRoot>> WebRoot(int TVItemID, WebTypeYearEnum WebTypeYear);
+        Task<ActionResult<WebSamplingPlan>> WebSamplingPlan(int TVItemID, WebTypeYearEnum WebTypeYear);
+        Task<ActionResult<WebSector>> WebSector(int TVItemID, WebTypeYearEnum WebTypeYear);
+        Task<ActionResult<WebSubsector>> WebSubsector(int TVItemID, WebTypeYearEnum WebTypeYear);
+        Task<ActionResult<WebTideLocation>> WebTideLocation(int TVItemID, WebTypeYearEnum WebTypeYear);
     }
 
     [Route("api/{culture}/[controller]")]
@@ -64,269 +64,270 @@ namespace CSSPWebAPIsLocal.Controllers
             this.CSSPCultureService = CSSPCultureService;
             this.LocalService = LocalService;
             this.ReadGzFileService = ReadGzFileService;
+
         }
         #endregion Constructors
 
         #region Functions public
-        [Route("WebArea/{WebType:int}/{TVItemID:int}/{WebTypeYear:int}")]
+        [Route("WebArea/{TVItemID:int}/{WebTypeYear:int}")]
         [HttpGet]
-        public async Task<ActionResult<WebArea>> WebArea(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear)
+        public async Task<ActionResult<WebArea>> WebArea(int TVItemID, WebTypeYearEnum WebTypeYear)
         {
             // TVItemID = AreaTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LocalService.SetLoggedInContactInfo();
 
-            return await ReadGzFileService.ReadJSON<WebArea>(WebType, TVItemID, WebTypeYear);
+            return await ReadGzFileService.ReadJSON<WebArea>(WebTypeEnum.WebArea, TVItemID, WebTypeYear);
         }
-        [Route("WebClimateDataValue/{WebType:int}/{TVItemID:int}/{WebTypeYear:int}")]
+        [Route("WebClimateDataValue/{TVItemID:int}/{WebTypeYear:int}")]
         [HttpGet]
-        public async Task<ActionResult<WebClimateDataValue>> WebClimateDataValue(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear)
+        public async Task<ActionResult<WebClimateDataValue>> WebClimateDataValue(int TVItemID, WebTypeYearEnum WebTypeYear)
         {
             // TVItemID = ClimateSiteTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LocalService.SetLoggedInContactInfo();
 
-            return await ReadGzFileService.ReadJSON<WebClimateDataValue>(WebType, TVItemID, WebTypeYear);
+            return await ReadGzFileService.ReadJSON<WebClimateDataValue>(WebTypeEnum.WebClimateDataValue, TVItemID, WebTypeYear);
         }
-        [Route("WebClimateSite/{WebType:int}/{TVItemID:int}/{WebTypeYear:int}")]
+        [Route("WebClimateSite/{TVItemID:int}/{WebTypeYear:int}")]
         [HttpGet]
-        public async Task<ActionResult<WebClimateSite>> WebClimateSite(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear)
+        public async Task<ActionResult<WebClimateSite>> WebClimateSite(int TVItemID, WebTypeYearEnum WebTypeYear)
         {
             // TVItemID = ProvinceTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LocalService.SetLoggedInContactInfo();
 
-            return await ReadGzFileService.ReadJSON<WebClimateSite>(WebType, TVItemID, WebTypeYear);
+            return await ReadGzFileService.ReadJSON<WebClimateSite>(WebTypeEnum.WebClimateSite, TVItemID, WebTypeYear);
         }
-        [Route("WebContact/{WebType:int}/{TVItemID:int}/{WebTypeYear:int}")]
+        [Route("WebContact/{TVItemID:int}/{WebTypeYear:int}")]
         [HttpGet]
-        public async Task<ActionResult<WebContact>> WebContact(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear)
+        public async Task<ActionResult<WebContact>> WebContact(int TVItemID, WebTypeYearEnum WebTypeYear)
         {
             // TVItemID = 0 -- not used
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LocalService.SetLoggedInContactInfo();
 
-            return await ReadGzFileService.ReadJSON<WebContact>(WebType, TVItemID, WebTypeYear);
+            return await ReadGzFileService.ReadJSON<WebContact>(WebTypeEnum.WebContact, TVItemID, WebTypeYear);
         }
-        [Route("WebCountry/{WebType:int}/{TVItemID:int}/{WebTypeYear:int}")]
+        [Route("WebCountry/{TVItemID:int}/{WebTypeYear:int}")]
         [HttpGet]
-        public async Task<ActionResult<WebCountry>> WebCountry(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear)
+        public async Task<ActionResult<WebCountry>> WebCountry(int TVItemID, WebTypeYearEnum WebTypeYear)
         {
             // TVItemID = CountryTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LocalService.SetLoggedInContactInfo();
 
-            return await ReadGzFileService.ReadJSON<WebCountry>(WebType, TVItemID, WebTypeYear);
+            return await ReadGzFileService.ReadJSON<WebCountry>(WebTypeEnum.WebCountry, TVItemID, WebTypeYear);
         }
-        [Route("WebDrogueRun/{WebType:int}/{TVItemID:int}/{WebTypeYear:int}")]
+        [Route("WebDrogueRun/{TVItemID:int}/{WebTypeYear:int}")]
         [HttpGet]
-        public async Task<ActionResult<WebDrogueRun>> WebDrogueRun(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear)
+        public async Task<ActionResult<WebDrogueRun>> WebDrogueRun(int TVItemID, WebTypeYearEnum WebTypeYear)
         {
             // TVItemID = SubsectorTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LocalService.SetLoggedInContactInfo();
 
-            return await ReadGzFileService.ReadJSON<WebDrogueRun>(WebType, TVItemID, WebTypeYear);
+            return await ReadGzFileService.ReadJSON<WebDrogueRun>(WebTypeEnum.WebDrogueRun, TVItemID, WebTypeYear);
         }
-        [Route("WebHelpDoc/{WebType:int}/{TVItemID:int}/{WebTypeYear:int}")]
+        [Route("WebHelpDoc/{TVItemID:int}/{WebTypeYear:int}")]
         [HttpGet]
-        public async Task<ActionResult<WebHelpDoc>> WebHelpDoc(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear)
+        public async Task<ActionResult<WebHelpDoc>> WebHelpDoc(int TVItemID, WebTypeYearEnum WebTypeYear)
         {
             // TVItemID = 0 -- not used
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LocalService.SetLoggedInContactInfo();
 
-            return await ReadGzFileService.ReadJSON<WebHelpDoc>(WebType, TVItemID, WebTypeYear);
+            return await ReadGzFileService.ReadJSON<WebHelpDoc>(WebTypeEnum.WebHelpDoc, TVItemID, WebTypeYear);
         }
-        [Route("WebHydrometricDataValue/{WebType:int}/{TVItemID:int}/{WebTypeYear:int}")]
+        [Route("WebHydrometricDataValue/{TVItemID:int}/{WebTypeYear:int}")]
         [HttpGet]
-        public async Task<ActionResult<WebHydrometricDataValue>> WebHydrometricDataValue(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear)
+        public async Task<ActionResult<WebHydrometricDataValue>> WebHydrometricDataValue(int TVItemID, WebTypeYearEnum WebTypeYear)
         {
             // TVItemID = HydrometricSiteTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LocalService.SetLoggedInContactInfo();
 
-            return await ReadGzFileService.ReadJSON<WebHydrometricDataValue>(WebType, TVItemID, WebTypeYear);
+            return await ReadGzFileService.ReadJSON<WebHydrometricDataValue>(WebTypeEnum.WebHydrometricDataValue, TVItemID, WebTypeYear);
         }
-        [Route("WebHydrometricSite/{WebType:int}/{TVItemID:int}/{WebTypeYear:int}")]
+        [Route("WebHydrometricSite/{TVItemID:int}/{WebTypeYear:int}")]
         [HttpGet]
-        public async Task<ActionResult<WebHydrometricSite>> WebHydrometricSite(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear)
+        public async Task<ActionResult<WebHydrometricSite>> WebHydrometricSite(int TVItemID, WebTypeYearEnum WebTypeYear)
         {
             // TVItemID = ProvinceTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LocalService.SetLoggedInContactInfo();
 
-            return await ReadGzFileService.ReadJSON<WebHydrometricSite>(WebType, TVItemID, WebTypeYear);
+            return await ReadGzFileService.ReadJSON<WebHydrometricSite>(WebTypeEnum.WebHydrometricSite, TVItemID, WebTypeYear);
         }
-        [Route("WebMikeScenario/{WebType:int}/{TVItemID:int}/{WebTypeYear:int}")]
+        [Route("WebMikeScenario/{TVItemID:int}/{WebTypeYear:int}")]
         [HttpGet]
-        public async Task<ActionResult<WebMikeScenario>> WebMikeScenario(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear)
+        public async Task<ActionResult<WebMikeScenario>> WebMikeScenario(int TVItemID, WebTypeYearEnum WebTypeYear)
         {
             // TVItemID = MikeScenarioTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LocalService.SetLoggedInContactInfo();
 
-            return await ReadGzFileService.ReadJSON<WebMikeScenario>(WebType, TVItemID, WebTypeYear);
+            return await ReadGzFileService.ReadJSON<WebMikeScenario>(WebTypeEnum.WebMikeScenario, TVItemID, WebTypeYear);
         }
-        [Route("WebMunicipalities/{WebType:int}/{TVItemID:int}/{WebTypeYear:int}")]
+        [Route("WebMunicipalities/{TVItemID:int}/{WebTypeYear:int}")]
         [HttpGet]
-        public async Task<ActionResult<WebMunicipalities>> WebMunicipalities(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear)
+        public async Task<ActionResult<WebMunicipalities>> WebMunicipalities(int TVItemID, WebTypeYearEnum WebTypeYear)
         {
             // TVItemID = ProvinceTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LocalService.SetLoggedInContactInfo();
 
-            return await ReadGzFileService.ReadJSON<WebMunicipalities>(WebType, TVItemID, WebTypeYear);
+            return await ReadGzFileService.ReadJSON<WebMunicipalities>(WebTypeEnum.WebMunicipalities, TVItemID, WebTypeYear);
         }
-        [Route("WebMunicipality/{WebType:int}/{TVItemID:int}/{WebTypeYear:int}")]
+        [Route("WebMunicipality/{TVItemID:int}/{WebTypeYear:int}")]
         [HttpGet]
-        public async Task<ActionResult<WebMunicipality>> WebMunicipality(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear)
+        public async Task<ActionResult<WebMunicipality>> WebMunicipality(int TVItemID, WebTypeYearEnum WebTypeYear)
         {
             // TVItemID = MunicipalityTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LocalService.SetLoggedInContactInfo();
 
-            return await ReadGzFileService.ReadJSON<WebMunicipality>(WebType, TVItemID, WebTypeYear);
+            return await ReadGzFileService.ReadJSON<WebMunicipality>(WebTypeEnum.WebMunicipality, TVItemID, WebTypeYear);
         }
-        [Route("WebMWQMLookupMPN/{WebType:int}/{TVItemID:int}/{WebTypeYear:int}")]
+        [Route("WebMWQMLookupMPN/{TVItemID:int}/{WebTypeYear:int}")]
         [HttpGet]
-        public async Task<ActionResult<WebMWQMLookupMPN>> WebMWQMLookupMPN(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear)
+        public async Task<ActionResult<WebMWQMLookupMPN>> WebMWQMLookupMPN(int TVItemID, WebTypeYearEnum WebTypeYear)
         {
             // TVItemID = 0 -- not used
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LocalService.SetLoggedInContactInfo();
 
-            return await ReadGzFileService.ReadJSON<WebMWQMLookupMPN>(WebType, TVItemID, WebTypeYear);
+            return await ReadGzFileService.ReadJSON<WebMWQMLookupMPN>(WebTypeEnum.WebMWQMLookupMPN, TVItemID, WebTypeYear);
         }
-        [Route("WebMWQMRun/{WebType:int}/{TVItemID:int}/{WebTypeYear:int}")]
+        [Route("WebMWQMRun/{TVItemID:int}/{WebTypeYear:int}")]
         [HttpGet]
-        public async Task<ActionResult<WebMWQMRun>> WebMWQMRun(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear)
+        public async Task<ActionResult<WebMWQMRun>> WebMWQMRun(int TVItemID, WebTypeYearEnum WebTypeYear)
         {
             // TVItemID = SubsectorTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LocalService.SetLoggedInContactInfo();
 
-            return await ReadGzFileService.ReadJSON<WebMWQMRun>(WebType, TVItemID, WebTypeYear);
+            return await ReadGzFileService.ReadJSON<WebMWQMRun>(WebTypeEnum.WebMWQMRun, TVItemID, WebTypeYear);
         }
-        [Route("WebMWQMSample/{WebType:int}/{TVItemID:int}/{WebTypeYear:int}")]
+        [Route("WebMWQMSample/{TVItemID:int}/{WebTypeYear:int}")]
         [HttpGet]
-        public async Task<ActionResult<WebMWQMSample>> WebMWQMSample(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear)
+        public async Task<ActionResult<WebMWQMSample>> WebMWQMSample(int TVItemID, WebTypeYearEnum WebTypeYear)
         {
             // TVItemID = SubsectorTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LocalService.SetLoggedInContactInfo();
 
-            return await ReadGzFileService.ReadJSON<WebMWQMSample>(WebType, TVItemID, WebTypeYear);
+            return await ReadGzFileService.ReadJSON<WebMWQMSample>(WebTypeEnum.WebMWQMSample, TVItemID, WebTypeYear);
         }
-        [Route("WebMWQMSite/{WebType:int}/{TVItemID:int}/{WebTypeYear:int}")]
+        [Route("WebMWQMSite/{TVItemID:int}/{WebTypeYear:int}")]
         [HttpGet]
-        public async Task<ActionResult<WebMWQMSite>> WebMWQMSite(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear)
+        public async Task<ActionResult<WebMWQMSite>> WebMWQMSite(int TVItemID, WebTypeYearEnum WebTypeYear)
         {
             // TVItemID = SubsectorTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LocalService.SetLoggedInContactInfo();
 
-            return await ReadGzFileService.ReadJSON<WebMWQMSite>(WebType, TVItemID, WebTypeYear);
+            return await ReadGzFileService.ReadJSON<WebMWQMSite>(WebTypeEnum.WebMWQMSite, TVItemID, WebTypeYear);
         }
-        [Route("WebPolSourceGrouping/{WebType:int}/{TVItemID:int}/{WebTypeYear:int}")]
+        [Route("WebPolSourceGrouping/{TVItemID:int}/{WebTypeYear:int}")]
         [HttpGet]
-        public async Task<ActionResult<WebPolSourceGrouping>> WebPolSourceGrouping(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear)
+        public async Task<ActionResult<WebPolSourceGrouping>> WebPolSourceGrouping(int TVItemID, WebTypeYearEnum WebTypeYear)
         {
             // TVItemID = 0 -- not used
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LocalService.SetLoggedInContactInfo();
 
-            return await ReadGzFileService.ReadJSON<WebPolSourceGrouping>(WebType, TVItemID, WebTypeYear);
+            return await ReadGzFileService.ReadJSON<WebPolSourceGrouping>(WebTypeEnum.WebPolSourceGrouping, TVItemID, WebTypeYear);
         }
-        [Route("WebPolSourceSite/{WebType:int}/{TVItemID:int}/{WebTypeYear:int}")]
+        [Route("WebPolSourceSite/{TVItemID:int}/{WebTypeYear:int}")]
         [HttpGet]
-        public async Task<ActionResult<WebPolSourceSite>> WebPolSourceSite(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear)
+        public async Task<ActionResult<WebPolSourceSite>> WebPolSourceSite(int TVItemID, WebTypeYearEnum WebTypeYear)
         {
             // TVItemID = SubsectorTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LocalService.SetLoggedInContactInfo();
 
-            return await ReadGzFileService.ReadJSON<WebPolSourceSite>(WebType, TVItemID, WebTypeYear);
+            return await ReadGzFileService.ReadJSON<WebPolSourceSite>(WebTypeEnum.WebPolSourceSite, TVItemID, WebTypeYear);
         }
-        [Route("WebProvince/{WebType:int}/{TVItemID:int}/{WebTypeYear:int}")]
+        [Route("WebProvince/{TVItemID:int}/{WebTypeYear:int}")]
         [HttpGet]
-        public async Task<ActionResult<WebProvince>> WebProvince(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear)
+        public async Task<ActionResult<WebProvince>> WebProvince(int TVItemID, WebTypeYearEnum WebTypeYear)
         {
             // TVItemID = ProvinceTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LocalService.SetLoggedInContactInfo();
 
-            return await ReadGzFileService.ReadJSON<WebProvince>(WebType, TVItemID, WebTypeYear);
+            return await ReadGzFileService.ReadJSON<WebProvince>(WebTypeEnum.WebProvince, TVItemID, WebTypeYear);
         }
-        [Route("WebReportType/{WebType:int}/{TVItemID:int}/{WebTypeYear:int}")]
+        [Route("WebReportType/{TVItemID:int}/{WebTypeYear:int}")]
         [HttpGet]
-        public async Task<ActionResult<WebReportType>> WebReportType(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear)
+        public async Task<ActionResult<WebReportType>> WebReportType(int TVItemID, WebTypeYearEnum WebTypeYear)
         {
             // TVItemID = 0 -- not used
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LocalService.SetLoggedInContactInfo();
 
-            return await ReadGzFileService.ReadJSON<WebReportType>(WebType, TVItemID, WebTypeYear);
+            return await ReadGzFileService.ReadJSON<WebReportType>(WebTypeEnum.WebReportType, TVItemID, WebTypeYear);
         }
-        [Route("WebRoot/{WebType:int}/{TVItemID:int}/{WebTypeYear:int}")]
+        [Route("WebRoot/{TVItemID:int}/{WebTypeYear:int}")]
         [HttpGet]
-        public async Task<ActionResult<WebRoot>> WebRoot(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear)
+        public async Task<ActionResult<WebRoot>> WebRoot(int TVItemID, WebTypeYearEnum WebTypeYear)
         {
             // TVItemID = 0 -- not used
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LocalService.SetLoggedInContactInfo();
 
-            return await ReadGzFileService.ReadJSON<WebRoot>(WebType, TVItemID, WebTypeYear);
+            return await ReadGzFileService.ReadJSON<WebRoot>(WebTypeEnum.WebRoot, TVItemID, WebTypeYear);
         }
-        [Route("WebSamplingPlan/{WebType:int}/{TVItemID:int}/{WebTypeYear:int}")]
+        [Route("WebSamplingPlan/{TVItemID:int}/{WebTypeYear:int}")]
         [HttpGet]
-        public async Task<ActionResult<WebSamplingPlan>> WebSamplingPlan(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear)
+        public async Task<ActionResult<WebSamplingPlan>> WebSamplingPlan(int TVItemID, WebTypeYearEnum WebTypeYear)
         {
             // TVItemID = SamplingPlanID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LocalService.SetLoggedInContactInfo();
 
-            return await ReadGzFileService.ReadJSON<WebSamplingPlan>(WebType, TVItemID, WebTypeYear);
+            return await ReadGzFileService.ReadJSON<WebSamplingPlan>(WebTypeEnum.WebSamplingPlan, TVItemID, WebTypeYear);
         }
-        [Route("WebSector/{WebType:int}/{TVItemID:int}/{WebTypeYear:int}")]
+        [Route("WebSector/{TVItemID:int}/{WebTypeYear:int}")]
         [HttpGet]
-        public async Task<ActionResult<WebSector>> WebSector(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear)
+        public async Task<ActionResult<WebSector>> WebSector(int TVItemID, WebTypeYearEnum WebTypeYear)
         {
             // TVItemID = SectorTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LocalService.SetLoggedInContactInfo();
 
-            return await ReadGzFileService.ReadJSON<WebSector>(WebType, TVItemID, WebTypeYear);
+            return await ReadGzFileService.ReadJSON<WebSector>(WebTypeEnum.WebSector, TVItemID, WebTypeYear);
         }
-        [Route("WebSubsector/{WebType:int}/{TVItemID:int}/{WebTypeYear:int}")]
+        [Route("WebSubsector/{TVItemID:int}/{WebTypeYear:int}")]
         [HttpGet]
-        public async Task<ActionResult<WebSubsector>> WebSubsector(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear)
+        public async Task<ActionResult<WebSubsector>> WebSubsector(int TVItemID, WebTypeYearEnum WebTypeYear)
         {
             // TVItemID = SubsectorTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LocalService.SetLoggedInContactInfo();
 
-            return await ReadGzFileService.ReadJSON<WebSubsector>(WebType, TVItemID, WebTypeYear);
+            return await ReadGzFileService.ReadJSON<WebSubsector>(WebTypeEnum.WebSubsector, TVItemID, WebTypeYear);
         }
-        [Route("WebTideLocation/{WebType:int}/{TVItemID:int}/{WebTypeYear:int}")]
+        [Route("WebTideLocation/{TVItemID:int}/{WebTypeYear:int}")]
         [HttpGet]
-        public async Task<ActionResult<WebTideLocation>> WebTideLocation(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear)
+        public async Task<ActionResult<WebTideLocation>> WebTideLocation(int TVItemID, WebTypeYearEnum WebTypeYear)
         {
             // TVItemID = 0 -- not used
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LocalService.SetLoggedInContactInfo();
 
-            return await ReadGzFileService.ReadJSON<WebTideLocation>(WebType, TVItemID, WebTypeYear);
+            return await ReadGzFileService.ReadJSON<WebTideLocation>(WebTypeEnum.WebTideLocation, TVItemID, WebTypeYear);
         }
-        [Route("WebTVItem/{WebType:int}/{TVItemID:int}/{WebTypeYear:int}")]
+        [Route("WebTVItem/{TVItemID:int}/{WebTypeYear:int}")]
         [HttpGet]
-        public async Task<ActionResult<WebTVItem>> WebTVItem(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear)
+        public async Task<ActionResult<WebTVItem>> WebTVItem(int TVItemID, WebTypeYearEnum WebTypeYear)
         {
             // TVItemID = 0 -- not used
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LocalService.SetLoggedInContactInfo();
 
-            return await ReadGzFileService.ReadJSON<WebTVItem>(WebType, TVItemID, WebTypeYear);
+            return await ReadGzFileService.ReadJSON<WebTVItem>(WebTypeEnum.WebTVItem, TVItemID, WebTypeYear);
         }
         #endregion Functions public
 

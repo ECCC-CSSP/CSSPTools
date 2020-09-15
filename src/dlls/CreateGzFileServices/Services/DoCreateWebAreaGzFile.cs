@@ -32,6 +32,7 @@ namespace CreateGzFileServices
 
             try
             {
+                // WebBase
                 webArea.TVItem = tvItem;
                 webArea.TVItemLanguageList = await GetTVItemLanguageListWithTVItemID(AreaTVItemID);
                 webArea.TVItemStatList = await GetTVItemStatListWithTVItemID(AreaTVItemID);
@@ -39,6 +40,7 @@ namespace CreateGzFileServices
                 webArea.MapInfoPointList = await GetMapInfoPointListWithTVItemID(AreaTVItemID);
                 webArea.TVFileList = await GetTVFileListWithTVItemID(AreaTVItemID);
                 webArea.TVFileLanguageList = await GetTVFileLanguageListWithTVItemID(AreaTVItemID);
+                // WebArea
                 webArea.TVItemSectorList = await GetTVItemChildrenListWithTVItemID(tvItem, TVTypeEnum.Sector);
                 webArea.TVItemLanguageSectorList = await GetTVItemLanguageChildrenListWithTVItemID(tvItem, TVTypeEnum.Sector);
                 webArea.TVItemStatSectorList = await GetTVItemStatChildrenListWithTVItemID(tvItem, TVTypeEnum.Sector);

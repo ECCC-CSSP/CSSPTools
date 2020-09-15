@@ -4,7 +4,8 @@ import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { ShellService } from './shell.service';
 import { ShellModel } from './shell.models';
-import { UserService } from 'src/app/services/user.service';
+import { Observable } from 'rxjs';
+import { LanguageEnum } from '../grouping';
 
 @Component({
   selector: 'app-shell',
@@ -14,7 +15,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class ShellComponent implements OnInit {
 
-  constructor(public shellService: ShellService, public userService: UserService, private router: Router, private title: Title) { }
+  constructor(public shellService: ShellService, private router: Router, private title: Title) { }
 
   /*
    * functions public
@@ -27,7 +28,7 @@ export class ShellComponent implements OnInit {
     else {
       $localize.locale = 'fr-CA';
     }
-    this.shellService.UpdateShell(<ShellModel>{ Language: $localize.locale });
+    this.shellService.UpdateShell(<ShellModel>{ Language: $localize.locale == "fr-CA" ? LanguageEnum.fr : LanguageEnum.en });
     this.router.navigateByUrl(this.router.url.replace(oldLocal, $localize.locale));
   }
 
@@ -39,18 +40,21 @@ export class ShellComponent implements OnInit {
     Events
    */
   ngOnInit(): void {
+    this.shellService.GetLoggedInContact().subscribe();
+
     if (this.router.url.indexOf('fr-CA') > 0) {
       $localize.locale = 'fr-CA';
     }
     else {
       $localize.locale = 'en-CA';
     }
-    this.shellService.UpdateShell(<ShellModel>{ Language: $localize.locale });
+    this.shellService.UpdateShell(<ShellModel>{ Language: $localize.locale == "fr-CA" ? LanguageEnum.fr : LanguageEnum.en });
     LoadLocalesShell(this.shellService);
     this.title.setTitle(this.shellService.shellModel$.value.AppTitle);
   }
 
-  Logout() {
-    this.userService.Logout(this.router, $localize.locale);
+  IsEnglish()
+  {
+    return (this.shellService.shellModel$.getValue().Language == LanguageEnum.en);
   }
 }

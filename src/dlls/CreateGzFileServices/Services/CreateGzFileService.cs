@@ -63,80 +63,80 @@ namespace CreateGzFileServices
         {           
             switch (webType)
             {
-                case WebTypeEnum.WebArea:
-                    return await DoCreateWebAreaGzFile(TVItemID); // TVItemID = AreaTVItemID
-                case WebTypeEnum.WebClimateDataValue:
-                    return await DoCreateWebClimateDataValueGzFile(TVItemID); // TVItemID = ClimateSiteTVItemID
-                case WebTypeEnum.WebClimateSite:
-                    return await DoCreateWebClimateSiteGzFile(TVItemID); // TVItemID = ProvinceTVItemID
-                case WebTypeEnum.WebContact:
-                    return await DoCreateWebContactGzFile();
-                case WebTypeEnum.WebCountry:
-                    return await DoCreateWebCountryGzFile(TVItemID); // TVItemID = CountryTVItemID
-                case WebTypeEnum.WebDrogueRun:
-                    return await DoCreateWebDrogueRunGzFile(TVItemID); // TVItemID = SubsectorTVItemID
-                case WebTypeEnum.WebHelpDoc:
-                    return await DoCreateWebHelpDocGzFile();
-                case WebTypeEnum.WebHydrometricDataValue:
-                    return await DoCreateWebHydrometricDataValueGzFile(TVItemID); // TVItemID = HydrometricSiteTVItemID
-                case WebTypeEnum.WebHydrometricSite:
-                    return await DoCreateWebHydrometricSiteGzFile(TVItemID); // TVItemID = ProvinceTVItemID
-                case WebTypeEnum.WebMikeScenario:
-                    return await DoCreateWebMikeScenarioGzFile(TVItemID); // TVItemID = MikeScenarioTVItemID
-                case WebTypeEnum.WebMunicipalities:
-                    return await DoCreateWebMunicipalitiesGzFile(TVItemID); // TVItemID = ProvinceTVItemID
-                case WebTypeEnum.WebMunicipality:
-                    return await DoCreateWebMunicipalityGzFile(TVItemID); // TVItemID = MunicipalityTVItemID
-                case WebTypeEnum.WebMWQMLookupMPN:
-                    return await DoCreateWebMWQMLookupMPNGzFile();
-                case WebTypeEnum.WebMWQMRun:
-                    return await DoCreateWebMWQMRunGzFile(TVItemID); // TVItemID = SubsectorTVItemID
-                case WebTypeEnum.WebMWQMSample:
-                    {
-                        switch (webTypeYear)
-                        {
-                            case WebTypeYearEnum.Year1980:
-                                return await DoCreateWebMWQMSampleGzFile(TVItemID, 1980); // TVItemID = SubsectorTVItemID
-                            case WebTypeYearEnum.Year1990:
-                                return await DoCreateWebMWQMSampleGzFile(TVItemID, 1990); // TVItemID = SubsectorTVItemID
-                            case WebTypeYearEnum.Year2000:
-                                return await DoCreateWebMWQMSampleGzFile(TVItemID, 2000); // TVItemID = SubsectorTVItemID
-                            case WebTypeYearEnum.Year2010:
-                                return await DoCreateWebMWQMSampleGzFile(TVItemID, 2010); // TVItemID = SubsectorTVItemID
-                            case WebTypeYearEnum.Year2020:
-                                return await DoCreateWebMWQMSampleGzFile(TVItemID, 2020); // TVItemID = SubsectorTVItemID
-                            case WebTypeYearEnum.Year2030:
-                                return await DoCreateWebMWQMSampleGzFile(TVItemID, 2030); // TVItemID = SubsectorTVItemID
-                            case WebTypeYearEnum.Year2040:
-                                return await DoCreateWebMWQMSampleGzFile(TVItemID, 2040); // TVItemID = SubsectorTVItemID
-                            case WebTypeYearEnum.Year2050:
-                                return await DoCreateWebMWQMSampleGzFile(TVItemID, 2050); // TVItemID = SubsectorTVItemID
-                            default:
-                                return await Task.FromResult(BadRequest($"{ webTypeYear } not implemented yet"));
-                        }
-                    }
-                case WebTypeEnum.WebMWQMSite:
-                    return await DoCreateWebMWQMSiteGzFile(TVItemID); // TVItemID = SubsectorTVItemID
-                case WebTypeEnum.WebPolSourceGrouping:
-                    return await DoCreateWebPolSourceGroupingGzFile();
-                case WebTypeEnum.WebPolSourceSite:
-                    return await DoCreateWebPolSourceSiteGzFile(TVItemID); // TVItemID = SubsectorTVItemID
-                case WebTypeEnum.WebProvince:
-                    return await DoCreateWebProvinceGzFile(TVItemID); // TVItemID = ProvinceTVItemID
-                case WebTypeEnum.WebReportType:
-                    return await DoCreateWebReportTypeGzFile();
+                //case WebTypeEnum.WebArea:
+                //    return await DoCreateWebAreaGzFile(TVItemID); // TVItemID = AreaTVItemID
+                //case WebTypeEnum.WebClimateDataValue:
+                //    return await DoCreateWebClimateDataValueGzFile(TVItemID); // TVItemID = ClimateSiteTVItemID
+                //case WebTypeEnum.WebClimateSite:
+                //    return await DoCreateWebClimateSiteGzFile(TVItemID); // TVItemID = ProvinceTVItemID
+                //case WebTypeEnum.WebContact:
+                //    return await DoCreateWebContactGzFile();
+                //case WebTypeEnum.WebCountry:
+                //    return await DoCreateWebCountryGzFile(TVItemID); // TVItemID = CountryTVItemID
+                //case WebTypeEnum.WebDrogueRun:
+                //    return await DoCreateWebDrogueRunGzFile(TVItemID); // TVItemID = SubsectorTVItemID
+                //case WebTypeEnum.WebHelpDoc:
+                //    return await DoCreateWebHelpDocGzFile();
+                //case WebTypeEnum.WebHydrometricDataValue:
+                //    return await DoCreateWebHydrometricDataValueGzFile(TVItemID); // TVItemID = HydrometricSiteTVItemID
+                //case WebTypeEnum.WebHydrometricSite:
+                //    return await DoCreateWebHydrometricSiteGzFile(TVItemID); // TVItemID = ProvinceTVItemID
+                //case WebTypeEnum.WebMikeScenario:
+                //    return await DoCreateWebMikeScenarioGzFile(TVItemID); // TVItemID = MikeScenarioTVItemID
+                //case WebTypeEnum.WebMunicipalities:
+                //    return await DoCreateWebMunicipalitiesGzFile(TVItemID); // TVItemID = ProvinceTVItemID
+                //case WebTypeEnum.WebMunicipality:
+                //    return await DoCreateWebMunicipalityGzFile(TVItemID); // TVItemID = MunicipalityTVItemID
+                //case WebTypeEnum.WebMWQMLookupMPN:
+                //    return await DoCreateWebMWQMLookupMPNGzFile();
+                //case WebTypeEnum.WebMWQMRun:
+                //    return await DoCreateWebMWQMRunGzFile(TVItemID); // TVItemID = SubsectorTVItemID
+                //case WebTypeEnum.WebMWQMSample:
+                //    {
+                //        switch (webTypeYear)
+                //        {
+                //            case WebTypeYearEnum.Year1980:
+                //                return await DoCreateWebMWQMSampleGzFile(TVItemID, 1980); // TVItemID = SubsectorTVItemID
+                //            case WebTypeYearEnum.Year1990:
+                //                return await DoCreateWebMWQMSampleGzFile(TVItemID, 1990); // TVItemID = SubsectorTVItemID
+                //            case WebTypeYearEnum.Year2000:
+                //                return await DoCreateWebMWQMSampleGzFile(TVItemID, 2000); // TVItemID = SubsectorTVItemID
+                //            case WebTypeYearEnum.Year2010:
+                //                return await DoCreateWebMWQMSampleGzFile(TVItemID, 2010); // TVItemID = SubsectorTVItemID
+                //            case WebTypeYearEnum.Year2020:
+                //                return await DoCreateWebMWQMSampleGzFile(TVItemID, 2020); // TVItemID = SubsectorTVItemID
+                //            case WebTypeYearEnum.Year2030:
+                //                return await DoCreateWebMWQMSampleGzFile(TVItemID, 2030); // TVItemID = SubsectorTVItemID
+                //            case WebTypeYearEnum.Year2040:
+                //                return await DoCreateWebMWQMSampleGzFile(TVItemID, 2040); // TVItemID = SubsectorTVItemID
+                //            case WebTypeYearEnum.Year2050:
+                //                return await DoCreateWebMWQMSampleGzFile(TVItemID, 2050); // TVItemID = SubsectorTVItemID
+                //            default:
+                //                return await Task.FromResult(BadRequest($"{ webTypeYear } not implemented yet"));
+                //        }
+                //    }
+                //case WebTypeEnum.WebMWQMSite:
+                //    return await DoCreateWebMWQMSiteGzFile(TVItemID); // TVItemID = SubsectorTVItemID
+                //case WebTypeEnum.WebPolSourceGrouping:
+                //    return await DoCreateWebPolSourceGroupingGzFile();
+                //case WebTypeEnum.WebPolSourceSite:
+                //    return await DoCreateWebPolSourceSiteGzFile(TVItemID); // TVItemID = SubsectorTVItemID
+                //case WebTypeEnum.WebProvince:
+                //    return await DoCreateWebProvinceGzFile(TVItemID); // TVItemID = ProvinceTVItemID
+                //case WebTypeEnum.WebReportType:
+                //    return await DoCreateWebReportTypeGzFile();
                 case WebTypeEnum.WebRoot:
                     return await DoCreateWebRootGzFile();
-                case WebTypeEnum.WebSamplingPlan:
-                    return await DoCreateWebSamplingPlanGzFile(TVItemID); // TVItemID = SamplingPlanID
-                case WebTypeEnum.WebSector:
-                    return await DoCreateWebSectorGzFile(TVItemID); // TVItemID = SectorTVItemID
-                case WebTypeEnum.WebSubsector:
-                    return await DoCreateWebSubsectorGzFile(TVItemID); // TVItemID = SubsectorTVItemID
-                case WebTypeEnum.WebTideLocation:
-                    return await DoCreateWebTideLocationGzFile();
-                case WebTypeEnum.WebTVItem:
-                    return await DoCreateWebTVItemGzFile();
+                //case WebTypeEnum.WebSamplingPlan:
+                //    return await DoCreateWebSamplingPlanGzFile(TVItemID); // TVItemID = SamplingPlanID
+                //case WebTypeEnum.WebSector:
+                //    return await DoCreateWebSectorGzFile(TVItemID); // TVItemID = SectorTVItemID
+                //case WebTypeEnum.WebSubsector:
+                //    return await DoCreateWebSubsectorGzFile(TVItemID); // TVItemID = SubsectorTVItemID
+                //case WebTypeEnum.WebTideLocation:
+                //    return await DoCreateWebTideLocationGzFile();
+                //case WebTypeEnum.WebTVItem:
+                //    return await DoCreateWebTVItemGzFile();
                 default:
                     return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._NotImplementedYet, $"{ webType }")));
             }

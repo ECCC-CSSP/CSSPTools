@@ -17,14 +17,4 @@ export class HomeService {
   UpdateHomeText(homeTextModel: HomeTextModel) {
     this.homeTextModel$.next(<HomeTextModel>{ ...this.homeTextModel$.getValue(), ...homeTextModel });
   }
-
-  // LoadLocalesHomeText() {
-  //   let homeTextModel: HomeTextModel = {
-  //     Title: 'The Title',
-  //   }
-
-  //   if ($localize.locale === 'fr-CA') {
-  //     homeTextModel.Title = 'Le Titre';
-  //   }
-  // }
 }

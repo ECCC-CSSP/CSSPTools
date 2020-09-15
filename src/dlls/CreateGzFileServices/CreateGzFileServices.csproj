@@ -24,6 +24,34 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Services\DoCreateWebAreaGzFile.cs" />
+    <Compile Remove="Services\DoCreateWebClimateDataValueGzFile.cs" />
+    <Compile Remove="Services\DoCreateWebClimateSiteGzFile.cs" />
+    <Compile Remove="Services\DoCreateWebContactGzFile.cs" />
+    <Compile Remove="Services\DoCreateWebCountryGzFile.cs" />
+    <Compile Remove="Services\DoCreateWebDrogueRunGzFile.cs" />
+    <Compile Remove="Services\DoCreateWebHelpDocGzFile.cs" />
+    <Compile Remove="Services\DoCreateWebHydrometricDataValueGzFile.cs" />
+    <Compile Remove="Services\DoCreateWebHydrometricSiteGzFile.cs" />
+    <Compile Remove="Services\DoCreateWebMikeScenarioGzFile.cs" />
+    <Compile Remove="Services\DoCreateWebMunicipalitiesGzFile.cs" />
+    <Compile Remove="Services\DoCreateWebMunicipalityGzFile.cs" />
+    <Compile Remove="Services\DoCreateWebMWQMLookupMPNGzFile.cs" />
+    <Compile Remove="Services\DoCreateWebMWQMRunGzFile.cs" />
+    <Compile Remove="Services\DoCreateWebMWQMSampleGzFile.cs" />
+    <Compile Remove="Services\DoCreateWebMWQMSiteGzFile.cs" />
+    <Compile Remove="Services\DoCreateWebPolSourceGroupingGzFile.cs" />
+    <Compile Remove="Services\DoCreateWebPolSourceSiteGzFile.cs" />
+    <Compile Remove="Services\DoCreateWebProvinceGzFile.cs" />
+    <Compile Remove="Services\DoCreateWebReportTypeGzFile.cs" />
+    <Compile Remove="Services\DoCreateWebSamplingPlanGzFile.cs" />
+    <Compile Remove="Services\DoCreateWebSectorGzFile.cs" />
+    <Compile Remove="Services\DoCreateWebSubsectorGzFile.cs" />
+    <Compile Remove="Services\DoCreateWebTideLocationGzFile.cs" />
+    <Compile Remove="Services\DoCreateWebTVItemGzFile.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Azure.Storage.Blobs" Version="12.4.4" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.6" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.6" />

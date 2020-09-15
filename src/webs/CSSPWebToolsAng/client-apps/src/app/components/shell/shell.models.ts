@@ -1,11 +1,9 @@
+import { Contact } from '../../models/generated/Contact.model';
 import { HttpRequestModel } from 'src/app/models/http.model';
+import { LanguageEnum } from '../grouping';
 
 export interface ShellModel extends HttpRequestModel {
-    Language?: string;
     AppTitle?: string;
-    ShowIcons?: string;
-    HideIcons?: string;   
-    Login?: string;
-    Register?: string;
-    Logout?: string;
+    Language?: LanguageEnum;
+    Contact?: Contact;
 }
