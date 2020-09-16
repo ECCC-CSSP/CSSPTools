@@ -56,8 +56,8 @@ namespace CSSPDesktopServices.Services
             // Doing csspjson container 
             List<string> jsonFileNameList = new List<string>()
             {
-                "WebContact.gz", "WebHelpDoc.gz", "WebMWQMLookupMPN.gz", "WebPolSourceGrouping.gz",
-                "WebReportType.gz", "WebRoot.gz", "WebTideLocation.gz", "WebTVItem.gz"
+                "WebContact.gz", "WebHelpDoc.gz", "WebMWQMLookupMPN.gz", "WebPolSourceGrouping.gz", "WebPolSourceSiteEffectTerm.gz",
+                "WebReportType.gz", "WebRoot.gz", "WebTideLocation.gz", "WebAllTVItem.gz", "WebAllTVItemLanguage.gz"
             };
 
             int jsonCount = 0;
@@ -121,6 +121,11 @@ namespace CSSPDesktopServices.Services
                             webType = WebTypeEnum.WebPolSourceGrouping;
                         }
                         break;
+                    case "WebPolSourceSiteEffectTerm.gz":
+                        {
+                            webType = WebTypeEnum.WebPolSourceSiteEffectTerm;
+                        }
+                        break;
                     case "WebReportType.gz":
                         {
                             webType = WebTypeEnum.WebReportType;
@@ -136,9 +141,14 @@ namespace CSSPDesktopServices.Services
                             webType = WebTypeEnum.WebTideLocation;
                         }
                         break;
-                    case "WebTVItem.gz":
+                    case "WebAllTVItem.gz":
                         {
-                            webType = WebTypeEnum.WebTVItem;
+                            webType = WebTypeEnum.WebAllTVItem;
+                        }
+                        break;
+                    case "WebAllTVItemLanguage.gz":
+                        {
+                            webType = WebTypeEnum.WebAllTVItemLanguage;
                         }
                         break;
                     default:
@@ -204,7 +214,7 @@ namespace CSSPDesktopServices.Services
                     return await Task.FromResult(false);
                 }
 
-                if (jsonFileName == "WebTVItem.gz")
+                if (jsonFileName == "WebAllTVItemLanguage.gz")
                 {
                     AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.FillingCSSPDBSearchDatabaseWith_Info, jsonFileName)));
                     
@@ -213,7 +223,7 @@ namespace CSSPDesktopServices.Services
             }
             else
             {
-                if (jsonFileName == "WebTVItem.gz")
+                if (jsonFileName == "WebAllTVItemLanguage.gz")
                 {
                     AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.UpdatingCSSPDBSearchDatabase)));
 

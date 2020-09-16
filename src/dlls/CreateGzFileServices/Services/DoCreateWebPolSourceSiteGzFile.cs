@@ -20,9 +20,9 @@ namespace CreateGzFileServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            TVItem tvItem = await GetTVItemWithTVItemID(SubsectorTVItemID);
+            TVItem tvItemSubsector = await GetTVItemWithTVItemID(SubsectorTVItemID);
 
-            if (tvItem == null || tvItem.TVType != TVTypeEnum.Subsector)
+            if (tvItemSubsector == null || tvItemSubsector.TVType != TVTypeEnum.Subsector)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._CouldNotBeFoundFor_Equal_And_Equal_,
                     "TVItem", SubsectorTVItemID.ToString(), "TVType", TVTypeEnum.Subsector.ToString())));
@@ -32,12 +32,7 @@ namespace CreateGzFileServices
 
             try
             {
-                webPolSourceSite.PolSourceSiteList = await GetPolSourceSiteListFromSubsector(tvItem);
-                webPolSourceSite.PolSourceObservationList = await GetPolSourceObservationListFromSubsector(tvItem);
-                webPolSourceSite.PolSourceObservationIssueList = await GetPolSourceObservationIssueListFromSubsector(tvItem);
-                webPolSourceSite.PolSourceSiteEffectList = await GetPolSourceSiteEffectListFromSubsector(tvItem);
-                webPolSourceSite.PolSourceSiteEffectTermList = await GetPolSourceSiteEffectTermListFromSubsector(tvItem);
-                webPolSourceSite.PolSourceSiteCivicAddressList = await GetPolSourceSiteAddressListFromSubsector(tvItem);
+                await FillChildTVItemPolSourceSiteModel(webPolSourceSite.PolSourceSiteModelList, tvItemSubsector, TVTypeEnum.PolSourceSite);
 
                 await DoStore<WebPolSourceSite>(webPolSourceSite, $"WebPolSourceSite_{SubsectorTVItemID}.gz");
             }

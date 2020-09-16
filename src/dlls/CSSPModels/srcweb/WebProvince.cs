@@ -9,11 +9,7 @@ namespace CSSPModels
     public partial class WebProvince : WebBase
     {
         #region Properties
-        public List<TVItem> TVItemAreaList { get; set; }
-        public List<TVItemLanguage> TVItemLanguageAreaList { get; set; }
-        public List<TVItemStat> TVItemStatAreaList { get; set; }
-        public List<MapInfo> MapInfoAreaList { get; set; }
-        public List<MapInfoPoint> MapInfoPointAreaList { get; set; }
+        public List<WebBase> TVItemAreaList { get; set; }
 
         public List<SamplingPlan> SamplingPlanList { get; set; }
         #endregion Properties
@@ -21,11 +17,7 @@ namespace CSSPModels
         #region Constructors
         public WebProvince()
         {
-            TVItemAreaList = new List<TVItem>();
-            TVItemLanguageAreaList = new List<TVItemLanguage>();
-            TVItemStatAreaList = new List<TVItemStat>();
-            MapInfoAreaList = new List<MapInfo>();
-            MapInfoPointAreaList = new List<MapInfoPoint>();
+            TVItemAreaList = new List<WebBase>();
 
             SamplingPlanList = new List<SamplingPlan>();
         }

@@ -20,9 +20,9 @@ namespace CreateGzFileServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            TVItem tvItem = await GetTVItemWithTVItemID(ClimateSiteTVItemID);
+            TVItem tvItemClimateSite = await GetTVItemWithTVItemID(ClimateSiteTVItemID);
 
-            if (tvItem == null || tvItem.TVType != TVTypeEnum.ClimateSite)
+            if (tvItemClimateSite == null || tvItemClimateSite.TVType != TVTypeEnum.ClimateSite)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._CouldNotBeFoundFor_Equal_And_Equal_,
                     "TVItem", ClimateSiteTVItemID.ToString(), "TVType", TVTypeEnum.ClimateSite.ToString())));
@@ -32,7 +32,7 @@ namespace CreateGzFileServices
 
             try
             {
-                webClimateDataValue.ClimateDataValueList = await GetClimateDataValueListForClimateSite(tvItem.TVItemID);
+                webClimateDataValue.ClimateDataValueList = await GetClimateDataValueListForClimateSite(tvItemClimateSite.TVItemID);
 
                 await DoStore<WebClimateDataValue>(webClimateDataValue, $"WebClimateDataValue_{ClimateSiteTVItemID}.gz");
             }

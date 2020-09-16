@@ -224,7 +224,7 @@ namespace CreateGzFileServices
                           && t.ToTVType == TVTypeEnum.Infrastructure
                           select t).AsNoTracking().ToListAsync();
         }
-        private async Task<List<Address>> GetInfrastructureCivicAddressListUnderMunicipality(TVItem tvItemMunicipality)
+        private async Task<Address> GetInfrastructureCivicAddressListUnderMunicipality(TVItem tvItemMunicipality)
         {
             return await (from c in db.TVItems
                           from ci in db.Infrastructures
@@ -235,7 +235,7 @@ namespace CreateGzFileServices
                           && c.TVType == TVTypeEnum.Infrastructure
                           && ci.CivicAddressTVItemID != null
                           && ci.CivicAddressTVItemID == a.AddressTVItemID
-                          select a).AsNoTracking().ToListAsync();
+                          select a).AsNoTracking().FirstOrDefaultAsync();
         }
         private async Task<List<MapInfo>> GetInfrastructureMapInfoListUnderMunicipality(TVItem tvItemMunicipality)
         {
@@ -842,6 +842,11 @@ namespace CreateGzFileServices
         private async Task<List<PolSourceGroupingLanguage>> GetPolSourceGroupingLanguageList()
         {
             return await (from c in db.PolSourceGroupingLanguages
+                          select c).AsNoTracking().ToListAsync();
+        }
+        private async Task<List<PolSourceSiteEffectTerm>> GetPolSourceSiteEffectTermList()
+        {
+            return await (from c in db.PolSourceSiteEffectTerms
                           select c).AsNoTracking().ToListAsync();
         }
         private async Task<List<ReportType>> GetReportTypeList()

@@ -35,6 +35,10 @@ namespace CreateGzFileServices
             await CreateGzFile(WebTypeEnum.WebRoot, 0, 0);
             Console.WriteLine("CreateWebTideLocation doing...");
             await CreateGzFile(WebTypeEnum.WebTideLocation, 0, 0);
+            Console.WriteLine("CreateWebAllTVItem doing...");
+            await CreateGzFile(WebTypeEnum.WebAllTVItem, 0, 0);
+            Console.WriteLine("CreateWebAllTVItemLanguage doing...");
+            await CreateGzFile(WebTypeEnum.WebAllTVItemLanguage, 0, 0);
 
             List<SamplingPlan> samplingPlanList = (from c in db.SamplingPlans
                                                    select c).ToList();

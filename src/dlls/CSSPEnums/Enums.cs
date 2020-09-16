@@ -1091,7 +1091,9 @@ namespace CSSPEnums
         WebPolSourceSite = 23,
         WebPolSourceGrouping = 24,
         WebReportType = 25,
-        WebTVItem = 26
+        WebAllTVItem = 26,
+        WebPolSourceSiteEffectTerm = 27,
+        WebAllTVItemLanguage = 28,
     }
     public enum WebTypeYearEnum
     {

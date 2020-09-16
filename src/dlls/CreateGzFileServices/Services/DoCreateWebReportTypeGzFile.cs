@@ -22,8 +22,7 @@ namespace CreateGzFileServices
 
             try
             {
-                webReportType.ReportTypeList = await GetReportTypeList();
-                webReportType.ReportSectionList = await GetReportSectionList();
+                await FillReportTypeModelList(webReportType.ReportTypeModelList);
 
                 await DoStore<WebReportType>(webReportType, $"WebReportType.gz");
             }

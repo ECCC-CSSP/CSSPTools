@@ -31,10 +31,7 @@ namespace CreateGzFileServices
 
             try
             {
-                webSamplingPlan.SamplingPlan = samplingPlan;
-                webSamplingPlan.SamplingPlanEmailList = await GetSamplingPlanEmailListWithSamplingPlanID(SamplingPlanID);
-                webSamplingPlan.SamplingPlanSubsectorList = await GetSamplingPlanSubsectorListWithSamplingPlanID(SamplingPlanID);
-                webSamplingPlan.SamplingPlanSubsectorSiteList = await GetSamplingPlanSubsectorSiteListWithSamplingPlanID(SamplingPlanID);
+                await FillSamplingPlanModel(webSamplingPlan.SamplingPlanModel, samplingPlan);
 
                 await DoStore<WebSamplingPlan>(webSamplingPlan, $"WebSamplingPlan_{SamplingPlanID}.gz");
             }

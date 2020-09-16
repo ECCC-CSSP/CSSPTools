@@ -23,7 +23,8 @@ namespace CSSPDesktopServices.Services
     {
         private async Task<bool> DoFillCSSPDBSearch()
         {
-            WebTVItem webTVItem = null;
+            WebAllTVItem webAllTVItem = null;
+            WebAllTVItemLanguage webAllTVItemLanguage = null;
             int skip = 0;
             int take = 50000;
 
@@ -34,10 +35,11 @@ namespace CSSPDesktopServices.Services
             {
                 try
                 {
-                    var actionWebTVItem = await ReadGzFileService.ReadJSON<WebTVItem>(WebTypeEnum.WebTVItem, 0, WebTypeYearEnum.Year1980);
-                    if (((ObjectResult)actionWebTVItem.Result).StatusCode == 200)
+                    #region doing WebAllTVItem
+                    var actionWebAllTVItem = await ReadGzFileService.ReadJSON<WebAllTVItem>(WebTypeEnum.WebAllTVItem, 0, WebTypeYearEnum.Year1980);
+                    if (((ObjectResult)actionWebAllTVItem.Result).StatusCode == 200)
                     {
-                        webTVItem = (WebTVItem)((OkObjectResult)actionWebTVItem.Result).Value;
+                        webAllTVItem = (WebAllTVItem)((OkObjectResult)actionWebAllTVItem.Result).Value;
                     }
                     else
                     {
@@ -46,11 +48,11 @@ namespace CSSPDesktopServices.Services
                     }
 
                     int count = 1;
-                    int total = webTVItem.TVItemList.Count;
+                    int total = webAllTVItem.TVItemList.Count;
 
                     while (count > 0)
                     {
-                        List<TVItem> tvItemList = webTVItem.TVItemList.Skip(skip).Take(take).ToList();
+                        List<TVItem> tvItemList = webAllTVItem.TVItemList.Skip(skip).Take(take).ToList();
 
                         count = tvItemList.Count;
 
@@ -82,13 +84,26 @@ namespace CSSPDesktopServices.Services
                             AppendStatus(new AppendEventArgs($"{ string.Format(CSSPCultureDesktopRes.Done) } TVItems ({ skip }/{ total })"));
                         }
                     }
+                    #endregion Doing WebAllTVItem
+
+                    #region doing WebAllTVItemLanguage
+                    var actionWebAllTVItemLanguage = await ReadGzFileService.ReadJSON<WebAllTVItemLanguage>(WebTypeEnum.WebAllTVItemLanguage, 0, WebTypeYearEnum.Year1980);
+                    if (((ObjectResult)actionWebAllTVItemLanguage.Result).StatusCode == 200)
+                    {
+                        webAllTVItemLanguage = (WebAllTVItemLanguage)((OkObjectResult)actionWebAllTVItemLanguage.Result).Value;
+                    }
+                    else
+                    {
+                        AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.CouldNotUpdateCSSPDBSearchWithTVItemsAndTVItemLanguages));
+                        return await Task.FromResult(false);
+                    }
 
                     skip = 0;
                     count = 1;
-                    total = webTVItem.TVItemLanguageList.Count;
+                    total = webAllTVItemLanguage.TVItemLanguageList.Count;
                     while (count > 0)
                     {
-                        List<TVItemLanguage> tvItemLanguageList = webTVItem.TVItemLanguageList.Skip(skip).Take(take).ToList();
+                        List<TVItemLanguage> tvItemLanguageList = webAllTVItemLanguage.TVItemLanguageList.Skip(skip).Take(take).ToList();
 
                         count = tvItemLanguageList.Count;
 
@@ -120,6 +135,7 @@ namespace CSSPDesktopServices.Services
                             AppendStatus(new AppendEventArgs($"{ string.Format(CSSPCultureDesktopRes.Done) } TVItemLanguages ({ skip }/{ total })"));
                         }
                     }
+                    #endregion doing WebAllTVItemLanguage
                 }
                 catch (Exception ex)
                 {

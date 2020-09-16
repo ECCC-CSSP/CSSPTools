@@ -20,9 +20,9 @@ namespace CreateGzFileServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            TVItem tvItem = await GetTVItemWithTVItemID(SubsectorTVItemID);
+            TVItem tvItemSubsector = await GetTVItemWithTVItemID(SubsectorTVItemID);
 
-            if (tvItem == null || tvItem.TVType != TVTypeEnum.Subsector)
+            if (tvItemSubsector == null || tvItemSubsector.TVType != TVTypeEnum.Subsector)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._CouldNotBeFoundFor_Equal_And_Equal_,
                     "TVItem", SubsectorTVItemID.ToString(), "TVType", TVTypeEnum.Subsector.ToString())));
@@ -32,8 +32,7 @@ namespace CreateGzFileServices
 
             try
             {
-                webMWQMSite.MWQMSiteList = await GetMWQMSiteListFromSubsector(tvItem);
-                webMWQMSite.MWQMSiteStartEndDateList = await GetMWQMSiteStartEndDateListFromSubsector(tvItem);
+                await FillChildTVItemMWQMSiteModel(webMWQMSite.MWQMSiteModelList, tvItemSubsector, TVTypeEnum.MWQMSite);
 
                 await DoStore<WebMWQMSite>(webMWQMSite, $"WebMWQMSite_{SubsectorTVItemID}.gz");
             }

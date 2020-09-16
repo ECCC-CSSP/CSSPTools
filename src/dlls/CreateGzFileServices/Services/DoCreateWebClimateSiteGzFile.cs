@@ -20,9 +20,9 @@ namespace CreateGzFileServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            TVItem tvItem = await GetTVItemWithTVItemID(ProvinceTVItemID);
+            TVItem tvItemProvince = await GetTVItemWithTVItemID(ProvinceTVItemID);
 
-            if (tvItem == null || tvItem.TVType != TVTypeEnum.Province)
+            if (tvItemProvince == null || tvItemProvince.TVType != TVTypeEnum.Province)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._CouldNotBeFoundFor_Equal_And_Equal_,
                     "TVItem", ProvinceTVItemID.ToString(), "TVType", TVTypeEnum.Province.ToString())));
@@ -32,11 +32,9 @@ namespace CreateGzFileServices
 
             try
             {
-                webClimateSite.ClimateSiteList = await GetClimateSiteListUnderProvince(tvItem);
-                webClimateSite.TVItemList = await GetTVItemChildrenListWithTVItemID(tvItem, TVTypeEnum.ClimateSite);
-                webClimateSite.TVItemLanguageList = await GetTVItemLanguageChildrenListWithTVItemID(tvItem, TVTypeEnum.ClimateSite);
-                webClimateSite.MapInfoList = await GetMapInfoChildrenListWithTVItemID(tvItem, TVTypeEnum.ClimateSite);
-                webClimateSite.MapInfoPointList = await GetMapInfoPointChildrenListWithTVItemID(tvItem, TVTypeEnum.ClimateSite);
+                webClimateSite.ClimateSiteList = await GetClimateSiteListUnderProvince(tvItemProvince);
+
+                await FillChildTVItemModel(webClimateSite.TVItemClimateSiteList, tvItemProvince, TVTypeEnum.ClimateSite);
 
                 await DoStore<WebClimateSite>(webClimateSite, $"WebClimateSite_{ProvinceTVItemID}.gz");
             }

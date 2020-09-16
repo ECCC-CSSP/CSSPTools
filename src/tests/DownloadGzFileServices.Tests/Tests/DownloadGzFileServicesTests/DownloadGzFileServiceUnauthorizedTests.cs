@@ -447,6 +447,23 @@ namespace DownloadGzFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
+        public async Task DownloadWebPolSourceSiteEffectTerm_Unauthorized_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            LocalService.LoggedInContactInfo = null;
+
+            WebTypeEnum webType = WebTypeEnum.WebPolSourceSiteEffectTerm;
+            int TVItemID = 635;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
+
+            // Download gz
+            var actionRes = await DownloadGzFileService.DownloadGzFile(webType, TVItemID, webTypeYear);
+            Assert.Equal(401, ((UnauthorizedResult)actionRes.Result).StatusCode);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
         public async Task DownloadWebProvince_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -556,6 +573,40 @@ namespace DownloadGzFileServices.Tests
             LocalService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebTideLocation;
+            int TVItemID = 0;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
+
+            // Download gz
+            var actionRes = await DownloadGzFileService.DownloadGzFile(webType, TVItemID, webTypeYear);
+            Assert.Equal(401, ((UnauthorizedResult)actionRes.Result).StatusCode);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task DownloadWebAllTVItem_Unauthorized_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            LocalService.LoggedInContactInfo = null;
+
+            WebTypeEnum webType = WebTypeEnum.WebAllTVItem;
+            int TVItemID = 0;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
+
+            // Download gz
+            var actionRes = await DownloadGzFileService.DownloadGzFile(webType, TVItemID, webTypeYear);
+            Assert.Equal(401, ((UnauthorizedResult)actionRes.Result).StatusCode);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task DownloadWebAllTVItemLanguage_Unauthorized_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            LocalService.LoggedInContactInfo = null;
+
+            WebTypeEnum webType = WebTypeEnum.WebAllTVItemLanguage;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 

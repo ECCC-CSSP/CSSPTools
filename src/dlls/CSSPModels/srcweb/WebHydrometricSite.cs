@@ -10,10 +10,8 @@ namespace CSSPModels
     {
         #region Properties
         public List<HydrometricSite> HydrometricSiteList { get; set; }
-        public List<TVItem> TVItemList { get; set; }
-        public List<TVItemLanguage> TVItemLanguageList { get; set; }
-        public List<MapInfo> MapInfoList { get; set; }
-        public List<MapInfoPoint> MapInfoPointList { get; set; }
+        public List<WebBase> TVItemHydrometricSiteList { get; set; }
+
         public List<RatingCurve> RatingCurveList { get; set; }
         public List<RatingCurveValue> RatingCurveValueList { get; set; }
         #endregion Properties
@@ -22,10 +20,8 @@ namespace CSSPModels
         public WebHydrometricSite()
         {
             HydrometricSiteList = new List<HydrometricSite>();
-            TVItemList = new List<TVItem>();
-            TVItemLanguageList = new List<TVItemLanguage>();
-            MapInfoList = new List<MapInfo>();
-            MapInfoPointList = new List<MapInfoPoint>();
+            TVItemHydrometricSiteList = new List<WebBase>();
+
             RatingCurveList = new List<RatingCurve>();
             RatingCurveValueList = new List<RatingCurveValue>();
         }

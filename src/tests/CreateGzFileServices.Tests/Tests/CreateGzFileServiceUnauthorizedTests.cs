@@ -447,6 +447,23 @@ namespace CreateGzFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
+        public async Task CreateWebPolSourceSiteEffectTerm_Unauthorized_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
+
+            WebTypeEnum webType = WebTypeEnum.WebPolSourceSiteEffectTerm;
+            int TVItemID = 635;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
+
+            // Create gz
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
+            Assert.Equal(401, ((UnauthorizedResult)actionRes.Result).StatusCode);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
         public async Task CreateWebProvince_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -566,13 +583,30 @@ namespace CreateGzFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task CreateWebTVItem_Unauthorized_Good_Test(string culture)
+        public async Task CreateWebAllTVItem_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
             await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
 
-            WebTypeEnum webType = WebTypeEnum.WebTVItem;
+            WebTypeEnum webType = WebTypeEnum.WebAllTVItem;
+            int TVItemID = 0;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
+
+            // Create gz
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
+            Assert.Equal(401, ((UnauthorizedResult)actionRes.Result).StatusCode);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task CreateWebAllTVItemLanguage_Unauthorized_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
+
+            WebTypeEnum webType = WebTypeEnum.WebAllTVItemLanguage;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 

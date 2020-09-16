@@ -458,6 +458,23 @@ namespace DownloadGzFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
+        public async Task DownloadGzFileService_DownloadWebPolSourceSiteEffectTerm_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebPolSourceSiteEffectTerm;
+            int TVItemID = 635;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
+
+            // Download gz
+            var actionRes = await DownloadGzFileService.DownloadGzFile(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
         public async Task DownloadGzFileService_DownloadWebProvince_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -565,6 +582,40 @@ namespace DownloadGzFileServices.Tests
             Assert.True(await Setup(culture));
 
             WebTypeEnum webType = WebTypeEnum.WebTideLocation;
+            int TVItemID = 0;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
+
+            // Download gz
+            var actionRes = await DownloadGzFileService.DownloadGzFile(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task DownloadGzFileService_DownloadWebAllTVItem_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebAllTVItem;
+            int TVItemID = 0;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
+
+            // Download gz
+            var actionRes = await DownloadGzFileService.DownloadGzFile(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task DownloadGzFileService_DownloadWebAllTVItemLanguage_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebAllTVItemLanguage;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
 

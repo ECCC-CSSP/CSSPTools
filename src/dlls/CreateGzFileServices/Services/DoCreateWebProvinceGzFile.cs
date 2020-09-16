@@ -20,9 +20,9 @@ namespace CreateGzFileServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            TVItem tvItem = await GetTVItemWithTVItemID(ProvinceTVItemID);
+            TVItem tvItemProvince = await GetTVItemWithTVItemID(ProvinceTVItemID);
 
-            if (tvItem == null || tvItem.TVType != TVTypeEnum.Province)
+            if (tvItemProvince == null || tvItemProvince.TVType != TVTypeEnum.Province)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._CouldNotBeFoundFor_Equal_And_Equal_,
                     "TVItem", ProvinceTVItemID.ToString(), "TVType", TVTypeEnum.Province.ToString())));
@@ -32,19 +32,11 @@ namespace CreateGzFileServices
 
             try
             {
-                webProvince.TVItem = tvItem;
-                webProvince.TVItemLanguageList = await GetTVItemLanguageListWithTVItemID(ProvinceTVItemID);
-                webProvince.TVItemStatList = await GetTVItemStatListWithTVItemID(ProvinceTVItemID);
-                webProvince.MapInfoList = await GetMapInfoListWithTVItemID(ProvinceTVItemID);
-                webProvince.MapInfoPointList = await GetMapInfoPointListWithTVItemID(ProvinceTVItemID);
-                webProvince.TVFileList = await GetTVFileListWithTVItemID(ProvinceTVItemID);
-                webProvince.TVFileLanguageList = await GetTVFileLanguageListWithTVItemID(ProvinceTVItemID);
-                webProvince.TVItemAreaList = await GetTVItemChildrenListWithTVItemID(tvItem, TVTypeEnum.Area);
-                webProvince.TVItemLanguageAreaList = await GetTVItemLanguageChildrenListWithTVItemID(tvItem, TVTypeEnum.Area);
-                webProvince.TVItemStatAreaList = await GetTVItemStatChildrenListWithTVItemID(tvItem, TVTypeEnum.Area);
-                webProvince.MapInfoAreaList = await GetMapInfoChildrenListWithTVItemID(tvItem, TVTypeEnum.Area);
-                webProvince.MapInfoPointAreaList = await GetMapInfoPointChildrenListWithTVItemID(tvItem, TVTypeEnum.Area);
-                webProvince.SamplingPlanList = await GetSamplingPlanListWithProvinceTVItemID(tvItem.TVItemID);
+                await FillTVItemModel(webProvince.TVItemModel, tvItemProvince);
+
+                await FillChildTVItemModel(webProvince.TVItemAreaList, tvItemProvince, TVTypeEnum.Area);
+
+                webProvince.SamplingPlanList = await GetSamplingPlanListWithProvinceTVItemID(tvItemProvince.TVItemID);
 
                 await DoStore<WebProvince>(webProvince, $"WebProvince_{ProvinceTVItemID}.gz");
             }

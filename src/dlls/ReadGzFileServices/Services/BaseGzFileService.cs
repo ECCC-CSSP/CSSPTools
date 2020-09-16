@@ -121,6 +121,9 @@ namespace ReadGzFileServices
                 case WebTypeEnum.WebPolSourceSite:
                     fileName = $"WebPolSourceSite_{ TVItemID }.gz";
                     break;
+                case WebTypeEnum.WebPolSourceSiteEffectTerm:
+                    fileName = $"WebPolSourceSiteEffectTerm.gz";
+                    break;
                 case WebTypeEnum.WebProvince:
                     fileName = $"WebProvince_{ TVItemID }.gz";
                     break;
@@ -142,8 +145,11 @@ namespace ReadGzFileServices
                 case WebTypeEnum.WebTideLocation:
                     fileName = $"WebTideLocation.gz";
                     break;
-                case WebTypeEnum.WebTVItem:
-                    fileName = $"WebTVItem.gz";
+                case WebTypeEnum.WebAllTVItem:
+                    fileName = $"WebAllTVItem.gz";
+                    break;
+                case WebTypeEnum.WebAllTVItemLanguage:
+                    fileName = $"WebAllTVItemLanguage.gz";
                     break;
                 default:
                     return await Task.FromResult("WebError.gz");

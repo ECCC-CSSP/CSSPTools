@@ -2535,8 +2535,8 @@
   <data name="WebTypeEnumWebTideLocation" xml:space="preserve">
     <value>WebTideLocation (fr)</value>
   </data>
-  <data name="WebTypeEnumWebTVItem" xml:space="preserve">
-    <value>WebTVItem (fr)</value>
+  <data name="WebTypeEnumWebAllTVItem" xml:space="preserve">
+    <value>WebAllTVItem (fr)</value>
   </data>
   <data name="WebTypeYearEnumYear1980" xml:space="preserve">
     <value>WebTypeYear1980 (fr)</value>
@@ -2561,5 +2561,11 @@
   </data>
   <data name="WebTypeYearEnumYear2050" xml:space="preserve">
     <value>WebTypeYear2050 (fr)</value>
+  </data>
+  <data name="WebTypeEnumWebPolSourceSiteEffectTerm" xml:space="preserve">
+    <value>WebPolSourceSiteEffectTerm</value>
+  </data>
+  <data name="WebTypeEnumWebAllTVItemLanguage" xml:space="preserve">
+    <value>WebAllTVItemLanguage (fr)</value>
   </data>
 </root>

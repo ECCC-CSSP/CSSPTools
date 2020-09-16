@@ -4626,8 +4626,11 @@ namespace CSSPEnums.Tests
                     case WebTypeEnum.WebReportType:
                         Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebReportType, retStr);
                         break;
-                    case WebTypeEnum.WebTVItem:
-                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebTVItem, retStr);
+                    case WebTypeEnum.WebAllTVItem:
+                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebAllTVItem, retStr);
+                        break;
+                    case WebTypeEnum.WebAllTVItemLanguage:
+                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebAllTVItemLanguage, retStr);
                         break;
                     default:
                         Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -7936,7 +7939,8 @@ namespace CSSPEnums.Tests
                      case WebTypeEnum.WebPolSourceSite:
                      case WebTypeEnum.WebPolSourceGrouping:
                      case WebTypeEnum.WebReportType:
-                     case WebTypeEnum.WebTVItem:
+                     case WebTypeEnum.WebAllTVItem:
+                     case WebTypeEnum.WebAllTVItemLanguage:
                         Assert.Equal("", retStr);
                         break;
                     default:

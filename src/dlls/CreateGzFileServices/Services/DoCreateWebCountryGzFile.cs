@@ -20,9 +20,9 @@ namespace CreateGzFileServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            TVItem tvItem = await GetTVItemWithTVItemID(CountryTVItemID);
+            TVItem tvItemCountry = await GetTVItemWithTVItemID(CountryTVItemID);
 
-            if (tvItem == null || tvItem.TVType != TVTypeEnum.Country)
+            if (tvItemCountry == null || tvItemCountry.TVType != TVTypeEnum.Country)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._CouldNotBeFoundFor_Equal_And_Equal_,
                     "TVItem", CountryTVItemID.ToString(), "TVType", TVTypeEnum.Country.ToString())));
@@ -32,22 +32,14 @@ namespace CreateGzFileServices
 
             try
             {
-                webCountry.TVItem = tvItem;
-                webCountry.TVItemLanguageList = await GetTVItemLanguageListWithTVItemID(CountryTVItemID);
-                webCountry.TVItemStatList = await GetTVItemStatListWithTVItemID(CountryTVItemID);
-                webCountry.MapInfoList = await GetMapInfoListWithTVItemID(CountryTVItemID);
-                webCountry.MapInfoPointList = await GetMapInfoPointListWithTVItemID(CountryTVItemID);
-                webCountry.TVFileList = await GetTVFileListWithTVItemID(CountryTVItemID);
-                webCountry.TVFileLanguageList = await GetTVFileLanguageListWithTVItemID(CountryTVItemID);
-                webCountry.TVItemProvinceList = await GetTVItemChildrenListWithTVItemID(tvItem, TVTypeEnum.Province);
-                webCountry.TVItemLanguageProvinceList = await GetTVItemLanguageChildrenListWithTVItemID(tvItem, TVTypeEnum.Province);
-                webCountry.TVItemStatProvinceList = await GetTVItemStatChildrenListWithTVItemID(tvItem, TVTypeEnum.Province);
-                webCountry.MapInfoProvinceList = await GetMapInfoChildrenListWithTVItemID(tvItem, TVTypeEnum.Province);
-                webCountry.MapInfoPointProvinceList = await GetMapInfoPointChildrenListWithTVItemID(tvItem, TVTypeEnum.Province);
-                webCountry.EmailDistributionListList = await GetEmailDistributionListListUnderCountry(tvItem.TVItemID);
-                webCountry.EmailDistributionListLanguageList = await GetEmailDistributionListLanguageListUnderCountry(tvItem.TVItemID);
-                webCountry.EmailDistributionListContactList = await GetEmailDistributionListContactListUnderCountry(tvItem.TVItemID);
-                webCountry.EmailDistributionListContactLanguageList = await GetEmailDistributionListContactLanguageListUnderCountry(tvItem.TVItemID);
+                await FillTVItemModel(webCountry.TVItemModel, tvItemCountry);
+
+                await FillChildTVItemModel(webCountry.TVItemProvinceList, tvItemCountry, TVTypeEnum.Province);
+
+                webCountry.EmailDistributionListList = await GetEmailDistributionListListUnderCountry(tvItemCountry.TVItemID);
+                webCountry.EmailDistributionListLanguageList = await GetEmailDistributionListLanguageListUnderCountry(tvItemCountry.TVItemID);
+                webCountry.EmailDistributionListContactList = await GetEmailDistributionListContactListUnderCountry(tvItemCountry.TVItemID);
+                webCountry.EmailDistributionListContactLanguageList = await GetEmailDistributionListContactLanguageListUnderCountry(tvItemCountry.TVItemID);
 
                 await DoStore<WebCountry>(webCountry, $"WebCountry_{CountryTVItemID}.gz");
             }

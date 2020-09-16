@@ -7,7 +7,9 @@ using CSSPEnums;
 using CSSPModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace CreateGzFileServices
 {
@@ -20,9 +22,9 @@ namespace CreateGzFileServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            TVItem tvItem = await GetTVItemWithTVItemID(AreaTVItemID);
+            TVItem tvItemArea = await GetTVItemWithTVItemID(AreaTVItemID);
 
-            if (tvItem == null || tvItem.TVType != TVTypeEnum.Area)
+            if (tvItemArea == null || tvItemArea.TVType != TVTypeEnum.Area)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._CouldNotBeFoundFor_Equal_And_Equal_, 
                     "TVItem", AreaTVItemID.ToString(), "TVType", TVTypeEnum.Area.ToString())));
@@ -32,20 +34,9 @@ namespace CreateGzFileServices
 
             try
             {
-                // WebBase
-                webArea.TVItem = tvItem;
-                webArea.TVItemLanguageList = await GetTVItemLanguageListWithTVItemID(AreaTVItemID);
-                webArea.TVItemStatList = await GetTVItemStatListWithTVItemID(AreaTVItemID);
-                webArea.MapInfoList = await GetMapInfoListWithTVItemID(AreaTVItemID);
-                webArea.MapInfoPointList = await GetMapInfoPointListWithTVItemID(AreaTVItemID);
-                webArea.TVFileList = await GetTVFileListWithTVItemID(AreaTVItemID);
-                webArea.TVFileLanguageList = await GetTVFileLanguageListWithTVItemID(AreaTVItemID);
-                // WebArea
-                webArea.TVItemSectorList = await GetTVItemChildrenListWithTVItemID(tvItem, TVTypeEnum.Sector);
-                webArea.TVItemLanguageSectorList = await GetTVItemLanguageChildrenListWithTVItemID(tvItem, TVTypeEnum.Sector);
-                webArea.TVItemStatSectorList = await GetTVItemStatChildrenListWithTVItemID(tvItem, TVTypeEnum.Sector);
-                webArea.MapInfoSectorList = await GetMapInfoChildrenListWithTVItemID(tvItem, TVTypeEnum.Sector);
-                webArea.MapInfoPointSectorList = await GetMapInfoPointChildrenListWithTVItemID(tvItem, TVTypeEnum.Sector);
+                await FillTVItemModel(webArea.TVItemModel, tvItemArea);
+
+                await FillChildTVItemModel(webArea.TVItemSectorList, tvItemArea, TVTypeEnum.Sector);
 
                 await DoStore<WebArea>(webArea, $"WebArea_{AreaTVItemID}.gz");
             }
