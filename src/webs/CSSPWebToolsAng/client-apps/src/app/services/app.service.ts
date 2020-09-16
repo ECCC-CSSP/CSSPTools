@@ -12,7 +12,7 @@ export class AppService {
   appModel$: BehaviorSubject<AppModel> = new BehaviorSubject<AppModel>(<AppModel>{});
 
   constructor(private httpClient: HttpClient) {
-    this.UpdateApp(<AppModel>{ BaseApiUrl: 'https://localhost:44346/api/'});
+    this.UpdateApp(<AppModel>{ BaseApiUrl: 'https://localhost:4447/api/'});
    }
 
   UpdateApp(appModel: AppModel)
