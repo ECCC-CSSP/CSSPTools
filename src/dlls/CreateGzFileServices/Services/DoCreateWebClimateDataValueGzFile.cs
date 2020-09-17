@@ -32,6 +32,8 @@ namespace CreateGzFileServices
 
             try
             {
+                await FillParentListTVItemModelList(webClimateDataValue.TVItemParentList, tvItemClimateSite);
+
                 webClimateDataValue.ClimateDataValueList = await GetClimateDataValueListForClimateSite(tvItemClimateSite.TVItemID);
 
                 await DoStore<WebClimateDataValue>(webClimateDataValue, $"WebClimateDataValue_{ClimateSiteTVItemID}.gz");

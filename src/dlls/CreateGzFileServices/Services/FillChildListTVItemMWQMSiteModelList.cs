@@ -15,24 +15,25 @@ namespace CreateGzFileServices
 {
     public partial class CreateGzFileService : ControllerBase, ICreateGzFileService
     {
-        private async Task FillChildTVItemMikeSourceModel(List<MikeSourceModel> MikeSourceModelList, TVItem TVItem, TVTypeEnum TVType)
+        private async Task FillChildListTVItemMWQMSiteModelList(List<MWQMSiteModel> MWQMSiteModelList, TVItem TVItem, TVTypeEnum TVType)
         {
             List<TVItem> TVItemList = await GetTVItemChildrenListWithTVItemID(TVItem, TVType);
             List<TVItemLanguage> TVItemLanguageList = await GetTVItemLanguageChildrenListWithTVItemID(TVItem, TVType);
             List<TVItemStat> TVItemStatList = await GetTVItemStatChildrenListWithTVItemID(TVItem, TVType);
             List<MapInfo> MapInfoList = await GetMapInfoChildrenListWithTVItemID(TVItem, TVType);
             List<MapInfoPoint> MapInfoPointList = await GetMapInfoPointChildrenListWithTVItemID(TVItem, TVType);
-            List<MikeSource> MikeSourceList = await GetMikeSourceListUnderMikeScenario(TVItem);
-            List<MikeSourceStartEnd> MikeSourceStartEndList = await GetMikeSourceStartEndListUnderMikeScenario(TVItem);
+
+            List<MWQMSite> MWQMSiteList = await GetMWQMSiteListFromSubsector(TVItem);
+            List<MWQMSiteStartEndDate> MWQMSiteStartEndDateList = await GetMWQMSiteStartEndDateListFromSubsector(TVItem);
 
             foreach (TVItem tvItem in TVItemList)
             {
-                MikeSourceModel mikeSourceModel = new MikeSourceModel();
-                mikeSourceModel.TVItemModel.TVItem = tvItem;
-                mikeSourceModel.TVItemModel.TVItemLanguageEN = TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID && c.Language == LanguageEnum.en).FirstOrDefault();
-                mikeSourceModel.TVItemModel.TVItemLanguageFR = TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID && c.Language == LanguageEnum.fr).FirstOrDefault();
+                MWQMSiteModel mwqmSiteModel = new MWQMSiteModel();
+                mwqmSiteModel.TVItemModel.TVItem = tvItem;
+                mwqmSiteModel.TVItemModel.TVItemLanguageEN = TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID && c.Language == LanguageEnum.en).FirstOrDefault();
+                mwqmSiteModel.TVItemModel.TVItemLanguageFR = TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID && c.Language == LanguageEnum.fr).FirstOrDefault();
 
-                mikeSourceModel.TVItemModel.TVItemStatList = TVItemStatList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
+                mwqmSiteModel.TVItemModel.TVItemStatList = TVItemStatList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
 
                 foreach (MapInfo mapInfo in MapInfoList)
                 {
@@ -41,15 +42,14 @@ namespace CreateGzFileServices
                         MapInfoModel mapInfoModel = new MapInfoModel();
                         mapInfoModel.MapInfo = mapInfo;
                         mapInfoModel.MapInfoPointList = MapInfoPointList.Where(c => c.MapInfoID == mapInfo.MapInfoID).Select(c => c).ToList();
-                        mikeSourceModel.TVItemModel.MapInfoModelList.Add(mapInfoModel);
+                        mwqmSiteModel.TVItemModel.MapInfoModelList.Add(mapInfoModel);
                     }
                 }
 
-                mikeSourceModel.MikeSource = MikeSourceList.Where(c => c.MikeSourceTVItemID == tvItem.TVItemID).FirstOrDefault();
+                mwqmSiteModel.MWQMSite = MWQMSiteList.Where(c => c.MWQMSiteTVItemID == tvItem.TVItemID).FirstOrDefault();
+                mwqmSiteModel.MWQMSiteStartEndDateList = MWQMSiteStartEndDateList.Where(c => c.MWQMSiteTVItemID == tvItem.TVItemID).ToList();
 
-                mikeSourceModel.MikeSourceStartEndList = MikeSourceStartEndList.Where(c => c.MikeSourceID == mikeSourceModel.MikeSource.MikeSourceID).ToList();
-
-                MikeSourceModelList.Add(mikeSourceModel);
+                MWQMSiteModelList.Add(mwqmSiteModel);
             }
         }
     }

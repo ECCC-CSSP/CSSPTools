@@ -9,12 +9,14 @@ namespace CSSPModels
     public partial class WebSamplingPlan
     {
         #region Properties
+        public List<WebBase> TVItemParentList { get; set; }
         public SamplingPlanModel SamplingPlanModel { get; set; }
         #endregion Properties
 
         #region Constructors
         public WebSamplingPlan()
         {
+            TVItemParentList = new List<WebBase>();
             SamplingPlanModel = new SamplingPlanModel();
         }
         #endregion Constructors

@@ -34,7 +34,9 @@ namespace CreateGzFileServices
             {
                 await FillTVItemModel(webProvince.TVItemModel, tvItemProvince);
 
-                await FillChildTVItemModel(webProvince.TVItemAreaList, tvItemProvince, TVTypeEnum.Area);
+                await FillParentListTVItemModelList(webProvince.TVItemParentList, tvItemProvince);
+
+                await FillChildListTVItemModelList(webProvince.TVItemAreaList, tvItemProvince, TVTypeEnum.Area);
 
                 webProvince.SamplingPlanList = await GetSamplingPlanListWithProvinceTVItemID(tvItemProvince.TVItemID);
 

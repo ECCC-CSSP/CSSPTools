@@ -15,7 +15,7 @@ namespace CreateGzFileServices
 {
     public partial class CreateGzFileService : ControllerBase, ICreateGzFileService
     {
-        private async Task FillChildTVItemContactModel(List<ContactModel> ContactModelList, TVItem TVItem)
+        private async Task FillChildListTVItemContactModelList(List<ContactModel> ContactModelList, TVItem TVItem)
         {
             List<Contact> MunicipalityContactList = await GetMunicipalityContactListUnderMunicipality(TVItem);
             List<Email> MunicipalityContactEmailList = await GetMunicipalityContactEmailListUnderMunicipality(TVItem);

@@ -36,9 +36,11 @@ namespace CreateGzFileServices
             {
                 await FillTVItemModel(webSector.TVItemModel, tvItemSector);
 
-                await FillChildTVItemModel(webSector.TVItemSubsectorList, tvItemSector, TVTypeEnum.Subsector);
+                await FillParentListTVItemModelList(webSector.TVItemParentList, tvItemSector);
 
-                await FillChildTVItemModel(webSector.TVItemMikeScenarioList, tvItemSector, TVTypeEnum.MikeScenario);
+                await FillChildListTVItemModelList(webSector.TVItemSubsectorList, tvItemSector, TVTypeEnum.Subsector);
+
+                await FillChildListTVItemModelList(webSector.TVItemMikeScenarioList, tvItemSector, TVTypeEnum.MikeScenario);
 
                 await DoStore<WebSector>(webSector, $"WebSector_{SectorTVItemID}.gz");
             }

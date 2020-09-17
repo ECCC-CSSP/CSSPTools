@@ -9,12 +9,14 @@ namespace CSSPModels
     public partial class WebPolSourceSite
     {
         #region Properties
+        public List<WebBase> TVItemParentList { get; set; }
         public List<PolSourceSiteModel> PolSourceSiteModelList { get; set; }
         #endregion Properties
 
         #region Constructors
         public WebPolSourceSite()
         {
+            TVItemParentList = new List<WebBase>();
             PolSourceSiteModelList = new List<PolSourceSiteModel>();
         }
         #endregion Constructors

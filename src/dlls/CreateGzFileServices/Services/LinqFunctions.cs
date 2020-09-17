@@ -869,5 +869,57 @@ namespace CreateGzFileServices
             return await (from c in db.TVItemLanguages
                           select c).AsNoTracking().ToListAsync();
         }
+        private async Task<List<TVItem>> GetTVItemParentListWithTVItemID(TVItem tvItem)
+        {
+            List<int> ParentsTVItemID = tvItem.TVPath.Split("p", StringSplitOptions.RemoveEmptyEntries).Select(c => int.Parse(c)).ToList();
+
+            return await (from c in db.TVItems
+                          where ParentsTVItemID.Contains(c.TVItemID)
+                          orderby c.TVLevel
+                          select c).AsNoTracking().ToListAsync();
+        }
+        private async Task<List<TVItemLanguage>> GetTVItemLanguageParentListWithTVItemID(TVItem tvItem)
+        {
+            List<int> ParentsTVItemID = tvItem.TVPath.Split("p", StringSplitOptions.RemoveEmptyEntries).Select(c => int.Parse(c)).ToList();
+
+            return await (from c in db.TVItems
+                          from cl in db.TVItemLanguages
+                          where c.TVItemID == cl.TVItemID
+                          && ParentsTVItemID.Contains(c.TVItemID)
+                          select cl).AsNoTracking().ToListAsync();
+
+        }
+        private async Task<List<TVItemStat>> GetTVItemStatParentListWithTVItemID(TVItem tvItem)
+        {
+            List<int> ParentsTVItemID = tvItem.TVPath.Split("p", StringSplitOptions.RemoveEmptyEntries).Select(c => int.Parse(c)).ToList();
+
+            return await (from c in db.TVItems
+                          from cs in db.TVItemStats
+                          where c.TVItemID == cs.TVItemID
+                          && ParentsTVItemID.Contains(c.TVItemID)
+                          select cs).AsNoTracking().ToListAsync();
+        }
+        private async Task<List<MapInfo>> GetMapInfoParentListWithTVItemID(TVItem tvItem)
+        {
+            List<int> ParentsTVItemID = tvItem.TVPath.Split("p", StringSplitOptions.RemoveEmptyEntries).Select(c => int.Parse(c)).ToList();
+
+            return await (from c in db.TVItems
+                          from mi in db.MapInfos
+                          where c.TVItemID == mi.TVItemID
+                          && ParentsTVItemID.Contains(c.TVItemID)
+                          select mi).AsNoTracking().ToListAsync();
+        }
+        private async Task<List<MapInfoPoint>> GetMapInfoPointParentListWithTVItemID(TVItem tvItem)
+        {
+            List<int> ParentsTVItemID = tvItem.TVPath.Split("p", StringSplitOptions.RemoveEmptyEntries).Select(c => int.Parse(c)).ToList();
+
+            return await (from c in db.TVItems
+                          from mi in db.MapInfos
+                          from mip in db.MapInfoPoints
+                          where c.TVItemID == mi.TVItemID
+                          && mi.MapInfoID == mip.MapInfoID
+                          && ParentsTVItemID.Contains(c.TVItemID)
+                          select mip).AsNoTracking().ToListAsync();
+        }
     }
 }

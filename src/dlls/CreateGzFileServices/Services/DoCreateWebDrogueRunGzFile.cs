@@ -20,9 +20,9 @@ namespace CreateGzFileServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            TVItem tvItem = await GetTVItemWithTVItemID(SubsectorTVItemID);
+            TVItem tvItemSubsector = await GetTVItemWithTVItemID(SubsectorTVItemID);
 
-            if (tvItem == null || tvItem.TVType != TVTypeEnum.Subsector)
+            if (tvItemSubsector == null || tvItemSubsector.TVType != TVTypeEnum.Subsector)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._CouldNotBeFoundFor_Equal_And_Equal_,
                     "TVItem", SubsectorTVItemID.ToString(), "TVType", TVTypeEnum.Subsector.ToString())));
@@ -32,8 +32,10 @@ namespace CreateGzFileServices
 
             try
             {
-                webDrogueRun.DrogueRunList = await GetDrogueRunListUnderProvince(tvItem.TVItemID);
-                webDrogueRun.DrogueRunPositionList = await GetDrogueRunPositionListUnderProvince(tvItem.TVItemID);
+                await FillParentListTVItemModelList(webDrogueRun.TVItemParentList, tvItemSubsector);
+
+                webDrogueRun.DrogueRunList = await GetDrogueRunListUnderProvince(tvItemSubsector.TVItemID);
+                webDrogueRun.DrogueRunPositionList = await GetDrogueRunPositionListUnderProvince(tvItemSubsector.TVItemID);
 
                 await DoStore<WebDrogueRun>(webDrogueRun, $"WebDrogueRun_{SubsectorTVItemID}.gz");
             }

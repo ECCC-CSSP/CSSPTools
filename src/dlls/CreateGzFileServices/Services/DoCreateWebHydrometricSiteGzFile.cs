@@ -32,9 +32,11 @@ namespace CreateGzFileServices
 
             try
             {
+                await FillParentListTVItemModelList(webHydrometricSite.TVItemParentList, tvItemProvince);
+
                 webHydrometricSite.HydrometricSiteList = await GetHydrometricSiteListUnderProvince(tvItemProvince);
 
-                await FillChildTVItemModel(webHydrometricSite.TVItemHydrometricSiteList, tvItemProvince, TVTypeEnum.HydrometricSite);
+                await FillChildListTVItemModelList(webHydrometricSite.TVItemHydrometricSiteList, tvItemProvince, TVTypeEnum.HydrometricSite);
 
                 webHydrometricSite.RatingCurveList = await GetRatingCurveListUnderProvince(tvItemProvince);
                 webHydrometricSite.RatingCurveValueList = await GetRatingCurveValueListUnderProvince(tvItemProvince);

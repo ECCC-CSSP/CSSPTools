@@ -15,22 +15,23 @@ namespace CreateGzFileServices
 {
     public partial class CreateGzFileService : ControllerBase, ICreateGzFileService
     {
-        private async Task FillChildTVItemModel(List<WebBase> TVItemChildList, TVItem TVItem, TVTypeEnum TVType)
+        private async Task FillChildListTVItemMikeBoundaryConditionModelList(List<MikeBoundaryConditionModel> MikeBoundaryConditionModelList, TVItem TVItem, TVTypeEnum TVType)
         {
             List<TVItem> TVItemList = await GetTVItemChildrenListWithTVItemID(TVItem, TVType);
             List<TVItemLanguage> TVItemLanguageList = await GetTVItemLanguageChildrenListWithTVItemID(TVItem, TVType);
             List<TVItemStat> TVItemStatList = await GetTVItemStatChildrenListWithTVItemID(TVItem, TVType);
             List<MapInfo> MapInfoList = await GetMapInfoChildrenListWithTVItemID(TVItem, TVType);
             List<MapInfoPoint> MapInfoPointList = await GetMapInfoPointChildrenListWithTVItemID(TVItem, TVType);
+            List<MikeBoundaryCondition> MikeBoundaryConditionList = await GetMikeBoundaryConditionListUnderMikeScenario(TVItem);
 
             foreach (TVItem tvItem in TVItemList)
             {
-                WebBase webBase = new WebBase();
-                webBase.TVItemModel.TVItem = tvItem;
-                webBase.TVItemModel.TVItemLanguageEN = TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID && c.Language == LanguageEnum.en).FirstOrDefault();
-                webBase.TVItemModel.TVItemLanguageFR = TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID && c.Language == LanguageEnum.fr).FirstOrDefault();
+                MikeBoundaryConditionModel mikeBoundaryConditionModel = new MikeBoundaryConditionModel();
+                mikeBoundaryConditionModel.TVItemModel.TVItem = tvItem;
+                mikeBoundaryConditionModel.TVItemModel.TVItemLanguageEN = TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID && c.Language == LanguageEnum.en).FirstOrDefault();
+                mikeBoundaryConditionModel.TVItemModel.TVItemLanguageFR = TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID && c.Language == LanguageEnum.fr).FirstOrDefault();
 
-                webBase.TVItemModel.TVItemStatList = TVItemStatList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
+                mikeBoundaryConditionModel.TVItemModel.TVItemStatList = TVItemStatList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
 
                 foreach (MapInfo mapInfo in MapInfoList)
                 {
@@ -39,11 +40,13 @@ namespace CreateGzFileServices
                         MapInfoModel mapInfoModel = new MapInfoModel();
                         mapInfoModel.MapInfo = mapInfo;
                         mapInfoModel.MapInfoPointList = MapInfoPointList.Where(c => c.MapInfoID == mapInfo.MapInfoID).Select(c => c).ToList();
-                        webBase.TVItemModel.MapInfoModelList.Add(mapInfoModel);
+                        mikeBoundaryConditionModel.TVItemModel.MapInfoModelList.Add(mapInfoModel);
                     }
                 }
 
-                TVItemChildList.Add(webBase);
+                mikeBoundaryConditionModel.MikeBoundaryConditionList = MikeBoundaryConditionList.Where(c => c.MikeBoundaryConditionTVItemID == tvItem.TVItemID && c.TVType == TVType).ToList();
+
+                MikeBoundaryConditionModelList.Add(mikeBoundaryConditionModel);
             }
         }
     }

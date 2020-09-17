@@ -35,7 +35,7 @@ namespace CreateGzFileServices
             {
                 await FillTVItemModel(webRoot.TVItemModel, tvItemRoot);
 
-                await FillChildTVItemModel(webRoot.TVItemCountryList, tvItemRoot, TVTypeEnum.Country);
+                await FillChildListTVItemModelList(webRoot.TVItemCountryList, tvItemRoot, TVTypeEnum.Country);
 
                 await DoStore<WebRoot>(webRoot, "WebRoot.gz");
             }

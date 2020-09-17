@@ -34,11 +34,13 @@ namespace CreateGzFileServices
             {
                 await FillTVItemModel(webMikeScenario.TVItemModel, tvItemMikeScenario);
 
-                await FillChildTVItemMikeSourceModel(webMikeScenario.MikeSourceModelList, tvItemMikeScenario, TVTypeEnum.MikeSource);
+                await FillParentListTVItemModelList(webMikeScenario.TVItemParentList, tvItemMikeScenario);
 
-                await FillChildTVItemMikeBoundaryConditionModel(webMikeScenario.MikeBoundaryConditionModelWebTideList, tvItemMikeScenario, TVTypeEnum.MikeBoundaryConditionWebTide);
+                await FillChildListTVItemMikeSourceModelList(webMikeScenario.MikeSourceModelList, tvItemMikeScenario, TVTypeEnum.MikeSource);
 
-                await FillChildTVItemMikeBoundaryConditionModel(webMikeScenario.MikeBoundaryConditionModelMeshList, tvItemMikeScenario, TVTypeEnum.MikeBoundaryConditionMesh);
+                await FillChildListTVItemMikeBoundaryConditionModelList(webMikeScenario.MikeBoundaryConditionModelWebTideList, tvItemMikeScenario, TVTypeEnum.MikeBoundaryConditionWebTide);
+
+                await FillChildListTVItemMikeBoundaryConditionModelList(webMikeScenario.MikeBoundaryConditionModelMeshList, tvItemMikeScenario, TVTypeEnum.MikeBoundaryConditionMesh);
 
                 await DoStore<WebMikeScenario>(webMikeScenario, $"WebMikeScenario_{MikeScenarioTVItemID}.gz");
             }

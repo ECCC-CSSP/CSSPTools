@@ -32,7 +32,9 @@ namespace CreateGzFileServices
 
             try
             {
-                await FillChildTVItemPolSourceSiteModel(webPolSourceSite.PolSourceSiteModelList, tvItemSubsector, TVTypeEnum.PolSourceSite);
+                await FillParentListTVItemModelList(webPolSourceSite.TVItemParentList, tvItemSubsector);
+
+                await FillChildListTVItemPolSourceSiteModelList(webPolSourceSite.PolSourceSiteModelList, tvItemSubsector, TVTypeEnum.PolSourceSite);
 
                 await DoStore<WebPolSourceSite>(webPolSourceSite, $"WebPolSourceSite_{SubsectorTVItemID}.gz");
             }

@@ -9,8 +9,8 @@ namespace CSSPModels
     public partial class WebCountry : WebBase
     {
         #region Properties
+        public List<WebBase> TVItemParentList { get; set; }
         public List<WebBase> TVItemProvinceList { get; set; }
-
         public List<EmailDistributionList> EmailDistributionListList { get; set; }
         public List<EmailDistributionListLanguage> EmailDistributionListLanguageList { get; set; }
         public List<EmailDistributionListContact> EmailDistributionListContactList { get; set; }
@@ -20,8 +20,8 @@ namespace CSSPModels
         #region Constructors
         public WebCountry()
         {
+            TVItemParentList = new List<WebBase>();
             TVItemProvinceList = new List<WebBase>();
-
             EmailDistributionListList = new List<EmailDistributionList>();
             EmailDistributionListLanguageList = new List<EmailDistributionListLanguage>();
             EmailDistributionListContactList = new List<EmailDistributionListContact>();

@@ -27,10 +27,20 @@ namespace CreateGzFileServices
                     "SamplingPlan", "SamplingPlanID", SamplingPlanID.ToString())));
             }
 
+            TVItem tvItemProvince = await GetTVItemWithTVItemID(samplingPlan.ProvinceTVItemID);
+
+            if (tvItemProvince == null)
+            {
+                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._CouldNotBeFoundFor_Equal_,
+                    "TVItem", "ProvinceTVItemID", samplingPlan.ProvinceTVItemID.ToString())));
+            }
+
             WebSamplingPlan webSamplingPlan = new WebSamplingPlan();
 
             try
             {
+                await FillParentListTVItemModelList(webSamplingPlan.TVItemParentList, tvItemProvince);
+
                 await FillSamplingPlanModel(webSamplingPlan.SamplingPlanModel, samplingPlan);
 
                 await DoStore<WebSamplingPlan>(webSamplingPlan, $"WebSamplingPlan_{SamplingPlanID}.gz");

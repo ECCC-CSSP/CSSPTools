@@ -34,16 +34,18 @@ namespace CreateGzFileServices
             {
                 await FillTVItemModel(webSubsector.TVItemModel, tvItemSubsector);
 
-                await FillChildTVItemModel(webSubsector.TVItemMWQMSiteList, tvItemSubsector, TVTypeEnum.MWQMSite);
+                await FillParentListTVItemModelList(webSubsector.TVItemParentList, tvItemSubsector);
 
-                await FillChildTVItemModel(webSubsector.TVItemMWQMRunList, tvItemSubsector, TVTypeEnum.MWQMRun);
+                await FillChildListTVItemModelList(webSubsector.TVItemMWQMSiteList, tvItemSubsector, TVTypeEnum.MWQMSite);
 
-                await FillChildTVItemModel(webSubsector.TVItemPolSourceSiteList, tvItemSubsector, TVTypeEnum.PolSourceSite);
+                await FillChildListTVItemModelList(webSubsector.TVItemMWQMRunList, tvItemSubsector, TVTypeEnum.MWQMRun);
+
+                await FillChildListTVItemModelList(webSubsector.TVItemPolSourceSiteList, tvItemSubsector, TVTypeEnum.PolSourceSite);
 
                 webSubsector.MWQMAnalysisReportParameterList = await GetMWQMAnalysisReportParameterListUnderSubsector(SubsectorTVItemID);
-                webSubsector.LabSheetList = await GetLabSheetListUnderSubsector(SubsectorTVItemID);
-                webSubsector.LabSheetDetailList = await GetLabSheetDetailListUnderSubsector(SubsectorTVItemID);
-                webSubsector.LabSheetTubeMPNDetailList = await GetLabSheetTubeMPNDetailListUnderSubsector(SubsectorTVItemID);
+
+                await FillLabSheetModelList(webSubsector.LabSheetModelList, tvItemSubsector);
+
                 webSubsector.MWQMSubsector = await GetMWQMSubsector(SubsectorTVItemID);
                 webSubsector.MWQMSubsectorLanguageList = await GetMWQMSubsectorLanguageList(SubsectorTVItemID);
                 webSubsector.UseOfSiteList = await GetUseOfSiteList(SubsectorTVItemID);

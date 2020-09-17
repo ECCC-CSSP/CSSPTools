@@ -9,9 +9,9 @@ namespace CSSPModels
     public partial class WebHydrometricSite
     {
         #region Properties
+        public List<WebBase> TVItemParentList { get; set; }
         public List<HydrometricSite> HydrometricSiteList { get; set; }
         public List<WebBase> TVItemHydrometricSiteList { get; set; }
-
         public List<RatingCurve> RatingCurveList { get; set; }
         public List<RatingCurveValue> RatingCurveValueList { get; set; }
         #endregion Properties
@@ -19,9 +19,9 @@ namespace CSSPModels
         #region Constructors
         public WebHydrometricSite()
         {
+            TVItemParentList = new List<WebBase>();
             HydrometricSiteList = new List<HydrometricSite>();
             TVItemHydrometricSiteList = new List<WebBase>();
-
             RatingCurveList = new List<RatingCurve>();
             RatingCurveValueList = new List<RatingCurveValue>();
         }

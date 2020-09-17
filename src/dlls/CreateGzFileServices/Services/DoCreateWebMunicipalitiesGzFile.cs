@@ -32,8 +32,9 @@ namespace CreateGzFileServices
 
             try
             {
+                await FillParentListTVItemModelList(webMunicipalities.TVItemParentList, tvItemProvince);
 
-                await FillChildTVItemModel(webMunicipalities.TVItemMunicipalityList, tvItemProvince, TVTypeEnum.Municipality);
+                await FillChildListTVItemModelList(webMunicipalities.TVItemMunicipalityList, tvItemProvince, TVTypeEnum.Municipality);
 
                 await DoStore<WebMunicipalities>(webMunicipalities, $"WebMunicipalities_{ProvinceTVItemID}.gz");
             }

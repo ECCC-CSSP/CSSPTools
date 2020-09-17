@@ -20,9 +20,9 @@ namespace CreateGzFileServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            TVItem tvItem = await GetTVItemWithTVItemID(HydrometricSiteTVItemID);
+            TVItem tvItemHydrometric = await GetTVItemWithTVItemID(HydrometricSiteTVItemID);
 
-            if (tvItem == null || tvItem.TVType != TVTypeEnum.HydrometricSite)
+            if (tvItemHydrometric == null || tvItemHydrometric.TVType != TVTypeEnum.HydrometricSite)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._CouldNotBeFoundFor_Equal_And_Equal_,
                     "TVItem", HydrometricSiteTVItemID.ToString(), "TVType", TVTypeEnum.HydrometricSite.ToString())));
@@ -32,7 +32,9 @@ namespace CreateGzFileServices
 
             try
             {
-                webHydrometricDataValue.HydrometricDataValueList = await GetHydrometricDataValueListForHydrometricSite(tvItem.TVItemID);
+                await FillParentListTVItemModelList(webHydrometricDataValue.TVItemParentList, tvItemHydrometric);
+
+                webHydrometricDataValue.HydrometricDataValueList = await GetHydrometricDataValueListForHydrometricSite(tvItemHydrometric.TVItemID);
 
                 await DoStore<WebHydrometricDataValue>(webHydrometricDataValue, $"WebHydrometricDataValue_{HydrometricSiteTVItemID}.gz");
             }

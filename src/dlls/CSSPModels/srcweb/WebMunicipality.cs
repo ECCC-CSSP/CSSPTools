@@ -9,6 +9,7 @@ namespace CSSPModels
     public partial class WebMunicipality : WebBase
     {
         #region Properties
+        public List<WebBase> TVItemParentList { get; set; }
         public List<WebBase> TVItemMikeScenarioList { get; set; }
         public List<InfrastructureModel> InfrastructureModelList { get; set; }
         public List<ContactModel> MunicipalityContactModelList { get; set; }
@@ -18,8 +19,9 @@ namespace CSSPModels
         #region Constructors
         public WebMunicipality()
         {
-            InfrastructureModelList = new List<InfrastructureModel>();
+            TVItemParentList = new List<WebBase>();
             TVItemMikeScenarioList = new List<WebBase>();
+            InfrastructureModelList = new List<InfrastructureModel>();
             MunicipalityContactModelList = new List<ContactModel>();
             MunicipalityTVItemLinkList = new List<TVItemLink>();
         }
