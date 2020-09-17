@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
-import { AppService } from 'src/app/services';
+import { AppService } from './services/app.service';
 
 @Component({
   selector: 'app-root',

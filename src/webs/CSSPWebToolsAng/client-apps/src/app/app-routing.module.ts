@@ -1,24 +1,26 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ShellComponent } from './components/shell';
+import { ShellComponent } from './pages/shell';
 
 const routes: Routes = [
   {
     path: 'en-CA', component: ShellComponent, children: [
-      { path: 'home', loadChildren: () => import('./components/home/home.module').then(mod => mod.HomeModule) },
-      { path: 'root', loadChildren: () => import('./components/root/root.module').then(mod => mod.RootModule) },
-      { path: 'webapinotfound', loadChildren: () => import('./components/web-api-not-found/web-api-not-found.module').then(mod => mod.WebApiNotFoundModule) },
+      { path: 'home', loadChildren: () => import('./pages/home/home.module').then(mod => mod.HomeModule) },
+      { path: 'root', loadChildren: () => import('./pages/root/root.module').then(mod => mod.RootModule) },
+      //{ path: 'search', loadChildren: () => import('./pages/search/search.module').then(mod => mod.SearchModule) },
+      { path: 'webapinotfound', loadChildren: () => import('./pages/web-api-not-found/web-api-not-found.module').then(mod => mod.WebApiNotFoundModule) },
     ]
   },
   {
     path: 'fr-CA', component: ShellComponent, children: [
-      { path: 'home', loadChildren: () => import('./components/home/home.module').then(mod => mod.HomeModule) },
-      { path: 'root', loadChildren: () => import('./components/root/root.module').then(mod => mod.RootModule) },
-      { path: 'webapinotfound', loadChildren: () => import('./components/web-api-not-found/web-api-not-found.module').then(mod => mod.WebApiNotFoundModule) },
+      { path: 'home', loadChildren: () => import('./pages/home/home.module').then(mod => mod.HomeModule) },
+      { path: 'root', loadChildren: () => import('./pages/root/root.module').then(mod => mod.RootModule) },
+      //{ path: 'search', loadChildren: () => import('./pages/search/search.module').then(mod => mod.SearchModule) },
+      { path: 'webapinotfound', loadChildren: () => import('./pages/web-api-not-found/web-api-not-found.module').then(mod => mod.WebApiNotFoundModule) },
     ]
   },
   { path: '', redirectTo: 'en-CA', pathMatch: 'full' },
-  { path: '**', loadChildren: () => import('./components/no-page-found/no-page-found.module').then(mod => mod.NoPageFoundModule) },
+  { path: '**', loadChildren: () => import('./pages/no-page-found/no-page-found.module').then(mod => mod.NoPageFoundModule) },
 ];
 
 @NgModule({

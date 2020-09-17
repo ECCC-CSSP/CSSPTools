@@ -1,0 +1,21 @@
+<div style="position: sticky;">
+<mat-toolbar>
+    <span class="top">
+        <button mat-button>
+            <mat-icon>menu</mat-icon>
+        </button>
+        <a mat-button routerLink="home">{{ (shellService.shellModel$ | async).AppTitle }}
+        </a>
+        <span class="right">
+            <button *ngIf="shellService.shellModel$.getValue()?.Contact" mat-button>
+                {{ shellService.shellModel$.getValue()?.Contact?.LoginEmail }}
+            </button>
+            <button mat-button *ngIf="!IsEnglish()"
+                (click)="changeLang()">English</button>
+            <button mat-button *ngIf="IsEnglish()"
+                (click)="changeLang()">Français</button>
+        </span>
+    </span>
+</mat-toolbar>
+</div>
+<router-outlet></router-outlet>

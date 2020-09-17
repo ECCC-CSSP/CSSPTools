@@ -1,12 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { AppRoutingModule } from 'src/app/app-routing.module';
-import { AppComponent } from 'src/app/app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MaterialModule } from 'src/app/app-material.module';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA  } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { ShellModule } from 'src/app/components/shell/shell.module';
-import { ApiInterceptor, ErrorInterceptor } from 'src/app/interceptors';
+
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { MaterialModule } from './app-material.module';
+import { ShellModule } from './pages/shell/shell.module';
+import { ApiInterceptor, ErrorInterceptor } from '../app/interceptors';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,9 @@ import { ApiInterceptor, ErrorInterceptor } from 'src/app/interceptors';
     { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA 
+  ]
 })
 export class AppModule { }

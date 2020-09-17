@@ -1,9 +1,8 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, of } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
-import { AppModel } from 'src/app/models';
-import { Contact } from '../models/generated/Contact.model';
+import { BehaviorSubject } from 'rxjs';
+
+import { AppModel } from '../models';
 
 @Injectable({
   providedIn: 'root'
