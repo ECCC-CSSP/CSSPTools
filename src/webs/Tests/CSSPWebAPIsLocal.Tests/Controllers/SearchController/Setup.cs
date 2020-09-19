@@ -61,14 +61,14 @@ namespace SearchControllers.Tests
             string LocalUrl = Configuration.GetValue<string>("LocalUrl");
             Assert.NotNull(LocalUrl);
 
-            string CSSPDBSearchFileName = Configuration.GetValue<string>("CSSPDBSearch");
-            Assert.NotNull(CSSPDBSearchFileName);
+            string CSSPDBCommandLogFileName = Configuration.GetValue<string>("CSSPDBCommandLog");
+            Assert.NotNull(CSSPDBCommandLogFileName);
 
-            FileInfo fiCSSPDBSearch = new FileInfo(CSSPDBSearchFileName);
+            FileInfo fiCSSPDBCommandLog = new FileInfo(CSSPDBCommandLogFileName);
 
-            Services.AddDbContext<CSSPDBSearchContext>(options =>
+            Services.AddDbContext<CSSPDBCommandLogContext>(options =>
             {
-                options.UseSqlite($"Data Source={ fiCSSPDBSearch.FullName }");
+                options.UseSqlite($"Data Source={ fiCSSPDBCommandLog.FullName }");
             });
 
             //string CSSPDBFilesManagementFileName = Configuration.GetValue<string>("CSSPDBFilesManagement");

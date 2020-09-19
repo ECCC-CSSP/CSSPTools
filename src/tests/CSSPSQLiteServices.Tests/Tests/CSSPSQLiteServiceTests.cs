@@ -54,11 +54,11 @@ namespace CSSPSQLiteServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task CSSPSQLiteService_CreateSQLiteCSSPDBSearch_Good_Test(string culture)
+        public async Task CSSPSQLiteService_CreateSQLiteCSSPDBCommandLog_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            bool retBool = await CSSPSQLiteService.CreateSQLiteCSSPDBSearch();
+            bool retBool = await CSSPSQLiteService.CreateSQLiteCSSPDBCommandLog();
             Assert.True(retBool);
         }
         [Theory]
@@ -79,6 +79,16 @@ namespace CSSPSQLiteServices.Tests
             Assert.True(await Setup(culture));
 
             bool retBool = await CSSPSQLiteService.CreateSQLiteCSSPDBLogin();
+            Assert.True(retBool);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task CSSPSQLiteService_CreateSQLiteCSSPDBSearch_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            bool retBool = await CSSPSQLiteService.CreateSQLiteCSSPDBSearch();
             Assert.True(retBool);
         }
         [Theory]
@@ -147,6 +157,41 @@ namespace CSSPSQLiteServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
+        public async Task CSSPSQLiteService_CSSPDBCommandLogIsEmpty_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            try
+            {
+                fiCSSPDBCommandLog.Delete();
+            }
+            catch (Exception ex)
+            {
+                Assert.True(false, ex.Message);
+            }
+
+            bool retBool = await CSSPSQLiteService.CreateSQLiteCSSPDBCommandLog();
+            Assert.True(retBool);
+
+            retBool = await CSSPSQLiteService.CSSPDBCommandLogIsEmpty();
+            Assert.True(retBool);
+
+            // will need to add some information to CSSPDBLocal to fully check if CSSPDBCommandLogIsEmpty is really working
+
+            //var actionTVItemList = await TVItemService.GetTVItemList();
+            //Assert.Equal(200, ((ObjectResult)actionTVItemList.Result).StatusCode);
+            //Assert.NotNull(((OkObjectResult)actionTVItemList.Result).Value);
+            //List<TVItem> tvItemList = (List<TVItem>)((OkObjectResult)actionTVItemList.Result).Value;
+            //Assert.True(tvItemList.Count > 0);
+
+
+
+            retBool = await CSSPSQLiteService.CSSPDBCommandLogIsEmpty();
+            Assert.True(retBool);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
         public async Task CSSPSQLiteService_CSSPDBSearchIsEmpty_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -173,8 +218,6 @@ namespace CSSPSQLiteServices.Tests
             //Assert.NotNull(((OkObjectResult)actionTVItemList.Result).Value);
             //List<TVItem> tvItemList = (List<TVItem>)((OkObjectResult)actionTVItemList.Result).Value;
             //Assert.True(tvItemList.Count > 0);
-
-
 
             retBool = await CSSPSQLiteService.CSSPDBSearchIsEmpty();
             Assert.True(retBool);

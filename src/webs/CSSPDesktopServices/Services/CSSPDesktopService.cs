@@ -1,5 +1,4 @@
 ﻿using CSSPCultureServices.Services;
-using CSSPDBSearchServices;
 using CSSPDesktopServices.Models;
 using CSSPEnums;
 using CSSPModels;
@@ -31,6 +30,7 @@ namespace CSSPDesktopServices.Services
         string CSSPDBLogin { get; set; }
         string CSSPDBLocal { get; set; }
         string CSSPDBSearch { get; set; }
+        string CSSPDBCommandLog { get; set; }
         string CSSPAzureUrl { get; set; }
         string CSSPLocalUrl { get; set; }
         Preference preference { get; set; }
@@ -76,6 +76,7 @@ namespace CSSPDesktopServices.Services
         public string CSSPDBLogin { get; set; }
         public string CSSPDBLocal { get; set; }
         public string CSSPDBSearch { get; set; }
+        public string CSSPDBCommandLog { get; set; }
         public string CSSPAzureUrl { get; set; }
         public string CSSPLocalUrl { get; set; }
         public Preference preference { get; set; }
@@ -86,13 +87,13 @@ namespace CSSPDesktopServices.Services
         #region Properties private
         private CSSPDBLocalContext dbLocal { get; }
         private CSSPDBSearchContext dbSearch { get; }
+        private CSSPDBCommandLogContext dbCommandLog { get; }
         private CSSPDBLoginContext dbLogin { get; }
         private CSSPDBFilesManagementContext dbFM { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private IEnums enums { get; }
         private ILocalService LocalService { get; }
-        private ICSSPDBSearchService CSSPDBSearchService { get; }
         private IReadGzFileService ReadGzFileService { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         private string CSSPDesktopPath { get; set; }
@@ -108,7 +109,7 @@ namespace CSSPDesktopServices.Services
 
         #region Constructors
         public CSSPDesktopService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, 
-            ILocalService LocalService, CSSPDBLocalContext dbLocal, CSSPDBSearchContext dbSearch, 
+            ILocalService LocalService, CSSPDBLocalContext dbLocal, CSSPDBSearchContext dbSearch, CSSPDBCommandLogContext dbCommandLog, 
             CSSPDBLoginContext dbLogin, CSSPDBFilesManagementContext dbFM, IReadGzFileService ReadGzFileService)
         {
             this.Configuration = Configuration;
@@ -117,9 +118,9 @@ namespace CSSPDesktopServices.Services
             this.LocalService = LocalService;
             this.dbLocal = dbLocal;
             this.dbSearch = dbSearch;
+            this.dbCommandLog = dbCommandLog;
             this.dbLogin = dbLogin;
             this.dbFM = dbFM;
-            this.CSSPDBSearchService = CSSPDBSearchService;
             this.ReadGzFileService = ReadGzFileService;
 
             preference = new Preference();

@@ -118,6 +118,19 @@ namespace CSSPWebAPIsLocal
             });
 
             /* ---------------------------------------------------------------------------------
+             * using CSSPDBCommandLog
+             * ---------------------------------------------------------------------------------      
+             */
+            string CSSPDBCommandLogFileName = Configuration.GetValue<string>("CSSPDBCommandLog");
+
+            FileInfo fiCSSPDBCommandLog = new FileInfo(CSSPDBCommandLogFileName);
+
+            services.AddDbContext<CSSPDBCommandLogContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiCSSPDBCommandLog.FullName }");
+            });
+
+            /* ---------------------------------------------------------------------------------
              * using CSSPDBSearch
              * ---------------------------------------------------------------------------------      
              */
@@ -126,15 +139,6 @@ namespace CSSPWebAPIsLocal
             FileInfo fiCSSPDBSearch = new FileInfo(CSSPDBSearchFileName);
 
             services.AddDbContext<CSSPDBSearchContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiCSSPDBSearch.FullName }");
-            });
-
-            /* ---------------------------------------------------------------------------------
-             * using CSSPDBSearchInMemory
-             * ---------------------------------------------------------------------------------      
-             */
-            services.AddDbContext<CSSPDBSearchInMemoryContext>(options =>
             {
                 options.UseInMemoryDatabase($"Data Source={ fiCSSPDBSearch.FullName }");
             });

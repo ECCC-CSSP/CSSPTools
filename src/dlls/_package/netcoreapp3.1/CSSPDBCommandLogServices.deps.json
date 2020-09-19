@@ -6,10 +6,11 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v3.1": {
-      "CSSPServices/1.0.0": {
+      "CSSPDBCommandLogServices/1.0.0": {
         "dependencies": {
           "Azure.Storage.Blobs": "12.4.4",
           "CSSPModels": "1.0.0",
+          "LocalServices": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.6",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.6",
           "Microsoft.EntityFrameworkCore": "3.1.6",
@@ -22,7 +23,7 @@
           "Microsoft.Extensions.Configuration.Json": "3.1.6"
         },
         "runtime": {
-          "CSSPServices.dll": {}
+          "CSSPDBCommandLogServices.dll": {}
         }
       },
       "Azure.Core/1.2.2": {
@@ -1400,11 +1401,30 @@
         "runtime": {
           "CSSPModels.dll": {}
         }
+      },
+      "LocalServices/1.0.0": {
+        "dependencies": {
+          "Azure.Storage.Blobs": "12.4.4",
+          "CSSPModels": "1.0.0",
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.6",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.6",
+          "Microsoft.EntityFrameworkCore": "3.1.6",
+          "Microsoft.EntityFrameworkCore.Design": "3.1.6",
+          "Microsoft.EntityFrameworkCore.InMemory": "3.1.6",
+          "Microsoft.EntityFrameworkCore.SqlServer": "3.1.6",
+          "Microsoft.EntityFrameworkCore.Sqlite": "3.1.6",
+          "Microsoft.EntityFrameworkCore.Tools": "3.1.6",
+          "Microsoft.Extensions.Configuration": "3.1.6",
+          "Microsoft.Extensions.Configuration.Json": "3.1.6"
+        },
+        "runtime": {
+          "LocalServices.dll": {}
+        }
       }
     }
   },
   "libraries": {
-    "CSSPServices/1.0.0": {
+    "CSSPDBCommandLogServices/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -2316,6 +2336,11 @@
       "sha512": ""
     },
     "CSSPModels/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "LocalServices/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

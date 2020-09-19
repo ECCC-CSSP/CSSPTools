@@ -8,20 +8,19 @@ using System.Linq;
 
 namespace CSSPModels
 {
-    public partial class CSSPDBSearchInMemoryContext : DbContext
+    public partial class CSSPDBCommandLogContext : DbContext
     {
 
         #region Properties
-        public virtual DbSet<TVItem> TVItems { get; set; }
-        public virtual DbSet<TVItemLanguage> TVItemLanguages { get; set; }
+        public virtual DbSet<CSSPCommandLog> CSSPCommandLogs { get; set; }
         #endregion Properties
 
         #region Constructors
-        public CSSPDBSearchInMemoryContext()
+        public CSSPDBCommandLogContext()
         {
         }
 
-        public CSSPDBSearchInMemoryContext(DbContextOptions<CSSPDBSearchInMemoryContext> options)
+        public CSSPDBCommandLogContext(DbContextOptions<CSSPDBCommandLogContext> options)
             : base(options)
         {
         }

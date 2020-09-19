@@ -29,7 +29,7 @@ namespace CSSPDesktopServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task CSSPDesktopService_FillCSSPDBSearch_Good_Test(string culture)
+        public async Task CSSPDesktopService_FillCSSPDBCommandLog_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 

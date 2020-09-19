@@ -31,13 +31,13 @@ namespace CSSPDBSearchServices
 
         #region Properties
         private IConfiguration Configuration { get; }
-        private CSSPDBSearchContext dbSearch { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILocalService LocalService { get; }
+        private CSSPDBSearchContext dbSearch { get; }
         #endregion Properties
 
         #region Constructors
-        public CSSPDBSearchService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, ILocalService LocalService, IEnums enums,
+        public CSSPDBSearchService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, ILocalService LocalService, 
             CSSPDBSearchContext dbSearch)
         {
             this.Configuration = Configuration;

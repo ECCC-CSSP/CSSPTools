@@ -17,10 +17,14 @@ using System.Text.Json;
 using System.Text;
 using System.Linq;
 using LocalServices;
+using DownloadGzFileServices;
+using CSSPDBFilesManagementServices;
+using ReadGzFileServices;
+using CSSPDBSearchServices;
 
-namespace CSSPDBSearchServices.Tests
+namespace CSSPSearchServices.Tests
 {
-    public class CSSPDBSearchServiceTests
+    public class CSSPSearchServiceTests
     {
         #region Variables
         #endregion Variables
@@ -31,16 +35,11 @@ namespace CSSPDBSearchServices.Tests
         private IServiceProvider ServiceProvider { get; set; }
         private ILocalService LocalService { get; set; }
         private ICSSPDBSearchService CSSPDBSearchService { get; set; }
-        private CSSPDBSearchContext dbSearch { get; set; }
-        private FileInfo fiCSSPDBLogin { get; set; }
-        private FileInfo fiCSSPDBSearch { get; set; }
-        private FileInfo fiCSSPDBFilesManagement { get; set; }
-        private string CSSPAzureUrl { get; set; }
-        private Contact contact { get; set; }
+        private IReadGzFileService ReadGzFileService { get; set; }
         #endregion Properties
 
         #region Constructors
-        public CSSPDBSearchServiceTests()
+        public CSSPSearchServiceTests()
         {
         }
         #endregion Constructors
@@ -49,7 +48,7 @@ namespace CSSPDBSearchServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task CSSPDBSearch_Constructor_Good_Test(string culture)
+        public async Task CSSPSearch_Constructor_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -59,7 +58,7 @@ namespace CSSPDBSearchServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task CSSPDBSearch_Search_Good_Test(string culture)
+        public async Task CSSPSearch_Search_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -96,7 +95,7 @@ namespace CSSPDBSearchServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task CSSPDBSearch_Search_Under_NotFound_Good_Test(string culture)
+        public async Task CSSPSearch_Search_Under_NotFound_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -119,7 +118,7 @@ namespace CSSPDBSearchServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task CSSPDBSearch_Search_NotFound_Good_Test(string culture)
+        public async Task CSSPSearch_Search_NotFound_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -147,7 +146,7 @@ namespace CSSPDBSearchServices.Tests
             Configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
                .AddJsonFile("appsettings_csspdbsearchservicestests.json")
-               .AddUserSecrets("a69ba832-ff3f-40a7-abe3-8868d1ee2f74")
+               .AddUserSecrets("7eca0e08-0188-4d60-b3f1-41e01a2a3ad1")
                 .Build();
 
             ServiceCollection = new ServiceCollection();
@@ -161,7 +160,7 @@ namespace CSSPDBSearchServices.Tests
             string CSSPDBLogin = Configuration.GetValue<string>("CSSPDBLogin");
             Assert.NotNull(CSSPDBLogin);
 
-            fiCSSPDBLogin = new FileInfo(CSSPDBLogin);
+            FileInfo fiCSSPDBLogin = new FileInfo(CSSPDBLogin);
 
             ServiceCollection.AddDbContext<CSSPDBLoginContext>(options =>
             {
@@ -173,26 +172,15 @@ namespace CSSPDBSearchServices.Tests
                 options.UseInMemoryDatabase($"Data Source={ fiCSSPDBLogin.FullName }");
             });
 
-            // doing CSSPDBSearch
-            string CSSPDBSearch = Configuration.GetValue<string>("CSSPDBSearch");
-            Assert.NotNull(CSSPDBSearch);
+            string CSSPDBFilesManagementFileName = Configuration.GetValue<string>("CSSPDBFilesManagement");
+            Assert.NotNull(CSSPDBFilesManagementFileName);
 
-            fiCSSPDBSearch = new FileInfo(CSSPDBSearch);
-
-            ServiceCollection.AddDbContext<CSSPDBSearchContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiCSSPDBSearch.FullName }");
-            });
-
-            // doing CSSPDBFilesManagement
-            string CSSPDBFilesManagement = Configuration.GetValue<string>("CSSPDBFilesManagement");
-            Assert.NotNull(CSSPDBSearch);
-
-            fiCSSPDBFilesManagement = new FileInfo(CSSPDBFilesManagement);
+            FileInfo fiCSSPDBFilesManagementFileName = new FileInfo(CSSPDBFilesManagementFileName);
+            Assert.True(fiCSSPDBFilesManagementFileName.Exists);
 
             ServiceCollection.AddDbContext<CSSPDBFilesManagementContext>(options =>
             {
-                options.UseSqlite($"Data Source={ fiCSSPDBFilesManagement.FullName }");
+                options.UseSqlite($"Data Source={ fiCSSPDBFilesManagementFileName.FullName }");
             });
 
             ServiceProvider = ServiceCollection.BuildServiceProvider();

@@ -187,16 +187,16 @@
 //            });
 
 //            /* ---------------------------------------------------------------------------------
-//             * using CSSPDBSearch
+//             * using CSSPDBCommandLog
 //             * ---------------------------------------------------------------------------------      
 //             */
-//            string CSSPDBSearchFileName = Configuration.GetValue<string>("CSSPDBSearch");
+//            string CSSPDBCommandLogFileName = Configuration.GetValue<string>("CSSPDBCommandLog");
 
-//            FileInfo fiCSSPDBSearch = new FileInfo(CSSPDBSearchFileName);
+//            FileInfo fiCSSPDBCommandLog = new FileInfo(CSSPDBCommandLogFileName);
 
-//            Services.AddDbContext<CSSPDBSearchContext>(options =>
+//            Services.AddDbContext<CSSPDBCommandLogContext>(options =>
 //            {
-//                options.UseSqlite($"Data Source={ fiCSSPDBSearch.FullName }");
+//                options.UseSqlite($"Data Source={ fiCSSPDBCommandLog.FullName }");
 //            });
 
 //            Services.AddScoped<ICSSPCultureService, CSSPCultureService>();
@@ -212,7 +212,7 @@
 //            Services.AddScoped<ICSSPFileService, CSSPFileService>();
 //            Services.AddScoped<IDownloadGzFileService, DownloadGzFileService>();
 //            Services.AddScoped<IReadGzFileService, ReadGzFileService>();
-//            Services.AddScoped<ICSSPDBSearchService, CSSPDBSearchService>();
+//            Services.AddScoped<ICSSPDBCommandLogService, CSSPDBCommandLogService>();
 
 //            if (RunningOn == RunningOnEnum.Local)
 //            {

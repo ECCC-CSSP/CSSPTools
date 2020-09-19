@@ -34,7 +34,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CSSPDBLocalServices\CSSPDBLocalServices.csproj" />
     <ProjectReference Include="..\CSSPDBLoginServices\CSSPDBLoginServices.csproj" />
-    <ProjectReference Include="..\CSSPDBSearchServices\CSSPDBSearchServices.csproj" />
+    <ProjectReference Include="..\CSSPDBCommandLogServices\CSSPDBCommandLogServices.csproj" />
     <ProjectReference Include="..\CSSPModels\CSSPModels.csproj" />
     <ProjectReference Include="..\LocalServices\LocalServices.csproj" />
   </ItemGroup>

@@ -5,7 +5,7 @@
 
     <IsPackable>false</IsPackable>
 
-    <UserSecretsId>a69ba832-ff3f-40a7-abe3-8868d1ee2f74</UserSecretsId>
+    <UserSecretsId>7eca0e08-0188-4d60-b3f1-41e01a2a3ad1</UserSecretsId>
 
   </PropertyGroup>
 
@@ -30,11 +30,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\dlls\CSSPDBFilesManagementServices\CSSPDBFilesManagementServices.csproj" />
     <ProjectReference Include="..\..\dlls\CSSPDBSearchServices\CSSPDBSearchServices.csproj" />
+    <ProjectReference Include="..\..\dlls\DownloadGzFileServices\DownloadGzFileServices.csproj" />
+    <ProjectReference Include="..\..\dlls\ReadGzFileServices\ReadGzFileServices.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="appsettings_csspdbsearchservicestests.json">
+    <None Update="appsettings_CSSPDBSearchservicestests.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="appsettings_csspsearchservicestests.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

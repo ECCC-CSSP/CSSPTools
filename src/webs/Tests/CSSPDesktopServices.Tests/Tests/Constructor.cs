@@ -85,15 +85,15 @@ namespace CSSPDesktopServices.Tests
                 options.UseInMemoryDatabase($"Data Source={ fiCSSPDBLocal.FullName }");
             });
 
-            // Doing CSSPDBSearchContext
-            string CSSPDBSearch = Configuration.GetValue<string>("CSSPDBSearch");
-            Assert.NotNull(CSSPDBSearch);
+            // Doing CSSPDBCommandLogContext
+            string CSSPDBCommandLog = Configuration.GetValue<string>("CSSPDBCommandLog");
+            Assert.NotNull(CSSPDBCommandLog);
 
-            FileInfo fiCSSPDBSearch = new FileInfo(CSSPDBSearch);
+            FileInfo fiCSSPDBCommandLog = new FileInfo(CSSPDBCommandLog);
 
-            Services.AddDbContext<CSSPDBSearchContext>(options =>
+            Services.AddDbContext<CSSPDBCommandLogContext>(options =>
             {
-                options.UseSqlite($"Data Source={ fiCSSPDBSearch.FullName }");
+                options.UseSqlite($"Data Source={ fiCSSPDBCommandLog.FullName }");
             });
 
             // Doing CSSPDBFilesManagementContext

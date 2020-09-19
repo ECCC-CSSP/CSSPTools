@@ -44,7 +44,7 @@ namespace CSSPDBFilesManagementServices.Tests
         {
             Configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-                .AddJsonFile("appsettings_CSSPDBFilesManagementServicestests.json")
+                .AddJsonFile("appsettings_csspdbfilesmanagementervicestests")
                 .AddUserSecrets("27667b6d-6208-4074-be00-1041ba61f0c0")
                 .Build();
 

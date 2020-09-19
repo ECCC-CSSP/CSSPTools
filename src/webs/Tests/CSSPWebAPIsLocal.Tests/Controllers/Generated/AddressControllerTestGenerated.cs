@@ -216,23 +216,28 @@ namespace CSSPWebAPIs.Tests.Controllers
             });
 
             /* ---------------------------------------------------------------------------------
-             * using CSSPDBSearch
+             * using CSSPDBCommandLog
              * ---------------------------------------------------------------------------------      
              */
-            string CSSPDBSearchFileName = Config.GetValue<string>("CSSPDBSearch");
+            string CSSPDBCommandLogFileName = Config.GetValue<string>("CSSPDBCommandLog");
 
-            FileInfo fiCSSPDBSearch = new FileInfo(CSSPDBSearchFileName);
+            FileInfo fiCSSPDBCommandLog = new FileInfo(CSSPDBCommandLogFileName);
 
-            Services.AddDbContext<CSSPDBSearchContext>(options =>
+            Services.AddDbContext<CSSPDBCommandLogContext>(options =>
             {
-                options.UseSqlite($"Data Source={ fiCSSPDBSearch.FullName }");
+                options.UseSqlite($"Data Source={ fiCSSPDBCommandLog.FullName }");
             });
 
             /* ---------------------------------------------------------------------------------
              * using CSSPDBSearchInMemory
              * ---------------------------------------------------------------------------------      
              */
-            Services.AddDbContext<CSSPDBSearchInMemoryContext>(options =>
+
+            string CSSPDBSearchFileName = Config.GetValue<string>("CSSPDBSearch");
+
+            FileInfo fiCSSPDBSearch = new FileInfo(CSSPDBSearchFileName);
+
+            Services.AddDbContext<CSSPDBSearchContext>(options =>
             {
                 options.UseInMemoryDatabase($"Data Source={ fiCSSPDBSearch.FullName }");
             });

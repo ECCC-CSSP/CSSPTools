@@ -32,9 +32,10 @@ namespace CSSPSQLiteServices.Tests
         private CSSPDBInMemoryContext dbIM { get; set; }
         private ICSSPSQLiteService CSSPSQLiteService { get; set; }
         private FileInfo fiCSSPDBLocal { get; set; }
-        private FileInfo fiCSSPDBSearch { get; set; }
+        private FileInfo fiCSSPDBCommandLog { get; set; }
         private FileInfo fiCSSPDBLogin { get; set; }
         private FileInfo fiCSSPDBFilesManagement { get; set; }
+        private FileInfo fiCSSPDBSearch { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -77,15 +78,15 @@ namespace CSSPSQLiteServices.Tests
                 options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
             });
 
-            // doing CSSPDBSearch
-            string CSSPDBSearch = Configuration.GetValue<string>("CSSPDBSearch");
-            Assert.NotNull(CSSPDBSearch);
+            // doing CSSPDBCommandLog
+            string CSSPDBCommandLog = Configuration.GetValue<string>("CSSPDBCommandLog");
+            Assert.NotNull(CSSPDBCommandLog);
 
-            fiCSSPDBSearch = new FileInfo(CSSPDBSearch);
+            fiCSSPDBCommandLog = new FileInfo(CSSPDBCommandLog);
 
-            Services.AddDbContext<CSSPDBSearchContext>(options =>
+            Services.AddDbContext<CSSPDBCommandLogContext>(options =>
             {
-                options.UseSqlite($"Data Source={ fiCSSPDBSearch.FullName }");
+                options.UseSqlite($"Data Source={ fiCSSPDBCommandLog.FullName }");
             });
 
             // doing CSSPLoginDB
@@ -113,6 +114,17 @@ namespace CSSPSQLiteServices.Tests
             Services.AddDbContext<CSSPDBFilesManagementContext>(options =>
             {
                 options.UseSqlite($"Data Source={ fiCSSPDBFilesManagement.FullName }");
+            });
+
+            // doing CSSPDBSearch
+            string CSSPDBSearch = Configuration.GetValue<string>("CSSPDBSearch");
+            Assert.NotNull(CSSPDBSearch);
+
+            fiCSSPDBSearch = new FileInfo(CSSPDBSearch);
+
+            Services.AddDbContext<CSSPDBSearchContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiCSSPDBSearch.FullName }");
             });
 
             Services.AddDbContext<ApplicationDbContext>(options =>

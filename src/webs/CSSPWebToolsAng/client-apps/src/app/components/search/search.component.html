@@ -1,3 +1,9 @@
-<p>Yes search works!</p>
-
-<p>{{ searchService.searchTextModel$.getValue().Title }}</p>
+    <mat-form-field>
+        <input type="text" placeholder="Search"  aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto">
+        <mat-icon matSuffix>search</mat-icon>
+              <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let option of filteredOptions | async" [value]="option.TVText">
+                {{option.TVText}}
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
