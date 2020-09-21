@@ -30,6 +30,13 @@ namespace CSSPDesktopServices.Services
                 return await Task.FromResult(false);
             }
 
+            CSSPDBCommandLog = Configuration.GetValue<string>("CSSPDBCommandLog");
+            if (string.IsNullOrWhiteSpace(CSSPDBCommandLog))
+            {
+                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes._CouldNotBeFoundInConfigurationFile_, "CSSPDBCommandLog", "appsettings_csspdesktop.json")));
+                return await Task.FromResult(false);
+            }
+
             CSSPDBFilesManagement = Configuration.GetValue<string>("CSSPDBFilesManagement");
             if (string.IsNullOrWhiteSpace(CSSPDBFilesManagement))
             {

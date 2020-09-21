@@ -140,7 +140,7 @@ namespace CSSPWebAPIsLocal
 
             services.AddDbContext<CSSPDBSearchContext>(options =>
             {
-                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBSearch.FullName }");
+                options.UseSqlite($"Data Source={ fiCSSPDBSearch.FullName }");
             });
 
 

@@ -29,7 +29,7 @@ namespace CSSPWebAPIs.Controllers
         #endregion Constructors
 
         #region Functions public
-        [Route("GetWithContactTVItemID")]
+        [Route("GetWithContactTVItemID/{ContactTVItemID}")]
         [HttpGet]
         public async Task<ActionResult<List<TVTypeUserAuthorization>>> GetWithContactTVItemID(int ContactTVItemID)
         {

@@ -21,9 +21,9 @@ using System.Text;
 using LocalServices;
 using CSSPDBSearchServices;
 
-namespace SearchControllers.Tests
+namespace CSSPWebAPIsLocal.SearchController.Tests
 {
-    public partial class SearchControllerTests
+    public partial class CSSPWebAPIsLocalSearchControllerTests
     {
         #region Variables
         #endregion Variables
@@ -39,7 +39,7 @@ namespace SearchControllers.Tests
         #endregion Properties
 
         #region Constructors
-        public SearchControllerTests()
+        public CSSPWebAPIsLocalSearchControllerTests()
         {
         }
         #endregion Constructors
@@ -52,33 +52,65 @@ namespace SearchControllers.Tests
         {
             Configuration = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-               .AddJsonFile("appsettings_csspwebapistests.json")
-               .AddUserSecrets("9d65c001-b7bc-4922-a0fc-1558b9ef927e")
+               .AddJsonFile("appsettings_csspwebapislocaltests.json")
+               .AddUserSecrets("61f396b6-8b79-4328-a2b7-a07921135f96")
                .Build();
 
             Services = new ServiceCollection();
 
-            string LocalUrl = Configuration.GetValue<string>("LocalUrl");
+            Services.AddSingleton<IConfiguration>(Configuration);
+
+            LocalUrl = Configuration.GetValue<string>("LocalUrl");
             Assert.NotNull(LocalUrl);
 
-            string CSSPDBCommandLogFileName = Configuration.GetValue<string>("CSSPDBCommandLog");
-            Assert.NotNull(CSSPDBCommandLogFileName);
+            /* ---------------------------------------------------------------------------------
+             * using CSSPDBLocal 
+             * ---------------------------------------------------------------------------------      
+             */
+            string CSSPDBSearchFileName = Configuration.GetValue<string>("CSSPDBSearch");
+            Assert.NotNull(CSSPDBSearchFileName);
 
-            FileInfo fiCSSPDBCommandLog = new FileInfo(CSSPDBCommandLogFileName);
+            FileInfo fiCSSPDBSearch = new FileInfo(CSSPDBSearchFileName);
 
-            Services.AddDbContext<CSSPDBCommandLogContext>(options =>
+            Services.AddDbContext<CSSPDBSearchContext>(options =>
             {
-                options.UseSqlite($"Data Source={ fiCSSPDBCommandLog.FullName }");
+                options.UseSqlite($"Data Source={ fiCSSPDBSearch.FullName }");
             });
 
-            //string CSSPDBFilesManagementFileName = Configuration.GetValue<string>("CSSPDBFilesManagement");
-            //Assert.NotNull(CSSPDBFilesManagementFileName);
+            /* ---------------------------------------------------------------------------------
+             * using CSSPDBLogin
+             * ---------------------------------------------------------------------------------      
+             */
+            string CSSPDBLoginFileName = Configuration.GetValue<string>("CSSPDBLogin");
 
-            //FileInfo fiCSSPDBFilesManagementFileName = new FileInfo(CSSPDBFilesManagementFileName);
+            FileInfo fiCSSPDBLogin = new FileInfo(CSSPDBLoginFileName);
 
-            //Services.AddDbContext<CSSPDBFilesManagementContext>(options =>
+            Services.AddDbContext<CSSPDBLoginContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiCSSPDBLogin.FullName }");
+            });
+
+            /* ---------------------------------------------------------------------------------
+             * using CSSPDBLoginInMemory
+             * ---------------------------------------------------------------------------------      
+             */
+
+            Services.AddDbContext<CSSPDBLoginInMemoryContext>(options =>
+            {
+                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBLogin.FullName }");
+            });
+
+            ///* ---------------------------------------------------------------------------------
+            // * using CSSPDBCommandLog
+            // * ---------------------------------------------------------------------------------      
+            // */
+            //string CSSPDBCommandLogFileName = Configuration.GetValue<string>("CSSPDBCommandLog");
+
+            //FileInfo fiCSSPDBCommandLog = new FileInfo(CSSPDBCommandLogFileName);
+
+            //Services.AddDbContext<CSSPDBCommandLogContext>(options =>
             //{
-            //    options.UseSqlite($"Data Source={ fiCSSPDBFilesManagementFileName.FullName }");
+            //    options.UseSqlite($"Data Source={ fiCSSPDBCommandLog.FullName }");
             //});
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
@@ -93,6 +125,11 @@ namespace SearchControllers.Tests
             Assert.NotNull(CSSPCultureService);
 
             CSSPCultureService.SetCulture(culture);
+
+            LocalService = Provider.GetService<ILocalService>();
+            Assert.NotNull(LocalService);
+
+            await LocalService.SetLoggedInContactInfo();
 
             CSSPDBSearchService = Provider.GetService<ICSSPDBSearchService>();
             Assert.NotNull(CSSPDBSearchService);

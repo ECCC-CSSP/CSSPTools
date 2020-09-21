@@ -26,8 +26,6 @@ namespace CSSPDesktopServices.Services
 
             if (!await DoLoginContact(loginModel)) return await Task.FromResult(false);
 
-            //if (!await DoLoginAspNetUser()) return await Task.FromResult(false);
-
             if (!await DoLoginTVItemUserAuthorization()) return await Task.FromResult(false);
 
             if (!await DoLoginTVTypeUserAuthorization()) return await Task.FromResult(false);

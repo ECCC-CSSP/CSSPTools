@@ -12,6 +12,7 @@ using CSSPEnums;
 using CSSPCultureServices.Resources;
 using LocalServices;
 using CSSPDBSearchServices;
+using Microsoft.Extensions.Configuration;
 
 namespace CSSPWebAPIsLocal.Controllers
 {
@@ -28,14 +29,16 @@ namespace CSSPWebAPIsLocal.Controllers
         #endregion Variables
 
         #region Properties
+        private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILocalService LocalService { get; }
         private ICSSPDBSearchService CSSPDBSearchService { get; }
         #endregion Properties
 
         #region Constructors
-        public SearchController(ICSSPCultureService CSSPCultureService, ILocalService LocalService, ICSSPDBSearchService CSSPDBSearchService)
+        public SearchController(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, ILocalService LocalService, ICSSPDBSearchService CSSPDBSearchService)
         {
+            this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LocalService = LocalService;
             this.CSSPDBSearchService = CSSPDBSearchService;

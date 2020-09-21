@@ -40,6 +40,7 @@ namespace CSSPDBServices.Tests
         private CSSPDBLocalContext dbLocal { get; set; }
         private CSSPDBInMemoryContext dbIM { get; set; }
         private Contact contact { get; set; }
+        private string Password { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -68,21 +69,27 @@ namespace CSSPDBServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            //RegisterModel registerModel = new RegisterModel()
-            //{
-            //    LoginEmail = "Allo@test.com",
-            //    FirstName = "Testing",
-            //    Initial = "T",
-            //    LastName = "Rouge",
-            //    Password = "tesitng123",
-            //    ConfirmPassword = "tesitng123"
-            //};
+            RegisterModel registerModel = new RegisterModel()
+            {
+                LoginEmail = "Allo@test.com",
+                FirstName = "Testing",
+                Initial = "T",
+                LastName = "Rouge",
+                Password = Password,
+                ConfirmPassword = Password
+            };
 
-            //var actionResContact = await ContactService.Register(registerModel);
-            //Assert.Equal(200, ((ObjectResult)actionResContact.Result).StatusCode);
-            //Assert.NotNull(((OkObjectResult)actionResContact.Result).Value);
-            //Contact contactRes = (Contact)((OkObjectResult)actionResContact.Result).Value;
-            //Assert.NotNull(contactRes);
+            var actionResContact = await ContactDBService.Register(registerModel);
+            Assert.Equal(200, ((ObjectResult)actionResContact.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionResContact.Result).Value);
+            Contact contactRes = (Contact)((OkObjectResult)actionResContact.Result).Value;
+            Assert.NotNull(contactRes);
+
+            var actionRe = await ContactDBService.RemoveAspNetUserAndContact(contactRes.Id);
+            Assert.Equal(200, ((ObjectResult)actionRe.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRe.Result).Value);
+            bool boolRes = (bool)((OkObjectResult)actionRe.Result).Value;
+            Assert.True(boolRes);
 
         }
         #endregion Tests 
@@ -138,6 +145,9 @@ namespace CSSPDBServices.Tests
 
             LoggedInService = Provider.GetService<ILoggedInService>();
             Assert.NotNull(LoggedInService);
+
+            Password = Configuration.GetValue<string>("Password");
+            Assert.NotNull(Password);
 
             string Id = Configuration.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));

@@ -21,10 +21,13 @@ using Microsoft.IdentityModel.Tokens;
 using CSSPWebAPIs;
 using LoggedInServices;
 using CreateGzFileServices;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text.Json;
 
-namespace AuthController.Tests
+namespace CSSPWebAPIs.AuthController.Tests
 {
-    public partial class AuthControllerTests
+    public partial class CSSPWebAPIsAuthControllerTests
     {
         #region Variables
         #endregion Variables
@@ -42,10 +45,12 @@ namespace AuthController.Tests
         private string LoginEmail { get; set; }
         private string Password { get; set; }
         private string CSSPAzureUrl { get; set; }
+        private LoginModel loginModel { get; set; }
+
         #endregion Properties
 
         #region Constructors
-        public AuthControllerTests()
+        public CSSPWebAPIsAuthControllerTests()
         {
         }
         #endregion Constructors
@@ -66,7 +71,7 @@ namespace AuthController.Tests
 
             Services.AddSingleton<IConfiguration>(Configuration);
 
-            string DBConnString = Configuration.GetValue<string>("TestDB");
+            string DBConnString = Configuration.GetValue<string>("CSSPDB2");
             Assert.NotNull(DBConnString);
 
             Services.AddDbContext<CSSPDBContext>(options =>
@@ -110,6 +115,34 @@ namespace AuthController.Tests
 
             LoggedInService = Provider.GetService<ILoggedInService>();
             Assert.NotNull(LoggedInService);
+
+            LoginEmail = Configuration.GetValue<string>("LoginEmail");
+            Assert.NotNull(LoginEmail);
+
+            Password = Configuration.GetValue<string>("Password");
+            Assert.NotNull(Password);
+
+            loginModel = new LoginModel()
+            {
+                LoginEmail = LoginEmail,
+                Password = Password
+            };
+
+            CSSPAzureUrl = Configuration.GetValue<string>("CSSPAzureUrl");
+            Assert.NotNull(CSSPAzureUrl);
+
+            using (HttpClient httpClient = new HttpClient())
+            {
+                var contentType = new MediaTypeWithQualityHeaderValue("application/json");
+                httpClient.DefaultRequestHeaders.Accept.Add(contentType);
+
+                string stringData = JsonSerializer.Serialize(loginModel);
+                var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = httpClient.PostAsync($"{ CSSPAzureUrl }api/en-CA/auth/token", contentData).Result;
+                Assert.True((int)response.StatusCode == 200);
+
+                contact = JsonSerializer.Deserialize<Contact>(response.Content.ReadAsStringAsync().Result);
+            }
 
             return await Task.FromResult(true);
         }

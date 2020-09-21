@@ -70,12 +70,12 @@ namespace CSSPDBServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            var actionTVItemLanguage = await TVItemLanguageDBService.GetTVItemLanguageStartDateList(2020, 5, 26);
+            var actionTVItemLanguage = await TVItemLanguageDBService.GetTVItemLanguageStartDateList(2018, 5, 26);
             Assert.Equal(200, ((ObjectResult)actionTVItemLanguage.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionTVItemLanguage.Result).Value);
             List<TVItemLanguage> TVItemLanguageList = (List<TVItemLanguage>)((OkObjectResult)actionTVItemLanguage.Result).Value;
             Assert.NotNull(TVItemLanguageList);
-            //Assert.True(TVItemLanguageList.Count > 0);
+            Assert.True(TVItemLanguageList[0].TVItemID > 0);
         }
         #endregion Tests
 

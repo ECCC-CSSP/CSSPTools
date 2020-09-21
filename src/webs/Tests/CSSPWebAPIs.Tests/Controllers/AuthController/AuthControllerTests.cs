@@ -21,10 +21,10 @@ using System.Text;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AuthController.Tests
+namespace CSSPWebAPIs.AuthController.Tests
 {
     [Collection("Sequential")]
-    public partial class AuthControllerTests
+    public partial class CSSPWebAPIsAuthControllerTests
     {
         #region Variables
         #endregion Variables
@@ -33,7 +33,7 @@ namespace AuthController.Tests
         #endregion Properties
 
         #region Constructors
-        //public AuthControllerTests()
+        //public CSSPWebAPIsAuthControllerTests()
         //{
         // See setup
         //}
@@ -49,6 +49,8 @@ namespace AuthController.Tests
 
             Assert.NotNull(Configuration);
             Assert.NotNull(CSSPCultureService);
+            Assert.NotNull(contact);
+            Assert.NotEmpty(contact.Token);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -57,7 +59,6 @@ namespace AuthController.Tests
         {
             Assert.True(await Setup(culture));
 
-            LoginTest();
             Assert.NotNull(contact);
             Assert.NotEmpty(contact.Token);
         }
@@ -68,7 +69,6 @@ namespace AuthController.Tests
         {
             Assert.True(await Setup(culture));
 
-            LoginTest();
             Assert.NotNull(contact);
             Assert.NotEmpty(contact.Token);
 
@@ -82,7 +82,6 @@ namespace AuthController.Tests
 
             foreach (LoginModel loginModel in loginModelList)
             {
-                LoginTest();
                 Assert.NotNull(contact);
                 Assert.NotEmpty(contact.Token);
 
@@ -109,7 +108,6 @@ namespace AuthController.Tests
         {
             Assert.True(await Setup(culture));
 
-            LoginTest();
             Assert.NotNull(contact);
             Assert.NotEmpty(contact.Token);
 
@@ -168,13 +166,9 @@ namespace AuthController.Tests
             string Id = contact.Id;
             int ContactTVItemID = contact.ContactTVItemID;
 
-            //var actionRet2 = await ContactDBService.RemoveAspNetUserAndContact(Id);
-            //Assert.Equal(200, ((ObjectResult)actionRet2.Result).StatusCode);
-            //Assert.True((bool)((OkObjectResult)actionRet2.Result).Value);
-
-            var actionRet3 = await TVItemDBService.Delete(ContactTVItemID);
-            Assert.Equal(200, ((ObjectResult)actionRet3.Result).StatusCode);
-            Assert.True((bool)((OkObjectResult)actionRet3.Result).Value);
+            var actionRet2 = await ContactDBService.RemoveAspNetUserAndContact(Id);
+            Assert.Equal(200, ((ObjectResult)actionRet2.Result).StatusCode);
+            Assert.True((bool)((OkObjectResult)actionRet2.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]

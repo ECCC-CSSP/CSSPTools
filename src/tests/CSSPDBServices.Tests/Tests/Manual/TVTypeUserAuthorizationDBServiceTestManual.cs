@@ -68,12 +68,12 @@ namespace CSSPDBServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            var actionTVTypeUserAuthorization = await TVTypeUserAuthorizationDBService.GetTVTypeUserAuthorizationWithContactTVItemID(2 /* Charles LeBlanc */);
+            var actionTVTypeUserAuthorization = await TVTypeUserAuthorizationDBService.GetTVTypeUserAuthorizationWithContactTVItemID(2);
             Assert.Equal(200, ((ObjectResult)actionTVTypeUserAuthorization.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionTVTypeUserAuthorization.Result).Value);
             List<TVTypeUserAuthorization> TVTypeUserAuthorizationList = (List<TVTypeUserAuthorization>)((OkObjectResult)actionTVTypeUserAuthorization.Result).Value;
             Assert.NotNull(TVTypeUserAuthorizationList);
-            //Assert.True(TVTypeUserAuthorizationList.Count > 0);
+            Assert.True(TVTypeUserAuthorizationList.Count > 0);
         }
         #endregion Tests
 

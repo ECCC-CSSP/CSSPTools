@@ -20,9 +20,9 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net;
 
-namespace CreateGzFileControllers.Tests
+namespace CSSPWebAPIs.CreateGzFileController.Tests
 {
-    public partial class CreateGzFileControllerTests
+    public partial class CSSPWebAPIsCreateGzFileControllerTests
     {
         #region Variables
         #endregion Variables
@@ -31,7 +31,7 @@ namespace CreateGzFileControllers.Tests
         #endregion Properties
 
         #region Constructors
-        //public CreateGzFileControllerTests()
+        //public CSSPWebAPIsCreateGzFileControllerTests()
         //{
         // see setup
         //}
@@ -46,8 +46,6 @@ namespace CreateGzFileControllers.Tests
             Assert.True(await Setup(culture));
 
             Assert.NotNull(CSSPCultureService);
-            Assert.NotNull(ContactDBService);
-            Assert.NotNull(LoggedInService);
             Assert.NotNull(CreateGzFileService);
         }
         [Theory]
@@ -56,8 +54,6 @@ namespace CreateGzFileControllers.Tests
         public async Task CreateGzFileController_WebArea_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
-
-            LoginTest();
             Assert.NotNull(contact);
             Assert.NotEmpty(contact.Token);
 

@@ -514,8 +514,8 @@ namespace ReadGzFileServices.Tests
             Assert.True(await Setup(culture));
 
             WebTypeEnum webType = WebTypeEnum.WebPolSourceSiteEffectTerm;
-            int TVItemID = 635;
-            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
+            int TVItemID = 0;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
             // Read gz
             var actionRes = await ReadGzFileService.ReadJSON<WebPolSourceSiteEffectTerm>(webType, TVItemID, webTypeYear);

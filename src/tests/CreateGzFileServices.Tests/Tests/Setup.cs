@@ -31,7 +31,6 @@ namespace CreateGzFileServices.Tests
         private IServiceCollection Services { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
         private ICreateGzFileService CreateGzFileService { get; set; }
-        //private IAspNetUserDBService AspNetUserDBService { get; set; }
         private IContactDBService ContactDBService { get; set; }
         private ILoggedInService LoggedInService { get; set; }
         private ITVItemDBService TVItemDBService { get; set; }
@@ -82,38 +81,7 @@ namespace CreateGzFileServices.Tests
             Services.AddIdentityCore<ApplicationUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            //string CSSPDBLocalFileName = Configuration.GetValue<string>("CSSPDBLocal");
-            //Assert.NotNull(CSSPDBLocalFileName);
-
-            //FileInfo fiCSSPDBLocalFileName = new FileInfo(CSSPDBLocalFileName);
-
-            //Services.AddDbContext<CSSPDBLocalContext>(options =>
-            //{
-            //    options.UseSqlite($"Data Source={ fiCSSPDBLocalFileName.FullName }");
-            //});
-
-            //string CSSPDBFilesManagementFileName = Configuration.GetValue<string>("CSSPDBFilesManagement");
-            //Assert.NotNull(CSSPDBFilesManagementFileName);
-
-            //FileInfo fiCSSPDBFilesManagementFileName = new FileInfo(CSSPDBFilesManagementFileName);
-
-            //Services.AddDbContext<CSSPDBFilesManagementContext>(options =>
-            //{
-            //    options.UseSqlite($"Data Source={ fiCSSPDBFilesManagementFileName.FullName }");
-            //});
-
-            //string CSSPDBLoginFileName = Configuration.GetValue<string>("CSSPDBLogin");
-            //Assert.NotNull(CSSPDBLoginFileName);
-
-            //FileInfo fiCSSPDBLoginFileName = new FileInfo(CSSPDBLoginFileName);
-
-            //Services.AddDbContext<CSSPDBLoginContext>(options =>
-            //{
-            //    options.UseSqlite($"Data Source={ fiCSSPDBLoginFileName.FullName }");
-            //});
-
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
-            //Services.AddSingleton<IAspNetUserDBService, AspNetUserDBService>();
             Services.AddSingleton<ILoginModelService, LoginModelService>();
             Services.AddSingleton<IRegisterModelService, RegisterModelService>();
             Services.AddSingleton<IContactDBService, ContactDBService>();

@@ -64,16 +64,30 @@ namespace CSSPDBServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
+        public async Task TVItemServiceManual_GetTVItemRoot_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            var actionTVItem = await TVItemDBService.GetTVItemRoot();
+            Assert.Equal(200, ((ObjectResult)actionTVItem.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionTVItem.Result).Value);
+            TVItem TVItem = (TVItem)((OkObjectResult)actionTVItem.Result).Value;
+            Assert.NotNull(TVItem);
+            Assert.True(TVItem.TVItemID > 0);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
         public async Task TVItemServiceManual_GetTVItemStartDateList_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            var actionTVItem = await TVItemDBService.GetTVItemStartDateList(2020, 5, 26);
+            var actionTVItem = await TVItemDBService.GetTVItemStartDateList(2018, 5, 26);
             Assert.Equal(200, ((ObjectResult)actionTVItem.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionTVItem.Result).Value);
             List<TVItem> TVItemList = (List<TVItem>)((OkObjectResult)actionTVItem.Result).Value;
             Assert.NotNull(TVItemList);
-            //Assert.True(TVItemList.Count > 0);
+            Assert.True(TVItemList[0].TVItemID > 0);
         }
         #endregion Tests
 

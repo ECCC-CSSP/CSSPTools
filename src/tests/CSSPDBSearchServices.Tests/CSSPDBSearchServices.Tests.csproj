@@ -5,13 +5,28 @@
 
     <IsPackable>false</IsPackable>
 
-    <UserSecretsId>7eca0e08-0188-4d60-b3f1-41e01a2a3ad1</UserSecretsId>
+    <UserSecretsId>38d7fa5b-72c7-4b05-9a17-24bb2ba5f559</UserSecretsId>
 
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath>..\_package\</OutputPath>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="C:\Users\charl\.nuget\packages\microsoft.testplatform.testhost\16.6.1\build\netcoreapp2.1\x64\testhost.dll" />
+    <Content Remove="C:\Users\charl\.nuget\packages\microsoft.testplatform.testhost\16.6.1\build\netcoreapp2.1\x64\testhost.exe" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="appsettings_csspdbsearchservicestests.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings_csspdbsearchservicestests.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.6" />
@@ -37,9 +52,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="appsettings_CSSPDBSearchservicestests.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="appsettings_csspsearchservicestests.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

@@ -91,37 +91,22 @@ namespace CSSPDBCommandLogServices
         }
         public async Task<ActionResult<List<CSSPCommandLog>>> GetCSSPCommandLogTodayList()
         {
-            if (LocalService.LoggedInContactInfo == null)
-            {
-                return await Task.FromResult(Unauthorized(""));
-            }
-
-            DateTime StartDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
-            DateTime EndDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day + 1);
+            DateTime StartDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0);
+            DateTime EndDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
 
             return await GetCSSPCommandLogBetweenDatesList(StartDate, EndDate);
         }
         public async Task<ActionResult<List<CSSPCommandLog>>> GetCSSPCommandLogLastWeekList()
         {
-            if (LocalService.LoggedInContactInfo == null)
-            {
-                return await Task.FromResult(Unauthorized(""));
-            }
-
-            DateTime StartDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day - 6);
-            DateTime EndDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day + 1);
+            DateTime StartDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day - 7, 0, 0, 0);
+            DateTime EndDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
 
             return await GetCSSPCommandLogBetweenDatesList(StartDate, EndDate);
         }
         public async Task<ActionResult<List<CSSPCommandLog>>> GetCSSPCommandLogLastMonthList()
         {
-            if (LocalService.LoggedInContactInfo == null)
-            {
-                return await Task.FromResult(Unauthorized(""));
-            }
-
-            DateTime StartDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month - 1, DateTime.Now.Day);
-            DateTime EndDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+            DateTime StartDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month - 1, DateTime.Now.Day - 7, 0, 0, 0);
+            DateTime EndDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
 
             return await GetCSSPCommandLogBetweenDatesList(StartDate, EndDate);
         }

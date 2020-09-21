@@ -38,7 +38,7 @@ namespace CSSPSQLiteServices
                 "CSSPCommandLogID INTEGER  NOT NULL UNIQUE, " +
                 "AppName TEXT NOT NULL, " +
                 "CommandName TEXT NOT NULL, " +
-                "Successfull INTEGER, " +
+                "Successful INTEGER, " +
                 "ErrorMessage TEXT NULL, " +
                 "DateTimeUTC TEXT NOT NULL)";
 

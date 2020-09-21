@@ -2708,10 +2708,6 @@ namespace CSSPEnums
 
             switch (webType)
             {
-                case WebTypeEnum.WebAllTVItem:
-                    return CSSPCultureEnumsRes.WebTypeEnumWebAllTVItem;
-                case WebTypeEnum.WebAllTVItemLanguage:
-                    return CSSPCultureEnumsRes.WebTypeEnumWebAllTVItemLanguage;
                 case WebTypeEnum.WebRoot:
                     return CSSPCultureEnumsRes.WebTypeEnumWebRoot;
                 case WebTypeEnum.WebCountry:
@@ -2762,6 +2758,12 @@ namespace CSSPEnums
                     return CSSPCultureEnumsRes.WebTypeEnumWebPolSourceGrouping;
                 case WebTypeEnum.WebReportType:
                     return CSSPCultureEnumsRes.WebTypeEnumWebReportType;
+                case WebTypeEnum.WebAllTVItem:
+                    return CSSPCultureEnumsRes.WebTypeEnumWebAllTVItem;
+                case WebTypeEnum.WebPolSourceSiteEffectTerm:
+                    return CSSPCultureEnumsRes.WebTypeEnumWebPolSourceSiteEffectTerm;
+                case WebTypeEnum.WebAllTVItemLanguage:
+                    return CSSPCultureEnumsRes.WebTypeEnumWebAllTVItemLanguage;
                 default:
                     return CSSPCultureEnumsRes.Empty;
             }

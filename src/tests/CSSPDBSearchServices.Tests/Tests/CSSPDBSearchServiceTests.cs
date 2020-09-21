@@ -18,9 +18,8 @@ using System.Text;
 using System.Linq;
 using LocalServices;
 using DownloadGzFileServices;
-using CSSPDBFilesManagementServices;
-using ReadGzFileServices;
 using CSSPDBSearchServices;
+using ReadGzFileServices;
 
 namespace CSSPSearchServices.Tests
 {
@@ -124,7 +123,7 @@ namespace CSSPSearchServices.Tests
 
             List<string> SearchTermList = new List<string>()
             {
-                "", "             ", "lsiefjlsiejfilsjfilj", "ljliefjlijsilejflsiejf"
+                "", "lsiefjlsiejfilsjfilj", "ljliefjlijsilejflsiejf"
             };
 
             foreach (string SearchText in SearchTermList)
@@ -146,7 +145,6 @@ namespace CSSPSearchServices.Tests
             Configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
                .AddJsonFile("appsettings_csspdbsearchservicestests.json")
-               .AddUserSecrets("7eca0e08-0188-4d60-b3f1-41e01a2a3ad1")
                 .Build();
 
             ServiceCollection = new ServiceCollection();
@@ -172,15 +170,15 @@ namespace CSSPSearchServices.Tests
                 options.UseInMemoryDatabase($"Data Source={ fiCSSPDBLogin.FullName }");
             });
 
-            string CSSPDBFilesManagementFileName = Configuration.GetValue<string>("CSSPDBFilesManagement");
-            Assert.NotNull(CSSPDBFilesManagementFileName);
+            string CSSPDBSearchFileName = Configuration.GetValue<string>("CSSPDBSearch");
+            Assert.NotNull(CSSPDBSearchFileName);
 
-            FileInfo fiCSSPDBFilesManagementFileName = new FileInfo(CSSPDBFilesManagementFileName);
-            Assert.True(fiCSSPDBFilesManagementFileName.Exists);
+            FileInfo fiCSSPDBSearchFileName = new FileInfo(CSSPDBSearchFileName);
+            Assert.True(fiCSSPDBSearchFileName.Exists);
 
-            ServiceCollection.AddDbContext<CSSPDBFilesManagementContext>(options =>
+            ServiceCollection.AddDbContext<CSSPDBSearchContext>(options =>
             {
-                options.UseSqlite($"Data Source={ fiCSSPDBFilesManagementFileName.FullName }");
+                options.UseSqlite($"Data Source={ fiCSSPDBSearchFileName.FullName }");
             });
 
             ServiceProvider = ServiceCollection.BuildServiceProvider();

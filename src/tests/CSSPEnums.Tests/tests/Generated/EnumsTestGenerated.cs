@@ -4629,6 +4629,9 @@ namespace CSSPEnums.Tests
                     case WebTypeEnum.WebAllTVItem:
                         Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebAllTVItem, retStr);
                         break;
+                    case WebTypeEnum.WebPolSourceSiteEffectTerm:
+                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebPolSourceSiteEffectTerm, retStr);
+                        break;
                     case WebTypeEnum.WebAllTVItemLanguage:
                         Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebAllTVItemLanguage, retStr);
                         break;
@@ -7940,6 +7943,7 @@ namespace CSSPEnums.Tests
                      case WebTypeEnum.WebPolSourceGrouping:
                      case WebTypeEnum.WebReportType:
                      case WebTypeEnum.WebAllTVItem:
+                     case WebTypeEnum.WebPolSourceSiteEffectTerm:
                      case WebTypeEnum.WebAllTVItemLanguage:
                         Assert.Equal("", retStr);
                         break;

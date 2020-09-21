@@ -35,6 +35,15 @@ namespace CSSPDesktopServices.Tests
 
             Assert.True(await CSSPDesktopService.CheckingInternetConnection());
 
+            LoginModel loginModel = new LoginModel()
+            {
+                LoginEmail = Configuration.GetValue<string>("LoginEmail"),
+                Password = Configuration.GetValue<string>("Password"),
+            };
+
+            bool retBool = await CSSPDesktopService.Login(loginModel);
+            Assert.True(retBool);
+
             Assert.True(await CSSPDesktopService.CheckIfNewTVItemsOrTVItemLanguagesExist());
         }
         #endregion Tests

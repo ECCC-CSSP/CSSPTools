@@ -27,7 +27,7 @@ namespace CSSPDBServices
 {
     public partial interface IContactDBService
     {
-        //Task<ActionResult<bool>> RemoveAspNetUserAndContact(string Id);
+        Task<ActionResult<bool>> RemoveAspNetUserAndContact(string Id);
     }
 
     public partial class ContactDBService : ControllerBase, IContactDBService
@@ -56,8 +56,8 @@ namespace CSSPDBServices
                 return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            using (var beginTransaction = db.Database.BeginTransaction())
-            {
+            //using (var beginTransaction = db.Database.BeginTransaction())
+            //{
                 var user = new ApplicationUser { UserName = registerModel.LoginEmail, Email = registerModel.LoginEmail };
                 var result = await UserManager.CreateAsync(user, registerModel.Password);
 
@@ -185,8 +185,8 @@ namespace CSSPDBServices
                     return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "TVItemLanguage", ex.Message)));
                 }
 
-                beginTransaction.Commit();
-            }
+            //    beginTransaction.Commit();
+            //}
 
             var actionLoginRet = await Login(new LoginModel() { LoginEmail = registerModel.LoginEmail, Password = registerModel.Password });
             if (((ObjectResult)actionLoginRet.Result).StatusCode != 200)
@@ -199,7 +199,7 @@ namespace CSSPDBServices
             await LoggedInService.SetLoggedInContactInfo(contact.Id);
 
             // should use http to send the CreateGzFile command
-            
+
             //// should recreate all the necessary gz files
             //var actionRet = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebContact, 0, WebTypeYearEnum.Year1980);
             //if (((ObjectResult)actionRet.Result).StatusCode != 200)
@@ -209,82 +209,76 @@ namespace CSSPDBServices
 
             return await Task.FromResult(Ok(contact));
         }
-        //public async Task<ActionResult<bool>> RemoveAspNetUserAndContact(string Id)
-        //{
-        //    if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
-        //    {
-        //        return await Task.FromResult(Unauthorized());
-        //    }
+        public async Task<ActionResult<bool>> RemoveAspNetUserAndContact(string Id)
+        {
+            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
 
-        //    using (var beginTransaction = db.Database.BeginTransaction())
-        //    {
-        //        Contact contact = null;
-        //        var actionContactRet = await GetContactWithId(Id);
-        //        if (((ObjectResult)actionContactRet.Result).StatusCode == 200)
-        //        {
-        //            contact = (Contact)((OkObjectResult)actionContactRet.Result).Value;
+            using (var beginTransaction = db.Database.BeginTransaction())
+            {
+                int TVItemID = 0;
 
-        //            var actionRet = await Delete(contact.ContactID);
-        //            if (((ObjectResult)actionRet.Result).StatusCode == 200)
-        //            {
-        //                var actionRet2 = await AspNetUserDBService.Delete(Id);
-        //                if (((ObjectResult)actionRet.Result).StatusCode == 200)
-        //                {
-        //                }
-        //                else
-        //                {
-        //                    if (((ObjectResult)actionRet2.Result).StatusCode == 401)
-        //                    {
-        //                        return await Task.FromResult(Unauthorized());
-        //                    }
-        //                    else if (((ObjectResult)actionRet2.Result).StatusCode == 400)
-        //                    {
-        //                        return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.UnmanagedServerError_, ((BadRequestObjectResult)actionRet2.Result).Value)));
-        //                    }
-        //                    else
-        //                    {
-        //                        return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.UnmanagedServerError_, ((BadRequestObjectResult)actionRet2.Result).Value)));
-        //                    }
-        //                }
-        //            }
-        //            else
-        //            {
-        //                if (((ObjectResult)actionRet.Result).StatusCode == 401)
-        //                {
-        //                    return await Task.FromResult(Unauthorized());
-        //                }
-        //                else if (((ObjectResult)actionRet.Result).StatusCode == 400)
-        //                {
-        //                    return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.UnmanagedServerError_, ((BadRequestObjectResult)actionRet.Result).Value)));
-        //                }
-        //                else
-        //                {
-        //                    return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.UnmanagedServerError_, ((BadRequestObjectResult)actionRet.Result).Value)));
-        //                }
-        //            }
-        //        }
-        //        else
-        //        {
-        //            if (((ObjectResult)actionContactRet.Result).StatusCode == 401)
-        //            {
-        //                return await Task.FromResult(Unauthorized());
-        //            }
-        //            else if (((ObjectResult)actionContactRet.Result).StatusCode == 400)
-        //            {
-        //                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.UnmanagedServerError_, ((BadRequestObjectResult)actionContactRet.Result).Value)));
-        //            }
-        //            else
-        //            {
-        //                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.UnmanagedServerError_, ((BadRequestObjectResult)actionContactRet.Result).Value)));
-        //            }
-        //        }
+                Contact contact = (from c in db.Contacts
+                                   where c.Id == Id
+                                   select c).FirstOrDefault();
 
-        //        await beginTransaction.CommitAsync();
-        //    }
+                if (contact != null)
+                {
+                    TVItemID = contact.ContactTVItemID;
 
+                    try
+                    {
+                        db.Contacts.Remove(contact);
+                        db.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotDelete_Error_, "Contacts", ex.Message)));
+                    }
 
-        //    return await Task.FromResult(Ok(true));
-        //}
+                }
+
+                AspNetUser aspNetUser = (from c in db.AspNetUsers
+                                         where c.Id == Id
+                                         select c).FirstOrDefault();
+
+                if (aspNetUser != null)
+                {
+                    try
+                    {
+                        db.AspNetUsers.Remove(aspNetUser);
+                        db.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotDelete_Error_, "AspNetUser", ex.Message)));
+                    }
+                }
+
+                TVItem tvItem = (from c in db.TVItems
+                                 where c.TVItemID == TVItemID
+                                 select c).FirstOrDefault();
+
+                if (tvItem != null)
+                {
+                    try
+                    {
+                        db.TVItems.Remove(tvItem);
+                        db.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotDelete_Error_, "TVItem", ex.Message)));
+                    }
+                }
+
+                await beginTransaction.CommitAsync();
+            }
+
+            return await Task.FromResult(Ok(true));
+        }
         #endregion Functions public
 
         #region Functions private

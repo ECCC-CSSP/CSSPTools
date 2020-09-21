@@ -385,6 +385,16 @@ namespace CSSPDesktop
 
             if (!CSSPDesktopService.LoginRequired)
             {
+                if (CSSPDesktopService.preference.HasInternetConnection != null && CSSPDesktopService.preference.HasInternetConnection == true)
+                {
+                    LoginModel loginModel = new LoginModel()
+                    {
+                        LoginEmail = CSSPDesktopService.preference.LoginEmail,
+                        Password = CSSPDesktopService.preference.Password,
+                    };
+
+                    if (!await CSSPDesktopService.Login(loginModel)) return await Task.FromResult(false);
+                }
                 if (!await CSSPDesktopService.CheckIfUpdateIsNeeded()) return await Task.FromResult(false);
             }
 

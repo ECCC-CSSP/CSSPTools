@@ -62,12 +62,12 @@ namespace CSSPDesktopServices.Tests
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ILocalService, LocalService>();
             Services.AddSingleton<ICSSPDesktopService, CSSPDesktopService>();
             Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
             Services.AddSingleton<ICSSPDBFilesManagementService, CSSPDBFilesManagementService>();
             Services.AddSingleton<IDownloadGzFileService, DownloadGzFileService>();
             Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
-            Services.AddSingleton<ILocalService, LocalService>();
 
             // Doing CSSPDBLocalContext
             string CSSPDBLocal = Configuration.GetValue<string>("CSSPDBLocal");
@@ -83,6 +83,17 @@ namespace CSSPDesktopServices.Tests
             Services.AddDbContext<CSSPDBInMemoryContext>(options =>
             {
                 options.UseInMemoryDatabase($"Data Source={ fiCSSPDBLocal.FullName }");
+            });
+
+            // Doing CSSPDBSearchContext
+            string CSSPDBSearch = Configuration.GetValue<string>("CSSPDBSearch");
+            Assert.NotNull(CSSPDBSearch);
+
+            FileInfo fiCSSPDBSearch = new FileInfo(CSSPDBSearch);
+
+            Services.AddDbContext<CSSPDBSearchContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiCSSPDBSearch.FullName }");
             });
 
             // Doing CSSPDBCommandLogContext

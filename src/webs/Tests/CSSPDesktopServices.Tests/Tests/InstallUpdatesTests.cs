@@ -33,8 +33,20 @@ namespace CSSPDesktopServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            bool retBool = await CSSPDesktopService.InstallUpdates();
+            LoginModel loginModel = new LoginModel()
+            {
+                LoginEmail = Configuration.GetValue<string>("LoginEmail"),
+                Password = Configuration.GetValue<string>("Password"),
+            };
+
+            bool retBool = await CSSPDesktopService.Login(loginModel);
             Assert.True(retBool);
+
+            bool retBool2 = await CSSPDesktopService.CheckIfLoginIsRequired();
+            Assert.True(retBool2);          
+
+            bool retBool3 = await CSSPDesktopService.InstallUpdates();
+            Assert.True(retBool3);
         }
         #endregion Tests
 

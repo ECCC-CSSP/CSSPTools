@@ -63,25 +63,6 @@ namespace DownloadGzFileServices.Tests
             CSSPJSONPath = Configuration.GetValue<string>("CSSPJSONPath");
             Assert.NotNull(CSSPJSONPath);
 
-            string CSSPDBConnString = Configuration.GetValue<string>("CSSPDB2");
-            Assert.NotNull(CSSPDBConnString);
-
-            Services.AddDbContext<CSSPDBContext>(options =>
-            {
-                options.UseSqlServer(CSSPDBConnString);
-            });
-
-            Services.AddDbContext<CSSPDBInMemoryContext>(options =>
-            {
-                options.UseInMemoryDatabase(CSSPDBConnString);
-            });
-
-            Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(CSSPDBConnString));
-
-            Services.AddIdentityCore<ApplicationUser>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
-
             string CSSPDBLocalFileName = Configuration.GetValue<string>("CSSPDBLocal");
             Assert.NotNull(CSSPDBLocalFileName);
 

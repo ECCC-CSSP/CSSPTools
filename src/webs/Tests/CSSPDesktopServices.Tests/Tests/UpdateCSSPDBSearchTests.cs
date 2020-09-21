@@ -29,12 +29,24 @@ namespace CSSPDesktopServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task CSSPDesktopService_UpdateCSSPDBCommandLog_Good_Test(string culture)
+        public async Task CSSPDesktopService_UpdateCSSPDBSearch_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            bool retBool = await CSSPDesktopService.UpdateCSSPDBSearch();
+            LoginModel loginModel = new LoginModel()
+            {
+                LoginEmail = Configuration.GetValue<string>("LoginEmail"),
+                Password = Configuration.GetValue<string>("Password"),
+            };
+
+            bool retBool = await CSSPDesktopService.Login(loginModel);
             Assert.True(retBool);
+
+            bool retBool2 = await CSSPDesktopService.CheckIfLoginIsRequired();
+            Assert.True(retBool2);
+
+            bool retBool3 = await CSSPDesktopService.UpdateCSSPDBSearch();
+            Assert.True(retBool3);
         }
         #endregion Tests
 

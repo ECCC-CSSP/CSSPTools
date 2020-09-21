@@ -69,7 +69,17 @@ namespace CSSPWebAPIs
                 };
             });
 
-            string DBConnStr = Configuration.GetValue<string>("AzureCSSPDB");
+            string DBConnStr = "";
+            if (Configuration.GetValue<string>("Environment") == "Development")
+            {
+                //DBConnStr = Configuration.GetValue<string>("LocalTestDB");
+
+                DBConnStr = Configuration.GetValue<string>("LocalCSSPDB2");
+            }
+            else
+            {
+                DBConnStr = Configuration.GetValue<string>("AzureCSSPDB");
+            }
 
             services.AddDbContext<CSSPDBContext>(options =>
                 options.UseSqlServer(DBConnStr));

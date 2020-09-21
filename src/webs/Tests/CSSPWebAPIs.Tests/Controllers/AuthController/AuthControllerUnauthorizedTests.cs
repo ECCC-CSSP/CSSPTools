@@ -19,9 +19,9 @@ using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Text;
 
-namespace AuthController.Tests
+namespace CSSPWebAPIs.AuthController.Tests
 {
-    public partial class AuthControllerTests
+    public partial class CSSPWebAPIsAuthControllerTests
     {
         #region Variables
         #endregion Variables
@@ -30,7 +30,7 @@ namespace AuthController.Tests
         #endregion Properties
 
         #region Constructors
-        //public AuthControllerTests()
+        //public CSSPWebAPIsAuthControllerTests()
         //{
         // See setup
         //}

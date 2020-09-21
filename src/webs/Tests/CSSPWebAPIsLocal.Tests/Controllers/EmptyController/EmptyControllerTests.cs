@@ -21,9 +21,9 @@ using System.Net;
 using System.Collections.Generic;
 using System.Text.Json;
 
-namespace EmptyControllers.Tests
+namespace CSSPWebAPIsLocal.EmptyController.Tests
 {
-    public partial class EmptyControllerTests
+    public partial class CSSPWebAPIsLocalEmptyControllerTests
     {
         #region Variables
         #endregion Variables
@@ -38,11 +38,25 @@ namespace EmptyControllers.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task SearchController_Constructor_Good_Test(string culture)
+        public async Task EmptyController_Constructor_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task EmptyController_Load_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            Assert.NotNull(CSSPCultureService);
+            using (HttpClient httpClient = new HttpClient())
+            {
+                string url = $"{ LocalUrl }Empty";
+                var response = await httpClient.GetAsync(url);
+                Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+                string responseContent = await response.Content.ReadAsStringAsync();
+                Assert.StartsWith("Empty", responseContent);
+            }
         }
         #endregion Tests
 

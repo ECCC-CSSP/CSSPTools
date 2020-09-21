@@ -13,6 +13,7 @@ namespace GenerateCodeBaseServices.Services
                 || type.Name.StartsWith("ApplicationUser")
                 || type.Name.StartsWith("CSSPDBBaseContext")
                 || type.Name.StartsWith("CSSPDBCommandLogContext")
+                || type.Name.StartsWith("CSSPDBSearchContext")
                 || type.Name.StartsWith("CSSPDBContext")
                 || type.Name.StartsWith("CSSPDBFilesManagementContext")
                 || type.Name.StartsWith("CSSPDBFilesManagementInMemoryContext")

@@ -27,7 +27,6 @@ namespace CSSPSQLiteServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
-        private CSSPDBContext db { get; set; }
         private CSSPDBLocalContext dbLocal { get; set; }
         private CSSPDBInMemoryContext dbIM { get; set; }
         private ICSSPSQLiteService CSSPSQLiteService { get; set; }
@@ -53,19 +52,6 @@ namespace CSSPSQLiteServices.Tests
             Services = new ServiceCollection();
 
             Services.AddSingleton<IConfiguration>(Configuration);
-
-            string TestDBConnString = Configuration.GetValue<string>("TestDB");
-            Assert.NotNull(TestDBConnString);
-
-            Services.AddDbContext<CSSPDBContext>(options =>
-            {
-                options.UseSqlServer(TestDBConnString);
-            });
-
-            Services.AddDbContext<CSSPDBInMemoryContext>(options =>
-            {
-                options.UseInMemoryDatabase(TestDBConnString);
-            });
 
             // doing CSSPDBLocal
             string CSSPDBLocal = Configuration.GetValue<string>("CSSPDBLocal");
@@ -126,12 +112,6 @@ namespace CSSPSQLiteServices.Tests
             {
                 options.UseSqlite($"Data Source={ fiCSSPDBSearch.FullName }");
             });
-
-            Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(TestDBConnString));
-
-            Services.AddIdentityCore<ApplicationUser>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();

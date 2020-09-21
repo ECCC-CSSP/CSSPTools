@@ -5,13 +5,23 @@
 
     <IsPackable>false</IsPackable>
 
-    <UserSecretsId>27667b6d-6208-4074-be00-1041ba61f0c0</UserSecretsId>
+    <UserSecretsId>48e29e5a-1f36-42a7-ad09-cc1f51c56c46</UserSecretsId>
 
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath>..\_package\</OutputPath>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="appsettings_csspdbcommandlogservicestests.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings_csspdbcommandlogservicestests.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.6" />

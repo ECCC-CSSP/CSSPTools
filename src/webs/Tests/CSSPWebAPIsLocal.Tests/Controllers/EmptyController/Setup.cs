@@ -19,36 +19,25 @@ using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Text;
 
-namespace EmptyControllers.Tests
+namespace CSSPWebAPIsLocal.EmptyController.Tests
 {
-    public partial class EmptyControllerTests
+    public partial class CSSPWebAPIsLocalEmptyControllerTests
     {
         #region Variables
         #endregion Variables
 
         #region Properties
         private IConfiguration Configuration { get; set; }
-        private IServiceProvider Provider { get; set; }
-        private IServiceCollection Services { get; set; }
-        private ICSSPCultureService CSSPCultureService { get; set; }
+        private string LocalUrl { get; set; }
         #endregion Properties
 
         #region Constructors
-        public EmptyControllerTests()
+        public CSSPWebAPIsLocalEmptyControllerTests()
         {
         }
         #endregion Constructors
 
         #region Tests
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task EmptyController_Constructor_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            Assert.NotNull(CSSPCultureService);
-        }
         #endregion Tests
 
         #region Functions private
@@ -60,16 +49,8 @@ namespace EmptyControllers.Tests
                .AddUserSecrets("61f396b6-8b79-4328-a2b7-a07921135f96")
                .Build();
 
-            Services = new ServiceCollection();
-
-
-            Provider = Services.BuildServiceProvider();
-            Assert.NotNull(Provider);
-
-            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
-            Assert.NotNull(CSSPCultureService);
-
-            CSSPCultureService.SetCulture(culture);
+            LocalUrl = Configuration.GetValue<string>("LocalUrl");
+            Assert.NotNull(LocalUrl);
 
             return await Task.FromResult(true);
         }
