@@ -1,0 +1,3 @@
+<button *ngIf="loggedInContactService.LoggedInContactModel$.getValue()?.Contact" mat-button>
+    {{ loggedInContactService.LoggedInContactModel$.getValue()?.Contact?.LoginEmail }}
+</button>

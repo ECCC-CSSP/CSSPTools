@@ -1,9 +1,11 @@
-    <mat-form-field>
-        <input type="text" placeholder="Search"  aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto">
-        <mat-icon matSuffix>search</mat-icon>
-              <mat-autocomplete #auto="matAutocomplete">
-            <mat-option *ngFor="let option of filteredOptions | async" [value]="option.TVText">
-                {{option.TVText}}
-            </mat-option>
-        </mat-autocomplete>
-    </mat-form-field>
+<mat-form-field [ngClass]="formFieldWidthClass">
+    <input (focus)="ToggleSearchWidth()" (blur)="ToggleSearchWidth()" type="text" placeholder="Search" 
+    aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="searchAuto">
+    <mat-icon matSuffix>search</mat-icon>
+    <mat-autocomplete #searchAuto="matAutocomplete" (optionSelected)="NavigateTo($event.option.value)" [displayWith]="displayFn">
+        <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+           <app-search-option [searchResult]="option"></app-search-option>
+        </mat-option>
+    </mat-autocomplete>  
+</mat-form-field>
+

@@ -75,17 +75,17 @@ namespace CSSPSearchServices.Tests
                 var actionRes = await CSSPDBSearchService.Search(SearchText, 0);
                 Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
-                List<TVItemLanguage> tvItemLanguageList = (List<TVItemLanguage>)((OkObjectResult)actionRes.Result).Value;
-                Assert.NotNull(tvItemLanguageList);
-                Assert.True(tvItemLanguageList.Count > 0);
+                List<SearchResult> searchResultList = (List<SearchResult>)((OkObjectResult)actionRes.Result).Value;
+                Assert.NotNull(searchResultList);
+                Assert.True(searchResultList.Count > 0);
 
                 List<string> TermList = SearchText.Split(" ", StringSplitOptions.RemoveEmptyEntries).Select(c => c.Trim()).ToList();
 
-                foreach (TVItemLanguage tvItemLanguage in tvItemLanguageList)
+                foreach (SearchResult searchResult in searchResultList)
                 {
                     foreach (string term in TermList)
                     {
-                        Assert.Contains(term.ToLower(), tvItemLanguage.TVText.ToLower());
+                        Assert.Contains(term.ToLower(), searchResult.TVItemLanguage.TVText.ToLower());
                     }
                 }
             }
@@ -108,9 +108,9 @@ namespace CSSPSearchServices.Tests
                 var actionRes = await CSSPDBSearchService.Search(SearchText, 10 /* 10 = Newfoundland and Labrador */);
                 Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
-                List<TVItemLanguage> tvItemLanguageList = (List<TVItemLanguage>)((OkObjectResult)actionRes.Result).Value;
-                Assert.NotNull(tvItemLanguageList);
-                Assert.True(tvItemLanguageList.Count == 0);
+                List<SearchResult> searchResultList = (List<SearchResult>)((OkObjectResult)actionRes.Result).Value;
+                Assert.NotNull(searchResultList);
+                Assert.True(searchResultList.Count == 0);
             }
 
         }
@@ -123,7 +123,7 @@ namespace CSSPSearchServices.Tests
 
             List<string> SearchTermList = new List<string>()
             {
-                "", "lsiefjlsiejfilsjfilj", "ljliefjlijsilejflsiejf"
+                "lsiefjlsiejfilsjfilj"
             };
 
             foreach (string SearchText in SearchTermList)
@@ -131,9 +131,9 @@ namespace CSSPSearchServices.Tests
                 var actionRes = await CSSPDBSearchService.Search(SearchText, 0);
                 Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
                 Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
-                List<TVItemLanguage> tvItemLanguageList = (List<TVItemLanguage>)((OkObjectResult)actionRes.Result).Value;
-                Assert.NotNull(tvItemLanguageList);
-                Assert.True(tvItemLanguageList.Count == 0);
+                List<SearchResult> searchResultList = (List<SearchResult>)((OkObjectResult)actionRes.Result).Value;
+                Assert.NotNull(searchResultList);
+                Assert.True(searchResultList.Count == 0);
             }
 
         }

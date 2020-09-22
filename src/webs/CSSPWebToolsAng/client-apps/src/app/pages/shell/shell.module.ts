@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 
 import { ShellComponent } from './shell.component';
 import { ShellRoutingModule } from './shell-routing.module';
-import { SharedModule } from 'src/app/shared.module';
+import { SharedModule } from '../../shared.module';
 
 @NgModule({
   declarations: [ShellComponent],

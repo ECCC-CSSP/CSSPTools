@@ -13,9 +13,9 @@
         </span>
     </span>
     <span class="right">
-        <button *ngIf="shellService.shellModel$.getValue()?.Contact" mat-button>
-            {{ shellService.shellModel$.getValue()?.Contact?.LoginEmail }}
-        </button>
+        <span>
+            <app-logged-in-contact></app-logged-in-contact>
+        </span>
         <button mat-button *ngIf="!IsEnglish()" (click)="changeLang()">English</button>
         <button mat-button *ngIf="IsEnglish()" (click)="changeLang()">Français</button>
     </span>

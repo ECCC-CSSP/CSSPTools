@@ -16,18 +16,6 @@ export class ShellService {
     this.UpdateShell(<ShellModel>{ Language: $localize.locale == "fr-CA" ? LanguageEnum.fr : LanguageEnum.en });
    }
 
-   GetLoggedInContact() {
-    return this.httpClient.get<Contact>('/api/LoggedInContact').pipe(
-      map((x: any) => {
-        this.UpdateShell(<ShellModel>{ Contact: x, Loading: false });
-        console.debug(x);
-      }),
-      catchError(e => of(e).pipe(map(e => {
-        this.UpdateShell(<ShellModel>{ Loading: false, Error: <HttpErrorResponse>e });
-        console.debug(e);
-      })))
-    );
-  }
 
   UpdateShell(shellModel: ShellModel)
   {

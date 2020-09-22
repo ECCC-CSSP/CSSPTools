@@ -40,8 +40,6 @@ export class ShellComponent implements OnInit {
     Events
    */
   ngOnInit(): void {
-    this.shellService.GetLoggedInContact().subscribe();
-
     if (this.router.url.indexOf('fr-CA') > 0) {
       $localize.locale = 'fr-CA';
     }

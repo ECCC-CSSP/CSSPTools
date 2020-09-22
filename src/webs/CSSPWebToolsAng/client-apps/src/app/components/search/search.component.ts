@@ -4,6 +4,10 @@ import { HttpClient } from '@angular/common/http';
 import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, map, startWith, switchMap, tap } from 'rxjs/operators';
 import { TVItemLanguage } from 'src/app/models/generated/TVItemLanguage.model';
+import { SearchService } from './search.service';
+import { SearchResult } from 'src/app/models/searchresult';
+import { Router, NavigationExtras } from '@angular/router';
+import { AppService } from 'src/app/services';
 
 @Component({
   selector: 'app-search',
@@ -14,32 +18,28 @@ import { TVItemLanguage } from 'src/app/models/generated/TVItemLanguage.model';
 export class SearchComponent implements OnInit {
   myControl = new FormControl();
   options = [];
-  filteredOptions: Observable<any>;
+  filteredOptions: Observable<SearchService>;
+  searchResult: SearchResult;
+  formFieldWidthClass: string = '';
 
-  constructor(private service: Service) {
+  constructor(private searchService: SearchService, private router: Router, private appService: AppService) {
   }
 
   ngOnInit() {
-    this.filteredOptions = this.myControl.valueChanges.pipe(
-      startWith(''),
-      debounceTime(200),
-      distinctUntilChanged(),
-      switchMap(val => {
-        val = val.trim();
-        return val.length ?  this.service.getData(val) : [];
-      })
-    )
+    this.filteredOptions = this.searchService.GetSearch(this.myControl);
   }
 
-}
+  displayFn(searchResult: SearchResult): string {
+    return searchResult ? searchResult.TVItemLanguage.TVText : "";
+  }
 
-@Injectable({
-  providedIn: 'root'
-})
-export class Service {
-  constructor(private http: HttpClient) { }
+  ToggleSearchWidth() {
+    this.formFieldWidthClass == '' ? this.formFieldWidthClass = 'form-field-width' : this.formFieldWidthClass = '';
+  }
 
-  getData(val: string) {   
-    return this.http.get(`/api/search/${val}/1`);
+  NavigateTo(sr: SearchResult)
+  {
+    this.searchResult = sr;
+    this.router.navigateByUrl($localize.locale + '/' + this.searchService.GetUrl(sr));
   }
 }

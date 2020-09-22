@@ -20,7 +20,7 @@ namespace CSSPDBSearchServices
 {
     public partial class CSSPDBSearchService : ControllerBase, ICSSPDBSearchService
     {
-        private async Task<List<TVItemLanguage>> DoSearchMore(string SearchTerm, int TVItemID, int Take)
+        private async Task<List<SearchResult>> DoSearchMore(string SearchTerm, int TVItemID, int Take)
         {
             LanguageEnum LanguageRequest = LanguageEnum.en;
             if (CSSPCultureServicesRes.Culture.TwoLetterISOLanguageName == "fr")
@@ -42,107 +42,127 @@ namespace CSSPDBSearchServices
                 UnderTVPath = tvItemUnder.TVPath + "p";
             }
 
-            List<TVItemLanguage> tvItemLanguageList = null;
+            List<SearchResult> searchResultList = null;
             switch (TermList.Count)
             {
                 case 1:
                     {
-                        tvItemLanguageList = (from c in dbSearch.TVItems
-                                              from cl in dbSearch.TVItemLanguages
-                                              where c.TVItemID == cl.TVItemID
-                                              && cl.TVText.ToLower().Contains(TermList[0].ToLower())
-                                              && c.TVPath.StartsWith(UnderTVPath)
-                                              && cl.Language == LanguageRequest
-                                              && (c.TVType == TVTypeEnum.Address
-                                              || c.TVType == TVTypeEnum.Contact
-                                              || c.TVType == TVTypeEnum.File
-                                              || c.TVType == TVTypeEnum.Email
-                                              || c.TVType == TVTypeEnum.Tel)
-                                              orderby c.TVLevel ascending
-                                              select cl).Take(Take).ToList();
+                        searchResultList = (from c in dbSearch.TVItems
+                                            from cl in dbSearch.TVItemLanguages
+                                            where c.TVItemID == cl.TVItemID
+                                            && cl.TVText.ToLower().Contains(TermList[0].ToLower())
+                                            && c.TVPath.StartsWith(UnderTVPath)
+                                            && cl.Language == LanguageRequest
+                                            && (c.TVType == TVTypeEnum.Address
+                                            || c.TVType == TVTypeEnum.Contact
+                                            || c.TVType == TVTypeEnum.File
+                                            || c.TVType == TVTypeEnum.Email
+                                            || c.TVType == TVTypeEnum.Tel)
+                                            orderby c.TVLevel ascending
+                                            select new SearchResult
+                                            {
+                                                TVItem = c,
+                                                TVItemLanguage = cl,
+                                            }).Take(Take).ToList();
                     }
                     break;
                 case 2:
                     {
-                        tvItemLanguageList = (from c in dbSearch.TVItems
-                                              from cl in dbSearch.TVItemLanguages
-                                              where c.TVItemID == cl.TVItemID
-                                              && (cl.TVText.ToLower().Contains(TermList[0].ToLower())
-                                              && cl.TVText.ToLower().Contains(TermList[1].ToLower()))
-                                              && c.TVPath.StartsWith(UnderTVPath)
-                                              && cl.Language == LanguageRequest
-                                              && (c.TVType == TVTypeEnum.Address
-                                              || c.TVType == TVTypeEnum.Contact
-                                              || c.TVType == TVTypeEnum.File
-                                              || c.TVType == TVTypeEnum.Email
-                                              || c.TVType == TVTypeEnum.Tel)
-                                              orderby c.TVLevel ascending
-                                              select cl).Take(Take).ToList();
+                        searchResultList = (from c in dbSearch.TVItems
+                                            from cl in dbSearch.TVItemLanguages
+                                            where c.TVItemID == cl.TVItemID
+                                            && (cl.TVText.ToLower().Contains(TermList[0].ToLower())
+                                            && cl.TVText.ToLower().Contains(TermList[1].ToLower()))
+                                            && c.TVPath.StartsWith(UnderTVPath)
+                                            && cl.Language == LanguageRequest
+                                            && (c.TVType == TVTypeEnum.Address
+                                            || c.TVType == TVTypeEnum.Contact
+                                            || c.TVType == TVTypeEnum.File
+                                            || c.TVType == TVTypeEnum.Email
+                                            || c.TVType == TVTypeEnum.Tel)
+                                            orderby c.TVLevel ascending
+                                            select new SearchResult
+                                            {
+                                                TVItem = c,
+                                                TVItemLanguage = cl,
+                                            }).Take(Take).ToList();
                     }
                     break;
                 case 3:
                     {
-                        tvItemLanguageList = (from c in dbSearch.TVItems
-                                              from cl in dbSearch.TVItemLanguages
-                                              where c.TVItemID == cl.TVItemID
-                                              && (cl.TVText.ToLower().Contains(TermList[0].ToLower())
-                                              && cl.TVText.ToLower().Contains(TermList[1].ToLower())
-                                              && cl.TVText.ToLower().Contains(TermList[2].ToLower()))
-                                              && c.TVPath.StartsWith(UnderTVPath)
-                                              && cl.Language == LanguageRequest
-                                              && (c.TVType == TVTypeEnum.Address
-                                              || c.TVType == TVTypeEnum.Contact
-                                              || c.TVType == TVTypeEnum.File
-                                              || c.TVType == TVTypeEnum.Email
-                                              || c.TVType == TVTypeEnum.Tel)
-                                              orderby c.TVLevel ascending
-                                              select cl).Take(Take).ToList();
+                        searchResultList = (from c in dbSearch.TVItems
+                                            from cl in dbSearch.TVItemLanguages
+                                            where c.TVItemID == cl.TVItemID
+                                            && (cl.TVText.ToLower().Contains(TermList[0].ToLower())
+                                            && cl.TVText.ToLower().Contains(TermList[1].ToLower())
+                                            && cl.TVText.ToLower().Contains(TermList[2].ToLower()))
+                                            && c.TVPath.StartsWith(UnderTVPath)
+                                            && cl.Language == LanguageRequest
+                                            && (c.TVType == TVTypeEnum.Address
+                                            || c.TVType == TVTypeEnum.Contact
+                                            || c.TVType == TVTypeEnum.File
+                                            || c.TVType == TVTypeEnum.Email
+                                            || c.TVType == TVTypeEnum.Tel)
+                                            orderby c.TVLevel ascending
+                                            select new SearchResult
+                                            {
+                                                TVItem = c,
+                                                TVItemLanguage = cl,
+                                            }).Take(Take).ToList();
                     }
                     break;
                 case 4:
                     {
-                        tvItemLanguageList = (from c in dbSearch.TVItems
-                                              from cl in dbSearch.TVItemLanguages
-                                              where c.TVItemID == cl.TVItemID
-                                              && (cl.TVText.ToLower().Contains(TermList[0].ToLower())
-                                              && cl.TVText.ToLower().Contains(TermList[1].ToLower())
-                                              && cl.TVText.ToLower().Contains(TermList[2].ToLower())
-                                              && cl.TVText.ToLower().Contains(TermList[3].ToLower()))
-                                              && c.TVPath.StartsWith(UnderTVPath)
-                                              && cl.Language == LanguageRequest
-                                              && (c.TVType == TVTypeEnum.Address
-                                              || c.TVType == TVTypeEnum.Contact
-                                              || c.TVType == TVTypeEnum.File
-                                              || c.TVType == TVTypeEnum.Email
-                                              || c.TVType == TVTypeEnum.Tel)
-                                              orderby c.TVLevel ascending
-                                              select cl).Take(Take).ToList();
+                        searchResultList = (from c in dbSearch.TVItems
+                                            from cl in dbSearch.TVItemLanguages
+                                            where c.TVItemID == cl.TVItemID
+                                            && (cl.TVText.ToLower().Contains(TermList[0].ToLower())
+                                            && cl.TVText.ToLower().Contains(TermList[1].ToLower())
+                                            && cl.TVText.ToLower().Contains(TermList[2].ToLower())
+                                            && cl.TVText.ToLower().Contains(TermList[3].ToLower()))
+                                            && c.TVPath.StartsWith(UnderTVPath)
+                                            && cl.Language == LanguageRequest
+                                            && (c.TVType == TVTypeEnum.Address
+                                            || c.TVType == TVTypeEnum.Contact
+                                            || c.TVType == TVTypeEnum.File
+                                            || c.TVType == TVTypeEnum.Email
+                                            || c.TVType == TVTypeEnum.Tel)
+                                            orderby c.TVLevel ascending
+                                            select new SearchResult
+                                            {
+                                                TVItem = c,
+                                                TVItemLanguage = cl,
+                                            }).Take(Take).ToList();
                     }
                     break;
                 default:
                     {
-                        tvItemLanguageList = (from c in dbSearch.TVItems
-                                              from cl in dbSearch.TVItemLanguages
-                                              where c.TVItemID == cl.TVItemID
-                                              && (cl.TVText.ToLower().Contains(TermList[0].ToLower())
-                                              && cl.TVText.ToLower().Contains(TermList[1].ToLower())
-                                              && cl.TVText.ToLower().Contains(TermList[2].ToLower())
-                                              && cl.TVText.ToLower().Contains(TermList[3].ToLower())
-                                              && cl.TVText.ToLower().Contains(TermList[4].ToLower()))
-                                              && c.TVPath.StartsWith(UnderTVPath)
-                                              && cl.Language == LanguageRequest
-                                              && (c.TVType == TVTypeEnum.Address
-                                              || c.TVType == TVTypeEnum.Contact
-                                              || c.TVType == TVTypeEnum.File
-                                              || c.TVType == TVTypeEnum.Email
-                                              || c.TVType == TVTypeEnum.Tel)
-                                              orderby c.TVLevel ascending
-                                              select cl).Take(Take).ToList();
+                        searchResultList = (from c in dbSearch.TVItems
+                                            from cl in dbSearch.TVItemLanguages
+                                            where c.TVItemID == cl.TVItemID
+                                            && (cl.TVText.ToLower().Contains(TermList[0].ToLower())
+                                            && cl.TVText.ToLower().Contains(TermList[1].ToLower())
+                                            && cl.TVText.ToLower().Contains(TermList[2].ToLower())
+                                            && cl.TVText.ToLower().Contains(TermList[3].ToLower())
+                                            && cl.TVText.ToLower().Contains(TermList[4].ToLower()))
+                                            && c.TVPath.StartsWith(UnderTVPath)
+                                            && cl.Language == LanguageRequest
+                                            && (c.TVType == TVTypeEnum.Address
+                                            || c.TVType == TVTypeEnum.Contact
+                                            || c.TVType == TVTypeEnum.File
+                                            || c.TVType == TVTypeEnum.Email
+                                            || c.TVType == TVTypeEnum.Tel)
+                                            orderby c.TVLevel ascending
+                                            select new SearchResult
+                                            {
+                                                TVItem = c,
+                                                TVItemLanguage = cl,
+                                            }).Take(Take).ToList();
                     }
                     break;
             }
 
-            return await Task.FromResult(tvItemLanguageList);
+            return await Task.FromResult(searchResultList);
         }
     }
 }
