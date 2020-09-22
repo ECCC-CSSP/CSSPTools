@@ -1,13 +1,9 @@
-import { Component, OnInit, ChangeDetectionStrategy, Injectable } from '@angular/core';
-import { Observable, of, Subject, Subscription } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 import { FormControl } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, map, startWith, switchMap, tap } from 'rxjs/operators';
-import { TVItemLanguage } from 'src/app/models/generated/TVItemLanguage.model';
 import { SearchService } from './search.service';
 import { SearchResult } from 'src/app/models/searchresult';
-import { Router, NavigationExtras } from '@angular/router';
-import { AppService } from 'src/app/services';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-search',
@@ -15,18 +11,19 @@ import { AppService } from 'src/app/services';
   styleUrls: ['./search.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent implements OnInit, OnDestroy {
   myControl = new FormControl();
   options = [];
-  filteredOptions: Observable<SearchService>;
+  //filteredOptions: Observable<SearchService>;
   searchResult: SearchResult;
   formFieldWidthClass: string = '';
+  sub: Subscription;
 
-  constructor(private searchService: SearchService, private router: Router, private appService: AppService) {
+  constructor(public searchService: SearchService, private router: Router) {
   }
 
   ngOnInit() {
-    this.filteredOptions = this.searchService.GetSearch(this.myControl);
+    this.sub = this.searchService.GetSearch(this.myControl).subscribe();
   }
 
   displayFn(searchResult: SearchResult): string {
@@ -41,5 +38,13 @@ export class SearchComponent implements OnInit {
   {
     this.searchResult = sr;
     this.router.navigateByUrl($localize.locale + '/' + this.searchService.GetUrl(sr));
+  }
+
+  ngOnDestroy()
+  {
+    if (this.sub)
+    {
+      this.sub.unsubscribe();
+    }
   }
 }

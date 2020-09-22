@@ -20,13 +20,14 @@ export class RootService {
   }
 
   GetWebRoot() {
+    this.UpdateWebRoot(<WebRootModel>{ Working: true });
     return this.httpClient.get<WebRoot>('/api/Read/WebRoot/0/1').pipe(
       map((x: any) => {
-        this.UpdateWebRoot(<WebRootModel>{ WebRoot: x, Loading: false });
+        this.UpdateWebRoot(<WebRootModel>{ WebRoot: x, Working: false });
         console.debug(x);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.UpdateWebRoot(<WebRootModel>{ Loading: false, Error: <HttpErrorResponse>e });
+        this.UpdateWebRoot(<WebRootModel>{ Working: false, Error: <HttpErrorResponse>e });
         console.debug(e);
       })))
     );

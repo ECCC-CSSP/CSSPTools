@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { SearchModel, SearchTextModel } from './search.models';
+import { SearchResultModel, SearchTextModel } from './search.models';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { LoadLocalesSearchText } from './search.locales';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { TVItemLanguage } from 'src/app/models/generated/TVItemLanguage.model';
-import { catchError, debounceTime, distinctUntilChanged, map, startWith, switchMap } from 'rxjs/operators';
+import { catchError, debounceTime, distinctUntilChanged, map, startWith, switchMap, tap } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 import { Router } from '@angular/router';
@@ -16,6 +16,7 @@ import { SearchResult } from 'src/app/models/searchresult';
 })
 export class SearchService {
   searchTextModel$: BehaviorSubject<SearchTextModel> = new BehaviorSubject<SearchTextModel>(<SearchTextModel>{});
+  searchResultModel$: BehaviorSubject<SearchResultModel> = new BehaviorSubject<SearchResultModel>(<SearchResultModel>{});
 
   constructor(private httpClient: HttpClient) {
     LoadLocalesSearchText(this);
@@ -26,122 +27,146 @@ export class SearchService {
     this.searchTextModel$.next(<SearchTextModel>{ ...this.searchTextModel$.getValue(), ...searchTextModel });
   }
 
+  UpdateSearchResult(searchResultModel: SearchResultModel) {
+    this.searchResultModel$.next(<SearchResultModel>{ ...this.searchResultModel$.getValue(), ...searchResultModel });
+  }
+
   GetSearch(myControl: FormControl) {
     return myControl.valueChanges.pipe(
       startWith(''),
-      debounceTime(300),
+      debounceTime(500),
       distinctUntilChanged(),
-      switchMap(term => {
-        term = ('' + term).trim();
-        return term.length ? this.GetData(term) : [];
+      tap(term => {
+        this.GetData(term);
       }));
   }
 
-  private GetData(val: string) {
-    return this.httpClient.get(`/api/search/${val}/1`);
+  private GetData(term: string) {
+    this.UpdateSearchResult(<SearchResultModel>{ Working: true });
+    term = ('' + term).trim();
+    if (!term) {
+      of([]).pipe(
+        tap(() => {
+          this.UpdateSearchResult(<SearchResultModel>{ searchResult: [], Working: false });
+          console.debug("Clean Search Result");
+        })
+      ).subscribe();
+    }
+    else {
+      this.httpClient.get<SearchResult>(`/api/search/${term}/1`).pipe(
+        map((x: any) => {
+          this.UpdateSearchResult(<SearchResultModel>{ searchResult: x, Working: false });
+          console.debug(x);
+        }),
+        catchError(e => of(e).pipe(map(e => {
+          this.UpdateSearchResult(<SearchResultModel>{ Working: false, Error: <HttpErrorResponse>e });
+          console.debug(e);
+        })))
+      ).subscribe();
+    }
   }
 
   GetUrl(searchResult: SearchResult): string {
     switch (<TVTypeEnum>searchResult.TVItem.TVType) {
       case TVTypeEnum.Address:
         {
-          return `address/${ searchResult.TVItem.TVItemID }`;
+          return `address/${searchResult.TVItem.TVItemID}`;
         }
       case TVTypeEnum.Area:
         {
-          return `area/${ searchResult.TVItem.TVItemID }`;
+          return `area/${searchResult.TVItem.TVItemID}`;
         }
       case TVTypeEnum.BoxModel:
         {
-          return `boxmodel/${ searchResult.TVItem.TVItemID }`;
+          return `boxmodel/${searchResult.TVItem.TVItemID}`;
         }
       case TVTypeEnum.ClimateSite:
         {
-          return `climatesite/${ searchResult.TVItem.TVItemID }`;
+          return `climatesite/${searchResult.TVItem.TVItemID}`;
         }
       case TVTypeEnum.Contact:
         {
-          return `contact/${ searchResult.TVItem.TVItemID }`;
+          return `contact/${searchResult.TVItem.TVItemID}`;
         }
       case TVTypeEnum.Country:
         {
-          return `country/${ searchResult.TVItem.TVItemID }`;
+          return `country/${searchResult.TVItem.TVItemID}`;
         }
       case TVTypeEnum.Email:
         {
-          return `email/${ searchResult.TVItem.TVItemID }`;
+          return `email/${searchResult.TVItem.TVItemID}`;
         }
       case TVTypeEnum.File:
         {
-          return `file/${ searchResult.TVItem.TVItemID }`;
+          return `file/${searchResult.TVItem.TVItemID}`;
         }
       case TVTypeEnum.HydrometricSite:
         {
-          return `hydrometricsite/${ searchResult.TVItem.TVItemID }`;
+          return `hydrometricsite/${searchResult.TVItem.TVItemID}`;
         }
       case TVTypeEnum.Infrastructure:
         {
-          return `infrastructure/${ searchResult.TVItem.TVItemID }`;
+          return `infrastructure/${searchResult.TVItem.TVItemID}`;
         }
       case TVTypeEnum.LabSheetInfo:
         {
-          return `labsheet/${ searchResult.TVItem.TVItemID }`;
+          return `labsheet/${searchResult.TVItem.TVItemID}`;
         }
       case TVTypeEnum.MWQMRun:
         {
-          return `mwqmrun/${ searchResult.TVItem.TVItemID }`;
+          return `mwqmrun/${searchResult.TVItem.TVItemID}`;
         }
       case TVTypeEnum.MWQMSite:
         {
-          return `mwqmsite/${ searchResult.TVItem.TVItemID }`;
+          return `mwqmsite/${searchResult.TVItem.TVItemID}`;
         }
       case TVTypeEnum.MikeScenario:
         {
-          return `mikescenario/${ searchResult.TVItem.TVItemID }`;
+          return `mikescenario/${searchResult.TVItem.TVItemID}`;
         }
       case TVTypeEnum.MikeSource:
         {
-          return `mikesource/${ searchResult.TVItem.TVItemID }`;
+          return `mikesource/${searchResult.TVItem.TVItemID}`;
         }
       case TVTypeEnum.Municipality:
         {
-          return `municipality/${ searchResult.TVItem.TVItemID }`;
+          return `municipality/${searchResult.TVItem.TVItemID}`;
         }
       case TVTypeEnum.PolSourceSite:
         {
-          return `polsourcesite/${ searchResult.TVItem.TVItemID }`;
+          return `polsourcesite/${searchResult.TVItem.TVItemID}`;
         }
       case TVTypeEnum.Province:
         {
-          return `province/${ searchResult.TVItem.TVItemID }`;
+          return `province/${searchResult.TVItem.TVItemID}`;
         }
       case TVTypeEnum.Root:
         {
-          return `root/${ searchResult.TVItem.TVItemID }`;
+          return `root/${searchResult.TVItem.TVItemID}`;
         }
       case TVTypeEnum.SamplingPlan:
         {
-          return `samplingplan/${ searchResult.TVItem.TVItemID }`;
+          return `samplingplan/${searchResult.TVItem.TVItemID}`;
         }
       case TVTypeEnum.Sector:
         {
-          return `sector/${ searchResult.TVItem.TVItemID }`;
+          return `sector/${searchResult.TVItem.TVItemID}`;
         }
       case TVTypeEnum.Subsector:
         {
-          return `subsector/${ searchResult.TVItem.TVItemID }`;
+          return `subsector/${searchResult.TVItem.TVItemID}`;
         }
       case TVTypeEnum.Tel:
         {
-          return `tel/${ searchResult.TVItem.TVItemID }`;
+          return `tel/${searchResult.TVItem.TVItemID}`;
         }
       case TVTypeEnum.TideSite:
         {
-          return `tidesite/${ searchResult.TVItem.TVItemID }`;
+          return `tidesite/${searchResult.TVItem.TVItemID}`;
         }
       case TVTypeEnum.VisualPlumesScenario:
         {
-          return `visualplumesscenario/${ searchResult.TVItem.TVItemID }`;
+          return `visualplumesscenario/${searchResult.TVItem.TVItemID}`;
         }
       default:
         {

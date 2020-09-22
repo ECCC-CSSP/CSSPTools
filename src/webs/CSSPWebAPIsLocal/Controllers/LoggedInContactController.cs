@@ -14,6 +14,7 @@ using CSSPCultureServices.Resources;
 using LocalServices;
 using ReadGzFileServices;
 using System.Linq;
+using System.Threading;
 
 namespace CSSPWebAPIsLocal.Controllers
 {
@@ -49,6 +50,8 @@ namespace CSSPWebAPIsLocal.Controllers
             // TVItemID = AreaTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LocalService.SetLoggedInContactInfo();
+
+            Thread.Sleep(3000);
 
             return await Task.FromResult(Ok(LocalService.LoggedInContactInfo.LoggedInContact));
         }

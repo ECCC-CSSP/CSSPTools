@@ -13,6 +13,7 @@ using CSSPEnums;
 using CSSPCultureServices.Resources;
 using LocalServices;
 using ReadGzFileServices;
+using System.Threading;
 
 namespace CSSPWebAPIsLocal.Controllers
 {
@@ -289,6 +290,8 @@ namespace CSSPWebAPIsLocal.Controllers
             // TVItemID = 0 -- not used
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LocalService.SetLoggedInContactInfo();
+
+            Thread.Sleep(2000);
 
             return await ReadGzFileService.ReadJSON<WebRoot>(WebTypeEnum.WebRoot, TVItemID, WebTypeYear);
         }

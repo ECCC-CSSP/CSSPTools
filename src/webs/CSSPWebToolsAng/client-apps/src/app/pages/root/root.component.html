@@ -1,3 +1,7 @@
+<span *ngIf="(rootService.webRootModel$ | async).Working">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</span>
+
 <p>root works! {{ rootService.rootTextModel$.getValue().Title }}</p>
 <hr />
 <ng-template>
@@ -36,7 +40,8 @@
                 {{ tvFileModel.TVFile.ServerFilePath }}{{ tvFileModel.TVFile.ServerFileName }}
                 <ul>
                     <li>
-                        {{ tvFileModel.TVFile.FileSize_kb }} KB {{ tvFileModel.TVFile.FilePurpose }} {{ tvFileModel.TVFile.FileType }}
+                        {{ tvFileModel.TVFile.FileSize_kb }} KB {{ tvFileModel.TVFile.FilePurpose }}
+                        {{ tvFileModel.TVFile.FileType }}
                     </li>
                 </ul>
             </li>

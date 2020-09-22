@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { ShellService } from './shell.service';
 import { ShellModel } from './shell.models';
-import { Observable } from 'rxjs';
 import { LanguageEnum } from '../grouping';
 
 @Component({
