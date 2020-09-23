@@ -14,7 +14,7 @@ import { WebTideDataSetEnum_GetOrderedText } from '../../../enums/generated/WebT
 import { TVTypeEnum_GetOrderedText } from '../../../enums/generated/TVTypeEnum';
 import { MikeBoundaryCondition } from '../../../models/generated/MikeBoundaryCondition.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from '../../../models/enumidandtext.model';
+import { EnumIDAndText } from '../../../models/enum-idandtext.model';
 import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({

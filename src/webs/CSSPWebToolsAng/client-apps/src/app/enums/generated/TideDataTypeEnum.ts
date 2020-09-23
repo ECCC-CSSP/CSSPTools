@@ -5,7 +5,7 @@
  *
  */
 
-import { EnumIDAndText } from '../../models/enumidandtext.model';
+import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
 
 export enum TideDataTypeEnum {
     Min15 = 1,

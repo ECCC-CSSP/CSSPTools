@@ -12,7 +12,7 @@ import { LoadLocalesLabSheetDetailText } from './labsheetdetail.locales';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { LabSheetDetail } from '../../../models/generated/LabSheetDetail.model';
-import { HttpRequestModel } from '../../../models/http.model';
+import { HttpRequestModel } from '../../../models/HttpRequest.model';
 import { HttpClientService } from '../../../services/http-client.service';
 import { HttpClientCommand } from '../../../enums/app.enums';
 

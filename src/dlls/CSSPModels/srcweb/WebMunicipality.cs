@@ -3,9 +3,11 @@
  * 
  */
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CSSPModels
 {
+    [NotMapped]
     public partial class WebMunicipality : WebBase
     {
         #region Properties

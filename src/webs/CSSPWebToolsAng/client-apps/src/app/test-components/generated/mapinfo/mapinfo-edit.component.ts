@@ -13,7 +13,7 @@ import { TVTypeEnum_GetOrderedText } from '../../../enums/generated/TVTypeEnum';
 import { MapInfoDrawTypeEnum_GetOrderedText } from '../../../enums/generated/MapInfoDrawTypeEnum';
 import { MapInfo } from '../../../models/generated/MapInfo.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from '../../../models/enumidandtext.model';
+import { EnumIDAndText } from '../../../models/enum-idandtext.model';
 import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({

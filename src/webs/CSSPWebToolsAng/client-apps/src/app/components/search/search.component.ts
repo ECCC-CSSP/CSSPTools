@@ -2,8 +2,9 @@ import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/
 import { Observable, Subscription } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { SearchService } from './search.service';
-import { SearchResult } from 'src/app/models/searchresult';
+import { SearchResult } from 'src/app/models/SearchResult.model';
 import { Router } from '@angular/router';
+import { AppService } from 'src/app/services';
 
 @Component({
   selector: 'app-search',
@@ -14,12 +15,11 @@ import { Router } from '@angular/router';
 export class SearchComponent implements OnInit, OnDestroy {
   myControl = new FormControl();
   options = [];
-  //filteredOptions: Observable<SearchService>;
   searchResult: SearchResult;
   formFieldWidthClass: string = '';
   sub: Subscription;
 
-  constructor(public searchService: SearchService, private router: Router) {
+  constructor(public searchService: SearchService, private router: Router, private appService: AppService) {
   }
 
   ngOnInit() {
@@ -37,7 +37,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   NavigateTo(sr: SearchResult)
   {
     this.searchResult = sr;
-    this.router.navigateByUrl($localize.locale + '/' + this.searchService.GetUrl(sr));
+    this.router.navigateByUrl($localize.locale + '/' + this.appService.GetUrl(sr.TVItem));
   }
 
   ngOnDestroy()

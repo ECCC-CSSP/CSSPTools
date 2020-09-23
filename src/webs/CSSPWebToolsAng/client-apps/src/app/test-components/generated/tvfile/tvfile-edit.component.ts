@@ -15,7 +15,7 @@ import { FilePurposeEnum_GetOrderedText } from '../../../enums/generated/FilePur
 import { FileTypeEnum_GetOrderedText } from '../../../enums/generated/FileTypeEnum';
 import { TVFile } from '../../../models/generated/TVFile.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from '../../../models/enumidandtext.model';
+import { EnumIDAndText } from '../../../models/enum-idandtext.model';
 import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({

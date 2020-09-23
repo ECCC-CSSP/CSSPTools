@@ -4,11 +4,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from './app-material.module';
 import { SearchComponent } from './components/search/search.component';
 import { SearchOptionComponent } from './components/search-option/search-option.component';
+import { BreadCrumbComponent } from './components/bread-crumb/bread-crumb.component';
 
 @NgModule({
   declarations: [
     SearchComponent,
-    SearchOptionComponent
+    SearchOptionComponent,
+    BreadCrumbComponent
   ],
   imports: [
     CommonModule,
@@ -22,6 +24,9 @@ import { SearchOptionComponent } from './components/search-option/search-option.
     SearchComponent,
     FormsModule,
     ReactiveFormsModule,
+    SearchComponent,
+    SearchOptionComponent,
+    BreadCrumbComponent
   ]
 })
 export class SharedModule { }

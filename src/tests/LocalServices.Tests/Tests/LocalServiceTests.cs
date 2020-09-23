@@ -31,7 +31,6 @@ namespace LocalServices.Tests
         public async Task LocalService_Constructor_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
-            Assert.False(LocalService.HasInternetConnection);
             Assert.Null(LocalService.LoggedInContactInfo);
             Assert.NotEmpty(FirstName);
             Assert.NotEmpty(Initial);

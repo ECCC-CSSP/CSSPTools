@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
 import { LanguageEnum_GetOrderedText } from '../../../enums/generated/LanguageEnum';
 import { ReportSection } from '../../../models/generated/ReportSection.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from '../../../models/enumidandtext.model';
+import { EnumIDAndText } from '../../../models/enum-idandtext.model';
 import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({

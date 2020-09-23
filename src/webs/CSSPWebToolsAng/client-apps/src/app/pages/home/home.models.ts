@@ -1,4 +1,4 @@
-import { HttpRequestModel } from '../../models/http.model';
+import { HttpRequestModel } from '../../models/HttpRequest.model';
 
 export interface HomeTextModel {
     Title?: string

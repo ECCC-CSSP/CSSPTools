@@ -42,7 +42,7 @@ namespace GenerateCodeBaseServices.Services
                 || type.Name.StartsWith("Device")
                 || type.Name.StartsWith("Preference")
                 || type.Name.StartsWith("CSSPFile")
-                || type.Name.StartsWith("Web")
+                //|| type.Name.StartsWith("Web")
                 )
             {
                 return true;

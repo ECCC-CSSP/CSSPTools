@@ -5,7 +5,7 @@
  *
  */
 
-import { EnumIDAndText } from '../../models/enumidandtext.model';
+import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
 
 export enum AnalysisReportExportCommandEnum {
     Report = 1,

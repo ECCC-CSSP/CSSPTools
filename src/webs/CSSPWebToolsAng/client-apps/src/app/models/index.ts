@@ -1,2 +1,2 @@
 export * from './app.models';
-export * from './http.model';
+export * from './HttpRequest.model';

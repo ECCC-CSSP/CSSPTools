@@ -5,7 +5,7 @@ import { RootComponent } from './root.component';
 import { SharedModule } from 'src/app/shared.module';
 
 @NgModule({
-  declarations: [ RootComponent ],
+  declarations: [RootComponent],
   imports: [
     RouterModule,
     RootRoutingModule,

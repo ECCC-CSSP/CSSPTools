@@ -1,5 +1,5 @@
-import { WebRoot } from '../../models/webroot';
-import { HttpRequestModel } from '../../models/http.model';
+import { HttpRequestModel } from '../../models/HttpRequest.model';
+import { WebRoot } from '../../models/generated/WebRoot.model';
 
 export interface RootTextModel {
     Title?: string;

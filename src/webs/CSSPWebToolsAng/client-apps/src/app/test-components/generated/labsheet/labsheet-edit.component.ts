@@ -15,7 +15,7 @@ import { LabSheetTypeEnum_GetOrderedText } from '../../../enums/generated/LabShe
 import { LabSheetStatusEnum_GetOrderedText } from '../../../enums/generated/LabSheetStatusEnum';
 import { LabSheet } from '../../../models/generated/LabSheet.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from '../../../models/enumidandtext.model';
+import { EnumIDAndTextModel } from '../../../models/enum-id-and-text.model';
 import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
@@ -26,10 +26,10 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class LabSheetEditComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  samplingPlanTypeList: EnumIDAndText[];
-  sampleTypeList: EnumIDAndText[];
-  labSheetTypeList: EnumIDAndText[];
-  labSheetStatusList: EnumIDAndText[];
+  samplingPlanTypeList: EnumIDAndTextModel[];
+  sampleTypeList: EnumIDAndTextModel[];
+  labSheetTypeList: EnumIDAndTextModel[];
+  labSheetStatusList: EnumIDAndTextModel[];
   labsheetFormEdit: FormGroup;
   @Input() labsheet: LabSheet = null;
   @Input() httpClientCommand: HttpClientCommand = HttpClientCommand.Put;

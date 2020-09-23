@@ -17,7 +17,7 @@ import { SampleMatrixEnum_GetOrderedText } from '../../../enums/generated/Sample
 import { LaboratoryEnum_GetOrderedText } from '../../../enums/generated/LaboratoryEnum';
 import { SamplingPlan } from '../../../models/generated/SamplingPlan.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from '../../../models/enumidandtext.model';
+import { EnumIDAndText } from '../../../models/enum-idandtext.model';
 import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({

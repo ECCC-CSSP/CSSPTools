@@ -1,0 +1,57 @@
+<span *ngIf="(provinceService.WebProvinceModel$ | async).Working">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</span>
+
+<app-bread-crumb [breadCrumbs]="provinceService.WebProvinceModel$.getValue().WebProvince.TVItemParentList"></app-bread-crumb>
+
+<p>Province works! {{ provinceService.ProvinceTextModel$.getValue().Title }}</p>
+<hr />
+<ng-template>
+    {{ (provinceService.WebProvinceModel$ | async) }}
+    {{ (shellService.shellModel$ | async) }}
+</ng-template>
+<hr />
+{{ provinceService.WebProvinceModel$.getValue().WebProvince.TVItemModel.TVItemLanguageEN.TVText }}
+<hr />
+<ul *ngFor="let tvItemModel of provinceService.WebProvinceModel$.getValue().WebProvince.TVItemAreaList">
+    <li *ngIf="shellService.shellModel$.getValue().Language == 1">
+        {{ tvItemModel.TVItemModel.TVItemLanguageEN.TVText }}
+
+        <ul *ngFor="let mapInfoModel of tvItemModel.TVItemModel.MapInfoModelList">
+            <li>
+                {{ mapInfoModel.MapInfo.MapInfoID }} {{ mapInfoModel.MapInfo.TVType }}
+                <ul>
+                    <li *ngFor="let mapInfoPointModel of mapInfoModel.MapInfoPointList">
+                        {{ mapInfoPointModel.Lat }} {{ mapInfoPointModel.Lng }}
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+    <li *ngIf="shellService.shellModel$.getValue().Language == 2">
+        {{ tvItemModel.TVItemModel.TVItemLanguageFR.TVText }}
+    </li>
+</ul>
+
+<ul *ngFor="let tvFileModel of provinceService.WebProvinceModel$.getValue().WebProvince.TVItemModel.TVFileModelList">
+    <li *ngIf="shellService.shellModel$.getValue().Language == 1">
+        {{ tvFileModel.TVFileLanguageEN }}
+
+        <ul>
+            <li>
+                {{ tvFileModel.TVFile.ServerFilePath }}{{ tvFileModel.TVFile.ServerFileName }}
+                <ul>
+                    <li>
+                        {{ tvFileModel.TVFile.FileSize_kb }} KB {{ tvFileModel.TVFile.FilePurpose }}
+                        {{ tvFileModel.TVFile.FileType }}
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+    <li *ngIf="shellService.shellModel$.getValue().Language == 2">
+        {{ tvFileModel.TVFileLanguageFR }}
+    </li>
+</ul>
+
+<router-outlet></router-outlet>

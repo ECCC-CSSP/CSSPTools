@@ -14,7 +14,7 @@ import { FileTypeEnum_GetOrderedText } from '../../../enums/generated/FileTypeEn
 import { LanguageEnum_GetOrderedText } from '../../../enums/generated/LanguageEnum';
 import { ReportType } from '../../../models/generated/ReportType.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from '../../../models/enumidandtext.model';
+import { EnumIDAndText } from '../../../models/enum-idandtext.model';
 import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({

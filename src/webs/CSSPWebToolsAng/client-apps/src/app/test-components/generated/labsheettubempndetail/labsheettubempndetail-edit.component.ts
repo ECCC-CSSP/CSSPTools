@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
 import { SampleTypeEnum_GetOrderedText } from '../../../enums/generated/SampleTypeEnum';
 import { LabSheetTubeMPNDetail } from '../../../models/generated/LabSheetTubeMPNDetail.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from '../../../models/enumidandtext.model';
+import { EnumIDAndText } from '../../../models/enum-idandtext.model';
 import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({

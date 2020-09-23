@@ -1,5 +1,5 @@
 import { Contact } from 'src/app/models/generated/Contact.model';
-import { HttpRequestModel } from '../../models/http.model';
+import { HttpRequestModel } from '../../models/HttpRequest.model';
 
 export interface LoggedInContactTextModel {
     Title?: string

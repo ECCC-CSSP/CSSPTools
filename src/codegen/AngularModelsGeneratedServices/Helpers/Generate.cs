@@ -71,6 +71,11 @@ namespace AngularModelsGeneratedServices.Services
                     continue;
                 }
 
+                //if (dllTypeInfoModels.Name != "WebProvince")
+                //{
+                //    continue;
+                //}
+
                 CreateTypeFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
             }
 

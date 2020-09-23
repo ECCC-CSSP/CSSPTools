@@ -12,7 +12,7 @@ import { LoadLocalesContactPreferenceText } from './contactpreference.locales';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { ContactPreference } from '../../../models/generated/ContactPreference.model';
-import { HttpRequestModel } from '../../../models/http.model';
+import { HttpRequestModel } from '../../../models/HttpRequest.model';
 import { HttpClientService } from '../../../services/http-client.service';
 import { HttpClientCommand } from '../../../enums/app.enums';
 

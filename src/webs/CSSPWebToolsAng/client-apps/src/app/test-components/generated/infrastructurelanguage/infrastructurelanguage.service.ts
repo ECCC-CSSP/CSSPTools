@@ -12,7 +12,7 @@ import { LoadLocalesInfrastructureLanguageText } from './infrastructurelanguage.
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { InfrastructureLanguage } from '../../../models/generated/InfrastructureLanguage.model';
-import { HttpRequestModel } from '../../../models/http.model';
+import { HttpRequestModel } from '../../../models/HttpRequest.model';
 import { HttpClientService } from '../../../services/http-client.service';
 import { HttpClientCommand } from '../../../enums/app.enums';
 

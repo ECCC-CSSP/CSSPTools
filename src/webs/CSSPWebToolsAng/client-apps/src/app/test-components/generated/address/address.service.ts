@@ -12,7 +12,7 @@ import { LoadLocalesAddressText } from './address.locales';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { Address } from '../../../models/generated/Address.model';
-import { HttpRequestModel } from '../../../models/http.model';
+import { HttpRequestModel } from '../../../models/HttpRequest.model';
 import { HttpClientService } from '../../../services/http-client.service';
 import { HttpClientCommand } from '../../../enums/app.enums';
 

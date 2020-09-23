@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
 import { ScenarioStatusEnum_GetOrderedText } from '../../../enums/generated/ScenarioStatusEnum';
 import { VPScenario } from '../../../models/generated/VPScenario.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from '../../../models/enumidandtext.model';
+import { EnumIDAndText } from '../../../models/enum-idandtext.model';
 import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({

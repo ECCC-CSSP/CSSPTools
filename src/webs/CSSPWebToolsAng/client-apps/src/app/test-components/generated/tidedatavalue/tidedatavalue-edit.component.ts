@@ -14,7 +14,7 @@ import { StorageDataTypeEnum_GetOrderedText } from '../../../enums/generated/Sto
 import { TideTextEnum_GetOrderedText } from '../../../enums/generated/TideTextEnum';
 import { TideDataValue } from '../../../models/generated/TideDataValue.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from '../../../models/enumidandtext.model';
+import { EnumIDAndText } from '../../../models/enum-idandtext.model';
 import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({

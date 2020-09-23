@@ -5,7 +5,7 @@
  *
  */
 
-import { EnumIDAndText } from '../../models/enumidandtext.model';
+import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
 
 export enum WebTypeEnum {
     WebRoot = 1,
@@ -33,7 +33,9 @@ export enum WebTypeEnum {
     WebPolSourceSite = 23,
     WebPolSourceGrouping = 24,
     WebReportType = 25,
-    WebTVItem = 26,
+    WebAllTVItem = 26,
+    WebPolSourceSiteEffectTerm = 27,
+    WebAllTVItemLanguage = 28,
 }
 
 export function WebTypeEnum_GetOrderedText(): EnumIDAndText[] {
@@ -64,7 +66,9 @@ export function WebTypeEnum_GetOrderedText(): EnumIDAndText[] {
         enumTextOrderedList.push({ EnumID: 23, EnumText: 'WebPolSourceSite (fr)' });
         enumTextOrderedList.push({ EnumID: 24, EnumText: 'WebPolSourceGrouping (fr)' });
         enumTextOrderedList.push({ EnumID: 25, EnumText: 'WebReportType (fr)' });
-        enumTextOrderedList.push({ EnumID: 26, EnumText: 'WebTVItem (fr)' });
+        enumTextOrderedList.push({ EnumID: 26, EnumText: 'WebAllTVItem (fr)' });
+        enumTextOrderedList.push({ EnumID: 27, EnumText: 'WebPolSourceSiteEffectTerm' });
+        enumTextOrderedList.push({ EnumID: 28, EnumText: 'WebAllTVItemLanguage (fr)' });
     }
     else {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'WebRoot' });
@@ -92,7 +96,9 @@ export function WebTypeEnum_GetOrderedText(): EnumIDAndText[] {
         enumTextOrderedList.push({ EnumID: 23, EnumText: 'WebPolSourceSite' });
         enumTextOrderedList.push({ EnumID: 24, EnumText: 'WebPolSourceGrouping' });
         enumTextOrderedList.push({ EnumID: 25, EnumText: 'WebReportType' });
-        enumTextOrderedList.push({ EnumID: 26, EnumText: 'WebTVItem' });
+        enumTextOrderedList.push({ EnumID: 26, EnumText: 'WebAllTVItem' });
+        enumTextOrderedList.push({ EnumID: 27, EnumText: 'WebPolSourceSiteEffectTerm' });
+        enumTextOrderedList.push({ EnumID: 28, EnumText: 'WebAllTVItemLanguage' });
     }
 
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));

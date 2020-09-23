@@ -12,7 +12,7 @@ import { LoadLocalesAppErrLogText } from './apperrlog.locales';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { AppErrLog } from '../../../models/generated/AppErrLog.model';
-import { HttpRequestModel } from '../../../models/http.model';
+import { HttpRequestModel } from '../../../models/HttpRequest.model';
 import { HttpClientService } from '../../../services/http-client.service';
 import { HttpClientCommand } from '../../../enums/app.enums';
 

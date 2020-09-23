@@ -13,7 +13,7 @@ import { AnalysisCalculationTypeEnum_GetOrderedText } from '../../../enums/gener
 import { AnalysisReportExportCommandEnum_GetOrderedText } from '../../../enums/generated/AnalysisReportExportCommandEnum';
 import { MWQMAnalysisReportParameter } from '../../../models/generated/MWQMAnalysisReportParameter.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from '../../../models/enumidandtext.model';
+import { EnumIDAndText } from '../../../models/enum-idandtext.model';
 import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({

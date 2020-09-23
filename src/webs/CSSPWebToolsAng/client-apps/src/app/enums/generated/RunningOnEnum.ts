@@ -5,22 +5,22 @@
  *
  */
 
-import { EnumIDAndText } from '../../models/enumidandtext.model';
+import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
 
 export enum RunningOnEnum {
-    Local = 1,
-    Azure = 2,
+    Azure = 1,
+    Local = 2,
 }
 
 export function RunningOnEnum_GetOrderedText(): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
     if ($localize.locale === 'fr-CA') {
-        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Local (fr)' });
-        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Azure (fr)' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Azure (fr)' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Local (fr)' });
     }
     else {
-        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Local' });
-        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Azure' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Azure' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Local' });
     }
 
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));

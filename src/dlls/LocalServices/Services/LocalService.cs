@@ -15,7 +15,6 @@ namespace LocalServices
     {
         // Properties
         LoggedInContactInfo LoggedInContactInfo { get; set; }
-        bool HasInternetConnection { get; set; }
 
         // Functions
         Task<bool> CheckInternetConnection();
@@ -30,7 +29,6 @@ namespace LocalServices
 
         #region Properties
         public LoggedInContactInfo LoggedInContactInfo { get; set; } = null;
-        public bool HasInternetConnection { get; set; } = false;
 
         private List<int> skip { get; set; } = new List<int>()
         {
@@ -148,9 +146,11 @@ namespace LocalServices
                 {
                     LoggedInContactInfo.TVTypeUserAuthorizationList = new List<TVTypeUserAuthorization>();
                     LoggedInContactInfo.TVItemUserAuthorizationList = new List<TVItemUserAuthorization>();
+                    LoggedInContactInfo.Preference = new Preference();
                 }
                 else
                 {
+                    // doing LoggedInContacts
                     try
                     {
                         dbLoginIM.Contacts.Add(LoggedInContactInfo.LoggedInContact);
@@ -162,6 +162,7 @@ namespace LocalServices
                         return await Task.FromResult(false);
                     }
 
+                    // doing TVTypeUserAuthorizationList 
                     LoggedInContactInfo.TVTypeUserAuthorizationList = (from c in dbLogin.TVTypeUserAuthorizations
                                                                        where c.ContactTVItemID == LoggedInContactInfo.LoggedInContact.ContactTVItemID
                                                                        select c).ToList();
@@ -180,6 +181,7 @@ namespace LocalServices
                         }
                     }
 
+                    // doing TVItemUserAuthorizationList 
                     LoggedInContactInfo.TVItemUserAuthorizationList = (from c in dbLogin.TVItemUserAuthorizations
                                                                        where c.ContactTVItemID == LoggedInContactInfo.LoggedInContact.ContactTVItemID
                                                                        select c).ToList();
@@ -189,6 +191,24 @@ namespace LocalServices
                         try
                         {
                             dbLoginIM.TVItemUserAuthorizations.AddRange(LoggedInContactInfo.TVItemUserAuthorizationList);
+                            await dbLoginIM.SaveChangesAsync();
+                        }
+                        catch (Exception)
+                        {
+                            // nothing yet
+                            return await Task.FromResult(false);
+                        }
+                    }
+
+                    // doing Preference
+                    LoggedInContactInfo.Preference = (from c in dbLogin.Preferences
+                                                      select c).FirstOrDefault();
+
+                    if (LoggedInContactInfo.Preference != null)
+                    {
+                        try
+                        {
+                            dbLoginIM.Preferences.Add(LoggedInContactInfo.Preference);
                             await dbLoginIM.SaveChangesAsync();
                         }
                         catch (Exception)
@@ -208,6 +228,9 @@ namespace LocalServices
                 LoggedInContactInfo.TVItemUserAuthorizationList = (from c in dbLoginIM.TVItemUserAuthorizations
                                                                    where c.ContactTVItemID == LoggedInContactInfo.LoggedInContact.ContactTVItemID
                                                                    select c).ToList();
+
+                LoggedInContactInfo.Preference = (from c in dbLoginIM.Preferences
+                                                  select c).FirstOrDefault();
             }
 
             return await Task.FromResult(true);

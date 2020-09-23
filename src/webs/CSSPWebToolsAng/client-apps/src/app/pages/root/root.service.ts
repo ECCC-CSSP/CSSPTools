@@ -4,15 +4,15 @@ import { LoadLocalesRootText } from './root.locales';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 
-import { WebRoot } from '../../models/webroot';
+import { WebRoot } from '../../models/generated/WebRoot.model';
 import { RootTextModel, WebRootModel } from './root.models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RootService {
-  rootTextModel$: BehaviorSubject<RootTextModel> = new BehaviorSubject<RootTextModel>(<RootTextModel>{});
-  webRootModel$: BehaviorSubject<WebRootModel> = new BehaviorSubject<WebRootModel>(<WebRootModel>{});
+  RootTextModel$: BehaviorSubject<RootTextModel> = new BehaviorSubject<RootTextModel>(<RootTextModel>{});
+  WebRootModel$: BehaviorSubject<WebRootModel> = new BehaviorSubject<WebRootModel>(<WebRootModel>{});
   
   constructor(private httpClient: HttpClient) {
     LoadLocalesRootText(this);
@@ -34,10 +34,10 @@ export class RootService {
   }
 
   UpdateRootText(rootTextModel: RootTextModel) {
-    this.rootTextModel$.next(<RootTextModel>{ ...this.rootTextModel$.getValue(), ...rootTextModel });
+    this.RootTextModel$.next(<RootTextModel>{ ...this.RootTextModel$.getValue(), ...rootTextModel });
   }
 
   UpdateWebRoot(webRootModel: WebRootModel) {
-    this.webRootModel$.next(<WebRootModel>{ ...this.webRootModel$.getValue(), ...webRootModel });
+    this.WebRootModel$.next(<WebRootModel>{ ...this.WebRootModel$.getValue(), ...webRootModel });
   }
 }

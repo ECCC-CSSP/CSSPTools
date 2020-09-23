@@ -42,7 +42,7 @@ namespace ReadGzFileServices
                 gzExistLocaly = true;
             }
 
-            if (LocalService.HasInternetConnection)
+            if (LocalService.LoggedInContactInfo.Preference.HasInternetConnection != null && LocalService.LoggedInContactInfo.Preference.HasInternetConnection == true)
             {
                 BlobClient blobClient = new BlobClient(AzureStoreConnectionString, AzureStoreCSSPJSONPath, fileName);
                 BlobProperties blobProperties = null;
