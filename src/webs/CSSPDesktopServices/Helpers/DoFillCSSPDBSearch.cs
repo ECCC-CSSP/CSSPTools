@@ -83,6 +83,9 @@ namespace CSSPDesktopServices.Services
                         {
                             AppendStatus(new AppendEventArgs($"{ string.Format(CSSPCultureDesktopRes.Done) } TVItems ({ skip }/{ total })"));
                         }
+
+                        InstallingStatus(new InstallingEventArgs(25 + (30 * skip/ total)));
+
                     }
                     #endregion Doing WebAllTVItem
 
@@ -134,6 +137,8 @@ namespace CSSPDesktopServices.Services
                         {
                             AppendStatus(new AppendEventArgs($"{ string.Format(CSSPCultureDesktopRes.Done) } TVItemLanguages ({ skip }/{ total })"));
                         }
+
+                        InstallingStatus(new InstallingEventArgs(50 + (40 * skip / total)));
                     }
                     #endregion doing WebAllTVItemLanguage
                 }

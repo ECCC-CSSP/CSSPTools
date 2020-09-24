@@ -47,7 +47,7 @@ namespace CSSPDesktopServices.Services
             foreach (string zipFileName in zipFileNameList)
             {
                 zipCount += 1;
-                InstallingStatus(new InstallingEventArgs(20 * zipCount));
+                InstallingStatus(new InstallingEventArgs(5 * zipCount));
                 AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.Downloading_, zipFileName)));
 
                 if (!await DownloadZipFilesFromAzure(zipFileName)) return await Task.FromResult(false);
@@ -63,8 +63,8 @@ namespace CSSPDesktopServices.Services
             int jsonCount = 0;
             foreach (string jsonFileName in jsonFileNameList)
             {
-                zipCount += 1;
-                InstallingStatus(new InstallingEventArgs(60 + (5 * jsonCount)));
+                jsonCount += 1;
+                InstallingStatus(new InstallingEventArgs(15 + (2 * jsonCount)));
                 AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.Downloading_, jsonFileName)));
 
                 if (!await DownloadJsonFilesFromAzure(jsonFileName)) return await Task.FromResult(false);
@@ -84,90 +84,55 @@ namespace CSSPDesktopServices.Services
                 culture = "en-CA";
             }
 
+            string enumTypeName = jsonFileName.Substring(0, jsonFileName.IndexOf("."));
+
+            WebTypeEnum webType = WebTypeEnum.WebRoot;
+
+            foreach (int enumVal in Enum.GetValues(typeof(WebTypeEnum)))
+            {
+
+                if (((WebTypeEnum)enumVal).ToString() == enumTypeName)
+                {
+                    webType = (WebTypeEnum)enumVal;
+                    break;
+                }
+            }
+
             AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.DownloadingFileFromAzure_, jsonFileName)));
 
             FileInfo fi = new FileInfo($"{ CSSPJSONPath }{ jsonFileName }");
 
             BlobClient blobClient = new BlobClient(preference.AzureStore, AzureStoreCSSPJSONPath, jsonFileName);
-            BlobProperties blobProperties = blobClient.GetProperties();
-            if (blobProperties == null)
+            BlobProperties blobProperties = null;
+
+            try
             {
-                // looks like the file does not exist on Azure
-                // will need to create it before downloading it
-
-                WebTypeEnum webType = WebTypeEnum.WebRoot;
-                int TVItemID = 0;
-                WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
-
-                switch (jsonFileName)
+                blobProperties = blobClient.GetProperties();
+            }
+            catch (RequestFailedException ex)
+            {
+                if (ex.Status == 404)
                 {
-                    case "WebContact.gz":
-                        {
-                            webType = WebTypeEnum.WebContact;
-                        }
-                        break;
-                    case "WebHelpDoc.gz":
-                        {
-                            webType = WebTypeEnum.WebHelpDoc;
-                        }
-                        break;
-                    case "WebMWQMLookupMPN.gz":
-                        {
-                            webType = WebTypeEnum.WebMWQMLookupMPN;
-                        }
-                        break;
-                    case "WebPolSourceGrouping.gz":
-                        {
-                            webType = WebTypeEnum.WebPolSourceGrouping;
-                        }
-                        break;
-                    case "WebPolSourceSiteEffectTerm.gz":
-                        {
-                            webType = WebTypeEnum.WebPolSourceSiteEffectTerm;
-                        }
-                        break;
-                    case "WebReportType.gz":
-                        {
-                            webType = WebTypeEnum.WebReportType;
-                        }
-                        break;
-                    case "WebRoot.gz":
-                        {
-                            webType = WebTypeEnum.WebRoot;
-                        }
-                        break;
-                    case "WebTideLocation.gz":
-                        {
-                            webType = WebTypeEnum.WebTideLocation;
-                        }
-                        break;
-                    case "WebAllTVItem.gz":
-                        {
-                            webType = WebTypeEnum.WebAllTVItem;
-                        }
-                        break;
-                    case "WebAllTVItemLanguage.gz":
-                        {
-                            webType = WebTypeEnum.WebAllTVItemLanguage;
-                        }
-                        break;
-                    default:
-                        break;
-                }
+                    using (HttpClient httpClient = new HttpClient())
+                    {
+                        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", LocalService.LoggedInContactInfo.LoggedInContact.Token);
+                        HttpResponseMessage response = httpClient.GetAsync($"{ CSSPAzureUrl }api/en-CA/CreateGzFile/{ (int)webType }/0/1").Result;
 
-                using (HttpClient httpClient = new HttpClient())
-                {
-                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
-                    string url = $"{ CSSPAzureUrl }api/{ culture }/CreateGzFile/{ (int)webType }/{ TVItemID }/{ (int)webTypeYear }";
-                    var response = await httpClient.GetAsync(url);
-                    if (response.StatusCode == HttpStatusCode.OK)
-                    {
-                        AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.File_CreatedOnAzure, jsonFileName)));
-                    }
-                    else
-                    {
-                        AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotCreateFile_OnAzure, jsonFileName)));
-                        return await Task.FromResult(false);
+                        if ((int)response.StatusCode != 200)
+                        {
+                            if ((int)response.StatusCode == 401)
+                            {
+                                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotGetPropertiesFromAzureStore_AndFile_, "csspjson", jsonFileName)));
+                                AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.NeedToBeLoggedIn));
+                                return await Task.FromResult(false);
+                            }
+                            else
+                            {
+                                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotGetPropertiesFromAzureStore_AndFile_, "csspjson", jsonFileName)));
+                                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes.UnmanagedServerError_, response.Content.ReadAsStringAsync())));
+                                return await Task.FromResult(false);
+                            }
+                        }
                     }
                 }
             }
@@ -216,7 +181,7 @@ namespace CSSPDesktopServices.Services
 
                 if (jsonFileName == "WebAllTVItemLanguage.gz")
                 {
-                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.FillingCSSPDBSearchDatabaseWith_Info, jsonFileName)));
+                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.FillingCSSPDBSearchDatabaseWith_Info, jsonFileName.Replace("Language", "") + " & " + jsonFileName)));
                     
                     if (!await FillCSSPDBSearch()) return await Task.FromResult(false);
                 }
@@ -240,7 +205,26 @@ namespace CSSPDesktopServices.Services
             FileInfo fi = new FileInfo($"{ CSSPDesktopPath }{ zipFileName }");
 
             BlobClient blobClient = new BlobClient(preference.AzureStore, AzureStoreCSSPWebAPIsLocalPath, zipFileName);
-            BlobProperties blobProperties = blobClient.GetProperties();
+            BlobProperties blobProperties = null;
+
+            try
+            {
+                blobProperties = blobClient.GetProperties();
+            }
+            catch (RequestFailedException ex)
+            {
+                if (ex.Status == 404)
+                {
+                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotGetPropertiesFromAzureStore_AndFile_, AzureStoreCSSPWebAPIsLocalPath, zipFileName)));
+                    return await Task.FromResult(false);
+                }
+                else
+                {
+                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes.UnmanagedServerError_, ex.Message)));
+                    return await Task.FromResult(false);
+                }
+            }
+
             if (blobProperties == null)
             {
                 AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotGetPropertiesFromAzureStore_AndFile_, AzureStoreCSSPWebAPIsLocalPath, zipFileName)));

@@ -4,6 +4,7 @@ import { LoadLocalesProvinceText } from './province.locales';
 import { Subscription } from 'rxjs';
 import { ShellService } from '../shell';
 import { LanguageEnum } from '../../enums/generated/LanguageEnum';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-province',
@@ -14,11 +15,12 @@ import { LanguageEnum } from '../../enums/generated/LanguageEnum';
 export class ProvinceComponent implements OnInit, OnDestroy {
   sub: Subscription;
 
-  constructor(public provinceService: ProvinceService, public shellService: ShellService) { }
+  constructor(public provinceService: ProvinceService, public shellService: ShellService, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
     LoadLocalesProvinceText(this.provinceService);
-    this.sub = this.provinceService.GetWebProvince().subscribe();
+    let TVItemID: number = this.activatedRoute.snapshot.params['TVItemID'];
+    this.sub = this.provinceService.GetWebProvince(TVItemID).subscribe();
   }
 
   ngOnDestroy(): void {

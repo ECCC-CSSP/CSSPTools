@@ -19,9 +19,9 @@ export class ProvinceService {
     this.UpdateProvinceText(<ProvinceTextModel>{ Title: "Something for text" });
   }
 
-  GetWebProvince() {
+  GetWebProvince(TVItemID: number) {
     this.UpdateWebProvince(<WebProvinceModel>{ Working: true });
-    return this.httpClient.get<WebProvince>('/api/Read/WebProvince/7/1').pipe(
+    return this.httpClient.get<WebProvince>(`/api/Read/WebProvince/${ TVItemID }/1`).pipe(
       map((x: any) => {
         this.UpdateWebProvince(<WebProvinceModel>{ WebProvince: x, Working: false });
         console.debug(x);

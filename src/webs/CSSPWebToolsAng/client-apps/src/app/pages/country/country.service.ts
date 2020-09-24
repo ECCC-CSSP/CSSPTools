@@ -19,9 +19,9 @@ export class CountryService {
     this.UpdateCountryText(<CountryTextModel>{ Title: "Something for text" });
   }
 
-  GetWebCountry() {
+  GetWebCountry(TVItemID: number) {
     this.UpdateWebCountry(<WebCountryModel>{ Working: true });
-    return this.httpClient.get<WebCountry>('/api/Read/WebCountry/5/1').pipe(
+    return this.httpClient.get<WebCountry>(`/api/Read/WebCountry/${ TVItemID }/1`).pipe(
       map((x: any) => {
         this.UpdateWebCountry(<WebCountryModel>{ WebCountry: x, Working: false });
         console.debug(x);

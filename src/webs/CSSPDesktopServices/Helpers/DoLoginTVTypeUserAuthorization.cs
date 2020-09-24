@@ -36,7 +36,7 @@ namespace CSSPDesktopServices.Services
                         AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.NeedToBeLoggedIn));
                         return await Task.FromResult(false);
                     }
-                    else if ((int)response.StatusCode == 500)
+                    else 
                     {
                         AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.ServerNotRespondingDoYouHaveInternetConnection));
                         return await Task.FromResult(false);

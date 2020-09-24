@@ -13,25 +13,8 @@
 <hr />
 {{ countryService.WebCountryModel$.getValue().WebCountry.TVItemModel.TVItemLanguageEN.TVText }}
 <hr />
-<ul *ngFor="let tvItemModel of countryService.WebCountryModel$.getValue().WebCountry.TVItemProvinceList">
-    <li *ngIf="shellService.shellModel$.getValue().Language == 1">
-        {{ tvItemModel.TVItemModel.TVItemLanguageEN.TVText }}
+<app-tvitem-list [TVItemLists]="countryService.WebCountryModel$.getValue().WebCountry.TVItemProvinceList"></app-tvitem-list>
 
-        <ul *ngFor="let mapInfoModel of tvItemModel.TVItemModel.MapInfoModelList">
-            <li>
-                {{ mapInfoModel.MapInfo.MapInfoID }} {{ mapInfoModel.MapInfo.TVType }}
-                <ul>
-                    <li *ngFor="let mapInfoPointModel of mapInfoModel.MapInfoPointList">
-                        {{ mapInfoPointModel.Lat }} {{ mapInfoPointModel.Lng }}
-                    </li>
-                </ul>
-            </li>
-        </ul>
-    </li>
-    <li *ngIf="shellService.shellModel$.getValue().Language == 2">
-        {{ tvItemModel.TVItemModel.TVItemLanguageFR.TVText }}
-    </li>
-</ul>
 
 <ul *ngFor="let tvFileModel of countryService.WebCountryModel$.getValue().WebCountry.TVItemModel.TVFileModelList">
     <li *ngIf="shellService.shellModel$.getValue().Language == 1">

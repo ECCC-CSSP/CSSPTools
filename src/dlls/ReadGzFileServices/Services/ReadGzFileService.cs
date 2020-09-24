@@ -35,7 +35,6 @@ namespace ReadGzFileServices
         private IEnums enums { get; }
         private IDownloadGzFileService DownloadGzFileService { get; }
         private ICSSPDBFilesManagementService CSSPDBFilesManagementService { get; }
-        private string AzureStoreConnectionString { get; set; }
         private string AzureStoreCSSPJSONPath { get; set; }
         private string CSSPJSONPath { get; set; }
         private string CSSPAzureUrl { get; set; }
@@ -52,7 +51,6 @@ namespace ReadGzFileServices
             this.DownloadGzFileService = DownloadGzFileService;
             this.CSSPDBFilesManagementService = CSSPDBFilesManagementService;
 
-            AzureStoreConnectionString = Configuration.GetValue<string>("AzureStoreConnectionString");
             AzureStoreCSSPJSONPath = Configuration.GetValue<string>("AzureStoreCSSPJSONPath");
             CSSPJSONPath = Configuration.GetValue<string>("CSSPJSONPath");
             CSSPAzureUrl = Configuration.GetValue<string>("CSSPAzureUrl");

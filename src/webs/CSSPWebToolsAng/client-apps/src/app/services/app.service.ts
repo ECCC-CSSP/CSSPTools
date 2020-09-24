@@ -13,8 +13,8 @@ export class AppService {
   appModel$: BehaviorSubject<AppModel> = new BehaviorSubject<AppModel>(<AppModel>{});
   preference$: BehaviorSubject<AppModel> = new BehaviorSubject<AppModel>(<AppModel>{});
   constructor(private httpClient: HttpClient) {
-    //this.UpdateApp(<AppModel>{ BaseApiUrl: 'https://localhost:4447/api/'});
-    this.UpdateApp(<AppModel>{ BaseApiUrl: 'https://localhost:44346/api/'});
+    this.UpdateApp(<AppModel>{ BaseApiUrl: 'https://localhost:4447/api/'});
+    //this.UpdateApp(<AppModel>{ BaseApiUrl: 'https://localhost:44346/api/'});
    }
 
   UpdateApp(appModel: AppModel)
@@ -102,7 +102,7 @@ export class AppService {
         }
       case TVTypeEnum.Root:
         {
-          return `root/${tvItem.TVItemID}`;
+          return `root`;
         }
       case TVTypeEnum.SamplingPlan:
         {

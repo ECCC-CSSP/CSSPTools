@@ -4,6 +4,8 @@ import { LoadLocalesCountryText } from './country.locales';
 import { Subscription } from 'rxjs';
 import { ShellService } from '../shell';
 import { LanguageEnum } from '../../enums/generated/LanguageEnum';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Route } from '@angular/compiler/src/core';
 
 @Component({
   selector: 'app-country',
@@ -14,11 +16,12 @@ import { LanguageEnum } from '../../enums/generated/LanguageEnum';
 export class CountryComponent implements OnInit, OnDestroy {
   sub: Subscription;
 
-  constructor(public countryService: CountryService, public shellService: ShellService) { }
+  constructor(public countryService: CountryService, public shellService: ShellService, public activateRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
     LoadLocalesCountryText(this.countryService);
-    this.sub = this.countryService.GetWebCountry().subscribe();
+    let TVItemID: number = this.activateRoute.snapshot.params['TVItemID'];
+    this.sub = this.countryService.GetWebCountry(TVItemID).subscribe();
   }
 
   ngOnDestroy(): void {

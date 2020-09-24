@@ -1,10 +1,8 @@
-<mat-nav-list *ngFor="let tvItemModel of breadCrumbs">
-    <mat-list-item (click)="NavigateTo(tvItemModel)" *ngIf="shellService.shellModel$.getValue().Language == 1">
-       <a routerlink="root">
-           {{ tvItemModel.TVItemModel.TVItemLanguageEN.TVText }}
-        </a>
+<mat-nav-list *ngFor="let webBase of breadCrumbs">
+    <mat-list-item (click)="NavigateTo(webBase.TVItemModel)" *ngIf="shellService.shellModel$.getValue().Language == 1">
+        {{ webBase.TVItemModel.TVItemLanguageEN.TVText }}
     </mat-list-item>
-    <mat-list-item *ngIf="shellService.shellModel$.getValue().Language == 2">
-        {{ tvItemModel.TVItemModel.TVItemLanguageFR.TVText }}
+    <mat-list-item (click)="NavigateTo(webBase.TVItemModel)" *ngIf="shellService.shellModel$.getValue().Language == 2">
+        {{ webBase.TVItemModel.TVItemLanguageFR.TVText }}
     </mat-list-item>
 </mat-nav-list>

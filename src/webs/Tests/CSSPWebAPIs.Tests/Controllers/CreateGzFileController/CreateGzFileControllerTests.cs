@@ -396,7 +396,7 @@ namespace CSSPWebAPIs.CreateGzFileController.Tests
             Assert.True(await Setup(culture));
 
             WebTypeEnum webType = WebTypeEnum.WebProvince;
-            int TVItemID = 7;
+            int TVItemID = 8;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
             await CreateGzFileTest(culture, webType, TVItemID, webTypeYear);

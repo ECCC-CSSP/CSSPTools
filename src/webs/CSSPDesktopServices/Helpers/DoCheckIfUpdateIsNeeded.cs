@@ -11,6 +11,10 @@ using Azure.Storage.Blobs.Models;
 using CSSPDesktopServices.Models;
 using CSSPModels;
 using CSSPCultureServices.Resources;
+using Azure;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using CSSPEnums;
 
 namespace CSSPDesktopServices.Services
 {
@@ -38,7 +42,21 @@ namespace CSSPDesktopServices.Services
                 FileInfo fi = new FileInfo($"{ CSSPDesktopPath }{ zipFileName }");
 
                 BlobClient blobClient = new BlobClient(preference.AzureStore, AzureStoreCSSPWebAPIsLocalPath, zipFileName);
-                BlobProperties blobProperties = blobClient.GetProperties();
+                BlobProperties blobProperties = null;
+
+                try
+                {
+                    blobProperties = blobClient.GetProperties();
+                }
+                catch (RequestFailedException ex)
+                {
+                    if (ex.Status == 404)
+                    {
+                        AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotGetPropertiesFromAzureStore_AndFile_, AzureStoreCSSPWebAPIsLocalPath, zipFileName)));
+                        return await Task.FromResult(false);
+                    }
+                }
+
                 if (blobProperties == null)
                 {
                     AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotGetPropertiesFromAzureStore_AndFile_, AzureStoreCSSPWebAPIsLocalPath, zipFileName)));
@@ -70,14 +88,44 @@ namespace CSSPDesktopServices.Services
 
             foreach (string jsonFileName in jsonFileNameList)
             {
+                string enumTypeName = jsonFileName.Substring(0, jsonFileName.IndexOf("."));
+
+                WebTypeEnum webType = WebTypeEnum.WebRoot;
+
+                foreach(int enumVal in Enum.GetValues(typeof(WebTypeEnum)))
+                    {
+
+                    if (((WebTypeEnum)enumVal).ToString() == enumTypeName)
+                    {
+                        webType = (WebTypeEnum)enumVal;
+                        break;
+                    }
+                }
+
                 FileInfo fi = new FileInfo($"{ CSSPDesktopPath }{ jsonFileName }");
 
                 BlobClient blobClient = new BlobClient(preference.AzureStore, AzureStoreCSSPJSONPath, jsonFileName);
-                BlobProperties blobProperties = blobClient.GetProperties();
+                BlobProperties blobProperties = null;
+
+                try
+                {
+                    blobProperties = blobClient.GetProperties();
+                }
+                catch (RequestFailedException ex)
+                {
+                    if (ex.Status == 404)
+                    {
+                        AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotGetPropertiesFromAzureStore_AndFile_, AzureStoreCSSPWebAPIsLocalPath, jsonFileName)));
+                        UpdateIsNeeded = true;
+                        return await Task.FromResult(true);
+                    }
+                }
+
                 if (blobProperties == null)
                 {
                     AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotGetPropertiesFromAzureStore_AndFile_, "csspjson", jsonFileName)));
-                    return await Task.FromResult(false);
+                    UpdateIsNeeded = true;
+                    return await Task.FromResult(true);
                 }
 
                 CSSPFile csspFile = (from c in dbFM.CSSPFiles
@@ -96,6 +144,16 @@ namespace CSSPDesktopServices.Services
                 }
             }
 
+
+            TVItem tvItem = await (from c in dbSearch.TVItems
+                                   select c).FirstOrDefaultAsync();
+
+            if (tvItem == null)
+            {
+                AppendStatus(new AppendEventArgs("CSSPDBSearch needs to be populated"));
+                UpdateIsNeeded = true;
+            }
+            
             AppendStatus(new AppendEventArgs(""));
 
             return await Task.FromResult(true);

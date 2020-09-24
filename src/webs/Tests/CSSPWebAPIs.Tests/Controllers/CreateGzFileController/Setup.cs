@@ -68,7 +68,7 @@ namespace CSSPWebAPIs.CreateGzFileController.Tests
             CSSPAzureUrl = Configuration.GetValue<string>("CSSPAzureUrl");
             Assert.NotNull(CSSPAzureUrl);
 
-            string DBConnStr = Configuration.GetValue<string>("CSSPDB2");
+            string DBConnStr = Configuration.GetValue<string>("AzureCSSPDB");
             Assert.NotNull(DBConnStr);
 
             Services.AddSingleton<IConfiguration>(Configuration);

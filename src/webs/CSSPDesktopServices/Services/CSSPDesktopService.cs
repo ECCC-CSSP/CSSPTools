@@ -143,6 +143,8 @@ namespace CSSPDesktopServices.Services
         }
         public async Task<bool> CheckIfUpdateIsNeeded()
         {
+            if (!await LocalService.SetLoggedInContactInfo()) return await Task.FromResult(false);
+
             if (!await DoCheckIfUpdateIsNeeded()) return await Task.FromResult(false);
 
             return await Task.FromResult(true);
@@ -187,13 +189,13 @@ namespace CSSPDesktopServices.Services
 
             if (!await DoInstallUpdates()) return await Task.FromResult(false);
 
-            //if (!OpenCSSPWebAPIsLocal()) return await Task.FromResult(false);
-
             return await Task.FromResult(true);
         }
         public async Task<bool> Login(LoginModel loginModel)
         {
             if (!await DoLogin(loginModel)) return await Task.FromResult(false);
+
+            if (!await LocalService.SetLoggedInContactInfo()) return await Task.FromResult(false);
 
             return await Task.FromResult(true);
         }

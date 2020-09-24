@@ -7,8 +7,8 @@ const routes: Routes = [
     path: 'en-CA', component: ShellComponent, children: [
       { path: 'home', loadChildren: () => import('./pages/home/home.module').then(mod => mod.HomeModule) },
       { path: 'root', loadChildren: () => import('./pages/root/root.module').then(mod => mod.RootModule) },
-      { path: 'country', loadChildren: () => import('./pages/country/country.module').then(mod => mod.CountryModule) },
-      { path: 'province', loadChildren: () => import('./pages/province/province.module').then(mod => mod.ProvinceModule) },
+      { path: 'country/:TVItemID', loadChildren: () => import('./pages/country/country.module').then(mod => mod.CountryModule) },
+      { path: 'province/:TVItemID', loadChildren: () => import('./pages/province/province.module').then(mod => mod.ProvinceModule) },
       //{ path: 'search', loadChildren: () => import('./pages/search/search.module').then(mod => mod.SearchModule) },
       { path: 'webapinotfound', loadChildren: () => import('./pages/web-api-not-found/web-api-not-found.module').then(mod => mod.WebApiNotFoundModule) },
     ]
@@ -17,8 +17,8 @@ const routes: Routes = [
     path: 'fr-CA', component: ShellComponent, children: [
       { path: 'home', loadChildren: () => import('./pages/home/home.module').then(mod => mod.HomeModule) },
       { path: 'root', loadChildren: () => import('./pages/root/root.module').then(mod => mod.RootModule) },
-      { path: 'country', loadChildren: () => import('./pages/country/country.module').then(mod => mod.CountryModule) },
-      { path: 'province', loadChildren: () => import('./pages/province/province.module').then(mod => mod.ProvinceModule) },
+      { path: 'country/:TVItemID', loadChildren: () => import('./pages/country/country.module').then(mod => mod.CountryModule) },
+      { path: 'province/:TVItemID', loadChildren: () => import('./pages/province/province.module').then(mod => mod.ProvinceModule) },
       //{ path: 'search', loadChildren: () => import('./pages/search/search.module').then(mod => mod.SearchModule) },
       { path: 'webapinotfound', loadChildren: () => import('./pages/web-api-not-found/web-api-not-found.module').then(mod => mod.WebApiNotFoundModule) },
     ]

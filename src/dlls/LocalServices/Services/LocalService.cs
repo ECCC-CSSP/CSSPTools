@@ -201,14 +201,25 @@ namespace LocalServices
                     }
 
                     // doing Preference
-                    LoggedInContactInfo.Preference = (from c in dbLogin.Preferences
-                                                      select c).FirstOrDefault();
+                    Preference preference = (from c in dbLogin.Preferences
+                                             select c).FirstOrDefault();
 
-                    if (LoggedInContactInfo.Preference != null)
+                    if (preference != null)
                     {
+                        Preference preferenceNew = new Preference();
+                        preferenceNew.PreferenceID = preference.PreferenceID;
+                        preferenceNew.AzureStore = await Descramble(preference.AzureStore);
+                        preferenceNew.LoginEmail = await Descramble(preference.LoginEmail);
+                        preferenceNew.Password = await Descramble(preference.Password);
+                        preferenceNew.Token = await Descramble(preference.Token);
+                        preferenceNew.HasInternetConnection = preference.HasInternetConnection;
+                        preferenceNew.LoggedIn = preference.LoggedIn;
+
+                        LoggedInContactInfo.Preference = preferenceNew;
+
                         try
                         {
-                            dbLoginIM.Preferences.Add(LoggedInContactInfo.Preference);
+                            dbLoginIM.Preferences.Add(preferenceNew);
                             await dbLoginIM.SaveChangesAsync();
                         }
                         catch (Exception)

@@ -62,7 +62,7 @@ namespace CreateGzFileServices.Tests
             AzureStoreCSSPJSONPath = Configuration.GetValue<string>("AzureStoreCSSPJSONPath");
             Assert.NotNull(AzureStoreCSSPJSONPath);
 
-            string CSSPDBConnString = Configuration.GetValue<string>("CSSPDB2");
+            string CSSPDBConnString = Configuration.GetValue<string>("AzureCSSPDB");
             Assert.NotNull(CSSPDBConnString);
 
             Services.AddDbContext<CSSPDBContext>(options =>

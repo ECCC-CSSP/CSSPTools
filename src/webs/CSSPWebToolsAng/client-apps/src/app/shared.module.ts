@@ -5,12 +5,16 @@ import { MaterialModule } from './app-material.module';
 import { SearchComponent } from './components/search/search.component';
 import { SearchOptionComponent } from './components/search-option/search-option.component';
 import { BreadCrumbComponent } from './components/bread-crumb/bread-crumb.component';
+import { TVItemListComponent } from './components/tvitem-list/tvitem-list.component';
+import { TVItemListItemComponent } from './components/tvitem-list-item/tvitem-list-item.component';
 
 @NgModule({
   declarations: [
     SearchComponent,
     SearchOptionComponent,
-    BreadCrumbComponent
+    BreadCrumbComponent,
+    TVItemListComponent,
+    TVItemListItemComponent
   ],
   imports: [
     CommonModule,
@@ -26,7 +30,9 @@ import { BreadCrumbComponent } from './components/bread-crumb/bread-crumb.compon
     ReactiveFormsModule,
     SearchComponent,
     SearchOptionComponent,
-    BreadCrumbComponent
+    BreadCrumbComponent,
+    TVItemListComponent,
+    TVItemListItemComponent
   ]
 })
 export class SharedModule { }

@@ -44,7 +44,7 @@ namespace ReadGzFileServices
 
             if (LocalService.LoggedInContactInfo.Preference.HasInternetConnection != null && LocalService.LoggedInContactInfo.Preference.HasInternetConnection == true)
             {
-                BlobClient blobClient = new BlobClient(AzureStoreConnectionString, AzureStoreCSSPJSONPath, fileName);
+                BlobClient blobClient = new BlobClient(LocalService.LoggedInContactInfo.Preference.AzureStore, AzureStoreCSSPJSONPath, fileName);
                 BlobProperties blobProperties = null;
 
                 try

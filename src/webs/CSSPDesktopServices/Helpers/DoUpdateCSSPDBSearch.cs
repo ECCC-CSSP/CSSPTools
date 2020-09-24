@@ -58,11 +58,12 @@ namespace CSSPDesktopServices.Services
                 return await Task.FromResult(false);
             }
 
-            HttpResponseMessage response = null;
+            List<TVItem> tvItemList = new List<TVItem>();
+
             using (HttpClient httpClient = new HttpClient())
             {
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
-                response = httpClient.GetAsync($"{ CSSPAzureUrl }api/{ culture }/TVItem/GetTVItemStartDateList/{ tvItem.LastUpdateDate_UTC.Year }/{ tvItem.LastUpdateDate_UTC.Month }/{ tvItem.LastUpdateDate_UTC.Day }").Result;
+                HttpResponseMessage response = httpClient.GetAsync($"{ CSSPAzureUrl }api/{ culture }/TVItem/GetTVItemStartDateList/{ tvItem.LastUpdateDate_UTC.Year }/{ tvItem.LastUpdateDate_UTC.Month }/{ tvItem.LastUpdateDate_UTC.Day }").Result;
                 if ((int)response.StatusCode != 200)
                 {
                     if ((int)response.StatusCode == 401)
@@ -70,18 +71,23 @@ namespace CSSPDesktopServices.Services
                         AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.NeedToBeLoggedIn));
                         return await Task.FromResult(false);
                     }
-                    else if ((int)response.StatusCode == 500)
+                    else
                     {
                         AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.ServerNotRespondingDoYouHaveInternetConnection));
                         return await Task.FromResult(false);
                     }
                 }
+
+                tvItemList = JsonSerializer.Deserialize<List<TVItem>>(response.Content.ReadAsStringAsync().Result);
             }
 
-            List<TVItem> tvItemList = JsonSerializer.Deserialize<List<TVItem>>(response.Content.ReadAsStringAsync().Result);
-
+            int total = tvItemList.Count;
+            int count = 0;
             foreach (TVItem tvItemChanged in tvItemList)
             {
+                count += 1;
+                InstallingStatus(new InstallingEventArgs(90 + (9 * count / total)));
+
                 TVItem TVItem2 = await (from c in dbSearch.TVItems
                                         where c.TVItemID == tvItemChanged.TVItemID
                                         select c).FirstOrDefaultAsync();
@@ -131,12 +137,13 @@ namespace CSSPDesktopServices.Services
                 return await Task.FromResult(false);
             }
 
-            HttpResponseMessage response = null;
+            List<TVItemLanguage> tvItemLanguageList = new List<TVItemLanguage>();
+
             using (HttpClient httpClient = new HttpClient())
             {
 
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
-                response = httpClient.GetAsync($"{ CSSPAzureUrl }api/{ culture }/TVItemLanguage/GetTVItemLanguageStartDateList/{ tvItemLanguage.LastUpdateDate_UTC.Year }/{ tvItemLanguage.LastUpdateDate_UTC.Month }/{ tvItemLanguage.LastUpdateDate_UTC.Day }").Result;
+                HttpResponseMessage response = httpClient.GetAsync($"{ CSSPAzureUrl }api/{ culture }/TVItemLanguage/GetTVItemLanguageStartDateList/{ tvItemLanguage.LastUpdateDate_UTC.Year }/{ tvItemLanguage.LastUpdateDate_UTC.Month }/{ tvItemLanguage.LastUpdateDate_UTC.Day }").Result;
                 if ((int)response.StatusCode != 200)
                 {
                     if ((int)response.StatusCode == 401)
@@ -144,15 +151,16 @@ namespace CSSPDesktopServices.Services
                         AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.NeedToBeLoggedIn));
                         return await Task.FromResult(false);
                     }
-                    else if ((int)response.StatusCode == 500)
+                    else
                     {
                         AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.ServerNotRespondingDoYouHaveInternetConnection));
                         return await Task.FromResult(false);
                     }
                 }
+
+                tvItemLanguageList = JsonSerializer.Deserialize<List<TVItemLanguage>>(response.Content.ReadAsStringAsync().Result);
             }
 
-            List<TVItemLanguage> tvItemLanguageList = JsonSerializer.Deserialize<List<TVItemLanguage>>(response.Content.ReadAsStringAsync().Result);
 
 
             foreach (TVItemLanguage tvItemLanguageChanged in tvItemLanguageList)

@@ -1,0 +1,8 @@
+<mat-list-item (click)="NavigateTo(TVItemModel)" *ngIf="shellService.shellModel$.getValue().Language == 1">
+    <span *ngIf="shellService.shellModel$.getValue().Language == 1">
+        {{ TVItemModel.TVItemLanguageEN.TVText }}
+    </span>       
+    <span *ngIf="shellService.shellModel$.getValue().Language == 2">
+        {{ TVItemModel.TVItemLanguageFR.TVText }}
+    </span>       
+</mat-list-item>
