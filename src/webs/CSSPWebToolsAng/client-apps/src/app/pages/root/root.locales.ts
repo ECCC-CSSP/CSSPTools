@@ -10,5 +10,5 @@ export function LoadLocalesRootText(rootService: RootService) {
       rootTextModel.Title = 'Le Titre';
     }
 
-  rootService.UpdateRootText(rootTextModel);
+  rootService.UpdateRootTextModel(rootTextModel);
 }

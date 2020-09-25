@@ -27,7 +27,7 @@ export class ShellComponent implements OnInit {
     else {
       $localize.locale = 'fr-CA';
     }
-    this.shellService.UpdateShell(<ShellModel>{ Language: $localize.locale == "fr-CA" ? LanguageEnum.fr : LanguageEnum.en });
+    this.shellService.UpdateShellModel(<ShellModel>{ Language: $localize.locale == "fr-CA" ? LanguageEnum.fr : LanguageEnum.en });
     this.router.navigateByUrl(this.router.url.replace(oldLocal, $localize.locale));
   }
 
@@ -45,7 +45,7 @@ export class ShellComponent implements OnInit {
     else {
       $localize.locale = 'en-CA';
     }
-    this.shellService.UpdateShell(<ShellModel>{ Language: $localize.locale == "fr-CA" ? LanguageEnum.fr : LanguageEnum.en });
+    this.shellService.UpdateShellModel(<ShellModel>{ Language: $localize.locale == "fr-CA" ? LanguageEnum.fr : LanguageEnum.en });
     LoadLocalesShell(this.shellService);
     this.title.setTitle(this.shellService.shellModel$.value.AppTitle);
   }

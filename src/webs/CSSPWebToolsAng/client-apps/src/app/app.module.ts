@@ -5,7 +5,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ShellModule } from './pages/shell/shell.module';
+import { HomeModule } from './pages/home/home.module';
 import { ApiInterceptor, ErrorInterceptor } from '../app/interceptors';
 
 @NgModule({
@@ -17,7 +17,10 @@ import { ApiInterceptor, ErrorInterceptor } from '../app/interceptors';
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    ShellModule
+    HomeModule
+  ],
+  exports: [
+    HomeModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true },

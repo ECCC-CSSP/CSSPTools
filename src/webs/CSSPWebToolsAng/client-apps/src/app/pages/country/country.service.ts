@@ -6,6 +6,8 @@ import { map, catchError } from 'rxjs/operators';
 
 import { WebCountry } from '../../models/generated/WebCountry.model';
 import { CountryTextModel, WebCountryModel } from './country.models';
+import { BreadCrumbModel } from '../../models/BreadCrumb.model';
+import { ShellService } from '../shell';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +16,7 @@ export class CountryService {
   CountryTextModel$: BehaviorSubject<CountryTextModel> = new BehaviorSubject<CountryTextModel>(<CountryTextModel>{});
   WebCountryModel$: BehaviorSubject<WebCountryModel> = new BehaviorSubject<WebCountryModel>(<WebCountryModel>{});
   
-  constructor(private httpClient: HttpClient) {
+  constructor(public shellService: ShellService, private httpClient: HttpClient) {
     LoadLocalesCountryText(this);
     this.UpdateCountryText(<CountryTextModel>{ Title: "Something for text" });
   }
@@ -39,5 +41,6 @@ export class CountryService {
 
   UpdateWebCountry(webCountryModel: WebCountryModel) {
     this.WebCountryModel$.next(<WebCountryModel>{ ...this.WebCountryModel$.getValue(), ...webCountryModel });
+    this.shellService.UpdateBreadCrumbModel(<BreadCrumbModel>{ WebBaseList: this.WebCountryModel$.getValue()?.WebCountry?.TVItemParentList });
   }
 }

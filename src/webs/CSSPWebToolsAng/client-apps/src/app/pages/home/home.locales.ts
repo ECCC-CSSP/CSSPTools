@@ -10,5 +10,5 @@ export function LoadLocalesHomeText(homeService: HomeService) {
       homeTextModel.Title = 'Le Titre';
     }
 
-  homeService.UpdateHomeText(homeTextModel);
+  homeService.UpdateHomeTextModel(homeTextModel);
 }

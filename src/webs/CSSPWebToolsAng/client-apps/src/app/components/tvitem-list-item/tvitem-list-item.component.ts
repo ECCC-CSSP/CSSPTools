@@ -1,9 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { TVItemModel } from 'src/app/models/generated/TVItemModel.model';
-import { WebBase } from 'src/app/models/generated/WebBase.model';
 import { ShellService } from 'src/app/pages/shell';
-import { AppService } from 'src/app/services';
 
 @Component({
   selector: 'app-tvitem-list-item',
@@ -14,7 +12,7 @@ import { AppService } from 'src/app/services';
 export class TVItemListItemComponent implements OnInit, OnDestroy {
   @Input() TVItemModel: TVItemModel;
   
-  constructor(public shellService: ShellService, public router: Router, private appService: AppService) {
+  constructor(public shellService: ShellService, public router: Router) {
   }
 
   ngOnInit() {
@@ -24,8 +22,5 @@ export class TVItemListItemComponent implements OnInit, OnDestroy {
   {
   }
 
-  NavigateTo(tvItemModel: TVItemModel)
-  {
-    this.router.navigateByUrl($localize.locale + '/' + this.appService.GetUrl(tvItemModel.TVItem));
-  }
+
 }

@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
-import { AppService } from './services/app.service';
 
 @Component({
   selector: 'app-root',
@@ -8,7 +7,7 @@ import { AppService } from './services/app.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnInit, OnDestroy {
-  constructor(public appService: AppService) {
+  constructor() {
   }
 
   ngOnInit() {

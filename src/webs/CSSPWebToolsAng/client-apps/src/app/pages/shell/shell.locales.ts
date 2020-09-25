@@ -10,5 +10,5 @@ export function LoadLocalesShell(shellService: ShellService) {
     shellModel.AppTitle = "PCCSM Outils Web";
   }
 
-  shellService.UpdateShell(shellModel);
+  shellService.UpdateShellModel(shellModel);
 }

@@ -6,7 +6,7 @@
         <button mat-button>
             <mat-icon>menu</mat-icon>
         </button>
-        <a mat-button routerLink="home">{{ shellService.shellModel$.getValue().AppTitle }}
+        <a mat-button routerLink="">{{ shellService.shellModel$.getValue().AppTitle }}
         </a>
         <span>
             <app-search></app-search>
@@ -18,7 +18,30 @@
         </span>
         <button mat-button *ngIf="!IsEnglish()" (click)="changeLang()">English</button>
         <button mat-button *ngIf="IsEnglish()" (click)="changeLang()">Français</button>
+        <button (click)="shellService.ToggleMap()" mat-raised-button>
+            <mat-icon>map</mat-icon>
+        </button>
     </span>
 </mat-toolbar>
 
-<router-outlet></router-outlet>
+<mat-sidenav-container>
+    <mat-sidenav #leftSideNav mode="side">Start content</mat-sidenav>
+    <mat-sidenav #rightSideNav [opened]="shellService.shellModel$?.getValue()?.MapVisible" mode="side" position="end">
+        <mat-list>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+        </mat-list>
+    </mat-sidenav>
+    <span *ngIf="(shellService.shellModel$ | async).Working">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </span>
+    <button (click)="leftSideNav.opened ? leftSideNav.close() : leftSideNav.open()" mat-raised-button>
+        <mat-icon>menu</mat-icon>
+    </button>
+    <app-bread-crumb [breadCrumbs]="shellService.BreadCrumbModel$?.getValue()?.WebBaseList"></app-bread-crumb>
+
+    <router-outlet></router-outlet>
+</mat-sidenav-container>

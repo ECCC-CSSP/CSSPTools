@@ -4,7 +4,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from './app-material.module';
 import { SearchComponent } from './components/search/search.component';
 import { SearchOptionComponent } from './components/search-option/search-option.component';
-import { BreadCrumbComponent } from './components/bread-crumb/bread-crumb.component';
 import { TVItemListComponent } from './components/tvitem-list/tvitem-list.component';
 import { TVItemListItemComponent } from './components/tvitem-list-item/tvitem-list-item.component';
 
@@ -12,7 +11,6 @@ import { TVItemListItemComponent } from './components/tvitem-list-item/tvitem-li
   declarations: [
     SearchComponent,
     SearchOptionComponent,
-    BreadCrumbComponent,
     TVItemListComponent,
     TVItemListItemComponent
   ],
@@ -30,7 +28,6 @@ import { TVItemListItemComponent } from './components/tvitem-list-item/tvitem-li
     ReactiveFormsModule,
     SearchComponent,
     SearchOptionComponent,
-    BreadCrumbComponent,
     TVItemListComponent,
     TVItemListItemComponent
   ]

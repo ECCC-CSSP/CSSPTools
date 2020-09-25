@@ -3,12 +3,8 @@ import { SearchResultModel, SearchTextModel } from './search.models';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { LoadLocalesSearchText } from './search.locales';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { TVItemLanguage } from 'src/app/models/generated/TVItemLanguage.model';
-import { catchError, debounceTime, distinctUntilChanged, map, startWith, switchMap, tap } from 'rxjs/operators';
+import { catchError, debounceTime, distinctUntilChanged, map, startWith, tap } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
-import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
-import { Router } from '@angular/router';
-import { AppService } from 'src/app/services';
 import { SearchResult } from 'src/app/models/SearchResult.model';
 
 @Injectable({

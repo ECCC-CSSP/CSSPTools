@@ -3,9 +3,7 @@ import { CountryService } from './country.service';
 import { LoadLocalesCountryText } from './country.locales';
 import { Subscription } from 'rxjs';
 import { ShellService } from '../shell';
-import { LanguageEnum } from '../../enums/generated/LanguageEnum';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Route } from '@angular/compiler/src/core';
 
 @Component({
   selector: 'app-country',
@@ -26,11 +24,5 @@ export class CountryComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.sub.unsubscribe();
-  }
-
-  GetT(language: number): string
-  {
-    let a: LanguageEnum = language;
-    return LanguageEnum[language];
   }
 }

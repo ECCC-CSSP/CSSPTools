@@ -6,6 +6,8 @@ import { map, catchError } from 'rxjs/operators';
 
 import { WebProvince } from '../../models/generated/WebProvince.model';
 import { ProvinceTextModel, WebProvinceModel } from './province.models';
+import { BreadCrumbModel } from 'src/app/models/BreadCrumb.model';
+import { ShellService } from '../shell';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +16,7 @@ export class ProvinceService {
   ProvinceTextModel$: BehaviorSubject<ProvinceTextModel> = new BehaviorSubject<ProvinceTextModel>(<ProvinceTextModel>{});
   WebProvinceModel$: BehaviorSubject<WebProvinceModel> = new BehaviorSubject<WebProvinceModel>(<WebProvinceModel>{});
   
-  constructor(private httpClient: HttpClient) {
+  constructor(public shellService: ShellService, private httpClient: HttpClient) {
     LoadLocalesProvinceText(this);
     this.UpdateProvinceText(<ProvinceTextModel>{ Title: "Something for text" });
   }
@@ -39,5 +41,6 @@ export class ProvinceService {
 
   UpdateWebProvince(WebProvinceModel: WebProvinceModel) {
     this.WebProvinceModel$.next(<WebProvinceModel>{ ...this.WebProvinceModel$.getValue(), ...WebProvinceModel });
+    this.shellService.UpdateBreadCrumbModel(<BreadCrumbModel>{ WebBaseList: this.WebProvinceModel$.getValue()?.WebProvince?.TVItemParentList });
   }
 }

@@ -51,8 +51,6 @@ namespace CSSPWebAPIsLocal.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LocalService.SetLoggedInContactInfo();
 
-            Thread.Sleep(3000);
-
             return await Task.FromResult(Ok(LocalService.LoggedInContactInfo.LoggedInContact));
         }
         #endregion Functions public

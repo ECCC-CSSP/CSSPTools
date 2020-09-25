@@ -5,5 +5,7 @@ import { LanguageEnum } from '../grouping';
 export interface ShellModel extends HttpRequestModel {
     AppTitle?: string;
     Language?: LanguageEnum;
+    BaseApiUrl?: string;
     Contact?: Contact;
+    MapVisible?: boolean;
 }

@@ -1,40 +1,10 @@
-<span *ngIf="(countryService.WebCountryModel$ | async).Working">
+<span *ngIf="(countryService.WebCountryModel$ | async).Working || (shellService.shellModel$ | async).Working">
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </span>
 
-<app-bread-crumb [breadCrumbs]="countryService.WebCountryModel$.getValue().WebCountry.TVItemParentList"></app-bread-crumb>
-
 <p>country works! {{ countryService.CountryTextModel$.getValue().Title }}</p>
-<hr />
-<ng-template>
-    {{ (countryService.WebCountryModel$ | async) }}
-    {{ (shellService.shellModel$ | async) }}
-</ng-template>
-<hr />
-{{ countryService.WebCountryModel$.getValue().WebCountry.TVItemModel.TVItemLanguageEN.TVText }}
-<hr />
-<app-tvitem-list [TVItemLists]="countryService.WebCountryModel$.getValue().WebCountry.TVItemProvinceList"></app-tvitem-list>
 
-
-<ul *ngFor="let tvFileModel of countryService.WebCountryModel$.getValue().WebCountry.TVItemModel.TVFileModelList">
-    <li *ngIf="shellService.shellModel$.getValue().Language == 1">
-        {{ tvFileModel.TVFileLanguageEN }}
-
-        <ul>
-            <li>
-                {{ tvFileModel.TVFile.ServerFilePath }}{{ tvFileModel.TVFile.ServerFileName }}
-                <ul>
-                    <li>
-                        {{ tvFileModel.TVFile.FileSize_kb }} KB {{ tvFileModel.TVFile.FilePurpose }}
-                        {{ tvFileModel.TVFile.FileType }}
-                    </li>
-                </ul>
-            </li>
-        </ul>
-    </li>
-    <li *ngIf="shellService.shellModel$.getValue().Language == 2">
-        {{ tvFileModel.TVFileLanguageFR }}
-    </li>
-</ul>
+<app-tvitem-list [TVItemLists]="countryService.WebCountryModel$?.getValue()?.WebCountry?.TVItemProvinceList">
+</app-tvitem-list>
 
 <router-outlet></router-outlet>

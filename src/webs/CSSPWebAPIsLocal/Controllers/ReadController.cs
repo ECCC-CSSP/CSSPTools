@@ -291,8 +291,6 @@ namespace CSSPWebAPIsLocal.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LocalService.SetLoggedInContactInfo();
 
-            Thread.Sleep(2000);
-
             return await ReadGzFileService.ReadJSON<WebRoot>(WebTypeEnum.WebRoot, TVItemID, WebTypeYear);
         }
         [Route("WebSamplingPlan/{TVItemID:int}/{WebTypeYear:int}")]
