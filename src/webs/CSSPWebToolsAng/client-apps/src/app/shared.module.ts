@@ -6,6 +6,7 @@ import { SearchComponent } from './components/search/search.component';
 import { SearchOptionComponent } from './components/search-option/search-option.component';
 import { TVItemListComponent } from './components/tvitem-list/tvitem-list.component';
 import { TVItemListItemComponent } from './components/tvitem-list-item/tvitem-list-item.component';
+import { GoogleMapsModule } from '@angular/google-maps';
 
 @NgModule({
   declarations: [
@@ -19,13 +20,15 @@ import { TVItemListItemComponent } from './components/tvitem-list-item/tvitem-li
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
+    GoogleMapsModule
   ],
   exports: [
     CommonModule,
     MaterialModule,
-    SearchComponent,
+    GoogleMapsModule,
     FormsModule,
     ReactiveFormsModule,
+
     SearchComponent,
     SearchOptionComponent,
     TVItemListComponent,
