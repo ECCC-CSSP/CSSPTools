@@ -1,9 +1,9 @@
 <ng-template>
     {{ (shellService.shellModel$ | async) }}
 </ng-template>
-<mat-toolbar>
-    <span class="top">
-        <button mat-button>
+<mat-toolbar class="header">
+    <span class="toolbar">
+        <button (click)="shellService.ToggleMenu()" mat-button>
             <mat-icon>menu</mat-icon>
         </button>
         <a mat-button routerLink="">{{ shellService.shellModel$.getValue().AppTitle }}
@@ -24,10 +24,130 @@
     </span>
 </mat-toolbar>
 
-<mat-sidenav-container>
-    <mat-sidenav #leftSideNav mode="side">Start content</mat-sidenav>
-    <mat-sidenav #rightSideNav [opened]="shellService.shellModel$?.getValue()?.MapVisible" mode="side" position="end">
+<mat-sidenav-container class="container">
+    <mat-sidenav class="sidenav-left" #leftSideNav [opened]="shellService.shellModel$?.getValue()?.MenuVisible"
+        mode="side">
         <mat-list>
+            <mat-list-item>Testing</mat-list-item>
+            <mat-list-item>Testing</mat-list-item>
+            <mat-list-item>Testing</mat-list-item>
+            <mat-list-item>Testing</mat-list-item>
+            <mat-list-item>Testing</mat-list-item>
+            <mat-list-item>Testing</mat-list-item>
+            <mat-list-item>Testing</mat-list-item>
+            <mat-list-item>Testing</mat-list-item>
+            <mat-list-item>Testing</mat-list-item>
+            <mat-list-item>Testing</mat-list-item>
+            <mat-list-item>Testing</mat-list-item>
+            <mat-list-item>Testing</mat-list-item>
+            <mat-list-item>Testing</mat-list-item>
+            <mat-list-item>Testing</mat-list-item>
+            <mat-list-item>Testing</mat-list-item>
+            <mat-list-item>Testing</mat-list-item>
+            <mat-list-item>Testing</mat-list-item>
+            <mat-list-item>Testing</mat-list-item>
+            <mat-list-item>Testing</mat-list-item>
+            <mat-list-item>Testing</mat-list-item>
+            <mat-list-item>Testing</mat-list-item>
+            <mat-list-item>Testing</mat-list-item>
+            <mat-list-item>Testing</mat-list-item>
+            <mat-list-item>Testing</mat-list-item>
+            <mat-list-item>Testing</mat-list-item>
+            <mat-list-item>Testing</mat-list-item>
+            <mat-list-item>Testing</mat-list-item>
+            <mat-list-item>Testing</mat-list-item>
+            <mat-list-item>Testing</mat-list-item>
+            <mat-list-item>Testing</mat-list-item>
+            <mat-list-item>Testing</mat-list-item>
+            <mat-list-item>Testing</mat-list-item>
+            <mat-list-item>Testing</mat-list-item>
+            <mat-list-item>Testing</mat-list-item>
+            <mat-list-item>Testing</mat-list-item>
+            <mat-list-item>Testing</mat-list-item>
+            <mat-list-item>Testing</mat-list-item>
+            <mat-list-item>Testing</mat-list-item>
+            <mat-list-item>Testing</mat-list-item>
+            <mat-list-item>Testing</mat-list-item>
+            <mat-list-item>Testing</mat-list-item>
+            <mat-list-item>Testing</mat-list-item>
+            <mat-list-item>Testing</mat-list-item>
+            <mat-list-item>Testing</mat-list-item>
+            <mat-list-item>Testing</mat-list-item>
+            <mat-list-item>Testing</mat-list-item>
+            <mat-list-item>Testing</mat-list-item>
+            <mat-list-item>Testing</mat-list-item>
+            <mat-list-item>Testing</mat-list-item>
+            <mat-list-item>Testing</mat-list-item>
+        </mat-list>
+    </mat-sidenav>
+    <mat-sidenav class="sidenav-right" #rightSideNav [opened]="shellService.shellModel$?.getValue()?.MapVisible"
+        mode="side" position="end">
+        <mat-list>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
+            <mat-list-item>bonjour</mat-list-item>
             <mat-list-item>bonjour</mat-list-item>
             <mat-list-item>bonjour</mat-list-item>
             <mat-list-item>bonjour</mat-list-item>
@@ -38,10 +158,14 @@
     <span *ngIf="(shellService.shellModel$ | async).Working">
         <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     </span>
-    <button (click)="leftSideNav.opened ? leftSideNav.close() : leftSideNav.open()" mat-raised-button>
-        <mat-icon>menu</mat-icon>
-    </button>
     <app-bread-crumb [breadCrumbs]="shellService.BreadCrumbModel$?.getValue()?.WebBaseList"></app-bread-crumb>
 
-    <router-outlet></router-outlet>
+
+    <div class="margin10">
+        <router-outlet></router-outlet>
+    </div>
+
+    <mat-toolbar class="footer">
+        <span>Footer</span>
+    </mat-toolbar>
 </mat-sidenav-container>

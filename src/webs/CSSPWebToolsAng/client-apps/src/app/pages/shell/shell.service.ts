@@ -21,15 +21,19 @@ export class ShellService {
     this.UpdateShellModel(<ShellModel>{
       Language: $localize.locale == "fr-CA" ? LanguageEnum.fr : LanguageEnum.en,
       BaseApiUrl: url,
-      MapVisible: false
+      MenuVisible: this.shellModel$.getValue().MenuVisible
     });
     this.UpdateBreadCrumbModel(<BreadCrumbModel>{ });
   }
 
+  ToggleMenu()
+  {
+    this.UpdateShellModel(<ShellModel>{ MenuVisible: !this.shellModel$.getValue().MenuVisible });   
+  }
+
   ToggleMap()
   {
-    let Visible: boolean = this.shellModel$.getValue().MapVisible;
-    this.UpdateShellModel(<ShellModel>{ MapVisible: !Visible });   
+    this.UpdateShellModel(<ShellModel>{ MapVisible: !this.shellModel$.getValue().MapVisible });   
   }
 
   UpdateBreadCrumbModel(breadCrumbModel: BreadCrumbModel) {

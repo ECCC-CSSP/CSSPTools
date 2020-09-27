@@ -5,6 +5,7 @@ import { Title } from '@angular/platform-browser';
 import { ShellService } from './shell.service';
 import { ShellModel } from './shell.models';
 import { LanguageEnum } from '../grouping';
+import { AppService } from 'src/app/services';
 
 @Component({
   selector: 'app-shell',
@@ -14,7 +15,7 @@ import { LanguageEnum } from '../grouping';
 })
 export class ShellComponent implements OnInit {
 
-  constructor(public shellService: ShellService, private router: Router, private title: Title) { }
+  constructor(public shellService: ShellService, private router: Router, private title: Title, private appService: AppService) { }
 
   /*
    * functions public
@@ -45,7 +46,7 @@ export class ShellComponent implements OnInit {
     else {
       $localize.locale = 'en-CA';
     }
-    this.shellService.UpdateShellModel(<ShellModel>{ Language: $localize.locale == "fr-CA" ? LanguageEnum.fr : LanguageEnum.en });
+    this.shellService.UpdateShellModel(<ShellModel>{ Language: $localize.locale == "fr-CA" ? LanguageEnum.fr : LanguageEnum.en, MenuVisible: this.appService.MenuVisible });
     LoadLocalesShell(this.shellService);
     this.title.setTitle(this.shellService.shellModel$.value.AppTitle);
   }
@@ -54,4 +55,5 @@ export class ShellComponent implements OnInit {
   {
     return (this.shellService.shellModel$.getValue().Language == LanguageEnum.en);
   }
+
 }

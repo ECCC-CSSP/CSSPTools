@@ -1,19 +1,53 @@
 .left {
   float: left;
 }
+
 .right {
   float: right;
 }
-.top {
+
+.toolbar {
   flex: 1 1 auto;
 }
-.active-link {
-  background-color: aqua;
-}
-.margin20 {
+
+.margin10 {
   margin: 20px;
 }
 
-.mapdiv {
+.container {
+  position: absolute;
+  top: 60px;
+  bottom: 60px;
+  left: 0;
+  right: 0;
+}
+
+.sidenav-left {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  background: orange;
+}
+
+.sidenav-right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 50%;
+  background: green;
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }

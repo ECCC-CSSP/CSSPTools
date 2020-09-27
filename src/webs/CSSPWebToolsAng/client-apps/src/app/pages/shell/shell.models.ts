@@ -8,4 +8,5 @@ export interface ShellModel extends HttpRequestModel {
     BaseApiUrl?: string;
     Contact?: Contact;
     MapVisible?: boolean;
+    MenuVisible?: boolean;
 }
