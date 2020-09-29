@@ -5,7 +5,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 
 import { WebCountry } from '../../models/generated/WebCountry.model';
-import { CountryTextModel, WebCountryModel } from './country.models';
+import { CountryTextModel, WebBaseProvinceModel, WebCountryModel } from './country.models';
 import { BreadCrumbModel } from '../../models/BreadCrumb.model';
 import { ShellService } from '../shell';
 
@@ -15,7 +15,8 @@ import { ShellService } from '../shell';
 export class CountryService {
   CountryTextModel$: BehaviorSubject<CountryTextModel> = new BehaviorSubject<CountryTextModel>(<CountryTextModel>{});
   WebCountryModel$: BehaviorSubject<WebCountryModel> = new BehaviorSubject<WebCountryModel>(<WebCountryModel>{});
-  
+  WebProvinceModel$: BehaviorSubject<WebBaseProvinceModel> = new BehaviorSubject<WebBaseProvinceModel>(<WebBaseProvinceModel>{});
+
   constructor(public shellService: ShellService, private httpClient: HttpClient) {
     LoadLocalesCountryText(this);
     this.UpdateCountryText(<CountryTextModel>{ Title: "Something for text" });
@@ -42,5 +43,23 @@ export class CountryService {
   UpdateWebCountry(webCountryModel: WebCountryModel) {
     this.WebCountryModel$.next(<WebCountryModel>{ ...this.WebCountryModel$.getValue(), ...webCountryModel });
     this.shellService.UpdateBreadCrumbModel(<BreadCrumbModel>{ WebBaseList: this.WebCountryModel$.getValue()?.WebCountry?.TVItemParentList });
+
+    let webBaseProvinceModel: WebBaseProvinceModel = <WebBaseProvinceModel>{ WebBaseProvinceList: [] };
+
+    if (this.shellService.shellModel$?.getValue()?.ActiveVisible && this.shellService.shellModel$?.getValue()?.InactVisible) {
+      webBaseProvinceModel = <WebBaseProvinceModel>{ WebBaseProvinceList: this.WebCountryModel$?.getValue()?.WebCountry?.TVItemProvinceList };
+    }
+    else if (this.shellService.shellModel$?.getValue()?.ActiveVisible) {
+      webBaseProvinceModel = <WebBaseProvinceModel>{ WebBaseProvinceList: this.WebCountryModel$?.getValue()?.WebCountry?.TVItemProvinceList.filter((country) => { return country.TVItemModel.TVItem.IsActive == true }) };
+    }
+    else if (this.shellService.shellModel$?.getValue()?.InactVisible) {
+      webBaseProvinceModel = <WebBaseProvinceModel>{ WebBaseProvinceList: this.WebCountryModel$?.getValue()?.WebCountry?.TVItemProvinceList.filter((country) => { return country.TVItemModel.TVItem.IsActive == false }) };
+    }
+
+    this.UpdateWebProvinceModel(webBaseProvinceModel);
+  }
+
+  UpdateWebProvinceModel(webBaseProvinceModel: WebBaseProvinceModel) {
+    this.WebProvinceModel$.next(<WebBaseProvinceModel>{ ...this.WebProvinceModel$.getValue(), ...webBaseProvinceModel });
   }
 }

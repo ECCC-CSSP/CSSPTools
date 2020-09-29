@@ -7,13 +7,15 @@ import { SearchOptionComponent } from './components/search-option/search-option.
 import { TVItemListComponent } from './components/tvitem-list/tvitem-list.component';
 import { TVItemListItemComponent } from './components/tvitem-list-item/tvitem-list-item.component';
 import { GoogleMapsModule } from '@angular/google-maps';
+import { ChildCountComponent } from './components/child-count/child-count.component';
 
 @NgModule({
   declarations: [
     SearchComponent,
     SearchOptionComponent,
     TVItemListComponent,
-    TVItemListItemComponent
+    TVItemListItemComponent,
+    ChildCountComponent
   ],
   imports: [
     CommonModule,
@@ -32,7 +34,8 @@ import { GoogleMapsModule } from '@angular/google-maps';
     SearchComponent,
     SearchOptionComponent,
     TVItemListComponent,
-    TVItemListItemComponent
+    TVItemListItemComponent,
+    ChildCountComponent
   ]
 })
 export class SharedModule { }

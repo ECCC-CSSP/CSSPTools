@@ -1870,11 +1870,11 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SolutionFileName - Examples: CSSPEnums || CSSPModels || CSSPServices.
+        ///   Looks up a localized string similar to SolutionFileName - Examples: CSSPEnums || CSSPModels || CSSPDBServices.
         /// </summary>
-        public static string SolutionFileNameExampleCSSPRunsCSSPModelsCSSPServices {
+        public static string SolutionFileNameExampleCSSPRunsCSSPModelsCSSPDBServices {
             get {
-                return ResourceManager.GetString("SolutionFileNameExampleCSSPRunsCSSPModelsCSSPServices", resourceCulture);
+                return ResourceManager.GetString("SolutionFileNameExampleCSSPRunsCSSPModelsCSSPDBServices", resourceCulture);
             }
         }
         

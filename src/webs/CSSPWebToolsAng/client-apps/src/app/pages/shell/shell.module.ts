@@ -8,9 +8,15 @@ import { LoggedInContactComponent } from 'src/app/components/logged-in-contact/l
 import { BreadCrumbComponent } from 'src/app/components/bread-crumb/bread-crumb.component';
 import { MapComponent } from 'src/app/components/map/map.component';
 import { GoogleMapsModule } from '@angular/google-maps';
+import { SideNavMenuComponent } from 'src/app/components/sidenav-menu/sidenav-menu.component';
 
 @NgModule({
-  declarations: [ShellComponent, LoggedInContactComponent, BreadCrumbComponent, MapComponent],
+  declarations: [
+    ShellComponent, 
+    LoggedInContactComponent, 
+    BreadCrumbComponent, 
+    MapComponent, 
+    SideNavMenuComponent],
   imports: [
     RouterModule,
     ShellRoutingModule,

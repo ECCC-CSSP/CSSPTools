@@ -8,15 +8,14 @@ import { WebBase } from 'src/app/models/generated/WebBase.model';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TVItemListComponent implements OnInit, OnDestroy {
-  @Input() TVItemLists: WebBase[] = [];
-  
+  @Input() TVItemList: WebBase[] = [];
+
   constructor() {
   }
 
   ngOnInit() {
   }
 
-  ngOnDestroy()
-  {
+  ngOnDestroy() {
   }
 }

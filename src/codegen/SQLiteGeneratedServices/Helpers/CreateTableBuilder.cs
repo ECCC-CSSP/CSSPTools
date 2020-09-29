@@ -35,7 +35,7 @@ namespace SQLiteGeneratedServices.Services
             sb.AppendLine(@"using Microsoft.EntityFrameworkCore;");
             sb.AppendLine(@"using System.Threading.Tasks;");
             sb.AppendLine(@"");
-            sb.AppendLine(@"namespace CSSPServices");
+            sb.AppendLine(@"namespace CSSPDBServices");
             sb.AppendLine(@"{");
             sb.AppendLine(@"    public partial class CSSPSQLiteService : ICSSPSQLiteService");
             sb.AppendLine(@"    {");

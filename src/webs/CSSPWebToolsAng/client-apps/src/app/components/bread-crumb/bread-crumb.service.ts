@@ -1,4 +1,3 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, of } from 'rxjs';
 import { BreadCrumbTextModel } from './bread-crumb.models';
@@ -9,7 +8,7 @@ import { BreadCrumbTextModel } from './bread-crumb.models';
 export class BreadCrumbService {
   BreadCrumbTextModel$: BehaviorSubject<BreadCrumbTextModel> = new BehaviorSubject<BreadCrumbTextModel>(<BreadCrumbTextModel>{});
 
-  constructor(private httpClient: HttpClient) {
+  constructor() {
     this.UpdateBreadCrumbText(<BreadCrumbTextModel>{});
   }
 

@@ -74,7 +74,7 @@ namespace ExecuteDotNetCommandServices.Services
 
                 new AppSettingParameter() { Parameter = "test:CSSPEnums", ExpectedValue = "C:\\CSSPTools\\src\\tests\\CSSPEnums.Tests\\CSSPEnums.Tests.csproj", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "test:CSSPModels", ExpectedValue = "C:\\CSSPTools\\src\\tests\\CSSPModels.Tests\\CSSPModels.Tests.csproj", IsFile = true, CheckExist = true },
-                new AppSettingParameter() { Parameter = "test:CSSPServices", ExpectedValue = "C:\\CSSPTools\\src\\tests\\CSSPServices.Tests\\CSSPServices.Tests.csproj", IsFile = true, CheckExist = true },
+                new AppSettingParameter() { Parameter = "test:CSSPDBServices", ExpectedValue = "C:\\CSSPTools\\src\\tests\\CSSPDBServices.Tests\\CSSPDBServices.Tests.csproj", IsFile = true, CheckExist = true },
 
                 // build
 
@@ -161,7 +161,7 @@ namespace ExecuteDotNetCommandServices.Services
 
                 new AppSettingParameter() { Parameter = "build:CSSPEnums", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\CSSPEnums.csproj", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "build:CSSPModels", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPModels\\CSSPModels.csproj", IsFile = true, CheckExist = true },
-                new AppSettingParameter() { Parameter = "build:CSSPServices", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPServices\\CSSPServices.csproj", IsFile = true, CheckExist = true },
+                new AppSettingParameter() { Parameter = "build:CSSPDBServices", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPDBServices\\CSSPDBServices.csproj", IsFile = true, CheckExist = true },
             };
 
             await ValidateAppSettingsService.VerifyAppSettings();

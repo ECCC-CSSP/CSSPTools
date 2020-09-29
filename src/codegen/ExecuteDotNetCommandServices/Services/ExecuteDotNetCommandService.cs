@@ -70,7 +70,7 @@ namespace ExecuteDotNetCommandServices.Services
 
             "CSSPEnums",
             "CSSPModels",
-            "CSSPServices",
+            "CSSPDBServices",
         };
         private List<string> ArgsBuildAllowables { get; set; } = new List<string>()
         {
@@ -155,7 +155,7 @@ namespace ExecuteDotNetCommandServices.Services
 
             "CSSPEnums",
             "CSSPModels",
-            "CSSPServices"
+            "CSSPDBServices"
         };
         #endregion Properties
 

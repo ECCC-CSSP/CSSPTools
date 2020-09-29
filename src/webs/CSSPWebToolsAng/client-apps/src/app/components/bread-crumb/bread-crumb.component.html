@@ -1,3 +1,7 @@
-<mat-nav-list *ngFor="let webBase of breadCrumbs">
+<span *ngIf="(breadCrumbService.BreadCrumbTextModel$ | async).Working">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</span>
+
+<ul *ngFor="let webBase of breadCrumbs">
     <app-tvitem-list-item [TVItemModel]="webBase.TVItemModel"></app-tvitem-list-item>
-</mat-nav-list>
+</ul>

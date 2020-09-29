@@ -1,10 +1,16 @@
-<mat-list-item>
-    <a href="{{ shellService.GetLink(TVItemModel)}}" routerLinkActive="active">
-        <span *ngIf="shellService.shellModel$.getValue().Language == 1">
-            {{ TVItemModel.TVItemLanguageEN.TVText }}
-        </span>
-        <span *ngIf="shellService.shellModel$.getValue().Language == 2">
-            {{ TVItemModel.TVItemLanguageFR.TVText }}
-        </span>
-    </a>
-</mat-list-item>
+<li>
+    <div>
+        <a href="{{ shellService.GetLink(TVItemModel)}}">
+            <span [ngClass]="TVItemModel.TVItem.IsActive ? '' : 'inactive'">
+                <span *ngIf="shellService.shellModel$.getValue().Language == 1">
+                    {{ TVItemModel.TVItemLanguageEN.TVText }}
+                </span>
+                <span *ngIf="shellService.shellModel$.getValue().Language == 2">
+                    {{ TVItemModel.TVItemLanguageFR.TVText }}
+                </span>
+            </span>
+        </a>
+        <app-child-count [TVItemModel]="TVItemModel"></app-child-count>
+        <p *ngIf="false">{{ TVItemModel | json }}</p>
+    </div>
+</li>

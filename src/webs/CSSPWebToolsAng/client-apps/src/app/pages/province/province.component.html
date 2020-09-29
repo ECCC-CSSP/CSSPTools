@@ -5,7 +5,7 @@
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </span>
 
-<p>Province works! {{ provinceService.ProvinceTextModel$.getValue().Title }}</p>
-<app-tvitem-list [TVItemLists]="provinceService.WebProvinceModel$?.getValue()?.WebProvince?.TVItemAreaList"></app-tvitem-list>
+<app-tvitem-list [TVItemList]="provinceService.WebAreaModel$?.getValue()?.WebBaseAreaList">   
+</app-tvitem-list>
 
 <router-outlet></router-outlet>

@@ -19,6 +19,11 @@ export class CountryComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     LoadLocalesCountryText(this.countryService);
     let TVItemID: number = this.activateRoute.snapshot.params['TVItemID'];
+    let Properties: string = this.activateRoute.snapshot.params['Properties'];
+    if (Properties == undefined) {
+      Properties = '';
+    }
+    this.shellService.SetProperties(Properties);
     this.sub = this.countryService.GetWebCountry(TVItemID).subscribe();
   }
 

@@ -1,10 +1,12 @@
-<span *ngIf="(countryService.WebCountryModel$ | async).Working || (shellService.shellModel$ | async).Working">
+<span *ngIf="(countryService.WebCountryModel$ | async).Working">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</span>
+<span *ngIf="(shellService.shellModel$ | async).Working">
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </span>
 
-<p>country works! {{ countryService.CountryTextModel$.getValue().Title }}</p>
-
-<app-tvitem-list [TVItemLists]="countryService.WebCountryModel$?.getValue()?.WebCountry?.TVItemProvinceList">
+<app-tvitem-list [TVItemList]="countryService.WebProvinceModel$?.getValue()?.WebBaseProvinceList">
 </app-tvitem-list>
+
 
 <router-outlet></router-outlet>

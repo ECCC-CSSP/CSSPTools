@@ -2,14 +2,13 @@
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </span>
 
-<p>Root works! {{ rootService.RootTextModel$.getValue().Title }}</p>
-<app-tvitem-list [TVItemLists]="rootService.WebRootModel$?.getValue()?.WebRoot?.TVItemCountryList">
+<app-tvitem-list [TVItemList]="rootService.WebCountryModel$?.getValue()?.WebBaseCountryList">
 </app-tvitem-list>
 
-<table>
-    <tr>
-        <th>bonjour</th><th>bonjour</th><th>bonjour</th><th>bonjour</th><th>bonjour</th><th>bonjour</th><th>bonjour</th><th>bonjour</th><th>bonjour</th><th>bonjour</th><th>bonjour</th><th>bonjour</th><th>bonjour</th><th>bonjour</th><th>bonjour</th><th>bonjour</th><th>bonjour</th><th>bonjour</th><th>bonjour</th><th>bonjour</th><th>bonjour</th><th>bonjour</th><th>bonjour</th><th>bonjour</th><th>bonjour</th><th>bonjour</th><th>bonjour</th>
-    </tr>
-</table>
+
+<div *ngIf="shellService.shellModel$?.getValue()?.FileVisible">
+    <h1>Files</h1>
+    <div>Will show files</div>
+</div>
 
 <router-outlet></router-outlet>

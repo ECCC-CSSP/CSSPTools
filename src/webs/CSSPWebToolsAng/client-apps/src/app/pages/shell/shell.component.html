@@ -1,9 +1,10 @@
-<ng-template>
-    {{ (shellService.shellModel$ | async) }}
-</ng-template>
+<span *ngIf="(shellService.shellModel$ | async).Working">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</span>
+
 <mat-toolbar class="header">
     <span class="toolbar">
-        <button (click)="shellService.ToggleMenu()" mat-button>
+        <button (click)="ToggleMenu()" mat-button>
             <mat-icon>menu</mat-icon>
         </button>
         <a mat-button routerLink="">{{ shellService.shellModel$.getValue().AppTitle }}
@@ -16,9 +17,9 @@
         <span>
             <app-logged-in-contact></app-logged-in-contact>
         </span>
-        <button mat-button *ngIf="!IsEnglish()" (click)="changeLang()">English</button>
-        <button mat-button *ngIf="IsEnglish()" (click)="changeLang()">Français</button>
-        <button (click)="shellService.ToggleMap()" mat-raised-button>
+        <button mat-button *ngIf="!IsEnglish()" (click)="ChangeLang()">English</button>
+        <button mat-button *ngIf="IsEnglish()" (click)="ChangeLang()">Français</button>
+        <button (click)="ToggleMap()" mat-raised-button>
             <mat-icon>map</mat-icon>
         </button>
     </span>
@@ -27,9 +28,7 @@
 <mat-sidenav-container class="container">
     <mat-sidenav class="sidenav-left" #leftSideNav [opened]="shellService.shellModel$?.getValue()?.MenuVisible"
         mode="side">
-        <mat-list>
-            <mat-list-item>Testing</mat-list-item>
-        </mat-list>
+        <app-sidenav-menu></app-sidenav-menu>
     </mat-sidenav>
     <mat-sidenav class="sidenav-right" #rightSideNav [opened]="shellService.shellModel$?.getValue()?.MapVisible"
         mode="side" position="end">

@@ -16,5 +16,4 @@ export class TVItemListService {
   UpdateTVItemListText(TVItemListTextModel: TVItemListTextModel) {
     this.TVItemListTextModel$.next(<TVItemListTextModel>{ ...this.TVItemListTextModel$.getValue(), ...TVItemListTextModel });
   }
-
 }

@@ -11,7 +11,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
             sb.AppendLine(@"        {");
             sb.AppendLine(@"            Config = new ConfigurationBuilder()");
             sb.AppendLine(@"               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)");
-            sb.AppendLine(@"               .AddJsonFile(""appsettings_csspservicestests.json"")");
+            sb.AppendLine(@"               .AddJsonFile(""appsettings_CSSPDBServicestests.json"")");
             sb.AppendLine(@"               .AddUserSecrets(""6f27cbbe-6ffb-4154-b49b-d739597c4f60"")");
             sb.AppendLine(@"               .Build();");
             sb.AppendLine(@"");

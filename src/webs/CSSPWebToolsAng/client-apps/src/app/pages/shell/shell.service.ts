@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { TVTypeEnum, TVTypeEnum_GetIDText } from 'src/app/enums/generated/TVTypeEnum';
 import { BreadCrumbModel } from 'src/app/models/BreadCrumb.model';
@@ -20,20 +21,33 @@ export class ShellService {
 
     this.UpdateShellModel(<ShellModel>{
       Language: $localize.locale == "fr-CA" ? LanguageEnum.fr : LanguageEnum.en,
-      BaseApiUrl: url,
-      MenuVisible: this.shellModel$.getValue().MenuVisible
+      BaseApiUrl: url
     });
-    this.UpdateBreadCrumbModel(<BreadCrumbModel>{ });
+    this.UpdateBreadCrumbModel(<BreadCrumbModel>{});
   }
 
-  ToggleMenu()
-  {
-    this.UpdateShellModel(<ShellModel>{ MenuVisible: !this.shellModel$.getValue().MenuVisible });   
+  SetProperties(properties: string) {
+    properties.indexOf("active") > -1 ? this.UpdateShellModel(<ShellModel>{ ActiveVisible: true }) : this.UpdateShellModel(<ShellModel>{ ActiveVisible: false });
+    properties.indexOf("detail") > -1 ? this.UpdateShellModel(<ShellModel>{ DetailVisible: true }) : this.UpdateShellModel(<ShellModel>{ DetailVisible: false });
+    properties.indexOf("edit") > -1 ? this.UpdateShellModel(<ShellModel>{ EditVisible: true }) : this.UpdateShellModel(<ShellModel>{ EditVisible: false });
+    properties.indexOf("file") > -1 ? this.UpdateShellModel(<ShellModel>{ FileVisible: true }) : this.UpdateShellModel(<ShellModel>{ FileVisible: false });
+    properties.indexOf("inact") > -1 ? this.UpdateShellModel(<ShellModel>{ InactVisible: true }) : this.UpdateShellModel(<ShellModel>{ InactVisible: false });
+    properties.indexOf("map") > -1 ? this.UpdateShellModel(<ShellModel>{ MapVisible: true }) : this.UpdateShellModel(<ShellModel>{ MapVisible: false });
+    properties.indexOf("menu") > -1 ? this.UpdateShellModel(<ShellModel>{ MenuVisible: true }) : this.UpdateShellModel(<ShellModel>{ MenuVisible: false });
   }
 
-  ToggleMap()
-  {
-    this.UpdateShellModel(<ShellModel>{ MapVisible: !this.shellModel$.getValue().MapVisible });   
+  ChangeUrl(router: Router, property: string): void {
+    let urlNew: string = '';
+    router.url.indexOf(property) > -1 ? urlNew = router.url.replace(',,', ',').replace('z', '').replace(property, 'z') : urlNew = router.url.replace(',,', ',').replace('z', '') + ',' + property;
+    property == 'active' ? (router.url.indexOf(property) > -1 ? this.UpdateShellModel(<ShellModel>{ ActiveVisible: false }) : this.UpdateShellModel(<ShellModel>{ ActiveVisible: true })) : null
+    property == 'detail' ? (router.url.indexOf(property) > -1 ? this.UpdateShellModel(<ShellModel>{ DetailVisible: false }) : this.UpdateShellModel(<ShellModel>{ DetailVisible: true })) : null
+    property == 'edit' ? (router.url.indexOf(property) > -1 ? this.UpdateShellModel(<ShellModel>{ EditVisible: false }) : this.UpdateShellModel(<ShellModel>{ EditVisible: true })) : null
+    property == 'file' ? (router.url.indexOf(property) > -1 ? this.UpdateShellModel(<ShellModel>{ FileVisible: false }) : this.UpdateShellModel(<ShellModel>{ FileVisible: true })) : null
+    property == 'inact' ? (router.url.indexOf(property) > -1 ? this.UpdateShellModel(<ShellModel>{ InactVisible: false }) : this.UpdateShellModel(<ShellModel>{ InactVisible: true })) : null
+    property == 'map' ? (router.url.indexOf(property) > -1 ? this.UpdateShellModel(<ShellModel>{ MapVisible: false }) : this.UpdateShellModel(<ShellModel>{ MapVisible: true })) : null
+    property == 'menu' ? (router.url.indexOf(property) > -1 ? this.UpdateShellModel(<ShellModel>{ MenuVisible: false }) : this.UpdateShellModel(<ShellModel>{ MenuVisible: true })) : null
+    router.routeReuseStrategy.shouldReuseRoute = () => false;
+    router.navigateByUrl(urlNew);
   }
 
   UpdateBreadCrumbModel(breadCrumbModel: BreadCrumbModel) {
@@ -44,11 +58,23 @@ export class ShellService {
     this.shellModel$.next(<ShellModel>{ ...this.shellModel$.getValue(), ...shellModel });
   }
 
-  GetLink(tvItemModel: TVItemModel)
-  {
-    return $localize.locale + '/' + this.GetUrl(tvItemModel.TVItem);
+  GetLink(tvItemModel: TVItemModel) {
+    return $localize.locale + '/' + this.GetUrl(tvItemModel.TVItem) + '/' + this.GetProperties();
   }
-  
+
+  GetProperties() {
+    let properties: string = 'z';
+    this.shellModel$.getValue().ActiveVisible ? properties = properties + ',active' : null;
+    this.shellModel$.getValue().DetailVisible ? properties = properties + ',detail' : null;
+    this.shellModel$.getValue().EditVisible ? properties = properties + ',edit' : null;
+    this.shellModel$.getValue().FileVisible ? properties = properties + ',file' : null;
+    this.shellModel$.getValue().InactVisible ? properties = properties + ',inact' : null;
+    this.shellModel$.getValue().MapVisible ? properties = properties + ',map' : null;
+    this.shellModel$.getValue().MenuVisible ? properties = properties + ',menu' : null;
+
+    return properties;
+  }
+
   GetTypeText(tvType: number) {
     return TVTypeEnum_GetIDText(tvType);
   }

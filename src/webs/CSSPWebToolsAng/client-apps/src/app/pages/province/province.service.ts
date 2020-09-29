@@ -5,7 +5,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 
 import { WebProvince } from '../../models/generated/WebProvince.model';
-import { ProvinceTextModel, WebProvinceModel } from './province.models';
+import { ProvinceTextModel, WebBaseAreaModel, WebProvinceModel } from './province.models';
 import { BreadCrumbModel } from 'src/app/models/BreadCrumb.model';
 import { ShellService } from '../shell';
 
@@ -15,7 +15,8 @@ import { ShellService } from '../shell';
 export class ProvinceService {
   ProvinceTextModel$: BehaviorSubject<ProvinceTextModel> = new BehaviorSubject<ProvinceTextModel>(<ProvinceTextModel>{});
   WebProvinceModel$: BehaviorSubject<WebProvinceModel> = new BehaviorSubject<WebProvinceModel>(<WebProvinceModel>{});
-  
+  WebAreaModel$: BehaviorSubject<WebBaseAreaModel> = new BehaviorSubject<WebBaseAreaModel>(<WebBaseAreaModel>{});
+
   constructor(public shellService: ShellService, private httpClient: HttpClient) {
     LoadLocalesProvinceText(this);
     this.UpdateProvinceText(<ProvinceTextModel>{ Title: "Something for text" });
@@ -39,8 +40,28 @@ export class ProvinceService {
     this.ProvinceTextModel$.next(<ProvinceTextModel>{ ...this.ProvinceTextModel$.getValue(), ...ProvinceTextModel });
   }
 
+
   UpdateWebProvince(WebProvinceModel: WebProvinceModel) {
     this.WebProvinceModel$.next(<WebProvinceModel>{ ...this.WebProvinceModel$.getValue(), ...WebProvinceModel });
     this.shellService.UpdateBreadCrumbModel(<BreadCrumbModel>{ WebBaseList: this.WebProvinceModel$.getValue()?.WebProvince?.TVItemParentList });
+
+    let webBaseAreaModel: WebBaseAreaModel = <WebBaseAreaModel>{ WebBaseAreaList: [] };
+
+    if (this.shellService.shellModel$?.getValue()?.ActiveVisible && this.shellService.shellModel$?.getValue()?.InactVisible) {
+      webBaseAreaModel = <WebBaseAreaModel>{ WebBaseAreaList: this.WebProvinceModel$?.getValue()?.WebProvince?.TVItemAreaList };
+    }
+    else if (this.shellService.shellModel$?.getValue()?.ActiveVisible) {
+      webBaseAreaModel = <WebBaseAreaModel>{ WebBaseAreaList: this.WebProvinceModel$?.getValue()?.WebProvince?.TVItemAreaList.filter((country) => { return country.TVItemModel.TVItem.IsActive == true }) };
+    }
+    else if (this.shellService.shellModel$?.getValue()?.InactVisible) {
+      webBaseAreaModel = <WebBaseAreaModel>{ WebBaseAreaList: this.WebProvinceModel$?.getValue()?.WebProvince?.TVItemAreaList.filter((country) => { return country.TVItemModel.TVItem.IsActive == false }) };
+    }
+
+    this.UpdateWebAreaModel(webBaseAreaModel);
   }
+
+  UpdateWebAreaModel(webBaseAreaModel: WebBaseAreaModel) {
+    this.WebAreaModel$.next(<WebBaseAreaModel>{ ...this.WebAreaModel$.getValue(), ...webBaseAreaModel });
+  }
+
 }

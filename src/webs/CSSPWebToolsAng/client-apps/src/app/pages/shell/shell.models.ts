@@ -7,6 +7,12 @@ export interface ShellModel extends HttpRequestModel {
     Language?: LanguageEnum;
     BaseApiUrl?: string;
     Contact?: Contact;
+
+    ActiveVisible?: boolean;
+    DetailVisible?: boolean;
+    EditVisible?: boolean;
+    FileVisible?: boolean;
+    InactVisible?: boolean;
     MapVisible?: boolean;
     MenuVisible?: boolean;
 }

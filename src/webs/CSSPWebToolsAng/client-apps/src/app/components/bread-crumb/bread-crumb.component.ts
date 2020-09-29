@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Input } from '@a
 import { Router } from '@angular/router';
 import { WebBase } from 'src/app/models/generated/WebBase.model';
 import { ShellService } from 'src/app/pages/shell';
+import { BreadCrumbService } from './bread-crumb.service';
 
 @Component({
   selector: 'app-bread-crumb',
@@ -12,7 +13,7 @@ import { ShellService } from 'src/app/pages/shell';
 export class BreadCrumbComponent implements OnInit, OnDestroy {
   @Input() breadCrumbs: WebBase[] = [];
   
-  constructor(public shellService: ShellService, public router: Router) {
+  constructor(public breadCrumbService: BreadCrumbService, public shellService: ShellService, public router: Router) {
   }
 
   ngOnInit() {

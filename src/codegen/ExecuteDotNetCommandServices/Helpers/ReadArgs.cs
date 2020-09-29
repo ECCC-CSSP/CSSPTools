@@ -19,7 +19,7 @@ namespace ExecuteDotNetCommandServices.Services
                 ActionCommandDBService.ErrorText.AppendLine("");
                 ActionCommandDBService.ErrorText.AppendLine($"\t#1:\t{ CSSPCultureServicesRes.ActionOptionsRunTestBuild }");
                 ActionCommandDBService.ErrorText.AppendLine("");
-                ActionCommandDBService.ErrorText.AppendLine($"\t#2:\t{ CSSPCultureServicesRes.SolutionFileNameExampleCSSPRunsCSSPModelsCSSPServices }");
+                ActionCommandDBService.ErrorText.AppendLine($"\t#2:\t{ CSSPCultureServicesRes.SolutionFileNameExampleCSSPRunsCSSPModelsCSSPDBServices }");
                 ActionCommandDBService.ErrorText.AppendLine("");
                 return await Task.FromResult(false);
             }

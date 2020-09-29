@@ -27,7 +27,7 @@ build,AngularModelsGeneratedServices,C:\CSSPTools\src\codegen\AngularModelsGener
 build,AngularModelsGeneratedServices.Tests,C:\CSSPTools\src\codegen\Tests\AngularModelsGeneratedServices.Tests\AngularModelsGeneratedServices.Tests.csproj
 build,CSSPEnums,C:\CSSPTools\src\dlls\CSSPEnums\CSSPEnums.csproj
 build,CSSPModels,C:\CSSPTools\src\dlls\CSSPModels\CSSPModels.csproj
-build,CSSPServices,C:\CSSPTools\src\dlls\CSSPServices\CSSPServices.csproj
+build,CSSPDBServices,C:\CSSPTools\src\dlls\CSSPDBServices\CSSPDBServices.csproj
 build,EnumsCompareWithOldEnums,C:\CSSPTools\src\codegen\EnumsCompareWithOldEnums\EnumsCompareWithOldEnums.csproj
 build,EnumsCompareWithOldEnumsServices,C:\CSSPTools\src\codegen\EnumsCompareWithOldEnumsServices\EnumsCompareWithOldEnumsServices.csproj
 build,EnumsCompareWithOldEnumsServices.Tests,C:\CSSPTools\src\codegen\Tests\EnumsCompareWithOldEnumsServices.Tests\EnumsCompareWithOldEnumsServices.Tests.csproj
@@ -85,7 +85,7 @@ test,AngularEnumsGeneratedServices.Tests,C:\CSSPTools\src\codegen\Tests\AngularE
 test,AngularModelsGeneratedServices.Tests,C:\CSSPTools\src\codegen\Tests\AngularModelsGeneratedServices.Tests\AngularModelsGeneratedServices.Tests.csproj
 test,CSSPEnums,C:\CSSPTools\src\tests\CSSPEnums.Tests\CSSPEnums.Tests.csproj
 test,CSSPModels,C:\CSSPTools\src\tests\CSSPModels.Tests\CSSPModels.Tests.csproj
-test,CSSPServices,C:\CSSPTools\src\tests\CSSPServices.Tests\CSSPServices.Tests.csproj
+test,CSSPDBServices,C:\CSSPTools\src\tests\CSSPDBServices.Tests\CSSPDBServices.Tests.csproj
 test,EnumsCompareWithOldEnumsServices.Tests,C:\CSSPTools\src\codegen\Tests\EnumsCompareWithOldEnumsServices.Tests\EnumsCompareWithOldEnumsServices.Tests.csproj
 test,EnumsGenerated_csServices.Tests,C:\CSSPTools\src\codegen\Tests\EnumsGenerated_csServices.Tests\EnumsGenerated_csServices.Tests.csproj
 test,EnumsPolSourceInfoRelatedFilesServices.Tests,C:\CSSPTools\src\codegen\Tests\EnumsPolSourceInfoRelatedFilesServices.Tests\EnumsPolSourceInfoRelatedFilesServices.Tests.csproj
