@@ -2,6 +2,6 @@
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </span>
 
-<ul *ngFor="let webBase of breadCrumbs">
-    <app-tvitem-list-item [TVItemModel]="webBase.TVItemModel"></app-tvitem-list-item>
-</ul>
+<mat-list *ngFor="let webBase of breadCrumbs">
+    <app-tvitem-list-item [IsBreadCrumb]="true" [TVItemModel]="webBase.TVItemModel"></app-tvitem-list-item>
+</mat-list>

@@ -46,13 +46,13 @@ export class CountryService {
 
     let webBaseProvinceModel: WebBaseProvinceModel = <WebBaseProvinceModel>{ WebBaseProvinceList: [] };
 
-    if (this.shellService.shellModel$?.getValue()?.ActiveVisible && this.shellService.shellModel$?.getValue()?.InactVisible) {
+    if (this.shellService.ShellModel$?.getValue()?.ActiveVisible && this.shellService.ShellModel$?.getValue()?.InactVisible) {
       webBaseProvinceModel = <WebBaseProvinceModel>{ WebBaseProvinceList: this.WebCountryModel$?.getValue()?.WebCountry?.TVItemProvinceList };
     }
-    else if (this.shellService.shellModel$?.getValue()?.ActiveVisible) {
+    else if (this.shellService.ShellModel$?.getValue()?.ActiveVisible) {
       webBaseProvinceModel = <WebBaseProvinceModel>{ WebBaseProvinceList: this.WebCountryModel$?.getValue()?.WebCountry?.TVItemProvinceList.filter((country) => { return country.TVItemModel.TVItem.IsActive == true }) };
     }
-    else if (this.shellService.shellModel$?.getValue()?.InactVisible) {
+    else if (this.shellService.ShellModel$?.getValue()?.InactVisible) {
       webBaseProvinceModel = <WebBaseProvinceModel>{ WebBaseProvinceList: this.WebCountryModel$?.getValue()?.WebCountry?.TVItemProvinceList.filter((country) => { return country.TVItemModel.TVItem.IsActive == false }) };
     }
 

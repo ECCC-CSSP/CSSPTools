@@ -12,9 +12,9 @@ import { ShellModel } from './shell.models';
   providedIn: 'root'
 })
 export class ShellService {
-  shellModel$: BehaviorSubject<ShellModel> = new BehaviorSubject<ShellModel>(<ShellModel>{});
+  ShellModel$: BehaviorSubject<ShellModel> = new BehaviorSubject<ShellModel>(<ShellModel>{});
   BreadCrumbModel$: BehaviorSubject<BreadCrumbModel> = new BehaviorSubject<BreadCrumbModel>(<BreadCrumbModel>{});
-
+  
   constructor() {
     //let url = 'https://localhost:4447/api/';
     let url = 'https://localhost:44346/api/';
@@ -24,8 +24,26 @@ export class ShellService {
       BaseApiUrl: url
     });
     this.UpdateBreadCrumbModel(<BreadCrumbModel>{});
+    this.SetTVTypeEnum();
   }
 
+  SetTVTypeEnum()
+  {
+    this.UpdateShellModel(<ShellModel>{ 
+      TVTypeRoot: TVTypeEnum.Root, 
+      TVTypeCountry: TVTypeEnum.Country,
+      TVTypeProvince: TVTypeEnum.Province,
+      TVTypeArea: TVTypeEnum.Area,
+      TVTypeSector: TVTypeEnum.Sector,
+      TVTypeSubsector: TVTypeEnum.Subsector,
+      TVTypeMWQMSite: TVTypeEnum.MWQMSite,
+      TVTypeMWQMRun: TVTypeEnum.MWQMRun,
+      TVTypePolSourcSite: TVTypeEnum.PolSourceSite,
+      TVTypeMikeScenario: TVTypeEnum.MikeScenario,
+      TVTypeMunicipality: TVTypeEnum.Municipality,
+      TVTypeMWQMSiteSample: TVTypeEnum.MWQMSiteSample,
+      });
+  }
   SetProperties(properties: string) {
     properties.indexOf("active") > -1 ? this.UpdateShellModel(<ShellModel>{ ActiveVisible: true }) : this.UpdateShellModel(<ShellModel>{ ActiveVisible: false });
     properties.indexOf("detail") > -1 ? this.UpdateShellModel(<ShellModel>{ DetailVisible: true }) : this.UpdateShellModel(<ShellModel>{ DetailVisible: false });
@@ -55,22 +73,27 @@ export class ShellService {
   }
 
   UpdateShellModel(shellModel: ShellModel) {
-    this.shellModel$.next(<ShellModel>{ ...this.shellModel$.getValue(), ...shellModel });
+    this.ShellModel$.next(<ShellModel>{ ...this.ShellModel$.getValue(), ...shellModel });
   }
 
+  GetTVType(tvType: TVTypeEnum)
+  {
+    return tvType;
+  }
+  
   GetLink(tvItemModel: TVItemModel) {
     return $localize.locale + '/' + this.GetUrl(tvItemModel.TVItem) + '/' + this.GetProperties();
   }
 
   GetProperties() {
     let properties: string = 'z';
-    this.shellModel$.getValue().ActiveVisible ? properties = properties + ',active' : null;
-    this.shellModel$.getValue().DetailVisible ? properties = properties + ',detail' : null;
-    this.shellModel$.getValue().EditVisible ? properties = properties + ',edit' : null;
-    this.shellModel$.getValue().FileVisible ? properties = properties + ',file' : null;
-    this.shellModel$.getValue().InactVisible ? properties = properties + ',inact' : null;
-    this.shellModel$.getValue().MapVisible ? properties = properties + ',map' : null;
-    this.shellModel$.getValue().MenuVisible ? properties = properties + ',menu' : null;
+    this.ShellModel$.getValue().ActiveVisible ? properties = properties + ',active' : null;
+    this.ShellModel$.getValue().DetailVisible ? properties = properties + ',detail' : null;
+    this.ShellModel$.getValue().EditVisible ? properties = properties + ',edit' : null;
+    this.ShellModel$.getValue().FileVisible ? properties = properties + ',file' : null;
+    this.ShellModel$.getValue().InactVisible ? properties = properties + ',inact' : null;
+    this.ShellModel$.getValue().MapVisible ? properties = properties + ',map' : null;
+    this.ShellModel$.getValue().MenuVisible ? properties = properties + ',menu' : null;
 
     return properties;
   }

@@ -10,7 +10,7 @@ export class ApiInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     request = request.clone({
-      url: request.url.replace('/api/', this.shellService.shellModel$.getValue().BaseApiUrl + $localize.locale + '/'),
+      url: request.url.replace('/api/', this.shellService.ShellModel$.getValue().BaseApiUrl + $localize.locale + '/'),
     });
 
     return next.handle(request);

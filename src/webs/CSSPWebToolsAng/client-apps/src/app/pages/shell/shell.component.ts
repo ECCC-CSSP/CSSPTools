@@ -47,11 +47,11 @@ export class ShellComponent implements OnInit {
 
     this.shellService.UpdateShellModel(<ShellModel>{ Language: $localize.locale == "fr-CA" ? LanguageEnum.fr : LanguageEnum.en });
     LoadLocalesShell(this.shellService);
-    this.title.setTitle(this.shellService.shellModel$.value.AppTitle);
+    this.title.setTitle(this.shellService.ShellModel$.value.AppTitle);
   }
 
   IsEnglish() {
-    return (this.shellService.shellModel$.getValue().Language == LanguageEnum.en);
+    return (this.shellService.ShellModel$.getValue().Language == LanguageEnum.en);
   }
 
 }

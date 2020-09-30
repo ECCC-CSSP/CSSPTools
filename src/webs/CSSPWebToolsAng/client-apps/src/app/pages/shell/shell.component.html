@@ -1,4 +1,4 @@
-<span *ngIf="(shellService.shellModel$ | async).Working">
+<span *ngIf="(shellService.ShellModel$ | async).Working">
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </span>
 
@@ -7,7 +7,7 @@
         <button (click)="ToggleMenu()" mat-button>
             <mat-icon>menu</mat-icon>
         </button>
-        <a mat-button routerLink="">{{ shellService.shellModel$.getValue().AppTitle }}
+        <a mat-button routerLink="">{{ shellService.ShellModel$.getValue().AppTitle }}
         </a>
         <span>
             <app-search></app-search>
@@ -26,15 +26,15 @@
 </mat-toolbar>
 
 <mat-sidenav-container class="container">
-    <mat-sidenav class="sidenav-left" #leftSideNav [opened]="shellService.shellModel$?.getValue()?.MenuVisible"
+    <mat-sidenav class="sidenav-left" #leftSideNav [opened]="shellService.ShellModel$?.getValue()?.MenuVisible"
         mode="side">
         <app-sidenav-menu></app-sidenav-menu>
     </mat-sidenav>
-    <mat-sidenav class="sidenav-right" #rightSideNav [opened]="shellService.shellModel$?.getValue()?.MapVisible"
+    <mat-sidenav class="sidenav-right" #rightSideNav [opened]="shellService.ShellModel$?.getValue()?.MapVisible"
         mode="side" position="end">
         <app-map></app-map>
     </mat-sidenav>
-    <span *ngIf="(shellService.shellModel$ | async).Working">
+    <span *ngIf="(shellService.ShellModel$ | async).Working">
         <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     </span>
     <app-bread-crumb [breadCrumbs]="shellService.BreadCrumbModel$?.getValue()?.WebBaseList"></app-bread-crumb>

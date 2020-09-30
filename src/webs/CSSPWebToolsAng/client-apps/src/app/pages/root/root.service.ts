@@ -46,13 +46,13 @@ export class RootService {
 
     let webBaseCountryModel: WebBaseCountryModel = <WebBaseCountryModel>{ WebBaseCountryList: [] };
 
-    if (this.shellService.shellModel$?.getValue()?.ActiveVisible && this.shellService.shellModel$?.getValue()?.InactVisible) {
+    if (this.shellService.ShellModel$?.getValue()?.ActiveVisible && this.shellService.ShellModel$?.getValue()?.InactVisible) {
       webBaseCountryModel = <WebBaseCountryModel>{ WebBaseCountryList: this.WebRootModel$?.getValue()?.WebRoot?.TVItemCountryList };
     }
-    else if (this.shellService.shellModel$?.getValue()?.ActiveVisible) {
+    else if (this.shellService.ShellModel$?.getValue()?.ActiveVisible) {
       webBaseCountryModel = <WebBaseCountryModel>{ WebBaseCountryList: this.WebRootModel$?.getValue()?.WebRoot?.TVItemCountryList.filter((country) => { return country.TVItemModel.TVItem.IsActive == true }) };
     }
-    else if (this.shellService.shellModel$?.getValue()?.InactVisible) {
+    else if (this.shellService.ShellModel$?.getValue()?.InactVisible) {
       webBaseCountryModel = <WebBaseCountryModel>{ WebBaseCountryList: this.WebRootModel$?.getValue()?.WebRoot?.TVItemCountryList.filter((country) => { return country.TVItemModel.TVItem.IsActive == false }) };
     }
 

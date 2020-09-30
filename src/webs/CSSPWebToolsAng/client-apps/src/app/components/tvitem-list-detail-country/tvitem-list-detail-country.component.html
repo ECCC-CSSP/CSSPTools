@@ -1,0 +1,34 @@
+<span *ngIf="shellService.ShellModel$?.getValue()?.TVTypeProvince">
+    <span>Province</span>
+    <app-child-count [TVType]="shellService.ShellModel$?.getValue()?.TVTypeProvince" [TVItemModel]="TVItemModel">
+    </app-child-count>
+</span>
+<span *ngIf="shellService.ShellModel$?.getValue()?.TVTypeMunicipality">
+    <span>Municipality</span>
+    <app-child-count [TVType]="shellService.ShellModel$?.getValue()?.TVTypeMunicipality" [TVItemModel]="TVItemModel">
+    </app-child-count>
+</span>
+<span *ngIf="shellService.ShellModel$?.getValue()?.TVTypeSubsector">
+    <span>Subsector</span>
+    <app-child-count [TVType]="shellService.ShellModel$?.getValue()?.TVTypeSubsector" [TVItemModel]="TVItemModel">
+    </app-child-count></span>
+<span *ngIf="shellService.ShellModel$?.getValue()?.TVTypeMWQMSite">
+    <span>MWQM site</span>
+    <app-child-count [TVType]="shellService.ShellModel$?.getValue()?.TVTypeMWQMSite" [TVItemModel]="TVItemModel">
+    </app-child-count>
+</span>
+<span *ngIf="shellService.ShellModel$?.getValue()?.TVTypeMWQMRun">
+    <span>MWQM Run</span>
+    <app-child-count [TVType]="shellService.ShellModel$?.getValue()?.TVTypeMWQMRun" [TVItemModel]="TVItemModel">
+    </app-child-count>
+</span>
+<span *ngIf="shellService.ShellModel$?.getValue()?.TVTypeMWQMSiteSample">
+    <span>MWQM Sample</span>
+    <app-child-count [TVType]="shellService.ShellModel$?.getValue()?.TVTypeMWQMSiteSample" [TVItemModel]="TVItemModel">
+    </app-child-count>
+</span>
+<span *ngIf="shellService.ShellModel$?.getValue()?.TVTypeMikeScenario">
+    <span>Mike Scenario</span>
+    <app-child-count [TVType]="shellService.ShellModel$?.getValue()?.TVTypeMikeScenario" [TVItemModel]="TVItemModel">
+    </app-child-count>
+</span>

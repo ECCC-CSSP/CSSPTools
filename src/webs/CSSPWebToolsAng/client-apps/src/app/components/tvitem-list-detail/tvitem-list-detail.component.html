@@ -1,0 +1,11 @@
+<blockquote>
+    <app-tvitem-list-detail-root [TVItemModel]="TVItemModel"
+        *ngIf="TVItemModel.TVItem.TVType == shellService.ShellModel$.getValue().TVTypeRoot">
+    </app-tvitem-list-detail-root>
+    <app-tvitem-list-detail-country [TVItemModel]="TVItemModel"
+        *ngIf="TVItemModel.TVItem.TVType == shellService.ShellModel$.getValue().TVTypeCountry">
+    </app-tvitem-list-detail-country>
+    <app-tvitem-list-detail-province [TVItemModel]="TVItemModel"
+        *ngIf="TVItemModel.TVItem.TVType == shellService.ShellModel$.getValue().TVTypeProvince">
+    </app-tvitem-list-detail-province>
+</blockquote>

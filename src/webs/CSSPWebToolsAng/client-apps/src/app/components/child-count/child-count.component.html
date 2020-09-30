@@ -1,5 +1,5 @@
-<span *ngIf="(childCountService.ChildCountTextModel$ | async).Working">
+<span *ngIf="(childCountService.ChildCountModel$ | async).Working">
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </span>
 
-<span>{{ TVItemModel?.TVItem?.TVItemID }}</span>
+<span>&nbsp;&nbsp;({{ childCountService.ChildCountModel$?.getValue()?.Count }})</span>

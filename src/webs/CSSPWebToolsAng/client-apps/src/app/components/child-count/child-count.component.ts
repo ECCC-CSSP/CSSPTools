@@ -1,9 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Input } from '@angular/core';
-import { Router } from '@angular/router';
 import { TVItemModel } from '../../models/generated/TVItemModel.model';
-import { ShellService } from 'src/app/pages/shell';
 import { ChildCountService } from './child-count.service';
-import { Observable } from 'rxjs';
+import { TVTypeEnum } from '../../enums/generated/TVTypeEnum';
 
 @Component({
   selector: 'app-child-count',
@@ -13,12 +11,13 @@ import { Observable } from 'rxjs';
 })
 export class ChildCountComponent implements OnInit, OnDestroy {
   @Input() TVItemModel: TVItemModel;
+  @Input() TVType?: TVTypeEnum;
 
-  constructor(public childCountService: ChildCountService, public shellService: ShellService, public router: Router) {
+  constructor(public childCountService: ChildCountService) {
   }
 
   ngOnInit() {
-    this.TVItemModel.TVItemStatList.filter((c) => { this.total += c.ChildCount });
+    this.childCountService.FillCount(this.TVItemModel, this.TVType);
   }
 
   ngOnDestroy()

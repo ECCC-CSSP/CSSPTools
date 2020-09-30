@@ -8,8 +8,8 @@ import { ViewChild, Component, OnInit, ChangeDetectionStrategy, OnDestroy, Input
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MapComponent implements OnInit, OnDestroy {
-  @ViewChild(GoogleMap, { static: false }) map: GoogleMap
-  @ViewChild(MapInfoWindow, { static: false }) info: MapInfoWindow
+  @ViewChild(GoogleMap, { static: false }) map: GoogleMap;
+  @ViewChild(MapInfoWindow, { static: false }) info: MapInfoWindow;
 
   zoom = 15;
   center: google.maps.LatLngLiteral;

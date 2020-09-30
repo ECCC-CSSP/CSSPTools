@@ -8,6 +8,13 @@ import { TVItemListComponent } from './components/tvitem-list/tvitem-list.compon
 import { TVItemListItemComponent } from './components/tvitem-list-item/tvitem-list-item.component';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { ChildCountComponent } from './components/child-count/child-count.component';
+import { TVItemListDetailComponent } from './components/tvitem-list-detail/tvitem-list-detail.component';
+import { TVItemListDetailRootComponent } from './components/tvitem-list-detail-root/tvitem-list-detail-root.component';
+import { TVItemListDetailCountryComponent } from './components/tvitem-list-detail-country/tvitem-list-detail-country.component';
+import { TVItemListDetailProvinceComponent } from './components/tvitem-list-detail-province/tvitem-list-detail-province.component';
+import { FileListComponent } from './components/file-list/file-list.component';
+import { FileListItemComponent } from './components/file-list-item/file-list-item.component';
+import { FileListItemDetailComponent } from './components/file-list-item-detail/file-list-item-detail.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +22,14 @@ import { ChildCountComponent } from './components/child-count/child-count.compon
     SearchOptionComponent,
     TVItemListComponent,
     TVItemListItemComponent,
-    ChildCountComponent
+    ChildCountComponent,
+    TVItemListDetailComponent,
+    TVItemListDetailRootComponent,
+    TVItemListDetailCountryComponent,
+    TVItemListDetailProvinceComponent,
+    FileListComponent,
+    FileListItemComponent,
+    FileListItemDetailComponent,
   ],
   imports: [
     CommonModule,
@@ -35,7 +49,14 @@ import { ChildCountComponent } from './components/child-count/child-count.compon
     SearchOptionComponent,
     TVItemListComponent,
     TVItemListItemComponent,
-    ChildCountComponent
+    ChildCountComponent,
+    TVItemListDetailComponent,
+    TVItemListDetailRootComponent,
+    TVItemListDetailCountryComponent,
+    TVItemListDetailProvinceComponent,
+    FileListComponent,
+    FileListItemComponent,
+    FileListItemDetailComponent,
   ]
 })
 export class SharedModule { }

@@ -1,3 +1,4 @@
+import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 import { HttpRequestModel } from 'src/app/models';
 
 export interface ChildCountTextModel extends HttpRequestModel {
@@ -5,5 +6,5 @@ export interface ChildCountTextModel extends HttpRequestModel {
 }
 
 export interface ChildCountModel extends HttpRequestModel {
-    ChildCount: number;
+    Count: number;
 }

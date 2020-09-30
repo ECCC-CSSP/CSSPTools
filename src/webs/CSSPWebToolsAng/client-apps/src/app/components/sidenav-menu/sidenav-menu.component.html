@@ -1,21 +1,21 @@
 <h1>Visibility</h1>
 <mat-list>
     <mat-list-item>
-        <mat-checkbox (click)="ToggleProperty('active')" [checked]="shellService.shellModel$.getValue().ActiveVisible">Active</mat-checkbox>
+        <mat-checkbox (click)="ToggleProperty('map')" [checked]="shellService.ShellModel$.getValue().MapVisible">Map</mat-checkbox>
     </mat-list-item>
     <mat-list-item>
-        <mat-checkbox (click)="ToggleProperty('inact')" [checked]="shellService.shellModel$.getValue().InactVisible">Inactive</mat-checkbox>
+        <mat-checkbox (click)="ToggleProperty('active')" [checked]="shellService.ShellModel$.getValue().ActiveVisible">Active</mat-checkbox>
     </mat-list-item>
     <mat-list-item>
-        <mat-checkbox (click)="ToggleProperty('detail')" [checked]="shellService.shellModel$.getValue().DetailVisible">Detail</mat-checkbox>
+        <mat-checkbox (click)="ToggleProperty('inact')" [checked]="shellService.ShellModel$.getValue().InactVisible">Inactive</mat-checkbox>
     </mat-list-item>
     <mat-list-item>
-        <mat-checkbox (click)="ToggleProperty('edit')" [checked]="shellService.shellModel$.getValue().EditVisible">Edit</mat-checkbox>
+        <mat-checkbox (click)="ToggleProperty('detail')" [checked]="shellService.ShellModel$.getValue().DetailVisible">Detail</mat-checkbox>
     </mat-list-item>
     <mat-list-item>
-        <mat-checkbox (click)="ToggleProperty('file')" [checked]="shellService.shellModel$.getValue().FileVisible">File</mat-checkbox>
+        <mat-checkbox (click)="ToggleProperty('edit')" [checked]="shellService.ShellModel$.getValue().EditVisible">Edit</mat-checkbox>
     </mat-list-item>
     <mat-list-item>
-        <mat-checkbox (click)="ToggleProperty('map')" [checked]="shellService.shellModel$.getValue().MapVisible">Map</mat-checkbox>
+        <mat-checkbox (click)="ToggleProperty('file')" [checked]="shellService.ShellModel$.getValue().FileVisible">File</mat-checkbox>
     </mat-list-item>
 </mat-list>
