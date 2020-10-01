@@ -6,6 +6,7 @@ import { ShellModel, ShellService } from '../shell';
 import { LanguageEnum } from '../../enums/generated/LanguageEnum';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
+import { MapService } from 'src/app/components/map';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +17,7 @@ import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 export class RootComponent implements OnInit, OnDestroy {
   sub: Subscription;
 
-  constructor(public rootService: RootService, public shellService: ShellService, private activatedRoute: ActivatedRoute) { }
+  constructor(public rootService: RootService, public shellService: ShellService, private activatedRoute: ActivatedRoute, private mapService: MapService) { }
 
   ngOnInit(): void {
     LoadLocalesRootText(this.rootService);

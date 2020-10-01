@@ -10,5 +10,5 @@ export function LoadLocalesMapText(mapService: MapService) {
       mapTextModel.Title = 'Yes Le Titre';
     }
 
-  mapService.UpdateMapText(mapTextModel);
+  mapService.UpdateMapTextModel(mapTextModel);
 }

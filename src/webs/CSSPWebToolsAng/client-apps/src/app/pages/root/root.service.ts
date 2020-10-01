@@ -8,6 +8,9 @@ import { WebRoot } from '../../models/generated/WebRoot.model';
 import { RootTextModel, WebBaseCountryModel, WebRootModel } from './root.models';
 import { BreadCrumbModel } from '../../models/BreadCrumb.model';
 import { ShellService } from '../shell';
+import { MapModel, MapService } from 'src/app/components/map';
+import { MapInfoDrawTypeEnum } from 'src/app/enums/generated/MapInfoDrawTypeEnum';
+import { WebBase } from 'src/app/models/generated/WebBase.model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +20,7 @@ export class RootService {
   WebRootModel$: BehaviorSubject<WebRootModel> = new BehaviorSubject<WebRootModel>(<WebRootModel>{});
   WebCountryModel$: BehaviorSubject<WebBaseCountryModel> = new BehaviorSubject<WebBaseCountryModel>(<WebBaseCountryModel>{});
 
-  constructor(public shellService: ShellService, private httpClient: HttpClient) {
+  constructor(public shellService: ShellService, private mapService: MapService, private httpClient: HttpClient) {
     LoadLocalesRootText(this);
     this.UpdateRootTextModel(<RootTextModel>{ Title: "Something for text" });
   }
@@ -61,6 +64,11 @@ export class RootService {
 
   UpdateWebCountryModel(webBaseCountryModel: WebBaseCountryModel) {
     this.WebCountryModel$.next(<WebBaseCountryModel>{ ...this.WebCountryModel$.getValue(), ...webBaseCountryModel });
+    if (webBaseCountryModel.WebBaseCountryList != undefined) {
+      if (webBaseCountryModel.WebBaseCountryList != undefined && webBaseCountryModel.WebBaseCountryList.length > 0) {
+        this.mapService.FillMapMarkers(webBaseCountryModel.WebBaseCountryList);
+        this.mapService.FillMapPolygons(webBaseCountryModel.WebBaseCountryList);
+      }
+    }
   }
-
 }

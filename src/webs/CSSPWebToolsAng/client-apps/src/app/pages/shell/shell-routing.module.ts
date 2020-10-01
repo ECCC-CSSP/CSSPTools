@@ -9,7 +9,7 @@ const routes: Routes = [
     { path: 'country/:TVItemID/:Properties', loadChildren: () => import('../../pages/country/country.module').then(mod => mod.CountryModule) },
     { path: 'province/:TVItemID/:Properties', loadChildren: () => import('../../pages/province/province.module').then(mod => mod.ProvinceModule) },
     { path: 'webapinotfound', loadChildren: () => import('../../pages/web-api-not-found/web-api-not-found.module').then(mod => mod.WebApiNotFoundModule) },
-    { path: '', redirectTo: 'root/1/active', pathMatch: 'full' } 
+    { path: '', redirectTo: 'root/1/active,map,satellite,labels,size50', pathMatch: 'full' } 
   ]},
 ];
 

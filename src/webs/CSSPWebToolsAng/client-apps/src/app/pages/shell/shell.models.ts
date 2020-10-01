@@ -16,6 +16,17 @@ export interface ShellModel extends HttpRequestModel {
     InactVisible?: boolean;
     MapVisible?: boolean;
     MenuVisible?: boolean;
+    Size30?: boolean;
+    Size40?: boolean;
+    Size50?: boolean;
+    Size60?: boolean;
+    Size70?: boolean;
+    MapSizeClass?: string;
+    HybridVisible?: boolean;
+    SatelliteVisible?: boolean;
+    RoadmapVisible?: boolean;
+    TerrainVisible?: boolean;
+    mapTypeId?: google.maps.MapTypeId;
 
     TVTypeRoot?: TVTypeEnum;
     TVTypeCountry?: TVTypeEnum;

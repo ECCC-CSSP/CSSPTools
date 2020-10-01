@@ -30,7 +30,7 @@
         mode="side">
         <app-sidenav-menu></app-sidenav-menu>
     </mat-sidenav>
-    <mat-sidenav class="sidenav-right" #rightSideNav [opened]="shellService.ShellModel$?.getValue()?.MapVisible"
+    <mat-sidenav [ngClass]="shellService.ShellModel$?.getValue()?.MapSizeClass" #rightSideNav [opened]="shellService.ShellModel$?.getValue()?.MapVisible"
         mode="side" position="end">
         <app-map></app-map>
     </mat-sidenav>

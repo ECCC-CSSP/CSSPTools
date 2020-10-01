@@ -23,19 +23,31 @@
 }
 
 .sidenav-left {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 150px;
-  background: orange;
+  width: 200px;
 }
 
 .sidenav-right {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   width: 50%;
-  background: green;
+}
+
+.mapSize30 {
+  width: 30%
+}
+
+.mapSize40 {
+  width: 40%
+}
+
+.mapSize50 {
+  width: 50%
+}
+
+.mapSize60 {
+  width: 60%
+}
+
+.mapSize70 {
+  width: 70%
 }
 
 .header {

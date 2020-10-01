@@ -8,6 +8,7 @@ import { WebProvince } from '../../models/generated/WebProvince.model';
 import { ProvinceTextModel, WebBaseAreaModel, WebProvinceModel } from './province.models';
 import { BreadCrumbModel } from 'src/app/models/BreadCrumb.model';
 import { ShellService } from '../shell';
+import { MapService } from 'src/app/components/map';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class ProvinceService {
   WebProvinceModel$: BehaviorSubject<WebProvinceModel> = new BehaviorSubject<WebProvinceModel>(<WebProvinceModel>{});
   WebAreaModel$: BehaviorSubject<WebBaseAreaModel> = new BehaviorSubject<WebBaseAreaModel>(<WebBaseAreaModel>{});
 
-  constructor(public shellService: ShellService, private httpClient: HttpClient) {
+  constructor(public shellService: ShellService, private mapService: MapService, private httpClient: HttpClient) {
     LoadLocalesProvinceText(this);
     this.UpdateProvinceText(<ProvinceTextModel>{ Title: "Something for text" });
   }
@@ -62,6 +63,10 @@ export class ProvinceService {
 
   UpdateWebAreaModel(webBaseAreaModel: WebBaseAreaModel) {
     this.WebAreaModel$.next(<WebBaseAreaModel>{ ...this.WebAreaModel$.getValue(), ...webBaseAreaModel });
+
+    if (webBaseAreaModel.WebBaseAreaList != undefined  && webBaseAreaModel.WebBaseAreaList.length > 0) {
+      this.mapService.FillMapMarkers(webBaseAreaModel.WebBaseAreaList);
   }
+}
 
 }

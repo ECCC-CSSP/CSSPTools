@@ -1,34 +1,36 @@
-<google-map
-  height="95%"
-  width="100%"
-  [zoom]="zoom"
-  [center]="center"
-  [options]="options"
-  (mapClick)="click($event)"
->
-  <map-marker
-    #somemarker="mapMarker"
-    *ngFor="let marker of markers"
-    [position]="marker.position"
-    [label]="marker.label"
-    [title]="marker.title"
-    [options]="marker.options"
-    (mapClick)="openInfo(somemarker, marker.info)"
-  >
+<span *ngIf="(mapService.MapModel$ | async).Working">
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</span>
+
+<span *ngIf="(shellService.ShellModel$ | async).Working">
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</span>
+
+<google-map height="100%" width="100%" 
+[zoom]="mapService.MapModel$?.getValue()?.zoom" 
+[center]="mapService.MapModel$?.getValue()?.center" 
+[options]="mapService.MapModel$?.getValue()?.options" (mapClick)="click($event)">
+
+  <map-marker #somemarker="mapMarker" *ngFor="let marker of mapService.MapModel$?.getValue()?.markerList" 
+  [position]="marker.position" 
+  [label]="marker.label"
+  [title]="marker.title" 
+  [options]="marker.options" 
+  (mapClick)="openInfo(somemarker, marker.info)">
   </map-marker>
 
-  <map-polygon>
-
+  <map-polygon #somepolygon="mapPolygon" *ngFor="let polygon of mapService.MapModel$?.getValue()?.polygonList" 
+  [paths]="polygon.paths" 
+  [options]="polygon.options"
+>
   </map-polygon>
 
-  <map-polyline>
+  <!-- <map-polyline #somepolyline="mapPolyline" *ngFor="let polyline of mapService.MapModel$?.getValue()?.polylineList" 
+  [title]="polyline.title"
+  [options]="polyline.options" 
+  (mapClick)="openInfo(somepolyline, polyline.info)">
 
-  </map-polyline>
- 
-  <map-info-window>{{ infoContent }}</map-info-window>
+  </map-polyline> -->
+
+  <map-info-window>{{ mapService.MapModel$?.getValue()?.infoContent }}</map-info-window>
 </google-map>
-
-<button (click)="zoomIn()">Zoom in</button>
-<button (click)="zoomOut()">Zoom out</button>
-<button (click)="logCenter()">Log center</button>
-<button (click)="addMarker()">Add marker</button>

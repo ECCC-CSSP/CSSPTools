@@ -1,11 +1,10 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { LoadLocalesShell } from './shell.locales';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { ShellService } from './shell.service';
 import { ShellModel } from './shell.models';
 import { LanguageEnum } from '../grouping';
-import { AppService } from 'src/app/services';
 
 @Component({
   selector: 'app-shell',
