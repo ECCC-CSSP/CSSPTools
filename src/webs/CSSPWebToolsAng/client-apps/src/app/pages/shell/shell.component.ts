@@ -29,11 +29,11 @@ export class ShellComponent implements OnInit {
   }
 
   ToggleMap(): void {
-    this.shellService.ChangeUrl(this.router, 'map');
+    this.shellService.SetProperties('map');
   }
 
   ToggleMenu(): void {
-    this.shellService.ChangeUrl(this.router, 'menu');
+    this.shellService.SetProperties('menu');
   }
 
   ngOnInit(): void {

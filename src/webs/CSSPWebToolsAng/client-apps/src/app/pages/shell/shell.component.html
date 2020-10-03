@@ -28,16 +28,16 @@
 <mat-sidenav-container class="container">
     <mat-sidenav class="sidenav-left" #leftSideNav [opened]="shellService.ShellModel$?.getValue()?.MenuVisible"
         mode="side">
-        <app-sidenav-menu></app-sidenav-menu>
+        <app-sidenav-menu [ShellModel]="shellService.ShellModel$?.getValue()"></app-sidenav-menu>
     </mat-sidenav>
     <mat-sidenav [ngClass]="shellService.ShellModel$?.getValue()?.MapSizeClass" #rightSideNav [opened]="shellService.ShellModel$?.getValue()?.MapVisible"
         mode="side" position="end">
-        <app-map></app-map>
+        <app-map [ShellModel]="shellService.ShellModel$?.getValue()"></app-map>
     </mat-sidenav>
     <span *ngIf="(shellService.ShellModel$ | async).Working">
         <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     </span>
-    <app-bread-crumb [breadCrumbs]="shellService.BreadCrumbModel$?.getValue()?.WebBaseList"></app-bread-crumb>
+    <app-bread-crumb [ShellModel]="shellService.ShellModel$?.getValue()" [breadCrumbs]="shellService.BreadCrumbModel$?.getValue()?.WebBaseList"></app-bread-crumb>
 
 
     <div class="margin10">

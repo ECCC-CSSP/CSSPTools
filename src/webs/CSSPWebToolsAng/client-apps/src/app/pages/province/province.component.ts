@@ -20,11 +20,6 @@ export class ProvinceComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     LoadLocalesProvinceText(this.provinceService);
     let TVItemID: number = this.activatedRoute.snapshot.params['TVItemID'];
-    let Properties: string = this.activatedRoute.snapshot.params['Properties'];
-    if (Properties == undefined) {
-      Properties = '';
-    }
-    this.shellService.SetProperties(Properties);
     this.sub = this.provinceService.GetWebProvince(TVItemID).subscribe();
   }
 

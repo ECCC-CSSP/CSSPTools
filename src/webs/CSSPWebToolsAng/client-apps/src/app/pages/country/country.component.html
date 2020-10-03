@@ -5,8 +5,13 @@
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </span>
 
-<app-tvitem-list [TVItemList]="countryService.WebProvinceModel$?.getValue()?.WebBaseProvinceList">
+<app-tvitem-list [ShellModel]="shellService.ShellModel$?.getValue()"  [TVItemList]="countryService.WebProvinceModel$?.getValue()?.WebBaseProvinceList">
 </app-tvitem-list>
 
+<div *ngIf="shellService.ShellModel$?.getValue()?.FileVisible">
+    <app-file-list [ShellModel]="shellService.ShellModel$?.getValue()" *ngIf="countryService.WebCountryModel$?.getValue()?.WebCountry?.TVItemModel" 
+    [TVFileModelList]="countryService.WebCountryModel$?.getValue()?.WebCountry?.TVItemModel?.TVFileModelList">        
+    </app-file-list>
+</div>
 
 <router-outlet></router-outlet>

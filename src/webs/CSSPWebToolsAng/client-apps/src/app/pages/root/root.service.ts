@@ -66,8 +66,8 @@ export class RootService {
     this.WebCountryModel$.next(<WebBaseCountryModel>{ ...this.WebCountryModel$.getValue(), ...webBaseCountryModel });
     if (webBaseCountryModel.WebBaseCountryList != undefined) {
       if (webBaseCountryModel.WebBaseCountryList != undefined && webBaseCountryModel.WebBaseCountryList.length > 0) {
-        this.mapService.FillMapMarkers(webBaseCountryModel.WebBaseCountryList);
-        this.mapService.FillMapPolygons(webBaseCountryModel.WebBaseCountryList);
+        // this.mapService.FillMapMarkers(webBaseCountryModel.WebBaseCountryList);
+        // this.mapService.FillMapPolygons(webBaseCountryModel.WebBaseCountryList);
       }
     }
   }

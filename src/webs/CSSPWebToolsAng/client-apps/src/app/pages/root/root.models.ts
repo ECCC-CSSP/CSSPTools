@@ -10,7 +10,7 @@ export interface WebRootModel extends HttpRequestModel  {
     WebRoot?: WebRoot;
 }
 
-export interface WebBaseCountryModel  {
+export interface WebBaseCountryModel extends HttpRequestModel  {
     WebBaseCountryList?: WebBase[];
 }
 

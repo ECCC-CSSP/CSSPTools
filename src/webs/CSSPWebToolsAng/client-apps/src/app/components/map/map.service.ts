@@ -43,7 +43,7 @@ export class MapService {
     property == "satellite" ? this.shellService.UpdateShellModel(<ShellModel>{ HybridVisible: true, SatelliteVisible: true, RoadmapVisible: false, TerrainVisible: false, mapTypeId: google.maps.MapTypeId.SATELLITE }) : null;
     property == "roadmap" ? this.shellService.UpdateShellModel(<ShellModel>{ HybridVisible: true, SatelliteVisible: false, RoadmapVisible: true, TerrainVisible: false, mapTypeId: google.maps.MapTypeId.ROADMAP }) : null;
     property == "terrain" ? this.shellService.UpdateShellModel(<ShellModel>{ HybridVisible: true, SatelliteVisible: false, RoadmapVisible: false, TerrainVisible: true, mapTypeId: google.maps.MapTypeId.TERRAIN }) : null;
-    this.shellService.ChangeUrl(router, property);
+    //this.shellService.ChangeUrl(router, property);
   }
 
   UpdateMapTextModel(mapTextModel: MapTextModel) {

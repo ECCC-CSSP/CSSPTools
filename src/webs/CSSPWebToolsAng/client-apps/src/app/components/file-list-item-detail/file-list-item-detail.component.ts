@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Input } from '@angular/core';
 import { TVFileModel } from '../../models/generated/TVFileModel.model';
-import { ShellService } from '../../pages/shell';
+import { ShellModel, ShellService } from '../../pages/shell';
 
 @Component({
   selector: 'app-file-list-item-detail',
@@ -10,6 +10,7 @@ import { ShellService } from '../../pages/shell';
 })
 export class FileListItemDetailComponent implements OnInit, OnDestroy {
   @Input() TVFileModel: TVFileModel = null;
+  @Input() ShellModel: ShellModel;
   
   constructor(public shellService: ShellService) {
   }

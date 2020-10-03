@@ -25,6 +25,7 @@ export class ShellService {
       BaseApiUrl: url
     });
     this.UpdateBreadCrumbModel(<BreadCrumbModel>{});
+    this.UpdateShellModel(<ShellModel> { ActiveVisible: true, MapVisible: true, HybridVisible: true, MapSizeClass: "mapSize50", Size50: true });
     this.SetTVTypeEnum();
   }
 
@@ -44,66 +45,24 @@ export class ShellService {
       TVTypeMWQMSiteSample: TVTypeEnum.MWQMSiteSample,
     });
   }
-  SetProperties(properties: string) {
-    properties.indexOf("active") > -1 ? this.UpdateShellModel(<ShellModel>{ ActiveVisible: true }) : this.UpdateShellModel(<ShellModel>{ ActiveVisible: false });
-    properties.indexOf("detail") > -1 ? this.UpdateShellModel(<ShellModel>{ DetailVisible: true }) : this.UpdateShellModel(<ShellModel>{ DetailVisible: false });
-    properties.indexOf("edit") > -1 ? this.UpdateShellModel(<ShellModel>{ EditVisible: true }) : this.UpdateShellModel(<ShellModel>{ EditVisible: false });
-    properties.indexOf("file") > -1 ? this.UpdateShellModel(<ShellModel>{ FileVisible: true }) : this.UpdateShellModel(<ShellModel>{ FileVisible: false });
-    properties.indexOf("inact") > -1 ? this.UpdateShellModel(<ShellModel>{ InactVisible: true }) : this.UpdateShellModel(<ShellModel>{ InactVisible: false });
-    properties.indexOf("map") > -1 ? this.UpdateShellModel(<ShellModel>{ MapVisible: true }) : this.UpdateShellModel(<ShellModel>{ MapVisible: false });
-    properties.indexOf("menu") > -1 ? this.UpdateShellModel(<ShellModel>{ MenuVisible: true }) : this.UpdateShellModel(<ShellModel>{ MenuVisible: false });
-    properties.indexOf("satellite") > -1 ? this.UpdateShellModel(<ShellModel>{ SatelliteVisible: true }) : this.UpdateShellModel(<ShellModel>{ SatelliteVisible: false });
-    properties.indexOf("size30") > -1 ? this.UpdateShellModel(<ShellModel>{ Size30: true, Size40: false, Size50: false, Size60: false, Size70: false, MapSizeClass: 'mapSize30' }) : this.UpdateShellModel(<ShellModel>{ Size30: false });
-    properties.indexOf("size40") > -1 ? this.UpdateShellModel(<ShellModel>{ Size30: false, Size40: true, Size50: false, Size60: false, Size70: false, MapSizeClass: 'mapSize40' }) : this.UpdateShellModel(<ShellModel>{ Size40: false });
-    properties.indexOf("size60") > -1 ? this.UpdateShellModel(<ShellModel>{ Size30: false, Size40: false, Size50: false, Size60: true, Size70: false, MapSizeClass: 'mapSize60' }) : this.UpdateShellModel(<ShellModel>{ Size60: false });
-    properties.indexOf("size70") > -1 ? this.UpdateShellModel(<ShellModel>{ Size30: false, Size40: false, Size50: false, Size60: false, Size70: true, MapSizeClass: 'mapSize70' }) : this.UpdateShellModel(<ShellModel>{ Size70: false });
-    properties.indexOf("size50") > -1 ? this.UpdateShellModel(<ShellModel>{ Size30: false, Size40: false, Size50: true, Size60: false, Size70: false, MapSizeClass: 'mapSize50' }) : this.UpdateShellModel(<ShellModel>{ Size50: false });
-    properties.indexOf("satellite") > -1 ? this.UpdateShellModel(<ShellModel>{ HybridVisible: false, SatelliteVisible: true, RoadmapVisible: false, TerrainVisible: false, mapTypeId: google.maps.MapTypeId.SATELLITE }) : this.UpdateShellModel(<ShellModel>{ SatelliteVisible: false });
-    properties.indexOf("terrain") > -1 ? this.UpdateShellModel(<ShellModel>{ HybridVisible: false, SatelliteVisible: false, RoadmapVisible: false, TerrainVisible: true, mapTypeId: google.maps.MapTypeId.TERRAIN }) : this.UpdateShellModel(<ShellModel>{ TerrainVisible: false });
-    properties.indexOf("roadmap") > -1 ? this.UpdateShellModel(<ShellModel>{ HybridVisible: false, SatelliteVisible: false, RoadmapVisible: true, TerrainVisible: false, mapTypeId: google.maps.MapTypeId.ROADMAP }) : this.UpdateShellModel(<ShellModel>{ RoadmapVisible: false });
-    properties.indexOf("hybrid") > -1 ? this.UpdateShellModel(<ShellModel>{ HybridVisible: true, SatelliteVisible: false, RoadmapVisible: false, TerrainVisible: false, mapTypeId: google.maps.MapTypeId.HYBRID }) : this.UpdateShellModel(<ShellModel>{ HybridVisible: false });
-  }
 
-  ChangeUrl(router: Router, property: string): void {
-    let urlNew: string = router.url.replace(',,', ',');
-    property == 'active' ? (urlNew.indexOf(property) > -1 ? this.UpdateShellModel(<ShellModel>{ ActiveVisible: false }) : this.UpdateShellModel(<ShellModel>{ ActiveVisible: true })) : null
-    property == 'detail' ? (urlNew.indexOf(property) > -1 ? this.UpdateShellModel(<ShellModel>{ DetailVisible: false }) : this.UpdateShellModel(<ShellModel>{ DetailVisible: true })) : null
-    property == 'edit' ? (urlNew.indexOf(property) > -1 ? this.UpdateShellModel(<ShellModel>{ EditVisible: false }) : this.UpdateShellModel(<ShellModel>{ EditVisible: true })) : null
-    property == 'file' ? (urlNew.indexOf(property) > -1 ? this.UpdateShellModel(<ShellModel>{ FileVisible: false }) : this.UpdateShellModel(<ShellModel>{ FileVisible: true })) : null
-    property == 'inact' ? (urlNew.indexOf(property) > -1 ? this.UpdateShellModel(<ShellModel>{ InactVisible: false }) : this.UpdateShellModel(<ShellModel>{ InactVisible: true })) : null
-    property == 'map' ? (urlNew.indexOf(property) > -1 ? this.UpdateShellModel(<ShellModel>{ MapVisible: false }) : this.UpdateShellModel(<ShellModel>{ MapVisible: true })) : null
-    property == 'menu' ? (urlNew.indexOf(property) > -1 ? this.UpdateShellModel(<ShellModel>{ MenuVisible: false }) : this.UpdateShellModel(<ShellModel>{ MenuVisible: true })) : null
-    if (property == 'size30' || property == 'size40' || property == 'size50' || property == 'size60' || property == 'size70') {
-      urlNew = urlNew.replace('size30', '').replace('size40', '').replace('size50', '').replace('size60', '').replace('size70', '');
-      urlNew = urlNew + (property == 'size30' ? ',size30' : '');
-      urlNew = urlNew + (property == 'size40' ? ',size40' : '');
-      urlNew = urlNew + (property == 'size50' ? ',size50' : '');
-      urlNew = urlNew + (property == 'size60' ? ',size60' : '');
-      urlNew = urlNew + (property == 'size70' ? ',size70' : '');
-
-      property == 'size30' ? (urlNew.indexOf(property) > -1 ? this.UpdateShellModel(<ShellModel>{ Size30: false }) : this.UpdateShellModel(<ShellModel>{ Size30: true, Size40: false, Size50: false, Size60: false, Size70: false, MapSizeClass: 'mapSize30' })) : null
-      property == 'size40' ? (urlNew.indexOf(property) > -1 ? this.UpdateShellModel(<ShellModel>{ Size40: false }) : this.UpdateShellModel(<ShellModel>{ Size30: false, Size40: true, Size50: false, Size60: false, Size70: false, MapSizeClass: 'mapSize40' })) : null
-      property == 'size60' ? (urlNew.indexOf(property) > -1 ? this.UpdateShellModel(<ShellModel>{ Size60: false }) : this.UpdateShellModel(<ShellModel>{ Size30: false, Size40: false, Size50: false, Size60: true, Size70: false, MapSizeClass: 'mapSize60' })) : null
-      property == 'size70' ? (urlNew.indexOf(property) > -1 ? this.UpdateShellModel(<ShellModel>{ Size70: false }) : this.UpdateShellModel(<ShellModel>{ Size30: false, Size40: false, Size50: false, Size60: false, Size70: true, MapSizeClass: 'mapSize70' })) : null
-      property == 'size50' ? (urlNew.indexOf(property) > -1 ? this.UpdateShellModel(<ShellModel>{ Size50: false }) : this.UpdateShellModel(<ShellModel>{ Size30: false, Size40: false, Size50: true, Size60: false, Size70: false, MapSizeClass: 'mapSize50' })) : null
-    }
-    else if (property == 'hybrid' || property == 'satellite' || property == 'roadmap' || property == 'terrain') {
-      urlNew = urlNew.replace('hybrid', '').replace('satellite', '').replace('roadmap', '').replace('terrain', '');
-      urlNew = urlNew + (property == 'hybrid' ? ',hybrid' : '');
-      urlNew = urlNew + (property == 'satellite' ? ',satellite' : '');
-      urlNew = urlNew + (property == 'roadmap' ? ',roadmap' : '');
-      urlNew = urlNew + (property == 'terrain' ? ',terrain' : '');
-
-      property == 'satellite' ? (urlNew.indexOf(property) > -1 ? this.UpdateShellModel(<ShellModel>{ SatelliteVisible: false }) : this.UpdateShellModel(<ShellModel>{ HybridVisible: false, SatelliteVisible: true, RoadmapVisible: false, TerrainVisible: false, mapTypeId: google.maps.MapTypeId.SATELLITE })) : null
-      property == 'terrain' ? (urlNew.indexOf(property) > -1 ? this.UpdateShellModel(<ShellModel>{ TerrainVisible: false }) : this.UpdateShellModel(<ShellModel>{ HybridVisible: false, SatelliteVisible: false, RoadmapVisible: false, TerrainVisible: true, mapTypeId: google.maps.MapTypeId.TERRAIN })) : null
-      property == 'roadmap' ? (urlNew.indexOf(property) > -1 ? this.UpdateShellModel(<ShellModel>{ RoadMapVisible: false }) : this.UpdateShellModel(<ShellModel>{ HybridVisible: false, SatelliteVisible: false, RoadmapVisible: true, TerrainVisible: false, mapTypeId: google.maps.MapTypeId.ROADMAP })) : null
-      property == 'hybrid' ? (urlNew.indexOf(property) > -1 ? this.UpdateShellModel(<ShellModel>{ HybridVisible: false }) : this.UpdateShellModel(<ShellModel>{ HybridVisible: true, SatelliteVisible: false, RoadmapVisible: false, TerrainVisible: false, mapTypeId: google.maps.MapTypeId.HYBRID })) : null
-      }
-    else {
-      urlNew = urlNew.indexOf(property) > -1 ? urlNew.replace(property, '') : urlNew + ',' + property;
-    }
-    router.routeReuseStrategy.shouldReuseRoute = () => false;
-    router.navigateByUrl(urlNew);
+  SetProperties(property: string) {
+    property == 'active' ? this.UpdateShellModel(<ShellModel>{ ActiveVisible: !this.ShellModel$.getValue().ActiveVisible }) : null;
+    property == 'detail' ? this.UpdateShellModel(<ShellModel>{ DetailVisible: !this.ShellModel$.getValue().DetailVisible }) : null;
+    property == 'edit' ? this.UpdateShellModel(<ShellModel>{ EditVisible: !this.ShellModel$.getValue().EditVisible }) : null;
+    property == 'file' ? this.UpdateShellModel(<ShellModel>{ FileVisible: !this.ShellModel$.getValue().FileVisible }) : null;
+    property == 'inact' ? this.UpdateShellModel(<ShellModel>{ InactVisible: !this.ShellModel$.getValue().InactVisible }) : null;
+    property == 'map' ? this.UpdateShellModel(<ShellModel>{ MapVisible: !this.ShellModel$.getValue().MapVisible }) : null;
+    property == 'menu' ? this.UpdateShellModel(<ShellModel>{ MenuVisible: !this.ShellModel$.getValue().MenuVisible }) : null;
+    property == 'size30' ? this.UpdateShellModel(<ShellModel>{ Size30: true, Size40: false, Size50: false, Size60: false, Size70: false, MapSizeClass: 'mapSize30' }) : null;
+    property == 'size40' ? this.UpdateShellModel(<ShellModel>{ Size30: false, Size40: true, Size50: false, Size60: false, Size70: false, MapSizeClass: 'mapSize40' }) : null;
+    property == 'size60' ? this.UpdateShellModel(<ShellModel>{ Size30: false, Size40: false, Size50: false, Size60: true, Size70: false, MapSizeClass: 'mapSize60' }) : null;
+    property == 'size70' ? this.UpdateShellModel(<ShellModel>{ Size30: false, Size40: false, Size50: false, Size60: false, Size70: true, MapSizeClass: 'mapSize70' }) : null;
+    property == 'size50' ? this.UpdateShellModel(<ShellModel>{ Size30: false, Size40: false, Size50: true, Size60: false, Size70: false, MapSizeClass: 'mapSize50' }) : null;
+    property == 'satellite' ? this.UpdateShellModel(<ShellModel>{ HybridVisible: false, SatelliteVisible: true, RoadmapVisible: false, TerrainVisible: false, mapTypeId: google.maps.MapTypeId.SATELLITE }) : null;
+    property == 'terrain' ? this.UpdateShellModel(<ShellModel>{ HybridVisible: false, SatelliteVisible: false, RoadmapVisible: false, TerrainVisible: true, mapTypeId: google.maps.MapTypeId.TERRAIN }) : null;
+    property == 'roadmap' ? this.UpdateShellModel(<ShellModel>{ HybridVisible: false, SatelliteVisible: false, RoadmapVisible: true, TerrainVisible: false, mapTypeId: google.maps.MapTypeId.ROADMAP }) : null;
+    property == 'hybrid' ? this.UpdateShellModel(<ShellModel>{ HybridVisible: true, SatelliteVisible: false, RoadmapVisible: false, TerrainVisible: false, mapTypeId: google.maps.MapTypeId.HYBRID }) : null;
   }
 
   UpdateBreadCrumbModel(breadCrumbModel: BreadCrumbModel) {
@@ -119,26 +78,7 @@ export class ShellService {
   }
 
   GetLink(tvItemModel: TVItemModel) {
-    return $localize.locale + '/' + this.GetUrl(tvItemModel.TVItem) + '/' + this.GetProperties();
-  }
-
-  GetProperties() {
-    let properties: string = 'z';
-    this.ShellModel$.getValue().ActiveVisible ? properties = properties + ',active' : null;
-    this.ShellModel$.getValue().DetailVisible ? properties = properties + ',detail' : null;
-    this.ShellModel$.getValue().EditVisible ? properties = properties + ',edit' : null;
-    this.ShellModel$.getValue().FileVisible ? properties = properties + ',file' : null;
-    this.ShellModel$.getValue().InactVisible ? properties = properties + ',inact' : null;
-    this.ShellModel$.getValue().MapVisible ? properties = properties + ',map' : null;
-    this.ShellModel$.getValue().MenuVisible ? properties = properties + ',menu' : null;
-    this.ShellModel$.getValue().SatelliteVisible ? properties = properties + ',satellite' : null;
-    this.ShellModel$.getValue().Size30 ? properties = properties + ',size30' : null;
-    this.ShellModel$.getValue().Size40 ? properties = properties + ',size40' : null;
-    this.ShellModel$.getValue().Size50 ? properties = properties + ',size50' : null;
-    this.ShellModel$.getValue().Size60 ? properties = properties + ',size60' : null;
-    this.ShellModel$.getValue().Size70 ? properties = properties + ',size70' : null;
-
-    return properties;
+    return $localize.locale + '/' + this.GetUrl(tvItemModel.TVItem);
   }
 
   GetTypeText(tvType: number) {

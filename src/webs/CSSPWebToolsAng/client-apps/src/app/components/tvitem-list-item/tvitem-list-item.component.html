@@ -1,18 +1,16 @@
 <mat-list-item>
     <a href="{{ shellService.GetLink(TVItemModel)}}">
-        <span [ngClass]="TVItemModel.TVItem.IsActive ? '' : 'inactive'">
-            <span *ngIf="shellService.ShellModel$?.getValue()?.Language == 1">
-                {{ TVItemModel.TVItemLanguageEN.TVText }}
+        <span [ngClass]="TVItemModel?.TVItem?.IsActive ? '' : 'inactive'">
+            <span *ngIf="ShellModel?.Language == 1">
+                {{ TVItemModel?.TVItemLanguageEN?.TVText }}
             </span>
-            <span *ngIf="shellService.ShellModel$?.getValue()?.Language == 2">
-                {{ TVItemModel.TVItemLanguageFR.TVText }}
+            <span *ngIf="ShellModel?.Language == 2">
+                {{ TVItemModel?.TVItemLanguageFR?.TVText }}
             </span>
         </span>
     </a>
-    <ng-container *ngIf="!IsBreadCrumb">
-        <app-child-count [TVType]="null" [TVItemModel]="TVItemModel"></app-child-count>
-    </ng-container>   
+    <app-child-count *ngIf="!IsBreadCrumb" [ShellModel]="ShellModel" [TVType]="null" [TVItemModel]="TVItemModel"></app-child-count>
 </mat-list-item>
-<app-tvitem-list-detail *ngIf="!IsBreadCrumb && shellService.ShellModel$?.getValue()?.DetailVisible" [TVItemModel]="TVItemModel"></app-tvitem-list-detail>
+<app-tvitem-list-detail [ShellModel]="ShellModel" *ngIf="!IsBreadCrumb && ShellModel?.DetailVisible" [TVItemModel]="TVItemModel"></app-tvitem-list-detail>
 
 <p *ngIf="false">{{ TVItemModel | json }}</p>

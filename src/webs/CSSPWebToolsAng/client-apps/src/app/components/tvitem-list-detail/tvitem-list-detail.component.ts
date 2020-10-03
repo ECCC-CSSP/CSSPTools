@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Input } from '@a
 import { Router } from '@angular/router';
 import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 import { TVItemModel } from '../../models/generated/TVItemModel.model';
-import { ShellService } from '../../pages/shell';
+import { ShellModel, ShellService } from '../../pages/shell';
 
 @Component({
   selector: 'app-tvitem-list-detail',
@@ -12,6 +12,7 @@ import { ShellService } from '../../pages/shell';
 })
 export class TVItemListDetailComponent implements OnInit, OnDestroy {
   @Input() TVItemModel: TVItemModel;
+  @Input() ShellModel: ShellModel;
 
   constructor(public shellService: ShellService, public router: Router) {
   }

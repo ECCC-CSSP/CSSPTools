@@ -6,26 +6,20 @@ import { TVItemModel } from 'src/app/models/generated/TVItemModel.model';
 import { ChildCountModel, ChildCountTextModel } from './child-count.models';
 
 @Injectable({
-  providedIn: 'any'
+  providedIn: 'root'
 })
 export class ChildCountService {
   ChildCountTextModel$: BehaviorSubject<ChildCountTextModel> = new BehaviorSubject<ChildCountTextModel>(<ChildCountTextModel>{});
-  ChildCountModel$: BehaviorSubject<ChildCountModel> = new BehaviorSubject<ChildCountModel>(<ChildCountModel>{});
 
   constructor() {
     this.UpdateChildCountTextModel(<ChildCountTextModel>{});
-    this.UpdateChildCountModel(<ChildCountModel>{});
   }
 
   UpdateChildCountTextModel(childCountTextModel: ChildCountTextModel) {
     this.ChildCountTextModel$.next(<ChildCountTextModel>{ ...this.ChildCountTextModel$.getValue(), ...childCountTextModel });
   }
 
-  UpdateChildCountModel(childCountModel: ChildCountModel) {
-    this.ChildCountModel$.next(<ChildCountModel>{ ...this.ChildCountModel$.getValue(), ...childCountModel });
-  }
-
-  FillCount(tvItemModel: TVItemModel, tvType?: TVTypeEnum): void {
+  GetCount(tvItemModel: TVItemModel, tvType?: TVTypeEnum): number {
     let count = 0;
     if (tvType == null) {
       tvItemModel.TVItemStatList.filter((c) => { count += c.ChildCount });
@@ -37,6 +31,6 @@ export class ChildCountService {
       }
     }
 
-    this.UpdateChildCountModel(<ChildCountModel>{ Count: count });
+    return count;
   }
 }

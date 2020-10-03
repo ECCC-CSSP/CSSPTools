@@ -1,4 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Input } from '@angular/core';
+import { ShellModel } from 'src/app/pages/shell';
 import { TVFileModel } from '../../models/generated/TVFileModel.model';
 
 @Component({
@@ -9,6 +10,7 @@ import { TVFileModel } from '../../models/generated/TVFileModel.model';
 })
 export class FileListComponent implements OnInit, OnDestroy {
   @Input() TVFileModelList: TVFileModel[];
+  @Input() ShellModel: ShellModel;
 
   constructor() {
   }

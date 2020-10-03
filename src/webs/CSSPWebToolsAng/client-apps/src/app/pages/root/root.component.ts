@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, ViewChild, Input } from '@angular/core';
 import { RootService } from './root.service';
 import { LoadLocalesRootText } from './root.locales';
 import { Subscription } from 'rxjs';
@@ -22,12 +22,6 @@ export class RootComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     LoadLocalesRootText(this.rootService);
     let TVItemID: number = this.activatedRoute.snapshot.params['TVItemID'];
-    let Properties: string = this.activatedRoute.snapshot.params['Properties'];
-    if (Properties == undefined) {
-      Properties = '';
-    }
-    this.shellService.SetProperties(Properties);
-
     this.sub = this.rootService.GetWebRoot(TVItemID).subscribe();
   }
 

@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { WebBase } from 'src/app/models/generated/WebBase.model';
-import { ShellService } from 'src/app/pages/shell';
+import { ShellModel, ShellService } from 'src/app/pages/shell';
 import { BreadCrumbService } from './bread-crumb.service';
 
 @Component({
@@ -12,6 +12,7 @@ import { BreadCrumbService } from './bread-crumb.service';
 })
 export class BreadCrumbComponent implements OnInit, OnDestroy {
   @Input() breadCrumbs: WebBase[] = [];
+  @Input() ShellModel: ShellModel;
   
   constructor(public breadCrumbService: BreadCrumbService, public shellService: ShellService, public router: Router) {
   }

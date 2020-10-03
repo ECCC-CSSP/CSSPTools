@@ -3,5 +3,5 @@
 </span>
 
 <mat-list *ngFor="let webBase of breadCrumbs">
-    <app-tvitem-list-item [IsBreadCrumb]="true" [TVItemModel]="webBase.TVItemModel"></app-tvitem-list-item>
+    <app-tvitem-list-item [ShellModel]="ShellModel" [IsBreadCrumb]="true" [TVItemModel]="webBase.TVItemModel"></app-tvitem-list-item>
 </mat-list>

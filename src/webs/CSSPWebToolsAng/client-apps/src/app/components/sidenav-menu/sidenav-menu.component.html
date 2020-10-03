@@ -1,93 +1,96 @@
+<span *ngIf="(shellService.ShellModel$ | async).Working">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</span>
+
 <h1>Visibility</h1>
 <mat-list>
     <mat-list-item>
-        <mat-checkbox (click)="ToggleProperty('menu')" [checked]="shellService.ShellModel$.getValue().MenuVisible">Menu
-        </mat-checkbox>
-    </mat-list-item>
-    <mat-list-item>
-        <mat-checkbox matLine (click)="ToggleProperty('map')"
-            [checked]="shellService.ShellModel$?.getValue()?.MapVisible">
+        <mat-checkbox matLine (change)="ToggleProperty('map')"
+            [checked]="ShellModel?.MapVisible">
             <span>Map</span>
         </mat-checkbox>
         <span matLine>&nbsp;&nbsp;
-            <mat-checkbox (click)="ToggleProperty('size30')"
-                [checked]="shellService.ShellModel$?.getValue()?.Size30">
+            <mat-checkbox (change)="ToggleProperty('size30')"
+                [checked]="ShellModel?.Size30">
                 <span>30%</span>
             </mat-checkbox>
         </span>
         <span matLine>&nbsp;&nbsp;
-            <mat-checkbox (click)="ToggleProperty('size40')"
-                [checked]="shellService.ShellModel$?.getValue()?.Size40">
+            <mat-checkbox (change)="ToggleProperty('size40')"
+                [checked]="ShellModel?.Size40">
                 <span>40%</span>
             </mat-checkbox>
         </span>
         <span matLine>&nbsp;&nbsp;
-            <mat-checkbox (click)="ToggleProperty('size50')"
-                [checked]="shellService.ShellModel$?.getValue()?.Size50">
+            <mat-checkbox (change)="ToggleProperty('size50')"
+                [checked]="ShellModel?.Size50">
                 <span>50%</span>
             </mat-checkbox>
         </span>
         <span matLine>&nbsp;&nbsp;
-            <mat-checkbox (click)="ToggleProperty('size60')"
-                [checked]="shellService.ShellModel$?.getValue()?.Size60">
+            <mat-checkbox (change)="ToggleProperty('size60')"
+                [checked]="ShellModel?.Size60">
                 <span>60%</span>
             </mat-checkbox>
         </span>
         <span matLine>&nbsp;&nbsp;
-            <mat-checkbox (click)="ToggleProperty('size70')"
-                [checked]="shellService.ShellModel$?.getValue()?.Size70">
+            <mat-checkbox (change)="ToggleProperty('size70')"
+                [checked]="ShellModel?.Size70">
                 <span>70%</span>
             </mat-checkbox>
         </span>
         <span matLine>&nbsp;&nbsp;
-            <mat-checkbox (click)="ToggleProperty('hybrid')"
-                [checked]="shellService.ShellModel$?.getValue()?.HybridVisible">
+            <mat-checkbox (change)="ToggleProperty('hybrid')"
+                [checked]="ShellModel?.HybridVisible">
                 <span>Hybrid</span>
             </mat-checkbox>
         </span>
         <span matLine>&nbsp;&nbsp;
-            <mat-checkbox (click)="ToggleProperty('satellite')"
-                [checked]="shellService.ShellModel$?.getValue()?.SatelliteVisible">
+            <mat-checkbox (change)="ToggleProperty('satellite')"
+                [checked]="ShellModel?.SatelliteVisible">
                 <span>Satellite</span>
             </mat-checkbox>
         </span>
         <span matLine>&nbsp;&nbsp;
-            <mat-checkbox (click)="ToggleProperty('roadmap')"
-                [checked]="shellService.ShellModel$?.getValue()?.RoadmapVisible">
+            <mat-checkbox (change)="ToggleProperty('roadmap')"
+                [checked]="ShellModel?.RoadmapVisible">
                 <span>Roadmap</span>
             </mat-checkbox>
         </span>
         <span matLine>&nbsp;&nbsp;
-            <mat-checkbox (click)="ToggleProperty('terrain')"
-                [checked]="shellService.ShellModel$?.getValue()?.TerrainVisible">
+            <mat-checkbox (change)="ToggleProperty('terrain')"
+                [checked]="ShellModel?.TerrainVisible">
                 <span>Terrain</span>
             </mat-checkbox>
         </span>
     </mat-list-item>
     <mat-list-item>
-        <mat-checkbox (click)="ToggleProperty('active')"
-            [checked]="shellService.ShellModel$?.getValue()?.ActiveVisible">
+        <mat-checkbox (change)="ToggleProperty('active')"
+            [checked]="ShellModel?.ActiveVisible">
             <span>Active</span>
         </mat-checkbox>
     </mat-list-item>
     <mat-list-item>
-        <mat-checkbox (click)="ToggleProperty('inact')" [checked]="shellService.ShellModel$?.getValue()?.InactVisible">
+        <mat-checkbox (change)="ToggleProperty('inact')"
+            [checked]="ShellModel?.InactVisible">
             <span>Inactive</span>
         </mat-checkbox>
     </mat-list-item>
     <mat-list-item>
-        <mat-checkbox (click)="ToggleProperty('detail')"
-            [checked]="shellService.ShellModel$?.getValue()?.DetailVisible">
+        <mat-checkbox (change)="ToggleProperty('detail')"
+            [checked]="ShellModel?.DetailVisible">
             <span>Detail</span>
         </mat-checkbox>
     </mat-list-item>
     <mat-list-item>
-        <mat-checkbox (click)="ToggleProperty('edit')" [checked]="shellService.ShellModel$?.getValue()?.EditVisible">
+        <mat-checkbox (change)="ToggleProperty('edit')"
+            [checked]="ShellModel?.EditVisible">
             <span>Edit</span>
         </mat-checkbox>
     </mat-list-item>
     <mat-list-item>
-        <mat-checkbox (click)="ToggleProperty('file')" [checked]="shellService.ShellModel$?.getValue()?.FileVisible">
+        <mat-checkbox (change)="ToggleProperty('file')"
+            [checked]="ShellModel?.FileVisible">
             <span>File</span>
         </mat-checkbox>
     </mat-list-item>

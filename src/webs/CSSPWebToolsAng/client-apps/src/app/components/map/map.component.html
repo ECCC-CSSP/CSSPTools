@@ -6,7 +6,19 @@
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </span>
 
-<google-map height="100%" width="100%" 
+latitude: <input placeholder="latitude" name="latitude" [(ngModel)]="latitude" required >
+longitude: <input placeholder="longitude" name="longitude" [(ngModel)]="longitude" required >
+<h2>Coordinates:</h2>
+<ul>
+    <li *ngFor="let coordinate of coordinates">
+      {{ coordinate.lat }},{{coordinate.lng}}
+    </li>
+  </ul>
+<button type="submit" (click)="onAdd()">Add coordinates</button>
+<button type="submit" (click)="onSubmit()">Draw Polygons</button>
+<div #map class="map"></div>
+
+<!-- <google-map height="100%" width="100%" 
 [zoom]="mapService.MapModel$?.getValue()?.zoom" 
 [center]="mapService.MapModel$?.getValue()?.center" 
 [options]="mapService.MapModel$?.getValue()?.options" (mapClick)="click($event)">
@@ -25,12 +37,12 @@
 >
   </map-polygon>
 
-  <!-- <map-polyline #somepolyline="mapPolyline" *ngFor="let polyline of mapService.MapModel$?.getValue()?.polylineList" 
+  <map-polyline #somepolyline="mapPolyline" *ngFor="let polyline of mapService.MapModel$?.getValue()?.polylineList" 
   [title]="polyline.title"
   [options]="polyline.options" 
   (mapClick)="openInfo(somepolyline, polyline.info)">
 
-  </map-polyline> -->
+  </map-polyline>
 
   <map-info-window>{{ mapService.MapModel$?.getValue()?.infoContent }}</map-info-window>
-</google-map>
+</google-map> -->
