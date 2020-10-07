@@ -21,7 +21,6 @@ namespace CSSPModels
         public Contact LoggedInContact { get; set; }
         public List<TVTypeUserAuthorization> TVTypeUserAuthorizationList { get; set; }
         public List<TVItemUserAuthorization> TVItemUserAuthorizationList { get; set; }
-        public Preference Preference { get; set; }
         #endregion Properties not in DB
 
         #region Constructors

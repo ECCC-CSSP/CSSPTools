@@ -2022,6 +2022,24 @@
           "CSSPDBFilesManagementServices.dll": {}
         }
       },
+      "CSSPDBLoginServices/1.0.0": {
+        "dependencies": {
+          "Azure.Storage.Blobs": "12.6.0",
+          "CSSPModels": "1.0.0",
+          "LocalServices": "1.0.0",
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.8",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.8",
+          "Microsoft.EntityFrameworkCore": "3.1.8",
+          "Microsoft.EntityFrameworkCore.InMemory": "3.1.8",
+          "Microsoft.EntityFrameworkCore.SqlServer": "3.1.8",
+          "Microsoft.EntityFrameworkCore.Sqlite": "3.1.8",
+          "Microsoft.Extensions.Configuration": "3.1.8",
+          "Microsoft.Extensions.Configuration.Json": "3.1.8"
+        },
+        "runtime": {
+          "CSSPDBLoginServices.dll": {}
+        }
+      },
       "CSSPEnums/1.0.0": {
         "dependencies": {
           "CSSPCultureServices": "1.0.0"
@@ -2087,6 +2105,7 @@
       "ReadGzFileServices/1.0.0": {
         "dependencies": {
           "Azure.Storage.Blobs": "12.6.0",
+          "CSSPDBLoginServices": "1.0.0",
           "CSSPModels": "1.0.0",
           "DownloadGzFileServices": "1.0.0",
           "LocalServices": "1.0.0",
@@ -3307,6 +3326,11 @@
       "sha512": ""
     },
     "CSSPDBFilesManagementServices/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "CSSPDBLoginServices/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

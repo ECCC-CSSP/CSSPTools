@@ -26,6 +26,8 @@ namespace CSSPDBLoginServices
         Task<ActionResult<Preference>> GetAddressWithPreferenceID(int PreferenceID);
         Task<ActionResult<Preference>> Post(Preference preference);
         Task<ActionResult<Preference>> Put(Preference preference);
+        Task<ActionResult<Preference>> AddOrChange(string VariableName, string VariableValue);
+        Task<ActionResult<Preference>> GetWithVariableName(string VariableName);
     }
     public partial class PreferenceService : ControllerBase, IPreferenceService
     {
@@ -49,12 +51,39 @@ namespace CSSPDBLoginServices
         #endregion Constructors
 
         #region Functions public 
+        public async Task<ActionResult<Preference>> AddOrChange(string VariableName, string VariableValue)
+        {
+            //if (LocalService.LoggedInContactInfo.LoggedInContact == null)
+            //{
+            //    return await Task.FromResult(Unauthorized());
+            //}
+
+            Preference preference = (from c in dbLogin.Preferences
+                                          where c.VariableName == VariableName
+                                          select c).FirstOrDefault();
+
+            if (preference == null)
+            {
+                int? LastID = (from c in dbLogin.Preferences
+                               orderby c.PreferenceID descending
+                               select c.PreferenceID).FirstOrDefault();
+
+                LastID = LastID == null ? LastID = 1 : LastID + 1;
+
+                return await Post(new Preference() { PreferenceID = (int)LastID, VariableName = VariableName, VariableValue = await LocalService.Scramble(VariableValue) });
+            }
+            else
+            {
+                preference.VariableValue = await LocalService.Scramble(VariableValue);
+                return await Put(preference);
+            }
+        }
         public async Task<ActionResult<Preference>> GetAddressWithPreferenceID(int PreferenceID)
         {
-            if (LocalService.LoggedInContactInfo.LoggedInContact == null)
-            {
-                return await Task.FromResult(Unauthorized());
-            }
+            //if (LocalService.LoggedInContactInfo.LoggedInContact == null)
+            //{
+            //    return await Task.FromResult(Unauthorized());
+            //}
 
             Preference preference = (from c in dbLogin.Preferences.AsNoTracking()
                                      where c.PreferenceID == PreferenceID
@@ -69,21 +98,43 @@ namespace CSSPDBLoginServices
         }
         public async Task<ActionResult<List<Preference>>> GetPreferenceList(int skip = 0, int take = 100)
         {
-            if (LocalService.LoggedInContactInfo.LoggedInContact == null)
-            {
-                return await Task.FromResult(Unauthorized());
-            }
+            //if (LocalService.LoggedInContactInfo.LoggedInContact == null)
+            //{
+            //    return await Task.FromResult(Unauthorized());
+            //}
 
             List<Preference> preferenceList = (from c in dbLogin.Preferences.AsNoTracking() orderby c.PreferenceID select c).Skip(skip).Take(take).ToList();
 
             return await Task.FromResult(Ok(preferenceList));
         }
+        public async Task<ActionResult<Preference>> GetWithVariableName(string VariableName)
+        {
+            //if (LocalService.LoggedInContactInfo.LoggedInContact == null)
+            //{
+            //    return await Task.FromResult(Unauthorized());
+            //}
+
+            Preference preference = (from c in dbLogin.Preferences.AsNoTracking()
+                                     where c.VariableName == VariableName
+                                     select c).FirstOrDefault();
+
+            if (preference == null)
+            {
+                return await Task.FromResult(NotFound());
+            }
+
+            return await Task.FromResult(Ok(new Preference() { 
+                PreferenceID = preference.PreferenceID, 
+                VariableName = VariableName, 
+                VariableValue = await LocalService.Descramble(preference.VariableValue) 
+            }));
+        }
         public async Task<ActionResult<bool>> Delete(int PreferenceID)
         {
-            if (LocalService.LoggedInContactInfo.LoggedInContact == null)
-            {
-                return await Task.FromResult(Unauthorized());
-            }
+            //if (LocalService.LoggedInContactInfo.LoggedInContact == null)
+            //{
+            //    return await Task.FromResult(Unauthorized());
+            //}
 
             Preference preference = (from c in dbLogin.Preferences
                                      where c.PreferenceID == PreferenceID
@@ -108,10 +159,10 @@ namespace CSSPDBLoginServices
         }
         public async Task<ActionResult<Preference>> Post(Preference preference)
         {
-            if (LocalService.LoggedInContactInfo.LoggedInContact == null)
-            {
-                return await Task.FromResult(Unauthorized());
-            }
+            //if (LocalService.LoggedInContactInfo.LoggedInContact == null)
+            //{
+            //    return await Task.FromResult(Unauthorized());
+            //}
 
             ValidationResults = Validate(new ValidationContext(preference), ActionDBTypeEnum.Create);
             if (ValidationResults.Count() > 0)
@@ -133,10 +184,10 @@ namespace CSSPDBLoginServices
         }
         public async Task<ActionResult<Preference>> Put(Preference preference)
         {
-            if (LocalService.LoggedInContactInfo.LoggedInContact == null)
-            {
-                return await Task.FromResult(Unauthorized());
-            }
+            //if (LocalService.LoggedInContactInfo.LoggedInContact == null)
+            //{
+            //    return await Task.FromResult(Unauthorized());
+            //}
 
             ValidationResults = Validate(new ValidationContext(preference), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
@@ -176,48 +227,26 @@ namespace CSSPDBLoginServices
                 }
             }
 
-            // doing AzureStore
-            if (string.IsNullOrWhiteSpace(preference.AzureStore))
+            // doing VariableName
+            if (string.IsNullOrWhiteSpace(preference.VariableName))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "AzureStore"), new[] { nameof(preference.AzureStore) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "VariableName"), new[] { nameof(preference.VariableName) });
             }
 
-            if (!string.IsNullOrWhiteSpace(preference.AzureStore) && preference.AzureStore.Length > 200)
+            if (!string.IsNullOrWhiteSpace(preference.VariableName) && preference.VariableName.Length > 300)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "AzureStore", "200"), new[] { nameof(preference.AzureStore) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "VariableName", "300"), new[] { nameof(preference.VariableName) });
             }
 
-            // doing LoginEmail
-            if (string.IsNullOrWhiteSpace(preference.LoginEmail))
+            // doing VariableValue
+            if (string.IsNullOrWhiteSpace(preference.VariableValue))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LoginEmail"), new[] { nameof(preference.LoginEmail) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "VariableValue"), new[] { nameof(preference.VariableValue) });
             }
 
-            if (!string.IsNullOrWhiteSpace(preference.LoginEmail) && preference.LoginEmail.Length > 200)
+            if (!string.IsNullOrWhiteSpace(preference.VariableValue) && preference.VariableValue.Length > 300)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "AzureStore", "200"), new[] { nameof(preference.AzureStore) });
-            }
-
-            // doing Password
-            if (string.IsNullOrWhiteSpace(preference.Password))
-            {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Password"), new[] { nameof(preference.Password) });
-            }
-
-            if (!string.IsNullOrWhiteSpace(preference.Password) && preference.Password.Length > 100)
-            {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Password", "100"), new[] { nameof(preference.Password) });
-            }
-
-            // doing Token
-            if (string.IsNullOrWhiteSpace(preference.Token))
-            {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Token"), new[] { nameof(preference.Token) });
-            }
-
-            if (!string.IsNullOrWhiteSpace(preference.Token) && preference.Token.Length > 300)
-            {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Token", "300"), new[] { nameof(preference.Token) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "VariableValue", "300"), new[] { nameof(preference.VariableValue) });
             }
         }
         #endregion Functions private

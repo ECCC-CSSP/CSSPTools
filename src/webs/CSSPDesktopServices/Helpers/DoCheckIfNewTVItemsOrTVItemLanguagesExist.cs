@@ -20,9 +20,19 @@ namespace CSSPDesktopServices.Services
         {
             AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.CheckIfNewTVItemsOrTVItemLanguagesExist));
 
-            HasNewTVItemsOrTVItemLanguages = false;
+            Preference preferenceHasInternetConnection = await GetPreferenceWithVariableName("HasInternetConnection");
 
-            if (preference.HasInternetConnection == null || (bool)preference.HasInternetConnection == false)
+            if (preferenceHasInternetConnection == null)
+            {
+                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotFind_InDBLogin_, "HasInternetConnection", "Preferences")));
+                return await Task.FromResult(true);
+            }
+
+            bool HasInternetConnection = bool.Parse(preferenceHasInternetConnection.VariableValue);
+
+            //HasNewTVItemsOrTVItemLanguages = false;
+
+            if (!HasInternetConnection)
             {
                 return await Task.FromResult(true);
             }

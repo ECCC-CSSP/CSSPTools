@@ -123,6 +123,9 @@
   <data name="AzureFile_DidNotChanged" xml:space="preserve">
     <value>Filière de Azure {0} n'a pas changé</value>
   </data>
+  <data name="BadRequest_" xml:space="preserve">
+    <value>Mauvaise requête {0}</value>
+  </data>
   <data name="butCancelUpdateText" xml:space="preserve">
     <value>Annuler</value>
   </data>
@@ -206,6 +209,9 @@
   </data>
   <data name="CouldNotFind_InDBLogin" xml:space="preserve">
     <value>{0} introuvable dans dbLogin</value>
+  </data>
+  <data name="CouldNotFind_InDBLogin_" xml:space="preserve">
+    <value>Dans l'impossibilité de trouver {0} dans CSSPDBLogin {1}</value>
   </data>
   <data name="CouldNotGetPropertiesFromAzureStore_AndFile_" xml:space="preserve">
     <value>Dans l'impossibilité de lire les propriétés de Azure Store {0} et la filière {1}</value>
@@ -293,6 +299,9 @@
   </data>
   <data name="Found_InDBLogin" xml:space="preserve">
     <value>{0} trouvé dans dbLogin</value>
+  </data>
+  <data name="Found_InDBLogin_" xml:space="preserve">
+    <value>{0} trouvé dans dbLogin {1}</value>
   </data>
   <data name="HelpFileFound_" xml:space="preserve">
     <value>Filière d'aide trouvé {0}</value>
@@ -387,6 +396,9 @@
   <data name="RegisteringIn" xml:space="preserve">
     <value>S'enregistrer en cours ...</value>
   </data>
+  <data name="ServerError" xml:space="preserve">
+    <value>Erreur au niveau du serveur</value>
+  </data>
   <data name="ServerNotRespondingDoYouHaveInternetConnection" xml:space="preserve">
     <value>Le serveur ne répond pas. Avez-vous une connexion Internet?</value>
   </data>
@@ -401,6 +413,9 @@
   </data>
   <data name="UnableToLoginAs_WithProvidedPassword" xml:space="preserve">
     <value>Impossible de se connecter en tant que [{0}] avec le mot de passe fourni</value>
+  </data>
+  <data name="Unauthorized" xml:space="preserve">
+    <value>Non-authorisé</value>
   </data>
   <data name="UnmanagedServerError_" xml:space="preserve">
     <value>Erreur au serveur non géré: [{0}]</value>

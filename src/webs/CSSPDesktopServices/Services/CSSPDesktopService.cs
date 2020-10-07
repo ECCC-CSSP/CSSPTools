@@ -1,4 +1,5 @@
 ﻿using CSSPCultureServices.Services;
+using CSSPDBLoginServices;
 using CSSPDesktopServices.Models;
 using CSSPEnums;
 using CSSPModels;
@@ -24,7 +25,7 @@ namespace CSSPDesktopServices.Services
         //AppTextModel appTextModel { get; set; }
         bool LoginRequired { get; set; }
         bool UpdateIsNeeded { get; set; }
-        bool HasNewTVItemsOrTVItemLanguages { get; set; }
+        //bool HasNewTVItemsOrTVItemLanguages { get; set; }
         bool HasHelpFiles { get; set; }
         string CSSPDBFilesManagement { get; set; }
         string CSSPDBLogin { get; set; }
@@ -32,10 +33,15 @@ namespace CSSPDesktopServices.Services
         string CSSPDBSearch { get; set; }
         string CSSPDBCommandLog { get; set; }
         string CSSPAzureUrl { get; set; }
-        string CSSPLocalUrl { get; set; }
-        Preference preference { get; set; }
+        string CSSPLocalUrl { get; set; }       
         string CSSPWebAPIsLocalPath { get; set; }
         Contact contact { get; set; }
+        //string AzureStore { get; set; }
+        //string LoginEmail { get; set; }
+        //string Password { get; set; }
+        //bool HasInternetConnection { get; set; }
+        //bool LoggedIn { get; set; }
+        //string Token { get; set; }
 
         // Functions
         Task<bool> CheckIfHelpFilesExist();
@@ -53,6 +59,7 @@ namespace CSSPDesktopServices.Services
         Task<bool> Start();
         Task<bool> Stop();
         Task<bool> UpdateCSSPDBSearch();
+        Task<Preference> GetPreferenceWithVariableName(string VariableName);
 
         // Events
         event EventHandler<ClearEventArgs> StatusClear;
@@ -70,7 +77,7 @@ namespace CSSPDesktopServices.Services
         public bool IsEnglish { get; set; }
         public bool LoginRequired { get; set; } = false;
         public bool UpdateIsNeeded { get; set; } = false;
-        public bool HasNewTVItemsOrTVItemLanguages { get; set; } = false;
+        //public bool HasNewTVItemsOrTVItemLanguages { get; set; } = false;
         public bool HasHelpFiles { get; set; } = false;
         public string CSSPDBFilesManagement { get; set; }
         public string CSSPDBLogin { get; set; }
@@ -79,9 +86,14 @@ namespace CSSPDesktopServices.Services
         public string CSSPDBCommandLog { get; set; }
         public string CSSPAzureUrl { get; set; }
         public string CSSPLocalUrl { get; set; }
-        public Preference preference { get; set; }
         public string CSSPWebAPIsLocalPath { get; set; }
         public Contact contact { get; set; }
+        //public string AzureStore { get; set; }
+        //public string LoginEmail { get; set; }
+        //public string Password { get; set; }
+        //public bool HasInternetConnection { get; set; }
+        //public bool LoggedIn { get; set; }
+        //public string Token { get; set; }
         #endregion Properties public
 
         #region Properties private
@@ -95,6 +107,7 @@ namespace CSSPDesktopServices.Services
         private IEnums enums { get; }
         private ILocalService LocalService { get; }
         private IReadGzFileService ReadGzFileService { get; }
+        private IPreferenceService PreferenceService { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         private string CSSPDesktopPath { get; set; }
         private string CSSPDatabasesPath { get; set; }
@@ -110,7 +123,7 @@ namespace CSSPDesktopServices.Services
         #region Constructors
         public CSSPDesktopService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, 
             ILocalService LocalService, CSSPDBLocalContext dbLocal, CSSPDBSearchContext dbSearch, CSSPDBCommandLogContext dbCommandLog, 
-            CSSPDBLoginContext dbLogin, CSSPDBFilesManagementContext dbFM, IReadGzFileService ReadGzFileService)
+            CSSPDBLoginContext dbLogin, CSSPDBFilesManagementContext dbFM, IReadGzFileService ReadGzFileService, IPreferenceService PreferenceService)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
@@ -122,8 +135,8 @@ namespace CSSPDesktopServices.Services
             this.dbLogin = dbLogin;
             this.dbFM = dbFM;
             this.ReadGzFileService = ReadGzFileService;
+            this.PreferenceService = PreferenceService;
 
-            preference = new Preference();
             contact = new Contact();
         }
         #endregion Constructors
@@ -232,6 +245,14 @@ namespace CSSPDesktopServices.Services
         public async Task<bool> UpdateCSSPDBSearch()
         {
             return await DoUpdateCSSPDBSearch();
+        }
+        public async Task<Preference> GetPreferenceWithVariableName(string VariableName)
+        {
+            return await DoGetPreferenceWithVariableName(VariableName);
+        }
+        public async Task<Preference> AddOrModifyPreferenceWithVariableName(string VariableName, string VariableValue)
+        {
+            return await DoAddOrModifyPreference(VariableName, VariableValue);
         }
         #endregion Function public
     }

@@ -115,6 +115,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bad request {0}.
+        /// </summary>
+        public static string BadRequest_ {
+            get {
+                return ResourceManager.GetString("BadRequest_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         public static string butCancelUpdateText {
@@ -354,6 +363,15 @@ namespace CSSPCultureServices.Resources {
         public static string CouldNotFind_InDBLogin {
             get {
                 return ResourceManager.GetString("CouldNotFind_InDBLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not find {0} in CSSPDBLogin {1}.
+        /// </summary>
+        public static string CouldNotFind_InDBLogin_ {
+            get {
+                return ResourceManager.GetString("CouldNotFind_InDBLogin_", resourceCulture);
             }
         }
         
@@ -624,6 +642,15 @@ namespace CSSPCultureServices.Resources {
         public static string Found_InDBLogin {
             get {
                 return ResourceManager.GetString("Found_InDBLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Found {0} in DBLogin {1}.
+        /// </summary>
+        public static string Found_InDBLogin_ {
+            get {
+                return ResourceManager.GetString("Found_InDBLogin_", resourceCulture);
             }
         }
         
@@ -907,6 +934,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Server error.
+        /// </summary>
+        public static string ServerError {
+            get {
+                return ResourceManager.GetString("ServerError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Server not responding. Do you have internet connection?.
         /// </summary>
         public static string ServerNotRespondingDoYouHaveInternetConnection {
@@ -948,6 +984,15 @@ namespace CSSPCultureServices.Resources {
         public static string UnableToLoginAs_WithProvidedPassword {
             get {
                 return ResourceManager.GetString("UnableToLoginAs_WithProvidedPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unauthorized.
+        /// </summary>
+        public static string Unauthorized {
+            get {
+                return ResourceManager.GetString("Unauthorized", resourceCulture);
             }
         }
         

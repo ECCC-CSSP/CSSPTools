@@ -120,12 +120,15 @@ namespace CSSPSQLiteServices
 
             string CreatePreferencesTable = "CREATE TABLE Preferences (" +
                     "PreferenceID INTEGER NOT NULL UNIQUE, " +
-                    "AzureStore TEXT NOT NULL, " +
-                    "LoginEmail TEXT NOT NULL, " +
-                    "Password TEXT NOT NULL, " +
-                    "HasInternetConnection INTEGER, " +
-                    "LoggedIn INTEGER, " +
-                    "Token TEXT)";
+                    "VariableName TEXT NOT NULL, " +
+                    "VariableValue TEXT NOT NULL)";
+                    //"PreferenceID INTEGER NOT NULL UNIQUE, " +
+                    //"AzureStore TEXT NOT NULL, " +
+                    //"LoginEmail TEXT NOT NULL, " +
+                    //"Password TEXT NOT NULL, " +
+                    //"HasInternetConnection INTEGER, " +
+                    //"LoggedIn INTEGER, " +
+                    //"Token TEXT)";
 
             using (var command = dbLogin.Database.GetDbConnection().CreateCommand())
             {

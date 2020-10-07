@@ -11,6 +11,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CSSPDesktopServices.Services
 {
@@ -24,7 +25,8 @@ namespace CSSPDesktopServices.Services
         {
             AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.Logoff));
 
-            if (preference.LoggedIn != null && !(bool)preference.LoggedIn) return await Task.FromResult(false);
+            var actionPreference = await PreferenceService.AddOrChange("LoggedIn", await LocalService.Scramble("false"));
+            if (!await DoStatusActionPreference(actionPreference, "LoggedIn")) return await Task.FromResult(false);
 
             AppendStatus(new AppendEventArgs(""));
 

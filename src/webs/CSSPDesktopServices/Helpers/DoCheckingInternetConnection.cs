@@ -19,6 +19,8 @@ namespace CSSPDesktopServices.Services
         {
             AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.CheckingInternetConnection));
 
+            bool HasInternetConnection = false;
+
             try
             {
                 AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.TryingToDownload_, "https://www.google.com/")));
@@ -26,62 +28,22 @@ namespace CSSPDesktopServices.Services
                 if (await LocalService.CheckInternetConnection())
                 {
                     AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.InternetConnectionDetected));
-                    preference.HasInternetConnection = true;
+                    HasInternetConnection = true;
                 }
                 else
                 {
                     AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.InternetConnectionNotDetected));
-                    preference.HasInternetConnection = false;
+                    HasInternetConnection = false;
                 }
             }
             catch (Exception)
             {
                 AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.InternetConnectionNotDetected));
-                preference.HasInternetConnection = false;
+                HasInternetConnection = false;
             }
 
-            Preference preferenceInDB = (from c in dbLogin.Preferences
-                                         select c).FirstOrDefault();
-
-            if (preferenceInDB == null)
-            {
-                preferenceInDB = new Preference()
-                {
-                    PreferenceID = 1,
-                    AzureStore = "",
-                    LoginEmail = "",
-                    Password = "",
-                    HasInternetConnection = preference.HasInternetConnection,
-                    LoggedIn = false,
-                    Token = "",
-                };
-
-                dbLogin.Preferences.Add(preferenceInDB);
-            }
-            else
-            {
-                preferenceInDB.HasInternetConnection = preference.HasInternetConnection;               
-            }
-
-            try
-            {
-                dbLogin.SaveChanges();
-
-                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes._StoredInTable_AndDatabase_, "Preference", "Preferences", "CSSPDBLogin.db")));
-            }
-            catch (Exception ex)
-            {
-                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotAdd_Error_, "Preference", ex.Message)));
-                return await Task.FromResult(false);
-            }
-
-            preference.PreferenceID = preferenceInDB.PreferenceID;
-            preference.AzureStore = await Descramble(preferenceInDB.AzureStore);
-            preference.LoginEmail = await Descramble(preferenceInDB.LoginEmail);
-            preference.Password = await Descramble(preferenceInDB.Password);
-            preference.HasInternetConnection = preferenceInDB.HasInternetConnection;
-            preference.LoggedIn = preferenceInDB.LoggedIn;
-            preference.Token = await Descramble(preferenceInDB.Token);
+            var actionPreference = await PreferenceService.AddOrChange("HasInternetConnection", await LocalService.Scramble(HasInternetConnection.ToString()));
+            if (!await DoStatusActionPreference(actionPreference, "HasInternetConnection")) return await Task.FromResult(false);
 
             AppendStatus(new AppendEventArgs(""));
 

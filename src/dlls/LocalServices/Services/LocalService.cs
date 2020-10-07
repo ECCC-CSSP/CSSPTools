@@ -146,7 +146,7 @@ namespace LocalServices
                 {
                     LoggedInContactInfo.TVTypeUserAuthorizationList = new List<TVTypeUserAuthorization>();
                     LoggedInContactInfo.TVItemUserAuthorizationList = new List<TVItemUserAuthorization>();
-                    LoggedInContactInfo.Preference = new Preference();
+                    //LoggedInContactInfo.PreferenceList = new List<Preference>();
                 }
                 else
                 {
@@ -199,35 +199,6 @@ namespace LocalServices
                             return await Task.FromResult(false);
                         }
                     }
-
-                    // doing Preference
-                    Preference preference = (from c in dbLogin.Preferences
-                                             select c).FirstOrDefault();
-
-                    if (preference != null)
-                    {
-                        Preference preferenceNew = new Preference();
-                        preferenceNew.PreferenceID = preference.PreferenceID;
-                        preferenceNew.AzureStore = await Descramble(preference.AzureStore);
-                        preferenceNew.LoginEmail = await Descramble(preference.LoginEmail);
-                        preferenceNew.Password = await Descramble(preference.Password);
-                        preferenceNew.Token = await Descramble(preference.Token);
-                        preferenceNew.HasInternetConnection = preference.HasInternetConnection;
-                        preferenceNew.LoggedIn = preference.LoggedIn;
-
-                        LoggedInContactInfo.Preference = preferenceNew;
-
-                        try
-                        {
-                            dbLoginIM.Preferences.Add(preferenceNew);
-                            await dbLoginIM.SaveChangesAsync();
-                        }
-                        catch (Exception)
-                        {
-                            // nothing yet
-                            return await Task.FromResult(false);
-                        }
-                    }
                 }
             }
             else
@@ -240,8 +211,6 @@ namespace LocalServices
                                                                    where c.ContactTVItemID == LoggedInContactInfo.LoggedInContact.ContactTVItemID
                                                                    select c).ToList();
 
-                LoggedInContactInfo.Preference = (from c in dbLoginIM.Preferences
-                                                  select c).FirstOrDefault();
             }
 
             return await Task.FromResult(true);

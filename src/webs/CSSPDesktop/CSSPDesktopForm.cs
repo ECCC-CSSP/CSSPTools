@@ -1,6 +1,7 @@
 ﻿using CSSPCultureServices.Resources;
 using CSSPCultureServices.Services;
 using CSSPDBFilesManagementServices;
+using CSSPDBLoginServices;
 using CSSPDesktopServices.Models;
 using CSSPDesktopServices.Services;
 using CSSPEnums;
@@ -229,9 +230,11 @@ namespace CSSPDesktop
         {
             if (!await CSSPDesktopService.CheckingInternetConnection()) return await Task.FromResult(false);
 
-            if (CSSPDesktopService.preference.HasInternetConnection != null)
+            Preference preference = await CSSPDesktopService.GetPreferenceWithVariableName("HasInternetConnection");
+
+            if (preference != null)
             {
-                if ((bool)CSSPDesktopService.preference.HasInternetConnection)
+                if (bool.Parse(preference.VariableValue))
                 {
                     Text = CSSPCultureDesktopRes.FormTitleText + $" --- ({ CSSPCultureDesktopRes.ConnectedOnInternet })";
                 }
@@ -257,7 +260,7 @@ namespace CSSPDesktop
                 CanEnableLoginButton = false;
             }
 
-              Regex regex = new Regex(@"^([\w\!\#$\%\&\'*\+\-\/\=\?\^`{\|\}\~]+\.)*[\w\!\#$\%\&\'‌​*\+\-\/\=\?\^`{\|\}\~]+@((((([a-zA-Z0-9]{1}[a-zA-Z0-9\-]{0,62}[a-zA-Z0-9]{1})|[‌​a-zA-Z])\.)+[a-zA-Z]{2,6})|(\d{1,3}\.){3}\d{1,3}(\:\d{1,5})?)$");
+            Regex regex = new Regex(@"^([\w\!\#$\%\&\'*\+\-\/\=\?\^`{\|\}\~]+\.)*[\w\!\#$\%\&\'‌​*\+\-\/\=\?\^`{\|\}\~]+@((((([a-zA-Z0-9]{1}[a-zA-Z0-9\-]{0,62}[a-zA-Z0-9]{1})|[‌​a-zA-Z])\.)+[a-zA-Z]{2,6})|(\d{1,3}\.){3}\d{1,3}(\:\d{1,5})?)$");
 
             Match match = regex.Match(textBoxLoginEmailLogin.Text);
 
@@ -385,12 +388,17 @@ namespace CSSPDesktop
 
             if (!CSSPDesktopService.LoginRequired)
             {
-                if (CSSPDesktopService.preference.HasInternetConnection != null && CSSPDesktopService.preference.HasInternetConnection == true)
+                Preference preferenceHasInternetConnection = await CSSPDesktopService.GetPreferenceWithVariableName("HasInternetConnection");
+
+                if (bool.Parse(preferenceHasInternetConnection.VariableValue))
                 {
+                    Preference preferenceLoginEmail = await CSSPDesktopService.GetPreferenceWithVariableName("LoginEmail");
+                    Preference preferencePassword = await CSSPDesktopService.GetPreferenceWithVariableName("Password");
+
                     LoginModel loginModel = new LoginModel()
                     {
-                        LoginEmail = CSSPDesktopService.preference.LoginEmail,
-                        Password = CSSPDesktopService.preference.Password,
+                        LoginEmail = preferenceLoginEmail.VariableValue,
+                        Password = preferencePassword.VariableValue,
                     };
 
                     if (!await CSSPDesktopService.Login(loginModel)) return await Task.FromResult(false);
@@ -405,7 +413,9 @@ namespace CSSPDesktop
                 lblContactLoggedIn.Text = "";
                 ShowPanels(ShowPanel.Login);
 
-                if (CSSPDesktopService.preference.HasInternetConnection == null || (bool)CSSPDesktopService.preference.HasInternetConnection == false)
+                Preference preferenceHasInternetConnection = await CSSPDesktopService.GetPreferenceWithVariableName("HasInternetConnection");
+
+                if (!bool.Parse(preferenceHasInternetConnection.VariableValue))
                 {
                     butLogin.Enabled = false;
                     lblInternetRequiredLogin.Visible = true;
@@ -465,6 +475,7 @@ namespace CSSPDesktop
             Services.AddSingleton<ICSSPDBFilesManagementService, CSSPDBFilesManagementService>();
             Services.AddSingleton<IDownloadGzFileService, DownloadGzFileService>();
             Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
+            Services.AddSingleton<IPreferenceService, PreferenceService>();
 
             // doing CSSPLocal
             string CSSPDBLocal = Configuration.GetValue<string>("CSSPDBLocal");
@@ -579,7 +590,7 @@ namespace CSSPDesktop
             CSSPDesktopService.StatusInstalling += CSSPDesktopService_StatusInstalling;
 
             CSSPDesktopService.IsEnglish = IsEnglish;
-            SettingUpAllTextForLanguage();
+
             if (!await CSSPDesktopService.ReadConfiguration()) return await Task.FromResult(false);
 
             CSSPSQLiteService = Provider.GetService<ICSSPSQLiteService>();
@@ -591,10 +602,17 @@ namespace CSSPDesktop
             if (!await CSSPDesktopService.CreateAllRequiredDirectories()) return await Task.FromResult(false);
 
 
-            SettingUpAllTextForLanguage();
+            // create CSSPDBLogin if it does not exist
+            FileInfo fi = new FileInfo(CSSPDesktopService.CSSPDBLogin);
+            if (!fi.Exists)
+            {
+                if (!await CSSPSQLiteService.CreateSQLiteCSSPDBLogin()) return await Task.FromResult(false);
+            }
+
+            await SettingUpAllTextForLanguage();
 
             // create CSSPDBLocal if it does not exist
-            FileInfo fi = new FileInfo(CSSPDesktopService.CSSPDBLocal);
+            fi = new FileInfo(CSSPDesktopService.CSSPDBLocal);
             if (!fi.Exists)
             {
                 if (!await CSSPSQLiteService.CreateSQLiteCSSPDBLocal()) return await Task.FromResult(false);
@@ -621,13 +639,6 @@ namespace CSSPDesktop
                 if (!await CSSPSQLiteService.CreateSQLiteCSSPDBFilesManagement()) return await Task.FromResult(false);
             }
 
-            // create CSSPDBLogin if it does not exist
-            fi = new FileInfo(CSSPDesktopService.CSSPDBLogin);
-            if (!fi.Exists)
-            {
-                if (!await CSSPSQLiteService.CreateSQLiteCSSPDBLogin()) return await Task.FromResult(false);
-            }
-
             splitContainerFirst.Dock = DockStyle.Fill;
             panelHelp.Dock = DockStyle.Fill;
             richTextBoxStatus.Dock = DockStyle.Fill;
@@ -648,7 +659,7 @@ namespace CSSPDesktop
 
             return await Task.FromResult(true);
         }
-        private void SettingUpAllTextForLanguage()
+        private async Task SettingUpAllTextForLanguage()
         {
             CSSPDesktopService.IsEnglish = IsEnglish;
 
@@ -661,22 +672,32 @@ namespace CSSPDesktop
                 CSSPCultureService.SetCulture("fr-CA");
             }
 
-            // Form
-            if (CSSPDesktopService.preference.HasInternetConnection == null)
+            try
             {
-                Text = CSSPCultureDesktopRes.FormTitleText;
-            }
-            else
-            {
-                if ((bool)CSSPDesktopService.preference.HasInternetConnection)
+                Preference preferenceHasInternetConnection = await CSSPDesktopService.GetPreferenceWithVariableName("HasInternetConnection");
+
+                if (preferenceHasInternetConnection == null)
                 {
-                    Text = CSSPCultureDesktopRes.FormTitleText + $" --- ({ CSSPCultureDesktopRes.ConnectedOnInternet })";
+                    Text = CSSPCultureDesktopRes.FormTitleText;
                 }
                 else
                 {
-                    Text = CSSPCultureDesktopRes.FormTitleText + $" --- ({ CSSPCultureDesktopRes.NoInternetConnection })";
+                    if (bool.Parse(preferenceHasInternetConnection.VariableValue))
+                    {
+                        Text = CSSPCultureDesktopRes.FormTitleText + $" --- ({ CSSPCultureDesktopRes.ConnectedOnInternet })";
+                    }
+                    else
+                    {
+                        Text = CSSPCultureDesktopRes.FormTitleText + $" --- ({ CSSPCultureDesktopRes.NoInternetConnection })";
+                    }
                 }
+
             }
+            catch (Exception ex)
+            {
+                // nothing
+            }
+
 
             // PanelTop
             butShowLanguagePanel.Text = CSSPCultureDesktopRes.butShowLanguagePanelText;

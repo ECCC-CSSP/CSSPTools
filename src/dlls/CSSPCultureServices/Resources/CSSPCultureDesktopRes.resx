@@ -123,6 +123,9 @@
   <data name="AzureFile_DidNotChanged" xml:space="preserve">
     <value>Azure file {0} did not changed</value>
   </data>
+  <data name="BadRequest_" xml:space="preserve">
+    <value>Bad request {0}</value>
+  </data>
   <data name="butCancelUpdateText" xml:space="preserve">
     <value>Cancel</value>
   </data>
@@ -206,6 +209,9 @@
   </data>
   <data name="CouldNotFind_InDBLogin" xml:space="preserve">
     <value>Could not find {0} in dbLogin</value>
+  </data>
+  <data name="CouldNotFind_InDBLogin_" xml:space="preserve">
+    <value>Could not find {0} in CSSPDBLogin {1}</value>
   </data>
   <data name="CouldNotGetPropertiesFromAzureStore_AndFile_" xml:space="preserve">
     <value>Could not read properties from Azure Store {0} and file {1}</value>
@@ -293,6 +299,9 @@
   </data>
   <data name="Found_InDBLogin" xml:space="preserve">
     <value>Found {0} in dbLogin</value>
+  </data>
+  <data name="Found_InDBLogin_" xml:space="preserve">
+    <value>Found {0} in DBLogin {1}</value>
   </data>
   <data name="HelpFileFound_" xml:space="preserve">
     <value>Help file found {0}</value>
@@ -387,6 +396,9 @@
   <data name="RegisteringIn" xml:space="preserve">
     <value>Registering in ...</value>
   </data>
+  <data name="ServerError" xml:space="preserve">
+    <value>Server error</value>
+  </data>
   <data name="ServerNotRespondingDoYouHaveInternetConnection" xml:space="preserve">
     <value>Server not responding. Do you have internet connection?</value>
   </data>
@@ -401,6 +413,9 @@
   </data>
   <data name="UnableToLoginAs_WithProvidedPassword" xml:space="preserve">
     <value>Unable to login as [{0}] with provided password</value>
+  </data>
+  <data name="Unauthorized" xml:space="preserve">
+    <value>Unauthorized</value>
   </data>
   <data name="UnmanagedServerError_" xml:space="preserve">
     <value>Unmanaged server error: [{0}]</value>

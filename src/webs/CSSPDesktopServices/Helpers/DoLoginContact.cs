@@ -75,7 +75,6 @@ namespace CSSPDesktopServices.Services
                         AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail)));
                         return await Task.FromResult(false);
                     }
-
                 }
                 catch (Exception ex)
                 {
@@ -113,6 +112,8 @@ namespace CSSPDesktopServices.Services
                     AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotAdd_Error_, "Contact", ex.Message)));
                     return await Task.FromResult(false);
                 }
+
+                await LocalService.SetLoggedInContactInfo();
             }
 
             return await Task.FromResult(true);

@@ -42,9 +42,27 @@ namespace ReadGzFileServices
                 gzExistLocaly = true;
             }
 
-            if (LocalService.LoggedInContactInfo.Preference.HasInternetConnection != null && LocalService.LoggedInContactInfo.Preference.HasInternetConnection == true)
+            bool HasInternetConnection = false;
+
+            var actionPreferenceHasInternetConnection = await PreferenceService.GetWithVariableName("HasInternetConnection");
+            if (((ObjectResult)actionPreferenceHasInternetConnection.Result).StatusCode == 200)
             {
-                BlobClient blobClient = new BlobClient(LocalService.LoggedInContactInfo.Preference.AzureStore, AzureStoreCSSPJSONPath, fileName);
+                Preference preference = (Preference)((OkObjectResult)actionPreferenceHasInternetConnection.Result).Value;
+                HasInternetConnection = bool.Parse(await LocalService.Descramble(preference.VariableValue));
+            }
+
+            if (HasInternetConnection)
+            {
+                string AzureStore = "";
+
+                var actionPreferenceAzureStore = await PreferenceService.GetWithVariableName("AzureStore");
+                if (((ObjectResult)actionPreferenceAzureStore.Result).StatusCode == 200)
+                {
+                    Preference preference = (Preference)((OkObjectResult)actionPreferenceAzureStore.Result).Value;
+                    AzureStore = await LocalService.Descramble(preference.VariableValue);
+                }
+
+                BlobClient blobClient = new BlobClient(AzureStore, AzureStoreCSSPJSONPath, fileName);
                 BlobProperties blobProperties = null;
 
                 try

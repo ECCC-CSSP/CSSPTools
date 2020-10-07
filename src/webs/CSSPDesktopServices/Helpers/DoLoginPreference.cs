@@ -11,6 +11,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CSSPDesktopServices.Services
 {
@@ -54,49 +55,62 @@ namespace CSSPDesktopServices.Services
                     return await Task.FromResult(false);
                 }
 
-                List<Preference> preferenceToDeleteList = (from c in dbLogin.Preferences
-                                                           select c).ToList();
-
-                if (preferenceToDeleteList.Count > 0)
+                List<string> VariableNameList = new List<string>()
                 {
-                    try
-                    {
-                        dbLogin.Preferences.RemoveRange(preferenceToDeleteList);
-                        dbLogin.SaveChanges();
-                    }
-                    catch (Exception ex)
-                    {
-                        AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotDelete_Error_, "PreferenceToDeleteList", ex.Message)));
-                        return await Task.FromResult(false);
-                    }
-                }
-
-                Preference preference = new Preference()
-                {
-                    PreferenceID = 1,
-                    AzureStore = await LocalService.Scramble(AzureStore),
-                    LoginEmail = await LocalService.Scramble(loginModel.LoginEmail),
-                    Password = await LocalService.Scramble(loginModel.Password),
-                    HasInternetConnection = true,
-                    LoggedIn = true,
-                    Token = await LocalService.Scramble(contact.Token),
+                    "AzureStore",
+                    "LoginEmail",
+                    "Password",
+                    "Token",
+                    "HasInternetConnection",
+                    "LoggedIn"
                 };
 
-                try
+                List<string> VariableValueList = new List<string>()
                 {
-                    dbLogin.Preferences.Add(preference);
-                    dbLogin.SaveChanges();
+                    await LocalService.Scramble(AzureStore),
+                    await LocalService.Scramble(loginModel.LoginEmail),
+                    await LocalService.Scramble(loginModel.Password),
+                    await LocalService.Scramble(contact.Token),
+                    await LocalService.Scramble("true"),
+                    await LocalService.Scramble("true"),
+                };
 
-                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes._StoredInTable_AndDatabase_, "Preference", "Preferences", "CSSPDBLogin.db")));
-                }
-                catch (Exception ex)
+                for (int i = 0; i < VariableNameList.Count; i++)
                 {
-                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotAdd_Error_, "Preference", ex.Message)));
-                    return await Task.FromResult(false);
+                    var actionPreference = await PreferenceService.AddOrChange(VariableNameList[i], VariableValueList[i]);
+                    if (!await DoStatusActionPreference(actionPreference, VariableNameList[i])) return await Task.FromResult(false);
                 }
             }
 
             AppendStatus(new AppendEventArgs(""));
+
+            return await Task.FromResult(true);
+        }
+
+        private async Task<bool> DoStatusActionPreference(ActionResult<Preference> actionPreference, string VariableName)
+        {
+            if (((ObjectResult)actionPreference.Result).StatusCode == 200)
+            {
+                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes._StoredInTable_AndDatabase_, VariableName, "Preferences", "CSSPDBLogin.db")));
+            }
+            else
+            {
+                if (((ObjectResult)actionPreference.Result).StatusCode == 401)
+                {
+                    AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.Unauthorized));
+                    return await Task.FromResult(false);
+                }
+                else if (((ObjectResult)actionPreference.Result).StatusCode == 404)
+                {
+                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.BadRequest_, ((ObjectResult)actionPreference.Result).Value)));
+                    return await Task.FromResult(false);
+                }
+                else
+                {
+                    AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.ServerError));
+                    return await Task.FromResult(false);
+                }
+            }
 
             return await Task.FromResult(true);
         }

@@ -35,7 +35,6 @@ namespace CSSPDesktopServices.Tests
 
             Assert.True(await CSSPDesktopService.CheckIfLoginIsRequired());
             Assert.NotNull(CSSPDesktopService.contact);
-            Assert.NotNull(CSSPDesktopService.preference);
         }
         #endregion Tests
 

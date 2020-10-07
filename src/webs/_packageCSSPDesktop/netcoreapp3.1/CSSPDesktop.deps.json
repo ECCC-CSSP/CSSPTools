@@ -1530,6 +1530,7 @@
       "ReadGzFileServices/1.0.0": {
         "dependencies": {
           "Azure.Storage.Blobs": "12.6.0",
+          "CSSPDBLoginServices": "1.0.0",
           "CSSPModels": "1.0.0",
           "DownloadGzFileServices": "1.0.0",
           "LocalServices": "1.0.0",

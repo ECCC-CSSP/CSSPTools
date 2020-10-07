@@ -38,6 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CSSPDBLoginServices\CSSPDBLoginServices.csproj" />
     <ProjectReference Include="..\CSSPModels\CSSPModels.csproj" />
     <ProjectReference Include="..\DownloadGzFileServices\DownloadGzFileServices.csproj" />
     <ProjectReference Include="..\LocalServices\LocalServices.csproj" />

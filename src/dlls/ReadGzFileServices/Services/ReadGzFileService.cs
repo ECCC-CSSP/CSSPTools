@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using LocalServices;
 using DownloadGzFileServices;
 using CSSPDBFilesManagementServices;
+using CSSPDBLoginServices;
 
 namespace ReadGzFileServices
 {
@@ -35,6 +36,7 @@ namespace ReadGzFileServices
         private IEnums enums { get; }
         private IDownloadGzFileService DownloadGzFileService { get; }
         private ICSSPDBFilesManagementService CSSPDBFilesManagementService { get; }
+        private IPreferenceService PreferenceService { get; }
         private string AzureStoreCSSPJSONPath { get; set; }
         private string CSSPJSONPath { get; set; }
         private string CSSPAzureUrl { get; set; }
@@ -42,7 +44,7 @@ namespace ReadGzFileServices
 
         #region Constructors
         public ReadGzFileService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, ILocalService LocalService, 
-            IEnums enums, IDownloadGzFileService DownloadGzFileService, ICSSPDBFilesManagementService CSSPDBFilesManagementService)
+            IEnums enums, IDownloadGzFileService DownloadGzFileService, ICSSPDBFilesManagementService CSSPDBFilesManagementService, IPreferenceService PreferenceService)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
@@ -50,6 +52,7 @@ namespace ReadGzFileServices
             this.enums = enums;
             this.DownloadGzFileService = DownloadGzFileService;
             this.CSSPDBFilesManagementService = CSSPDBFilesManagementService;
+            this.PreferenceService = PreferenceService;
 
             AzureStoreCSSPJSONPath = Configuration.GetValue<string>("AzureStoreCSSPJSONPath");
             CSSPJSONPath = Configuration.GetValue<string>("CSSPJSONPath");

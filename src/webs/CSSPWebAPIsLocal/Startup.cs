@@ -20,6 +20,7 @@ using CSSPDBFilesManagementServices;
 using DownloadGzFileServices;
 using ReadGzFileServices;
 using CSSPDBSearchServices;
+using CSSPDBLoginServices;
 
 namespace CSSPWebAPIsLocal
 {
@@ -153,6 +154,7 @@ namespace CSSPWebAPIsLocal
             services.AddScoped<ICSSPDBFilesManagementService, CSSPDBFilesManagementService>();
             services.AddScoped<IDownloadGzFileService, DownloadGzFileService>();
             services.AddScoped<IReadGzFileService, ReadGzFileService>();
+            services.AddScoped<IPreferenceService, PreferenceService>();
             services.AddScoped<ICSSPDBSearchService, CSSPDBSearchService>();
 
             services.AddSpaStaticFiles(configuration =>

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using CSSPDesktopServices.Models;
 using CSSPModels;
 using CSSPCultureServices.Resources;
+using System.Runtime.CompilerServices;
 
 namespace CSSPDesktopServices.Services
 {
@@ -31,27 +32,25 @@ namespace CSSPDesktopServices.Services
 
             AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.Found_InDBLogin, "Contact")));
 
-            // doing preference
-            Preference preferenceInDB = (from c in dbLogin.Preferences
-                                         select c).FirstOrDefault();
+            Preference preferenceLoggedIn = await GetPreferenceWithVariableName("LoggedIn");
 
-            if (preferenceInDB == null)
+            if (preferenceLoggedIn == null)
             {
-                preference = null;
-                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotFind_InDBLogin, "Preference")));
+                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotFind_InDBLogin_, "LoggedIn", "Preferences")));
+                return await Task.FromResult(false);
+            }
+
+            bool LoggedIn = bool.Parse(preferenceLoggedIn.VariableValue);
+
+            if (!LoggedIn)
+            {
+                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotFind_InDBLogin_, "LoggedIn", "Preferences")));
 
                 LoginRequired = true;
                 return await Task.FromResult(true);
             }
 
-            AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.Found_InDBLogin, "Preference")));
-            preference.PreferenceID = preferenceInDB.PreferenceID;
-            preference.AzureStore = await Descramble(preferenceInDB.AzureStore);
-            preference.LoginEmail = await Descramble(preferenceInDB.LoginEmail);
-            preference.Password = await Descramble(preferenceInDB.Password);
-            preference.HasInternetConnection = preferenceInDB.HasInternetConnection;
-            preference.LoggedIn = preferenceInDB.LoggedIn;
-            preference.Token = await Descramble(preferenceInDB.Token);
+            AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.Found_InDBLogin_, "LoggedIn", "Preference")));
 
             LoginRequired = false;
 

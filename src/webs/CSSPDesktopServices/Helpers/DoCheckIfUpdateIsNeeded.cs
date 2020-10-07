@@ -1,20 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Azure;
+using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
+using CSSPCultureServices.Resources;
+using CSSPDesktopServices.Models;
+using CSSPEnums;
+using CSSPModels;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Azure.Storage.Blobs;
 using System.IO;
-using Azure.Storage.Blobs.Models;
-using CSSPDesktopServices.Models;
-using CSSPModels;
-using CSSPCultureServices.Resources;
-using Azure;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using CSSPEnums;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace CSSPDesktopServices.Services
 {
@@ -26,7 +22,32 @@ namespace CSSPDesktopServices.Services
 
             UpdateIsNeeded = false;
 
-            if (preference.HasInternetConnection == null || (bool)preference.HasInternetConnection == false)
+            Preference preferenceHasInternetConnection = await GetPreferenceWithVariableName("HasInternetConnection");
+
+            if (preferenceHasInternetConnection == null)
+            {
+                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotFind_InDBLogin_, "HasInternetConnection", "Preferences")));
+                return await Task.FromResult(false);
+            }
+
+            bool HasInternetConnection = bool.Parse(preferenceHasInternetConnection.VariableValue);
+
+            if (!HasInternetConnection)
+            {
+                return await Task.FromResult(true);
+            }
+
+            Preference preferenceAzureStore = await GetPreferenceWithVariableName("AzureStore");
+
+            if (preferenceAzureStore == null)
+            {
+                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotFind_InDBLogin_, "AzureStore", "Preferences")));
+                return await Task.FromResult(false);
+            }
+
+            string AzureStore = preferenceAzureStore.VariableValue;
+
+            if (string.IsNullOrWhiteSpace(AzureStore))
             {
                 return await Task.FromResult(true);
             }
@@ -41,7 +62,8 @@ namespace CSSPDesktopServices.Services
             {
                 FileInfo fi = new FileInfo($"{ CSSPDesktopPath }{ zipFileName }");
 
-                BlobClient blobClient = new BlobClient(preference.AzureStore, AzureStoreCSSPWebAPIsLocalPath, zipFileName);
+
+                BlobClient blobClient = new BlobClient(AzureStore, AzureStoreCSSPWebAPIsLocalPath, zipFileName);
                 BlobProperties blobProperties = null;
 
                 try
@@ -92,8 +114,8 @@ namespace CSSPDesktopServices.Services
 
                 WebTypeEnum webType = WebTypeEnum.WebRoot;
 
-                foreach(int enumVal in Enum.GetValues(typeof(WebTypeEnum)))
-                    {
+                foreach (int enumVal in Enum.GetValues(typeof(WebTypeEnum)))
+                {
 
                     if (((WebTypeEnum)enumVal).ToString() == enumTypeName)
                     {
@@ -104,7 +126,7 @@ namespace CSSPDesktopServices.Services
 
                 FileInfo fi = new FileInfo($"{ CSSPDesktopPath }{ jsonFileName }");
 
-                BlobClient blobClient = new BlobClient(preference.AzureStore, AzureStoreCSSPJSONPath, jsonFileName);
+                BlobClient blobClient = new BlobClient(AzureStore, AzureStoreCSSPJSONPath, jsonFileName);
                 BlobProperties blobProperties = null;
 
                 try
@@ -153,7 +175,7 @@ namespace CSSPDesktopServices.Services
                 AppendStatus(new AppendEventArgs("CSSPDBSearch needs to be populated"));
                 UpdateIsNeeded = true;
             }
-            
+
             AppendStatus(new AppendEventArgs(""));
 
             return await Task.FromResult(true);

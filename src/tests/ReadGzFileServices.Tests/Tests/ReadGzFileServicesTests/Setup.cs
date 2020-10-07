@@ -17,6 +17,7 @@ using System.Linq;
 using LocalServices;
 using CSSPDBFilesManagementServices;
 using DownloadGzFileServices;
+using CSSPDBLoginServices;
 
 namespace ReadGzFileServices.Tests
 {
@@ -31,6 +32,7 @@ namespace ReadGzFileServices.Tests
         private IServiceCollection Services { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
         private ICSSPDBFilesManagementService CSSPDBFilesManagementService { get; set; }
+        //private IPreferenceService PreferenceService { get; set; }
         private IReadGzFileService ReadGzFileService { get; set; }
         private ILocalService LocalService { get; set; }
         private CSSPDBContext db { get; set; }
@@ -127,6 +129,7 @@ namespace ReadGzFileServices.Tests
             Services.AddSingleton<IDownloadGzFileService, DownloadGzFileService>();
             Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
             Services.AddSingleton<ILocalService, LocalService>();
+            Services.AddSingleton<IPreferenceService, PreferenceService>();
 
             Provider = Services.BuildServiceProvider();
             Assert.NotNull(Provider);

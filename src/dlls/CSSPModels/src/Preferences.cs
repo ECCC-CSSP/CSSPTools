@@ -17,16 +17,20 @@ namespace CSSPModels
         [Key]
         public int PreferenceID { get; set; }
         [CSSPMaxLength(200)]
-        public string AzureStore { get; set; }
+        public string VariableName { get; set; }
         [CSSPMaxLength(200)]
-        public string LoginEmail { get; set; }
-        [CSSPMaxLength(100)]
-        public string Password { get; set; }
-        public bool? HasInternetConnection { get; set; }
-        public bool? LoggedIn { get; set; }
-        [CSSPMaxLength(300)]
-        [CSSPAllowNull]
-        public string Token { get; set; }
+        public string VariableValue { get; set; }
+        //[CSSPMaxLength(200)]
+        //public string AzureStore { get; set; }
+        //[CSSPMaxLength(200)]
+        //public string LoginEmail { get; set; }
+        //[CSSPMaxLength(100)]
+        //public string Password { get; set; }
+        //public bool? HasInternetConnection { get; set; }
+        //public bool? LoggedIn { get; set; }
+        //[CSSPMaxLength(300)]
+        //[CSSPAllowNull]
+        //public string Token { get; set; }
         #endregion Properties in DB
 
         #region Constructors

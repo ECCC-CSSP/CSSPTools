@@ -102,7 +102,22 @@ namespace CSSPDesktopServices.Services
 
             FileInfo fi = new FileInfo($"{ CSSPJSONPath }{ jsonFileName }");
 
-            BlobClient blobClient = new BlobClient(preference.AzureStore, AzureStoreCSSPJSONPath, jsonFileName);
+            Preference preferenceAzureStore = await GetPreferenceWithVariableName("AzureStore");
+
+            if (preferenceAzureStore == null)
+            {
+                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotFind_InDBLogin_, "AzureStore", "Preferences")));
+                return await Task.FromResult(false);
+            }
+
+            string AzureStore = preferenceAzureStore.VariableValue;
+
+            if (string.IsNullOrWhiteSpace(AzureStore))
+            {
+                return await Task.FromResult(true);
+            }
+
+            BlobClient blobClient = new BlobClient(AzureStore, AzureStoreCSSPJSONPath, jsonFileName);
             BlobProperties blobProperties = null;
 
             try
@@ -182,7 +197,7 @@ namespace CSSPDesktopServices.Services
                 if (jsonFileName == "WebAllTVItemLanguage.gz")
                 {
                     AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.FillingCSSPDBSearchDatabaseWith_Info, jsonFileName.Replace("Language", "") + " & " + jsonFileName)));
-                    
+
                     if (!await FillCSSPDBSearch()) return await Task.FromResult(false);
                 }
             }
@@ -204,7 +219,27 @@ namespace CSSPDesktopServices.Services
 
             FileInfo fi = new FileInfo($"{ CSSPDesktopPath }{ zipFileName }");
 
-            BlobClient blobClient = new BlobClient(preference.AzureStore, AzureStoreCSSPWebAPIsLocalPath, zipFileName);
+            Preference preferenceAzureStore = await GetPreferenceWithVariableName("AzureStore");
+
+            if (preferenceAzureStore == null)
+            {
+                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotFind_InDBLogin_, "AzureStore", "Preferences")));
+                return await Task.FromResult(false);
+            }
+
+            string AzureStore = preferenceAzureStore.VariableValue;
+
+            if (string.IsNullOrWhiteSpace(AzureStore))
+            {
+                return await Task.FromResult(true);
+            }
+
+            if (string.IsNullOrWhiteSpace(AzureStore))
+            {
+                return await Task.FromResult(true);
+            }
+
+            BlobClient blobClient = new BlobClient(AzureStore, AzureStoreCSSPWebAPIsLocalPath, zipFileName);
             BlobProperties blobProperties = null;
 
             try
