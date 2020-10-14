@@ -1,22 +1,22 @@
 import { getTreeControlFunctionsMissingError } from '@angular/cdk/tree';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, of } from 'rxjs';
-import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
-import { TVItemModel } from 'src/app/models/generated/TVItemModel.model';
-import { ChildCountModel, ChildCountTextModel } from './child-count.models';
+import { TVTypeEnum } from '../../enums/generated/TVTypeEnum';
+import { TVItemModel } from '../../models/generated/TVItemModel.model';
+import { ChildCountVar } from './child-count.models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChildCountService {
-  ChildCountTextModel$: BehaviorSubject<ChildCountTextModel> = new BehaviorSubject<ChildCountTextModel>(<ChildCountTextModel>{});
+  ChildCountVar$: BehaviorSubject<ChildCountVar> = new BehaviorSubject<ChildCountVar>(<ChildCountVar>{});
 
   constructor() {
-    this.UpdateChildCountTextModel(<ChildCountTextModel>{});
+    this.UpdateChildCountVar(<ChildCountVar>{});
   }
 
-  UpdateChildCountTextModel(childCountTextModel: ChildCountTextModel) {
-    this.ChildCountTextModel$.next(<ChildCountTextModel>{ ...this.ChildCountTextModel$.getValue(), ...childCountTextModel });
+  UpdateChildCountVar(childCountVar: ChildCountVar) {
+    this.ChildCountVar$.next(<ChildCountVar>{ ...this.ChildCountVar$.getValue(), ...childCountVar });
   }
 
   GetCount(tvItemModel: TVItemModel, tvType?: TVTypeEnum): number {

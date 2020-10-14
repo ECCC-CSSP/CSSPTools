@@ -1,15 +1,9 @@
-import { HttpRequestModel } from '../../models/HttpRequest.model';
 import { WebProvince } from '../../models/generated/WebProvince.model';
-import { WebBase } from 'src/app/models/generated/WebBase.model';
+import { WebBase } from '../../models/generated/WebBase.model';
+import { HttpStatus } from '../../models/HttpStatus.model';
 
-export interface ProvinceTextModel {
-    Title?: string;
-}
-
-export interface WebProvinceModel extends HttpRequestModel  {
+export interface ProvinceVar extends HttpStatus   {
+    ProvinceTitle?: string;
     WebProvince?: WebProvince;
-}
-
-export interface WebBaseAreaModel  {
     WebBaseAreaList?: WebBase[];
 }

@@ -1,9 +1,9 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { CountryService } from './country.service';
-import { LoadLocalesCountryText } from './country.locales';
+import { LoadLocalesCountryVar } from './country.locales';
 import { Subscription } from 'rxjs';
-import { ShellService } from '../shell';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { AppService } from 'src/app/app.service';
 
 @Component({
   selector: 'app-country',
@@ -14,10 +14,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class CountryComponent implements OnInit, OnDestroy {
   sub: Subscription;
 
-  constructor(public countryService: CountryService, public shellService: ShellService, public activateRoute: ActivatedRoute) { }
+  constructor(public countryService: CountryService, public appService: AppService, public activateRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
-    LoadLocalesCountryText(this.countryService);
+    LoadLocalesCountryVar(this.countryService);
     let TVItemID: number = this.activateRoute.snapshot.params['TVItemID'];
     this.sub = this.countryService.GetWebCountry(TVItemID).subscribe();
   }

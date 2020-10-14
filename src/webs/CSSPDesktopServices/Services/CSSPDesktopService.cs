@@ -180,10 +180,6 @@ namespace CSSPDesktopServices.Services
 
             return await Task.FromResult(true);
         }
-        public async Task<string> Descramble(string Text)
-        {
-            return await Task.FromResult(await LocalService.Descramble(Text));
-        }
         public async Task<bool> FillCSSPDBSearch()
         {
             return await DoFillCSSPDBSearch();

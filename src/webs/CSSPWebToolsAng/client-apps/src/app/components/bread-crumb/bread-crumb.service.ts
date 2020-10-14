@@ -1,19 +1,19 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, of } from 'rxjs';
-import { BreadCrumbTextModel } from './bread-crumb.models';
+import { BreadCrumbVar } from './bread-crumb.models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BreadCrumbService {
-  BreadCrumbTextModel$: BehaviorSubject<BreadCrumbTextModel> = new BehaviorSubject<BreadCrumbTextModel>(<BreadCrumbTextModel>{});
+  BreadCrumbVar$: BehaviorSubject<BreadCrumbVar> = new BehaviorSubject<BreadCrumbVar>(<BreadCrumbVar>{});
 
   constructor() {
-    this.UpdateBreadCrumbText(<BreadCrumbTextModel>{});
+    this.UpdateBreadCrumbVar(<BreadCrumbVar>{});
   }
 
-  UpdateBreadCrumbText(breadCrumbTextModel: BreadCrumbTextModel) {
-    this.BreadCrumbTextModel$.next(<BreadCrumbTextModel>{ ...this.BreadCrumbTextModel$.getValue(), ...breadCrumbTextModel });
+  UpdateBreadCrumbVar(breadCrumbVar: BreadCrumbVar) {
+    this.BreadCrumbVar$.next(<BreadCrumbVar>{ ...this.BreadCrumbVar$.getValue(), ...breadCrumbVar });
   }
 
 }

@@ -1,5 +1,6 @@
-import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Input } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { Contact } from 'src/app/models/generated/Contact.model';
 import { LoggedInContactService } from './logged-in-contact.service';
 
 @Component({
@@ -9,20 +10,16 @@ import { LoggedInContactService } from './logged-in-contact.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoggedInContactComponent implements OnInit, OnDestroy {
-  sub: Subscription;
+  @Input() LoggedInContact: Contact;
+
   
-  constructor(public loggedInContactService: LoggedInContactService) {
+  constructor() {
   }
 
   ngOnInit() {
-    this.sub = this.loggedInContactService.GetLoggedInContact().subscribe();
   }
 
   ngOnDestroy()
   {
-    if(this.sub)
-    {
-      this.sub.unsubscribe();
-    }
   }
 }

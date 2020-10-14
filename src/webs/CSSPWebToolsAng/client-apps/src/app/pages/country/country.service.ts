@@ -1,69 +1,55 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, of } from 'rxjs';
-import { LoadLocalesCountryText } from './country.locales';
+import { LoadLocalesCountryVar } from './country.locales';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 
 import { WebCountry } from '../../models/generated/WebCountry.model';
-import { CountryTextModel, WebBaseProvinceModel, WebCountryModel } from './country.models';
-import { BreadCrumbModel } from '../../models/BreadCrumb.model';
-import { ShellService } from '../shell';
-import { MapService } from 'src/app/components/map';
+import { MapService } from '../../components/map';
+import { CountryVar } from '.';
+import { AppService } from '../../app.service';
+import { BreadCrumbVar } from 'src/app/components/bread-crumb';
+import { AppVar } from 'src/app/app.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CountryService {
-  CountryTextModel$: BehaviorSubject<CountryTextModel> = new BehaviorSubject<CountryTextModel>(<CountryTextModel>{});
-  WebCountryModel$: BehaviorSubject<WebCountryModel> = new BehaviorSubject<WebCountryModel>(<WebCountryModel>{});
-  WebProvinceModel$: BehaviorSubject<WebBaseProvinceModel> = new BehaviorSubject<WebBaseProvinceModel>(<WebBaseProvinceModel>{});
+  CountryVar$: BehaviorSubject<CountryVar> = new BehaviorSubject<CountryVar>(<CountryVar>{});
 
-  constructor(public shellService: ShellService, private mapService: MapService, private httpClient: HttpClient) {
-    LoadLocalesCountryText(this);
-    this.UpdateCountryText(<CountryTextModel>{ Title: "Something for text" });
+  constructor(public appService: AppService, private mapService: MapService, private httpClient: HttpClient) {
+    LoadLocalesCountryVar(this);
+    this.UpdateCountryVar(<CountryVar>{ CountryTitle: "Something for text" });
   }
 
   GetWebCountry(TVItemID: number) {
-    this.UpdateWebCountry(<WebCountryModel>{ Working: true });
+    this.UpdateCountryVar(<CountryVar>{ Working: true });
     return this.httpClient.get<WebCountry>(`/api/Read/WebCountry/${ TVItemID }/1`).pipe(
       map((x: any) => {
-        this.UpdateWebCountry(<WebCountryModel>{ WebCountry: x, Working: false });
+        this.UpdateCountryVar(<CountryVar>{ WebCountry: x, Working: false });
         console.debug(x);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.UpdateWebCountry(<WebCountryModel>{ Working: false, Error: <HttpErrorResponse>e });
+        this.UpdateCountryVar(<CountryVar>{ Working: false, Error: <HttpErrorResponse>e });
         console.debug(e);
       })))
     );
   }
 
-  UpdateCountryText(countryTextModel: CountryTextModel) {
-    this.CountryTextModel$.next(<CountryTextModel>{ ...this.CountryTextModel$.getValue(), ...countryTextModel });
-  }
+  UpdateCountryVar(countryVar: CountryVar) {
+    this.CountryVar$.next(<CountryVar>{ ...this.CountryVar$.getValue(), ...countryVar });
 
-  UpdateWebCountry(webCountryModel: WebCountryModel) {
-    this.WebCountryModel$.next(<WebCountryModel>{ ...this.WebCountryModel$.getValue(), ...webCountryModel });
-    this.shellService.UpdateBreadCrumbModel(<BreadCrumbModel>{ WebBaseList: this.WebCountryModel$.getValue()?.WebCountry?.TVItemParentList });
+    let CountryVarProvinceList: CountryVar = <CountryVar>{ WebBaseProvinceList: [] };
 
-    let webBaseProvinceModel: WebBaseProvinceModel = <WebBaseProvinceModel>{ WebBaseProvinceList: [] };
-
-    if (this.shellService.ShellModel$?.getValue()?.ActiveVisible && this.shellService.ShellModel$?.getValue()?.InactVisible) {
-      webBaseProvinceModel = <WebBaseProvinceModel>{ WebBaseProvinceList: this.WebCountryModel$?.getValue()?.WebCountry?.TVItemProvinceList };
+    if (this.appService.AppVar$?.getValue()?.InactVisible) {
+      CountryVarProvinceList = <CountryVar>{ WebBaseProvinceList: this.CountryVar$?.getValue()?.WebCountry?.TVItemProvinceList.filter((province) => { return province.TVItemModel.TVItem.IsActive == true }) };
     }
-    else if (this.shellService.ShellModel$?.getValue()?.ActiveVisible) {
-      webBaseProvinceModel = <WebBaseProvinceModel>{ WebBaseProvinceList: this.WebCountryModel$?.getValue()?.WebCountry?.TVItemProvinceList.filter((country) => { return country.TVItemModel.TVItem.IsActive == true }) };
-    }
-    else if (this.shellService.ShellModel$?.getValue()?.InactVisible) {
-      webBaseProvinceModel = <WebBaseProvinceModel>{ WebBaseProvinceList: this.WebCountryModel$?.getValue()?.WebCountry?.TVItemProvinceList.filter((country) => { return country.TVItemModel.TVItem.IsActive == false }) };
+    else {
+      CountryVarProvinceList = <CountryVar>{ WebBaseProvinceList: this.CountryVar$?.getValue()?.WebCountry?.TVItemProvinceList };
     }
 
-    this.UpdateWebProvinceModel(webBaseProvinceModel);
-  }
+    this.CountryVar$.next(<CountryVar>{ ...this.CountryVar$.getValue(), ...CountryVarProvinceList });
 
-  UpdateWebProvinceModel(webBaseProvinceModel: WebBaseProvinceModel) {
-    this.WebProvinceModel$.next(<WebBaseProvinceModel>{ ...this.WebProvinceModel$.getValue(), ...webBaseProvinceModel });
-    if (webBaseProvinceModel.WebBaseProvinceList != undefined  && webBaseProvinceModel.WebBaseProvinceList.length > 0) {
-        this.mapService.FillMapMarkers(webBaseProvinceModel.WebBaseProvinceList);
-    }
+    this.appService.UpdateAppVar(<AppVar>{ BreadCrumbWebBaseList: this.CountryVar$.getValue()?.WebCountry?.TVItemParentList });
   }
 }

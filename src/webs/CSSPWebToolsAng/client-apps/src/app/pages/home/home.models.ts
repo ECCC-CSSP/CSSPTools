@@ -1,10 +1,5 @@
-import { HttpRequestModel } from '../../models/HttpRequest.model';
-import { Contact } from '../../models/generated/Contact.model';
+import { HttpStatus } from 'src/app/models/HttpStatus.model';
 
-export interface HomeTextModel {
-    Title?: string;
-}
-
-export interface AdminContactModel extends HttpRequestModel {
-    AdminList: Contact[];
+export interface HomeVar extends HttpStatus {
+    HomeTitle?: string;
 }

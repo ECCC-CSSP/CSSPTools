@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Input } from '@a
 import { TVItemModel } from '../../models/generated/TVItemModel.model';
 import { ChildCountService } from './child-count.service';
 import { TVTypeEnum } from '../../enums/generated/TVTypeEnum';
-import { ShellModel } from 'src/app/pages/shell';
+import { AppVar } from '../../app.model';
 
 @Component({
   selector: 'app-child-count',
@@ -13,7 +13,7 @@ import { ShellModel } from 'src/app/pages/shell';
 export class ChildCountComponent implements OnInit, OnDestroy {
   @Input() TVItemModel: TVItemModel;
   @Input() TVType?: TVTypeEnum;
-  @Input() ShellModel: ShellModel;
+  @Input() AppVar: AppVar;
 
   constructor(public childCountService: ChildCountService) {
   }

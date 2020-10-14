@@ -1,7 +1,6 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { ShellModel, ShellService } from 'src/app/pages/shell';
+import { AppService } from '../../app.service';
 import { SideNavMenuTextModel } from './sidenav-menu.models';
 
 @Injectable({
@@ -10,7 +9,7 @@ import { SideNavMenuTextModel } from './sidenav-menu.models';
 export class SideNavMenuService {
   SideNavMenuTextModel$: BehaviorSubject<SideNavMenuTextModel> = new BehaviorSubject<SideNavMenuTextModel>(<SideNavMenuTextModel>{});
 
-  constructor(private shellService: ShellService) {
+  constructor(private appService: AppService) {
     this.UpdateSideNavMenuText(<SideNavMenuTextModel>{});
   }
 

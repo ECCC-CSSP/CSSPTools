@@ -1,34 +1,34 @@
-<span *ngIf="ShellModel?.TVTypeProvince">
+<span *ngIf="AppVar?.TVTypeProvince">
     <span>Province</span>
-    <app-child-count [ShellModel]="ShellModel" [TVType]="ShellModel?.TVTypeProvince" [TVItemModel]="TVItemModel">
+    <app-child-count [AppVar]="AppVar" [TVType]="AppVar?.TVTypeProvince" [TVItemModel]="TVItemModel">
     </app-child-count>
 </span>
-<span *ngIf="ShellModel?.TVTypeMunicipality">
+<span *ngIf="AppVar?.TVTypeMunicipality">
     <span>Municipality</span>
-    <app-child-count [ShellModel]="ShellModel" [TVType]="ShellModel?.TVTypeMunicipality" [TVItemModel]="TVItemModel">
+    <app-child-count [AppVar]="AppVar" [TVType]="AppVar?.TVTypeMunicipality" [TVItemModel]="TVItemModel">
     </app-child-count>
 </span>
-<span *ngIf="ShellModel?.TVTypeSubsector">
+<span *ngIf="AppVar?.TVTypeSubsector">
     <span>Subsector</span>
-    <app-child-count [ShellModel]="ShellModel" [TVType]="ShellModel?.TVTypeSubsector" [TVItemModel]="TVItemModel">
+    <app-child-count [AppVar]="AppVar" [TVType]="AppVar?.TVTypeSubsector" [TVItemModel]="TVItemModel">
     </app-child-count></span>
-<span *ngIf="ShellModel?.TVTypeMWQMSite">
+<span *ngIf="AppVar?.TVTypeMWQMSite">
     <span>MWQM site</span>
-    <app-child-count [ShellModel]="ShellModel" [TVType]="ShellModel?.TVTypeMWQMSite" [TVItemModel]="TVItemModel">
+    <app-child-count [AppVar]="AppVar" [TVType]="AppVar?.TVTypeMWQMSite" [TVItemModel]="TVItemModel">
     </app-child-count>
 </span>
-<span *ngIf="ShellModel?.TVTypeMWQMRun">
+<span *ngIf="AppVar?.TVTypeMWQMRun">
     <span>MWQM Run</span>
-    <app-child-count [ShellModel]="ShellModel" [TVType]="ShellModel?.TVTypeMWQMRun" [TVItemModel]="TVItemModel">
+    <app-child-count [AppVar]="AppVar" [TVType]="AppVar?.TVTypeMWQMRun" [TVItemModel]="TVItemModel">
     </app-child-count>
 </span>
-<span *ngIf="ShellModel?.TVTypeMWQMSiteSample">
+<span *ngIf="AppVar?.TVTypeMWQMSiteSample">
     <span>MWQM Sample</span>
-    <app-child-count [ShellModel]="ShellModel" [TVType]="ShellModel?.TVTypeMWQMSiteSample" [TVItemModel]="TVItemModel">
+    <app-child-count [AppVar]="AppVar" [TVType]="AppVar?.TVTypeMWQMSiteSample" [TVItemModel]="TVItemModel">
     </app-child-count>
 </span>
-<span *ngIf="ShellModel?.TVTypeMikeScenario">
+<span *ngIf="AppVar?.TVTypeMikeScenario">
     <span>Mike Scenario</span>
-    <app-child-count [ShellModel]="ShellModel" [TVType]="ShellModel?.TVTypeMikeScenario" [TVItemModel]="TVItemModel">
+    <app-child-count [AppVar]="AppVar" [TVType]="AppVar?.TVTypeMikeScenario" [TVItemModel]="TVItemModel">
     </app-child-count>
 </span>

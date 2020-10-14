@@ -1,12 +1,12 @@
-<span *ngIf="(mapService.MapModel$ | async).Working">
+<span *ngIf="(mapService.MapVar$ | async).Working">
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </span>
 
-<span *ngIf="(shellService.ShellModel$ | async).Working">
+<span *ngIf="(appService.AppVar$ | async).Working">
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </span>
 
-latitude: <input placeholder="latitude" name="latitude" [(ngModel)]="latitude" required >
+<!-- latitude: <input placeholder="latitude" name="latitude" [(ngModel)]="latitude" required >
 longitude: <input placeholder="longitude" name="longitude" [(ngModel)]="longitude" required >
 <h2>Coordinates:</h2>
 <ul>
@@ -15,7 +15,7 @@ longitude: <input placeholder="longitude" name="longitude" [(ngModel)]="longitud
     </li>
   </ul>
 <button type="submit" (click)="onAdd()">Add coordinates</button>
-<button type="submit" (click)="onSubmit()">Draw Polygons</button>
+<button type="submit" (click)="onSubmit()">Draw Polygons</button> -->
 <div #map class="map"></div>
 
 <!-- <google-map height="100%" width="100%" 

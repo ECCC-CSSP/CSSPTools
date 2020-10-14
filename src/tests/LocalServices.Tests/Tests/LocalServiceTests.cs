@@ -51,25 +51,6 @@ namespace LocalServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task LocalService_Scramble_And_DeScramble_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            List<string> TextToScrambleList = new List<string>()
-            {
-                "bonjour", "rouge", "1214123", "lsjf slefij", "@#$%^!&", "     "
-            };
-
-            foreach (string toScramble in TextToScrambleList)
-            {
-                string scrambleText = await LocalService.Scramble(toScramble);
-                Assert.Equal(toScramble.Length + 1, scrambleText.Length);
-                Assert.Equal(toScramble, await LocalService.Descramble(scrambleText));
-            }
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
         public async Task LoggedInService_SetLoggedInContactInfo_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));

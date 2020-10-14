@@ -1,12 +1,8 @@
-import { TVItemLanguage } from 'src/app/models/generated/TVItemLanguage.model';
-import { SearchResult } from 'src/app/models/SearchResult.model';
-import { HttpRequestModel } from '../../models/HttpRequest.model';
+import { HttpStatus } from '../../models/HttpStatus.model';
+import { SearchResult } from '../../models/generated/SearchResult.model';
 
-export interface SearchTextModel {
-    Title?: string
-}
-
-export interface SearchResultModel extends HttpRequestModel  {
+export interface SearchVar extends HttpStatus  {
+    SearchTitle?: string
     searchResult?: SearchResult[];
 }
 

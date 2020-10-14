@@ -67,12 +67,12 @@ namespace CSSPDesktopServices.Services
 
                 List<string> VariableValueList = new List<string>()
                 {
-                    await LocalService.Scramble(AzureStore),
-                    await LocalService.Scramble(loginModel.LoginEmail),
-                    await LocalService.Scramble(loginModel.Password),
-                    await LocalService.Scramble(contact.Token),
-                    await LocalService.Scramble("true"),
-                    await LocalService.Scramble("true"),
+                    AzureStore,
+                    loginModel.LoginEmail,
+                    loginModel.Password,
+                    contact.Token,
+                    "true",
+                    "true",
                 };
 
                 for (int i = 0; i < VariableNameList.Count; i++)

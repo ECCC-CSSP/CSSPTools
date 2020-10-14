@@ -1,10 +1,10 @@
-import { HttpRequestModel } from '../../models/HttpRequest.model';
+import { HttpStatus } from 'src/app/models/HttpStatus.model';
 
 export interface GroupingTextModel {
     Title?: string
 }
 
-export interface GroupSourceGroupingModel extends HttpRequestModel {
+export interface GroupSourceGroupingModel extends HttpStatus {
     PolSourceGroupingList: PolSourceGrouping[];
     PolSourceGroupingLanguageList: PolSourceGroupingLanguage[];
 }

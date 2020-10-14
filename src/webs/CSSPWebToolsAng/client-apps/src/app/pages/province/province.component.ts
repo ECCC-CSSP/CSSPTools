@@ -1,10 +1,10 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { ProvinceService } from './province.service';
-import { LoadLocalesProvinceText } from './province.locales';
+import { LoadLocalesProvinceVar } from './province.locales';
 import { Subscription } from 'rxjs';
-import { ShellService } from '../shell';
 import { LanguageEnum } from '../../enums/generated/LanguageEnum';
 import { ActivatedRoute } from '@angular/router';
+import { AppService } from 'src/app/app.service';
 
 @Component({
   selector: 'app-province',
@@ -15,10 +15,10 @@ import { ActivatedRoute } from '@angular/router';
 export class ProvinceComponent implements OnInit, OnDestroy {
   sub: Subscription;
 
-  constructor(public provinceService: ProvinceService, public shellService: ShellService, private activatedRoute: ActivatedRoute) { }
+  constructor(public provinceService: ProvinceService, public appService: AppService, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
-    LoadLocalesProvinceText(this.provinceService);
+    LoadLocalesProvinceVar(this.provinceService);
     let TVItemID: number = this.activatedRoute.snapshot.params['TVItemID'];
     this.sub = this.provinceService.GetWebProvince(TVItemID).subscribe();
   }

@@ -1,8 +1,8 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { TVTypeEnum } from '../../enums/generated/TVTypeEnum';
+import { AppService } from '../../app.service';
+import { AppVar } from '../../app.model';
 import { TVItemModel } from '../../models/generated/TVItemModel.model';
-import { ShellModel, ShellService } from '../../pages/shell';
 
 @Component({
   selector: 'app-tvitem-list-detail-root',
@@ -12,9 +12,9 @@ import { ShellModel, ShellService } from '../../pages/shell';
 })
 export class TVItemListDetailRootComponent implements OnInit, OnDestroy {
   @Input() TVItemModel: TVItemModel;
-  @Input() ShellModel: ShellModel;
+  @Input() AppVar: AppVar;
 
-  constructor(public shellService: ShellService, public router: Router) {
+  constructor(public appService: AppService, public router: Router) {
   }
 
   ngOnInit() {

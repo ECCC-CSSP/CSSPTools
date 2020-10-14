@@ -1,7 +1,8 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { AppService } from '../../app.service';
+import { AppVar } from '../../app.model';
 import { TVItemModel } from '../../models/generated/TVItemModel.model';
-import { ShellModel, ShellService } from '../../pages/shell';
 import { TVItemListDetailProvinceService } from './tvitem-list-detail-province.service';
 
 @Component({
@@ -12,9 +13,9 @@ import { TVItemListDetailProvinceService } from './tvitem-list-detail-province.s
 })
 export class TVItemListDetailProvinceComponent implements OnInit, OnDestroy {
   @Input() TVItemModel: TVItemModel;
-  @Input() ShellModel: ShellModel;
+  @Input() AppVar: AppVar;
 
-  constructor(public shellService: ShellService, public  tvItemListDetailProvinceService: TVItemListDetailProvinceService, router: Router) {
+  constructor(public appService: AppService, public  tvItemListDetailProvinceService: TVItemListDetailProvinceService, router: Router) {
   }
 
   ngOnInit() {

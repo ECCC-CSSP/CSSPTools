@@ -1,14 +1,14 @@
-import { ProvinceTextModel } from './province.models';
+import { ProvinceVar } from './province.models';
 import { ProvinceService } from './province.service';
 
-export function LoadLocalesProvinceText(provinceService: ProvinceService) {
-  let ProvinceTextModel: ProvinceTextModel = { 
-    Title: 'The title',
+export function LoadLocalesProvinceVar(provinceService: ProvinceService) {
+  let provinceVar: ProvinceVar = { 
+    ProvinceTitle: 'The title',
 }
 
   if ($localize.locale === 'fr-CA') {
-      ProvinceTextModel.Title = 'Le Titre';
+      provinceVar.ProvinceTitle = 'Le Titre';
     }
 
-  provinceService.UpdateProvinceText(ProvinceTextModel);
+  provinceService.UpdateProvinceVar(provinceVar);
 }

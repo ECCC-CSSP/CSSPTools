@@ -44,22 +44,22 @@ namespace ReadGzFileServices
 
             bool HasInternetConnection = false;
 
-            var actionPreferenceHasInternetConnection = await PreferenceService.GetWithVariableName("HasInternetConnection");
+            var actionPreferenceHasInternetConnection = await PreferenceService.GetPreferenceWithVariableName("HasInternetConnection");
             if (((ObjectResult)actionPreferenceHasInternetConnection.Result).StatusCode == 200)
             {
                 Preference preference = (Preference)((OkObjectResult)actionPreferenceHasInternetConnection.Result).Value;
-                HasInternetConnection = bool.Parse(await LocalService.Descramble(preference.VariableValue));
+                HasInternetConnection = bool.Parse(preference.VariableValue);
             }
 
             if (HasInternetConnection)
             {
                 string AzureStore = "";
 
-                var actionPreferenceAzureStore = await PreferenceService.GetWithVariableName("AzureStore");
+                var actionPreferenceAzureStore = await PreferenceService.GetPreferenceWithVariableName("AzureStore");
                 if (((ObjectResult)actionPreferenceAzureStore.Result).StatusCode == 200)
                 {
                     Preference preference = (Preference)((OkObjectResult)actionPreferenceAzureStore.Result).Value;
-                    AzureStore = await LocalService.Descramble(preference.VariableValue);
+                    AzureStore = preference.VariableValue;
                 }
 
                 BlobClient blobClient = new BlobClient(AzureStore, AzureStoreCSSPJSONPath, fileName);

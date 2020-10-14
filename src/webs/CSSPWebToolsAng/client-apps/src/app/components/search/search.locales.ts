@@ -1,14 +1,14 @@
-import { SearchTextModel } from './search.models';
+import { SearchVar } from './search.models';
 import { SearchService } from './search.service';
 
-export function LoadLocalesSearchText(searchService: SearchService) {
-  let searchTextModel: SearchTextModel = { 
-    Title: 'Yes The title',
+export function LoadLocalesSearchVar(searchService: SearchService) {
+  let searchVar: SearchVar = { 
+    SearchTitle: 'Yes The title',
 }
 
   if ($localize.locale === 'fr-CA') {
-      searchTextModel.Title = 'Yes Le Titre';
+      searchVar.SearchTitle = 'Yes Le Titre';
     }
 
-  searchService.UpdateSearchText(searchTextModel);
+  searchService.UpdateSearchVar(searchVar);
 }

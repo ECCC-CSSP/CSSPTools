@@ -1,19 +1,16 @@
-<span *ngIf="(shellService.ShellModel$ | async).Working">
+<span *ngIf="(appService.AppVar$ | async).Working">
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </span>
-<span *ngIf="(rootService.WebRootModel$ | async).Working">
-    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-</span>
-<span *ngIf="(rootService.WebCountryModel$ | async).Working">
+<span *ngIf="(rootService.RootVar$ | async).Working">
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </span>
 
-<app-tvitem-list [ShellModel]="shellService.ShellModel$?.getValue()" [TVItemList]="rootService.WebCountryModel$?.getValue()?.WebBaseCountryList">
+<app-tvitem-list [AppVar]="appService.AppVar$?.getValue()" [TVItemList]="rootService.RootVar$?.getValue()?.WebBaseCountryList">
 </app-tvitem-list>
 
-<div *ngIf="shellService.ShellModel$?.getValue()?.FileVisible">
-    <app-file-list [ShellModel]="shellService.ShellModel$?.getValue()" *ngIf="rootService.WebRootModel$?.getValue()?.WebRoot?.TVItemModel" 
-    [TVFileModelList]="rootService.WebRootModel$?.getValue()?.WebRoot?.TVItemModel?.TVFileModelList">        
+<div *ngIf="appService.AppVar$?.getValue()?.FileVisible">
+    <app-file-list [AppVar]="appService.AppVar$?.getValue()" *ngIf="rootService.RootVar$?.getValue()?.WebRoot?.TVItemModel" 
+    [TVFileModelList]="rootService.RootVar$?.getValue()?.WebRoot?.TVItemModel?.TVFileModelList">        
     </app-file-list>
 </div>
 

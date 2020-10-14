@@ -1,14 +1,14 @@
 import { ShellService } from './shell.service';
-import { ShellModel } from './shell.models';
+import { ShellVar } from './shell.models';
 
 export function LoadLocalesShell(shellService: ShellService) {
-  let shellModel: ShellModel = {
-    AppTitle: 'CSSP Web Tools',
+  let shellVar: ShellVar = {
+    ShellTitle: 'CSSP Web Tools',
   }
 
   if ($localize.locale === 'fr-CA') {
-    shellModel.AppTitle = "PCCSM Outils Web";
+    shellVar.ShellTitle = "PCCSM Outils Web";
   }
 
-  shellService.UpdateShellModel(shellModel);
+  shellService.UpdateShellVar(shellVar);
 }

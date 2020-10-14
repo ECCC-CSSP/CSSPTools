@@ -1,13 +1,13 @@
 <mat-form-field [ngClass]="formFieldWidthClass">
     <input (focus)="ToggleSearchWidth()" (blur)="ToggleSearchWidth()" type="text" placeholder="Search"
         aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="searchAuto">
-    <span *ngIf="(searchService.searchResultModel$ | async)?.Working">
+    <span *ngIf="(searchService.SearchVar$ | async)?.Working">
         <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     </span>
     <mat-icon matSuffix>search</mat-icon>
     <mat-autocomplete #searchAuto="matAutocomplete" (optionSelected)="NavigateTo($event.option.value)"
         [displayWith]="displayFn">
-        <mat-option *ngFor="let option of (searchService.searchResultModel$ | async).searchResult" [value]="option">
+        <mat-option *ngFor="let option of (searchService.SearchVar$ | async).searchResult" [value]="option">
             <app-search-option [searchResult]="option"></app-search-option>
         </mat-option>
     </mat-autocomplete>

@@ -3,5 +3,5 @@
     {{ TVFileModel.TVFile.ServerFileName }} - {{ TVFileModel.TVFile.FileSize_kb }} KB
 </span>
 </mat-list-item>
-<app-file-list-item-detail [ShellModel]="ShellModel" *ngIf="ShellModel.DetailVisible" [TVFileModel]="TVFileModel"></app-file-list-item-detail>
+<app-file-list-item-detail [AppVar]="AppVar" *ngIf="AppVar.DetailVisible" [TVFileModel]="TVFileModel"></app-file-list-item-detail>
 <p *ngIf="false">{{ TVFileModel | json }}</p>

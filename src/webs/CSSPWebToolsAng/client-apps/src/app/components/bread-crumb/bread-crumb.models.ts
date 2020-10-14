@@ -1,5 +1,5 @@
-import { HttpRequestModel } from 'src/app/models';
+import { HttpStatus } from '../../models/HttpStatus.model';
 
-export interface BreadCrumbTextModel extends HttpRequestModel {
-    Title?: string
+export interface BreadCrumbVar extends HttpStatus {
+    BreadCrumbTitle?: string
 }

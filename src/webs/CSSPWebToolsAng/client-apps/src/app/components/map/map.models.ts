@@ -1,15 +1,12 @@
-import { HttpRequestModel } from 'src/app/models';
+import { HttpStatus } from '../../models/HttpStatus.model';
 
-export interface MapTextModel extends HttpRequestModel  {
-    Title?: string
-}
-
-export interface MapModel extends HttpRequestModel {
-    zoom: number;
-    center: google.maps.LatLngLiteral;
-    options: google.maps.MapOptions;
-    markerList: [];
-    polygonList: [];
-    polylineList: [];
-    infoContent: string;
+export interface MapVar extends HttpStatus  {
+    MapTitle?: string
+    zoom?: number;
+    center?: google.maps.LatLngLiteral;
+    options?: google.maps.MapOptions;
+    markerList?: [];
+    polygonList?: [];
+    polylineList?: [];
+    infoContent?: string;
 }

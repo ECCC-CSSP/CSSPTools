@@ -78,11 +78,11 @@ namespace CSSPDesktopServices.Services
 
         private async Task<bool> DownloadJsonFilesFromAzure(string jsonFileName)
         {
-            string culture = "fr-CA";
-            if (IsEnglish)
-            {
-                culture = "en-CA";
-            }
+            //string culture = "fr-CA";
+            //if (IsEnglish)
+            //{
+            //    culture = "en-CA";
+            //}
 
             string enumTypeName = jsonFileName.Substring(0, jsonFileName.IndexOf("."));
 

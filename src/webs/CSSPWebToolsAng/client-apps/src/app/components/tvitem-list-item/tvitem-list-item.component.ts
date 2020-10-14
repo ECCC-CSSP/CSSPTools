@@ -1,8 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Input } from '@angular/core';
-import { Router } from '@angular/router';
-import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
-import { TVItemModel } from 'src/app/models/generated/TVItemModel.model';
-import { ShellModel, ShellService } from 'src/app/pages/shell';
+import { AppService } from '../../app.service';
+import { AppVar } from '../../app.model';
+import { TVItemModel } from '../../models/generated/TVItemModel.model';
 
 @Component({
   selector: 'app-tvitem-list-item',
@@ -13,9 +12,9 @@ import { ShellModel, ShellService } from 'src/app/pages/shell';
 export class TVItemListItemComponent implements OnInit, OnDestroy {
   @Input() TVItemModel: TVItemModel;
   @Input() IsBreadCrumb: boolean = false;
-  @Input() ShellModel: ShellModel;
+  @Input() AppVar: AppVar;
   
-  constructor(public shellService: ShellService) {
+  constructor(public appService: AppService) {
   }
 
   ngOnInit() {

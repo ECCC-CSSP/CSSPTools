@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { HomeService } from './home.service';
 import { LoadLocalesHomeText } from './home.locales';
-import { Subscription } from 'rxjs';
+import { AppService } from 'src/app/app.service';
 
 @Component({
   selector: 'app-home',
@@ -10,16 +10,13 @@ import { Subscription } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomeComponent implements OnInit, OnDestroy {
-  sub: Subscription;
 
-  constructor(public homeService: HomeService) { }
+  constructor(public homeService: HomeService, public appService: AppService) { }
 
   ngOnInit(): void {
     LoadLocalesHomeText(this.homeService);
-    this.sub = this.homeService.GetAdminContactList().subscribe();
   }
 
   ngOnDestroy() {
-    this.sub ? this.sub.unsubscribe() : null;
   }
 }

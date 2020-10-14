@@ -1,14 +1,14 @@
-import { RootTextModel } from './root.models';
+import { RootVar } from './root.models';
 import { RootService } from './root.service';
 
-export function LoadLocalesRootText(rootService: RootService) {
-  let rootTextModel: RootTextModel = { 
-    Title: 'The title',
+export function LoadLocalesRootVar(rootService: RootService) {
+  let rootVar: RootVar = { 
+    RootTitle: 'The title',
 }
 
   if ($localize.locale === 'fr-CA') {
-      rootTextModel.Title = 'Le Titre';
+      rootVar.RootTitle = 'Le Titre';
     }
 
-  rootService.UpdateRootTextModel(rootTextModel);
+  rootService.UpdateRootVar(rootVar);
 }

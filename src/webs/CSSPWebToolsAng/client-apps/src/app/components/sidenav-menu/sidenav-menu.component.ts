@@ -1,7 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Input } from '@angular/core';
-import { Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { ShellModel, ShellService } from 'src/app/pages/shell';
+import { AppService } from 'src/app/app.service';
+import { AppVar } from '../../app.model';
 import { MapService } from '../map';
 import { SideNavMenuService } from './sidenav-menu.service';
 
@@ -12,9 +11,9 @@ import { SideNavMenuService } from './sidenav-menu.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SideNavMenuComponent implements OnInit, OnDestroy {
-  @Input() ShellModel: ShellModel;
+  @Input() AppVar: AppVar;
   
-  constructor(public SideNavMenuService: SideNavMenuService, public shellService: ShellService, public mapService: MapService) {
+  constructor(public SideNavMenuService: SideNavMenuService, public appService: AppService, public mapService: MapService) {
   }
 
   ngOnInit() {
@@ -24,7 +23,7 @@ export class SideNavMenuComponent implements OnInit, OnDestroy {
   }
 
   ToggleProperty(property: string): void {
-    this.shellService.SetProperties(property);
+    this.appService.SetProperties(property);
   }
 
 }

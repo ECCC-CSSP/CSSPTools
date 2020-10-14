@@ -1,10 +1,6 @@
-import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
-import { HttpRequestModel } from 'src/app/models';
+import { HttpStatus } from '../../models/HttpStatus.model';
 
-export interface ChildCountTextModel extends HttpRequestModel {
-    Title?: string
-}
-
-export interface ChildCountModel extends HttpRequestModel {
+export interface ChildCountVar extends HttpStatus {
+    ChildCountTitle?: string
     Count: number;
 }

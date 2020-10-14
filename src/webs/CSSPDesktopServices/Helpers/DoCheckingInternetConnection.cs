@@ -42,7 +42,7 @@ namespace CSSPDesktopServices.Services
                 HasInternetConnection = false;
             }
 
-            var actionPreference = await PreferenceService.AddOrChange("HasInternetConnection", await LocalService.Scramble(HasInternetConnection.ToString()));
+            var actionPreference = await PreferenceService.AddOrChange("HasInternetConnection", HasInternetConnection.ToString());
             if (!await DoStatusActionPreference(actionPreference, "HasInternetConnection")) return await Task.FromResult(false);
 
             AppendStatus(new AppendEventArgs(""));

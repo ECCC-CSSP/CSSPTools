@@ -1,4 +1,4 @@
-<span *ngIf="(shellService.ShellModel$ | async).Working">
+<span *ngIf="(appService.AppVar$ | async).Working">
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </span>
 
@@ -7,7 +7,7 @@
         <button (click)="ToggleMenu()" mat-button>
             <mat-icon>menu</mat-icon>
         </button>
-        <a mat-button routerLink="">{{ shellService.ShellModel$.getValue().AppTitle }}
+        <a mat-button routerLink="">{{ shellService.ShellVar$.getValue().ShellTitle }}
         </a>
         <span>
             <app-search></app-search>
@@ -15,7 +15,7 @@
     </span>
     <span class="right">
         <span>
-            <app-logged-in-contact></app-logged-in-contact>
+            <app-logged-in-contact [LoggedInContact]="appService.AppVar$?.getValue()?.LoggedInContact"></app-logged-in-contact>
         </span>
         <button mat-button *ngIf="!IsEnglish()" (click)="ChangeLang()">English</button>
         <button mat-button *ngIf="IsEnglish()" (click)="ChangeLang()">Français</button>
@@ -26,19 +26,18 @@
 </mat-toolbar>
 
 <mat-sidenav-container class="container">
-    <mat-sidenav class="sidenav-left" #leftSideNav [opened]="shellService.ShellModel$?.getValue()?.MenuVisible"
+    <mat-sidenav class="sidenav-left" #leftSideNav [opened]="appService.AppVar$?.getValue()?.MenuVisible"
         mode="side">
-        <app-sidenav-menu [ShellModel]="shellService.ShellModel$?.getValue()"></app-sidenav-menu>
+        <app-sidenav-menu [AppVar]="appService.AppVar$?.getValue()"></app-sidenav-menu>
     </mat-sidenav>
-    <mat-sidenav [ngClass]="shellService.ShellModel$?.getValue()?.MapSizeClass" #rightSideNav [opened]="shellService.ShellModel$?.getValue()?.MapVisible"
+    <mat-sidenav [ngClass]="appService.AppVar$?.getValue()?.MapSizeClass" #rightSideNav [opened]="appService.AppVar$?.getValue()?.MapVisible"
         mode="side" position="end">
-        <app-map [ShellModel]="shellService.ShellModel$?.getValue()"></app-map>
+        <app-map [AppVar]="appService.AppVar$?.getValue()"></app-map>
     </mat-sidenav>
-    <span *ngIf="(shellService.ShellModel$ | async).Working">
+    <span *ngIf="(appService.AppVar$ | async).Working">
         <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     </span>
-    <app-bread-crumb [ShellModel]="shellService.ShellModel$?.getValue()" [breadCrumbs]="shellService.BreadCrumbModel$?.getValue()?.WebBaseList"></app-bread-crumb>
-
+    <app-bread-crumb [AppVar]="appService.AppVar$?.getValue()"></app-bread-crumb>
 
     <div class="margin10">
         <router-outlet></router-outlet>

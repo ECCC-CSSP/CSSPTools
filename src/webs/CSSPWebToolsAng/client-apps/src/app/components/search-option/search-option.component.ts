@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
-import { SearchResult } from 'src/app/models/SearchResult.model';
-import { ShellService } from 'src/app/pages/shell';
+import { SearchResult } from '../../models/generated/SearchResult.model';
 import { SearchOptionService } from './search-option.service';
+import { AppService } from '../../app.service';
 
 @Component({
   selector: 'app-search-option',
@@ -12,7 +12,7 @@ import { SearchOptionService } from './search-option.service';
 export class SearchOptionComponent implements OnInit {
   @Input() searchResult: SearchResult;
 
-  constructor(public searchOptionService: SearchOptionService, public shellService: ShellService) {
+  constructor(public searchOptionService: SearchOptionService, public appService: AppService) {
   }
 
   ngOnInit() {

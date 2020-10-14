@@ -1,11 +1,8 @@
 import { Contact } from 'src/app/models/generated/Contact.model';
-import { HttpRequestModel } from '../../models/HttpRequest.model';
+import { HttpStatus } from 'src/app/models/HttpStatus.model';
 
-export interface LoggedInContactTextModel {
-    Title?: string
-}
-
-export interface LoggedInContactModel extends HttpRequestModel  {
+export interface LoggedInContactVar extends HttpStatus  {
+    LoggedInContactTitle?: string
     Contact?: Contact;
 }
 

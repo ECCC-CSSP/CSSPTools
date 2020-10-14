@@ -7,6 +7,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeModule } from './pages/home/home.module';
 import { ApiInterceptor, ErrorInterceptor } from '../app/interceptors';
+import { SharedModule } from './shared.module';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { ApiInterceptor, ErrorInterceptor } from '../app/interceptors';
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    HomeModule
+    HomeModule,
+    SharedModule
   ],
   exports: [
     HomeModule

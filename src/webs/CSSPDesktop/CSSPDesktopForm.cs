@@ -382,7 +382,7 @@ namespace CSSPDesktop
         }
         private async Task<bool> StartTheAppWithLanguage()
         {
-            SettingUpAllTextForLanguage();
+            await SettingUpAllTextForLanguage();
 
             if (!await CSSPDesktopService.CheckIfLoginIsRequired()) return await Task.FromResult(false);
 

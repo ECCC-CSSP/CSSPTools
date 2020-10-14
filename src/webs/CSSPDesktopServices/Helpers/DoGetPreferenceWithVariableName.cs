@@ -26,11 +26,11 @@ namespace CSSPDesktopServices.Services
     {
         private async Task<Preference> DoGetPreferenceWithVariableName(string VariableName)
         {
-            var actionPreference = await PreferenceService.GetWithVariableName(VariableName);
+            var actionPreference = await PreferenceService.GetPreferenceWithVariableName(VariableName);
             if (await DoStatusActionPreference(actionPreference, VariableName))
             {
                 Preference preference = (Preference)((OkObjectResult)actionPreference.Result).Value;
-                return await Task.FromResult(new Preference() { PreferenceID = preference.PreferenceID, VariableName = preference.VariableName, VariableValue = await LocalService.Descramble(preference.VariableValue) });
+                return await Task.FromResult(new Preference() { PreferenceID = preference.PreferenceID, VariableName = preference.VariableName, VariableValue = preference.VariableValue });
             }
 
             return null;

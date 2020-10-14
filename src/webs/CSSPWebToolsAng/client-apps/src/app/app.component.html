@@ -1,1 +1,5 @@
+<span *ngIf="(this.appService.AppVar$ | async).Working">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</span>
+
 <router-outlet></router-outlet>

@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Input } from '@angular/core';
-import { WebBase } from 'src/app/models/generated/WebBase.model';
-import { ShellModel } from 'src/app/pages/shell';
+import { AppVar } from '../../app.model';
+import { WebBase } from '../../models/generated/WebBase.model';
 
 @Component({
   selector: 'app-tvitem-list',
@@ -10,7 +10,7 @@ import { ShellModel } from 'src/app/pages/shell';
 })
 export class TVItemListComponent implements OnInit, OnDestroy {
   @Input() TVItemList: WebBase[] = [];
-  @Input() ShellModel: ShellModel;
+  @Input() AppVar: AppVar;
 
   constructor() {
   }

@@ -1,17 +1,12 @@
-<p>home works!</p>
-<p>{{ homeService.HomeTextModel$?.getValue()?.Title }}</p>
-
 <a mat-raised-button href="en-CA">English</a>
 <a mat-raised-button href="fr-CA">Français</a>
 
-<span *ngIf="(homeService.AdminContactModel$ | async).Working">
+<span *ngIf="(appService.AppVar$ | async).Working">
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </span>
 
 <mat-list>
-    <mat-list-item *ngFor="let admin of homeService.AdminContactModel$?.getValue()?.AdminList">
+    <mat-list-item *ngFor="let admin of appService.AppVar$?.getValue()?.AdminContactList">
         <a href="mailto:{{ admin.LoginEmail }}">{{ admin.LoginEmail }}</a>
     </mat-list-item>
 </mat-list>
-
-<router-outlet></router-outlet>

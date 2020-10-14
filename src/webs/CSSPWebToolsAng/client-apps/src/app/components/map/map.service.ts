@@ -1,33 +1,30 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
-import { MapInfoDrawTypeEnum } from 'src/app/enums/generated/MapInfoDrawTypeEnum';
-import { LatLng } from 'src/app/models/generated/LatLng.model';
-import { PolyPoint } from 'src/app/models/generated/PolyPoint.model';
-import { WebBase } from 'src/app/models/generated/WebBase.model';
-import { ShellModel, ShellService } from 'src/app/pages/shell';
+import { AppService } from '../../app.service';
+import { AppVar } from '../../app.model';
+import { MapInfoDrawTypeEnum } from '../../enums/generated/MapInfoDrawTypeEnum';
+import { WebBase } from '../../models/generated/WebBase.model';
 import { LoadLocalesMapText } from './map.locales'
-import { MapModel, MapTextModel } from './map.models';
+import { MapVar } from './map.models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MapService {
-  MapTextModel$: BehaviorSubject<MapTextModel> = new BehaviorSubject<MapTextModel>(<MapTextModel>{});
-  MapModel$: BehaviorSubject<MapModel> = new BehaviorSubject<MapModel>(<MapModel>{});
+  MapVar$: BehaviorSubject<MapVar> = new BehaviorSubject<MapVar>(<MapVar>{});
 
-  constructor(private shellService: ShellService) {
+  constructor(private appService: AppService) {
     LoadLocalesMapText(this);
-    this.UpdateMapTextModel(<MapTextModel>{ Title: "Something for text" });
-    this.shellService.UpdateShellModel(<ShellModel>{ HybridVisible: true, SatelliteVisible: false, RoadmapVisible: false, TerrainVisible: false, mapTypeId: google.maps.MapTypeId.HYBRID });
-    this.UpdateMapModel(<MapModel>{
+    this.UpdateMapVar(<MapVar>{ 
+      MapTitle: "Something for text", 
       zoom: 12,
       center: <google.maps.LatLngLiteral>{ lat: 46.0915449, lng: -64.7242012 },
       options: <google.maps.MapOptions>{
         //zoomControl: true,
         //scrollwheel: true,
         //disableDoubleClickZoom: false,
-        mapTypeId: this.shellService.ShellModel$?.getValue()?.mapTypeId,
+        mapTypeId: this.appService.AppVar$?.getValue()?.mapTypeId,
         // maxZoom: 15,
         // minZoom: 8,
       },
@@ -36,22 +33,19 @@ export class MapService {
       polylineList: [],
       infoContent: ''
     });
+    this.appService.UpdateAppVar(<AppVar>{ HybridVisible: true, SatelliteVisible: false, RoadmapVisible: false, TerrainVisible: false, mapTypeId: google.maps.MapTypeId.HYBRID });
   }
 
   ToggleMapType(router: Router, property: string) {
-    property == "hybrid" ? this.shellService.UpdateShellModel(<ShellModel>{ HybridVisible: true, SatelliteVisible: false, RoadmapVisible: false, TerrainVisible: false, mapTypeId: google.maps.MapTypeId.HYBRID }) : null;
-    property == "satellite" ? this.shellService.UpdateShellModel(<ShellModel>{ HybridVisible: true, SatelliteVisible: true, RoadmapVisible: false, TerrainVisible: false, mapTypeId: google.maps.MapTypeId.SATELLITE }) : null;
-    property == "roadmap" ? this.shellService.UpdateShellModel(<ShellModel>{ HybridVisible: true, SatelliteVisible: false, RoadmapVisible: true, TerrainVisible: false, mapTypeId: google.maps.MapTypeId.ROADMAP }) : null;
-    property == "terrain" ? this.shellService.UpdateShellModel(<ShellModel>{ HybridVisible: true, SatelliteVisible: false, RoadmapVisible: false, TerrainVisible: true, mapTypeId: google.maps.MapTypeId.TERRAIN }) : null;
+    property == "hybrid" ? this.appService.UpdateAppVar(<AppVar>{ HybridVisible: true, SatelliteVisible: false, RoadmapVisible: false, TerrainVisible: false, mapTypeId: google.maps.MapTypeId.HYBRID }) : null;
+    property == "satellite" ? this.appService.UpdateAppVar(<AppVar>{ HybridVisible: true, SatelliteVisible: true, RoadmapVisible: false, TerrainVisible: false, mapTypeId: google.maps.MapTypeId.SATELLITE }) : null;
+    property == "roadmap" ? this.appService.UpdateAppVar(<AppVar>{ HybridVisible: true, SatelliteVisible: false, RoadmapVisible: true, TerrainVisible: false, mapTypeId: google.maps.MapTypeId.ROADMAP }) : null;
+    property == "terrain" ? this.appService.UpdateAppVar(<AppVar>{ HybridVisible: true, SatelliteVisible: false, RoadmapVisible: false, TerrainVisible: true, mapTypeId: google.maps.MapTypeId.TERRAIN }) : null;
     //this.shellService.ChangeUrl(router, property);
   }
 
-  UpdateMapTextModel(mapTextModel: MapTextModel) {
-    this.MapTextModel$.next(<MapTextModel>{ ...this.MapTextModel$.getValue(), ...mapTextModel });
-  }
-
-  UpdateMapModel(mapModel: MapModel) {
-    this.MapModel$.next(<MapModel>{ ...this.MapModel$.getValue(), ...mapModel });
+  UpdateMapVar(mapVar: MapVar) {
+    this.MapVar$.next(<MapVar>{ ...this.MapVar$.getValue(), ...mapVar });
   }
 
   FillMapMarkers(webBaseList: WebBase[]) {
@@ -77,7 +71,7 @@ export class MapService {
       };
     }
 
-    this.UpdateMapModel(<MapModel>{ markerList: markers });
+    this.UpdateMapVar(<MapVar>{ markerList: markers });
   }
 
   FillMapPolygons(webBaseList: WebBase[]) {
@@ -110,7 +104,7 @@ export class MapService {
       };
     }
 
-    this.UpdateMapModel(<MapModel>{ polygonList: polygons });
+    this.UpdateMapVar(<MapVar>{ polygonList: polygons });
   }
 
 }

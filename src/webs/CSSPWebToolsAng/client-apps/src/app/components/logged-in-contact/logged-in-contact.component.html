@@ -1,8 +1,5 @@
 <button mat-button>
-    <span *ngIf="(loggedInContactService.LoggedInContactModel$ | async).Working">
-        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-    </span>
-    <span *ngIf="(loggedInContactService.LoggedInContactModel$ | async).Contact">
-        {{ loggedInContactService.LoggedInContactModel$.getValue()?.Contact?.LoginEmail }}
+    <span>
+        {{ LoggedInContact?.LoginEmail }}
     </span>
 </button>
