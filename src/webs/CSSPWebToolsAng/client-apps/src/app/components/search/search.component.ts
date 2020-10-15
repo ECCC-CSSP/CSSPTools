@@ -3,8 +3,9 @@ import { Subscription } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { SearchService } from './search.service';
 import { SearchResult } from '../../models/generated/SearchResult.model';
-import { Router } from '@angular/router';
+//import { Router } from '@angular/router';
 import { AppService } from '../../app.service';
+import { AppVar } from 'src/app/app.model';
 
 @Component({
   selector: 'app-search',
@@ -19,7 +20,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   formFieldWidthClass: string = '';
   sub: Subscription;
 
-  constructor(public searchService: SearchService, private router: Router, private appService: AppService) {
+  constructor(public searchService: SearchService, private appService: AppService) {
   }
 
   ngOnInit() {
@@ -37,7 +38,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   NavigateTo(sr: SearchResult)
   {
     this.searchResult = sr;
-    this.router.navigateByUrl($localize.locale + '/' + this.appService.GetUrl(sr.TVItem));
+    this.appService.UpdateAppVar(<AppVar>{ SubPage: this.appService.GetSubPage(sr.TVItem), CurrentTVItemID: sr.TVItem.TVItemID });
   }
 
   ngOnDestroy()

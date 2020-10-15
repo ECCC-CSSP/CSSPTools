@@ -6,6 +6,9 @@ import { WebContact } from './models/generated/WebContact.model';
 import { HttpStatus } from './models/HttpStatus.model';
 
 export interface AppVar extends HttpStatus {
+    Page?: string;
+    SubPage?: string;
+    CurrentTVItemID?: number;
     Language?: LanguageEnum;
     BaseApiUrl?: string;
     LoggedInContact?: Contact;

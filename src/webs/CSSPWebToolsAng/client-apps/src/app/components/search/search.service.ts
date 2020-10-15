@@ -6,6 +6,7 @@ import { catchError, debounceTime, distinctUntilChanged, map, startWith, tap } f
 import { FormControl } from '@angular/forms';
 import { SearchResult } from '../../models/generated/SearchResult.model';
 import { SearchVar } from '.';
+import { AppService } from 'src/app/app.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ import { SearchVar } from '.';
 export class SearchService {
   SearchVar$: BehaviorSubject<SearchVar> = new BehaviorSubject<SearchVar>(<SearchVar>{});
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private appService: AppService, private httpClient: HttpClient) {
     LoadLocalesSearchVar(this);
     this.UpdateSearchVar(<SearchVar>{ SearchTitle: "Something for text" });
   }
@@ -44,7 +45,8 @@ export class SearchService {
       ).subscribe();
     }
     else {
-      this.httpClient.get<SearchResult>(`/api/search/${term}/1`).pipe(
+      let url: string = `${this.appService.AppVar$.getValue().BaseApiUrl}en-CA/search/${term}/1`;
+      this.httpClient.get<SearchResult>(url).pipe(
         map((x: any) => {
           this.UpdateSearchVar(<SearchVar>{ searchResult: x, Working: false });
           console.debug(x);

@@ -2,4 +2,5 @@
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </span>
 
-<router-outlet></router-outlet>
+<app-home *ngIf="((appService.AppVar$ | async)?.Page == 'home')"></app-home>
+<app-shell *ngIf="((appService.AppVar$ | async)?.Page == 'shell')"></app-shell>

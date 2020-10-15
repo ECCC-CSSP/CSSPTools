@@ -15,6 +15,15 @@ import { TVItemListDetailProvinceComponent } from './components/tvitem-list-deta
 import { FileListComponent } from './components/file-list/file-list.component';
 import { FileListItemComponent } from './components/file-list-item/file-list-item.component';
 import { FileListItemDetailComponent } from './components/file-list-item-detail/file-list-item-detail.component';
+import { SideNavMenuComponent } from './components/sidenav-menu/sidenav-menu.component';
+import { MapComponent } from './components/map/map.component';
+import { BreadCrumbComponent } from './components/bread-crumb/bread-crumb.component';
+import { LoggedInContactComponent } from './components/logged-in-contact/logged-in-contact.component';
+import { HomeComponent } from './components/home/home.component';
+import { ShellComponent } from './components/shell';
+import { RootComponent } from './components/root/root.component';
+import { CountryComponent } from './components/country/country.component';
+import { ProvinceComponent } from './components/province/province.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +39,15 @@ import { FileListItemDetailComponent } from './components/file-list-item-detail/
     FileListComponent,
     FileListItemComponent,
     FileListItemDetailComponent,
+    HomeComponent,
+    ShellComponent,
+    SideNavMenuComponent,
+    MapComponent,
+    BreadCrumbComponent,
+    RootComponent,
+    LoggedInContactComponent,
+    CountryComponent,
+    ProvinceComponent,
   ],
   imports: [
     CommonModule,
@@ -57,6 +75,15 @@ import { FileListItemDetailComponent } from './components/file-list-item-detail/
     FileListComponent,
     FileListItemComponent,
     FileListItemDetailComponent,
+    HomeComponent,
+    ShellComponent,
+    SideNavMenuComponent,
+    MapComponent,
+    BreadCrumbComponent,
+    RootComponent,
+    LoggedInContactComponent,
+    CountryComponent,
+    ProvinceComponent,
   ]
 })
 export class SharedModule { }

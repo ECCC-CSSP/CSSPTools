@@ -1,0 +1,16 @@
+<span *ngIf="(appService.AppVar$ | async).Working">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</span>
+<span *ngIf="(rootService.RootVar$ | async).Working">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</span>
+
+<p>Bonjourrr {{ (rootService.RootVar$ | async).RootTitle }}</p>
+<app-tvitem-list [AppVar]="appService.AppVar$?.getValue()" [TVItemList]="rootService.RootVar$?.getValue()?.WebBaseCountryList">
+</app-tvitem-list>
+
+<div *ngIf="appService.AppVar$?.getValue()?.FileVisible">
+    <app-file-list [AppVar]="appService.AppVar$?.getValue()" *ngIf="rootService.RootVar$?.getValue()?.WebRoot?.TVItemModel" 
+    [TVFileModelList]="rootService.RootVar$?.getValue()?.WebRoot?.TVItemModel?.TVFileModelList">        
+    </app-file-list>
+</div>

@@ -23,7 +23,9 @@ export class AppService {
 
     if (true) {
       this.UpdateAppVar(<AppVar>{
-        Language: $localize.locale == "fr-CA" ? LanguageEnum.fr : LanguageEnum.en,
+        Page: 'home',
+        SubPage: 'root',
+        Language: $localize.locale == 'fr-CA' ? LanguageEnum.fr : LanguageEnum.en,
         BaseApiUrl: url,
         LoggedInContact: null,
 
@@ -70,28 +72,27 @@ export class AppService {
   }
 
   GetLoggedInContact() {
-    if (!this.AppVar$.getValue().LoggedInContact) {
-      this.UpdateAppVar(<AppVar>{ Working: true });
-      return this.httpClient.get<Contact>('/api/LoggedInContact').pipe(
-        map((x: any) => {
-          this.UpdateAppVar(<AppVar>{ LoggedInContact: x, Working: false });
-          console.debug(x);
-        }),
-        catchError(e => of(e).pipe(map(e => {
-          this.UpdateAppVar(<AppVar>{ Working: false, Error: <HttpErrorResponse>e });
-          console.debug(e);
-        })))
-      );
-    }
+    this.UpdateAppVar(<AppVar>{ Working: true });
+    let url: string = `${this.AppVar$.getValue().BaseApiUrl}en-CA/LoggedInContact`;
+    return this.httpClient.get<Contact>(url).pipe(
+      map((x: any) => {
+        this.UpdateAppVar(<AppVar>{ LoggedInContact: x, Working: false });
+        console.debug(x);
+      }),
+      catchError(e => of(e).pipe(map(e => {
+        this.UpdateAppVar(<AppVar>{ Working: false, Error: <HttpErrorResponse>e });
+        console.debug(e);
+      })))
+    );
   }
 
   GetWebContact() {
     this.UpdateAppVar(<AppVar>{ Working: true });
-    return this.httpClient.get<WebContact>(`/api/Read/WebContact/0/1`).pipe(
+    let url: string = `${this.AppVar$.getValue().BaseApiUrl}en-CA/Read/WebContact/0/1`;
+    return this.httpClient.get<WebContact>(url).pipe(
       map((x: WebContact) => {
         let adminList: Contact[] = x.ContactList.filter(contact => contact.IsAdmin == true);
         this.UpdateAppVar(<AppVar>{ WebContact: x, AdminContactList: adminList, Working: false });
-        localStorage.setItem('GetWebContact', 't');
         console.debug(x);
       }),
       catchError(e => of(e).pipe(map(e => {
@@ -103,7 +104,8 @@ export class AppService {
 
   GetPreference() {
     this.UpdateAppVar(<AppVar>{ Working: true });
-    return this.httpClient.get<Preference[]>(`/api/Preference`).pipe(
+    let url: string = `${this.AppVar$.getValue().BaseApiUrl}Preference`;
+    return this.httpClient.get<Preference[]>(url).pipe(
       map((x: any) => {
         this.UpdateAppVar(<AppVar>{ Working: false });
         console.debug(x);
@@ -143,6 +145,120 @@ export class AppService {
 
   GetLink(tvItemModel: TVItemModel) {
     return $localize.locale + '/' + this.GetUrl(tvItemModel.TVItem);
+  }
+
+  SetSubPage(tvItemModel: TVItemModel)
+  {
+    this.UpdateAppVar(<AppVar> { SubPage: this.GetSubPage(tvItemModel.TVItem), CurrentTVItemID: tvItemModel.TVItem.TVItemID });
+  }
+
+  GetSubPage(tvItem: TVItem): string {
+    switch (<TVTypeEnum>tvItem.TVType) {
+      case TVTypeEnum.Address:
+        {
+          return `address`;
+        }
+      case TVTypeEnum.Area:
+        {
+          return `area`;
+        }
+      case TVTypeEnum.BoxModel:
+        {
+          return `boxmodel`;
+        }
+      case TVTypeEnum.ClimateSite:
+        {
+          return `climatesite`;
+        }
+      case TVTypeEnum.Contact:
+        {
+          return `contact`;
+        }
+      case TVTypeEnum.Country:
+        {
+          return `country`;
+        }
+      case TVTypeEnum.Email:
+        {
+          return `email`;
+        }
+      case TVTypeEnum.File:
+        {
+          return `file`;
+        }
+      case TVTypeEnum.HydrometricSite:
+        {
+          return `hydrometricsite`;
+        }
+      case TVTypeEnum.Infrastructure:
+        {
+          return `infrastructure`;
+        }
+      case TVTypeEnum.LabSheetInfo:
+        {
+          return `labsheet`;
+        }
+      case TVTypeEnum.MWQMRun:
+        {
+          return `mwqmrun`;
+        }
+      case TVTypeEnum.MWQMSite:
+        {
+          return `mwqmsite`;
+        }
+      case TVTypeEnum.MikeScenario:
+        {
+          return `mikescenario`;
+        }
+      case TVTypeEnum.MikeSource:
+        {
+          return `mikesource`;
+        }
+      case TVTypeEnum.Municipality:
+        {
+          return `municipality`;
+        }
+      case TVTypeEnum.PolSourceSite:
+        {
+          return `polsourcesite`;
+        }
+      case TVTypeEnum.Province:
+        {
+          return `province`;
+        }
+      case TVTypeEnum.Root:
+        {
+          return `root`;
+        }
+      case TVTypeEnum.SamplingPlan:
+        {
+          return `samplingplan`;
+        }
+      case TVTypeEnum.Sector:
+        {
+          return `sector`;
+        }
+      case TVTypeEnum.Subsector:
+        {
+          return `subsector`;
+        }
+      case TVTypeEnum.Tel:
+        {
+          return `tel`;
+        }
+      case TVTypeEnum.TideSite:
+        {
+          return `tidesite`;
+        }
+      case TVTypeEnum.VisualPlumesScenario:
+        {
+          return `visualplumesscenario`;
+        }
+      default:
+        {
+          return ``;
+        }
+    }
   }
 
   GetTypeText(tvType: number) {

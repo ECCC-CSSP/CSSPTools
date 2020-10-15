@@ -1,14 +1,16 @@
-import { LoggedInContactTextModel } from './logged-in-contact.models';
+import { AppService } from 'src/app/app.service';
+import { LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
+import { LoggedInContactVar } from './logged-in-contact.models';
 import { LoggedInContactService } from './logged-in-contact.service';
 
-export function LoadLocalesLoggedInContactText(loggedInContactService: LoggedInContactService) {
-  let loggedInContactTextModel: LoggedInContactTextModel = {
-    Title: 'Yes The title',
+export function LoadLocalesLoggedInContactText(appService: AppService, loggedInContactService: LoggedInContactService) {
+  let loggedInContactVar: LoggedInContactVar = {
+    LoggedInContactTitle: 'Yes The title',
   }
 
-  if ($localize.locale === 'fr-CA') {
-    loggedInContactTextModel.Title = 'Yes Le Titre';
+  if (appService.AppVar$.getValue().Language == LanguageEnum.fr) {
+    loggedInContactVar.LoggedInContactTitle = 'Yes Le Titre';
   }
 
-  loggedInContactService.UpdateLoggedInContactText(loggedInContactTextModel);
+  loggedInContactService.UpdateLoggedInContactVar(loggedInContactVar);
 }
