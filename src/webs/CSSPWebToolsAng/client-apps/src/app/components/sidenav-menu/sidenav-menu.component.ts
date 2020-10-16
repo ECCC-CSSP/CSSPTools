@@ -22,8 +22,15 @@ export class SideNavMenuComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
   }
 
-  ToggleProperty(property: string): void {
-    this.appService.SetProperties(property);
+  ToggleInactive(): void {
+    this.appService.UpdateAppVar(<AppVar> { InactVisible: !this.appService.AppVar$.getValue().InactVisible });
   }
 
+  ToggleDetail(): void {
+    this.appService.UpdateAppVar(<AppVar> { DetailVisible: !this.appService.AppVar$.getValue().DetailVisible });
+  }
+
+  ToggleEdit(): void {
+    this.appService.UpdateAppVar(<AppVar> { EditVisible: !this.appService.AppVar$.getValue().EditVisible });
+  }
 }

@@ -5,16 +5,18 @@
  *
  */
 
+import { AppService } from '../../app.service';
 import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
+import { LanguageEnum } from './LanguageEnum';
 
 export enum AnalysisReportExportCommandEnum {
     Report = 1,
     Excel = 2,
 }
 
-export function AnalysisReportExportCommandEnum_GetOrderedText(): EnumIDAndText[] {
+export function AnalysisReportExportCommandEnum_GetOrderedText(appService: AppService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if ($localize.locale === 'fr-CA') {
+    if (appService.AppVar$?.getValue().Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'Rapport' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'Excel' });
     }
@@ -26,9 +28,9 @@ export function AnalysisReportExportCommandEnum_GetOrderedText(): EnumIDAndText[
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function AnalysisReportExportCommandEnum_GetIDText(enumID: number): string {
+export function AnalysisReportExportCommandEnum_GetIDText(enumID: number, appService: AppService): string {
     let addressTypeEnunText: string;
-    AnalysisReportExportCommandEnum_GetOrderedText().forEach(e => {
+    AnalysisReportExportCommandEnum_GetOrderedText(appService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

@@ -38,11 +38,6 @@ export interface PolSourceGroupingLanguage {
     LastUpdateContactTVItemID: number;
 }
 
-export enum LanguageEnum {
-    en = 1,
-    fr = 2,
-}
-
 export enum TranslationStatusDescription {
     NotTranslated = 1,
     ElectronicallyTranslated = 2,

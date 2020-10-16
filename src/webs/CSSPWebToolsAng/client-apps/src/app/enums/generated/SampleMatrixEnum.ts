@@ -5,7 +5,9 @@
  *
  */
 
+import { AppService } from '../../app.service';
 import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
+import { LanguageEnum } from './LanguageEnum';
 
 export enum SampleMatrixEnum {
     W = 1,
@@ -17,9 +19,9 @@ export enum SampleMatrixEnum {
     Water = 7,
 }
 
-export function SampleMatrixEnum_GetOrderedText(): EnumIDAndText[] {
+export function SampleMatrixEnum_GetOrderedText(appService: AppService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if ($localize.locale === 'fr-CA') {
+    if (appService.AppVar$?.getValue().Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'W (fr)' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'S (fr)' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'B (fr)' });
@@ -41,9 +43,9 @@ export function SampleMatrixEnum_GetOrderedText(): EnumIDAndText[] {
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function SampleMatrixEnum_GetIDText(enumID: number): string {
+export function SampleMatrixEnum_GetIDText(enumID: number, appService: AppService): string {
     let addressTypeEnunText: string;
-    SampleMatrixEnum_GetOrderedText().forEach(e => {
+    SampleMatrixEnum_GetOrderedText(appService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

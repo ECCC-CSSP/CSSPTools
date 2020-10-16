@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { GroupingService } from './grouping.service';
 import { LoadLocalesGroupingText } from './grouping.locales';
 import { Router } from '@angular/router';
+import { AppService } from 'src/app/app.service';
 
 @Component({
   selector: 'app-grouping',
@@ -11,15 +12,15 @@ import { Router } from '@angular/router';
 })
 export class GroupingComponent implements OnInit {
 
-  constructor(public groupingService: GroupingService, public router: Router) { }
+  constructor(private appService: AppService, public groupingService: GroupingService) { }
 
   FillDBWithGrouping()
   {
-    this.groupingService.FillDBWithGrouping(this.router);
+    this.groupingService.FillDBWithGrouping();
   }
 
   ngOnInit(): void {
-    LoadLocalesGroupingText(this.groupingService);
+    LoadLocalesGroupingText(this.appService, this.groupingService);
   }
 
 }

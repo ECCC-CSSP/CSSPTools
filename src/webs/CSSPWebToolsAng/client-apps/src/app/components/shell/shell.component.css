@@ -30,23 +30,23 @@
   width: 50%;
 }
 
-.mapSize30 {
+.Size30 {
   width: 30%
 }
 
-.mapSize40 {
+.Size40 {
   width: 40%
 }
 
-.mapSize50 {
+.Size50 {
   width: 50%
 }
 
-.mapSize60 {
+.Size60 {
   width: 60%
 }
 
-.mapSize70 {
+.Size70 {
   width: 70%
 }
 
@@ -63,3 +63,4 @@
   left: 0;
   right: 0;
 } */
+

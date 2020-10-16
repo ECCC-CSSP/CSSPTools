@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AppService } from '../../app.service';
 import { AppVar } from '../../app.model';
 import { TVItemModel } from '../../models/generated/TVItemModel.model';
+import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 
 @Component({
   selector: 'app-tvitem-list-detail-root',
@@ -14,9 +15,13 @@ export class TVItemListDetailRootComponent implements OnInit, OnDestroy {
   @Input() TVItemModel: TVItemModel;
   @Input() AppVar: AppVar;
 
-  constructor(public appService: AppService, public router: Router) {
+  constructor(public appService: AppService) {
   }
 
+  get tvTypeEnum(): typeof TVTypeEnum {
+    return TVTypeEnum;
+  }
+  
   ngOnInit() {
   }
 

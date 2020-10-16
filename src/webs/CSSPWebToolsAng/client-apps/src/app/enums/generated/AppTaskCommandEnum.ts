@@ -5,7 +5,9 @@
  *
  */
 
+import { AppService } from '../../app.service';
 import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
+import { LanguageEnum } from './LanguageEnum';
 
 export enum AppTaskCommandEnum {
     GenerateWebTide = 1,
@@ -58,9 +60,9 @@ export enum AppTaskCommandEnum {
     ClimateSiteLoadCoCoRaHSData = 48,
 }
 
-export function AppTaskCommandEnum_GetOrderedText(): EnumIDAndText[] {
+export function AppTaskCommandEnum_GetOrderedText(appService: AppService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if ($localize.locale === 'fr-CA') {
+    if (appService.AppVar$?.getValue().Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'Generate Web Tide (fr)' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'MIKE Scenario Ask To Run (fr)' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'MIKE Scenario Import (fr)' });
@@ -164,9 +166,9 @@ export function AppTaskCommandEnum_GetOrderedText(): EnumIDAndText[] {
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function AppTaskCommandEnum_GetIDText(enumID: number): string {
+export function AppTaskCommandEnum_GetIDText(enumID: number, appService: AppService): string {
     let addressTypeEnunText: string;
-    AppTaskCommandEnum_GetOrderedText().forEach(e => {
+    AppTaskCommandEnum_GetOrderedText(appService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

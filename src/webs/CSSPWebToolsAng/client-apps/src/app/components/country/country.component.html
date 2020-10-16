@@ -5,11 +5,46 @@
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </span>
 
-<app-tvitem-list [AppVar]="appService.AppVar$?.getValue()"  [TVItemList]="countryService.CountryVar$?.getValue()?.WebBaseProvinceList">
+<button mat-button [matMenuTriggerFor]="countryMenu">
+    <mat-icon>more_vert</mat-icon>
+</button>
+<mat-menu #countryMenu="matMenu">
+    <h3>&nbsp;&nbsp;Country Menu</h3>
+    <button mat-button
+    [ngClass]="appService.AppVar$?.getValue()?.InactVisible ? 'selected' : ''"
+    (click)="ToggleInactive()">Inactive</button>
+    <button mat-button
+    [ngClass]="appService.AppVar$?.getValue()?.DetailVisible ? 'selected' : ''"
+    (click)="ToggleDetail()">Detail</button>
+    <button mat-button
+    [ngClass]="appService.AppVar$?.getValue()?.EditVisible ? 'selected' : ''"
+    (click)="ToggleEdit()">Edit</button>
+</mat-menu>
+
+<button mat-button [ngClass]="ColorSelection(countrySubComponentEnum.Provinces)" (click)="Show(countrySubComponentEnum.Provinces)">Provinces</button>
+<button mat-button [ngClass]="ColorSelection(countrySubComponentEnum.Files)" (click)="Show(countrySubComponentEnum.Files)">Files</button>
+<button mat-button [ngClass]="ColorSelection(countrySubComponentEnum.OpenDataNational)" (click)="Show(countrySubComponentEnum.OpenDataNational)">Open Data National</button>
+<button mat-button [ngClass]="ColorSelection(countrySubComponentEnum.EmailDistributionList)" (click)="Show(countrySubComponentEnum.EmailDistributionList)">Email Distribution List</button>
+<button mat-button [ngClass]="ColorSelection(countrySubComponentEnum.RainExceedance)" (click)="Show(countrySubComponentEnum.RainExceedance)">RainExceedance</button>
+
+<app-tvitem-list *ngIf="appService.AppVar$?.getValue()?.CountrySubComponent == countrySubComponentEnum.Provinces"
+    [AppVar]="appService.AppVar$?.getValue()"
+    [TVItemList]="countryService.CountryVar$?.getValue()?.WebBaseProvinceList">
 </app-tvitem-list>
 
-<div *ngIf="appService.AppVar$?.getValue()?.FileVisible">
-    <app-file-list [AppVar]="appService.AppVar$?.getValue()" *ngIf="countryService.CountryVar$?.getValue()?.WebCountry?.TVItemModel" 
-    [TVFileModelList]="countryService.CountryVar$?.getValue()?.WebCountry?.TVItemModel?.TVFileModelList">        
-    </app-file-list>
+<app-file-list *ngIf="appService.AppVar$?.getValue()?.CountrySubComponent == countrySubComponentEnum.Files"
+    [AppVar]="appService.AppVar$?.getValue()"
+    [TVFileModelList]="countryService.CountryVar$?.getValue()?.WebCountry?.TVItemModel?.TVFileModelList">
+</app-file-list>
+
+<div *ngIf="appService.AppVar$?.getValue()?.CountrySubComponent == countrySubComponentEnum.OpenDataNational">
+    Not implemented yet. Need to create OpenDataNationalComponent.
+</div>
+
+<div *ngIf="appService.AppVar$?.getValue()?.CountrySubComponent == countrySubComponentEnum.EmailDistributionList">
+    Not implemented yet. Need to create EmailDistributionListComponent.
+</div>
+
+<div *ngIf="appService.AppVar$?.getValue()?.CountrySubComponent == countrySubComponentEnum.RainExceedance">
+    Not implemented yet. Need to create RainExceedanceComponent.
 </div>

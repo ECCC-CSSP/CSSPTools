@@ -15,7 +15,7 @@ export class SearchService {
   SearchVar$: BehaviorSubject<SearchVar> = new BehaviorSubject<SearchVar>(<SearchVar>{});
 
   constructor(private appService: AppService, private httpClient: HttpClient) {
-    LoadLocalesSearchVar(this);
+    LoadLocalesSearchVar(appService, this);
     this.UpdateSearchVar(<SearchVar>{ SearchTitle: "Something for text" });
   }
 

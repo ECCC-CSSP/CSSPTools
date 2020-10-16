@@ -5,16 +5,18 @@
  *
  */
 
+import { AppService } from '../../app.service';
 import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
+import { LanguageEnum } from './LanguageEnum';
 
 export enum CSSPWQInputTypeEnum {
     Subsector = 1,
     Municipality = 2,
 }
 
-export function CSSPWQInputTypeEnum_GetOrderedText(): EnumIDAndText[] {
+export function CSSPWQInputTypeEnum_GetOrderedText(appService: AppService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if ($localize.locale === 'fr-CA') {
+    if (appService.AppVar$?.getValue().Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'Subsector (fr)' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'Municipality (fr)' });
     }
@@ -26,9 +28,9 @@ export function CSSPWQInputTypeEnum_GetOrderedText(): EnumIDAndText[] {
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function CSSPWQInputTypeEnum_GetIDText(enumID: number): string {
+export function CSSPWQInputTypeEnum_GetIDText(enumID: number, appService: AppService): string {
     let addressTypeEnunText: string;
-    CSSPWQInputTypeEnum_GetOrderedText().forEach(e => {
+    CSSPWQInputTypeEnum_GetOrderedText(appService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

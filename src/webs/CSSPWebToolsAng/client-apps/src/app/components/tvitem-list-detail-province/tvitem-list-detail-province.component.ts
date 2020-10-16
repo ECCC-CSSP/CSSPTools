@@ -4,6 +4,7 @@ import { AppService } from '../../app.service';
 import { AppVar } from '../../app.model';
 import { TVItemModel } from '../../models/generated/TVItemModel.model';
 import { TVItemListDetailProvinceService } from './tvitem-list-detail-province.service';
+import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 
 @Component({
   selector: 'app-tvitem-list-detail-province',
@@ -15,14 +16,17 @@ export class TVItemListDetailProvinceComponent implements OnInit, OnDestroy {
   @Input() TVItemModel: TVItemModel;
   @Input() AppVar: AppVar;
 
-  constructor(public appService: AppService, public  tvItemListDetailProvinceService: TVItemListDetailProvinceService, router: Router) {
+  constructor(public appService: AppService, public tvItemListDetailProvinceService: TVItemListDetailProvinceService) {
+  }
+
+  get tvTypeEnum(): typeof TVTypeEnum {
+    return TVTypeEnum;
   }
 
   ngOnInit() {
   }
 
-  ngOnDestroy()
-  {
+  ngOnDestroy() {
   }
 
 

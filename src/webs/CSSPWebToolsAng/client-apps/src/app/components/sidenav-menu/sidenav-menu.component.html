@@ -2,90 +2,21 @@
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </span>
 
-<h1>Visibility</h1>
+<h1>Context Menu</h1>
 <mat-list>
     <mat-list-item>
-        <mat-checkbox matLine (change)="ToggleProperty('map')"
-            [checked]="AppVar?.MapVisible">
-            <span>Map</span>
-        </mat-checkbox>
-        <span matLine>&nbsp;&nbsp;
-            <mat-checkbox (change)="ToggleProperty('size30')"
-                [checked]="AppVar?.Size30">
-                <span>30%</span>
-            </mat-checkbox>
-        </span>
-        <span matLine>&nbsp;&nbsp;
-            <mat-checkbox (change)="ToggleProperty('size40')"
-                [checked]="AppVar?.Size40">
-                <span>40%</span>
-            </mat-checkbox>
-        </span>
-        <span matLine>&nbsp;&nbsp;
-            <mat-checkbox (change)="ToggleProperty('size50')"
-                [checked]="AppVar?.Size50">
-                <span>50%</span>
-            </mat-checkbox>
-        </span>
-        <span matLine>&nbsp;&nbsp;
-            <mat-checkbox (change)="ToggleProperty('size60')"
-                [checked]="AppVar?.Size60">
-                <span>60%</span>
-            </mat-checkbox>
-        </span>
-        <span matLine>&nbsp;&nbsp;
-            <mat-checkbox (change)="ToggleProperty('size70')"
-                [checked]="AppVar?.Size70">
-                <span>70%</span>
-            </mat-checkbox>
-        </span>
-        <span matLine>&nbsp;&nbsp;
-            <mat-checkbox (change)="ToggleProperty('hybrid')"
-                [checked]="AppVar?.HybridVisible">
-                <span>Hybrid</span>
-            </mat-checkbox>
-        </span>
-        <span matLine>&nbsp;&nbsp;
-            <mat-checkbox (change)="ToggleProperty('satellite')"
-                [checked]="AppVar?.SatelliteVisible">
-                <span>Satellite</span>
-            </mat-checkbox>
-        </span>
-        <span matLine>&nbsp;&nbsp;
-            <mat-checkbox (change)="ToggleProperty('roadmap')"
-                [checked]="AppVar?.RoadmapVisible">
-                <span>Roadmap</span>
-            </mat-checkbox>
-        </span>
-        <span matLine>&nbsp;&nbsp;
-            <mat-checkbox (change)="ToggleProperty('terrain')"
-                [checked]="AppVar?.TerrainVisible">
-                <span>Terrain</span>
-            </mat-checkbox>
-        </span>
+        <button mat-button
+        [ngClass]="appService.AppVar$?.getValue()?.InactVisible ? 'selected' : ''"
+        (click)="ToggleInactive()">Inactive</button>
     </mat-list-item>
     <mat-list-item>
-        <mat-checkbox (change)="ToggleProperty('inact')"
-            [checked]="AppVar?.InactVisible">
-            <span>Inactive</span>
-        </mat-checkbox>
+        <button mat-button
+        [ngClass]="appService.AppVar$?.getValue()?.DetailVisible ? 'selected' : ''"
+        (click)="ToggleDetail()">Detail</button>
     </mat-list-item>
     <mat-list-item>
-        <mat-checkbox (change)="ToggleProperty('detail')"
-            [checked]="AppVar?.DetailVisible">
-            <span>Detail</span>
-        </mat-checkbox>
-    </mat-list-item>
-    <mat-list-item>
-        <mat-checkbox (change)="ToggleProperty('edit')"
-            [checked]="AppVar?.EditVisible">
-            <span>Edit</span>
-        </mat-checkbox>
-    </mat-list-item>
-    <mat-list-item>
-        <mat-checkbox (change)="ToggleProperty('file')"
-            [checked]="AppVar?.FileVisible">
-            <span>File</span>
-        </mat-checkbox>
+        <button mat-button
+        [ngClass]="appService.AppVar$?.getValue()?.EditVisible ? 'selected' : ''"
+        (click)="ToggleEdit()">Edit</button>
     </mat-list-item>
 </mat-list>

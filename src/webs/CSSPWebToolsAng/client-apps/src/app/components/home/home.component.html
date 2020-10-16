@@ -5,6 +5,7 @@
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </span>
 
+<p>{{ homeService.HomeVar$?.getValue()?.HomeTitle }}</p>
 <mat-list>
     <mat-list-item *ngFor="let admin of appService.AppVar$?.getValue()?.AdminContactList">
         <a href="mailto:{{ admin.LoginEmail }}">{{ admin.LoginEmail }}</a>

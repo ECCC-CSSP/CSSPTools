@@ -5,7 +5,9 @@
  *
  */
 
+import { AppService } from '../../app.service';
 import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
+import { LanguageEnum } from './LanguageEnum';
 
 export enum AppTaskStatusEnum {
     Created = 1,
@@ -14,9 +16,9 @@ export enum AppTaskStatusEnum {
     Cancelled = 4,
 }
 
-export function AppTaskStatusEnum_GetOrderedText(): EnumIDAndText[] {
+export function AppTaskStatusEnum_GetOrderedText(appService: AppService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if ($localize.locale === 'fr-CA') {
+    if (appService.AppVar$?.getValue().Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'Créé' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'En traitement' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'Terminé' });
@@ -32,9 +34,9 @@ export function AppTaskStatusEnum_GetOrderedText(): EnumIDAndText[] {
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function AppTaskStatusEnum_GetIDText(enumID: number): string {
+export function AppTaskStatusEnum_GetIDText(enumID: number, appService: AppService): string {
     let addressTypeEnunText: string;
-    AppTaskStatusEnum_GetOrderedText().forEach(e => {
+    AppTaskStatusEnum_GetOrderedText(appService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

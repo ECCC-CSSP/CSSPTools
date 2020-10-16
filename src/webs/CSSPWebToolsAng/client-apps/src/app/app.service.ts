@@ -10,6 +10,12 @@ import { Preference } from './models/generated/Preference.model';
 import { AppVar } from './app.model';
 import { WebContact } from './models/generated/WebContact.model';
 import { Contact } from './models/generated/Contact.model';
+import { TopComponentEnum } from './enums/TopComponentEnum';
+import { ShellSubComponentEnum } from './enums/ShellSubComponentEnum';
+import { RootSubComponentEnum } from './enums/RootSubComponentEnum';
+import { CountrySubComponentEnum } from './enums/CountrySubComponentEnum';
+import { ProvinceSubComponentEnum } from './enums/ProvinceSubComponentEnum';
+import { MapSizeEnum } from './enums/MapSizeEnum';
 
 @Injectable({
   providedIn: 'root'
@@ -21,54 +27,29 @@ export class AppService {
     //let url = 'https://localhost:4447/api/';
     let url = 'https://localhost:44346/api/';
 
-    if (true) {
-      this.UpdateAppVar(<AppVar>{
-        Page: 'home',
-        SubPage: 'root',
-        Language: $localize.locale == 'fr-CA' ? LanguageEnum.fr : LanguageEnum.en,
-        BaseApiUrl: url,
-        LoggedInContact: null,
+    this.UpdateAppVar(<AppVar>{
+      TopComponent: TopComponentEnum.Home,
+      ShellSubComponent: ShellSubComponentEnum.Root,
+      RootSubComponent: RootSubComponentEnum.Countries,
+      CountrySubComponent: CountrySubComponentEnum.Provinces,
+      ProvinceSubComponent: ProvinceSubComponentEnum.Areas,
+      CurrentTVItemID: 0,
+      Language: LanguageEnum.en,
+      BaseApiUrl: url,
+      LoggedInContact: null,
 
-        DetailVisible: false,
-        EditVisible: false,
-        FileVisible: false,
-        InactVisible: false,
-        MapVisible: false,
-        MenuVisible: false,
+      DetailVisible: false,
+      EditVisible: false,
+      InactVisible: false,
+      MapVisible: false,
+      MenuVisible: false,
 
-        Size30: false,
-        Size40: false,
-        Size50: true,
-        Size60: false,
-        Size70: false,
-        MapSizeClass: 'mapSize50',
+      MapSize: MapSizeEnum.Size50,
 
-        HybridVisible: true,
-        SatelliteVisible: false,
-        RoadmapVisible: false,
-        TerrainVisible: false,
-        mapTypeId: google.maps.MapTypeId.HYBRID,
-
-        TVTypeRoot: TVTypeEnum.Root,
-        TVTypeCountry: TVTypeEnum.Country,
-        TVTypeProvince: TVTypeEnum.Province,
-        TVTypeArea: TVTypeEnum.Area,
-        TVTypeSector: TVTypeEnum.Sector,
-        TVTypeSubsector: TVTypeEnum.Subsector,
-        TVTypeMWQMSite: TVTypeEnum.MWQMSite,
-        TVTypeMWQMRun: TVTypeEnum.MWQMRun,
-        TVTypePolSourcSite: TVTypeEnum.PolSourceSite,
-        TVTypeMikeScenario: TVTypeEnum.MikeScenario,
-        TVTypeMunicipality: TVTypeEnum.Municipality,
-        TVTypeMWQMSiteSample: TVTypeEnum.MWQMSiteSample,
-
-        BreadCrumbVar: null,
-        WebContact: null,
-        AdminContactList: null,
-      });
-
-      //localStorage.setItem("AppVar", 't');
-    }
+      BreadCrumbVar: null,
+      WebContact: null,
+      AdminContactList: null,
+    });
   }
 
   GetLoggedInContact() {
@@ -117,24 +98,6 @@ export class AppService {
     );
   }
 
-  SetProperties(property: string) {
-    property == 'detail' ? this.UpdateAppVar(<AppVar>{ DetailVisible: !this.AppVar$.getValue().DetailVisible }) : null;
-    property == 'edit' ? this.UpdateAppVar(<AppVar>{ EditVisible: !this.AppVar$.getValue().EditVisible }) : null;
-    property == 'file' ? this.UpdateAppVar(<AppVar>{ FileVisible: !this.AppVar$.getValue().FileVisible }) : null;
-    property == 'inact' ? this.UpdateAppVar(<AppVar>{ InactVisible: !this.AppVar$.getValue().InactVisible }) : null;
-    property == 'map' ? this.UpdateAppVar(<AppVar>{ MapVisible: !this.AppVar$.getValue().MapVisible }) : null;
-    property == 'menu' ? this.UpdateAppVar(<AppVar>{ MenuVisible: !this.AppVar$.getValue().MenuVisible }) : null;
-    property == 'size30' ? this.UpdateAppVar(<AppVar>{ Size30: true, Size40: false, Size50: false, Size60: false, Size70: false, MapSizeClass: 'mapSize30' }) : null;
-    property == 'size40' ? this.UpdateAppVar(<AppVar>{ Size30: false, Size40: true, Size50: false, Size60: false, Size70: false, MapSizeClass: 'mapSize40' }) : null;
-    property == 'size60' ? this.UpdateAppVar(<AppVar>{ Size30: false, Size40: false, Size50: false, Size60: true, Size70: false, MapSizeClass: 'mapSize60' }) : null;
-    property == 'size70' ? this.UpdateAppVar(<AppVar>{ Size30: false, Size40: false, Size50: false, Size60: false, Size70: true, MapSizeClass: 'mapSize70' }) : null;
-    property == 'size50' ? this.UpdateAppVar(<AppVar>{ Size30: false, Size40: false, Size50: true, Size60: false, Size70: false, MapSizeClass: 'mapSize50' }) : null;
-    property == 'satellite' ? this.UpdateAppVar(<AppVar>{ HybridVisible: false, SatelliteVisible: true, RoadmapVisible: false, TerrainVisible: false, mapTypeId: google.maps.MapTypeId.SATELLITE }) : null;
-    property == 'terrain' ? this.UpdateAppVar(<AppVar>{ HybridVisible: false, SatelliteVisible: false, RoadmapVisible: false, TerrainVisible: true, mapTypeId: google.maps.MapTypeId.TERRAIN }) : null;
-    property == 'roadmap' ? this.UpdateAppVar(<AppVar>{ HybridVisible: false, SatelliteVisible: false, RoadmapVisible: true, TerrainVisible: false, mapTypeId: google.maps.MapTypeId.ROADMAP }) : null;
-    property == 'hybrid' ? this.UpdateAppVar(<AppVar>{ HybridVisible: true, SatelliteVisible: false, RoadmapVisible: false, TerrainVisible: false, mapTypeId: google.maps.MapTypeId.HYBRID }) : null;
-  }
-
   UpdateAppVar(appVar: AppVar) {
     this.AppVar$.next(<AppVar>{ ...this.AppVar$.getValue(), ...appVar });
   }
@@ -143,235 +106,121 @@ export class AppService {
     return tvType;
   }
 
-  GetLink(tvItemModel: TVItemModel) {
-    return $localize.locale + '/' + this.GetUrl(tvItemModel.TVItem);
+  SetSubPage(tvItemModel: TVItemModel) {
+    this.UpdateAppVar(<AppVar>{ ShellSubComponent: this.GetSubPage(tvItemModel.TVItem), CurrentTVItemID: tvItemModel.TVItem.TVItemID });
   }
 
-  SetSubPage(tvItemModel: TVItemModel)
-  {
-    this.UpdateAppVar(<AppVar> { SubPage: this.GetSubPage(tvItemModel.TVItem), CurrentTVItemID: tvItemModel.TVItem.TVItemID });
-  }
-
-  GetSubPage(tvItem: TVItem): string {
+  GetSubPage(tvItem: TVItem): ShellSubComponentEnum {
     switch (<TVTypeEnum>tvItem.TVType) {
-      case TVTypeEnum.Address:
-        {
-          return `address`;
-        }
-      case TVTypeEnum.Area:
-        {
-          return `area`;
-        }
-      case TVTypeEnum.BoxModel:
-        {
-          return `boxmodel`;
-        }
-      case TVTypeEnum.ClimateSite:
-        {
-          return `climatesite`;
-        }
-      case TVTypeEnum.Contact:
-        {
-          return `contact`;
-        }
+      // case TVTypeEnum.Address:
+      //   {
+      //     return `address`;
+      //   }
+      // case TVTypeEnum.Area:
+      //   {
+      //     return `area`;
+      //   }
+      // case TVTypeEnum.BoxModel:
+      //   {
+      //     return `boxmodel`;
+      //   }
+      // case TVTypeEnum.ClimateSite:
+      //   {
+      //     return `climatesite`;
+      //   }
+      // case TVTypeEnum.Contact:
+      //   {
+      //     return `contact`;
+      //   }
       case TVTypeEnum.Country:
         {
-          return `country`;
+          return ShellSubComponentEnum.Country;
         }
-      case TVTypeEnum.Email:
-        {
-          return `email`;
-        }
-      case TVTypeEnum.File:
-        {
-          return `file`;
-        }
-      case TVTypeEnum.HydrometricSite:
-        {
-          return `hydrometricsite`;
-        }
-      case TVTypeEnum.Infrastructure:
-        {
-          return `infrastructure`;
-        }
-      case TVTypeEnum.LabSheetInfo:
-        {
-          return `labsheet`;
-        }
-      case TVTypeEnum.MWQMRun:
-        {
-          return `mwqmrun`;
-        }
-      case TVTypeEnum.MWQMSite:
-        {
-          return `mwqmsite`;
-        }
-      case TVTypeEnum.MikeScenario:
-        {
-          return `mikescenario`;
-        }
-      case TVTypeEnum.MikeSource:
-        {
-          return `mikesource`;
-        }
-      case TVTypeEnum.Municipality:
-        {
-          return `municipality`;
-        }
-      case TVTypeEnum.PolSourceSite:
-        {
-          return `polsourcesite`;
-        }
+      // case TVTypeEnum.Email:
+      //   {
+      //     return `email`;
+      //   }
+      // case TVTypeEnum.File:
+      //   {
+      //     return `file`;
+      //   }
+      // case TVTypeEnum.HydrometricSite:
+      //   {
+      //     return `hydrometricsite`;
+      //   }
+      // case TVTypeEnum.Infrastructure:
+      //   {
+      //     return `infrastructure`;
+      //   }
+      // case TVTypeEnum.LabSheetInfo:
+      //   {
+      //     return `labsheet`;
+      //   }
+      // case TVTypeEnum.MWQMRun:
+      //   {
+      //     return `mwqmrun`;
+      //   }
+      // case TVTypeEnum.MWQMSite:
+      //   {
+      //     return `mwqmsite`;
+      //   }
+      // case TVTypeEnum.MikeScenario:
+      //   {
+      //     return `mikescenario`;
+      //   }
+      // case TVTypeEnum.MikeSource:
+      //   {
+      //     return `mikesource`;
+      //   }
+      // case TVTypeEnum.Municipality:
+      //   {
+      //     return `municipality`;
+      //   }
+      // case TVTypeEnum.PolSourceSite:
+      //   {
+      //     return `polsourcesite`;
+      //   }
       case TVTypeEnum.Province:
         {
-          return `province`;
+          return ShellSubComponentEnum.Province;
         }
       case TVTypeEnum.Root:
         {
-          return `root`;
+          return ShellSubComponentEnum.Root;
         }
-      case TVTypeEnum.SamplingPlan:
-        {
-          return `samplingplan`;
-        }
+      // case TVTypeEnum.SamplingPlan:
+      //   {
+      //     return `samplingplan`;
+      //   }
       case TVTypeEnum.Sector:
         {
-          return `sector`;
+          return ShellSubComponentEnum.Sector;
         }
       case TVTypeEnum.Subsector:
         {
-          return `subsector`;
+          return ShellSubComponentEnum.Subsector;
         }
-      case TVTypeEnum.Tel:
-        {
-          return `tel`;
-        }
-      case TVTypeEnum.TideSite:
-        {
-          return `tidesite`;
-        }
-      case TVTypeEnum.VisualPlumesScenario:
-        {
-          return `visualplumesscenario`;
-        }
+      // case TVTypeEnum.Tel:
+      //   {
+      //     return `tel`;
+      //   }
+      // case TVTypeEnum.TideSite:
+      //   {
+      //     return `tidesite`;
+      //   }
+      // case TVTypeEnum.VisualPlumesScenario:
+      //   {
+      //     return `visualplumesscenario`;
+      //   }
       default:
         {
-          return ``;
+          return ShellSubComponentEnum.Root;
         }
     }
   }
 
   GetTypeText(tvType: number) {
-    return TVTypeEnum_GetIDText(tvType);
-  }
-
-  GetUrl(tvItem: TVItem): string {
-    switch (<TVTypeEnum>tvItem.TVType) {
-      case TVTypeEnum.Address:
-        {
-          return `address/${tvItem.TVItemID}`;
-        }
-      case TVTypeEnum.Area:
-        {
-          return `area/${tvItem.TVItemID}`;
-        }
-      case TVTypeEnum.BoxModel:
-        {
-          return `boxmodel/${tvItem.TVItemID}`;
-        }
-      case TVTypeEnum.ClimateSite:
-        {
-          return `climatesite/${tvItem.TVItemID}`;
-        }
-      case TVTypeEnum.Contact:
-        {
-          return `contact/${tvItem.TVItemID}`;
-        }
-      case TVTypeEnum.Country:
-        {
-          return `country/${tvItem.TVItemID}`;
-        }
-      case TVTypeEnum.Email:
-        {
-          return `email/${tvItem.TVItemID}`;
-        }
-      case TVTypeEnum.File:
-        {
-          return `file/${tvItem.TVItemID}`;
-        }
-      case TVTypeEnum.HydrometricSite:
-        {
-          return `hydrometricsite/${tvItem.TVItemID}`;
-        }
-      case TVTypeEnum.Infrastructure:
-        {
-          return `infrastructure/${tvItem.TVItemID}`;
-        }
-      case TVTypeEnum.LabSheetInfo:
-        {
-          return `labsheet/${tvItem.TVItemID}`;
-        }
-      case TVTypeEnum.MWQMRun:
-        {
-          return `mwqmrun/${tvItem.TVItemID}`;
-        }
-      case TVTypeEnum.MWQMSite:
-        {
-          return `mwqmsite/${tvItem.TVItemID}`;
-        }
-      case TVTypeEnum.MikeScenario:
-        {
-          return `mikescenario/${tvItem.TVItemID}`;
-        }
-      case TVTypeEnum.MikeSource:
-        {
-          return `mikesource/${tvItem.TVItemID}`;
-        }
-      case TVTypeEnum.Municipality:
-        {
-          return `municipality/${tvItem.TVItemID}`;
-        }
-      case TVTypeEnum.PolSourceSite:
-        {
-          return `polsourcesite/${tvItem.TVItemID}`;
-        }
-      case TVTypeEnum.Province:
-        {
-          return `province/${tvItem.TVItemID}`;
-        }
-      case TVTypeEnum.Root:
-        {
-          return `root/${tvItem.TVItemID}`;
-        }
-      case TVTypeEnum.SamplingPlan:
-        {
-          return `samplingplan/${tvItem.TVItemID}`;
-        }
-      case TVTypeEnum.Sector:
-        {
-          return `sector/${tvItem.TVItemID}`;
-        }
-      case TVTypeEnum.Subsector:
-        {
-          return `subsector/${tvItem.TVItemID}`;
-        }
-      case TVTypeEnum.Tel:
-        {
-          return `tel/${tvItem.TVItemID}`;
-        }
-      case TVTypeEnum.TideSite:
-        {
-          return `tidesite/${tvItem.TVItemID}`;
-        }
-      case TVTypeEnum.VisualPlumesScenario:
-        {
-          return `visualplumesscenario/${tvItem.TVItemID}`;
-        }
-      default:
-        {
-          return ``;
-        }
-    }
+    return TVTypeEnum_GetIDText(tvType, this);
   }
 
   GetTypeIcon(tvType: number) {

@@ -5,7 +5,9 @@
  *
  */
 
+import { AppService } from '../../app.service';
 import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
+import { LanguageEnum } from './LanguageEnum';
 
 export enum ScenarioStatusEnum {
     Normal = 1,
@@ -19,9 +21,9 @@ export enum ScenarioStatusEnum {
     Cancelled = 9,
 }
 
-export function ScenarioStatusEnum_GetOrderedText(): EnumIDAndText[] {
+export function ScenarioStatusEnum_GetOrderedText(appService: AppService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if ($localize.locale === 'fr-CA') {
+    if (appService.AppVar$?.getValue().Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'Normal (fr)' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'Copying (fr)' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'Copied (fr)' });
@@ -47,9 +49,9 @@ export function ScenarioStatusEnum_GetOrderedText(): EnumIDAndText[] {
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function ScenarioStatusEnum_GetIDText(enumID: number): string {
+export function ScenarioStatusEnum_GetIDText(enumID: number, appService: AppService): string {
     let addressTypeEnunText: string;
-    ScenarioStatusEnum_GetOrderedText().forEach(e => {
+    ScenarioStatusEnum_GetOrderedText(appService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

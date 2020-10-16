@@ -5,7 +5,9 @@
  *
  */
 
+import { AppService } from '../../app.service';
 import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
+import { LanguageEnum } from './LanguageEnum';
 
 export enum BoxModelResultTypeEnum {
     Dilution = 1,
@@ -15,9 +17,9 @@ export enum BoxModelResultTypeEnum {
     DecayPreDisinfection = 5,
 }
 
-export function BoxModelResultTypeEnum_GetOrderedText(): EnumIDAndText[] {
+export function BoxModelResultTypeEnum_GetOrderedText(appService: AppService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if ($localize.locale === 'fr-CA') {
+    if (appService.AppVar$?.getValue().Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'Dilution' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'NoDecayUntreated (fr)' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'NoDecayPreDisinfection (fr)' });
@@ -35,9 +37,9 @@ export function BoxModelResultTypeEnum_GetOrderedText(): EnumIDAndText[] {
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function BoxModelResultTypeEnum_GetIDText(enumID: number): string {
+export function BoxModelResultTypeEnum_GetIDText(enumID: number, appService: AppService): string {
     let addressTypeEnunText: string;
-    BoxModelResultTypeEnum_GetOrderedText().forEach(e => {
+    BoxModelResultTypeEnum_GetOrderedText(appService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/
 import { Subscription } from 'rxjs';
 import { LoadLocalesApp } from './app.locales';
 import { AppService } from './app.service';
+import { TopComponentEnum } from './enums/TopComponentEnum';
 
 @Component({
   selector: 'app-root',
@@ -14,6 +15,9 @@ export class AppComponent implements OnInit, OnDestroy {
   sub2: Subscription;
 
   constructor(public appService: AppService) {
+  }
+  get topComponentEnum(): typeof TopComponentEnum {
+    return TopComponentEnum;
   }
 
   ngOnInit() {

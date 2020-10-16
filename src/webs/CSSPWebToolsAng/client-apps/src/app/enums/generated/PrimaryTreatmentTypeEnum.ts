@@ -5,7 +5,9 @@
  *
  */
 
+import { AppService } from '../../app.service';
 import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
+import { LanguageEnum } from './LanguageEnum';
 
 export enum PrimaryTreatmentTypeEnum {
     NotApplicable = 1,
@@ -15,9 +17,9 @@ export enum PrimaryTreatmentTypeEnum {
     PrimaryClarification = 5,
 }
 
-export function PrimaryTreatmentTypeEnum_GetOrderedText(): EnumIDAndText[] {
+export function PrimaryTreatmentTypeEnum_GetOrderedText(appService: AppService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if ($localize.locale === 'fr-CA') {
+    if (appService.AppVar$?.getValue().Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'Not applicable (fr)' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'Sedimentation (fr)' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'Chemical coagulation (fr)' });
@@ -35,9 +37,9 @@ export function PrimaryTreatmentTypeEnum_GetOrderedText(): EnumIDAndText[] {
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function PrimaryTreatmentTypeEnum_GetIDText(enumID: number): string {
+export function PrimaryTreatmentTypeEnum_GetIDText(enumID: number, appService: AppService): string {
     let addressTypeEnunText: string;
-    PrimaryTreatmentTypeEnum_GetOrderedText().forEach(e => {
+    PrimaryTreatmentTypeEnum_GetOrderedText(appService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

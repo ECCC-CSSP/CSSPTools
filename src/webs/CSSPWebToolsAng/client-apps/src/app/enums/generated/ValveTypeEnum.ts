@@ -5,7 +5,9 @@
  *
  */
 
+import { AppService } from '../../app.service';
 import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
+import { LanguageEnum } from './LanguageEnum';
 
 export enum ValveTypeEnum {
     Manually = 1,
@@ -13,9 +15,9 @@ export enum ValveTypeEnum {
     None = 3,
 }
 
-export function ValveTypeEnum_GetOrderedText(): EnumIDAndText[] {
+export function ValveTypeEnum_GetOrderedText(appService: AppService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if ($localize.locale === 'fr-CA') {
+    if (appService.AppVar$?.getValue().Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'Manually (fr)' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'Automatically (fr)' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'None (fr)' });
@@ -29,9 +31,9 @@ export function ValveTypeEnum_GetOrderedText(): EnumIDAndText[] {
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function ValveTypeEnum_GetIDText(enumID: number): string {
+export function ValveTypeEnum_GetIDText(enumID: number, appService: AppService): string {
     let addressTypeEnunText: string;
-    ValveTypeEnum_GetOrderedText().forEach(e => {
+    ValveTypeEnum_GetOrderedText(appService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

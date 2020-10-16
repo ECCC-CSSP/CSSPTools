@@ -5,12 +5,35 @@
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </span>
 
-<p>Bonjourrr {{ (rootService.RootVar$ | async).RootTitle }}</p>
-<app-tvitem-list [AppVar]="appService.AppVar$?.getValue()" [TVItemList]="rootService.RootVar$?.getValue()?.WebBaseCountryList">
+<button mat-button [matMenuTriggerFor]="rootMenu">
+    <mat-icon>more_vert</mat-icon>
+</button>
+<mat-menu #rootMenu="matMenu">
+    <h3>&nbsp;&nbsp;Root Menu</h3>
+    <button mat-button
+    [ngClass]="appService.AppVar$?.getValue()?.InactVisible ? 'selected' : ''"
+    (click)="ToggleInactive()">Inactive</button>
+    <button mat-button
+    [ngClass]="appService.AppVar$?.getValue()?.DetailVisible ? 'selected' : ''"
+    (click)="ToggleDetail()">Detail</button>
+    <button mat-button
+    [ngClass]="appService.AppVar$?.getValue()?.EditVisible ? 'selected' : ''"
+    (click)="ToggleEdit()">Edit</button>
+</mat-menu>
+
+<button mat-button [ngClass]="ColorSelection(rootSubComponentEnum.Countries)" (click)="Show(rootSubComponentEnum.Countries)">Countries</button>
+<button mat-button [ngClass]="ColorSelection(rootSubComponentEnum.Files)" (click)="Show(rootSubComponentEnum.Files)">Files</button>
+<button mat-button [ngClass]="ColorSelection(rootSubComponentEnum.ExportArcGIS)" (click)="Show(rootSubComponentEnum.ExportArcGIS)">Export Arc GIS</button>
+
+<app-tvitem-list *ngIf="appService.AppVar$.getValue().RootSubComponent == rootSubComponentEnum.Countries"
+    [AppVar]="appService.AppVar$?.getValue()" [TVItemList]="rootService.RootVar$?.getValue()?.WebBaseCountryList">
 </app-tvitem-list>
 
-<div *ngIf="appService.AppVar$?.getValue()?.FileVisible">
-    <app-file-list [AppVar]="appService.AppVar$?.getValue()" *ngIf="rootService.RootVar$?.getValue()?.WebRoot?.TVItemModel" 
-    [TVFileModelList]="rootService.RootVar$?.getValue()?.WebRoot?.TVItemModel?.TVFileModelList">        
-    </app-file-list>
+<app-file-list *ngIf="appService.AppVar$?.getValue()?.RootSubComponent == rootSubComponentEnum.Files"
+    [AppVar]="appService.AppVar$?.getValue()"
+    [TVFileModelList]="rootService.RootVar$?.getValue()?.WebRoot?.TVItemModel?.TVFileModelList">
+</app-file-list>
+
+<div *ngIf="appService.AppVar$?.getValue()?.RootSubComponent == rootSubComponentEnum.ExportArcGIS">
+    Not implemented yet. Need to create ExportArcGISComponent.
 </div>

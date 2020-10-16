@@ -18,7 +18,7 @@ export class ProvinceService {
   ProvinceVar$: BehaviorSubject<ProvinceVar> = new BehaviorSubject<ProvinceVar>(<ProvinceVar>{});
 
   constructor(public appService: AppService, private mapService: MapService, private httpClient: HttpClient) {
-    LoadLocalesProvinceVar(this);
+    LoadLocalesProvinceVar(appService, this);
     this.UpdateProvinceVar(<ProvinceVar>{ ProvinceTitle: "Something for text" });
   }
 
@@ -42,7 +42,7 @@ export class ProvinceService {
 
     let ProvinceVarAreaList: ProvinceVar = <ProvinceVar>{ WebBaseAreaList: [] };
 
-    if (this.appService.AppVar$?.getValue()?.InactVisible) {
+    if (!this.appService.AppVar$?.getValue()?.InactVisible) {
       ProvinceVarAreaList = <ProvinceVar>{ WebBaseAreaList: this.ProvinceVar$?.getValue()?.WebProvince?.TVItemAreaList.filter((area) => { return area.TVItemModel.TVItem.IsActive == true }) };
     }
     else {

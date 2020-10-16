@@ -5,7 +5,9 @@
  *
  */
 
+import { AppService } from '../../app.service';
 import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
+import { LanguageEnum } from './LanguageEnum';
 
 export enum FilePurposeEnum {
     MikeInput = 1,
@@ -24,9 +26,9 @@ export enum FilePurposeEnum {
     OpenData = 14,
 }
 
-export function FilePurposeEnum_GetOrderedText(): EnumIDAndText[] {
+export function FilePurposeEnum_GetOrderedText(appService: AppService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if ($localize.locale === 'fr-CA') {
+    if (appService.AppVar$?.getValue().Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'MIKE Input (fr)' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'MIKE Input MDF (fr)' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'MIKE Result DFSU (fr)' });
@@ -62,9 +64,9 @@ export function FilePurposeEnum_GetOrderedText(): EnumIDAndText[] {
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function FilePurposeEnum_GetIDText(enumID: number): string {
+export function FilePurposeEnum_GetIDText(enumID: number, appService: AppService): string {
     let addressTypeEnunText: string;
-    FilePurposeEnum_GetOrderedText().forEach(e => {
+    FilePurposeEnum_GetOrderedText(appService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

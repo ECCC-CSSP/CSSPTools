@@ -7,6 +7,7 @@ import { WebRoot } from '../../models/generated/WebRoot.model';
 import { RootVar } from './root.models';
 import { MapService } from '../../components/map';
 import { AppService } from '../../app.service';
+import { AppVar } from 'src/app/app.model';
 
 @Injectable({
   providedIn: 'root'
@@ -48,6 +49,7 @@ export class RootService {
 
     this.RootVar$.next(<RootVar>{ ...this.RootVar$.getValue(), ...RootVarCountryList });
 
+    this.appService.UpdateAppVar(<AppVar>{ BreadCrumbWebBaseList: this.RootVar$.getValue()?.WebRoot?.TVItemParentList });
   }
 
 }

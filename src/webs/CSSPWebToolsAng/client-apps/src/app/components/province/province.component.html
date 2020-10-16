@@ -5,12 +5,60 @@
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </span>
 
-<app-tvitem-list [AppVar]="appService.AppVar$?.getValue()" [TVItemList]="provinceService.ProvinceVar$?.getValue()?.WebBaseAreaList">   
+<button mat-button [matMenuTriggerFor]="provinceMenu">
+    <mat-icon>more_vert</mat-icon>
+</button>
+<mat-menu #provinceMenu="matMenu">
+    <h3>&nbsp;&nbsp;Province Menu</h3>
+    <button mat-button
+    [ngClass]="appService.AppVar$?.getValue()?.InactVisible ? 'selected' : ''"
+    (click)="ToggleInactive()">Inactive</button>
+    <button mat-button
+    [ngClass]="appService.AppVar$?.getValue()?.DetailVisible ? 'selected' : ''"
+    (click)="ToggleDetail()">Detail</button>
+    <button mat-button
+    [ngClass]="appService.AppVar$?.getValue()?.EditVisible ? 'selected' : ''"
+    (click)="ToggleEdit()">Edit</button>
+    <h3>&nbsp;&nbsp;Province Menu</h3>
+    <button mat-button
+    [ngClass]="appService.AppVar$?.getValue()?.InactVisible ? 'selected' : ''"
+    (click)="ToggleInactive()">Inactive</button>
+    <button mat-button
+    [ngClass]="appService.AppVar$?.getValue()?.DetailVisible ? 'selected' : ''"
+    (click)="ToggleDetail()">Detail</button>
+    <button mat-button
+    [ngClass]="appService.AppVar$?.getValue()?.EditVisible ? 'selected' : ''"
+    (click)="ToggleEdit()">Edit</button>
+</mat-menu>
+
+<button mat-button [ngClass]="ColorSelection(provinceSubComponentEnum.Areas)" (click)="Show(provinceSubComponentEnum.Areas)">Areas</button>
+<button mat-button [ngClass]="ColorSelection(provinceSubComponentEnum.Municipalities)" (click)="Show(provinceSubComponentEnum.Municipalities)">Municipalities</button>
+<button mat-button [ngClass]="ColorSelection(provinceSubComponentEnum.Files)" (click)="Show(provinceSubComponentEnum.Files)">Files</button>
+<button mat-button [ngClass]="ColorSelection(provinceSubComponentEnum.OpenData)" (click)="Show(provinceSubComponentEnum.OpenData)">Open Data</button>
+<button mat-button [ngClass]="ColorSelection(provinceSubComponentEnum.SamplingPlan)" (click)="Show(provinceSubComponentEnum.SamplingPlan)">Sampling Plan</button>
+<button mat-button [ngClass]="ColorSelection(provinceSubComponentEnum.ProvinceTools)" (click)="Show(provinceSubComponentEnum.ProvinceTools)">Province Tools</button>
+
+<app-tvitem-list *ngIf="appService.AppVar$?.getValue()?.ProvinceSubComponent == provinceSubComponentEnum.Areas"
+    [AppVar]="appService.AppVar$?.getValue()" [TVItemList]="provinceService.ProvinceVar$?.getValue()?.WebBaseAreaList">
 </app-tvitem-list>
 
-<div *ngIf="appService.AppVar$?.getValue()?.FileVisible">
-    <app-file-list [AppVar]="appService.AppVar$?.getValue()" *ngIf="provinceService.ProvinceVar$?.getValue()?.WebProvince?.TVItemModel" 
-    [TVFileModelList]="provinceService.ProvinceVar$?.getValue()?.WebProvince?.TVItemModel?.TVFileModelList">        
-    </app-file-list>
+<div *ngIf="appService.AppVar$?.getValue()?.ProvinceSubComponent == provinceSubComponentEnum.Municipalities">
+    Not implemented yet. Need to create MunicipalityListComponent or use the TVItemListComponent.
 </div>
 
+<app-file-list *ngIf="appService.AppVar$?.getValue()?.ProvinceSubComponent == provinceSubComponentEnum.Files"
+    [AppVar]="appService.AppVar$?.getValue()"
+    [TVFileModelList]="provinceService.ProvinceVar$?.getValue()?.WebProvince?.TVItemModel?.TVFileModelList">
+</app-file-list>
+
+<div *ngIf="appService.AppVar$?.getValue()?.ProvinceSubComponent == provinceSubComponentEnum.OpenData">
+    Not implemented yet. Need to create OpenDataComponent.
+</div>
+
+<div *ngIf="appService.AppVar$?.getValue()?.ProvinceSubComponent == provinceSubComponentEnum.SamplingPlan">
+    Not implemented yet. Need to create SamplingPlanComponent.
+</div>
+
+<div *ngIf="appService.AppVar$?.getValue()?.ProvinceSubComponent == provinceSubComponentEnum.ProvinceTools">
+    Not implemented yet. Need to create ProvinceToolsComponent.
+</div>

@@ -15,7 +15,7 @@ export class MapService {
   MapVar$: BehaviorSubject<MapVar> = new BehaviorSubject<MapVar>(<MapVar>{});
 
   constructor(private appService: AppService) {
-    LoadLocalesMapText(this);
+    LoadLocalesMapText(appService, this);
     this.UpdateMapVar(<MapVar>{ 
       MapTitle: "Something for text", 
       zoom: 12,
@@ -24,7 +24,7 @@ export class MapService {
         //zoomControl: true,
         //scrollwheel: true,
         //disableDoubleClickZoom: false,
-        mapTypeId: this.appService.AppVar$?.getValue()?.mapTypeId,
+        mapTypeId: google.maps.MapTypeId.SATELLITE,
         // maxZoom: 15,
         // minZoom: 8,
       },
@@ -34,14 +34,6 @@ export class MapService {
       infoContent: ''
     });
     this.appService.UpdateAppVar(<AppVar>{ HybridVisible: true, SatelliteVisible: false, RoadmapVisible: false, TerrainVisible: false, mapTypeId: google.maps.MapTypeId.HYBRID });
-  }
-
-  ToggleMapType(router: Router, property: string) {
-    property == "hybrid" ? this.appService.UpdateAppVar(<AppVar>{ HybridVisible: true, SatelliteVisible: false, RoadmapVisible: false, TerrainVisible: false, mapTypeId: google.maps.MapTypeId.HYBRID }) : null;
-    property == "satellite" ? this.appService.UpdateAppVar(<AppVar>{ HybridVisible: true, SatelliteVisible: true, RoadmapVisible: false, TerrainVisible: false, mapTypeId: google.maps.MapTypeId.SATELLITE }) : null;
-    property == "roadmap" ? this.appService.UpdateAppVar(<AppVar>{ HybridVisible: true, SatelliteVisible: false, RoadmapVisible: true, TerrainVisible: false, mapTypeId: google.maps.MapTypeId.ROADMAP }) : null;
-    property == "terrain" ? this.appService.UpdateAppVar(<AppVar>{ HybridVisible: true, SatelliteVisible: false, RoadmapVisible: false, TerrainVisible: true, mapTypeId: google.maps.MapTypeId.TERRAIN }) : null;
-    //this.shellService.ChangeUrl(router, property);
   }
 
   UpdateMapVar(mapVar: MapVar) {

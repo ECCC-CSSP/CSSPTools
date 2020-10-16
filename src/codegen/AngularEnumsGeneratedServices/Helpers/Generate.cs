@@ -75,7 +75,12 @@ namespace AngularEnumsGeneratedServices.Services
                     sb.AppendLine(@" *");
                     sb.AppendLine(@" */");
                     sb.AppendLine(@"");
+                    sb.AppendLine(@"import { AppService } from '../../app.service';");
                     sb.AppendLine(@"import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';");
+                    if (dllTypeInfoEnums.Name != "LanguageEnum")
+                    {
+                        sb.AppendLine(@"import { LanguageEnum } from './LanguageEnum';");
+                    }
                     sb.AppendLine(@"");
 
                     sb.AppendLine($@"export enum { dllTypeInfoEnums.Name } {{");
@@ -105,9 +110,9 @@ namespace AngularEnumsGeneratedServices.Services
                     // ---------------------------------
                     // doing {EnumName}_GetOrderedText()
                     // ---------------------------------
-                    sb.AppendLine($@"export function { dllTypeInfoEnums.Name }_GetOrderedText(): EnumIDAndText[] {{");
+                    sb.AppendLine($@"export function { dllTypeInfoEnums.Name }_GetOrderedText(appService: AppService): EnumIDAndText[] {{");
                     sb.AppendLine(@"    let enumTextOrderedList: EnumIDAndText[] = [];");
-                    sb.AppendLine(@"    if ($localize.locale === 'fr-CA') {");
+                    sb.AppendLine(@"    if (appService.AppVar$?.getValue().Language == LanguageEnum.fr) {");
 
                     CSSPCultureService.SetCulture("fr-CA");
                     List<EnumIDAndText> enumIDAndTextList = Enums.GetEnumTextOrderedList(dllTypeInfoEnums.Type);
@@ -137,9 +142,9 @@ namespace AngularEnumsGeneratedServices.Services
                     // doing {EnumName}_GetIDText(enumID: number)
                     // ---------------------------------
                     sb.AppendLine(@"");
-                    sb.AppendLine($@"export function { dllTypeInfoEnums.Name }_GetIDText(enumID: number): string {{");
+                    sb.AppendLine($@"export function { dllTypeInfoEnums.Name }_GetIDText(enumID: number, appService: AppService): string {{");
                     sb.AppendLine(@"    let addressTypeEnunText: string;");
-                    sb.AppendLine($@"    { dllTypeInfoEnums.Name }_GetOrderedText().forEach(e => {{");
+                    sb.AppendLine($@"    { dllTypeInfoEnums.Name }_GetOrderedText(appService).forEach(e => {{");
                     sb.AppendLine($@"        if (e.EnumID == enumID) {{");
                     sb.AppendLine($@"            addressTypeEnunText = e.EnumText;");
                     sb.AppendLine($@"            return false;");

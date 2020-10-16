@@ -5,7 +5,9 @@
  *
  */
 
+import { AppService } from '../../app.service';
 import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
+import { LanguageEnum } from './LanguageEnum';
 
 export enum MikeScenarioSpecialResultKMLTypeEnum {
     Mesh = 1,
@@ -15,9 +17,9 @@ export enum MikeScenarioSpecialResultKMLTypeEnum {
     PollutionAnimation = 5,
 }
 
-export function MikeScenarioSpecialResultKMLTypeEnum_GetOrderedText(): EnumIDAndText[] {
+export function MikeScenarioSpecialResultKMLTypeEnum_GetOrderedText(appService: AppService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if ($localize.locale === 'fr-CA') {
+    if (appService.AppVar$?.getValue().Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'Grillage' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'Région d\'étude' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'Conditions aux limits' });
@@ -35,9 +37,9 @@ export function MikeScenarioSpecialResultKMLTypeEnum_GetOrderedText(): EnumIDAnd
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function MikeScenarioSpecialResultKMLTypeEnum_GetIDText(enumID: number): string {
+export function MikeScenarioSpecialResultKMLTypeEnum_GetIDText(enumID: number, appService: AppService): string {
     let addressTypeEnunText: string;
-    MikeScenarioSpecialResultKMLTypeEnum_GetOrderedText().forEach(e => {
+    MikeScenarioSpecialResultKMLTypeEnum_GetOrderedText(appService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

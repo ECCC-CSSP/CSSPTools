@@ -1,34 +1,34 @@
-<span *ngIf="AppVar?.TVTypeProvince">
+<span *ngIf="tvTypeEnum.Province">
     <span>Province</span>
-    <app-child-count [AppVar]="AppVar" [TVType]="AppVar?.TVTypeProvince" [TVItemModel]="TVItemModel">
+    <app-child-count [AppVar]="AppVar" [TVType]="tvTypeEnum.Province" [TVItemModel]="TVItemModel">
     </app-child-count>
 </span>
-<span *ngIf="AppVar?.TVTypeMunicipality">
+<span *ngIf="tvTypeEnum.Municipality">
     <span>Municipality</span>
-    <app-child-count [AppVar]="AppVar" [TVType]="AppVar?.TVTypeMunicipality" [TVItemModel]="TVItemModel">
+    <app-child-count [AppVar]="AppVar" [TVType]="tvTypeEnum.Municipality" [TVItemModel]="TVItemModel">
     </app-child-count>
 </span>
-<span *ngIf="AppVar?.TVTypeSubsector">
+<span *ngIf="tvTypeEnum.Subsector">
     <span>Subsector</span>
-    <app-child-count [AppVar]="AppVar" [TVType]="AppVar?.TVTypeSubsector" [TVItemModel]="TVItemModel">
+    <app-child-count [AppVar]="AppVar" [TVType]="tvTypeEnum.Subsector" [TVItemModel]="TVItemModel">
     </app-child-count></span>
-<span *ngIf="AppVar?.TVTypeMWQMSite">
+<span *ngIf="tvTypeEnum.MWQMSite">
     <span>MWQM site</span>
-    <app-child-count [AppVar]="AppVar" [TVType]="AppVar?.TVTypeMWQMSite" [TVItemModel]="TVItemModel">
+    <app-child-count [AppVar]="AppVar" [TVType]="tvTypeEnum.MWQMSite" [TVItemModel]="TVItemModel">
     </app-child-count>
 </span>
-<span *ngIf="AppVar?.TVTypeMWQMRun">
+<span *ngIf="tvTypeEnum.MWQMRun">
     <span>MWQM Run</span>
-    <app-child-count [AppVar]="AppVar" [TVType]="AppVar?.TVTypeMWQMRun" [TVItemModel]="TVItemModel">
+    <app-child-count [AppVar]="AppVar" [TVType]="tvTypeEnum.MWQMRun" [TVItemModel]="TVItemModel">
     </app-child-count>
 </span>
-<span *ngIf="AppVar?.TVTypeMWQMSiteSample">
+<span *ngIf="tvTypeEnum.MWQMSiteSample">
     <span>MWQM Sample</span>
-    <app-child-count [AppVar]="AppVar" [TVType]="AppVar?.TVTypeMWQMSiteSample" [TVItemModel]="TVItemModel">
+    <app-child-count [AppVar]="AppVar" [TVType]="tvTypeEnum.MWQMSiteSample" [TVItemModel]="TVItemModel">
     </app-child-count>
 </span>
-<span *ngIf="AppVar?.TVTypeMikeScenario">
+<span *ngIf="tvTypeEnum.MikeScenario">
     <span>Mike Scenario</span>
-    <app-child-count [AppVar]="AppVar" [TVType]="AppVar?.TVTypeMikeScenario" [TVItemModel]="TVItemModel">
+    <app-child-count [AppVar]="AppVar" [TVType]="tvTypeEnum.MikeScenario" [TVItemModel]="TVItemModel">
     </app-child-count>
 </span>

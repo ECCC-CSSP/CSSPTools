@@ -5,7 +5,9 @@
  *
  */
 
+import { AppService } from '../../app.service';
 import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
+import { LanguageEnum } from './LanguageEnum';
 
 export enum CollectionSystemTypeEnum {
     CompletelySeparated = 1,
@@ -21,9 +23,9 @@ export enum CollectionSystemTypeEnum {
     Combined10Separated90 = 11,
 }
 
-export function CollectionSystemTypeEnum_GetOrderedText(): EnumIDAndText[] {
+export function CollectionSystemTypeEnum_GetOrderedText(appService: AppService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if ($localize.locale === 'fr-CA') {
+    if (appService.AppVar$?.getValue().Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'Completely Separated (fr)' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'Completely Combined (fr)' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'Combined 90% Separated 10% (fr)' });
@@ -53,9 +55,9 @@ export function CollectionSystemTypeEnum_GetOrderedText(): EnumIDAndText[] {
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function CollectionSystemTypeEnum_GetIDText(enumID: number): string {
+export function CollectionSystemTypeEnum_GetIDText(enumID: number, appService: AppService): string {
     let addressTypeEnunText: string;
-    CollectionSystemTypeEnum_GetOrderedText().forEach(e => {
+    CollectionSystemTypeEnum_GetOrderedText(appService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

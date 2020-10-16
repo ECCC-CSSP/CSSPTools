@@ -5,16 +5,18 @@
  *
  */
 
+import { AppService } from '../../app.service';
 import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
+import { LanguageEnum } from './LanguageEnum';
 
 export enum SamplingPlanTypeEnum {
     Subsector = 1,
     Municipality = 2,
 }
 
-export function SamplingPlanTypeEnum_GetOrderedText(): EnumIDAndText[] {
+export function SamplingPlanTypeEnum_GetOrderedText(appService: AppService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if ($localize.locale === 'fr-CA') {
+    if (appService.AppVar$?.getValue().Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'Subsector (fr)' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'Municipality (fr)' });
     }
@@ -26,9 +28,9 @@ export function SamplingPlanTypeEnum_GetOrderedText(): EnumIDAndText[] {
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function SamplingPlanTypeEnum_GetIDText(enumID: number): string {
+export function SamplingPlanTypeEnum_GetIDText(enumID: number, appService: AppService): string {
     let addressTypeEnunText: string;
-    SamplingPlanTypeEnum_GetOrderedText().forEach(e => {
+    SamplingPlanTypeEnum_GetOrderedText(appService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

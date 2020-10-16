@@ -2,6 +2,6 @@
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </span>
 
-<mat-list *ngFor="let webBase of AppVar.BreadCrumbWebBaseList">
-    <app-tvitem-list-item [AppVar]="AppVar" [IsBreadCrumb]="true" [TVItemModel]="webBase.TVItemModel"></app-tvitem-list-item>
+<mat-list *ngFor="let webBase of AppVar.BreadCrumbWebBaseList; let i = index" >
+    <app-tvitem-list-item [IsLast]="IsLast(i)" [AppVar]="AppVar" [IsBreadCrumb]="true" [TVItemModel]="webBase.TVItemModel"></app-tvitem-list-item>
 </mat-list>

@@ -5,7 +5,9 @@
  *
  */
 
+import { AppService } from '../../app.service';
 import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
+import { LanguageEnum } from './LanguageEnum';
 
 export enum KMZActionEnum {
     DoNothing = 1,
@@ -18,9 +20,9 @@ export enum KMZActionEnum {
     GenerateKMZBoundaryConditionNodes = 8,
 }
 
-export function KMZActionEnum_GetOrderedText(): EnumIDAndText[] {
+export function KMZActionEnum_GetOrderedText(appService: AppService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if ($localize.locale === 'fr-CA') {
+    if (appService.AppVar$?.getValue().Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'DoNothing (fr)' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'GenerateKMZContourAnimation (fr)' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'GenerateKMZContourLimit (fr)' });
@@ -44,9 +46,9 @@ export function KMZActionEnum_GetOrderedText(): EnumIDAndText[] {
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function KMZActionEnum_GetIDText(enumID: number): string {
+export function KMZActionEnum_GetIDText(enumID: number, appService: AppService): string {
     let addressTypeEnunText: string;
-    KMZActionEnum_GetOrderedText().forEach(e => {
+    KMZActionEnum_GetOrderedText(appService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

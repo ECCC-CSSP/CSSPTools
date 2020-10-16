@@ -5,7 +5,9 @@
  *
  */
 
+import { AppService } from '../../app.service';
 import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
+import { LanguageEnum } from './LanguageEnum';
 
 export enum WebTideDataSetEnum {
     arctic9 = 1,
@@ -21,9 +23,9 @@ export enum WebTideDataSetEnum {
     vigf8 = 11,
 }
 
-export function WebTideDataSetEnum_GetOrderedText(): EnumIDAndText[] {
+export function WebTideDataSetEnum_GetOrderedText(appService: AppService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if ($localize.locale === 'fr-CA') {
+    if (appService.AppVar$?.getValue().Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'Arctic (fr)' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'Brador (fr)' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'Global (LEGOS France) (fr)' });
@@ -53,9 +55,9 @@ export function WebTideDataSetEnum_GetOrderedText(): EnumIDAndText[] {
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function WebTideDataSetEnum_GetIDText(enumID: number): string {
+export function WebTideDataSetEnum_GetIDText(enumID: number, appService: AppService): string {
     let addressTypeEnunText: string;
-    WebTideDataSetEnum_GetOrderedText().forEach(e => {
+    WebTideDataSetEnum_GetOrderedText(appService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

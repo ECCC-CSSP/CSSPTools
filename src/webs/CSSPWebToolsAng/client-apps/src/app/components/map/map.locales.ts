@@ -1,12 +1,14 @@
+import { AppService } from 'src/app/app.service';
+import { LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { MapVar } from './map.models';
 import { MapService } from './map.service';
 
-export function LoadLocalesMapText(mapService: MapService) {
+export function LoadLocalesMapText(appService: AppService, mapService: MapService) {
   let mapVar: MapVar = {
     MapTitle: 'Yes The title',
   }
 
-  if ($localize.locale === 'fr-CA') {
+  if (appService.AppVar$.getValue().Language == LanguageEnum.fr) {
     mapVar.MapTitle = 'Yes Le Titre';
   }
 

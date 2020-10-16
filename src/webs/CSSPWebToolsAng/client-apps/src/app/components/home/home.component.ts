@@ -4,6 +4,7 @@ import { LoadLocalesHomeText } from './home.locales';
 import { AppService } from 'src/app/app.service';
 import { AppVar } from 'src/app/app.model';
 import { LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
+import { TopComponentEnum } from 'src/app/enums/TopComponentEnum';
 
 @Component({
   selector: 'app-home',
@@ -23,10 +24,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   English() {
-    this.appService.UpdateAppVar(<AppVar>{ Language: LanguageEnum.en, Page: 'shell' });
+    this.appService.UpdateAppVar(<AppVar>{ Language: LanguageEnum.en, TopComponent: TopComponentEnum.Shell });
   }
 
   French() {
-    this.appService.UpdateAppVar(<AppVar>{ Language: LanguageEnum.fr, Page: 'shell' });
+    this.appService.UpdateAppVar(<AppVar>{ Language: LanguageEnum.fr, TopComponent: TopComponentEnum.Shell });
   }
 }

@@ -5,7 +5,9 @@
  *
  */
 
+import { AppService } from '../../app.service';
 import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
+import { LanguageEnum } from './LanguageEnum';
 
 export enum PolSourceObsInfoEnum {
     SourceStart = 10100,
@@ -1609,9 +1611,9 @@ export enum PolSourceObsInfoEnum {
     FollowupCompleted = 93002,
 }
 
-export function PolSourceObsInfoEnum_GetOrderedText(): EnumIDAndText[] {
+export function PolSourceObsInfoEnum_GetOrderedText(appService: AppService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if ($localize.locale === 'fr-CA') {
+    if (appService.AppVar$?.getValue().Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 10100, EnumText: 'Sélection de la source: Le problème ci-dessus est  mieux décrit comme l\'un des suivants' });
         enumTextOrderedList.push({ EnumID: 10101, EnumText: 'Humain-terre' });
         enumTextOrderedList.push({ EnumID: 10102, EnumText: '                          Humain-marin' });
@@ -4818,9 +4820,9 @@ pelouse au bord de l\'eau' });
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function PolSourceObsInfoEnum_GetIDText(enumID: number): string {
+export function PolSourceObsInfoEnum_GetIDText(enumID: number, appService: AppService): string {
     let addressTypeEnunText: string;
-    PolSourceObsInfoEnum_GetOrderedText().forEach(e => {
+    PolSourceObsInfoEnum_GetOrderedText(appService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

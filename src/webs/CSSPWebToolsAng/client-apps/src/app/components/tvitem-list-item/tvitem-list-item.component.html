@@ -1,10 +1,10 @@
 <mat-list-item (click)="appService.SetSubPage(TVItemModel)">
-    <button mat-button>
+    <button mat-button [ngClass]="(IsBreadCrumb && IsLast) ? 'selected' : ''">
         <span [ngClass]="TVItemModel?.TVItem?.IsActive ? '' : 'inactive'">
-            <span *ngIf="AppVar?.Language == 1">
+            <span *ngIf="AppVar?.Language == languageEnum.en">
                 {{ TVItemModel?.TVItemLanguageEN?.TVText }}
             </span>
-            <span *ngIf="AppVar?.Language == 2">
+            <span *ngIf="AppVar?.Language == languageEnum.fr">
                 {{ TVItemModel?.TVItemLanguageFR?.TVText }}
             </span>
         </span>

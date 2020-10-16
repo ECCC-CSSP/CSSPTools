@@ -11,4 +11,5 @@ import { TVItemModel } from './TVItemModel.model';
 export class WebRoot {
     TVItemCountryList: WebBase[];
     TVItemModel: TVItemModel;
+    TVItemParentList: WebBase[];
 }

@@ -5,16 +5,18 @@
  *
  */
 
+import { AppService } from '../../app.service';
 import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
+import { LanguageEnum } from './LanguageEnum';
 
 export enum SameDayNextDayEnum {
     SameDay = 1,
     NextDay = 2,
 }
 
-export function SameDayNextDayEnum_GetOrderedText(): EnumIDAndText[] {
+export function SameDayNextDayEnum_GetOrderedText(appService: AppService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if ($localize.locale === 'fr-CA') {
+    if (appService.AppVar$?.getValue().Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'Same day (fr)' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'Next day (fr)' });
     }
@@ -26,9 +28,9 @@ export function SameDayNextDayEnum_GetOrderedText(): EnumIDAndText[] {
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function SameDayNextDayEnum_GetIDText(enumID: number): string {
+export function SameDayNextDayEnum_GetIDText(enumID: number, appService: AppService): string {
     let addressTypeEnunText: string;
-    SameDayNextDayEnum_GetOrderedText().forEach(e => {
+    SameDayNextDayEnum_GetOrderedText(appService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

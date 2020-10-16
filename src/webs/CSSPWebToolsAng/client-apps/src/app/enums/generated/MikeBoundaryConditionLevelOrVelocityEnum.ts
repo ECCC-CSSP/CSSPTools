@@ -5,16 +5,18 @@
  *
  */
 
+import { AppService } from '../../app.service';
 import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
+import { LanguageEnum } from './LanguageEnum';
 
 export enum MikeBoundaryConditionLevelOrVelocityEnum {
     Level = 1,
     Velocity = 2,
 }
 
-export function MikeBoundaryConditionLevelOrVelocityEnum_GetOrderedText(): EnumIDAndText[] {
+export function MikeBoundaryConditionLevelOrVelocityEnum_GetOrderedText(appService: AppService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if ($localize.locale === 'fr-CA') {
+    if (appService.AppVar$?.getValue().Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'Level (fr)' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'Velocity (fr)' });
     }
@@ -26,9 +28,9 @@ export function MikeBoundaryConditionLevelOrVelocityEnum_GetOrderedText(): EnumI
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function MikeBoundaryConditionLevelOrVelocityEnum_GetIDText(enumID: number): string {
+export function MikeBoundaryConditionLevelOrVelocityEnum_GetIDText(enumID: number, appService: AppService): string {
     let addressTypeEnunText: string;
-    MikeBoundaryConditionLevelOrVelocityEnum_GetOrderedText().forEach(e => {
+    MikeBoundaryConditionLevelOrVelocityEnum_GetOrderedText(appService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

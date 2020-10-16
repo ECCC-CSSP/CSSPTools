@@ -5,7 +5,9 @@
  *
  */
 
+import { AppService } from '../../app.service';
 import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
+import { LanguageEnum } from './LanguageEnum';
 
 export enum TreatmentTypeEnum {
     ActivatedSludge = 1,
@@ -43,9 +45,9 @@ export enum TreatmentTypeEnum {
     RotatingBiologicalContactor = 33,
 }
 
-export function TreatmentTypeEnum_GetOrderedText(): EnumIDAndText[] {
+export function TreatmentTypeEnum_GetOrderedText(appService: AppService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if ($localize.locale === 'fr-CA') {
+    if (appService.AppVar$?.getValue().Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'Activated Sludge (fr)' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'Activated Sludge With Biofilter (fr)' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'Lagoon No Aeration 1 Cell (fr)' });
@@ -119,9 +121,9 @@ export function TreatmentTypeEnum_GetOrderedText(): EnumIDAndText[] {
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function TreatmentTypeEnum_GetIDText(enumID: number): string {
+export function TreatmentTypeEnum_GetIDText(enumID: number, appService: AppService): string {
     let addressTypeEnunText: string;
-    TreatmentTypeEnum_GetOrderedText().forEach(e => {
+    TreatmentTypeEnum_GetOrderedText(appService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

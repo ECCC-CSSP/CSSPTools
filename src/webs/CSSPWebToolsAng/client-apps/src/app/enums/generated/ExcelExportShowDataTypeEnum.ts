@@ -5,7 +5,9 @@
  *
  */
 
+import { AppService } from '../../app.service';
 import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
+import { LanguageEnum } from './LanguageEnum';
 
 export enum ExcelExportShowDataTypeEnum {
     FecalColiform = 1,
@@ -18,9 +20,9 @@ export enum ExcelExportShowDataTypeEnum {
     PercOfP90Over260 = 8,
 }
 
-export function ExcelExportShowDataTypeEnum_GetOrderedText(): EnumIDAndText[] {
+export function ExcelExportShowDataTypeEnum_GetOrderedText(appService: AppService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if ($localize.locale === 'fr-CA') {
+    if (appService.AppVar$?.getValue().Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'Fecal Coliform (fr)' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'Temperature (fr)' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'Salinity (fr)' });
@@ -44,9 +46,9 @@ export function ExcelExportShowDataTypeEnum_GetOrderedText(): EnumIDAndText[] {
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function ExcelExportShowDataTypeEnum_GetIDText(enumID: number): string {
+export function ExcelExportShowDataTypeEnum_GetIDText(enumID: number, appService: AppService): string {
     let addressTypeEnunText: string;
-    ExcelExportShowDataTypeEnum_GetOrderedText().forEach(e => {
+    ExcelExportShowDataTypeEnum_GetOrderedText(appService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

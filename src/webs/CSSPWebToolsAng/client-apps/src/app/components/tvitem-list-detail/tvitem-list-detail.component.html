@@ -1,11 +1,11 @@
 <blockquote>
     <app-tvitem-list-detail-root [AppVar]="AppVar" [TVItemModel]="TVItemModel"
-        *ngIf="TVItemModel.TVItem.TVType == AppVar.TVTypeRoot">
+        *ngIf="TVItemModel.TVItem.TVType == tvTypeEnum.Root">
     </app-tvitem-list-detail-root>
     <app-tvitem-list-detail-country [AppVar]="AppVar" [TVItemModel]="TVItemModel"
-        *ngIf="TVItemModel.TVItem.TVType == AppVar.TVTypeCountry">
+        *ngIf="TVItemModel.TVItem.TVType == tvTypeEnum.Country">
     </app-tvitem-list-detail-country>
     <app-tvitem-list-detail-province [AppVar]="AppVar" [TVItemModel]="TVItemModel"
-        *ngIf="TVItemModel.TVItem.TVType == AppVar.TVTypeProvince">
+        *ngIf="TVItemModel.TVItem.TVType == tvTypeEnum.Province">
     </app-tvitem-list-detail-province>
 </blockquote>

@@ -5,7 +5,9 @@
  *
  */
 
+import { AppService } from '../../app.service';
 import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
+import { LanguageEnum } from './LanguageEnum';
 
 export enum CanOverflowTypeEnum {
     Yes = 1,
@@ -13,9 +15,9 @@ export enum CanOverflowTypeEnum {
     Unknown = 3,
 }
 
-export function CanOverflowTypeEnum_GetOrderedText(): EnumIDAndText[] {
+export function CanOverflowTypeEnum_GetOrderedText(appService: AppService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if ($localize.locale === 'fr-CA') {
+    if (appService.AppVar$?.getValue().Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'Oui' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'Non' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'Inconnu' });
@@ -29,9 +31,9 @@ export function CanOverflowTypeEnum_GetOrderedText(): EnumIDAndText[] {
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function CanOverflowTypeEnum_GetIDText(enumID: number): string {
+export function CanOverflowTypeEnum_GetIDText(enumID: number, appService: AppService): string {
     let addressTypeEnunText: string;
-    CanOverflowTypeEnum_GetOrderedText().forEach(e => {
+    CanOverflowTypeEnum_GetOrderedText(appService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

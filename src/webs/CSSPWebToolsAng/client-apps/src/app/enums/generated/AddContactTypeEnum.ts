@@ -5,7 +5,9 @@
  *
  */
 
+import { AppService } from '../../app.service';
 import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
+import { LanguageEnum } from './LanguageEnum';
 
 export enum AddContactTypeEnum {
     First = 1,
@@ -13,9 +15,9 @@ export enum AddContactTypeEnum {
     LoggedIn = 3,
 }
 
-export function AddContactTypeEnum_GetOrderedText(): EnumIDAndText[] {
+export function AddContactTypeEnum_GetOrderedText(appService: AppService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if ($localize.locale === 'fr-CA') {
+    if (appService.AppVar$?.getValue().Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'First' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'Register' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'Logged in' });
@@ -29,9 +31,9 @@ export function AddContactTypeEnum_GetOrderedText(): EnumIDAndText[] {
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function AddContactTypeEnum_GetIDText(enumID: number): string {
+export function AddContactTypeEnum_GetIDText(enumID: number, appService: AppService): string {
     let addressTypeEnunText: string;
-    AddContactTypeEnum_GetOrderedText().forEach(e => {
+    AddContactTypeEnum_GetOrderedText(appService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;
