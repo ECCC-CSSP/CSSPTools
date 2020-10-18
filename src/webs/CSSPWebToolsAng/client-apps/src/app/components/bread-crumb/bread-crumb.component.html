@@ -1,7 +1,7 @@
-<span *ngIf="(breadCrumbService.BreadCrumbVar$ | async).Working">
+<span *ngIf="(appLoadedService.AppLoaded$ | async).Working">
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </span>
 
-<mat-list *ngFor="let webBase of AppVar.BreadCrumbWebBaseList; let i = index" >
-    <app-tvitem-list-item [IsLast]="IsLast(i)" [AppVar]="AppVar" [IsBreadCrumb]="true" [TVItemModel]="webBase.TVItemModel"></app-tvitem-list-item>
+<mat-list *ngFor="let webBase of appLoadedService.AppLoaded$?.getValue()?.BreadCrumbWebBaseList; let i = index" >
+    <app-tvitem-list-item [IsLast]="IsLast(i)" [AppState]="AppState" [IsBreadCrumb]="true" [TVItemModel]="webBase.TVItemModel"></app-tvitem-list-item>
 </mat-list>

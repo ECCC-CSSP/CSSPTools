@@ -1,8 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Input } from '@angular/core';
-import { AppService } from 'src/app/app.service';
-import { AppVar } from '../../app.model';
-import { MapService } from '../map';
-import { SideNavMenuService } from './sidenav-menu.service';
+import { AppState } from 'src/app/models/AppState.model';
+import { AppStateService } from 'src/app/services/app-state.service';
 
 @Component({
   selector: 'app-sidenav-menu',
@@ -11,9 +9,9 @@ import { SideNavMenuService } from './sidenav-menu.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SideNavMenuComponent implements OnInit, OnDestroy {
-  @Input() AppVar: AppVar;
+  @Input() AppState: AppState;
   
-  constructor(public SideNavMenuService: SideNavMenuService, public appService: AppService, public mapService: MapService) {
+  constructor(public appStateService: AppStateService) {
   }
 
   ngOnInit() {
@@ -23,14 +21,14 @@ export class SideNavMenuComponent implements OnInit, OnDestroy {
   }
 
   ToggleInactive(): void {
-    this.appService.UpdateAppVar(<AppVar> { InactVisible: !this.appService.AppVar$.getValue().InactVisible });
+    this.appStateService.UpdateAppState(<AppState> { InactVisible: !this.appStateService.AppState$.getValue().InactVisible });
   }
 
   ToggleDetail(): void {
-    this.appService.UpdateAppVar(<AppVar> { DetailVisible: !this.appService.AppVar$.getValue().DetailVisible });
+    this.appStateService.UpdateAppState(<AppState> { DetailVisible: !this.appStateService.AppState$.getValue().DetailVisible });
   }
 
   ToggleEdit(): void {
-    this.appService.UpdateAppVar(<AppVar> { EditVisible: !this.appService.AppVar$.getValue().EditVisible });
+    this.appStateService.UpdateAppState(<AppState> { EditVisible: !this.appStateService.AppState$.getValue().EditVisible });
   }
 }

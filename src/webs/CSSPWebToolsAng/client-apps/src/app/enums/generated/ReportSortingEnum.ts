@@ -5,7 +5,7 @@
  *
  */
 
-import { AppService } from '../../app.service';
+import { AppStateService } from '../../services/app-state.service';
 import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
 import { LanguageEnum } from './LanguageEnum';
 
@@ -14,9 +14,14 @@ export enum ReportSortingEnum {
     ReportSortingDescending = 2,
 }
 
-export function ReportSortingEnum_GetOrderedText(appService: AppService): EnumIDAndText[] {
+export function GetReportSortingEnum(): typeof ReportSortingEnum
+{
+  return ReportSortingEnum;
+}
+
+export function ReportSortingEnum_GetOrderedText(appStateService: AppStateService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if (appService.AppVar$?.getValue().Language == LanguageEnum.fr) {
+    if (appStateService.AppState$?.getValue().Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'ReportSortingAscending' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'ReportSortingDescending' });
     }
@@ -28,9 +33,9 @@ export function ReportSortingEnum_GetOrderedText(appService: AppService): EnumID
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function ReportSortingEnum_GetIDText(enumID: number, appService: AppService): string {
+export function ReportSortingEnum_GetIDText(enumID: number, appStateService: AppStateService): string {
     let addressTypeEnunText: string;
-    ReportSortingEnum_GetOrderedText(appService).forEach(e => {
+    ReportSortingEnum_GetOrderedText(appStateService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

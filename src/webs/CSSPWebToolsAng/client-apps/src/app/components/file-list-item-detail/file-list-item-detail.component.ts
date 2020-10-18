@@ -1,6 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Input } from '@angular/core';
-import { AppService } from '../../app.service';
-import { AppVar } from '../../app.model';
+import { AppState } from 'src/app/models/AppState.model';
 import { TVFileModel } from '../../models/generated/TVFileModel.model';
 
 @Component({
@@ -11,9 +10,9 @@ import { TVFileModel } from '../../models/generated/TVFileModel.model';
 })
 export class FileListItemDetailComponent implements OnInit, OnDestroy {
   @Input() TVFileModel: TVFileModel = null;
-  @Input() AppVar: AppVar;
+  @Input() AppState: AppState;
   
-  constructor(public appService: AppService) {
+  constructor() {
   }
 
   ngOnInit() {

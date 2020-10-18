@@ -5,7 +5,7 @@
  *
  */
 
-import { AppService } from '../../app.service';
+import { AppStateService } from '../../services/app-state.service';
 import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
 import { LanguageEnum } from './LanguageEnum';
 
@@ -14,9 +14,14 @@ export enum DailyOrHourlyDataEnum {
     Hourly = 2,
 }
 
-export function DailyOrHourlyDataEnum_GetOrderedText(appService: AppService): EnumIDAndText[] {
+export function GetDailyOrHourlyDataEnum(): typeof DailyOrHourlyDataEnum
+{
+  return DailyOrHourlyDataEnum;
+}
+
+export function DailyOrHourlyDataEnum_GetOrderedText(appStateService: AppStateService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if (appService.AppVar$?.getValue().Language == LanguageEnum.fr) {
+    if (appStateService.AppState$?.getValue().Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'Daily (fr)' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'Hourly (fr)' });
     }
@@ -28,9 +33,9 @@ export function DailyOrHourlyDataEnum_GetOrderedText(appService: AppService): En
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function DailyOrHourlyDataEnum_GetIDText(enumID: number, appService: AppService): string {
+export function DailyOrHourlyDataEnum_GetIDText(enumID: number, appStateService: AppStateService): string {
     let addressTypeEnunText: string;
-    DailyOrHourlyDataEnum_GetOrderedText(appService).forEach(e => {
+    DailyOrHourlyDataEnum_GetOrderedText(appStateService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

@@ -5,7 +5,7 @@
  *
  */
 
-import { AppService } from '../../app.service';
+import { AppStateService } from '../../services/app-state.service';
 import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
 import { LanguageEnum } from './LanguageEnum';
 
@@ -58,9 +58,14 @@ export enum ReportFieldTypeEnum {
     MikeScenarioSpecialResultKMLType = 46,
 }
 
-export function ReportFieldTypeEnum_GetOrderedText(appService: AppService): EnumIDAndText[] {
+export function GetReportFieldTypeEnum(): typeof ReportFieldTypeEnum
+{
+  return ReportFieldTypeEnum;
+}
+
+export function ReportFieldTypeEnum_GetOrderedText(appStateService: AppStateService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if (appService.AppVar$?.getValue().Language == LanguageEnum.fr) {
+    if (appStateService.AppState$?.getValue().Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'NumberWhole' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'NumberWithDecimal' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'DateAndTime' });
@@ -160,9 +165,9 @@ export function ReportFieldTypeEnum_GetOrderedText(appService: AppService): Enum
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function ReportFieldTypeEnum_GetIDText(enumID: number, appService: AppService): string {
+export function ReportFieldTypeEnum_GetIDText(enumID: number, appStateService: AppStateService): string {
     let addressTypeEnunText: string;
-    ReportFieldTypeEnum_GetOrderedText(appService).forEach(e => {
+    ReportFieldTypeEnum_GetOrderedText(appStateService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

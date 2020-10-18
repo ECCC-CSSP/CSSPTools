@@ -5,7 +5,7 @@
  *
  */
 
-import { AppService } from '../../app.service';
+import { AppStateService } from '../../services/app-state.service';
 import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
 import { LanguageEnum } from './LanguageEnum';
 
@@ -15,9 +15,14 @@ export enum StorageDataTypeEnum {
     Observed = 3,
 }
 
-export function StorageDataTypeEnum_GetOrderedText(appService: AppService): EnumIDAndText[] {
+export function GetStorageDataTypeEnum(): typeof StorageDataTypeEnum
+{
+  return StorageDataTypeEnum;
+}
+
+export function StorageDataTypeEnum_GetOrderedText(appStateService: AppStateService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if (appService.AppVar$?.getValue().Language == LanguageEnum.fr) {
+    if (appStateService.AppState$?.getValue().Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'Archived (fr)' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'Forcasted (fr)' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'Observed (fr)' });
@@ -31,9 +36,9 @@ export function StorageDataTypeEnum_GetOrderedText(appService: AppService): Enum
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function StorageDataTypeEnum_GetIDText(enumID: number, appService: AppService): string {
+export function StorageDataTypeEnum_GetIDText(enumID: number, appStateService: AppStateService): string {
     let addressTypeEnunText: string;
-    StorageDataTypeEnum_GetOrderedText(appService).forEach(e => {
+    StorageDataTypeEnum_GetOrderedText(appStateService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

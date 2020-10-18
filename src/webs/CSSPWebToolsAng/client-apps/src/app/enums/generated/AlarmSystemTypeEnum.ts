@@ -5,7 +5,7 @@
  *
  */
 
-import { AppService } from '../../app.service';
+import { AppStateService } from '../../services/app-state.service';
 import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
 import { LanguageEnum } from './LanguageEnum';
 
@@ -17,9 +17,14 @@ export enum AlarmSystemTypeEnum {
     PagerAndLight = 5,
 }
 
-export function AlarmSystemTypeEnum_GetOrderedText(appService: AppService): EnumIDAndText[] {
+export function GetAlarmSystemTypeEnum(): typeof AlarmSystemTypeEnum
+{
+  return AlarmSystemTypeEnum;
+}
+
+export function AlarmSystemTypeEnum_GetOrderedText(appStateService: AppStateService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if (appService.AppVar$?.getValue().Language == LanguageEnum.fr) {
+    if (appStateService.AppState$?.getValue().Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'SCADA (fr)' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'Aucun' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'Only Visual Light (fr)' });
@@ -37,9 +42,9 @@ export function AlarmSystemTypeEnum_GetOrderedText(appService: AppService): Enum
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function AlarmSystemTypeEnum_GetIDText(enumID: number, appService: AppService): string {
+export function AlarmSystemTypeEnum_GetIDText(enumID: number, appStateService: AppStateService): string {
     let addressTypeEnunText: string;
-    AlarmSystemTypeEnum_GetOrderedText(appService).forEach(e => {
+    AlarmSystemTypeEnum_GetOrderedText(appStateService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

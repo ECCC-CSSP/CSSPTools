@@ -5,7 +5,7 @@
  *
  */
 
-import { AppService } from '../../app.service';
+import { AppStateService } from '../../services/app-state.service';
 import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
 import { LanguageEnum } from './LanguageEnum';
 
@@ -26,9 +26,14 @@ export enum ReportFormatingNumberEnum {
     ReportFormatingNumberScientific6Decimal = 14,
 }
 
-export function ReportFormatingNumberEnum_GetOrderedText(appService: AppService): EnumIDAndText[] {
+export function GetReportFormatingNumberEnum(): typeof ReportFormatingNumberEnum
+{
+  return ReportFormatingNumberEnum;
+}
+
+export function ReportFormatingNumberEnum_GetOrderedText(appStateService: AppStateService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if (appService.AppVar$?.getValue().Language == LanguageEnum.fr) {
+    if (appStateService.AppState$?.getValue().Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'ReportFormatingNumber0Decimal' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'ReportFormatingNumber1Decimal' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'ReportFormatingNumber2Decimal' });
@@ -64,9 +69,9 @@ export function ReportFormatingNumberEnum_GetOrderedText(appService: AppService)
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function ReportFormatingNumberEnum_GetIDText(enumID: number, appService: AppService): string {
+export function ReportFormatingNumberEnum_GetIDText(enumID: number, appStateService: AppStateService): string {
     let addressTypeEnunText: string;
-    ReportFormatingNumberEnum_GetOrderedText(appService).forEach(e => {
+    ReportFormatingNumberEnum_GetOrderedText(appStateService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

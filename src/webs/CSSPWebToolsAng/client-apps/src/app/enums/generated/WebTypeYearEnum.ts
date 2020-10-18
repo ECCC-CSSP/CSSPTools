@@ -5,7 +5,7 @@
  *
  */
 
-import { AppService } from '../../app.service';
+import { AppStateService } from '../../services/app-state.service';
 import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
 import { LanguageEnum } from './LanguageEnum';
 
@@ -20,9 +20,14 @@ export enum WebTypeYearEnum {
     Year2050 = 8,
 }
 
-export function WebTypeYearEnum_GetOrderedText(appService: AppService): EnumIDAndText[] {
+export function GetWebTypeYearEnum(): typeof WebTypeYearEnum
+{
+  return WebTypeYearEnum;
+}
+
+export function WebTypeYearEnum_GetOrderedText(appStateService: AppStateService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if (appService.AppVar$?.getValue().Language == LanguageEnum.fr) {
+    if (appStateService.AppState$?.getValue().Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'WebTypeYear1980 (fr)' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'WebTypeYear1990 (fr)' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'WebTypeYear2000 (fr)' });
@@ -46,9 +51,9 @@ export function WebTypeYearEnum_GetOrderedText(appService: AppService): EnumIDAn
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function WebTypeYearEnum_GetIDText(enumID: number, appService: AppService): string {
+export function WebTypeYearEnum_GetIDText(enumID: number, appStateService: AppStateService): string {
     let addressTypeEnunText: string;
-    WebTypeYearEnum_GetOrderedText(appService).forEach(e => {
+    WebTypeYearEnum_GetOrderedText(appStateService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

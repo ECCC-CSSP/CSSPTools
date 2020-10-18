@@ -1,11 +1,11 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { FormControl } from '@angular/forms';
-import { SearchService } from './search.service';
 import { SearchResult } from '../../models/generated/SearchResult.model';
-//import { Router } from '@angular/router';
-import { AppService } from '../../app.service';
-import { AppVar } from 'src/app/app.model';
+import { AppLoadedService } from 'src/app/services/app-loaded.service';
+import { AppState } from 'src/app/models/AppState.model';
+import { AppStateService } from 'src/app/services/app-state.service';
+import { AppHelperService } from 'src/app/services/app-helper.service';
 
 @Component({
   selector: 'app-search',
@@ -20,11 +20,13 @@ export class SearchComponent implements OnInit, OnDestroy {
   formFieldWidthClass: string = '';
   sub: Subscription;
 
-  constructor(public searchService: SearchService, private appService: AppService) {
+  constructor(public appLoadedService: AppLoadedService, 
+    public appStateService: AppStateService,
+    public appHelperService: AppHelperService) {
   }
 
   ngOnInit() {
-    this.sub = this.searchService.GetSearch(this.myControl).subscribe();
+    this.sub = this.appLoadedService.GetSearch(this.myControl).subscribe();
   }
 
   displayFn(searchResult: SearchResult): string {
@@ -38,7 +40,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   NavigateTo(sr: SearchResult)
   {
     this.searchResult = sr;
-    this.appService.UpdateAppVar(<AppVar>{ SubPage: this.appService.GetSubPage(sr.TVItem), CurrentTVItemID: sr.TVItem.TVItemID });
+    this.appStateService.UpdateAppState(<AppState>{ SubPage: this.appHelperService.GetSubPage(sr.TVItem), CurrentTVItemID: sr.TVItem.TVItemID });
   }
 
   ngOnDestroy()

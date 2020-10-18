@@ -1,13 +1,11 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, ViewChild, Input } from '@angular/core';
-import { RootService } from './root.service';
-import { LoadLocalesRootVar } from './root.locales';
 import { Subscription } from 'rxjs';
 import { LanguageEnum } from '../../enums/generated/LanguageEnum';
-import { MapService } from '../../components/map';
-import { AppService } from '../../app.service';
-import { RootSubComponentEnum } from 'src/app/enums/RootSubComponentEnum';
-import { AppVar } from 'src/app/app.model';
-import { RootVar } from './root.models';
+import { GetRootSubComponentEnum, RootSubComponentEnum } from 'src/app/enums/generated/RootSubComponentEnum';
+import { AppLoadedService } from 'src/app/services/app-loaded.service';
+import { AppStateService } from 'src/app/services/app-state.service';
+import { AppState } from 'src/app/models/AppState.model';
+import { AppLoaded } from 'src/app/models/AppLoaded.model';
 
 @Component({
   selector: 'app-root',
@@ -16,23 +14,19 @@ import { RootVar } from './root.models';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RootComponent implements OnInit, OnDestroy {
-  sub: Subscription;
+  subWebRoot: Subscription;
+  rootSubComponentEnum = GetRootSubComponentEnum();
 
-  constructor(public rootService: RootService, public appService: AppService, private mapService: MapService) {
-  }
-
-  get rootSubComponentEnum(): typeof RootSubComponentEnum {
-    return RootSubComponentEnum;
+  constructor(public appStateService: AppStateService, public appLoadedService: AppLoadedService) {
   }
 
   ngOnInit(): void {
-    LoadLocalesRootVar(this.appService, this.rootService);
-    this.sub = this.rootService.GetWebRoot(0).subscribe();
-    this.appService.UpdateAppVar(<AppVar>{ BreadCrumbWebBaseList: [] })
-  }
+    let TVItemID: number = this.appStateService.AppState$.getValue().CurrentTVItemID;
+    this.subWebRoot = this.appLoadedService.GetWebRoot(TVItemID).subscribe();
+ }
 
   ngOnDestroy(): void {
-    this.sub ? this.sub.unsubscribe() : null;
+    this.subWebRoot ? this.subWebRoot.unsubscribe() : null;
   }
 
   GetT(language: number): string {
@@ -41,7 +35,7 @@ export class RootComponent implements OnInit, OnDestroy {
   }
 
   ColorSelection(rootSubComponent: RootSubComponentEnum) {
-    if (this.appService.AppVar$.getValue().RootSubComponent == rootSubComponent) {
+    if (this.appStateService.AppState$.getValue().RootSubComponent == rootSubComponent) {
       return 'selected';
     }
     else {
@@ -50,22 +44,22 @@ export class RootComponent implements OnInit, OnDestroy {
   }
 
   Show(rootSubComponent: RootSubComponentEnum) {
-    this.appService.UpdateAppVar(<AppVar>{ RootSubComponent: rootSubComponent });
+    this.appStateService.UpdateAppState(<AppState>{ RootSubComponent: rootSubComponent });
   }
 
   ToggleInactive(): void {
-    this.appService.UpdateAppVar(<AppVar> { InactVisible: !this.appService.AppVar$.getValue().InactVisible });
-    this.rootService.UpdateRootVar(<RootVar> { Working: false });
+    this.appStateService.UpdateAppState(<AppState> { InactVisible: !this.appStateService.AppState$.getValue().InactVisible });
+    this.appLoadedService.UpdateAppLoaded(<AppLoaded> { Working: false });
   }
 
   ToggleDetail(): void {
-    this.appService.UpdateAppVar(<AppVar> { DetailVisible: !this.appService.AppVar$.getValue().DetailVisible });
-    this.rootService.UpdateRootVar(<RootVar> { Working: false });
+    this.appStateService.UpdateAppState(<AppState> { DetailVisible: !this.appStateService.AppState$.getValue().DetailVisible });
+    this.appLoadedService.UpdateAppLoaded(<AppLoaded> { Working: false });
   }
 
   ToggleEdit(): void {
-    this.appService.UpdateAppVar(<AppVar> { EditVisible: !this.appService.AppVar$.getValue().EditVisible });
-    this.rootService.UpdateRootVar(<RootVar> { Working: false });
+    this.appStateService.UpdateAppState(<AppState> { EditVisible: !this.appStateService.AppState$.getValue().EditVisible });
+    this.appLoadedService.UpdateAppLoaded(<AppLoaded> { Working: false });
   }
 
 }

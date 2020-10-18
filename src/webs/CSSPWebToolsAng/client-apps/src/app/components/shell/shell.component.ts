@@ -1,13 +1,13 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
-import { LoadLocalesShell } from './shell.locales';
 import { Title } from '@angular/platform-browser';
-import { AppService } from '../../app.service';
-import { AppVar } from '../../app.model';
-import { ShellService } from './shell.service';
-import { LanguageEnum } from '../../enums/generated/LanguageEnum';
-import { ShellSubComponentEnum } from '../../enums/ShellSubComponentEnum';
-import { MapSizeEnum } from 'src/app/enums/MapSizeEnum';
-import { TopComponentEnum } from 'src/app/enums/TopComponentEnum';
+import { GetLanguageEnum, LanguageEnum } from '../../enums/generated/LanguageEnum';
+import { GetShellSubComponentEnum } from '../../enums/generated/ShellSubComponentEnum';
+import { GetMapSizeEnum, MapSizeEnum } from '../../enums/generated/MapSizeEnum';
+import { TopComponentEnum } from '../../enums/generated/TopComponentEnum';
+import { AppLoadedService } from 'src/app/services/app-loaded.service';
+import { AppStateService } from 'src/app/services/app-state.service';
+import { AppState } from 'src/app/models/AppState.model';
+import { AppLanguageService } from 'src/app/services/app-language.service';
 
 @Component({
   selector: 'app-shell',
@@ -16,50 +16,42 @@ import { TopComponentEnum } from 'src/app/enums/TopComponentEnum';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ShellComponent implements OnInit {
+  languageEnum = GetLanguageEnum();
+  shellSubComponentEnum = GetShellSubComponentEnum();
+  mapSizeEnum = GetMapSizeEnum();
 
-  constructor(public appService: AppService, public shellService: ShellService, private title: Title) { }
-
-  get languageEnum(): typeof LanguageEnum {
-    return LanguageEnum;
-  }
-
-  get shellSubComponentEnum(): typeof ShellSubComponentEnum {
-    return ShellSubComponentEnum;
-  }
-
-  get mapSizeEnum(): typeof MapSizeEnum {
-    return MapSizeEnum;
-  }
+  constructor(public appStateService: AppStateService, 
+    public appLoadedService: AppLoadedService, 
+    public appLanguageService: AppLanguageService,
+    private title: Title) { }
 
   ToggleMap(): void {
-    this.appService.UpdateAppVar(<AppVar> { MapVisible: !this.appService.AppVar$.getValue().MapVisible });
+    this.appStateService.UpdateAppState(<AppState> { MapVisible: !this.appStateService.AppState$.getValue().MapVisible });
   }
 
   ToggleMenu(): void {
-    this.appService.UpdateAppVar(<AppVar> { MenuVisible: !this.appService.AppVar$.getValue().MenuVisible });
+    this.appStateService.UpdateAppState(<AppState> { MenuVisible: !this.appStateService.AppState$.getValue().MenuVisible });
   }
 
   ngOnInit(): void {
-    LoadLocalesShell(this.appService, this.shellService);
-    this.title.setTitle(this.shellService.ShellVar$.getValue().ShellTitle);
+    this.title.setTitle(this.appLanguageService.AppLanguage.Title[this.appStateService.AppState$?.getValue().Language]);
   }
 
   Home() {
-    this.appService.UpdateAppVar(<AppVar>{ TopComponent: TopComponentEnum.Home });
+    this.appStateService.UpdateAppState(<AppState>{ TopComponent: TopComponentEnum.Home });
   }
 
   SetLanguage(language: LanguageEnum) {
-    this.appService.UpdateAppVar(<AppVar>{ Language: language });
-    LoadLocalesShell(this.appService, this.shellService);
+    this.appStateService.UpdateAppState(<AppState>{ Language: language });
   }
 
   SetMapSize(mapSize: MapSizeEnum)
   {
-    this.appService.UpdateAppVar(<AppVar> { MapSize: mapSize });
+    this.appStateService.UpdateAppState(<AppState> { MapSize: mapSize });
   }
   
   ColorSelection(mapSize: MapSizeEnum) {
-    if (this.appService.AppVar$.getValue().MapSize == mapSize) {
+    if (this.appStateService.AppState$.getValue().MapSize == mapSize) {
       return 'selected';
     }
     else {
@@ -68,6 +60,6 @@ export class ShellComponent implements OnInit {
   }
 
   GetMapSizeClass(): string {
-    return MapSizeEnum[this.appService.AppVar$?.getValue()?.MapSize];
+    return MapSizeEnum[this.appStateService.AppState$?.getValue()?.MapSize];
   }
 }

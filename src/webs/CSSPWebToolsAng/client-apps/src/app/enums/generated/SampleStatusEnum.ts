@@ -5,7 +5,7 @@
  *
  */
 
-import { AppService } from '../../app.service';
+import { AppStateService } from '../../services/app-state.service';
 import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
 import { LanguageEnum } from './LanguageEnum';
 
@@ -17,9 +17,14 @@ export enum SampleStatusEnum {
     SampleStatus5 = 5,
 }
 
-export function SampleStatusEnum_GetOrderedText(appService: AppService): EnumIDAndText[] {
+export function GetSampleStatusEnum(): typeof SampleStatusEnum
+{
+  return SampleStatusEnum;
+}
+
+export function SampleStatusEnum_GetOrderedText(appStateService: AppStateService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if (appService.AppVar$?.getValue().Language == LanguageEnum.fr) {
+    if (appStateService.AppState$?.getValue().Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'Active (fr)' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'Archived (fr)' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'Sample Status 3 (fr)' });
@@ -37,9 +42,9 @@ export function SampleStatusEnum_GetOrderedText(appService: AppService): EnumIDA
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function SampleStatusEnum_GetIDText(enumID: number, appService: AppService): string {
+export function SampleStatusEnum_GetIDText(enumID: number, appStateService: AppStateService): string {
     let addressTypeEnunText: string;
-    SampleStatusEnum_GetOrderedText(appService).forEach(e => {
+    SampleStatusEnum_GetOrderedText(appStateService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

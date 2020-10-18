@@ -5,7 +5,7 @@
  *
  */
 
-import { AppService } from '../../app.service';
+import { AppStateService } from '../../services/app-state.service';
 import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
 import { LanguageEnum } from './LanguageEnum';
 
@@ -20,9 +20,14 @@ export enum SpecialTableTypeEnum {
     PercentOver260Table = 8,
 }
 
-export function SpecialTableTypeEnum_GetOrderedText(appService: AppService): EnumIDAndText[] {
+export function GetSpecialTableTypeEnum(): typeof SpecialTableTypeEnum
+{
+  return SpecialTableTypeEnum;
+}
+
+export function SpecialTableTypeEnum_GetOrderedText(appStateService: AppStateService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if (appService.AppVar$?.getValue().Language == LanguageEnum.fr) {
+    if (appStateService.AppState$?.getValue().Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'FCDensitiesTable' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'SalinityTable' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'TemperatureTable' });
@@ -46,9 +51,9 @@ export function SpecialTableTypeEnum_GetOrderedText(appService: AppService): Enu
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function SpecialTableTypeEnum_GetIDText(enumID: number, appService: AppService): string {
+export function SpecialTableTypeEnum_GetIDText(enumID: number, appStateService: AppStateService): string {
     let addressTypeEnunText: string;
-    SpecialTableTypeEnum_GetOrderedText(appService).forEach(e => {
+    SpecialTableTypeEnum_GetOrderedText(appStateService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

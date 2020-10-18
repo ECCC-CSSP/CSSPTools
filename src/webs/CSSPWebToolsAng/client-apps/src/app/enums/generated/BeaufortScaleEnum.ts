@@ -5,7 +5,7 @@
  *
  */
 
-import { AppService } from '../../app.service';
+import { AppStateService } from '../../services/app-state.service';
 import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
 import { LanguageEnum } from './LanguageEnum';
 
@@ -25,9 +25,14 @@ export enum BeaufortScaleEnum {
     HurricaneForce = 12,
 }
 
-export function BeaufortScaleEnum_GetOrderedText(appService: AppService): EnumIDAndText[] {
+export function GetBeaufortScaleEnum(): typeof BeaufortScaleEnum
+{
+  return BeaufortScaleEnum;
+}
+
+export function BeaufortScaleEnum_GetOrderedText(appStateService: AppStateService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if (appService.AppVar$?.getValue().Language == LanguageEnum.fr) {
+    if (appStateService.AppState$?.getValue().Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 0, EnumText: 'Calm (fr)' });
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'Light air (fr)' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'Light breeze (fr)' });
@@ -61,9 +66,9 @@ export function BeaufortScaleEnum_GetOrderedText(appService: AppService): EnumID
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function BeaufortScaleEnum_GetIDText(enumID: number, appService: AppService): string {
+export function BeaufortScaleEnum_GetIDText(enumID: number, appStateService: AppStateService): string {
     let addressTypeEnunText: string;
-    BeaufortScaleEnum_GetOrderedText(appService).forEach(e => {
+    BeaufortScaleEnum_GetOrderedText(appStateService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

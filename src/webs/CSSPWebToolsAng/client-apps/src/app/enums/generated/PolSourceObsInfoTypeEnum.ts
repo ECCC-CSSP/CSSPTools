@@ -5,7 +5,7 @@
  *
  */
 
-import { AppService } from '../../app.service';
+import { AppStateService } from '../../services/app-state.service';
 import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
 import { LanguageEnum } from './LanguageEnum';
 
@@ -16,9 +16,14 @@ export enum PolSourceObsInfoTypeEnum {
     Initial = 4,
 }
 
-export function PolSourceObsInfoTypeEnum_GetOrderedText(appService: AppService): EnumIDAndText[] {
+export function GetPolSourceObsInfoTypeEnum(): typeof PolSourceObsInfoTypeEnum
+{
+  return PolSourceObsInfoTypeEnum;
+}
+
+export function PolSourceObsInfoTypeEnum_GetOrderedText(appStateService: AppStateService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if (appService.AppVar$?.getValue().Language == LanguageEnum.fr) {
+    if (appStateService.AppState$?.getValue().Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'Description (fr)' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'Report (fr)' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'Text (fr)' });
@@ -34,9 +39,9 @@ export function PolSourceObsInfoTypeEnum_GetOrderedText(appService: AppService):
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function PolSourceObsInfoTypeEnum_GetIDText(enumID: number, appService: AppService): string {
+export function PolSourceObsInfoTypeEnum_GetIDText(enumID: number, appStateService: AppStateService): string {
     let addressTypeEnunText: string;
-    PolSourceObsInfoTypeEnum_GetOrderedText(appService).forEach(e => {
+    PolSourceObsInfoTypeEnum_GetOrderedText(appStateService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

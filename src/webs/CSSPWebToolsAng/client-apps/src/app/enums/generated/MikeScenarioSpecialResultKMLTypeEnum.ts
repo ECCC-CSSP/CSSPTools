@@ -5,7 +5,7 @@
  *
  */
 
-import { AppService } from '../../app.service';
+import { AppStateService } from '../../services/app-state.service';
 import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
 import { LanguageEnum } from './LanguageEnum';
 
@@ -17,9 +17,14 @@ export enum MikeScenarioSpecialResultKMLTypeEnum {
     PollutionAnimation = 5,
 }
 
-export function MikeScenarioSpecialResultKMLTypeEnum_GetOrderedText(appService: AppService): EnumIDAndText[] {
+export function GetMikeScenarioSpecialResultKMLTypeEnum(): typeof MikeScenarioSpecialResultKMLTypeEnum
+{
+  return MikeScenarioSpecialResultKMLTypeEnum;
+}
+
+export function MikeScenarioSpecialResultKMLTypeEnum_GetOrderedText(appStateService: AppStateService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if (appService.AppVar$?.getValue().Language == LanguageEnum.fr) {
+    if (appStateService.AppState$?.getValue().Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'Grillage' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'Région d\'étude' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'Conditions aux limits' });
@@ -37,9 +42,9 @@ export function MikeScenarioSpecialResultKMLTypeEnum_GetOrderedText(appService: 
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function MikeScenarioSpecialResultKMLTypeEnum_GetIDText(enumID: number, appService: AppService): string {
+export function MikeScenarioSpecialResultKMLTypeEnum_GetIDText(enumID: number, appStateService: AppStateService): string {
     let addressTypeEnunText: string;
-    MikeScenarioSpecialResultKMLTypeEnum_GetOrderedText(appService).forEach(e => {
+    MikeScenarioSpecialResultKMLTypeEnum_GetOrderedText(appStateService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

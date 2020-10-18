@@ -1,16 +1,16 @@
-<mat-list-item (click)="appService.SetSubPage(TVItemModel)">
+<mat-list-item (click)="appHelperService.SetSubPage(TVItemModel)">
     <button mat-button [ngClass]="(IsBreadCrumb && IsLast) ? 'selected' : ''">
         <span [ngClass]="TVItemModel?.TVItem?.IsActive ? '' : 'inactive'">
-            <span *ngIf="AppVar?.Language == languageEnum.en">
+            <span *ngIf="AppState?.Language == languageEnum.en">
                 {{ TVItemModel?.TVItemLanguageEN?.TVText }}
             </span>
-            <span *ngIf="AppVar?.Language == languageEnum.fr">
+            <span *ngIf="AppState?.Language == languageEnum.fr">
                 {{ TVItemModel?.TVItemLanguageFR?.TVText }}
             </span>
         </span>
+        <app-child-count *ngIf="!IsBreadCrumb" [AppState]="AppState" [TVType]="null" [TVItemModel]="TVItemModel"></app-child-count>
     </button>
-    <app-child-count *ngIf="!IsBreadCrumb" [AppVar]="AppVar" [TVType]="null" [TVItemModel]="TVItemModel"></app-child-count>
 </mat-list-item>
-<app-tvitem-list-detail [AppVar]="AppVar" *ngIf="!IsBreadCrumb && AppVar?.DetailVisible" [TVItemModel]="TVItemModel"></app-tvitem-list-detail>
+<app-tvitem-list-detail [AppState]="AppState" *ngIf="!IsBreadCrumb && AppState?.DetailVisible" [TVItemModel]="TVItemModel"></app-tvitem-list-detail>
 
 <p *ngIf="false">{{ TVItemModel | json }}</p>

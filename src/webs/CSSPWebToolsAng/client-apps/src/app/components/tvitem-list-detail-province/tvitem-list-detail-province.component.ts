@@ -1,10 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Input } from '@angular/core';
-import { Router } from '@angular/router';
-import { AppService } from '../../app.service';
-import { AppVar } from '../../app.model';
 import { TVItemModel } from '../../models/generated/TVItemModel.model';
-import { TVItemListDetailProvinceService } from './tvitem-list-detail-province.service';
-import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
+import { GetTVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
+import { AppState } from 'src/app/models/AppState.model';
 
 @Component({
   selector: 'app-tvitem-list-detail-province',
@@ -14,13 +11,10 @@ import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 })
 export class TVItemListDetailProvinceComponent implements OnInit, OnDestroy {
   @Input() TVItemModel: TVItemModel;
-  @Input() AppVar: AppVar;
+  @Input() AppState: AppState;
+  tvTypeEnum = GetTVTypeEnum();
 
-  constructor(public appService: AppService, public tvItemListDetailProvinceService: TVItemListDetailProvinceService) {
-  }
-
-  get tvTypeEnum(): typeof TVTypeEnum {
-    return TVTypeEnum;
+  constructor() {
   }
 
   ngOnInit() {

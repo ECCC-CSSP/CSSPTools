@@ -248,6 +248,14 @@ namespace CSSPEnums
         Supervisor = 8,
         Technician = 9,
     }
+    public enum CountrySubComponentEnum
+    {
+        Provinces = 1,
+        Files = 2,
+        OpenDataNational = 3,
+        EmailDistributionList = 4,
+        RainExceedance = 5,
+    }
     public enum CSSPWQInputSheetTypeEnum
     {
         A1 = 1,
@@ -443,6 +451,14 @@ namespace CSSPEnums
         Polyline = 2,
         Polygon = 3,
     }
+    public enum MapSizeEnum
+    {
+        Size30 = 1,
+        Size40 = 2,
+        Size50 = 3,
+        Size60 = 4,
+        Size70 = 5,
+    }
     public enum MikeBoundaryConditionLevelOrVelocityEnum
     {
         Level = 1,
@@ -508,6 +524,15 @@ namespace CSSPEnums
         Boolean = 4,
         DateTime = 5,
         Enum = 6,
+    }
+    public enum ProvinceSubComponentEnum
+    {
+        Areas = 1,
+        Municipalities = 2,
+        Files = 3,
+        SamplingPlan = 4,
+        OpenData = 5,
+        ProvinceTools = 6,
     }
     public enum ReportConditionEnum
     {
@@ -728,6 +753,12 @@ namespace CSSPEnums
         ReportSubsectorSpecialTableType = 78,
         ReportMikeScenarioSpecialResultKMLType = 79,
     }
+    public enum RootSubComponentEnum
+    {
+        Countries = 1,
+        Files = 2,
+        ExportArcGIS = 3,
+    }
     public enum RunningOnEnum
     {
         Azure = 1,
@@ -846,6 +877,15 @@ namespace CSSPEnums
         ActivatedSludge = 14,
         ExtendedActivatedSludge = 15,
     }
+    public enum ShellSubComponentEnum
+    {
+        Root = 1,
+        Country = 2,
+        Province = 3,
+        Area = 4,
+        Sector = 5,
+        Subsector = 6,
+    }
     public enum SiteTypeEnum
     {
         Climate = 1,
@@ -917,6 +957,11 @@ namespace CSSPEnums
         HighTide = 7,
         HighTideFalling = 8,
         HighTideRising = 9,
+    }
+    public enum TopComponentEnum
+    {
+        Home = 1,
+        Shell = 2,
     }
     public enum TranslationStatusEnum
     {

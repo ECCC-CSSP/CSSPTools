@@ -5,7 +5,7 @@
  *
  */
 
-import { AppService } from '../../app.service';
+import { AppStateService } from '../../services/app-state.service';
 import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
 import { LanguageEnum } from './LanguageEnum';
 
@@ -15,9 +15,14 @@ export enum LabSheetTypeEnum {
     EC = 3,
 }
 
-export function LabSheetTypeEnum_GetOrderedText(appService: AppService): EnumIDAndText[] {
+export function GetLabSheetTypeEnum(): typeof LabSheetTypeEnum
+{
+  return LabSheetTypeEnum;
+}
+
+export function LabSheetTypeEnum_GetOrderedText(appStateService: AppStateService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if (appService.AppVar$?.getValue().Language == LanguageEnum.fr) {
+    if (appStateService.AppState$?.getValue().Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'A1' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'LTB' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'EC' });
@@ -31,9 +36,9 @@ export function LabSheetTypeEnum_GetOrderedText(appService: AppService): EnumIDA
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function LabSheetTypeEnum_GetIDText(enumID: number, appService: AppService): string {
+export function LabSheetTypeEnum_GetIDText(enumID: number, appStateService: AppStateService): string {
     let addressTypeEnunText: string;
-    LabSheetTypeEnum_GetOrderedText(appService).forEach(e => {
+    LabSheetTypeEnum_GetOrderedText(appStateService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

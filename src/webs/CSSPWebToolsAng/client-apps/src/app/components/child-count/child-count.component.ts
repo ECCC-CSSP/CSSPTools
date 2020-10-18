@@ -1,8 +1,8 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Input } from '@angular/core';
 import { TVItemModel } from '../../models/generated/TVItemModel.model';
-import { ChildCountService } from './child-count.service';
 import { TVTypeEnum } from '../../enums/generated/TVTypeEnum';
-import { AppVar } from '../../app.model';
+import { AppState } from '../../models/AppState.model';
+import { AppHelperService } from 'src/app/services/app-helper.service';
 
 @Component({
   selector: 'app-child-count',
@@ -13,9 +13,9 @@ import { AppVar } from '../../app.model';
 export class ChildCountComponent implements OnInit, OnDestroy {
   @Input() TVItemModel: TVItemModel;
   @Input() TVType?: TVTypeEnum;
-  @Input() AppVar: AppVar;
+  @Input() AppState: AppState;
 
-  constructor(public childCountService: ChildCountService) {
+  constructor(public appHelperService: AppHelperService) {
   }
 
   ngOnInit() {

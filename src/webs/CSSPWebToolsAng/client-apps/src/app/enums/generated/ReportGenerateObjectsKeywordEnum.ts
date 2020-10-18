@@ -5,7 +5,7 @@
  *
  */
 
-import { AppService } from '../../app.service';
+import { AppStateService } from '../../services/app-state.service';
 import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
 import { LanguageEnum } from './LanguageEnum';
 
@@ -34,9 +34,14 @@ export enum ReportGenerateObjectsKeywordEnum {
     SUBSECTOR_POLLUTION_SOURCE_LOCATIONS_MAP = 22,
 }
 
-export function ReportGenerateObjectsKeywordEnum_GetOrderedText(appService: AppService): EnumIDAndText[] {
+export function GetReportGenerateObjectsKeywordEnum(): typeof ReportGenerateObjectsKeywordEnum
+{
+  return ReportGenerateObjectsKeywordEnum;
+}
+
+export function ReportGenerateObjectsKeywordEnum_GetOrderedText(appStateService: AppStateService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if (appService.AppVar$?.getValue().Language == LanguageEnum.fr) {
+    if (appStateService.AppState$?.getValue().Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'SUBSECTOR_RE_EVALUATION_COVER_PAGE' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'SUBSECTOR_FC_SUMMARY_STAT_ALL' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'SUBSECTOR_FC_SUMMARY_STAT_WET' });
@@ -88,9 +93,9 @@ export function ReportGenerateObjectsKeywordEnum_GetOrderedText(appService: AppS
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function ReportGenerateObjectsKeywordEnum_GetIDText(enumID: number, appService: AppService): string {
+export function ReportGenerateObjectsKeywordEnum_GetIDText(enumID: number, appStateService: AppStateService): string {
     let addressTypeEnunText: string;
-    ReportGenerateObjectsKeywordEnum_GetOrderedText(appService).forEach(e => {
+    ReportGenerateObjectsKeywordEnum_GetOrderedText(appStateService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

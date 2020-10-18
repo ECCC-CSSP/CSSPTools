@@ -1,10 +1,7 @@
-<span *ngIf="(mapService.MapVar$ | async).Working">
+<span *ngIf="(appStateService.AppState$ | async).Working">
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </span>
 
-<span *ngIf="(appService.AppVar$ | async).Working">
-  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-</span>
 
 <!-- latitude: <input placeholder="latitude" name="latitude" [(ngModel)]="latitude" required >
 longitude: <input placeholder="longitude" name="longitude" [(ngModel)]="longitude" required >

@@ -1,13 +1,11 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
-import { ProvinceService } from './province.service';
-import { LoadLocalesProvinceVar } from './province.locales';
 import { Subscription } from 'rxjs';
 import { LanguageEnum } from '../../enums/generated/LanguageEnum';
-import { ActivatedRoute } from '@angular/router';
-import { AppService } from 'src/app/app.service';
-import { ProvinceSubComponentEnum } from 'src/app/enums/ProvinceSubComponentEnum';
-import { AppVar } from 'src/app/app.model';
-import { ProvinceVar } from '.';
+import { GetProvinceSubComponentEnum, ProvinceSubComponentEnum } from '../../enums/generated/ProvinceSubComponentEnum';
+import { AppStateService } from '../../services/app-state.service';
+import { AppState } from '../../models/AppState.model';
+import { AppLoadedService } from '../../services/app-loaded.service';
+import { AppLoaded } from '../../models/AppLoaded.model';
 
 @Component({
   selector: 'app-province',
@@ -16,23 +14,18 @@ import { ProvinceVar } from '.';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProvinceComponent implements OnInit, OnDestroy {
-  sub: Subscription;
+  subWebProvince: Subscription;
+  provinceSubComponentEnum = GetProvinceSubComponentEnum();
 
-  constructor(public provinceService: ProvinceService, public appService: AppService) { }
-
-  get provinceSubComponentEnum(): typeof ProvinceSubComponentEnum
-  {
-    return ProvinceSubComponentEnum;
-  }
+  constructor(public appStateService: AppStateService, public appLoadedService: AppLoadedService) { }
 
   ngOnInit(): void {
-    LoadLocalesProvinceVar(this.appService, this.provinceService);
-    let TVItemID: number = this.appService.AppVar$.getValue().CurrentTVItemID;
-    this.sub = this.provinceService.GetWebProvince(TVItemID).subscribe();
+    let TVItemID: number = this.appStateService.AppState$.getValue().CurrentTVItemID;
+    this.subWebProvince = this.appLoadedService.GetWebProvince(TVItemID).subscribe();
   }
 
   ngOnDestroy(): void {
-    this.sub.unsubscribe();
+    this.subWebProvince ? this.subWebProvince.unsubscribe() : null;
   }
 
   GetT(language: number): string
@@ -42,7 +35,7 @@ export class ProvinceComponent implements OnInit, OnDestroy {
   }
 
   ColorSelection(provinceSubComponent: ProvinceSubComponentEnum) {
-    if (this.appService.AppVar$.getValue().ProvinceSubComponent == provinceSubComponent) {
+    if (this.appStateService.AppState$.getValue().ProvinceSubComponent == provinceSubComponent) {
       return 'selected';
     }
     else {
@@ -51,22 +44,22 @@ export class ProvinceComponent implements OnInit, OnDestroy {
   }
 
   Show(provinceSubComponent: ProvinceSubComponentEnum) {
-    this.appService.UpdateAppVar(<AppVar>{ ProvinceSubComponent: provinceSubComponent });
+    this.appStateService.UpdateAppState(<AppState>{ ProvinceSubComponent: provinceSubComponent });
   }
 
   ToggleInactive(): void {
-    this.appService.UpdateAppVar(<AppVar> { InactVisible: !this.appService.AppVar$.getValue().InactVisible });
-    this.provinceService.UpdateProvinceVar(<ProvinceVar> { Working: false });
+    this.appStateService.UpdateAppState(<AppState> { InactVisible: !this.appStateService.AppState$.getValue().InactVisible });
+    this.appLoadedService.UpdateAppLoaded(<AppLoaded> { Working: false });
   }
 
   ToggleDetail(): void {
-    this.appService.UpdateAppVar(<AppVar> { DetailVisible: !this.appService.AppVar$.getValue().DetailVisible });
-    this.provinceService.UpdateProvinceVar(<ProvinceVar> { Working: false });
+    this.appStateService.UpdateAppState(<AppState> { DetailVisible: !this.appStateService.AppState$.getValue().DetailVisible });
+    this.appLoadedService.UpdateAppLoaded(<AppLoaded> { Working: false });
   }
 
   ToggleEdit(): void {
-    this.appService.UpdateAppVar(<AppVar> { EditVisible: !this.appService.AppVar$.getValue().EditVisible });
-    this.provinceService.UpdateProvinceVar(<ProvinceVar> { Working: false });
+    this.appStateService.UpdateAppState(<AppState> { EditVisible: !this.appStateService.AppState$.getValue().EditVisible });
+    this.appLoadedService.UpdateAppLoaded(<AppLoaded> { Working: false });
   }
 
 }

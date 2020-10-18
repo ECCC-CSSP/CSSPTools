@@ -5,7 +5,7 @@
  *
  */
 
-import { AppService } from '../../app.service';
+import { AppStateService } from '../../services/app-state.service';
 import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
 import { LanguageEnum } from './LanguageEnum';
 
@@ -26,9 +26,14 @@ export enum SecondaryTreatmentTypeEnum {
     ExtendedActivatedSludge = 15,
 }
 
-export function SecondaryTreatmentTypeEnum_GetOrderedText(appService: AppService): EnumIDAndText[] {
+export function GetSecondaryTreatmentTypeEnum(): typeof SecondaryTreatmentTypeEnum
+{
+  return SecondaryTreatmentTypeEnum;
+}
+
+export function SecondaryTreatmentTypeEnum_GetOrderedText(appStateService: AppStateService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if (appService.AppVar$?.getValue().Language == LanguageEnum.fr) {
+    if (appStateService.AppState$?.getValue().Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'Not applicable (fr)' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'Rotating Biological Contactor (RBC) (fr)' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'Trickling filters (fr)' });
@@ -64,9 +69,9 @@ export function SecondaryTreatmentTypeEnum_GetOrderedText(appService: AppService
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function SecondaryTreatmentTypeEnum_GetIDText(enumID: number, appService: AppService): string {
+export function SecondaryTreatmentTypeEnum_GetIDText(enumID: number, appStateService: AppStateService): string {
     let addressTypeEnunText: string;
-    SecondaryTreatmentTypeEnum_GetOrderedText(appService).forEach(e => {
+    SecondaryTreatmentTypeEnum_GetOrderedText(appStateService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

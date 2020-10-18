@@ -5,7 +5,7 @@
  *
  */
 
-import { AppService } from '../../app.service';
+import { AppStateService } from '../../services/app-state.service';
 import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
 import { LanguageEnum } from './LanguageEnum';
 
@@ -34,9 +34,14 @@ export enum FileTypeEnum {
     WMV = 22,
 }
 
-export function FileTypeEnum_GetOrderedText(appService: AppService): EnumIDAndText[] {
+export function GetFileTypeEnum(): typeof FileTypeEnum
+{
+  return FileTypeEnum;
+}
+
+export function FileTypeEnum_GetOrderedText(appStateService: AppStateService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if (appService.AppVar$?.getValue().Language == LanguageEnum.fr) {
+    if (appStateService.AppState$?.getValue().Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'DFS0 (fr)' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'DFS1 (fr)' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'DFSU (fr)' });
@@ -88,9 +93,9 @@ export function FileTypeEnum_GetOrderedText(appService: AppService): EnumIDAndTe
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function FileTypeEnum_GetIDText(enumID: number, appService: AppService): string {
+export function FileTypeEnum_GetIDText(enumID: number, appStateService: AppStateService): string {
     let addressTypeEnunText: string;
-    FileTypeEnum_GetOrderedText(appService).forEach(e => {
+    FileTypeEnum_GetOrderedText(appStateService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

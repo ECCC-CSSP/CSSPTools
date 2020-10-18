@@ -1496,6 +1496,51 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Email Distribution List.
+        /// </summary>
+        public static string CountrySubComponentEnumEmailDistributionList {
+            get {
+                return ResourceManager.GetString("CountrySubComponentEnumEmailDistributionList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Files.
+        /// </summary>
+        public static string CountrySubComponentEnumFiles {
+            get {
+                return ResourceManager.GetString("CountrySubComponentEnumFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Data National.
+        /// </summary>
+        public static string CountrySubComponentEnumOpenDataNational {
+            get {
+                return ResourceManager.GetString("CountrySubComponentEnumOpenDataNational", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Provinces.
+        /// </summary>
+        public static string CountrySubComponentEnumProvinces {
+            get {
+                return ResourceManager.GetString("CountrySubComponentEnumProvinces", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rain Exceedance.
+        /// </summary>
+        public static string CountrySubComponentEnumRainExceedance {
+            get {
+                return ResourceManager.GetString("CountrySubComponentEnumRainExceedance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
         public static string CSSPError {
@@ -3350,6 +3395,51 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Size 30.
+        /// </summary>
+        public static string MapSizeEnumSize30 {
+            get {
+                return ResourceManager.GetString("MapSizeEnumSize30", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Size 40.
+        /// </summary>
+        public static string MapSizeEnumSize40 {
+            get {
+                return ResourceManager.GetString("MapSizeEnumSize40", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Size 50.
+        /// </summary>
+        public static string MapSizeEnumSize50 {
+            get {
+                return ResourceManager.GetString("MapSizeEnumSize50", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Size 60.
+        /// </summary>
+        public static string MapSizeEnumSize60 {
+            get {
+                return ResourceManager.GetString("MapSizeEnumSize60", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Size 70.
+        /// </summary>
+        public static string MapSizeEnumSize70 {
+            get {
+                return ResourceManager.GetString("MapSizeEnumSize70", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to MikeBoundaryConditionLevelOrVelocity.
         /// </summary>
         public static string MikeBoundaryConditionLevelOrVelocity {
@@ -3805,6 +3895,60 @@ namespace CSSPCultureServices.Resources {
         public static string PropertyTypeEnumString {
             get {
                 return ResourceManager.GetString("PropertyTypeEnumString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Areas.
+        /// </summary>
+        public static string ProvinceSubComponentEnumAreas {
+            get {
+                return ResourceManager.GetString("ProvinceSubComponentEnumAreas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Files.
+        /// </summary>
+        public static string ProvinceSubComponentEnumFiles {
+            get {
+                return ResourceManager.GetString("ProvinceSubComponentEnumFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Municipalities.
+        /// </summary>
+        public static string ProvinceSubComponentEnumMunicipalities {
+            get {
+                return ResourceManager.GetString("ProvinceSubComponentEnumMunicipalities", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Data.
+        /// </summary>
+        public static string ProvinceSubComponentEnumOpenData {
+            get {
+                return ResourceManager.GetString("ProvinceSubComponentEnumOpenData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Province Tools.
+        /// </summary>
+        public static string ProvinceSubComponentEnumProvinceTools {
+            get {
+                return ResourceManager.GetString("ProvinceSubComponentEnumProvinceTools", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sampling Plan.
+        /// </summary>
+        public static string ProvinceSubComponentEnumSamplingPlan {
+            get {
+                return ResourceManager.GetString("ProvinceSubComponentEnumSamplingPlan", resourceCulture);
             }
         }
         
@@ -5727,6 +5871,33 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Countries.
+        /// </summary>
+        public static string RootSubComponentEnumCountries {
+            get {
+                return ResourceManager.GetString("RootSubComponentEnumCountries", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export Arc GIS.
+        /// </summary>
+        public static string RootSubComponentEnumExportArcGIS {
+            get {
+                return ResourceManager.GetString("RootSubComponentEnumExportArcGIS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Files.
+        /// </summary>
+        public static string RootSubComponentEnumFiles {
+            get {
+                return ResourceManager.GetString("RootSubComponentEnumFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Azure.
         /// </summary>
         public static string RunningOnEnumAzure {
@@ -6627,6 +6798,60 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Area.
+        /// </summary>
+        public static string ShellSubComponentEnumArea {
+            get {
+                return ResourceManager.GetString("ShellSubComponentEnumArea", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Country.
+        /// </summary>
+        public static string ShellSubComponentEnumCountry {
+            get {
+                return ResourceManager.GetString("ShellSubComponentEnumCountry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Province.
+        /// </summary>
+        public static string ShellSubComponentEnumProvince {
+            get {
+                return ResourceManager.GetString("ShellSubComponentEnumProvince", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Root.
+        /// </summary>
+        public static string ShellSubComponentEnumRoot {
+            get {
+                return ResourceManager.GetString("ShellSubComponentEnumRoot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sector.
+        /// </summary>
+        public static string ShellSubComponentEnumSector {
+            get {
+                return ResourceManager.GetString("ShellSubComponentEnumSector", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Subsector.
+        /// </summary>
+        public static string ShellSubComponentEnumSubsector {
+            get {
+                return ResourceManager.GetString("ShellSubComponentEnumSubsector", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to SiteType.
         /// </summary>
         public static string SiteType {
@@ -7163,6 +7388,24 @@ namespace CSSPCultureServices.Resources {
         public static string TideTextEnumMidTideRising {
             get {
                 return ResourceManager.GetString("TideTextEnumMidTideRising", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Home.
+        /// </summary>
+        public static string TopComponentEnumHome {
+            get {
+                return ResourceManager.GetString("TopComponentEnumHome", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shell.
+        /// </summary>
+        public static string TopComponentEnumShell {
+            get {
+                return ResourceManager.GetString("TopComponentEnumShell", resourceCulture);
             }
         }
         

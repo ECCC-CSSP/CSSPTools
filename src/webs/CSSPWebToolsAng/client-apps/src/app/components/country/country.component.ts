@@ -1,12 +1,10 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
-import { CountryService } from './country.service';
-import { LoadLocalesCountryVar } from './country.locales';
 import { Subscription } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
-import { AppService } from 'src/app/app.service';
-import { CountrySubComponentEnum } from 'src/app/enums/CountrySubComponentEnum';
-import { AppVar } from 'src/app/app.model';
-import { CountryVar } from '.';
+import { CountrySubComponentEnum, GetCountrySubComponentEnum } from '../../enums/generated/CountrySubComponentEnum';
+import { AppLoadedService } from 'src/app/services/app-loaded.service';
+import { AppStateService } from 'src/app/services/app-state.service';
+import { AppState } from 'src/app/models/AppState.model';
+import { AppLoaded } from 'src/app/models/AppLoaded.model';
 
 @Component({
   selector: 'app-country',
@@ -15,28 +13,24 @@ import { CountryVar } from '.';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CountryComponent implements OnInit, OnDestroy {
-  sub: Subscription;
+  subWebCountry: Subscription;
+  countrySubComponentEnum = GetCountrySubComponentEnum();
 
-  constructor(public countryService: CountryService, public appService: AppService) {
+  constructor(public appStateService: AppStateService, public appLoadedService: AppLoadedService) {
 
-  }
-
-  get countrySubComponentEnum(): typeof CountrySubComponentEnum {
-    return CountrySubComponentEnum;
   }
 
   ngOnInit(): void {
-    LoadLocalesCountryVar(this.appService, this.countryService);
-    let TVItemID: number = this.appService.AppVar$.getValue().CurrentTVItemID;
-    this.sub = this.countryService.GetWebCountry(TVItemID).subscribe();
+    let TVItemID: number = this.appStateService.AppState$.getValue().CurrentTVItemID;
+    this.subWebCountry = this.appLoadedService.GetWebCountry(TVItemID).subscribe();
   }
 
   ngOnDestroy(): void {
-    this.sub ? this.sub.unsubscribe() : null;
+    this.subWebCountry ? this.subWebCountry.unsubscribe() : null;
   }
 
   ColorSelection(countrySubComponent: CountrySubComponentEnum) {
-    if (this.appService.AppVar$.getValue().CountrySubComponent == countrySubComponent) {
+    if (this.appStateService.AppState$.getValue().CountrySubComponent == countrySubComponent) {
       return 'selected';
     }
     else {
@@ -45,22 +39,22 @@ export class CountryComponent implements OnInit, OnDestroy {
   }
 
   Show(countrySubComponent: CountrySubComponentEnum) {
-    this.appService.UpdateAppVar(<AppVar>{ CountrySubComponent: countrySubComponent });
+    this.appStateService.UpdateAppState(<AppState>{ CountrySubComponent: countrySubComponent });
   }
 
   ToggleInactive(): void {
-    this.appService.UpdateAppVar(<AppVar> { InactVisible: !this.appService.AppVar$.getValue().InactVisible });
-    this.countryService.UpdateCountryVar(<CountryVar> { Working: false });
+    this.appStateService.UpdateAppState(<AppState> { InactVisible: !this.appStateService.AppState$.getValue().InactVisible });
+    this.appLoadedService.UpdateAppLoaded(<AppLoaded> { Working: false });
   }
 
   ToggleDetail(): void {
-    this.appService.UpdateAppVar(<AppVar> { DetailVisible: !this.appService.AppVar$.getValue().DetailVisible });
-    this.countryService.UpdateCountryVar(<CountryVar> { Working: false });
+    this.appStateService.UpdateAppState(<AppState> { DetailVisible: !this.appStateService.AppState$.getValue().DetailVisible });
+    this.appLoadedService.UpdateAppLoaded(<AppLoaded> { Working: false });
   }
 
   ToggleEdit(): void {
-    this.appService.UpdateAppVar(<AppVar> { EditVisible: !this.appService.AppVar$.getValue().EditVisible });
-    this.countryService.UpdateCountryVar(<CountryVar> { Working: false });
+    this.appStateService.UpdateAppState(<AppState> { EditVisible: !this.appStateService.AppState$.getValue().EditVisible });
+    this.appLoadedService.UpdateAppLoaded(<AppLoaded> { Working: false });
   }
 
 }

@@ -1,7 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Input } from '@angular/core';
-import { AppService } from '../../app.service';
-import { BreadCrumbService } from './bread-crumb.service';
-import { AppVar } from 'src/app/app.model';
+import { AppState } from 'src/app/models/AppState.model';
+import { AppLoadedService } from 'src/app/services/app-loaded.service';
 
 @Component({
   selector: 'app-bread-crumb',
@@ -10,9 +9,9 @@ import { AppVar } from 'src/app/app.model';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BreadCrumbComponent implements OnInit, OnDestroy {
-  @Input() AppVar: AppVar;
+  @Input() AppState: AppState;
   
-  constructor(public breadCrumbService: BreadCrumbService, public appService: AppService) {
+  constructor(public appLoadedService: AppLoadedService) {
   }
 
   ngOnInit() {
@@ -23,7 +22,7 @@ export class BreadCrumbComponent implements OnInit, OnDestroy {
   }
 
   IsLast(i: number) {
-    if (this.appService.AppVar$.getValue().BreadCrumbWebBaseList.length - 1 == i) {
+    if (this.appLoadedService.AppLoaded$.getValue().BreadCrumbWebBaseList.length - 1 == i) {
       return true;
     }
     else {

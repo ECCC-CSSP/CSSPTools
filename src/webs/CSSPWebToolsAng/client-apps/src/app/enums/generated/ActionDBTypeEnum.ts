@@ -5,7 +5,7 @@
  *
  */
 
-import { AppService } from '../../app.service';
+import { AppStateService } from '../../services/app-state.service';
 import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
 import { LanguageEnum } from './LanguageEnum';
 
@@ -16,9 +16,14 @@ export enum ActionDBTypeEnum {
     Delete = 4,
 }
 
-export function ActionDBTypeEnum_GetOrderedText(appService: AppService): EnumIDAndText[] {
+export function GetActionDBTypeEnum(): typeof ActionDBTypeEnum
+{
+  return ActionDBTypeEnum;
+}
+
+export function ActionDBTypeEnum_GetOrderedText(appStateService: AppStateService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if (appService.AppVar$?.getValue().Language == LanguageEnum.fr) {
+    if (appStateService.AppState$?.getValue().Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'Créer' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'Lire' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'Mettre à jour' });
@@ -34,9 +39,9 @@ export function ActionDBTypeEnum_GetOrderedText(appService: AppService): EnumIDA
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function ActionDBTypeEnum_GetIDText(enumID: number, appService: AppService): string {
+export function ActionDBTypeEnum_GetIDText(enumID: number, appStateService: AppStateService): string {
     let addressTypeEnunText: string;
-    ActionDBTypeEnum_GetOrderedText(appService).forEach(e => {
+    ActionDBTypeEnum_GetOrderedText(appStateService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

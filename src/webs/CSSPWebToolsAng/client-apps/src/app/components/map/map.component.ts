@@ -1,8 +1,6 @@
-import { MapInfoWindow, MapMarker, GoogleMap } from '@angular/google-maps'
 import { ViewChild, Component, OnInit, ChangeDetectionStrategy, OnDestroy, Input } from '@angular/core';
-import { MapService } from '.';
-import { AppVar } from '../../app.model';
-import { AppService } from '../../app.service';
+import { AppState } from 'src/app/models/AppState.model';
+import { AppStateService } from 'src/app/services/app-state.service';
 
 @Component({
   selector: 'app-map',
@@ -11,14 +9,14 @@ import { AppService } from '../../app.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MapComponent implements OnInit, OnDestroy {
-  @Input() AppVar: AppVar;
+  @Input() AppState: AppState;
   @ViewChild("map", { static: true }) mapElement: any;
   map: any;
   latitude: number;
   longitude: number;
   coordinates = [];
 
-  constructor(public mapService: MapService, public appService: AppService) {
+  constructor(public appStateService: AppStateService) {
     
   }
 

@@ -5,7 +5,7 @@
  *
  */
 
-import { AppService } from '../../app.service';
+import { AppStateService } from '../../services/app-state.service';
 import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
 import { LanguageEnum } from './LanguageEnum';
 
@@ -16,9 +16,14 @@ export enum EmailTypeEnum {
     Work2 = 4,
 }
 
-export function EmailTypeEnum_GetOrderedText(appService: AppService): EnumIDAndText[] {
+export function GetEmailTypeEnum(): typeof EmailTypeEnum
+{
+  return EmailTypeEnum;
+}
+
+export function EmailTypeEnum_GetOrderedText(appStateService: AppStateService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if (appService.AppVar$?.getValue().Language == LanguageEnum.fr) {
+    if (appStateService.AppState$?.getValue().Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'Personnel' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'Travail' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'Personnel-2' });
@@ -34,9 +39,9 @@ export function EmailTypeEnum_GetOrderedText(appService: AppService): EnumIDAndT
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function EmailTypeEnum_GetIDText(enumID: number, appService: AppService): string {
+export function EmailTypeEnum_GetIDText(enumID: number, appStateService: AppStateService): string {
     let addressTypeEnunText: string;
-    EmailTypeEnum_GetOrderedText(appService).forEach(e => {
+    EmailTypeEnum_GetOrderedText(appStateService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

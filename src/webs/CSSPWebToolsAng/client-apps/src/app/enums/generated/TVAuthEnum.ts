@@ -5,7 +5,7 @@
  *
  */
 
-import { AppService } from '../../app.service';
+import { AppStateService } from '../../services/app-state.service';
 import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
 import { LanguageEnum } from './LanguageEnum';
 
@@ -18,9 +18,14 @@ export enum TVAuthEnum {
     Admin = 6,
 }
 
-export function TVAuthEnum_GetOrderedText(appService: AppService): EnumIDAndText[] {
+export function GetTVAuthEnum(): typeof TVAuthEnum
+{
+  return TVAuthEnum;
+}
+
+export function TVAuthEnum_GetOrderedText(appStateService: AppStateService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if (appService.AppVar$?.getValue().Language == LanguageEnum.fr) {
+    if (appStateService.AppState$?.getValue().Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'No access (fr)' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'Read (fr)' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'Write (fr)' });
@@ -40,9 +45,9 @@ export function TVAuthEnum_GetOrderedText(appService: AppService): EnumIDAndText
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function TVAuthEnum_GetIDText(enumID: number, appService: AppService): string {
+export function TVAuthEnum_GetIDText(enumID: number, appStateService: AppStateService): string {
     let addressTypeEnunText: string;
-    TVAuthEnum_GetOrderedText(appService).forEach(e => {
+    TVAuthEnum_GetOrderedText(appStateService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

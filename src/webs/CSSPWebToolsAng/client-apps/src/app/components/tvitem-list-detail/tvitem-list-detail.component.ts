@@ -1,9 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Input } from '@angular/core';
-import { Router } from '@angular/router';
-import { AppService } from '../../app.service';
-import { AppVar } from '../../app.model';
 import { TVItemModel } from '../../models/generated/TVItemModel.model';
 import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
+import { AppState } from 'src/app/models/AppState.model';
 
 @Component({
   selector: 'app-tvitem-list-detail',
@@ -13,9 +11,9 @@ import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 })
 export class TVItemListDetailComponent implements OnInit, OnDestroy {
   @Input() TVItemModel: TVItemModel;
-  @Input() AppVar: AppVar;
+  @Input() AppState: AppState;
 
-  constructor(public appService: AppService) {
+  constructor() {
   }
 
   get tvTypeEnum(): typeof TVTypeEnum {

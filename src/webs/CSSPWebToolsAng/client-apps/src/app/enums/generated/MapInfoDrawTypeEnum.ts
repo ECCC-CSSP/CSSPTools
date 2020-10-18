@@ -5,7 +5,7 @@
  *
  */
 
-import { AppService } from '../../app.service';
+import { AppStateService } from '../../services/app-state.service';
 import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
 import { LanguageEnum } from './LanguageEnum';
 
@@ -15,9 +15,14 @@ export enum MapInfoDrawTypeEnum {
     Polygon = 3,
 }
 
-export function MapInfoDrawTypeEnum_GetOrderedText(appService: AppService): EnumIDAndText[] {
+export function GetMapInfoDrawTypeEnum(): typeof MapInfoDrawTypeEnum
+{
+  return MapInfoDrawTypeEnum;
+}
+
+export function MapInfoDrawTypeEnum_GetOrderedText(appStateService: AppStateService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if (appService.AppVar$?.getValue().Language == LanguageEnum.fr) {
+    if (appStateService.AppState$?.getValue().Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'Point (fr)' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'Polyline (fr)' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'Polygon (fr)' });
@@ -31,9 +36,9 @@ export function MapInfoDrawTypeEnum_GetOrderedText(appService: AppService): Enum
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function MapInfoDrawTypeEnum_GetIDText(enumID: number, appService: AppService): string {
+export function MapInfoDrawTypeEnum_GetIDText(enumID: number, appStateService: AppStateService): string {
     let addressTypeEnunText: string;
-    MapInfoDrawTypeEnum_GetOrderedText(appService).forEach(e => {
+    MapInfoDrawTypeEnum_GetOrderedText(appStateService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

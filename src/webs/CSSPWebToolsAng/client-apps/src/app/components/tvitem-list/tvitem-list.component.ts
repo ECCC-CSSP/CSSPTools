@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Input } from '@angular/core';
-import { AppVar } from '../../app.model';
+import { AppState } from '../../models/AppState.model';
 import { WebBase } from '../../models/generated/WebBase.model';
 
 @Component({
@@ -10,7 +10,7 @@ import { WebBase } from '../../models/generated/WebBase.model';
 })
 export class TVItemListComponent implements OnInit, OnDestroy {
   @Input() TVItemList: WebBase[] = [];
-  @Input() AppVar: AppVar;
+  @Input() AppState: AppState;
 
   constructor() {
   }

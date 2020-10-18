@@ -5,7 +5,7 @@
  *
  */
 
-import { AppService } from '../../app.service';
+import { AppStateService } from '../../services/app-state.service';
 import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
 import { LanguageEnum } from './LanguageEnum';
 
@@ -17,9 +17,14 @@ export enum ClassificationTypeEnum {
     ConditionallyRestricted = 5,
 }
 
-export function ClassificationTypeEnum_GetOrderedText(appService: AppService): EnumIDAndText[] {
+export function GetClassificationTypeEnum(): typeof ClassificationTypeEnum
+{
+  return ClassificationTypeEnum;
+}
+
+export function ClassificationTypeEnum_GetOrderedText(appStateService: AppStateService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if (appService.AppVar$?.getValue().Language == LanguageEnum.fr) {
+    if (appStateService.AppState$?.getValue().Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'Agréé' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'Restreint' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'Interdit' });
@@ -37,9 +42,9 @@ export function ClassificationTypeEnum_GetOrderedText(appService: AppService): E
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function ClassificationTypeEnum_GetIDText(enumID: number, appService: AppService): string {
+export function ClassificationTypeEnum_GetIDText(enumID: number, appStateService: AppStateService): string {
     let addressTypeEnunText: string;
-    ClassificationTypeEnum_GetOrderedText(appService).forEach(e => {
+    ClassificationTypeEnum_GetOrderedText(appStateService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

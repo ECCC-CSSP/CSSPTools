@@ -85,9 +85,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 
-@angular/localize
-MIT
-
 @angular/material
 MIT
 The MIT License
@@ -114,9 +111,6 @@ THE SOFTWARE.
 
 
 @angular/platform-browser
-MIT
-
-@angular/router
 MIT
 
 core-js

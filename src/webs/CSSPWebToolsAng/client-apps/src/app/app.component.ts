@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { LoadLocalesApp } from './app.locales';
-import { AppService } from './app.service';
-import { TopComponentEnum } from './enums/TopComponentEnum';
+import { GetTopComponentEnum } from './enums/generated/TopComponentEnum';
+import { AppLoadedService } from './services/app-loaded.service';
+import { AppStateService } from './services/app-state.service';
 
 @Component({
   selector: 'app-root',
@@ -11,24 +11,24 @@ import { TopComponentEnum } from './enums/TopComponentEnum';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnInit, OnDestroy {
-  sub: Subscription;
-  sub2: Subscription;
+  subWebContact: Subscription;
+  subLoggedInContact: Subscription;
+  
+  topComponentEnum = GetTopComponentEnum();
 
-  constructor(public appService: AppService) {
-  }
-  get topComponentEnum(): typeof TopComponentEnum {
-    return TopComponentEnum;
+  constructor(
+    public appLoadedService: AppLoadedService,
+    public appStateService: AppStateService) {
   }
 
   ngOnInit() {
-    LoadLocalesApp(this.appService);
-    this.sub = this.appService.GetWebContact().subscribe();
-    this.sub2 = this.appService.GetLoggedInContact().subscribe();
+    this.subWebContact = this.appLoadedService.GetWebContact().subscribe();
+    this.subLoggedInContact = this.appLoadedService.GetLoggedInContact().subscribe();
   }
 
   ngOnDestroy() {
-    this.sub != null ? this.sub.unsubscribe() : null;
-    this.sub2 != null ? this.sub2.unsubscribe() : null;
+    this.subWebContact != null ? this.subWebContact.unsubscribe() : null;
+    this.subLoggedInContact != null ? this.subLoggedInContact.unsubscribe() : null;
   }
 }
 

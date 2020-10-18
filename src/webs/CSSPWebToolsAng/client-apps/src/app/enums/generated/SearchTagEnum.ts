@@ -5,7 +5,7 @@
  *
  */
 
-import { AppService } from '../../app.service';
+import { AppStateService } from '../../services/app-state.service';
 import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
 import { LanguageEnum } from './LanguageEnum';
 
@@ -48,9 +48,14 @@ export enum SearchTagEnum {
     fcsv = 36,
 }
 
-export function SearchTagEnum_GetOrderedText(appService: AppService): EnumIDAndText[] {
+export function GetSearchTagEnum(): typeof SearchTagEnum
+{
+  return SearchTagEnum;
+}
+
+export function SearchTagEnum_GetOrderedText(appStateService: AppStateService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if (appService.AppVar$?.getValue().Language == LanguageEnum.fr) {
+    if (appStateService.AppState$?.getValue().Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'c' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'e' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 't' });
@@ -130,9 +135,9 @@ export function SearchTagEnum_GetOrderedText(appService: AppService): EnumIDAndT
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function SearchTagEnum_GetIDText(enumID: number, appService: AppService): string {
+export function SearchTagEnum_GetIDText(enumID: number, appStateService: AppStateService): string {
     let addressTypeEnunText: string;
-    SearchTagEnum_GetOrderedText(appService).forEach(e => {
+    SearchTagEnum_GetOrderedText(appStateService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

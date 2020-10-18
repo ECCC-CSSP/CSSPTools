@@ -1,8 +1,8 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Input } from '@angular/core';
-import { AppService } from '../../app.service';
-import { AppVar } from '../../app.model';
 import { TVItemModel } from '../../models/generated/TVItemModel.model';
-import { LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
+import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
+import { AppState } from 'src/app/models/AppState.model';
+import { AppHelperService } from 'src/app/services/app-helper.service';
 
 @Component({
   selector: 'app-tvitem-list-item',
@@ -13,15 +13,11 @@ import { LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 export class TVItemListItemComponent implements OnInit, OnDestroy {
   @Input() TVItemModel: TVItemModel;
   @Input() IsBreadCrumb: boolean = false;
-  @Input() AppVar: AppVar;
+  @Input() AppState: AppState;
   @Input() IsLast: boolean = false;
+  languageEnum = GetLanguageEnum();
   
-  constructor(public appService: AppService) {
-  }
-
-  get languageEnum(): typeof LanguageEnum
-  {
-    return LanguageEnum;
+  constructor(public appHelperService: AppHelperService) {
   }
 
   ngOnInit() {

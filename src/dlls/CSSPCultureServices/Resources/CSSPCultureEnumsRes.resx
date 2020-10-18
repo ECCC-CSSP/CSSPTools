@@ -3042,4 +3042,85 @@
   <data name="WebTypeEnumWebAllTVItemLanguage" xml:space="preserve">
     <value>WebAllTVItemLanguage</value>
   </data>
+  <data name="CountrySubComponentEnumEmailDistributionList" xml:space="preserve">
+    <value>Email Distribution List</value>
+  </data>
+  <data name="CountrySubComponentEnumFiles" xml:space="preserve">
+    <value>Files</value>
+  </data>
+  <data name="CountrySubComponentEnumOpenDataNational" xml:space="preserve">
+    <value>Open Data National</value>
+  </data>
+  <data name="CountrySubComponentEnumProvinces" xml:space="preserve">
+    <value>Provinces</value>
+  </data>
+  <data name="CountrySubComponentEnumRainExceedance" xml:space="preserve">
+    <value>Rain Exceedance</value>
+  </data>
+  <data name="MapSizeEnumSize30" xml:space="preserve">
+    <value>Size 30</value>
+  </data>
+  <data name="MapSizeEnumSize40" xml:space="preserve">
+    <value>Size 40</value>
+  </data>
+  <data name="MapSizeEnumSize50" xml:space="preserve">
+    <value>Size 50</value>
+  </data>
+  <data name="MapSizeEnumSize60" xml:space="preserve">
+    <value>Size 60</value>
+  </data>
+  <data name="MapSizeEnumSize70" xml:space="preserve">
+    <value>Size 70</value>
+  </data>
+  <data name="ProvinceSubComponentEnumAreas" xml:space="preserve">
+    <value>Areas</value>
+  </data>
+  <data name="ProvinceSubComponentEnumFiles" xml:space="preserve">
+    <value>Files</value>
+  </data>
+  <data name="ProvinceSubComponentEnumMunicipalities" xml:space="preserve">
+    <value>Municipalities</value>
+  </data>
+  <data name="ProvinceSubComponentEnumOpenData" xml:space="preserve">
+    <value>Open Data</value>
+  </data>
+  <data name="ProvinceSubComponentEnumProvinceTools" xml:space="preserve">
+    <value>Province Tools</value>
+  </data>
+  <data name="ProvinceSubComponentEnumSamplingPlan" xml:space="preserve">
+    <value>Sampling Plan</value>
+  </data>
+  <data name="RootSubComponentEnumCountries" xml:space="preserve">
+    <value>Countries</value>
+  </data>
+  <data name="RootSubComponentEnumExportArcGIS" xml:space="preserve">
+    <value>Export Arc GIS</value>
+  </data>
+  <data name="RootSubComponentEnumFiles" xml:space="preserve">
+    <value>Files</value>
+  </data>
+  <data name="ShellSubComponentEnumArea" xml:space="preserve">
+    <value>Area</value>
+  </data>
+  <data name="ShellSubComponentEnumCountry" xml:space="preserve">
+    <value>Country</value>
+  </data>
+  <data name="ShellSubComponentEnumProvince" xml:space="preserve">
+    <value>Province</value>
+  </data>
+  <data name="ShellSubComponentEnumRoot" xml:space="preserve">
+    <value>Root</value>
+  </data>
+  <data name="ShellSubComponentEnumSector" xml:space="preserve">
+    <value>Sector</value>
+  </data>
+  <data name="ShellSubComponentEnumSubsector" xml:space="preserve">
+    <value>Subsector</value>
+  </data>
+  <data name="TopComponentEnumHome" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="TopComponentEnumShell" xml:space="preserve">
+    <value>Shell</value>
+  </data>
 </root>

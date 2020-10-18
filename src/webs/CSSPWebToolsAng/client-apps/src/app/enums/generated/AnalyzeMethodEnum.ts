@@ -5,7 +5,7 @@
  *
  */
 
-import { AppService } from '../../app.service';
+import { AppStateService } from '../../services/app-state.service';
 import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
 import { LanguageEnum } from './LanguageEnum';
 
@@ -24,9 +24,14 @@ export enum AnalyzeMethodEnum {
     AnalyzeMethod12 = 12,
 }
 
-export function AnalyzeMethodEnum_GetOrderedText(appService: AppService): EnumIDAndText[] {
+export function GetAnalyzeMethodEnum(): typeof AnalyzeMethodEnum
+{
+  return AnalyzeMethodEnum;
+}
+
+export function AnalyzeMethodEnum_GetOrderedText(appStateService: AppStateService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if (appService.AppVar$?.getValue().Language == LanguageEnum.fr) {
+    if (appStateService.AppState$?.getValue().Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'MF' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'ZZ_510Q' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'ZZ_509Q' });
@@ -58,9 +63,9 @@ export function AnalyzeMethodEnum_GetOrderedText(appService: AppService): EnumID
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function AnalyzeMethodEnum_GetIDText(enumID: number, appService: AppService): string {
+export function AnalyzeMethodEnum_GetIDText(enumID: number, appStateService: AppStateService): string {
     let addressTypeEnunText: string;
-    AnalyzeMethodEnum_GetOrderedText(appService).forEach(e => {
+    AnalyzeMethodEnum_GetOrderedText(appStateService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

@@ -5,7 +5,7 @@
  *
  */
 
-import { AppService } from '../../app.service';
+import { AppStateService } from '../../services/app-state.service';
 import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
 import { LanguageEnum } from './LanguageEnum';
 
@@ -16,9 +16,14 @@ export enum ReportFileTypeEnum {
     KML = 4,
 }
 
-export function ReportFileTypeEnum_GetOrderedText(appService: AppService): EnumIDAndText[] {
+export function GetReportFileTypeEnum(): typeof ReportFileTypeEnum
+{
+  return ReportFileTypeEnum;
+}
+
+export function ReportFileTypeEnum_GetOrderedText(appStateService: AppStateService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if (appService.AppVar$?.getValue().Language == LanguageEnum.fr) {
+    if (appStateService.AppState$?.getValue().Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'Comma Seperated Values (fr)' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'Word (fr)' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'Excel (fr)' });
@@ -34,9 +39,9 @@ export function ReportFileTypeEnum_GetOrderedText(appService: AppService): EnumI
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function ReportFileTypeEnum_GetIDText(enumID: number, appService: AppService): string {
+export function ReportFileTypeEnum_GetIDText(enumID: number, appStateService: AppStateService): string {
     let addressTypeEnunText: string;
-    ReportFileTypeEnum_GetOrderedText(appService).forEach(e => {
+    ReportFileTypeEnum_GetOrderedText(appStateService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

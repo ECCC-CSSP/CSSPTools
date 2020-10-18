@@ -5,7 +5,7 @@
  *
  */
 
-import { AppService } from '../../app.service';
+import { AppStateService } from '../../services/app-state.service';
 import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';
 import { LanguageEnum } from './LanguageEnum';
 
@@ -18,9 +18,14 @@ export enum MWQMSiteLatestClassificationEnum {
     Unclassified = 6,
 }
 
-export function MWQMSiteLatestClassificationEnum_GetOrderedText(appService: AppService): EnumIDAndText[] {
+export function GetMWQMSiteLatestClassificationEnum(): typeof MWQMSiteLatestClassificationEnum
+{
+  return MWQMSiteLatestClassificationEnum;
+}
+
+export function MWQMSiteLatestClassificationEnum_GetOrderedText(appStateService: AppStateService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if (appService.AppVar$?.getValue().Language == LanguageEnum.fr) {
+    if (appStateService.AppState$?.getValue().Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'Approved (fr)' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'ConditionallyApproved (fr)' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'Restricted (fr)' });
@@ -40,9 +45,9 @@ export function MWQMSiteLatestClassificationEnum_GetOrderedText(appService: AppS
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function MWQMSiteLatestClassificationEnum_GetIDText(enumID: number, appService: AppService): string {
+export function MWQMSiteLatestClassificationEnum_GetIDText(enumID: number, appStateService: AppStateService): string {
     let addressTypeEnunText: string;
-    MWQMSiteLatestClassificationEnum_GetOrderedText(appService).forEach(e => {
+    MWQMSiteLatestClassificationEnum_GetOrderedText(appStateService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

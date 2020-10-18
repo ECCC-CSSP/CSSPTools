@@ -21,10 +21,10 @@ import { MapComponent } from './components/map/map.component';
 import { BreadCrumbComponent } from './components/bread-crumb/bread-crumb.component';
 import { LoggedInContactComponent } from './components/logged-in-contact/logged-in-contact.component';
 import { HomeComponent } from './components/home/home.component';
-import { ShellComponent } from './components/shell';
 import { RootComponent } from './components/root/root.component';
 import { CountryComponent } from './components/country/country.component';
 import { ProvinceComponent } from './components/province/province.component';
+import { ShellComponent } from './components/shell/shell.component';
 
 @NgModule({
   declarations: [
