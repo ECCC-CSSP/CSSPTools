@@ -25,6 +25,7 @@ import { RootComponent } from './components/root/root.component';
 import { CountryComponent } from './components/country/country.component';
 import { ProvinceComponent } from './components/province/province.component';
 import { ShellComponent } from './components/shell/shell.component';
+import { ErrorComponent } from './components/error/error.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { ShellComponent } from './components/shell/shell.component';
     TVItemListDetailProvinceComponent,
     TVItemListDetailRootComponent,
     TVItemListItemComponent,
+    ErrorComponent,
   ],
   imports: [
     CommonModule,
@@ -85,6 +87,7 @@ import { ShellComponent } from './components/shell/shell.component';
     TVItemListDetailProvinceComponent,
     TVItemListDetailRootComponent,
     TVItemListItemComponent,
+    ErrorComponent
   ]
 })
 export class SharedModule { }

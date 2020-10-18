@@ -1,8 +1,6 @@
 <span *ngIf="(appStateService.AppState$ | async).Working">
-    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </span>
 <span *ngIf="(appLoadedService.AppLoaded$ | async).Working">
-    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </span>
 
 <button mat-button [matMenuTriggerFor]="rootMenu">

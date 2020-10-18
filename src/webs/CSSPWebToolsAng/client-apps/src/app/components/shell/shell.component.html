@@ -1,13 +1,13 @@
-<span *ngIf="(appStateService.AppState$ | async).Working">
-    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-</span>
+<span *ngIf="(appStateService.AppState$ | async).Working"></span>
+<span *ngIf="(appLoadedService.AppLoaded$ | async).Working"></span>
 
 <mat-toolbar class="header">
     <span class="toolbar">
         <button (click)="ToggleMenu()" mat-button>
             <mat-icon>menu</mat-icon>
         </button>
-        <button mat-button (click)="Home()">{{ appLanguageService.AppLanguage.Title[appStateService.AppState$?.getValue().Language] }}
+        <button mat-button
+            (click)="Home()">{{ appLanguageService.AppLanguage.Title[appStateService.AppState$?.getValue().Language] }}
         </button>
         <span>
             <app-search></app-search>
@@ -45,20 +45,23 @@
 </mat-toolbar>
 
 <mat-sidenav-container class="container">
-    <mat-sidenav class="sidenav-left" #leftSideNav [opened]="appStateService.AppState$?.getValue()?.MenuVisible" mode="side">
+    <mat-sidenav class="sidenav-left" #leftSideNav [opened]="appStateService.AppState$?.getValue()?.MenuVisible"
+        mode="side">
         <app-sidenav-menu [AppState]="appStateService.AppState$?.getValue()"></app-sidenav-menu>
     </mat-sidenav>
-    <mat-sidenav [ngClass]="GetMapSizeClass()" #rightSideNav [opened]="appStateService.AppState$?.getValue()?.MapVisible"
-        mode="side" position="end">
+    <mat-sidenav [ngClass]="GetMapSizeClass()" #rightSideNav
+        [opened]="appStateService.AppState$?.getValue()?.MapVisible" mode="side" position="end">
         <app-map [AppState]="appStateService.AppState$?.getValue()"></app-map>
     </mat-sidenav>
-    <span *ngIf="(appStateService.AppState$ | async).Working">
+    <span *ngIf="(appStateService.AppState$ | async).Working || (appLoadedService.AppLoaded$ | async).Working">
         <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     </span>
+    <app-error [Error]="(appStateService.AppState$ | async).Error"></app-error>
+    <app-error [Error]="(appLoadedService.AppLoaded$ | async).Error"></app-error>
     <app-bread-crumb [AppState]="appStateService.AppState$?.getValue()"></app-bread-crumb>
 
     <div class="margin10">
-        <app-root *ngIf="appStateService.AppState$?.getValue().ShellSubComponent == shellSubComponentEnum.Root">            
+        <app-root *ngIf="appStateService.AppState$?.getValue().ShellSubComponent == shellSubComponentEnum.Root">
         </app-root>
         <app-country *ngIf="appStateService.AppState$?.getValue().ShellSubComponent == shellSubComponentEnum.Country">
         </app-country>

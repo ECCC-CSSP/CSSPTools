@@ -1,8 +1,6 @@
 <span *ngIf="(appLoadedService.AppLoaded$ | async).Working">
-    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </span>
 <span *ngIf="(appStateService.AppState$ | async).Working">
-    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </span>
 
 <app-home *ngIf="((appStateService.AppState$ | async)?.TopComponent == topComponentEnum.Home)"></app-home>

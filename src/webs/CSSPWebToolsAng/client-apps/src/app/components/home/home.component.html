@@ -2,7 +2,6 @@
 <button mat-raised-button (click)="French()">Français</button>
 
 <span *ngIf="(appStateService.AppState$ | async).Working">
-    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </span>
 
 <p>{{ this.appLanguageService.AppLanguage.Title[this.appStateService.AppState$?.getValue().Language] }}</p>

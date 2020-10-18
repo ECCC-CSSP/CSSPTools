@@ -6,6 +6,12 @@ import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppState } from 'src/app/models/AppState.model';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { AppHelperService } from 'src/app/services/app-helper.service';
+import { GetTVTypeEnum, TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
+import { RootSubComponentEnum } from 'src/app/enums/generated/RootSubComponentEnum';
+import { CountrySubComponentEnum } from 'src/app/enums/generated/CountrySubComponentEnum';
+import { ProvinceSubComponentEnum } from 'src/app/enums/generated/ProvinceSubComponentEnum';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ShellSubComponentEnum } from 'src/app/enums/generated/ShellSubComponentEnum';
 
 @Component({
   selector: 'app-search',
@@ -20,7 +26,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   formFieldWidthClass: string = '';
   sub: Subscription;
 
-  constructor(public appLoadedService: AppLoadedService, 
+  constructor(public appLoadedService: AppLoadedService,
     public appStateService: AppStateService,
     public appHelperService: AppHelperService) {
   }
@@ -37,16 +43,13 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.formFieldWidthClass == '' ? this.formFieldWidthClass = 'form-field-width' : this.formFieldWidthClass = '';
   }
 
-  NavigateTo(sr: SearchResult)
-  {
+  NavigateTo(sr: SearchResult) {
     this.searchResult = sr;
-    this.appStateService.UpdateAppState(<AppState>{ SubPage: this.appHelperService.GetSubPage(sr.TVItem), CurrentTVItemID: sr.TVItem.TVItemID });
+    this.appHelperService.SearchNavigateTo(sr);
   }
 
-  ngOnDestroy()
-  {
-    if (this.sub)
-    {
+  ngOnDestroy() {
+    if (this.sub) {
       this.sub.unsubscribe();
     }
   }

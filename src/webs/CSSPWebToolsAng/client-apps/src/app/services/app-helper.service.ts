@@ -1,8 +1,12 @@
 import { Injectable } from '@angular/core';
+import { CountrySubComponentEnum } from '../enums/generated/CountrySubComponentEnum';
 import { MapInfoDrawTypeEnum } from '../enums/generated/MapInfoDrawTypeEnum';
+import { ProvinceSubComponentEnum } from '../enums/generated/ProvinceSubComponentEnum';
+import { RootSubComponentEnum } from '../enums/generated/RootSubComponentEnum';
 import { ShellSubComponentEnum } from '../enums/generated/ShellSubComponentEnum';
 import { TVTypeEnum, TVTypeEnum_GetIDText } from '../enums/generated/TVTypeEnum';
 import { AppState } from '../models/AppState.model';
+import { SearchResult } from '../models/generated/SearchResult.model';
 import { TVItem } from '../models/generated/TVItem.model';
 import { TVItemModel } from '../models/generated/TVItemModel.model';
 import { WebBase } from '../models/generated/WebBase.model';
@@ -30,10 +34,10 @@ export class AppHelperService {
       //   {
       //     return `address`;
       //   }
-      // case TVTypeEnum.Area:
-      //   {
-      //     return `area`;
-      //   }
+      case TVTypeEnum.Area:
+        {
+          return ShellSubComponentEnum.Area;
+        }
       // case TVTypeEnum.BoxModel:
       //   {
       //     return `boxmodel`;
@@ -318,6 +322,31 @@ export class AppHelperService {
     }
 
     this.appStateService.UpdateAppState(<AppState>{ polygonList: polygons });
+  }
+
+  SearchNavigateTo(sr: SearchResult) {
+    if (sr.TVItem.TVType == TVTypeEnum.Root) {
+      this.appStateService.UpdateAppState(<AppState>{ 
+        RootSubComponent: RootSubComponentEnum.Countries, 
+        ShellSubComponent: this.GetSubPage(sr.TVItem), 
+        CurrentTVItemID: sr.TVItem.TVItemID });
+    }
+    else if (sr.TVItem.TVType == TVTypeEnum.Country) {
+      this.appStateService.UpdateAppState(<AppState>{ 
+        CountrySubComponent: CountrySubComponentEnum.Provinces, 
+        ShellSubComponent: this.GetSubPage(sr.TVItem), 
+        CurrentTVItemID: sr.TVItem.TVItemID });
+    }
+    else if (sr.TVItem.TVType == TVTypeEnum.Province) {
+      this.appStateService.UpdateAppState(<AppState>{ 
+        ProvinceSubComponent: ProvinceSubComponentEnum.Areas, 
+        ShellSubComponent: this.GetSubPage(sr.TVItem), 
+        CurrentTVItemID: sr.TVItem.TVItemID });
+    }
+    else {
+        let typeNotImplemented: string =  ShellSubComponentEnum[this.GetSubPage(sr.TVItem)];
+        alert(`${ typeNotImplemented } - Not Implemented Yet. See app-helper.service.ts -- SearchNavigateTo Function`);
+    }
   }
 
 }
