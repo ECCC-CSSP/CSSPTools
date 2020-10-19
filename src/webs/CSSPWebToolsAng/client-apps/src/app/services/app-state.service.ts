@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { ContentSizeEnum } from '../enums/generated/ContentSizeEnum';
 import { CountrySubComponentEnum } from '../enums/generated/CountrySubComponentEnum';
 import { LanguageEnum } from '../enums/generated/LanguageEnum';
 import { MapSizeEnum } from '../enums/generated/MapSizeEnum';
@@ -30,7 +31,7 @@ export class AppStateService {
       MenuVisible: false,
       MapVisible: false,
       MapSize: MapSizeEnum.Size50, // Size30 | Size40 | Size50 | Size60 | Size70
-
+  
       MapTitle: "Something for text", 
       zoom: 12,
       center: <google.maps.LatLngLiteral>{ lat: 46.0915449, lng: -64.7242012 },
@@ -53,4 +54,5 @@ export class AppStateService {
   UpdateAppState(appState: AppState) {
     this.AppState$.next(<AppState>{ ...this.AppState$.getValue(), ...appState });
   }
+  
 }

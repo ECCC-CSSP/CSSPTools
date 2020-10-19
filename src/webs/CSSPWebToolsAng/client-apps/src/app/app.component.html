@@ -1,6 +1,6 @@
-<span *ngIf="(appLoadedService.AppLoaded$ | async).Working">
-</span>
 <span *ngIf="(appStateService.AppState$ | async).Working">
+</span>
+<span *ngIf="(appLoadedService.AppLoaded$ | async).Working">
 </span>
 
 <app-home *ngIf="((appStateService.AppState$ | async)?.TopComponent == topComponentEnum.Home)"></app-home>

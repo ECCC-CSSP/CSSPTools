@@ -1,0 +1,7 @@
+<span *ngIf="(appLoadedService.AppLoaded$ | async).Working">
+</span>
+<span *ngIf="(appStateService.AppState$ | async).Working">
+</span>
+
+<span>© {{ year }} - {{ appLanguageService.AppLanguage.ShellApplicationName[appStateService.AppState$?.getValue().Language] }}
+    </span>

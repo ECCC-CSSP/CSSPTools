@@ -6,12 +6,93 @@ import { AppLanguage } from '../models/AppLanguage.model';
 })
 export class AppLanguageService {
 
-  constructor() {   
+  constructor() {
   }
 
   get AppLanguage(): AppLanguage {
-      return {
-          Title: ['', 'The Title', 'Le Titre' ]
-      }
+    return {
+      CountryShowProvince: ['', 'Show province', 'Montrer province'],
+      CountryProvinces: ['', 'Provinces', 'Provinces'],
+      CountryShowFiles: ['', 'Show files', 'Montrer filières'],
+      CountryFiles: ['', 'Files', 'Filières'],
+      CountryShowOpenDataNationalTools: ['', 'Show open data national tools', 'Montrer outils données ouvertes nationales'],
+      CountryOpenDataNational: ['', 'Open Data National', 'Données ouvertes nationales'],
+      CountryShowEmailDistributionList: ['', 'Show email distribution list', 'Montrer liste de distribution des courriels'],
+      CountryEmailDistributionList: ['', 'Email Distribution List', 'Liste de distribution des courriels'],
+      CountryShowRainExceedance: ['', 'Show rain exceedance', 'Montrer pluie dépassement'],
+      CountryRainExceedance: ['', 'Rain Exceedance', 'Pluie dépassement'],
+  
+      HomeCSSPWebTools: ['', 'CSSP Web Tools', 'PCCSM: outils Web'],
+      HomeTheWebToolWillLetYou: ['', 'The Web tools will let you:', 'Avec les outils Web, il est possible de:'],
+      HomeViewAndUpdateWWTPInfo: ['', 'view and update the waste water treatment plants and the lift stations information,', 'consulter et mettre à jour l\'information des usines de traitement des eaux usées et des postes de pompage,'],
+      HomeMakeCalculationUsingBoxModelAndVisualPlumes: ['', 'make calculation using Box Model and Visual Plumes,', 'exécuter les calculs utilisant Box Model et Visual Plumes,'],
+      HomeSetupAndRunMIKEScenariosAndStoreInputsAndResults: ['', 'Setup and run MIKE scenarios and store inputs and results', 'Configurer et exécuter des scénarios MIKE et stocker les entrées et les résultats'],
+      HomeManageMWQMInformation: ['', 'Manage Marine Water Quality Monitorng Information', 'Gestion de l\'informmation de Surveillance de qualité d\'eau marine'],
+      HomeToHaveAccessWebToolsInformationAndApplication: ['', 'To have access to Web Tools information and application, ', 'Pour accéder à l\'information et aux applications des outils Web,'],
+      HomePleaseContactASiteAdministratorListedBelow: ['', 'please contact a site administrator listed below', 'veuillez contacter un administrateur du site suivants:'],
+      HomeStartUsingCSSPWebTools: ['', 'Start using CSSP Web Tools', 'Utilisez les outils web PCCSM'],
+      HomeAzureVersion: ['', '(Azure Version)', '(Version Azure)'],
+
+      ProvinceShowAreas: ['', 'Show areas', 'Montrer areas'],
+      ProvinceAreas: ['', 'Areas', 'Régions'],
+      ProvinceShowMunicipalities: ['', 'Show municipalities', 'Montrer municipalités'],
+      ProvinceMunicipalities: ['', 'Municipalities', 'Municipalités'],
+      ProvinceShowFiles: ['', 'Show files', 'Montrer filières'],
+      ProvinceFiles: ['', 'Files', 'Filières'],
+      ProvinceShowOpenData: ['', 'Show open data', 'Montrer données ouvertes'],
+      ProvinceOpenData: ['', 'Open Data', 'Données ouvertes'],
+      ProvinceShowSamplingPlan: ['', 'Show sampling plan', 'Montrer plan d\'échantillonnage'],
+      ProvinceSamplingPlan: ['', 'Sampling Plan', 'Plan d\'échantillonnage'],
+      ProvinceShowProvinceTools: ['', 'Show province tools', 'Montrer outils pour province'],
+      ProvinceProvinceTools: ['', 'Province Tools', "Outils pour province"],
+  
+      RootShowCountries: ['', 'Show countries', 'Montrer pays'],
+      RootCountries: ['', 'Countries', 'Pays'],
+      RootShowFiles: ['', 'Show Files', 'Montrer filières'],
+      RootFiles: ['', 'Files', 'Filières'],
+      RootShowExportArcGISTools: ['', 'Show export Arc GIS tools', 'Montrer outils pour exportation Arc GIS'],
+      RootExportArcGIS: ['', 'Export Arc GIS', 'Exportation Arc GIS'],
+
+      SearchSearch: ['', 'Search', 'Rechercher'],
+
+      ShellApplicationName: ['', 'CSSP Web Tools', 'PCCSM: outils Web'],
+      ShellOpenContextMenu: ['', 'Open context menu', 'ouvrir le menu contextuel'],
+      ShellReturnHome: ['', 'Return home', 'Retour à la page d\'accueil'],
+      ShellShowMap: ['', 'Show map', 'Montrer carte'],
+      ShellResizeMap: ['', 'Resize map', 'Redimentionnez la carte'],
+
+      SideNavMenuContextMenu: ['', 'Context menu', 'Menu contextuel'],
+      SideNavMenuShowInactiveItems: ['', 'Show inactive items', 'Montrer items inactifs'],
+      SideNavMenuInactive: ['', 'Inactive', 'Inactif'],
+      SideNavMenuShowDetails: ['', 'Show details', 'Montrer détails'],
+      SideNavMenuDetails: ['', 'Details', 'Détails'],
+      SideNavMenuShowEdit: ['', 'Show edit', 'Montrer modifier'],
+      SideNavMenuEdit: ['', 'Edit', 'Modifier'],
+
+      TVItemListDetailCountryProvince: ['', 'Province', 'Province'],
+      TVItemListDetailCountryMunicipality: ['', 'Municipality', 'Municipalité'],
+      TVItemListDetailCountrySubsector: ['', 'Subsector', 'Sous-secteur'],
+      TVItemListDetailCountryMWQMSite: ['', 'MWQM site', 'Site de SQE'],
+      TVItemListDetailCountryMWQMRun: ['', 'MWQM run', 'Tournées'],
+      TVItemListDetailCountryMWQMSample: ['', 'MWQM sample', 'Échantillons'],
+      TVItemListDetailCountryMikeScenario: ['', 'MIKE scenario', 'Scénario de MIKE'],
+  
+      TVItemListDetailProvinceMunicipality: ['', 'Municipality', 'Municipalité'],
+      TVItemListDetailProvinceSubsector: ['', 'Subsector', 'Sous-secteur'],
+      TVItemListDetailProvinceMWQMSite: ['', 'MWQM site', 'Site de SQE'],
+      TVItemListDetailProvinceMWQMRun: ['', 'MWQM run', 'Tournées'],
+      TVItemListDetailProvinceMWQMSample: ['', 'MWQM sample', 'Échantillons'],
+      TVItemListDetailProvinceMikeScenario: ['', 'MIKE scenario', 'Scénario de MIKE'],
+  
+      TVItemListDetailRootCountry: ['', 'Country', 'Pays'],
+      TVItemListDetailRootProvince: ['', 'Province', 'Province'],
+      TVItemListDetailRootMunicipality: ['', 'Municipality', 'Municipalité'],
+      TVItemListDetailRootSubsector: ['', 'Subsector', 'Sous-secteur'],
+      TVItemListDetailRootMWQMSite: ['', 'MWQM site', 'Site de SQE'],
+      TVItemListDetailRootMWQMRun: ['', 'MWQM run', 'Tournées'],
+      TVItemListDetailRootMWQMSample: ['', 'MWQM sample', 'Échantillons'],
+      TVItemListDetailRootMikeScenario: ['', 'MIKE scenario', 'Scénario de MIKE'],
+  
+    }
   }
 }

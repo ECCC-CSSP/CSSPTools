@@ -1,31 +1,32 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MaterialModule } from './app-material.module';
-
-import { SearchComponent } from './components/search/search.component';
-import { SearchOptionComponent } from './components/search-option/search-option.component';
-import { TVItemListComponent } from './components/tvitem-list/tvitem-list.component';
-import { TVItemListItemComponent } from './components/tvitem-list-item/tvitem-list-item.component';
 import { GoogleMapsModule } from '@angular/google-maps';
-import { ChildCountComponent } from './components/child-count/child-count.component';
-import { TVItemListDetailComponent } from './components/tvitem-list-detail/tvitem-list-detail.component';
-import { TVItemListDetailRootComponent } from './components/tvitem-list-detail-root/tvitem-list-detail-root.component';
-import { TVItemListDetailCountryComponent } from './components/tvitem-list-detail-country/tvitem-list-detail-country.component';
-import { TVItemListDetailProvinceComponent } from './components/tvitem-list-detail-province/tvitem-list-detail-province.component';
-import { FileListComponent } from './components/file-list/file-list.component';
-import { FileListItemComponent } from './components/file-list-item/file-list-item.component';
-import { FileListItemDetailComponent } from './components/file-list-item-detail/file-list-item-detail.component';
-import { SideNavMenuComponent } from './components/sidenav-menu/sidenav-menu.component';
-import { MapComponent } from './components/map/map.component';
-import { BreadCrumbComponent } from './components/bread-crumb/bread-crumb.component';
-import { LoggedInContactComponent } from './components/logged-in-contact/logged-in-contact.component';
-import { HomeComponent } from './components/home/home.component';
-import { RootComponent } from './components/root/root.component';
-import { CountryComponent } from './components/country/country.component';
-import { ProvinceComponent } from './components/province/province.component';
-import { ShellComponent } from './components/shell/shell.component';
-import { ErrorComponent } from './components/error/error.component';
+import { MaterialModule } from './app-material.module';
+import { FileListItemDetailComponent } from './components/files/file-list-item-detail/file-list-item-detail.component';
+import { FileListItemComponent } from './components/files/file-list-item/file-list-item.component';
+import { FileListComponent } from './components/files/file-list/file-list.component';
+import { BreadCrumbComponent } from './components/helpers/bread-crumb/bread-crumb.component';
+import { ChildCountComponent } from './components/helpers/child-count/child-count.component';
+import { ErrorComponent } from './components/helpers/error/error.component';
+import { FooterComponent } from './components/helpers/footer/footer.component';
+import { SearchOptionComponent } from './components/helpers/search-option/search-option.component';
+import { SearchComponent } from './components/helpers/search/search.component';
+import { MapComponent } from './components/maps/map/map.component';
+import { SideNavMenuComponent } from './components/sidenavs/sidenav-menu/sidenav-menu.component';
+import { TVItemListDetailCountryComponent } from './components/tvitems/tvitem-list-detail-country/tvitem-list-detail-country.component';
+import { TVItemListDetailProvinceComponent } from './components/tvitems/tvitem-list-detail-province/tvitem-list-detail-province.component';
+import { TVItemListDetailRootComponent } from './components/tvitems/tvitem-list-detail-root/tvitem-list-detail-root.component';
+import { TVItemListDetailComponent } from './components/tvitems/tvitem-list-detail/tvitem-list-detail.component';
+import { TVItemListItemComponent } from './components/tvitems/tvitem-list-item/tvitem-list-item.component';
+import { TVItemListComponent } from './components/tvitems/tvitem-list/tvitem-list.component';
+import { CountryComponent } from './components/tvtypes/country/country.component';
+import { HomeComponent } from './components/tvtypes/home/home.component';
+import { ProvinceComponent } from './components/tvtypes/province/province.component';
+import { RootComponent } from './components/tvtypes/root/root.component';
+import { ShellComponent } from './components/tvtypes/shell/shell.component';
+
+
 
 @NgModule({
   declarations: [
@@ -36,7 +37,6 @@ import { ErrorComponent } from './components/error/error.component';
     FileListItemComponent,
     FileListItemDetailComponent,
     HomeComponent,
-    LoggedInContactComponent,
     MapComponent,
     ProvinceComponent,
     RootComponent,
@@ -51,6 +51,7 @@ import { ErrorComponent } from './components/error/error.component';
     TVItemListDetailRootComponent,
     TVItemListItemComponent,
     ErrorComponent,
+    FooterComponent
   ],
   imports: [
     CommonModule,
@@ -73,7 +74,6 @@ import { ErrorComponent } from './components/error/error.component';
     FileListItemComponent,
     FileListItemDetailComponent,
     HomeComponent,
-    LoggedInContactComponent,
     MapComponent,
     ProvinceComponent,
     RootComponent,
@@ -87,7 +87,8 @@ import { ErrorComponent } from './components/error/error.component';
     TVItemListDetailProvinceComponent,
     TVItemListDetailRootComponent,
     TVItemListItemComponent,
-    ErrorComponent
+    ErrorComponent,
+    FooterComponent
   ]
 })
 export class SharedModule { }

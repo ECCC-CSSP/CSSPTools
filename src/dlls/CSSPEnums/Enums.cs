@@ -248,6 +248,14 @@ namespace CSSPEnums
         Supervisor = 8,
         Technician = 9,
     }
+    public enum ContentSizeEnum
+    {
+        Size30 = 1,
+        Size40 = 2,
+        Size50 = 3,
+        Size60 = 4,
+        Size70 = 5,
+    }
     public enum CountrySubComponentEnum
     {
         Provinces = 1,

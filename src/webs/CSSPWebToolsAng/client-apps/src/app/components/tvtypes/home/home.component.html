@@ -1,0 +1,96 @@
+<span *ngIf="(appLoadedService.AppLoaded$ | async).Working">
+</span>
+<span *ngIf="(appStateService.AppState$ | async).Working">
+</span>
+
+<div *ngIf="(appLoadedService.AppLoaded$ | async).Working">
+    <p>
+        <mat-spinner></mat-spinner>
+    </p>
+</div>
+
+<div *ngIf="!((appLoadedService.AppLoaded$ | async).Working)">
+    <div class="card-container">
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title>
+                    <h2 class="center">{{ appLanguageService.AppLanguage.HomeCSSPWebTools[languageEnum.en] }}
+                        {{ appLanguageService.AppLanguage.HomeAzureVersion[languageEnum.en] }}</h2>
+
+                </mat-card-title>
+            </mat-card-header>
+            <h3> {{ appLanguageService.AppLanguage.HomeTheWebToolWillLetYou[languageEnum.en] }}
+            </h3>
+            <ol>
+                <li>
+                    {{ appLanguageService.AppLanguage.HomeViewAndUpdateWWTPInfo[languageEnum.en] }}
+                </li>
+                <li>
+                    {{ appLanguageService.AppLanguage.HomeMakeCalculationUsingBoxModelAndVisualPlumes[languageEnum.en] }}
+                </li>
+                <li>
+                    {{ appLanguageService.AppLanguage.HomeSetupAndRunMIKEScenariosAndStoreInputsAndResults[languageEnum.en] }}
+                </li>
+                <li>
+                    {{ appLanguageService.AppLanguage.HomeManageMWQMInformation[languageEnum.en] }}
+                </li>
+            </ol>
+            <p>{{ appLanguageService.AppLanguage.HomeToHaveAccessWebToolsInformationAndApplication[languageEnum.en] }}
+                &nbsp;{{ appLanguageService.AppLanguage.HomePleaseContactASiteAdministratorListedBelow[languageEnum.en] }}
+            </p>
+            <p>&nbsp;</p>
+            <p>
+                <span *ngFor="let admin of appLoadedService.AppLoaded$?.getValue()?.AdminContactList">
+                    &nbsp;&nbsp;&nbsp;&nbsp;<a href="mailto:{{ admin.LoginEmail }}">{{ admin.LoginEmail }}</a>
+                </span>
+            </p>
+            <p>&nbsp;</p>
+            <p>
+                <button mat-raised-button
+                    (click)="English()">{{ appLanguageService.AppLanguage.HomeStartUsingCSSPWebTools[languageEnum.en] }}
+                    &nbsp;&nbsp;&nbsp;&nbsp;<mat-icon>play_arrow</mat-icon>
+                </button>
+            </p>
+        </mat-card>
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title>
+                    <h2 class="center">{{ appLanguageService.AppLanguage.HomeCSSPWebTools[languageEnum.fr] }}
+                        {{ appLanguageService.AppLanguage.HomeAzureVersion[languageEnum.fr] }}</h2>
+                </mat-card-title>
+            </mat-card-header>
+            <h3> {{ appLanguageService.AppLanguage.HomeTheWebToolWillLetYou[languageEnum.fr] }}
+            </h3>
+            <ol>
+                <li>
+                    {{ appLanguageService.AppLanguage.HomeViewAndUpdateWWTPInfo[languageEnum.fr] }}
+                </li>
+                <li>
+                    {{ appLanguageService.AppLanguage.HomeMakeCalculationUsingBoxModelAndVisualPlumes[languageEnum.fr] }}
+                </li>
+                <li>
+                    {{ appLanguageService.AppLanguage.HomeSetupAndRunMIKEScenariosAndStoreInputsAndResults[languageEnum.fr] }}
+                </li>
+                <li>
+                    {{ appLanguageService.AppLanguage.HomeManageMWQMInformation[languageEnum.fr] }}
+                </li>
+            </ol>
+            <p>{{ appLanguageService.AppLanguage.HomeToHaveAccessWebToolsInformationAndApplication[languageEnum.fr] }}
+                &nbsp;{{ appLanguageService.AppLanguage.HomePleaseContactASiteAdministratorListedBelow[languageEnum.fr] }}
+            </p>
+            <p>&nbsp;</p>
+            <p>
+                <span *ngFor="let admin of appLoadedService.AppLoaded$?.getValue()?.AdminContactList">
+                    &nbsp;&nbsp;&nbsp;&nbsp;<a href="mailto:{{ admin.LoginEmail }}">{{ admin.LoginEmail }}</a>
+                </span>
+            </p>
+            <p>&nbsp;</p>
+            <p>
+                <button mat-raised-button
+                    (click)="French()">{{ appLanguageService.AppLanguage.HomeStartUsingCSSPWebTools[languageEnum.fr] }}
+                    &nbsp;&nbsp;&nbsp;&nbsp;<mat-icon>play_arrow</mat-icon>
+                </button>
+            </p>
+        </mat-card>
+    </div>
+</div>

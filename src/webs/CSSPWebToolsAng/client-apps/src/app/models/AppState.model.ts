@@ -1,3 +1,4 @@
+import { ContentSizeEnum } from '../enums/generated/ContentSizeEnum';
 import { CountrySubComponentEnum } from '../enums/generated/CountrySubComponentEnum';
 import { LanguageEnum } from '../enums/generated/LanguageEnum';
 import { MapSizeEnum } from '../enums/generated/MapSizeEnum';

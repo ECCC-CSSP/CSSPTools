@@ -1487,6 +1487,51 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Size 30.
+        /// </summary>
+        public static string ContentSizeEnumSize30 {
+            get {
+                return ResourceManager.GetString("ContentSizeEnumSize30", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Size 40.
+        /// </summary>
+        public static string ContentSizeEnumSize40 {
+            get {
+                return ResourceManager.GetString("ContentSizeEnumSize40", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Size 50.
+        /// </summary>
+        public static string ContentSizeEnumSize50 {
+            get {
+                return ResourceManager.GetString("ContentSizeEnumSize50", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Size 60.
+        /// </summary>
+        public static string ContentSizeEnumSize60 {
+            get {
+                return ResourceManager.GetString("ContentSizeEnumSize60", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Size 70.
+        /// </summary>
+        public static string ContentSizeEnumSize70 {
+            get {
+                return ResourceManager.GetString("ContentSizeEnumSize70", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not find {0} within {1}.
         /// </summary>
         public static string CouldNotFind_Within_ {

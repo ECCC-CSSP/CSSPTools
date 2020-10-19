@@ -1,0 +1,61 @@
+<span *ngIf="(appLoadedService.AppLoaded$ | async).Working">
+</span>
+<span *ngIf="(appStateService.AppState$ | async).Working">
+</span>
+
+<button mat-button [ngClass]="ColorSelection(provinceSubComponentEnum.Areas)"
+    (click)="Show(provinceSubComponentEnum.Areas)"
+    title="{{ appLanguageService.AppLanguage.ProvinceShowAreas[appStateService.AppState$?.getValue().Language] }}">
+    {{ appLanguageService.AppLanguage.ProvinceAreas[appStateService.AppState$?.getValue().Language] }}
+</button>
+<button mat-button [ngClass]="ColorSelection(provinceSubComponentEnum.Municipalities)"
+    (click)="Show(provinceSubComponentEnum.Municipalities)"
+    title="{{ appLanguageService.AppLanguage.ProvinceShowMunicipalities[appStateService.AppState$?.getValue().Language] }}">
+    {{ appLanguageService.AppLanguage.ProvinceMunicipalities[appStateService.AppState$?.getValue().Language] }}
+</button>
+<button mat-button [ngClass]="ColorSelection(provinceSubComponentEnum.Files)"
+    (click)="Show(provinceSubComponentEnum.Files)"
+    title="{{ appLanguageService.AppLanguage.ProvinceShowFiles[appStateService.AppState$?.getValue().Language] }}">
+    {{ appLanguageService.AppLanguage.ProvinceFiles[appStateService.AppState$?.getValue().Language] }}
+</button>
+<button mat-button [ngClass]="ColorSelection(provinceSubComponentEnum.OpenData)"
+    (click)="Show(provinceSubComponentEnum.OpenData)"
+    title="{{ appLanguageService.AppLanguage.ProvinceShowOpenData[appStateService.AppState$?.getValue().Language] }}">
+    {{ appLanguageService.AppLanguage.ProvinceOpenData[appStateService.AppState$?.getValue().Language] }}
+</button>
+<button mat-button [ngClass]="ColorSelection(provinceSubComponentEnum.SamplingPlan)"
+    (click)="Show(provinceSubComponentEnum.SamplingPlan)"
+    title="{{ appLanguageService.AppLanguage.ProvinceShowSamplingPlan[appStateService.AppState$?.getValue().Language] }}">
+    {{ appLanguageService.AppLanguage.ProvinceSamplingPlan[appStateService.AppState$?.getValue().Language] }}
+</button>
+<button mat-button [ngClass]="ColorSelection(provinceSubComponentEnum.ProvinceTools)"
+    (click)="Show(provinceSubComponentEnum.ProvinceTools)"
+    title="{{ appLanguageService.AppLanguage.ProvinceShowProvinceTools[appStateService.AppState$?.getValue().Language] }}">
+    {{ appLanguageService.AppLanguage.ProvinceProvinceTools[appStateService.AppState$?.getValue().Language] }}
+</button>
+
+<app-tvitem-list *ngIf="appStateService.AppState$?.getValue()?.ProvinceSubComponent == provinceSubComponentEnum.Areas"
+    [AppState]="appStateService.AppState$?.getValue()"
+    [TVItemList]="appLoadedService.AppLoaded$?.getValue()?.ProvinceAreaList">
+</app-tvitem-list>
+
+<div *ngIf="appStateService.AppState$?.getValue()?.ProvinceSubComponent == provinceSubComponentEnum.Municipalities">
+    Not implemented yet. Need to create MunicipalityListComponent or use the TVItemListComponent.
+</div>
+
+<app-file-list *ngIf="appStateService.AppState$?.getValue()?.ProvinceSubComponent == provinceSubComponentEnum.Files"
+    [AppState]="appStateService.AppState$?.getValue()"
+    [TVFileModelList]="appLoadedService.AppLoaded$?.getValue()?.WebProvince?.TVItemModel?.TVFileModelList">
+</app-file-list>
+
+<div *ngIf="appStateService.AppState$?.getValue()?.ProvinceSubComponent == provinceSubComponentEnum.OpenData">
+    Not implemented yet. Need to create OpenDataComponent.
+</div>
+
+<div *ngIf="appStateService.AppState$?.getValue()?.ProvinceSubComponent == provinceSubComponentEnum.SamplingPlan">
+    Not implemented yet. Need to create SamplingPlanComponent.
+</div>
+
+<div *ngIf="appStateService.AppState$?.getValue()?.ProvinceSubComponent == provinceSubComponentEnum.ProvinceTools">
+    Not implemented yet. Need to create ProvinceToolsComponent.
+</div>

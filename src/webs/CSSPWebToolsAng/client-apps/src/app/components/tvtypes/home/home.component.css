@@ -1,0 +1,13 @@
+.center {
+  text-align: center;
+}
+
+.card-container {
+  display: flex;
+    flex-flow: row wrap;
+}
+
+mat-card {
+  min-width: 400px;
+  margin: 20px;
+}

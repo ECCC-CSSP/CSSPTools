@@ -324,29 +324,5 @@ export class AppHelperService {
     this.appStateService.UpdateAppState(<AppState>{ polygonList: polygons });
   }
 
-  SearchNavigateTo(sr: SearchResult) {
-    if (sr.TVItem.TVType == TVTypeEnum.Root) {
-      this.appStateService.UpdateAppState(<AppState>{ 
-        RootSubComponent: RootSubComponentEnum.Countries, 
-        ShellSubComponent: this.GetSubPage(sr.TVItem), 
-        CurrentTVItemID: sr.TVItem.TVItemID });
-    }
-    else if (sr.TVItem.TVType == TVTypeEnum.Country) {
-      this.appStateService.UpdateAppState(<AppState>{ 
-        CountrySubComponent: CountrySubComponentEnum.Provinces, 
-        ShellSubComponent: this.GetSubPage(sr.TVItem), 
-        CurrentTVItemID: sr.TVItem.TVItemID });
-    }
-    else if (sr.TVItem.TVType == TVTypeEnum.Province) {
-      this.appStateService.UpdateAppState(<AppState>{ 
-        ProvinceSubComponent: ProvinceSubComponentEnum.Areas, 
-        ShellSubComponent: this.GetSubPage(sr.TVItem), 
-        CurrentTVItemID: sr.TVItem.TVItemID });
-    }
-    else {
-        let typeNotImplemented: string =  ShellSubComponentEnum[this.GetSubPage(sr.TVItem)];
-        alert(`${ typeNotImplemented } - Not Implemented Yet. See app-helper.service.ts -- SearchNavigateTo Function`);
-    }
-  }
 
 }

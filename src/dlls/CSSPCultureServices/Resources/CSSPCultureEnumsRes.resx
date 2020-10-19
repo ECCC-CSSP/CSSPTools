@@ -3123,4 +3123,19 @@
   <data name="TopComponentEnumShell" xml:space="preserve">
     <value>Shell</value>
   </data>
+  <data name="ContentSizeEnumSize30" xml:space="preserve">
+    <value>Size 30</value>
+  </data>
+  <data name="ContentSizeEnumSize40" xml:space="preserve">
+    <value>Size 40</value>
+  </data>
+  <data name="ContentSizeEnumSize50" xml:space="preserve">
+    <value>Size 50</value>
+  </data>
+  <data name="ContentSizeEnumSize60" xml:space="preserve">
+    <value>Size 60</value>
+  </data>
+  <data name="ContentSizeEnumSize70" xml:space="preserve">
+    <value>Size 70</value>
+  </data>
 </root>

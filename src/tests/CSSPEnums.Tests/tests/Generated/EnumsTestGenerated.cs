@@ -950,6 +950,49 @@ namespace CSSPEnums.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
+        public async Task GetResValueForTypeAndID_ForEnum_ContentSizeEnum_Test(string culture)
+        {
+            Assert.True(await SetupTest(culture));
+
+            string retStr = enums.GetResValueForTypeAndID(typeof(ContentSizeEnum), -100);
+            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
+
+            retStr = enums.GetResValueForTypeAndID(typeof(ContentSizeEnum), 10000000);
+            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
+
+            retStr = enums.GetResValueForTypeAndID(typeof(ContentSizeEnum), null);
+            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
+
+            foreach (int i in Enum.GetValues(typeof(ContentSizeEnum)))
+            {
+                retStr = enums.GetResValueForTypeAndID(typeof(ContentSizeEnum), i);
+
+                switch ((ContentSizeEnum)i)
+                {
+                    case ContentSizeEnum.Size30:
+                        Assert.Equal(CSSPCultureEnumsRes.ContentSizeEnumSize30, retStr);
+                        break;
+                    case ContentSizeEnum.Size40:
+                        Assert.Equal(CSSPCultureEnumsRes.ContentSizeEnumSize40, retStr);
+                        break;
+                    case ContentSizeEnum.Size50:
+                        Assert.Equal(CSSPCultureEnumsRes.ContentSizeEnumSize50, retStr);
+                        break;
+                    case ContentSizeEnum.Size60:
+                        Assert.Equal(CSSPCultureEnumsRes.ContentSizeEnumSize60, retStr);
+                        break;
+                    case ContentSizeEnum.Size70:
+                        Assert.Equal(CSSPCultureEnumsRes.ContentSizeEnumSize70, retStr);
+                        break;
+                    default:
+                        Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
+                        break;
+                }
+            }
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_CountrySubComponentEnum_Test(string culture)
         {
             Assert.True(await SetupTest(culture));
@@ -5706,6 +5749,41 @@ namespace CSSPEnums.Tests
                         break;
                     default:
                         Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "ContactTitleEnum"), retStr);
+                        break;
+                }
+            }
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task Enums_ContentSizeOK_Test(string culture)
+        {
+            Assert.True(await SetupTest(culture));
+
+            string retStr = enums.EnumTypeOK(typeof(ContentSizeEnum), null);
+            Assert.Equal("", retStr);
+
+            retStr = enums.EnumTypeOK(typeof(ContentSizeEnum), -100);
+            Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "ContentSizeEnum"), retStr);
+
+            retStr = enums.EnumTypeOK(typeof(ContentSizeEnum), 10000000);
+            Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "ContentSizeEnum"), retStr);
+
+            foreach (int i in Enum.GetValues(typeof(ContentSizeEnum)))
+            {
+                retStr = enums.EnumTypeOK(typeof(ContentSizeEnum), i);
+
+                switch ((ContentSizeEnum)i)
+                {
+                     case ContentSizeEnum.Size30:
+                     case ContentSizeEnum.Size40:
+                     case ContentSizeEnum.Size50:
+                     case ContentSizeEnum.Size60:
+                     case ContentSizeEnum.Size70:
+                        Assert.Equal("", retStr);
+                        break;
+                    default:
+                        Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "ContentSizeEnum"), retStr);
                         break;
                 }
             }
@@ -10578,6 +10656,32 @@ namespace CSSPEnums.Tests
             enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
             List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(ContactTitleEnum));
+            Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+
+            EnumIDAndText enumTextOrdered = new EnumIDAndText();
+            Assert.NotNull(enumTextOrdered);
+
+            for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
+            {
+                Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+            }
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task Enums_ContentSizeEnumTextOrdered_Test(string culture)
+        {
+            Assert.True(await SetupTest(culture));
+
+            List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
+            foreach (int i in Enum.GetValues(typeof(ContentSizeEnum)))
+            {
+                enumTextOrderedList.Add(new EnumIDAndText() { EnumID = i, EnumText = enums.GetResValueForTypeAndID(typeof(ContentSizeEnum), i) });
+            }
+            enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
+
+            List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(ContentSizeEnum));
             Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
             EnumIDAndText enumTextOrdered = new EnumIDAndText();

@@ -1,0 +1,37 @@
+<span *ngIf="(appStateService.AppState$ | async).Working">
+</span>
+
+<span *ngIf="tvTypeEnum.Province">
+    <span>{{ appLanguageService.AppLanguage.TVItemListDetailCountryProvince[appStateService.AppState$?.getValue().Language] }}</span>
+    <app-child-count [TVType]="tvTypeEnum.Province" [TVItemModel]="TVItemModel">
+    </app-child-count>
+</span>
+<span *ngIf="tvTypeEnum.Municipality">
+    <span>{{ appLanguageService.AppLanguage.TVItemListDetailCountryMunicipality[appStateService.AppState$?.getValue().Language] }}</span>
+    <app-child-count [TVType]="tvTypeEnum.Municipality" [TVItemModel]="TVItemModel">
+    </app-child-count>
+</span>
+<span *ngIf="tvTypeEnum.Subsector">
+    <span>{{ appLanguageService.AppLanguage.TVItemListDetailCountrySubsector[appStateService.AppState$?.getValue().Language] }}</span>
+    <app-child-count [TVType]="tvTypeEnum.Subsector" [TVItemModel]="TVItemModel">
+    </app-child-count></span>
+<span *ngIf="tvTypeEnum.MWQMSite">
+    <span>{{ appLanguageService.AppLanguage.TVItemListDetailCountryMWQMSite[appStateService.AppState$?.getValue().Language] }}</span>
+    <app-child-count [TVType]="tvTypeEnum.MWQMSite" [TVItemModel]="TVItemModel">
+    </app-child-count>
+</span>
+<span *ngIf="tvTypeEnum.MWQMRun">
+    <span>{{ appLanguageService.AppLanguage.TVItemListDetailCountryMWQMRun[appStateService.AppState$?.getValue().Language] }}</span>
+    <app-child-count [TVType]="tvTypeEnum.MWQMRun" [TVItemModel]="TVItemModel">
+    </app-child-count>
+</span>
+<span *ngIf="tvTypeEnum.MWQMSiteSample">
+    <span>{{ appLanguageService.AppLanguage.TVItemListDetailCountryMWQMSample[appStateService.AppState$?.getValue().Language] }}</span>
+    <app-child-count [TVType]="tvTypeEnum.MWQMSiteSample" [TVItemModel]="TVItemModel">
+    </app-child-count>
+</span>
+<span *ngIf="tvTypeEnum.MikeScenario">
+    <span>{{ appLanguageService.AppLanguage.TVItemListDetailCountryMikeScenario[appStateService.AppState$?.getValue().Language] }}</span>
+    <app-child-count [TVType]="tvTypeEnum.MikeScenario" [TVItemModel]="TVItemModel">
+    </app-child-count>
+</span>
