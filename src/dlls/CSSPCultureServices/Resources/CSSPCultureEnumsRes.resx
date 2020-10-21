@@ -3138,4 +3138,58 @@
   <data name="ContentSizeEnumSize70" xml:space="preserve">
     <value>Size 70</value>
   </data>
+  <data name="AreaSubComponentEnumFiles" xml:space="preserve">
+    <value>Files</value>
+  </data>
+  <data name="AreaSubComponentEnumSectors" xml:space="preserve">
+    <value>Sectors</value>
+  </data>
+  <data name="SectorSubComponentEnumFiles" xml:space="preserve">
+    <value>Files</value>
+  </data>
+  <data name="SectorSubComponentEnumMIKEScenarios" xml:space="preserve">
+    <value>MIKE Scenarios</value>
+  </data>
+  <data name="SectorSubComponentEnumSubsectors" xml:space="preserve">
+    <value>Subsectors</value>
+  </data>
+  <data name="SubsectorSubComponentEnumAnalysis" xml:space="preserve">
+    <value>Analysis</value>
+  </data>
+  <data name="SubsectorSubComponentEnumFiles" xml:space="preserve">
+    <value>Files</value>
+  </data>
+  <data name="SubsectorSubComponentEnumLogBook" xml:space="preserve">
+    <value>Log Book</value>
+  </data>
+  <data name="SubsectorSubComponentEnumMWQMRuns" xml:space="preserve">
+    <value>MWQM Runs</value>
+  </data>
+  <data name="SubsectorSubComponentEnumMWQMSites" xml:space="preserve">
+    <value>MWQM Sites</value>
+  </data>
+  <data name="SubsectorSubComponentEnumPollutionSourceSites" xml:space="preserve">
+    <value>Pollution Source Sites</value>
+  </data>
+  <data name="SubsectorSubComponentEnumSubsectorTools" xml:space="preserve">
+    <value>Subsector Tools</value>
+  </data>
+  <data name="AscDescEnumAscending" xml:space="preserve">
+    <value>Ascending</value>
+  </data>
+  <data name="AscDescEnumDescending" xml:space="preserve">
+    <value>Descending</value>
+  </data>
+  <data name="FilesSortPropEnumName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="FilesSortPropEnumPurpose" xml:space="preserve">
+    <value>Purpose</value>
+  </data>
+  <data name="FilesSortPropEnumSize" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="FilesSortPropEnumType" xml:space="preserve">
+    <value>Type</value>
+  </data>
 </root>

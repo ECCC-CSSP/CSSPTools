@@ -20,22 +20,28 @@ import { TVItemListDetailRootComponent } from './components/tvitems/tvitem-list-
 import { TVItemListDetailComponent } from './components/tvitems/tvitem-list-detail/tvitem-list-detail.component';
 import { TVItemListItemComponent } from './components/tvitems/tvitem-list-item/tvitem-list-item.component';
 import { TVItemListComponent } from './components/tvitems/tvitem-list/tvitem-list.component';
+import { AreaComponent } from './components/tvtypes/area/area.component';
 import { CountryComponent } from './components/tvtypes/country/country.component';
 import { HomeComponent } from './components/tvtypes/home/home.component';
 import { ProvinceComponent } from './components/tvtypes/province/province.component';
 import { RootComponent } from './components/tvtypes/root/root.component';
+import { SectorComponent } from './components/tvtypes/Sector/sector.component';
 import { ShellComponent } from './components/tvtypes/shell/shell.component';
+import { SubsectorComponent } from './components/tvtypes/subsector/subsector.component';
 
 
 
 @NgModule({
   declarations: [
+    AreaComponent,
     BreadCrumbComponent,
     ChildCountComponent,
     CountryComponent,
+    ErrorComponent,
     FileListComponent,
     FileListItemComponent,
     FileListItemDetailComponent,
+    FooterComponent,
     HomeComponent,
     MapComponent,
     ProvinceComponent,
@@ -44,14 +50,14 @@ import { ShellComponent } from './components/tvtypes/shell/shell.component';
     SearchOptionComponent,
     ShellComponent,
     SideNavMenuComponent,
+    SectorComponent,
+    SubsectorComponent,
     TVItemListComponent,
     TVItemListDetailComponent,
     TVItemListDetailCountryComponent,
     TVItemListDetailProvinceComponent,
     TVItemListDetailRootComponent,
     TVItemListItemComponent,
-    ErrorComponent,
-    FooterComponent
   ],
   imports: [
     CommonModule,
@@ -67,12 +73,15 @@ import { ShellComponent } from './components/tvtypes/shell/shell.component';
     MaterialModule,
     ReactiveFormsModule,
 
+    AreaComponent,
     BreadCrumbComponent,
     ChildCountComponent,
     CountryComponent,
+    ErrorComponent,
     FileListComponent,
     FileListItemComponent,
     FileListItemDetailComponent,
+    FooterComponent,
     HomeComponent,
     MapComponent,
     ProvinceComponent,
@@ -81,14 +90,14 @@ import { ShellComponent } from './components/tvtypes/shell/shell.component';
     SearchOptionComponent,
     ShellComponent,
     SideNavMenuComponent,
+    SectorComponent,
+    SubsectorComponent,
     TVItemListComponent,
     TVItemListDetailComponent,
     TVItemListDetailCountryComponent,
     TVItemListDetailProvinceComponent,
     TVItemListDetailRootComponent,
     TVItemListItemComponent,
-    ErrorComponent,
-    FooterComponent
   ]
 })
 export class SharedModule { }

@@ -1,7 +1,12 @@
 import { HttpStatus } from './HttpStatus.model';
 
 export interface AppLanguage extends HttpStatus {
-    CountryShowProvince: string[];
+    AreaShowSectors: string[];
+    AreaSectors: string[];
+    AreaShowFiles: string[];
+    AreaFiles: string[];
+
+    CountryShowProvinces: string[];
     CountryProvinces: string[];
     CountryShowFiles: string[];
     CountryFiles: string[];
@@ -58,6 +63,28 @@ export interface AppLanguage extends HttpStatus {
     SideNavMenuDetails: string[];
     SideNavMenuShowEdit: string[];
     SideNavMenuEdit: string[];
+
+    SectorShowSubsectors: string[];
+    SectorSubsectors: string[];
+    SectorShowFiles: string[];
+    SectorFiles: string[];
+    SectorShowMIKEScenarios: string[];
+    SectorMIKEScenarios: string[];
+
+    SubsectorShowMWQMSites: string[];
+    SubsectorMWQMSites: string[];
+    SubsectorShowAnalysis: string[];
+    SubsectorAnalysis: string[];
+    SubsectorShowMWQMRuns: string[];
+    SubsectorMWQMRuns: string[];
+    SubsectorShowPollutionSourceSites: string[];
+    SubsectorPollutionSourceSites: string[];
+    SubsectorShowFiles: string[];
+    SubsectorFiles: string[];
+    SubsectorShowSubsectorTools: string[];
+    SubsectorSubsectorTools: string[];
+    SubsectorShowLogBook: string[];
+    SubsectorLogBook: string[];   
 
     TVItemListDetailCountryProvince: string[];
     TVItemListDetailCountryMunicipality: string[];

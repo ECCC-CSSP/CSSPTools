@@ -3,6 +3,8 @@ import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { AppState } from 'src/app/models/AppState.model';
 import { TVItemModel } from 'src/app/models/generated/TVItemModel.model';
 import { AppHelperService } from 'src/app/services/app-helper.service';
+import { AppLoadedService } from 'src/app/services/app-loaded.service';
+import { AppStateService } from 'src/app/services/app-state.service';
 
 @Component({
   selector: 'app-tvitem-list-item',
@@ -17,7 +19,9 @@ export class TVItemListItemComponent implements OnInit, OnDestroy {
   @Input() IsLast: boolean = false;
   languageEnum = GetLanguageEnum();
   
-  constructor(public appHelperService: AppHelperService) {
+  constructor(public appHelperService: AppHelperService,
+    public appStateService: AppStateService,
+    public appLoadedService: AppLoadedService) {
   }
 
   ngOnInit() {
@@ -26,7 +30,5 @@ export class TVItemListItemComponent implements OnInit, OnDestroy {
   ngOnDestroy()
   {
   }
-
-
 
 }

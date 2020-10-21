@@ -83,6 +83,11 @@ namespace CSSPEnums
         Shipping = 2,
         Civic = 3,
     }
+    public enum AreaSubComponentEnum
+    {
+        Sectors = 1,
+        Files = 2,
+    }
     public enum AerationTypeEnum
     {
         MechanicalAirLines = 1,
@@ -183,6 +188,11 @@ namespace CSSPEnums
         Running = 2,
         Completed = 3,
         Cancelled = 4,
+    }
+    public enum AscDescEnum
+    {
+        Ascending = 1,
+        Descending = 2
     }
     public enum BeaufortScaleEnum
     {
@@ -341,6 +351,13 @@ namespace CSSPEnums
         Map = 12,
         Analysis = 13,
         OpenData = 14,
+    }
+    public enum FilesSortPropEnum
+    {
+        Name = 1,
+        Size = 2,
+        Type = 3,
+        Purpose = 4
     }
     public enum FileStatusEnum
     {
@@ -885,6 +902,12 @@ namespace CSSPEnums
         ActivatedSludge = 14,
         ExtendedActivatedSludge = 15,
     }
+    public enum SectorSubComponentEnum
+    {
+        Subsectors = 1,
+        Files = 2,
+        MIKEScenarios = 3,
+    }
     public enum ShellSubComponentEnum
     {
         Root = 1,
@@ -929,6 +952,16 @@ namespace CSSPEnums
         Blvd = 8,
         Route = 9,
         Lane = 10,
+    }
+    public enum SubsectorSubComponentEnum
+    {
+        MWQMSites = 1,
+        Analysis = 2,
+        MWQMRuns = 3,
+        PollutionSourceSites = 4,
+        Files = 5,
+        SubsectorTools = 6,
+        LogBook = 7,
     }
     public enum TelTypeEnum
     {

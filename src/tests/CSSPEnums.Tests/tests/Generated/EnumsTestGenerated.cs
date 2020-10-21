@@ -208,6 +208,40 @@ namespace CSSPEnums.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
+        public async Task GetResValueForTypeAndID_ForEnum_AreaSubComponentEnum_Test(string culture)
+        {
+            Assert.True(await SetupTest(culture));
+
+            string retStr = enums.GetResValueForTypeAndID(typeof(AreaSubComponentEnum), -100);
+            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
+
+            retStr = enums.GetResValueForTypeAndID(typeof(AreaSubComponentEnum), 10000000);
+            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
+
+            retStr = enums.GetResValueForTypeAndID(typeof(AreaSubComponentEnum), null);
+            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
+
+            foreach (int i in Enum.GetValues(typeof(AreaSubComponentEnum)))
+            {
+                retStr = enums.GetResValueForTypeAndID(typeof(AreaSubComponentEnum), i);
+
+                switch ((AreaSubComponentEnum)i)
+                {
+                    case AreaSubComponentEnum.Sectors:
+                        Assert.Equal(CSSPCultureEnumsRes.AreaSubComponentEnumSectors, retStr);
+                        break;
+                    case AreaSubComponentEnum.Files:
+                        Assert.Equal(CSSPCultureEnumsRes.AreaSubComponentEnumFiles, retStr);
+                        break;
+                    default:
+                        Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
+                        break;
+                }
+            }
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_AerationTypeEnum_Test(string culture)
         {
             Assert.True(await SetupTest(culture));
@@ -634,6 +668,40 @@ namespace CSSPEnums.Tests
                         break;
                     case AppTaskStatusEnum.Cancelled:
                         Assert.Equal(CSSPCultureEnumsRes.AppTaskStatusEnumCancelled, retStr);
+                        break;
+                    default:
+                        Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
+                        break;
+                }
+            }
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task GetResValueForTypeAndID_ForEnum_AscDescEnum_Test(string culture)
+        {
+            Assert.True(await SetupTest(culture));
+
+            string retStr = enums.GetResValueForTypeAndID(typeof(AscDescEnum), -100);
+            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
+
+            retStr = enums.GetResValueForTypeAndID(typeof(AscDescEnum), 10000000);
+            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
+
+            retStr = enums.GetResValueForTypeAndID(typeof(AscDescEnum), null);
+            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
+
+            foreach (int i in Enum.GetValues(typeof(AscDescEnum)))
+            {
+                retStr = enums.GetResValueForTypeAndID(typeof(AscDescEnum), i);
+
+                switch ((AscDescEnum)i)
+                {
+                    case AscDescEnum.Ascending:
+                        Assert.Equal(CSSPCultureEnumsRes.AscDescEnumAscending, retStr);
+                        break;
+                    case AscDescEnum.Descending:
+                        Assert.Equal(CSSPCultureEnumsRes.AscDescEnumDescending, retStr);
                         break;
                     default:
                         Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -1450,6 +1518,46 @@ namespace CSSPEnums.Tests
                         break;
                     case FilePurposeEnum.OpenData:
                         Assert.Equal(CSSPCultureEnumsRes.FilePurposeEnumOpenData, retStr);
+                        break;
+                    default:
+                        Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
+                        break;
+                }
+            }
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task GetResValueForTypeAndID_ForEnum_FilesSortPropEnum_Test(string culture)
+        {
+            Assert.True(await SetupTest(culture));
+
+            string retStr = enums.GetResValueForTypeAndID(typeof(FilesSortPropEnum), -100);
+            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
+
+            retStr = enums.GetResValueForTypeAndID(typeof(FilesSortPropEnum), 10000000);
+            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
+
+            retStr = enums.GetResValueForTypeAndID(typeof(FilesSortPropEnum), null);
+            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
+
+            foreach (int i in Enum.GetValues(typeof(FilesSortPropEnum)))
+            {
+                retStr = enums.GetResValueForTypeAndID(typeof(FilesSortPropEnum), i);
+
+                switch ((FilesSortPropEnum)i)
+                {
+                    case FilesSortPropEnum.Name:
+                        Assert.Equal(CSSPCultureEnumsRes.FilesSortPropEnumName, retStr);
+                        break;
+                    case FilesSortPropEnum.Size:
+                        Assert.Equal(CSSPCultureEnumsRes.FilesSortPropEnumSize, retStr);
+                        break;
+                    case FilesSortPropEnum.Type:
+                        Assert.Equal(CSSPCultureEnumsRes.FilesSortPropEnumType, retStr);
+                        break;
+                    case FilesSortPropEnum.Purpose:
+                        Assert.Equal(CSSPCultureEnumsRes.FilesSortPropEnumPurpose, retStr);
                         break;
                     default:
                         Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -3843,6 +3951,43 @@ namespace CSSPEnums.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
+        public async Task GetResValueForTypeAndID_ForEnum_SectorSubComponentEnum_Test(string culture)
+        {
+            Assert.True(await SetupTest(culture));
+
+            string retStr = enums.GetResValueForTypeAndID(typeof(SectorSubComponentEnum), -100);
+            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
+
+            retStr = enums.GetResValueForTypeAndID(typeof(SectorSubComponentEnum), 10000000);
+            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
+
+            retStr = enums.GetResValueForTypeAndID(typeof(SectorSubComponentEnum), null);
+            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
+
+            foreach (int i in Enum.GetValues(typeof(SectorSubComponentEnum)))
+            {
+                retStr = enums.GetResValueForTypeAndID(typeof(SectorSubComponentEnum), i);
+
+                switch ((SectorSubComponentEnum)i)
+                {
+                    case SectorSubComponentEnum.Subsectors:
+                        Assert.Equal(CSSPCultureEnumsRes.SectorSubComponentEnumSubsectors, retStr);
+                        break;
+                    case SectorSubComponentEnum.Files:
+                        Assert.Equal(CSSPCultureEnumsRes.SectorSubComponentEnumFiles, retStr);
+                        break;
+                    case SectorSubComponentEnum.MIKEScenarios:
+                        Assert.Equal(CSSPCultureEnumsRes.SectorSubComponentEnumMIKEScenarios, retStr);
+                        break;
+                    default:
+                        Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
+                        break;
+                }
+            }
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_ShellSubComponentEnum_Test(string culture)
         {
             Assert.True(await SetupTest(culture));
@@ -4063,6 +4208,55 @@ namespace CSSPEnums.Tests
                         break;
                     case StreetTypeEnum.Lane:
                         Assert.Equal(CSSPCultureEnumsRes.StreetTypeEnumLane, retStr);
+                        break;
+                    default:
+                        Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
+                        break;
+                }
+            }
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task GetResValueForTypeAndID_ForEnum_SubsectorSubComponentEnum_Test(string culture)
+        {
+            Assert.True(await SetupTest(culture));
+
+            string retStr = enums.GetResValueForTypeAndID(typeof(SubsectorSubComponentEnum), -100);
+            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
+
+            retStr = enums.GetResValueForTypeAndID(typeof(SubsectorSubComponentEnum), 10000000);
+            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
+
+            retStr = enums.GetResValueForTypeAndID(typeof(SubsectorSubComponentEnum), null);
+            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
+
+            foreach (int i in Enum.GetValues(typeof(SubsectorSubComponentEnum)))
+            {
+                retStr = enums.GetResValueForTypeAndID(typeof(SubsectorSubComponentEnum), i);
+
+                switch ((SubsectorSubComponentEnum)i)
+                {
+                    case SubsectorSubComponentEnum.MWQMSites:
+                        Assert.Equal(CSSPCultureEnumsRes.SubsectorSubComponentEnumMWQMSites, retStr);
+                        break;
+                    case SubsectorSubComponentEnum.Analysis:
+                        Assert.Equal(CSSPCultureEnumsRes.SubsectorSubComponentEnumAnalysis, retStr);
+                        break;
+                    case SubsectorSubComponentEnum.MWQMRuns:
+                        Assert.Equal(CSSPCultureEnumsRes.SubsectorSubComponentEnumMWQMRuns, retStr);
+                        break;
+                    case SubsectorSubComponentEnum.PollutionSourceSites:
+                        Assert.Equal(CSSPCultureEnumsRes.SubsectorSubComponentEnumPollutionSourceSites, retStr);
+                        break;
+                    case SubsectorSubComponentEnum.Files:
+                        Assert.Equal(CSSPCultureEnumsRes.SubsectorSubComponentEnumFiles, retStr);
+                        break;
+                    case SubsectorSubComponentEnum.SubsectorTools:
+                        Assert.Equal(CSSPCultureEnumsRes.SubsectorSubComponentEnumSubsectorTools, retStr);
+                        break;
+                    case SubsectorSubComponentEnum.LogBook:
+                        Assert.Equal(CSSPCultureEnumsRes.SubsectorSubComponentEnumLogBook, retStr);
                         break;
                     default:
                         Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -5240,6 +5434,38 @@ namespace CSSPEnums.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
+        public async Task Enums_AreaSubComponentOK_Test(string culture)
+        {
+            Assert.True(await SetupTest(culture));
+
+            string retStr = enums.EnumTypeOK(typeof(AreaSubComponentEnum), null);
+            Assert.Equal("", retStr);
+
+            retStr = enums.EnumTypeOK(typeof(AreaSubComponentEnum), -100);
+            Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "AreaSubComponentEnum"), retStr);
+
+            retStr = enums.EnumTypeOK(typeof(AreaSubComponentEnum), 10000000);
+            Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "AreaSubComponentEnum"), retStr);
+
+            foreach (int i in Enum.GetValues(typeof(AreaSubComponentEnum)))
+            {
+                retStr = enums.EnumTypeOK(typeof(AreaSubComponentEnum), i);
+
+                switch ((AreaSubComponentEnum)i)
+                {
+                     case AreaSubComponentEnum.Sectors:
+                     case AreaSubComponentEnum.Files:
+                        Assert.Equal("", retStr);
+                        break;
+                    default:
+                        Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "AreaSubComponentEnum"), retStr);
+                        break;
+                }
+            }
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
         public async Task Enums_AerationTypeOK_Test(string culture)
         {
             Assert.True(await SetupTest(culture));
@@ -5523,6 +5749,38 @@ namespace CSSPEnums.Tests
                         break;
                     default:
                         Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "AppTaskStatusEnum"), retStr);
+                        break;
+                }
+            }
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task Enums_AscDescOK_Test(string culture)
+        {
+            Assert.True(await SetupTest(culture));
+
+            string retStr = enums.EnumTypeOK(typeof(AscDescEnum), null);
+            Assert.Equal("", retStr);
+
+            retStr = enums.EnumTypeOK(typeof(AscDescEnum), -100);
+            Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "AscDescEnum"), retStr);
+
+            retStr = enums.EnumTypeOK(typeof(AscDescEnum), 10000000);
+            Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "AscDescEnum"), retStr);
+
+            foreach (int i in Enum.GetValues(typeof(AscDescEnum)))
+            {
+                retStr = enums.EnumTypeOK(typeof(AscDescEnum), i);
+
+                switch ((AscDescEnum)i)
+                {
+                     case AscDescEnum.Ascending:
+                     case AscDescEnum.Descending:
+                        Assert.Equal("", retStr);
+                        break;
+                    default:
+                        Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "AscDescEnum"), retStr);
                         break;
                 }
             }
@@ -6167,6 +6425,40 @@ namespace CSSPEnums.Tests
                         break;
                     default:
                         Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "FilePurposeEnum"), retStr);
+                        break;
+                }
+            }
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task Enums_FilesSortPropOK_Test(string culture)
+        {
+            Assert.True(await SetupTest(culture));
+
+            string retStr = enums.EnumTypeOK(typeof(FilesSortPropEnum), null);
+            Assert.Equal("", retStr);
+
+            retStr = enums.EnumTypeOK(typeof(FilesSortPropEnum), -100);
+            Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "FilesSortPropEnum"), retStr);
+
+            retStr = enums.EnumTypeOK(typeof(FilesSortPropEnum), 10000000);
+            Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "FilesSortPropEnum"), retStr);
+
+            foreach (int i in Enum.GetValues(typeof(FilesSortPropEnum)))
+            {
+                retStr = enums.EnumTypeOK(typeof(FilesSortPropEnum), i);
+
+                switch ((FilesSortPropEnum)i)
+                {
+                     case FilesSortPropEnum.Name:
+                     case FilesSortPropEnum.Size:
+                     case FilesSortPropEnum.Type:
+                     case FilesSortPropEnum.Purpose:
+                        Assert.Equal("", retStr);
+                        break;
+                    default:
+                        Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "FilesSortPropEnum"), retStr);
                         break;
                 }
             }
@@ -7795,6 +8087,39 @@ namespace CSSPEnums.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
+        public async Task Enums_SectorSubComponentOK_Test(string culture)
+        {
+            Assert.True(await SetupTest(culture));
+
+            string retStr = enums.EnumTypeOK(typeof(SectorSubComponentEnum), null);
+            Assert.Equal("", retStr);
+
+            retStr = enums.EnumTypeOK(typeof(SectorSubComponentEnum), -100);
+            Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "SectorSubComponentEnum"), retStr);
+
+            retStr = enums.EnumTypeOK(typeof(SectorSubComponentEnum), 10000000);
+            Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "SectorSubComponentEnum"), retStr);
+
+            foreach (int i in Enum.GetValues(typeof(SectorSubComponentEnum)))
+            {
+                retStr = enums.EnumTypeOK(typeof(SectorSubComponentEnum), i);
+
+                switch ((SectorSubComponentEnum)i)
+                {
+                     case SectorSubComponentEnum.Subsectors:
+                     case SectorSubComponentEnum.Files:
+                     case SectorSubComponentEnum.MIKEScenarios:
+                        Assert.Equal("", retStr);
+                        break;
+                    default:
+                        Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "SectorSubComponentEnum"), retStr);
+                        break;
+                }
+            }
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
         public async Task Enums_ShellSubComponentOK_Test(string culture)
         {
             Assert.True(await SetupTest(culture));
@@ -7968,6 +8293,43 @@ namespace CSSPEnums.Tests
                         break;
                     default:
                         Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "StreetTypeEnum"), retStr);
+                        break;
+                }
+            }
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task Enums_SubsectorSubComponentOK_Test(string culture)
+        {
+            Assert.True(await SetupTest(culture));
+
+            string retStr = enums.EnumTypeOK(typeof(SubsectorSubComponentEnum), null);
+            Assert.Equal("", retStr);
+
+            retStr = enums.EnumTypeOK(typeof(SubsectorSubComponentEnum), -100);
+            Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "SubsectorSubComponentEnum"), retStr);
+
+            retStr = enums.EnumTypeOK(typeof(SubsectorSubComponentEnum), 10000000);
+            Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "SubsectorSubComponentEnum"), retStr);
+
+            foreach (int i in Enum.GetValues(typeof(SubsectorSubComponentEnum)))
+            {
+                retStr = enums.EnumTypeOK(typeof(SubsectorSubComponentEnum), i);
+
+                switch ((SubsectorSubComponentEnum)i)
+                {
+                     case SubsectorSubComponentEnum.MWQMSites:
+                     case SubsectorSubComponentEnum.Analysis:
+                     case SubsectorSubComponentEnum.MWQMRuns:
+                     case SubsectorSubComponentEnum.PollutionSourceSites:
+                     case SubsectorSubComponentEnum.Files:
+                     case SubsectorSubComponentEnum.SubsectorTools:
+                     case SubsectorSubComponentEnum.LogBook:
+                        Assert.Equal("", retStr);
+                        break;
+                    default:
+                        Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "SubsectorSubComponentEnum"), retStr);
                         break;
                 }
             }
@@ -10332,6 +10694,32 @@ namespace CSSPEnums.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
+        public async Task Enums_AreaSubComponentEnumTextOrdered_Test(string culture)
+        {
+            Assert.True(await SetupTest(culture));
+
+            List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
+            foreach (int i in Enum.GetValues(typeof(AreaSubComponentEnum)))
+            {
+                enumTextOrderedList.Add(new EnumIDAndText() { EnumID = i, EnumText = enums.GetResValueForTypeAndID(typeof(AreaSubComponentEnum), i) });
+            }
+            enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
+
+            List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(AreaSubComponentEnum));
+            Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+
+            EnumIDAndText enumTextOrdered = new EnumIDAndText();
+            Assert.NotNull(enumTextOrdered);
+
+            for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
+            {
+                Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+            }
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
         public async Task Enums_AerationTypeEnumTextOrdered_Test(string culture)
         {
             Assert.True(await SetupTest(culture));
@@ -10500,6 +10888,32 @@ namespace CSSPEnums.Tests
             enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
             List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(AppTaskStatusEnum));
+            Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+
+            EnumIDAndText enumTextOrdered = new EnumIDAndText();
+            Assert.NotNull(enumTextOrdered);
+
+            for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
+            {
+                Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+            }
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task Enums_AscDescEnumTextOrdered_Test(string culture)
+        {
+            Assert.True(await SetupTest(culture));
+
+            List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
+            foreach (int i in Enum.GetValues(typeof(AscDescEnum)))
+            {
+                enumTextOrderedList.Add(new EnumIDAndText() { EnumID = i, EnumText = enums.GetResValueForTypeAndID(typeof(AscDescEnum), i) });
+            }
+            enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
+
+            List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(AscDescEnum));
             Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
             EnumIDAndText enumTextOrdered = new EnumIDAndText();
@@ -10968,6 +11382,32 @@ namespace CSSPEnums.Tests
             enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
             List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(FilePurposeEnum));
+            Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+
+            EnumIDAndText enumTextOrdered = new EnumIDAndText();
+            Assert.NotNull(enumTextOrdered);
+
+            for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
+            {
+                Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+            }
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task Enums_FilesSortPropEnumTextOrdered_Test(string culture)
+        {
+            Assert.True(await SetupTest(culture));
+
+            List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
+            foreach (int i in Enum.GetValues(typeof(FilesSortPropEnum)))
+            {
+                enumTextOrderedList.Add(new EnumIDAndText() { EnumID = i, EnumText = enums.GetResValueForTypeAndID(typeof(FilesSortPropEnum), i) });
+            }
+            enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
+
+            List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(FilesSortPropEnum));
             Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
             EnumIDAndText enumTextOrdered = new EnumIDAndText();
@@ -12022,6 +12462,32 @@ namespace CSSPEnums.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
+        public async Task Enums_SectorSubComponentEnumTextOrdered_Test(string culture)
+        {
+            Assert.True(await SetupTest(culture));
+
+            List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
+            foreach (int i in Enum.GetValues(typeof(SectorSubComponentEnum)))
+            {
+                enumTextOrderedList.Add(new EnumIDAndText() { EnumID = i, EnumText = enums.GetResValueForTypeAndID(typeof(SectorSubComponentEnum), i) });
+            }
+            enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
+
+            List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(SectorSubComponentEnum));
+            Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+
+            EnumIDAndText enumTextOrdered = new EnumIDAndText();
+            Assert.NotNull(enumTextOrdered);
+
+            for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
+            {
+                Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+            }
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
         public async Task Enums_ShellSubComponentEnumTextOrdered_Test(string culture)
         {
             Assert.True(await SetupTest(culture));
@@ -12138,6 +12604,32 @@ namespace CSSPEnums.Tests
             enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
             List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(StreetTypeEnum));
+            Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+
+            EnumIDAndText enumTextOrdered = new EnumIDAndText();
+            Assert.NotNull(enumTextOrdered);
+
+            for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
+            {
+                Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+            }
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task Enums_SubsectorSubComponentEnumTextOrdered_Test(string culture)
+        {
+            Assert.True(await SetupTest(culture));
+
+            List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
+            foreach (int i in Enum.GetValues(typeof(SubsectorSubComponentEnum)))
+            {
+                enumTextOrderedList.Add(new EnumIDAndText() { EnumID = i, EnumText = enums.GetResValueForTypeAndID(typeof(SubsectorSubComponentEnum), i) });
+            }
+            enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
+
+            List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(SubsectorSubComponentEnum));
             Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
             EnumIDAndText enumTextOrdered = new EnumIDAndText();

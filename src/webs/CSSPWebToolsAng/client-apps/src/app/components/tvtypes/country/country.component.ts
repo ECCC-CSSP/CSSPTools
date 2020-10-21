@@ -5,6 +5,9 @@ import { AppStateService } from 'src/app/services/app-state.service';
 import { AppState } from 'src/app/models/AppState.model';
 import { CountrySubComponentEnum, GetCountrySubComponentEnum } from 'src/app/enums/generated/CountrySubComponentEnum';
 import { AppLanguageService } from 'src/app/services/app-language.service';
+import { GetTVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
+import { AppHelperService } from 'src/app/services/app-helper.service';
+import { GetAscDescEnum } from 'src/app/enums/generated/AscDescEnum';
 
 @Component({
   selector: 'app-country',
@@ -15,10 +18,13 @@ import { AppLanguageService } from 'src/app/services/app-language.service';
 export class CountryComponent implements OnInit, OnDestroy {
   subWebCountry: Subscription;
   countrySubComponentEnum = GetCountrySubComponentEnum();
+  tvTypeEnum = GetTVTypeEnum();
+  ascDescEnum = GetAscDescEnum();
 
   constructor(public appStateService: AppStateService, 
     public appLoadedService: AppLoadedService,
-    public appLanguageService: AppLanguageService) {
+    public appLanguageService: AppLanguageService,
+    public appHelperService: AppHelperService) {
 
   }
 

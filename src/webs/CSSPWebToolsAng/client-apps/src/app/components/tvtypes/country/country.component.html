@@ -1,17 +1,43 @@
-<span *ngIf="(appLoadedService.AppLoaded$ | async).Working">
-</span>
-<span *ngIf="(appStateService.AppState$ | async).Working">
+<span *ngIf="(appStateService.AppState$ | async).Working || (appLoadedService.AppLoaded$ | async).Working">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </span>
 
 <button mat-button [ngClass]="ColorSelection(countrySubComponentEnum.Provinces)"
     (click)="Show(countrySubComponentEnum.Provinces)"
-    title="{{ appLanguageService.AppLanguage.CountryShowProvince[appStateService.AppState$?.getValue().Language] }}">
-    {{ appLanguageService.AppLanguage.CountryProvinces[appStateService.AppState$?.getValue().Language] }}
+    title="{{ appLanguageService.AppLanguage.CountryShowProvinces[appStateService.AppState$?.getValue().Language] }}">
+    <span>
+        {{ appLanguageService.AppLanguage.CountryProvinces[appStateService.AppState$?.getValue().Language] }}
+        ({{ appHelperService.GetCount(appLoadedService.AppLoaded$.getValue().WebCountry.TVItemModel, tvTypeEnum.Province) }})
+    </span>
+    <span class="biggerArrow"
+        (click)="appLoadedService.ChangeTVItemSortOrder('CountryProvincesSortOrder', ascDescEnum.Ascending)"
+        *ngIf="appStateService.AppState$.getValue().CountryProvincesSortOrder == ascDescEnum.Descending">
+        &nbsp;&nbsp;&uarr;
+    </span>
+    <span class="biggerArrow"
+        (click)="appLoadedService.ChangeTVItemSortOrder('CountryProvincesSortOrder', ascDescEnum.Descending)"
+        *ngIf="appStateService.AppState$.getValue().CountryProvincesSortOrder == ascDescEnum.Ascending">
+        &nbsp;&nbsp;&darr;
+    </span>
 </button>
 <button mat-button [ngClass]="ColorSelection(countrySubComponentEnum.Files)"
     (click)="Show(countrySubComponentEnum.Files)"
     title="{{ appLanguageService.AppLanguage.CountryShowFiles[appStateService.AppState$?.getValue().Language] }}">
-    {{ appLanguageService.AppLanguage.CountryFiles[appStateService.AppState$?.getValue().Language] }}
+    <span>
+        {{ appLanguageService.AppLanguage.CountryFiles[appStateService.AppState$?.getValue().Language] }}
+        ({{ appHelperService.GetCount(appLoadedService.AppLoaded$.getValue().WebCountry.TVItemModel, tvTypeEnum.File) }}/
+        {{ appHelperService.GetCount(appLoadedService.AppLoaded$.getValue().WebCountry.TVItemModel, tvTypeEnum.TotalFile) }})
+    </span>
+    <span class="biggerArrow"
+        (click)="appLoadedService.ChangeTVFileSortOrder('CountryFilesSortOrder', ascDescEnum.Ascending)"
+        *ngIf="appStateService.AppState$.getValue().CountryFilesSortOrder == ascDescEnum.Descending">
+        &nbsp;&nbsp;&uarr;
+    </span>
+    <span class="biggerArrow"
+        (click)="appLoadedService.ChangeTVFileSortOrder('CountryFilesSortOrder', ascDescEnum.Descending)"
+        *ngIf="appStateService.AppState$.getValue().CountryFilesSortOrder == ascDescEnum.Ascending">
+        &nbsp;&nbsp;&darr;
+    </span>
 </button>
 <button mat-button [ngClass]="ColorSelection(countrySubComponentEnum.OpenDataNational)"
     (click)="Show(countrySubComponentEnum.OpenDataNational)"
@@ -31,12 +57,13 @@
 
 <app-tvitem-list *ngIf="appStateService.AppState$?.getValue()?.CountrySubComponent == countrySubComponentEnum.Provinces"
     [AppState]="appStateService.AppState$?.getValue()"
-    [TVItemList]="appLoadedService.AppLoaded$?.getValue()?.CountryProvinceList">
+    [TVItemList]="appLoadedService.SortTVItemList(appLoadedService.AppLoaded$?.getValue()?.CountryProvinceList)">
 </app-tvitem-list>
 
 <app-file-list *ngIf="appStateService.AppState$?.getValue()?.CountrySubComponent == countrySubComponentEnum.Files"
     [AppState]="appStateService.AppState$?.getValue()"
-    [TVFileModelList]="appLoadedService.AppLoaded$?.getValue()?.WebCountry?.TVItemModel?.TVFileModelList">
+    [TVFileModelList]="appLoadedService.SortTVFileList(appLoadedService.AppLoaded$?.getValue()?.CountryProvinceList, 
+    appLoadedService.AppLoaded$?.getValue()?.WebCountry?.TVItemModel?.TVFileModelList)">
 </app-file-list>
 
 <div *ngIf="appStateService.AppState$?.getValue()?.CountrySubComponent == countrySubComponentEnum.OpenDataNational">

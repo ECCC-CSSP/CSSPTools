@@ -1,22 +1,60 @@
-<span *ngIf="(appLoadedService.AppLoaded$ | async).Working">
-</span>
-<span *ngIf="(appStateService.AppState$ | async).Working">
+<span *ngIf="(appStateService.AppState$ | async).Working || (appLoadedService.AppLoaded$ | async).Working">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </span>
 
 <button mat-button [ngClass]="ColorSelection(provinceSubComponentEnum.Areas)"
     (click)="Show(provinceSubComponentEnum.Areas)"
     title="{{ appLanguageService.AppLanguage.ProvinceShowAreas[appStateService.AppState$?.getValue().Language] }}">
-    {{ appLanguageService.AppLanguage.ProvinceAreas[appStateService.AppState$?.getValue().Language] }}
+    <span>{{ appLanguageService.AppLanguage.ProvinceAreas[appStateService.AppState$?.getValue().Language] }}
+        ({{ appHelperService.GetCount(appLoadedService.AppLoaded$.getValue().WebProvince.TVItemModel, tvTypeEnum.Area) }})
+    </span>
+    <span class="biggerArrow"
+        (click)="appLoadedService.ChangeTVItemSortOrder('ProvinceAreasSortOrder', ascDescEnum.Ascending)"
+        *ngIf="appStateService.AppState$.getValue().ProvinceAreasSortOrder == ascDescEnum.Descending">
+        &nbsp;&nbsp;&uarr;
+    </span>
+    <span class="biggerArrow"
+        (click)="appLoadedService.ChangeTVItemSortOrder('ProvinceAreasSortOrder', ascDescEnum.Descending)"
+        *ngIf="appStateService.AppState$.getValue().ProvinceAreasSortOrder == ascDescEnum.Ascending">
+        &nbsp;&nbsp;&darr;
+    </span>
 </button>
 <button mat-button [ngClass]="ColorSelection(provinceSubComponentEnum.Municipalities)"
     (click)="Show(provinceSubComponentEnum.Municipalities)"
     title="{{ appLanguageService.AppLanguage.ProvinceShowMunicipalities[appStateService.AppState$?.getValue().Language] }}">
-    {{ appLanguageService.AppLanguage.ProvinceMunicipalities[appStateService.AppState$?.getValue().Language] }}
+    <span>
+        {{ appLanguageService.AppLanguage.ProvinceMunicipalities[appStateService.AppState$?.getValue().Language] }}
+        ({{ appHelperService.GetCount(appLoadedService.AppLoaded$.getValue().WebProvince.TVItemModel, tvTypeEnum.Municipality) }})
+    </span>
+    <span class="biggerArrow"
+        (click)="appLoadedService.ChangeTVItemSortOrder('ProvinceMunicipalitiesSortOrder', ascDescEnum.Ascending)"
+        *ngIf="appStateService.AppState$.getValue().ProvinceMunicipalitiesSortOrder == ascDescEnum.Descending">
+        &nbsp;&nbsp;&uarr;
+    </span>
+    <span class="biggerArrow"
+        (click)="appLoadedService.ChangeTVItemSortOrder('ProvinceMunicipalitiesSortOrder', ascDescEnum.Descending)"
+        *ngIf="appStateService.AppState$.getValue().ProvinceMunicipalitiesSortOrder == ascDescEnum.Ascending">
+        &nbsp;&nbsp;&darr;
+    </span>
 </button>
 <button mat-button [ngClass]="ColorSelection(provinceSubComponentEnum.Files)"
     (click)="Show(provinceSubComponentEnum.Files)"
     title="{{ appLanguageService.AppLanguage.ProvinceShowFiles[appStateService.AppState$?.getValue().Language] }}">
-    {{ appLanguageService.AppLanguage.ProvinceFiles[appStateService.AppState$?.getValue().Language] }}
+    <span>
+        {{ appLanguageService.AppLanguage.ProvinceFiles[appStateService.AppState$?.getValue().Language] }}
+        ({{ appHelperService.GetCount(appLoadedService.AppLoaded$.getValue().WebProvince.TVItemModel, tvTypeEnum.File) }}/
+        {{ appHelperService.GetCount(appLoadedService.AppLoaded$.getValue().WebProvince.TVItemModel, tvTypeEnum.TotalFile) }})
+    </span>
+    <span class="biggerArrow"
+        (click)="appLoadedService.ChangeTVFileSortOrder('ProvinceFilesSortOrder', ascDescEnum.Ascending)"
+        *ngIf="appStateService.AppState$.getValue().ProvinceFilesSortOrder == ascDescEnum.Descending">
+        &nbsp;&nbsp;&uarr;
+    </span>
+    <span class="biggerArrow"
+        (click)="appLoadedService.ChangeTVFileSortOrder('ProvinceFilesSortOrder', ascDescEnum.Descending)"
+        *ngIf="appStateService.AppState$.getValue().ProvinceFilesSortOrder == ascDescEnum.Ascending">
+        &nbsp;&nbsp;&darr;
+    </span>
 </button>
 <button mat-button [ngClass]="ColorSelection(provinceSubComponentEnum.OpenData)"
     (click)="Show(provinceSubComponentEnum.OpenData)"
@@ -36,16 +74,18 @@
 
 <app-tvitem-list *ngIf="appStateService.AppState$?.getValue()?.ProvinceSubComponent == provinceSubComponentEnum.Areas"
     [AppState]="appStateService.AppState$?.getValue()"
-    [TVItemList]="appLoadedService.AppLoaded$?.getValue()?.ProvinceAreaList">
+    [TVItemList]="appLoadedService.SortTVItemList(appLoadedService.AppLoaded$?.getValue()?.ProvinceAreaList)">
 </app-tvitem-list>
 
-<div *ngIf="appStateService.AppState$?.getValue()?.ProvinceSubComponent == provinceSubComponentEnum.Municipalities">
-    Not implemented yet. Need to create MunicipalityListComponent or use the TVItemListComponent.
-</div>
+<app-tvitem-list
+    *ngIf="appStateService.AppState$?.getValue()?.ProvinceSubComponent == provinceSubComponentEnum.Municipalities"
+    [AppState]="appStateService.AppState$?.getValue()"
+    [TVItemList]="appLoadedService.SortTVItemList(appLoadedService.AppLoaded$?.getValue()?.ProvinceMunicipalityList)">
+</app-tvitem-list>
 
 <app-file-list *ngIf="appStateService.AppState$?.getValue()?.ProvinceSubComponent == provinceSubComponentEnum.Files"
-    [AppState]="appStateService.AppState$?.getValue()"
-    [TVFileModelList]="appLoadedService.AppLoaded$?.getValue()?.WebProvince?.TVItemModel?.TVFileModelList">
+    [AppState]="appStateService.AppState$?.getValue()" [TVFileModelList]="appLoadedService.SortTVFileList(appLoadedService.AppLoaded$?.getValue()?.ProvinceAreaList, 
+    appLoadedService.AppLoaded$?.getValue()?.WebProvince?.TVItemModel?.TVFileModelList)">
 </app-file-list>
 
 <div *ngIf="appStateService.AppState$?.getValue()?.ProvinceSubComponent == provinceSubComponentEnum.OpenData">

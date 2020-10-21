@@ -1,12 +1,16 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { ContentSizeEnum } from '../enums/generated/ContentSizeEnum';
+import { AreaSubComponentEnum } from '../enums/generated/AreaSubComponentEnum';
+import { AscDescEnum } from '../enums/generated/AscDescEnum';
 import { CountrySubComponentEnum } from '../enums/generated/CountrySubComponentEnum';
+import { FilesSortPropEnum } from '../enums/generated/FilesSortPropEnum';
 import { LanguageEnum } from '../enums/generated/LanguageEnum';
 import { MapSizeEnum } from '../enums/generated/MapSizeEnum';
 import { ProvinceSubComponentEnum } from '../enums/generated/ProvinceSubComponentEnum';
 import { RootSubComponentEnum } from '../enums/generated/RootSubComponentEnum';
+import { SectorSubComponentEnum } from '../enums/generated/SectorSubComponentEnum';
 import { ShellSubComponentEnum } from '../enums/generated/ShellSubComponentEnum';
+import { SubsectorSubComponentEnum } from '../enums/generated/SubsectorSubComponentEnum';
 import { TopComponentEnum } from '../enums/generated/TopComponentEnum';
 import { AppState } from '../models/AppState.model';
 
@@ -23,6 +27,9 @@ export class AppStateService {
       RootSubComponent: RootSubComponentEnum.Countries, // Countries | Files | ExportArcGIS
       CountrySubComponent: CountrySubComponentEnum.Provinces, // Provinces | Files | OpenDataNational | EmailDistributionList | RainExceedance
       ProvinceSubComponent: ProvinceSubComponentEnum.Areas, // Areas | Municipalities | Files | SamplingPlan | OpenData | ProvinceTools
+      AreaSubComponent: AreaSubComponentEnum.Sectors, // Sectors | Files 
+      SectorSubComponent: SectorSubComponentEnum.Subsectors, // Subsectors | Files | MIKEScenarios
+      SubsectorSubComponent: SubsectorSubComponentEnum.MWQMSites, // MWQMSites | Analysis | MWQMRuns | PollutionSourceSites | Files | SubsectorTools | LogBook
       CurrentTVItemID: 0,
       Language: LanguageEnum.en, // en | fr | enAndfr | es
       DetailVisible: false,
@@ -46,7 +53,29 @@ export class AppStateService {
       markerList: [],
       polygonList: [],
       polylineList: [],
-      infoContent: ''
+      infoContent: '',
+
+      RootCountriesSortOrder: AscDescEnum.Ascending,
+      RootFilesSortOrder: AscDescEnum.Ascending,
+      RootFilesSortByProp: FilesSortPropEnum.Name, 
+      CountryProvincesSortOrder: AscDescEnum.Ascending,
+      CountryFilesSortOrder: AscDescEnum.Ascending,
+      CountryFilesSortByProp: FilesSortPropEnum.Name, 
+      ProvinceAreasSortOrder: AscDescEnum.Ascending,
+      ProvinceMunicipalitiesSortOrder: AscDescEnum.Ascending,
+      ProvinceFilesSortOrder: AscDescEnum.Ascending,
+      ProvinceFilesSortByProp: FilesSortPropEnum.Name, 
+      AreaSectorsSortOrder: AscDescEnum.Ascending,
+      AreaFilesSortOrder: AscDescEnum.Ascending,
+      AreaFilesSortByProp: FilesSortPropEnum.Name, 
+      SectorSubsectorsSortOrder: AscDescEnum.Ascending,
+      SectorFilesSortOrder: AscDescEnum.Ascending,
+      SectorFilesSortByProp: FilesSortPropEnum.Name, 
+      SubsectorMWQMSitesSortOrder: AscDescEnum.Ascending,
+      SubsectorMWQMRunsSortOrder: AscDescEnum.Ascending,
+      SubsectorPolSourceSitesSortOrder: AscDescEnum.Ascending,
+      SubsectorFilesSortOrder: AscDescEnum.Ascending,
+      SubsectorFilesSortByProp: FilesSortPropEnum.Name, 
 
     });
   }

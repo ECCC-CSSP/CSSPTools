@@ -1,4 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Input } from '@angular/core';
+import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { AppState } from 'src/app/models/AppState.model';
 import { TVFileModel } from 'src/app/models/generated/TVFileModel.model';
 
@@ -11,16 +12,21 @@ import { TVFileModel } from 'src/app/models/generated/TVFileModel.model';
 export class FileListItemComponent implements OnInit, OnDestroy {
   @Input() TVFileModel: TVFileModel = null;
   @Input() AppState: AppState;
+  @Input() Index: number;
   
+  languageEnum = GetLanguageEnum();
+
   constructor() {
   }
 
   ngOnInit() {
   }
 
-  ngOnDestroy()
-  {
+  ngOnDestroy() {
   }
 
+  ShowCommands(tvFileModel: TVFileModel) {
+      alert("bonjour from ShowCommands");
+  }
 
 }

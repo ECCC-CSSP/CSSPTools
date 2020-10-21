@@ -1,6 +1,5 @@
-<span *ngIf="(appLoadedService.AppLoaded$ | async).Working">
-</span>
-<span *ngIf="(appStateService.AppState$ | async).Working">
+<span *ngIf="(appStateService.AppState$ | async).Working || (appLoadedService.AppLoaded$ | async).Working">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </span>
 
 <div *ngIf="(appLoadedService.AppLoaded$ | async).Working">

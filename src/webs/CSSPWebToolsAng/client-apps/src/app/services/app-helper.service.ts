@@ -17,7 +17,7 @@ import { AppStateService } from './app-state.service';
 })
 export class AppHelperService {
 
-  constructor(private appStateService: AppStateService) {   
+  constructor(private appStateService: AppStateService) {
   }
 
   GetTVType(tvType: TVTypeEnum) {
@@ -250,19 +250,21 @@ export class AppHelperService {
     }
   }
 
-  GetCount(tvItemModel: TVItemModel, tvType?: TVTypeEnum): number {
+  GetCount(tvItemModel: TVItemModel, tvType?: TVTypeEnum): string {
     let count = 0;
-    if (tvType == null) {
-      tvItemModel.TVItemStatList.filter((c) => { count += c.ChildCount });
-    }
-    else {
-      var tvItemStat = tvItemModel.TVItemStatList.filter((c) => { return c.TVType == tvType });
-      if (tvItemStat.length > 0) {
-        count = tvItemStat[0].ChildCount;
+    if (tvItemModel) {
+      if (tvType == null) { 
+        tvItemModel.TVItemStatList.filter((c) => { count += c.ChildCount });
+      }
+      else {
+        let tvItemStat = tvItemModel.TVItemStatList.filter((c) => { return c.TVType == tvType });
+        if (tvItemStat.length > 0) {
+          count = tvItemStat[0].ChildCount;
+        }
       }
     }
-
-    return count;
+    
+    return count.toString();
   }
 
   FillMapMarkers(webBaseList: WebBase[]) {

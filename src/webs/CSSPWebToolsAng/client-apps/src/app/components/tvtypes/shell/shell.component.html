@@ -1,6 +1,5 @@
-<span *ngIf="(appLoadedService.AppLoaded$ | async).Working">
-</span>
-<span *ngIf="(appStateService.AppState$ | async).Working">
+<span *ngIf="(appStateService.AppState$ | async).Working || (appLoadedService.AppLoaded$ | async).Working">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </span>
 
 <mat-toolbar class="header">
@@ -70,6 +69,12 @@
         </app-country>
         <app-province *ngIf="appStateService.AppState$?.getValue().ShellSubComponent == shellSubComponentEnum.Province">
         </app-province>
+        <app-area *ngIf="appStateService.AppState$?.getValue().ShellSubComponent == shellSubComponentEnum.Area">
+        </app-area>
+        <app-sector *ngIf="appStateService.AppState$?.getValue().ShellSubComponent == shellSubComponentEnum.Sector">
+        </app-sector>
+        <app-subsector *ngIf="appStateService.AppState$?.getValue().ShellSubComponent == shellSubComponentEnum.Subsector">
+        </app-subsector>
     </div>
 
 

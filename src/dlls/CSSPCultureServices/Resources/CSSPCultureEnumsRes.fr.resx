@@ -2664,4 +2664,58 @@
   <data name="ContentSizeEnumSize70" xml:space="preserve">
     <value>Size 70</value>
   </data>
+  <data name="AreaSubComponentEnumFiles" xml:space="preserve">
+    <value>Fichiers</value>
+  </data>
+  <data name="AreaSubComponentEnumSectors" xml:space="preserve">
+    <value>Secteurs</value>
+  </data>
+  <data name="SectorSubComponentEnumFiles" xml:space="preserve">
+    <value>Fichiers</value>
+  </data>
+  <data name="SectorSubComponentEnumMIKEScenarios" xml:space="preserve">
+    <value>Scénarios MIKE</value>
+  </data>
+  <data name="SectorSubComponentEnumSubsectors" xml:space="preserve">
+    <value>Sous-secteurs</value>
+  </data>
+  <data name="SubsectorSubComponentEnumAnalysis" xml:space="preserve">
+    <value>Analyse</value>
+  </data>
+  <data name="SubsectorSubComponentEnumFiles" xml:space="preserve">
+    <value>Fichiers</value>
+  </data>
+  <data name="SubsectorSubComponentEnumLogBook" xml:space="preserve">
+    <value>Journal de bord</value>
+  </data>
+  <data name="SubsectorSubComponentEnumMWQMRuns" xml:space="preserve">
+    <value>Tournées PSQEM</value>
+  </data>
+  <data name="SubsectorSubComponentEnumMWQMSites" xml:space="preserve">
+    <value>Sites PSQEM</value>
+  </data>
+  <data name="SubsectorSubComponentEnumPollutionSourceSites" xml:space="preserve">
+    <value>Sites des sources de pollution</value>
+  </data>
+  <data name="SubsectorSubComponentEnumSubsectorTools" xml:space="preserve">
+    <value>Outils de sous-secteurs</value>
+  </data>
+  <data name="AscDescEnumAscending" xml:space="preserve">
+    <value>Ascendant</value>
+  </data>
+  <data name="AscDescEnumDescending" xml:space="preserve">
+    <value>Descendant</value>
+  </data>
+  <data name="FilesSortPropEnumName" xml:space="preserve">
+    <value>Nom</value>
+  </data>
+  <data name="FilesSortPropEnumPurpose" xml:space="preserve">
+    <value>But</value>
+  </data>
+  <data name="FilesSortPropEnumSize" xml:space="preserve">
+    <value>Grosseur</value>
+  </data>
+  <data name="FilesSortPropEnumType" xml:space="preserve">
+    <value>Type</value>
+  </data>
 </root>

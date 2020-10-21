@@ -1028,6 +1028,42 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Files.
+        /// </summary>
+        public static string AreaSubComponentEnumFiles {
+            get {
+                return ResourceManager.GetString("AreaSubComponentEnumFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sectors.
+        /// </summary>
+        public static string AreaSubComponentEnumSectors {
+            get {
+                return ResourceManager.GetString("AreaSubComponentEnumSectors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ascending.
+        /// </summary>
+        public static string AscDescEnumAscending {
+            get {
+                return ResourceManager.GetString("AscDescEnumAscending", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Descending.
+        /// </summary>
+        public static string AscDescEnumDescending {
+            get {
+                return ResourceManager.GetString("AscDescEnumDescending", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Beaufort Scale.
         /// </summary>
         public static string BeaufortScale {
@@ -2554,6 +2590,42 @@ namespace CSSPCultureServices.Resources {
         public static string FilePurposeEnumTemplateGenerated {
             get {
                 return ResourceManager.GetString("FilePurposeEnumTemplateGenerated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string FilesSortPropEnumName {
+            get {
+                return ResourceManager.GetString("FilesSortPropEnumName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Purpose.
+        /// </summary>
+        public static string FilesSortPropEnumPurpose {
+            get {
+                return ResourceManager.GetString("FilesSortPropEnumPurpose", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Size.
+        /// </summary>
+        public static string FilesSortPropEnumSize {
+            get {
+                return ResourceManager.GetString("FilesSortPropEnumSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type.
+        /// </summary>
+        public static string FilesSortPropEnumType {
+            get {
+                return ResourceManager.GetString("FilesSortPropEnumType", resourceCulture);
             }
         }
         
@@ -6843,6 +6915,33 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Files.
+        /// </summary>
+        public static string SectorSubComponentEnumFiles {
+            get {
+                return ResourceManager.GetString("SectorSubComponentEnumFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MIKE Scenarios.
+        /// </summary>
+        public static string SectorSubComponentEnumMIKEScenarios {
+            get {
+                return ResourceManager.GetString("SectorSubComponentEnumMIKEScenarios", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Subsectors.
+        /// </summary>
+        public static string SectorSubComponentEnumSubsectors {
+            get {
+                return ResourceManager.GetString("SectorSubComponentEnumSubsectors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Area.
         /// </summary>
         public static string ShellSubComponentEnumArea {
@@ -7154,6 +7253,69 @@ namespace CSSPCultureServices.Resources {
         public static string StreetTypeEnumStreet {
             get {
                 return ResourceManager.GetString("StreetTypeEnumStreet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Analysis.
+        /// </summary>
+        public static string SubsectorSubComponentEnumAnalysis {
+            get {
+                return ResourceManager.GetString("SubsectorSubComponentEnumAnalysis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Files.
+        /// </summary>
+        public static string SubsectorSubComponentEnumFiles {
+            get {
+                return ResourceManager.GetString("SubsectorSubComponentEnumFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Book.
+        /// </summary>
+        public static string SubsectorSubComponentEnumLogBook {
+            get {
+                return ResourceManager.GetString("SubsectorSubComponentEnumLogBook", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MWQM Runs.
+        /// </summary>
+        public static string SubsectorSubComponentEnumMWQMRuns {
+            get {
+                return ResourceManager.GetString("SubsectorSubComponentEnumMWQMRuns", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MWQM Sites.
+        /// </summary>
+        public static string SubsectorSubComponentEnumMWQMSites {
+            get {
+                return ResourceManager.GetString("SubsectorSubComponentEnumMWQMSites", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pollution Source Sites.
+        /// </summary>
+        public static string SubsectorSubComponentEnumPollutionSourceSites {
+            get {
+                return ResourceManager.GetString("SubsectorSubComponentEnumPollutionSourceSites", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Subsector Tools.
+        /// </summary>
+        public static string SubsectorSubComponentEnumSubsectorTools {
+            get {
+                return ResourceManager.GetString("SubsectorSubComponentEnumSubsectorTools", resourceCulture);
             }
         }
         

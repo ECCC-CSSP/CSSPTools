@@ -1,4 +1,6 @@
-<div *ngIf="TVFileModel">
-   <p>FullName {{ TVFileModel.TVFile.ServerFilePath }}{{ TVFileModel.TVFile.ServerFileName }}</p>
-   <p>Type {{ TVFileModel.TVFile.FileType }} - Purpose {{ TVFileModel.TVFile.FilePurpose }}</p>
-</div>
+<mat-list-item *ngIf="TVFileModel">
+   <blockquote>
+      <p mat-line>FullName {{ TVFileModel.TVFile.ServerFilePath }}{{ TVFileModel.TVFile.ServerFileName }}</p>
+      <p mat-line>Type {{ fileTypeEnum[TVFileModel.TVFile.FileType] }} - Purpose {{ filePurposeEnum[TVFileModel.TVFile.FilePurpose] }}</p>
+   </blockquote>
+</mat-list-item>

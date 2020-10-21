@@ -6,6 +6,10 @@ import { AppStateService } from 'src/app/services/app-state.service';
 import { AppState } from 'src/app/models/AppState.model';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
+import { AppHelperService } from 'src/app/services/app-helper.service';
+import { GetTVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
+import { AscDescEnum, GetAscDescEnum } from 'src/app/enums/generated/AscDescEnum';
+import { AppLoaded } from 'src/app/models/AppLoaded.model';
 
 @Component({
   selector: 'app-root',
@@ -16,16 +20,20 @@ import { LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 export class RootComponent implements OnInit, OnDestroy {
   subWebRoot: Subscription;
   rootSubComponentEnum = GetRootSubComponentEnum();
+  tvTypeEnum = GetTVTypeEnum();
+  ascDescEnum = GetAscDescEnum();
 
-  constructor(public appStateService: AppStateService, 
+  constructor(public appStateService: AppStateService,
     public appLoadedService: AppLoadedService,
-    public appLanguageService: AppLanguageService) {
+    public appLanguageService: AppLanguageService,
+    public appHelperService: AppHelperService) {
   }
 
   ngOnInit(): void {
     let TVItemID: number = this.appStateService.AppState$.getValue().CurrentTVItemID;
     this.subWebRoot = this.appLoadedService.GetWebRoot(TVItemID).subscribe();
- }
+    this.appLoadedService.UpdateAppLoaded(<AppLoaded> { RootCountryList: this.appLoadedService.AppLoaded$.getValue().RootCountryList });
+  }
 
   ngOnDestroy(): void {
     this.subWebRoot ? this.subWebRoot.unsubscribe() : null;
@@ -37,7 +45,7 @@ export class RootComponent implements OnInit, OnDestroy {
   }
 
   ColorSelection(rootSubComponent: RootSubComponentEnum) {
-    if (this.appStateService.AppState$.getValue().RootSubComponent == rootSubComponent) {
+    if (this.appStateService.AppState$.getValue()['RootSubComponent'] == rootSubComponent) {
       return 'selected';
     }
     else {
@@ -48,6 +56,5 @@ export class RootComponent implements OnInit, OnDestroy {
   Show(rootSubComponent: RootSubComponentEnum) {
     this.appStateService.UpdateAppState(<AppState>{ RootSubComponent: rootSubComponent });
   }
-
 
 }

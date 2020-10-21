@@ -11,7 +11,12 @@ export class AppLanguageService {
 
   get AppLanguage(): AppLanguage {
     return {
-      CountryShowProvince: ['', 'Show province', 'Montrer province'],
+      AreaShowSectors: ['', 'Show sectors', 'Montrer secteurs'],
+      AreaSectors: ['', 'Sectors', 'Secteurs'],
+      AreaShowFiles: ['', 'Show files', 'Montrer filières'],
+      AreaFiles: ['', 'Files', 'Filières'],
+
+      CountryShowProvinces: ['', 'Show provinces', 'Montrer provinces'],
       CountryProvinces: ['', 'Provinces', 'Provinces'],
       CountryShowFiles: ['', 'Show files', 'Montrer filières'],
       CountryFiles: ['', 'Files', 'Filières'],
@@ -69,6 +74,28 @@ export class AppLanguageService {
       SideNavMenuShowEdit: ['', 'Show edit', 'Montrer modifier'],
       SideNavMenuEdit: ['', 'Edit', 'Modifier'],
 
+      SectorShowSubsectors: ['', 'Show subsectors', 'Montrer sous-secteurs'],
+      SectorSubsectors: ['', 'Subsectors', 'Sous-secteurs'],
+      SectorShowFiles: ['', 'Show files', 'Montrer filières'],
+      SectorFiles: ['', 'Files', 'Filières'],
+      SectorShowMIKEScenarios: ['', 'Show MIKE scenarios', 'Montrer scénarios MIKE'],
+      SectorMIKEScenarios: ['', 'MIKE Scenarios', 'Scénarios MIKE'],
+  
+      SubsectorShowMWQMSites: ['', 'Show MWQM sites', 'Montrer sites PSQEM'],
+      SubsectorMWQMSites: ['', 'MWQM Sites', 'Sites PSQEM'],
+      SubsectorShowAnalysis: ['', 'Show analysis', 'Montrer analyse'],
+      SubsectorAnalysis: ['', 'Analysis', 'Analyse'],
+      SubsectorShowMWQMRuns: ['', 'Show MWQM runs', 'Montrer tournées PSQEM'],
+      SubsectorMWQMRuns: ['', 'MWQM Runs', 'Tournées PSQEM'],
+      SubsectorShowPollutionSourceSites: ['', 'Show pollution source sites', 'Montrer sites des sources de pollution'],
+      SubsectorPollutionSourceSites: ['', 'Pollution Source Sites', 'Sites des source de pollution'],
+      SubsectorShowFiles: ['', 'Show files', 'Montrer filières'],
+      SubsectorFiles: ['', 'Files', 'Filières'],
+      SubsectorShowSubsectorTools: ['', 'Show subsector tools', 'Montrer outils de sous-secteurs'],
+      SubsectorSubsectorTools: ['', 'Subsector Tools', 'Outils de sous-secteurs'],
+      SubsectorShowLogBook: ['', 'Show log book', 'Montrer journal de bord'],
+      SubsectorLogBook: ['', 'Log Book', 'Journal de bord'],
+  
       TVItemListDetailCountryProvince: ['', 'Province', 'Province'],
       TVItemListDetailCountryMunicipality: ['', 'Municipality', 'Municipalité'],
       TVItemListDetailCountrySubsector: ['', 'Subsector', 'Sous-secteur'],

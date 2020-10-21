@@ -23,6 +23,9 @@ export class SearchComponent implements OnInit, OnDestroy {
   subWebRoot: Subscription;
   subWebCountry: Subscription;
   subWebProvince: Subscription;
+  subWebArea: Subscription;
+  subWebSector: Subscription;
+  subWebSubsector: Subscription;
 
   constructor(public appLoadedService: AppLoadedService,
     public appStateService: AppStateService,
@@ -53,6 +56,15 @@ export class SearchComponent implements OnInit, OnDestroy {
     else if (sr.TVItem.TVType == TVTypeEnum.Province) {
       this.subWebProvince = this.appLoadedService.GetWebProvince(sr.TVItem.TVItemID).subscribe();
     }
+    else if (sr.TVItem.TVType == TVTypeEnum.Area) {
+      this.subWebArea = this.appLoadedService.GetWebProvince(sr.TVItem.TVItemID).subscribe();
+    }
+    else if (sr.TVItem.TVType == TVTypeEnum.Sector) {
+      this.subWebSector = this.appLoadedService.GetWebProvince(sr.TVItem.TVItemID).subscribe();
+    }
+    else if (sr.TVItem.TVType == TVTypeEnum.Subsector) {
+      this.subWebSubsector = this.appLoadedService.GetWebProvince(sr.TVItem.TVItemID).subscribe();
+    }
     else {
       alert(`${TVTypeEnum[sr.TVItem.TVType]} - Not Implemented Yet. See search.component.ts -- NavigateTo Function`);
     }
@@ -63,5 +75,8 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.subWebRoot ? this.subWebRoot.unsubscribe() : null;
     this.subWebCountry ? this.subWebCountry.unsubscribe() : null;
     this.subWebProvince ? this.subWebProvince.unsubscribe() : null;
+    this.subWebArea ? this.subWebArea.unsubscribe() : null;
+    this.subWebSector ? this.subWebSector.unsubscribe() : null;
+    this.subWebSubsector ? this.subWebSubsector.unsubscribe() : null;
   }
 }

@@ -1,0 +1,65 @@
+<span *ngIf="(appStateService.AppState$ | async).Working || (appLoadedService.AppLoaded$ | async).Working">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</span>
+
+<button mat-button [ngClass]="ColorSelection(sectorSubComponentEnum.Subsectors)"
+    (click)="Show(sectorSubComponentEnum.Subsectors)"
+    title="{{ appLanguageService.AppLanguage.SectorShowSubsectors[appStateService.AppState$?.getValue().Language] }}">
+    <span>
+        {{ appLanguageService.AppLanguage.SectorSubsectors[appStateService.AppState$?.getValue().Language] }}
+        ({{ appHelperService.GetCount(appLoadedService.AppLoaded$.getValue().WebSector.TVItemModel, tvTypeEnum.Subsector) }})
+    </span>
+    <span class="biggerArrow"
+        (click)="appLoadedService.ChangeTVItemSortOrder('SectorSubsectorsSortOrder', ascDescEnum.Ascending)"
+        *ngIf="appStateService.AppState$.getValue().SectorSubsectorsSortOrder == ascDescEnum.Descending">
+        &nbsp;&nbsp;&uarr;
+    </span>
+    <span class="biggerArrow"
+        (click)="appLoadedService.ChangeTVItemSortOrder('SectorSubsectorsSortOrder', ascDescEnum.Descending)"
+        *ngIf="appStateService.AppState$.getValue().SectorSubsectorsSortOrder == ascDescEnum.Ascending">
+        &nbsp;&nbsp;&darr;
+    </span>
+</button>
+<button mat-button [ngClass]="ColorSelection(sectorSubComponentEnum.Files)" (click)="Show(sectorSubComponentEnum.Files)"
+    title="{{ appLanguageService.AppLanguage.SectorShowFiles[appStateService.AppState$?.getValue().Language] }}">
+    <span>
+        {{ appLanguageService.AppLanguage.SectorFiles[appStateService.AppState$?.getValue().Language] }}
+        ({{ appHelperService.GetCount(appLoadedService.AppLoaded$.getValue().WebSector.TVItemModel, tvTypeEnum.File) }}/
+        {{ appHelperService.GetCount(appLoadedService.AppLoaded$.getValue().WebSector.TVItemModel, tvTypeEnum.TotalFile) }})
+    </span>
+    <span class="biggerArrow"
+        (click)="appLoadedService.ChangeTVFileSortOrder('SectorFilesSortOrder', ascDescEnum.Ascending)"
+        *ngIf="appStateService.AppState$.getValue().SectorFilesSortOrder == ascDescEnum.Descending">
+        &nbsp;&nbsp;&uarr;
+    </span>
+    <span class="biggerArrow"
+        (click)="appLoadedService.ChangeTVFileSortOrder('SectorFilesSortOrder', ascDescEnum.Descending)"
+        *ngIf="appStateService.AppState$.getValue().SectorFilesSortOrder == ascDescEnum.Ascending">
+        &nbsp;&nbsp;&darr;
+    </span>
+</button>
+<button mat-button [ngClass]="ColorSelection(sectorSubComponentEnum.MIKEScenarios)"
+    (click)="Show(sectorSubComponentEnum.MIKEScenarios)"
+    title="{{ appLanguageService.AppLanguage.SectorShowMIKEScenarios[appStateService.AppState$?.getValue().Language] }}">
+    <span>
+        {{ appLanguageService.AppLanguage.SectorMIKEScenarios[appStateService.AppState$?.getValue().Language] }}
+        ({{ appHelperService.GetCount(appLoadedService.AppLoaded$.getValue().WebSector.TVItemModel, tvTypeEnum.MikeScenario) }})
+    </span>
+</button>
+
+<app-tvitem-list *ngIf="appStateService.AppState$?.getValue()?.SectorSubComponent == sectorSubComponentEnum.Subsectors"
+    [AppState]="appStateService.AppState$?.getValue()"
+    [TVItemList]="appLoadedService.SortTVItemList(appLoadedService.AppLoaded$?.getValue()?.SectorSubsectorList)">
+</app-tvitem-list>
+
+<app-file-list *ngIf="appStateService.AppState$?.getValue()?.SectorSubComponent == sectorSubComponentEnum.Files"
+    [AppState]="appStateService.AppState$?.getValue()"
+    [TVFileModelList]="appLoadedService.SortTVFileList(appLoadedService.AppLoaded$?.getValue()?.SectorSubsectorList, 
+    appLoadedService.AppLoaded$?.getValue()?.WebSector?.TVItemModel?.TVFileModelList)">
+</app-file-list>
+
+<app-tvitem-list
+    *ngIf="appStateService.AppState$?.getValue()?.SectorSubComponent == sectorSubComponentEnum.MIKEScenarios"
+    [AppState]="appStateService.AppState$?.getValue()"
+    [TVItemList]="appLoadedService.SortTVItemList(appLoadedService.AppLoaded$?.getValue()?.SectorMIKEScenarioList)">
+</app-tvitem-list>
