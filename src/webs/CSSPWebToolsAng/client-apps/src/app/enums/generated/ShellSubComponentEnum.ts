@@ -16,6 +16,10 @@ export enum ShellSubComponentEnum {
     Area = 4,
     Sector = 5,
     Subsector = 6,
+    Municipality = 7,
+    MWQMSite = 8,
+    MWQMRun = 9,
+    PolSourceSite = 10,
 }
 
 export function GetShellSubComponentEnum(): typeof ShellSubComponentEnum
@@ -32,6 +36,10 @@ export function ShellSubComponentEnum_GetOrderedText(appStateService: AppStateSe
         enumTextOrderedList.push({ EnumID: 4, EnumText: 'Area (fr)' });
         enumTextOrderedList.push({ EnumID: 5, EnumText: 'Sector (fr)' });
         enumTextOrderedList.push({ EnumID: 6, EnumText: 'Subsector (fr)' });
+        enumTextOrderedList.push({ EnumID: 7, EnumText: 'Municipality (fr)' });
+        enumTextOrderedList.push({ EnumID: 8, EnumText: 'MWQMSite (fr)' });
+        enumTextOrderedList.push({ EnumID: 9, EnumText: 'MWQMRun (fr)' });
+        enumTextOrderedList.push({ EnumID: 10, EnumText: 'PolSourceSite (fr)' });
     }
     else {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'Root' });
@@ -40,6 +48,10 @@ export function ShellSubComponentEnum_GetOrderedText(appStateService: AppStateSe
         enumTextOrderedList.push({ EnumID: 4, EnumText: 'Area' });
         enumTextOrderedList.push({ EnumID: 5, EnumText: 'Sector' });
         enumTextOrderedList.push({ EnumID: 6, EnumText: 'Subsector' });
+        enumTextOrderedList.push({ EnumID: 7, EnumText: 'Municipality' });
+        enumTextOrderedList.push({ EnumID: 8, EnumText: 'MWQMSite' });
+        enumTextOrderedList.push({ EnumID: 9, EnumText: 'MWQMRun' });
+        enumTextOrderedList.push({ EnumID: 10, EnumText: 'PolSourceSite' });
     }
 
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));

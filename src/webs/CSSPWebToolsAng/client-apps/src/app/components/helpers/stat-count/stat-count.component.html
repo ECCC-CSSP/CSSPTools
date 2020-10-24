@@ -1,0 +1,6 @@
+<span *ngIf="(appStateService.AppState$ | async).Working">
+</span>
+<span *ngIf="(appLoadedService.AppLoaded$ | async).Working">
+</span>
+
+<span>&nbsp;&nbsp;({{ statCountService.GetStatCount(TVItemModel, TVType) }})</span>

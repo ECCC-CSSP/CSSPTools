@@ -3,6 +3,9 @@ import { AppState } from 'src/app/models/AppState.model';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
+import { ToggleDetailService } from 'src/app/services/loaders/toggle-detail.service';
+import { ToggleEditService } from 'src/app/services/loaders/toggle-edit.service';
+import { ToggleInactiveService } from 'src/app/services/loaders/toggle-inactive.service';
 
 @Component({
   selector: 'app-sidenav-menu',
@@ -15,7 +18,10 @@ export class SideNavMenuComponent implements OnInit, OnDestroy {
   
   constructor(public appStateService: AppStateService, 
     public appLoadedService: AppLoadedService,
-    public appLanguageService: AppLanguageService) {
+    public appLanguageService: AppLanguageService,
+    public toggleInactiveService: ToggleInactiveService,
+    public toggleDetailService: ToggleDetailService,
+    public toggleEditService: ToggleEditService) {
   }
 
   ngOnInit() {

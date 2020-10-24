@@ -7,11 +7,11 @@ import { FileListItemDetailComponent } from './components/files/file-list-item-d
 import { FileListItemComponent } from './components/files/file-list-item/file-list-item.component';
 import { FileListComponent } from './components/files/file-list/file-list.component';
 import { BreadCrumbComponent } from './components/helpers/bread-crumb/bread-crumb.component';
-import { ChildCountComponent } from './components/helpers/child-count/child-count.component';
 import { ErrorComponent } from './components/helpers/error/error.component';
 import { FooterComponent } from './components/helpers/footer/footer.component';
 import { SearchOptionComponent } from './components/helpers/search-option/search-option.component';
 import { SearchComponent } from './components/helpers/search/search.component';
+import { StatCountComponent } from './components/helpers/stat-count/stat-count.component';
 import { MapComponent } from './components/maps/map/map.component';
 import { SideNavMenuComponent } from './components/sidenavs/sidenav-menu/sidenav-menu.component';
 import { TVItemListDetailCountryComponent } from './components/tvitems/tvitem-list-detail-country/tvitem-list-detail-country.component';
@@ -35,7 +35,6 @@ import { SubsectorComponent } from './components/tvtypes/subsector/subsector.com
   declarations: [
     AreaComponent,
     BreadCrumbComponent,
-    ChildCountComponent,
     CountryComponent,
     ErrorComponent,
     FileListComponent,
@@ -46,11 +45,12 @@ import { SubsectorComponent } from './components/tvtypes/subsector/subsector.com
     MapComponent,
     ProvinceComponent,
     RootComponent,
-    SearchComponent,
     SearchOptionComponent,
+    SearchComponent,
     ShellComponent,
     SideNavMenuComponent,
     SectorComponent,
+    StatCountComponent,
     SubsectorComponent,
     TVItemListComponent,
     TVItemListDetailComponent,
@@ -75,7 +75,6 @@ import { SubsectorComponent } from './components/tvtypes/subsector/subsector.com
 
     AreaComponent,
     BreadCrumbComponent,
-    ChildCountComponent,
     CountryComponent,
     ErrorComponent,
     FileListComponent,
@@ -86,11 +85,12 @@ import { SubsectorComponent } from './components/tvtypes/subsector/subsector.com
     MapComponent,
     ProvinceComponent,
     RootComponent,
-    SearchComponent,
     SearchOptionComponent,
+    SearchComponent,
     ShellComponent,
     SideNavMenuComponent,
     SectorComponent,
+    StatCountComponent,
     SubsectorComponent,
     TVItemListComponent,
     TVItemListDetailComponent,

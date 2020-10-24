@@ -1,4 +1,6 @@
-<span *ngIf="(appStateService.AppState$ | async).Working || (appLoadedService.AppLoaded$ | async).Working">
+<span *ngIf="(appStateService.AppState$ | async).Working">
+</span>
+<span *ngIf="(appLoadedService.AppLoaded$ | async).Working">
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </span>
 
@@ -7,15 +9,15 @@
     title="{{ appLanguageService.AppLanguage.SubsectorShowMWQMSites[appStateService.AppState$?.getValue().Language] }}">
     <span>
         {{ appLanguageService.AppLanguage.SubsectorMWQMSites[appStateService.AppState$?.getValue().Language] }}
-        ({{ appHelperService.GetCount(appLoadedService.AppLoaded$.getValue().WebSubsector.TVItemModel, tvTypeEnum.MWQMSite) }})
+        ({{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebSubsector?.TVItemModel, tvTypeEnum.MWQMSite) }})
     </span>
     <span class="biggerArrow"
-        (click)="appLoadedService.ChangeTVItemSortOrder('SubsectorMWQMSitesSortOrder', ascDescEnum.Ascending)"
+        (click)="tvItemSortOrderService.ChangeTVItemSortOrder('SubsectorMWQMSitesSortOrder', ascDescEnum.Ascending)"
         *ngIf="appStateService.AppState$.getValue().SubsectorMWQMSitesSortOrder == ascDescEnum.Descending">
         &nbsp;&nbsp;&uarr;
     </span>
     <span class="biggerArrow"
-        (click)="appLoadedService.ChangeTVItemSortOrder('SubsectorMWQMSitesSortOrder', ascDescEnum.Descending)"
+        (click)="tvItemSortOrderService.ChangeTVItemSortOrder('SubsectorMWQMSitesSortOrder', ascDescEnum.Descending)"
         *ngIf="appStateService.AppState$.getValue().SubsectorMWQMSitesSortOrder == ascDescEnum.Ascending">
         &nbsp;&nbsp;&darr;
     </span>
@@ -30,15 +32,15 @@
     title="{{ appLanguageService.AppLanguage.SubsectorShowMWQMRuns[appStateService.AppState$?.getValue().Language] }}">
     <span>
         {{ appLanguageService.AppLanguage.SubsectorMWQMRuns[appStateService.AppState$?.getValue().Language] }}
-        ({{ appHelperService.GetCount(appLoadedService.AppLoaded$.getValue().WebSubsector.TVItemModel, tvTypeEnum.MWQMRun) }})
+        ({{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebSubsector?.TVItemModel, tvTypeEnum.MWQMRun) }})
     </span>
     <span class="biggerArrow"
-        (click)="appLoadedService.ChangeTVItemSortOrder('SubsectorMWQMRunsSortOrder', ascDescEnum.Ascending)"
+        (click)="tvItemSortOrderService.ChangeTVItemSortOrder('SubsectorMWQMRunsSortOrder', ascDescEnum.Ascending)"
         *ngIf="appStateService.AppState$.getValue().SubsectorMWQMRunsSortOrder == ascDescEnum.Descending">
         &nbsp;&nbsp;&uarr;
     </span>
     <span class="biggerArrow"
-        (click)="appLoadedService.ChangeTVItemSortOrder('SubsectorMWQMRunsSortOrder', ascDescEnum.Descending)"
+        (click)="tvItemSortOrderService.ChangeTVItemSortOrder('SubsectorMWQMRunsSortOrder', ascDescEnum.Descending)"
         *ngIf="appStateService.AppState$.getValue().SubsectorMWQMRunsSortOrder == ascDescEnum.Ascending">
         &nbsp;&nbsp;&darr;
     </span>
@@ -48,15 +50,15 @@
     title="{{ appLanguageService.AppLanguage.SubsectorShowPollutionSourceSites[appStateService.AppState$?.getValue().Language] }}">
     <span>
         {{ appLanguageService.AppLanguage.SubsectorPollutionSourceSites[appStateService.AppState$?.getValue().Language] }}
-        ({{ appHelperService.GetCount(appLoadedService.AppLoaded$.getValue().WebSubsector.TVItemModel, tvTypeEnum.PolSourceSite) }})
+        ({{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebSubsector?.TVItemModel, tvTypeEnum.PolSourceSite) }})
     </span>
     <span class="biggerArrow"
-        (click)="appLoadedService.ChangeTVItemSortOrder('SubsectorPolSourceSitesSortOrder', ascDescEnum.Ascending)"
+        (click)="tvItemSortOrderService.ChangeTVItemSortOrder('SubsectorPolSourceSitesSortOrder', ascDescEnum.Ascending)"
         *ngIf="appStateService.AppState$.getValue().SubsectorPolSourceSitesSortOrder == ascDescEnum.Descending">
         &nbsp;&nbsp;&uarr;
     </span>
     <span class="biggerArrow"
-        (click)="appLoadedService.ChangeTVItemSortOrder('SubsectorPolSourceSitesSortOrder', ascDescEnum.Descending)"
+        (click)="tvItemSortOrderService.ChangeTVItemSortOrder('SubsectorPolSourceSitesSortOrder', ascDescEnum.Descending)"
         *ngIf="appStateService.AppState$.getValue().SubsectorPolSourceSitesSortOrder == ascDescEnum.Ascending">
         &nbsp;&nbsp;&darr;
     </span>
@@ -66,16 +68,16 @@
     title="{{ appLanguageService.AppLanguage.SubsectorShowFiles[appStateService.AppState$?.getValue().Language] }}">
     <span>
         {{ appLanguageService.AppLanguage.SubsectorFiles[appStateService.AppState$?.getValue().Language] }}
-        ({{ appHelperService.GetCount(appLoadedService.AppLoaded$.getValue().WebSubsector.TVItemModel, tvTypeEnum.File) }}/
-        {{ appHelperService.GetCount(appLoadedService.AppLoaded$.getValue().WebSubsector.TVItemModel, tvTypeEnum.TotalFile) }})
+        ({{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebSubsector?.TVItemModel, tvTypeEnum.File) }}/
+        {{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebSubsector?.TVItemModel, tvTypeEnum.TotalFile) }})
     </span>
     <span class="biggerArrow"
-        (click)="appLoadedService.ChangeTVFileSortOrder('SubsectorFilesSortOrder', ascDescEnum.Ascending)"
+        (click)="tvFileSortOrderService.ChangeTVFileSortOrder('SubsectorFilesSortOrder', ascDescEnum.Ascending)"
         *ngIf="appStateService.AppState$.getValue().SubsectorFilesSortOrder == ascDescEnum.Descending">
         &nbsp;&nbsp;&uarr;
     </span>
     <span class="biggerArrow"
-        (click)="appLoadedService.ChangeTVFileSortOrder('SubsectorFilesSortOrder', ascDescEnum.Descending)"
+        (click)="tvFileSortOrderService.ChangeTVFileSortOrder('SubsectorFilesSortOrder', ascDescEnum.Descending)"
         *ngIf="appStateService.AppState$.getValue().SubsectorFilesSortOrder == ascDescEnum.Ascending">
         &nbsp;&nbsp;&darr;
     </span>
@@ -94,7 +96,7 @@
 <app-tvitem-list
     *ngIf="appStateService.AppState$?.getValue()?.SubsectorSubComponent == subsectorSubComponentEnum.MWQMSites"
     [AppState]="appStateService.AppState$?.getValue()"
-    [TVItemList]="appLoadedService.SortTVItemList(appLoadedService.AppLoaded$?.getValue()?.SubsectorMWQMSiteList)">
+    [TVItemList]="appLoadedService.AppLoaded$?.getValue()?.SubsectorMWQMSiteList">
 </app-tvitem-list>
 
 <div *ngIf="appStateService.AppState$?.getValue()?.SubsectorSubComponent == subsectorSubComponentEnum.Analysis">
@@ -104,19 +106,18 @@
 <app-tvitem-list
     *ngIf="appStateService.AppState$?.getValue()?.SubsectorSubComponent == subsectorSubComponentEnum.MWQMRuns"
     [AppState]="appStateService.AppState$?.getValue()"
-    [TVItemList]="appLoadedService.SortTVItemList(appLoadedService.AppLoaded$?.getValue()?.SubsectorMWQMRunList)">
+    [TVItemList]="appLoadedService.AppLoaded$?.getValue()?.SubsectorMWQMRunList">
 </app-tvitem-list>
 
 <app-tvitem-list
     *ngIf="appStateService.AppState$?.getValue()?.SubsectorSubComponent == subsectorSubComponentEnum.PollutionSourceSites"
     [AppState]="appStateService.AppState$?.getValue()"
-    [TVItemList]="appLoadedService.SortTVItemList(appLoadedService.AppLoaded$?.getValue()?.SubsectorPolSourceSiteList)">
+    [TVItemList]="appLoadedService.AppLoaded$?.getValue()?.SubsectorPolSourceSiteList">
 </app-tvitem-list>
 
 <app-file-list *ngIf="appStateService.AppState$?.getValue()?.SubsectorSubComponent == subsectorSubComponentEnum.Files"
     [AppState]="appStateService.AppState$?.getValue()"
-    [TVFileModelList]="appLoadedService.SortTVFileList(appLoadedService.AppLoaded$?.getValue()?.SubsectorMWQMSiteList, 
-    appLoadedService.AppLoaded$?.getValue()?.WebSubsector?.TVItemModel?.TVFileModelList)">
+    [TVFileModelList]="appLoadedService.AppLoaded$?.getValue()?.SubsectorFileList">
 </app-file-list>
 
 <div *ngIf="appStateService.AppState$?.getValue()?.SubsectorSubComponent == subsectorSubComponentEnum.SubsectorTools">

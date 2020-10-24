@@ -1,6 +1,4 @@
-import { HttpStatus } from './HttpStatus.model';
-
-export interface AppLanguage extends HttpStatus {
+export interface AppLanguage {
     AreaShowSectors: string[];
     AreaSectors: string[];
     AreaShowFiles: string[];

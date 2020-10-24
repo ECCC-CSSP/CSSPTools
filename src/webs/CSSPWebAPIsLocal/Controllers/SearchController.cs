@@ -18,7 +18,8 @@ namespace CSSPWebAPIsLocal.Controllers
 {
     public partial interface ISearchController
     {
-        Task<ActionResult<List<TVItemLanguage>>> Search(string SearchTerm, int TVItemID);
+        Task<ActionResult<List<TVItemLanguage>>> SearchByTVText(string SearchTerm, int TVItemID);
+        Task<ActionResult<List<TVItemLanguage>>> SearchByTVItemID(string SearchTerm, int TVItemID);
     }
 
     [Route("api/{culture}/[controller]")]
@@ -46,9 +47,18 @@ namespace CSSPWebAPIsLocal.Controllers
         #endregion Constructors
 
         #region Functions public
-        [Route("{SearchTerm}/{TVItemID:int}")]
+        [Route("SearchByTVText/{SearchTerm}/{TVItemID:int}")]
         [HttpGet]
-        public async Task<ActionResult<List<TVItemLanguage>>> Search(string SearchTerm, int TVItemID)
+        public async Task<ActionResult<List<TVItemLanguage>>> SearchByTVText(string SearchTerm, int TVItemID)
+        {
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LocalService.SetLoggedInContactInfo();
+
+            return await CSSPDBSearchService.Search(SearchTerm, TVItemID);
+        }
+        [Route("SearchByTVItemID{SearchTerm}/{TVItemID:int}")]
+        [HttpGet]
+        public async Task<ActionResult<List<TVItemLanguage>>> SearchByTVItemID(string SearchTerm, int TVItemID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LocalService.SetLoggedInContactInfo();

@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Input, OnDestroy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
@@ -8,6 +8,8 @@ import { GetLanguageEnum, LanguageEnum } from 'src/app/enums/generated/LanguageE
 import { GetShellSubComponentEnum } from 'src/app/enums/generated/ShellSubComponentEnum';
 import { GetMapSizeEnum, MapSizeEnum } from 'src/app/enums/generated/MapSizeEnum';
 import { TopComponentEnum } from 'src/app/enums/generated/TopComponentEnum';
+import { of, Subscription, timer } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-shell',
@@ -15,7 +17,9 @@ import { TopComponentEnum } from 'src/app/enums/generated/TopComponentEnum';
   styleUrls: ['./shell.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ShellComponent implements OnInit {
+export class ShellComponent implements OnInit, OnDestroy {
+  subMapSize: Subscription;
+
   languageEnum = GetLanguageEnum();
   shellSubComponentEnum = GetShellSubComponentEnum();
   mapSizeEnum = GetMapSizeEnum();
@@ -37,6 +41,10 @@ export class ShellComponent implements OnInit {
     this.title.setTitle(this.appLanguageService.AppLanguage.ShellApplicationName[this.appStateService.AppState$?.getValue().Language]);
   }
 
+  ngOnDestroy(): void {
+    this.subMapSize ? this.subMapSize.unsubscribe() : null;
+  }
+
   Home() {
     this.appStateService.UpdateAppState(<AppState>{ TopComponent: TopComponentEnum.Home });
   }
@@ -46,7 +54,19 @@ export class ShellComponent implements OnInit {
   }
 
   SetMapSize(mapSize: MapSizeEnum) {
-    this.appStateService.UpdateAppState(<AppState>{ MapSize: mapSize });
+    let MenuVisible: boolean = !(this.appStateService.AppState$.getValue().MenuVisible);
+    this.appStateService.UpdateAppState(<AppState>{ MapSize: mapSize, MenuVisible: MenuVisible });
+    if (!this.subMapSize) {
+      this.subMapSize = timer(300, 300).pipe(
+        tap(() => this.appStateService.UpdateAppState(<AppState>{ MapSize: mapSize, MenuVisible: !MenuVisible }))
+      ).subscribe();
+    }
+    else {
+      this.subMapSize.unsubscribe();
+      this.subMapSize = timer(300, 300).pipe(
+        tap(() => this.appStateService.UpdateAppState(<AppState>{ MapSize: mapSize, MenuVisible: !MenuVisible }))
+      ).subscribe();
+    }
   }
 
   ColorSelection(mapSize: MapSizeEnum) {

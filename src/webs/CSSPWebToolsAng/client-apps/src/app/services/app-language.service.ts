@@ -118,8 +118,7 @@ export class AppLanguageService {
       TVItemListDetailRootMWQMSite: ['', 'MWQM site', 'Site de SQE'],
       TVItemListDetailRootMWQMRun: ['', 'MWQM run', 'Tournées'],
       TVItemListDetailRootMWQMSample: ['', 'MWQM sample', 'Échantillons'],
-      TVItemListDetailRootMikeScenario: ['', 'MIKE scenario', 'Scénario de MIKE'],
-  
+      TVItemListDetailRootMikeScenario: ['', 'MIKE scenario', 'Scénario de MIKE'], 
     }
   }
 }

@@ -6,8 +6,11 @@ import { AppState } from 'src/app/models/AppState.model';
 import { CountrySubComponentEnum, GetCountrySubComponentEnum } from 'src/app/enums/generated/CountrySubComponentEnum';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { GetTVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
-import { AppHelperService } from 'src/app/services/app-helper.service';
 import { GetAscDescEnum } from 'src/app/enums/generated/AscDescEnum';
+import { WebCountryService } from 'src/app/services/loaders/web-country.service';
+import { TVItemSortOrderService } from 'src/app/services/loaders/tvitem-sort-order.service';
+import { StatCountService } from 'src/app/services/helpers/stat-count.service';
+import { TVFileSortOrderService } from 'src/app/services/loaders/tvfile-sort-order.service';
 
 @Component({
   selector: 'app-country',
@@ -21,16 +24,19 @@ export class CountryComponent implements OnInit, OnDestroy {
   tvTypeEnum = GetTVTypeEnum();
   ascDescEnum = GetAscDescEnum();
 
-  constructor(public appStateService: AppStateService, 
+  constructor(public appStateService: AppStateService,
     public appLoadedService: AppLoadedService,
     public appLanguageService: AppLanguageService,
-    public appHelperService: AppHelperService) {
+    public webCountryService: WebCountryService,
+    public tvItemSortOrderService: TVItemSortOrderService,
+    public statCountService: StatCountService,
+    public tvFileSortOrderService: TVFileSortOrderService) {
 
   }
 
   ngOnInit(): void {
     let TVItemID: number = this.appStateService.AppState$.getValue().CurrentTVItemID;
-    this.subWebCountry = this.appLoadedService.GetWebCountry(TVItemID).subscribe();
+    this.subWebCountry = this.webCountryService.GetWebCountry(TVItemID).subscribe();
   }
 
   ngOnDestroy(): void {

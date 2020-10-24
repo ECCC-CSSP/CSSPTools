@@ -5,10 +5,13 @@ import { LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { GetSectorSubComponentEnum, SectorSubComponentEnum } from 'src/app/enums/generated/SectorSubComponentEnum';
 import { GetTVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 import { AppState } from 'src/app/models/AppState.model';
-import { AppHelperService } from 'src/app/services/app-helper.service';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
+import { StatCountService } from 'src/app/services/helpers/stat-count.service';
+import { TVFileSortOrderService } from 'src/app/services/loaders/tvfile-sort-order.service';
+import { TVItemSortOrderService } from 'src/app/services/loaders/tvitem-sort-order.service';
+import { WebSectorService } from 'src/app/services/loaders/web-sector.service';
 
 @Component({
   selector: 'app-sector',
@@ -22,14 +25,17 @@ export class SectorComponent implements OnInit, OnDestroy {
   tvTypeEnum = GetTVTypeEnum();
   ascDescEnum = GetAscDescEnum();
 
-  constructor(public appStateService: AppStateService, 
+  constructor(public appStateService: AppStateService,
     public appLoadedService: AppLoadedService,
     public appLanguageService: AppLanguageService,
-    public appHelperService: AppHelperService) { }
+    public webSectorService: WebSectorService,
+    public tvItemSortOrderService: TVItemSortOrderService,
+    public statCountService: StatCountService,
+    public tvFileSortOrderService: TVFileSortOrderService) { }
 
   ngOnInit(): void {
     let TVItemID: number = this.appStateService.AppState$.getValue().CurrentTVItemID;
-    this.subWebSector = this.appLoadedService.GetWebSector(TVItemID).subscribe();
+    this.subWebSector = this.webSectorService.GetWebSector(TVItemID).subscribe();
   }
 
   ngOnDestroy(): void {

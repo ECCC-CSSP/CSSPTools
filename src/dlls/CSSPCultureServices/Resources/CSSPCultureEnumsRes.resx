@@ -3192,4 +3192,46 @@
   <data name="FilesSortPropEnumType" xml:space="preserve">
     <value>Type</value>
   </data>
+  <data name="ShellSubComponentEnumMunicipality" xml:space="preserve">
+    <value>Municipality</value>
+  </data>
+  <data name="ShellSubComponentEnumMWQMRun" xml:space="preserve">
+    <value>MWQMRun</value>
+  </data>
+  <data name="ShellSubComponentEnumMWQMSite" xml:space="preserve">
+    <value>MWQMSite</value>
+  </data>
+  <data name="ShellSubComponentEnumPolSourceSite" xml:space="preserve">
+    <value>PolSourceSite</value>
+  </data>
+  <data name="MunicipalitySubComponentEnumContacts" xml:space="preserve">
+    <value>Contacts</value>
+  </data>
+  <data name="MunicipalitySubComponentEnumFiles" xml:space="preserve">
+    <value>Files</value>
+  </data>
+  <data name="MunicipalitySubComponentEnumInfrastructures" xml:space="preserve">
+    <value>Infrastructures</value>
+  </data>
+  <data name="MunicipalitySubComponentEnumMIKEScenarios" xml:space="preserve">
+    <value>MIKE Scenarios</value>
+  </data>
+  <data name="MWQMRunSubComponentEnumFiles" xml:space="preserve">
+    <value>Files</value>
+  </data>
+  <data name="MWQMRunSubComponentEnumInformation" xml:space="preserve">
+    <value>Information</value>
+  </data>
+  <data name="MWQMSiteSubComponentEnumFiles" xml:space="preserve">
+    <value>Files</value>
+  </data>
+  <data name="MWQMSiteSubComponentEnumInformation" xml:space="preserve">
+    <value>Information</value>
+  </data>
+  <data name="PolSourceSiteSubComponentEnumFiles" xml:space="preserve">
+    <value>Files</value>
+  </data>
+  <data name="PolSourceSiteSubComponentEnumInformation" xml:space="preserve">
+    <value>Information</value>
+  </data>
 </root>

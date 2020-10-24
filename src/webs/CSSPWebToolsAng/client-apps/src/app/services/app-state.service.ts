@@ -6,6 +6,10 @@ import { CountrySubComponentEnum } from '../enums/generated/CountrySubComponentE
 import { FilesSortPropEnum } from '../enums/generated/FilesSortPropEnum';
 import { LanguageEnum } from '../enums/generated/LanguageEnum';
 import { MapSizeEnum } from '../enums/generated/MapSizeEnum';
+import { MunicipalitySubComponentEnum } from '../enums/generated/MunicipalitySubComponentEnum';
+import { MWQMRunSubComponentEnum } from '../enums/generated/MWQMRunSubComponentEnum';
+import { MWQMSiteSubComponentEnum } from '../enums/generated/MWQMSiteSubComponentEnum';
+import { PolSourceSiteSubComponentEnum } from '../enums/generated/PolSourceSiteSubComponentEnum';
 import { ProvinceSubComponentEnum } from '../enums/generated/ProvinceSubComponentEnum';
 import { RootSubComponentEnum } from '../enums/generated/RootSubComponentEnum';
 import { SectorSubComponentEnum } from '../enums/generated/SectorSubComponentEnum';
@@ -30,7 +34,11 @@ export class AppStateService {
       AreaSubComponent: AreaSubComponentEnum.Sectors, // Sectors | Files 
       SectorSubComponent: SectorSubComponentEnum.Subsectors, // Subsectors | Files | MIKEScenarios
       SubsectorSubComponent: SubsectorSubComponentEnum.MWQMSites, // MWQMSites | Analysis | MWQMRuns | PollutionSourceSites | Files | SubsectorTools | LogBook
-      CurrentTVItemID: 0,
+      MunicipalitySubComponent: MunicipalitySubComponentEnum.Infrastructures, // Infrastructures | MIKEScenarios | Contacts | Files
+      MWQMSiteSubComponent: MWQMSiteSubComponentEnum.Information, // Information | Files
+      MWQMRunSubComponent: MWQMRunSubComponentEnum.Information, // Information | Files
+      PolSourceSiteSubComponent: PolSourceSiteSubComponentEnum.Information, // Information | Files
+      CurrentTVItemID: 1,
       Language: LanguageEnum.en, // en | fr | enAndfr | es
       DetailVisible: false,
       EditVisible: false,
@@ -55,7 +63,7 @@ export class AppStateService {
       polylineList: [],
       infoContent: '',
 
-      RootCountriesSortOrder: AscDescEnum.Ascending,
+      RootCountriesSortOrder: AscDescEnum.Descending,
       RootFilesSortOrder: AscDescEnum.Ascending,
       RootFilesSortByProp: FilesSortPropEnum.Name, 
       CountryProvincesSortOrder: AscDescEnum.Ascending,
@@ -72,11 +80,20 @@ export class AppStateService {
       SectorFilesSortOrder: AscDescEnum.Ascending,
       SectorFilesSortByProp: FilesSortPropEnum.Name, 
       SubsectorMWQMSitesSortOrder: AscDescEnum.Ascending,
-      SubsectorMWQMRunsSortOrder: AscDescEnum.Ascending,
+      SubsectorMWQMRunsSortOrder: AscDescEnum.Descending,
       SubsectorPolSourceSitesSortOrder: AscDescEnum.Ascending,
       SubsectorFilesSortOrder: AscDescEnum.Ascending,
       SubsectorFilesSortByProp: FilesSortPropEnum.Name, 
-
+      MunicipaltyInfrastructuresSortOrder: AscDescEnum.Ascending,
+      MunicipalityFilesSortOrder: AscDescEnum.Ascending,
+      MunicipalityFilesSortByProp: FilesSortPropEnum.Name,
+      MWQMSiteFilesSortOrder: AscDescEnum.Ascending,
+      MWQMSiteFilesSortByProp: FilesSortPropEnum.Name,
+      MWQMRunFilesSortOrder: AscDescEnum.Ascending,
+      MWQMRunFilesSortByProp: FilesSortPropEnum.Name,
+      PolSourceSiteFilesSortOrder: AscDescEnum.Ascending,
+      PolSourceSiteFilesSortByProp: FilesSortPropEnum.Name,
+  
     });
   }
 

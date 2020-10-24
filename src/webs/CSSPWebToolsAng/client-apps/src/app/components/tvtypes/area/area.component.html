@@ -1,38 +1,50 @@
-<span *ngIf="(appStateService.AppState$ | async).Working || (appLoadedService.AppLoaded$ | async).Working">
-    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+<span *ngIf="(appStateService.AppState$ | async).Working">
+</span>
+<span *ngIf="(appLoadedService.AppLoaded$ | async).Working">
 </span>
 
 <button mat-button [ngClass]="ColorSelection(areaSubComponentEnum.Sectors)" (click)="Show(areaSubComponentEnum.Sectors)"
     title="{{ appLanguageService.AppLanguage.AreaShowSectors[appStateService.AppState$?.getValue().Language] }}">
     <span>
         {{ appLanguageService.AppLanguage.AreaSectors[appStateService.AppState$?.getValue().Language] }}
-        ({{ appHelperService.GetCount(appLoadedService.AppLoaded$.getValue().WebArea.TVItemModel, tvTypeEnum.Sector) }})
+        ({{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebArea?.TVItemModel, tvTypeEnum.Sector) }})
     </span>
     <span class="biggerArrow"
-        (click)="appLoadedService.ChangeTVItemSortOrder('AreaSectorsSortOrder', ascDescEnum.Ascending)"
+        (click)="tvItemSortOrderService.ChangeTVItemSortOrder('AreaSectorsSortOrder', ascDescEnum.Ascending)"
         *ngIf="appStateService.AppState$.getValue().AreaSectorsSortOrder == ascDescEnum.Descending">
         &nbsp;&nbsp;&uarr;
     </span>
     <span class="biggerArrow"
-        (click)="appLoadedService.ChangeTVItemSortOrder('AreaSectorsSortOrder', ascDescEnum.Descending)"
+        (click)="tvItemSortOrderService.ChangeTVItemSortOrder('AreaSectorsSortOrder', ascDescEnum.Descending)"
         *ngIf="appStateService.AppState$.getValue().AreaSectorsSortOrder == ascDescEnum.Ascending">
         &nbsp;&nbsp;&darr;
     </span>
 </button>
 <button mat-button [ngClass]="ColorSelection(areaSubComponentEnum.Files)" (click)="Show(areaSubComponentEnum.Files)"
     title="{{ appLanguageService.AppLanguage.AreaShowFiles[appStateService.AppState$?.getValue().Language] }}">
-    {{ appLanguageService.AppLanguage.AreaFiles[appStateService.AppState$?.getValue().Language] }}
-    ({{ appHelperService.GetCount(appLoadedService.AppLoaded$.getValue().WebArea.TVItemModel, tvTypeEnum.File) }}/
-    {{ appHelperService.GetCount(appLoadedService.AppLoaded$.getValue().WebArea.TVItemModel, tvTypeEnum.TotalFile) }})
+    <span>
+        {{ appLanguageService.AppLanguage.AreaFiles[appStateService.AppState$?.getValue().Language] }}
+        ({{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebArea?.TVItemModel, tvTypeEnum.File) }}/
+        {{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebArea?.TVItemModel, tvTypeEnum.TotalFile) }})
+    </span>
+    <span class="biggerArrow"
+        (click)="tvFileSortOrderService.ChangeTVFileSortOrder('CountryFilesSortOrder', ascDescEnum.Ascending)"
+        *ngIf="appStateService.AppState$.getValue().CountryFilesSortOrder == ascDescEnum.Descending">
+        &nbsp;&nbsp;&uarr;
+    </span>
+    <span class="biggerArrow"
+        (click)="tvFileSortOrderService.ChangeTVFileSortOrder('CountryFilesSortOrder', ascDescEnum.Descending)"
+        *ngIf="appStateService.AppState$.getValue().CountryFilesSortOrder == ascDescEnum.Ascending">
+        &nbsp;&nbsp;&darr;
+    </span>
 </button>
 
 <app-tvitem-list *ngIf="appStateService.AppState$?.getValue()?.AreaSubComponent == areaSubComponentEnum.Sectors"
     [AppState]="appStateService.AppState$?.getValue()"
-    [TVItemList]="appLoadedService.SortTVItemList(appLoadedService.AppLoaded$?.getValue()?.AreaSectorList)">
+    [TVItemList]="appLoadedService.AppLoaded$?.getValue()?.AreaSectorList">
 </app-tvitem-list>
 
 <app-file-list *ngIf="appStateService.AppState$?.getValue()?.AreaSubComponent == areaSubComponentEnum.Files"
-    [AppState]="appStateService.AppState$?.getValue()"
-    [TVFileModelList]="appLoadedService.SortTVFileList(appLoadedService.AppLoaded$?.getValue()?.AreaSectorList, 
-    appLoadedService.AppLoaded$?.getValue()?.WebArea?.TVItemModel?.TVFileModelList)">
+    [AppState]="appStateService.AppState$?.getValue()" 
+    [TVFileModelList]="appLoadedService.AppLoaded$?.getValue()?.AreaFileList">
 </app-file-list>

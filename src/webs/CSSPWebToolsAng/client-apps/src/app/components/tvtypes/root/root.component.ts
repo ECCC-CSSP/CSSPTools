@@ -6,10 +6,12 @@ import { AppStateService } from 'src/app/services/app-state.service';
 import { AppState } from 'src/app/models/AppState.model';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
-import { AppHelperService } from 'src/app/services/app-helper.service';
 import { GetTVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
-import { AscDescEnum, GetAscDescEnum } from 'src/app/enums/generated/AscDescEnum';
-import { AppLoaded } from 'src/app/models/AppLoaded.model';
+import { GetAscDescEnum } from 'src/app/enums/generated/AscDescEnum';
+import { WebRootService } from 'src/app/services/loaders/web-root.service';
+import { TVItemSortOrderService } from 'src/app/services/loaders/tvitem-sort-order.service';
+import { StatCountService } from 'src/app/services/helpers/stat-count.service';
+import { TVFileSortOrderService } from 'src/app/services/loaders/tvfile-sort-order.service';
 
 @Component({
   selector: 'app-root',
@@ -26,13 +28,15 @@ export class RootComponent implements OnInit, OnDestroy {
   constructor(public appStateService: AppStateService,
     public appLoadedService: AppLoadedService,
     public appLanguageService: AppLanguageService,
-    public appHelperService: AppHelperService) {
+    public webRootService: WebRootService,
+    public tvItemSortOrderService: TVItemSortOrderService,
+    public statCountService: StatCountService,
+    public tvFileSortOrderService: TVFileSortOrderService) {
   }
 
   ngOnInit(): void {
     let TVItemID: number = this.appStateService.AppState$.getValue().CurrentTVItemID;
-    this.subWebRoot = this.appLoadedService.GetWebRoot(TVItemID).subscribe();
-    this.appLoadedService.UpdateAppLoaded(<AppLoaded> { RootCountryList: this.appLoadedService.AppLoaded$.getValue().RootCountryList });
+    this.subWebRoot = this.webRootService.GetWebRoot(TVItemID).subscribe();
   }
 
   ngOnDestroy(): void {

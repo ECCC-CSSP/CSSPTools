@@ -3,6 +3,8 @@ import { Subscription } from 'rxjs';
 import { GetTopComponentEnum } from './enums/generated/TopComponentEnum';
 import { AppLoadedService } from './services/app-loaded.service';
 import { AppStateService } from './services/app-state.service';
+import { LoggedInContactService } from './services/loaders/logged-in-contact.service';
+import { WebContactService } from './services/loaders/web-contact.service';
 
 @Component({
   selector: 'app-root',
@@ -18,12 +20,14 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     public appLoadedService: AppLoadedService,
-    public appStateService: AppStateService) {
+    public appStateService: AppStateService,
+    public webContactService: WebContactService,
+    public loggedInContactService: LoggedInContactService) {
   }
 
   ngOnInit() {
-    this.subWebContact = this.appLoadedService.GetWebContact().subscribe();
-    this.subLoggedInContact = this.appLoadedService.GetLoggedInContact().subscribe();
+    this.subWebContact = this.webContactService.GetWebContact().subscribe();
+    this.subLoggedInContact = this.loggedInContactService.GetLoggedInContact().subscribe();
   }
 
   ngOnDestroy() {

@@ -4,6 +4,10 @@ import { CountrySubComponentEnum } from '../enums/generated/CountrySubComponentE
 import { FilesSortPropEnum } from '../enums/generated/FilesSortPropEnum';
 import { LanguageEnum } from '../enums/generated/LanguageEnum';
 import { MapSizeEnum } from '../enums/generated/MapSizeEnum';
+import { MunicipalitySubComponentEnum } from '../enums/generated/MunicipalitySubComponentEnum';
+import { MWQMRunSubComponentEnum } from '../enums/generated/MWQMRunSubComponentEnum';
+import { MWQMSiteSubComponentEnum } from '../enums/generated/MWQMSiteSubComponentEnum';
+import { PolSourceSiteSubComponentEnum } from '../enums/generated/PolSourceSiteSubComponentEnum';
 import { ProvinceSubComponentEnum } from '../enums/generated/ProvinceSubComponentEnum';
 import { RootSubComponentEnum } from '../enums/generated/RootSubComponentEnum';
 import { SectorSubComponentEnum } from '../enums/generated/SectorSubComponentEnum';
@@ -21,6 +25,10 @@ export interface AppState extends HttpStatus {
     AreaSubComponent?: AreaSubComponentEnum, // Sectors | Files 
     SectorSubComponent?: SectorSubComponentEnum, // Subsectors | Files | MIKEScenarios
     SubsectorSubComponent?: SubsectorSubComponentEnum, // MWQMSites | Analysis | MWQMRuns | PollutionSourceSites | Files | SubsectorTools | LogBook
+    MunicipalitySubComponent?: MunicipalitySubComponentEnum, // Infrastructures | MIKEScenarios | Contacts | Files
+    MWQMSiteSubComponent?: MWQMSiteSubComponentEnum, // Information | Files
+    MWQMRunSubComponent?: MWQMRunSubComponentEnum, // Information | Files
+    PolSourceSiteSubComponent?: PolSourceSiteSubComponentEnum, // Information | Files
     CurrentTVItemID?: number;
     Language?: LanguageEnum; // en | fr | enAndfr | es
     BaseApiUrl?: string;
@@ -50,10 +58,10 @@ export interface AppState extends HttpStatus {
     ProvinceAreasSortOrder?: AscDescEnum;
     ProvinceMunicipalitiesSortOrder?: AscDescEnum;
     ProvinceFilesSortOrder?: AscDescEnum;
-    ProvinceFilesSortByProp?: FilesSortPropEnum; 
+    ProvinceFilesSortByProp?: FilesSortPropEnum;
     AreaSectorsSortOrder?: AscDescEnum;
     AreaFilesSortOrder?: AscDescEnum;
-    AreaFilesSortByProp?: FilesSortPropEnum; 
+    AreaFilesSortByProp?: FilesSortPropEnum;
     SectorSubsectorsSortOrder?: AscDescEnum;
     SectorFilesSortOrder?: AscDescEnum;
     SectorFilesSortByProp?: FilesSortPropEnum;
@@ -62,4 +70,13 @@ export interface AppState extends HttpStatus {
     SubsectorPolSourceSitesSortOrder?: AscDescEnum;
     SubsectorFilesSortOrder?: AscDescEnum;
     SubsectorFilesSortByProp?: FilesSortPropEnum;
+    MunicipaltyInfrastructuresSortOrder?: AscDescEnum;
+    MunicipalityFilesSortOrder?: AscDescEnum;
+    MunicipalityFilesSortByProp?: FilesSortPropEnum;
+    MWQMSiteFilesSortOrder?: AscDescEnum;
+    MWQMSiteFilesSortByProp?: FilesSortPropEnum;
+    MWQMRunFilesSortOrder?: AscDescEnum;
+    MWQMRunFilesSortByProp?: FilesSortPropEnum;
+    PolSourceSiteFilesSortOrder?: AscDescEnum;
+    PolSourceSiteFilesSortByProp?: FilesSortPropEnum;
 }

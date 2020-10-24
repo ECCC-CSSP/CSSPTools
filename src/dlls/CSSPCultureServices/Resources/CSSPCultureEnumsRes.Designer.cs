@@ -3638,6 +3638,60 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Contacts.
+        /// </summary>
+        public static string MunicipalitySubComponentEnumContacts {
+            get {
+                return ResourceManager.GetString("MunicipalitySubComponentEnumContacts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Files.
+        /// </summary>
+        public static string MunicipalitySubComponentEnumFiles {
+            get {
+                return ResourceManager.GetString("MunicipalitySubComponentEnumFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Infrastructures.
+        /// </summary>
+        public static string MunicipalitySubComponentEnumInfrastructures {
+            get {
+                return ResourceManager.GetString("MunicipalitySubComponentEnumInfrastructures", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MIKE Scenarios.
+        /// </summary>
+        public static string MunicipalitySubComponentEnumMIKEScenarios {
+            get {
+                return ResourceManager.GetString("MunicipalitySubComponentEnumMIKEScenarios", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Files.
+        /// </summary>
+        public static string MWQMRunSubComponentEnumFiles {
+            get {
+                return ResourceManager.GetString("MWQMRunSubComponentEnumFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Information.
+        /// </summary>
+        public static string MWQMRunSubComponentEnumInformation {
+            get {
+                return ResourceManager.GetString("MWQMRunSubComponentEnumInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to MWQMSiteLatestClassification.
         /// </summary>
         public static string MWQMSiteLatestClassification {
@@ -3697,6 +3751,24 @@ namespace CSSPCultureServices.Resources {
         public static string MWQMSiteLatestClassificationEnumUnclassified {
             get {
                 return ResourceManager.GetString("MWQMSiteLatestClassificationEnumUnclassified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Files.
+        /// </summary>
+        public static string MWQMSiteSubComponentEnumFiles {
+            get {
+                return ResourceManager.GetString("MWQMSiteSubComponentEnumFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Information.
+        /// </summary>
+        public static string MWQMSiteSubComponentEnumInformation {
+            get {
+                return ResourceManager.GetString("MWQMSiteSubComponentEnumInformation", resourceCulture);
             }
         }
         
@@ -3823,6 +3895,24 @@ namespace CSSPCultureServices.Resources {
         public static string PolSourceObsInfoTypeEnumText {
             get {
                 return ResourceManager.GetString("PolSourceObsInfoTypeEnumText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Files.
+        /// </summary>
+        public static string PolSourceSiteSubComponentEnumFiles {
+            get {
+                return ResourceManager.GetString("PolSourceSiteSubComponentEnumFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Information.
+        /// </summary>
+        public static string PolSourceSiteSubComponentEnumInformation {
+            get {
+                return ResourceManager.GetString("PolSourceSiteSubComponentEnumInformation", resourceCulture);
             }
         }
         
@@ -6956,6 +7046,42 @@ namespace CSSPCultureServices.Resources {
         public static string ShellSubComponentEnumCountry {
             get {
                 return ResourceManager.GetString("ShellSubComponentEnumCountry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Municipality.
+        /// </summary>
+        public static string ShellSubComponentEnumMunicipality {
+            get {
+                return ResourceManager.GetString("ShellSubComponentEnumMunicipality", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MWQMRun.
+        /// </summary>
+        public static string ShellSubComponentEnumMWQMRun {
+            get {
+                return ResourceManager.GetString("ShellSubComponentEnumMWQMRun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MWQMSite.
+        /// </summary>
+        public static string ShellSubComponentEnumMWQMSite {
+            get {
+                return ResourceManager.GetString("ShellSubComponentEnumMWQMSite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PolSourceSite.
+        /// </summary>
+        public static string ShellSubComponentEnumPolSourceSite {
+            get {
+                return ResourceManager.GetString("ShellSubComponentEnumPolSourceSite", resourceCulture);
             }
         }
         

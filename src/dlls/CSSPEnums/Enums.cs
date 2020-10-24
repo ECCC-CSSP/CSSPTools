@@ -497,6 +497,11 @@ namespace CSSPEnums
         PollutionLimit = 4,
         PollutionAnimation = 5,
     }
+    public enum MWQMRunSubComponentEnum
+    {
+        Information = 1,
+        Files = 2,
+    }
     public enum MWQMSiteLatestClassificationEnum
     {
         Approved = 1,
@@ -505,6 +510,18 @@ namespace CSSPEnums
         ConditionallyRestricted = 4,
         Prohibited = 5,
         Unclassified = 6,
+    }
+    public enum MWQMSiteSubComponentEnum
+    {
+        Information = 1,
+        Files = 2,
+    }
+    public enum MunicipalitySubComponentEnum
+    {
+        Infrastructures = 1,
+        MIKEScenarios = 2,
+        Contacts = 3,
+        Files = 4
     }
     public enum PolSourceInactiveReasonEnum
     {
@@ -517,6 +534,11 @@ namespace CSSPEnums
         LowRisk = 1,
         ModerateRisk = 2,
         HighRisk = 3,
+    }
+    public enum PolSourceSiteSubComponentEnum
+    {
+        Information = 1,
+        Files = 2,
     }
     public enum PositionEnum
     {
@@ -916,6 +938,10 @@ namespace CSSPEnums
         Area = 4,
         Sector = 5,
         Subsector = 6,
+        Municipality = 7,
+        MWQMSite = 8,
+        MWQMRun = 9,
+        PolSourceSite = 10,
     }
     public enum SiteTypeEnum
     {

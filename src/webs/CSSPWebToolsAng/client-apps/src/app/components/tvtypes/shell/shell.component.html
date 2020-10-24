@@ -10,6 +10,7 @@
         <button mat-button (click)="Home()" title="{{ appLanguageService.AppLanguage.ShellReturnHome[appStateService.AppState$?.getValue().Language] }}">
             {{ appLanguageService.AppLanguage.ShellApplicationName[appStateService.AppState$?.getValue().Language] }}
         </button>
+        <span>{{ appStateService.AppState$?.getValue()?.CurrentTVItemID }}</span>
         <span>
             <app-search></app-search>
         </span>

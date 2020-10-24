@@ -6,6 +6,7 @@ import { AppState } from 'src/app/models/AppState.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { Subscription } from 'rxjs';
+import { WebContactService } from 'src/app/services/loaders/web-contact.service';
 
 @Component({
   selector: 'app-home',
@@ -19,10 +20,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   
   constructor(public appLoadedService: AppLoadedService,
     public appStateService: AppStateService,
-    public appLanguageService: AppLanguageService) { }
+    public appLanguageService: AppLanguageService,
+    public webContactService: WebContactService) { }
 
   ngOnInit(): void {
-    this.subWebContact = this.appLoadedService.GetWebContact().subscribe();
+    this.subWebContact = this.webContactService.GetWebContact().subscribe();
   }
 
   ngOnDestroy() {
