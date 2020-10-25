@@ -27,16 +27,6 @@
         ({{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebArea?.TVItemModel, tvTypeEnum.File) }}/
         {{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebArea?.TVItemModel, tvTypeEnum.TotalFile) }})
     </span>
-    <span class="biggerArrow"
-        (click)="tvFileSortOrderService.ChangeTVFileSortOrder('CountryFilesSortOrder', ascDescEnum.Ascending)"
-        *ngIf="appStateService.AppState$.getValue().CountryFilesSortOrder == ascDescEnum.Descending">
-        &nbsp;&nbsp;&uarr;
-    </span>
-    <span class="biggerArrow"
-        (click)="tvFileSortOrderService.ChangeTVFileSortOrder('CountryFilesSortOrder', ascDescEnum.Descending)"
-        *ngIf="appStateService.AppState$.getValue().CountryFilesSortOrder == ascDescEnum.Ascending">
-        &nbsp;&nbsp;&darr;
-    </span>
 </button>
 
 <app-tvitem-list *ngIf="appStateService.AppState$?.getValue()?.AreaSubComponent == areaSubComponentEnum.Sectors"
@@ -46,5 +36,5 @@
 
 <app-file-list *ngIf="appStateService.AppState$?.getValue()?.AreaSubComponent == areaSubComponentEnum.Files"
     [AppState]="appStateService.AppState$?.getValue()" 
-    [TVFileModelList]="appLoadedService.AppLoaded$?.getValue()?.AreaFileList">
+    [TVFileModelListList]="appLoadedService.AppLoaded$?.getValue()?.AreaFileListList">
 </app-file-list>

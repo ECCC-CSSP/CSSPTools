@@ -6,6 +6,7 @@ import { AppLoaded } from 'src/app/models/AppLoaded.model';
 import { WebMunicipalities } from 'src/app/models/generated/WebMunicipalities.model';
 import { AppLoadedService } from '../app-loaded.service';
 import { AppStateService } from '../app-state.service';
+import { SortTVItemListService } from './sort-tvitem-list.service';
 
 
 @Injectable({
@@ -15,7 +16,8 @@ export class WebMunicipalitiesService {
 
   constructor(private httpClient: HttpClient,
     private appStateService: AppStateService, 
-    private appLoadedService: AppLoadedService) {
+    private appLoadedService: AppLoadedService,
+    private sortTVItemListService: SortTVItemListService) {
   }
 
     GetWebMunicipalities(TVItemID: number) {
@@ -36,6 +38,7 @@ export class WebMunicipalitiesService {
       UpdateWebMunicipalities(x: WebMunicipalities) {
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
           WebMunicipalities: x,
+          ProvinceMunicipalityList: this.sortTVItemListService.SortTVItemList(x.TVItemMunicipalityList, x?.TVItemParentList),
           Working: false
         });
       }    

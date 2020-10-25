@@ -11,7 +11,6 @@ import { GetAscDescEnum } from 'src/app/enums/generated/AscDescEnum';
 import { WebAreaService } from 'src/app/services/loaders/web-area.service';
 import { TVItemSortOrderService } from 'src/app/services/loaders/tvitem-sort-order.service';
 import { StatCountService } from 'src/app/services/helpers/stat-count.service';
-import { TVFileSortOrderService } from 'src/app/services/loaders/tvfile-sort-order.service';
 
 @Component({
   selector: 'app-area',
@@ -30,8 +29,7 @@ export class AreaComponent implements OnInit, OnDestroy {
     public appLanguageService: AppLanguageService,
     public webAreaService: WebAreaService,
     public tvItemSortOrderService: TVItemSortOrderService,
-    public statCountService: StatCountService,
-    public tvFileSortOrderService: TVFileSortOrderService) { }
+    public statCountService: StatCountService) { }
 
   ngOnInit(): void {
     let TVItemID: number = this.appStateService.AppState$.getValue().CurrentTVItemID;

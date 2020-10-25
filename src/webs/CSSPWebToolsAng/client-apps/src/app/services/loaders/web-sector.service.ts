@@ -7,7 +7,7 @@ import { WebBase } from 'src/app/models/generated/WebBase.model';
 import { WebSector } from 'src/app/models/generated/WebSector.model';
 import { AppLoadedService } from '../app-loaded.service';
 import { AppStateService } from '../app-state.service';
-import { SortTVFileListService } from './sort-tvfile-list.service';
+import { StructureTVFileListService } from './structure-tvfile-list.service';
 import { SortTVItemListService } from './sort-tvitem-list.service';
 
 
@@ -20,7 +20,7 @@ export class WebSectorService {
     private appStateService: AppStateService,
     private appLoadedService: AppLoadedService,
     private sortTVItemListService: SortTVItemListService,
-    private sortTVFileListService: SortTVFileListService) {
+    private structureTVFileListService: StructureTVFileListService) {
   }
 
   GetWebSector(TVItemID: number) {
@@ -68,7 +68,7 @@ export class WebSectorService {
       WebSector: x,
       SectorSubsectorList: this.sortTVItemListService.SortTVItemList(SectorSubsectorList, x?.TVItemParentList),
       SectorMIKEScenarioList: this.sortTVItemListService.SortTVItemList(SectorMIKEScenarioList, x?.TVItemParentList),
-      SectorFileList: this.sortTVFileListService.SortTVFileList(SectorSubsectorList, x.TVItemModel.TVFileModelList, x?.TVItemParentList),
+      SectorFileListList: this.structureTVFileListService.StructureTVFileList(x.TVItemModel),
       BreadCrumbWebBaseList: x?.TVItemParentList,
       Working: false
     });

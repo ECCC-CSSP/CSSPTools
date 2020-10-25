@@ -10,7 +10,6 @@ import { GetAscDescEnum } from 'src/app/enums/generated/AscDescEnum';
 import { WebCountryService } from 'src/app/services/loaders/web-country.service';
 import { TVItemSortOrderService } from 'src/app/services/loaders/tvitem-sort-order.service';
 import { StatCountService } from 'src/app/services/helpers/stat-count.service';
-import { TVFileSortOrderService } from 'src/app/services/loaders/tvfile-sort-order.service';
 
 @Component({
   selector: 'app-country',
@@ -29,8 +28,7 @@ export class CountryComponent implements OnInit, OnDestroy {
     public appLanguageService: AppLanguageService,
     public webCountryService: WebCountryService,
     public tvItemSortOrderService: TVItemSortOrderService,
-    public statCountService: StatCountService,
-    public tvFileSortOrderService: TVFileSortOrderService) {
+    public statCountService: StatCountService) {
 
   }
 

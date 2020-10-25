@@ -1,6 +1,8 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Input } from '@angular/core';
+import { FilePurposeEnum, FilePurposeEnum_GetIDText } from 'src/app/enums/generated/FilePurposeEnum';
 import { AppState } from 'src/app/models/AppState.model';
 import { TVFileModel } from 'src/app/models/generated/TVFileModel.model';
+import { AppStateService } from 'src/app/services/app-state.service';
 
 @Component({
   selector: 'app-file-list',
@@ -9,15 +11,19 @@ import { TVFileModel } from 'src/app/models/generated/TVFileModel.model';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FileListComponent implements OnInit, OnDestroy {
-  @Input() TVFileModelList: TVFileModel[];
+  @Input() TVFileModelListList: TVFileModel[][];
   @Input() AppState: AppState;
 
-  constructor() {
+  constructor(private appStateService: AppStateService) {
   }
 
   ngOnInit() {
   }
 
   ngOnDestroy() {
+  }
+
+  GetFilePurposeEnum_GetIDText(filePurposeEnum: number): string {
+    return FilePurposeEnum_GetIDText(filePurposeEnum, this.appStateService);
   }
 }

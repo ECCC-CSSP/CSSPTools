@@ -8,7 +8,7 @@ import { WebBase } from 'src/app/models/generated/WebBase.model';
 import { WebProvince } from 'src/app/models/generated/WebProvince.model';
 import { AppLoadedService } from '../app-loaded.service';
 import { AppStateService } from '../app-state.service';
-import { SortTVFileListService } from './sort-tvfile-list.service';
+import { StructureTVFileListService } from './structure-tvfile-list.service';
 import { SortTVItemListService } from './sort-tvitem-list.service';
 
 @Injectable({
@@ -20,7 +20,7 @@ export class WebProvinceService {
     private appStateService: AppStateService,
     private appLoadedService: AppLoadedService,
     private sortTVItemListService: SortTVItemListService,
-    private sortTVFileListService: SortTVFileListService) {
+    private structureTVFileListService: StructureTVFileListService) {
   }
 
   GetWebProvince(TVItemID: number) {
@@ -57,7 +57,7 @@ export class WebProvinceService {
     this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
       WebProvince: x,
       ProvinceAreaList: this.sortTVItemListService.SortTVItemList(ProvinceAreaList, x?.TVItemParentList),
-      ProvinceFileList: this.sortTVFileListService.SortTVFileList(ProvinceAreaList, x.TVItemModel.TVFileModelList, x?.TVItemParentList),
+      ProvinceFileListList: this.structureTVFileListService.StructureTVFileList(x.TVItemModel),
       ProvinceSamplingPlanList: ProvinceSamplingPlanList,
       BreadCrumbWebBaseList: x?.TVItemParentList,
       Working: false

@@ -67,12 +67,12 @@ export interface AppLoaded extends HttpStatus {
     // Root TVItemID related
     WebRoot?: WebRoot;
     RootCountryList?: WebBase[];
-    RootFileList?: TVFileModel[];
+    RootFileListList?: TVFileModel[][];
     
     // Country TVItemID related
     WebCountry?: WebCountry;
     CountryProvinceList?: WebBase[];
-    CountryFileList?: TVFileModel[];
+    CountryFileListList?: TVFileModel[][];
     EmailDistributionListContactLanguageList?: EmailDistributionListContactLanguage[];
     EmailDistributionListContactList?: EmailDistributionListContact[];
     EmailDistributionListLanguageList?: EmailDistributionListLanguage[];
@@ -81,7 +81,8 @@ export interface AppLoaded extends HttpStatus {
     // Province TVItemID related
     WebProvince?: WebProvince;
     ProvinceAreaList?: WebBase[];
-    ProvinceFileList?: TVFileModel[];
+    ProvinceMunicipalityList?: WebBase[];
+    ProvinceFileListList?: TVFileModel[][];
     ProvinceSamplingPlanList?: SamplingPlan[];
     // separate load
     WebMunicipalities?: WebMunicipalities;
@@ -93,12 +94,12 @@ export interface AppLoaded extends HttpStatus {
     // Area TVItemID related
     WebArea?: WebArea;
     AreaSectorList?: WebBase[];
-    AreaFileList?: TVFileModel[];
+    AreaFileListList?: TVFileModel[][];
 
     // Sector TVItemID related
     WebSector?: WebSector;
     SectorSubsectorList?: WebBase[];
-    SectorFileList?: TVFileModel[];
+    SectorFileListList?: TVFileModel[][];
     SectorMIKEScenarioList?: WebBase[];
     
     // Subsector TVItemID related
@@ -106,7 +107,7 @@ export interface AppLoaded extends HttpStatus {
     SubsectorMWQMSiteList?: WebBase[];
     SubsectorMWQMRunList?: WebBase[];
     SubsectorPolSourceSiteList?: WebBase[];
-    SubsectorFileList?: TVFileModel[];
+    SubsectorFileListList?: TVFileModel[][];
     LabSheetModelList?: LabSheetModel[];
     MWQMAnalysisReportParameterList?: MWQMAnalysisReportParameter[];
     MWQMSubsector?: MWQMSubsector;
@@ -129,13 +130,13 @@ export interface AppLoaded extends HttpStatus {
     // Municipality TVItemID related -- this object is under province
     WebMunicipality?: WebMunicipality;
     InfrastructureModelList?: InfrastructureModel[];
-    MunicipalityFileList?: TVFileModel[];
+    MunicipalityFileListList?: TVFileModel[][];
     MunicipalityContactModelList?: ContactModel[];
     MunicipalityTVItemLinkList?: TVItemLink[];
     TVItemMikeScenarioList?: WebBase[];
     // separate load --- not this object is also used for MIKE Scenario under Sector
     WebMikeScenario?: WebMikeScenario;
-    MikeScenarioFileList?: TVFileModel[];
+    MikeScenarioFileListList?: TVFileModel[][];
     MikeBoundaryConditionModelMeshList: MikeBoundaryConditionModel[];
     MikeBoundaryConditionModelWebTideList: MikeBoundaryConditionModel[];
     MikeScenario: MikeScenario;

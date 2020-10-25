@@ -6,7 +6,7 @@ import { AppLoaded } from 'src/app/models/AppLoaded.model';
 import { WebMunicipality } from 'src/app/models/generated/WebMunicipality.model';
 import { AppLoadedService } from '../app-loaded.service';
 import { AppStateService } from '../app-state.service';
-import { SortTVFileListService } from './sort-tvfile-list.service';
+import { StructureTVFileListService } from './structure-tvfile-list.service';
 
 @Injectable({
     providedIn: 'root'
@@ -16,7 +16,7 @@ export class WebMunicipalityService {
     constructor(private httpClient: HttpClient,
         private appStateService: AppStateService,
         private appLoadedService: AppLoadedService,
-        private sortTVFileListService: SortTVFileListService) {
+        private structureTVFileListService: StructureTVFileListService) {
     }
 
     GetWebMunicipality(TVItemID: number) {

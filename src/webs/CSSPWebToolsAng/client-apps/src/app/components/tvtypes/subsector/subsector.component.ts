@@ -9,7 +9,6 @@ import { AppLanguageService } from 'src/app/services/app-language.service';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { StatCountService } from 'src/app/services/helpers/stat-count.service';
-import { TVFileSortOrderService } from 'src/app/services/loaders/tvfile-sort-order.service';
 import { TVItemSortOrderService } from 'src/app/services/loaders/tvitem-sort-order.service';
 import { WebSubsectorService } from 'src/app/services/loaders/web-subsector.service';
 
@@ -30,8 +29,7 @@ export class SubsectorComponent implements OnInit, OnDestroy {
     public appLanguageService: AppLanguageService,
     public webSubsectorService: WebSubsectorService,
     public tvItemSortOrderService: TVItemSortOrderService,
-    public statCountService: StatCountService,
-    public tvFileSortOrderService: TVFileSortOrderService) { }
+    public statCountService: StatCountService) { }
 
   ngOnInit(): void {
     let TVItemID: number = this.appStateService.AppState$.getValue().CurrentTVItemID;

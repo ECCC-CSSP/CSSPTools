@@ -71,16 +71,6 @@
         ({{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebSubsector?.TVItemModel, tvTypeEnum.File) }}/
         {{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebSubsector?.TVItemModel, tvTypeEnum.TotalFile) }})
     </span>
-    <span class="biggerArrow"
-        (click)="tvFileSortOrderService.ChangeTVFileSortOrder('SubsectorFilesSortOrder', ascDescEnum.Ascending)"
-        *ngIf="appStateService.AppState$.getValue().SubsectorFilesSortOrder == ascDescEnum.Descending">
-        &nbsp;&nbsp;&uarr;
-    </span>
-    <span class="biggerArrow"
-        (click)="tvFileSortOrderService.ChangeTVFileSortOrder('SubsectorFilesSortOrder', ascDescEnum.Descending)"
-        *ngIf="appStateService.AppState$.getValue().SubsectorFilesSortOrder == ascDescEnum.Ascending">
-        &nbsp;&nbsp;&darr;
-    </span>
 </button>
 <button mat-button [ngClass]="ColorSelection(subsectorSubComponentEnum.SubsectorTools)"
     (click)="Show(subsectorSubComponentEnum.SubsectorTools)"
@@ -117,7 +107,7 @@
 
 <app-file-list *ngIf="appStateService.AppState$?.getValue()?.SubsectorSubComponent == subsectorSubComponentEnum.Files"
     [AppState]="appStateService.AppState$?.getValue()"
-    [TVFileModelList]="appLoadedService.AppLoaded$?.getValue()?.SubsectorFileList">
+    [TVFileModelListList]="appLoadedService.AppLoaded$?.getValue()?.SubsectorFileListList">
 </app-file-list>
 
 <div *ngIf="appStateService.AppState$?.getValue()?.SubsectorSubComponent == subsectorSubComponentEnum.SubsectorTools">

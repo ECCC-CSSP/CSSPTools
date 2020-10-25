@@ -7,7 +7,7 @@ import { WebArea } from 'src/app/models/generated/WebArea.model';
 import { WebBase } from 'src/app/models/generated/WebBase.model';
 import { AppLoadedService } from '../app-loaded.service';
 import { AppStateService } from '../app-state.service';
-import { SortTVFileListService } from './sort-tvfile-list.service';
+import { StructureTVFileListService } from './structure-tvfile-list.service';
 import { SortTVItemListService } from './sort-tvitem-list.service';
 
 
@@ -19,7 +19,7 @@ export class WebAreaService {
     private appStateService: AppStateService,
     private appLoadedService: AppLoadedService,
     private sortTVItemListService: SortTVItemListService,
-    private sortTVFileListService: SortTVFileListService) {
+    private structureTVFileListService: StructureTVFileListService) {
   }
 
   GetWebArea(TVItemID: number) {
@@ -50,7 +50,7 @@ export class WebAreaService {
     this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
       WebArea: x,
       AreaSectorList: this.sortTVItemListService.SortTVItemList(AreaSectorList, x?.TVItemParentList),
-      AreaFileList: this.sortTVFileListService.SortTVFileList(AreaSectorList, x.TVItemModel.TVFileModelList, x?.TVItemParentList),
+      AreaFileListList: this.structureTVFileListService.StructureTVFileList(x.TVItemModel),
       BreadCrumbWebBaseList: x?.TVItemParentList,
       Working: false
     });

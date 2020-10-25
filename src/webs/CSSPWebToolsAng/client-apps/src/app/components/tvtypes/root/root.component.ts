@@ -11,7 +11,6 @@ import { GetAscDescEnum } from 'src/app/enums/generated/AscDescEnum';
 import { WebRootService } from 'src/app/services/loaders/web-root.service';
 import { TVItemSortOrderService } from 'src/app/services/loaders/tvitem-sort-order.service';
 import { StatCountService } from 'src/app/services/helpers/stat-count.service';
-import { TVFileSortOrderService } from 'src/app/services/loaders/tvfile-sort-order.service';
 
 @Component({
   selector: 'app-root',
@@ -30,8 +29,7 @@ export class RootComponent implements OnInit, OnDestroy {
     public appLanguageService: AppLanguageService,
     public webRootService: WebRootService,
     public tvItemSortOrderService: TVItemSortOrderService,
-    public statCountService: StatCountService,
-    public tvFileSortOrderService: TVFileSortOrderService) {
+    public statCountService: StatCountService) {
   }
 
   ngOnInit(): void {

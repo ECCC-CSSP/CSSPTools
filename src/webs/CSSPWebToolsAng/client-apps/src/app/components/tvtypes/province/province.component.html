@@ -46,16 +46,6 @@
         ({{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebProvince?.TVItemModel, tvTypeEnum.File) }}/
         {{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebProvince?.TVItemModel, tvTypeEnum.TotalFile) }})
     </span>
-    <span class="biggerArrow"
-        (click)="tvFileSortOrderService.ChangeTVFileSortOrder('ProvinceFilesSortOrder', ascDescEnum.Ascending)"
-        *ngIf="appStateService.AppState$.getValue().ProvinceFilesSortOrder == ascDescEnum.Descending">
-        &nbsp;&nbsp;&uarr;
-    </span>
-    <span class="biggerArrow"
-        (click)="tvFileSortOrderService.ChangeTVFileSortOrder('ProvinceFilesSortOrder', ascDescEnum.Descending)"
-        *ngIf="appStateService.AppState$.getValue().ProvinceFilesSortOrder == ascDescEnum.Ascending">
-        &nbsp;&nbsp;&darr;
-    </span>
 </button>
 <button mat-button [ngClass]="ColorSelection(provinceSubComponentEnum.OpenData)"
     (click)="Show(provinceSubComponentEnum.OpenData)"
@@ -81,12 +71,12 @@
 <app-tvitem-list
     *ngIf="appStateService.AppState$?.getValue()?.ProvinceSubComponent == provinceSubComponentEnum.Municipalities"
     [AppState]="appStateService.AppState$?.getValue()"
-    [TVItemList]="appLoadedService.AppLoaded$?.getValue()?.WebMunicipalities.TVItemMunicipalityList">
+    [TVItemList]="appLoadedService.AppLoaded$?.getValue()?.ProvinceMunicipalityList">
 </app-tvitem-list>
 
 <app-file-list *ngIf="appStateService.AppState$?.getValue()?.ProvinceSubComponent == provinceSubComponentEnum.Files"
     [AppState]="appStateService.AppState$?.getValue()"
-    [TVFileModelList]="appLoadedService.AppLoaded$?.getValue()?.ProvinceFileList">
+    [TVFileModelListList]="appLoadedService.AppLoaded$?.getValue()?.ProvinceFileListList">
 </app-file-list>
 
 <div *ngIf="appStateService.AppState$?.getValue()?.ProvinceSubComponent == provinceSubComponentEnum.OpenData">

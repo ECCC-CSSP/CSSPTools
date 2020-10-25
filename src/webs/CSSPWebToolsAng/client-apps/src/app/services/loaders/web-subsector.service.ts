@@ -7,7 +7,7 @@ import { WebBase } from 'src/app/models/generated/WebBase.model';
 import { WebSubsector } from 'src/app/models/generated/WebSubsector.model';
 import { AppLoadedService } from '../app-loaded.service';
 import { AppStateService } from '../app-state.service';
-import { SortTVFileListService } from './sort-tvfile-list.service';
+import { StructureTVFileListService } from './structure-tvfile-list.service';
 import { SortTVItemListService } from './sort-tvitem-list.service';
 
 
@@ -20,7 +20,7 @@ export class WebSubsectorService {
         private appStateService: AppStateService, 
         private appLoadedService: AppLoadedService,
         private sortTVItemListService: SortTVItemListService,
-        private sortTVFileListService: SortTVFileListService) {
+        private structureTVFileListService: StructureTVFileListService) {
       }
     
     GetWebSubsector(TVItemID: number) {
@@ -84,7 +84,7 @@ export class WebSubsectorService {
             SubsectorMWQMSiteList: this.sortTVItemListService.SortTVItemList(SubsectorMWQMSiteList, x?.TVItemParentList),
             SubsectorMWQMRunList: this.sortTVItemListService.SortTVItemList(SubsectorMWQMRunList, x?.TVItemParentList),
             SubsectorPolSourceSiteList: this.sortTVItemListService.SortTVItemList(SubsectorPolSourceSiteList, x?.TVItemParentList),
-            SubsectorFileList: this.sortTVFileListService.SortTVFileList(SubsectorMWQMSiteList, x.TVItemModel.TVFileModelList, x?.TVItemParentList), 
+            SubsectorFileListList: this.structureTVFileListService.StructureTVFileList(x.TVItemModel), 
             LabSheetModelList: x?.LabSheetModelList,
             MWQMAnalysisReportParameterList: x?.MWQMAnalysisReportParameterList,
             MWQMSubsector: x?.MWQMSubsector,

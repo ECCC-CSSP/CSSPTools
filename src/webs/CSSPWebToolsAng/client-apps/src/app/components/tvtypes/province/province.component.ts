@@ -9,7 +9,6 @@ import { AppLanguageService } from 'src/app/services/app-language.service';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { StatCountService } from 'src/app/services/helpers/stat-count.service';
-import { TVFileSortOrderService } from 'src/app/services/loaders/tvfile-sort-order.service';
 import { TVItemSortOrderService } from 'src/app/services/loaders/tvitem-sort-order.service';
 import { WebMunicipalitiesService } from 'src/app/services/loaders/web-municipalities.service';
 import { WebProvinceService } from 'src/app/services/loaders/web-province.service';
@@ -33,8 +32,7 @@ export class ProvinceComponent implements OnInit, OnDestroy {
     public webProvinceService: WebProvinceService,
     public webMunicipalitiesService: WebMunicipalitiesService,
     public tvItemSortOrderService: TVItemSortOrderService,
-    public statCountService: StatCountService,
-    public tvFileSortOrderService: TVFileSortOrderService) { }
+    public statCountService: StatCountService) { }
 
   ngOnInit(): void {
     let TVItemID: number = this.appStateService.AppState$.getValue().CurrentTVItemID;

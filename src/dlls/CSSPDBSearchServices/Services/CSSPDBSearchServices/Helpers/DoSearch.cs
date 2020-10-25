@@ -55,6 +55,24 @@ namespace CSSPDBSearchServices
             }
 
             List<SearchResult> searchResultList = null;
+            if (SearchTerm.All(char.IsNumber))
+            {
+                int TVItemIDToSearch = int.Parse(SearchTerm);
+
+                searchResultList = (from c in dbSearch.TVItems
+                                    from cl in dbSearch.TVItemLanguages
+                                    where c.TVItemID == cl.TVItemID
+                                    && c.TVItemID == TVItemIDToSearch
+                                    && cl.Language == LanguageRequest
+                                    select new SearchResult
+                                    {
+                                        TVItem = c,
+                                        TVItemLanguage = cl,
+                                    }).ToList();
+
+                return await Task.FromResult(Ok(searchResultList));
+            }
+
             switch (TermList.Count)
             {
                 case 1:

@@ -40,16 +40,8 @@ export class SearchService {
                 })
             ).subscribe();
         }
-        else {
-            let url: string = '';
-            if (_isNumberValue(term)) {
-                url = `${this.appLoadedService.BaseApiUrl}en-CA/search/searchbytvitemid/${term}/1`;
-            }
-            else {
-                url = `${this.appLoadedService.BaseApiUrl}en-CA/search/searchbytvtext/${term}/1`;
-            }
-            
-            this.httpClient.get<SearchResult>(url).pipe(
+        else {           
+            this.httpClient.get<SearchResult>(`${this.appLoadedService.BaseApiUrl}en-CA/search/${term}/1`).pipe(
                 map((x: any) => {
                     this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ SearchResult: x, Working: false });
                     console.debug(x);

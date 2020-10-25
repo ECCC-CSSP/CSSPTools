@@ -7,7 +7,7 @@ import { WebBase } from 'src/app/models/generated/WebBase.model';
 import { WebRoot } from 'src/app/models/generated/WebRoot.model';
 import { AppLoadedService } from '../app-loaded.service';
 import { AppStateService } from '../app-state.service';
-import { SortTVFileListService } from './sort-tvfile-list.service';
+import { StructureTVFileListService } from './structure-tvfile-list.service';
 import { SortTVItemListService } from './sort-tvitem-list.service';
 
 @Injectable({
@@ -18,7 +18,7 @@ export class WebRootService {
         private appStateService: AppStateService,
         private appLoadedService: AppLoadedService,
         private sortTVItemListService: SortTVItemListService,
-        private sortTVFileListService: SortTVFileListService) {
+        private structureTVFileListService: StructureTVFileListService) {
     }
 
     GetWebRoot(TVItemID: number) {
@@ -49,7 +49,7 @@ export class WebRootService {
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
             WebRoot: x,
             RootCountryList: this.sortTVItemListService.SortTVItemList(RootCountryList, x?.TVItemParentList),
-            RootFileList: this.sortTVFileListService.SortTVFileList(RootCountryList, x.TVItemModel.TVFileModelList, x?.TVItemParentList),
+            RootFileListList: this.structureTVFileListService.StructureTVFileList(x.TVItemModel),
             BreadCrumbWebBaseList: x?.TVItemParentList, Working: false
         });
     }

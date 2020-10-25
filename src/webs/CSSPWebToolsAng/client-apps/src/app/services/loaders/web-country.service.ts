@@ -11,7 +11,7 @@ import { WebBase } from 'src/app/models/generated/WebBase.model';
 import { WebCountry } from 'src/app/models/generated/WebCountry.model';
 import { AppLoadedService } from '../app-loaded.service';
 import { AppStateService } from '../app-state.service';
-import { SortTVFileListService } from './sort-tvfile-list.service';
+import { StructureTVFileListService } from './structure-tvfile-list.service';
 import { SortTVItemListService } from './sort-tvitem-list.service';
 
 @Injectable({
@@ -23,7 +23,7 @@ export class WebCountryService {
     private appStateService: AppStateService,
     private appLoadedService: AppLoadedService,
     private sortTVItemListService: SortTVItemListService,
-    private sortTVFileListService: SortTVFileListService) {
+    private structureTVFileListService: StructureTVFileListService) {
   }
 
   GetWebCountry(TVItemID: number) {
@@ -74,7 +74,7 @@ export class WebCountryService {
     this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
       WebCountry: x,
       CountryProvinceList: this.sortTVItemListService.SortTVItemList(CountryProvinceList, x?.TVItemParentList),
-      CountryFileList: this.sortTVFileListService.SortTVFileList(CountryProvinceList, x.TVItemModel.TVFileModelList, x?.TVItemParentList),
+      CountryFileListList: this.structureTVFileListService.StructureTVFileList(x.TVItemModel),
       EmailDistributionListContactLanguageList: EmailDistributionListContactLanguageList,
       EmailDistributionListContactList: EmailDistributionListContactList,
       EmailDistributionListLanguageList: EmailDistributionListLanguageList,
