@@ -44,7 +44,7 @@ export class AppStateService {
       EditVisible: false,
       InactVisible: false,
       MenuVisible: false,
-      MapVisible: false,
+      MapVisible: true,
       MapSize: MapSizeEnum.Size50, // Size30 | Size40 | Size50 | Size60 | Size70
   
       MapTitle: "Something for text", 
@@ -58,9 +58,9 @@ export class AppStateService {
         // maxZoom: 15,
         // minZoom: 8,
       },
-      markerList: [],
-      polygonList: [],
-      polylineList: [],
+      // markerList: [],
+      // polygonList: [],
+      // polylineList: [],
       infoContent: '',
 
       RootCountriesSortOrder: AscDescEnum.Ascending,

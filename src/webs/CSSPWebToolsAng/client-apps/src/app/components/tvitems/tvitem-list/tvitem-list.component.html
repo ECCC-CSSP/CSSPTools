@@ -3,6 +3,6 @@
 <span *ngIf="(appLoadedService.AppLoaded$ | async).Working">
 </span>
 
-<mat-list *ngFor="let webBase of TVItemList">
-    <app-tvitem-list-item [AppState]="AppState" [TVItemModel]="webBase?.TVItemModel"></app-tvitem-list-item>
+<mat-list *ngFor="let webBase of TVItemList; let i = index">
+    <app-tvitem-list-item [Index]="i + 1" [AppState]="AppState" [TVItemModel]="webBase?.TVItemModel"></app-tvitem-list-item>
 </mat-list>

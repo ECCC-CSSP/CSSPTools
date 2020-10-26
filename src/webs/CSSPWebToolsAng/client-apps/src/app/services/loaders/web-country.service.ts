@@ -13,6 +13,8 @@ import { AppLoadedService } from '../app-loaded.service';
 import { AppStateService } from '../app-state.service';
 import { StructureTVFileListService } from './structure-tvfile-list.service';
 import { SortTVItemListService } from './sort-tvitem-list.service';
+import { MapService } from '../map/map.service';
+import { CountrySubComponentEnum } from 'src/app/enums/generated/CountrySubComponentEnum';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +25,8 @@ export class WebCountryService {
     private appStateService: AppStateService,
     private appLoadedService: AppLoadedService,
     private sortTVItemListService: SortTVItemListService,
-    private structureTVFileListService: StructureTVFileListService) {
+    private structureTVFileListService: StructureTVFileListService,
+    private mapService: MapService) {
   }
 
   GetWebCountry(TVItemID: number) {
@@ -82,5 +85,10 @@ export class WebCountryService {
       BreadCrumbWebBaseList: x?.TVItemParentList,
       Working: false
     });
+
+    if (this.appStateService.AppState$.getValue().CountrySubComponent == CountrySubComponentEnum.Provinces) {
+      this.mapService.ClearMap();
+      this.mapService.DrawObjects(this.appLoadedService.AppLoaded$.getValue().CountryProvinceList);
+    }
   }
 }

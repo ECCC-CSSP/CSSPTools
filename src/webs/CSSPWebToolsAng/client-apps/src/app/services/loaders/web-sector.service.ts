@@ -9,6 +9,8 @@ import { AppLoadedService } from '../app-loaded.service';
 import { AppStateService } from '../app-state.service';
 import { StructureTVFileListService } from './structure-tvfile-list.service';
 import { SortTVItemListService } from './sort-tvitem-list.service';
+import { MapService } from '../map/map.service';
+import { SectorSubComponentEnum } from 'src/app/enums/generated/SectorSubComponentEnum';
 
 
 @Injectable({
@@ -20,7 +22,8 @@ export class WebSectorService {
     private appStateService: AppStateService,
     private appLoadedService: AppLoadedService,
     private sortTVItemListService: SortTVItemListService,
-    private structureTVFileListService: StructureTVFileListService) {
+    private structureTVFileListService: StructureTVFileListService,
+    private mapService: MapService) {
   }
 
   GetWebSector(TVItemID: number) {
@@ -72,5 +75,15 @@ export class WebSectorService {
       BreadCrumbWebBaseList: x?.TVItemParentList,
       Working: false
     });
+
+    if (this.appStateService.AppState$.getValue().SectorSubComponent == SectorSubComponentEnum.Subsectors) {
+      this.mapService.ClearMap();
+      this.mapService.DrawObjects(this.appLoadedService.AppLoaded$.getValue().SectorSubsectorList);
+    }
+
+    if (this.appStateService.AppState$.getValue().SectorSubComponent == SectorSubComponentEnum.MIKEScenarios) {
+      this.mapService.ClearMap();
+      this.mapService.DrawObjects(this.appLoadedService.AppLoaded$.getValue().SectorMIKEScenarioList);
+    }
   }
 }

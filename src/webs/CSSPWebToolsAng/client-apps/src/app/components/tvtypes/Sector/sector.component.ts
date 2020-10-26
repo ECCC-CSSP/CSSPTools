@@ -57,6 +57,7 @@ export class SectorComponent implements OnInit, OnDestroy {
 
   Show(sectorSubComponent: SectorSubComponentEnum) {
     this.appStateService.UpdateAppState(<AppState>{ SectorSubComponent: sectorSubComponent });
+    this.webSectorService.UpdateWebSector(this.appLoadedService.AppLoaded$.getValue().WebSector);
   }
 
 }

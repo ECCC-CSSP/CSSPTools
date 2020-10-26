@@ -52,6 +52,7 @@ export class CountryComponent implements OnInit, OnDestroy {
 
   Show(countrySubComponent: CountrySubComponentEnum) {
     this.appStateService.UpdateAppState(<AppState>{ CountrySubComponent: countrySubComponent });
+    this.webCountryService.UpdateWebCountry(this.appLoadedService.AppLoaded$.getValue().WebCountry);
   }
 
 }

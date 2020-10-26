@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { MapInfoDrawTypeEnum } from 'src/app/enums/generated/MapInfoDrawTypeEnum';
-import { AppState } from 'src/app/models/AppState.model';
+import { AppLoaded } from 'src/app/models/AppLoaded.model';
 import { WebBase } from 'src/app/models/generated/WebBase.model';
+import { AppLoadedService } from '../app-loaded.service';
 import { AppStateService } from '../app-state.service';
 
 @Injectable({
@@ -9,41 +10,37 @@ import { AppStateService } from '../app-state.service';
 })
 export class MapPolygonsService {
 
-  constructor(private appStateService: AppStateService) {
+  constructor(private appStateService: AppStateService,
+    private appLoadedService: AppLoadedService) {
   }
 
-  FillMapPolygons(webBaseList: WebBase[]) {
-    let polygons: any[] = [];
+  DrawPolygons(webBaseList: WebBase[]) {
+    let polygonList: google.maps.Polygon[] = [];
 
     for (let webBase of webBaseList) {
       for (let mapInfoModel of webBase.TVItemModel.MapInfoModelList) {
         if (mapInfoModel.MapInfo?.MapInfoDrawType == MapInfoDrawTypeEnum.Polygon) {
-          // let position: google.maps.LatLngLiteral = { lat: mapInfoModel.MapInfoPointList[0].Lat, lng: mapInfoModel.MapInfoPointList[0].Lng };
-          // let label: google.maps.MarkerLabel = { color: 'red', text: webBase.TVItemModel.TVItemLanguageEN.TVText };
-          // let title = 'title - ' + webBase.TVItemModel.TVItemLanguageEN.TVText;
-          // let info = 'info - ' + webBase.TVItemModel.TVItemLanguageEN.TVText;
 
           let polyPoints = new google.maps.MVCArray<google.maps.LatLng>();
           for (let point of mapInfoModel.MapInfoPointList) {
             polyPoints.push(new google.maps.LatLng(point.Lat, point.Lng));
           }
 
-          let polygon = new google.maps.Polygon({
+          let options: google.maps.PolygonOptions = {
             paths: polyPoints,
             strokeColor: "#FF0000",
             strokeOpacity: 0.8,
             strokeWeight: 2,
             fillColor: "#FF0000",
-            fillOpacity: 0.35,
-          });
+            fillOpacity: 0.0,
+            map: this.appLoadedService.AppLoaded$.getValue().Map,
+          };
 
-          polygons.push(polygon);
+          polygonList.push(new google.maps.Polygon(options));
         }
       };
     }
 
-    this.appStateService.UpdateAppState(<AppState>{ polygonList: polygons });
+    this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ GooglePolygonListMVC: new google.maps.MVCArray<google.maps.Polygon>(polygonList) });
   }
-
-
 }

@@ -6,6 +6,7 @@ import { EmailDistributionListContactLanguage } from './generated/EmailDistribut
 import { EmailDistributionListLanguage } from './generated/EmailDistributionListLanguage.model';
 import { InfrastructureModel } from './generated/InfrastructureModel.model';
 import { LabSheetModel } from './generated/LabSheetModel.model';
+import { MapInfoModel } from './generated/MapInfoModel.model';
 import { MikeBoundaryConditionModel } from './generated/MikeBoundaryConditionModel.model';
 import { MikeScenario } from './generated/MikeScenario.model';
 import { MikeSourceModel } from './generated/MikeSourceModel.model';
@@ -51,7 +52,18 @@ export interface AppLoaded extends HttpStatus {
     LoggedInContact?: Contact;
     BreadCrumbWebBaseList?: WebBase[];
     PreferenceList?: Preference[];
-    
+   
+    // Map related items
+    Map?: google.maps.Map;
+    Zoom?: number;
+    Center?: google.maps.LatLngLiteral;
+    Options?: google.maps.MapOptions;
+    GoogleCrossPolylineListMVC?: google.maps.MVCArray<google.maps.Polyline>;
+    GoogleMarkerListMVC?: google.maps.MVCArray<google.maps.Marker>;
+    GooglePolygonListMVC?: google.maps.MVCArray<google.maps.Polygon>;
+    GooglePolylineListMVC?: google.maps.MVCArray<google.maps.Polyline>;
+    InfoContent?: string;
+
     // Complete list not related to a TVItemID
     WebContact?: WebContact;
     AdminContactList?: Contact[];
@@ -61,6 +73,7 @@ export interface AppLoaded extends HttpStatus {
     WebPolSourceSiteEffectTerm?: WebPolSourceSiteEffectTerm;   
     WebReportType?: WebReportType;   
     WebTideLocation?: WebTideLocation;
+    MapInfoModelList?: MapInfoModel[];
    
     SearchResult?: SearchResult[];
     

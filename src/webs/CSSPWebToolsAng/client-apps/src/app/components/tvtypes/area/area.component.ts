@@ -57,6 +57,7 @@ export class AreaComponent implements OnInit, OnDestroy {
 
   Show(areaSubComponent: AreaSubComponentEnum) {
     this.appStateService.UpdateAppState(<AppState>{ AreaSubComponent: areaSubComponent });
+    this.webAreaService.UpdateWebArea(this.appLoadedService.AppLoaded$.getValue().WebArea);
   }
 
 }

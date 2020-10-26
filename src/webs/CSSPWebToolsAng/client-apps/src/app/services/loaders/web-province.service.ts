@@ -10,6 +10,8 @@ import { AppLoadedService } from '../app-loaded.service';
 import { AppStateService } from '../app-state.service';
 import { StructureTVFileListService } from './structure-tvfile-list.service';
 import { SortTVItemListService } from './sort-tvitem-list.service';
+import { MapService } from '../map/map.service';
+import { ProvinceSubComponentEnum } from 'src/app/enums/generated/ProvinceSubComponentEnum';
 
 @Injectable({
   providedIn: 'root'
@@ -20,11 +22,17 @@ export class WebProvinceService {
     private appStateService: AppStateService,
     private appLoadedService: AppLoadedService,
     private sortTVItemListService: SortTVItemListService,
-    private structureTVFileListService: StructureTVFileListService) {
+    private structureTVFileListService: StructureTVFileListService,
+    private mapService: MapService) {
   }
 
   GetWebProvince(TVItemID: number) {
-    this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebProvince: {}, ProvinceAreaList: [], BreadCrumbWebBaseList: [], Working: true });
+    this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
+      WebProvince: {},
+      ProvinceAreaList: [],
+      BreadCrumbWebBaseList: [],
+      Working: true
+    });
     let url: string = `${this.appLoadedService.BaseApiUrl}en-CA/Read/WebProvince/${TVItemID}/1`;
     return this.httpClient.get<WebProvince>(url).pipe(
       map((x: any) => {
@@ -62,5 +70,10 @@ export class WebProvinceService {
       BreadCrumbWebBaseList: x?.TVItemParentList,
       Working: false
     });
+
+    if (this.appStateService.AppState$.getValue().ProvinceSubComponent == ProvinceSubComponentEnum.Areas) {
+      this.mapService.ClearMap();
+      this.mapService.DrawObjects(this.appLoadedService.AppLoaded$.getValue().ProvinceAreaList);
+    }
   }
 }

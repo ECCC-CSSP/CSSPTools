@@ -9,6 +9,8 @@ import { AppLoadedService } from '../app-loaded.service';
 import { AppStateService } from '../app-state.service';
 import { StructureTVFileListService } from './structure-tvfile-list.service';
 import { SortTVItemListService } from './sort-tvitem-list.service';
+import { MapService } from '../map/map.service';
+import { RootSubComponentEnum } from 'src/app/enums/generated/RootSubComponentEnum';
 
 @Injectable({
     providedIn: 'root'
@@ -18,11 +20,17 @@ export class WebRootService {
         private appStateService: AppStateService,
         private appLoadedService: AppLoadedService,
         private sortTVItemListService: SortTVItemListService,
-        private structureTVFileListService: StructureTVFileListService) {
+        private structureTVFileListService: StructureTVFileListService,
+        private mapService: MapService) {
     }
 
     GetWebRoot(TVItemID: number) {
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebRoot: {}, RootCountryList: [], BreadCrumbWebBaseList: [], Working: true });
+        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
+            WebRoot: {},
+            RootCountryList: [],
+            BreadCrumbWebBaseList: [],
+            Working: true
+        });
         let url: string = `${this.appLoadedService.BaseApiUrl}en-CA/Read/WebRoot/${TVItemID}/1`;
         return this.httpClient.get<WebRoot>(url).pipe(
             map((x: any) => {
@@ -50,7 +58,13 @@ export class WebRootService {
             WebRoot: x,
             RootCountryList: this.sortTVItemListService.SortTVItemList(RootCountryList, x?.TVItemParentList),
             RootFileListList: this.structureTVFileListService.StructureTVFileList(x.TVItemModel),
-            BreadCrumbWebBaseList: x?.TVItemParentList, Working: false
+            BreadCrumbWebBaseList: x?.TVItemParentList,
+            Working: false,
         });
+
+        if (this.appStateService.AppState$.getValue().RootSubComponent == RootSubComponentEnum.Countries) {
+            this.mapService.ClearMap();
+            this.mapService.DrawObjects(this.appLoadedService.AppLoaded$.getValue().RootCountryList);
+        }
     }
 }

@@ -1,44 +1,6 @@
 <span *ngIf="(appStateService.AppState$ | async).Working">
 </span>
+<span *ngIf="(appLoadedService.AppLoaded$ | async).Working">
+</span>
 
-
-<!-- latitude: <input placeholder="latitude" name="latitude" [(ngModel)]="latitude" required >
-longitude: <input placeholder="longitude" name="longitude" [(ngModel)]="longitude" required >
-<h2>Coordinates:</h2>
-<ul>
-    <li *ngFor="let coordinate of coordinates">
-      {{ coordinate.lat }},{{coordinate.lng}}
-    </li>
-  </ul>
-<button type="submit" (click)="onAdd()">Add coordinates</button>
-<button type="submit" (click)="onSubmit()">Draw Polygons</button> -->
 <div #map class="map"></div>
-
-<!-- <google-map height="100%" width="100%" 
-[zoom]="mapService.MapModel$?.getValue()?.zoom" 
-[center]="mapService.MapModel$?.getValue()?.center" 
-[options]="mapService.MapModel$?.getValue()?.options" (mapClick)="click($event)">
-
-  <map-marker #somemarker="mapMarker" *ngFor="let marker of mapService.MapModel$?.getValue()?.markerList" 
-  [position]="marker.position" 
-  [label]="marker.label"
-  [title]="marker.title" 
-  [options]="marker.options" 
-  (mapClick)="openInfo(somemarker, marker.info)">
-  </map-marker>
-
-  <map-polygon #somepolygon="mapPolygon" *ngFor="let polygon of mapService.MapModel$?.getValue()?.polygonList" 
-  [paths]="polygon.paths" 
-  [options]="polygon.options"
->
-  </map-polygon>
-
-  <map-polyline #somepolyline="mapPolyline" *ngFor="let polyline of mapService.MapModel$?.getValue()?.polylineList" 
-  [title]="polyline.title"
-  [options]="polyline.options" 
-  (mapClick)="openInfo(somepolyline, polyline.info)">
-
-  </map-polyline>
-
-  <map-info-window>{{ mapService.MapModel$?.getValue()?.infoContent }}</map-info-window>
-</google-map> -->

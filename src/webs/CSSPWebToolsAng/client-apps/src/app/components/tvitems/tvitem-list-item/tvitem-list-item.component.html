@@ -3,9 +3,18 @@
 <span *ngIf="(appLoadedService.AppLoaded$ | async).Working">
 </span>
 
-<mat-list-item (click)="subPageService.SetSubPage(TVItemModel)">
-    <button mat-button [ngClass]="(IsBreadCrumb && IsLast) ? 'selected' : ''">
+<mat-list-item>
+    <button mat-button 
+    *ngIf="appStateService.AppState$?.getValue()?.MapVisible && !IsBreadCrumb"
+    (click)="mapService.ShowItem(TVItemModel)">
+        <mat-icon>place</mat-icon>
+    </button>
+    <button mat-button [ngClass]="(IsBreadCrumb && IsLast) ? 'selected' : ''"
+        (click)="subPageService.SetSubPage(TVItemModel)">
         <span [ngClass]="TVItemModel?.TVItem?.IsActive ? '' : 'inactive'">
+            <span *ngIf="appStateService.AppState$?.getValue()?.MapVisible && !IsBreadCrumb">
+                {{ Index }}&nbsp;-&nbsp;
+            </span>
             <span *ngIf="appStateService.AppState$?.getValue()?.DetailVisible">
                 [{{ TVItemModel.TVItem.TVItemID }}]
             </span>

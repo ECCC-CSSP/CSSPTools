@@ -9,6 +9,8 @@ import { AppLoadedService } from '../app-loaded.service';
 import { AppStateService } from '../app-state.service';
 import { StructureTVFileListService } from './structure-tvfile-list.service';
 import { SortTVItemListService } from './sort-tvitem-list.service';
+import { MapService } from '../map/map.service';
+import { AreaSubComponentEnum } from 'src/app/enums/generated/AreaSubComponentEnum';
 
 
 @Injectable({
@@ -19,7 +21,8 @@ export class WebAreaService {
     private appStateService: AppStateService,
     private appLoadedService: AppLoadedService,
     private sortTVItemListService: SortTVItemListService,
-    private structureTVFileListService: StructureTVFileListService) {
+    private structureTVFileListService: StructureTVFileListService,
+    private mapService: MapService) {
   }
 
   GetWebArea(TVItemID: number) {
@@ -54,5 +57,10 @@ export class WebAreaService {
       BreadCrumbWebBaseList: x?.TVItemParentList,
       Working: false
     });
+
+    if (this.appStateService.AppState$.getValue().AreaSubComponent == AreaSubComponentEnum.Sectors) {
+      this.mapService.ClearMap();
+      this.mapService.DrawObjects(this.appLoadedService.AppLoaded$.getValue().AreaSectorList);    
+      }
   }
 }

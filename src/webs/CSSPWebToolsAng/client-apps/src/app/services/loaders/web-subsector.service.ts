@@ -9,6 +9,8 @@ import { AppLoadedService } from '../app-loaded.service';
 import { AppStateService } from '../app-state.service';
 import { StructureTVFileListService } from './structure-tvfile-list.service';
 import { SortTVItemListService } from './sort-tvitem-list.service';
+import { MapService } from '../map/map.service';
+import { SubsectorSubComponentEnum } from 'src/app/enums/generated/SubsectorSubComponentEnum';
 
 
 @Injectable({
@@ -17,12 +19,13 @@ import { SortTVItemListService } from './sort-tvitem-list.service';
 export class WebSubsectorService {
 
     constructor(private httpClient: HttpClient,
-        private appStateService: AppStateService, 
+        private appStateService: AppStateService,
         private appLoadedService: AppLoadedService,
         private sortTVItemListService: SortTVItemListService,
-        private structureTVFileListService: StructureTVFileListService) {
-      }
-    
+        private structureTVFileListService: StructureTVFileListService,
+        private mapService: MapService) {
+    }
+
     GetWebSubsector(TVItemID: number) {
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
             WebSubsector: {},
@@ -84,7 +87,7 @@ export class WebSubsectorService {
             SubsectorMWQMSiteList: this.sortTVItemListService.SortTVItemList(SubsectorMWQMSiteList, x?.TVItemParentList),
             SubsectorMWQMRunList: this.sortTVItemListService.SortTVItemList(SubsectorMWQMRunList, x?.TVItemParentList),
             SubsectorPolSourceSiteList: this.sortTVItemListService.SortTVItemList(SubsectorPolSourceSiteList, x?.TVItemParentList),
-            SubsectorFileListList: this.structureTVFileListService.StructureTVFileList(x.TVItemModel), 
+            SubsectorFileListList: this.structureTVFileListService.StructureTVFileList(x.TVItemModel),
             LabSheetModelList: x?.LabSheetModelList,
             MWQMAnalysisReportParameterList: x?.MWQMAnalysisReportParameterList,
             MWQMSubsector: x?.MWQMSubsector,
@@ -93,5 +96,20 @@ export class WebSubsectorService {
             BreadCrumbWebBaseList: x?.TVItemParentList,
             Working: false
         });
+
+        if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.MWQMSites) {
+            this.mapService.ClearMap();
+            this.mapService.DrawObjects(this.appLoadedService.AppLoaded$.getValue().SubsectorMWQMSiteList);
+        }
+
+        if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.MWQMRuns) {
+            this.mapService.ClearMap();
+            this.mapService.DrawObjects(this.appLoadedService.AppLoaded$.getValue().SubsectorMWQMRunList);
+        }
+
+        if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.PollutionSourceSites) {
+            this.mapService.ClearMap();
+            this.mapService.DrawObjects(this.appLoadedService.AppLoaded$.getValue().SubsectorPolSourceSiteList);
+        }
     }
 }

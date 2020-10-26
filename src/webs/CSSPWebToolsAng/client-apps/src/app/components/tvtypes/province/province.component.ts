@@ -62,6 +62,8 @@ export class ProvinceComponent implements OnInit, OnDestroy {
 
   Show(provinceSubComponent: ProvinceSubComponentEnum) {
     this.appStateService.UpdateAppState(<AppState>{ ProvinceSubComponent: provinceSubComponent });
+    this.webProvinceService.UpdateWebProvince(this.appLoadedService.AppLoaded$.getValue().WebProvince);
+    this.webMunicipalitiesService.UpdateWebMunicipalities(this.appLoadedService.AppLoaded$.getValue().WebMunicipalities);
   }
 
 }

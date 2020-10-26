@@ -39,15 +39,6 @@ export interface AppState extends HttpStatus {
     MapVisible?: boolean;
     MapSize?: MapSizeEnum; // Size30 | Size40 | Size50 | Size60 | Size70
 
-    MapTitle?: string;
-    zoom?: number;
-    center?: google.maps.LatLngLiteral;
-    options?: google.maps.MapOptions;
-    markerList?: [];
-    polygonList?: [];
-    polylineList?: [];
-    infoContent?: string;
-
     // sorting
     RootCountriesSortOrder?: AscDescEnum;
     RootFilesSortOrder?: AscDescEnum;

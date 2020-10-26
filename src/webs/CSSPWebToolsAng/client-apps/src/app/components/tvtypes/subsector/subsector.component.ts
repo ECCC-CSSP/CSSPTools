@@ -56,6 +56,7 @@ export class SubsectorComponent implements OnInit, OnDestroy {
 
   Show(subsectorSubComponent: SubsectorSubComponentEnum) {
     this.appStateService.UpdateAppState(<AppState>{ SubsectorSubComponent: subsectorSubComponent });
+    this.webSubsectorService.UpdateWebSubsector(this.appLoadedService.AppLoaded$.getValue().WebSubsector);
   }
 
 }
