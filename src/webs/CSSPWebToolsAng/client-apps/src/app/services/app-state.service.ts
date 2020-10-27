@@ -41,6 +41,7 @@ export class AppStateService {
       CurrentTVItemID: 1,
       Language: LanguageEnum.en, // en | fr | enAndfr | es
       DetailVisible: false,
+      StatCountVisible: false,
       EditVisible: false,
       InactVisible: false,
       MenuVisible: false,

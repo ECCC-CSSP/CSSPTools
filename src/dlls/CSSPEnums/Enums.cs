@@ -354,10 +354,10 @@ namespace CSSPEnums
     }
     public enum FilesSortPropEnum
     {
-        Name = 1,
-        Size = 2,
-        Type = 3,
-        Purpose = 4
+        FileName = 1,
+        FileSize = 2,
+        FileType = 3,
+        FilePurpose = 4
     }
     public enum FileStatusEnum
     {

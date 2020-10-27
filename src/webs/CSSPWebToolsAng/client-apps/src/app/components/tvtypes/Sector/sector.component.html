@@ -7,7 +7,9 @@
     title="{{ appLanguageService.AppLanguage.SectorShowSubsectors[appStateService.AppState$?.getValue().Language] }}">
     <span>
         {{ appLanguageService.AppLanguage.SectorSubsectors[appStateService.AppState$?.getValue().Language] }}
-        ({{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebSector?.TVItemModel, tvTypeEnum.Subsector) }})
+        <span class="badge-stat" *ngIf="appStateService.AppState$.getValue().StatCountVisible">
+            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebSector?.TVItemModel, tvTypeEnum.Subsector) }}&nbsp;&nbsp;
+        </span>                                                
     </span>
     <span class="biggerArrow"
         (click)="tvItemSortOrderService.ChangeTVItemSortOrder('SectorSubsectorsSortOrder', ascDescEnum.Ascending)"
@@ -24,8 +26,10 @@
     title="{{ appLanguageService.AppLanguage.SectorShowFiles[appStateService.AppState$?.getValue().Language] }}">
     <span>
         {{ appLanguageService.AppLanguage.SectorFiles[appStateService.AppState$?.getValue().Language] }}
-        ({{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebSector?.TVItemModel, tvTypeEnum.File) }}/
-        {{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebSector?.TVItemModel, tvTypeEnum.TotalFile) }})
+        <span class="badge-stat" *ngIf="appStateService.AppState$.getValue().StatCountVisible">
+            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebSector?.TVItemModel, tvTypeEnum.File) }}/
+            {{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebSector?.TVItemModel, tvTypeEnum.TotalFile) }}&nbsp;&nbsp;
+        </span>                                                        
     </span>
 </button>
 <button mat-button [ngClass]="ColorSelection(sectorSubComponentEnum.MIKEScenarios)"
@@ -33,7 +37,9 @@
     title="{{ appLanguageService.AppLanguage.SectorShowMIKEScenarios[appStateService.AppState$?.getValue().Language] }}">
     <span>
         {{ appLanguageService.AppLanguage.SectorMIKEScenarios[appStateService.AppState$?.getValue().Language] }}
-        ({{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebSector?.TVItemModel, tvTypeEnum.MikeScenario) }})
+        <span class="badge-stat" *ngIf="appStateService.AppState$.getValue().StatCountVisible">
+            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebSector?.TVItemModel, tvTypeEnum.MikeScenario) }}&nbsp;&nbsp;
+        </span>                                                                
     </span>
 </button>
 

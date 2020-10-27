@@ -21,6 +21,13 @@
         </button>
     </mat-list-item>
     <mat-list-item>
+        <button mat-button [ngClass]="appStateService.AppState$?.getValue()?.StatCountVisible ? 'selected' : ''"
+            (click)="toggleStatCountService.ToggleStatCount()"
+            title="{{ appLanguageService.AppLanguage.SideNavMenuShowStatCount[appStateService.AppState$?.getValue().Language] }}">
+            {{ appLanguageService.AppLanguage.SideNavMenuStatCount[appStateService.AppState$?.getValue().Language] }}
+        </button>
+    </mat-list-item>
+    <mat-list-item>
         <button mat-button [ngClass]="appStateService.AppState$?.getValue()?.EditVisible ? 'selected' : ''"
             (click)="toggleEditService.ToggleEdit()"
             title="{{ appLanguageService.AppLanguage.SideNavMenuShowEdit[appStateService.AppState$?.getValue().Language] }}">

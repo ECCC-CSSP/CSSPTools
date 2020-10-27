@@ -9,7 +9,9 @@
     title="{{ appLanguageService.AppLanguage.RootShowCountries[appStateService.AppState$?.getValue().Language] }}">
     <span>
         {{ appLanguageService.AppLanguage.RootCountries[appStateService.AppState$?.getValue().Language] }}
-        ({{ statCountService.GetStatCount(appLoadedService.AppLoaded$?.getValue()?.WebRoot?.TVItemModel, tvTypeEnum.Country) }})
+        <span class="badge-stat" *ngIf="appStateService.AppState$.getValue().StatCountVisible">
+            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.AppLoaded$?.getValue()?.WebRoot?.TVItemModel, tvTypeEnum.Country) }}&nbsp;&nbsp;
+        </span>
     </span>
     <span class="biggerArrow"
         (click)="tvItemSortOrderService.ChangeTVItemSortOrder('RootCountriesSortOrder', ascDescEnum.Ascending)"
@@ -27,8 +29,10 @@
     title="{{ appLanguageService.AppLanguage.RootShowFiles[appStateService.AppState$?.getValue().Language] }}">
     <span>
         {{ appLanguageService.AppLanguage.RootFiles[appStateService.AppState$?.getValue().Language] }}
-        ({{ statCountService.GetStatCount(appLoadedService.AppLoaded$?.getValue()?.WebRoot?.TVItemModel, tvTypeEnum.File) }}/
-        {{ statCountService.GetStatCount(appLoadedService.AppLoaded$?.getValue()?.WebRoot?.TVItemModel, tvTypeEnum.TotalFile) }})
+        <span class="badge-stat" *ngIf="appStateService.AppState$.getValue().StatCountVisible">
+            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.AppLoaded$?.getValue()?.WebRoot?.TVItemModel, tvTypeEnum.File) }}/
+            {{ statCountService.GetStatCount(appLoadedService.AppLoaded$?.getValue()?.WebRoot?.TVItemModel, tvTypeEnum.TotalFile) }}&nbsp;&nbsp;
+        </span>        
     </span>
 </button>
 <button mat-button [ngClass]="ColorSelection(rootSubComponentEnum.ExportArcGIS)"
@@ -43,7 +47,7 @@
 </app-tvitem-list>
 
 <app-file-list *ngIf="appStateService.AppState$?.getValue()?.RootSubComponent == rootSubComponentEnum.Files"
-    [AppState]="appStateService.AppState$?.getValue()" 
+    [AppState]="appStateService.AppState$?.getValue()"
     [TVFileModelListList]="appLoadedService.AppLoaded$?.getValue()?.RootFileListList">
 </app-file-list>
 

@@ -24,16 +24,16 @@ export function GetFilesSortPropEnum(): typeof FilesSortPropEnum
 export function FilesSortPropEnum_GetOrderedText(appStateService: AppStateService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
     if (appStateService.AppState$?.getValue().Language == LanguageEnum.fr) {
-        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Nom' });
-        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Grosseur' });
-        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Type' });
-        enumTextOrderedList.push({ EnumID: 4, EnumText: 'But' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Nom de filière' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Grosseur de filière' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Type de filière' });
+        enumTextOrderedList.push({ EnumID: 4, EnumText: 'But de filière' });
     }
     else {
-        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Name' });
-        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Size' });
-        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Type' });
-        enumTextOrderedList.push({ EnumID: 4, EnumText: 'Purpose' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'File name' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'File size' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'File type' });
+        enumTextOrderedList.push({ EnumID: 4, EnumText: 'File purpose' });
     }
 
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));

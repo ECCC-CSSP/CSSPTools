@@ -1,0 +1,33 @@
+<span *ngIf="(appStateService.AppState$ | async).Working">
+</span>
+
+<span *ngIf="tvTypeEnum.Sector">
+    <span>{{ appLanguageService.AppLanguage.TVItemListDetailAreaSector[appStateService.AppState$?.getValue().Language] }}&nbsp;&nbsp;</span>
+    <app-stat-count [TVType]="tvTypeEnum.Sector" [TVItemModel]="TVItemModel">
+    </app-stat-count>
+</span>
+<span *ngIf="tvTypeEnum.Subsector">
+    <span>{{ appLanguageService.AppLanguage.TVItemListDetailAreaSubsector[appStateService.AppState$?.getValue().Language] }}&nbsp;&nbsp;</span>
+    <app-stat-count [TVType]="tvTypeEnum.Subsector" [TVItemModel]="TVItemModel">
+    </app-stat-count>
+</span>
+<span *ngIf="tvTypeEnum.MWQMSiteSample">
+    <span>{{ appLanguageService.AppLanguage.TVItemListDetailAreaMWQMSample[appStateService.AppState$?.getValue().Language] }}&nbsp;&nbsp;</span>
+    <app-stat-count [TVType]="tvTypeEnum.MWQMSiteSample" [TVItemModel]="TVItemModel">
+    </app-stat-count>
+</span>
+<span *ngIf="tvTypeEnum.MWQMSite">
+    <span>{{ appLanguageService.AppLanguage.TVItemListDetailAreaMWQMSite[appStateService.AppState$?.getValue().Language] }}&nbsp;&nbsp;</span>
+    <app-stat-count [TVType]="tvTypeEnum.MWQMSite" [TVItemModel]="TVItemModel">
+    </app-stat-count>
+</span>
+<span *ngIf="tvTypeEnum.MWQMRun">
+    <span>{{ appLanguageService.AppLanguage.TVItemListDetailAreaMWQMRun[appStateService.AppState$?.getValue().Language] }}&nbsp;&nbsp;</span>
+    <app-stat-count [TVType]="tvTypeEnum.MWQMRun" [TVItemModel]="TVItemModel">
+    </app-stat-count>
+</span>
+<span *ngIf="tvTypeEnum.PolSourceSite">
+    <span>{{ appLanguageService.AppLanguage.TVItemListDetailAreaPolSourceSite[appStateService.AppState$?.getValue().Language] }}&nbsp;&nbsp;</span>
+    <app-stat-count [TVType]="tvTypeEnum.PolSourceSite" [TVItemModel]="TVItemModel">
+    </app-stat-count>
+</span>

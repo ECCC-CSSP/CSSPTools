@@ -11,3 +11,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   .biggerArrow {
     font-size: larger;
   }
+
+  .badge-stat {
+    border: 1px solid lightgreen;
+    padding: 3px;
+    border-radius: 25px;
+}

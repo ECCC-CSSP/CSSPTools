@@ -6,12 +6,12 @@ import { AppLanguageService } from 'src/app/services/app-language.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 
 @Component({
-  selector: 'app-tvitem-list-detail-root',
-  templateUrl: './tvitem-list-detail-root.component.html',
-  styleUrls: ['./tvitem-list-detail-root.component.css'],
+  selector: 'app-tvitem-list-detail-area',
+  templateUrl: './tvitem-list-detail-area.component.html',
+  styleUrls: ['./tvitem-list-detail-area.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TVItemListDetailRootComponent implements OnInit, OnDestroy {
+export class TVItemListDetailAreaComponent implements OnInit, OnDestroy {
   @Input() TVItemModel: TVItemModel;
   @Input() AppState: AppState;
 
@@ -22,11 +22,12 @@ export class TVItemListDetailRootComponent implements OnInit, OnDestroy {
   get tvTypeEnum(): typeof TVTypeEnum {
     return TVTypeEnum;
   }
-  
+
   ngOnInit() {
   }
 
-  ngOnDestroy()
-  {
+  ngOnDestroy() {
   }
+
+
 }

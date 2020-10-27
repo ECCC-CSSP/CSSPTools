@@ -34,20 +34,20 @@ export function GetFilePurposeEnum(): typeof FilePurposeEnum
 export function FilePurposeEnum_GetOrderedText(appStateService: AppStateService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
     if (appStateService.AppState$?.getValue().Language == LanguageEnum.fr) {
-        enumTextOrderedList.push({ EnumID: 1, EnumText: 'MIKE Input (fr)' });
-        enumTextOrderedList.push({ EnumID: 2, EnumText: 'MIKE Input MDF (fr)' });
-        enumTextOrderedList.push({ EnumID: 3, EnumText: 'MIKE Result DFSU (fr)' });
-        enumTextOrderedList.push({ EnumID: 4, EnumText: 'MIKE Result KMZ (fr)' });
-        enumTextOrderedList.push({ EnumID: 5, EnumText: 'Information (fr)' });
-        enumTextOrderedList.push({ EnumID: 6, EnumText: 'Image (fr)' });
-        enumTextOrderedList.push({ EnumID: 7, EnumText: 'Picture (fr)' });
-        enumTextOrderedList.push({ EnumID: 8, EnumText: 'Report Generated (fr)' });
-        enumTextOrderedList.push({ EnumID: 9, EnumText: 'Template Generated (fr)' });
-        enumTextOrderedList.push({ EnumID: 10, EnumText: 'Generated FC Form(fr)' });
-        enumTextOrderedList.push({ EnumID: 11, EnumText: 'Template (fr)' });
-        enumTextOrderedList.push({ EnumID: 12, EnumText: 'Map (fr)' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'MIKE données d\'entrées' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'MIKE données d\'entrées MDF' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'MIKE résultats DFSU' });
+        enumTextOrderedList.push({ EnumID: 4, EnumText: 'MIKE résultats KMZ' });
+        enumTextOrderedList.push({ EnumID: 5, EnumText: 'Information' });
+        enumTextOrderedList.push({ EnumID: 6, EnumText: 'Image' });
+        enumTextOrderedList.push({ EnumID: 7, EnumText: 'Photo' });
+        enumTextOrderedList.push({ EnumID: 8, EnumText: 'Rapport généré' });
+        enumTextOrderedList.push({ EnumID: 9, EnumText: 'Générer à partir de modèle' });
+        enumTextOrderedList.push({ EnumID: 10, EnumText: 'Formulaire CF' });
+        enumTextOrderedList.push({ EnumID: 11, EnumText: 'Modèle' });
+        enumTextOrderedList.push({ EnumID: 12, EnumText: 'Carte' });
         enumTextOrderedList.push({ EnumID: 13, EnumText: 'Analyses' });
-        enumTextOrderedList.push({ EnumID: 14, EnumText: 'Open Data (fr)' });
+        enumTextOrderedList.push({ EnumID: 14, EnumText: 'Données ouvertes' });
     }
     else {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'MIKE Input' });

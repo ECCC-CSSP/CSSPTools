@@ -3,4 +3,4 @@
 <span *ngIf="(appLoadedService.AppLoaded$ | async).Working">
 </span>
 
-<span>&nbsp;&nbsp;({{ statCountService.GetStatCount(TVItemModel, TVType) }})</span>
+<span class="badge-stat">&nbsp;&nbsp;{{ statCountService.GetStatCount(TVItemModel, TVType) }}&nbsp;&nbsp;</span>

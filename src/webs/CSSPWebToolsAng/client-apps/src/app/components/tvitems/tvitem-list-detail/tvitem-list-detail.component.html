@@ -1,12 +1,21 @@
 <blockquote>
-    <app-tvitem-list-detail-root [AppState]="AppState" [TVItemModel]="TVItemModel"
-        *ngIf="TVItemModel.TVItem.TVType == tvTypeEnum.Root">
-    </app-tvitem-list-detail-root>
     <app-tvitem-list-detail-country [AppState]="AppState" [TVItemModel]="TVItemModel"
         *ngIf="TVItemModel.TVItem.TVType == tvTypeEnum.Country">
     </app-tvitem-list-detail-country>
     <app-tvitem-list-detail-province [AppState]="AppState" [TVItemModel]="TVItemModel"
         *ngIf="TVItemModel.TVItem.TVType == tvTypeEnum.Province">
     </app-tvitem-list-detail-province>
+    <app-tvitem-list-detail-area [AppState]="AppState" [TVItemModel]="TVItemModel"
+        *ngIf="TVItemModel.TVItem.TVType == tvTypeEnum.Area">
+    </app-tvitem-list-detail-area>
+    <app-tvitem-list-detail-sector [AppState]="AppState" [TVItemModel]="TVItemModel"
+        *ngIf="TVItemModel.TVItem.TVType == tvTypeEnum.Sector">
+    </app-tvitem-list-detail-sector>
+    <app-tvitem-list-detail-subsector [AppState]="AppState" [TVItemModel]="TVItemModel"
+        *ngIf="TVItemModel.TVItem.TVType == tvTypeEnum.Subsector">
+    </app-tvitem-list-detail-subsector>
+    <app-tvitem-list-detail-municipality [AppState]="AppState" [TVItemModel]="TVItemModel"
+        *ngIf="TVItemModel.TVItem.TVType == tvTypeEnum.Municipality">
+    </app-tvitem-list-detail-municipality>
     <hr />
 </blockquote>

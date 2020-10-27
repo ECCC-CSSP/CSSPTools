@@ -7,7 +7,9 @@
     title="{{ appLanguageService.AppLanguage.AreaShowSectors[appStateService.AppState$?.getValue().Language] }}">
     <span>
         {{ appLanguageService.AppLanguage.AreaSectors[appStateService.AppState$?.getValue().Language] }}
-        ({{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebArea?.TVItemModel, tvTypeEnum.Sector) }})
+        <span class="badge-stat" *ngIf="appStateService.AppState$.getValue().StatCountVisible">
+            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebArea?.TVItemModel, tvTypeEnum.Sector) }}&nbsp;&nbsp;
+        </span>                                                                                                                
     </span>
     <span class="biggerArrow"
         (click)="tvItemSortOrderService.ChangeTVItemSortOrder('AreaSectorsSortOrder', ascDescEnum.Ascending)"
@@ -24,8 +26,10 @@
     title="{{ appLanguageService.AppLanguage.AreaShowFiles[appStateService.AppState$?.getValue().Language] }}">
     <span>
         {{ appLanguageService.AppLanguage.AreaFiles[appStateService.AppState$?.getValue().Language] }}
-        ({{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebArea?.TVItemModel, tvTypeEnum.File) }}/
-        {{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebArea?.TVItemModel, tvTypeEnum.TotalFile) }})
+        <span class="badge-stat" *ngIf="appStateService.AppState$.getValue().StatCountVisible">
+            &nbsp;&nbsp;({{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebArea?.TVItemModel, tvTypeEnum.File) }}/
+            {{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebArea?.TVItemModel, tvTypeEnum.TotalFile) }})&nbsp;&nbsp;
+        </span>
     </span>
 </button>
 
@@ -35,6 +39,6 @@
 </app-tvitem-list>
 
 <app-file-list *ngIf="appStateService.AppState$?.getValue()?.AreaSubComponent == areaSubComponentEnum.Files"
-    [AppState]="appStateService.AppState$?.getValue()" 
+    [AppState]="appStateService.AppState$?.getValue()"
     [TVFileModelListList]="appLoadedService.AppLoaded$?.getValue()?.AreaFileListList">
 </app-file-list>

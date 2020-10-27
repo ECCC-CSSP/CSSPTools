@@ -3180,17 +3180,17 @@
   <data name="AscDescEnumDescending" xml:space="preserve">
     <value>Descending</value>
   </data>
-  <data name="FilesSortPropEnumName" xml:space="preserve">
-    <value>Name</value>
+  <data name="FilesSortPropEnumFileName" xml:space="preserve">
+    <value>File name</value>
   </data>
-  <data name="FilesSortPropEnumPurpose" xml:space="preserve">
-    <value>Purpose</value>
+  <data name="FilesSortPropEnumFilePurpose" xml:space="preserve">
+    <value>File purpose</value>
   </data>
-  <data name="FilesSortPropEnumSize" xml:space="preserve">
-    <value>Size</value>
+  <data name="FilesSortPropEnumFileSize" xml:space="preserve">
+    <value>File size</value>
   </data>
-  <data name="FilesSortPropEnumType" xml:space="preserve">
-    <value>Type</value>
+  <data name="FilesSortPropEnumFileType" xml:space="preserve">
+    <value>File type</value>
   </data>
   <data name="ShellSubComponentEnumMunicipality" xml:space="preserve">
     <value>Municipality</value>

@@ -592,40 +592,40 @@
     <value>FilePurpose</value>
   </data>
   <data name="FilePurposeEnumGenerated" xml:space="preserve">
-    <value>Generated (fr)</value>
+    <value>Générée</value>
   </data>
   <data name="FilePurposeEnumGeneratedFCForm" xml:space="preserve">
-    <value>Generated FC Form(fr)</value>
+    <value>Formulaire CF</value>
   </data>
   <data name="FilePurposeEnumImage" xml:space="preserve">
-    <value>Image (fr)</value>
+    <value>Image</value>
   </data>
   <data name="FilePurposeEnumInformation" xml:space="preserve">
-    <value>Information (fr)</value>
+    <value>Information</value>
   </data>
   <data name="FilePurposeEnumMap" xml:space="preserve">
-    <value>Map (fr)</value>
+    <value>Carte</value>
   </data>
   <data name="FilePurposeEnumMikeInput" xml:space="preserve">
-    <value>MIKE Input (fr)</value>
+    <value>MIKE données d'entrées</value>
   </data>
   <data name="FilePurposeEnumMikeInputMDF" xml:space="preserve">
-    <value>MIKE Input MDF (fr)</value>
+    <value>MIKE données d'entrées MDF</value>
   </data>
   <data name="FilePurposeEnumMikeResultDFSU" xml:space="preserve">
-    <value>MIKE Result DFSU (fr)</value>
+    <value>MIKE résultats DFSU</value>
   </data>
   <data name="FilePurposeEnumMikeResultKMZ" xml:space="preserve">
-    <value>MIKE Result KMZ (fr)</value>
+    <value>MIKE résultats KMZ</value>
   </data>
   <data name="FilePurposeEnumPicture" xml:space="preserve">
-    <value>Picture (fr)</value>
+    <value>Photo</value>
   </data>
   <data name="FilePurposeEnumReported" xml:space="preserve">
-    <value>Reported (fr)</value>
+    <value>Raporté</value>
   </data>
   <data name="FilePurposeEnumTemplate" xml:space="preserve">
-    <value>Template (fr)</value>
+    <value>Modèle</value>
   </data>
   <data name="FileStatus" xml:space="preserve">
     <value>FileStatus</value>
@@ -2104,13 +2104,13 @@
     <value>Temperature (fr)</value>
   </data>
   <data name="FilePurposeEnumOpenData" xml:space="preserve">
-    <value>Open Data (fr)</value>
+    <value>Données ouvertes</value>
   </data>
   <data name="FilePurposeEnumReportGenerated" xml:space="preserve">
-    <value>Report Generated (fr)</value>
+    <value>Rapport généré</value>
   </data>
   <data name="FilePurposeEnumTemplateGenerated" xml:space="preserve">
-    <value>Template Generated (fr)</value>
+    <value>Générer à partir de modèle</value>
   </data>
   <data name="LaboratoryEnumAvalonLaboratoriesInc" xml:space="preserve">
     <value>Avalon Laboratories Inc (fr)</value>
@@ -2706,17 +2706,17 @@
   <data name="AscDescEnumDescending" xml:space="preserve">
     <value>Descendant</value>
   </data>
-  <data name="FilesSortPropEnumName" xml:space="preserve">
-    <value>Nom</value>
+  <data name="FilesSortPropEnumFileName" xml:space="preserve">
+    <value>Nom de filière</value>
   </data>
-  <data name="FilesSortPropEnumPurpose" xml:space="preserve">
-    <value>But</value>
+  <data name="FilesSortPropEnumFilePurpose" xml:space="preserve">
+    <value>But de filière</value>
   </data>
-  <data name="FilesSortPropEnumSize" xml:space="preserve">
-    <value>Grosseur</value>
+  <data name="FilesSortPropEnumFileSize" xml:space="preserve">
+    <value>Grosseur de filière</value>
   </data>
-  <data name="FilesSortPropEnumType" xml:space="preserve">
-    <value>Type</value>
+  <data name="FilesSortPropEnumFileType" xml:space="preserve">
+    <value>Type de filière</value>
   </data>
   <data name="ShellSubComponentEnumMunicipality" xml:space="preserve">
     <value>Municipality (fr)</value>

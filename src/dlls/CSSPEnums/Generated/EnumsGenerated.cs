@@ -1090,14 +1090,14 @@ namespace CSSPEnums
 
             switch (filesSortProp)
             {
-                case FilesSortPropEnum.Name:
-                    return CSSPCultureEnumsRes.FilesSortPropEnumName;
-                case FilesSortPropEnum.Size:
-                    return CSSPCultureEnumsRes.FilesSortPropEnumSize;
-                case FilesSortPropEnum.Type:
-                    return CSSPCultureEnumsRes.FilesSortPropEnumType;
-                case FilesSortPropEnum.Purpose:
-                    return CSSPCultureEnumsRes.FilesSortPropEnumPurpose;
+                case FilesSortPropEnum.FileName:
+                    return CSSPCultureEnumsRes.FilesSortPropEnumFileName;
+                case FilesSortPropEnum.FileSize:
+                    return CSSPCultureEnumsRes.FilesSortPropEnumFileSize;
+                case FilesSortPropEnum.FileType:
+                    return CSSPCultureEnumsRes.FilesSortPropEnumFileType;
+                case FilesSortPropEnum.FilePurpose:
+                    return CSSPCultureEnumsRes.FilesSortPropEnumFilePurpose;
                 default:
                     return CSSPCultureEnumsRes.Empty;
             }

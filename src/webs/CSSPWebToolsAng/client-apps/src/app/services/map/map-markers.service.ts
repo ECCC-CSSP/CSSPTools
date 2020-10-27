@@ -26,7 +26,7 @@ export class MapMarkersService {
       for (let mapInfoModel of webBase.TVItemModel.MapInfoModelList) {
         if (mapInfoModel.MapInfo?.MapInfoDrawType == MapInfoDrawTypeEnum.Point) {
           let position: google.maps.LatLngLiteral = { lat: mapInfoModel.MapInfoPointList[0].Lat, lng: mapInfoModel.MapInfoPointList[0].Lng };
-          let label: google.maps.MarkerLabel = { color: 'ff0000', text: count.toString() };
+          let label: google.maps.MarkerLabel = { color: 'ff0000', fontWeight: 'bold',  text: count.toString() };
           let title = webBase.TVItemModel.TVItemLanguageEN.TVText;
           let info = webBase.TVItemModel.TVItemLanguageEN.TVText;
           let options: google.maps.MarkerOptions = {

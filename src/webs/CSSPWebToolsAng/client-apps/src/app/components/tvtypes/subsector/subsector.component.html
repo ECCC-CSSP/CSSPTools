@@ -9,7 +9,9 @@
     title="{{ appLanguageService.AppLanguage.SubsectorShowMWQMSites[appStateService.AppState$?.getValue().Language] }}">
     <span>
         {{ appLanguageService.AppLanguage.SubsectorMWQMSites[appStateService.AppState$?.getValue().Language] }}
-        ({{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebSubsector?.TVItemModel, tvTypeEnum.MWQMSite) }})
+        <span class="badge-stat" *ngIf="appStateService.AppState$.getValue().StatCountVisible">
+            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebSubsector?.TVItemModel, tvTypeEnum.MWQMSite) }}&nbsp;&nbsp;
+        </span>                
     </span>
     <span class="biggerArrow"
         (click)="tvItemSortOrderService.ChangeTVItemSortOrder('SubsectorMWQMSitesSortOrder', ascDescEnum.Ascending)"
@@ -32,7 +34,9 @@
     title="{{ appLanguageService.AppLanguage.SubsectorShowMWQMRuns[appStateService.AppState$?.getValue().Language] }}">
     <span>
         {{ appLanguageService.AppLanguage.SubsectorMWQMRuns[appStateService.AppState$?.getValue().Language] }}
-        ({{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebSubsector?.TVItemModel, tvTypeEnum.MWQMRun) }})
+        <span class="badge-stat" *ngIf="appStateService.AppState$.getValue().StatCountVisible">
+            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebSubsector?.TVItemModel, tvTypeEnum.MWQMRun) }}&nbsp;&nbsp;
+        </span>                        
     </span>
     <span class="biggerArrow"
         (click)="tvItemSortOrderService.ChangeTVItemSortOrder('SubsectorMWQMRunsSortOrder', ascDescEnum.Ascending)"
@@ -50,7 +54,9 @@
     title="{{ appLanguageService.AppLanguage.SubsectorShowPollutionSourceSites[appStateService.AppState$?.getValue().Language] }}">
     <span>
         {{ appLanguageService.AppLanguage.SubsectorPollutionSourceSites[appStateService.AppState$?.getValue().Language] }}
-        ({{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebSubsector?.TVItemModel, tvTypeEnum.PolSourceSite) }})
+        <span class="badge-stat" *ngIf="appStateService.AppState$.getValue().StatCountVisible">
+            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebSubsector?.TVItemModel, tvTypeEnum.PolSourceSite) }}&nbsp;&nbsp;
+        </span>                                
     </span>
     <span class="biggerArrow"
         (click)="tvItemSortOrderService.ChangeTVItemSortOrder('SubsectorPolSourceSitesSortOrder', ascDescEnum.Ascending)"
@@ -68,8 +74,10 @@
     title="{{ appLanguageService.AppLanguage.SubsectorShowFiles[appStateService.AppState$?.getValue().Language] }}">
     <span>
         {{ appLanguageService.AppLanguage.SubsectorFiles[appStateService.AppState$?.getValue().Language] }}
-        ({{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebSubsector?.TVItemModel, tvTypeEnum.File) }}/
-        {{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebSubsector?.TVItemModel, tvTypeEnum.TotalFile) }})
+        <span class="badge-stat" *ngIf="appStateService.AppState$.getValue().StatCountVisible">
+            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebSubsector?.TVItemModel, tvTypeEnum.File) }}/
+            {{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebSubsector?.TVItemModel, tvTypeEnum.TotalFile) }}&nbsp;&nbsp;
+        </span>                                        
     </span>
 </button>
 <button mat-button [ngClass]="ColorSelection(subsectorSubComponentEnum.SubsectorTools)"

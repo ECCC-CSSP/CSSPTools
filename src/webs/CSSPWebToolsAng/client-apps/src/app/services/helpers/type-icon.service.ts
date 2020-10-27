@@ -10,7 +10,6 @@ export class TypeIconService {
   constructor(private appStateService: AppStateService) {
   }
 
-
   GetTypeIcon(tvType: number) {
     switch (<TVTypeEnum>tvType) {
       case TVTypeEnum.Address:

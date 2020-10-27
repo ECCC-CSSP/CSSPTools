@@ -1,6 +1,6 @@
 <div *ngFor="let TVFileModelList of TVFileModelListList">
     <mat-list *ngFor="let tvFileModel of TVFileModelList; let i = index">
-        <h2 *ngIf="i == 0">{{ GetFilePurposeEnum_GetIDText(tvFileModel.TVFile.FilePurpose) }}</h2>
+        <h2 class="file-purpose" *ngIf="i == 0">{{ GetFilePurposeEnum_GetIDText(tvFileModel.TVFile.FilePurpose) }}</h2>
         <app-file-list-item [Index]='(i + 1)' [AppState]="AppState" [TVFileModel]="tvFileModel"></app-file-list-item>
     </mat-list>
 </div>

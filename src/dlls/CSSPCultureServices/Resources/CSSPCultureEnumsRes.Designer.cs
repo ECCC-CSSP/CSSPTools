@@ -2594,38 +2594,38 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Name.
+        ///   Looks up a localized string similar to File name.
         /// </summary>
-        public static string FilesSortPropEnumName {
+        public static string FilesSortPropEnumFileName {
             get {
-                return ResourceManager.GetString("FilesSortPropEnumName", resourceCulture);
+                return ResourceManager.GetString("FilesSortPropEnumFileName", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Purpose.
+        ///   Looks up a localized string similar to File purpose.
         /// </summary>
-        public static string FilesSortPropEnumPurpose {
+        public static string FilesSortPropEnumFilePurpose {
             get {
-                return ResourceManager.GetString("FilesSortPropEnumPurpose", resourceCulture);
+                return ResourceManager.GetString("FilesSortPropEnumFilePurpose", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Size.
+        ///   Looks up a localized string similar to File size.
         /// </summary>
-        public static string FilesSortPropEnumSize {
+        public static string FilesSortPropEnumFileSize {
             get {
-                return ResourceManager.GetString("FilesSortPropEnumSize", resourceCulture);
+                return ResourceManager.GetString("FilesSortPropEnumFileSize", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Type.
+        ///   Looks up a localized string similar to File type.
         /// </summary>
-        public static string FilesSortPropEnumType {
+        public static string FilesSortPropEnumFileType {
             get {
-                return ResourceManager.GetString("FilesSortPropEnumType", resourceCulture);
+                return ResourceManager.GetString("FilesSortPropEnumFileType", resourceCulture);
             }
         }
         

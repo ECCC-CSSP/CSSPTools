@@ -25,7 +25,7 @@
                 {{ TVItemModel?.TVItemLanguageFR?.TVText }}
             </span>
         </span>
-        <app-stat-count *ngIf="!IsBreadCrumb" [TVType]="null" [TVItemModel]="TVItemModel"></app-stat-count>
+        <app-stat-count *ngIf="!IsBreadCrumb && appStateService.AppState$.getValue().StatCountVisible" [TVType]="null" [TVItemModel]="TVItemModel"></app-stat-count>
     </button>
 </mat-list-item>
 <app-tvitem-list-detail [AppState]="AppState" *ngIf="!IsBreadCrumb && AppState?.DetailVisible"

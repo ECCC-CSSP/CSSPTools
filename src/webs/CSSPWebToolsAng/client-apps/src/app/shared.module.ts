@@ -14,9 +14,12 @@ import { SearchComponent } from './components/helpers/search/search.component';
 import { StatCountComponent } from './components/helpers/stat-count/stat-count.component';
 import { MapComponent } from './components/maps/map/map.component';
 import { SideNavMenuComponent } from './components/sidenavs/sidenav-menu/sidenav-menu.component';
+import { TVItemListDetailAreaComponent } from './components/tvitems/tvitem-list-detail-area/tvitem-list-detail-area.component';
 import { TVItemListDetailCountryComponent } from './components/tvitems/tvitem-list-detail-country/tvitem-list-detail-country.component';
+import { TVItemListDetailMunicipalityComponent } from './components/tvitems/tvitem-list-detail-municipality/tvitem-list-detail-municipality.component';
 import { TVItemListDetailProvinceComponent } from './components/tvitems/tvitem-list-detail-province/tvitem-list-detail-province.component';
-import { TVItemListDetailRootComponent } from './components/tvitems/tvitem-list-detail-root/tvitem-list-detail-root.component';
+import { TVItemListDetailSectorComponent } from './components/tvitems/tvitem-list-detail-sector/tvitem-list-detail-sector.component';
+import { TVItemListDetailSubsectorComponent } from './components/tvitems/tvitem-list-detail-subsector/tvitem-list-detail-subsector.component';
 import { TVItemListDetailComponent } from './components/tvitems/tvitem-list-detail/tvitem-list-detail.component';
 import { TVItemListItemComponent } from './components/tvitems/tvitem-list-item/tvitem-list-item.component';
 import { TVItemListComponent } from './components/tvitems/tvitem-list/tvitem-list.component';
@@ -56,7 +59,10 @@ import { SubsectorComponent } from './components/tvtypes/subsector/subsector.com
     TVItemListDetailComponent,
     TVItemListDetailCountryComponent,
     TVItemListDetailProvinceComponent,
-    TVItemListDetailRootComponent,
+    TVItemListDetailAreaComponent,
+    TVItemListDetailSectorComponent,
+    TVItemListDetailSubsectorComponent,
+    TVItemListDetailMunicipalityComponent,
     TVItemListItemComponent,
   ],
   imports: [
@@ -96,7 +102,10 @@ import { SubsectorComponent } from './components/tvtypes/subsector/subsector.com
     TVItemListDetailComponent,
     TVItemListDetailCountryComponent,
     TVItemListDetailProvinceComponent,
-    TVItemListDetailRootComponent,
+    TVItemListDetailAreaComponent, 
+    TVItemListDetailSectorComponent,
+    TVItemListDetailSubsectorComponent,
+    TVItemListDetailMunicipalityComponent,
     TVItemListItemComponent,
   ]
 })

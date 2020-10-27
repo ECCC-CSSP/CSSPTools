@@ -15,6 +15,32 @@ export interface AppLanguage {
     CountryShowRainExceedance: string[];
     CountryRainExceedance: string[];
 
+    DateJanuary: string[];
+    DateFebruary: string[];
+    DateMarch: string[];
+    DateApril: string[];
+    DateMay: string[];
+    DateJune: string[];
+    DateJuly: string[];
+    DateAugust: string[];
+    DateSeptember: string[];
+    DateOctober: string[];
+    DateNovember: string[];
+    DateDecember: string[];
+
+    DateJanuaryAcronym: string[];
+    DateFebruaryAcronym: string[];
+    DateMarchAcronym: string[];
+    DateAprilAcronym: string[];
+    DateMayAcronym: string[];
+    DateJuneAcronym: string[];
+    DateJulyAcronym: string[];
+    DateAugustAcronym: string[];
+    DateSeptemberAcronym: string[];
+    DateOctoberAcronym: string[];
+    DateNovemberAcronym: string[];
+    DateDecemberAcronym: string[];
+
     HomeCSSPWebTools: string[];
     HomeTheWebToolWillLetYou: string[];
     HomeViewAndUpdateWWTPInfo: string[];
@@ -25,6 +51,8 @@ export interface AppLanguage {
     HomePleaseContactASiteAdministratorListedBelow: string[];
     HomeStartUsingCSSPWebTools: string[];
     HomeAzureVersion: string[];
+
+    KB: string[];
 
     ProvinceShowAreas: string[];
     ProvinceAreas: string[];
@@ -59,6 +87,8 @@ export interface AppLanguage {
     SideNavMenuInactive: string[];
     SideNavMenuShowDetails: string[];
     SideNavMenuDetails: string[];
+    SideNavMenuShowStatCount: string[];
+    SideNavMenuStatCount: string[];
     SideNavMenuShowEdit: string[];
     SideNavMenuEdit: string[];
 
@@ -84,28 +114,59 @@ export interface AppLanguage {
     SubsectorShowLogBook: string[];
     SubsectorLogBook: string[];   
 
+    TVItemListDetailAreaSector: string[];
+    TVItemListDetailAreaSubsector: string[];
+    TVItemListDetailAreaMWQMSample: string[];
+    TVItemListDetailAreaMWQMSite: string[];
+    TVItemListDetailAreaMWQMRun: string[];
+    TVItemListDetailAreaPolSourceSite: string[];
+
     TVItemListDetailCountryProvince: string[];
     TVItemListDetailCountryMunicipality: string[];
+    TVItemListDetailCountryLiftStation: string[];
+    TVItemListDetailCountryWWTP: string[];
+    TVItemListDetailCountryArea: string[];
+    TVItemListDetailCountrySector: string[];
     TVItemListDetailCountrySubsector: string[];
+    TVItemListDetailCountryMWQMSample: string[];
     TVItemListDetailCountryMWQMSite: string[];
     TVItemListDetailCountryMWQMRun: string[];
-    TVItemListDetailCountryMWQMSample: string[];
+    TVItemListDetailCountryPolSourceSite: string[];
     TVItemListDetailCountryMikeScenario: string[];
+    TVItemListDetailCountryBoxModel: string[];
+    TVItemListDetailCountryVPScenario: string[];
+
+    TVItemListDetailMunicipalityLiftStation: string[];
+    TVItemListDetailMunicipalityWWTP: string[];
+    TVItemListDetailMunicipalityMikeScenario: string[];
+    TVItemListDetailMunicipalityBoxModel: string[];
+    TVItemListDetailMunicipalityVPScenario: string[];
 
     TVItemListDetailProvinceMunicipality: string[];
+    TVItemListDetailProvinceLiftStation: string[];
+    TVItemListDetailProvinceWWTP: string[];
+    TVItemListDetailProvinceArea: string[];
+    TVItemListDetailProvinceSector: string[];
     TVItemListDetailProvinceSubsector: string[];
+    TVItemListDetailProvinceMWQMSample: string[];
     TVItemListDetailProvinceMWQMSite: string[];
     TVItemListDetailProvinceMWQMRun: string[];
-    TVItemListDetailProvinceMWQMSample: string[];
+    TVItemListDetailProvincePolSourceSite: string[];
     TVItemListDetailProvinceMikeScenario: string[];
+    TVItemListDetailProvinceBoxModel: string[];
+    TVItemListDetailProvinceVPScenario: string[];
 
-    TVItemListDetailRootCountry: string[];
-    TVItemListDetailRootProvince: string[];
-    TVItemListDetailRootMunicipality: string[];
-    TVItemListDetailRootSubsector: string[];
-    TVItemListDetailRootMWQMSite: string[];
-    TVItemListDetailRootMWQMRun: string[];
-    TVItemListDetailRootMWQMSample: string[];
-    TVItemListDetailRootMikeScenario: string[];
+    TVItemListDetailSectorSubsector: string[];
+    TVItemListDetailSectorMWQMSample: string[];
+    TVItemListDetailSectorMWQMSite: string[];
+    TVItemListDetailSectorMWQMRun: string[];
+    TVItemListDetailSectorPolSourceSite: string[];
+    TVItemListDetailSectorMikeScenario: string[];
+
+    TVItemListDetailSubsectorMWQMSample: string[];
+    TVItemListDetailSubsectorMWQMSite: string[];
+    TVItemListDetailSubsectorMWQMRun: string[];
+    TVItemListDetailSubsectorPolSourceSite: string[];
+
 
 }

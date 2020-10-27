@@ -6,8 +6,11 @@
 <button mat-button [ngClass]="ColorSelection(provinceSubComponentEnum.Areas)"
     (click)="Show(provinceSubComponentEnum.Areas)"
     title="{{ appLanguageService.AppLanguage.ProvinceShowAreas[appStateService.AppState$?.getValue().Language] }}">
-    <span>{{ appLanguageService.AppLanguage.ProvinceAreas[appStateService.AppState$?.getValue().Language] }}
-        ({{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebProvince?.TVItemModel, tvTypeEnum.Area) }})
+    <span>
+        {{ appLanguageService.AppLanguage.ProvinceAreas[appStateService.AppState$?.getValue().Language] }}
+        <span class="badge-stat" *ngIf="appStateService.AppState$.getValue().StatCountVisible">
+            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebProvince?.TVItemModel, tvTypeEnum.Area) }}&nbsp;&nbsp;
+        </span>                                                                        
     </span>
     <span class="biggerArrow"
         (click)="tvItemSortOrderService.ChangeTVItemSortOrder('ProvinceAreasSortOrder', ascDescEnum.Ascending)"
@@ -25,7 +28,9 @@
     title="{{ appLanguageService.AppLanguage.ProvinceShowMunicipalities[appStateService.AppState$?.getValue().Language] }}">
     <span>
         {{ appLanguageService.AppLanguage.ProvinceMunicipalities[appStateService.AppState$?.getValue().Language] }}
-        ({{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebProvince?.TVItemModel, tvTypeEnum.Municipality) }})
+        <span class="badge-stat" *ngIf="appStateService.AppState$.getValue().StatCountVisible">
+            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebProvince?.TVItemModel, tvTypeEnum.Municipality) }}&nbsp;&nbsp;
+        </span>                                                                                
     </span>
     <span class="biggerArrow"
         (click)="tvItemSortOrderService.ChangeTVItemSortOrder('ProvinceMunicipalitiesSortOrder', ascDescEnum.Ascending)"
@@ -43,8 +48,10 @@
     title="{{ appLanguageService.AppLanguage.ProvinceShowFiles[appStateService.AppState$?.getValue().Language] }}">
     <span>
         {{ appLanguageService.AppLanguage.ProvinceFiles[appStateService.AppState$?.getValue().Language] }}
-        ({{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebProvince?.TVItemModel, tvTypeEnum.File) }}/
-        {{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebProvince?.TVItemModel, tvTypeEnum.TotalFile) }})
+        <span class="badge-stat" *ngIf="appStateService.AppState$.getValue().StatCountVisible">
+            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebProvince?.TVItemModel, tvTypeEnum.File) }}/
+            {{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebProvince?.TVItemModel, tvTypeEnum.TotalFile) }}&nbsp;&nbsp;
+        </span>                                                                                        
     </span>
 </button>
 <button mat-button [ngClass]="ColorSelection(provinceSubComponentEnum.OpenData)"

@@ -1547,17 +1547,17 @@ namespace CSSPEnums.Tests
 
                 switch ((FilesSortPropEnum)i)
                 {
-                    case FilesSortPropEnum.Name:
-                        Assert.Equal(CSSPCultureEnumsRes.FilesSortPropEnumName, retStr);
+                    case FilesSortPropEnum.FileName:
+                        Assert.Equal(CSSPCultureEnumsRes.FilesSortPropEnumFileName, retStr);
                         break;
-                    case FilesSortPropEnum.Size:
-                        Assert.Equal(CSSPCultureEnumsRes.FilesSortPropEnumSize, retStr);
+                    case FilesSortPropEnum.FileSize:
+                        Assert.Equal(CSSPCultureEnumsRes.FilesSortPropEnumFileSize, retStr);
                         break;
-                    case FilesSortPropEnum.Type:
-                        Assert.Equal(CSSPCultureEnumsRes.FilesSortPropEnumType, retStr);
+                    case FilesSortPropEnum.FileType:
+                        Assert.Equal(CSSPCultureEnumsRes.FilesSortPropEnumFileType, retStr);
                         break;
-                    case FilesSortPropEnum.Purpose:
-                        Assert.Equal(CSSPCultureEnumsRes.FilesSortPropEnumPurpose, retStr);
+                    case FilesSortPropEnum.FilePurpose:
+                        Assert.Equal(CSSPCultureEnumsRes.FilesSortPropEnumFilePurpose, retStr);
                         break;
                     default:
                         Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -6451,10 +6451,10 @@ namespace CSSPEnums.Tests
 
                 switch ((FilesSortPropEnum)i)
                 {
-                     case FilesSortPropEnum.Name:
-                     case FilesSortPropEnum.Size:
-                     case FilesSortPropEnum.Type:
-                     case FilesSortPropEnum.Purpose:
+                     case FilesSortPropEnum.FileName:
+                     case FilesSortPropEnum.FileSize:
+                     case FilesSortPropEnum.FileType:
+                     case FilesSortPropEnum.FilePurpose:
                         Assert.Equal("", retStr);
                         break;
                     default:

@@ -33,6 +33,7 @@ export interface AppState extends HttpStatus {
     Language?: LanguageEnum; // en | fr | enAndfr | es
     BaseApiUrl?: string;
     DetailVisible?: boolean;
+    StatCountVisible?: boolean;
     EditVisible?: boolean;
     InactVisible?: boolean;
     MenuVisible?: boolean;

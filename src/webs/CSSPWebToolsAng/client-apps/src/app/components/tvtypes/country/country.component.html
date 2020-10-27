@@ -7,7 +7,9 @@
     title="{{ appLanguageService.AppLanguage.CountryShowProvinces[appStateService.AppState$?.getValue().Language] }}">
     <span>
         {{ appLanguageService.AppLanguage.CountryProvinces[appStateService.AppState$?.getValue().Language] }}
-        ({{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebCountry?.TVItemModel, tvTypeEnum.Province) }})
+        <span class="badge-stat" *ngIf="appStateService.AppState$.getValue().StatCountVisible">
+            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebCountry?.TVItemModel, tvTypeEnum.Province) }}&nbsp;&nbsp;
+        </span>                                                                                                
     </span>
     <span class="biggerArrow"
         (click)="tvItemSortOrderService.ChangeTVItemSortOrder('CountryProvincesSortOrder', ascDescEnum.Ascending)"
@@ -25,8 +27,10 @@
     title="{{ appLanguageService.AppLanguage.CountryShowFiles[appStateService.AppState$?.getValue().Language] }}">
     <span>
         {{ appLanguageService.AppLanguage.CountryFiles[appStateService.AppState$?.getValue().Language] }}
-        ({{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebCountry?.TVItemModel, tvTypeEnum.File) }}/
-        {{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebCountry?.TVItemModel, tvTypeEnum.TotalFile) }})
+        <span class="badge-stat" *ngIf="appStateService.AppState$.getValue().StatCountVisible">
+            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebCountry?.TVItemModel, tvTypeEnum.File) }}/
+            {{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebCountry?.TVItemModel, tvTypeEnum.TotalFile) }}&nbsp;&nbsp;
+        </span>                                                                                                        
     </span>
 </button>
 <button mat-button [ngClass]="ColorSelection(countrySubComponentEnum.OpenDataNational)"
