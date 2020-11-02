@@ -5,12 +5,11 @@
  *
  */
 
-import { LastUpdate } from './LastUpdate.model';
 import { MWQMRun } from './MWQMRun.model';
 import { MWQMRunLanguage } from './MWQMRunLanguage.model';
 import { TVItemModel } from './TVItemModel.model';
 
-export class MWQMRunModel extends LastUpdate {
+export class MWQMRunModel {
     MWQMRun: MWQMRun;
     MWQMRunLanguageList: MWQMRunLanguage[];
     TVItemModel: TVItemModel;

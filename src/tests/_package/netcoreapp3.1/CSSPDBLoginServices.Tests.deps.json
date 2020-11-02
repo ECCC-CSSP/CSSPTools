@@ -2007,8 +2007,8 @@
       "CSSPDBLoginServices/1.0.0": {
         "dependencies": {
           "Azure.Storage.Blobs": "12.6.0",
+          "CSSPLocalServices": "1.0.0",
           "CSSPModels": "1.0.0",
-          "LocalServices": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.8",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.8",
           "Microsoft.EntityFrameworkCore": "3.1.8",
@@ -2030,6 +2030,23 @@
           "CSSPEnums.dll": {}
         }
       },
+      "CSSPLocalServices/1.0.0": {
+        "dependencies": {
+          "Azure.Storage.Blobs": "12.6.0",
+          "CSSPModels": "1.0.0",
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.8",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.8",
+          "Microsoft.EntityFrameworkCore": "3.1.8",
+          "Microsoft.EntityFrameworkCore.InMemory": "3.1.8",
+          "Microsoft.EntityFrameworkCore.SqlServer": "3.1.8",
+          "Microsoft.EntityFrameworkCore.Sqlite": "3.1.8",
+          "Microsoft.Extensions.Configuration": "3.1.8",
+          "Microsoft.Extensions.Configuration.Json": "3.1.8"
+        },
+        "runtime": {
+          "CSSPLocalServices.dll": {}
+        }
+      },
       "CSSPModels/1.0.0": {
         "dependencies": {
           "CSSPEnums": "1.0.0",
@@ -2046,23 +2063,6 @@
         },
         "runtime": {
           "CSSPModels.dll": {}
-        }
-      },
-      "LocalServices/1.0.0": {
-        "dependencies": {
-          "Azure.Storage.Blobs": "12.6.0",
-          "CSSPModels": "1.0.0",
-          "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.8",
-          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.8",
-          "Microsoft.EntityFrameworkCore": "3.1.8",
-          "Microsoft.EntityFrameworkCore.InMemory": "3.1.8",
-          "Microsoft.EntityFrameworkCore.SqlServer": "3.1.8",
-          "Microsoft.EntityFrameworkCore.Sqlite": "3.1.8",
-          "Microsoft.Extensions.Configuration": "3.1.8",
-          "Microsoft.Extensions.Configuration.Json": "3.1.8"
-        },
-        "runtime": {
-          "LocalServices.dll": {}
         }
       }
     }
@@ -3278,12 +3278,12 @@
       "serviceable": false,
       "sha512": ""
     },
-    "CSSPModels/1.0.0": {
+    "CSSPLocalServices/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "LocalServices/1.0.0": {
+    "CSSPModels/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

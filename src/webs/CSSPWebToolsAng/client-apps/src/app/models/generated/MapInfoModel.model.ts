@@ -5,11 +5,10 @@
  *
  */
 
-import { LastUpdate } from './LastUpdate.model';
 import { MapInfo } from './MapInfo.model';
 import { MapInfoPoint } from './MapInfoPoint.model';
 
-export class MapInfoModel extends LastUpdate {
+export class MapInfoModel {
     MapInfo: MapInfo;
     MapInfoPointList: MapInfoPoint[];
 }

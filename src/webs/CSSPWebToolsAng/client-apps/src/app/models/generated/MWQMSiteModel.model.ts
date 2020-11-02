@@ -5,12 +5,11 @@
  *
  */
 
-import { LastUpdate } from './LastUpdate.model';
 import { MWQMSite } from './MWQMSite.model';
 import { MWQMSiteStartEndDate } from './MWQMSiteStartEndDate.model';
 import { TVItemModel } from './TVItemModel.model';
 
-export class MWQMSiteModel extends LastUpdate {
+export class MWQMSiteModel {
     MWQMSite: MWQMSite;
     MWQMSiteStartEndDateList: MWQMSiteStartEndDate[];
     TVItemModel: TVItemModel;

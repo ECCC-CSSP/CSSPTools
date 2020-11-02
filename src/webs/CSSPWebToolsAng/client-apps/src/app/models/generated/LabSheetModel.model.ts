@@ -5,11 +5,10 @@
  *
  */
 
-import { LastUpdate } from './LastUpdate.model';
 import { LabSheet } from './LabSheet.model';
 import { LabSheetDetailModel } from './LabSheetDetailModel.model';
 
-export class LabSheetModel extends LastUpdate {
+export class LabSheetModel {
     LabSheet: LabSheet;
     LabSheetDetailModelList: LabSheetDetailModel[];
 }

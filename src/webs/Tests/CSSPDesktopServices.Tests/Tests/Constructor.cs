@@ -9,7 +9,7 @@ using CSSPDesktopServices.Services;
 using CSSPEnums;
 using CSSPModels;
 using CSSPSQLiteServices;
-using DownloadGzFileServices;
+using DownloadFileServices;
 using LocalServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -66,7 +66,7 @@ namespace CSSPDesktopServices.Tests
             Services.AddSingleton<ICSSPDesktopService, CSSPDesktopService>();
             Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
             Services.AddSingleton<ICSSPDBFilesManagementService, CSSPDBFilesManagementService>();
-            Services.AddSingleton<IDownloadGzFileService, DownloadGzFileService>();
+            Services.AddSingleton<IDownloadFileService, DownloadFileService>();
             Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
 
             // Doing CSSPDBLocalContext

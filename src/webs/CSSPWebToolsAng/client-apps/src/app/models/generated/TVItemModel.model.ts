@@ -5,14 +5,13 @@
  *
  */
 
-import { LastUpdate } from './LastUpdate.model';
 import { MapInfoModel } from './MapInfoModel.model';
 import { TVFileModel } from './TVFileModel.model';
 import { TVItem } from './TVItem.model';
 import { TVItemLanguage } from './TVItemLanguage.model';
 import { TVItemStat } from './TVItemStat.model';
 
-export class TVItemModel extends LastUpdate {
+export class TVItemModel {
     MapInfoModelList: MapInfoModel[];
     TVFileModelList: TVFileModel[];
     TVItem: TVItem;

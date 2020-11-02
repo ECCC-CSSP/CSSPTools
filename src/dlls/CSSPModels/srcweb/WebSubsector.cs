@@ -38,6 +38,7 @@ namespace CSSPModels
         #endregion Constructors
     }
 
+    [NotMapped]
     public partial class LabSheetModel
     {
         #region Properties
@@ -54,6 +55,7 @@ namespace CSSPModels
         #endregion Constructors
     }
 
+    [NotMapped]
     public partial class LabSheetDetailModel
     {
         #region Properties

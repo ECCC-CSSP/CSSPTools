@@ -5,14 +5,13 @@
  *
  */
 
-import { LastUpdate } from './LastUpdate.model';
 import { PolSourceObservationModel } from './PolSourceObservationModel.model';
 import { PolSourceSite } from './PolSourceSite.model';
 import { Address } from './Address.model';
 import { PolSourceSiteEffect } from './PolSourceSiteEffect.model';
 import { TVItemModel } from './TVItemModel.model';
 
-export class PolSourceSiteModel extends LastUpdate {
+export class PolSourceSiteModel {
     PolSourceObservationModelList: PolSourceObservationModel[];
     PolSourceSite: PolSourceSite;
     PolSourceSiteCivicAddress: Address;

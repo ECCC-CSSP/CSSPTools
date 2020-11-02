@@ -17,9 +17,7 @@ using System.Text.Json;
 using System.Text;
 using System.Linq;
 using LocalServices;
-using DownloadGzFileServices;
 using CSSPDBSearchServices;
-using ReadGzFileServices;
 
 namespace CSSPSearchServices.Tests
 {
@@ -34,7 +32,6 @@ namespace CSSPSearchServices.Tests
         private IServiceProvider ServiceProvider { get; set; }
         private ILocalService LocalService { get; set; }
         private ICSSPDBSearchService CSSPDBSearchService { get; set; }
-        private IReadGzFileService ReadGzFileService { get; set; }
         #endregion Properties
 
         #region Constructors

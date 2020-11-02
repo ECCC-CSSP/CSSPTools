@@ -30,6 +30,7 @@ namespace CSSPModels
         #endregion Constructors
     }
 
+    [NotMapped]
     public partial class MikeSourceModel : WebBase
     {
         public MikeSource MikeSource { get; set; }
@@ -46,6 +47,7 @@ namespace CSSPModels
         #endregion Constructors
     }
 
+    [NotMapped]
     public partial class MikeBoundaryConditionModel : WebBase
     {
         #region Properties

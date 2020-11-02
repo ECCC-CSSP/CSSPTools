@@ -5,13 +5,12 @@
  *
  */
 
-import { LastUpdate } from './LastUpdate.model';
 import { VPAmbient } from './VPAmbient.model';
 import { VPResult } from './VPResult.model';
 import { VPScenario } from './VPScenario.model';
 import { VPScenarioLanguage } from './VPScenarioLanguage.model';
 
-export class VPScenarioModel extends LastUpdate {
+export class VPScenarioModel {
     VPAmbientList: VPAmbient[];
     VPResultList: VPResult[];
     VPScenario: VPScenario;

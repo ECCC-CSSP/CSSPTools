@@ -5,12 +5,11 @@
  *
  */
 
-import { LastUpdate } from './LastUpdate.model';
 import { BoxModel } from './BoxModel.model';
 import { BoxModelLanguage } from './BoxModelLanguage.model';
 import { BoxModelResult } from './BoxModelResult.model';
 
-export class BoxModelModel extends LastUpdate {
+export class BoxModelModel {
     BoxModel: BoxModel;
     BoxModelLanguageList: BoxModelLanguage[];
     BoxModelResultList: BoxModelResult[];

@@ -5,12 +5,11 @@
  *
  */
 
-import { LastUpdate } from './LastUpdate.model';
 import { MikeSource } from './MikeSource.model';
 import { MikeSourceStartEnd } from './MikeSourceStartEnd.model';
 import { TVItemModel } from './TVItemModel.model';
 
-export class MikeSourceModel extends LastUpdate {
+export class MikeSourceModel {
     MikeSource: MikeSource;
     MikeSourceStartEndList: MikeSourceStartEnd[];
     TVItemModel: TVItemModel;

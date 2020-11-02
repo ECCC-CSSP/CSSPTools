@@ -5,11 +5,10 @@
  *
  */
 
-import { LastUpdate } from './LastUpdate.model';
 import { PolSourceObservation } from './PolSourceObservation.model';
 import { PolSourceObservationIssue } from './PolSourceObservationIssue.model';
 
-export class PolSourceObservationModel extends LastUpdate {
+export class PolSourceObservationModel {
     PolSourceObservation: PolSourceObservation;
     PolSourceObservationIssueList: PolSourceObservationIssue[];
 }

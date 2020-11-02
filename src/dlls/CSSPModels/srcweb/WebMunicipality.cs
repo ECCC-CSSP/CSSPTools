@@ -30,6 +30,7 @@ namespace CSSPModels
         #endregion Constructors
     }
 
+    [NotMapped]
     public partial class InfrastructureModel : WebBase
     {
         #region Properties
@@ -52,6 +53,7 @@ namespace CSSPModels
         #endregion Constructors
 
     }
+    [NotMapped]
     public partial class ContactModel : WebBase
     {
         #region Properties
@@ -72,6 +74,7 @@ namespace CSSPModels
         #endregion Constructors
     }
 
+    [NotMapped]
     public partial class EmailModel : WebBase
     {
         #region Properties
@@ -86,6 +89,7 @@ namespace CSSPModels
         #endregion Constructors
     }
 
+    [NotMapped]
     public partial class TelModel : WebBase
     {
         #region Properties
@@ -100,6 +104,7 @@ namespace CSSPModels
         #endregion Constructors
     }
 
+    [NotMapped]
     public partial class AddressModel : WebBase
     {
         #region Properties
@@ -114,6 +119,7 @@ namespace CSSPModels
         #endregion Constructors
     }
 
+    [NotMapped]
     public partial class BoxModelModel
     {
         #region Properties
@@ -132,6 +138,7 @@ namespace CSSPModels
         #endregion Constructors
 
     }
+    [NotMapped]
     public partial class VPScenarioModel
     {
         #region Properties

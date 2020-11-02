@@ -22,6 +22,7 @@ namespace CSSPModels
         #endregion Constructors
     }
 
+    [NotMapped]
     public partial class ReportTypeModel
     {
         #region Properties

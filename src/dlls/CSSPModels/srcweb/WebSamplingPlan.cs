@@ -24,6 +24,7 @@ namespace CSSPModels
         #endregion Constructors
     }
 
+    [NotMapped]
     public partial class SamplingPlanModel
     {
         #region Properties
@@ -41,6 +42,7 @@ namespace CSSPModels
         #endregion Constructors
     }
 
+    [NotMapped]
     public partial class SamplingPlanSubsectorModel
     {
         #region Properties

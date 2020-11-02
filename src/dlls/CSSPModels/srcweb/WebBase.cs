@@ -22,6 +22,7 @@ namespace CSSPModels
         #endregion Constructors
     }
 
+    [NotMapped]
     public partial class TVItemModel
     {
         public TVItem TVItem { get; set; }
@@ -42,6 +43,7 @@ namespace CSSPModels
         }
     }
 
+    [NotMapped]
     public partial class MapInfoModel
     {
         public MapInfo MapInfo { get; set; }
@@ -54,14 +56,17 @@ namespace CSSPModels
         }
     }
 
+    [NotMapped]
     public partial class TVFileModel
     {
+        public int ParentTVItemID { get; set; }
         public TVFile TVFile { get; set; }
         public TVFileLanguage TVFileLanguageEN { get; set; }
         public TVFileLanguage TVFileLanguageFR { get; set; }
 
         public TVFileModel()
         {
+            ParentTVItemID = 0;
             TVFile = new TVFile();
             TVFileLanguageEN = new TVFileLanguage();
             TVFileLanguageFR = new TVFileLanguage();

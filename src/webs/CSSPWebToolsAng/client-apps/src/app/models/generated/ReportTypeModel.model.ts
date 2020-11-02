@@ -5,11 +5,10 @@
  *
  */
 
-import { LastUpdate } from './LastUpdate.model';
 import { ReportSection } from './ReportSection.model';
 import { ReportType } from './ReportType.model';
 
-export class ReportTypeModel extends LastUpdate {
+export class ReportTypeModel {
     ReportSectionList: ReportSection[];
     ReportType: ReportType;
 }

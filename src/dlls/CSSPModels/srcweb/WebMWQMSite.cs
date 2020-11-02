@@ -24,6 +24,7 @@ namespace CSSPModels
         #endregion Constructors
     }
 
+    [NotMapped]
     public partial class MWQMSiteModel : WebBase
     {
         #region Properties

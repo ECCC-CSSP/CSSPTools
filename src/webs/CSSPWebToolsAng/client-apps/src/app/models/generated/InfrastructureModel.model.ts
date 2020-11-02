@@ -5,7 +5,6 @@
  *
  */
 
-import { LastUpdate } from './LastUpdate.model';
 import { BoxModelModel } from './BoxModelModel.model';
 import { Infrastructure } from './Infrastructure.model';
 import { Address } from './Address.model';
@@ -13,7 +12,7 @@ import { InfrastructureLanguage } from './InfrastructureLanguage.model';
 import { TVItemModel } from './TVItemModel.model';
 import { VPScenarioModel } from './VPScenarioModel.model';
 
-export class InfrastructureModel extends LastUpdate {
+export class InfrastructureModel {
     BoxModelModelList: BoxModelModel[];
     Infrastructure: Infrastructure;
     InfrastructureCivicAddress: Address;

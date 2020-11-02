@@ -5,11 +5,11 @@
  *
  */
 
-import { LastUpdate } from './LastUpdate.model';
 import { TVFile } from './TVFile.model';
 import { TVFileLanguage } from './TVFileLanguage.model';
 
-export class TVFileModel extends LastUpdate {
+export class TVFileModel {
+    ParentTVItemID: number;
     TVFile: TVFile;
     TVFileLanguageEN: TVFileLanguage;
     TVFileLanguageFR: TVFileLanguage;

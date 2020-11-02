@@ -5,12 +5,11 @@
  *
  */
 
-import { LastUpdate } from './LastUpdate.model';
 import { SamplingPlan } from './SamplingPlan.model';
 import { SamplingPlanEmail } from './SamplingPlanEmail.model';
 import { SamplingPlanSubsectorModel } from './SamplingPlanSubsectorModel.model';
 
-export class SamplingPlanModel extends LastUpdate {
+export class SamplingPlanModel {
     SamplingPlan: SamplingPlan;
     SamplingPlanEmailList: SamplingPlanEmail[];
     SamplingPlanSubsectorModelList: SamplingPlanSubsectorModel[];

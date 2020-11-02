@@ -24,6 +24,7 @@ namespace CSSPModels
         #endregion Constructors
     }
 
+    [NotMapped]
     public partial class PolSourceSiteModel : WebBase
     {
         #region Properties
@@ -44,6 +45,7 @@ namespace CSSPModels
         #endregion Constructors
     }
 
+    [NotMapped]
     public partial class PolSourceObservationModel
     {
         #region Properties

@@ -17,7 +17,7 @@ using System.Linq;
 using System.Text;
 using LocalServices;
 using CSSPDBFilesManagementServices;
-using DownloadGzFileServices;
+using DownloadFileServices;
 using ReadGzFileServices;
 using CSSPDBSearchServices;
 using CSSPDBLoginServices;
@@ -152,7 +152,8 @@ namespace CSSPWebAPIsLocal
 
             services.AddScoped<ILocalService, LocalService>();
             services.AddScoped<ICSSPDBFilesManagementService, CSSPDBFilesManagementService>();
-            services.AddScoped<IDownloadGzFileService, DownloadGzFileService>();
+            services.AddScoped<IDownloadFileService, DownloadFileService>();
+            services.AddScoped<IDownloadFileService, DownloadFileService>();
             services.AddScoped<IReadGzFileService, ReadGzFileService>();
             services.AddScoped<IPreferenceService, PreferenceService>();
             services.AddScoped<ICSSPDBSearchService, CSSPDBSearchService>();

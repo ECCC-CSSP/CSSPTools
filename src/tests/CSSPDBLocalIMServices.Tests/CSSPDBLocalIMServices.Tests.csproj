@@ -44,7 +44,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\dlls\CSSPDBLocalIMServices\CSSPDBLocalIMServices.csproj" />
-    <ProjectReference Include="..\..\dlls\LocalServices\LocalServices.csproj" />
   </ItemGroup>
 
   <ItemGroup>

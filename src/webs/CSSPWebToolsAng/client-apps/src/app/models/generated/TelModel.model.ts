@@ -5,11 +5,10 @@
  *
  */
 
-import { LastUpdate } from './LastUpdate.model';
 import { Tel } from './Tel.model';
 import { TVItemModel } from './TVItemModel.model';
 
-export class TelModel extends LastUpdate {
+export class TelModel {
     Tel: Tel;
     TVItemModel: TVItemModel;
 }

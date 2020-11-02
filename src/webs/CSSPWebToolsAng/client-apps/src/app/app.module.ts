@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { SharedModule } from './shared.module';
+import { getSaver, SAVER } from './services/helpers/saver.provider';
 
 
 @NgModule({
@@ -18,7 +19,7 @@ import { SharedModule } from './shared.module';
     SharedModule,
   ],
   exports: [],
-  providers: [],
+  providers: [{provide: SAVER, useFactory: getSaver}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

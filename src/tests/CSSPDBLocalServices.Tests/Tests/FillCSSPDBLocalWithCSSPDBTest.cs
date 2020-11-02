@@ -58,7 +58,11 @@ namespace CSSPDBLocalServices.Tests
             Assert.True(await Setup(culture));
 
             // add a comment in front of the return to populate CSSPDBLocal with CSSPDBTest information
-            return;
+            bool a = true;
+            if (a)
+            {
+                return;
+            }
 
             // Logs
             List<Log> LogList = (from c in dbLocal.Logs select c).ToList();

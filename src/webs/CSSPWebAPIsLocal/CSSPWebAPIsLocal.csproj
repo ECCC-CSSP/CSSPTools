@@ -40,7 +40,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\dlls\CSSPDBLocalServices\CSSPDBLocalServices.csproj" />
     <ProjectReference Include="..\..\dlls\CSSPDBSearchServices\CSSPDBSearchServices.csproj" />
-    <ProjectReference Include="..\..\dlls\ReadGzFileServices\ReadGzFileServices.csproj" />
+    <ProjectReference Include="..\..\dlls\CSSPReadGzFileServices\CSSPReadGzFileServices.csproj" />
   </ItemGroup>
 
 </Project>

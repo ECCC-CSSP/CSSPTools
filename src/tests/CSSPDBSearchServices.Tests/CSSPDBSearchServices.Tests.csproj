@@ -47,8 +47,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\dlls\CSSPDBFilesManagementServices\CSSPDBFilesManagementServices.csproj" />
     <ProjectReference Include="..\..\dlls\CSSPDBSearchServices\CSSPDBSearchServices.csproj" />
-    <ProjectReference Include="..\..\dlls\DownloadGzFileServices\DownloadGzFileServices.csproj" />
-    <ProjectReference Include="..\..\dlls\ReadGzFileServices\ReadGzFileServices.csproj" />
   </ItemGroup>
 
   <ItemGroup>

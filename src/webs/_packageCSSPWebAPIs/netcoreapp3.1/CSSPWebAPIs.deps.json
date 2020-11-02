@@ -24,8 +24,8 @@
     ".NETCoreApp,Version=v3.1": {
       "CSSPWebAPIs/1.0.0": {
         "dependencies": {
+          "CSSPCreateGzFileServices": "1.0.0",
           "CSSPDBServices": "1.0.0",
-          "CreateGzFileServices": "1.0.0",
           "Microsoft.AspNetCore.Authentication.Certificate": "3.1.8",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.8",
           "Microsoft.AspNetCore.Authentication.Negotiate": "3.1.8",
@@ -1894,11 +1894,11 @@
           "System.Xml.XmlDocument": "4.3.0"
         }
       },
-      "CreateGzFileServices/1.0.0": {
+      "CSSPCreateGzFileServices/1.0.0": {
         "dependencies": {
           "Azure.Storage.Blobs": "12.6.0",
+          "CSSPLoggedInServices": "1.0.0",
           "CSSPModels": "1.0.0",
-          "LoggedInServices": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.8",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.8",
           "Microsoft.EntityFrameworkCore": "3.1.8",
@@ -1909,10 +1909,10 @@
           "Microsoft.Extensions.Configuration.Json": "3.1.8"
         },
         "runtime": {
-          "CreateGzFileServices.dll": {}
+          "CSSPCreateGzFileServices.dll": {}
         },
         "compile": {
-          "CreateGzFileServices.dll": {}
+          "CSSPCreateGzFileServices.dll": {}
         }
       },
       "CSSPCultureServices/1.0.0": {
@@ -1931,8 +1931,8 @@
       "CSSPDBServices/1.0.0": {
         "dependencies": {
           "Azure.Storage.Blobs": "12.6.0",
+          "CSSPLoggedInServices": "1.0.0",
           "CSSPModels": "1.0.0",
-          "LoggedInServices": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.8",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.8",
           "Microsoft.EntityFrameworkCore": "3.1.8",
@@ -1960,6 +1960,26 @@
           "CSSPEnums.dll": {}
         }
       },
+      "CSSPLoggedInServices/1.0.0": {
+        "dependencies": {
+          "Azure.Storage.Blobs": "12.6.0",
+          "CSSPModels": "1.0.0",
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.8",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.8",
+          "Microsoft.EntityFrameworkCore": "3.1.8",
+          "Microsoft.EntityFrameworkCore.InMemory": "3.1.8",
+          "Microsoft.EntityFrameworkCore.SqlServer": "3.1.8",
+          "Microsoft.EntityFrameworkCore.Sqlite": "3.1.8",
+          "Microsoft.Extensions.Configuration": "3.1.8",
+          "Microsoft.Extensions.Configuration.Json": "3.1.8"
+        },
+        "runtime": {
+          "CSSPLoggedInServices.dll": {}
+        },
+        "compile": {
+          "CSSPLoggedInServices.dll": {}
+        }
+      },
       "CSSPModels/1.0.0": {
         "dependencies": {
           "CSSPEnums": "1.0.0",
@@ -1979,26 +1999,6 @@
         },
         "compile": {
           "CSSPModels.dll": {}
-        }
-      },
-      "LoggedInServices/1.0.0": {
-        "dependencies": {
-          "Azure.Storage.Blobs": "12.6.0",
-          "CSSPModels": "1.0.0",
-          "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.8",
-          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.8",
-          "Microsoft.EntityFrameworkCore": "3.1.8",
-          "Microsoft.EntityFrameworkCore.InMemory": "3.1.8",
-          "Microsoft.EntityFrameworkCore.SqlServer": "3.1.8",
-          "Microsoft.EntityFrameworkCore.Sqlite": "3.1.8",
-          "Microsoft.Extensions.Configuration": "3.1.8",
-          "Microsoft.Extensions.Configuration.Json": "3.1.8"
-        },
-        "runtime": {
-          "LoggedInServices.dll": {}
-        },
-        "compile": {
-          "LoggedInServices.dll": {}
         }
       },
       "Microsoft.AspNetCore.Antiforgery/3.1.0.0": {
@@ -4467,7 +4467,7 @@
       "path": "system.xml.xmlserializer/4.3.0",
       "hashPath": "system.xml.xmlserializer.4.3.0.nupkg.sha512"
     },
-    "CreateGzFileServices/1.0.0": {
+    "CSSPCreateGzFileServices/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -4487,12 +4487,12 @@
       "serviceable": false,
       "sha512": ""
     },
-    "CSSPModels/1.0.0": {
+    "CSSPLoggedInServices/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "LoggedInServices/1.0.0": {
+    "CSSPModels/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

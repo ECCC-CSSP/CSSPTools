@@ -5,14 +5,13 @@
  *
  */
 
-import { LastUpdate } from './LastUpdate.model';
 import { Contact } from './Contact.model';
 import { AddressModel } from './AddressModel.model';
 import { EmailModel } from './EmailModel.model';
 import { TelModel } from './TelModel.model';
 import { TVItemModel } from './TVItemModel.model';
 
-export class ContactModel extends LastUpdate {
+export class ContactModel {
     Contact: Contact;
     ContactAddressModelList: AddressModel[];
     ContactEmailModelList: EmailModel[];

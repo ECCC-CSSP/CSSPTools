@@ -5,11 +5,10 @@
  *
  */
 
-import { LastUpdate } from './LastUpdate.model';
 import { MikeBoundaryCondition } from './MikeBoundaryCondition.model';
 import { TVItemModel } from './TVItemModel.model';
 
-export class MikeBoundaryConditionModel extends LastUpdate {
+export class MikeBoundaryConditionModel {
     MikeBoundaryConditionList: MikeBoundaryCondition[];
     TVItemModel: TVItemModel;
 }

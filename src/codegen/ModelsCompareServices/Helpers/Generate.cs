@@ -70,7 +70,12 @@ namespace ModelsCompareServices.Services
                     continue;
                 }
 
-                //if (dllTypeInfoModels.Type.Name != "Address")
+                if (dllTypeInfoModels.Type.Name.StartsWith("Web"))
+                {
+                    continue;
+                }
+
+                //if (dllTypeInfoModels.Type.Name != "WebAllTVItem")
                 //{
                 //    continue;
                 //}

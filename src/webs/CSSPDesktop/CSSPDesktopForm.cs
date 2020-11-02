@@ -7,7 +7,7 @@ using CSSPDesktopServices.Services;
 using CSSPEnums;
 using CSSPModels;
 using CSSPSQLiteServices;
-using DownloadGzFileServices;
+using DownloadFileServices;
 using LocalServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -473,7 +473,7 @@ namespace CSSPDesktop
             Services.AddSingleton<ILocalService, LocalService>();
             Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
             Services.AddSingleton<ICSSPDBFilesManagementService, CSSPDBFilesManagementService>();
-            Services.AddSingleton<IDownloadGzFileService, DownloadGzFileService>();
+            Services.AddSingleton<IDownloadFileService, DownloadFileService>();
             Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
             Services.AddSingleton<IPreferenceService, PreferenceService>();
 
@@ -693,7 +693,7 @@ namespace CSSPDesktop
                 }
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // nothing
             }
