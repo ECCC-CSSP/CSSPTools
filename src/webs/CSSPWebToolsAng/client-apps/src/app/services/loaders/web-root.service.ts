@@ -31,7 +31,7 @@ export class WebRootService {
             BreadCrumbWebBaseList: [],
             Working: true
         });
-        let url: string = `${this.appLoadedService.BaseApiUrl}en-CA/Read/WebRoot/${TVItemID}/1`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appStateService.AppState$.getValue().Language}-CA/Read/WebRoot/${TVItemID}/1`;
         return this.httpClient.get<WebRoot>(url).pipe(
             map((x: any) => {
                 this.UpdateWebRoot(x);

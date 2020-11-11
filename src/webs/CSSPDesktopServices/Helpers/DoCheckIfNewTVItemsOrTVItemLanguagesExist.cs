@@ -9,7 +9,7 @@ using Azure.Storage.Blobs;
 using System.IO;
 using Azure.Storage.Blobs.Models;
 using CSSPDesktopServices.Models;
-using CSSPModels;
+using CSSPDBModels;
 using CSSPCultureServices.Resources;
 
 namespace CSSPDesktopServices.Services

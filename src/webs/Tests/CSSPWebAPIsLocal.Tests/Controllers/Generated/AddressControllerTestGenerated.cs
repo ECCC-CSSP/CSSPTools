@@ -5,7 +5,7 @@
  */
 
 using CSSPEnums;
-using CSSPModels;
+using CSSPDBModels;
 using CSSPDBLocalServices;
 using CSSPWebAPIs.Controllers;
 using CSSPCultureServices.Services;
@@ -72,6 +72,8 @@ namespace CSSPWebAPIs.Tests.Controllers
 
             using (HttpClient httpClient = new HttpClient())
             {
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", LocalService.LoggedInContactInfo.LoggedInContact.Token);
+
                 // testing Get
                 string url = $"{ LocalUrl }api/{ culture }/Address";
                 var response = await httpClient.GetAsync(url);
@@ -143,104 +145,6 @@ namespace CSSPWebAPIs.Tests.Controllers
 
             LocalUrl = Config.GetValue<string>("LocalUrl");
             Assert.NotNull(LocalUrl);
-
-            /* ---------------------------------------------------------------------------------
-             * using CSSPDBLocal 
-             * ---------------------------------------------------------------------------------      
-             */
-            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
-
-            FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocalFileName);
-
-            Services.AddDbContext<CSSPDBLocalContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
-            });
-
-            /* ---------------------------------------------------------------------------------
-             * using CSSPDBLocalInMemory 
-             * ---------------------------------------------------------------------------------      
-             */
-            string DBConnStr = "";
-
-            DBConnStr = Config.GetValue<string>("AzureCSSPDB");
-
-            Services.AddDbContext<CSSPDBInMemoryContext>(options =>
-            {
-                options.UseInMemoryDatabase(DBConnStr);
-            });
-
-            /* ---------------------------------------------------------------------------------
-             * using CSSPDBLogin
-             * ---------------------------------------------------------------------------------      
-             */
-            string CSSPDBLoginFileName = Config.GetValue<string>("CSSPDBLogin");
-
-            FileInfo fiCSSPDBLogin = new FileInfo(CSSPDBLoginFileName);
-
-            Services.AddDbContext<CSSPDBLoginContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiCSSPDBLogin.FullName }");
-            });
-
-            /* ---------------------------------------------------------------------------------
-             * using CSSPDBLoginInMemory
-             * ---------------------------------------------------------------------------------      
-             */
-
-            Services.AddDbContext<CSSPDBLoginInMemoryContext>(options =>
-            {
-                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBLogin.FullName }");
-            });
-
-            /* ---------------------------------------------------------------------------------
-             * using CSSPDBFileManagement
-             * ---------------------------------------------------------------------------------      
-             */
-            string CSSPDBFilesManagementFileName = Config.GetValue<string>("CSSPDBFilesManagement");
-
-            FileInfo fiCSSPDBFilesManagement = new FileInfo(CSSPDBFilesManagementFileName);
-
-            Services.AddDbContext<CSSPDBFilesManagementContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiCSSPDBFilesManagement.FullName }");
-            });
-
-            /* ---------------------------------------------------------------------------------
-             * using CSSPDBFileManagementInMemmory
-             * ---------------------------------------------------------------------------------      
-             */
-            Services.AddDbContext<CSSPDBFilesManagementInMemoryContext>(options =>
-            {
-                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBFilesManagement.FullName }");
-            });
-
-            /* ---------------------------------------------------------------------------------
-             * using CSSPDBCommandLog
-             * ---------------------------------------------------------------------------------      
-             */
-            string CSSPDBCommandLogFileName = Config.GetValue<string>("CSSPDBCommandLog");
-
-            FileInfo fiCSSPDBCommandLog = new FileInfo(CSSPDBCommandLogFileName);
-
-            Services.AddDbContext<CSSPDBCommandLogContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiCSSPDBCommandLog.FullName }");
-            });
-
-            /* ---------------------------------------------------------------------------------
-             * using CSSPDBSearchInMemory
-             * ---------------------------------------------------------------------------------      
-             */
-
-            string CSSPDBSearchFileName = Config.GetValue<string>("CSSPDBSearch");
-
-            FileInfo fiCSSPDBSearch = new FileInfo(CSSPDBSearchFileName);
-
-            Services.AddDbContext<CSSPDBSearchContext>(options =>
-            {
-                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBSearch.FullName }");
-            });
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();

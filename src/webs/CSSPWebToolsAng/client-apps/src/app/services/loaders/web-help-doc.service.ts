@@ -19,7 +19,7 @@ export class WebHelpDocService {
     
     GetWebHelpDoc() {
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebHelpDoc: {}, Working: true });
-        let url: string = `${this.appLoadedService.BaseApiUrl}en-CA/Read/WebHelpDoc/0/1`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appStateService.AppState$.getValue().Language}-CA/Read/WebHelpDoc/0/1`;
         return this.httpClient.get<WebHelpDoc>(url).pipe(
             map((x: any) => {
                 this.UpdateWebHelpDoc(x);

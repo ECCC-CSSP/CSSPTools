@@ -19,7 +19,7 @@ export class WebMWQMRunService {
     
     GetWebMWQMRun(TVItemID: number) {
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebMWQMRun: {}, BreadCrumbWebBaseList: [], Working: true });
-        let url: string = `${this.appLoadedService.BaseApiUrl}en-CA/Read/WebMWQMRun/${TVItemID}/1`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appStateService.AppState$.getValue().Language}-CA/Read/WebMWQMRun/${TVItemID}/1`;
         return this.httpClient.get<WebMWQMRun>(url).pipe(
             map((x: any) => {
                 this.UpdateWebMWQMRun(x);

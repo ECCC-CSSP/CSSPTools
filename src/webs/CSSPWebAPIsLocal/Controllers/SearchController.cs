@@ -2,7 +2,7 @@
  * Manually edited
  * 
  */
-using CSSPModels;
+using CSSPDBModels;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

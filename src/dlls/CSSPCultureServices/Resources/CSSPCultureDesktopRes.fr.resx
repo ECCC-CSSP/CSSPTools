@@ -211,7 +211,7 @@
     <value>{0} introuvable dans dbLogin</value>
   </data>
   <data name="CouldNotFind_InDBLogin_" xml:space="preserve">
-    <value>Dans l'impossibilité de trouver {0} dans CSSPDBLogin {1}</value>
+    <value>Dans l'impossibilité de trouver {0} dans CSSPDBPreference {1}</value>
   </data>
   <data name="CouldNotGetPropertiesFromAzureStore_AndFile_" xml:space="preserve">
     <value>Dans l'impossibilité de lire les propriétés de Azure Store {0} et la filière {1}</value>

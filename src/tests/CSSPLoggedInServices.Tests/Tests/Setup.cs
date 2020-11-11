@@ -1,4 +1,4 @@
-using CSSPModels;
+using CSSPDBModels;
 using CSSPCultureServices.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -9,6 +9,7 @@ using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
 using Xunit;
+using CSSPDBModels;
 
 namespace LoggedInServices.Tests
 {

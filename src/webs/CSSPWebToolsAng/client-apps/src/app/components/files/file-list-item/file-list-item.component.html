@@ -1,17 +1,19 @@
-<mat-list-item (click)="ShowCommands(TVFileModel)">
-    <button mat-button (click)="fileService.DownloadFile(TVFileModel.ParentTVItemID, TVFileModel.TVFile.ServerFileName)">Download</button>
-    <mat-progress-bar *ngIf="download$ | async as download"
-		[mode]="download.state == 'PENDING' ? 'buffer' : 'determinate'" 
-        [value]="download.progress">
-</mat-progress-bar>
-    <button mat-button>
-        <img src="{{ fileIconService.GetFileIcon(TVFileModel) }}" />
-        <span>&nbsp;&nbsp;</span>
-        <span>{{ Index }} - {{ TVFileModel.TVFile.ServerFileName }} </span>
-        <span>| {{ TVFileModel.TVFile.FileSize_kb }} </span>
-        <span>{{ appLanguageService.AppLanguage.KB[appStateService.AppState$?.getValue().Language] }} | </span>
-        <span>{{ dateFormatService.GetFileCreateDate(TVFileModel) }}</span>
-    </button>
+<mat-list-item>
+    <span mat-line>
+        <button mat-button (click)="download(TVFileModel)">
+            <img src="{{ fileIconService.GetFileIcon(TVFileModel) }}" />
+            <span>&nbsp;&nbsp;</span>
+            <span>{{ Index }} - {{ TVFileModel.TVFile.ServerFileName }} </span>
+            <span>| {{ TVFileModel.TVFile.FileSize_kb }} </span>
+            <span>{{ appLanguageService.AppLanguage.KB[appStateService.AppState$?.getValue().Language] }} | </span>
+            <span>{{ dateFormatService.GetFileCreateDate(TVFileModel) }}</span>
+        </button>
+    </span>
+    <span mat-line *ngIf="download$ | async as download">
+        <mat-progress-bar 
+            [mode]="download.state == 'PENDING' ? 'buffer' : 'determinate'" [value]="download.progress">
+        </mat-progress-bar>
+    </span> 
 </mat-list-item>
 <app-file-list-item-detail [AppState]="AppState" *ngIf="AppState.DetailVisible" [TVFileModel]="TVFileModel">
 </app-file-list-item-detail>

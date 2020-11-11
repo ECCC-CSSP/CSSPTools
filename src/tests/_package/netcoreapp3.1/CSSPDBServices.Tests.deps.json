@@ -2004,11 +2004,29 @@
           }
         }
       },
+      "CSSPDBModels/1.0.0": {
+        "dependencies": {
+          "CSSPEnums": "1.0.0",
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.8",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.8",
+          "Microsoft.EntityFrameworkCore": "3.1.8",
+          "Microsoft.EntityFrameworkCore.InMemory": "3.1.8",
+          "Microsoft.EntityFrameworkCore.SqlServer": "3.1.8",
+          "Microsoft.EntityFrameworkCore.Sqlite": "3.1.8",
+          "Microsoft.Extensions.Configuration": "3.1.8",
+          "Microsoft.Extensions.Configuration.Json": "3.1.8",
+          "Microsoft.Extensions.DependencyInjection": "3.1.8",
+          "System.IdentityModel.Tokens.Jwt": "6.7.1"
+        },
+        "runtime": {
+          "CSSPDBModels.dll": {}
+        }
+      },
       "CSSPDBServices/1.0.0": {
         "dependencies": {
           "Azure.Storage.Blobs": "12.6.0",
+          "CSSPHelperServices": "1.0.0",
           "CSSPLoggedInServices": "1.0.0",
-          "CSSPModels": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.8",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.8",
           "Microsoft.EntityFrameworkCore": "3.1.8",
@@ -2030,25 +2048,9 @@
           "CSSPEnums.dll": {}
         }
       },
-      "CSSPLoggedInServices/1.0.0": {
+      "CSSPHelperModels/1.0.0": {
         "dependencies": {
-          "Azure.Storage.Blobs": "12.6.0",
-          "CSSPModels": "1.0.0",
-          "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.8",
-          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.8",
-          "Microsoft.EntityFrameworkCore": "3.1.8",
-          "Microsoft.EntityFrameworkCore.InMemory": "3.1.8",
-          "Microsoft.EntityFrameworkCore.SqlServer": "3.1.8",
-          "Microsoft.EntityFrameworkCore.Sqlite": "3.1.8",
-          "Microsoft.Extensions.Configuration": "3.1.8",
-          "Microsoft.Extensions.Configuration.Json": "3.1.8"
-        },
-        "runtime": {
-          "CSSPLoggedInServices.dll": {}
-        }
-      },
-      "CSSPModels/1.0.0": {
-        "dependencies": {
+          "CSSPDBModels": "1.0.0",
           "CSSPEnums": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.8",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.8",
@@ -2062,7 +2064,41 @@
           "System.IdentityModel.Tokens.Jwt": "6.7.1"
         },
         "runtime": {
-          "CSSPModels.dll": {}
+          "CSSPHelperModels.dll": {}
+        }
+      },
+      "CSSPHelperServices/1.0.0": {
+        "dependencies": {
+          "Azure.Storage.Blobs": "12.6.0",
+          "CSSPLoggedInServices": "1.0.0",
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.8",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.8",
+          "Microsoft.EntityFrameworkCore": "3.1.8",
+          "Microsoft.EntityFrameworkCore.InMemory": "3.1.8",
+          "Microsoft.EntityFrameworkCore.SqlServer": "3.1.8",
+          "Microsoft.EntityFrameworkCore.Sqlite": "3.1.8",
+          "Microsoft.Extensions.Configuration": "3.1.8",
+          "Microsoft.Extensions.Configuration.Json": "3.1.8"
+        },
+        "runtime": {
+          "CSSPHelperServices.dll": {}
+        }
+      },
+      "CSSPLoggedInServices/1.0.0": {
+        "dependencies": {
+          "Azure.Storage.Blobs": "12.6.0",
+          "CSSPHelperModels": "1.0.0",
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.8",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.8",
+          "Microsoft.EntityFrameworkCore": "3.1.8",
+          "Microsoft.EntityFrameworkCore.InMemory": "3.1.8",
+          "Microsoft.EntityFrameworkCore.SqlServer": "3.1.8",
+          "Microsoft.EntityFrameworkCore.Sqlite": "3.1.8",
+          "Microsoft.Extensions.Configuration": "3.1.8",
+          "Microsoft.Extensions.Configuration.Json": "3.1.8"
+        },
+        "runtime": {
+          "CSSPLoggedInServices.dll": {}
         }
       }
     }
@@ -3268,6 +3304,11 @@
       "serviceable": false,
       "sha512": ""
     },
+    "CSSPDBModels/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
     "CSSPDBServices/1.0.0": {
       "type": "project",
       "serviceable": false,
@@ -3278,12 +3319,17 @@
       "serviceable": false,
       "sha512": ""
     },
-    "CSSPLoggedInServices/1.0.0": {
+    "CSSPHelperModels/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "CSSPModels/1.0.0": {
+    "CSSPHelperServices/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "CSSPLoggedInServices/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

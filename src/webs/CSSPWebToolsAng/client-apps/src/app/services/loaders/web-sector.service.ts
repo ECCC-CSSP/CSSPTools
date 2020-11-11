@@ -34,7 +34,7 @@ export class WebSectorService {
       BreadCrumbWebBaseList: [],
       Working: true
     });
-    let url: string = `${this.appLoadedService.BaseApiUrl}en-CA/Read/WebSector/${TVItemID}/1`;
+    let url: string = `${this.appLoadedService.BaseApiUrl}${this.appStateService.AppState$.getValue().Language}-CA/Read/WebSector/${TVItemID}/1`;
     return this.httpClient.get<WebSector>(url).pipe(
       map((x: any) => {
         this.UpdateWebSector(x);

@@ -211,7 +211,7 @@
     <value>Could not find {0} in dbLogin</value>
   </data>
   <data name="CouldNotFind_InDBLogin_" xml:space="preserve">
-    <value>Could not find {0} in CSSPDBLogin {1}</value>
+    <value>Could not find {0} in CSSPDBPreference {1}</value>
   </data>
   <data name="CouldNotGetPropertiesFromAzureStore_AndFile_" xml:space="preserve">
     <value>Could not read properties from Azure Store {0} and file {1}</value>

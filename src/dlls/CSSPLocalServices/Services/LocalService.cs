@@ -1,5 +1,5 @@
 ﻿using CSSPEnums;
-using CSSPModels;
+using CSSPDBModels;
 using CSSPCultureServices.Services;
 using System;
 using System.Collections.Generic;
@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net.Http;
 using Microsoft.Extensions.Configuration;
+using CSSPDBPreferenceModels;
+using CSSPHelperModels;
 
 namespace LocalServices
 {
@@ -29,16 +31,16 @@ namespace LocalServices
         public LoggedInContactInfo LoggedInContactInfo { get; set; } = null;
 
         private ICSSPCultureService CSSPCultureService { get; set; }
-        private CSSPDBLoginContext dbLogin { get; set; }
-        private CSSPDBLoginInMemoryContext dbLoginIM { get; set; }
+        private CSSPDBPreferenceContext dbPreference { get; set; }
+        private CSSPDBPreferenceInMemoryContext dbPreferenceIM { get; set; }
         #endregion Properties
 
         #region Constructors
-        public LocalService(ICSSPCultureService CSSPCultureService, CSSPDBLoginContext dbLogin, CSSPDBLoginInMemoryContext dbLoginIM)
+        public LocalService(ICSSPCultureService CSSPCultureService, CSSPDBPreferenceContext dbPreference, CSSPDBPreferenceInMemoryContext dbPreferenceIM)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.dbLogin = dbLogin;
-            this.dbLoginIM = dbLoginIM;
+            this.dbPreference = dbPreference;
+            this.dbPreferenceIM = dbPreferenceIM;
         }
         #endregion Constructors
 
@@ -69,12 +71,12 @@ namespace LocalServices
         {
             LoggedInContactInfo = new LoggedInContactInfo();
 
-            LoggedInContactInfo.LoggedInContact = (from c in dbLoginIM.Contacts
+            LoggedInContactInfo.LoggedInContact = (from c in dbPreferenceIM.Contacts
                                                    select c).FirstOrDefault();
 
             if (LoggedInContactInfo.LoggedInContact == null)
             {
-                LoggedInContactInfo.LoggedInContact = (from c in dbLogin.Contacts
+                LoggedInContactInfo.LoggedInContact = (from c in dbPreference.Contacts
                                                        select c).FirstOrDefault();
 
                 if (LoggedInContactInfo.LoggedInContact == null)
@@ -88,8 +90,8 @@ namespace LocalServices
                     // doing LoggedInContacts
                     try
                     {
-                        dbLoginIM.Contacts.Add(LoggedInContactInfo.LoggedInContact);
-                        await dbLoginIM.SaveChangesAsync();
+                        dbPreferenceIM.Contacts.Add(LoggedInContactInfo.LoggedInContact);
+                        await dbPreferenceIM.SaveChangesAsync();
                     }
                     catch (Exception)
                     {
@@ -98,7 +100,7 @@ namespace LocalServices
                     }
 
                     // doing TVTypeUserAuthorizationList 
-                    LoggedInContactInfo.TVTypeUserAuthorizationList = (from c in dbLogin.TVTypeUserAuthorizations
+                    LoggedInContactInfo.TVTypeUserAuthorizationList = (from c in dbPreference.TVTypeUserAuthorizations
                                                                        where c.ContactTVItemID == LoggedInContactInfo.LoggedInContact.ContactTVItemID
                                                                        select c).ToList();
 
@@ -106,8 +108,8 @@ namespace LocalServices
                     {
                         try
                         {
-                            dbLoginIM.TVTypeUserAuthorizations.AddRange(LoggedInContactInfo.TVTypeUserAuthorizationList);
-                            await dbLoginIM.SaveChangesAsync();
+                            dbPreferenceIM.TVTypeUserAuthorizations.AddRange(LoggedInContactInfo.TVTypeUserAuthorizationList);
+                            await dbPreferenceIM.SaveChangesAsync();
                         }
                         catch (Exception)
                         {
@@ -117,7 +119,7 @@ namespace LocalServices
                     }
 
                     // doing TVItemUserAuthorizationList 
-                    LoggedInContactInfo.TVItemUserAuthorizationList = (from c in dbLogin.TVItemUserAuthorizations
+                    LoggedInContactInfo.TVItemUserAuthorizationList = (from c in dbPreference.TVItemUserAuthorizations
                                                                        where c.ContactTVItemID == LoggedInContactInfo.LoggedInContact.ContactTVItemID
                                                                        select c).ToList();
 
@@ -125,8 +127,8 @@ namespace LocalServices
                     {
                         try
                         {
-                            dbLoginIM.TVItemUserAuthorizations.AddRange(LoggedInContactInfo.TVItemUserAuthorizationList);
-                            await dbLoginIM.SaveChangesAsync();
+                            dbPreferenceIM.TVItemUserAuthorizations.AddRange(LoggedInContactInfo.TVItemUserAuthorizationList);
+                            await dbPreferenceIM.SaveChangesAsync();
                         }
                         catch (Exception)
                         {
@@ -138,11 +140,11 @@ namespace LocalServices
             }
             else
             {
-                LoggedInContactInfo.TVTypeUserAuthorizationList = (from c in dbLoginIM.TVTypeUserAuthorizations
+                LoggedInContactInfo.TVTypeUserAuthorizationList = (from c in dbPreferenceIM.TVTypeUserAuthorizations
                                                                    where c.ContactTVItemID == LoggedInContactInfo.LoggedInContact.ContactTVItemID
                                                                    select c).ToList();
 
-                LoggedInContactInfo.TVItemUserAuthorizationList = (from c in dbLoginIM.TVItemUserAuthorizations
+                LoggedInContactInfo.TVItemUserAuthorizationList = (from c in dbPreferenceIM.TVItemUserAuthorizations
                                                                    where c.ContactTVItemID == LoggedInContactInfo.LoggedInContact.ContactTVItemID
                                                                    select c).ToList();
 

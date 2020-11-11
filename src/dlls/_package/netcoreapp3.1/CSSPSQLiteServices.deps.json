@@ -10,9 +10,10 @@
         "dependencies": {
           "Azure.Storage.Blobs": "12.6.0",
           "CSSPDBCommandLogServices": "1.0.0",
+          "CSSPDBFilesManagementModels": "1.0.0",
           "CSSPDBLocalServices": "1.0.0",
-          "CSSPDBLoginServices": "1.0.0",
-          "CSSPModels": "1.0.0",
+          "CSSPDBModels": "1.0.0",
+          "CSSPDBSearchModels": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.8",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.8",
           "Microsoft.EntityFrameworkCore": "3.1.8",
@@ -1380,86 +1381,7 @@
           }
         }
       },
-      "CSSPDBCommandLogServices/1.0.0": {
-        "dependencies": {
-          "Azure.Storage.Blobs": "12.6.0",
-          "CSSPLocalServices": "1.0.0",
-          "CSSPModels": "1.0.0",
-          "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.8",
-          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.8",
-          "Microsoft.EntityFrameworkCore": "3.1.8",
-          "Microsoft.EntityFrameworkCore.InMemory": "3.1.8",
-          "Microsoft.EntityFrameworkCore.SqlServer": "3.1.8",
-          "Microsoft.EntityFrameworkCore.Sqlite": "3.1.8",
-          "Microsoft.Extensions.Configuration": "3.1.8",
-          "Microsoft.Extensions.Configuration.Json": "3.1.8"
-        },
-        "runtime": {
-          "CSSPDBCommandLogServices.dll": {}
-        }
-      },
-      "CSSPDBLocalServices/1.0.0": {
-        "dependencies": {
-          "Azure.Storage.Blobs": "12.6.0",
-          "CSSPLocalServices": "1.0.0",
-          "CSSPModels": "1.0.0",
-          "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.8",
-          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.8",
-          "Microsoft.EntityFrameworkCore": "3.1.8",
-          "Microsoft.EntityFrameworkCore.InMemory": "3.1.8",
-          "Microsoft.EntityFrameworkCore.SqlServer": "3.1.8",
-          "Microsoft.EntityFrameworkCore.Sqlite": "3.1.8",
-          "Microsoft.Extensions.Configuration": "3.1.8",
-          "Microsoft.Extensions.Configuration.Json": "3.1.8"
-        },
-        "runtime": {
-          "CSSPDBLocalServices.dll": {}
-        }
-      },
-      "CSSPDBLoginServices/1.0.0": {
-        "dependencies": {
-          "Azure.Storage.Blobs": "12.6.0",
-          "CSSPLocalServices": "1.0.0",
-          "CSSPModels": "1.0.0",
-          "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.8",
-          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.8",
-          "Microsoft.EntityFrameworkCore": "3.1.8",
-          "Microsoft.EntityFrameworkCore.InMemory": "3.1.8",
-          "Microsoft.EntityFrameworkCore.SqlServer": "3.1.8",
-          "Microsoft.EntityFrameworkCore.Sqlite": "3.1.8",
-          "Microsoft.Extensions.Configuration": "3.1.8",
-          "Microsoft.Extensions.Configuration.Json": "3.1.8"
-        },
-        "runtime": {
-          "CSSPDBLoginServices.dll": {}
-        }
-      },
-      "CSSPEnums/1.0.0": {
-        "dependencies": {
-          "CSSPCultureServices": "1.0.0"
-        },
-        "runtime": {
-          "CSSPEnums.dll": {}
-        }
-      },
-      "CSSPLocalServices/1.0.0": {
-        "dependencies": {
-          "Azure.Storage.Blobs": "12.6.0",
-          "CSSPModels": "1.0.0",
-          "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.8",
-          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.8",
-          "Microsoft.EntityFrameworkCore": "3.1.8",
-          "Microsoft.EntityFrameworkCore.InMemory": "3.1.8",
-          "Microsoft.EntityFrameworkCore.SqlServer": "3.1.8",
-          "Microsoft.EntityFrameworkCore.Sqlite": "3.1.8",
-          "Microsoft.Extensions.Configuration": "3.1.8",
-          "Microsoft.Extensions.Configuration.Json": "3.1.8"
-        },
-        "runtime": {
-          "CSSPLocalServices.dll": {}
-        }
-      },
-      "CSSPModels/1.0.0": {
+      "CSSPDBCommandLogModels/1.0.0": {
         "dependencies": {
           "CSSPEnums": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.8",
@@ -1474,7 +1396,181 @@
           "System.IdentityModel.Tokens.Jwt": "6.7.1"
         },
         "runtime": {
-          "CSSPModels.dll": {}
+          "CSSPDBCommandLogModels.dll": {}
+        }
+      },
+      "CSSPDBCommandLogServices/1.0.0": {
+        "dependencies": {
+          "Azure.Storage.Blobs": "12.6.0",
+          "CSSPDBCommandLogModels": "1.0.0",
+          "CSSPLocalServices": "1.0.0",
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.8",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.8",
+          "Microsoft.EntityFrameworkCore": "3.1.8",
+          "Microsoft.EntityFrameworkCore.InMemory": "3.1.8",
+          "Microsoft.EntityFrameworkCore.SqlServer": "3.1.8",
+          "Microsoft.EntityFrameworkCore.Sqlite": "3.1.8",
+          "Microsoft.Extensions.Configuration": "3.1.8",
+          "Microsoft.Extensions.Configuration.Json": "3.1.8"
+        },
+        "runtime": {
+          "CSSPDBCommandLogServices.dll": {}
+        }
+      },
+      "CSSPDBFilesManagementModels/1.0.0": {
+        "dependencies": {
+          "CSSPEnums": "1.0.0",
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.8",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.8",
+          "Microsoft.EntityFrameworkCore": "3.1.8",
+          "Microsoft.EntityFrameworkCore.InMemory": "3.1.8",
+          "Microsoft.EntityFrameworkCore.SqlServer": "3.1.8",
+          "Microsoft.EntityFrameworkCore.Sqlite": "3.1.8",
+          "Microsoft.Extensions.Configuration": "3.1.8",
+          "Microsoft.Extensions.Configuration.Json": "3.1.8",
+          "Microsoft.Extensions.DependencyInjection": "3.1.8",
+          "System.IdentityModel.Tokens.Jwt": "6.7.1"
+        },
+        "runtime": {
+          "CSSPDBFilesManagementModels.dll": {}
+        }
+      },
+      "CSSPDBLocalModels/1.0.0": {
+        "dependencies": {
+          "CSSPDBModels": "1.0.0",
+          "CSSPEnums": "1.0.0",
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.8",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.8",
+          "Microsoft.EntityFrameworkCore": "3.1.8",
+          "Microsoft.EntityFrameworkCore.InMemory": "3.1.8",
+          "Microsoft.EntityFrameworkCore.SqlServer": "3.1.8",
+          "Microsoft.EntityFrameworkCore.Sqlite": "3.1.8",
+          "Microsoft.Extensions.Configuration": "3.1.8",
+          "Microsoft.Extensions.Configuration.Json": "3.1.8",
+          "Microsoft.Extensions.DependencyInjection": "3.1.8",
+          "System.IdentityModel.Tokens.Jwt": "6.7.1"
+        },
+        "runtime": {
+          "CSSPDBLocalModels.dll": {}
+        }
+      },
+      "CSSPDBLocalServices/1.0.0": {
+        "dependencies": {
+          "Azure.Storage.Blobs": "12.6.0",
+          "CSSPDBLocalModels": "1.0.0",
+          "CSSPLocalServices": "1.0.0",
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.8",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.8",
+          "Microsoft.EntityFrameworkCore": "3.1.8",
+          "Microsoft.EntityFrameworkCore.InMemory": "3.1.8",
+          "Microsoft.EntityFrameworkCore.SqlServer": "3.1.8",
+          "Microsoft.EntityFrameworkCore.Sqlite": "3.1.8",
+          "Microsoft.Extensions.Configuration": "3.1.8",
+          "Microsoft.Extensions.Configuration.Json": "3.1.8"
+        },
+        "runtime": {
+          "CSSPDBLocalServices.dll": {}
+        }
+      },
+      "CSSPDBModels/1.0.0": {
+        "dependencies": {
+          "CSSPEnums": "1.0.0",
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.8",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.8",
+          "Microsoft.EntityFrameworkCore": "3.1.8",
+          "Microsoft.EntityFrameworkCore.InMemory": "3.1.8",
+          "Microsoft.EntityFrameworkCore.SqlServer": "3.1.8",
+          "Microsoft.EntityFrameworkCore.Sqlite": "3.1.8",
+          "Microsoft.Extensions.Configuration": "3.1.8",
+          "Microsoft.Extensions.Configuration.Json": "3.1.8",
+          "Microsoft.Extensions.DependencyInjection": "3.1.8",
+          "System.IdentityModel.Tokens.Jwt": "6.7.1"
+        },
+        "runtime": {
+          "CSSPDBModels.dll": {}
+        }
+      },
+      "CSSPDBPreferenceModels/1.0.0": {
+        "dependencies": {
+          "CSSPDBModels": "1.0.0",
+          "CSSPEnums": "1.0.0",
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.8",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.8",
+          "Microsoft.EntityFrameworkCore": "3.1.8",
+          "Microsoft.EntityFrameworkCore.InMemory": "3.1.8",
+          "Microsoft.EntityFrameworkCore.SqlServer": "3.1.8",
+          "Microsoft.EntityFrameworkCore.Sqlite": "3.1.8",
+          "Microsoft.Extensions.Configuration": "3.1.8",
+          "Microsoft.Extensions.Configuration.Json": "3.1.8",
+          "Microsoft.Extensions.DependencyInjection": "3.1.8",
+          "System.IdentityModel.Tokens.Jwt": "6.7.1"
+        },
+        "runtime": {
+          "CSSPDBPreferenceModels.dll": {}
+        }
+      },
+      "CSSPDBSearchModels/1.0.0": {
+        "dependencies": {
+          "CSSPDBModels": "1.0.0",
+          "CSSPEnums": "1.0.0",
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.8",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.8",
+          "Microsoft.EntityFrameworkCore": "3.1.8",
+          "Microsoft.EntityFrameworkCore.InMemory": "3.1.8",
+          "Microsoft.EntityFrameworkCore.SqlServer": "3.1.8",
+          "Microsoft.EntityFrameworkCore.Sqlite": "3.1.8",
+          "Microsoft.Extensions.Configuration": "3.1.8",
+          "Microsoft.Extensions.Configuration.Json": "3.1.8",
+          "Microsoft.Extensions.DependencyInjection": "3.1.8",
+          "System.IdentityModel.Tokens.Jwt": "6.7.1"
+        },
+        "runtime": {
+          "CSSPDBSearchModels.dll": {}
+        }
+      },
+      "CSSPEnums/1.0.0": {
+        "dependencies": {
+          "CSSPCultureServices": "1.0.0"
+        },
+        "runtime": {
+          "CSSPEnums.dll": {}
+        }
+      },
+      "CSSPHelperModels/1.0.0": {
+        "dependencies": {
+          "CSSPDBModels": "1.0.0",
+          "CSSPEnums": "1.0.0",
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.8",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.8",
+          "Microsoft.EntityFrameworkCore": "3.1.8",
+          "Microsoft.EntityFrameworkCore.InMemory": "3.1.8",
+          "Microsoft.EntityFrameworkCore.SqlServer": "3.1.8",
+          "Microsoft.EntityFrameworkCore.Sqlite": "3.1.8",
+          "Microsoft.Extensions.Configuration": "3.1.8",
+          "Microsoft.Extensions.Configuration.Json": "3.1.8",
+          "Microsoft.Extensions.DependencyInjection": "3.1.8",
+          "System.IdentityModel.Tokens.Jwt": "6.7.1"
+        },
+        "runtime": {
+          "CSSPHelperModels.dll": {}
+        }
+      },
+      "CSSPLocalServices/1.0.0": {
+        "dependencies": {
+          "Azure.Storage.Blobs": "12.6.0",
+          "CSSPDBPreferenceModels": "1.0.0",
+          "CSSPHelperModels": "1.0.0",
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.8",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.8",
+          "Microsoft.EntityFrameworkCore": "3.1.8",
+          "Microsoft.EntityFrameworkCore.InMemory": "3.1.8",
+          "Microsoft.EntityFrameworkCore.SqlServer": "3.1.8",
+          "Microsoft.EntityFrameworkCore.Sqlite": "3.1.8",
+          "Microsoft.Extensions.Configuration": "3.1.8",
+          "Microsoft.Extensions.Configuration.Json": "3.1.8"
+        },
+        "runtime": {
+          "CSSPLocalServices.dll": {}
         }
       }
     }
@@ -2386,7 +2482,22 @@
       "serviceable": false,
       "sha512": ""
     },
+    "CSSPDBCommandLogModels/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
     "CSSPDBCommandLogServices/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "CSSPDBFilesManagementModels/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "CSSPDBLocalModels/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -2396,7 +2507,17 @@
       "serviceable": false,
       "sha512": ""
     },
-    "CSSPDBLoginServices/1.0.0": {
+    "CSSPDBModels/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "CSSPDBPreferenceModels/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "CSSPDBSearchModels/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -2406,12 +2527,12 @@
       "serviceable": false,
       "sha512": ""
     },
-    "CSSPLocalServices/1.0.0": {
+    "CSSPHelperModels/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "CSSPModels/1.0.0": {
+    "CSSPLocalServices/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

@@ -2,7 +2,7 @@
 using CSSPCultureServices.Resources;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SQLiteGeneratedServices.Services;
+using GenerateCSSPSQLiteServices;
 using System;
 using System.Collections.Generic;
 using System.Globalization;

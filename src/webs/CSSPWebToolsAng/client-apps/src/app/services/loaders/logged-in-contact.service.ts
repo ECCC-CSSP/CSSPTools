@@ -19,7 +19,7 @@ export class LoggedInContactService {
 
     GetLoggedInContact() {
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ LoggedInContact: {}, Working: true });
-        let url: string = `${this.appLoadedService.BaseApiUrl}en-CA/LoggedInContact`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appStateService.AppState$.getValue().Language}-CA/LoggedInContact`;
         return this.httpClient.get<Contact>(url).pipe(
             map((x: any) => {
                 this.UpdateLoggedInContact(x);

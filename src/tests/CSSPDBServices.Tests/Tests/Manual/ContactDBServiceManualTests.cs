@@ -3,7 +3,7 @@
  */
 
 using CSSPEnums;
-using CSSPModels;
+using CSSPDBModels;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +20,7 @@ using Xunit;
 using System.ComponentModel.DataAnnotations;
 using CSSPCultureServices.Resources;
 using LoggedInServices;
+using CSSPHelperModels;
 
 namespace CSSPDBServices.Tests
 {
@@ -37,8 +38,6 @@ namespace CSSPDBServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private IContactDBService ContactDBService { get; set; }
         private CSSPDBContext db { get; set; }
-        private CSSPDBLocalContext dbLocal { get; set; }
-        private CSSPDBInMemoryContext dbIM { get; set; }
         private Contact contact { get; set; }
         private string Password { get; set; }
         #endregion Properties

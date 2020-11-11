@@ -4,7 +4,7 @@
 // */
 
 //using CSSPEnums;
-//using CSSPModels;
+//using CSSPDBModels;
 //using CSSPDBServices;
 //using CSSPCultureServices.Services;
 //using Microsoft.EntityFrameworkCore;
@@ -159,16 +159,16 @@
 //            });
 
 //            /* ---------------------------------------------------------------------------------
-//             * using CSSPDBLogin
+//             * using CSSPDBPreference
 //             * ---------------------------------------------------------------------------------      
 //             */
-//            string CSSPDBLoginFileName = Configuration.GetValue<string>("CSSPDBLogin");
+//            string CSSPDBPreferenceFileName = Configuration.GetValue<string>("CSSPDBPreference");
 
-//            FileInfo fiCSSPDBLogin = new FileInfo(CSSPDBLoginFileName);
+//            FileInfo fiCSSPDBPreference = new FileInfo(CSSPDBPreferenceFileName);
 
-//            Services.AddDbContext<CSSPDBLoginContext>(options =>
+//            Services.AddDbContext<CSSPDBPreferenceContext>(options =>
 //            {
-//                options.UseSqlite($"Data Source={ fiCSSPDBLogin.FullName }");
+//                options.UseSqlite($"Data Source={ fiCSSPDBPreference.FullName }");
 //            });
 
 //            /* ---------------------------------------------------------------------------------

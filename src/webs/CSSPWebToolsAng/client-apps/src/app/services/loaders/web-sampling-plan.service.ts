@@ -23,7 +23,7 @@ export class WebSamplingPlanService {
             BreadCrumbWebBaseList: [],
             Working: true
         });
-        let url: string = `${this.appLoadedService.BaseApiUrl}en-CA/Read/WebSamplingPlan/${SamplingPlanID}/1`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appStateService.AppState$.getValue().Language}-CA/Read/WebSamplingPlan/${SamplingPlanID}/1`;
         return this.httpClient.get<WebSamplingPlan>(url).pipe(
             map((x: any) => {
                 this.UpdateWebSamplingPlan(x);

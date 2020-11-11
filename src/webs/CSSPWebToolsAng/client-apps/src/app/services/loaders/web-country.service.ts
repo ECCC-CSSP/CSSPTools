@@ -40,7 +40,7 @@ export class WebCountryService {
       BreadCrumbWebBaseList: [],
       Working: true
     });
-    let url: string = `${this.appLoadedService.BaseApiUrl}en-CA/Read/WebCountry/${TVItemID}/1`;
+    let url: string = `${this.appLoadedService.BaseApiUrl}${this.appStateService.AppState$.getValue().Language}-CA/Read/WebCountry/${TVItemID}/1`;
     return this.httpClient.get<WebCountry>(url).pipe(
       map((x: any) => {
         this.UpdateWebCountry(x);

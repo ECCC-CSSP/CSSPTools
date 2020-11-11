@@ -33,7 +33,7 @@ export class WebProvinceService {
       BreadCrumbWebBaseList: [],
       Working: true
     });
-    let url: string = `${this.appLoadedService.BaseApiUrl}en-CA/Read/WebProvince/${TVItemID}/1`;
+    let url: string = `${this.appLoadedService.BaseApiUrl}${this.appStateService.AppState$.getValue().Language}-CA/Read/WebProvince/${TVItemID}/1`;
     return this.httpClient.get<WebProvince>(url).pipe(
       map((x: any) => {
         this.UpdateWebProvince(x);

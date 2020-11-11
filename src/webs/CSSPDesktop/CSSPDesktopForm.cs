@@ -1,11 +1,11 @@
 ﻿using CSSPCultureServices.Resources;
 using CSSPCultureServices.Services;
 using CSSPDBFilesManagementServices;
-using CSSPDBLoginServices;
+using CSSPDBPreferenceServices;
 using CSSPDesktopServices.Models;
 using CSSPDesktopServices.Services;
 using CSSPEnums;
-using CSSPModels;
+using CSSPDBModels;
 using CSSPSQLiteServices;
 using DownloadFileServices;
 using LocalServices;
@@ -543,23 +543,23 @@ namespace CSSPDesktop
             });
 
             // doing CSSPLogin
-            string CSSPDBLogin = Configuration.GetValue<string>("CSSPDBLogin");
-            if (string.IsNullOrWhiteSpace(CSSPDBLogin))
+            string CSSPDBPreference = Configuration.GetValue<string>("CSSPDBPreference");
+            if (string.IsNullOrWhiteSpace(CSSPDBPreference))
             {
-                richTextBoxStatus.AppendText(string.Format(_CouldNotBeFoundInConfigurationFile_, "CSSPDBLogin", "appsettings_csspdesktop.json"));
+                richTextBoxStatus.AppendText(string.Format(_CouldNotBeFoundInConfigurationFile_, "CSSPDBPreference", "appsettings_csspdesktop.json"));
                 return await Task.FromResult(false);
             }
 
-            FileInfo fiCSSPDBLogin = new FileInfo(CSSPDBLogin);
+            FileInfo fiCSSPDBPreference = new FileInfo(CSSPDBPreference);
 
-            Services.AddDbContext<CSSPDBLoginContext>(options =>
+            Services.AddDbContext<CSSPDBPreferenceContext>(options =>
             {
-                options.UseSqlite($"Data Source={ fiCSSPDBLogin.FullName }");
+                options.UseSqlite($"Data Source={ fiCSSPDBPreference.FullName }");
             });
 
-            Services.AddDbContext<CSSPDBLoginInMemoryContext>(options =>
+            Services.AddDbContext<CSSPDBPreferenceInMemoryContext>(options =>
             {
-                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBLogin.FullName }");
+                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBPreference.FullName }");
             });
 
             Provider = Services.BuildServiceProvider();
@@ -602,11 +602,11 @@ namespace CSSPDesktop
             if (!await CSSPDesktopService.CreateAllRequiredDirectories()) return await Task.FromResult(false);
 
 
-            // create CSSPDBLogin if it does not exist
-            FileInfo fi = new FileInfo(CSSPDesktopService.CSSPDBLogin);
+            // create CSSPDBPreference if it does not exist
+            FileInfo fi = new FileInfo(CSSPDesktopService.CSSPDBPreference);
             if (!fi.Exists)
             {
-                if (!await CSSPSQLiteService.CreateSQLiteCSSPDBLogin()) return await Task.FromResult(false);
+                if (!await CSSPSQLiteService.CreateSQLiteCSSPDBPreference()) return await Task.FromResult(false);
             }
 
             await SettingUpAllTextForLanguage();

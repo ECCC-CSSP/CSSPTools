@@ -44,10 +44,10 @@ namespace CSSPDesktopServices.Services
                 return await Task.FromResult(false);
             }
 
-            CSSPDBLogin = Configuration.GetValue<string>("CSSPDBLogin");
-            if (string.IsNullOrWhiteSpace(CSSPDBLogin))
+            CSSPDBPreference = Configuration.GetValue<string>("CSSPDBPreference");
+            if (string.IsNullOrWhiteSpace(CSSPDBPreference))
             {
-                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes._CouldNotBeFoundInConfigurationFile_, "CSSPDBLogin", "appsettings_csspdesktop.json")));
+                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes._CouldNotBeFoundInConfigurationFile_, "CSSPDBPreference", "appsettings_csspdesktop.json")));
                 return await Task.FromResult(false);
             }
 

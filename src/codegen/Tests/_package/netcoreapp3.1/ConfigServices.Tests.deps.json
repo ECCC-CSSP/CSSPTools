@@ -1998,8 +1998,8 @@
       },
       "ConfigServices/1.0.0": {
         "dependencies": {
+          "CSSPDBModels": "1.0.0",
           "CSSPEnums": "1.0.0",
-          "CSSPModels": "1.0.0",
           "GenerateCodeBaseServices": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.8",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.8",
@@ -2028,15 +2028,7 @@
           }
         }
       },
-      "CSSPEnums/1.0.0": {
-        "dependencies": {
-          "CSSPCultureServices": "1.0.0"
-        },
-        "runtime": {
-          "CSSPEnums.dll": {}
-        }
-      },
-      "CSSPModels/1.0.0": {
+      "CSSPDBModels/1.0.0": {
         "dependencies": {
           "CSSPEnums": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.8",
@@ -2051,7 +2043,15 @@
           "System.IdentityModel.Tokens.Jwt": "6.7.1"
         },
         "runtime": {
-          "CSSPModels.dll": {}
+          "CSSPDBModels.dll": {}
+        }
+      },
+      "CSSPEnums/1.0.0": {
+        "dependencies": {
+          "CSSPCultureServices": "1.0.0"
+        },
+        "runtime": {
+          "CSSPEnums.dll": {}
         }
       },
       "GenerateCodeBaseServices/1.0.0": {
@@ -3283,12 +3283,12 @@
       "serviceable": false,
       "sha512": ""
     },
-    "CSSPEnums/1.0.0": {
+    "CSSPDBModels/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "CSSPModels/1.0.0": {
+    "CSSPEnums/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

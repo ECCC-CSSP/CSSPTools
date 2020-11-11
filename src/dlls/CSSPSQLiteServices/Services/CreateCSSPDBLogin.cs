@@ -1,4 +1,4 @@
-﻿using CSSPModels;
+﻿using CSSPDBModels;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,7 +10,7 @@ namespace CSSPSQLiteServices
 {
     public partial class CSSPSQLiteService : ICSSPSQLiteService
     {
-        private async Task<bool> CreateCSSPDBLogin()
+        private async Task<bool> CreateCSSPDBPreference()
         {
             List<string> ExistingTableList = new List<string>();
 

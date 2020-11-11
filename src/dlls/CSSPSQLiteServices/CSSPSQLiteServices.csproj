@@ -38,10 +38,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CSSPDBFilesManagementModels\CSSPDBFilesManagementModels.csproj" />
     <ProjectReference Include="..\CSSPDBLocalServices\CSSPDBLocalServices.csproj" />
-    <ProjectReference Include="..\CSSPDBLoginServices\CSSPDBLoginServices.csproj" />
     <ProjectReference Include="..\CSSPDBCommandLogServices\CSSPDBCommandLogServices.csproj" />
-    <ProjectReference Include="..\CSSPModels\CSSPModels.csproj" />
+    <ProjectReference Include="..\CSSPDBModels\CSSPDBModels.csproj" />
+    <ProjectReference Include="..\CSSPDBSearchModels\CSSPDBSearchModels.csproj" />
   </ItemGroup>
 
 </Project>

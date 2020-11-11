@@ -4,7 +4,7 @@
  */
 
 using CSSPEnums;
-using CSSPModels;
+using CSSPDBModels;
 using CSSPCultureServices.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -78,26 +78,26 @@ namespace CSSPWebAPIsLocal.SearchController.Tests
             });
 
             /* ---------------------------------------------------------------------------------
-             * using CSSPDBLogin
+             * using CSSPDBPreference
              * ---------------------------------------------------------------------------------      
              */
-            string CSSPDBLoginFileName = Configuration.GetValue<string>("CSSPDBLogin");
+            string CSSPDBPreferenceFileName = Configuration.GetValue<string>("CSSPDBPreference");
 
-            FileInfo fiCSSPDBLogin = new FileInfo(CSSPDBLoginFileName);
+            FileInfo fiCSSPDBPreference = new FileInfo(CSSPDBPreferenceFileName);
 
-            Services.AddDbContext<CSSPDBLoginContext>(options =>
+            Services.AddDbContext<CSSPDBPreferenceContext>(options =>
             {
-                options.UseSqlite($"Data Source={ fiCSSPDBLogin.FullName }");
+                options.UseSqlite($"Data Source={ fiCSSPDBPreference.FullName }");
             });
 
             /* ---------------------------------------------------------------------------------
-             * using CSSPDBLoginInMemory
+             * using CSSPDBPreferenceInMemory
              * ---------------------------------------------------------------------------------      
              */
 
-            Services.AddDbContext<CSSPDBLoginInMemoryContext>(options =>
+            Services.AddDbContext<CSSPDBPreferenceInMemoryContext>(options =>
             {
-                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBLogin.FullName }");
+                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBPreference.FullName }");
             });
 
             ///* ---------------------------------------------------------------------------------

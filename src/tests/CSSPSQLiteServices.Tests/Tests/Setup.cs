@@ -1,5 +1,5 @@
 ﻿using CSSPEnums;
-using CSSPModels;
+using CSSPDBModels;
 using CSSPSQLiteServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -32,7 +32,7 @@ namespace CSSPSQLiteServices.Tests
         private ICSSPSQLiteService CSSPSQLiteService { get; set; }
         private FileInfo fiCSSPDBLocal { get; set; }
         private FileInfo fiCSSPDBCommandLog { get; set; }
-        private FileInfo fiCSSPDBLogin { get; set; }
+        private FileInfo fiCSSPDBPreference { get; set; }
         private FileInfo fiCSSPDBFilesManagement { get; set; }
         private FileInfo fiCSSPDBSearch { get; set; }
         #endregion Properties
@@ -76,19 +76,19 @@ namespace CSSPSQLiteServices.Tests
             });
 
             // doing CSSPLoginDB
-            string CSSPLoginDB = Configuration.GetValue<string>("CSSPDBLogin");
+            string CSSPLoginDB = Configuration.GetValue<string>("CSSPDBPreference");
             Assert.NotNull(CSSPLoginDB);
 
-            fiCSSPDBLogin = new FileInfo(CSSPLoginDB);
+            fiCSSPDBPreference = new FileInfo(CSSPLoginDB);
 
-            Services.AddDbContext<CSSPDBLoginContext>(options =>
+            Services.AddDbContext<CSSPDBPreferenceContext>(options =>
             {
-                options.UseSqlite($"Data Source={ fiCSSPDBLogin.FullName }");
+                options.UseSqlite($"Data Source={ fiCSSPDBPreference.FullName }");
             });
 
-            Services.AddDbContext<CSSPDBLoginInMemoryContext>(options =>
+            Services.AddDbContext<CSSPDBPreferenceInMemoryContext>(options =>
             {
-                options.UseSqlite($"Data Source={ fiCSSPDBLogin.FullName }");
+                options.UseSqlite($"Data Source={ fiCSSPDBPreference.FullName }");
             });
 
             // doing CSSPFilesManagementDB

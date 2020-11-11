@@ -367,7 +367,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not find {0} in CSSPDBLogin {1}.
+        ///   Looks up a localized string similar to Could not find {0} in CSSPDBPreference {1}.
         /// </summary>
         public static string CouldNotFind_InDBLogin_ {
             get {

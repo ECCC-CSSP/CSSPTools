@@ -1,4 +1,3 @@
-import { _isNumberValue } from '@angular/cdk/coercion';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormControl } from '@angular/forms';
@@ -20,16 +19,8 @@ export class FileService {
 
     DownloadFile(ParentTVItemID: number, FileName: string) {
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ Working: true });
-        let options = {
-            headers: null,
-            observe: 'events',
-            param: null,
-            reportProgress: true,
-            responseType: 'blob',
-            withCredential: false,
-        };
-        let url: string = `${this.appLoadedService.BaseApiUrl}en-CA/download/${ParentTVItemID}/${FileName}`;
-        this.httpClient.get<Blob>(url, options).pipe(
+        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appStateService.AppState$.getValue().Language}-CA/download/${ParentTVItemID}/${FileName}`;
+        this.httpClient.get<Blob>(url).pipe(
             map((x: any) => {
                 this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ Working: false });
                 console.debug(x);

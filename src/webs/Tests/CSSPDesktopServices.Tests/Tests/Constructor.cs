@@ -7,7 +7,7 @@ using CSSPDBFilesManagementServices;
 using CSSPDesktopServices.Models;
 using CSSPDesktopServices.Services;
 using CSSPEnums;
-using CSSPModels;
+using CSSPDBModels;
 using CSSPSQLiteServices;
 using DownloadFileServices;
 using LocalServices;
@@ -118,20 +118,20 @@ namespace CSSPDesktopServices.Tests
                 options.UseSqlite($"Data Source={ fiCSSPDBFileManagement.FullName }");
             });
 
-            // Doing CSSPDBLoginContext
-            string CSSPDBLogin = Configuration.GetValue<string>("CSSPDBLogin");
-            Assert.NotNull(CSSPDBLogin);
+            // Doing CSSPDBPreferenceContext
+            string CSSPDBPreference = Configuration.GetValue<string>("CSSPDBPreference");
+            Assert.NotNull(CSSPDBPreference);
 
-            FileInfo fiCSSPDBLogin = new FileInfo(CSSPDBLogin);
+            FileInfo fiCSSPDBPreference = new FileInfo(CSSPDBPreference);
 
-            Services.AddDbContext<CSSPDBLoginContext>(options =>
+            Services.AddDbContext<CSSPDBPreferenceContext>(options =>
             {
-                options.UseSqlite($"Data Source={ fiCSSPDBLogin.FullName }");
+                options.UseSqlite($"Data Source={ fiCSSPDBPreference.FullName }");
             });
 
-            Services.AddDbContext<CSSPDBLoginInMemoryContext>(options =>
+            Services.AddDbContext<CSSPDBPreferenceInMemoryContext>(options =>
             {
-                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBLogin.FullName }");
+                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBPreference.FullName }");
             });
 
             Provider = Services.BuildServiceProvider();

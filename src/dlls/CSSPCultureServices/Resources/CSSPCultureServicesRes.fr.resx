@@ -549,8 +549,8 @@
   <data name="ShouldOnlyContainCharactersLike" xml:space="preserve">
     <value>should only contain characters like (fr)</value>
   </data>
-  <data name="SolutionFileNameExampleCSSPRunsCSSPModelsCSSPDBServices" xml:space="preserve">
-    <value>SolutionFileName - Examples: CSSPEnums || CSSPModels || CSSPDBServices (fr)</value>
+  <data name="SolutionFileNameExampleCSSPRunsCSSPDBModelsCSSPDBServices" xml:space="preserve">
+    <value>SolutionFileName - Examples: CSSPEnums || CSSPDBModels || CSSPDBServices (fr)</value>
   </data>
   <data name="Starting" xml:space="preserve">
     <value>Starting (fr)</value>

@@ -6,6 +6,7 @@ import { MaterialModule } from './app-material.module';
 import { FileListItemDetailComponent } from './components/files/file-list-item-detail/file-list-item-detail.component';
 import { FileListItemComponent } from './components/files/file-list-item/file-list-item.component';
 import { FileListComponent } from './components/files/file-list/file-list.component';
+import { FileUploadComponent } from './components/files/file-upload/file-upload.component';
 import { BreadCrumbComponent } from './components/helpers/bread-crumb/bread-crumb.component';
 import { ErrorComponent } from './components/helpers/error/error.component';
 import { FooterComponent } from './components/helpers/footer/footer.component';
@@ -43,6 +44,7 @@ import { SubsectorComponent } from './components/tvtypes/subsector/subsector.com
     FileListComponent,
     FileListItemComponent,
     FileListItemDetailComponent,
+    FileUploadComponent,
     FooterComponent,
     HomeComponent,
     MapComponent,
@@ -86,6 +88,7 @@ import { SubsectorComponent } from './components/tvtypes/subsector/subsector.com
     FileListComponent,
     FileListItemComponent,
     FileListItemDetailComponent,
+    FileUploadComponent,
     FooterComponent,
     HomeComponent,
     MapComponent,

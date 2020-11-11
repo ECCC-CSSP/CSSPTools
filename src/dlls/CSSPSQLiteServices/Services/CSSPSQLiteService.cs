@@ -1,5 +1,5 @@
 ﻿using CSSPEnums;
-using CSSPModels;
+using CSSPDBModels;
 using CSSPCultureServices.Resources;
 using CSSPCultureServices.Services;
 using Microsoft.Data.Sqlite;
@@ -10,6 +10,11 @@ using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using CSSPDBLocalModels;
+using CSSPDBPreferenceModels;
+using CSSPDBCommandLogModels;
+using CSSPDBSearchModels;
+using CSSPDBFilesManagementModels;
 
 namespace CSSPSQLiteServices
 {
@@ -20,12 +25,12 @@ namespace CSSPSQLiteServices
         Task<bool> CreateSQLiteCSSPDBCommandLog();
         Task<bool> CreateSQLiteCSSPDBFilesManagement();
         Task<bool> CreateSQLiteCSSPDBLocal();
-        Task<bool> CreateSQLiteCSSPDBLogin();
+        Task<bool> CreateSQLiteCSSPDBPreference();
         Task<bool> CreateSQLiteCSSPDBSearch();
 
         Task<bool> CSSPDBCommandLogIsEmpty();
         Task<bool> CSSPDBFilesManagementIsEmpty();
-        Task<bool> CSSPDBLoginIsEmpty();
+        Task<bool> CSSPDBPreferenceIsEmpty();
         Task<bool> CSSPDBLocalIsEmpty();
         Task<bool> CSSPDBSearchIsEmpty();
     }
@@ -40,7 +45,7 @@ namespace CSSPSQLiteServices
         private CSSPDBLocalContext dbLocal { get; }
         private CSSPDBSearchContext dbSearch { get; }
         private CSSPDBCommandLogContext dbCommandLog { get; }
-        private CSSPDBLoginContext dbLogin { get; }
+        private CSSPDBPreferenceContext dbLogin { get; }
         private CSSPDBFilesManagementContext dbFM { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
@@ -51,7 +56,7 @@ namespace CSSPSQLiteServices
         #region Constructors
         public CSSPSQLiteService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, 
             CSSPDBLocalContext dbLocal, CSSPDBSearchContext dbSearch, CSSPDBCommandLogContext dbCommandLog,
-            CSSPDBLoginContext dbLogin, CSSPDBFilesManagementContext dbFM)
+            CSSPDBPreferenceContext dbLogin, CSSPDBFilesManagementContext dbFM)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
@@ -77,9 +82,9 @@ namespace CSSPSQLiteServices
 
             return await Task.FromResult(true);
         }
-        public async Task<bool> CreateSQLiteCSSPDBLogin()
+        public async Task<bool> CreateSQLiteCSSPDBPreference()
         {
-            if (!await DoCreateSQLiteCSSPDBLogin()) return await Task.FromResult(false);
+            if (!await DoCreateSQLiteCSSPDBPreference()) return await Task.FromResult(false);
 
             return await Task.FromResult(true);
         }
@@ -108,9 +113,9 @@ namespace CSSPSQLiteServices
 
             return await Task.FromResult(true);
         }
-        public async Task<bool> CSSPDBLoginIsEmpty()
+        public async Task<bool> CSSPDBPreferenceIsEmpty()
         {
-            if (!await DoCSSPDBLoginIsEmpty()) return await Task.FromResult(false);
+            if (!await DoCSSPDBPreferenceIsEmpty()) return await Task.FromResult(false);
 
             return await Task.FromResult(true);
         }

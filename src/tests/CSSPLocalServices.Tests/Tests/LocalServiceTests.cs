@@ -1,4 +1,4 @@
-using CSSPModels;
+using CSSPDBModels;
 using CSSPCultureServices.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -37,7 +37,7 @@ namespace LocalServices.Tests
             Assert.NotEmpty(LastName);
             Assert.NotEmpty(LoginEmail);
             Assert.NotEmpty(Password);
-            Assert.NotEmpty(CSSPDBLoginFileName);
+            Assert.NotEmpty(CSSPDBPreferenceFileName);
         }
         [Theory]
         [InlineData("en-CA")]

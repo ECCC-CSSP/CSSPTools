@@ -19,7 +19,7 @@ export class WebPolSourceGroupingService {
     
     GetWebPolSourceGrouping() {
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebPolSourceGrouping: {}, Working: true });
-        let url: string = `${this.appLoadedService.BaseApiUrl}en-CA/Read/WebPolSourceGrouping/0/1`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appStateService.AppState$.getValue().Language}-CA/Read/WebPolSourceGrouping/0/1`;
         return this.httpClient.get<WebPolSourceGrouping>(url).pipe(
             map((x: any) => {
                 this.UpdateWebPolSourceGrouping(x);

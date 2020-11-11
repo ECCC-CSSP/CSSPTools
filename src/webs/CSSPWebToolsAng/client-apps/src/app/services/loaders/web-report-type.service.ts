@@ -19,7 +19,7 @@ export class WebReportTypeService {
     
     GetWebReportType() {
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebReportType: {}, Working: true });
-        let url: string = `${this.appLoadedService.BaseApiUrl}en-CA/Read/WebReportType/0/1`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appStateService.AppState$.getValue().Language}-CA/Read/WebReportType/0/1`;
         return this.httpClient.get<WebReportType>(url).pipe(
             map((x: any) => {
                 this.UpdateWebReportType(x);

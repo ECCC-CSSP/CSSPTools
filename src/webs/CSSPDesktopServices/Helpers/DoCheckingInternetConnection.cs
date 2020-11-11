@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
 using CSSPCultureServices.Resources;
-using CSSPModels;
+using CSSPDBModels;
 
 namespace CSSPDesktopServices.Services
 {

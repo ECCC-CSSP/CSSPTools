@@ -1,6 +1,6 @@
 ﻿using CSSPCultureServices.Resources;
 using CSSPDesktopServices.Models;
-using CSSPModels;
+using CSSPDBModels;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -105,7 +105,7 @@ namespace CSSPDesktopServices.Services
                     dbLogin.Contacts.Add(contact);
                     dbLogin.SaveChanges();
 
-                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes._StoredInTable_AndDatabase_, "Contact", "Contacts", "CSSPDBLogin.db")));
+                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes._StoredInTable_AndDatabase_, "Contact", "Contacts", "CSSPDBPreference.db")));
                 }
                 catch (Exception ex)
                 {

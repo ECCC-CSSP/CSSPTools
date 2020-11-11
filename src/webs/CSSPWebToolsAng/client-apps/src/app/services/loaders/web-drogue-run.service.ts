@@ -19,7 +19,7 @@ export class WebDrogueRunService {
     
     GetWebDrogueRun(TVItemID: number) {
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebDrogueRun: {}, BreadCrumbWebBaseList: [], Working: true });
-        let url: string = `${this.appLoadedService.BaseApiUrl}en-CA/Read/WebDrogueRun/${TVItemID}/1`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appStateService.AppState$.getValue().Language}-CA/Read/WebDrogueRun/${TVItemID}/1`;
         return this.httpClient.get<WebDrogueRun>(url).pipe(
             map((x: any) => {
                 this.UpdateWebDrogueRun(x);

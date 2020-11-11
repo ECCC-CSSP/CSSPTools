@@ -1,4 +1,4 @@
-using CSSPModels;
+using CSSPDBModels;
 using CSSPCultureServices.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -9,6 +9,7 @@ using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
 using Xunit;
+using CSSPDBPreferenceModels;
 
 namespace LocalServices.Tests
 {
@@ -29,7 +30,7 @@ namespace LocalServices.Tests
         private string LastName { get; set; }
         private string LoginEmail { get; set; }
         private string Password { get; set; }
-        private string CSSPDBLoginFileName { get; set; }
+        private string CSSPDBPreferenceFileName { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -57,26 +58,26 @@ namespace LocalServices.Tests
             ServiceCollection.AddSingleton<ILocalService, LocalService>();
 
             /* ---------------------------------------------------------------------------------
-             * using CSSPDBLogin
+             * using CSSPDBPreference
              * ---------------------------------------------------------------------------------      
              */
-            CSSPDBLoginFileName = Configuration.GetValue<string>("CSSPDBLogin");
+            CSSPDBPreferenceFileName = Configuration.GetValue<string>("CSSPDBPreference");
 
-            FileInfo fiCSSPDBLogin = new FileInfo(CSSPDBLoginFileName);
+            FileInfo fiCSSPDBPreference = new FileInfo(CSSPDBPreferenceFileName);
 
-            ServiceCollection.AddDbContext<CSSPDBLoginContext>(options =>
+            ServiceCollection.AddDbContext<CSSPDBPreferenceContext>(options =>
             {
-                options.UseSqlite($"Data Source={ fiCSSPDBLogin.FullName }");
+                options.UseSqlite($"Data Source={ fiCSSPDBPreference.FullName }");
             });
 
             /* ---------------------------------------------------------------------------------
-             * using CSSPDBLoginInMemory
+             * using CSSPDBPreferenceInMemory
              * ---------------------------------------------------------------------------------      
              */
 
-            ServiceCollection.AddDbContext<CSSPDBLoginInMemoryContext>(options =>
+            ServiceCollection.AddDbContext<CSSPDBPreferenceInMemoryContext>(options =>
             {
-                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBLogin.FullName }");
+                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBPreference.FullName }");
             });
 
             ServiceProvider = ServiceCollection.BuildServiceProvider();

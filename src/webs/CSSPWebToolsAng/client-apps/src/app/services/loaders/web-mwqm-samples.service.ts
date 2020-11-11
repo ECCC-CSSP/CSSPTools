@@ -66,7 +66,7 @@ export class WebMWQMSampleService {
                 }
                 break;
         }
-        let url: string = `${this.appLoadedService.BaseApiUrl}en-CA/Read/WebMWQMSample/${TVItemID}/${year}`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appStateService.AppState$.getValue().Language}-CA/Read/WebMWQMSample/${TVItemID}/${year}`;
         return this.httpClient.get<WebMWQMSample>(url).pipe(
             map((x: any) => {
                 this.UpdateWebMWQMSample(x, year);

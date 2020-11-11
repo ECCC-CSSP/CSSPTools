@@ -29,7 +29,7 @@ export class WebMunicipalityService {
             BreadCrumbWebBaseList: [],
             Working: true
         });
-        let url: string = `${this.appLoadedService.BaseApiUrl}en-CA/Read/WebMunicipality/${TVItemID}/1`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appStateService.AppState$.getValue().Language}-CA/Read/WebMunicipality/${TVItemID}/1`;
         return this.httpClient.get<WebMunicipality>(url).pipe(
             map((x: any) => {
                 this.UpdateWebMunicipality(x);

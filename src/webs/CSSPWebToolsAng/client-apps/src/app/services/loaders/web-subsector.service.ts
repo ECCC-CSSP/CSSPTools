@@ -40,7 +40,7 @@ export class WebSubsectorService {
             BreadCrumbWebBaseList: [],
             Working: true
         });
-        let url: string = `${this.appLoadedService.BaseApiUrl}en-CA/Read/WebSubsector/${TVItemID}/1`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appStateService.AppState$.getValue().Language}-CA/Read/WebSubsector/${TVItemID}/1`;
         return this.httpClient.get<WebSubsector>(url).pipe(
             map((x: any) => {
                 this.UpdateWebSubsector(x);

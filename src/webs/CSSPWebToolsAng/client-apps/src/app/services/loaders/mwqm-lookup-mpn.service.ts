@@ -19,7 +19,7 @@ export class WebMWQMLookupMPNService {
     
     GetWebMWQMLookupMPN() {
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebHelpDoc: {}, Working: true });
-        let url: string = `${this.appLoadedService.BaseApiUrl}en-CA/Read/WebMWQMLookupMPN/0/1`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appStateService.AppState$.getValue().Language}-CA/Read/WebMWQMLookupMPN/0/1`;
         return this.httpClient.get<WebMWQMLookupMPN>(url).pipe(
             map((x: any) => {
                 this.UpdateWebMWQMLookupMPN(x);

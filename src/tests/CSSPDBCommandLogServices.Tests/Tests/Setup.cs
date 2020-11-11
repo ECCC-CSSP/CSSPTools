@@ -1,4 +1,4 @@
-using CSSPModels;
+using CSSPDBModels;
 using CSSPCultureServices.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -26,7 +26,7 @@ namespace CSSPDBCommandLogServices.Tests
         private ICSSPDBCommandLogService CSSPDBCommandLogService { get; set; }
         private ILocalService LocalService { get; set; }
         private string CSSPDBCommandLogFileName { get; set; }
-        private string CSSPDBLoginFileName { get; set; }
+        private string CSSPDBPreferenceFileName { get; set; }
         private string Id { get; set; }
         #endregion Properties
 
@@ -55,28 +55,28 @@ namespace CSSPDBCommandLogServices.Tests
             ServiceCollection.AddSingleton<ICSSPDBCommandLogService, CSSPDBCommandLogService>();
 
             /* ---------------------------------------------------------------------------------
-             * using CSSPDBLogin
+             * using CSSPDBPreference
              * ---------------------------------------------------------------------------------      
              */
-            CSSPDBLoginFileName = Configuration.GetValue<string>("CSSPDBLogin");
-            Assert.NotNull(CSSPDBLoginFileName);
+            CSSPDBPreferenceFileName = Configuration.GetValue<string>("CSSPDBPreference");
+            Assert.NotNull(CSSPDBPreferenceFileName);
 
-            FileInfo fiCSSPDBLogin = new FileInfo(CSSPDBLoginFileName);
-            Assert.True(fiCSSPDBLogin.Exists);
+            FileInfo fiCSSPDBPreference = new FileInfo(CSSPDBPreferenceFileName);
+            Assert.True(fiCSSPDBPreference.Exists);
 
-            ServiceCollection.AddDbContext<CSSPDBLoginContext>(options =>
+            ServiceCollection.AddDbContext<CSSPDBPreferenceContext>(options =>
             {
-                options.UseSqlite($"Data Source={ fiCSSPDBLogin.FullName }");
+                options.UseSqlite($"Data Source={ fiCSSPDBPreference.FullName }");
             });
 
             /* ---------------------------------------------------------------------------------
-             * using CSSPDBLoginInMemory
+             * using CSSPDBPreferenceInMemory
              * ---------------------------------------------------------------------------------      
              */
 
-            ServiceCollection.AddDbContext<CSSPDBLoginInMemoryContext>(options =>
+            ServiceCollection.AddDbContext<CSSPDBPreferenceInMemoryContext>(options =>
             {
-                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBLogin.FullName }");
+                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBPreference.FullName }");
             });
 
             CSSPDBCommandLogFileName = Configuration.GetValue<string>("CSSPDBCommandLog");

@@ -20,7 +20,7 @@ export class WebClimateSiteService {
     
     GetWebClimateSite(TVItemID: number) {
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebClimateSite: {}, Working: true });
-        let url: string = `${this.appLoadedService.BaseApiUrl}en-CA/Read/WebClimateSite/${TVItemID}/1`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appStateService.AppState$.getValue().Language}-CA/Read/WebClimateSite/${TVItemID}/1`;
         return this.httpClient.get<WebClimateSite>(url).pipe(
             map((x: any) => {
                 this.UpdateWebClimateSite(x);

@@ -1,6 +1,6 @@
 ﻿using CSSPCultureServices.Resources;
 using CSSPDesktopServices.Models;
-using CSSPModels;
+using CSSPDBModels;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -91,7 +91,7 @@ namespace CSSPDesktopServices.Services
         {
             if (((ObjectResult)actionPreference.Result).StatusCode == 200)
             {
-                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes._StoredInTable_AndDatabase_, VariableName, "Preferences", "CSSPDBLogin.db")));
+                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes._StoredInTable_AndDatabase_, VariableName, "Preferences", "CSSPDBPreference.db")));
             }
             else
             {

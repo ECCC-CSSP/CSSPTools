@@ -1,5 +1,5 @@
 using CSSPEnums;
-using CSSPModels;
+using CSSPDBModels;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -20,7 +20,8 @@ using CSSPDBFilesManagementServices;
 using DownloadFileServices;
 using ReadGzFileServices;
 using CSSPDBSearchServices;
-using CSSPDBLoginServices;
+using CSSPDBPreferenceServices;
+using Microsoft.AspNetCore.Http.Features;
 
 namespace CSSPWebAPIsLocal
 {
@@ -74,26 +75,26 @@ namespace CSSPWebAPIsLocal
             });
 
             /* ---------------------------------------------------------------------------------
-             * using CSSPDBLogin
+             * using CSSPDBPreference
              * ---------------------------------------------------------------------------------      
              */
-            string CSSPDBLoginFileName = Configuration.GetValue<string>("CSSPDBLogin");
+            string CSSPDBPreferenceFileName = Configuration.GetValue<string>("CSSPDBPreference");
 
-            FileInfo fiCSSPDBLogin = new FileInfo(CSSPDBLoginFileName);
+            FileInfo fiCSSPDBPreference = new FileInfo(CSSPDBPreferenceFileName);
 
-            services.AddDbContext<CSSPDBLoginContext>(options =>
+            services.AddDbContext<CSSPDBPreferenceContext>(options =>
             {
-                options.UseSqlite($"Data Source={ fiCSSPDBLogin.FullName }");
+                options.UseSqlite($"Data Source={ fiCSSPDBPreference.FullName }");
             });
 
             /* ---------------------------------------------------------------------------------
-             * using CSSPDBLoginInMemory
+             * using CSSPDBPreferenceInMemory
              * ---------------------------------------------------------------------------------      
              */
 
-            services.AddDbContext<CSSPDBLoginInMemoryContext>(options =>
+            services.AddDbContext<CSSPDBPreferenceInMemoryContext>(options =>
             {
-                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBLogin.FullName }");
+                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBPreference.FullName }");
             });
 
             /* ---------------------------------------------------------------------------------
@@ -161,6 +162,18 @@ namespace CSSPWebAPIsLocal
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "csspclient";
+            });
+
+            //services.Configure<FormOptions>(options =>
+            //{
+            //    options.MultipartBodyLengthLimit = (5L * 1024L * 1024L * 1024L);
+
+            //});
+
+            services.Configure<FormOptions>(o => {
+                o.ValueLengthLimit = int.MaxValue;
+                o.MultipartBodyLengthLimit = int.MaxValue;
+                o.MemoryBufferThreshold = int.MaxValue;
             });
         }
 

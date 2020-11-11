@@ -41,7 +41,7 @@ export class SearchService {
             ).subscribe();
         }
         else {           
-            this.httpClient.get<SearchResult>(`${this.appLoadedService.BaseApiUrl}en-CA/search/${term}/1`).pipe(
+            this.httpClient.get<SearchResult>(`${this.appLoadedService.BaseApiUrl}${this.appStateService.AppState$.getValue().Language}-CA/search/${term}/1`).pipe(
                 map((x: any) => {
                     this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ SearchResult: x, Working: false });
                     console.debug(x);

@@ -33,7 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\GenerateCodeBaseServices\GenerateCodeBaseServices.csproj" />
+    <ProjectReference Include="..\..\GenerateCodeBaseServices\GenerateCodeBaseHelper.csproj" />
   </ItemGroup>
 
   <ItemGroup>

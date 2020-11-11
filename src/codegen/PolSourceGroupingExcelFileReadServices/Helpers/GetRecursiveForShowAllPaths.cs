@@ -8,13 +8,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ActionCommandDBServices.Services;
-using ValidateAppSettingsServices.Services;
-using CSSPCultureServices.Resources;
 
 namespace PolSourceGroupingExcelFileReadServices.Services
 {
-    public partial class PolSourceGroupingExcelFileReadService : IPolSourceGroupingExcelFileReadService
+    public partial class PolSourceGroupingExcelFileReadService
     {
         private async Task<bool> GetRecursiveForShowAllPaths(string s, List<string> textList, int Level, bool RaiseEvents, StringBuilder sb)
         {
@@ -22,27 +19,21 @@ namespace PolSourceGroupingExcelFileReadServices.Services
 
             if (textList.Contains(s))
             {
-                ActionCommandDBService.ErrorText.AppendLine($"{ CSSPCultureServicesRes.RecursiveFound } ...");
-                ActionCommandDBService.ErrorText.AppendLine("");
-                ActionCommandDBService.PercentCompleted = 0;
-                await ActionCommandDBService.Update();
+                Console.WriteLine($"Recursive found ...");
+                Console.WriteLine("");
 
                 foreach (string sp in textList)
                 {
-                    ActionCommandDBService.ErrorText.AppendLine($"{ sp }");
-                    ActionCommandDBService.PercentCompleted = 0;
-                    await ActionCommandDBService.Update();
+                    Console.WriteLine($"{ sp }");
 
                 }
-                ActionCommandDBService.ErrorText.AppendLine($"{ s }");
-                ActionCommandDBService.PercentCompleted = 0;
-                await ActionCommandDBService.Update();
+                Console.WriteLine($"{ s }");
 
 
                 return false;
             }
 
-            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CSSPCultureServicesRes.Doing } ... { s }");
+            Console.WriteLine($"Doing ... { s }");
             //await actionCommandDBService.Update( 0);
 
             if (RaiseEvents)
@@ -69,7 +60,7 @@ namespace PolSourceGroupingExcelFileReadServices.Services
                 }
             }
 
-            ActionCommandDBService.ExecutionStatusText.AppendLine($"");
+            Console.WriteLine($"");
             //await actionCommandDBService.Update( 0);
 
             return true;

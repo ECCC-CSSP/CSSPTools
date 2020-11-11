@@ -19,7 +19,7 @@ export class WebMWQMSiteService {
     
     GetWebMWQMSite(TVItemID: number) {
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebMWQMSite: {}, BreadCrumbWebBaseList: [], Working: true });
-        let url: string = `${this.appLoadedService.BaseApiUrl}en-CA/Read/WebMWQMSite/${TVItemID}/1`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appStateService.AppState$.getValue().Language}-CA/Read/WebMWQMSite/${TVItemID}/1`;
         return this.httpClient.get<WebMWQMSite>(url).pipe(
             map((x: any) => {
                 this.UpdateWebMWQMSite(x);

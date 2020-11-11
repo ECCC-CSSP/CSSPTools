@@ -1,5 +1,5 @@
 ﻿using CSSPEnums;
-using CSSPModels;
+using CSSPDBModels;
 using CSSPSQLiteServices;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -74,11 +74,11 @@ namespace CSSPSQLiteServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task CSSPSQLiteService_CreateSQLiteCSSPDBLogin_Good_Test(string culture)
+        public async Task CSSPSQLiteService_CreateSQLiteCSSPDBPreference_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            bool retBool = await CSSPSQLiteService.CreateSQLiteCSSPDBLogin();
+            bool retBool = await CSSPSQLiteService.CreateSQLiteCSSPDBPreference();
             Assert.True(retBool);
         }
         [Theory]
@@ -275,7 +275,7 @@ namespace CSSPSQLiteServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task CSSPSQLiteService_CSSPDBLoginIsEmpty_Good_Test(string culture)
+        public async Task CSSPSQLiteService_CSSPDBPreferenceIsEmpty_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -288,10 +288,10 @@ namespace CSSPSQLiteServices.Tests
                 Assert.True(false, ex.Message);
             }
 
-            bool retBool = await CSSPSQLiteService.CreateSQLiteCSSPDBLogin();
+            bool retBool = await CSSPSQLiteService.CreateSQLiteCSSPDBPreference();
             Assert.True(retBool);
 
-            retBool = await CSSPSQLiteService.CSSPDBLoginIsEmpty();
+            retBool = await CSSPSQLiteService.CSSPDBPreferenceIsEmpty();
             Assert.True(retBool);
 
             RegisterModel registerModelNew = new RegisterModel()
@@ -304,7 +304,7 @@ namespace CSSPSQLiteServices.Tests
                 ConfirmPassword = "TestPassword",
             };
 
-            // will need to add some information to CSSPDBLocal to fully check if CSSPDBLoginIsEmpty is really working
+            // will need to add some information to CSSPDBLocal to fully check if CSSPDBPreferenceIsEmpty is really working
 
             //var actionContact = await ContactService.Register(registerModelNew);
             //Assert.Equal(200, ((ObjectResult)actionContact.Result).StatusCode);
@@ -312,7 +312,7 @@ namespace CSSPSQLiteServices.Tests
             //Contact contact = (Contact)((OkObjectResult)actionContact.Result).Value;
             //Assert.NotNull(contact);
 
-            //retBool = await CSSPSQLiteService.CSSPDBLoginIsEmpty();
+            //retBool = await CSSPSQLiteService.CSSPDBPreferenceIsEmpty();
             //Assert.False(retBool);
 
             //var actionContactDelete = await ContactService.Delete(contact.ContactID);
@@ -327,7 +327,7 @@ namespace CSSPSQLiteServices.Tests
             //retBool = (bool)((OkObjectResult)actionAspNetUser.Result).Value;
             //Assert.True(retBool);
 
-            retBool = await CSSPSQLiteService.CSSPDBLoginIsEmpty();
+            retBool = await CSSPSQLiteService.CSSPDBPreferenceIsEmpty();
             Assert.True(retBool);
         }
         #endregion Tests

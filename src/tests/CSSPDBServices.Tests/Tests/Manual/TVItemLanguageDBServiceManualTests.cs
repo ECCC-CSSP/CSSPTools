@@ -5,7 +5,7 @@
  */
 
 using CSSPEnums;
-using CSSPModels;
+using CSSPDBModels;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -39,8 +39,6 @@ namespace CSSPDBServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private ITVItemLanguageDBService TVItemLanguageDBService { get; set; }
         private CSSPDBContext db { get; set; }
-        private CSSPDBLocalContext dbLocal { get; set; }
-        private CSSPDBInMemoryContext dbIM { get; set; }
         private TVItemLanguage tvItemLanguage { get; set; }
         #endregion Properties
 

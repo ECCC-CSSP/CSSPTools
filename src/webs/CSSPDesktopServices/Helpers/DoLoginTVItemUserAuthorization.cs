@@ -1,6 +1,6 @@
 ﻿using CSSPCultureServices.Resources;
 using CSSPDesktopServices.Models;
-using CSSPModels;
+using CSSPDBModels;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -70,7 +70,7 @@ namespace CSSPDesktopServices.Services
                     dbLogin.TVItemUserAuthorizations.AddRange(tvItemUserAuthorizationList);
                     dbLogin.SaveChanges();
 
-                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes._StoredInTable_AndDatabase_, "TVItemUserAuthorization", "TVItemUserAuthorizations", "CSSPDBLogin.db")));
+                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes._StoredInTable_AndDatabase_, "TVItemUserAuthorization", "TVItemUserAuthorizations", "CSSPDBPreference.db")));
                 }
                 catch (Exception ex)
                 {

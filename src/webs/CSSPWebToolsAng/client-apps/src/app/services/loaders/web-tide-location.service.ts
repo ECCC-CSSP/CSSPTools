@@ -19,7 +19,7 @@ export class WebTideLocationService {
     
     GetWebTideLocation() {
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebTideLocation: {}, Working: true });
-        let url: string = `${this.appLoadedService.BaseApiUrl}en-CA/Read/WebTideLocation/0/1`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appStateService.AppState$.getValue().Language}-CA/Read/WebTideLocation/0/1`;
         return this.httpClient.get<WebTideLocation>(url).pipe(
             map((x: any) => {
                 this.UpdateWebTideLocation(x);

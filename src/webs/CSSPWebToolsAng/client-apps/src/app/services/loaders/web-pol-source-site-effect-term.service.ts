@@ -19,7 +19,7 @@ export class WebPolSourceSiteEffectTermService {
     
     GetWebPolSourceSiteEffectTerm() {
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebPolSourceSiteEffectTerm: {}, Working: true });
-        let url: string = `${this.appLoadedService.BaseApiUrl}en-CA/Read/WebPolSourceSiteEffectTerm/0/1`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appStateService.AppState$.getValue().Language}-CA/Read/WebPolSourceSiteEffectTerm/0/1`;
         return this.httpClient.get<WebPolSourceSiteEffectTerm>(url).pipe(
             map((x: any) => {
                 this.UpdateWebPolSourceSiteEffectTerm(x);

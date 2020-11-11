@@ -33,10 +33,6 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\ActionCommandDBServices\ActionCommandDBServices.csproj" />
-  </ItemGroup>
-
     <ItemGroup>
     <None Update="ActionCommandList.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

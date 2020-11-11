@@ -38,8 +38,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CSSPHelperServices\CSSPHelperServices.csproj" />
     <ProjectReference Include="..\CSSPLoggedInServices\CSSPLoggedInServices.csproj" />
-    <ProjectReference Include="..\CSSPModels\CSSPModels.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Services\Generated\" />
   </ItemGroup>
 
 </Project>

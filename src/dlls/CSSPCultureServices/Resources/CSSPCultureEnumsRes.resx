@@ -3234,4 +3234,13 @@
   <data name="PolSourceSiteSubComponentEnumInformation" xml:space="preserve">
     <value>Information</value>
   </data>
+  <data name="LocalDBCommandEnumChange" xml:space="preserve">
+    <value>Change</value>
+  </data>
+  <data name="LocalDBCommandEnumDelete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="LocalDBCommandEnumNew" xml:space="preserve">
+    <value>New</value>
+  </data>
 </root>

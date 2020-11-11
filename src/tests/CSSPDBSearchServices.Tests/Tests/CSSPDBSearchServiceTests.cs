@@ -1,4 +1,4 @@
-using CSSPModels;
+using CSSPDBModels;
 using CSSPCultureServices.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -152,19 +152,19 @@ namespace CSSPSearchServices.Tests
             ServiceCollection.AddSingleton<ILocalService, LocalService>();
             ServiceCollection.AddSingleton<ICSSPDBSearchService, CSSPDBSearchService>();
 
-            string CSSPDBLogin = Configuration.GetValue<string>("CSSPDBLogin");
-            Assert.NotNull(CSSPDBLogin);
+            string CSSPDBPreference = Configuration.GetValue<string>("CSSPDBPreference");
+            Assert.NotNull(CSSPDBPreference);
 
-            FileInfo fiCSSPDBLogin = new FileInfo(CSSPDBLogin);
+            FileInfo fiCSSPDBPreference = new FileInfo(CSSPDBPreference);
 
-            ServiceCollection.AddDbContext<CSSPDBLoginContext>(options =>
+            ServiceCollection.AddDbContext<CSSPDBPreferenceContext>(options =>
             {
-                options.UseSqlite($"Data Source={ fiCSSPDBLogin.FullName }");
+                options.UseSqlite($"Data Source={ fiCSSPDBPreference.FullName }");
             });
 
-            ServiceCollection.AddDbContext<CSSPDBLoginInMemoryContext>(options =>
+            ServiceCollection.AddDbContext<CSSPDBPreferenceInMemoryContext>(options =>
             {
-                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBLogin.FullName }");
+                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBPreference.FullName }");
             });
 
             string CSSPDBSearchFileName = Configuration.GetValue<string>("CSSPDBSearch");

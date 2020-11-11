@@ -32,10 +32,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\AngularEnumsGeneratedServices\AngularEnumsGeneratedServices.csproj" />
-  </ItemGroup>
   
   <ItemGroup>
     <None Update="appsettings_bad1.json">

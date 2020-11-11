@@ -19,7 +19,7 @@ export class WebPolSourceSiteService {
     
     GetWebPolSourceSite(TVItemID: number) {
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebPolSourceSite: {}, BreadCrumbWebBaseList: [], Working: true });
-        let url: string = `${this.appLoadedService.BaseApiUrl}en-CA/Read/WebPolSourceSite/${TVItemID}/1`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appStateService.AppState$.getValue().Language}-CA/Read/WebPolSourceSite/${TVItemID}/1`;
         return this.httpClient.get<WebPolSourceSite>(url).pipe(
             map((x: any) => {
                 this.UpdateWebPolSourceSite(x);

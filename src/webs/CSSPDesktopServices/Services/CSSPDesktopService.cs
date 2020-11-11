@@ -1,8 +1,8 @@
 ﻿using CSSPCultureServices.Services;
-using CSSPDBLoginServices;
+using CSSPDBPreferenceServices;
 using CSSPDesktopServices.Models;
 using CSSPEnums;
-using CSSPModels;
+using CSSPDBModels;
 using LocalServices;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,7 +28,7 @@ namespace CSSPDesktopServices.Services
         //bool HasNewTVItemsOrTVItemLanguages { get; set; }
         bool HasHelpFiles { get; set; }
         string CSSPDBFilesManagement { get; set; }
-        string CSSPDBLogin { get; set; }
+        string CSSPDBPreference { get; set; }
         string CSSPDBLocal { get; set; }
         string CSSPDBSearch { get; set; }
         string CSSPDBCommandLog { get; set; }
@@ -80,7 +80,7 @@ namespace CSSPDesktopServices.Services
         //public bool HasNewTVItemsOrTVItemLanguages { get; set; } = false;
         public bool HasHelpFiles { get; set; } = false;
         public string CSSPDBFilesManagement { get; set; }
-        public string CSSPDBLogin { get; set; }
+        public string CSSPDBPreference { get; set; }
         public string CSSPDBLocal { get; set; }
         public string CSSPDBSearch { get; set; }
         public string CSSPDBCommandLog { get; set; }
@@ -100,7 +100,7 @@ namespace CSSPDesktopServices.Services
         private CSSPDBLocalContext dbLocal { get; }
         private CSSPDBSearchContext dbSearch { get; }
         private CSSPDBCommandLogContext dbCommandLog { get; }
-        private CSSPDBLoginContext dbLogin { get; }
+        private CSSPDBPreferenceContext dbLogin { get; }
         private CSSPDBFilesManagementContext dbFM { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
@@ -123,7 +123,7 @@ namespace CSSPDesktopServices.Services
         #region Constructors
         public CSSPDesktopService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, 
             ILocalService LocalService, CSSPDBLocalContext dbLocal, CSSPDBSearchContext dbSearch, CSSPDBCommandLogContext dbCommandLog, 
-            CSSPDBLoginContext dbLogin, CSSPDBFilesManagementContext dbFM, IReadGzFileService ReadGzFileService, IPreferenceService PreferenceService)
+            CSSPDBPreferenceContext dbLogin, CSSPDBFilesManagementContext dbFM, IReadGzFileService ReadGzFileService, IPreferenceService PreferenceService)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;

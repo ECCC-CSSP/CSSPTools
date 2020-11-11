@@ -464,6 +464,12 @@ namespace CSSPEnums
         enAndfr = 3,
         es = 4,
     }
+    public enum LocalDBCommandEnum
+    {
+        Change = 1,
+        New = 2,
+        Delete = 3,
+    }
     public enum LogCommandEnum
     {
         Add = 1,

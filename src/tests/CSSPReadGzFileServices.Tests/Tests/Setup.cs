@@ -1,5 +1,5 @@
 using CSSPEnums;
-using CSSPModels;
+using CSSPDBModels;
 using CSSPCultureServices.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -17,7 +17,7 @@ using System.Linq;
 using LocalServices;
 using CSSPDBFilesManagementServices;
 using DownloadFileServices;
-using CSSPDBLoginServices;
+using CSSPDBPreferenceServices;
 
 namespace ReadGzFileServices.Tests
 {
@@ -108,19 +108,19 @@ namespace ReadGzFileServices.Tests
                 options.UseSqlite($"Data Source={ fiCSSPDBFilesManagementFileName.FullName }");
             });
 
-            string CSSPDBLoginFileName = Configuration.GetValue<string>("CSSPDBLogin");
-            Assert.NotNull(CSSPDBLoginFileName);
+            string CSSPDBPreferenceFileName = Configuration.GetValue<string>("CSSPDBPreference");
+            Assert.NotNull(CSSPDBPreferenceFileName);
 
-            FileInfo fiCSSPDBLoginFileName = new FileInfo(CSSPDBLoginFileName);
+            FileInfo fiCSSPDBPreferenceFileName = new FileInfo(CSSPDBPreferenceFileName);
 
-            Services.AddDbContext<CSSPDBLoginContext>(options =>
+            Services.AddDbContext<CSSPDBPreferenceContext>(options =>
             {
-                options.UseSqlite($"Data Source={ fiCSSPDBLoginFileName.FullName }");
+                options.UseSqlite($"Data Source={ fiCSSPDBPreferenceFileName.FullName }");
             });
 
-            Services.AddDbContext<CSSPDBLoginInMemoryContext>(options =>
+            Services.AddDbContext<CSSPDBPreferenceInMemoryContext>(options =>
             {
-                options.UseSqlite($"Data Source={ fiCSSPDBLoginFileName.FullName }");
+                options.UseSqlite($"Data Source={ fiCSSPDBPreferenceFileName.FullName }");
             });
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();

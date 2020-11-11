@@ -33,10 +33,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\ExecuteDotNetCommandServices\ExecuteDotNetCommandServices.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="appsettings_bad1.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

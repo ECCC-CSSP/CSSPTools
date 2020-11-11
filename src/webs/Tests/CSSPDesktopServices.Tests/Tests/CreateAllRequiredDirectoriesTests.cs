@@ -6,7 +6,7 @@ using CSSPCultureServices.Services;
 using CSSPDesktopServices.Models;
 using CSSPDesktopServices.Services;
 using CSSPEnums;
-using CSSPModels;
+using CSSPDBModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

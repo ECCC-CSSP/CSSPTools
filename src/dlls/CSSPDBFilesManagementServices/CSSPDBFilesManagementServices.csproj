@@ -38,8 +38,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CSSPDBCommandLogModels\CSSPDBCommandLogModels.csproj" />
+    <ProjectReference Include="..\CSSPDBFilesManagementModels\CSSPDBFilesManagementModels.csproj" />
     <ProjectReference Include="..\CSSPLocalServices\CSSPLocalServices.csproj" />
-    <ProjectReference Include="..\CSSPModels\CSSPModels.csproj" />
   </ItemGroup>
 
 </Project>

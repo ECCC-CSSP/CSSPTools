@@ -43,10 +43,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\dlls\CSSPDBLocalIMServices\CSSPDBLocalIMServices.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Tests\Generated\" />
   </ItemGroup>
 

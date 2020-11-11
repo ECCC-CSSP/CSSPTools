@@ -20,7 +20,7 @@ export class WebHydrometricSiteService {
     
     GetWebHydrometricSite(TVItemID: number) {
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebHydrometricSite: {}, Working: true });
-        let url: string = `${this.appLoadedService.BaseApiUrl}en-CA/Read/WebHydrometricSite/${TVItemID}/1`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appStateService.AppState$.getValue().Language}-CA/Read/WebHydrometricSite/${TVItemID}/1`;
         return this.httpClient.get<WebHydrometricSite>(url).pipe(
             map((x: any) => {
                 this.UpdateWebHydrometricSite(x);
