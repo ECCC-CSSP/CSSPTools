@@ -2,7 +2,7 @@
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GenerateCSSPDBServices_Tests
+namespace GenerateCSSPDBLocalServices_Tests
 {
     public partial class Startup
     {
@@ -13,24 +13,20 @@ namespace GenerateCSSPDBServices_Tests
             sb.AppendLine(@"            Config = new ConfigurationBuilder()");
             sb.AppendLine(@"               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)");
             sb.AppendLine(@"               .AddJsonFile(""appsettings_csspdbservicestests.json"")");
-            sb.AppendLine(@"               .AddUserSecrets(""70c662c1-a1a8-4b2c-b594-d7834bb5e6db"")");
+            sb.AppendLine(@"               .AddUserSecrets(""91a273aa-0169-4298-82eb-86ff2429a2f8"")");
             sb.AppendLine(@"               .Build();");
             sb.AppendLine(@"");
             sb.AppendLine(@"            Services = new ServiceCollection();");
             sb.AppendLine(@"");
             sb.AppendLine(@"            Services.AddSingleton<IConfiguration>(Config);");
             sb.AppendLine(@"");
+
             sb.AppendLine(@"            string CSSPDBConnString = Config.GetValue<string>(""TestDB"");");
             sb.AppendLine(@"            Assert.NotNull(CSSPDBConnString);");
             sb.AppendLine(@"");
             sb.AppendLine(@"            Services.AddDbContext<CSSPDBContext>(options =>");
             sb.AppendLine(@"            {");
             sb.AppendLine(@"                options.UseSqlServer(CSSPDBConnString);");
-            sb.AppendLine(@"            });");
-            sb.AppendLine(@"");
-            sb.AppendLine(@"            Services.AddDbContext<CSSPDBInMemoryContext>(options =>");
-            sb.AppendLine(@"            {");
-            sb.AppendLine(@"                options.UseInMemoryDatabase(CSSPDBConnString);");
             sb.AppendLine(@"            });");
             sb.AppendLine(@"");
             sb.AppendLine(@"            Services.AddDbContext<ApplicationDbContext>(options =>");
@@ -40,9 +36,24 @@ namespace GenerateCSSPDBServices_Tests
             sb.AppendLine(@"");
             sb.AppendLine(@"            Services.AddIdentityCore<ApplicationUser>()");
             sb.AppendLine(@"                .AddEntityFrameworkStores<ApplicationDbContext>();");
+
+
+            sb.AppendLine(@"            /* ---------------------------------------------------------------------------------");
+            sb.AppendLine(@"             * using CSSPDBLocalContext");
+            sb.AppendLine(@"             * ---------------------------------------------------------------------------------      ");
+            sb.AppendLine(@"             */");
+            sb.AppendLine(@"            string CSSPDBLocal = Config.GetValue<string>(""CSSPDBLocal"");");
+            sb.AppendLine(@"            Assert.NotNull(CSSPDBLocal);");
+            sb.AppendLine(@"");
+            sb.AppendLine(@"            FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocal);");
+            sb.AppendLine(@"");
+            sb.AppendLine(@"            Services.AddDbContext<CSSPDBLocalContext>(options =>");
+            sb.AppendLine(@"            {");
+            sb.AppendLine($@"                options.UseSqlite($""Data Source={{ fiCSSPDBLocal.FullName }}"");");
+            sb.AppendLine(@"            });");
             sb.AppendLine(@"");
             sb.AppendLine(@"            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();");
-            sb.AppendLine(@"            Services.AddSingleton<ILoggedInService, LoggedInService>();");
+            sb.AppendLine(@"            Services.AddSingleton<ILocalService, LocalService>();");
             sb.AppendLine(@"            Services.AddSingleton<IEnums, Enums>();");
             if (TypeName == "Contact")
             {
@@ -62,14 +73,14 @@ namespace GenerateCSSPDBServices_Tests
             sb.AppendLine(@"");
             sb.AppendLine(@"            CSSPCultureService.SetCulture(culture);");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            LoggedInService = Provider.GetService<ILoggedInService>();");
-            sb.AppendLine(@"            Assert.NotNull(LoggedInService);");
+            sb.AppendLine(@"            LocalService = Provider.GetService<ILocalService>();");
+            sb.AppendLine(@"            Assert.NotNull(LocalService);");
             sb.AppendLine(@"");
             sb.AppendLine(@"            string Id = Config.GetValue<string>(""Id"");");
-            sb.AppendLine(@"            Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));");
+            sb.AppendLine(@"            Assert.True(await LocalService.SetLoggedInContactInfo());");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            db = Provider.GetService<CSSPDBContext>();");
-            sb.AppendLine(@"            Assert.NotNull(db);");
+            sb.AppendLine(@"            dbLocal = Provider.GetService<CSSPDBLocalContext>();");
+            sb.AppendLine(@"            Assert.NotNull(dbLocal);");
             sb.AppendLine(@"");
             sb.AppendLine($@"            { TypeName }DBService = Provider.GetService<I{ TypeName }DBService>();");
             sb.AppendLine($@"            Assert.NotNull({ TypeName }DBService);");

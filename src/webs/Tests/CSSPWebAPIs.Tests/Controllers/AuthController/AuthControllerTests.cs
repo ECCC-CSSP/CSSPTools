@@ -20,6 +20,7 @@ using System.Text.Json;
 using System.Text;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using CSSPHelperModels;
 
 namespace CSSPWebAPIs.AuthController.Tests
 {

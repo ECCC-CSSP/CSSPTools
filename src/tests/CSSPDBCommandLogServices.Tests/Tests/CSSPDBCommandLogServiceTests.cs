@@ -12,6 +12,7 @@ using Xunit;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using CSSPCultureServices.Resources;
+using CSSPDBCommandLogModels;
 
 namespace CSSPDBCommandLogServices.Tests
 {

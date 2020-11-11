@@ -14,6 +14,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPDBFilesManagementModels;
+using CSSPHelperModels;
 
 namespace CSSPSQLiteServices.Tests
 {

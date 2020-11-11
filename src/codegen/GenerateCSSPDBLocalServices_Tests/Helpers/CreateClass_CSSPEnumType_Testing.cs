@@ -2,7 +2,7 @@
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GenerateCSSPDBServices_Tests
+namespace GenerateCSSPDBLocalServices_Tests
 {
     public partial class Startup
     {
@@ -17,16 +17,21 @@ namespace GenerateCSSPDBServices_Tests
             {
                 if (csspProp.HasCSSPEnumTypeAttribute)
                 {
+                    string InsertVar = "var";
+                    if (csspProp.PropName != "LocalDBCommand")
+                    {
+                        InsertVar = "";
+                    }
                     sb.AppendLine($@"            { TypeNameLower } = null;");
                     sb.AppendLine($@"            { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
                     sb.AppendLine($@"            { TypeNameLower }.{ csspProp.PropName } = ({ csspProp.PropType })1000000;");
                     if (TypeName == "Contact")
-                    {
-                        sb.AppendLine($@"            action{ TypeName } = await { TypeName }DBService.Post({ TypeNameLower }, AddContactTypeEnum.LoggedIn);");
+                    { 
+                        sb.AppendLine($@"            { InsertVar } action{ TypeName } = await { TypeName }DBService.Post({ TypeNameLower }, AddContactTypeEnum.LoggedIn);");
                     }
                     else
                     {
-                        sb.AppendLine($@"            action{ TypeName } = await { TypeName }DBService.Post({ TypeNameLower });");
+                        sb.AppendLine($@"            { InsertVar } action{ TypeName } = await { TypeName }DBService.Post({ TypeNameLower });");
                     }
                     sb.AppendLine($@"            Assert.IsType<BadRequestObjectResult>(action{ TypeName }.Result);");
                     sb.AppendLine(@"");

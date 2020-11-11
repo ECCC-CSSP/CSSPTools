@@ -22,6 +22,11 @@ using ReadGzFileServices;
 using CSSPDBSearchServices;
 using CSSPDBPreferenceServices;
 using Microsoft.AspNetCore.Http.Features;
+using CSSPDBLocalModels;
+using CSSPDBPreferenceModels;
+using CSSPDBFilesManagementModels;
+using CSSPDBCommandLogModels;
+using CSSPDBSearchModels;
 
 namespace CSSPWebAPIsLocal
 {
@@ -111,15 +116,6 @@ namespace CSSPWebAPIsLocal
             });
 
             /* ---------------------------------------------------------------------------------
-             * using CSSPDBFileManagementInMemmory
-             * ---------------------------------------------------------------------------------      
-             */
-            services.AddDbContext<CSSPDBFilesManagementInMemoryContext>(options =>
-            {
-                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBFilesManagement.FullName }");
-            });
-
-            /* ---------------------------------------------------------------------------------
              * using CSSPDBCommandLog
              * ---------------------------------------------------------------------------------      
              */
@@ -149,7 +145,7 @@ namespace CSSPWebAPIsLocal
             services.AddScoped<ICSSPCultureService, CSSPCultureService>();
             services.AddScoped<IEnums, Enums>();
 
-            LoadAllDBLocalServices(services);
+            LoadAllDBServices(services);
 
             services.AddScoped<ILocalService, LocalService>();
             services.AddScoped<ICSSPDBFilesManagementService, CSSPDBFilesManagementService>();

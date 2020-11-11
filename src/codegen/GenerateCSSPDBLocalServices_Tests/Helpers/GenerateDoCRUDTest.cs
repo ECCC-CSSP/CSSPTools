@@ -2,7 +2,7 @@
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GenerateCSSPDBServices_Tests
+namespace GenerateCSSPDBLocalServices_Tests
 {
     public partial class Startup
     {
@@ -10,7 +10,7 @@ namespace GenerateCSSPDBServices_Tests
         {
             sb.AppendLine($@"        private async Task DoCRUDDBTest()");
             sb.AppendLine(@"        {");
-            sb.AppendLine($@"            db.Database.BeginTransaction();");
+            sb.AppendLine($@"            dbLocal.Database.BeginTransaction();");
             sb.AppendLine($@"            // Post { TypeName }");
             if (TypeName == "Contact")
             {
@@ -49,7 +49,7 @@ namespace GenerateCSSPDBServices_Tests
             }
             else
             {
-                sb.AppendLine($@"            Assert.False({ TypeNameLower }List[0].{ TypeName }ID == { TypeNameLower }ListSkipAndTake[0].{ TypeName }ID);");
+                sb.AppendLine($@"            Assert.False({ TypeNameLower }List[0].{ TypeName.Replace("Local", "") }ID == { TypeNameLower }ListSkipAndTake[0].{ TypeName.Replace("Local", "") }ID);");
             }
             sb.AppendLine(@"");
             if (TypeName == "AspNetUser")
@@ -59,8 +59,8 @@ namespace GenerateCSSPDBServices_Tests
             }
             else
             {
-                sb.AppendLine($@"            // Get { TypeName } With { TypeName }ID");
-                sb.AppendLine($@"            var action{ TypeName }Get = await { TypeName }DBService.Get{ TypeName }With{ TypeName }ID({ TypeNameLower }List[0].{ TypeName }ID);");
+                sb.AppendLine($@"            // Get { TypeName } With { TypeName.Replace("Local", "") }ID");
+                sb.AppendLine($@"            var action{ TypeName }Get = await { TypeName }DBService.Get{ TypeName }With{ TypeName.Replace("Local", "") }ID({ TypeNameLower }List[0].{ TypeName.Replace("Local", "") }ID);");
             }
             sb.AppendLine($@"            Assert.Equal(200, ((ObjectResult)action{ TypeName }Get.Result).StatusCode);");
             sb.AppendLine($@"            Assert.NotNull(((OkObjectResult)action{ TypeName }Get.Result).Value);");
@@ -72,7 +72,7 @@ namespace GenerateCSSPDBServices_Tests
             }
             else
             {
-                sb.AppendLine($@"            Assert.Equal({ TypeNameLower }Get.{ TypeName }ID, { TypeNameLower }List[0].{ TypeName }ID);");
+                sb.AppendLine($@"            Assert.Equal({ TypeNameLower }Get.{ TypeName.Replace("Local", "") }ID, { TypeNameLower }List[0].{ TypeName.Replace("Local", "") }ID);");
             }
             sb.AppendLine(@"");
             sb.AppendLine($@"            // Put { TypeName }");
@@ -89,14 +89,14 @@ namespace GenerateCSSPDBServices_Tests
             }
             else
             {
-                sb.AppendLine($@"            var action{ TypeName }Deleted = await { TypeName }DBService.Delete({ TypeNameLower }.{ TypeName }ID);");
+                sb.AppendLine($@"            var action{ TypeName }Deleted = await { TypeName }DBService.Delete({ TypeNameLower }.{ TypeName.Replace("Local", "") }ID);");
             }
             sb.AppendLine($@"            Assert.Equal(200, ((ObjectResult)action{ TypeName }Deleted.Result).StatusCode);");
             sb.AppendLine($@"            Assert.NotNull(((OkObjectResult)action{ TypeName }Deleted.Result).Value);");
             sb.AppendLine($@"            bool retBool = (bool)((OkObjectResult)action{ TypeName }Deleted.Result).Value;");
             sb.AppendLine($@"            Assert.True(retBool);");
             sb.AppendLine(@"");
-            sb.AppendLine($@"            db.Database.RollbackTransaction();");
+            sb.AppendLine($@"            dbLocal.Database.RollbackTransaction();");
             sb.AppendLine(@"        }");
 
             return await Task.FromResult(true);

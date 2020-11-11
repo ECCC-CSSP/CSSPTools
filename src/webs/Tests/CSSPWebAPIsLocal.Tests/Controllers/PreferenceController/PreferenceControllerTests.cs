@@ -21,6 +21,8 @@ using System.Net;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Text;
+using CSSPHelperModels;
+using CSSPDBPreferenceModels;
 
 namespace CSSPWebAPIsLocal.PreferenceController.Tests
 {

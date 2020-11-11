@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
+using CSSPHelperModels;
 
 namespace CSSPDesktopServices.Tests
 {

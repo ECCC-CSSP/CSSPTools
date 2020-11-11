@@ -24,6 +24,7 @@ using CreateGzFileServices;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
+using CSSPHelperModels;
 
 namespace CSSPWebAPIs.AuthController.Tests
 {

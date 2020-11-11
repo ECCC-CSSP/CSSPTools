@@ -16,6 +16,9 @@ using System.Collections.Generic;
 using System.Linq;
 using CSSPDBFilesManagementServices;
 using LocalServices;
+using CSSPDBLocalModels;
+using CSSPDBFilesManagementModels;
+using CSSPDBPreferenceModels;
 
 namespace UploadFileServices.Tests
 {

@@ -18,6 +18,9 @@ using System.Text;
 using System.Linq;
 using LocalServices;
 using CSSPDBSearchServices;
+using CSSPHelperModels;
+using CSSPDBPreferenceModels;
+using CSSPDBSearchModels;
 
 namespace CSSPSearchServices.Tests
 {

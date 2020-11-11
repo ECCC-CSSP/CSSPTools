@@ -42,4 +42,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\dlls\CSSPCultureServices\CSSPCultureServices.csproj" />
+  </ItemGroup>
+
 </Project>

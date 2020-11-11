@@ -19,6 +19,9 @@ using LocalServices;
 using DownloadFileServices;
 using ReadGzFileServices;
 using CSSPDBPreferenceServices;
+using CSSPDBLocalModels;
+using CSSPDBFilesManagementModels;
+using CSSPDBPreferenceModels;
 
 namespace DownloadFileServices.Tests
 {

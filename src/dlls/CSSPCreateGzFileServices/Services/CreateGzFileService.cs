@@ -13,6 +13,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using LoggedInServices;
+using CSSPDBFilesManagementModels;
 
 namespace CreateGzFileServices
 {

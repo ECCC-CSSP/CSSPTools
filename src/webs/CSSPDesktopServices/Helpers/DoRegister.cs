@@ -11,6 +11,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.AspNetCore.SignalR;
+using CSSPHelperModels;
 
 namespace CSSPDesktopServices.Services
 {

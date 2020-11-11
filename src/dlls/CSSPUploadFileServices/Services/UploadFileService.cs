@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using LocalServices;
 using CSSPDBFilesManagementServices;
+using CSSPDBFilesManagementModels;
 
 namespace UploadFileServices
 {

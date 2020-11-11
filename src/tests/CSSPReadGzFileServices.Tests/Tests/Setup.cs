@@ -18,6 +18,9 @@ using LocalServices;
 using CSSPDBFilesManagementServices;
 using DownloadFileServices;
 using CSSPDBPreferenceServices;
+using CSSPDBLocalModels;
+using CSSPDBFilesManagementModels;
+using CSSPDBPreferenceModels;
 
 namespace ReadGzFileServices.Tests
 {

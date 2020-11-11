@@ -35,4 +35,8 @@
     <ProjectReference Include="..\..\CSSPWebAPIs\CSSPWebAPIs.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\Generated\" />
+  </ItemGroup>
+
 </Project>

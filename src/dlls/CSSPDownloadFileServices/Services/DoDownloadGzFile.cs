@@ -16,6 +16,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using CSSPDBFilesManagementModels;
 
 namespace DownloadFileServices
 {

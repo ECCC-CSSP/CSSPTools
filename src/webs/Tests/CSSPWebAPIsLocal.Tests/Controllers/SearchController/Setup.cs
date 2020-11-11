@@ -20,6 +20,8 @@ using System.Text.Json;
 using System.Text;
 using LocalServices;
 using CSSPDBSearchServices;
+using CSSPDBSearchModels;
+using CSSPDBPreferenceModels;
 
 namespace CSSPWebAPIsLocal.SearchController.Tests
 {

@@ -1,4 +1,5 @@
-﻿using CSSPDBModels;
+﻿using CSSPDBLocalModels;
+using CSSPDBModels;
 using GenerateCodeBaseServices.Models;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GenerateCSSPDBServices_Tests
+namespace GenerateCSSPDBLocalServices_Tests
 {
     public partial class Startup
     {

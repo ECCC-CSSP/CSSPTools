@@ -8,7 +8,7 @@
     ".NETCoreApp,Version=v3.1": {
       "GenerateCSSPDBLocalServices_Tests/1.0.0": {
         "dependencies": {
-          "CSSPDBModels": "1.0.0",
+          "CSSPDBLocalModels": "1.0.0",
           "GenerateCodeBaseHelper": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.8",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.8",
@@ -1346,6 +1346,25 @@
           }
         }
       },
+      "CSSPDBLocalModels/1.0.0": {
+        "dependencies": {
+          "CSSPDBModels": "1.0.0",
+          "CSSPEnums": "1.0.0",
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.8",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.8",
+          "Microsoft.EntityFrameworkCore": "3.1.8",
+          "Microsoft.EntityFrameworkCore.InMemory": "3.1.8",
+          "Microsoft.EntityFrameworkCore.SqlServer": "3.1.8",
+          "Microsoft.EntityFrameworkCore.Sqlite": "3.1.8",
+          "Microsoft.Extensions.Configuration": "3.1.8",
+          "Microsoft.Extensions.Configuration.Json": "3.1.8",
+          "Microsoft.Extensions.DependencyInjection": "3.1.8",
+          "System.IdentityModel.Tokens.Jwt": "6.7.1"
+        },
+        "runtime": {
+          "CSSPDBLocalModels.dll": {}
+        }
+      },
       "CSSPDBModels/1.0.0": {
         "dependencies": {
           "CSSPEnums": "1.0.0",
@@ -2236,6 +2255,11 @@
       "hashPath": "system.xml.xmlserializer.4.3.0.nupkg.sha512"
     },
     "CSSPCultureServices/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "CSSPDBLocalModels/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

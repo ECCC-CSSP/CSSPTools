@@ -10,6 +10,8 @@ using System.IO;
 using System.Threading.Tasks;
 using Xunit;
 using LocalServices;
+using CSSPDBPreferenceModels;
+using CSSPDBCommandLogModels;
 
 namespace CSSPDBCommandLogServices.Tests
 {

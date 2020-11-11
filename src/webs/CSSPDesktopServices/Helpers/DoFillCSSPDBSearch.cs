@@ -16,6 +16,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using CSSPDesktopServices.Models;
+using CSSPWebModels;
 
 namespace CSSPDesktopServices.Services
 {

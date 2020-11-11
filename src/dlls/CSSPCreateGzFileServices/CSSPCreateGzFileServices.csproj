@@ -44,8 +44,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CSSPDBFilesManagementModels\CSSPDBFilesManagementModels.csproj" />
     <ProjectReference Include="..\CSSPLoggedInServices\CSSPLoggedInServices.csproj" />
     <ProjectReference Include="..\CSSPDBModels\CSSPDBModels.csproj" />
+    <ProjectReference Include="..\CSSPWebModels\CSSPWebModels.csproj" />
   </ItemGroup>
 
 </Project>

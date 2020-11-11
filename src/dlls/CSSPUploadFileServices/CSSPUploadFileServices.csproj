@@ -40,8 +40,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CSSPDBFilesManagementServices\CSSPDBFilesManagementServices.csproj" />
+    <ProjectReference Include="..\CSSPDBLocalModels\CSSPDBLocalModels.csproj" />
     <ProjectReference Include="..\CSSPLocalServices\CSSPLocalServices.csproj" />
-    <ProjectReference Include="..\CSSPDBModels\CSSPDBModels.csproj" />
   </ItemGroup>
 
 </Project>

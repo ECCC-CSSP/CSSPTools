@@ -14,6 +14,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using LocalServices;
+using CSSPDBLocalModels;
+using CSSPDBCommandLogModels;
+using CSSPDBPreferenceModels;
+using CSSPDBFilesManagementModels;
+using CSSPDBSearchModels;
 
 namespace CSSPSQLiteServices.Tests
 {

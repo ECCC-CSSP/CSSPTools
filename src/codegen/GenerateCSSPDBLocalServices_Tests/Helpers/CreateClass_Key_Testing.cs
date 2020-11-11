@@ -2,7 +2,7 @@
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GenerateCSSPDBServices_Tests
+namespace GenerateCSSPDBLocalServices_Tests
 {
     public partial class Startup
     {
@@ -19,7 +19,7 @@ namespace GenerateCSSPDBServices_Tests
                 sb.AppendLine($@"            { TypeNameLower }.{ csspProp.PropName } = 0;");
             }
             sb.AppendLine(@"");
-            sb.AppendLine($@"            var action{ TypeName } = await { TypeName }DBService.Put({ TypeNameLower });");
+            sb.AppendLine($@"            action{ TypeName } = await { TypeName }DBService.Put({ TypeNameLower });");
             sb.AppendLine($@"            Assert.IsType<BadRequestObjectResult>(action{ TypeName }.Result);");
             sb.AppendLine(@"");
             sb.AppendLine($@"            { TypeNameLower } = null;");

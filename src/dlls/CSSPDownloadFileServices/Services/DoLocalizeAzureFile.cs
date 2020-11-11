@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 using Azure.Storage.Files.Shares;
 using Azure.Storage.Files;
 using Azure.Storage.Files.Shares.Models;
+using CSSPDBFilesManagementModels;
 
 namespace DownloadFileServices
 {

@@ -21,6 +21,7 @@ using System.Text.Json;
 using System.Text;
 using LoggedInServices;
 using CreateGzFileServices;
+using CSSPHelperModels;
 
 namespace CSSPWebAPIs.CreateGzFileController.Tests
 {

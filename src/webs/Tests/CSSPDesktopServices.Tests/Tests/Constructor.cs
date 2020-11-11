@@ -16,6 +16,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ReadGzFileServices;
 using Xunit;
+using CSSPDBLocalModels;
+using CSSPDBCommandLogModels;
+using CSSPDBSearchModels;
+using CSSPDBFilesManagementModels;
+using CSSPDBPreferenceModels;
 
 namespace CSSPDesktopServices.Tests
 {
@@ -80,10 +85,10 @@ namespace CSSPDesktopServices.Tests
                 options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
             });
 
-            Services.AddDbContext<CSSPDBInMemoryContext>(options =>
-            {
-                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBLocal.FullName }");
-            });
+            //Services.AddDbContext<CSSPDBInMemoryContext>(options =>
+            //{
+            //    options.UseInMemoryDatabase($"Data Source={ fiCSSPDBLocal.FullName }");
+            //});
 
             // Doing CSSPDBSearchContext
             string CSSPDBSearch = Configuration.GetValue<string>("CSSPDBSearch");
