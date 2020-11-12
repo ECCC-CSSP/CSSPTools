@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SubsectorComponent } from './subsector.component';
+import { SubsectorComponent } from 'src/app/components/tvtypes/subsector/subsector.component';
 
 describe('SubsectorComponent', () => {
   let component: SubsectorComponent;

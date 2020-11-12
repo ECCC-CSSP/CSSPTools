@@ -65,11 +65,11 @@ namespace GenerateAngularEnums
                     sb.AppendLine(@" *");
                     sb.AppendLine(@" */");
                     sb.AppendLine(@"");
-                    sb.AppendLine(@"import { AppStateService } from '../../services/app-state.service';");
-                    sb.AppendLine(@"import { EnumIDAndText } from '../../models/generated/EnumIDAndText.model';");
+                    sb.AppendLine(@"import { AppStateService } from 'src/app/services/app-state.service';");
+                    sb.AppendLine(@"import { EnumIDAndText } from 'src/app/models/generated/helper/EnumIDAndText.model';");
                     if (dllTypeInfoEnums.Name != "LanguageEnum")
                     {
-                        sb.AppendLine(@"import { LanguageEnum } from './LanguageEnum';");
+                        sb.AppendLine(@"import { LanguageEnum } from 'src/app/enums/generated/LanguageEnum';");
                     }
                     sb.AppendLine(@"");
 

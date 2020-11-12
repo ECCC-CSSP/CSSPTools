@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
-import { SearchResult } from 'src/app/models/generated/SearchResult.model';
+import { SearchResult } from 'src/app/models/generated/helper/SearchResult.model';
 import { TypeIconService } from 'src/app/services/helpers/type-icon.service';
 import { TypeTextService } from 'src/app/services/helpers/type-text.service';
 

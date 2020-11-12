@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { SideNavMenuComponent } from './sidenav-menu.component';
+import { SideNavMenuComponent } from 'src/app/components/sidenavs/sidenav-menu/sidenav-menu.component';
 
 describe('SideNavMenuComponent', () => {
   let component: SideNavMenuComponent;

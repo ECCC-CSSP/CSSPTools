@@ -2,10 +2,11 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
-import { WebClimateSite } from 'src/app/models/generated/WebClimateSite.model';
-import { AppLoadedService } from '../app-loaded.service';
-import { AppStateService } from '../app-state.service';
+import { WebClimateSite } from 'src/app/models/generated/web/WebClimateSite.model';
+import { AppLoadedService } from 'src/app/services/app-loaded.service';
+import { AppStateService } from 'src/app/services/app-state.service';
 
 
 @Injectable({
@@ -19,8 +20,9 @@ export class WebClimateSiteService {
       }
     
     GetWebClimateSite(TVItemID: number) {
+        let languageEnum = GetLanguageEnum();
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebClimateSite: {}, Working: true });
-        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appStateService.AppState$.getValue().Language}-CA/Read/WebClimateSite/${TVItemID}/1`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebClimateSite/${TVItemID}/1`;
         return this.httpClient.get<WebClimateSite>(url).pipe(
             map((x: any) => {
                 this.UpdateWebClimateSite(x);

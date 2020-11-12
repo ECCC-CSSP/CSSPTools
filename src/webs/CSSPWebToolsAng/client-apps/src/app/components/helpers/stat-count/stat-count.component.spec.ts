@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { StatCountComponent } from './stat-count.component';
+import { StatCountComponent } from 'src/app/components/helpers/stat-count/stat-count.component';
 
 describe('StatCountComponent', () => {
   let component: StatCountComponent;

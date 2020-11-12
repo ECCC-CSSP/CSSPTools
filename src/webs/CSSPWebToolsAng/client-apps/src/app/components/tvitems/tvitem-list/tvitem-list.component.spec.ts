@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TVItemListComponent } from './tvitem-list.component';
+import { TVItemListComponent } from 'src/app/components/tvitems/tvitem-list/tvitem-list.component';
 
 describe('TVItemListComponent', () => {
   let component: TVItemListComponent;

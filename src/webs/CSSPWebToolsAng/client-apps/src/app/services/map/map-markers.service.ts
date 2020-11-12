@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
-import { map } from 'rxjs/operators';
 import { MapInfoDrawTypeEnum } from 'src/app/enums/generated/MapInfoDrawTypeEnum';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
-import { WebBase } from 'src/app/models/generated/WebBase.model';
-import { AppLoadedService } from '../app-loaded.service';
-import { AppStateService } from '../app-state.service';
+import { WebBase } from 'src/app/models/generated/web/WebBase.model';
+import { AppLoadedService } from 'src/app/services/app-loaded.service';
+import { AppStateService } from 'src/app/services/app-state.service';
 
 @Injectable({
   providedIn: 'root'

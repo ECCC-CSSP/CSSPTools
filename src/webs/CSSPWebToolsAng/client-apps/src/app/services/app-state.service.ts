@@ -1,22 +1,22 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { AreaSubComponentEnum } from '../enums/generated/AreaSubComponentEnum';
-import { AscDescEnum } from '../enums/generated/AscDescEnum';
-import { CountrySubComponentEnum } from '../enums/generated/CountrySubComponentEnum';
-import { FilesSortPropEnum } from '../enums/generated/FilesSortPropEnum';
-import { LanguageEnum } from '../enums/generated/LanguageEnum';
-import { MapSizeEnum } from '../enums/generated/MapSizeEnum';
-import { MunicipalitySubComponentEnum } from '../enums/generated/MunicipalitySubComponentEnum';
-import { MWQMRunSubComponentEnum } from '../enums/generated/MWQMRunSubComponentEnum';
-import { MWQMSiteSubComponentEnum } from '../enums/generated/MWQMSiteSubComponentEnum';
-import { PolSourceSiteSubComponentEnum } from '../enums/generated/PolSourceSiteSubComponentEnum';
-import { ProvinceSubComponentEnum } from '../enums/generated/ProvinceSubComponentEnum';
-import { RootSubComponentEnum } from '../enums/generated/RootSubComponentEnum';
-import { SectorSubComponentEnum } from '../enums/generated/SectorSubComponentEnum';
-import { ShellSubComponentEnum } from '../enums/generated/ShellSubComponentEnum';
-import { SubsectorSubComponentEnum } from '../enums/generated/SubsectorSubComponentEnum';
-import { TopComponentEnum } from '../enums/generated/TopComponentEnum';
-import { AppState } from '../models/AppState.model';
+import { AreaSubComponentEnum } from 'src/app/enums/generated/AreaSubComponentEnum';
+import { AscDescEnum } from 'src/app/enums/generated/AscDescEnum';
+import { CountrySubComponentEnum } from 'src/app/enums/generated/CountrySubComponentEnum';
+import { FilesSortPropEnum } from 'src/app/enums/generated/FilesSortPropEnum';
+import { LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
+import { MapSizeEnum } from 'src/app/enums/generated/MapSizeEnum';
+import { MunicipalitySubComponentEnum } from 'src/app/enums/generated/MunicipalitySubComponentEnum';
+import { MWQMRunSubComponentEnum } from 'src/app/enums/generated/MWQMRunSubComponentEnum';
+import { MWQMSiteSubComponentEnum } from 'src/app/enums/generated/MWQMSiteSubComponentEnum';
+import { PolSourceSiteSubComponentEnum } from 'src/app/enums/generated/PolSourceSiteSubComponentEnum';
+import { ProvinceSubComponentEnum } from 'src/app/enums/generated/ProvinceSubComponentEnum';
+import { RootSubComponentEnum } from 'src/app/enums/generated/RootSubComponentEnum';
+import { SectorSubComponentEnum } from 'src/app/enums/generated/SectorSubComponentEnum';
+import { ShellSubComponentEnum } from 'src/app/enums/generated/ShellSubComponentEnum';
+import { SubsectorSubComponentEnum } from 'src/app/enums/generated/SubsectorSubComponentEnum';
+import { TopComponentEnum } from 'src/app/enums/generated/TopComponentEnum';
+import { AppState } from 'src/app/models/AppState.model';
 
 @Injectable({
   providedIn: 'root'

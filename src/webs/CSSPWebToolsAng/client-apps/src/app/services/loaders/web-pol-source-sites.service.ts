@@ -2,10 +2,11 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
-import { WebPolSourceSite } from 'src/app/models/generated/WebPolSourceSite.model';
-import { AppLoadedService } from '../app-loaded.service';
-import { AppStateService } from '../app-state.service';
+import { WebPolSourceSite } from 'src/app/models/generated/web/WebPolSourceSite.model';
+import { AppLoadedService } from 'src/app/services/app-loaded.service';
+import { AppStateService } from 'src/app/services/app-state.service';
 
 @Injectable({
     providedIn: 'root'
@@ -18,8 +19,9 @@ export class WebPolSourceSiteService {
       }
     
     GetWebPolSourceSite(TVItemID: number) {
+        let languageEnum = GetLanguageEnum();
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebPolSourceSite: {}, BreadCrumbWebBaseList: [], Working: true });
-        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appStateService.AppState$.getValue().Language}-CA/Read/WebPolSourceSite/${TVItemID}/1`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebPolSourceSite/${TVItemID}/1`;
         return this.httpClient.get<WebPolSourceSite>(url).pipe(
             map((x: any) => {
                 this.UpdateWebPolSourceSite(x);

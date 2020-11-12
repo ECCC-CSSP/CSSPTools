@@ -4,7 +4,7 @@ import { FormControl } from '@angular/forms';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
-import { SearchResult } from 'src/app/models/generated/SearchResult.model';
+import { SearchResult } from 'src/app/models/generated/helper/SearchResult.model';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { SearchService } from 'src/app/services/loaders/search.service';
 import { WebRootService } from 'src/app/services/loaders/web-root.service';
@@ -20,7 +20,6 @@ import { WebMunicipalityService } from 'src/app/services/loaders/web-municipalty
 import { WebMunicipalitiesService } from 'src/app/services/loaders/web-municipalities.service';
 import { AppState } from 'src/app/models/AppState.model';
 import { ShellSubComponentEnum } from 'src/app/enums/generated/ShellSubComponentEnum';
-import { AppLoaded } from 'src/app/models/AppLoaded.model';
 
 @Component({
   selector: 'app-search',

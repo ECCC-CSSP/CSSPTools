@@ -2,11 +2,12 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { WebTypeYearEnum } from 'src/app/enums/generated/WebTypeYearEnum';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
-import { WebMWQMSample } from 'src/app/models/generated/WebMWQMSample.model';
-import { AppLoadedService } from '../app-loaded.service';
-import { AppStateService } from '../app-state.service';
+import { WebMWQMSample } from 'src/app/models/generated/web/WebMWQMSample.model';
+import { AppLoadedService } from 'src/app/services/app-loaded.service';
+import { AppStateService } from 'src/app/services/app-state.service';
 
 @Injectable({
     providedIn: 'root'
@@ -19,6 +20,7 @@ export class WebMWQMSampleService {
       }
     
     GetWebMWQMSample(TVItemID: number, year: WebTypeYearEnum) {
+        let languageEnum = GetLanguageEnum();
         switch (year) {
             case WebTypeYearEnum.Year1980:
                 {
@@ -66,7 +68,7 @@ export class WebMWQMSampleService {
                 }
                 break;
         }
-        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appStateService.AppState$.getValue().Language}-CA/Read/WebMWQMSample/${TVItemID}/${year}`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebMWQMSample/${TVItemID}/${year}`;
         return this.httpClient.get<WebMWQMSample>(url).pipe(
             map((x: any) => {
                 this.UpdateWebMWQMSample(x, year);

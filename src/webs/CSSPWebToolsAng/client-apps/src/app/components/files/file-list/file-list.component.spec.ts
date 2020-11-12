@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FileListComponent } from './file-list.component';
+import { FileListComponent } from 'src/app/components/files/file-list/file-list.component';
 
 describe('FileListComponent', () => {
   let component: FileListComponent;

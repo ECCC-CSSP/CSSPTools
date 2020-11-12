@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ShellComponent } from './shell.component';
+import { ShellComponent } from 'src/app/components/tvtypes/shell/shell.component';
 
 describe('ShellComponent', () => {
   let component: ShellComponent;

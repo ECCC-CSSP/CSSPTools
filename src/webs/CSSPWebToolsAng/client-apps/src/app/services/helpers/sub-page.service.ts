@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { ShellSubComponentEnum } from 'src/app/enums/generated/ShellSubComponentEnum';
 import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 import { AppState } from 'src/app/models/AppState.model';
-import { TVItem } from 'src/app/models/generated/TVItem.model';
-import { TVItemModel } from 'src/app/models/generated/TVItemModel.model';
-import { AppStateService } from '../app-state.service';
+import { TVItem } from 'src/app/models/generated/db/TVItem.model';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
+import { AppStateService } from 'src/app/services/app-state.service';
 
 @Injectable({
   providedIn: 'root'

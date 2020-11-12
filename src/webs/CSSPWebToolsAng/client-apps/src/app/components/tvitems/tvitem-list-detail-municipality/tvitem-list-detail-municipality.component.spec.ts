@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TVItemListDetailMunicipalityComponent } from './tvitem-list-detail-municipality.component';
+import { TVItemListDetailMunicipalityComponent } from 'src/app/components/tvitems/tvitem-list-detail-municipality/tvitem-list-detail-municipality.component';
 
 describe('TVItemListDetailMunicipalityComponent', () => {
   let component: TVItemListDetailMunicipalityComponent;

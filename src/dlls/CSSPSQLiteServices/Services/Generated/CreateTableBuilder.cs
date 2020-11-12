@@ -1300,6 +1300,17 @@ namespace CSSPSQLiteServices
                     "LastUpdateDate_UTC TEXT  NOT NULL  , " +
                     "LastUpdateContactTVItemID INTEGER  NOT NULL  )";
                     break;
+                case "TVItems":
+                    CreateTable = "CREATE TABLE TVItems (" +
+                    "TVItemID INTEGER  NOT NULL  UNIQUE , " +
+                    "TVLevel INTEGER  NOT NULL  , " +
+                    "TVPath TEXT  NOT NULL  , " +
+                    "TVType INTEGER  NOT NULL  , " +
+                    "ParentID INTEGER   , " +
+                    "IsActive INTEGER  NOT NULL  , " +
+                    "LastUpdateDate_UTC TEXT  NOT NULL  , " +
+                    "LastUpdateContactTVItemID INTEGER  NOT NULL  )";
+                    break;
                 case "LocalTVItems":
                     CreateTable = "CREATE TABLE LocalTVItems (" +
                     "LocalDBCommand INTEGER NOT NULL, " +
@@ -1309,6 +1320,16 @@ namespace CSSPSQLiteServices
                     "TVType INTEGER  NOT NULL  , " +
                     "ParentID INTEGER   , " +
                     "IsActive INTEGER  NOT NULL  , " +
+                    "LastUpdateDate_UTC TEXT  NOT NULL  , " +
+                    "LastUpdateContactTVItemID INTEGER  NOT NULL  )";
+                    break;
+                case "TVItemLanguages":
+                    CreateTable = "CREATE TABLE TVItemLanguages (" +
+                    "TVItemLanguageID INTEGER  NOT NULL  UNIQUE , " +
+                    "TVItemID INTEGER  NOT NULL  , " +
+                    "Language INTEGER  NOT NULL  , " +
+                    "TVText TEXT  NOT NULL  , " +
+                    "TranslationStatus INTEGER  NOT NULL  , " +
                     "LastUpdateDate_UTC TEXT  NOT NULL  , " +
                     "LastUpdateContactTVItemID INTEGER  NOT NULL  )";
                     break;

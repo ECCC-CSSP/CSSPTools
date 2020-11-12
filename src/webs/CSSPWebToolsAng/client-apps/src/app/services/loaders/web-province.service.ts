@@ -3,15 +3,16 @@ import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
-import { SamplingPlan } from 'src/app/models/generated/SamplingPlan.model';
-import { WebBase } from 'src/app/models/generated/WebBase.model';
-import { WebProvince } from 'src/app/models/generated/WebProvince.model';
-import { AppLoadedService } from '../app-loaded.service';
-import { AppStateService } from '../app-state.service';
-import { StructureTVFileListService } from './structure-tvfile-list.service';
-import { SortTVItemListService } from './sort-tvitem-list.service';
-import { MapService } from '../map/map.service';
+import { SamplingPlan } from 'src/app/models/generated/db/SamplingPlan.model';
+import { WebBase } from 'src/app/models/generated/web/WebBase.model';
+import { WebProvince } from 'src/app/models/generated/web/WebProvince.model';
+import { AppLoadedService } from 'src/app/services/app-loaded.service';
+import { AppStateService } from 'src/app/services/app-state.service';
+import { StructureTVFileListService } from 'src/app/services/loaders/structure-tvfile-list.service';
+import { SortTVItemListService } from 'src/app/services/loaders/sort-tvitem-list.service';
+import { MapService } from 'src/app/services/map/map.service';
 import { ProvinceSubComponentEnum } from 'src/app/enums/generated/ProvinceSubComponentEnum';
+import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 
 @Injectable({
   providedIn: 'root'
@@ -27,13 +28,14 @@ export class WebProvinceService {
   }
 
   GetWebProvince(TVItemID: number) {
+    let languageEnum = GetLanguageEnum();
     this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
       WebProvince: {},
       ProvinceAreaList: [],
       BreadCrumbWebBaseList: [],
       Working: true
     });
-    let url: string = `${this.appLoadedService.BaseApiUrl}${this.appStateService.AppState$.getValue().Language}-CA/Read/WebProvince/${TVItemID}/1`;
+    let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebProvince/${TVItemID}/1`;
     return this.httpClient.get<WebProvince>(url).pipe(
       map((x: any) => {
         this.UpdateWebProvince(x);

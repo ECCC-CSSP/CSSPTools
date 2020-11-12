@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
-import { TVFileModel } from 'src/app/models/generated/TVFileModel.model';
-import { AppLanguageService } from '../app-language.service';
-import { AppStateService } from '../app-state.service';
+import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model';
+import { AppLanguageService } from 'src/app/services/app-language.service';
+import { AppStateService } from 'src/app/services/app-state.service';
 
 @Injectable({
   providedIn: 'root'

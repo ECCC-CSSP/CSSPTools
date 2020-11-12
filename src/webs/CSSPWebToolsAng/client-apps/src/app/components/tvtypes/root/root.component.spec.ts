@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RootComponent } from './root.component';
+import { RootComponent } from 'src/app/components/tvtypes/root/root.component';
 
 describe('RootComponent', () => {
   let component: RootComponent;

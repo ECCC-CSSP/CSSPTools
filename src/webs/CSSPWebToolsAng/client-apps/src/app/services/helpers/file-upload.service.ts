@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { HttpErrorResponse, HttpClient, HttpEvent } from '@angular/common/http';
-import { AppLoadedService } from '../app-loaded.service';
-import { AppStateService } from '../app-state.service';
-import { GetLanguageEnum } from '../../enums/generated/LanguageEnum';
+import { HttpClient } from '@angular/common/http';
+import { AppLoadedService } from 'src/app/services/app-loaded.service';
+import { AppStateService } from 'src/app/services/app-state.service';
+import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 @Injectable({
   providedIn: 'root'
 })
@@ -12,8 +10,6 @@ import { GetLanguageEnum } from '../../enums/generated/LanguageEnum';
 export class FileUploadService {
   errorMessage: string;
   languageEnum = GetLanguageEnum();
-
-  SERVER_URL: string = "https://file.io/";
 
   constructor(private appLoadedService: AppLoadedService,
     private appStateService: AppStateService,

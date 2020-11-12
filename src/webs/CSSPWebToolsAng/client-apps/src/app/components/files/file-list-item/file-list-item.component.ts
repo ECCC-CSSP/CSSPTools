@@ -1,9 +1,9 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Input, Inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { GetLanguageEnum, LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
+import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { AppState } from 'src/app/models/AppState.model';
-import { TVFileModel } from 'src/app/models/generated/TVFileModel.model';
+import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { DateFormatService } from 'src/app/services/helpers/date-format.service';

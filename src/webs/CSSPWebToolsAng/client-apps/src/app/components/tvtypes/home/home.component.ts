@@ -1,11 +1,11 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { GetLanguageEnum, LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { TopComponentEnum } from 'src/app/enums/generated/TopComponentEnum';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { AppState } from 'src/app/models/AppState.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppLanguageService } from 'src/app/services/app-language.service';
-import { Subscription } from 'rxjs';
 import { WebContactService } from 'src/app/services/loaders/web-contact.service';
 
 @Component({

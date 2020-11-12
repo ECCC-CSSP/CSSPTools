@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AreaComponent } from './area.component';
+import { AreaComponent } from 'src/app/components/tvtypes/area/area.component';
 
 describe('AreaComponent', () => {
   let component: AreaComponent;

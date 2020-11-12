@@ -198,20 +198,20 @@ namespace CSSPSQLiteServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            try
-            {
-                fiCSSPDBSearch.Delete();
-            }
-            catch (Exception ex)
-            {
-                Assert.True(false, ex.Message);
-            }
+            //try
+            //{
+            //    fiCSSPDBSearch.Delete();
+            //}
+            //catch (Exception ex)
+            //{
+            //    Assert.True(false, ex.Message);
+            //}
 
-            bool retBool = await CSSPSQLiteService.CreateSQLiteCSSPDBSearch();
-            Assert.True(retBool);
+            //bool retBool = await CSSPSQLiteService.CreateSQLiteCSSPDBSearch();
+            //Assert.True(retBool);
 
-            retBool = await CSSPSQLiteService.CSSPDBSearchIsEmpty();
-            Assert.True(retBool);
+            //retBool = await CSSPSQLiteService.CSSPDBSearchIsEmpty();
+            //Assert.True(retBool);
 
             // will need to add some information to CSSPDBLocal to fully check if CSSPDBSearchIsEmpty is really working
 
@@ -221,8 +221,8 @@ namespace CSSPSQLiteServices.Tests
             //List<TVItem> tvItemList = (List<TVItem>)((OkObjectResult)actionTVItemList.Result).Value;
             //Assert.True(tvItemList.Count > 0);
 
-            retBool = await CSSPSQLiteService.CSSPDBSearchIsEmpty();
-            Assert.True(retBool);
+            //retBool = await CSSPSQLiteService.CSSPDBSearchIsEmpty();
+            //Assert.True(retBool);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -283,7 +283,7 @@ namespace CSSPSQLiteServices.Tests
 
             try
             {
-                fiCSSPDBFilesManagement.Delete();
+                fiCSSPDBPreference.Delete();
             }
             catch (Exception ex)
             {

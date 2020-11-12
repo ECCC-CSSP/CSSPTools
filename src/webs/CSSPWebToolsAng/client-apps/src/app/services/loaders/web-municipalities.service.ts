@@ -4,11 +4,12 @@ import { of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { ProvinceSubComponentEnum } from 'src/app/enums/generated/ProvinceSubComponentEnum';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
-import { WebMunicipalities } from 'src/app/models/generated/WebMunicipalities.model';
-import { AppLoadedService } from '../app-loaded.service';
-import { AppStateService } from '../app-state.service';
-import { MapService } from '../map/map.service';
-import { SortTVItemListService } from './sort-tvitem-list.service';
+import { WebMunicipalities } from 'src/app/models/generated/web/WebMunicipalities.model';
+import { AppLoadedService } from 'src/app/services/app-loaded.service';
+import { AppStateService } from 'src/app/services/app-state.service';
+import { MapService } from 'src/app/services/map/map.service';
+import { SortTVItemListService } from 'src/app/services/loaders/sort-tvitem-list.service';
+import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 
 
 @Injectable({
@@ -24,8 +25,9 @@ export class WebMunicipalitiesService {
   }
 
   GetWebMunicipalities(TVItemID: number) {
+    let languageEnum = GetLanguageEnum();
     this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebMunicipalities: {}, Working: true });
-    let url: string = `${this.appLoadedService.BaseApiUrl}${this.appStateService.AppState$.getValue().Language}-CA/Read/WebMunicipalities/${TVItemID}/1`;
+    let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebMunicipalities/${TVItemID}/1`;
     return this.httpClient.get<WebMunicipalities>(url).pipe(
       map((x: any) => {
         this.UpdateWebMunicipalities(x);

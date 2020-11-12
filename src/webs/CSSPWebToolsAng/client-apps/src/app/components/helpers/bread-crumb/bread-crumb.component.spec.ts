@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { BreadCrumbComponent } from './bread-crumb.component';
+import { BreadCrumbComponent } from 'src/app/components/helpers/bread-crumb/bread-crumb.component';
 
 describe('BreadCrumbComponent', () => {
   let component: BreadCrumbComponent;

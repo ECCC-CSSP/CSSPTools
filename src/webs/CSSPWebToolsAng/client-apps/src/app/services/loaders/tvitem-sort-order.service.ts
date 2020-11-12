@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { AscDescEnum } from 'src/app/enums/generated/AscDescEnum';
 import { AppState } from 'src/app/models/AppState.model';
-import { AppLoadedService } from '../app-loaded.service';
-import { AppStateService } from '../app-state.service';
-import { WebAreaService } from './web-area.service';
-import { WebCountryService } from './web-country.service';
-import { WebProvinceService } from './web-province.service';
-import { WebRootService } from './web-root.service';
-import { WebSectorService } from './web-sector.service';
-import { WebSubsectorService } from './web-subsector.service';
+import { AppLoadedService } from 'src/app/services/app-loaded.service';
+import { AppStateService } from 'src/app/services/app-state.service';
+import { WebAreaService } from 'src/app/services/loaders/web-area.service';
+import { WebCountryService } from 'src/app/services/loaders/web-country.service';
+import { WebProvinceService } from 'src/app/services/loaders/web-province.service';
+import { WebRootService } from 'src/app/services/loaders/web-root.service';
+import { WebSectorService } from 'src/app/services/loaders/web-sector.service';
+import { WebSubsectorService } from 'src/app/services/loaders/web-subsector.service';
 
 @Injectable({
     providedIn: 'root'

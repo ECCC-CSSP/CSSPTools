@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Input } from '@angular/core';
 import { AppState } from 'src/app/models/AppState.model';
-import { WebBase } from 'src/app/models/generated/WebBase.model';
+import { WebBase } from 'src/app/models/generated/web/WebBase.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 

@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Input } from '@angular/core';
 import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 import { AppState } from 'src/app/models/AppState.model';
-import { TVItemModel } from 'src/app/models/generated/TVItemModel.model';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 
 @Component({
   selector: 'app-tvitem-list-detail',

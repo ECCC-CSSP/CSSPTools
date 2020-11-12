@@ -71,6 +71,127 @@ namespace GenerateCSSPSQLiteServices
 
                 if (!ClassNotMapped)
                 {
+                    if (TypeName == "TVItem" || TypeName == "TVItemLanguage")
+                    {
+                        sb.AppendLine($@"                case ""{ TypeName + plurial }"":");
+                        sb.AppendLine($@"                    CreateTable = ""CREATE TABLE { TypeName + plurial } ("" +");
+
+                        int countProp2 = 0;
+                        int TotCountProp2 = type.GetProperties().Count();
+
+                        List<string> ForeignKeyStrList2 = new List<string>();
+                        foreach (PropertyInfo prop in type.GetProperties())
+                        {
+                            countProp2 += 1;
+
+                            CSSPProp csspProp = new CSSPProp();
+                            if (!GenerateCodeBase.FillCSSPProp(prop, csspProp, type))
+                            {
+                                //Console.WriteLine($"{ string.Format(AppRes.ErrorWhileCreatingCode_, csspProp.CSSPError) }");
+                                return await Task.FromResult(false);
+                            }
+
+                            string TempStr = "";
+                            string Unique = "";
+                            string NotNull = "";
+                            string FieldType = "";
+                            string CollateNoCase = "";
+
+                            if (csspProp.IsKey)
+                            {
+                                Unique = " UNIQUE";
+                            }
+
+                            if (!csspProp.IsNullable)
+                            {
+                                NotNull = " NOT NULL";
+                            }
+
+                            switch (csspProp.PropType)
+                            {
+                                case "Boolean":
+                                case "Int16":
+                                case "Int32":
+                                case "Int64":
+                                    {
+                                        FieldType = "INTEGER";
+                                    }
+                                    break;
+                                case "Single":
+                                case "Double":
+                                    {
+                                        FieldType = "REAL";
+                                    }
+                                    break;
+                                case "DateTime":
+                                case "DateTimeOffset":
+                                case "String":
+                                    {
+                                        FieldType = "TEXT";
+                                        //CollateNoCase = "COLLATE NOCASE";
+                                    }
+                                    break;
+                                case "Byte[]":
+                                    {
+                                        FieldType = "BLOB";
+                                    }
+                                    break;
+                                default:
+                                    {
+                                        if (csspProp.HasCSSPEnumTypeAttribute)
+                                        {
+                                            FieldType = "INTEGER";
+                                        }
+                                        else
+                                        {
+                                            TempStr = $@"   ERROR ";
+                                        }
+                                    }
+                                    break;
+                            }
+
+                            TempStr = $@"                    ""{ csspProp.PropName } { FieldType } { NotNull } { Unique } { CollateNoCase }, "" +";
+
+                            if (csspProp.HasCSSPForeignKeyAttribute)
+                            {
+                                //ForeignKeyStrList.Add($@"                    @""FOREIGN KEY(""""{ csspProp.PropName }"""") REFERENCES """"{ csspProp.TableName }"""" (""""{ csspProp.FieldName }""""), "" +");
+                            }
+
+                            if (countProp2 == TotCountProp2)
+                            {
+                                if (ForeignKeyStrList2.Count > 0)
+                                {
+                                    sb.AppendLine(TempStr);
+                                    int CountForeignKey = 0;
+                                    int TotForeignKey = ForeignKeyStrList2.Count();
+                                    foreach (string s in ForeignKeyStrList2)
+                                    {
+                                        CountForeignKey += 1;
+                                        if (CountForeignKey == TotForeignKey)
+                                        {
+                                            sb.AppendLine(s.Substring(0, s.Length - 5) + ")\";");
+                                        }
+                                        else
+                                        {
+                                            sb.AppendLine(s);
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    sb.AppendLine(TempStr.Substring(0, TempStr.Length - 5) + ")\";");
+                                }
+                            }
+                            else
+                            {
+                                sb.AppendLine(TempStr);
+                            }
+
+                        }
+                        sb.AppendLine($@"                    break;");
+
+                    }
+
                     sb.AppendLine($@"                case ""Local{ TypeName + plurial }"":");
                     sb.AppendLine($@"                    CreateTable = ""CREATE TABLE Local{ TypeName + plurial } ("" +");
                     sb.AppendLine($@"                    ""LocalDBCommand INTEGER NOT NULL, "" +");

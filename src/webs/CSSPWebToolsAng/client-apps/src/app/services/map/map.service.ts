@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { MapInfoDrawTypeEnum } from 'src/app/enums/generated/MapInfoDrawTypeEnum';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
-import { TVItemModel } from 'src/app/models/generated/TVItemModel.model';
-import { WebBase } from 'src/app/models/generated/WebBase.model';
-import { AppLoadedService } from '../app-loaded.service';
-import { AppStateService } from '../app-state.service';
-import { MapMarkersService } from './map-markers.service';
-import { MapPolygonsService } from './map-polygons.service';
-import { MapPolylinesService } from './map-polylines.service';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
+import { WebBase } from 'src/app/models/generated/web/WebBase.model';
+import { AppLoadedService } from 'src/app/services/app-loaded.service';
+import { AppStateService } from 'src/app/services/app-state.service';
+import { MapMarkersService } from 'src/app/services/map/map-markers.service';
+import { MapPolygonsService } from 'src/app/services/map/map-polygons.service';
+import { MapPolylinesService } from 'src/app/services/map/map-polylines.service';
 
 @Injectable({
   providedIn: 'root'

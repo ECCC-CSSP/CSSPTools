@@ -5,9 +5,9 @@ import { FormControl } from '@angular/forms';
 import { of } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, map, startWith, tap } from 'rxjs/operators';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
-import { SearchResult } from 'src/app/models/generated/SearchResult.model';
-import { AppLoadedService } from '../app-loaded.service';
-import { AppStateService } from '../app-state.service';
+import { SearchResult } from 'src/app/models/generated/helper/SearchResult.model';
+import { AppLoadedService } from 'src/app/services/app-loaded.service';
+import { AppStateService } from 'src/app/services/app-state.service';
 
 @Injectable({
     providedIn: 'root'

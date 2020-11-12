@@ -11,7 +11,9 @@ namespace CSSPSQLiteServices
         {
             foreach (string TableName in ListTableToCreate)
             {
-                if (! await CreateTableBuilder(TableName, DoSearch)) return await Task.FromResult(false);
+                string tableName = TableName;
+
+                if (! await CreateTableBuilder(tableName, DoSearch)) return await Task.FromResult(false);
             }
 
             return await Task.FromResult(true);

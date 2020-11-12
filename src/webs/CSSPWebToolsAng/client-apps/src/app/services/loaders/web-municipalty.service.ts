@@ -2,11 +2,12 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
-import { WebMunicipality } from 'src/app/models/generated/WebMunicipality.model';
-import { AppLoadedService } from '../app-loaded.service';
-import { AppStateService } from '../app-state.service';
-import { StructureTVFileListService } from './structure-tvfile-list.service';
+import { WebMunicipality } from 'src/app/models/generated/web/WebMunicipality.model';
+import { AppLoadedService } from 'src/app/services/app-loaded.service';
+import { AppStateService } from 'src/app/services/app-state.service';
+import { StructureTVFileListService } from 'src/app/services/loaders/structure-tvfile-list.service';
 
 @Injectable({
     providedIn: 'root'
@@ -20,6 +21,7 @@ export class WebMunicipalityService {
     }
 
     GetWebMunicipality(TVItemID: number) {
+        let languageEnum = GetLanguageEnum();
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
             WebMunicipality: {},
             InfrastructureModelList: [],
@@ -29,7 +31,7 @@ export class WebMunicipalityService {
             BreadCrumbWebBaseList: [],
             Working: true
         });
-        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appStateService.AppState$.getValue().Language}-CA/Read/WebMunicipality/${TVItemID}/1`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebMunicipality/${TVItemID}/1`;
         return this.httpClient.get<WebMunicipality>(url).pipe(
             map((x: any) => {
                 this.UpdateWebMunicipality(x);

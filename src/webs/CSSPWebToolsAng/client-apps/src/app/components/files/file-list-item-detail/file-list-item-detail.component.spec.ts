@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FileListItemDetailComponent } from './file-list-item-detail.component';
+import { FileListItemDetailComponent } from 'src/app/components/files/file-list-item-detail/file-list-item-detail.component';
 
 describe('FileListItemDetailComponent', () => {
   let component: FileListItemDetailComponent;

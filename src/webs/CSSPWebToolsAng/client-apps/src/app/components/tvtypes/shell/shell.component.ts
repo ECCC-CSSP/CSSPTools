@@ -1,5 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, OnDestroy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { Subscription, timer } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { AppState } from 'src/app/models/AppState.model';
@@ -8,8 +10,6 @@ import { GetLanguageEnum, LanguageEnum } from 'src/app/enums/generated/LanguageE
 import { GetShellSubComponentEnum } from 'src/app/enums/generated/ShellSubComponentEnum';
 import { GetMapSizeEnum, MapSizeEnum } from 'src/app/enums/generated/MapSizeEnum';
 import { TopComponentEnum } from 'src/app/enums/generated/TopComponentEnum';
-import { of, Subscription, timer } from 'rxjs';
-import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-shell',

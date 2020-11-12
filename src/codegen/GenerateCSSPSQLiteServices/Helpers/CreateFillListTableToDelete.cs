@@ -38,7 +38,7 @@ namespace GenerateCSSPSQLiteServices
             sb.AppendLine(@"            {");
             foreach (string CSSPDBTableName in ListCSSPDBTableList)
             {
-                sb.AppendLine($@"                ""{ CSSPDBTableName }"",");
+                sb.AppendLine($@"                ""Local{ CSSPDBTableName }"",");
             }
             sb.AppendLine(@"            };");
             sb.AppendLine(@"");

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SearchOptionComponent } from './search-option.component';
+import { SearchOptionComponent } from 'src/app/components/helpers/search-option/search-option.component';
 
 describe('SearchOptionComponent', () => {
   let component: SearchOptionComponent;

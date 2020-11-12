@@ -3,14 +3,15 @@ import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
-import { WebBase } from 'src/app/models/generated/WebBase.model';
-import { WebRoot } from 'src/app/models/generated/WebRoot.model';
-import { AppLoadedService } from '../app-loaded.service';
-import { AppStateService } from '../app-state.service';
-import { StructureTVFileListService } from './structure-tvfile-list.service';
-import { SortTVItemListService } from './sort-tvitem-list.service';
-import { MapService } from '../map/map.service';
+import { WebBase } from 'src/app/models/generated/web/WebBase.model';
+import { WebRoot } from 'src/app/models/generated/web/WebRoot.model';
+import { AppLoadedService } from 'src/app/services/app-loaded.service';
+import { AppStateService } from 'src/app/services/app-state.service';
+import { StructureTVFileListService } from 'src/app/services/loaders/structure-tvfile-list.service';
+import { SortTVItemListService } from 'src/app/services/loaders/sort-tvitem-list.service';
+import { MapService } from 'src/app/services/map/map.service';
 import { RootSubComponentEnum } from 'src/app/enums/generated/RootSubComponentEnum';
+import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 
 @Injectable({
     providedIn: 'root'
@@ -25,13 +26,14 @@ export class WebRootService {
     }
 
     GetWebRoot(TVItemID: number) {
+        let languageEnum = GetLanguageEnum();
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
             WebRoot: {},
             RootCountryList: [],
             BreadCrumbWebBaseList: [],
             Working: true
         });
-        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appStateService.AppState$.getValue().Language}-CA/Read/WebRoot/${TVItemID}/1`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebRoot/${TVItemID}/1`;
         return this.httpClient.get<WebRoot>(url).pipe(
             map((x: any) => {
                 this.UpdateWebRoot(x);

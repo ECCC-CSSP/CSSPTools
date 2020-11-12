@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Input } from '@a
 import { GetFilePurposeEnum } from 'src/app/enums/generated/FilePurposeEnum';
 import { GetFileTypeEnum } from 'src/app/enums/generated/FileTypeEnum';
 import { AppState } from 'src/app/models/AppState.model';
-import { TVFileModel } from 'src/app/models/generated/TVFileModel.model';
+import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model';
 
 @Component({
   selector: 'app-file-list-item-detail',

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SectorComponent } from './sector.component';
+import { SectorComponent } from 'src/app/components/tvtypes/sector/sector.component';
 
 describe('SectorComponent', () => {
   let component: SectorComponent;

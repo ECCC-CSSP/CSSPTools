@@ -1,12 +1,11 @@
 import { Injectable, Inject } from '@angular/core'
-import { HttpClient, HttpRequest } from '@angular/common/http'
-import { download, Download } from './file-download'
-import { map } from 'rxjs/operators'
+import { HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs'
-import { SAVER, Saver } from './saver.provider'
-import { TVFileModel } from 'src/app/models/generated/TVFileModel.model'
-import { AppLoadedService } from '../app-loaded.service'
-import { AppStateService } from '../app-state.service'
+import { download, Download } from 'src/app/services/helpers/file-download'
+import { SAVER, Saver } from 'src/app/services/helpers/saver.provider'
+import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model'
+import { AppLoadedService } from 'src/app/services/app-loaded.service'
+import { AppStateService } from 'src/app/services/app-state.service'
 
 @Injectable({ providedIn: 'root' })
 export class DownloadService {

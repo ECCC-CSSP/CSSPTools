@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { AppStateService } from '../app-state.service';
-import { TVFileModel } from 'src/app/models/generated/TVFileModel.model';
-import { PredicateAscByService } from './predicate-asc-by.service';
+import { AppStateService } from 'src/app/services/app-state.service';
+import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model';
+import { PredicateAscByService } from 'src/app/services/loaders/predicate-asc-by.service';
 import { TVFileID_ServerFileName_Sort } from 'src/app/models/TVFileID_ServerFileName_Sort.model';
-import { TVItemModel } from 'src/app/models/generated/TVItemModel.model';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { FilePurposeEnum_GetOrderedText } from 'src/app/enums/generated/FilePurposeEnum';
-import { EnumIDAndText } from 'src/app/models/generated/EnumIDAndText.model';
+import { EnumIDAndText } from 'src/app/models/generated/helper/EnumIDAndText.model';
 
 @Injectable({
   providedIn: 'root'

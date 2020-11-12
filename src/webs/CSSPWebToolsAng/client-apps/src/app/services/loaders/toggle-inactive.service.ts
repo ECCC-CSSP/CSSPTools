@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
 import { ShellSubComponentEnum } from 'src/app/enums/generated/ShellSubComponentEnum';
 import { AppState } from 'src/app/models/AppState.model';
-import { AppLoadedService } from '../app-loaded.service';
-import { AppStateService } from '../app-state.service';
-import { WebAreaService } from './web-area.service';
-import { WebCountryService } from './web-country.service';
-import { WebMunicipalityService } from './web-municipalty.service';
-import { WebMWQMRunService } from './web-mwqm-runs.service';
-import { WebMWQMSiteService } from './web-mwqm-sites.service';
-import { WebPolSourceSiteService } from './web-pol-source-sites.service';
-import { WebProvinceService } from './web-province.service';
-import { WebRootService } from './web-root.service';
-import { WebSectorService } from './web-sector.service';
-import { WebSubsectorService } from './web-subsector.service';
+import { AppLoadedService } from 'src/app/services/app-loaded.service';
+import { AppStateService } from 'src/app/services/app-state.service';
+import { WebAreaService } from 'src/app/services/loaders/web-area.service';
+import { WebCountryService } from 'src/app/services/loaders/web-country.service';
+import { WebMunicipalityService } from 'src/app/services/loaders/web-municipalty.service';
+import { WebMWQMRunService } from 'src/app/services/loaders/web-mwqm-runs.service';
+import { WebMWQMSiteService } from 'src/app/services/loaders/web-mwqm-sites.service';
+import { WebPolSourceSiteService } from 'src/app/services/loaders/web-pol-source-sites.service';
+import { WebProvinceService } from 'src/app/services/loaders/web-province.service';
+import { WebRootService } from 'src/app/services/loaders/web-root.service';
+import { WebSectorService } from 'src/app/services/loaders/web-sector.service';
+import { WebSubsectorService } from 'src/app/services/loaders/web-subsector.service';
 
 @Injectable({
     providedIn: 'root'

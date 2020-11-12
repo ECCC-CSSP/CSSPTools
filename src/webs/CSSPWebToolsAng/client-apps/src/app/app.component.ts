@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { GetTopComponentEnum } from './enums/generated/TopComponentEnum';
-import { AppLoadedService } from './services/app-loaded.service';
-import { AppStateService } from './services/app-state.service';
-import { LoggedInContactService } from './services/loaders/logged-in-contact.service';
-import { WebContactService } from './services/loaders/web-contact.service';
+import { GetTopComponentEnum } from 'src/app/enums/generated/TopComponentEnum';
+import { AppLoadedService } from 'src/app/services/app-loaded.service';
+import { AppStateService } from 'src/app/services/app-state.service';
+import { LoggedInContactService } from 'src/app/services/loaders/logged-in-contact.service';
+import { WebContactService } from 'src/app/services/loaders/web-contact.service';
 
 @Component({
   selector: 'app-root',

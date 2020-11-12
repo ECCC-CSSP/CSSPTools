@@ -3,9 +3,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 
-import { AppComponent } from './app.component';
-import { SharedModule } from './shared.module';
-import { getSaver, SAVER } from './services/helpers/saver.provider';
+import { AppComponent } from 'src/app/app.component';
+import { SharedModule } from 'src/app/shared.module';
+import { getSaver, SAVER } from 'src/app/services/helpers/saver.provider';
 
 
 @NgModule({
