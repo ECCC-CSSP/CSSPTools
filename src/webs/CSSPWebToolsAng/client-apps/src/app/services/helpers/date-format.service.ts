@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 
@@ -13,8 +14,19 @@ export class DateFormatService {
     private appLanguageService: AppLanguageService) {
   }
 
+  GetLastUpdateDateTVItemModel(tvItemModel: TVItemModel) {
+    return this.GetDateFromDateText(tvItemModel.TVItem.LastUpdateDate_UTC.toString());
+  }
+
+  GetLastUpdateDateTVFileModel(tvFileModel: TVFileModel) {
+    return this.GetDateFromDateText(tvFileModel.TVFile.LastUpdateDate_UTC.toString());
+  }
+
   GetFileCreateDate(tvFileModel: TVFileModel) {
-    let DateText: string = tvFileModel.TVFile.FileCreatedDate_UTC.toString();
+    return this.GetDateFromDateText(tvFileModel.TVFile.FileCreatedDate_UTC.toString());
+  }
+
+  private GetDateFromDateText(DateText: string) {
     let Year: number = parseInt(DateText.substring(0, 4));
     let Month: number = parseInt(DateText.substring(5, 7));
     let Day: number = parseInt(DateText.substring(8, 10));
@@ -22,13 +34,13 @@ export class DateFormatService {
     let Minute: number = parseInt(DateText.substring(14, 16));
     let Second: number = parseInt(DateText.substring(17, 19));
     if (this.appStateService.AppState$.getValue().Language == LanguageEnum.fr) {
-      return `${ Day } ${this.GetMonthName(Month, false)} ${ Year } ${ Hour }:${ Minute }:${ Second } (utc)`;
+      return `${Day} ${this.GetMonthName(Month, false)} ${Year} ${Hour}:${Minute}:${Second} (utc)`;
     }
 
-    return `${this.GetMonthName(Month, false)} ${ Day }, ${ Year } ${ Hour }:${ Minute }:${ Second } (utc)`;
+    return `${this.GetMonthName(Month, false)} ${Day}, ${Year} ${Hour}:${Minute}:${Second} (utc)`;
   }
 
-  GetMonthName(month: number, acronym: boolean = false) : string {
+  private GetMonthName(month: number, acronym: boolean = false): string {
     switch (month) {
       case 1:
         {

@@ -31,8 +31,12 @@ namespace CreateGzFileServices
             {
                 MWQMSiteModel mwqmSiteModel = new MWQMSiteModel();
                 mwqmSiteModel.TVItemModel.TVItem = tvItem;
-                mwqmSiteModel.TVItemModel.TVItemLanguageEN = TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID && c.Language == LanguageEnum.en).FirstOrDefault();
-                mwqmSiteModel.TVItemModel.TVItemLanguageFR = TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID && c.Language == LanguageEnum.fr).FirstOrDefault();
+                mwqmSiteModel.TVItemModel.TVItemLanguageList = new List<TVItemLanguage>()
+                {
+                    TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID && c.Language == LanguageEnum.en).FirstOrDefault(),
+                    TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID && c.Language == LanguageEnum.en).FirstOrDefault(),
+                    TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID && c.Language == LanguageEnum.fr).FirstOrDefault()
+                };
 
                 mwqmSiteModel.TVItemModel.TVItemStatList = TVItemStatList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
 

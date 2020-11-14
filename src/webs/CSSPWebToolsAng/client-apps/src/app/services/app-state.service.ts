@@ -42,6 +42,7 @@ export class AppStateService {
       Language: LanguageEnum.en, // en | fr | enAndfr | es
       DetailVisible: false,
       StatCountVisible: false,
+      LastUpdateVisible: false,
       EditVisible: false,
       InactVisible: false,
       MenuVisible: false,

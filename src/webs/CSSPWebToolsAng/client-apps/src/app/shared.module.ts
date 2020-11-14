@@ -32,6 +32,8 @@ import { RootComponent } from 'src/app/components/tvtypes/root/root.component';
 import { SectorComponent } from 'src/app/components/tvtypes/Sector/sector.component';
 import { ShellComponent } from 'src/app/components/tvtypes/shell/shell.component';
 import { SubsectorComponent } from 'src/app/components/tvtypes/subsector/subsector.component';
+import { LastUpdateTVFileModelComponent } from './components/helpers/last-update-tvfilemodel/last-update-tvfilemodel.component';
+import { LastUpdateTVItemModelComponent } from './components/helpers/last-update-tvitemmodel/last-update-tvitemmodel.component';
 
 
 
@@ -47,6 +49,8 @@ import { SubsectorComponent } from 'src/app/components/tvtypes/subsector/subsect
     FileUploadComponent,
     FooterComponent,
     HomeComponent,
+    LastUpdateTVFileModelComponent,
+    LastUpdateTVItemModelComponent,
     MapComponent,
     ProvinceComponent,
     RootComponent,
@@ -90,6 +94,8 @@ import { SubsectorComponent } from 'src/app/components/tvtypes/subsector/subsect
     FileListItemDetailComponent,
     FileUploadComponent,
     FooterComponent,
+    LastUpdateTVFileModelComponent,
+    LastUpdateTVItemModelComponent,
     HomeComponent,
     MapComponent,
     ProvinceComponent,

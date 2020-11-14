@@ -34,6 +34,7 @@ export interface AppState extends HttpStatus {
     BaseApiUrl?: string;
     DetailVisible?: boolean;
     StatCountVisible?: boolean;
+    LastUpdateVisible?: boolean;
     EditVisible?: boolean;
     InactVisible?: boolean;
     MenuVisible?: boolean;

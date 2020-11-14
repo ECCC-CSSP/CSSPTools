@@ -27,8 +27,11 @@ namespace CreateGzFileServices
             List<TVFile> TVFileList = await GetTVFileListWithTVItemID(TVItem.TVItemID);
             List<TVFileLanguage> TVFileLanguageList = await GetTVFileLanguageListWithTVItemID(TVItem.TVItemID);
 
-            TVItemModel.TVItemLanguageEN = TVItemLanguageList.Where(c => c.Language == LanguageEnum.en).FirstOrDefault();
-            TVItemModel.TVItemLanguageFR = TVItemLanguageList.Where(c => c.Language == LanguageEnum.fr).FirstOrDefault();
+            TVItemModel.TVItemLanguageList = new List<TVItemLanguage>() {
+                TVItemLanguageList.Where(c => c.Language == LanguageEnum.en).FirstOrDefault(),
+                TVItemLanguageList.Where(c => c.Language == LanguageEnum.en).FirstOrDefault(),
+                TVItemLanguageList.Where(c => c.Language == LanguageEnum.fr).FirstOrDefault()
+            };
             TVItemModel.TVItemStatList = TVItemStatList.Select(c => c).ToList();
 
             foreach (MapInfo mapInfo in MapInfoList)
@@ -41,9 +44,16 @@ namespace CreateGzFileServices
 
             foreach (TVFile tvFile in TVFileList)
             {
-                TVFileLanguage tvFileLanguageEN = TVFileLanguageList.Where(c => c.Language == LanguageEnum.en).FirstOrDefault();
-                TVFileLanguage tvFileLanguageFR = TVFileLanguageList.Where(c => c.Language == LanguageEnum.fr).FirstOrDefault();
-                TVItemModel.TVFileModelList.Add(new TVFileModel() { ParentTVItemID = TVItem.TVItemID, TVFile = tvFile, TVFileLanguageEN = tvFileLanguageEN, TVFileLanguageFR = tvFileLanguageFR });
+                TVItemModel.TVFileModelList.Add(new TVFileModel()
+                {
+                    ParentTVItemID = TVItem.TVItemID,
+                    TVFile = tvFile,
+                    TVFileLanguageList = new List<TVFileLanguage>() {
+                        TVFileLanguageList.Where(c => c.Language == LanguageEnum.en).FirstOrDefault(),
+                        TVFileLanguageList.Where(c => c.Language == LanguageEnum.en).FirstOrDefault(),
+                        TVFileLanguageList.Where(c => c.Language == LanguageEnum.fr).FirstOrDefault()
+                    }
+                });
             }
         }
     }

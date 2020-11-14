@@ -23,7 +23,6 @@ export class SortTVItemListService {
 
         let TVType: TVTypeEnum = breadCrumb[breadCrumb.length - 1].TVItemModel?.TVItem.TVType;
         let TVTypeOfList: TVTypeEnum = arr[0].TVItemModel?.TVItem.TVType;
-        let lang: LanguageEnum = this.appStateService.AppState$.getValue().Language;
         let AscDesc: AscDescEnum = AscDescEnum.Ascending;
 
         switch (TVType) {
@@ -152,7 +151,7 @@ export class SortTVItemListService {
         for (let i = 0; i < arr.length; i++) {
             sortable.push(<TVItemID_TVText_Sort>{
                 TVItemID: arr[i].TVItemModel.TVItem.TVItemID,
-                TVText: lang == LanguageEnum.fr ? arr[i].TVItemModel.TVItemLanguageFR.TVText.toLowerCase() : arr[i].TVItemModel.TVItemLanguageEN.TVText.toLowerCase()
+                TVText: arr[i].TVItemModel.TVItemLanguageList[this.appStateService.AppState$.getValue().Language].TVText.toLowerCase(),
             });
         }
 

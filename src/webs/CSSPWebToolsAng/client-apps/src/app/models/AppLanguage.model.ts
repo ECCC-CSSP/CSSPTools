@@ -4,6 +4,8 @@ export interface AppLanguage {
     AreaShowFiles: string[];
     AreaFiles: string[];
 
+    ContactNotFound: string[];
+    
     CountryShowProvinces: string[];
     CountryProvinces: string[];
     CountryShowFiles: string[];
@@ -89,6 +91,8 @@ export interface AppLanguage {
     SideNavMenuDetails: string[];
     SideNavMenuShowStatCount: string[];
     SideNavMenuStatCount: string[];
+    SideNavMenuShowLastUpdate: string[];
+    SideNavMenuLastUpdate: string[];
     SideNavMenuShowEdit: string[];
     SideNavMenuEdit: string[];
 

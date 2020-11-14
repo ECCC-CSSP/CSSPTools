@@ -4,9 +4,8 @@
 </span>
 
 <mat-list-item>
-    <button mat-button 
-    *ngIf="appStateService.AppState$?.getValue()?.MapVisible && !IsBreadCrumb"
-    (click)="mapService.ShowItem(TVItemModel)">
+    <button mat-button *ngIf="appStateService.AppState$?.getValue()?.MapVisible && !IsBreadCrumb"
+        (click)="mapService.ShowItem(TVItemModel)">
         <mat-icon>place</mat-icon>
     </button>
     <button mat-button [ngClass]="(IsBreadCrumb && IsLast) ? 'selected' : ''"
@@ -18,14 +17,12 @@
             <span *ngIf="appStateService.AppState$?.getValue()?.DetailVisible">
                 [{{ TVItemModel.TVItem.TVItemID }}]
             </span>
-            <span *ngIf="AppState?.Language == languageEnum.en">
-                {{ TVItemModel?.TVItemLanguageEN?.TVText }}
-            </span>
-            <span *ngIf="AppState?.Language == languageEnum.fr">
-                {{ TVItemModel?.TVItemLanguageFR?.TVText }}
-            </span>
+            {{ TVItemModel?.TVItemLanguageList[this.appStateService.AppState$.getValue().Language]?.TVText }}
         </span>
-        <app-stat-count *ngIf="!IsBreadCrumb && appStateService.AppState$.getValue().StatCountVisible" [TVType]="null" [TVItemModel]="TVItemModel"></app-stat-count>
+        <app-stat-count *ngIf="!IsBreadCrumb && appStateService.AppState$.getValue().StatCountVisible" [TVType]="null"
+            [TVItemModel]="TVItemModel"></app-stat-count>
+        <app-last-udpate-tv-item-model *ngIf="appStateService.AppState$?.getValue()?.LastUpdateVisible && !IsBreadCrumb"
+            [TVItemModel]="TVItemModel"></app-last-udpate-tv-item-model>
     </button>
 </mat-list-item>
 <app-tvitem-list-detail [AppState]="AppState" *ngIf="!IsBreadCrumb && AppState?.DetailVisible"

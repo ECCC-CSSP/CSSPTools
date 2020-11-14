@@ -16,6 +16,8 @@ export class AppLanguageService {
       AreaShowFiles: ['', 'Show files', 'Montrer filières'],
       AreaFiles: ['', 'Files', 'Filières'],
 
+      ContactNotFound: ['', 'Contact not found', 'Contact non trouvé'],
+
       CountryShowProvinces: ['', 'Show provinces', 'Montrer provinces'],
       CountryProvinces: ['', 'Provinces', 'Provinces'],
       CountryShowFiles: ['', 'Show files', 'Montrer filières'],
@@ -101,6 +103,8 @@ export class AppLanguageService {
       SideNavMenuDetails: ['', 'Details', 'Détails'],
       SideNavMenuShowStatCount: ['', 'Show stat count', 'Montrer stat nombre'],
       SideNavMenuStatCount: ['', 'Stat Count', 'Stat nombre'],
+      SideNavMenuShowLastUpdate: ['', 'Show last update', 'Montrer dernière mise-à-jour'],
+      SideNavMenuLastUpdate: ['', 'Last Update', 'Dernière mise-à-jour'],
       SideNavMenuShowEdit: ['', 'Show edit', 'Montrer modifier'],
       SideNavMenuEdit: ['', 'Edit', 'Modifier'],
 

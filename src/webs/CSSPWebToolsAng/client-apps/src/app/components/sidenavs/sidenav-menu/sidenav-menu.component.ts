@@ -6,6 +6,7 @@ import { AppStateService } from 'src/app/services/app-state.service';
 import { ToggleDetailService } from 'src/app/services/loaders/toggle-detail.service';
 import { ToggleEditService } from 'src/app/services/loaders/toggle-edit.service';
 import { ToggleInactiveService } from 'src/app/services/loaders/toggle-inactive.service';
+import { ToggleLastUpdateService } from 'src/app/services/loaders/toggle-last-update.service';
 import { ToggleStatCountService } from 'src/app/services/loaders/toggle-stat-count.service';
 
 @Component({
@@ -23,6 +24,7 @@ export class SideNavMenuComponent implements OnInit, OnDestroy {
     public toggleInactiveService: ToggleInactiveService,
     public toggleDetailService: ToggleDetailService,
     public toggleStatCountService: ToggleStatCountService,
+    public toggleLastUpdateService: ToggleLastUpdateService,
     public toggleEditService: ToggleEditService) {
   }
 

@@ -7,6 +7,8 @@
             <span>| {{ TVFileModel.TVFile.FileSize_kb }} </span>
             <span>{{ appLanguageService.AppLanguage.KB[appStateService.AppState$?.getValue().Language] }} | </span>
             <span>{{ dateFormatService.GetFileCreateDate(TVFileModel) }}</span>
+            <app-last-udpate-tv-file-model *ngIf="appStateService.AppState$?.getValue()?.LastUpdateVisible"
+            [TVFileModel]="TVFileModel"></app-last-udpate-tv-file-model>        
         </button>
     </span>
     <span mat-line *ngIf="download$ | async as download">

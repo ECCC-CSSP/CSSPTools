@@ -28,6 +28,13 @@
         </button>
     </mat-list-item>
     <mat-list-item>
+        <button mat-button [ngClass]="appStateService.AppState$?.getValue()?.LastUpdateVisible ? 'selected' : ''"
+            (click)="toggleLastUpdateService.ToggleLastUpdate()"
+            title="{{ appLanguageService.AppLanguage.SideNavMenuShowLastUpdate[appStateService.AppState$?.getValue().Language] }}">
+            {{ appLanguageService.AppLanguage.SideNavMenuLastUpdate[appStateService.AppState$?.getValue().Language] }}
+        </button>
+    </mat-list-item>
+    <mat-list-item>
         <button mat-button [ngClass]="appStateService.AppState$?.getValue()?.EditVisible ? 'selected' : ''"
             (click)="toggleEditService.ToggleEdit()"
             title="{{ appLanguageService.AppLanguage.SideNavMenuShowEdit[appStateService.AppState$?.getValue().Language] }}">

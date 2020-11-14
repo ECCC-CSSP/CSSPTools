@@ -11,6 +11,5 @@ import { TVFileLanguage } from 'src/app/models/generated/db/TVFileLanguage.model
 export class TVFileModel {
     ParentTVItemID: number;
     TVFile: TVFile;
-    TVFileLanguageEN: TVFileLanguage;
-    TVFileLanguageFR: TVFileLanguage;
+    TVFileLanguageList: TVFileLanguage[];
 }

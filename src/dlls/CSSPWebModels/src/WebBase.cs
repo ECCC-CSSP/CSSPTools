@@ -27,8 +27,7 @@ namespace CSSPWebModels
     public partial class TVItemModel
     {
         public TVItem TVItem { get; set; }
-        public TVItemLanguage TVItemLanguageEN { get; set; }
-        public TVItemLanguage TVItemLanguageFR { get; set; }
+        public List<TVItemLanguage> TVItemLanguageList { get; set; }
         public List<TVItemStat> TVItemStatList { get; set; }
         public List<MapInfoModel> MapInfoModelList { get; set; }
         public List<TVFileModel> TVFileModelList { get; set; }
@@ -36,8 +35,7 @@ namespace CSSPWebModels
         public TVItemModel()
         {
             TVItem = new TVItem();
-            TVItemLanguageEN = new TVItemLanguage();
-            TVItemLanguageFR = new TVItemLanguage();
+            TVItemLanguageList = new List<TVItemLanguage>();
             TVItemStatList = new List<TVItemStat>();
             MapInfoModelList = new List<MapInfoModel>();
             TVFileModelList = new List<TVFileModel>();
@@ -62,15 +60,13 @@ namespace CSSPWebModels
     {
         public int ParentTVItemID { get; set; }
         public TVFile TVFile { get; set; }
-        public TVFileLanguage TVFileLanguageEN { get; set; }
-        public TVFileLanguage TVFileLanguageFR { get; set; }
+        public List<TVFileLanguage> TVFileLanguageList { get; set; }
 
         public TVFileModel()
         {
             ParentTVItemID = 0;
             TVFile = new TVFile();
-            TVFileLanguageEN = new TVFileLanguage();
-            TVFileLanguageFR = new TVFileLanguage();
+            TVFileLanguageList = new List<TVFileLanguage>();
         }
     }
 }

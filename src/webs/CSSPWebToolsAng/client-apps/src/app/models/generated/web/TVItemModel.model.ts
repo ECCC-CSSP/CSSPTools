@@ -15,7 +15,6 @@ export class TVItemModel {
     MapInfoModelList: MapInfoModel[];
     TVFileModelList: TVFileModel[];
     TVItem: TVItem;
-    TVItemLanguageEN: TVItemLanguage;
-    TVItemLanguageFR: TVItemLanguage;
+    TVItemLanguageList: TVItemLanguage[];
     TVItemStatList: TVItemStat[];
 }
