@@ -11,6 +11,9 @@ import { GetAscDescEnum } from 'src/app/enums/generated/AscDescEnum';
 import { WebAreaService } from 'src/app/services/loaders/web-area.service';
 import { TVItemSortOrderService } from 'src/app/services/loaders/tvitem-sort-order.service';
 import { StatCountService } from 'src/app/services/helpers/stat-count.service';
+import { ComponentButtonSelectionService } from 'src/app/services/helpers/component-button-selection.service';
+import { ComponentShowService } from 'src/app/services/helpers/component-show.service';
+import { ComponentDataClearService } from 'src/app/services/helpers/component-data-clear.service';
 
 @Component({
   selector: 'app-area',
@@ -29,35 +32,19 @@ export class AreaComponent implements OnInit, OnDestroy {
     public appLanguageService: AppLanguageService,
     public webAreaService: WebAreaService,
     public tvItemSortOrderService: TVItemSortOrderService,
-    public statCountService: StatCountService) { }
+    public statCountService: StatCountService,
+    public componentButtonSelectionService: ComponentButtonSelectionService,
+    public componentShowService: ComponentShowService,
+    private componentDataClearService: ComponentDataClearService) { }
 
   ngOnInit(): void {
     let TVItemID: number = this.appStateService.AppState$.getValue().CurrentTVItemID;
+    this.componentDataClearService.DataClearArea();
     this.subWebArea = this.webAreaService.GetWebArea(TVItemID).subscribe();
   }
 
   ngOnDestroy(): void {
     this.subWebArea ? this.subWebArea.unsubscribe() : null;
-  }
-
-  GetT(language: number): string
-  {
-    let a: LanguageEnum = language;
-    return LanguageEnum[language];
-  }
-
-  ColorSelection(areaSubComponent: AreaSubComponentEnum) {
-    if (this.appStateService.AppState$.getValue().AreaSubComponent == areaSubComponent) {
-      return 'selected';
-    }
-    else {
-      return '';
-    }
-  }
-
-  Show(areaSubComponent: AreaSubComponentEnum) {
-    this.appStateService.UpdateAppState(<AppState>{ AreaSubComponent: areaSubComponent });
-    this.webAreaService.UpdateWebArea(this.appLoadedService.AppLoaded$.getValue().WebArea);
   }
 
 }

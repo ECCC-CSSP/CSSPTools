@@ -27,7 +27,7 @@ export class AppStateService {
   constructor() {   
     this.UpdateAppState(<AppState>{
       TopComponent: TopComponentEnum.Home, // home | shell
-      ShellSubComponent: ShellSubComponentEnum.Root, // Root | Country | Province | Area | Sector | Subsector
+      ShellSubComponent: ShellSubComponentEnum.Root, // Root | Country | Province | Area | Sector | Subsector | Municipality
       RootSubComponent: RootSubComponentEnum.Countries, // Countries | Files | ExportArcGIS
       CountrySubComponent: CountrySubComponentEnum.Provinces, // Provinces | Files | OpenDataNational | EmailDistributionList | RainExceedance
       ProvinceSubComponent: ProvinceSubComponentEnum.Areas, // Areas | Municipalities | Files | SamplingPlan | OpenData | ProvinceTools
@@ -79,6 +79,7 @@ export class AppStateService {
       AreaFilesSortOrder: AscDescEnum.Ascending,
       AreaFilesSortByProp: FilesSortPropEnum.FileName, 
       SectorSubsectorsSortOrder: AscDescEnum.Ascending,
+      SectorMikeScenariosSortOrder: AscDescEnum.Ascending,
       SectorFilesSortOrder: AscDescEnum.Ascending,
       SectorFilesSortByProp: FilesSortPropEnum.FileName, 
       SubsectorMWQMSitesSortOrder: AscDescEnum.Ascending,
@@ -86,9 +87,11 @@ export class AppStateService {
       SubsectorPolSourceSitesSortOrder: AscDescEnum.Ascending,
       SubsectorFilesSortOrder: AscDescEnum.Ascending,
       SubsectorFilesSortByProp: FilesSortPropEnum.FileName, 
-      MunicipaltyInfrastructuresSortOrder: AscDescEnum.Ascending,
+      MunicipalityContactsSortOrder: AscDescEnum.Ascending,
+      MunicipalityInfrastructuresSortOrder: AscDescEnum.Ascending,
       MunicipalityFilesSortOrder: AscDescEnum.Ascending,
       MunicipalityFilesSortByProp: FilesSortPropEnum.FileName,
+      MunicipalityMIKEScenariosSortOrder: AscDescEnum.Ascending,
       MWQMSiteFilesSortOrder: AscDescEnum.Ascending,
       MWQMSiteFilesSortByProp: FilesSortPropEnum.FileName,
       MWQMRunFilesSortOrder: AscDescEnum.Ascending,

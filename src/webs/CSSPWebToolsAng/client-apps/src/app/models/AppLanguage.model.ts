@@ -56,6 +56,15 @@ export interface AppLanguage {
 
     KB: string[];
 
+    MunicipalityShowContacts: string[];
+    MunicipalityContacts: string[];
+    MunicipalityShowFiles: string[];
+    MunicipalityFiles: string[];
+    MunicipalityShowInfrastructures: string[];
+    MunicipalityInfrastructures: string[];
+    MunicipalityShowMikeScenarios: string[];
+    MunicipalityMikeScenarios: string[];
+
     ProvinceShowAreas: string[];
     ProvinceAreas: string[];
     ProvinceShowMunicipalities: string[];

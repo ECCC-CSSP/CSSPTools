@@ -12,6 +12,7 @@ import { SortTVItemListService } from 'src/app/services/loaders/sort-tvitem-list
 import { MapService } from 'src/app/services/map/map.service';
 import { RootSubComponentEnum } from 'src/app/enums/generated/RootSubComponentEnum';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
+import { ComponentDataLoadedService } from '../helpers/component-data-loaded.service';
 
 @Injectable({
     providedIn: 'root'
@@ -22,17 +23,12 @@ export class WebRootService {
         private appLoadedService: AppLoadedService,
         private sortTVItemListService: SortTVItemListService,
         private structureTVFileListService: StructureTVFileListService,
-        private mapService: MapService) {
+        private mapService: MapService,
+        private componentDataLoadedService: ComponentDataLoadedService) {
     }
 
     GetWebRoot(TVItemID: number) {
         let languageEnum = GetLanguageEnum();
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
-            WebRoot: {},
-            RootCountryList: [],
-            BreadCrumbWebBaseList: [],
-            Working: true
-        });
         let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebRoot/${TVItemID}/1`;
         return this.httpClient.get<WebRoot>(url).pipe(
             map((x: any) => {
@@ -61,8 +57,13 @@ export class WebRootService {
             RootCountryList: this.sortTVItemListService.SortTVItemList(RootCountryList, x?.TVItemParentList),
             RootFileListList: this.structureTVFileListService.StructureTVFileList(x.TVItemModel),
             BreadCrumbWebBaseList: x?.TVItemParentList,
-            Working: false,
         });
+
+        if (this.componentDataLoadedService.DataLoadedRoot()) {
+            this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
+                Working: false
+            });
+        }
 
         if (this.appStateService.AppState$.getValue().RootSubComponent == RootSubComponentEnum.Countries) {
             this.mapService.ClearMap();

@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { AppStateService } from '../app-state.service';
 import { WebBase } from 'src/app/models/generated/web/WebBase.model';
 import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
-import { LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { AscDescEnum } from 'src/app/enums/generated/AscDescEnum';
 import { PredicateAscByService } from 'src/app/services/loaders/predicate-asc-by.service';
 import { PredicateDescByService } from 'src/app/services/loaders/predicate-desc-by.service';
@@ -26,17 +25,17 @@ export class SortTVItemListService {
         let AscDesc: AscDescEnum = AscDescEnum.Ascending;
 
         switch (TVType) {
-            case TVTypeEnum.Root:
+            case TVTypeEnum.Area:
                 {
                     switch (TVTypeOfList) {
-                        case TVTypeEnum.Country:
+                        case TVTypeEnum.Sector:
                             {
-                                AscDesc = this.appStateService.AppState$.getValue().RootCountriesSortOrder;
+                                AscDesc = this.appStateService.AppState$.getValue().AreaSectorsSortOrder;
                             }
                             break;
                         default:
                             {
-                                alert(`${TVTypeEnum[TVTypeOfList]} - Not Implemented Yet. See app-loaded.service.ts -- SortTVItemList function -- case TVTypeEnum.Root`);
+                                alert(`${TVTypeEnum[TVTypeOfList]} - Not Implemented Yet. See app-loaded.service.ts -- SortTVItemList function -- case TVTypeEnum.Area`);
                             }
                             break;
                     }
@@ -53,6 +52,27 @@ export class SortTVItemListService {
                         default:
                             {
                                 alert(`${TVTypeEnum[TVTypeOfList]} - Not Implemented Yet. See app-loaded.service.ts -- SortTVItemList function -- case TVTypeEnum.Country`);
+                            }
+                            break;
+                    }
+                }
+                break;
+            case TVTypeEnum.Municipality:
+                {
+                    switch (TVTypeOfList) {
+                        case TVTypeEnum.Infrastructure:
+                            {
+                                AscDesc = this.appStateService.AppState$.getValue().MunicipalityInfrastructuresSortOrder;
+                            }
+                            break;
+                        case TVTypeEnum.MikeScenario:
+                            {
+                                AscDesc = this.appStateService.AppState$.getValue().MunicipalityMIKEScenariosSortOrder;
+                            }
+                            break;
+                        default:
+                            {
+                                alert(`${TVTypeEnum[TVTypeOfList]} - Not Implemented Yet. See app-loaded.service.ts -- SortTVItemList function -- case TVTypeEnum.Province`);
                             }
                             break;
                     }
@@ -79,17 +99,17 @@ export class SortTVItemListService {
                     }
                 }
                 break;
-            case TVTypeEnum.Area:
+            case TVTypeEnum.Root:
                 {
                     switch (TVTypeOfList) {
-                        case TVTypeEnum.Sector:
+                        case TVTypeEnum.Country:
                             {
-                                AscDesc = this.appStateService.AppState$.getValue().AreaSectorsSortOrder;
+                                AscDesc = this.appStateService.AppState$.getValue().RootCountriesSortOrder;
                             }
                             break;
                         default:
                             {
-                                alert(`${TVTypeEnum[TVTypeOfList]} - Not Implemented Yet. See app-loaded.service.ts -- SortTVItemList function -- case TVTypeEnum.Area`);
+                                alert(`${TVTypeEnum[TVTypeOfList]} - Not Implemented Yet. See app-loaded.service.ts -- SortTVItemList function -- case TVTypeEnum.Root`);
                             }
                             break;
                     }
@@ -101,6 +121,11 @@ export class SortTVItemListService {
                         case TVTypeEnum.Subsector:
                             {
                                 AscDesc = this.appStateService.AppState$.getValue().SectorSubsectorsSortOrder;
+                            }
+                            break;
+                        case TVTypeEnum.MikeScenario:
+                            {
+                                AscDesc = this.appStateService.AppState$.getValue().SectorMikeScenariosSortOrder;
                             }
                             break;
                         default:
@@ -139,7 +164,7 @@ export class SortTVItemListService {
                 break;
             default:
                 {
-                    alert(`${TVTypeEnum[TVType]} - Not Implemented Yet. See app-loaded.service.ts -- SortTVItemList function`);
+                    alert(`${TVTypeEnum[TVType]} - Not Implemented Yet. See sort-tvitem-list.service.ts -- SortTVItemList function`);
                 }
                 break;
         }

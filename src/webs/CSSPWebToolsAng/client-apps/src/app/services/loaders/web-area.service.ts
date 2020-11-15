@@ -12,6 +12,7 @@ import { SortTVItemListService } from 'src/app/services/loaders/sort-tvitem-list
 import { MapService } from 'src/app/services/map/map.service';
 import { AreaSubComponentEnum } from 'src/app/enums/generated/AreaSubComponentEnum';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
+import { ComponentDataLoadedService } from '../helpers/component-data-loaded.service';
 
 
 @Injectable({
@@ -23,7 +24,8 @@ export class WebAreaService {
     private appLoadedService: AppLoadedService,
     private sortTVItemListService: SortTVItemListService,
     private structureTVFileListService: StructureTVFileListService,
-    private mapService: MapService) {
+    private mapService: MapService,
+    private componentDataLoadedService: ComponentDataLoadedService) {
   }
 
   GetWebArea(TVItemID: number) {
@@ -59,6 +61,12 @@ export class WebAreaService {
       BreadCrumbWebBaseList: x?.TVItemParentList,
       Working: false
     });
+    
+    if (this.componentDataLoadedService.DataLoadedArea()) {
+      this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
+        Working: false
+      });
+    }
 
     if (this.appStateService.AppState$.getValue().AreaSubComponent == AreaSubComponentEnum.Sectors) {
       this.mapService.ClearMap();

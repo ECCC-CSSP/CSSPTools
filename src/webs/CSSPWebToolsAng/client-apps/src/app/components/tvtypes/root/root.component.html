@@ -1,11 +1,9 @@
-<span *ngIf="(appStateService.AppState$ | async).Working">
-</span>
-<span *ngIf="(appLoadedService.AppLoaded$ | async).Working">
+<span *ngIf="(appStateService.AppState$ | async).Working || (appLoadedService.AppLoaded$ | async).Working">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </span>
 
-<button mat-button
-    [ngClass]="this.appStateService.AppState$.getValue()['RootSubComponent'] == rootSubComponentEnum.Countries? 'selected' : ''"
-    (click)="Show(rootSubComponentEnum.Countries)"
+<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionRoot(rootSubComponentEnum.Countries)"
+    (click)="componentButtonSelectionService.ColorSelectionRoot(rootSubComponentEnum.Countries)"
     title="{{ appLanguageService.AppLanguage.RootShowCountries[appStateService.AppState$?.getValue().Language] }}">
     <span>
         {{ appLanguageService.AppLanguage.RootCountries[appStateService.AppState$?.getValue().Language] }}
@@ -25,18 +23,19 @@
     </span>
 </button>
 
-<button mat-button [ngClass]="ColorSelection(rootSubComponentEnum.Files)" (click)="Show(rootSubComponentEnum.Files)"
+<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionRoot(rootSubComponentEnum.Files)"
+    (click)="componentShowService.ShowRoot(rootSubComponentEnum.Files)"
     title="{{ appLanguageService.AppLanguage.RootShowFiles[appStateService.AppState$?.getValue().Language] }}">
     <span>
         {{ appLanguageService.AppLanguage.RootFiles[appStateService.AppState$?.getValue().Language] }}
         <span class="badge-stat" *ngIf="appStateService.AppState$.getValue().StatCountVisible">
             &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.AppLoaded$?.getValue()?.WebRoot?.TVItemModel, tvTypeEnum.File) }}/
             {{ statCountService.GetStatCount(appLoadedService.AppLoaded$?.getValue()?.WebRoot?.TVItemModel, tvTypeEnum.TotalFile) }}&nbsp;&nbsp;
-        </span>        
+        </span>
     </span>
 </button>
-<button mat-button [ngClass]="ColorSelection(rootSubComponentEnum.ExportArcGIS)"
-    (click)="Show(rootSubComponentEnum.ExportArcGIS)"
+<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionRoot(rootSubComponentEnum.ExportArcGIS)"
+    (click)="componentShowService.ShowRoot(rootSubComponentEnum.ExportArcGIS)"
     title="{{ appLanguageService.AppLanguage.RootShowExportArcGISTools[appStateService.AppState$?.getValue().Language] }}">
     {{ appLanguageService.AppLanguage.RootExportArcGIS[appStateService.AppState$?.getValue().Language] }}
 </button>
@@ -52,5 +51,5 @@
 </app-file-list>
 
 <div *ngIf="appStateService.AppState$?.getValue()?.RootSubComponent == rootSubComponentEnum.ExportArcGIS">
-    Not implemented yet. Need to create ExportArcGISComponent.
+    <app-export-arc-gis></app-export-arc-gis>
 </div>

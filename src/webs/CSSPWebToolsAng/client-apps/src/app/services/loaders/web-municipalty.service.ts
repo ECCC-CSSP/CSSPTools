@@ -3,11 +3,18 @@ import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
+import { MunicipalitySubComponentEnum } from 'src/app/enums/generated/MunicipalitySubComponentEnum';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
+import { TVItemLink } from 'src/app/models/generated/db/TVItemLink.model';
+import { ContactModel } from 'src/app/models/generated/web/ContactModel.model';
+import { InfrastructureModel } from 'src/app/models/generated/web/InfrastructureModel.model';
+import { WebBase } from 'src/app/models/generated/web/WebBase.model';
 import { WebMunicipality } from 'src/app/models/generated/web/WebMunicipality.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { StructureTVFileListService } from 'src/app/services/loaders/structure-tvfile-list.service';
+import { MapService } from '../map/map.service';
+import { SortTVItemListService } from './sort-tvitem-list.service';
 
 @Injectable({
     providedIn: 'root'
@@ -17,7 +24,9 @@ export class WebMunicipalityService {
     constructor(private httpClient: HttpClient,
         private appStateService: AppStateService,
         private appLoadedService: AppLoadedService,
-        private structureTVFileListService: StructureTVFileListService) {
+        private sortTVItemListService: SortTVItemListService,
+        private structureTVFileListService: StructureTVFileListService,
+        private mapService: MapService) {
     }
 
     GetWebMunicipality(TVItemID: number) {
@@ -45,14 +54,31 @@ export class WebMunicipalityService {
     }
 
     UpdateWebMunicipality(x: WebMunicipality) {
+        let TVItemMikeScenarioList: WebBase[] = [];
+
+        // doing CountryProvinceList
+        if (!this.appStateService.AppState$?.getValue()?.InactVisible) {
+            TVItemMikeScenarioList = x?.TVItemMikeScenarioList.filter((MIKEScenario) => { return MIKEScenario.TVItemModel.TVItem.IsActive == true });
+        }
+        else {
+            TVItemMikeScenarioList = x?.TVItemMikeScenarioList;
+        }
+
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
             WebMunicipality: x,
+            MunicipalityFileListList: this.structureTVFileListService.StructureTVFileList(x.TVItemModel),
             InfrastructureModelList: x?.InfrastructureModelList,
             MunicipalityContactModelList: x?.MunicipalityContactModelList,
             MunicipalityTVItemLinkList: x?.MunicipalityTVItemLinkList,
-            TVItemMikeScenarioList: x?.TVItemMikeScenarioList,
+            TVItemMikeScenarioList: this.sortTVItemListService.SortTVItemList(TVItemMikeScenarioList, x?.TVItemParentList),
             BreadCrumbWebBaseList: x?.TVItemParentList,
             Working: false
         });
+
+        if (this.appStateService.AppState$.getValue().MunicipalitySubComponent == MunicipalitySubComponentEnum.Infrastructures) {
+            this.mapService.ClearMap();
+            this.mapService.DrawObjects(this.appLoadedService.AppLoaded$.getValue().InfrastructureModelList);
+          }
+      
     }
 }

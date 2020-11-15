@@ -1,5 +1,5 @@
 <span *ngIf="(appStateService.AppState$ | async).Working || (appLoadedService.AppLoaded$ | async).Working">
-    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    
 </span>
 
 <mat-toolbar class="header">
@@ -56,7 +56,7 @@
         <app-map [AppState]="appStateService.AppState$?.getValue()"></app-map>
     </mat-sidenav>
     <span *ngIf="(appStateService.AppState$ | async).Working || (appLoadedService.AppLoaded$ | async).Working">
-        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        
     </span>
     <app-error [Error]="(appStateService.AppState$ | async).Error"></app-error>
     <app-error [Error]="(appLoadedService.AppLoaded$ | async).Error"></app-error>
@@ -75,6 +75,10 @@
         </app-sector>
         <app-subsector *ngIf="appStateService.AppState$?.getValue().ShellSubComponent == shellSubComponentEnum.Subsector">
         </app-subsector>
+        <app-municipality *ngIf="appStateService.AppState$?.getValue().ShellSubComponent == shellSubComponentEnum.Municipality">
+        </app-municipality>
+        <app-mike-scenario *ngIf="appStateService.AppState$?.getValue().ShellSubComponent == shellSubComponentEnum.MIKEScenario">
+        </app-mike-scenario>
     </div>
 
 

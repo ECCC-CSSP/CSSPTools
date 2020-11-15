@@ -1,15 +1,15 @@
-<span *ngIf="(appStateService.AppState$ | async).Working">
-</span>
-<span *ngIf="(appLoadedService.AppLoaded$ | async).Working">
+<span *ngIf="(appStateService.AppState$ | async).Working || (appLoadedService.AppLoaded$ | async).Working">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </span>
 
-<button mat-button [ngClass]="ColorSelection(areaSubComponentEnum.Sectors)" (click)="Show(areaSubComponentEnum.Sectors)"
+<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionArea(areaSubComponentEnum.Sectors)"
+    (click)="componentShowService.ShowArea(areaSubComponentEnum.Sectors)"
     title="{{ appLanguageService.AppLanguage.AreaShowSectors[appStateService.AppState$?.getValue().Language] }}">
     <span>
         {{ appLanguageService.AppLanguage.AreaSectors[appStateService.AppState$?.getValue().Language] }}
         <span class="badge-stat" *ngIf="appStateService.AppState$.getValue().StatCountVisible">
             &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebArea?.TVItemModel, tvTypeEnum.Sector) }}&nbsp;&nbsp;
-        </span>                                                                                                                
+        </span>
     </span>
     <span class="biggerArrow"
         (click)="tvItemSortOrderService.ChangeTVItemSortOrder('AreaSectorsSortOrder', ascDescEnum.Ascending)"
@@ -22,7 +22,8 @@
         &nbsp;&nbsp;&darr;
     </span>
 </button>
-<button mat-button [ngClass]="ColorSelection(areaSubComponentEnum.Files)" (click)="Show(areaSubComponentEnum.Files)"
+<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionArea(areaSubComponentEnum.Files)"
+    (click)="componentShowService.ShowArea(areaSubComponentEnum.Files)"
     title="{{ appLanguageService.AppLanguage.AreaShowFiles[appStateService.AppState$?.getValue().Language] }}">
     <span>
         {{ appLanguageService.AppLanguage.AreaFiles[appStateService.AppState$?.getValue().Language] }}

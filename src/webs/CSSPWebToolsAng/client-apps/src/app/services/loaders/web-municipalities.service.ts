@@ -10,6 +10,7 @@ import { AppStateService } from 'src/app/services/app-state.service';
 import { MapService } from 'src/app/services/map/map.service';
 import { SortTVItemListService } from 'src/app/services/loaders/sort-tvitem-list.service';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
+import { ComponentDataLoadedService } from '../helpers/component-data-loaded.service';
 
 
 @Injectable({
@@ -21,7 +22,8 @@ export class WebMunicipalitiesService {
     private appStateService: AppStateService,
     private appLoadedService: AppLoadedService,
     private sortTVItemListService: SortTVItemListService,
-    private mapService: MapService) {
+    private mapService: MapService,
+    private componentDataLoadedService: ComponentDataLoadedService) {
   }
 
   GetWebMunicipalities(TVItemID: number) {
@@ -46,6 +48,13 @@ export class WebMunicipalitiesService {
       ProvinceMunicipalityList: this.sortTVItemListService.SortTVItemList(x.TVItemMunicipalityList, x?.TVItemParentList),
       Working: false
     });
+
+    
+    if (this.componentDataLoadedService.DataLoadedProvince()) {
+      this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
+        Working: false
+      });
+    }
 
     if (this.appStateService.AppState$.getValue().ProvinceSubComponent == ProvinceSubComponentEnum.Municipalities) {
       this.mapService.ClearMap();

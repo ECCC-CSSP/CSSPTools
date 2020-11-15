@@ -34,38 +34,68 @@ import { ShellComponent } from 'src/app/components/tvtypes/shell/shell.component
 import { SubsectorComponent } from 'src/app/components/tvtypes/subsector/subsector.component';
 import { LastUpdateTVFileModelComponent } from './components/helpers/last-update-tvfilemodel/last-update-tvfilemodel.component';
 import { LastUpdateTVItemModelComponent } from './components/helpers/last-update-tvitemmodel/last-update-tvitemmodel.component';
-
-
+import { TVItemListDetailMikeScenarioComponent } from './components/tvitems/tvitem-list-detail-mike-scenario/tvitem-list-detail-mike-scenario.component';
+import { AnalysisComponent } from './components/tvtypes/analysis/analysis.component';
+import { ContactComponent } from './components/tvtypes/contact/contact.component';
+import { EmailDistributionListComponent } from './components/tvtypes/email-distribution-list/email-distribution-list.component';
+import { ExportArcGISComponent } from './components/tvtypes/export-arc-gis/export-arc-gis.component';
+import { InfrastructureComponent } from './components/tvtypes/infrastructure/infrastructure.component';
+import { InfrastructuresComponent } from './components/tvtypes/infrastructures/infrastructures.component';
+import { LogBookComponent } from './components/tvtypes/log-book/log-book.component';
+import { MikeScenarioComponent } from './components/tvtypes/mike-scenario/mike-scenario.component';
+import { MunicipalityComponent } from './components/tvtypes/municipality/municipality.component';
+import { OpenDataNationalComponent } from './components/tvtypes/open-data-national/open-data-national.component';
+import { OpenDataComponent } from './components/tvtypes/open-data/open-data.component';
+import { ProvincialToolsComponent } from './components/tvtypes/provincial-tools/provincial-tools.component';
+import { RainExceedanceComponent } from './components/tvtypes/rain-exceedance/rain-exceedance.component';
+import { SamplingPlanComponent } from './components/tvtypes/sampling-plan/sampling-plan.component';
+import { SubsectorToolsComponent } from './components/tvtypes/subsector-tools/subsector-tools.component';
 
 @NgModule({
   declarations: [
+    AnalysisComponent,
     AreaComponent,
     BreadCrumbComponent,
+    ContactComponent,
     CountryComponent,
+    EmailDistributionListComponent,
     ErrorComponent,
+    ExportArcGISComponent,
     FileListComponent,
     FileListItemComponent,
     FileListItemDetailComponent,
     FileUploadComponent,
     FooterComponent,
     HomeComponent,
+    InfrastructureComponent,
+    InfrastructuresComponent,
     LastUpdateTVFileModelComponent,
     LastUpdateTVItemModelComponent,
+    LogBookComponent,
     MapComponent,
+    MikeScenarioComponent,
+    MunicipalityComponent,
+    OpenDataComponent,
+    OpenDataNationalComponent,
+    ProvincialToolsComponent,
     ProvinceComponent,
+    RainExceedanceComponent,
     RootComponent,
+    SamplingPlanComponent,
     SearchOptionComponent,
     SearchComponent,
+    SectorComponent,
     ShellComponent,
     SideNavMenuComponent,
-    SectorComponent,
     StatCountComponent,
     SubsectorComponent,
+    SubsectorToolsComponent,
     TVItemListComponent,
     TVItemListDetailComponent,
     TVItemListDetailCountryComponent,
     TVItemListDetailProvinceComponent,
     TVItemListDetailAreaComponent,
+    TVItemListDetailMikeScenarioComponent,
     TVItemListDetailSectorComponent,
     TVItemListDetailSubsectorComponent,
     TVItemListDetailMunicipalityComponent,
@@ -85,10 +115,14 @@ import { LastUpdateTVItemModelComponent } from './components/helpers/last-update
     MaterialModule,
     ReactiveFormsModule,
 
+    AnalysisComponent,
     AreaComponent,
     BreadCrumbComponent,
+    ContactComponent,
     CountryComponent,
+    EmailDistributionListComponent,
     ErrorComponent,
+    ExportArcGISComponent,
     FileListComponent,
     FileListItemComponent,
     FileListItemDetailComponent,
@@ -96,22 +130,34 @@ import { LastUpdateTVItemModelComponent } from './components/helpers/last-update
     FooterComponent,
     LastUpdateTVFileModelComponent,
     LastUpdateTVItemModelComponent,
+    LogBookComponent,
     HomeComponent,
+    InfrastructureComponent,
+    InfrastructuresComponent,
     MapComponent,
+    MikeScenarioComponent,
+    MunicipalityComponent,
+    OpenDataComponent,
+    OpenDataNationalComponent,
+    ProvincialToolsComponent,
     ProvinceComponent,
+    RainExceedanceComponent,
     RootComponent,
+    SamplingPlanComponent,
     SearchOptionComponent,
     SearchComponent,
+    SectorComponent,
     ShellComponent,
     SideNavMenuComponent,
-    SectorComponent,
     StatCountComponent,
     SubsectorComponent,
+    SubsectorToolsComponent,
     TVItemListComponent,
     TVItemListDetailComponent,
     TVItemListDetailCountryComponent,
     TVItemListDetailProvinceComponent,
     TVItemListDetailAreaComponent, 
+    TVItemListDetailMikeScenarioComponent,
     TVItemListDetailSectorComponent,
     TVItemListDetailSubsectorComponent,
     TVItemListDetailMunicipalityComponent,

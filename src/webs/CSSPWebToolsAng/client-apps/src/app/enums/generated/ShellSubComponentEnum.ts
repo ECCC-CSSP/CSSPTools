@@ -20,6 +20,7 @@ export enum ShellSubComponentEnum {
     MWQMSite = 8,
     MWQMRun = 9,
     PolSourceSite = 10,
+    MIKEScenario = 11,
 }
 
 export function GetShellSubComponentEnum(): typeof ShellSubComponentEnum

@@ -12,6 +12,7 @@ import { SortTVItemListService } from 'src/app/services/loaders/sort-tvitem-list
 import { MapService } from 'src/app/services/map/map.service';
 import { SectorSubComponentEnum } from 'src/app/enums/generated/SectorSubComponentEnum';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
+import { ComponentDataLoadedService } from '../helpers/component-data-loaded.service';
 
 
 @Injectable({
@@ -24,7 +25,8 @@ export class WebSectorService {
     private appLoadedService: AppLoadedService,
     private sortTVItemListService: SortTVItemListService,
     private structureTVFileListService: StructureTVFileListService,
-    private mapService: MapService) {
+    private mapService: MapService,
+    private componentDataLoadedService: ComponentDataLoadedService) {
   }
 
   GetWebSector(TVItemID: number) {
@@ -75,8 +77,13 @@ export class WebSectorService {
       SectorMIKEScenarioList: this.sortTVItemListService.SortTVItemList(SectorMIKEScenarioList, x?.TVItemParentList),
       SectorFileListList: this.structureTVFileListService.StructureTVFileList(x.TVItemModel),
       BreadCrumbWebBaseList: x?.TVItemParentList,
-      Working: false
     });
+
+    if (this.componentDataLoadedService.DataLoadedRoot()) {
+      this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
+        Working: false
+      });
+    }
 
     if (this.appStateService.AppState$.getValue().SectorSubComponent == SectorSubComponentEnum.Subsectors) {
       this.mapService.ClearMap();

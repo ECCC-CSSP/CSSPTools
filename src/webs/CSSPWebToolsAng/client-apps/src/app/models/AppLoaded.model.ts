@@ -138,6 +138,7 @@ export interface AppLoaded extends HttpStatus {
     WebMWQMSample2030?: WebMWQMSample;
     WebMWQMSample2040?: WebMWQMSample;
     WebMWQMSample2050?: WebMWQMSample;
+    WebMWQMSampleAll?: WebMWQMSample;
     WebDrogueRun?: WebDrogueRun;
 
     // Municipality TVItemID related -- this object is under province

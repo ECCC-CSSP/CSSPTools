@@ -8,6 +8,9 @@ import { AppState } from 'src/app/models/AppState.model';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
+import { ComponentButtonSelectionService } from 'src/app/services/helpers/component-button-selection.service';
+import { ComponentDataClearService } from 'src/app/services/helpers/component-data-clear.service';
+import { ComponentShowService } from 'src/app/services/helpers/component-show.service';
 import { StatCountService } from 'src/app/services/helpers/stat-count.service';
 import { TVItemSortOrderService } from 'src/app/services/loaders/tvitem-sort-order.service';
 import { WebSectorService } from 'src/app/services/loaders/web-sector.service';
@@ -29,35 +32,19 @@ export class SectorComponent implements OnInit, OnDestroy {
     public appLanguageService: AppLanguageService,
     public webSectorService: WebSectorService,
     public tvItemSortOrderService: TVItemSortOrderService,
-    public statCountService: StatCountService) { }
+    public statCountService: StatCountService,
+    public componentButtonSelectionService: ComponentButtonSelectionService,
+    public componentShowService: ComponentShowService,
+    private componentDataClearService: ComponentDataClearService) { }
 
   ngOnInit(): void {
     let TVItemID: number = this.appStateService.AppState$.getValue().CurrentTVItemID;
+    this.componentDataClearService.DataClearSector();
     this.subWebSector = this.webSectorService.GetWebSector(TVItemID).subscribe();
   }
 
   ngOnDestroy(): void {
     this.subWebSector ? this.subWebSector.unsubscribe() : null;
-  }
-
-  GetT(language: number): string
-  {
-    let a: LanguageEnum = language;
-    return LanguageEnum[language];
-  }
-
-  ColorSelection(sectorSubComponent: SectorSubComponentEnum) {
-    if (this.appStateService.AppState$.getValue().SectorSubComponent == sectorSubComponent) {
-      return 'selected';
-    }
-    else {
-      return '';
-    }
-  }
-
-  Show(sectorSubComponent: SectorSubComponentEnum) {
-    this.appStateService.UpdateAppState(<AppState>{ SectorSubComponent: sectorSubComponent });
-    this.webSectorService.UpdateWebSector(this.appLoadedService.AppLoaded$.getValue().WebSector);
   }
 
 }

@@ -1,0 +1,5 @@
+<span *ngIf="(appStateService.AppState$ | async).Working || (appLoadedService.AppLoaded$ | async).Working">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</span>
+
+<p>This is the analysis component</p>

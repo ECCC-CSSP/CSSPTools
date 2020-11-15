@@ -68,6 +68,15 @@ export class AppLanguageService {
 
       KB: ['', 'KB', 'Ko'],
 
+      MunicipalityShowContacts: ['', 'Show contacts', 'Montrer contacts'],
+      MunicipalityContacts: ['', 'Contacts', 'Contacts'],
+      MunicipalityShowFiles: ['', 'Show files', 'Montrer filières'],
+      MunicipalityFiles: ['', 'Files', 'Filières'],
+      MunicipalityShowInfrastructures: ['', 'Show infrastructures', 'Montrer infrastructures'],
+      MunicipalityInfrastructures: ['', 'Infrastructures', 'Infrastructures'],
+      MunicipalityShowMikeScenarios: ['', 'Show MIKE scenaros', 'Montrer les scénarios de MIKE'],
+      MunicipalityMikeScenarios: ['', 'MIKE Scenarios', 'Scénarios de MIKE'],
+
       ProvinceShowAreas: ['', 'Show areas', 'Montrer areas'],
       ProvinceAreas: ['', 'Areas', 'Régions'],
       ProvinceShowMunicipalities: ['', 'Show municipalities', 'Montrer municipalités'],

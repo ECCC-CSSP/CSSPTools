@@ -12,7 +12,9 @@ import { SortTVItemListService } from 'src/app/services/loaders/sort-tvitem-list
 import { MapService } from 'src/app/services/map/map.service';
 import { SubsectorSubComponentEnum } from 'src/app/enums/generated/SubsectorSubComponentEnum';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
-
+import { ComponentDataLoadedService } from '../helpers/component-data-loaded.service';
+import { WebMWQMSampleService } from './web-mwqm-samples.service';
+import { WebTypeYearEnum } from 'src/app/enums/generated/WebTypeYearEnum';
 
 @Injectable({
     providedIn: 'root'
@@ -24,7 +26,9 @@ export class WebSubsectorService {
         private appLoadedService: AppLoadedService,
         private sortTVItemListService: SortTVItemListService,
         private structureTVFileListService: StructureTVFileListService,
-        private mapService: MapService) {
+        private mapService: MapService,
+        private componentDataLoadedService: ComponentDataLoadedService,
+        private webMWQMSampleService: WebMWQMSampleService) {
     }
 
     GetWebSubsector(TVItemID: number) {
@@ -40,6 +44,7 @@ export class WebSubsectorService {
             MWQMSubsectorLanguageList: [],
             UseOfSiteList: [],
             BreadCrumbWebBaseList: [],
+            Status: 'Loading Web Subsector',
             Working: true
         });
         let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebSubsector/${TVItemID}/1`;
@@ -47,12 +52,18 @@ export class WebSubsectorService {
             map((x: any) => {
                 this.UpdateWebSubsector(x);
                 console.debug(x);
+                this.GetWebMWQMSamples(TVItemID);
             }),
             catchError(e => of(e).pipe(map(e => {
                 this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ Working: false, Error: <HttpErrorResponse>e });
                 console.debug(e);
             })))
         );
+    }
+
+    GetWebMWQMSamples(TVItemID: number)
+    {
+        this.webMWQMSampleService.GetWebMWQMSample(TVItemID, WebTypeYearEnum.Year1980).subscribe();
     }
 
     UpdateWebSubsector(x: WebSubsector) {
@@ -96,8 +107,11 @@ export class WebSubsectorService {
             MWQMSubsectorLanguageList: x?.MWQMSubsectorLanguageList,
             UseOfSiteList: x?.UseOfSiteList,
             BreadCrumbWebBaseList: x?.TVItemParentList,
-            Working: false
         });
+
+        if (this.componentDataLoadedService.DataLoadedSubsector()) {
+            this.webMWQMSampleService.FillWebMWQMSampleAll(); // does set the Working: false
+        }
 
         if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.MWQMSites) {
             this.mapService.ClearMap();

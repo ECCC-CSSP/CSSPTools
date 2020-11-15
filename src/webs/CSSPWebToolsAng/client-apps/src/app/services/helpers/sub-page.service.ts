@@ -72,18 +72,18 @@ export class SubPageService {
       //   {
       //     return `mwqmsite`;
       //   }
-      // case TVTypeEnum.MikeScenario:
-      //   {
-      //     return `mikescenario`;
-      //   }
+      case TVTypeEnum.MikeScenario:
+        {
+          return ShellSubComponentEnum.MIKEScenario;
+        }
       // case TVTypeEnum.MikeSource:
       //   {
       //     return `mikesource`;
       //   }
-      // case TVTypeEnum.Municipality:
-      //   {
-      //     return `municipality`;
-      //   }
+      case TVTypeEnum.Municipality:
+        {
+          return ShellSubComponentEnum.Municipality;
+        }
       // case TVTypeEnum.PolSourceSite:
       //   {
       //     return `polsourcesite`;

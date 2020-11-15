@@ -13,6 +13,8 @@ import { SortTVItemListService } from 'src/app/services/loaders/sort-tvitem-list
 import { MapService } from 'src/app/services/map/map.service';
 import { ProvinceSubComponentEnum } from 'src/app/enums/generated/ProvinceSubComponentEnum';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
+import { ComponentDataLoadedService } from '../helpers/component-data-loaded.service';
+import { WebMunicipalitiesService } from './web-municipalities.service';
 
 @Injectable({
   providedIn: 'root'
@@ -22,9 +24,11 @@ export class WebProvinceService {
   constructor(private httpClient: HttpClient,
     private appStateService: AppStateService,
     private appLoadedService: AppLoadedService,
+    public webMunicipalitiesService: WebMunicipalitiesService,
     private sortTVItemListService: SortTVItemListService,
     private structureTVFileListService: StructureTVFileListService,
-    private mapService: MapService) {
+    private mapService: MapService,
+    private componentDataLoadedService: ComponentDataLoadedService) {
   }
 
   GetWebProvince(TVItemID: number) {
@@ -32,14 +36,18 @@ export class WebProvinceService {
     this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
       WebProvince: {},
       ProvinceAreaList: [],
+      ProvinceFileListList: [],
+      ProvinceSamplingPlanList: [],
       BreadCrumbWebBaseList: [],
       Working: true
     });
+
     let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebProvince/${TVItemID}/1`;
     return this.httpClient.get<WebProvince>(url).pipe(
       map((x: any) => {
         this.UpdateWebProvince(x);
         console.debug(x);
+        this.GetWebMunicipalities(TVItemID);      
       }),
       catchError(e => of(e).pipe(map(e => {
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ Working: false, Error: <HttpErrorResponse>e });
@@ -48,6 +56,11 @@ export class WebProvinceService {
     );
   }
 
+  GetWebMunicipalities(TVItemID: number)
+  {
+    this.webMunicipalitiesService.GetWebMunicipalities(TVItemID).subscribe();
+  }
+  
   UpdateWebProvince(x: WebProvince) {
     let ProvinceAreaList: WebBase[] = [];
     let ProvinceSamplingPlanList: SamplingPlan[] = [];
@@ -70,12 +83,18 @@ export class WebProvinceService {
       ProvinceFileListList: this.structureTVFileListService.StructureTVFileList(x.TVItemModel),
       ProvinceSamplingPlanList: ProvinceSamplingPlanList,
       BreadCrumbWebBaseList: x?.TVItemParentList,
-      Working: false
     });
+
+    if (this.componentDataLoadedService.DataLoadedProvince()) {
+      this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
+        Working: false
+      });
+    }
 
     if (this.appStateService.AppState$.getValue().ProvinceSubComponent == ProvinceSubComponentEnum.Areas) {
       this.mapService.ClearMap();
       this.mapService.DrawObjects(this.appLoadedService.AppLoaded$.getValue().ProvinceAreaList);
     }
   }
+
 }

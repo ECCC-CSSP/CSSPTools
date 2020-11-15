@@ -3,10 +3,6 @@ import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
-import { EmailDistributionList } from 'src/app/models/generated/db/EmailDistributionList.model';
-import { EmailDistributionListContact } from 'src/app/models/generated/db/EmailDistributionListContact.model';
-import { EmailDistributionListContactLanguage } from 'src/app/models/generated/db/EmailDistributionListContactLanguage.model';
-import { EmailDistributionListLanguage } from 'src/app/models/generated/db/EmailDistributionListLanguage.model';
 import { WebBase } from 'src/app/models/generated/web/WebBase.model';
 import { WebCountry } from 'src/app/models/generated/web/WebCountry.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
@@ -16,6 +12,7 @@ import { SortTVItemListService } from 'src/app/services/loaders/sort-tvitem-list
 import { MapService } from 'src/app/services/map/map.service';
 import { CountrySubComponentEnum } from 'src/app/enums/generated/CountrySubComponentEnum';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
+import { ComponentDataLoadedService } from '../helpers/component-data-loaded.service';
 
 @Injectable({
   providedIn: 'root'
@@ -27,21 +24,12 @@ export class WebCountryService {
     private appLoadedService: AppLoadedService,
     private sortTVItemListService: SortTVItemListService,
     private structureTVFileListService: StructureTVFileListService,
-    private mapService: MapService) {
+    private mapService: MapService,
+    private componentDataLoadedService: ComponentDataLoadedService) {
   }
 
   GetWebCountry(TVItemID: number) {
     let languageEnum = GetLanguageEnum();
-    this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
-      WebCountry: {},
-      CountryProvinceList: [],
-      EmailDistributionListContactLanguageList: [],
-      EmailDistributionListContactList: [],
-      EmailDistributionListLanguageList: [],
-      EmailDistributionListList: [],
-      BreadCrumbWebBaseList: [],
-      Working: true
-    });
     let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebCountry/${TVItemID}/1`;
     return this.httpClient.get<WebCountry>(url).pipe(
       map((x: any) => {
@@ -58,10 +46,6 @@ export class WebCountryService {
 
   UpdateWebCountry(x: WebCountry) {
     let CountryProvinceList: WebBase[] = [];
-    let EmailDistributionListContactLanguageList: EmailDistributionListContactLanguage[] = [];
-    let EmailDistributionListContactList: EmailDistributionListContact[] = [];
-    let EmailDistributionListLanguageList: EmailDistributionListLanguage[] = [];
-    let EmailDistributionListList: EmailDistributionList[] = [];
 
     // doing CountryProvinceList
     if (!this.appStateService.AppState$?.getValue()?.InactVisible) {
@@ -71,22 +55,22 @@ export class WebCountryService {
       CountryProvinceList = x?.TVItemProvinceList;
     }
 
-    EmailDistributionListContactLanguageList = x?.EmailDistributionListContactLanguageList;
-    EmailDistributionListContactList = x?.EmailDistributionListContactList;
-    EmailDistributionListLanguageList = x?.EmailDistributionListLanguageList;
-    EmailDistributionListList = x?.EmailDistributionListList;
-
     this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
       WebCountry: x,
       CountryProvinceList: this.sortTVItemListService.SortTVItemList(CountryProvinceList, x?.TVItemParentList),
       CountryFileListList: this.structureTVFileListService.StructureTVFileList(x.TVItemModel),
-      EmailDistributionListContactLanguageList: EmailDistributionListContactLanguageList,
-      EmailDistributionListContactList: EmailDistributionListContactList,
-      EmailDistributionListLanguageList: EmailDistributionListLanguageList,
-      EmailDistributionListList: EmailDistributionListList,
+      EmailDistributionListContactLanguageList: x?.EmailDistributionListContactLanguageList,
+      EmailDistributionListContactList: x?.EmailDistributionListContactList,
+      EmailDistributionListLanguageList: x?.EmailDistributionListLanguageList,
+      EmailDistributionListList: x?.EmailDistributionListList,
       BreadCrumbWebBaseList: x?.TVItemParentList,
-      Working: false
     });
+
+    if (this.componentDataLoadedService.DataLoadedCountry()) {
+      this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
+        Working: false
+      });
+    }
 
     if (this.appStateService.AppState$.getValue().CountrySubComponent == CountrySubComponentEnum.Provinces) {
       this.mapService.ClearMap();

@@ -18,7 +18,7 @@ import { HttpStatus } from 'src/app/models/HttpStatus.model';
 
 export interface AppState extends HttpStatus {
     TopComponent?: TopComponentEnum; // home | shell
-    ShellSubComponent?: ShellSubComponentEnum; // Root | Country | Province | Area | Sector | Subsector
+    ShellSubComponent?: ShellSubComponentEnum; // Root | Country | Province | Area | Sector | Subsector | Municipality
     RootSubComponent?: RootSubComponentEnum; // Countries | Files | ExportArcGIS
     CountrySubComponent?: CountrySubComponentEnum; // Provinces | Files | OpenDataNational | EmailDistributionList | RainExceedance
     ProvinceSubComponent?: ProvinceSubComponentEnum; // Areas | Municipalities | Files | SamplingPlan | OpenData | ProvinceTools
@@ -56,6 +56,7 @@ export interface AppState extends HttpStatus {
     AreaFilesSortOrder?: AscDescEnum;
     AreaFilesSortByProp?: FilesSortPropEnum;
     SectorSubsectorsSortOrder?: AscDescEnum;
+    SectorMikeScenariosSortOrder?: AscDescEnum;
     SectorFilesSortOrder?: AscDescEnum;
     SectorFilesSortByProp?: FilesSortPropEnum;
     SubsectorMWQMSitesSortOrder?: AscDescEnum;
@@ -63,9 +64,11 @@ export interface AppState extends HttpStatus {
     SubsectorPolSourceSitesSortOrder?: AscDescEnum;
     SubsectorFilesSortOrder?: AscDescEnum;
     SubsectorFilesSortByProp?: FilesSortPropEnum;
-    MunicipaltyInfrastructuresSortOrder?: AscDescEnum;
+    MunicipalityContactsSortOrder?: AscDescEnum;
+    MunicipalityInfrastructuresSortOrder?: AscDescEnum;
     MunicipalityFilesSortOrder?: AscDescEnum;
     MunicipalityFilesSortByProp?: FilesSortPropEnum;
+    MunicipalityMIKEScenariosSortOrder?: AscDescEnum;
     MWQMSiteFilesSortOrder?: AscDescEnum;
     MWQMSiteFilesSortByProp?: FilesSortPropEnum;
     MWQMRunFilesSortOrder?: AscDescEnum;
