@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { ShellSubComponentEnum } from 'src/app/enums/generated/ShellSubComponentEnum';
 import { AppState } from 'src/app/models/AppState.model';
-import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
+import { ShellSubComponentEnum } from 'src/app/enums/generated/ShellSubComponentEnum';
 import { WebAreaService } from 'src/app/services/loaders/web-area.service';
 import { WebCountryService } from 'src/app/services/loaders/web-country.service';
 import { WebMunicipalityService } from 'src/app/services/loaders/web-municipalty.service';
@@ -13,26 +12,36 @@ import { WebProvinceService } from 'src/app/services/loaders/web-province.servic
 import { WebRootService } from 'src/app/services/loaders/web-root.service';
 import { WebSectorService } from 'src/app/services/loaders/web-sector.service';
 import { WebSubsectorService } from 'src/app/services/loaders/web-subsector.service';
+import { AppLoadedService } from '../app-loaded.service';
 
 @Injectable({
     providedIn: 'root'
 })
-export class ToggleInactiveService {
-constructor(private appStateService: AppStateService,
-    private appLoadedService: AppLoadedService,
-    private getWebRootService: WebRootService,
-    private getWebCountryService: WebCountryService,
-    private getWebProvinceService: WebProvinceService,
-    private getWebAreaService: WebAreaService,
-    private getWebSectorService: WebSectorService,
-    private getWebSubsectorService: WebSubsectorService,
-    private getWebMunicipalityService: WebMunicipalityService,
-    private getWebMWQMSiteService: WebMWQMSiteService,
-    private getWebMWQMRunService: WebMWQMRunService,
-    private getWebPolSourceSiteService: WebPolSourceSiteService,
+export class TogglesService {
+    constructor(private appStateService: AppStateService,
+        private appLoadedService: AppLoadedService,
+        private getWebRootService: WebRootService,
+        private getWebCountryService: WebCountryService,
+        private getWebProvinceService: WebProvinceService,
+        private getWebAreaService: WebAreaService,
+        private getWebSectorService: WebSectorService,
+        private getWebSubsectorService: WebSubsectorService,
+        private getWebMunicipalityService: WebMunicipalityService,
+        private getWebMWQMSiteService: WebMWQMSiteService,
+        private getWebMWQMRunService: WebMWQMRunService,
+        private getWebPolSourceSiteService: WebPolSourceSiteService,
     ) {
 
-}
+    }
+
+    ToggleDetail(): void {
+        this.appStateService.UpdateAppState(<AppState>{ DetailVisible: !this.appStateService.AppState$.getValue().DetailVisible, Working: false });
+    }
+
+    ToggleEdit(): void {
+        this.appStateService.UpdateAppState(<AppState>{ EditVisible: !this.appStateService.AppState$.getValue().EditVisible, Working: false });
+    }
+
     ToggleInactive(appState: AppState): void {
         this.appStateService.UpdateAppState(<AppState>{ InactVisible: !this.appStateService.AppState$.getValue().InactVisible });
         if (appState.ShellSubComponent == ShellSubComponentEnum.Root) {
@@ -69,4 +78,13 @@ constructor(private appStateService: AppStateService,
             alert(`ToggleInactive (${ShellSubComponentEnum[appState.ShellSubComponent]}) not implemented. see ToggleInactive in app-loaded.service`);
         }
     }
+
+    ToggleLastUpdate(): void {
+        this.appStateService.UpdateAppState(<AppState>{ LastUpdateVisible: !this.appStateService.AppState$.getValue().LastUpdateVisible, Working: false });
+    }
+
+    ToggleStatCount(): void {
+        this.appStateService.UpdateAppState(<AppState>{ StatCountVisible: !this.appStateService.AppState$.getValue().StatCountVisible, Working: false });
+    }
+
 }

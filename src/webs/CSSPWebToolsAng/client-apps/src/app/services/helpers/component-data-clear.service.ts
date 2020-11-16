@@ -1,7 +1,4 @@
 import { Injectable } from '@angular/core';
-import { CountrySubComponentEnum } from 'src/app/enums/generated/CountrySubComponentEnum';
-import { ProvinceSubComponentEnum } from 'src/app/enums/generated/ProvinceSubComponentEnum';
-import { RootSubComponentEnum } from 'src/app/enums/generated/RootSubComponentEnum';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
 import { AppState } from 'src/app/models/AppState.model';
 import { AppStateService } from 'src/app/services/app-state.service';
@@ -28,8 +25,9 @@ export class ComponentDataClearService {
       AreaSectorList: [],
       AreaFileListList: [],
       BreadCrumbWebBaseList: [],
-      Working: true
     });
+
+    this.appStateService.UpdateAppState(<AppState>{ Working: true });
   }
 
   DataClearCountry(): void {
@@ -41,8 +39,9 @@ export class ComponentDataClearService {
       EmailDistributionListLanguageList: [],
       EmailDistributionListList: [],
       BreadCrumbWebBaseList: [],
-      Working: true
     });
+
+    this.appStateService.UpdateAppState(<AppState>{ Working: true });
   }
 
   DataClearProvince(): void {
@@ -53,8 +52,9 @@ export class ComponentDataClearService {
       ProvinceSamplingPlanList: [],
       BreadCrumbWebBaseList: [],
       WebMunicipalities: {},
-      Working: true
     });
+
+    this.appStateService.UpdateAppState(<AppState>{ Working: true });
   }
 
   DataClearRoot(): void {
@@ -62,8 +62,9 @@ export class ComponentDataClearService {
       WebRoot: {},
       RootCountryList: [],
       BreadCrumbWebBaseList: [],
-      Working: true
     });
+
+    this.appStateService.UpdateAppState(<AppState>{ Working: true });
   }
 
   DataClearSector(): void {
@@ -72,8 +73,9 @@ export class ComponentDataClearService {
       SectorSubsectorList: [],
       SectorMIKEScenarioList: [],
       BreadCrumbWebBaseList: [],
-      Working: true
     });
+
+    this.appStateService.UpdateAppState(<AppState>{ Working: true });
   }
 
   DataClearSubsector(): void {
@@ -97,9 +99,9 @@ export class ComponentDataClearService {
       WebMWQMSample2030: {},
       WebMWQMSample2040: {},
       WebMWQMSample2050: {},
-      Working: true
     });
 
+    this.appStateService.UpdateAppState(<AppState>{ Working: true });
   }
 }
 

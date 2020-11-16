@@ -13,6 +13,7 @@ import { MapService } from 'src/app/services/map/map.service';
 import { AreaSubComponentEnum } from 'src/app/enums/generated/AreaSubComponentEnum';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { ComponentDataLoadedService } from '../helpers/component-data-loaded.service';
+import { AppState } from 'src/app/models/AppState.model';
 
 
 @Injectable({
@@ -30,7 +31,8 @@ export class WebAreaService {
 
   GetWebArea(TVItemID: number) {
     let languageEnum = GetLanguageEnum();
-    this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebArea: {}, AreaSectorList: [], BreadCrumbWebBaseList: [], Working: true });
+    this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebArea: {}, AreaSectorList: [], BreadCrumbWebBaseList: [] });
+    this.appStateService.UpdateAppState(<AppState>{ Working: true });
     let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebArea/${TVItemID}/1`;
     return this.httpClient.get<WebArea>(url).pipe(
       map((x: any) => {
@@ -38,7 +40,7 @@ export class WebAreaService {
         console.debug(x);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ Working: false, Error: <HttpErrorResponse>e });
+        this.appStateService.UpdateAppState(<AppState>{ Working: false, Error: <HttpErrorResponse>e });
         console.debug(e);
       })))
     );
@@ -59,18 +61,15 @@ export class WebAreaService {
       AreaSectorList: this.sortTVItemListService.SortTVItemList(AreaSectorList, x?.TVItemParentList),
       AreaFileListList: this.structureTVFileListService.StructureTVFileList(x.TVItemModel),
       BreadCrumbWebBaseList: x?.TVItemParentList,
-      Working: false
     });
-    
+
     if (this.componentDataLoadedService.DataLoadedArea()) {
-      this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
-        Working: false
-      });
+      this.appStateService.UpdateAppState(<AppState>{ Working: false });
     }
 
     if (this.appStateService.AppState$.getValue().AreaSubComponent == AreaSubComponentEnum.Sectors) {
       this.mapService.ClearMap();
-      this.mapService.DrawObjects(this.appLoadedService.AppLoaded$.getValue().AreaSectorList);    
-      }
+      this.mapService.DrawObjects(this.appLoadedService.AppLoaded$.getValue().AreaSectorList);
+    }
   }
 }

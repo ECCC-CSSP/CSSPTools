@@ -2,7 +2,6 @@ import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Input } from '@a
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { AppState } from 'src/app/models/AppState.model';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
-import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { SubPageService } from 'src/app/services/helpers/sub-page.service';
 import { MapService } from 'src/app/services/map/map.service';
@@ -23,7 +22,6 @@ export class TVItemListItemComponent implements OnInit, OnDestroy {
   languageEnum = GetLanguageEnum();
   
   constructor(public appStateService: AppStateService,
-    public appLoadedService: AppLoadedService,
     public subPageService: SubPageService,
     public mapService: MapService) {
   }

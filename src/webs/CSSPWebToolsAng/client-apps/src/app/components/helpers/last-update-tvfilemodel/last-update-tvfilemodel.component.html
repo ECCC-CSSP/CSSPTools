@@ -1,9 +1,6 @@
 <span *ngIf="(appStateService.AppState$ | async).Working">
 </span>
-<span *ngIf="(appLoadedService.AppLoaded$ | async).Working">
-</span>
 
 <span class="last-update">
-    <!-- &nbsp;&nbsp;{{ dateFormatService.GetLastUpdateDateTVFileModel(TVFileModel) }}&nbsp;&nbsp; -->
     &nbsp;&nbsp;{{ contactNameService.GetContactNameTVFileModel(TVFileModel) }}&nbsp;&nbsp;
 </span>

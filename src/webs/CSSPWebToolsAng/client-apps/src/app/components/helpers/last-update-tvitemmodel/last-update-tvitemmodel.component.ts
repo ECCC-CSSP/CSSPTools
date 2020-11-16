@@ -18,7 +18,6 @@ export class LastUpdateTVItemModelComponent implements OnInit, OnDestroy {
   languageEnum = GetLanguageEnum();
 
   constructor(public appStateService: AppStateService,
-    public appLoadedService: AppLoadedService,
     public dateFormatService: DateFormatService,
     public contactNameService: ContactNameService) {
   }

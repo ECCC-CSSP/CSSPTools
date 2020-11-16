@@ -67,7 +67,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   displayFn(searchResult: SearchResult): string {
-    return ''; // searchResult ? searchResult.TVItemLanguage.TVText : "";
+    return '';
   }
 
   ToggleSearchWidth() {

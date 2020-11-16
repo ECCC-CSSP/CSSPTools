@@ -5,6 +5,7 @@ import { catchError, map } from 'rxjs/operators';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { WebTypeYearEnum } from 'src/app/enums/generated/WebTypeYearEnum';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
+import { AppState } from 'src/app/models/AppState.model';
 import { MWQMSample } from 'src/app/models/generated/db/MWQMSample.model';
 import { MWQMSampleLanguage } from 'src/app/models/generated/db/MWQMSampleLanguage.model';
 import { WebBase } from 'src/app/models/generated/web/WebBase.model';
@@ -29,51 +30,50 @@ export class WebMWQMSampleService {
         switch (year) {
             case WebTypeYearEnum.Year1980:
                 {
-                    this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebMWQMSampleAll: {}, WebMWQMSample1980: {}, BreadCrumbWebBaseList: [], 
-                        Status: 'Loading Web Sample 1980-1990', Working: true });
+                    this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebMWQMSampleAll: {}, WebMWQMSample1980: {}, BreadCrumbWebBaseList: [] });
+                    this.appStateService.UpdateAppState(<AppState>{ Status: 'Loading Web Sample 1980-1990', Working: true });
                 }
                 break;
             case WebTypeYearEnum.Year1990:
                 {
-                    this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebMWQMSampleAll: {}, WebMWQMSample1990: {}, BreadCrumbWebBaseList: [], 
-                        Status: 'Loading Web Sample 1990-2000', Working: true });
+                    this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebMWQMSampleAll: {}, WebMWQMSample1990: {}, BreadCrumbWebBaseList: [] });
+                    this.appStateService.UpdateAppState(<AppState>{ Status: 'Loading Web Sample 1990-2000', Working: true });
                 }
                 break;
             case WebTypeYearEnum.Year2000:
                 {
-                    this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebMWQMSampleAll: {}, WebMWQMSample2000: {}, BreadCrumbWebBaseList: [],
-                        Status: 'Loading Web Sample 2000-2010', Working: true });
+                    this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebMWQMSampleAll: {}, WebMWQMSample2000: {}, BreadCrumbWebBaseList: [] });
+                    this.appStateService.UpdateAppState(<AppState>{ Status: 'Loading Web Sample 2000-2010', Working: true });
                 }
                 break;
             case WebTypeYearEnum.Year2010:
                 {
-                    this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebMWQMSampleAll: {}, WebMWQMSample2010: {}, BreadCrumbWebBaseList: [],
-                        Status: 'Loading Web Sample 2010-2020', Working: true });
+                    this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebMWQMSampleAll: {}, WebMWQMSample2010: {}, BreadCrumbWebBaseList: [] });
+                    this.appStateService.UpdateAppState(<AppState>{ Status: 'Loading Web Sample 2010-2020', Working: true });
                 }
                 break;
             case WebTypeYearEnum.Year2020:
                 {
-                    this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebMWQMSampleAll: {}, WebMWQMSample2020: {}, BreadCrumbWebBaseList: [],
-                        Status: 'Loading Web Sample 2020-2030', Working: true });
-
+                    this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebMWQMSampleAll: {}, WebMWQMSample2020: {}, BreadCrumbWebBaseList: [] });
+                    this.appStateService.UpdateAppState(<AppState>{ Status: 'Loading Web Sample 2020-2030', Working: true });
                 }
                 break;
             case WebTypeYearEnum.Year2030:
                 {
-                    this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebMWQMSampleAll: {}, WebMWQMSample2030: {}, BreadCrumbWebBaseList: [],
-                    Status: 'Loading Web Sample 2030-2040', Working: true });
+                    this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebMWQMSampleAll: {}, WebMWQMSample2030: {}, BreadCrumbWebBaseList: [] });
+                    this.appStateService.UpdateAppState(<AppState>{ Status: 'Loading Web Sample 2030-2040', Working: true });
                 }
                 break;
             case WebTypeYearEnum.Year2040:
                 {
-                    this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebMWQMSampleAll: {}, WebMWQMSample2040: {}, BreadCrumbWebBaseList: [],
-                    Status: 'Loading Web Sample 2040-2050', Working: true });
+                    this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebMWQMSampleAll: {}, WebMWQMSample2040: {}, BreadCrumbWebBaseList: [] });
+                    this.appStateService.UpdateAppState(<AppState>{ Status: 'Loading Web Sample 2040-2050', Working: true });
                 }
                 break;
             case WebTypeYearEnum.Year2050:
                 {
-                    this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebMWQMSampleAll: {}, WebMWQMSample2050: {}, BreadCrumbWebBaseList: [],
-                    Status: 'Loading Web Sample 2050-2060', Working: true });
+                    this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebMWQMSampleAll: {}, WebMWQMSample2050: {}, BreadCrumbWebBaseList: [] });
+                    this.appStateService.UpdateAppState(<AppState>{ Status: 'Loading Web Sample 2050-2060', Working: true });
                 }
                 break;
             default:
@@ -143,7 +143,7 @@ export class WebMWQMSampleService {
 
             }),
             catchError(e => of(e).pipe(map(e => {
-                this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ Working: false, Status: '', Error: <HttpErrorResponse>e });
+                this.appStateService.UpdateAppState(<AppState>{ Working: false, Status: '', Error: <HttpErrorResponse>e });
                 console.debug(e);
             })))
         );
@@ -186,7 +186,9 @@ export class WebMWQMSampleService {
 
         console.debug(WebMWQMSampleAll);
 
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebMWQMSampleAll: WebMWQMSampleAll, BreadCrumbWebBaseList: TVItemParentList, Status: '', Working: false });
+        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebMWQMSampleAll: WebMWQMSampleAll, BreadCrumbWebBaseList: TVItemParentList });
+        this.appStateService.UpdateAppState(<AppState>{ Working: false, Status: '' });
+
     }
 
     private GetNextWebMWQMSamples(TVItemID: number, WebTypeYear: WebTypeYearEnum) {

@@ -4,6 +4,7 @@ import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Input } from '@a
 import { of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
+import { AppState } from 'src/app/models/AppState.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { FileUploadService } from 'src/app/services/helpers/file-upload.service';
@@ -98,10 +99,10 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   private uploadFiles() {
     this.fileUpload.nativeElement.value = '';
     this.files.forEach(file => {
-      this.appLoadedService.UpdateAppLoaded(<AppLoaded> { Working: true })
+      this.appStateService.UpdateAppState(<AppState> { Working: true })
       this.uploadFile(file);
     });
-    this.appLoadedService.UpdateAppLoaded(<AppLoaded> { Working: false })
+    this.appStateService.UpdateAppState(<AppState> { Working: false })
   }
 
   onClick() {
@@ -111,7 +112,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
         this.files.push({ data: file, inProgress: false, progress: 0 });
       }
       this.uploadFiles();
-      this.appLoadedService.UpdateAppLoaded(<AppLoaded> { Working: true })
+      this.appStateService.UpdateAppState(<AppState> { Working: true })
     };
     fileUpload.click();
   }

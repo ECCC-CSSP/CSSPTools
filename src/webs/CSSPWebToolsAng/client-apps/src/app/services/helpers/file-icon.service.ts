@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
 import { FileTypeEnum } from 'src/app/enums/generated/FileTypeEnum';
 import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model';
-import { AppStateService } from 'src/app/services/app-state.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FileIconService {
 
-  constructor(private appStateService: AppStateService) {
+  constructor() {
   }
 
   GetFileIcon(tvFileModel: TVFileModel) {

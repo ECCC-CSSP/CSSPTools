@@ -1,8 +1,8 @@
-<span *ngIf="(appStateService.AppState$ | async).Working || (appLoadedService.AppLoaded$ | async).Working">
+<span *ngIf="(appStateService.AppState$ | async).Working">
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </span>
-<p class="loading-status" *ngIf="(appLoadedService.AppLoaded$ | async).Status">
-    {{ appLoadedService.AppLoaded$?.getValue()?.Status }}
+<p class="loading-status" *ngIf="(appStateService.AppState$ | async).Status">
+    {{ appStateService.AppState$?.getValue()?.Status }}
 </p>
 
 <button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionSubsector(subsectorSubComponentEnum.MWQMSites)"

@@ -1,6 +1,9 @@
-<span *ngIf="(appStateService.AppState$ | async).Working || (appLoadedService.AppLoaded$ | async).Working">
-    
+<span *ngIf="(appStateService.AppState$ | async).Working">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </span>
+<p class="loading-status" *ngIf="(appStateService.AppState$ | async).Status">
+    {{ appStateService.AppState$?.getValue()?.Status }}
+</p>
 
 <mat-toolbar class="header">
     <span class="toolbar">
@@ -55,11 +58,10 @@
         [opened]="appStateService.AppState$?.getValue()?.MapVisible" mode="side" position="end">
         <app-map [AppState]="appStateService.AppState$?.getValue()"></app-map>
     </mat-sidenav>
-    <span *ngIf="(appStateService.AppState$ | async).Working || (appLoadedService.AppLoaded$ | async).Working">
+    <span *ngIf="(appStateService.AppState$ | async).Working">
         
     </span>
     <app-error [Error]="(appStateService.AppState$ | async).Error"></app-error>
-    <app-error [Error]="(appLoadedService.AppLoaded$ | async).Error"></app-error>
     <app-bread-crumb [AppState]="appStateService.AppState$?.getValue()"></app-bread-crumb>
 
     <div class="margin10">

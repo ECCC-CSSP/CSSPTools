@@ -46,9 +46,8 @@ import { WebSamplingPlan } from 'src/app/models/generated/web/WebSamplingPlan.mo
 import { WebSector } from 'src/app/models/generated/web/WebSector.model';
 import { WebSubsector } from 'src/app/models/generated/web/WebSubsector.model';
 import { WebTideLocation } from 'src/app/models/generated/web/WebTideLocation.model';
-import { HttpStatus } from 'src/app/models/HttpStatus.model';
 
-export interface AppLoaded extends HttpStatus {
+export interface AppLoaded {
     LoggedInContact?: Contact;
     BreadCrumbWebBaseList?: WebBase[];
     PreferenceList?: Preference[];

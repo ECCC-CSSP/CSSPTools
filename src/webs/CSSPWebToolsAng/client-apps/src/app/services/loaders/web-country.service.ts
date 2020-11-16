@@ -13,6 +13,7 @@ import { MapService } from 'src/app/services/map/map.service';
 import { CountrySubComponentEnum } from 'src/app/enums/generated/CountrySubComponentEnum';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { ComponentDataLoadedService } from '../helpers/component-data-loaded.service';
+import { AppState } from 'src/app/models/AppState.model';
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +31,8 @@ export class WebCountryService {
 
   GetWebCountry(TVItemID: number) {
     let languageEnum = GetLanguageEnum();
+    this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebCountry: {}, CountryProvinceList: [], BreadCrumbWebBaseList: [] });
+    this.appStateService.UpdateAppState(<AppState>{ Working: true });
     let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebCountry/${TVItemID}/1`;
     return this.httpClient.get<WebCountry>(url).pipe(
       map((x: any) => {
@@ -38,7 +41,7 @@ export class WebCountryService {
 
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ Working: false, Error: <HttpErrorResponse>e });
+        this.appStateService.UpdateAppState(<AppState>{ Working: false, Error: <HttpErrorResponse>e });
         console.debug(e);
       })))
     );
@@ -67,9 +70,7 @@ export class WebCountryService {
     });
 
     if (this.componentDataLoadedService.DataLoadedCountry()) {
-      this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
-        Working: false
-      });
+      this.appStateService.UpdateAppState(<AppState>{ Working: false });
     }
 
     if (this.appStateService.AppState$.getValue().CountrySubComponent == CountrySubComponentEnum.Provinces) {

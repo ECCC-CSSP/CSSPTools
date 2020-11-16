@@ -1,8 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
-import { GetAreaSubComponentEnum, AreaSubComponentEnum } from 'src/app/enums/generated/AreaSubComponentEnum';
-import { AppState } from 'src/app/models/AppState.model';
+import { GetAreaSubComponentEnum } from 'src/app/enums/generated/AreaSubComponentEnum';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';

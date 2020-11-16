@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Input } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { AppLoadedService } from 'src/app/services/app-loaded.service';
-import { AppLoaded } from 'src/app/models/AppLoaded.model';
+import { AppStateService } from 'src/app/services/app-state.service';
+import { AppState } from 'src/app/models/AppState.model';
 
 @Component({
   selector: 'app-error',
@@ -12,7 +12,7 @@ import { AppLoaded } from 'src/app/models/AppLoaded.model';
 export class ErrorComponent implements OnInit, OnDestroy {
   @Input() Error: HttpErrorResponse;
 
-  constructor(private appLoadedService: AppLoadedService) {
+  constructor(private appStateService: AppStateService) {
   }
 
   ngOnInit(): void {
@@ -22,6 +22,6 @@ export class ErrorComponent implements OnInit, OnDestroy {
   }
 
   ClearErrorMessage() {
-    this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ Error: null });
+    this.appStateService.UpdateAppState(<AppState>{ Error: null });
   }
 }

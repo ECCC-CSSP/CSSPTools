@@ -1,10 +1,8 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { GetAscDescEnum } from 'src/app/enums/generated/AscDescEnum';
-import { LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
-import { GetSectorSubComponentEnum, SectorSubComponentEnum } from 'src/app/enums/generated/SectorSubComponentEnum';
+import { GetSectorSubComponentEnum } from 'src/app/enums/generated/SectorSubComponentEnum';
 import { GetTVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
-import { AppState } from 'src/app/models/AppState.model';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';

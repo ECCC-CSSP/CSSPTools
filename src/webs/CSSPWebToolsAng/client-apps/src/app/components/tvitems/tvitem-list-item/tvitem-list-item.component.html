@@ -1,7 +1,5 @@
 <span *ngIf="(appStateService.AppState$ | async).Working">
 </span>
-<span *ngIf="(appLoadedService.AppLoaded$ | async).Working">
-</span>
 
 <mat-list-item>
     <button mat-button *ngIf="appStateService.AppState$?.getValue()?.MapVisible && !IsBreadCrumb"

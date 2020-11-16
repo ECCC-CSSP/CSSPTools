@@ -11,7 +11,7 @@ import { ComponentDataClearService } from 'src/app/services/helpers/component-da
 import { ComponentShowService } from 'src/app/services/helpers/component-show.service';
 import { StatCountService } from 'src/app/services/helpers/stat-count.service';
 import { TVItemSortOrderService } from 'src/app/services/loaders/tvitem-sort-order.service';
-      import { WebProvinceService } from 'src/app/services/loaders/web-province.service';
+import { WebProvinceService } from 'src/app/services/loaders/web-province.service';
 
 @Component({
   selector: 'app-province',

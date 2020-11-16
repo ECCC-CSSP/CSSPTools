@@ -1,4 +1,4 @@
-<span *ngIf="(appLoadedService.AppLoaded$ | async).Working">
+<span *ngIf="AppState.Working">
 </span>
 
 <mat-list *ngFor="let webBase of appLoadedService.AppLoaded$?.getValue()?.BreadCrumbWebBaseList; let i = index" >

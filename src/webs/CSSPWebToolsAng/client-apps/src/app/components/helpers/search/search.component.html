@@ -1,6 +1,5 @@
-<span *ngIf="(appLoadedService.AppLoaded$ | async).Working">
-</span>
-<span *ngIf="(appStateService.AppState$ | async).Working">
+<span *ngIf="(appStateService.AppState$ | async).SearchWorking">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </span>
 
 <mat-form-field [ngClass]="formFieldWidthClass">

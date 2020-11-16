@@ -1,6 +1,5 @@
 import { ViewChild, Component, OnInit, ChangeDetectionStrategy, OnDestroy, Input } from '@angular/core';
 import { AppState } from 'src/app/models/AppState.model';
-import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { MapService } from 'src/app/services/map/map.service';
 
@@ -15,7 +14,6 @@ export class MapComponent implements OnInit, OnDestroy {
   @ViewChild("map", { static: true }) mapElement;
 
   constructor(public appStateService: AppStateService,
-    public appLoadedService: AppLoadedService,
     private mapService: MapService) {
 
   }

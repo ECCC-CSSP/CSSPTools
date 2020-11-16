@@ -5,6 +5,7 @@ import { catchError, map } from 'rxjs/operators';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { MunicipalitySubComponentEnum } from 'src/app/enums/generated/MunicipalitySubComponentEnum';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
+import { AppState } from 'src/app/models/AppState.model';
 import { TVItemLink } from 'src/app/models/generated/db/TVItemLink.model';
 import { ContactModel } from 'src/app/models/generated/web/ContactModel.model';
 import { InfrastructureModel } from 'src/app/models/generated/web/InfrastructureModel.model';
@@ -13,6 +14,7 @@ import { WebMunicipality } from 'src/app/models/generated/web/WebMunicipality.mo
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { StructureTVFileListService } from 'src/app/services/loaders/structure-tvfile-list.service';
+import { ComponentDataLoadedService } from '../helpers/component-data-loaded.service';
 import { MapService } from '../map/map.service';
 import { SortTVItemListService } from './sort-tvitem-list.service';
 
@@ -26,7 +28,8 @@ export class WebMunicipalityService {
         private appLoadedService: AppLoadedService,
         private sortTVItemListService: SortTVItemListService,
         private structureTVFileListService: StructureTVFileListService,
-        private mapService: MapService) {
+        private mapService: MapService,
+        private componentDataLoadedService: ComponentDataLoadedService) {
     }
 
     GetWebMunicipality(TVItemID: number) {
@@ -38,8 +41,8 @@ export class WebMunicipalityService {
             MunicipalityTVItemLinkList: [],
             TVItemMikeScenarioList: [],
             BreadCrumbWebBaseList: [],
-            Working: true
         });
+        this.appStateService.UpdateAppState(<AppState>{ Working: true });
         let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebMunicipality/${TVItemID}/1`;
         return this.httpClient.get<WebMunicipality>(url).pipe(
             map((x: any) => {
@@ -47,7 +50,7 @@ export class WebMunicipalityService {
                 console.debug(x);
             }),
             catchError(e => of(e).pipe(map(e => {
-                this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ Working: false, Error: <HttpErrorResponse>e });
+                this.appStateService.UpdateAppState(<AppState>{ Working: false, Error: <HttpErrorResponse>e });
                 console.debug(e);
             })))
         );
@@ -72,13 +75,16 @@ export class WebMunicipalityService {
             MunicipalityTVItemLinkList: x?.MunicipalityTVItemLinkList,
             TVItemMikeScenarioList: this.sortTVItemListService.SortTVItemList(TVItemMikeScenarioList, x?.TVItemParentList),
             BreadCrumbWebBaseList: x?.TVItemParentList,
-            Working: false
         });
+
+        if (this.componentDataLoadedService.DataLoadedMunicipality()) {
+            this.appStateService.UpdateAppState(<AppState>{ Working: false });
+        }
 
         if (this.appStateService.AppState$.getValue().MunicipalitySubComponent == MunicipalitySubComponentEnum.Infrastructures) {
             this.mapService.ClearMap();
             this.mapService.DrawObjects(this.appLoadedService.AppLoaded$.getValue().InfrastructureModelList);
-          }
-      
+        }
+
     }
 }

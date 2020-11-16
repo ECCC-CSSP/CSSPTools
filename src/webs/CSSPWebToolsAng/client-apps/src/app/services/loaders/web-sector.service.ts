@@ -13,6 +13,7 @@ import { MapService } from 'src/app/services/map/map.service';
 import { SectorSubComponentEnum } from 'src/app/enums/generated/SectorSubComponentEnum';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { ComponentDataLoadedService } from '../helpers/component-data-loaded.service';
+import { AppState } from 'src/app/models/AppState.model';
 
 
 @Injectable({
@@ -36,8 +37,8 @@ export class WebSectorService {
       SectorSubsectorList: [],
       SectorMIKEScenarioList: [],
       BreadCrumbWebBaseList: [],
-      Working: true
     });
+    this.appStateService.UpdateAppState(<AppState>{ Working: true });
     let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebSector/${TVItemID}/1`;
     return this.httpClient.get<WebSector>(url).pipe(
       map((x: any) => {
@@ -45,7 +46,7 @@ export class WebSectorService {
         console.debug(x);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ Working: false, Error: <HttpErrorResponse>e });
+        this.appStateService.UpdateAppState(<AppState>{ Working: false, Error: <HttpErrorResponse>e });
         console.debug(e);
       })))
     );
@@ -80,9 +81,7 @@ export class WebSectorService {
     });
 
     if (this.componentDataLoadedService.DataLoadedRoot()) {
-      this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
-        Working: false
-      });
+      this.appStateService.UpdateAppState(<AppState>{ Working: false });
     }
 
     if (this.appStateService.AppState$.getValue().SectorSubComponent == SectorSubComponentEnum.Subsectors) {

@@ -12,8 +12,7 @@ import { AppStateService } from 'src/app/services/app-state.service';
 export class FooterComponent implements OnInit, OnDestroy {
   year: number = new Date().getFullYear();
 
-  constructor(public appLoadedService: AppLoadedService,
-    public appStateService: AppStateService,
+  constructor(public appStateService: AppStateService,
     public appLanguageService: AppLanguageService) {
   }
 

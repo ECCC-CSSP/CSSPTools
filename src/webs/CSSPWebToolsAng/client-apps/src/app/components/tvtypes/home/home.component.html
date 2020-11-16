@@ -1,14 +1,17 @@
-<span *ngIf="(appStateService.AppState$ | async).Working || (appLoadedService.AppLoaded$ | async).Working">
-    
+<span *ngIf="(appStateService.AppState$ | async).Working">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </span>
+<p class="loading-status" *ngIf="(appStateService.AppState$ | async).Status">
+    {{ appStateService.AppState$?.getValue()?.Status }}
+</p>
 
-<div *ngIf="(appLoadedService.AppLoaded$ | async).Working">
+<div *ngIf="(appStateService.AppState$ | async).Working">
     <p>
         <mat-spinner></mat-spinner>
     </p>
 </div>
 
-<div *ngIf="!((appLoadedService.AppLoaded$ | async).Working)">
+<div *ngIf="!((appStateService.AppState$ | async).Working)">
     <div class="card-container">
         <mat-card>
             <mat-card-header>

@@ -1,42 +1,40 @@
 <span *ngIf="(appStateService.AppState$ | async).Working">
 </span>
-<span *ngIf="(appLoadedService.AppLoaded$ | async).Working">
-</span>
 
 <h2 class="center">
     {{ appLanguageService.AppLanguage.SideNavMenuContextMenu[appStateService.AppState$?.getValue().Language] }}</h2>
 <mat-list>
     <mat-list-item>
         <button mat-button [ngClass]="appStateService.AppState$?.getValue()?.InactVisible ? 'selected' : ''"
-            (click)="toggleInactiveService.ToggleInactive(appStateService.AppState$?.getValue())"
+            (click)="togglesService.ToggleInactive(appStateService.AppState$?.getValue())"
             title="{{ appLanguageService.AppLanguage.SideNavMenuShowInactiveItems[appStateService.AppState$?.getValue().Language] }}">
             {{ appLanguageService.AppLanguage.SideNavMenuInactive[appStateService.AppState$?.getValue().Language] }}
         </button>
     </mat-list-item>
     <mat-list-item>
         <button mat-button [ngClass]="appStateService.AppState$?.getValue()?.DetailVisible ? 'selected' : ''"
-            (click)="toggleDetailService.ToggleDetail()"
+            (click)="togglesService.ToggleDetail()"
             title="{{ appLanguageService.AppLanguage.SideNavMenuShowDetails[appStateService.AppState$?.getValue().Language] }}">
             {{ appLanguageService.AppLanguage.SideNavMenuDetails[appStateService.AppState$?.getValue().Language] }}
         </button>
     </mat-list-item>
     <mat-list-item>
         <button mat-button [ngClass]="appStateService.AppState$?.getValue()?.StatCountVisible ? 'selected' : ''"
-            (click)="toggleStatCountService.ToggleStatCount()"
+            (click)="togglesService.ToggleStatCount()"
             title="{{ appLanguageService.AppLanguage.SideNavMenuShowStatCount[appStateService.AppState$?.getValue().Language] }}">
             {{ appLanguageService.AppLanguage.SideNavMenuStatCount[appStateService.AppState$?.getValue().Language] }}
         </button>
     </mat-list-item>
     <mat-list-item>
         <button mat-button [ngClass]="appStateService.AppState$?.getValue()?.LastUpdateVisible ? 'selected' : ''"
-            (click)="toggleLastUpdateService.ToggleLastUpdate()"
+            (click)="togglesService.ToggleLastUpdate()"
             title="{{ appLanguageService.AppLanguage.SideNavMenuShowLastUpdate[appStateService.AppState$?.getValue().Language] }}">
             {{ appLanguageService.AppLanguage.SideNavMenuLastUpdate[appStateService.AppState$?.getValue().Language] }}
         </button>
     </mat-list-item>
     <mat-list-item>
         <button mat-button [ngClass]="appStateService.AppState$?.getValue()?.EditVisible ? 'selected' : ''"
-            (click)="toggleEditService.ToggleEdit()"
+            (click)="togglesService.ToggleEdit()"
             title="{{ appLanguageService.AppLanguage.SideNavMenuShowEdit[appStateService.AppState$?.getValue().Language] }}">
             {{ appLanguageService.AppLanguage.SideNavMenuEdit[appStateService.AppState$?.getValue().Language] }}
         </button>

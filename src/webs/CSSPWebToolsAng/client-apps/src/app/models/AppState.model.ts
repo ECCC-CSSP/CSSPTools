@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { AreaSubComponentEnum } from 'src/app/enums/generated/AreaSubComponentEnum';
 import { AscDescEnum } from 'src/app/enums/generated/AscDescEnum';
 import { CountrySubComponentEnum } from 'src/app/enums/generated/CountrySubComponentEnum';
@@ -14,9 +15,17 @@ import { SectorSubComponentEnum } from 'src/app/enums/generated/SectorSubCompone
 import { ShellSubComponentEnum } from 'src/app/enums/generated/ShellSubComponentEnum';
 import { SubsectorSubComponentEnum } from 'src/app/enums/generated/SubsectorSubComponentEnum';
 import { TopComponentEnum } from 'src/app/enums/generated/TopComponentEnum';
-import { HttpStatus } from 'src/app/models/HttpStatus.model';
 
-export interface AppState extends HttpStatus {
+export interface AppState {
+    // http loading related
+    Working?: boolean;
+    Error?: HttpErrorResponse;
+    Status?: string;
+
+    // search http loading related
+    SearchWorking?: boolean;
+
+    // visual related
     TopComponent?: TopComponentEnum; // home | shell
     ShellSubComponent?: ShellSubComponentEnum; // Root | Country | Province | Area | Sector | Subsector | Municipality
     RootSubComponent?: RootSubComponentEnum; // Countries | Files | ExportArcGIS

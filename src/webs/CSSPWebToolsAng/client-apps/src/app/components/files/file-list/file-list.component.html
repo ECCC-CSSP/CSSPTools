@@ -1,4 +1,4 @@
-<app-file-upload [working]="appLoadedService.AppLoaded$?.getValue()?.Working"></app-file-upload>
+<app-file-upload [working]="appStateService.AppState$?.getValue()?.Working"></app-file-upload>
 
 <div *ngFor="let TVFileModelList of TVFileModelListList">
     <mat-list *ngFor="let tvFileModel of TVFileModelList; let i = index">

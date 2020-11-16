@@ -1,7 +1,5 @@
 <span *ngIf="(appStateService.AppState$ | async).Working">
 </span>
-<span *ngIf="(appLoadedService.AppLoaded$ | async).Working">
-</span>
 
 <span class="last-update">
     &nbsp;&nbsp;{{ dateFormatService.GetLastUpdateDateTVItemModel(TVItemModel) }}&nbsp;&nbsp;

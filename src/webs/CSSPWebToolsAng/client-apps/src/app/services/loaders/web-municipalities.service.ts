@@ -11,6 +11,7 @@ import { MapService } from 'src/app/services/map/map.service';
 import { SortTVItemListService } from 'src/app/services/loaders/sort-tvitem-list.service';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { ComponentDataLoadedService } from '../helpers/component-data-loaded.service';
+import { AppState } from 'src/app/models/AppState.model';
 
 
 @Injectable({
@@ -28,7 +29,8 @@ export class WebMunicipalitiesService {
 
   GetWebMunicipalities(TVItemID: number) {
     let languageEnum = GetLanguageEnum();
-    this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebMunicipalities: {}, Working: true });
+    this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebMunicipalities: {} });
+    this.appStateService.UpdateAppState(<AppState>{ Working: true });
     let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebMunicipalities/${TVItemID}/1`;
     return this.httpClient.get<WebMunicipalities>(url).pipe(
       map((x: any) => {
@@ -36,7 +38,7 @@ export class WebMunicipalitiesService {
         console.debug(x);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ Working: false, Error: <HttpErrorResponse>e });
+        this.appStateService.UpdateAppState(<AppState>{ Working: false, Error: <HttpErrorResponse>e });
         console.debug(e);
       })))
     );
@@ -46,14 +48,11 @@ export class WebMunicipalitiesService {
     this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
       WebMunicipalities: x,
       ProvinceMunicipalityList: this.sortTVItemListService.SortTVItemList(x.TVItemMunicipalityList, x?.TVItemParentList),
-      Working: false
     });
 
-    
+
     if (this.componentDataLoadedService.DataLoadedProvince()) {
-      this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
-        Working: false
-      });
+      this.appStateService.UpdateAppState(<AppState>{ Working: false });
     }
 
     if (this.appStateService.AppState$.getValue().ProvinceSubComponent == ProvinceSubComponentEnum.Municipalities) {
