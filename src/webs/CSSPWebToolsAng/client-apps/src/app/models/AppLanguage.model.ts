@@ -56,6 +56,40 @@ export interface AppLanguage {
 
     KB: string[];
 
+    LoadingArea: string[];
+    LoadingClimateData: string[];
+    LoadingContact: string[];
+    LoadingCountry: string[];
+    LoadingHelpDoc: string[];
+    LoadingHydrometricData: string[];
+    LoadingMIKEScenario: string[];
+    LoadingMunicipality: string[];
+    LoadingMWQMLookupMPN: string[];
+    LoadingMWQMRun: string[];
+    LoadingMWQMSample1980To1990: string[];
+    LoadingMWQMSample1990To2000: string[];
+    LoadingMWQMSample2000To2010: string[];
+    LoadingMWQMSample2010To2020: string[];
+    LoadingMWQMSample2020To2030: string[];
+    LoadingMWQMSample2030To2040: string[];
+    LoadingMWQMSample2040To2050: string[];
+    LoadingMWQMSample2050To2060: string[];
+    LoadingMWQMSite: string[];
+    LoadingPolSourceGrouping: string[];
+    LoadingPolSourceSite: string[];
+    LoadingPolSourceSiteEffectTerm: string[];
+    LoadingProvince: string[];
+    LoadingProvinceClimateSite: string[];
+    LoadingProvinceHydrometricSite: string[];
+    LoadingProvinceMunicipalities: string[];
+    LoadingReportType: string[];
+    LoadingRoot: string[];
+    LoadingSamplingPlan: string[];
+    LoadingSector: string[];
+    LoadingSubsector: string[];
+    LoadingSubsectorDrogueRun: string[];
+    LoadingTideLocation: string[];
+
     MunicipalityShowContacts: string[];
     MunicipalityContacts: string[];
     MunicipalityShowFiles: string[];

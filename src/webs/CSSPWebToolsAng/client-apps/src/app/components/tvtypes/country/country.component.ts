@@ -7,7 +7,7 @@ import { AppLanguageService } from 'src/app/services/app-language.service';
 import { GetTVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 import { GetAscDescEnum } from 'src/app/enums/generated/AscDescEnum';
 import { WebCountryService } from 'src/app/services/loaders/web-country.service';
-import { TVItemSortOrderService } from 'src/app/services/loaders/tvitem-sort-order.service';
+import { TVItemSortOrderService } from 'src/app/services/helpers/tvitem-sort-order.service';
 import { StatCountService } from 'src/app/services/helpers/stat-count.service';
 import { ComponentButtonSelectionService } from 'src/app/services/helpers/component-button-selection.service';
 import { ComponentShowService } from 'src/app/services/helpers/component-show.service';
@@ -40,7 +40,7 @@ export class CountryComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     let TVItemID: number = this.appStateService.AppState$.getValue().CurrentTVItemID;
     this.componentDataClearService.DataClearCountry();
-    this.subWebCountry = this.webCountryService.GetWebCountry(TVItemID).subscribe();
+    this.subWebCountry = this.webCountryService.GetWebCountry(TVItemID, true).subscribe();
   }
 
   ngOnDestroy(): void {

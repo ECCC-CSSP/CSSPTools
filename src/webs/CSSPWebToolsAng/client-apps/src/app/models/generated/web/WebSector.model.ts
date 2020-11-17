@@ -5,10 +5,12 @@
  *
  */
 
+import { MIKEScenarioModel } from 'src/app/models/generated/web/MIKEScenarioModel.model';
 import { WebBase } from 'src/app/models/generated/web/WebBase.model';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 
 export class WebSector {
+    MIKEScenarioModelList: MIKEScenarioModel[];
     TVItemMikeScenarioList: WebBase[];
     TVItemModel: TVItemModel;
     TVItemParentList: WebBase[];

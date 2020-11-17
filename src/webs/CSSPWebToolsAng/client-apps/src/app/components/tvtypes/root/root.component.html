@@ -6,7 +6,7 @@
 </p>
 
 <button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionRoot(rootSubComponentEnum.Countries)"
-    (click)="componentButtonSelectionService.ColorSelectionRoot(rootSubComponentEnum.Countries)"
+    (click)="componentShowService.ShowRoot(rootSubComponentEnum.Countries)"
     title="{{ appLanguageService.AppLanguage.RootShowCountries[appStateService.AppState$?.getValue().Language] }}">
     <span>
         {{ appLanguageService.AppLanguage.RootCountries[appStateService.AppState$?.getValue().Language] }}

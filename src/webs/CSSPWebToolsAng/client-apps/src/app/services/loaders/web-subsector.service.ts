@@ -7,32 +7,36 @@ import { WebBase } from 'src/app/models/generated/web/WebBase.model';
 import { WebSubsector } from 'src/app/models/generated/web/WebSubsector.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
-import { StructureTVFileListService } from 'src/app/services/loaders/structure-tvfile-list.service';
-import { SortTVItemListService } from 'src/app/services/loaders/sort-tvitem-list.service';
+import { StructureTVFileListService } from 'src/app/services/helpers/structure-tvfile-list.service';
+import { SortTVItemListService } from 'src/app/services/helpers/sort-tvitem-list.service';
 import { MapService } from 'src/app/services/map/map.service';
 import { SubsectorSubComponentEnum } from 'src/app/enums/generated/SubsectorSubComponentEnum';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { ComponentDataLoadedService } from '../helpers/component-data-loaded.service';
-import { WebMWQMSampleService } from './web-mwqm-samples.service';
 import { WebTypeYearEnum } from 'src/app/enums/generated/WebTypeYearEnum';
 import { AppState } from 'src/app/models/AppState.model';
+import { AppLanguageService } from '../app-language.service';
+import { WebMWQMSiteService } from './web-mwqm-sites.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class WebSubsectorService {
+    private DoOther: boolean;
 
     constructor(private httpClient: HttpClient,
         private appStateService: AppStateService,
         private appLoadedService: AppLoadedService,
+        private appLanguageService: AppLanguageService,
         private sortTVItemListService: SortTVItemListService,
         private structureTVFileListService: StructureTVFileListService,
         private mapService: MapService,
         private componentDataLoadedService: ComponentDataLoadedService,
-        private webMWQMSampleService: WebMWQMSampleService) {
+        private webMWQMSiteService: WebMWQMSiteService) {
     }
 
-    GetWebSubsector(TVItemID: number) {
+    GetWebSubsector(TVItemID: number, DoOther: boolean) {
+        this.DoOther = DoOther;
         let languageEnum = GetLanguageEnum();
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
             WebSubsector: {},
@@ -46,24 +50,28 @@ export class WebSubsectorService {
             UseOfSiteList: [],
             BreadCrumbWebBaseList: [],
         });
-        this.appStateService.UpdateAppState(<AppState>{ Status: 'Loading Web Subsector', Working: true });
+        this.appStateService.UpdateAppState(<AppState>{
+            Status: this.appLanguageService.AppLanguage.LoadingSubsector[this.appStateService.AppState$?.getValue()?.Language],
+            Working: true
+        });
         let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebSubsector/${TVItemID}/1`;
         return this.httpClient.get<WebSubsector>(url).pipe(
             map((x: any) => {
                 this.UpdateWebSubsector(x);
                 console.debug(x);
-                this.GetWebMWQMSamples(TVItemID);
+                if (DoOther) {
+                    this.GetWebMWQMSite(TVItemID);
+                }
             }),
             catchError(e => of(e).pipe(map(e => {
-                this.appStateService.UpdateAppState(<AppState>{ Working: false, Error: <HttpErrorResponse>e });
+                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false, Error: <HttpErrorResponse>e });
                 console.debug(e);
             })))
         );
     }
 
-    GetWebMWQMSamples(TVItemID: number)
-    {
-        this.webMWQMSampleService.GetWebMWQMSample(TVItemID, WebTypeYearEnum.Year1980).subscribe();
+    GetWebMWQMSite(TVItemID: number) {
+        this.webMWQMSiteService.GetWebMWQMSite(TVItemID, this.DoOther).subscribe();
     }
 
     UpdateWebSubsector(x: WebSubsector) {
@@ -109,8 +117,13 @@ export class WebSubsectorService {
             BreadCrumbWebBaseList: x?.TVItemParentList,
         });
 
-        if (this.componentDataLoadedService.DataLoadedSubsector()) {
-            this.webMWQMSampleService.FillWebMWQMSampleAll(); // does set the Working: false
+        if (this.DoOther) {
+            if (this.componentDataLoadedService.DataLoadedSubsector()) {
+                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
+            }
+        }
+        else {
+            this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
         }
 
         if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.MWQMSites) {

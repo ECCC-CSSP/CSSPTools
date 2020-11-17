@@ -8,23 +8,26 @@ import { WebBase } from 'src/app/models/generated/web/WebBase.model';
 import { WebProvince } from 'src/app/models/generated/web/WebProvince.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
-import { StructureTVFileListService } from 'src/app/services/loaders/structure-tvfile-list.service';
-import { SortTVItemListService } from 'src/app/services/loaders/sort-tvitem-list.service';
+import { StructureTVFileListService } from 'src/app/services/helpers/structure-tvfile-list.service';
+import { SortTVItemListService } from 'src/app/services/helpers/sort-tvitem-list.service';
 import { MapService } from 'src/app/services/map/map.service';
 import { ProvinceSubComponentEnum } from 'src/app/enums/generated/ProvinceSubComponentEnum';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { ComponentDataLoadedService } from '../helpers/component-data-loaded.service';
 import { WebMunicipalitiesService } from './web-municipalities.service';
 import { AppState } from 'src/app/models/AppState.model';
+import { AppLanguageService } from '../app-language.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WebProvinceService {
+  private DoOther: boolean;
 
   constructor(private httpClient: HttpClient,
     private appStateService: AppStateService,
     private appLoadedService: AppLoadedService,
+    private appLanguageService: AppLanguageService,
     public webMunicipalitiesService: WebMunicipalitiesService,
     private sortTVItemListService: SortTVItemListService,
     private structureTVFileListService: StructureTVFileListService,
@@ -32,7 +35,8 @@ export class WebProvinceService {
     private componentDataLoadedService: ComponentDataLoadedService) {
   }
 
-  GetWebProvince(TVItemID: number) {
+  GetWebProvince(TVItemID: number, DoOther: boolean) {
+    this.DoOther = DoOther;
     let languageEnum = GetLanguageEnum();
     this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
       WebProvince: {},
@@ -40,27 +44,34 @@ export class WebProvinceService {
       ProvinceFileListList: [],
       ProvinceSamplingPlanList: [],
       BreadCrumbWebBaseList: [],
+      WebMunicipalities: {},
+      WebClimateSite: {},
+      WebHydrometricSite: {},
     });
-    this.appStateService.UpdateAppState(<AppState>{ Working: true });
+    this.appStateService.UpdateAppState(<AppState>{
+      Status: this.appLanguageService.AppLanguage.LoadingProvince[this.appStateService.AppState$?.getValue()?.Language],
+      Working: true
+    });
     let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebProvince/${TVItemID}/1`;
     return this.httpClient.get<WebProvince>(url).pipe(
       map((x: any) => {
         this.UpdateWebProvince(x);
         console.debug(x);
-        this.GetWebMunicipalities(TVItemID);      
+        if (DoOther) {
+          this.GetWebMunicipalities(TVItemID);
+        }
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.appStateService.UpdateAppState(<AppState>{ Working: false, Error: <HttpErrorResponse>e });
+        this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false, Error: <HttpErrorResponse>e });
         console.debug(e);
       })))
     );
   }
 
-  GetWebMunicipalities(TVItemID: number)
-  {
-    this.webMunicipalitiesService.GetWebMunicipalities(TVItemID).subscribe();
+  GetWebMunicipalities(TVItemID: number) {
+    this.webMunicipalitiesService.GetWebMunicipalities(TVItemID, this.DoOther).subscribe();
   }
-  
+
   UpdateWebProvince(x: WebProvince) {
     let ProvinceAreaList: WebBase[] = [];
     let ProvinceSamplingPlanList: SamplingPlan[] = [];
@@ -85,8 +96,13 @@ export class WebProvinceService {
       BreadCrumbWebBaseList: x?.TVItemParentList,
     });
 
-    if (this.componentDataLoadedService.DataLoadedProvince()) {
-      this.appStateService.UpdateAppState(<AppState>{ Working: false });
+    if (this.DoOther) {
+      if (this.componentDataLoadedService.DataLoadedProvince()) {
+        this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
+      }
+    }
+    else {
+      this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
     }
 
     if (this.appStateService.AppState$.getValue().ProvinceSubComponent == ProvinceSubComponentEnum.Areas) {

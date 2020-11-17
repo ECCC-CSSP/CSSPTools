@@ -10,7 +10,7 @@ import { ComponentButtonSelectionService } from 'src/app/services/helpers/compon
 import { ComponentDataClearService } from 'src/app/services/helpers/component-data-clear.service';
 import { ComponentShowService } from 'src/app/services/helpers/component-show.service';
 import { StatCountService } from 'src/app/services/helpers/stat-count.service';
-import { TVItemSortOrderService } from 'src/app/services/loaders/tvitem-sort-order.service';
+import { TVItemSortOrderService } from 'src/app/services/helpers/tvitem-sort-order.service';
 import { WebSectorService } from 'src/app/services/loaders/web-sector.service';
 
 @Component({
@@ -38,7 +38,7 @@ export class SectorComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     let TVItemID: number = this.appStateService.AppState$.getValue().CurrentTVItemID;
     this.componentDataClearService.DataClearSector();
-    this.subWebSector = this.webSectorService.GetWebSector(TVItemID).subscribe();
+    this.subWebSector = this.webSectorService.GetWebSector(TVItemID, true).subscribe();
   }
 
   ngOnDestroy(): void {

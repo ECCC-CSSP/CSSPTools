@@ -26,7 +26,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subWebContact = this.webContactService.GetWebContact().subscribe();
+    this.subWebContact = this.webContactService.GetWebContact(false).subscribe();
     this.subLoggedInContact = this.loggedInContactService.GetLoggedInContact().subscribe();
   }
 

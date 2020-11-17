@@ -31,22 +31,6 @@ namespace CSSPWebModels
         #endregion Constructors
     }
 
-    [NotMapped]
-    public partial class MikeSourceModel : WebBase
-    {
-        public MikeSource MikeSource { get; set; }
-        #region Properties
-        public List<MikeSourceStartEnd> MikeSourceStartEndList { get; set; }
-        #endregion Properties
-
-        #region Constructors
-        public MikeSourceModel()
-        {
-            MikeSource = new MikeSource();
-            MikeSourceStartEndList = new List<MikeSourceStartEnd>();
-        }
-        #endregion Constructors
-    }
 
     [NotMapped]
     public partial class MikeBoundaryConditionModel : WebBase

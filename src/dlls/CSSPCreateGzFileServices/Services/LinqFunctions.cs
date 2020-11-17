@@ -209,6 +209,38 @@ namespace CreateGzFileServices
                           && c.TVType == TVTypeEnum.Infrastructure
                           select ci).AsNoTracking().ToListAsync();
         }
+        private async Task<List<MikeScenario>> GetMikeScenarioListUnderMunicipality(TVItem tvItemMunicipality)
+        {
+            return await (from c in db.TVItems
+                          from ci in db.MikeScenarios
+                          where c.TVItemID == ci.MikeScenarioTVItemID
+                          && c.TVPath.Contains(tvItemMunicipality.TVPath + "p")
+                          && c.ParentID == tvItemMunicipality.TVItemID
+                          && c.TVType == TVTypeEnum.MikeScenario
+                          select ci).AsNoTracking().ToListAsync();
+        }
+        private async Task<List<MikeSource>> GetMikeSourceListUnderMunicipality(TVItem tvItemMunicipality)
+        {
+            return await (from c in db.TVItems
+                          from ci in db.MikeSources
+                          where c.TVItemID == ci.MikeSourceTVItemID
+                          && c.TVPath.Contains(tvItemMunicipality.TVPath + "p")
+                          && c.ParentID == tvItemMunicipality.TVItemID
+                          && c.TVType == TVTypeEnum.MikeSource
+                          select ci).AsNoTracking().ToListAsync();
+        }
+        private async Task<List<MikeSourceStartEnd>> GetMikeSourceStartEndListUnderMunicipality(TVItem tvItemMunicipality)
+        {
+            return await (from c in db.TVItems
+                          from ci in db.MikeSources
+                          from se in db.MikeSourceStartEnds
+                          where c.TVItemID == ci.MikeSourceTVItemID
+                          && ci.MikeSourceID == se.MikeSourceID
+                          && c.TVPath.Contains(tvItemMunicipality.TVPath + "p")
+                          && c.ParentID == tvItemMunicipality.TVItemID
+                          && c.TVType == TVTypeEnum.MikeSource
+                          select se).AsNoTracking().ToListAsync();
+        }
         private async Task<List<TVItemLink>> GetInfrastructureTVItemLinkListUnderMunicipality(TVItem tvItemMunicipality)
         {
             return await (from c in db.TVItems

@@ -8,20 +8,24 @@ import { AppState } from 'src/app/models/AppState.model';
 import { WebMikeScenario } from 'src/app/models/generated/web/WebMikeScenario.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
+import { AppLanguageService } from '../app-language.service';
 import { ComponentDataLoadedService } from '../helpers/component-data-loaded.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class WebMikeScenarioService {
+    private DoOther: boolean;
 
     constructor(private httpClient: HttpClient,
-        private appStateService: AppStateService, 
+        private appStateService: AppStateService,
         private appLoadedService: AppLoadedService,
+        private appLanguageService: AppLanguageService,
         private componentDataLoadedService: ComponentDataLoadedService) {
-      }
-    
-    GetWebMikeScenario(TVItemID: number) {
+    }
+
+    GetWebMikeScenario(TVItemID: number, DoOther: boolean) {
+        this.DoOther = DoOther;
         let languageEnum = GetLanguageEnum();
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
             WebMikeScenario: {},
@@ -31,15 +35,21 @@ export class WebMikeScenarioService {
             MikeSourceModelList: [],
             BreadCrumbWebBaseList: [],
         });
-        this.appStateService.UpdateAppState(<AppState>{ Working: true });
+        this.appStateService.UpdateAppState(<AppState>{
+            Status: this.appLanguageService.AppLanguage.LoadingMIKEScenario[this.appStateService.AppState$?.getValue()?.Language],
+            Working: true
+        });
         let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebMikeScenario/${TVItemID}/1`;
         return this.httpClient.get<WebMikeScenario>(url).pipe(
             map((x: any) => {
                 this.UpdateWebMikeScenario(x);
                 console.debug(x);
+                if (DoOther) {
+                    // nothing else to add in the chain
+                }
             }),
             catchError(e => of(e).pipe(map(e => {
-                this.appStateService.UpdateAppState(<AppState>{ Working: false, Error: <HttpErrorResponse>e });
+                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false, Error: <HttpErrorResponse>e });
                 console.debug(e);
             })))
         );
@@ -55,9 +65,13 @@ export class WebMikeScenarioService {
             BreadCrumbWebBaseList: x?.TVItemParentList,
         });
 
-        if (this.componentDataLoadedService.DataLoadedMIKEScenario()) {
-            this.appStateService.UpdateAppState(<AppState>{ Working: false });
+        if (this.DoOther) {
+            if (this.componentDataLoadedService.DataLoadedMIKEScenario()) {
+                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
+            }
         }
-
+        else {
+            this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
+        }
     }
 }

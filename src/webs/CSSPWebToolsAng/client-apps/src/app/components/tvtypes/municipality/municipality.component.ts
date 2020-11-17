@@ -9,7 +9,7 @@ import { AppLanguageService } from 'src/app/services/app-language.service';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { StatCountService } from 'src/app/services/helpers/stat-count.service';
-import { TVItemSortOrderService } from 'src/app/services/loaders/tvitem-sort-order.service';
+import { TVItemSortOrderService } from 'src/app/services/helpers/tvitem-sort-order.service';
 import { WebMunicipalityService } from 'src/app/services/loaders/web-municipalty.service';
 
 @Component({
@@ -33,7 +33,7 @@ export class MunicipalityComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     let TVItemID: number = this.appStateService.AppState$.getValue().CurrentTVItemID;
-    this.subWebMunicipality = this.webMunicipalityService.GetWebMunicipality(TVItemID).subscribe();
+    this.subWebMunicipality = this.webMunicipalityService.GetWebMunicipality(TVItemID, true).subscribe();
   }
 
   ngOnDestroy(): void {

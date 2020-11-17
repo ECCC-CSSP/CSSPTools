@@ -15,6 +15,7 @@ namespace CSSPWebModels
         public List<WebBase> TVItemParentList { get; set; }
         public List<WebBase> TVItemMikeScenarioList { get; set; }
         public List<InfrastructureModel> InfrastructureModelList { get; set; }
+        public List<MIKEScenarioModel> MIKEScenarioModelList { get; set; }
         public List<ContactModel> MunicipalityContactModelList { get; set; }
         public List<TVItemLink> MunicipalityTVItemLinkList { get; set; }
         #endregion Properties
@@ -25,6 +26,7 @@ namespace CSSPWebModels
             TVItemParentList = new List<WebBase>();
             TVItemMikeScenarioList = new List<WebBase>();
             InfrastructureModelList = new List<InfrastructureModel>();
+            MIKEScenarioModelList = new List<MIKEScenarioModel>();
             MunicipalityContactModelList = new List<ContactModel>();
             MunicipalityTVItemLinkList = new List<TVItemLink>();
         }
@@ -54,6 +56,42 @@ namespace CSSPWebModels
         #endregion Constructors
 
     }
+
+    [NotMapped]
+    public partial class MIKEScenarioModel : WebBase
+    {
+        #region Properties
+        public MikeScenario MikeScenario { get; set; }
+        public List<MikeSourceModel> MikeSourceModelList { get; set; }
+        #endregion Properties
+
+        #region Constructors
+        public MIKEScenarioModel()
+        {
+            MikeScenario = new MikeScenario();
+            MikeSourceModelList = new List<MikeSourceModel>();
+        }
+        #endregion Constructors
+
+    }
+
+    [NotMapped]
+    public partial class MikeSourceModel : WebBase
+    {
+        public MikeSource MikeSource { get; set; }
+        #region Properties
+        public List<MikeSourceStartEnd> MikeSourceStartEndList { get; set; }
+        #endregion Properties
+
+        #region Constructors
+        public MikeSourceModel()
+        {
+            MikeSource = new MikeSource();
+            MikeSourceStartEndList = new List<MikeSourceStartEnd>();
+        }
+        #endregion Constructors
+    }
+
     [NotMapped]
     public partial class ContactModel : WebBase
     {

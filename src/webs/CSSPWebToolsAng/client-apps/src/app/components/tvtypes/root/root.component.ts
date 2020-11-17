@@ -7,7 +7,7 @@ import { AppLanguageService } from 'src/app/services/app-language.service';
 import { GetTVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 import { GetAscDescEnum } from 'src/app/enums/generated/AscDescEnum';
 import { WebRootService } from 'src/app/services/loaders/web-root.service';
-import { TVItemSortOrderService } from 'src/app/services/loaders/tvitem-sort-order.service';
+import { TVItemSortOrderService } from 'src/app/services/helpers/tvitem-sort-order.service';
 import { StatCountService } from 'src/app/services/helpers/stat-count.service';
 import { ComponentButtonSelectionService } from 'src/app/services/helpers/component-button-selection.service';
 import { ComponentShowService } from 'src/app/services/helpers/component-show.service';
@@ -39,7 +39,7 @@ export class RootComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     let TVItemID: number = this.appStateService.AppState$.getValue().CurrentTVItemID;
     this.componentDataClearService.DataClearRoot();
-    this.subWebRoot = this.webRootService.GetWebRoot(TVItemID).subscribe();
+    this.subWebRoot = this.webRootService.GetWebRoot(TVItemID, true).subscribe();
   }
 
   ngOnDestroy(): void {

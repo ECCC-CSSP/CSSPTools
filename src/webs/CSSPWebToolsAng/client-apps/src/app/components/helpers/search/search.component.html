@@ -1,12 +1,11 @@
-<span *ngIf="(appStateService.AppState$ | async).SearchWorking">
-    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-</span>
-
 <mat-form-field [ngClass]="formFieldWidthClass">
-    <input (focus)="ToggleSearchWidth()" (blur)="ToggleSearchWidth()" type="text" 
-    placeholder="{{ appLanguageService.AppLanguage.SearchSearch[appStateService.AppState$?.getValue().Language] }}"
+    <input (focus)="ToggleSearchWidth()" (blur)="ToggleSearchWidth()" type="text"
+        placeholder="{{ appLanguageService.AppLanguage.SearchSearch[appStateService.AppState$?.getValue().Language] }}"
         aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="searchAuto">
     <mat-icon matSuffix>search</mat-icon>
+    <span *ngIf="(appStateService.AppState$ | async).SearchWorking">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </span>
     <mat-autocomplete #searchAuto="matAutocomplete" (optionSelected)="NavigateTo($event.option.value)"
         [displayWith]="displayFn">
         <mat-option *ngFor="let option of (appLoadedService.AppLoaded$ | async).SearchResult" [value]="option">

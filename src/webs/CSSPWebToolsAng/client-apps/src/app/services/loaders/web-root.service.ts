@@ -7,28 +7,35 @@ import { WebBase } from 'src/app/models/generated/web/WebBase.model';
 import { WebRoot } from 'src/app/models/generated/web/WebRoot.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
-import { StructureTVFileListService } from 'src/app/services/loaders/structure-tvfile-list.service';
-import { SortTVItemListService } from 'src/app/services/loaders/sort-tvitem-list.service';
+import { StructureTVFileListService } from 'src/app/services/helpers/structure-tvfile-list.service';
+import { SortTVItemListService } from 'src/app/services/helpers/sort-tvitem-list.service';
 import { MapService } from 'src/app/services/map/map.service';
 import { RootSubComponentEnum } from 'src/app/enums/generated/RootSubComponentEnum';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { ComponentDataLoadedService } from '../helpers/component-data-loaded.service';
 import { AppState } from 'src/app/models/AppState.model';
+import { AppLanguageService } from '../app-language.service';
+import { WebContactService } from './web-contact.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class WebRootService {
+    private DoOther: boolean;
+
     constructor(private httpClient: HttpClient,
         private appStateService: AppStateService,
         private appLoadedService: AppLoadedService,
+        private appLanguageService: AppLanguageService,
         private sortTVItemListService: SortTVItemListService,
         private structureTVFileListService: StructureTVFileListService,
         private mapService: MapService,
+        private webContactService: WebContactService,
         private componentDataLoadedService: ComponentDataLoadedService) {
     }
 
-    GetWebRoot(TVItemID: number) {
+    GetWebRoot(TVItemID: number, DoOther: boolean) {
+        this.DoOther = DoOther;
         let languageEnum = GetLanguageEnum();
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
             WebRoot: {},
@@ -36,18 +43,28 @@ export class WebRootService {
             RootFileListList: [],
             BreadCrumbWebBaseList: [],
         });
-        this.appStateService.UpdateAppState(<AppState>{ Working: true });
+        this.appStateService.UpdateAppState(<AppState>{
+            Status: this.appLanguageService.AppLanguage.LoadingRoot[this.appStateService.AppState$?.getValue()?.Language],
+            Working: true
+        });
         let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebRoot/${TVItemID}/1`;
         return this.httpClient.get<WebRoot>(url).pipe(
             map((x: any) => {
                 this.UpdateWebRoot(x);
                 console.debug(x);
+                if (DoOther) {
+                    this.GetWebContact();
+                }
             }),
             catchError(e => of(e).pipe(map(e => {
-                this.appStateService.UpdateAppState(<AppState>{ Working: false, Error: <HttpErrorResponse>e });
+                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false, Error: <HttpErrorResponse>e });
                 console.debug(e);
             })))
         );
+    }
+
+    GetWebContact() {
+        this.webContactService.GetWebContact(this.DoOther).subscribe();
     }
 
     UpdateWebRoot(x: WebRoot) {
@@ -67,8 +84,13 @@ export class WebRootService {
             BreadCrumbWebBaseList: x?.TVItemParentList,
         });
 
-        if (this.componentDataLoadedService.DataLoadedRoot()) {
-            this.appStateService.UpdateAppState(<AppState>{ Working: false });
+        if (this.DoOther) {
+            if (this.componentDataLoadedService.DataLoadedRoot()) {
+                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
+            }
+        }
+        else {
+            this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
         }
 
         if (this.appStateService.AppState$.getValue().RootSubComponent == RootSubComponentEnum.Countries) {

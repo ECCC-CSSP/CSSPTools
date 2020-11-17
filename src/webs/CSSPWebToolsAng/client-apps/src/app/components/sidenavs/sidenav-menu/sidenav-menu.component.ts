@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Input } from '@a
 import { AppState } from 'src/app/models/AppState.model';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { AppStateService } from 'src/app/services/app-state.service';
-import { TogglesService } from 'src/app/services/loaders/toggles.service';
+import { TogglesService } from 'src/app/services/helpers/toggles.service';
 
 @Component({
   selector: 'app-sidenav-menu',

@@ -1,6 +1,3 @@
-<span *ngIf="(appStateService.AppState$ | async).Working">
-</span>
-
 <span *ngIf="tvTypeEnum.Sector">
     <span>{{ appLanguageService.AppLanguage.TVItemListDetailAreaSector[appStateService.AppState$?.getValue().Language] }}&nbsp;&nbsp;</span>
     <app-stat-count [TVType]="tvTypeEnum.Sector" [TVItemModel]="TVItemModel">

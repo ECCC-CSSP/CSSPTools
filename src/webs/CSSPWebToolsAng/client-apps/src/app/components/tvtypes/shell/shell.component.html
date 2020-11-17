@@ -1,13 +1,6 @@
-<span *ngIf="(appStateService.AppState$ | async).Working">
-    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-</span>
-<p class="loading-status" *ngIf="(appStateService.AppState$ | async).Status">
-    {{ appStateService.AppState$?.getValue()?.Status }}
-</p>
-
 <mat-toolbar class="header">
     <span class="toolbar">
-        <button (click)="ToggleMenu()" mat-button title="{{ appLanguageService.AppLanguage.ShellOpenContextMenu[appStateService.AppState$?.getValue().Language] }}">
+        <button (click)="togglesService.ToggleMenu()" mat-button title="{{ appLanguageService.AppLanguage.ShellOpenContextMenu[appStateService.AppState$?.getValue().Language] }}">
             <mat-icon>menu</mat-icon>
         </button>
         <button mat-button (click)="Home()" title="{{ appLanguageService.AppLanguage.ShellReturnHome[appStateService.AppState$?.getValue().Language] }}">
@@ -26,7 +19,7 @@
             (click)="SetLanguage(languageEnum.en)">English</button>
         <button mat-button *ngIf="(appStateService.AppState$?.getValue()?.Language == languageEnum.en)"
             (click)="SetLanguage(languageEnum.fr)">Français</button>
-        <button mat-button (click)="ToggleMap()" title="{{ appLanguageService.AppLanguage.ShellShowMap[appStateService.AppState$?.getValue().Language] }}">
+        <button mat-button (click)="togglesService.ToggleMap()" title="{{ appLanguageService.AppLanguage.ShellShowMap[appStateService.AppState$?.getValue().Language] }}">
             <mat-icon>map</mat-icon>
         </button>
         <button mat-button title="{{ appLanguageService.AppLanguage.ShellResizeMap[appStateService.AppState$?.getValue().Language] }}" 

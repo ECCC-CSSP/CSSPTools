@@ -10,6 +10,7 @@ import { GetLanguageEnum, LanguageEnum } from 'src/app/enums/generated/LanguageE
 import { GetShellSubComponentEnum } from 'src/app/enums/generated/ShellSubComponentEnum';
 import { GetMapSizeEnum, MapSizeEnum } from 'src/app/enums/generated/MapSizeEnum';
 import { TopComponentEnum } from 'src/app/enums/generated/TopComponentEnum';
+import { TogglesService } from 'src/app/services/helpers/toggles.service';
 
 @Component({
   selector: 'app-shell',
@@ -27,15 +28,9 @@ export class ShellComponent implements OnInit, OnDestroy {
   constructor(public appStateService: AppStateService,
     public appLoadedService: AppLoadedService,
     public appLanguageService: AppLanguageService,
+    public togglesService: TogglesService,
     private title: Title) { }
 
-  ToggleMap(): void {
-    this.appStateService.UpdateAppState(<AppState>{ MapVisible: !this.appStateService.AppState$.getValue().MapVisible });
-  }
-
-  ToggleMenu(): void {
-    this.appStateService.UpdateAppState(<AppState>{ MenuVisible: !this.appStateService.AppState$.getValue().MenuVisible });
-  }
 
   ngOnInit(): void {
     this.title.setTitle(this.appLanguageService.AppLanguage.ShellApplicationName[this.appStateService.AppState$?.getValue().Language]);

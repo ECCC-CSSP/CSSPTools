@@ -7,7 +7,7 @@ import { AppStateService } from 'src/app/services/app-state.service';
 import { GetTVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 import { GetAscDescEnum } from 'src/app/enums/generated/AscDescEnum';
 import { WebAreaService } from 'src/app/services/loaders/web-area.service';
-import { TVItemSortOrderService } from 'src/app/services/loaders/tvitem-sort-order.service';
+import { TVItemSortOrderService } from 'src/app/services/helpers/tvitem-sort-order.service';
 import { StatCountService } from 'src/app/services/helpers/stat-count.service';
 import { ComponentButtonSelectionService } from 'src/app/services/helpers/component-button-selection.service';
 import { ComponentShowService } from 'src/app/services/helpers/component-show.service';
@@ -38,7 +38,7 @@ export class AreaComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     let TVItemID: number = this.appStateService.AppState$.getValue().CurrentTVItemID;
     this.componentDataClearService.DataClearArea();
-    this.subWebArea = this.webAreaService.GetWebArea(TVItemID).subscribe();
+    this.subWebArea = this.webAreaService.GetWebArea(TVItemID, true).subscribe();
   }
 
   ngOnDestroy(): void {

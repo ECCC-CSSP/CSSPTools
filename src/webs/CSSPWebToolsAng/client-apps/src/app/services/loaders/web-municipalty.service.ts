@@ -13,26 +13,30 @@ import { WebBase } from 'src/app/models/generated/web/WebBase.model';
 import { WebMunicipality } from 'src/app/models/generated/web/WebMunicipality.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
-import { StructureTVFileListService } from 'src/app/services/loaders/structure-tvfile-list.service';
+import { StructureTVFileListService } from 'src/app/services/helpers/structure-tvfile-list.service';
 import { ComponentDataLoadedService } from '../helpers/component-data-loaded.service';
 import { MapService } from '../map/map.service';
-import { SortTVItemListService } from './sort-tvitem-list.service';
+import { SortTVItemListService } from '../helpers/sort-tvitem-list.service';
+import { AppLanguageService } from '../app-language.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class WebMunicipalityService {
+    private DoOther: boolean;
 
     constructor(private httpClient: HttpClient,
         private appStateService: AppStateService,
         private appLoadedService: AppLoadedService,
+        private appLanguageService: AppLanguageService,
         private sortTVItemListService: SortTVItemListService,
         private structureTVFileListService: StructureTVFileListService,
         private mapService: MapService,
         private componentDataLoadedService: ComponentDataLoadedService) {
     }
 
-    GetWebMunicipality(TVItemID: number) {
+    GetWebMunicipality(TVItemID: number, DoOther: boolean) {
+        this.DoOther = this.DoOther;
         let languageEnum = GetLanguageEnum();
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
             WebMunicipality: {},
@@ -42,15 +46,21 @@ export class WebMunicipalityService {
             TVItemMikeScenarioList: [],
             BreadCrumbWebBaseList: [],
         });
-        this.appStateService.UpdateAppState(<AppState>{ Working: true });
+        this.appStateService.UpdateAppState(<AppState>{
+            Status: this.appLanguageService.AppLanguage.LoadingMunicipality[this.appStateService.AppState$?.getValue()?.Language],
+            Working: true
+        });
         let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebMunicipality/${TVItemID}/1`;
         return this.httpClient.get<WebMunicipality>(url).pipe(
             map((x: any) => {
                 this.UpdateWebMunicipality(x);
                 console.debug(x);
+                if (DoOther) {
+                    // nothing more to add in the chain
+                }
             }),
             catchError(e => of(e).pipe(map(e => {
-                this.appStateService.UpdateAppState(<AppState>{ Working: false, Error: <HttpErrorResponse>e });
+                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false, Error: <HttpErrorResponse>e });
                 console.debug(e);
             })))
         );
@@ -77,8 +87,13 @@ export class WebMunicipalityService {
             BreadCrumbWebBaseList: x?.TVItemParentList,
         });
 
-        if (this.componentDataLoadedService.DataLoadedMunicipality()) {
-            this.appStateService.UpdateAppState(<AppState>{ Working: false });
+        if (this.DoOther) {
+            if (this.componentDataLoadedService.DataLoadedMunicipality()) {
+                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
+            }
+        }
+        else {
+            this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
         }
 
         if (this.appStateService.AppState$.getValue().MunicipalitySubComponent == MunicipalitySubComponentEnum.Infrastructures) {

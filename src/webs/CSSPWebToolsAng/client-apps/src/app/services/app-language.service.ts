@@ -28,7 +28,7 @@ export class AppLanguageService {
       CountryEmailDistributionList: ['', 'Email Distribution List', 'Liste de distribution des courriels'],
       CountryShowRainExceedance: ['', 'Show rain exceedance', 'Montrer pluie dépassement'],
       CountryRainExceedance: ['', 'Rain Exceedance', 'Pluie dépassement'],
-  
+
       DateJanuary: ['', 'January', 'janvier'],
       DateFebruary: ['', 'February', 'février'],
       DateMarch: ['', 'March', 'mars'],
@@ -68,6 +68,40 @@ export class AppLanguageService {
 
       KB: ['', 'KB', 'Ko'],
 
+      LoadingArea: ['', 'Loading Area', 'Téléchargement - Région'],
+      LoadingClimateData: ['', 'Loading Climate Data', 'Téléchargement - Données Climatiques'],
+      LoadingContact: ['', 'Loading Contacts', 'Téléchargement - Contacts'],
+      LoadingCountry: ['', 'Loading Country', 'Téléchargement - Pays'],
+      LoadingHelpDoc: ['', 'Loading Help Doc', 'Téléchargement - Aide - Doc'],
+      LoadingHydrometricData: ['', 'Loading Hydrometric Data', 'Téléchargement - Données Hydrométriques'],
+      LoadingMIKEScenario: ['', 'Loading MIKE Scenario', 'Téléchargement - Scénario MIKE'],
+      LoadingMunicipality: ['', 'Loading Municipality', 'Téléchargement - Municipalité'],
+      LoadingMWQMLookupMPN: ['', 'Loading MWQM Lookup MPN', 'Téléchargement - Liste des NPB PSQEM'],
+      LoadingMWQMRun: ['', 'Loading MWQM Run', 'Téléchargement - Tournée PSQEM'],
+      LoadingMWQMSample1980To1990: ['', 'Loading MWQM Sample 1980-1990', 'Téléchargement - Échantillons PSQEM 1980-1990'],
+      LoadingMWQMSample1990To2000: ['', 'Loading MWQM Sample 1990-2000', 'Téléchargement - Échantillons PSQEM 1990-2000'],
+      LoadingMWQMSample2000To2010: ['', 'Loading MWQM Sample 2000-2010', 'Téléchargement - Échantillons PSQEM 2000-2010'],
+      LoadingMWQMSample2010To2020: ['', 'Loading MWQM Sample 2010-2020', 'Téléchargement - Échantillons PSQEM 2010-2020'],
+      LoadingMWQMSample2020To2030: ['', 'Loading MWQM Sample 2020-2030', 'Téléchargement - Échantillons PSQEM 2020-2030'],
+      LoadingMWQMSample2030To2040: ['', 'Loading MWQM Sample 2030-2040', 'Téléchargement - Échantillons PSQEM 2030-2040'],
+      LoadingMWQMSample2040To2050: ['', 'Loading MWQM Sample 2040-2050', 'Téléchargement - Échantillons PSQEM 2040-2050'],
+      LoadingMWQMSample2050To2060: ['', 'Loading MWQM Sample 2050-2060', 'Téléchargement - Échantillons PSQEM 2050-2060'],
+      LoadingMWQMSite: ['', 'Loading MWQM Site', 'Téléchargement - Site PSQEM'],
+      LoadingPolSourceGrouping: ['', 'Loading Pollution Source Grouping', 'Téléchargement - Groupement de source de pollution'],
+      LoadingPolSourceSite: ['', 'Loading Pollution Source Site', 'Téléchargement - Site de source de pollution'],
+      LoadingPolSourceSiteEffectTerm: ['', 'Loading Pollution Source Site Effect Term', 'Téléchargement - Site de source de pollution termes des effets'],
+      LoadingProvince: ['', 'Loading Province', 'Téléchargement - Province'],
+      LoadingProvinceClimateSite: ['', 'Loading Province Climate Sites', 'Téléchargement - Province - Sites Climatiques'],
+      LoadingProvinceHydrometricSite: ['', 'Loading Province Hydrometric Sites', 'Téléchargement - Province - Sites Hydrométriques'],
+      LoadingProvinceMunicipalities: ['', 'Loading Province Municipalities', 'Téléchargement - Province - Municipalités'],
+      LoadingReportType: ['', 'Loading Report Type', 'Téléchargement - Type de rapport'],
+      LoadingRoot: ['', 'Loading Root', 'Téléchargement - Base'],
+      LoadingSamplingPlan: ['', 'Loading Sampling Plan', 'Téléchargement - Plan d\'échantillonnage'],
+      LoadingSector: ['', 'Loading Sector', 'Téléchargement - Secteur'],
+      LoadingSubsector: ['', 'Loading Subsector', 'Téléchargement - Sous-Secteur'],
+      LoadingSubsectorDrogueRun: ['', 'Loading Subsector Drogue Run', 'Téléchargement - Sous-Secteur - Drogue Run (fr)'],
+      LoadingTideLocation: ['', 'Loading Tide Location', 'Téléchargement - Endroit des sites de marées'],
+
       MunicipalityShowContacts: ['', 'Show contacts', 'Montrer contacts'],
       MunicipalityContacts: ['', 'Contacts', 'Contacts'],
       MunicipalityShowFiles: ['', 'Show files', 'Montrer filières'],
@@ -89,7 +123,7 @@ export class AppLanguageService {
       ProvinceSamplingPlan: ['', 'Sampling Plan', 'Plan d\'échantillonnage'],
       ProvinceShowProvinceTools: ['', 'Show province tools', 'Montrer outils pour province'],
       ProvinceProvinceTools: ['', 'Province Tools', "Outils pour province"],
-  
+
       RootShowCountries: ['', 'Show countries', 'Montrer pays'],
       RootCountries: ['', 'Countries', 'Pays'],
       RootShowFiles: ['', 'Show Files', 'Montrer filières'],
@@ -123,7 +157,7 @@ export class AppLanguageService {
       SectorFiles: ['', 'Files', 'Filières'],
       SectorShowMIKEScenarios: ['', 'Show MIKE scenarios', 'Montrer scénarios MIKE'],
       SectorMIKEScenarios: ['', 'MIKE Scenarios', 'Scénarios MIKE'],
-  
+
       SubsectorShowMWQMSites: ['', 'Show MWQM sites', 'Montrer sites PSQEM'],
       SubsectorMWQMSites: ['', 'MWQM Sites', 'Sites PSQEM'],
       SubsectorShowAnalysis: ['', 'Show analysis', 'Montrer analyse'],
@@ -192,7 +226,7 @@ export class AppLanguageService {
       TVItemListDetailSubsectorMWQMSite: ['', 'MWQM site', 'Site de SQE'],
       TVItemListDetailSubsectorMWQMRun: ['', 'MWQM run', 'Tournées'],
       TVItemListDetailSubsectorPolSourceSite: ['', 'Pollution source site', 'Site de source de pollution'],
-  
+
 
     }
   }

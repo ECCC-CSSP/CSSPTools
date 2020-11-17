@@ -24,7 +24,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     public webContactService: WebContactService) { }
 
   ngOnInit(): void {
-    this.subWebContact = this.webContactService.GetWebContact().subscribe();
+    this.subWebContact = this.webContactService.GetWebContact(false).subscribe();
   }
 
   ngOnDestroy() {

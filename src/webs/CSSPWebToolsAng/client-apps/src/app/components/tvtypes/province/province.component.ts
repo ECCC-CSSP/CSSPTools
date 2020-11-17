@@ -10,7 +10,7 @@ import { ComponentButtonSelectionService } from 'src/app/services/helpers/compon
 import { ComponentDataClearService } from 'src/app/services/helpers/component-data-clear.service';
 import { ComponentShowService } from 'src/app/services/helpers/component-show.service';
 import { StatCountService } from 'src/app/services/helpers/stat-count.service';
-import { TVItemSortOrderService } from 'src/app/services/loaders/tvitem-sort-order.service';
+import { TVItemSortOrderService } from 'src/app/services/helpers/tvitem-sort-order.service';
 import { WebProvinceService } from 'src/app/services/loaders/web-province.service';
 
 @Component({
@@ -39,7 +39,7 @@ export class ProvinceComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     let TVItemID: number = this.appStateService.AppState$.getValue().CurrentTVItemID;
     this.componentDataClearService.DataClearProvince();
-    this.subWebProvince = this.webProvinceService.GetWebProvince(TVItemID).subscribe();
+    this.subWebProvince = this.webProvinceService.GetWebProvince(TVItemID, true).subscribe();
   }
 
   ngOnDestroy(): void {

@@ -8,6 +8,7 @@ import { AppState } from 'src/app/models/AppState.model';
 import { WebClimateDataValue } from 'src/app/models/generated/web/WebClimateDataValue.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
+import { AppLanguageService } from '../app-language.service';
 import { ComponentDataLoadedService } from '../helpers/component-data-loaded.service';
 
 
@@ -15,25 +16,34 @@ import { ComponentDataLoadedService } from '../helpers/component-data-loaded.ser
     providedIn: 'root'
 })
 export class WebClimateDataValueService {
+    private DoOther: boolean;
 
     constructor(private httpClient: HttpClient,
         private appStateService: AppStateService,
         private appLoadedService: AppLoadedService,
+        private appLanguageService: AppLanguageService,
         private componentDataLoadedService: ComponentDataLoadedService) {
     }
 
-    GetWebClimateDataValue(TVItemID: number) {
+    GetWebClimateDataValue(TVItemID: number, DoOther: boolean) {
+        this.DoOther = DoOther;
         let languageEnum = GetLanguageEnum();
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebClimateDataValue: {} });
-        this.appStateService.UpdateAppState(<AppState>{ Working: true });
+        this.appStateService.UpdateAppState(<AppState>{
+            Status: this.appLanguageService.AppLanguage.LoadingClimateData[this.appStateService.AppState$?.getValue()?.Language],
+            Working: true
+        });
         let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebClimateDataValue/${TVItemID}/1`;
         return this.httpClient.get<WebClimateDataValue>(url).pipe(
             map((x: any) => {
                 this.UpdateWebClimateDataValue(x);
                 console.debug(x);
+                if (DoOther) {
+                    // nothing else to add to the chain
+                }
             }),
             catchError(e => of(e).pipe(map(e => {
-                this.appStateService.UpdateAppState(<AppState>{ Working: false, Error: <HttpErrorResponse>e });
+                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false, Error: <HttpErrorResponse>e });
                 console.debug(e);
             })))
         );
@@ -42,10 +52,13 @@ export class WebClimateDataValueService {
     UpdateWebClimateDataValue(x: WebClimateDataValue) {
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebClimateDataValue: x, });
 
-        if (this.componentDataLoadedService.DataLoadedClimateSite()) {
-            this.appStateService.UpdateAppState(<AppState>{ Working: false });
+        if (this.DoOther) {
+            if (this.componentDataLoadedService.DataLoadedClimateData()) {
+                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
+            }
+        }
+        else {
+            this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
         }
     }
-
-
 }
