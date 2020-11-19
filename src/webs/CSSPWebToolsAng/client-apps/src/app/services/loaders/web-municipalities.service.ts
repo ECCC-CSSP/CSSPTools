@@ -14,6 +14,7 @@ import { ComponentDataLoadedService } from '../helpers/component-data-loaded.ser
 import { AppState } from 'src/app/models/AppState.model';
 import { AppLanguageService } from '../app-language.service';
 import { WebClimateSiteService } from './web-climate-site.service';
+import { WebBase } from 'src/app/models/generated/web/WebBase.model';
 
 
 @Injectable({
@@ -77,9 +78,16 @@ export class WebMunicipalitiesService {
       }
     }
 
+    let webBaseProvince: WebBase[] = <WebBase[]>[
+      <WebBase>{ TVItemModel: this.appLoadedService.AppLoaded$.getValue().WebProvince.TVItemModel },
+    ];
+
     if (this.appStateService.AppState$.getValue().ProvinceSubComponent == ProvinceSubComponentEnum.Municipalities) {
       this.mapService.ClearMap();
-      this.mapService.DrawObjects(this.appLoadedService.AppLoaded$.getValue().ProvinceMunicipalityList);
+      this.mapService.DrawObjects([
+        ...this.appLoadedService.AppLoaded$.getValue().ProvinceMunicipalityList,
+        ...webBaseProvince
+      ]);
     }
 
   }

@@ -4,6 +4,7 @@ import { AppLoaded } from 'src/app/models/AppLoaded.model';
 import { WebBase } from 'src/app/models/generated/web/WebBase.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
+import { MapHelperService } from './map-helper.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,8 @@ import { AppStateService } from 'src/app/services/app-state.service';
 export class MapPolylinesService {
 
   constructor(private appStateService: AppStateService,
-    private appLoadedService: AppLoadedService) {
+    private appLoadedService: AppLoadedService,
+    private mapHelperService: MapHelperService) {
   }
 
   DrawPolylines(webBaseList: WebBase[]) {
@@ -26,9 +28,11 @@ export class MapPolylinesService {
             polyPoints.push(new google.maps.LatLng(point.Lat, point.Lng));
           }
 
+          let strokeColor: string = this.mapHelperService.GetMapPolylineColor(mapInfoModel.MapInfo.TVType, mapInfoModel.MapInfo.TVType);
+
           let options: google.maps.PolylineOptions = {
             path: polyPoints,
-            strokeColor: "#FF0000",
+            strokeColor: strokeColor,
             strokeOpacity: 0.8,
             strokeWeight: 2,
             map: this.appLoadedService.AppLoaded$.getValue().Map,

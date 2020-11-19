@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
+import { ClassificationTypeEnum } from 'src/app/enums/generated/ClassificationTypeEnum';
 import { MapInfoDrawTypeEnum } from 'src/app/enums/generated/MapInfoDrawTypeEnum';
+import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { WebBase } from 'src/app/models/generated/web/WebBase.model';
@@ -8,6 +10,7 @@ import { AppStateService } from 'src/app/services/app-state.service';
 import { MapMarkersService } from 'src/app/services/map/map-markers.service';
 import { MapPolygonsService } from 'src/app/services/map/map-polygons.service';
 import { MapPolylinesService } from 'src/app/services/map/map-polylines.service';
+import { MapHelperService } from './map-helper.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,31 +20,28 @@ export class MapService {
     private appLoadedService: AppLoadedService,
     private mapMarkersService: MapMarkersService,
     private mapPolygonsService: MapPolygonsService,
-    private mapPolylinesService: MapPolylinesService) {
+    private mapPolylinesService: MapPolylinesService,
+    private mapHelperService: MapHelperService) {
   }
 
   ClearMap() {
     let length: number = this.appLoadedService.AppLoaded$.getValue().GoogleCrossPolylineListMVC.getLength();
-    for(let i = 0; i < length; i++)
-    {
+    for (let i = 0; i < length; i++) {
       this.appLoadedService.AppLoaded$.getValue().GoogleCrossPolylineListMVC.getAt(i).setMap(null);
     }
 
     length = this.appLoadedService.AppLoaded$.getValue().GoogleMarkerListMVC.getLength();
-    for(let i = 0; i < length; i++)
-    {
+    for (let i = 0; i < length; i++) {
       this.appLoadedService.AppLoaded$.getValue().GoogleMarkerListMVC.getAt(i).setMap(null);
     }
 
     length = this.appLoadedService.AppLoaded$.getValue().GooglePolygonListMVC.getLength();
-    for(let i = 0; i < length; i++)
-    {
+    for (let i = 0; i < length; i++) {
       this.appLoadedService.AppLoaded$.getValue().GooglePolygonListMVC.getAt(i).setMap(null);
     }
 
     length = this.appLoadedService.AppLoaded$.getValue().GooglePolylineListMVC.getLength();
-    for(let i = 0; i < length; i++)
-    {
+    for (let i = 0; i < length; i++) {
       this.appLoadedService.AppLoaded$.getValue().GooglePolylineListMVC.getAt(i).setMap(null);
     }
 
@@ -60,42 +60,11 @@ export class MapService {
     this.mapMarkersService.DrawMarkers(webBaseList);
     this.mapPolygonsService.DrawPolygons(webBaseList);
     this.mapPolylinesService.DrawPolylines(webBaseList);
-    this.FitBounds();
-  }
-
-  FitBounds() {
-    let bounds = new google.maps.LatLngBounds();
-    let googleMarkerMVCArray: google.maps.MVCArray<google.maps.Marker> = this.appLoadedService.AppLoaded$.getValue().GoogleMarkerListMVC;
-    let length: number = googleMarkerMVCArray.getLength();
-    for (let i = 0; i < length; i++) {
-      let marker: google.maps.Marker = googleMarkerMVCArray.getAt(i);
-
-      bounds.extend(marker.getPosition());
-    }
-
-    let googlePolygonMVCArray: google.maps.MVCArray<google.maps.Polygon> = this.appLoadedService.AppLoaded$.getValue().GooglePolygonListMVC;
-    length = googlePolygonMVCArray.getLength();
-    for (let i = 0; i < length; i++) {
-
-      googlePolygonMVCArray.getAt(i).getPath().forEach((path) => {
-        bounds.extend(path);
-      });
-    }
-
-    let googlePolylineMVCArray: google.maps.MVCArray<google.maps.Polyline> = this.appLoadedService.AppLoaded$.getValue().GooglePolylineListMVC;
-    length = googlePolylineMVCArray.getLength();
-    for (let i = 0; i < length; i++) {
-
-      googlePolylineMVCArray.getAt(i).getPath().forEach((path) => {
-        bounds.extend(path);
-      });
-    }
-
-    this.appLoadedService.AppLoaded$.getValue().Map.fitBounds(bounds);
+    this.mapHelperService.FitBounds();
   }
 
   SetupMap(mapElement: any) {
-    this.appLoadedService.UpdateAppLoaded(<AppLoaded> {
+    this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
       Map: new google.maps.Map(
         mapElement.nativeElement,
         {
@@ -111,21 +80,17 @@ export class MapService {
     });
   }
 
-  ShowItem(tvItemModel: TVItemModel)
-  {
+  ShowItem(tvItemModel: TVItemModel) {
     let length: number = this.appLoadedService.AppLoaded$.getValue().GoogleCrossPolylineListMVC.getLength();
-    for(let i = 0; i < length; i++)
-    {
+    for (let i = 0; i < length; i++) {
       this.appLoadedService.AppLoaded$.getValue().GoogleCrossPolylineListMVC.getAt(i).setMap(null);
     }
 
     let CurrentPoint: google.maps.LatLng;
 
     length = tvItemModel.MapInfoModelList.length;
-    for(let i = 0; i < length; i++)
-    {
-      if (tvItemModel.MapInfoModelList[i].MapInfo.MapInfoDrawType == MapInfoDrawTypeEnum.Point)
-      {
+    for (let i = 0; i < length; i++) {
+      if (tvItemModel.MapInfoModelList[i].MapInfo.MapInfoDrawType == MapInfoDrawTypeEnum.Point) {
         CurrentPoint = new google.maps.LatLng(tvItemModel.MapInfoModelList[i].MapInfoPointList[0].Lat, tvItemModel.MapInfoModelList[i].MapInfoPointList[0].Lng);
         break;
       }
@@ -140,12 +105,12 @@ export class MapService {
     CoordList.push(new google.maps.LatLng(CurrentPoint.lat(), CurrentPoint.lng()));
     CoordList.push(new google.maps.LatLng(sw.lat(), ne.lng()));
     let polyl1: google.maps.Polyline = new google.maps.Polyline({
-        path: CoordList,
-        strokeColor: '#FCF',
-        strokeOpacity: 0.5,
-        strokeWeight: 2,
-        map: this.appLoadedService.AppLoaded$.getValue().Map,
-        zIndex: 200,
+      path: CoordList,
+      strokeColor: '#FCF',
+      strokeOpacity: 0.5,
+      strokeWeight: 2,
+      map: this.appLoadedService.AppLoaded$.getValue().Map,
+      zIndex: 200,
     });
     this.appLoadedService.AppLoaded$.getValue().GoogleCrossPolylineListMVC.push(polyl1);
     let CoordList2 = [];
@@ -153,13 +118,14 @@ export class MapService {
     CoordList2.push(new google.maps.LatLng(CurrentPoint.lat(), CurrentPoint.lng()));
     CoordList2.push(new google.maps.LatLng(ne.lat(), ne.lng()));
     let polyl2: google.maps.Polyline = new google.maps.Polyline({
-        path: CoordList2,
-        strokeColor: '#FCF',
-        strokeOpacity: 0.5,
-        strokeWeight: 2,
-        map: this.appLoadedService.AppLoaded$.getValue().Map,
-        zIndex: 200,
+      path: CoordList2,
+      strokeColor: '#FCF',
+      strokeOpacity: 0.5,
+      strokeWeight: 2,
+      map: this.appLoadedService.AppLoaded$.getValue().Map,
+      zIndex: 200,
     });
     this.appLoadedService.AppLoaded$.getValue().GoogleCrossPolylineListMVC.push(polyl2);
   }
+
 }

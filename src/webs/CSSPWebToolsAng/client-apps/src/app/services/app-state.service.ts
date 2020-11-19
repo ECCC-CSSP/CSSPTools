@@ -24,8 +24,17 @@ import { AppState } from 'src/app/models/AppState.model';
 export class AppStateService {
   AppState$: BehaviorSubject<AppState> = new BehaviorSubject<AppState>(<AppState>{});
 
-  constructor() {   
+  constructor() {
     this.UpdateAppState(<AppState>{
+      // http loading related
+      Working: null,
+      Error: null,
+      Status: null,
+
+      // search http loading related
+      SearchWorking: null,
+
+      // visual related
       TopComponent: TopComponentEnum.Home, // home | shell
       ShellSubComponent: ShellSubComponentEnum.Root, // Root | Country | Province | Area | Sector | Subsector | Municipality
       RootSubComponent: RootSubComponentEnum.Countries, // Countries | Files | ExportArcGIS
@@ -40,70 +49,129 @@ export class AppStateService {
       PolSourceSiteSubComponent: PolSourceSiteSubComponentEnum.Information, // Information | Files
       CurrentTVItemID: 1,
       Language: LanguageEnum.en, // en | fr | enAndfr | es
+      BaseApiUrl: '',
       DetailVisible: false,
       StatCountVisible: false,
       LastUpdateVisible: false,
       EditVisible: false,
       InactVisible: false,
       MenuVisible: false,
+
+      // map 
       MapVisible: true,
       MapSize: MapSizeEnum.Size50, // Size30 | Size40 | Size50 | Size60 | Size70
+
+      MapMarkerPathCharacters: [
+        '',
+        'm0,0l-5,-10l-11,0l0,-20l32,0l0,20l-11,0l-5,10z',
+        'm0,0l-5,-10l-17,0l0,-20l44,0l0,20l-17,0l-5,10z',
+        'm0,0l-5,-10l-23,0l0,-20l56,0l0,20l-23,0l-5,10z',
+        'm0,0l-5,-10l-29,0l0,-20l68,0l0,20l-29,0l-5,10z',
+        'm0,0l-5,-10l-35,0l0,-20l80,0l0,20l-35,0l-5,10z',
+      ],
+
+      MapMarkerColorArea: '#0ffff0',
+      MapMarkerColorClimateSite: '#ff0000',
+      MapMarkerColorCountry: '#00ff00',
+      MapMarkerColorFailed: '#ff0000',
+      MapMarkerColorHydrometricSite: '#ff0000',
+      MapMarkerColorInfrastructure: '#ff0000',
+      MapMarkerColorLessThan10: '#ff0000',
+      MapMarkerColorLiftStation: '#ff0000',
+      MapMarkerColorLineOverflow: '#ff0000',
+      MapMarkerColorMeshNode: '#ff0000',
+      MapMarkerColorMikeBoundaryConditionMesh: '#ff0000',
+      MapMarkerColorMikeBoundaryConditionWebTide: '#ff0000',
+      MapMarkerColorMikeScenario: '#ff0000',
+      MapMarkerColorMikeSource: '#ff0000',
+      MapMarkerColorMikeSourceIncluded: '#ff0000',
+      MapMarkerColorMikeSourceIsRiver: '#ff0000',
+      MapMarkerColorMikeSourceNotIncluded: '#ff0000',
+      MapMarkerColorMunicipality: '#fff000',
+      MapMarkerColorMWQMRun: '#ff0000',
+      MapMarkerColorMWQMSite: '#f0f000',
+      MapMarkerColorNoData: '#ff0000',
+      MapMarkerColorNoDepuration: '#ff0000',
+      MapMarkerColorOtherInfrastructure: '#ff0000',
+      MapMarkerColorOutfall: '#ff0000',
+      MapMarkerColorPassed: '#ff0000',
+      MapMarkerColorPolSourceSite: '#ff0000',
+      MapMarkerColorProvince: '#ff00ff',
+      MapMarkerColorSector: '#ff00ff',
+      MapMarkerColorSeeOtherMunicipality: '#ff0000',
+      MapMarkerColorSubsector: '#0f0ff0',
+      MapMarkerColorTideSite: '#ff0000',
+      MapMarkerColorWasteWaterTreatmentPlant: '#ff0000',
+      MapMarkerColorWebTideNode: '#ff0000',
+
+      ClassificationColorApproved: '#ff0000',
+      ClassificationColorConditionallyApproved: '#ff0000',
+      ClassificationColorConditionallyRestricted: '#ff0000',
+      ClassificationColorProhibited: '#ff0000',
+      ClassificationColorRestricted: '#ff0000',
+
+      MapPolylineColorInfrastructureLineOverflowToOutfall: '#00ff00',
+      MapPolylineColorInfrastructureLiftStationToLiftStation: '#ff0000',
+      MapPolylineColorInfrastructureLiftStationToOutfall: '#ff00ff',
+      MapPolylineColorInfrastructureLiftStationToWWTP: '#ffff00',
+      MapPolylineColorInfrastructureWWTPToOutfall: '#00ffff',
   
-      MapTitle: "Something for text", 
+      MapPolygonColorArea: '#ff0000',
+      MapPolygonColorCountry: '#00ff00',
+      MapPolygonColorProvince: '#0000ff',
+      MapPolygonColorSector: '#ff00ff',
+      MapPolygonColorSubsector: '#ffff00',
+
       zoom: 12,
       center: <google.maps.LatLngLiteral>{ lat: 46.0915449, lng: -64.7242012 },
       options: <google.maps.MapOptions>{
-        //zoomControl: true,
-        //scrollwheel: true,
-        //disableDoubleClickZoom: false,
+        zoomControl: true,
+        scrollwheel: true,
+        disableDoubleClickZoom: false,
         mapTypeId: google.maps.MapTypeId.SATELLITE,
-        // maxZoom: 15,
-        // minZoom: 8,
       },
-      // markerList: [],
-      // polygonList: [],
-      // polylineList: [],
       infoContent: '',
 
-      RootCountriesSortOrder: AscDescEnum.Ascending,
-      RootFilesSortOrder: AscDescEnum.Ascending,
-      RootFilesSortByProp: FilesSortPropEnum.FileName, 
-      CountryProvincesSortOrder: AscDescEnum.Ascending,
-      CountryFilesSortOrder: AscDescEnum.Ascending,
-      CountryFilesSortByProp: FilesSortPropEnum.FileName, 
-      ProvinceAreasSortOrder: AscDescEnum.Ascending,
-      ProvinceMunicipalitiesSortOrder: AscDescEnum.Ascending,
-      ProvinceFilesSortOrder: AscDescEnum.Ascending,
-      ProvinceFilesSortByProp: FilesSortPropEnum.FileName, 
+      // sorting
       AreaSectorsSortOrder: AscDescEnum.Ascending,
+      AreaFilesSortByProp: FilesSortPropEnum.FileName,
       AreaFilesSortOrder: AscDescEnum.Ascending,
-      AreaFilesSortByProp: FilesSortPropEnum.FileName, 
-      SectorSubsectorsSortOrder: AscDescEnum.Ascending,
-      SectorMikeScenariosSortOrder: AscDescEnum.Ascending,
-      SectorFilesSortOrder: AscDescEnum.Ascending,
-      SectorFilesSortByProp: FilesSortPropEnum.FileName, 
-      SubsectorMWQMSitesSortOrder: AscDescEnum.Ascending,
-      SubsectorMWQMRunsSortOrder: AscDescEnum.Descending,
-      SubsectorPolSourceSitesSortOrder: AscDescEnum.Ascending,
-      SubsectorFilesSortOrder: AscDescEnum.Ascending,
-      SubsectorFilesSortByProp: FilesSortPropEnum.FileName, 
+      CountryProvincesSortOrder: AscDescEnum.Ascending,
+      CountryFilesSortByProp: FilesSortPropEnum.FileName,
+      CountryFilesSortOrder: AscDescEnum.Ascending,
       MunicipalityContactsSortOrder: AscDescEnum.Ascending,
-      MunicipalityInfrastructuresSortOrder: AscDescEnum.Ascending,
-      MunicipalityFilesSortOrder: AscDescEnum.Ascending,
       MunicipalityFilesSortByProp: FilesSortPropEnum.FileName,
+      MunicipalityFilesSortOrder: AscDescEnum.Ascending,
+      MunicipalityInfrastructuresSortOrder: AscDescEnum.Ascending,
       MunicipalityMIKEScenariosSortOrder: AscDescEnum.Ascending,
-      MWQMSiteFilesSortOrder: AscDescEnum.Ascending,
-      MWQMSiteFilesSortByProp: FilesSortPropEnum.FileName,
-      MWQMRunFilesSortOrder: AscDescEnum.Ascending,
       MWQMRunFilesSortByProp: FilesSortPropEnum.FileName,
-      PolSourceSiteFilesSortOrder: AscDescEnum.Ascending,
+      MWQMRunFilesSortOrder: AscDescEnum.Ascending,
+      MWQMSiteFilesSortByProp: FilesSortPropEnum.FileName,
+      MWQMSiteFilesSortOrder: AscDescEnum.Ascending,
       PolSourceSiteFilesSortByProp: FilesSortPropEnum.FileName,
-  
+      PolSourceSiteFilesSortOrder: AscDescEnum.Ascending,
+      ProvinceAreasSortOrder: AscDescEnum.Ascending,
+      ProvinceFilesSortByProp: FilesSortPropEnum.FileName,
+      ProvinceFilesSortOrder: AscDescEnum.Ascending,
+      ProvinceMunicipalitiesSortOrder: AscDescEnum.Ascending,
+      RootCountriesSortOrder: AscDescEnum.Ascending,
+      RootFilesSortByProp: FilesSortPropEnum.FileName,
+      RootFilesSortOrder: AscDescEnum.Ascending,
+      SectorFilesSortByProp: FilesSortPropEnum.FileName,
+      SectorFilesSortOrder: AscDescEnum.Ascending,
+      SectorMikeScenariosSortOrder: AscDescEnum.Ascending,
+      SectorSubsectorsSortOrder: AscDescEnum.Ascending,
+      SubsectorFilesSortByProp: FilesSortPropEnum.FileName,
+      SubsectorFilesSortOrder: AscDescEnum.Ascending,
+      SubsectorMWQMRunsSortOrder: AscDescEnum.Descending,
+      SubsectorMWQMSitesSortOrder: AscDescEnum.Ascending,
+      SubsectorPolSourceSitesSortOrder: AscDescEnum.Ascending,
+
     });
   }
 
   UpdateAppState(appState: AppState) {
     this.AppState$.next(<AppState>{ ...this.AppState$.getValue(), ...appState });
   }
-  
+
 }

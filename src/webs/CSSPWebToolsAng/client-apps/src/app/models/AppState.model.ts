@@ -47,41 +47,104 @@ export interface AppState {
     EditVisible?: boolean;
     InactVisible?: boolean;
     MenuVisible?: boolean;
+
+    // map
     MapVisible?: boolean;
     MapSize?: MapSizeEnum; // Size30 | Size40 | Size50 | Size60 | Size70
 
+    MapMarkerPathCharacters: string[];
+
+    MapMarkerColorArea?: string;
+    MapMarkerColorClimateSite?: string;
+    MapMarkerColorCountry?: string;
+    MapMarkerColorFailed?: string;
+    MapMarkerColorHydrometricSite?: string;
+    MapMarkerColorInfrastructure?: string;
+    MapMarkerColorLessThan10?: string;
+    MapMarkerColorLiftStation?: string;
+    MapMarkerColorLineOverflow?: string;
+    MapMarkerColorMeshNode?: string;
+    MapMarkerColorMikeBoundaryConditionMesh?: string;
+    MapMarkerColorMikeBoundaryConditionWebTide?: string;
+    MapMarkerColorMikeScenario?: string;
+    MapMarkerColorMikeSource?: string;
+    MapMarkerColorMikeSourceIncluded?: string;
+    MapMarkerColorMikeSourceIsRiver?: string;
+    MapMarkerColorMikeSourceNotIncluded?: string;
+    MapMarkerColorMunicipality?: string;
+    MapMarkerColorMWQMRun?: string;
+    MapMarkerColorMWQMSite?: string;
+    MapMarkerColorNoData?: string;
+    MapMarkerColorNoDepuration?: string;
+    MapMarkerColorOtherInfrastructure?: string;
+    MapMarkerColorOutfall?: string;
+    MapMarkerColorPassed?: string;
+    MapMarkerColorPolSourceSite?: string;
+    MapMarkerColorProvince?: string;
+    MapMarkerColorSector?: string;
+    MapMarkerColorSeeOtherMunicipality?: string;
+    MapMarkerColorSubsector?: string;
+    MapMarkerColorTideSite?: string;
+    MapMarkerColorWasteWaterTreatmentPlant?: string;
+    MapMarkerColorWebTideNode?: string;
+
+    ClassificationColorApproved?: string;
+    ClassificationColorConditionallyApproved?: string;
+    ClassificationColorConditionallyRestricted?: string;
+    ClassificationColorProhibited?: string;
+    ClassificationColorRestricted?: string;
+
+    MapPolylineColorInfrastructureLineOverflowToOutfall?: string;
+    MapPolylineColorInfrastructureLiftStationToLiftStation?: string;
+    MapPolylineColorInfrastructureLiftStationToOutfall?: string;
+    MapPolylineColorInfrastructureLiftStationToWWTP?: string;
+    MapPolylineColorInfrastructureWWTPToOutfall?: string;
+
+    MapPolygonColorArea?: string;
+    MapPolygonColorCountry?: string;
+    MapPolygonColorProvince?: string;
+    MapPolygonColorSector?: string;
+    MapPolygonColorSubsector?: string;
+
+    MapColorNotFound?: string;
+
+    zoom?: number;
+    center?: google.maps.LatLngLiteral;
+    options?: google.maps.MapOptions;
+    infoContent?: string;
+
     // sorting
-    RootCountriesSortOrder?: AscDescEnum;
-    RootFilesSortOrder?: AscDescEnum;
-    RootFilesSortByProp?: FilesSortPropEnum;
-    CountryProvincesSortOrder?: AscDescEnum;
-    CountryFilesSortOrder?: AscDescEnum;
-    CountryFilesSortByProp?: FilesSortPropEnum;
-    ProvinceAreasSortOrder?: AscDescEnum;
-    ProvinceMunicipalitiesSortOrder?: AscDescEnum;
-    ProvinceFilesSortOrder?: AscDescEnum;
-    ProvinceFilesSortByProp?: FilesSortPropEnum;
     AreaSectorsSortOrder?: AscDescEnum;
-    AreaFilesSortOrder?: AscDescEnum;
     AreaFilesSortByProp?: FilesSortPropEnum;
-    SectorSubsectorsSortOrder?: AscDescEnum;
-    SectorMikeScenariosSortOrder?: AscDescEnum;
-    SectorFilesSortOrder?: AscDescEnum;
-    SectorFilesSortByProp?: FilesSortPropEnum;
-    SubsectorMWQMSitesSortOrder?: AscDescEnum;
-    SubsectorMWQMRunsSortOrder?: AscDescEnum;
-    SubsectorPolSourceSitesSortOrder?: AscDescEnum;
-    SubsectorFilesSortOrder?: AscDescEnum;
-    SubsectorFilesSortByProp?: FilesSortPropEnum;
+    AreaFilesSortOrder?: AscDescEnum;
+    CountryProvincesSortOrder?: AscDescEnum;
+    CountryFilesSortByProp?: FilesSortPropEnum;
+    CountryFilesSortOrder?: AscDescEnum;
     MunicipalityContactsSortOrder?: AscDescEnum;
-    MunicipalityInfrastructuresSortOrder?: AscDescEnum;
-    MunicipalityFilesSortOrder?: AscDescEnum;
     MunicipalityFilesSortByProp?: FilesSortPropEnum;
+    MunicipalityFilesSortOrder?: AscDescEnum;
+    MunicipalityInfrastructuresSortOrder?: AscDescEnum;
     MunicipalityMIKEScenariosSortOrder?: AscDescEnum;
-    MWQMSiteFilesSortOrder?: AscDescEnum;
-    MWQMSiteFilesSortByProp?: FilesSortPropEnum;
-    MWQMRunFilesSortOrder?: AscDescEnum;
     MWQMRunFilesSortByProp?: FilesSortPropEnum;
-    PolSourceSiteFilesSortOrder?: AscDescEnum;
+    MWQMRunFilesSortOrder?: AscDescEnum;
+    MWQMSiteFilesSortByProp?: FilesSortPropEnum;
+    MWQMSiteFilesSortOrder?: AscDescEnum;
     PolSourceSiteFilesSortByProp?: FilesSortPropEnum;
+    PolSourceSiteFilesSortOrder?: AscDescEnum;
+    ProvinceAreasSortOrder?: AscDescEnum;
+    ProvinceFilesSortByProp?: FilesSortPropEnum;
+    ProvinceFilesSortOrder?: AscDescEnum;
+    ProvinceMunicipalitiesSortOrder?: AscDescEnum;
+    RootCountriesSortOrder?: AscDescEnum;
+    RootFilesSortByProp?: FilesSortPropEnum;
+    RootFilesSortOrder?: AscDescEnum;
+    SectorFilesSortByProp?: FilesSortPropEnum;
+    SectorFilesSortOrder?: AscDescEnum;
+    SectorMikeScenariosSortOrder?: AscDescEnum;
+    SectorSubsectorsSortOrder?: AscDescEnum;
+    SubsectorFilesSortByProp?: FilesSortPropEnum;
+    SubsectorFilesSortOrder?: AscDescEnum;
+    SubsectorMWQMRunsSortOrder?: AscDescEnum;
+    SubsectorMWQMSitesSortOrder?: AscDescEnum;
+    SubsectorPolSourceSitesSortOrder?: AscDescEnum;
 }

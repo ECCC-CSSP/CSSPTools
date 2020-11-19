@@ -83,9 +83,24 @@ export class WebAreaService {
       this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
     }
 
+    let webBaseArea: WebBase[] = <WebBase[]>[
+      <WebBase>{ TVItemModel: this.appLoadedService.AppLoaded$.getValue().WebArea.TVItemModel },
+    ];
+
     if (this.appStateService.AppState$.getValue().AreaSubComponent == AreaSubComponentEnum.Sectors) {
       this.mapService.ClearMap();
-      this.mapService.DrawObjects(this.appLoadedService.AppLoaded$.getValue().AreaSectorList);
+      this.mapService.DrawObjects([
+        ...this.appLoadedService.AppLoaded$.getValue().AreaSectorList,
+        ...webBaseArea
+      ]);
+    }
+
+    if (this.appStateService.AppState$.getValue().AreaSubComponent == AreaSubComponentEnum.Files) {
+      this.mapService.ClearMap();
+      this.mapService.DrawObjects([
+        ...this.appLoadedService.AppLoaded$.getValue().AreaSectorList,
+        ...webBaseArea
+      ]);
     }
   }
 }

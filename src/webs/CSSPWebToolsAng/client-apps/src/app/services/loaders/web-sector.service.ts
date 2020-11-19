@@ -99,14 +99,25 @@ export class WebSectorService {
       this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
     }
 
+    let webBaseSector: WebBase[] = <WebBase[]>[
+      <WebBase>{ TVItemModel: this.appLoadedService.AppLoaded$.getValue().WebSector.TVItemModel },
+    ];
+
     if (this.appStateService.AppState$.getValue().SectorSubComponent == SectorSubComponentEnum.Subsectors) {
       this.mapService.ClearMap();
-      this.mapService.DrawObjects(this.appLoadedService.AppLoaded$.getValue().SectorSubsectorList);
+      this.mapService.DrawObjects([
+        ...this.appLoadedService.AppLoaded$.getValue().SectorSubsectorList,
+        ...webBaseSector
+      ]);
     }
 
     if (this.appStateService.AppState$.getValue().SectorSubComponent == SectorSubComponentEnum.MIKEScenarios) {
       this.mapService.ClearMap();
-      this.mapService.DrawObjects(this.appLoadedService.AppLoaded$.getValue().SectorMIKEScenarioList);
+      this.mapService.DrawObjects([
+        ...this.appLoadedService.AppLoaded$.getValue().SectorSubsectorList,
+        ...webBaseSector,
+        ...this.appLoadedService.AppLoaded$.getValue().SectorMIKEScenarioList
+      ]);
     }
   }
 }

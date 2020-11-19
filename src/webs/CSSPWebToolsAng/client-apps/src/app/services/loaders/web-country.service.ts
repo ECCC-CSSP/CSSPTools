@@ -87,9 +87,48 @@ export class WebCountryService {
       this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
     }
 
+    let webBaseCountry: WebBase[] = <WebBase[]>[
+      <WebBase>{ TVItemModel: this.appLoadedService.AppLoaded$.getValue().WebCountry.TVItemModel },
+    ];
+
     if (this.appStateService.AppState$.getValue().CountrySubComponent == CountrySubComponentEnum.Provinces) {
       this.mapService.ClearMap();
-      this.mapService.DrawObjects(this.appLoadedService.AppLoaded$.getValue().CountryProvinceList);
+      this.mapService.DrawObjects([
+        ...this.appLoadedService.AppLoaded$.getValue().CountryProvinceList,
+        ... webBaseCountry
+      ]);
+    }
+
+    if (this.appStateService.AppState$.getValue().CountrySubComponent == CountrySubComponentEnum.Files) {
+      this.mapService.ClearMap();
+      this.mapService.DrawObjects([
+        ...this.appLoadedService.AppLoaded$.getValue().CountryProvinceList,
+        ... webBaseCountry
+      ]);
+    }
+
+    if (this.appStateService.AppState$.getValue().CountrySubComponent == CountrySubComponentEnum.OpenDataNational) {
+      this.mapService.ClearMap();
+      this.mapService.DrawObjects([
+        ...this.appLoadedService.AppLoaded$.getValue().CountryProvinceList,
+        ... webBaseCountry
+      ]);
+    }
+
+    if (this.appStateService.AppState$.getValue().CountrySubComponent == CountrySubComponentEnum.EmailDistributionList) {
+      this.mapService.ClearMap();
+      this.mapService.DrawObjects([
+        ...this.appLoadedService.AppLoaded$.getValue().CountryProvinceList,
+        ... webBaseCountry
+      ]);
+    }
+
+    if (this.appStateService.AppState$.getValue().CountrySubComponent == CountrySubComponentEnum.RainExceedance) {
+      this.mapService.ClearMap();
+      this.mapService.DrawObjects([
+        ...this.appLoadedService.AppLoaded$.getValue().CountryProvinceList,
+        ... webBaseCountry
+      ]);
     }
   }
 }

@@ -105,10 +105,49 @@ export class WebProvinceService {
       this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
     }
 
+    let webBaseProvince: WebBase[] = <WebBase[]>[
+      <WebBase>{ TVItemModel: this.appLoadedService.AppLoaded$.getValue().WebProvince.TVItemModel },
+    ];
+
     if (this.appStateService.AppState$.getValue().ProvinceSubComponent == ProvinceSubComponentEnum.Areas) {
       this.mapService.ClearMap();
-      this.mapService.DrawObjects(this.appLoadedService.AppLoaded$.getValue().ProvinceAreaList);
+      this.mapService.DrawObjects([
+        ...this.appLoadedService.AppLoaded$.getValue().ProvinceAreaList,
+        ...webBaseProvince
+      ]);
     }
-  }
 
+    if (this.appStateService.AppState$.getValue().ProvinceSubComponent == ProvinceSubComponentEnum.Files) {
+      this.mapService.ClearMap();
+      this.mapService.DrawObjects([
+        ...this.appLoadedService.AppLoaded$.getValue().ProvinceAreaList,
+        ...webBaseProvince
+      ]);
+    }
+
+    if (this.appStateService.AppState$.getValue().ProvinceSubComponent == ProvinceSubComponentEnum.OpenData) {
+      this.mapService.ClearMap();
+      this.mapService.DrawObjects([
+        ...this.appLoadedService.AppLoaded$.getValue().ProvinceAreaList,
+        ...webBaseProvince
+      ]);
+    }
+
+    if (this.appStateService.AppState$.getValue().ProvinceSubComponent == ProvinceSubComponentEnum.SamplingPlan) {
+      this.mapService.ClearMap();
+      this.mapService.DrawObjects([
+        ...this.appLoadedService.AppLoaded$.getValue().ProvinceAreaList,
+        ...webBaseProvince
+      ]);
+    }
+
+    if (this.appStateService.AppState$.getValue().ProvinceSubComponent == ProvinceSubComponentEnum.ProvinceTools) {
+      this.mapService.ClearMap();
+      this.mapService.DrawObjects([
+        ...this.appLoadedService.AppLoaded$.getValue().ProvinceAreaList,
+        ...webBaseProvince
+      ]);
+    }
+
+  }
 }

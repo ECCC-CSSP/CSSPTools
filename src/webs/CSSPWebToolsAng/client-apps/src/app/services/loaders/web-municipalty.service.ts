@@ -96,9 +96,40 @@ export class WebMunicipalityService {
             this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
         }
 
+        let webBaseMunicipality: WebBase[] = <WebBase[]>[
+            <WebBase>{ TVItemModel: this.appLoadedService.AppLoaded$.getValue().WebMunicipality.TVItemModel },
+          ];
+      
         if (this.appStateService.AppState$.getValue().MunicipalitySubComponent == MunicipalitySubComponentEnum.Infrastructures) {
             this.mapService.ClearMap();
-            this.mapService.DrawObjects(this.appLoadedService.AppLoaded$.getValue().InfrastructureModelList);
+            this.mapService.DrawObjects([
+                ...this.appLoadedService.AppLoaded$.getValue().InfrastructureModelList,
+                ...webBaseMunicipality
+            ]);
+        }
+
+        if (this.appStateService.AppState$.getValue().MunicipalitySubComponent == MunicipalitySubComponentEnum.Contacts) {
+            this.mapService.ClearMap();
+            this.mapService.DrawObjects([
+                ...this.appLoadedService.AppLoaded$.getValue().InfrastructureModelList,
+                ...webBaseMunicipality
+            ]);
+        }
+
+        if (this.appStateService.AppState$.getValue().MunicipalitySubComponent == MunicipalitySubComponentEnum.MIKEScenarios) {
+            this.mapService.ClearMap();
+            this.mapService.DrawObjects([
+                ...this.appLoadedService.AppLoaded$.getValue().InfrastructureModelList,
+                ...webBaseMunicipality
+            ]);
+        }
+
+        if (this.appStateService.AppState$.getValue().MunicipalitySubComponent == MunicipalitySubComponentEnum.Files) {
+            this.mapService.ClearMap();
+            this.mapService.DrawObjects([
+                ...this.appLoadedService.AppLoaded$.getValue().InfrastructureModelList,
+                ...webBaseMunicipality
+            ]);
         }
 
     }

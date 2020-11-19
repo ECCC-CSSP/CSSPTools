@@ -126,19 +126,61 @@ export class WebSubsectorService {
             this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
         }
 
+        let webBaseSubsector: WebBase[] = <WebBase[]>[
+            <WebBase>{ TVItemModel: this.appLoadedService.AppLoaded$.getValue().WebSubsector.TVItemModel },
+        ];
+
         if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.MWQMSites) {
             this.mapService.ClearMap();
-            this.mapService.DrawObjects(this.appLoadedService.AppLoaded$.getValue().SubsectorMWQMSiteList);
+            this.mapService.DrawObjects([
+                ...this.appLoadedService.AppLoaded$.getValue().SubsectorMWQMSiteList,
+                ...webBaseSubsector,
+            ]);
+        }
+
+        if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.Analysis) {
+            this.mapService.ClearMap();
+            this.mapService.DrawObjects([
+                ...this.appLoadedService.AppLoaded$.getValue().SubsectorMWQMSiteList,
+                ...webBaseSubsector
+            ]);
         }
 
         if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.MWQMRuns) {
             this.mapService.ClearMap();
-            this.mapService.DrawObjects(this.appLoadedService.AppLoaded$.getValue().SubsectorMWQMRunList);
+            this.mapService.DrawObjects([
+                ...this.appLoadedService.AppLoaded$.getValue().SubsectorMWQMRunList,
+                ...webBaseSubsector
+            ]);
         }
 
         if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.PollutionSourceSites) {
             this.mapService.ClearMap();
-            this.mapService.DrawObjects(this.appLoadedService.AppLoaded$.getValue().SubsectorPolSourceSiteList);
+            this.mapService.DrawObjects([
+                ...this.appLoadedService.AppLoaded$.getValue().SubsectorPolSourceSiteList,
+                ...webBaseSubsector
+            ]);
+        }
+
+        if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.Files) {
+            this.mapService.ClearMap();
+            this.mapService.DrawObjects([
+                ...webBaseSubsector
+            ]);
+        }
+
+        if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.SubsectorTools) {
+            this.mapService.ClearMap();
+            this.mapService.DrawObjects([
+                ...webBaseSubsector
+            ]);
+        }
+
+        if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.LogBook) {
+            this.mapService.ClearMap();
+            this.mapService.DrawObjects([
+                ...webBaseSubsector
+            ]);
         }
     }
 }
