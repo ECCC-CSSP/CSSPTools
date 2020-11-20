@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
 import { WebBase } from 'src/app/models/generated/web/WebBase.model';
@@ -22,6 +22,7 @@ import { WebContactService } from './web-contact.service';
 })
 export class WebRootService {
     private DoOther: boolean;
+    private sub: Subscription;
 
     constructor(private httpClient: HttpClient,
         private appStateService: AppStateService,
@@ -34,26 +35,39 @@ export class WebRootService {
         private componentDataLoadedService: ComponentDataLoadedService) {
     }
 
-    GetWebRoot(TVItemID: number, DoOther: boolean) {
+    DoWebRoot(DoOther: boolean) {
         this.DoOther = DoOther;
+
+        this.sub ? this.sub.unsubscribe() : null;
+
+        if (this.appLoadedService.AppLoaded$.getValue()?.WebRoot?.TVItemCountryList?.length > 0) {
+            this.KeepWebRoot();
+        }
+        else {
+            this.sub = this.GetWebRoot().subscribe();
+        }
+    }
+
+    private GetWebRoot() {
         let languageEnum = GetLanguageEnum();
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
             WebRoot: {},
             RootCountryList: [],
             RootFileListList: [],
-            BreadCrumbWebBaseList: [],
+            BreadCrumbRootWebBaseList: [],
+            BreadCrumbWebBaseList: []
         });
         this.appStateService.UpdateAppState(<AppState>{
             Status: this.appLanguageService.AppLanguage.LoadingRoot[this.appStateService.AppState$?.getValue()?.Language],
             Working: true
         });
-        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebRoot/${TVItemID}/1`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebRoot/0/1`;
         return this.httpClient.get<WebRoot>(url).pipe(
             map((x: any) => {
                 this.UpdateWebRoot(x);
                 console.debug(x);
-                if (DoOther) {
-                    this.GetWebContact();
+                if (this.DoOther) {
+                    this.DoWebContact();
                 }
             }),
             catchError(e => of(e).pipe(map(e => {
@@ -63,11 +77,19 @@ export class WebRootService {
         );
     }
 
-    GetWebContact() {
-        this.webContactService.GetWebContact(this.DoOther).subscribe();
+    private DoWebContact() {
+        this.webContactService.DoWebContact(this.DoOther);
     }
 
-    UpdateWebRoot(x: WebRoot) {
+    private KeepWebRoot() {
+        this.UpdateWebRoot(this.appLoadedService.AppLoaded$?.getValue()?.WebRoot);
+        console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebRoot);
+        if (this.DoOther) {
+            this.DoWebContact();
+        }
+    }
+
+    private UpdateWebRoot(x: WebRoot) {
         let RootCountryList: WebBase[] = [];
 
         if (!this.appStateService.AppState$?.getValue()?.InactVisible) {
@@ -81,7 +103,8 @@ export class WebRootService {
             WebRoot: x,
             RootCountryList: this.sortTVItemListService.SortTVItemList(RootCountryList, x?.TVItemParentList),
             RootFileListList: this.structureTVFileListService.StructureTVFileList(x.TVItemModel),
-            BreadCrumbWebBaseList: x?.TVItemParentList,
+            BreadCrumbRootWebBaseList: x?.TVItemParentList,
+            BreadCrumbWebBaseList: x?.TVItemParentList
         });
 
         if (this.DoOther) {
@@ -95,8 +118,8 @@ export class WebRootService {
 
         let webBaseRoot: WebBase[] = <WebBase[]>[
             <WebBase>{ TVItemModel: this.appLoadedService.AppLoaded$.getValue().WebRoot.TVItemModel },
-          ];
-      
+        ];
+
         if (this.appStateService.AppState$.getValue().RootSubComponent == RootSubComponentEnum.Countries) {
             this.mapService.ClearMap();
             this.mapService.DrawObjects([

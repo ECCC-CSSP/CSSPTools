@@ -33,6 +33,8 @@ namespace CreateGzFileServices
 
             try
             {
+                await FillTVItemModel(webHydrometricDataValue.TVItemModel, tvItemHydrometric);
+
                 await FillParentListTVItemModelList(webHydrometricDataValue.TVItemParentList, tvItemHydrometric);
 
                 webHydrometricDataValue.HydrometricDataValueList = await GetHydrometricDataValueListForHydrometricSite(tvItemHydrometric.TVItemID);

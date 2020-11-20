@@ -15,6 +15,7 @@ import { SectorSubComponentEnum } from 'src/app/enums/generated/SectorSubCompone
 import { ShellSubComponentEnum } from 'src/app/enums/generated/ShellSubComponentEnum';
 import { SubsectorSubComponentEnum } from 'src/app/enums/generated/SubsectorSubComponentEnum';
 import { TopComponentEnum } from 'src/app/enums/generated/TopComponentEnum';
+import { MikeScenarioSubComponentEnum } from '../enums/generated/MikeScenarioSubComponentEnum';
 
 export interface AppState {
     // http loading related
@@ -27,7 +28,7 @@ export interface AppState {
 
     // visual related
     TopComponent?: TopComponentEnum; // home | shell
-    ShellSubComponent?: ShellSubComponentEnum; // Root | Country | Province | Area | Sector | Subsector | Municipality
+    ShellSubComponent?: ShellSubComponentEnum; // Area | Country | MikeScenario | Municipality | MWQMRun | MWQMSite | PolSourceSite | Province | Root | Sector | Subsector
     RootSubComponent?: RootSubComponentEnum; // Countries | Files | ExportArcGIS
     CountrySubComponent?: CountrySubComponentEnum; // Provinces | Files | OpenDataNational | EmailDistributionList | RainExceedance
     ProvinceSubComponent?: ProvinceSubComponentEnum; // Areas | Municipalities | Files | SamplingPlan | OpenData | ProvinceTools
@@ -35,10 +36,12 @@ export interface AppState {
     SectorSubComponent?: SectorSubComponentEnum, // Subsectors | Files | MIKEScenarios
     SubsectorSubComponent?: SubsectorSubComponentEnum, // MWQMSites | Analysis | MWQMRuns | PollutionSourceSites | Files | SubsectorTools | LogBook
     MunicipalitySubComponent?: MunicipalitySubComponentEnum, // Infrastructures | MIKEScenarios | Contacts | Files
+    MikeScenarioSubComponent?: MikeScenarioSubComponentEnum, // GeneralParameters | Sources | InputSummary | Files | GeneralResults
     MWQMSiteSubComponent?: MWQMSiteSubComponentEnum, // Information | Files
     MWQMRunSubComponent?: MWQMRunSubComponentEnum, // Information | Files
     PolSourceSiteSubComponent?: PolSourceSiteSubComponentEnum, // Information | Files
     CurrentTVItemID?: number;
+    SamplingPlanID?: number;
     Language?: LanguageEnum; // en | fr | enAndfr | es
     BaseApiUrl?: string;
     DetailVisible?: boolean;

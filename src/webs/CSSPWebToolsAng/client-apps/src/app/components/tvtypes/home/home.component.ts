@@ -15,7 +15,6 @@ import { WebContactService } from 'src/app/services/loaders/web-contact.service'
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomeComponent implements OnInit, OnDestroy {
-  subWebContact: Subscription;
   languageEnum = GetLanguageEnum();
   
   constructor(public appLoadedService: AppLoadedService,
@@ -24,11 +23,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     public webContactService: WebContactService) { }
 
   ngOnInit(): void {
-    this.subWebContact = this.webContactService.GetWebContact(false).subscribe();
+    this.webContactService.DoWebContact(false);
   }
 
   ngOnDestroy() {
-    this.subWebContact ? this.subWebContact.unsubscribe() : null;
   }
 
   English() {

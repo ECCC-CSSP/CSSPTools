@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
@@ -16,6 +16,7 @@ import { ComponentDataLoadedService } from '../helpers/component-data-loaded.ser
 })
 export class WebTideLocationService {
     private DoOther: boolean;
+    private sub: Subscription;
 
     constructor(private httpClient: HttpClient,
         private appStateService: AppStateService,
@@ -24,8 +25,20 @@ export class WebTideLocationService {
         private componentDataLoadedService: ComponentDataLoadedService) {
     }
 
-    GetWebTideLocation(DoOther: boolean) {
+    DoWebTideLocation(DoOther: boolean) {
         this.DoOther = DoOther;
+
+        this.sub ? this.sub.unsubscribe() : null;
+
+        if (this.appLoadedService.AppLoaded$.getValue()?.WebTideLocation?.TideLocationList?.length > 0) {
+            this.KeepWebTideLocation();
+        }
+        else {
+            this.sub = this.GetWebTideLocation().subscribe();
+        }
+    }
+
+    private GetWebTideLocation() {
         let languageEnum = GetLanguageEnum();
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebTideLocation: {} });
         this.appStateService.UpdateAppState(<AppState>{
@@ -37,7 +50,7 @@ export class WebTideLocationService {
             map((x: any) => {
                 this.UpdateWebTideLocation(x);
                 console.debug(x);
-                if (DoOther) {
+                if (this.DoOther) {
                     // nothing more to add in the chain
                 }
             }),
@@ -48,7 +61,15 @@ export class WebTideLocationService {
         );
     }
 
-    UpdateWebTideLocation(x: WebTideLocation) {
+    private KeepWebTideLocation() {
+        this.UpdateWebTideLocation(this.appLoadedService.AppLoaded$?.getValue()?.WebTideLocation);
+        console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebTideLocation);
+        if (this.DoOther) {
+            // nothing more to add in the chain
+        }
+    }
+
+    private UpdateWebTideLocation(x: WebTideLocation) {
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebTideLocation: x });
 
         if (this.DoOther) {

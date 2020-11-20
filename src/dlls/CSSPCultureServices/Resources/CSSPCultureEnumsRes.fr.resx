@@ -2769,4 +2769,22 @@
   <data name="LocalDBCommandEnumNew" xml:space="preserve">
     <value>Nouveau</value>
   </data>
+  <data name="MikeScenarioSubComponentEnumFiles" xml:space="preserve">
+    <value>Fichiers</value>
+  </data>
+  <data name="MikeScenarioSubComponentEnumGeneralParameters" xml:space="preserve">
+    <value>Paramètres Généraux</value>
+  </data>
+  <data name="MikeScenarioSubComponentEnumGeneralResults" xml:space="preserve">
+    <value>Générer résultats</value>
+  </data>
+  <data name="MikeScenarioSubComponentEnumInputSummary" xml:space="preserve">
+    <value>Sommaire des entrées</value>
+  </data>
+  <data name="MikeScenarioSubComponentEnumSources" xml:space="preserve">
+    <value>Sources</value>
+  </data>
+  <data name="ShellSubComponentEnumMikeScenario" xml:space="preserve">
+    <value>Scénario MIKE</value>
+  </data>
 </root>

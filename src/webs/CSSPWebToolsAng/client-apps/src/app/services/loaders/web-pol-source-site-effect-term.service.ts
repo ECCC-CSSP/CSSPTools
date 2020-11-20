@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
@@ -17,6 +17,7 @@ import { WebReportTypeService } from './web-report-type.service';
 })
 export class WebPolSourceSiteEffectTermService {
     private DoOther: boolean;
+    private sub: Subscription;
 
     constructor(private httpClient: HttpClient,
         private appStateService: AppStateService,
@@ -26,8 +27,20 @@ export class WebPolSourceSiteEffectTermService {
         private componentDataLoadedService: ComponentDataLoadedService) {
     }
 
-    GetWebPolSourceSiteEffectTerm(DoOther: boolean) {
+    DoWebPolSourceSiteEffectTerm(DoOther: boolean) {
         this.DoOther = DoOther;
+
+        this.sub ? this.sub.unsubscribe() : null;
+
+        if (this.appLoadedService.AppLoaded$.getValue()?.WebPolSourceSiteEffectTerm?.PolSourceSiteEffectTermList?.length > 0) {
+            this.KeepWebPolSourceSiteEffectTerm();
+        }
+        else {
+            this.sub = this.GetWebPolSourceSiteEffectTerm().subscribe();
+        }
+    }
+
+    private GetWebPolSourceSiteEffectTerm() {
         let languageEnum = GetLanguageEnum();
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebPolSourceSiteEffectTerm: {} });
         this.appStateService.UpdateAppState(<AppState>{
@@ -39,8 +52,8 @@ export class WebPolSourceSiteEffectTermService {
             map((x: any) => {
                 this.UpdateWebPolSourceSiteEffectTerm(x);
                 console.debug(x);
-                if (DoOther) {
-                    this.GetWebReportType();
+                if (this.DoOther) {
+                    this.DoWebReportType();
                 }
             }),
             catchError(e => of(e).pipe(map(e => {
@@ -50,11 +63,19 @@ export class WebPolSourceSiteEffectTermService {
         );
     }
 
-    GetWebReportType() {
-        this.webReportTypeService.GetWebReportType(this.DoOther).subscribe();
+    private DoWebReportType() {
+        this.webReportTypeService.DoWebReportType(this.DoOther);
     }
 
-    UpdateWebPolSourceSiteEffectTerm(x: WebPolSourceSiteEffectTerm) {
+    private KeepWebPolSourceSiteEffectTerm() {
+        this.UpdateWebPolSourceSiteEffectTerm(this.appLoadedService.AppLoaded$?.getValue()?.WebPolSourceSiteEffectTerm);
+        console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebPolSourceSiteEffectTerm);
+        if (this.DoOther) {
+            this.DoWebReportType();
+        }
+    }
+
+    private UpdateWebPolSourceSiteEffectTerm(x: WebPolSourceSiteEffectTerm) {
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebPolSourceSiteEffectTerm: x });
 
         if (this.DoOther) {

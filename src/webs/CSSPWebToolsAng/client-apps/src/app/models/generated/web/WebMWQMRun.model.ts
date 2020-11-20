@@ -6,9 +6,11 @@
  */
 
 import { MWQMRunModel } from 'src/app/models/generated/web/MWQMRunModel.model';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { WebBase } from 'src/app/models/generated/web/WebBase.model';
 
 export class WebMWQMRun {
     MWQMRunModelList: MWQMRunModel[];
+    TVItemModel: TVItemModel;
     TVItemParentList: WebBase[];
 }

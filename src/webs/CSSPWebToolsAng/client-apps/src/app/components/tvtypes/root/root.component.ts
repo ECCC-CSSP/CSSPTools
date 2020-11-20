@@ -12,6 +12,7 @@ import { StatCountService } from 'src/app/services/helpers/stat-count.service';
 import { ComponentButtonSelectionService } from 'src/app/services/helpers/component-button-selection.service';
 import { ComponentShowService } from 'src/app/services/helpers/component-show.service';
 import { ComponentDataClearService } from 'src/app/services/helpers/component-data-clear.service';
+import { GetSortOrderAngularEnum } from 'src/app/enums/generated/SortOrderAngularEnum';
 
 @Component({
   selector: 'app-root',
@@ -20,11 +21,11 @@ import { ComponentDataClearService } from 'src/app/services/helpers/component-da
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RootComponent implements OnInit, OnDestroy {
-  subWebRoot: Subscription;
   rootSubComponentEnum = GetRootSubComponentEnum();
   tvTypeEnum = GetTVTypeEnum();
   ascDescEnum = GetAscDescEnum();
-
+  sortOrderAngular = GetSortOrderAngularEnum();
+  
   constructor(public appStateService: AppStateService,
     public appLoadedService: AppLoadedService,
     public appLanguageService: AppLanguageService,
@@ -37,13 +38,10 @@ export class RootComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    let TVItemID: number = this.appStateService.AppState$.getValue().CurrentTVItemID;
-    this.componentDataClearService.DataClearRoot();
-    this.subWebRoot = this.webRootService.GetWebRoot(TVItemID, true).subscribe();
+    this.webRootService.DoWebRoot(true);
   }
 
   ngOnDestroy(): void {
-    this.subWebRoot ? this.subWebRoot.unsubscribe() : null;
   }
 
 }

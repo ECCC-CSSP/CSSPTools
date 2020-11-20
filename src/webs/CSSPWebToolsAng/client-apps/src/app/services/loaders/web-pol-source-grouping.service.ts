@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
@@ -17,6 +17,7 @@ import { WebPolSourceSiteEffectTermService } from './web-pol-source-site-effect-
 })
 export class WebPolSourceGroupingService {
     private DoOther: boolean;
+    private sub: Subscription;
 
     constructor(private httpClient: HttpClient,
         private appStateService: AppStateService,
@@ -26,8 +27,20 @@ export class WebPolSourceGroupingService {
         private componentDataLoadedService: ComponentDataLoadedService) {
     }
 
-    GetWebPolSourceGrouping(DoOther: boolean) {
+    DoWebPolSourceGrouping(DoOther: boolean) {
         this.DoOther = DoOther;
+
+        this.sub ? this.sub.unsubscribe() : null;
+
+        if (this.appLoadedService.AppLoaded$.getValue()?.WebPolSourceGrouping?.PolSourceGroupingList?.length > 0) {
+            this.KeepWebPolSourceGrouping();
+        }
+        else {
+            this.sub = this.GetWebPolSourceGrouping().subscribe();
+        }
+    }
+
+    private GetWebPolSourceGrouping() {
         let languageEnum = GetLanguageEnum();
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebPolSourceGrouping: {} });
         this.appStateService.UpdateAppState(<AppState>{
@@ -39,8 +52,8 @@ export class WebPolSourceGroupingService {
             map((x: any) => {
                 this.UpdateWebPolSourceGrouping(x);
                 console.debug(x);
-                if (DoOther) {
-                    this.GetWebPolSourceSiteEffectTerm();
+                if (this.DoOther) {
+                    this.DoWebPolSourceSiteEffectTerm();
                 }
             }),
             catchError(e => of(e).pipe(map(e => {
@@ -50,11 +63,19 @@ export class WebPolSourceGroupingService {
         );
     }
 
-    GetWebPolSourceSiteEffectTerm() {
-        this.webPolSourceSiteEffectTermService.GetWebPolSourceSiteEffectTerm(this.DoOther).subscribe();
+    private DoWebPolSourceSiteEffectTerm() {
+        this.webPolSourceSiteEffectTermService.DoWebPolSourceSiteEffectTerm(this.DoOther);
     }
 
-    UpdateWebPolSourceGrouping(x: WebPolSourceGrouping) {
+    private KeepWebPolSourceGrouping() {
+        this.UpdateWebPolSourceGrouping(this.appLoadedService.AppLoaded$?.getValue()?.WebPolSourceGrouping);
+        console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebPolSourceGrouping);
+        if (this.DoOther) {
+            this.DoWebPolSourceSiteEffectTerm();
+        }
+    }
+
+    private UpdateWebPolSourceGrouping(x: WebPolSourceGrouping) {
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebPolSourceGrouping: x });
 
         if (this.DoOther) {

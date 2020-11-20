@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
 import { AppState } from 'src/app/models/AppState.model';
@@ -16,7 +16,8 @@ import { WebPolSourceGroupingService } from './web-pol-source-grouping.service';
 })
 export class WebMWQMLookupMPNService {
     private DoOther: boolean;
-
+    private sub: Subscription;
+ 
     constructor(private httpClient: HttpClient,
         private appStateService: AppStateService,
         private appLoadedService: AppLoadedService,
@@ -25,8 +26,20 @@ export class WebMWQMLookupMPNService {
         private componentDataLoadedService: ComponentDataLoadedService) {
     }
 
-    GetWebMWQMLookupMPN(DoOther: boolean) {
+    DoWebMWQMLookupMPN(DoOther: boolean) {
         this.DoOther = DoOther;
+    
+        this.sub ? this.sub.unsubscribe() : null;
+    
+        if (this.appLoadedService.AppLoaded$.getValue()?.WebMWQMLookupMPN?.MWQMLookupMPNList?.length > 0) {
+          this.KeepWebMWQMLookupMPN();
+        }
+        else {
+          this.sub = this.GetWebMWQMLookupMPN().subscribe();
+        }
+      }
+    
+    private GetWebMWQMLookupMPN() {
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebMWQMLookupMPN: {} });
         this.appStateService.UpdateAppState(<AppState>{
             Status: this.appLanguageService.AppLanguage.LoadingMWQMLookupMPN[this.appStateService.AppState$?.getValue()?.Language],
@@ -37,8 +50,8 @@ export class WebMWQMLookupMPNService {
             map((x: any) => {
                 this.UpdateWebMWQMLookupMPN(x);
                 console.debug(x);
-                if (DoOther) {
-                    this.GetWebPolSourceGrouping();
+                if (this.DoOther) {
+                    this.DoWebPolSourceGrouping();
                 }
             }),
             catchError(e => of(e).pipe(map(e => {
@@ -48,11 +61,19 @@ export class WebMWQMLookupMPNService {
         );
     }
 
-    GetWebPolSourceGrouping() {
-        this.webPolSourceGroupingService.GetWebPolSourceGrouping(this.DoOther).subscribe();
+    DoWebPolSourceGrouping() {
+        this.webPolSourceGroupingService.DoWebPolSourceGrouping(this.DoOther);
     }
 
-    UpdateWebMWQMLookupMPN(x: WebMWQMLookupMPN) {
+    private KeepWebMWQMLookupMPN() {
+        this.UpdateWebMWQMLookupMPN(this.appLoadedService.AppLoaded$?.getValue()?.WebMWQMLookupMPN);
+        console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebMWQMLookupMPN);
+        if (this.DoOther) {
+            this.DoWebPolSourceGrouping();
+        }
+    }
+
+    private UpdateWebMWQMLookupMPN(x: WebMWQMLookupMPN) {
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebMWQMLookupMPN: x });
 
         if (this.DoOther) {

@@ -3243,4 +3243,55 @@
   <data name="LocalDBCommandEnumNew" xml:space="preserve">
     <value>New</value>
   </data>
+  <data name="MikeScenarioSubComponentEnumFiles" xml:space="preserve">
+    <value>Files</value>
+  </data>
+  <data name="MikeScenarioSubComponentEnumGeneralParameters" xml:space="preserve">
+    <value>General Parameters</value>
+  </data>
+  <data name="MikeScenarioSubComponentEnumGeneralResults" xml:space="preserve">
+    <value>General Results</value>
+  </data>
+  <data name="MikeScenarioSubComponentEnumInputSummary" xml:space="preserve">
+    <value>Input Summary</value>
+  </data>
+  <data name="MikeScenarioSubComponentEnumSources" xml:space="preserve">
+    <value>Sources</value>
+  </data>
+  <data name="ShellSubComponentEnumMikeScenario" xml:space="preserve">
+    <value>MIKE Scenario</value>
+  </data>
+  <data name="SortOrderAngularEnumAreaSectors" xml:space="preserve">
+    <value>AreaSectors</value>
+  </data>
+  <data name="SortOrderAngularEnumCountryProvinces" xml:space="preserve">
+    <value>CountryProvinces</value>
+  </data>
+  <data name="SortOrderAngularEnumMunicipalityMIKEScenarios" xml:space="preserve">
+    <value>MunicipalityMIKEScenarios</value>
+  </data>
+  <data name="SortOrderAngularEnumProvinceAreas" xml:space="preserve">
+    <value>ProvinceAreas</value>
+  </data>
+  <data name="SortOrderAngularEnumProvinceMunicipalities" xml:space="preserve">
+    <value>ProvinceMunicipalities</value>
+  </data>
+  <data name="SortOrderAngularEnumRootCountries" xml:space="preserve">
+    <value>RootCountries</value>
+  </data>
+  <data name="SortOrderAngularEnumSectorMikeScenarios" xml:space="preserve">
+    <value>SectorMikeScenarios</value>
+  </data>
+  <data name="SortOrderAngularEnumSectorSubsectors" xml:space="preserve">
+    <value>SectorSubsectors</value>
+  </data>
+  <data name="SortOrderAngularEnumSubsectorMWQMRuns" xml:space="preserve">
+    <value>SubsectorMWQMRuns</value>
+  </data>
+  <data name="SortOrderAngularEnumSubsectorMWQMSites" xml:space="preserve">
+    <value>SubsectorMWQMSites</value>
+  </data>
+  <data name="SortOrderAngularEnumSubsectorPolSourceSites" xml:space="preserve">
+    <value>SubsectorPolSourceSites</value>
+  </data>
 </root>

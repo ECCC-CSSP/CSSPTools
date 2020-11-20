@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CSSPWebModels
 {
     [NotMapped]
-    public partial class WebMunicipalities
+    public partial class WebMunicipalities : WebBase
     {
         #region Properties
         public List<WebBase> TVItemParentList { get; set; }

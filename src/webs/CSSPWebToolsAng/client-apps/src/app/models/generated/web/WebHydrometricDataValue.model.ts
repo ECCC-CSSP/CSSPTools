@@ -6,9 +6,11 @@
  */
 
 import { HydrometricDataValue } from 'src/app/models/generated/db/HydrometricDataValue.model';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { WebBase } from 'src/app/models/generated/web/WebBase.model';
 
 export class WebHydrometricDataValue {
     HydrometricDataValueList: HydrometricDataValue[];
+    TVItemModel: TVItemModel;
     TVItemParentList: WebBase[];
 }

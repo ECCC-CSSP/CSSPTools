@@ -13,6 +13,7 @@ import { WebRootService } from 'src/app/services/loaders/web-root.service';
 import { WebSectorService } from 'src/app/services/loaders/web-sector.service';
 import { WebSubsectorService } from 'src/app/services/loaders/web-subsector.service';
 import { AppLoadedService } from '../app-loaded.service';
+import { WebMikeScenarioService } from '../loaders/web-mike-scenario.service';
 
 @Injectable({
     providedIn: 'root'
@@ -20,16 +21,17 @@ import { AppLoadedService } from '../app-loaded.service';
 export class TogglesService {
     constructor(private appStateService: AppStateService,
         private appLoadedService: AppLoadedService,
-        private getWebRootService: WebRootService,
-        private getWebCountryService: WebCountryService,
-        private getWebProvinceService: WebProvinceService,
-        private getWebAreaService: WebAreaService,
-        private getWebSectorService: WebSectorService,
-        private getWebSubsectorService: WebSubsectorService,
-        private getWebMunicipalityService: WebMunicipalityService,
-        private getWebMWQMSiteService: WebMWQMSiteService,
-        private getWebMWQMRunService: WebMWQMRunService,
-        private getWebPolSourceSiteService: WebPolSourceSiteService,
+        private webAreaService: WebAreaService,
+        private webCountryService: WebCountryService,
+        private webMikeScenarioService: WebMikeScenarioService,
+        private webMunicipalityService: WebMunicipalityService,
+        private webMWQMSiteService: WebMWQMSiteService,
+        private webMWQMRunService: WebMWQMRunService,
+        private webPolSourceSiteService: WebPolSourceSiteService,
+        private webProvinceService: WebProvinceService,
+        private webRootService: WebRootService,
+        private webSectorService: WebSectorService,
+        private webSubsectorService: WebSubsectorService,
     ) {
 
     }
@@ -44,38 +46,67 @@ export class TogglesService {
 
     ToggleInactive(appState: AppState): void {
         this.appStateService.UpdateAppState(<AppState>{ InactVisible: !this.appStateService.AppState$.getValue().InactVisible });
-        if (appState.ShellSubComponent == ShellSubComponentEnum.Root) {
-            this.getWebRootService.UpdateWebRoot(this.appLoadedService.AppLoaded$.getValue().WebRoot);
-        }
-        else if (appState.ShellSubComponent == ShellSubComponentEnum.Country) {
-            this.getWebCountryService.UpdateWebCountry(this.appLoadedService.AppLoaded$.getValue().WebCountry);
-        }
-        else if (appState.ShellSubComponent == ShellSubComponentEnum.Province) {
-            this.getWebProvinceService.UpdateWebProvince(this.appLoadedService.AppLoaded$.getValue().WebProvince);
-        }
-        else if (appState.ShellSubComponent == ShellSubComponentEnum.Area) {
-            this.getWebAreaService.UpdateWebArea(this.appLoadedService.AppLoaded$.getValue().WebArea);
-        }
-        else if (appState.ShellSubComponent == ShellSubComponentEnum.Sector) {
-            this.getWebSectorService.UpdateWebSector(this.appLoadedService.AppLoaded$.getValue().WebSector);
-        }
-        else if (appState.ShellSubComponent == ShellSubComponentEnum.Subsector) {
-            this.getWebSubsectorService.UpdateWebSubsector(this.appLoadedService.AppLoaded$.getValue().WebSubsector);
-        }
-        else if (appState.ShellSubComponent == ShellSubComponentEnum.Municipality) {
-            this.getWebMunicipalityService.UpdateWebMunicipality(this.appLoadedService.AppLoaded$.getValue().WebMunicipality);
-        }
-        else if (appState.ShellSubComponent == ShellSubComponentEnum.MWQMSite) {
-            this.getWebMWQMSiteService.UpdateWebMWQMSite(this.appLoadedService.AppLoaded$.getValue().WebMWQMSite);
-        }
-        else if (appState.ShellSubComponent == ShellSubComponentEnum.MWQMRun) {
-            this.getWebMWQMRunService.UpdateWebMWQMRun(this.appLoadedService.AppLoaded$.getValue().WebMWQMRun);
-        }
-        else if (appState.ShellSubComponent == ShellSubComponentEnum.PolSourceSite) {
-            this.getWebPolSourceSiteService.UpdateWebPolSourceSite(this.appLoadedService.AppLoaded$.getValue().WebPolSourceSite);
-        }
-        else {
-            alert(`ToggleInactive (${ShellSubComponentEnum[appState.ShellSubComponent]}) not implemented. see ToggleInactive in app-loaded.service`);
+        switch (appState.ShellSubComponent) {
+            case ShellSubComponentEnum.Area:
+                {
+                    this.webAreaService.DoWebArea(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
+                }
+                break;
+            case ShellSubComponentEnum.Country:
+                {
+                    this.webCountryService.DoWebCountry(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
+                }
+                break;
+            case ShellSubComponentEnum.MikeScenario:
+                {
+                    this.webMikeScenarioService.DoWebMikeScenario(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
+                }
+                break;
+            case ShellSubComponentEnum.Municipality:
+                {
+                    this.webMunicipalityService.DoWebMunicipality(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
+                }
+                break;
+            case ShellSubComponentEnum.MWQMRun:
+                {
+                    this.webMWQMRunService.DoWebMWQMRun(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
+                }
+                break;
+            case ShellSubComponentEnum.MWQMSite:
+                {
+                    this.webMWQMSiteService.DoWebMWQMSite(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
+                }
+                break;
+            case ShellSubComponentEnum.PolSourceSite:
+                {
+                    this.webPolSourceSiteService.DoWebPolSourceSite(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
+                }
+                break;
+            case ShellSubComponentEnum.Province:
+                {
+                    this.webProvinceService.DoWebProvince(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
+                }
+                break;
+            case ShellSubComponentEnum.Root:
+                {
+                    this.webRootService.DoWebRoot(true);
+                }
+                break;
+            case ShellSubComponentEnum.Sector:
+                {
+                    this.webSectorService.DoWebSector(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
+                }
+                break;
+            case ShellSubComponentEnum.Subsector:
+                {
+                    this.webSubsectorService.DoWebSubsector(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
+                }
+                break;
+            default:
+                {
+
+                }
+                break;
         }
     }
 

@@ -76,45 +76,45 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   NavigateTo(sr: SearchResult) {
     this.searchResult = sr;
-    if (sr.TVItem.TVType == TVTypeEnum.Root) {
-      this.subWebRoot = this.webRootService.GetWebRoot(sr.TVItem.TVItemID, true).subscribe();
-      this.appStateService.UpdateAppState(<AppState> { ShellSubComponent: ShellSubComponentEnum.Root, CurrentTVItemID: sr.TVItem.TVItemID });
-    }
-    else if (sr.TVItem.TVType == TVTypeEnum.Country) {
-      this.subWebCountry = this.webCountryService.GetWebCountry(sr.TVItem.TVItemID, true).subscribe();
-      this.appStateService.UpdateAppState(<AppState> { ShellSubComponent: ShellSubComponentEnum.Country, CurrentTVItemID: sr.TVItem.TVItemID });
-    }
-    else if (sr.TVItem.TVType == TVTypeEnum.Province) {
-      this.subWebProvince = this.webProvinceService.GetWebProvince(sr.TVItem.TVItemID, true).subscribe();
-      this.appStateService.UpdateAppState(<AppState> { ShellSubComponent: ShellSubComponentEnum.Province, CurrentTVItemID: sr.TVItem.TVItemID });
+    if (sr.TVItem.TVType == TVTypeEnum.Country) {
+      this.webCountryService.DoWebCountry(sr.TVItem.TVItemID, true);
+      this.appStateService.UpdateAppState(<AppState>{ ShellSubComponent: ShellSubComponentEnum.Country, CurrentTVItemID: sr.TVItem.TVItemID });
     }
     else if (sr.TVItem.TVType == TVTypeEnum.Area) {
-      this.subWebArea = this.webAreaService.GetWebArea(sr.TVItem.TVItemID, true).subscribe();
-      this.appStateService.UpdateAppState(<AppState> { ShellSubComponent: ShellSubComponentEnum.Area, CurrentTVItemID: sr.TVItem.TVItemID });
-    }
-    else if (sr.TVItem.TVType == TVTypeEnum.Sector) {
-      this.subWebSector = this.webSectorService.GetWebSector(sr.TVItem.TVItemID, true).subscribe();
-      this.appStateService.UpdateAppState(<AppState> { ShellSubComponent: ShellSubComponentEnum.Sector, CurrentTVItemID: sr.TVItem.TVItemID });
-    }
-    else if (sr.TVItem.TVType == TVTypeEnum.Subsector) {
-      this.subWebSubsector = this.webSubsectorService.GetWebSubsector(sr.TVItem.TVItemID, true).subscribe();
-      this.appStateService.UpdateAppState(<AppState> { ShellSubComponent: ShellSubComponentEnum.Subsector, CurrentTVItemID: sr.TVItem.TVItemID });
+      this.webAreaService.DoWebArea(sr.TVItem.TVItemID, true);
+      this.appStateService.UpdateAppState(<AppState>{ ShellSubComponent: ShellSubComponentEnum.Area, CurrentTVItemID: sr.TVItem.TVItemID });
     }
     else if (sr.TVItem.TVType == TVTypeEnum.Municipality) {
-      this.subWebMunicipality = this.webMunicipalityService.GetWebMunicipality(sr.TVItem.TVItemID, true).subscribe();
-      this.appStateService.UpdateAppState(<AppState> { ShellSubComponent: ShellSubComponentEnum.Municipality, CurrentTVItemID: sr.TVItem.TVItemID });
-    }
-    else if (sr.TVItem.TVType == TVTypeEnum.MWQMSite) {
-      this.subWebMWQMSite = this.webMWQMSiteService.GetWebMWQMSite(sr.TVItem.TVItemID, true).subscribe();
-      this.appStateService.UpdateAppState(<AppState> { ShellSubComponent: ShellSubComponentEnum.MWQMSite, CurrentTVItemID: sr.TVItem.TVItemID });
+      this.webMunicipalityService.DoWebMunicipality(sr.TVItem.TVItemID, true);
+      this.appStateService.UpdateAppState(<AppState>{ ShellSubComponent: ShellSubComponentEnum.Municipality, CurrentTVItemID: sr.TVItem.TVItemID });
     }
     else if (sr.TVItem.TVType == TVTypeEnum.MWQMRun) {
-      this.subWebMWQMRun = this.webMWQMRunService.GetWebMWQMRun(sr.TVItem.TVItemID, true).subscribe();
-      this.appStateService.UpdateAppState(<AppState> { ShellSubComponent: ShellSubComponentEnum.MWQMRun, CurrentTVItemID: sr.TVItem.TVItemID });
+      this.webMWQMRunService.DoWebMWQMRun(sr.TVItem.TVItemID, true);
+      this.appStateService.UpdateAppState(<AppState>{ ShellSubComponent: ShellSubComponentEnum.MWQMRun, CurrentTVItemID: sr.TVItem.TVItemID });
+    }
+    else if (sr.TVItem.TVType == TVTypeEnum.MWQMSite) {
+      this.webMWQMSiteService.DoWebMWQMSite(sr.TVItem.TVItemID, true);
+      this.appStateService.UpdateAppState(<AppState>{ ShellSubComponent: ShellSubComponentEnum.MWQMSite, CurrentTVItemID: sr.TVItem.TVItemID });
     }
     else if (sr.TVItem.TVType == TVTypeEnum.PolSourceSite) {
-      this.subWebPolSourceSite = this.webPolSourceSiteService.GetWebPolSourceSite(sr.TVItem.TVItemID, true).subscribe();
-      this.appStateService.UpdateAppState(<AppState> { ShellSubComponent: ShellSubComponentEnum.PolSourceSite, CurrentTVItemID: sr.TVItem.TVItemID });
+      this.webPolSourceSiteService.DoWebPolSourceSite(sr.TVItem.TVItemID, true);
+      this.appStateService.UpdateAppState(<AppState>{ ShellSubComponent: ShellSubComponentEnum.PolSourceSite, CurrentTVItemID: sr.TVItem.TVItemID });
+    }
+    else if (sr.TVItem.TVType == TVTypeEnum.Province) {
+      this.webProvinceService.DoWebProvince(sr.TVItem.TVItemID, true);
+      this.appStateService.UpdateAppState(<AppState>{ ShellSubComponent: ShellSubComponentEnum.Province, CurrentTVItemID: sr.TVItem.TVItemID });
+    }
+    else if (sr.TVItem.TVType == TVTypeEnum.Root) {
+      this.webRootService.DoWebRoot(true);
+      this.appStateService.UpdateAppState(<AppState>{ ShellSubComponent: ShellSubComponentEnum.Root, CurrentTVItemID: sr.TVItem.TVItemID });
+    }
+    else if (sr.TVItem.TVType == TVTypeEnum.Sector) {
+      this.webSectorService.DoWebSector(sr.TVItem.TVItemID, true);
+      this.appStateService.UpdateAppState(<AppState>{ ShellSubComponent: ShellSubComponentEnum.Sector, CurrentTVItemID: sr.TVItem.TVItemID });
+    }
+    else if (sr.TVItem.TVType == TVTypeEnum.Subsector) {
+      this.webSubsectorService.DoWebSubsector(sr.TVItem.TVItemID, true);
+      this.appStateService.UpdateAppState(<AppState>{ ShellSubComponent: ShellSubComponentEnum.Subsector, CurrentTVItemID: sr.TVItem.TVItemID });
     }
     else {
       alert(`${TVTypeEnum[sr.TVItem.TVType]} - Not Implemented Yet. See search.component.ts -- NavigateTo Function`);

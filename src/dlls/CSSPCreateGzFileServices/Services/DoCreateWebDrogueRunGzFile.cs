@@ -35,6 +35,8 @@ namespace CreateGzFileServices
             {
                 await FillParentListTVItemModelList(webDrogueRun.TVItemParentList, tvItemSubsector);
 
+                await FillTVItemModel(webDrogueRun.TVItemModel, tvItemSubsector);
+
                 webDrogueRun.DrogueRunList = await GetDrogueRunListUnderProvince(tvItemSubsector.TVItemID);
                 webDrogueRun.DrogueRunPositionList = await GetDrogueRunPositionListUnderProvince(tvItemSubsector.TVItemID);
 

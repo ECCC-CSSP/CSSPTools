@@ -20,74 +20,30 @@ export class SubPageService {
 
   GetSubPage(tvItem: TVItem): ShellSubComponentEnum {
     switch (<TVTypeEnum>tvItem.TVType) {
-      // case TVTypeEnum.Address:
-      //   {
-      //     return `address`;
-      //   }
       case TVTypeEnum.Area:
         {
           return ShellSubComponentEnum.Area;
         }
-      // case TVTypeEnum.BoxModel:
-      //   {
-      //     return `boxmodel`;
-      //   }
-      // case TVTypeEnum.ClimateSite:
-      //   {
-      //     return `climatesite`;
-      //   }
-      // case TVTypeEnum.Contact:
-      //   {
-      //     return `contact`;
-      //   }
       case TVTypeEnum.Country:
         {
           return ShellSubComponentEnum.Country;
         }
-      // case TVTypeEnum.Email:
-      //   {
-      //     return `email`;
-      //   }
-      // case TVTypeEnum.File:
-      //   {
-      //     return `file`;
-      //   }
-      // case TVTypeEnum.HydrometricSite:
-      //   {
-      //     return `hydrometricsite`;
-      //   }
-      // case TVTypeEnum.Infrastructure:
-      //   {
-      //     return `infrastructure`;
-      //   }
-      // case TVTypeEnum.LabSheetInfo:
-      //   {
-      //     return `labsheet`;
-      //   }
-      // case TVTypeEnum.MWQMRun:
-      //   {
-      //     return `mwqmrun`;
-      //   }
-      // case TVTypeEnum.MWQMSite:
-      //   {
-      //     return `mwqmsite`;
-      //   }
-      case TVTypeEnum.MikeScenario:
-        {
-          return ShellSubComponentEnum.MIKEScenario;
-        }
-      // case TVTypeEnum.MikeSource:
-      //   {
-      //     return `mikesource`;
-      //   }
       case TVTypeEnum.Municipality:
         {
           return ShellSubComponentEnum.Municipality;
         }
-      // case TVTypeEnum.PolSourceSite:
-      //   {
-      //     return `polsourcesite`;
-      //   }
+      case TVTypeEnum.MWQMRun:
+        {
+          return ShellSubComponentEnum.MWQMRun;
+        }
+      case TVTypeEnum.MWQMSite:
+        {
+          return ShellSubComponentEnum.MWQMSite;
+        }
+      case TVTypeEnum.PolSourceSite:
+        {
+          return ShellSubComponentEnum.PolSourceSite;
+        }
       case TVTypeEnum.Province:
         {
           return ShellSubComponentEnum.Province;
@@ -96,10 +52,6 @@ export class SubPageService {
         {
           return ShellSubComponentEnum.Root;
         }
-      // case TVTypeEnum.SamplingPlan:
-      //   {
-      //     return `samplingplan`;
-      //   }
       case TVTypeEnum.Sector:
         {
           return ShellSubComponentEnum.Sector;
@@ -108,18 +60,6 @@ export class SubPageService {
         {
           return ShellSubComponentEnum.Subsector;
         }
-      // case TVTypeEnum.Tel:
-      //   {
-      //     return `tel`;
-      //   }
-      // case TVTypeEnum.TideSite:
-      //   {
-      //     return `tidesite`;
-      //   }
-      // case TVTypeEnum.VisualPlumesScenario:
-      //   {
-      //     return `visualplumesscenario`;
-      //   }
       default:
         {
           return ShellSubComponentEnum.Root;

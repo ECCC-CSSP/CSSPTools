@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
@@ -15,7 +15,9 @@ import { ComponentDataLoadedService } from '../helpers/component-data-loaded.ser
     providedIn: 'root'
 })
 export class WebSamplingPlanService {
+    private SamplingPlanID: number;
     private DoOther: boolean;
+    private sub: Subscription;
 
     constructor(private httpClient: HttpClient,
         private appStateService: AppStateService,
@@ -24,20 +26,35 @@ export class WebSamplingPlanService {
         private componentDataLoadedService: ComponentDataLoadedService) {
     }
 
-    GetWebSamplingPlan(SamplingPlanID: number, DoOther: boolean) {
+    DoWebSamplingPlan(SamplingPlanID: number, DoOther: boolean) {
+        this.SamplingPlanID = SamplingPlanID;
         this.DoOther = DoOther;
+
+        this.sub ? this.sub.unsubscribe() : null;
+
+        if (this.appLoadedService.AppLoaded$.getValue()?.WebSamplingPlan?.SamplingPlanModel.SamplingPlan.SamplingPlanID == SamplingPlanID) {
+            this.KeepWebSamplingPlan();
+        }
+        else {
+            this.sub = this.GetWebSamplingPlan().subscribe();
+        }
+    }
+
+    private GetWebSamplingPlan() {
         let languageEnum = GetLanguageEnum();
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebSamplingPlan: {}, BreadCrumbWebBaseList: [] });
+        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
+            WebSamplingPlan: {},
+        });
         this.appStateService.UpdateAppState(<AppState>{
             Status: this.appLanguageService.AppLanguage.LoadingSamplingPlan[this.appStateService.AppState$?.getValue()?.Language],
             Working: true
         });
-        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebSamplingPlan/${SamplingPlanID}/1`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebSamplingPlan/${this.SamplingPlanID}/1`;
         return this.httpClient.get<WebSamplingPlan>(url).pipe(
             map((x: any) => {
                 this.UpdateWebSamplingPlan(x);
                 console.debug(x);
-                if (DoOther) {
+                if (this.DoOther) {
                     // nothing more to add in the chain
                 }
             }),
@@ -48,8 +65,18 @@ export class WebSamplingPlanService {
         );
     }
 
-    UpdateWebSamplingPlan(x: WebSamplingPlan) {
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebSamplingPlan: x, BreadCrumbWebBaseList: x?.TVItemParentList });
+    private KeepWebSamplingPlan() {
+        this.UpdateWebSamplingPlan(this.appLoadedService.AppLoaded$?.getValue()?.WebSamplingPlan);
+        console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebSamplingPlan);
+        if (this.DoOther) {
+            // nothing more to add in the chain
+        }
+    }
+
+    private UpdateWebSamplingPlan(x: WebSamplingPlan) {
+        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
+            WebSamplingPlan: x,
+        });
 
         if (this.DoOther) {
             if (this.componentDataLoadedService.DataLoadedSamplingPlan()) {

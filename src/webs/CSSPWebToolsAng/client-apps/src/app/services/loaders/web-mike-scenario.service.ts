@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
@@ -15,7 +15,9 @@ import { ComponentDataLoadedService } from '../helpers/component-data-loaded.ser
     providedIn: 'root'
 })
 export class WebMikeScenarioService {
+    private TVItemID: number;
     private DoOther: boolean;
+    private sub: Subscription;
 
     constructor(private httpClient: HttpClient,
         private appStateService: AppStateService,
@@ -24,8 +26,21 @@ export class WebMikeScenarioService {
         private componentDataLoadedService: ComponentDataLoadedService) {
     }
 
-    GetWebMikeScenario(TVItemID: number, DoOther: boolean) {
+    DoWebMikeScenario(TVItemID: number, DoOther: boolean) {
+        this.TVItemID = TVItemID;
         this.DoOther = DoOther;
+    
+        this.sub ? this.sub.unsubscribe() : null;
+    
+        if (this.appLoadedService.AppLoaded$.getValue()?.WebMikeScenario?.TVItemModel?.TVItem?.TVItemID == TVItemID) {
+          this.KeepWebMikeScenario();
+        }
+        else {
+          this.sub = this.GetWebMikeScenario().subscribe();
+        }
+      }
+    
+    private GetWebMikeScenario() {
         let languageEnum = GetLanguageEnum();
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
             WebMikeScenario: {},
@@ -33,18 +48,19 @@ export class WebMikeScenarioService {
             MikeBoundaryConditionModelWebTideList: [],
             MikeScenario: {},
             MikeSourceModelList: [],
-            BreadCrumbWebBaseList: [],
+            BreadCrumbMikeScenarioWebBaseList: [],
+            BreadCrumbWebBaseList: []
         });
         this.appStateService.UpdateAppState(<AppState>{
             Status: this.appLanguageService.AppLanguage.LoadingMIKEScenario[this.appStateService.AppState$?.getValue()?.Language],
             Working: true
         });
-        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebMikeScenario/${TVItemID}/1`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebMikeScenario/${this.TVItemID}/1`;
         return this.httpClient.get<WebMikeScenario>(url).pipe(
             map((x: any) => {
                 this.UpdateWebMikeScenario(x);
                 console.debug(x);
-                if (DoOther) {
+                if (this.DoOther) {
                     // nothing else to add in the chain
                 }
             }),
@@ -55,14 +71,23 @@ export class WebMikeScenarioService {
         );
     }
 
-    UpdateWebMikeScenario(x: WebMikeScenario) {
+    private KeepWebMikeScenario() {
+        this.UpdateWebMikeScenario(this.appLoadedService.AppLoaded$?.getValue()?.WebMikeScenario);
+        console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebMikeScenario);
+        if (this.DoOther) {
+            // nothing else to add in the chain
+        }
+    }
+
+    private UpdateWebMikeScenario(x: WebMikeScenario) {
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
             WebMikeScenario: x,
             MikeBoundaryConditionModelMeshList: x?.MikeBoundaryConditionModelMeshList,
             MikeBoundaryConditionModelWebTideList: x?.MikeBoundaryConditionModelWebTideList,
             MikeScenario: x?.MikeScenario,
             MikeSourceModelList: x?.MikeSourceModelList,
-            BreadCrumbWebBaseList: x?.TVItemParentList,
+            BreadCrumbMikeScenarioWebBaseList: x?.TVItemParentList,
+            BreadCrumbWebBaseList: x?.TVItemParentList
         });
 
         if (this.DoOther) {

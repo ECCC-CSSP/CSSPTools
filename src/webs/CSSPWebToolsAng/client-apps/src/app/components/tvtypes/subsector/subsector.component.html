@@ -15,12 +15,12 @@
         </span>                
     </span>
     <span class="biggerArrow"
-        (click)="tvItemSortOrderService.ChangeTVItemSortOrder('SubsectorMWQMSitesSortOrder', ascDescEnum.Ascending)"
+        (click)="tvItemSortOrderService.ChangeTVItemSortOrder(sortOrderAngular.SubsectorMWQMSites, ascDescEnum.Ascending)"
         *ngIf="appStateService.AppState$.getValue().SubsectorMWQMSitesSortOrder == ascDescEnum.Descending">
         &nbsp;&nbsp;&uarr;
     </span>
     <span class="biggerArrow"
-        (click)="tvItemSortOrderService.ChangeTVItemSortOrder('SubsectorMWQMSitesSortOrder', ascDescEnum.Descending)"
+        (click)="tvItemSortOrderService.ChangeTVItemSortOrder(sortOrderAngular.SubsectorMWQMSites, ascDescEnum.Descending)"
         *ngIf="appStateService.AppState$.getValue().SubsectorMWQMSitesSortOrder == ascDescEnum.Ascending">
         &nbsp;&nbsp;&darr;
     </span>
@@ -40,12 +40,12 @@
         </span>                        
     </span>
     <span class="biggerArrow"
-        (click)="tvItemSortOrderService.ChangeTVItemSortOrder('SubsectorMWQMRunsSortOrder', ascDescEnum.Ascending)"
+        (click)="tvItemSortOrderService.ChangeTVItemSortOrder(sortOrderAngular.SubsectorMWQMRuns, ascDescEnum.Ascending)"
         *ngIf="appStateService.AppState$.getValue().SubsectorMWQMRunsSortOrder == ascDescEnum.Descending">
         &nbsp;&nbsp;&uarr;
     </span>
     <span class="biggerArrow"
-        (click)="tvItemSortOrderService.ChangeTVItemSortOrder('SubsectorMWQMRunsSortOrder', ascDescEnum.Descending)"
+        (click)="tvItemSortOrderService.ChangeTVItemSortOrder(sortOrderAngular.SubsectorMWQMRuns, ascDescEnum.Descending)"
         *ngIf="appStateService.AppState$.getValue().SubsectorMWQMRunsSortOrder == ascDescEnum.Ascending">
         &nbsp;&nbsp;&darr;
     </span>
@@ -60,12 +60,12 @@
         </span>                                
     </span>
     <span class="biggerArrow"
-        (click)="tvItemSortOrderService.ChangeTVItemSortOrder('SubsectorPolSourceSitesSortOrder', ascDescEnum.Ascending)"
+        (click)="tvItemSortOrderService.ChangeTVItemSortOrder(sortOrderAngular.SubsectorPolSourceSites, ascDescEnum.Ascending)"
         *ngIf="appStateService.AppState$.getValue().SubsectorPolSourceSitesSortOrder == ascDescEnum.Descending">
         &nbsp;&nbsp;&uarr;
     </span>
     <span class="biggerArrow"
-        (click)="tvItemSortOrderService.ChangeTVItemSortOrder('SubsectorPolSourceSitesSortOrder', ascDescEnum.Descending)"
+        (click)="tvItemSortOrderService.ChangeTVItemSortOrder(sortOrderAngular.SubsectorPolSourceSites, ascDescEnum.Descending)"
         *ngIf="appStateService.AppState$.getValue().SubsectorPolSourceSitesSortOrder == ascDescEnum.Ascending">
         &nbsp;&nbsp;&darr;
     </span>

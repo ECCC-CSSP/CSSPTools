@@ -6,9 +6,11 @@
  */
 
 import { MWQMSiteModel } from 'src/app/models/generated/web/MWQMSiteModel.model';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { WebBase } from 'src/app/models/generated/web/WebBase.model';
 
 export class WebMWQMSite {
     MWQMSiteModelList: MWQMSiteModel[];
+    TVItemModel: TVItemModel;
     TVItemParentList: WebBase[];
 }

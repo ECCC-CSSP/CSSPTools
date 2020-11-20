@@ -48,6 +48,7 @@ export class AppStateService {
       MWQMRunSubComponent: MWQMRunSubComponentEnum.Information, // Information | Files
       PolSourceSiteSubComponent: PolSourceSiteSubComponentEnum.Information, // Information | Files
       CurrentTVItemID: 1,
+      SamplingPlanID: 0,
       Language: LanguageEnum.en, // en | fr | enAndfr | es
       BaseApiUrl: '',
       DetailVisible: false,

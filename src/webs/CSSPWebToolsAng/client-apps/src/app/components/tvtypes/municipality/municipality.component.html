@@ -5,8 +5,8 @@
     {{ appStateService.AppState$?.getValue()?.Status }}
 </p>
 
-<button mat-button [ngClass]="ColorSelection(municipalitySubComponentEnum.Infrastructures)"
-    (click)="Show(municipalitySubComponentEnum.Infrastructures)"
+<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionMunicipality(municipalitySubComponentEnum.Infrastructures)"
+    (click)="componentShowService.ShowMunicipality(municipalitySubComponentEnum.Infrastructures)"
     title="{{ appLanguageService.AppLanguage.MunicipalityShowInfrastructures[appStateService.AppState$?.getValue().Language] }}">
     <span>
         {{ appLanguageService.AppLanguage.MunicipalityInfrastructures[appStateService.AppState$?.getValue().Language] }}
@@ -15,8 +15,8 @@
         </span>
     </span>
 </button>
-<button mat-button [ngClass]="ColorSelection(municipalitySubComponentEnum.Contacts)"
-    (click)="Show(municipalitySubComponentEnum.Contacts)"
+<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionMunicipality(municipalitySubComponentEnum.Contacts)"
+    (click)="componentShowService.ShowMunicipality(municipalitySubComponentEnum.Contacts)"
     title="{{ appLanguageService.AppLanguage.MunicipalityShowContacts[appStateService.AppState$?.getValue().Language] }}">
     <span>
         {{ appLanguageService.AppLanguage.MunicipalityContacts[appStateService.AppState$?.getValue().Language] }}
@@ -25,8 +25,8 @@
         </span>
     </span>
 </button>
-<button mat-button [ngClass]="ColorSelection(municipalitySubComponentEnum.MIKEScenarios)"
-    (click)="Show(municipalitySubComponentEnum.MIKEScenarios)"
+<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionMunicipality(municipalitySubComponentEnum.MIKEScenarios)"
+    (click)="componentShowService.ShowMunicipality(municipalitySubComponentEnum.MIKEScenarios)"
     title="{{ appLanguageService.AppLanguage.MunicipalityShowMikeScenarios[appStateService.AppState$?.getValue().Language] }}">
     <span>
         {{ appLanguageService.AppLanguage.MunicipalityMikeScenarios[appStateService.AppState$?.getValue().Language] }}
@@ -35,18 +35,18 @@
         </span>
     </span>
     <span class="biggerArrow"
-        (click)="tvItemSortOrderService.ChangeTVItemSortOrder('MunicipalityMIKEScenariosSortOrder', ascDescEnum.Ascending)"
+        (click)="tvItemSortOrderService.ChangeTVItemSortOrder(sortOrderAngular.MunicipalityMIKEScenarios, ascDescEnum.Ascending)"
         *ngIf="appStateService.AppState$.getValue().MunicipalityMIKEScenariosSortOrder == ascDescEnum.Descending">
         &nbsp;&nbsp;&uarr;
     </span>
     <span class="biggerArrow"
-        (click)="tvItemSortOrderService.ChangeTVItemSortOrder('MunicipalityMIKEScenariosSortOrder', ascDescEnum.Descending)"
+        (click)="tvItemSortOrderService.ChangeTVItemSortOrder(sortOrderAngular.MunicipalityMIKEScenarios, ascDescEnum.Descending)"
         *ngIf="appStateService.AppState$.getValue().MunicipalityMIKEScenariosSortOrder == ascDescEnum.Ascending">
         &nbsp;&nbsp;&darr;
     </span>
 </button>
-<button mat-button [ngClass]="ColorSelection(municipalitySubComponentEnum.Files)"
-    (click)="Show(municipalitySubComponentEnum.Files)"
+<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionMunicipality(municipalitySubComponentEnum.Files)"
+    (click)="componentShowService.ShowMunicipality(municipalitySubComponentEnum.Files)"
     title="{{ appLanguageService.AppLanguage.MunicipalityShowFiles[appStateService.AppState$?.getValue().Language] }}">
     <span>
         {{ appLanguageService.AppLanguage.MunicipalityFiles[appStateService.AppState$?.getValue().Language] }}

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AscDescEnum } from 'src/app/enums/generated/AscDescEnum';
+import { SortOrderAngularEnum } from 'src/app/enums/generated/SortOrderAngularEnum';
 import { AppState } from 'src/app/models/AppState.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
@@ -27,54 +28,54 @@ export class TVItemSortOrderService {
   ) {
   }
 
-  ChangeTVItemSortOrder(prop: string, ascDesc: AscDescEnum) {
-    switch (prop) {
-      case 'AreaSectorsSortOrder':
+  ChangeTVItemSortOrder(sortOrderItem: SortOrderAngularEnum, ascDesc: AscDescEnum) {
+    switch (sortOrderItem) {
+      case SortOrderAngularEnum.AreaSectors:
         this.appStateService.UpdateAppState(<AppState>{ AreaSectorsSortOrder: ascDesc });
-        this.webAreaService.UpdateWebArea(this.appLoadedService.AppLoaded$.getValue().WebArea);
+        this.webAreaService.DoWebArea(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
         break;
-      case 'CountryProvincesSortOrder':
+      case SortOrderAngularEnum.CountryProvinces:
         this.appStateService.UpdateAppState(<AppState>{ CountryProvincesSortOrder: ascDesc });
-        this.webCountryService.UpdateWebCountry(this.appLoadedService.AppLoaded$.getValue().WebCountry);
+        this.webCountryService.DoWebCountry(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
         break;
-      case 'MunicipalityMIKEScenariosSortOrder':
+      case SortOrderAngularEnum.MunicipalityMIKEScenarios:
         this.appStateService.UpdateAppState(<AppState>{ MunicipalityMIKEScenariosSortOrder: ascDesc });
-        this.webMunicipalityService.UpdateWebMunicipality(this.appLoadedService.AppLoaded$.getValue().WebMunicipality);
+        this.webMunicipalityService.DoWebMunicipality(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
         break;
-      case 'ProvinceAreasSortOrder':
+      case SortOrderAngularEnum.ProvinceAreas:
         this.appStateService.UpdateAppState(<AppState>{ ProvinceAreasSortOrder: ascDesc });
-        this.webProvinceService.UpdateWebProvince(this.appLoadedService.AppLoaded$.getValue().WebProvince);
+        this.webProvinceService.DoWebProvince(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
         break;
-      case 'ProvinceMunicipalitiesSortOrder':
+      case SortOrderAngularEnum.ProvinceMunicipalities:
         this.appStateService.UpdateAppState(<AppState>{ ProvinceMunicipalitiesSortOrder: ascDesc });
-        this.webProvinceService.UpdateWebProvince(this.appLoadedService.AppLoaded$.getValue().WebProvince);
+        this.webProvinceService.DoWebProvince(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
         break;
-      case 'RootCountriesSortOrder':
+      case SortOrderAngularEnum.RootCountries:
         this.appStateService.UpdateAppState(<AppState>{ RootCountriesSortOrder: ascDesc });
-        this.webRootService.UpdateWebRoot(this.appLoadedService.AppLoaded$.getValue().WebRoot);
+        this.webRootService.DoWebRoot(true);
         break;
-      case 'SectorSubsectorsSortOrder':
+      case SortOrderAngularEnum.SectorSubsectors:
         this.appStateService.UpdateAppState(<AppState>{ SectorSubsectorsSortOrder: ascDesc });
-        this.webSectorService.UpdateWebSector(this.appLoadedService.AppLoaded$.getValue().WebSector);
+        this.webSectorService.DoWebSector(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
         break;
-      case 'SectorMikeScenariosSortOrder':
+      case SortOrderAngularEnum.SectorMikeScenarios:
         this.appStateService.UpdateAppState(<AppState>{ SectorMikeScenariosSortOrder: ascDesc });
-        this.webSectorService.UpdateWebSector(this.appLoadedService.AppLoaded$.getValue().WebSector);
+        this.webSubsectorService.DoWebSubsector(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
         break;
-      case 'SubsectorMWQMSitesSortOrder':
+      case SortOrderAngularEnum.SubsectorMWQMSites:
         this.appStateService.UpdateAppState(<AppState>{ SubsectorMWQMSitesSortOrder: ascDesc });
-        this.webSubsectorService.UpdateWebSubsector(this.appLoadedService.AppLoaded$.getValue().WebSubsector);
+        this.webSubsectorService.DoWebSubsector(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
         break;
-      case 'SubsectorMWQMRunsSortOrder':
+      case SortOrderAngularEnum.SubsectorMWQMRuns:
         this.appStateService.UpdateAppState(<AppState>{ SubsectorMWQMRunsSortOrder: ascDesc });
-        this.webSubsectorService.UpdateWebSubsector(this.appLoadedService.AppLoaded$.getValue().WebSubsector);
+        this.webSubsectorService.DoWebSubsector(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
         break;
-      case 'SubsectorPolSourceSitesSortOrder':
+      case SortOrderAngularEnum.SubsectorPolSourceSites:
         this.appStateService.UpdateAppState(<AppState>{ SubsectorPolSourceSitesSortOrder: ascDesc });
-        this.webSubsectorService.UpdateWebSubsector(this.appLoadedService.AppLoaded$.getValue().WebSubsector);
+        this.webSubsectorService.DoWebSubsector(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
         break;
       default:
-        alert(`${prop} not implemented yet. See app-loaded.service.ts -- ChangeTVItemSortOrder function`);
+        alert(`${sortOrderItem} not implemented yet. See app-loaded.service.ts -- ChangeTVItemSortOrder function`);
         break;
     }
   }

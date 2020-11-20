@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
@@ -17,8 +17,10 @@ import { WebHydrometricSiteService } from './web-hydrometric-site.service';
     providedIn: 'root'
 })
 export class WebClimateSiteService {
+    private TVItemID: number;
     private DoOther: boolean;
-
+    private sub: Subscription;
+  
     constructor(private httpClient: HttpClient,
         private appStateService: AppStateService,
         private appLoadedService: AppLoadedService,
@@ -27,21 +29,34 @@ export class WebClimateSiteService {
         private componentDataLoadedService: ComponentDataLoadedService) {
     }
 
-    GetWebClimateSite(TVItemID: number, DoOther: boolean) {
+    DoWebClimateSite(TVItemID: number, DoOther: boolean) {
+        this.TVItemID = TVItemID;
         this.DoOther = DoOther;
+    
+        this.sub ? this.sub.unsubscribe() : null;
+
+        if (this.appLoadedService.AppLoaded$.getValue()?.WebClimateSite?.TVItemModel?.TVItem?.TVItemID == TVItemID) {
+          this.KeepWebClimateSite();
+        }
+        else {
+          this.sub = this.GetWebClimateSite().subscribe();
+        }
+      }
+    
+    private GetWebClimateSite() {
         let languageEnum = GetLanguageEnum();
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebClimateSite: {} });
         this.appStateService.UpdateAppState(<AppState>{
             Status: this.appLanguageService.AppLanguage.LoadingProvinceClimateSite[this.appStateService.AppState$?.getValue()?.Language],
             Working: true
         });
-        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebClimateSite/${TVItemID}/1`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebClimateSite/${this.TVItemID}/1`;
         return this.httpClient.get<WebClimateSite>(url).pipe(
             map((x: any) => {
                 this.UpdateWebClimateSite(x);
                 console.debug(x);
-                if (DoOther) {
-                    this.GetWebHydrometricSite(TVItemID);
+                if (this.DoOther) {
+                    this.DoWebHydrometricSite();
                 }
             }),
             catchError(e => of(e).pipe(map(e => {
@@ -51,11 +66,19 @@ export class WebClimateSiteService {
         );
     }
 
-    GetWebHydrometricSite(TVItemID: number) {
-        this.webHydrometricSiteService.GetWebHydrometricSite(TVItemID, this.DoOther).subscribe();
+    private DoWebHydrometricSite() {
+        this.webHydrometricSiteService.DoWebHydrometricSite(this.TVItemID, this.DoOther);
     }
 
-    UpdateWebClimateSite(x: WebClimateSite) {
+    private KeepWebClimateSite() {
+        this.UpdateWebClimateSite(this.appLoadedService.AppLoaded$?.getValue()?.WebClimateSite);
+        console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebClimateSite);
+        if (this.DoOther) {
+            this.DoWebHydrometricSite();
+        }
+    }
+
+    private UpdateWebClimateSite(x: WebClimateSite) {
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebClimateSite: x, });
 
         if (this.DoOther) {

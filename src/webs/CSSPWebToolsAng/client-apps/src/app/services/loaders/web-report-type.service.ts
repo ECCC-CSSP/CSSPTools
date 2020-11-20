@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
@@ -17,7 +17,8 @@ import { WebTideLocationService } from './web-tide-location.service';
 })
 export class WebReportTypeService {
     private DoOther: boolean;
-
+    private sub: Subscription;
+  
     constructor(private httpClient: HttpClient,
         private appStateService: AppStateService,
         private appLoadedService: AppLoadedService,
@@ -26,8 +27,20 @@ export class WebReportTypeService {
         private componentDataLoadedService: ComponentDataLoadedService) {
     }
 
-    GetWebReportType(DoOther: boolean) {
+    DoWebReportType(DoOther: boolean) {
         this.DoOther = DoOther;
+    
+        this.sub ? this.sub.unsubscribe() : null;
+    
+        if (this.appLoadedService.AppLoaded$.getValue()?.WebReportType?.ReportTypeModelList?.length > 0) {
+          this.KeepWebReportType();
+        }
+        else {
+          this.sub = this.GetWebReportType().subscribe();
+        }
+      }
+    
+    private GetWebReportType() {
         let languageEnum = GetLanguageEnum();
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebReportType: {} });
         this.appStateService.UpdateAppState(<AppState>{
@@ -39,8 +52,8 @@ export class WebReportTypeService {
             map((x: any) => {
                 this.UpdateWebReportType(x);
                 console.debug(x);
-                if (DoOther) {
-                    this.GetWebTideLocation();
+                if (this.DoOther) {
+                    this.DoWebTideLocation();
                 }
             }),
             catchError(e => of(e).pipe(map(e => {
@@ -50,11 +63,19 @@ export class WebReportTypeService {
         );
     }
 
-    GetWebTideLocation() {
-        this.webTideLocationService.GetWebTideLocation(this.DoOther).subscribe();
+    private DoWebTideLocation() {
+        this.webTideLocationService.DoWebTideLocation(this.DoOther);
     }
 
-    UpdateWebReportType(x: WebReportType) {
+    private KeepWebReportType() {
+        this.UpdateWebReportType(this.appLoadedService.AppLoaded$?.getValue()?.WebReportType);
+        console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebReportType);
+        if (this.DoOther) {
+            this.DoWebTideLocation();
+        }
+    }
+
+    private UpdateWebReportType(x: WebReportType) {
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebReportType: x });
 
         if (this.DoOther) {

@@ -7,9 +7,11 @@
 
 import { ClimateSite } from 'src/app/models/generated/db/ClimateSite.model';
 import { WebBase } from 'src/app/models/generated/web/WebBase.model';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 
 export class WebClimateSite {
     ClimateSiteList: ClimateSite[];
     TVItemClimateSiteList: WebBase[];
+    TVItemModel: TVItemModel;
     TVItemParentList: WebBase[];
 }

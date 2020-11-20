@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
 import { WebBase } from 'src/app/models/generated/web/WebBase.model';
@@ -22,7 +22,9 @@ import { WebMWQMSiteService } from './web-mwqm-sites.service';
     providedIn: 'root'
 })
 export class WebSubsectorService {
+    private TVItemID: number;
     private DoOther: boolean;
+    private sub: Subscription;
 
     constructor(private httpClient: HttpClient,
         private appStateService: AppStateService,
@@ -35,8 +37,21 @@ export class WebSubsectorService {
         private webMWQMSiteService: WebMWQMSiteService) {
     }
 
-    GetWebSubsector(TVItemID: number, DoOther: boolean) {
+    DoWebSubsector(TVItemID: number, DoOther: boolean) {
+        this.TVItemID = TVItemID;
         this.DoOther = DoOther;
+
+        this.sub ? this.sub.unsubscribe() : null;
+
+        if (this.appLoadedService.AppLoaded$.getValue()?.WebSubsector?.TVItemModel?.TVItem?.TVItemID == TVItemID) {
+            this.KeepWebSubsector();
+        }
+        else {
+            this.sub = this.GetWebSubsector().subscribe();
+        }
+    }
+
+    private GetWebSubsector() {
         let languageEnum = GetLanguageEnum();
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
             WebSubsector: {},
@@ -48,19 +63,20 @@ export class WebSubsectorService {
             MWQMSubsector: {},
             MWQMSubsectorLanguageList: [],
             UseOfSiteList: [],
-            BreadCrumbWebBaseList: [],
+            BreadCrumbSubsectorWebBaseList: [],
+            BreadCrumbWebBaseList: []
         });
         this.appStateService.UpdateAppState(<AppState>{
             Status: this.appLanguageService.AppLanguage.LoadingSubsector[this.appStateService.AppState$?.getValue()?.Language],
             Working: true
         });
-        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebSubsector/${TVItemID}/1`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebSubsector/${this.TVItemID}/1`;
         return this.httpClient.get<WebSubsector>(url).pipe(
             map((x: any) => {
                 this.UpdateWebSubsector(x);
                 console.debug(x);
-                if (DoOther) {
-                    this.GetWebMWQMSite(TVItemID);
+                if (this.DoOther) {
+                    this.DoWebMWQMSite();
                 }
             }),
             catchError(e => of(e).pipe(map(e => {
@@ -70,11 +86,19 @@ export class WebSubsectorService {
         );
     }
 
-    GetWebMWQMSite(TVItemID: number) {
-        this.webMWQMSiteService.GetWebMWQMSite(TVItemID, this.DoOther).subscribe();
+    private DoWebMWQMSite() {
+        this.webMWQMSiteService.DoWebMWQMSite(this.TVItemID, this.DoOther);
     }
 
-    UpdateWebSubsector(x: WebSubsector) {
+    private KeepWebSubsector() {
+        this.UpdateWebSubsector(this.appLoadedService.AppLoaded$?.getValue()?.WebSubsector);
+        console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebSubsector);
+        if (this.DoOther) {
+            this.DoWebMWQMSite();
+        }
+    }
+
+    private UpdateWebSubsector(x: WebSubsector) {
         let SubsectorMWQMSiteList: WebBase[] = [];
         let SubsectorMWQMRunList: WebBase[] = [];
         let SubsectorPolSourceSiteList: WebBase[] = [];
@@ -114,7 +138,8 @@ export class WebSubsectorService {
             MWQMSubsector: x?.MWQMSubsector,
             MWQMSubsectorLanguageList: x?.MWQMSubsectorLanguageList,
             UseOfSiteList: x?.UseOfSiteList,
-            BreadCrumbWebBaseList: x?.TVItemParentList,
+            BreadCrumbSubsectorWebBaseList: x?.TVItemParentList,
+            BreadCrumbWebBaseList: x?.TVItemParentList
         });
 
         if (this.DoOther) {

@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { WebTypeYearEnum } from 'src/app/enums/generated/WebTypeYearEnum';
@@ -17,8 +17,10 @@ import { WebDrogueRunService } from './web-drogue-run.service';
     providedIn: 'root'
 })
 export class WebPolSourceSiteService {
+    private TVItemID: number;
     private DoOther: boolean;
-
+    private sub: Subscription;
+  
     constructor(private httpClient: HttpClient,
         private appStateService: AppStateService,
         private appLoadedService: AppLoadedService,
@@ -27,21 +29,38 @@ export class WebPolSourceSiteService {
         private componentDataLoadedService: ComponentDataLoadedService) {
     }
 
-    GetWebPolSourceSite(TVItemID: number, DoOther: boolean) {
+    DoWebPolSourceSite(TVItemID: number, DoOther: boolean) {
+        this.TVItemID = TVItemID;
         this.DoOther = DoOther;
+    
+        this.sub ? this.sub.unsubscribe() : null;
+    
+        if (this.appLoadedService.AppLoaded$.getValue()?.WebPolSourceSite?.TVItemModel?.TVItem?.TVItemID == TVItemID) {
+          this.KeepWebPolSourceSite();
+        }
+        else {
+          this.sub = this.GetWebPolSourceSite().subscribe();
+        }
+      }
+    
+    private GetWebPolSourceSite() {
         let languageEnum = GetLanguageEnum();
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebPolSourceSite: {}, BreadCrumbWebBaseList: [] });
+        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
+            WebPolSourceSite: {},
+            BreadCrumbPolSourceSiteWebBaseList: [],
+            BreadCrumbWebBaseList: []
+        });
         this.appStateService.UpdateAppState(<AppState>{
             Status: this.appLanguageService.AppLanguage.LoadingPolSourceSite[this.appStateService.AppState$?.getValue()?.Language],
             Working: true
         });
-        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebPolSourceSite/${TVItemID}/1`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebPolSourceSite/${this.TVItemID}/1`;
         return this.httpClient.get<WebPolSourceSite>(url).pipe(
             map((x: any) => {
                 this.UpdateWebPolSourceSite(x);
                 console.debug(x);
-                if (DoOther) {
-                    this.GetWebDrogueRun(TVItemID);
+                if (this.DoOther) {
+                    this.DoWebDrogueRun();
                 }
             }),
             catchError(e => of(e).pipe(map(e => {
@@ -51,12 +70,24 @@ export class WebPolSourceSiteService {
         );
     }
 
-    GetWebDrogueRun(TVItemID: number) {
-        this.webDrogueRunService.GetWebDrogueRun(TVItemID, this.DoOther).subscribe();
+    private DoWebDrogueRun() {
+        this.webDrogueRunService.DoWebDrogueRun(this.TVItemID, this.DoOther);
     }
 
-    UpdateWebPolSourceSite(x: WebPolSourceSite) {
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebPolSourceSite: x, BreadCrumbWebBaseList: x?.TVItemParentList });
+    private KeepWebPolSourceSite() {
+        this.UpdateWebPolSourceSite(this.appLoadedService.AppLoaded$?.getValue()?.WebPolSourceSite);
+        console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebPolSourceSite);
+        if (this.DoOther) {
+            this.DoWebDrogueRun();
+        }
+    }
+
+    private UpdateWebPolSourceSite(x: WebPolSourceSite) {
+        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
+            WebPolSourceSite: x,
+            BreadCrumbPolSourceSiteWebBaseList: x?.TVItemParentList,
+            BreadCrumbWebBaseList: x?.TVItemParentList
+        });
 
         if (this.DoOther) {
             if (this.componentDataLoadedService.DataLoadedSubsector()) {

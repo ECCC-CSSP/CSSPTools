@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
@@ -16,7 +16,9 @@ import { WebMWQMRunService } from './web-mwqm-runs.service';
     providedIn: 'root'
 })
 export class WebMWQMSiteService {
+    private TVItemID: number;
     private DoOther: boolean;
+    private sub: Subscription;
 
     constructor(private httpClient: HttpClient,
         private appStateService: AppStateService,
@@ -26,21 +28,38 @@ export class WebMWQMSiteService {
         private componentDataLoadedService: ComponentDataLoadedService) {
     }
 
-    GetWebMWQMSite(TVItemID: number, DoOther: boolean) {
+    DoWebMWQMSite(TVItemID: number, DoOther: boolean) {
+        this.TVItemID = TVItemID;
         this.DoOther = DoOther;
+
+        this.sub ? this.sub.unsubscribe() : null;
+
+        if (this.appLoadedService.AppLoaded$.getValue()?.WebMWQMSite?.TVItemModel?.TVItem?.TVItemID == TVItemID) {
+            this.KeepWebMWQMSite();
+        }
+        else {
+            this.sub = this.GetWebMWQMSite().subscribe();
+        }
+    }
+
+    private GetWebMWQMSite() {
         let languageEnum = GetLanguageEnum();
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebMWQMSite: {}, BreadCrumbWebBaseList: [] });
+        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
+            WebMWQMSite: {},
+            BreadCrumbMWQMSiteWebBaseList: [],
+            BreadCrumbWebBaseList: []
+        });
         this.appStateService.UpdateAppState(<AppState>{
             Status: this.appLanguageService.AppLanguage.LoadingMWQMSite[this.appStateService.AppState$?.getValue()?.Language],
             Working: true
         });
-        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebMWQMSite/${TVItemID}/1`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebMWQMSite/${this.TVItemID}/1`;
         return this.httpClient.get<WebMWQMSite>(url).pipe(
             map((x: any) => {
                 this.UpdateWebMWQMSite(x);
                 console.debug(x);
-                if (DoOther) {
-                    this.GetWebMWQMRun(TVItemID);
+                if (this.DoOther) {
+                    this.DoWebMWQMRun();
                 }
             }),
             catchError(e => of(e).pipe(map(e => {
@@ -50,12 +69,24 @@ export class WebMWQMSiteService {
         );
     }
 
-    GetWebMWQMRun(TVItemID: number) {
-        this.webMWQMRunService.GetWebMWQMRun(TVItemID, this.DoOther).subscribe();
+    private DoWebMWQMRun() {
+        this.webMWQMRunService.DoWebMWQMRun(this.TVItemID, this.DoOther);
     }
 
-    UpdateWebMWQMSite(x: WebMWQMSite) {
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebMWQMSite: x, BreadCrumbWebBaseList: x?.TVItemParentList });
+    private KeepWebMWQMSite() {
+        this.UpdateWebMWQMSite(this.appLoadedService.AppLoaded$?.getValue()?.WebMWQMSite);
+        console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebMWQMSite);
+        if (this.DoOther) {
+            this.DoWebMWQMRun();
+        }
+    }
+
+    private UpdateWebMWQMSite(x: WebMWQMSite) {
+        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
+            WebMWQMSite: x,
+            BreadCrumbMWQMSiteWebBaseList: x?.TVItemParentList,
+            BreadCrumbWebBaseList: x?.TVItemParentList
+        });
 
         if (this.DoOther) {
             if (this.componentDataLoadedService.DataLoadedSubsector()) {
@@ -67,5 +98,5 @@ export class WebMWQMSiteService {
                 this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
             }
         }
-   }
+    }
 }

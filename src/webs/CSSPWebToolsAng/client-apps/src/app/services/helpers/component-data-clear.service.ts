@@ -24,7 +24,7 @@ export class ComponentDataClearService {
       WebArea: {},
       AreaSectorList: [],
       AreaFileListList: [],
-      BreadCrumbWebBaseList: [],
+      BreadCrumbAreaWebBaseList: [],
     });
 
     this.appStateService.UpdateAppState(<AppState>{ Working: true });
@@ -38,7 +38,7 @@ export class ComponentDataClearService {
       EmailDistributionListContactList: [],
       EmailDistributionListLanguageList: [],
       EmailDistributionListList: [],
-      BreadCrumbWebBaseList: [],
+      BreadCrumbCountryWebBaseList: [],
     });
 
     this.appStateService.UpdateAppState(<AppState>{ Working: true });
@@ -50,7 +50,7 @@ export class ComponentDataClearService {
       ProvinceAreaList: [],
       ProvinceFileListList: [],
       ProvinceSamplingPlanList: [],
-      BreadCrumbWebBaseList: [],
+      BreadCrumbProvinceWebBaseList: [],
       WebMunicipalities: {},
     });
 
@@ -61,7 +61,7 @@ export class ComponentDataClearService {
     this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
       WebRoot: {},
       RootCountryList: [],
-      BreadCrumbWebBaseList: [],
+      BreadCrumbRootWebBaseList: [],
     });
 
     this.appStateService.UpdateAppState(<AppState>{ Working: true });
@@ -72,7 +72,7 @@ export class ComponentDataClearService {
       WebSector: {},
       SectorSubsectorList: [],
       SectorMIKEScenarioList: [],
-      BreadCrumbWebBaseList: [],
+      BreadCrumbSectorWebBaseList: [],
     });
 
     this.appStateService.UpdateAppState(<AppState>{ Working: true });
@@ -89,7 +89,7 @@ export class ComponentDataClearService {
       MWQMSubsector: {},
       MWQMSubsectorLanguageList: [],
       UseOfSiteList: [],
-      BreadCrumbWebBaseList: [],
+      BreadCrumbSubsectorWebBaseList: [],
       WebMWQMSampleAll: {},
       WebMWQMSample1980: {},
       WebMWQMSample1990: {},
@@ -99,6 +99,33 @@ export class ComponentDataClearService {
       WebMWQMSample2030: {},
       WebMWQMSample2040: {},
       WebMWQMSample2050: {},
+    });
+
+    this.appStateService.UpdateAppState(<AppState>{ Working: true });
+  }
+
+  DataClearMWQMRun(): void {
+    this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
+      WebMWQMRun: {},
+      BreadCrumbMWQMRunWebBaseList: [],
+    });
+
+    this.appStateService.UpdateAppState(<AppState>{ Working: true });
+  }
+
+  DataClearMWQMSite(): void {
+    this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
+      WebMWQMSite: {},
+      BreadCrumbMWQMRunWebBaseList: [],
+    });
+
+    this.appStateService.UpdateAppState(<AppState>{ Working: true });
+  }
+
+  DataClearPolSourceSite(): void {
+    this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
+      WebPolSourceSite: {},
+      BreadCrumbMWQMRunWebBaseList: [],
     });
 
     this.appStateService.UpdateAppState(<AppState>{ Working: true });

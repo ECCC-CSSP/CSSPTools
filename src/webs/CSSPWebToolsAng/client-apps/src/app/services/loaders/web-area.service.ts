@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
 import { WebArea } from 'src/app/models/generated/web/WebArea.model';
@@ -21,7 +21,9 @@ import { AppLanguageService } from '../app-language.service';
   providedIn: 'root'
 })
 export class WebAreaService {
+  private TVItemID: number;
   private DoOther: boolean;
+  private sub: Subscription;
 
   constructor(private httpClient: HttpClient,
     private appStateService: AppStateService,
@@ -33,20 +35,38 @@ export class WebAreaService {
     private componentDataLoadedService: ComponentDataLoadedService) {
   }
 
-  GetWebArea(TVItemID: number, DoOther: boolean) {
+  DoWebArea(TVItemID: number, DoOther: boolean) {
+    this.TVItemID = TVItemID;
     this.DoOther = DoOther;
+
+    this.sub ? this.sub.unsubscribe() : null;
+
+    if (this.appLoadedService.AppLoaded$.getValue()?.WebArea?.TVItemModel?.TVItem?.TVItemID == TVItemID) {
+      this.KeepWebArea();
+    }
+    else {
+      this.sub = this.GetWebArea().subscribe();
+    }
+  }
+
+  private GetWebArea() {
     let languageEnum = GetLanguageEnum();
-    this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebArea: {}, AreaSectorList: [], BreadCrumbWebBaseList: [] });
+    this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
+      WebArea: {},
+      AreaSectorList: [],
+      BreadCrumbAreaWebBaseList: [],
+      BreadCrumbWebBaseList: []
+    });
     this.appStateService.UpdateAppState(<AppState>{
       Status: this.appLanguageService.AppLanguage.LoadingArea[this.appStateService.AppState$?.getValue()?.Language],
       Working: true
     });
-    let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebArea/${TVItemID}/1`;
+    let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebArea/${this.TVItemID}/1`;
     return this.httpClient.get<WebArea>(url).pipe(
       map((x: any) => {
         this.UpdateWebArea(x);
         console.debug(x);
-        if (DoOther) {
+        if (this.DoOther) {
           // nothing else to add in the chain
         }
       }),
@@ -57,7 +77,15 @@ export class WebAreaService {
     );
   }
 
-  UpdateWebArea(x: WebArea) {
+  private KeepWebArea() {
+    this.UpdateWebArea(this.appLoadedService.AppLoaded$?.getValue()?.WebArea);
+    console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebArea);
+    if (this.DoOther) {
+      // nothing else to add in the chain
+    }
+  }
+
+  private UpdateWebArea(x: WebArea) {
     let AreaSectorList: WebBase[] = [];
 
     if (!this.appStateService.AppState$?.getValue()?.InactVisible) {
@@ -71,7 +99,8 @@ export class WebAreaService {
       WebArea: x,
       AreaSectorList: this.sortTVItemListService.SortTVItemList(AreaSectorList, x?.TVItemParentList),
       AreaFileListList: this.structureTVFileListService.StructureTVFileList(x.TVItemModel),
-      BreadCrumbWebBaseList: x?.TVItemParentList,
+      BreadCrumbAreaWebBaseList: x?.TVItemParentList,
+      BreadCrumbWebBaseList: x?.TVItemParentList
     });
 
     if (this.DoOther) {

@@ -6,9 +6,11 @@
  */
 
 import { ClimateDataValue } from 'src/app/models/generated/db/ClimateDataValue.model';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { WebBase } from 'src/app/models/generated/web/WebBase.model';
 
 export class WebClimateDataValue {
     ClimateDataValueList: ClimateDataValue[];
+    TVItemModel: TVItemModel;
     TVItemParentList: WebBase[];
 }

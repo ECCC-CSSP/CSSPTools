@@ -9,11 +9,13 @@ import { HydrometricSite } from 'src/app/models/generated/db/HydrometricSite.mod
 import { RatingCurve } from 'src/app/models/generated/db/RatingCurve.model';
 import { RatingCurveValue } from 'src/app/models/generated/db/RatingCurveValue.model';
 import { WebBase } from 'src/app/models/generated/web/WebBase.model';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 
 export class WebHydrometricSite {
     HydrometricSiteList: HydrometricSite[];
     RatingCurveList: RatingCurve[];
     RatingCurveValueList: RatingCurveValue[];
     TVItemHydrometricSiteList: WebBase[];
+    TVItemModel: TVItemModel;
     TVItemParentList: WebBase[];
 }

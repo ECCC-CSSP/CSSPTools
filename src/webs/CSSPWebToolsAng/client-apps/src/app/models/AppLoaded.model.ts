@@ -46,12 +46,44 @@ import { WebSamplingPlan } from 'src/app/models/generated/web/WebSamplingPlan.mo
 import { WebSector } from 'src/app/models/generated/web/WebSector.model';
 import { WebSubsector } from 'src/app/models/generated/web/WebSubsector.model';
 import { WebTideLocation } from 'src/app/models/generated/web/WebTideLocation.model';
+import { MWQMRun } from './generated/db/MWQMRun.model';
+import { MWQMSite } from './generated/db/MWQMSite.model';
+import { PolSourceSite } from './generated/db/PolSourceSite.model';
+import { Subscription } from 'rxjs';
 
 export interface AppLoaded {
     LoggedInContact?: Contact;
     BreadCrumbWebBaseList?: WebBase[];
     PreferenceList?: Preference[];
-   
+
+    WebAreaSubscription: Subscription;
+    WebClimateDataValueSubscription: Subscription;
+    WebClimateSiteSubscription: Subscription;
+    WebContactSubscription: Subscription;
+    WebCountrySubscription: Subscription;
+    WebDrogueRunSubscription: Subscription;
+    WebHelpDocSubscription: Subscription;
+    WebHydrometricDataValueSubscription: Subscription;
+    WebHydrometricSiteSubscription: Subscription;
+    WebMikeScenarioSubscription: Subscription;
+    WebMunicipalitiesSubscription: Subscription;
+    WebMunicipalitySubscription: Subscription;
+    WebMWQMLookupMPNSubscription: Subscription;
+    WebMWQMRunSubscription: Subscription;
+    WebMWQMSampleSubscription: Subscription;
+    WebMWQMSiteSubscription: Subscription;
+    WebPolSourceGroupingSubscription: Subscription;
+    WebPolSourceSiteEffectTermSubscription: Subscription;
+    WebPolSourceSiteSubscription: Subscription;
+    WebProvinceSubscription: Subscription;
+    WebReportTypeSubscription: Subscription;
+    WebRootSubscription: Subscription;
+    WebSamplingPlanSubscription: Subscription;
+    WebSectorSubscription: Subscription;
+    WebSubsectorSubscription: Subscription;
+    WebTideLocationSubscription: Subscription;
+    WebSubscription: Subscription;
+
     // Map related items
     Map?: google.maps.Map;
     Zoom?: number;
@@ -69,29 +101,32 @@ export interface AppLoaded {
     WebHelpDoc?: WebHelpDoc;
     WebMWQMLookupMPN?: WebMWQMLookupMPN;
     WebPolSourceGrouping?: WebPolSourceGrouping;
-    WebPolSourceSiteEffectTerm?: WebPolSourceSiteEffectTerm;   
-    WebReportType?: WebReportType;   
+    WebPolSourceSiteEffectTerm?: WebPolSourceSiteEffectTerm;
+    WebReportType?: WebReportType;
     WebTideLocation?: WebTideLocation;
     MapInfoModelList?: MapInfoModel[];
-   
+
     SearchResult?: SearchResult[];
-    
+
     // Root TVItemID related
     WebRoot?: WebRoot;
+    BreadCrumbRootWebBaseList?: WebBase[];
     RootCountryList?: WebBase[];
     RootFileListList?: TVFileModel[][];
-    
+
     // Country TVItemID related
     WebCountry?: WebCountry;
+    BreadCrumbCountryWebBaseList?: WebBase[];
     CountryProvinceList?: WebBase[];
     CountryFileListList?: TVFileModel[][];
     EmailDistributionListContactLanguageList?: EmailDistributionListContactLanguage[];
     EmailDistributionListContactList?: EmailDistributionListContact[];
     EmailDistributionListLanguageList?: EmailDistributionListLanguage[];
     EmailDistributionListList?: EmailDistributionList[];
-    
+
     // Province TVItemID related
     WebProvince?: WebProvince;
+    BreadCrumbProvinceWebBaseList?: WebBase[];
     ProvinceAreaList?: WebBase[];
     ProvinceMunicipalityList?: WebBase[];
     ProvinceFileListList?: TVFileModel[][];
@@ -102,20 +137,23 @@ export interface AppLoaded {
     WebClimateDataValue?: WebClimateDataValue;
     WebHydrometricSite?: WebHydrometricSite;
     WebHydrometricDataValue?: WebHydrometricDataValue;
-    
+
     // Area TVItemID related
     WebArea?: WebArea;
+    BreadCrumbAreaWebBaseList?: WebBase[];
     AreaSectorList?: WebBase[];
     AreaFileListList?: TVFileModel[][];
 
     // Sector TVItemID related
     WebSector?: WebSector;
+    BreadCrumbSectorWebBaseList?: WebBase[];
     SectorSubsectorList?: WebBase[];
     SectorFileListList?: TVFileModel[][];
     SectorMIKEScenarioList?: WebBase[];
-    
+
     // Subsector TVItemID related
     WebSubsector?: WebSubsector;
+    BreadCrumbSubsectorWebBaseList?: WebBase[];
     SubsectorMWQMSiteList?: WebBase[];
     SubsectorMWQMRunList?: WebBase[];
     SubsectorPolSourceSiteList?: WebBase[];
@@ -142,18 +180,39 @@ export interface AppLoaded {
 
     // Municipality TVItemID related -- this object is under province
     WebMunicipality?: WebMunicipality;
+    BreadCrumbMunicipalityWebBaseList?: WebBase[];
     InfrastructureModelList?: InfrastructureModel[];
     MunicipalityFileListList?: TVFileModel[][];
     MunicipalityContactModelList?: ContactModel[];
     MunicipalityTVItemLinkList?: TVItemLink[];
     TVItemMikeScenarioList?: WebBase[];
-    // separate load --- not this object is also used for MIKE Scenario under Sector
+
+    // Mike Scenario TVItemID related -- this object is under province
     WebMikeScenario?: WebMikeScenario;
+    BreadCrumbMikeScenarioWebBaseList?: WebBase[];
     MikeScenarioFileListList?: TVFileModel[][];
     MikeBoundaryConditionModelMeshList: MikeBoundaryConditionModel[];
     MikeBoundaryConditionModelWebTideList: MikeBoundaryConditionModel[];
     MikeScenario: MikeScenario;
     MikeSourceModelList: MikeSourceModel[];
+
+    // MWQM Run TVItemID related -- this object is under province
+    WebMWQMRunScenario?: WebMWQMRun;
+    BreadCrumbMWQMRunWebBaseList?: WebBase[];
+    MWQMRunFileListList?: TVFileModel[][];
+    MWQMRun: MWQMRun;
+
+    // MWQM Site TVItemID related -- this object is under province
+    WebMWQMSiteScenario?: WebMWQMSite;
+    BreadCrumbMWQMSiteWebBaseList?: WebBase[];
+    MWQMSiteFileListList?: TVFileModel[][];
+    MWQMSite: MWQMSite;
+
+    // MWQM Site TVItemID related -- this object is under province
+    WebPolSourceSiteScenario?: WebPolSourceSite;
+    BreadCrumbPolSourceSiteWebBaseList?: WebBase[];
+    PolSourceSiteFileListList?: TVFileModel[][];
+    PolSourceSite: PolSourceSite;
 
     // SamplingPlan SamplingPlanID related -- this object is under province
     WebSamplingPlan?: WebSamplingPlan;

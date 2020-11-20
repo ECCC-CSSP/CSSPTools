@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
 import { GetAscDescEnum } from 'src/app/enums/generated/AscDescEnum';
 import { GetSectorSubComponentEnum } from 'src/app/enums/generated/SectorSubComponentEnum';
+import { GetSortOrderAngularEnum } from 'src/app/enums/generated/SortOrderAngularEnum';
 import { GetTVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
@@ -20,10 +20,10 @@ import { WebSectorService } from 'src/app/services/loaders/web-sector.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SectorComponent implements OnInit, OnDestroy {
-  subWebSector: Subscription;
   sectorSubComponentEnum = GetSectorSubComponentEnum();
   tvTypeEnum = GetTVTypeEnum();
   ascDescEnum = GetAscDescEnum();
+  sortOrderAngular = GetSortOrderAngularEnum();
 
   constructor(public appStateService: AppStateService,
     public appLoadedService: AppLoadedService,
@@ -36,13 +36,10 @@ export class SectorComponent implements OnInit, OnDestroy {
     private componentDataClearService: ComponentDataClearService) { }
 
   ngOnInit(): void {
-    let TVItemID: number = this.appStateService.AppState$.getValue().CurrentTVItemID;
-    this.componentDataClearService.DataClearSector();
-    this.subWebSector = this.webSectorService.GetWebSector(TVItemID, true).subscribe();
+    this.webSectorService.DoWebSector(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
   }
 
   ngOnDestroy(): void {
-    this.subWebSector ? this.subWebSector.unsubscribe() : null;
   }
 
 }

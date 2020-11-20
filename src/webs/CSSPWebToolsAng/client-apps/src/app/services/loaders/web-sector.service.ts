@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
 import { WebBase } from 'src/app/models/generated/web/WebBase.model';
@@ -21,7 +21,9 @@ import { AppLanguageService } from '../app-language.service';
   providedIn: 'root'
 })
 export class WebSectorService {
+  private TVItemID: number;
   private DoOther: boolean;
+  private sub: Subscription;
 
   constructor(private httpClient: HttpClient,
     private appStateService: AppStateService,
@@ -33,25 +35,39 @@ export class WebSectorService {
     private componentDataLoadedService: ComponentDataLoadedService) {
   }
 
-  GetWebSector(TVItemID: number, DoOther: boolean) {
+  DoWebSector(TVItemID: number, DoOther: boolean) {
+    this.TVItemID = TVItemID;
     this.DoOther = DoOther;
+
+    this.sub ? this.sub.unsubscribe() : null;
+
+    if (this.appLoadedService.AppLoaded$.getValue()?.WebSector?.TVItemModel?.TVItem?.TVItemID == TVItemID) {
+      this.KeepWebSector();
+    }
+    else {
+      this.sub = this.GetWebSector().subscribe();
+    }
+  }
+
+  private GetWebSector() {
     let languageEnum = GetLanguageEnum();
     this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
       WebSector: {},
       SectorSubsectorList: [],
       SectorMIKEScenarioList: [],
-      BreadCrumbWebBaseList: [],
+      BreadCrumbSectorWebBaseList: [],
+      BreadCrumbWebBaseList: []
     });
     this.appStateService.UpdateAppState(<AppState>{
       Status: this.appLanguageService.AppLanguage.LoadingSector[this.appStateService.AppState$?.getValue()?.Language],
       Working: true
     });
-    let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebSector/${TVItemID}/1`;
+    let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebSector/${this.TVItemID}/1`;
     return this.httpClient.get<WebSector>(url).pipe(
       map((x: any) => {
         this.UpdateWebSector(x);
         console.debug(x);
-        if (DoOther) {
+        if (this.DoOther) {
           // nothing more to add in the chain
         }
       }),
@@ -62,7 +78,15 @@ export class WebSectorService {
     );
   }
 
-  UpdateWebSector(x: WebSector) {
+  private KeepWebSector() {
+    this.UpdateWebSector(this.appLoadedService.AppLoaded$?.getValue()?.WebSector);
+    console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebSector);
+    if (this.DoOther) {
+      // nothing more to add in the chain
+    }
+  }
+
+  private UpdateWebSector(x: WebSector) {
     let SectorSubsectorList: WebBase[] = [];
     let SectorMIKEScenarioList: WebBase[] = [];
 
@@ -87,7 +111,8 @@ export class WebSectorService {
       SectorSubsectorList: this.sortTVItemListService.SortTVItemList(SectorSubsectorList, x?.TVItemParentList),
       SectorMIKEScenarioList: this.sortTVItemListService.SortTVItemList(SectorMIKEScenarioList, x?.TVItemParentList),
       SectorFileListList: this.structureTVFileListService.StructureTVFileList(x.TVItemModel),
-      BreadCrumbWebBaseList: x?.TVItemParentList,
+      BreadCrumbSectorWebBaseList: x?.TVItemParentList,
+      BreadCrumbWebBaseList: x?.TVItemParentList
     });
 
     if (this.DoOther) {

@@ -10,17 +10,17 @@ import { EnumIDAndText } from 'src/app/models/generated/helper/EnumIDAndText.mod
 import { LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 
 export enum ShellSubComponentEnum {
-    Root = 1,
+    Area = 1,
     Country = 2,
-    Province = 3,
-    Area = 4,
-    Sector = 5,
-    Subsector = 6,
-    Municipality = 7,
-    MWQMSite = 8,
-    MWQMRun = 9,
-    PolSourceSite = 10,
-    MIKEScenario = 11,
+    MikeScenario = 3,
+    Municipality = 4,
+    MWQMRun = 5,
+    MWQMSite = 6,
+    PolSourceSite = 7,
+    Province = 8,
+    Root = 9,
+    Sector = 10,
+    Subsector = 11,
 }
 
 export function GetShellSubComponentEnum(): typeof ShellSubComponentEnum
@@ -31,28 +31,30 @@ export function GetShellSubComponentEnum(): typeof ShellSubComponentEnum
 export function ShellSubComponentEnum_GetOrderedText(appStateService: AppStateService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
     if (appStateService.AppState$?.getValue().Language == LanguageEnum.fr) {
-        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Root (fr)' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Area (fr)' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'Country (fr)' });
-        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Province (fr)' });
-        enumTextOrderedList.push({ EnumID: 4, EnumText: 'Area (fr)' });
-        enumTextOrderedList.push({ EnumID: 5, EnumText: 'Sector (fr)' });
-        enumTextOrderedList.push({ EnumID: 6, EnumText: 'Subsector (fr)' });
-        enumTextOrderedList.push({ EnumID: 7, EnumText: 'Municipality (fr)' });
-        enumTextOrderedList.push({ EnumID: 8, EnumText: 'MWQMSite (fr)' });
-        enumTextOrderedList.push({ EnumID: 9, EnumText: 'MWQMRun (fr)' });
-        enumTextOrderedList.push({ EnumID: 10, EnumText: 'PolSourceSite (fr)' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Scénario MIKE' });
+        enumTextOrderedList.push({ EnumID: 4, EnumText: 'Municipality (fr)' });
+        enumTextOrderedList.push({ EnumID: 5, EnumText: 'MWQMRun (fr)' });
+        enumTextOrderedList.push({ EnumID: 6, EnumText: 'MWQMSite (fr)' });
+        enumTextOrderedList.push({ EnumID: 7, EnumText: 'PolSourceSite (fr)' });
+        enumTextOrderedList.push({ EnumID: 8, EnumText: 'Province (fr)' });
+        enumTextOrderedList.push({ EnumID: 9, EnumText: 'Root (fr)' });
+        enumTextOrderedList.push({ EnumID: 10, EnumText: 'Sector (fr)' });
+        enumTextOrderedList.push({ EnumID: 11, EnumText: 'Subsector (fr)' });
     }
     else {
-        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Root' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Area' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'Country' });
-        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Province' });
-        enumTextOrderedList.push({ EnumID: 4, EnumText: 'Area' });
-        enumTextOrderedList.push({ EnumID: 5, EnumText: 'Sector' });
-        enumTextOrderedList.push({ EnumID: 6, EnumText: 'Subsector' });
-        enumTextOrderedList.push({ EnumID: 7, EnumText: 'Municipality' });
-        enumTextOrderedList.push({ EnumID: 8, EnumText: 'MWQMSite' });
-        enumTextOrderedList.push({ EnumID: 9, EnumText: 'MWQMRun' });
-        enumTextOrderedList.push({ EnumID: 10, EnumText: 'PolSourceSite' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'MIKE Scenario' });
+        enumTextOrderedList.push({ EnumID: 4, EnumText: 'Municipality' });
+        enumTextOrderedList.push({ EnumID: 5, EnumText: 'MWQMRun' });
+        enumTextOrderedList.push({ EnumID: 6, EnumText: 'MWQMSite' });
+        enumTextOrderedList.push({ EnumID: 7, EnumText: 'PolSourceSite' });
+        enumTextOrderedList.push({ EnumID: 8, EnumText: 'Province' });
+        enumTextOrderedList.push({ EnumID: 9, EnumText: 'Root' });
+        enumTextOrderedList.push({ EnumID: 10, EnumText: 'Sector' });
+        enumTextOrderedList.push({ EnumID: 11, EnumText: 'Subsector' });
     }
 
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));

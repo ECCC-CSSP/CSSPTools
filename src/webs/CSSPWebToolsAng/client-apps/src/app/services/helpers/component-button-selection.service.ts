@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 import { AreaSubComponentEnum } from 'src/app/enums/generated/AreaSubComponentEnum';
 import { CountrySubComponentEnum } from 'src/app/enums/generated/CountrySubComponentEnum';
+import { MunicipalitySubComponentEnum } from 'src/app/enums/generated/MunicipalitySubComponentEnum';
+import { MWQMRunSubComponentEnum } from 'src/app/enums/generated/MWQMRunSubComponentEnum';
+import { MWQMSiteSubComponentEnum } from 'src/app/enums/generated/MWQMSiteSubComponentEnum';
+import { PolSourceSiteSubComponentEnum } from 'src/app/enums/generated/PolSourceSiteSubComponentEnum';
 import { ProvinceSubComponentEnum } from 'src/app/enums/generated/ProvinceSubComponentEnum';
 import { RootSubComponentEnum } from 'src/app/enums/generated/RootSubComponentEnum';
 import { SectorSubComponentEnum } from 'src/app/enums/generated/SectorSubComponentEnum';
@@ -26,6 +30,42 @@ export class ComponentButtonSelectionService {
 
   ColorSelectionCountry(countrySubComponent: CountrySubComponentEnum) {
     if (this.appStateService.AppState$.getValue().CountrySubComponent == countrySubComponent) {
+      return 'selected';
+    }
+    else {
+      return '';
+    }
+  }
+
+  ColorSelectionMunicipality(municipalitySubComponent: MunicipalitySubComponentEnum) {
+    if (this.appStateService.AppState$.getValue().MunicipalitySubComponent == municipalitySubComponent) {
+      return 'selected';
+    }
+    else {
+      return '';
+    }
+  }
+
+  ColorSelectionMWQMRun(mwqmRunSubComponent: MWQMRunSubComponentEnum) {
+    if (this.appStateService.AppState$.getValue().MWQMRunSubComponent == mwqmRunSubComponent) {
+      return 'selected';
+    }
+    else {
+      return '';
+    }
+  }
+
+  ColorSelectionMWQMSite(mwqmSiteSubComponent: MWQMSiteSubComponentEnum) {
+    if (this.appStateService.AppState$.getValue().MWQMSiteSubComponent == mwqmSiteSubComponent) {
+      return 'selected';
+    }
+    else {
+      return '';
+    }
+  }
+
+  ColorSelectionPolSourceSite(polSourceSiteSubComponent: PolSourceSiteSubComponentEnum) {
+    if (this.appStateService.AppState$.getValue().PolSourceSiteSubComponent == polSourceSiteSubComponent) {
       return 'selected';
     }
     else {

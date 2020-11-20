@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
 import { SamplingPlan } from 'src/app/models/generated/db/SamplingPlan.model';
@@ -22,7 +22,9 @@ import { AppLanguageService } from '../app-language.service';
   providedIn: 'root'
 })
 export class WebProvinceService {
+  private TVItemID: number;
   private DoOther: boolean;
+  private sub: Subscription;
 
   constructor(private httpClient: HttpClient,
     private appStateService: AppStateService,
@@ -35,14 +37,28 @@ export class WebProvinceService {
     private componentDataLoadedService: ComponentDataLoadedService) {
   }
 
-  GetWebProvince(TVItemID: number, DoOther: boolean) {
+  DoWebProvince(TVItemID: number, DoOther: boolean) {
+    this.TVItemID = TVItemID;
     this.DoOther = DoOther;
+
+    this.sub ? this.sub.unsubscribe() : null;
+
+    if (this.appLoadedService.AppLoaded$.getValue()?.WebProvince?.TVItemModel?.TVItem?.TVItemID == TVItemID) {
+      this.KeepWebProvince();
+    }
+    else {
+      this.sub = this.GetWebProvince().subscribe();
+    }
+  }
+
+  private GetWebProvince() {
     let languageEnum = GetLanguageEnum();
     this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
       WebProvince: {},
       ProvinceAreaList: [],
       ProvinceFileListList: [],
       ProvinceSamplingPlanList: [],
+      BreadCrumbProvinceWebBaseList: [],
       BreadCrumbWebBaseList: [],
       WebMunicipalities: {},
       WebClimateSite: {},
@@ -52,13 +68,13 @@ export class WebProvinceService {
       Status: this.appLanguageService.AppLanguage.LoadingProvince[this.appStateService.AppState$?.getValue()?.Language],
       Working: true
     });
-    let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebProvince/${TVItemID}/1`;
+    let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebProvince/${this.TVItemID}/1`;
     return this.httpClient.get<WebProvince>(url).pipe(
       map((x: any) => {
         this.UpdateWebProvince(x);
         console.debug(x);
-        if (DoOther) {
-          this.GetWebMunicipalities(TVItemID);
+        if (this.DoOther) {
+          this.DoWebMunicipalities();
         }
       }),
       catchError(e => of(e).pipe(map(e => {
@@ -68,11 +84,19 @@ export class WebProvinceService {
     );
   }
 
-  GetWebMunicipalities(TVItemID: number) {
-    this.webMunicipalitiesService.GetWebMunicipalities(TVItemID, this.DoOther).subscribe();
+  private DoWebMunicipalities() {
+    this.webMunicipalitiesService.DoWebMunicipalities(this.TVItemID, this.DoOther);
   }
 
-  UpdateWebProvince(x: WebProvince) {
+  private KeepWebProvince() {
+    this.UpdateWebProvince(this.appLoadedService.AppLoaded$?.getValue()?.WebProvince);
+    console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebProvince);
+    if (this.DoOther) {
+      this.DoWebMunicipalities();
+    }
+  }
+
+  private UpdateWebProvince(x: WebProvince) {
     let ProvinceAreaList: WebBase[] = [];
     let ProvinceSamplingPlanList: SamplingPlan[] = [];
 
@@ -93,7 +117,8 @@ export class WebProvinceService {
       ProvinceAreaList: this.sortTVItemListService.SortTVItemList(ProvinceAreaList, x?.TVItemParentList),
       ProvinceFileListList: this.structureTVFileListService.StructureTVFileList(x.TVItemModel),
       ProvinceSamplingPlanList: ProvinceSamplingPlanList,
-      BreadCrumbWebBaseList: x?.TVItemParentList,
+      BreadCrumbProvinceWebBaseList: x?.TVItemParentList,
+      BreadCrumbWebBaseList: x?.TVItemParentList
     });
 
     if (this.DoOther) {

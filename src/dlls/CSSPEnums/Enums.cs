@@ -503,6 +503,14 @@ namespace CSSPEnums
         PollutionLimit = 4,
         PollutionAnimation = 5,
     }
+    public enum MikeScenarioSubComponentEnum
+    {
+        GeneralParameters = 1,
+        Sources = 2,
+        InputSummary = 3,
+        Files = 4,
+        GeneralResults = 5
+    }
     public enum MWQMRunSubComponentEnum
     {
         Information = 1,
@@ -938,22 +946,37 @@ namespace CSSPEnums
     }
     public enum ShellSubComponentEnum
     {
-        Root = 1,
+        Area = 1,
         Country = 2,
-        Province = 3,
-        Area = 4,
-        Sector = 5,
-        Subsector = 6,
-        Municipality = 7,
-        MWQMSite = 8,
-        MWQMRun = 9,
-        PolSourceSite = 10,
+        MikeScenario = 3,
+        Municipality = 4,
+        MWQMRun = 5,
+        MWQMSite = 6,
+        PolSourceSite = 7,
+        Province = 8,
+        Root = 9,
+        Sector = 10,
+        Subsector = 11,
     }
     public enum SiteTypeEnum
     {
         Climate = 1,
         Hydrometric = 2,
         Tide = 3,
+    }
+    public enum SortOrderAngularEnum
+    {
+        AreaSectors = 1,
+        CountryProvinces = 2,
+        MunicipalityMIKEScenarios = 3,
+        ProvinceAreas = 4,
+        ProvinceMunicipalities = 5,
+        RootCountries = 6,
+        SectorSubsectors = 7,
+        SectorMikeScenarios = 8,
+        SubsectorMWQMRuns = 9,
+        SubsectorMWQMSites = 10,
+        SubsectorPolSourceSites = 11,
     }
     public enum SpecialTableTypeEnum
     {

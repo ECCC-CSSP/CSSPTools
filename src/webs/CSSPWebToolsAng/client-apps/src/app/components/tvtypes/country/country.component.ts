@@ -12,6 +12,7 @@ import { StatCountService } from 'src/app/services/helpers/stat-count.service';
 import { ComponentButtonSelectionService } from 'src/app/services/helpers/component-button-selection.service';
 import { ComponentShowService } from 'src/app/services/helpers/component-show.service';
 import { ComponentDataClearService } from 'src/app/services/helpers/component-data-clear.service';
+import { GetSortOrderAngularEnum } from 'src/app/enums/generated/SortOrderAngularEnum';
 
 @Component({
   selector: 'app-country',
@@ -20,10 +21,10 @@ import { ComponentDataClearService } from 'src/app/services/helpers/component-da
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CountryComponent implements OnInit, OnDestroy {
-  subWebCountry: Subscription;
   countrySubComponentEnum = GetCountrySubComponentEnum();
   tvTypeEnum = GetTVTypeEnum();
   ascDescEnum = GetAscDescEnum();
+  sortOrderAngular = GetSortOrderAngularEnum();
 
   constructor(public appStateService: AppStateService,
     public appLoadedService: AppLoadedService,
@@ -32,19 +33,15 @@ export class CountryComponent implements OnInit, OnDestroy {
     public tvItemSortOrderService: TVItemSortOrderService,
     public statCountService: StatCountService,
     public componentButtonSelectionService: ComponentButtonSelectionService,
-    public componentShowService: ComponentShowService,
-    private componentDataClearService: ComponentDataClearService) {
+    public componentShowService: ComponentShowService) {
 
   }
 
   ngOnInit(): void {
-    let TVItemID: number = this.appStateService.AppState$.getValue().CurrentTVItemID;
-    this.componentDataClearService.DataClearCountry();
-    this.subWebCountry = this.webCountryService.GetWebCountry(TVItemID, true).subscribe();
+    this.webCountryService.DoWebCountry(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
   }
 
   ngOnDestroy(): void {
-    this.subWebCountry ? this.subWebCountry.unsubscribe() : null;
   }
 
 }

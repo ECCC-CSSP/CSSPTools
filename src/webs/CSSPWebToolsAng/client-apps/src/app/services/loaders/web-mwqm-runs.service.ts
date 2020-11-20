@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
@@ -17,7 +17,9 @@ import { WebPolSourceSiteService } from './web-pol-source-sites.service';
     providedIn: 'root'
 })
 export class WebMWQMRunService {
+    private TVItemID: number;
     private DoOther: boolean;
+    private sub: Subscription;
 
     constructor(private httpClient: HttpClient,
         private appStateService: AppStateService,
@@ -27,21 +29,38 @@ export class WebMWQMRunService {
         private componentDataLoadedService: ComponentDataLoadedService) {
     }
 
-    GetWebMWQMRun(TVItemID: number, DoOther: boolean) {
+    DoWebMWQMRun(TVItemID: number, DoOther: boolean) {
+        this.TVItemID = TVItemID;
         this.DoOther = DoOther;
+
+        this.sub ? this.sub.unsubscribe() : null;
+
+        if (this.appLoadedService.AppLoaded$.getValue()?.WebMWQMRun?.TVItemModel?.TVItem?.TVItemID == TVItemID) {
+            this.KeepWebMWQMRun();
+        }
+        else {
+            this.sub = this.GetWebMWQMRun().subscribe();
+        }
+    }
+
+    private GetWebMWQMRun() {
         let languageEnum = GetLanguageEnum();
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebMWQMRun: {}, BreadCrumbWebBaseList: [] });
+        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
+            WebMWQMRun: {},
+            BreadCrumbMWQMRunWebBaseList: [],
+            BreadCrumbWebBaseList: []
+        });
         this.appStateService.UpdateAppState(<AppState>{
             Status: this.appLanguageService.AppLanguage.LoadingMWQMRun[this.appStateService.AppState$?.getValue()?.Language],
             Working: true
         });
-        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebMWQMRun/${TVItemID}/1`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebMWQMRun/${this.TVItemID}/1`;
         return this.httpClient.get<WebMWQMRun>(url).pipe(
             map((x: any) => {
                 this.UpdateWebMWQMRun(x);
                 console.debug(x);
-                if (DoOther) {
-                    this.GetWebPolSourceSite(TVItemID);
+                if (this.DoOther) {
+                    this.DoWebPolSourceSite();
                 }
             }),
             catchError(e => of(e).pipe(map(e => {
@@ -51,12 +70,24 @@ export class WebMWQMRunService {
         );
     }
 
-    GetWebPolSourceSite(TVItemID: number) {
-        this.webPolSourceSiteService.GetWebPolSourceSite(TVItemID, this.DoOther).subscribe();
+    private DoWebPolSourceSite() {
+        this.webPolSourceSiteService.DoWebPolSourceSite(this.TVItemID, this.DoOther);
     }
 
-    UpdateWebMWQMRun(x: WebMWQMRun) {
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebMWQMRun: x, BreadCrumbWebBaseList: x?.TVItemParentList });
+    private KeepWebMWQMRun() {
+        this.UpdateWebMWQMRun(this.appLoadedService.AppLoaded$?.getValue()?.WebMWQMRun);
+        console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebMWQMRun);
+        if (this.DoOther) {
+            this.DoWebPolSourceSite();
+        }
+    }
+
+    private UpdateWebMWQMRun(x: WebMWQMRun) {
+        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
+            WebMWQMRun: x,
+            BreadCrumbMWQMRunWebBaseList: x?.TVItemParentList,
+            BreadCrumbWebBaseList: x?.TVItemParentList
+        });
 
         if (this.DoOther) {
             if (this.componentDataLoadedService.DataLoadedSubsector()) {

@@ -9,7 +9,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CSSPWebModels
 {
     [NotMapped]
-    public partial class WebHydrometricDataValue
+    public partial class WebHydrometricDataValue : WebBase
     {
         #region Properties
         public List<WebBase> TVItemParentList { get; set; }

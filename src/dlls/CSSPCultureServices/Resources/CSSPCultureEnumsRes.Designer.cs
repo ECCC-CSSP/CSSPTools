@@ -3665,6 +3665,51 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Files.
+        /// </summary>
+        public static string MikeScenarioSubComponentEnumFiles {
+            get {
+                return ResourceManager.GetString("MikeScenarioSubComponentEnumFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to General Parameters.
+        /// </summary>
+        public static string MikeScenarioSubComponentEnumGeneralParameters {
+            get {
+                return ResourceManager.GetString("MikeScenarioSubComponentEnumGeneralParameters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to General Results.
+        /// </summary>
+        public static string MikeScenarioSubComponentEnumGeneralResults {
+            get {
+                return ResourceManager.GetString("MikeScenarioSubComponentEnumGeneralResults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Input Summary.
+        /// </summary>
+        public static string MikeScenarioSubComponentEnumInputSummary {
+            get {
+                return ResourceManager.GetString("MikeScenarioSubComponentEnumInputSummary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sources.
+        /// </summary>
+        public static string MikeScenarioSubComponentEnumSources {
+            get {
+                return ResourceManager.GetString("MikeScenarioSubComponentEnumSources", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contacts.
         /// </summary>
         public static string MunicipalitySubComponentEnumContacts {
@@ -7077,6 +7122,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MIKE Scenario.
+        /// </summary>
+        public static string ShellSubComponentEnumMikeScenario {
+            get {
+                return ResourceManager.GetString("ShellSubComponentEnumMikeScenario", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Municipality.
         /// </summary>
         public static string ShellSubComponentEnumMunicipality {
@@ -7181,6 +7235,105 @@ namespace CSSPCultureServices.Resources {
         public static string SiteTypeEnumTide {
             get {
                 return ResourceManager.GetString("SiteTypeEnumTide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AreaSectors.
+        /// </summary>
+        public static string SortOrderAngularEnumAreaSectors {
+            get {
+                return ResourceManager.GetString("SortOrderAngularEnumAreaSectors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CountryProvinces.
+        /// </summary>
+        public static string SortOrderAngularEnumCountryProvinces {
+            get {
+                return ResourceManager.GetString("SortOrderAngularEnumCountryProvinces", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MunicipalityMIKEScenarios.
+        /// </summary>
+        public static string SortOrderAngularEnumMunicipalityMIKEScenarios {
+            get {
+                return ResourceManager.GetString("SortOrderAngularEnumMunicipalityMIKEScenarios", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ProvinceAreas.
+        /// </summary>
+        public static string SortOrderAngularEnumProvinceAreas {
+            get {
+                return ResourceManager.GetString("SortOrderAngularEnumProvinceAreas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ProvinceMunicipalities.
+        /// </summary>
+        public static string SortOrderAngularEnumProvinceMunicipalities {
+            get {
+                return ResourceManager.GetString("SortOrderAngularEnumProvinceMunicipalities", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RootCountries.
+        /// </summary>
+        public static string SortOrderAngularEnumRootCountries {
+            get {
+                return ResourceManager.GetString("SortOrderAngularEnumRootCountries", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SectorMikeScenarios.
+        /// </summary>
+        public static string SortOrderAngularEnumSectorMikeScenarios {
+            get {
+                return ResourceManager.GetString("SortOrderAngularEnumSectorMikeScenarios", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SectorSubsectors.
+        /// </summary>
+        public static string SortOrderAngularEnumSectorSubsectors {
+            get {
+                return ResourceManager.GetString("SortOrderAngularEnumSectorSubsectors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SubsectorMWQMRuns.
+        /// </summary>
+        public static string SortOrderAngularEnumSubsectorMWQMRuns {
+            get {
+                return ResourceManager.GetString("SortOrderAngularEnumSubsectorMWQMRuns", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SubsectorMWQMSites.
+        /// </summary>
+        public static string SortOrderAngularEnumSubsectorMWQMSites {
+            get {
+                return ResourceManager.GetString("SortOrderAngularEnumSubsectorMWQMSites", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SubsectorPolSourceSites.
+        /// </summary>
+        public static string SortOrderAngularEnumSubsectorPolSourceSites {
+            get {
+                return ResourceManager.GetString("SortOrderAngularEnumSubsectorPolSourceSites", resourceCulture);
             }
         }
         

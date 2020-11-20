@@ -9,7 +9,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CSSPWebModels
 {
     [NotMapped]
-    public partial class WebMWQMSite
+    public partial class WebMWQMSite : WebBase
     {
         #region Properties
         public List<WebBase> TVItemParentList { get; set; }

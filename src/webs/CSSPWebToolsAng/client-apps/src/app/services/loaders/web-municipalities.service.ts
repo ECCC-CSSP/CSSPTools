@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { ProvinceSubComponentEnum } from 'src/app/enums/generated/ProvinceSubComponentEnum';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
@@ -21,7 +21,9 @@ import { WebBase } from 'src/app/models/generated/web/WebBase.model';
   providedIn: 'root'
 })
 export class WebMunicipalitiesService {
+  private TVItemID: number;
   private DoOther: boolean;
+  private sub: Subscription;
 
   constructor(private httpClient: HttpClient,
     private appStateService: AppStateService,
@@ -33,21 +35,34 @@ export class WebMunicipalitiesService {
     private componentDataLoadedService: ComponentDataLoadedService) {
   }
 
-  GetWebMunicipalities(TVItemID: number, DoOther: boolean) {
+  DoWebMunicipalities(TVItemID: number, DoOther: boolean) {
+    this.TVItemID = TVItemID;
     this.DoOther = DoOther;
+
+    this.sub ? this.sub.unsubscribe() : null;
+
+    if (this.appLoadedService.AppLoaded$.getValue()?.WebMunicipalities?.TVItemModel?.TVItem?.TVItemID == TVItemID) {
+      this.KeepWebMunicipalities();
+    }
+    else {
+      this.sub = this.GetWebMunicipalities().subscribe();
+    }
+  }
+
+  private GetWebMunicipalities() {
     let languageEnum = GetLanguageEnum();
     this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebMunicipalities: {} });
     this.appStateService.UpdateAppState(<AppState>{
       Status: this.appLanguageService.AppLanguage.LoadingProvinceMunicipalities[this.appStateService.AppState$?.getValue()?.Language],
       Working: true
     });
-    let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebMunicipalities/${TVItemID}/1`;
+    let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebMunicipalities/${this.TVItemID}/1`;
     return this.httpClient.get<WebMunicipalities>(url).pipe(
       map((x: any) => {
         this.UpdateWebMunicipalities(x);
         console.debug(x);
-        if (DoOther) {
-          this.GetWebClimateSite(TVItemID);
+        if (this.DoOther) {
+          this.DoWebClimateSite();
         }
       }),
       catchError(e => of(e).pipe(map(e => {
@@ -57,11 +72,19 @@ export class WebMunicipalitiesService {
     );
   }
 
-  GetWebClimateSite(TVItemID: number) {
-    this.webClimateSiteService.GetWebClimateSite(TVItemID, this.DoOther).subscribe();
+  private DoWebClimateSite() {
+    this.webClimateSiteService.DoWebClimateSite(this.TVItemID, this.DoOther);
   }
 
-  UpdateWebMunicipalities(x: WebMunicipalities) {
+  private KeepWebMunicipalities() {
+    this.UpdateWebMunicipalities(this.appLoadedService.AppLoaded$?.getValue()?.WebMunicipalities);
+    console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebMunicipalities);
+    if (this.DoOther) {
+      this.DoWebClimateSite();
+    }
+  }
+
+  private UpdateWebMunicipalities(x: WebMunicipalities) {
     this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
       WebMunicipalities: x,
       ProvinceMunicipalityList: this.sortTVItemListService.SortTVItemList(x.TVItemMunicipalityList, x?.TVItemParentList),

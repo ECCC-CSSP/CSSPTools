@@ -5,9 +5,11 @@
  *
  */
 
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { WebBase } from 'src/app/models/generated/web/WebBase.model';
 
 export class WebMunicipalities {
+    TVItemModel: TVItemModel;
     TVItemMunicipalityList: WebBase[];
     TVItemParentList: WebBase[];
 }

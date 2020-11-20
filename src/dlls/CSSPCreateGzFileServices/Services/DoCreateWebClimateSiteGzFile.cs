@@ -35,6 +35,8 @@ namespace CreateGzFileServices
             {
                 webClimateSite.ClimateSiteList = await GetClimateSiteListUnderProvince(tvItemProvince);
 
+                await FillTVItemModel(webClimateSite.TVItemModel, tvItemProvince);
+
                 await FillParentListTVItemModelList(webClimateSite.TVItemParentList, tvItemProvince);
 
                 await FillChildListTVItemModelList(webClimateSite.TVItemClimateSiteList, tvItemProvince, TVTypeEnum.ClimateSite);

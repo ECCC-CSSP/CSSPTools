@@ -13,9 +13,6 @@ import { WebContactService } from 'src/app/services/loaders/web-contact.service'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnInit, OnDestroy {
-  subWebContact: Subscription;
-  subLoggedInContact: Subscription;
-  
   topComponentEnum = GetTopComponentEnum();
 
   constructor(
@@ -26,13 +23,11 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subWebContact = this.webContactService.GetWebContact(false).subscribe();
-    this.subLoggedInContact = this.loggedInContactService.GetLoggedInContact().subscribe();
+    this.webContactService.DoWebContact(false);
+    this.loggedInContactService.DoLoggedInContact();
   }
 
   ngOnDestroy() {
-    this.subWebContact != null ? this.subWebContact.unsubscribe() : null;
-    this.subLoggedInContact != null ? this.subLoggedInContact.unsubscribe() : null;
   }
 }
 

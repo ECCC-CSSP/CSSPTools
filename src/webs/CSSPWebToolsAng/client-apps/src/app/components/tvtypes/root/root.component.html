@@ -15,13 +15,13 @@
         </span>
     </span>
     <span class="biggerArrow"
-        (click)="tvItemSortOrderService.ChangeTVItemSortOrder('RootCountriesSortOrder', ascDescEnum.Ascending)"
-        *ngIf="appStateService.AppState$.getValue()['RootCountriesSortOrder'] == ascDescEnum.Descending">
+        (click)="tvItemSortOrderService.ChangeTVItemSortOrder(sortOrderAngular.RootCountries, ascDescEnum.Ascending)"
+        *ngIf="appStateService.AppState$.getValue().RootCountriesSortOrder == ascDescEnum.Descending">
         &nbsp;&nbsp;&uarr;
     </span>
     <span class="biggerArrow"
-        (click)="tvItemSortOrderService.ChangeTVItemSortOrder('RootCountriesSortOrder', ascDescEnum.Descending)"
-        *ngIf="appStateService.AppState$.getValue()['RootCountriesSortOrder'] == ascDescEnum.Ascending">
+        (click)="tvItemSortOrderService.ChangeTVItemSortOrder(sortOrderAngular.RootCountries, ascDescEnum.Descending)"
+        *ngIf="appStateService.AppState$.getValue().RootCountriesSortOrder == ascDescEnum.Ascending">
         &nbsp;&nbsp;&darr;
     </span>
 </button>

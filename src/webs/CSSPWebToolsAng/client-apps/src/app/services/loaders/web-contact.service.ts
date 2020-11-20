@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
@@ -19,7 +19,8 @@ import { WebHelpDocService } from './web-help-doc.service';
 })
 export class WebContactService {
     private DoOther: boolean;
-
+    private sub: Subscription;
+  
     constructor(private httpClient: HttpClient,
         private appStateService: AppStateService,
         private appLoadedService: AppLoadedService,
@@ -28,8 +29,20 @@ export class WebContactService {
         private componentDataLoadedService: ComponentDataLoadedService) {
     }
 
-    GetWebContact(DoOther: boolean) {
+    DoWebContact(DoOther: boolean) {
         this.DoOther = DoOther;
+    
+        this.sub ? this.sub.unsubscribe() : null;
+
+        if (this.appLoadedService.AppLoaded$.getValue()?.WebContact?.ContactList?.length > 0) {
+          this.KeepWebContact();
+        }
+        else {
+          this.sub = this.GetWebContact().subscribe();
+        }
+      }
+    
+    private GetWebContact() {
         let languageEnum = GetLanguageEnum();
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebContact: {}, AdminContactList: [] });
         this.appStateService.UpdateAppState(<AppState>{
@@ -41,8 +54,8 @@ export class WebContactService {
             map((x: WebContact) => {
                 this.UpdateWebContact(x);
                 console.debug(x);
-                if (DoOther) {
-                    this.GetWebHelpDoc();
+                if (this.DoOther) {
+                    this.DoWebHelpDoc();
                 }
             }),
             catchError(e => of(e).pipe(map(e => {
@@ -52,11 +65,19 @@ export class WebContactService {
         );
     }
 
-    GetWebHelpDoc() {
-        this.webHelpDocService.GetWebHelpDoc(this.DoOther).subscribe();
+    private DoWebHelpDoc() {
+        this.webHelpDocService.DoWebHelpDoc(this.DoOther);
     }
 
-    UpdateWebContact(x: WebContact) {
+    private KeepWebContact() {
+        this.UpdateWebContact(this.appLoadedService.AppLoaded$?.getValue()?.WebContact);
+        console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebContact);
+        if (this.DoOther) {
+            this.DoWebHelpDoc();
+        }
+    }
+
+    private UpdateWebContact(x: WebContact) {
         let adminList: Contact[] = x.ContactList.filter(contact => contact.IsAdmin == true);
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebContact: x, AdminContactList: adminList, });
 

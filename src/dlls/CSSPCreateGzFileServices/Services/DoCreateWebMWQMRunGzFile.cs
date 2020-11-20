@@ -33,6 +33,8 @@ namespace CreateGzFileServices
 
             try
             {
+                await FillTVItemModel(webMWQMRun.TVItemModel, tvItemSubsector);
+
                 await FillParentListTVItemModelList(webMWQMRun.TVItemParentList, tvItemSubsector);
 
                 await FillChildListTVItemMWQMRunModelList(webMWQMRun.MWQMRunModelList, tvItemSubsector, TVTypeEnum.MWQMRun);

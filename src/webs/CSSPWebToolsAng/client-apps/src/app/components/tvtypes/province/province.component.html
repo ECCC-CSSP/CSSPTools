@@ -15,12 +15,12 @@
         </span>                                                                        
     </span>
     <span class="biggerArrow"
-        (click)="tvItemSortOrderService.ChangeTVItemSortOrder('ProvinceAreasSortOrder', ascDescEnum.Ascending)"
+        (click)="tvItemSortOrderService.ChangeTVItemSortOrder(sortOrderAngular.ProvinceAreas, ascDescEnum.Ascending)"
         *ngIf="appStateService.AppState$.getValue().ProvinceAreasSortOrder == ascDescEnum.Descending">
         &nbsp;&nbsp;&uarr;
     </span>
     <span class="biggerArrow"
-        (click)="tvItemSortOrderService.ChangeTVItemSortOrder('ProvinceAreasSortOrder', ascDescEnum.Descending)"
+        (click)="tvItemSortOrderService.ChangeTVItemSortOrder(sortOrderAngular.ProvinceAreas, ascDescEnum.Descending)"
         *ngIf="appStateService.AppState$.getValue().ProvinceAreasSortOrder == ascDescEnum.Ascending">
         &nbsp;&nbsp;&darr;
     </span>
@@ -35,12 +35,12 @@
         </span>                                                                                
     </span>
     <span class="biggerArrow"
-        (click)="tvItemSortOrderService.ChangeTVItemSortOrder('ProvinceMunicipalitiesSortOrder', ascDescEnum.Ascending)"
+        (click)="tvItemSortOrderService.ChangeTVItemSortOrder(sortOrderAngular.ProvinceMunicipalities, ascDescEnum.Ascending)"
         *ngIf="appStateService.AppState$.getValue().ProvinceMunicipalitiesSortOrder == ascDescEnum.Descending">
         &nbsp;&nbsp;&uarr;
     </span>
     <span class="biggerArrow"
-        (click)="tvItemSortOrderService.ChangeTVItemSortOrder('ProvinceMunicipalitiesSortOrder', ascDescEnum.Descending)"
+        (click)="tvItemSortOrderService.ChangeTVItemSortOrder(sortOrderAngular.ProvinceMunicipalities, ascDescEnum.Descending)"
         *ngIf="appStateService.AppState$.getValue().ProvinceMunicipalitiesSortOrder == ascDescEnum.Ascending">
         &nbsp;&nbsp;&darr;
     </span>

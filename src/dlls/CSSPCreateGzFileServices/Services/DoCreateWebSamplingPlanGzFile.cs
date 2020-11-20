@@ -40,6 +40,8 @@ namespace CreateGzFileServices
 
             try
             {
+                await FillTVItemModel(webSamplingPlan.TVItemModel, tvItemProvince);
+
                 await FillParentListTVItemModelList(webSamplingPlan.TVItemParentList, tvItemProvince);
 
                 await FillSamplingPlanModel(webSamplingPlan.SamplingPlanModel, samplingPlan);

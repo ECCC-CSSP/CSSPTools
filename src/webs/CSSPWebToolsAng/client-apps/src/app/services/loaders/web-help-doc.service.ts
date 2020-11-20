@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
@@ -17,6 +17,7 @@ import { WebMWQMLookupMPNService } from './web-mwqm-lookup-mpn.service';
 })
 export class WebHelpDocService {
     private DoOther: boolean;
+    private sub: Subscription;
 
     constructor(private httpClient: HttpClient,
         private appStateService: AppStateService,
@@ -26,8 +27,20 @@ export class WebHelpDocService {
         private componentDataLoadedService: ComponentDataLoadedService) {
     }
 
-    GetWebHelpDoc(DoOther: boolean) {
+    DoWebHelpDoc(DoOther: boolean) {
         this.DoOther = DoOther;
+    
+        this.sub ? this.sub.unsubscribe() : null;
+    
+        if (this.appLoadedService.AppLoaded$.getValue()?.WebHelpDoc?.HelpDocList?.length > 0) {
+          this.KeepWebHelpDoc();
+        }
+        else {
+          this.sub = this.GetWebHelpDoc().subscribe();
+        }
+      }
+    
+    private GetWebHelpDoc() {
         let languageEnum = GetLanguageEnum();
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebHelpDoc: {} });
         this.appStateService.UpdateAppState(<AppState>{
@@ -39,8 +52,8 @@ export class WebHelpDocService {
             map((x: any) => {
                 this.UpdateWebHelpDoc(x);
                 console.debug(x);
-                if (DoOther) {
-                    this.GetWebMWQMLookupMPN();
+                if (this.DoOther) {
+                    this.DoWebMWQMLookupMPN();
                 }
             }),
             catchError(e => of(e).pipe(map(e => {
@@ -50,11 +63,19 @@ export class WebHelpDocService {
         );
     }
 
-    GetWebMWQMLookupMPN() {
-        this.webMWQMLookupMPNService.GetWebMWQMLookupMPN(this.DoOther).subscribe();
+    private DoWebMWQMLookupMPN() {
+        this.webMWQMLookupMPNService.DoWebMWQMLookupMPN(this.DoOther);
+    }
+    
+    private KeepWebHelpDoc() {
+        this.UpdateWebHelpDoc(this.appLoadedService.AppLoaded$?.getValue()?.WebHelpDoc);
+        console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebHelpDoc);
+        if (this.DoOther) {
+            this.DoWebMWQMLookupMPN();
+        }
     }
 
-    UpdateWebHelpDoc(x: WebHelpDoc) {
+    private UpdateWebHelpDoc(x: WebHelpDoc) {
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebHelpDoc: x, });
 
         if (this.DoOther) {

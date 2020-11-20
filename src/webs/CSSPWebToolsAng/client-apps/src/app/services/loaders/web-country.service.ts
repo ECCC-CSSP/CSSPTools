@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
 import { WebBase } from 'src/app/models/generated/web/WebBase.model';
@@ -20,7 +20,9 @@ import { AppLanguageService } from '../app-language.service';
   providedIn: 'root'
 })
 export class WebCountryService {
+  private TVItemID: number;
   private DoOther: boolean;
+  private sub: Subscription;
 
   constructor(private httpClient: HttpClient,
     private appStateService: AppStateService,
@@ -32,20 +34,38 @@ export class WebCountryService {
     private componentDataLoadedService: ComponentDataLoadedService) {
   }
 
-  GetWebCountry(TVItemID: number, DoOther: boolean) {
-    this.DoOther = DoOther; PageTransitionEvent
+  DoWebCountry(TVItemID: number, DoOther: boolean) {
+    this.TVItemID = TVItemID;
+    this.DoOther = DoOther;
+
+    this.sub ? this.sub.unsubscribe() : null;
+
+    if (this.appLoadedService.AppLoaded$.getValue()?.WebCountry?.TVItemModel?.TVItem?.TVItemID == TVItemID) {
+      this.KeepWebCountry();
+    }
+    else {
+      this.sub = this.GetWebCountry().subscribe();
+    }
+  }
+
+  private GetWebCountry() {
     let languageEnum = GetLanguageEnum();
-    this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebCountry: {}, CountryProvinceList: [], BreadCrumbWebBaseList: [] });
+    this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
+      WebCountry: {},
+      CountryProvinceList: [],
+      BreadCrumbCountryWebBaseList: [],
+      BreadCrumbWebBaseList: []
+    });
     this.appStateService.UpdateAppState(<AppState>{
       Status: this.appLanguageService.AppLanguage.LoadingCountry[this.appStateService.AppState$?.getValue()?.Language],
       Working: true
     });
-    let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebCountry/${TVItemID}/1`;
+    let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebCountry/${this.TVItemID}/1`;
     return this.httpClient.get<WebCountry>(url).pipe(
       map((x: any) => {
         this.UpdateWebCountry(x);
         console.debug(x);
-        if (DoOther) {
+        if (this.DoOther) {
           // nothing more to add in the chain
         }
       }),
@@ -56,7 +76,15 @@ export class WebCountryService {
     );
   }
 
-  UpdateWebCountry(x: WebCountry) {
+  private KeepWebCountry() {
+    this.UpdateWebCountry(this.appLoadedService.AppLoaded$?.getValue()?.WebCountry);
+    console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebCountry);
+    if (this.DoOther) {
+      // nothing more to add in the chain
+    }
+  }
+  
+  private UpdateWebCountry(x: WebCountry) {
     let CountryProvinceList: WebBase[] = [];
 
     // doing CountryProvinceList
@@ -75,7 +103,8 @@ export class WebCountryService {
       EmailDistributionListContactList: x?.EmailDistributionListContactList,
       EmailDistributionListLanguageList: x?.EmailDistributionListLanguageList,
       EmailDistributionListList: x?.EmailDistributionListList,
-      BreadCrumbWebBaseList: x?.TVItemParentList,
+      BreadCrumbCountryWebBaseList: x?.TVItemParentList,
+      BreadCrumbWebBaseList: x?.TVItemParentList
     });
 
     if (this.DoOther) {
@@ -95,7 +124,7 @@ export class WebCountryService {
       this.mapService.ClearMap();
       this.mapService.DrawObjects([
         ...this.appLoadedService.AppLoaded$.getValue().CountryProvinceList,
-        ... webBaseCountry
+        ...webBaseCountry
       ]);
     }
 
@@ -103,7 +132,7 @@ export class WebCountryService {
       this.mapService.ClearMap();
       this.mapService.DrawObjects([
         ...this.appLoadedService.AppLoaded$.getValue().CountryProvinceList,
-        ... webBaseCountry
+        ...webBaseCountry
       ]);
     }
 
@@ -111,7 +140,7 @@ export class WebCountryService {
       this.mapService.ClearMap();
       this.mapService.DrawObjects([
         ...this.appLoadedService.AppLoaded$.getValue().CountryProvinceList,
-        ... webBaseCountry
+        ...webBaseCountry
       ]);
     }
 
@@ -119,7 +148,7 @@ export class WebCountryService {
       this.mapService.ClearMap();
       this.mapService.DrawObjects([
         ...this.appLoadedService.AppLoaded$.getValue().CountryProvinceList,
-        ... webBaseCountry
+        ...webBaseCountry
       ]);
     }
 
@@ -127,7 +156,7 @@ export class WebCountryService {
       this.mapService.ClearMap();
       this.mapService.DrawObjects([
         ...this.appLoadedService.AppLoaded$.getValue().CountryProvinceList,
-        ... webBaseCountry
+        ...webBaseCountry
       ]);
     }
   }

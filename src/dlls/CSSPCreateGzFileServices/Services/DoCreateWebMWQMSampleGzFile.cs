@@ -33,6 +33,8 @@ namespace CreateGzFileServices
 
             try
             {
+                await FillTVItemModel(webMWQMSample.TVItemModel, tvItemSubsector);
+
                 await FillParentListTVItemModelList(webMWQMSample.TVItemParentList, tvItemSubsector);
 
                 webMWQMSample.MWQMSampleList = await GetWQMSampleListFromSubsector10Years(tvItemSubsector, Year);

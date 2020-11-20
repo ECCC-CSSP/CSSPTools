@@ -6,9 +6,11 @@
  */
 
 import { SamplingPlanModel } from 'src/app/models/generated/web/SamplingPlanModel.model';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { WebBase } from 'src/app/models/generated/web/WebBase.model';
 
 export class WebSamplingPlan {
     SamplingPlanModel: SamplingPlanModel;
+    TVItemModel: TVItemModel;
     TVItemParentList: WebBase[];
 }

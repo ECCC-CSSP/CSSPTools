@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { MunicipalitySubComponentEnum } from 'src/app/enums/generated/MunicipalitySubComponentEnum';
@@ -23,8 +23,10 @@ import { AppLanguageService } from '../app-language.service';
     providedIn: 'root'
 })
 export class WebMunicipalityService {
+    private TVItemID: number;
     private DoOther: boolean;
-
+    private sub: Subscription;
+  
     constructor(private httpClient: HttpClient,
         private appStateService: AppStateService,
         private appLoadedService: AppLoadedService,
@@ -35,8 +37,21 @@ export class WebMunicipalityService {
         private componentDataLoadedService: ComponentDataLoadedService) {
     }
 
-    GetWebMunicipality(TVItemID: number, DoOther: boolean) {
-        this.DoOther = this.DoOther;
+    DoWebMunicipality(TVItemID: number, DoOther: boolean) {
+        this.TVItemID = TVItemID;
+        this.DoOther = DoOther;
+    
+        this.sub ? this.sub.unsubscribe() : null;
+    
+        if (this.appLoadedService.AppLoaded$.getValue()?.WebMunicipality?.TVItemModel?.TVItem?.TVItemID == TVItemID) {
+          this.KeepWebMunicipality();
+        }
+        else {
+          this.sub = this.GetWebMunicipality().subscribe();
+        }
+      }
+    
+    private GetWebMunicipality() {
         let languageEnum = GetLanguageEnum();
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
             WebMunicipality: {},
@@ -44,18 +59,19 @@ export class WebMunicipalityService {
             MunicipalityContactModelList: [],
             MunicipalityTVItemLinkList: [],
             TVItemMikeScenarioList: [],
-            BreadCrumbWebBaseList: [],
+            BreadCrumbMunicipalityWebBaseList: [],
+            BreadCrumbWebBaseList: []
         });
         this.appStateService.UpdateAppState(<AppState>{
             Status: this.appLanguageService.AppLanguage.LoadingMunicipality[this.appStateService.AppState$?.getValue()?.Language],
             Working: true
         });
-        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebMunicipality/${TVItemID}/1`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebMunicipality/${this.TVItemID}/1`;
         return this.httpClient.get<WebMunicipality>(url).pipe(
             map((x: any) => {
                 this.UpdateWebMunicipality(x);
                 console.debug(x);
-                if (DoOther) {
+                if (this.DoOther) {
                     // nothing more to add in the chain
                 }
             }),
@@ -66,7 +82,15 @@ export class WebMunicipalityService {
         );
     }
 
-    UpdateWebMunicipality(x: WebMunicipality) {
+    private KeepWebMunicipality() {
+        this.UpdateWebMunicipality(this.appLoadedService.AppLoaded$?.getValue()?.WebMunicipality);
+        console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebMunicipality);
+        if (this.DoOther) {
+            // nothing more to add in the chain
+        }
+    }
+
+    private UpdateWebMunicipality(x: WebMunicipality) {
         let TVItemMikeScenarioList: WebBase[] = [];
 
         // doing CountryProvinceList
@@ -84,7 +108,8 @@ export class WebMunicipalityService {
             MunicipalityContactModelList: x?.MunicipalityContactModelList,
             MunicipalityTVItemLinkList: x?.MunicipalityTVItemLinkList,
             TVItemMikeScenarioList: this.sortTVItemListService.SortTVItemList(TVItemMikeScenarioList, x?.TVItemParentList),
-            BreadCrumbWebBaseList: x?.TVItemParentList,
+            BreadCrumbMunicipalityWebBaseList: x?.TVItemParentList,
+            BreadCrumbWebBaseList: x?.TVItemParentList
         });
 
         if (this.DoOther) {
@@ -98,8 +123,8 @@ export class WebMunicipalityService {
 
         let webBaseMunicipality: WebBase[] = <WebBase[]>[
             <WebBase>{ TVItemModel: this.appLoadedService.AppLoaded$.getValue().WebMunicipality.TVItemModel },
-          ];
-      
+        ];
+
         if (this.appStateService.AppState$.getValue().MunicipalitySubComponent == MunicipalitySubComponentEnum.Infrastructures) {
             this.mapService.ClearMap();
             this.mapService.DrawObjects([

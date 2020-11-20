@@ -7,10 +7,12 @@
 
 import { DrogueRun } from 'src/app/models/generated/db/DrogueRun.model';
 import { DrogueRunPosition } from 'src/app/models/generated/db/DrogueRunPosition.model';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { WebBase } from 'src/app/models/generated/web/WebBase.model';
 
 export class WebDrogueRun {
     DrogueRunList: DrogueRun[];
     DrogueRunPositionList: DrogueRunPosition[];
+    TVItemModel: TVItemModel;
     TVItemParentList: WebBase[];
 }

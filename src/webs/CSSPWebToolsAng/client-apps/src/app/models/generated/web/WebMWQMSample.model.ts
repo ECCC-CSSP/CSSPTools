@@ -7,10 +7,12 @@
 
 import { MWQMSampleLanguage } from 'src/app/models/generated/db/MWQMSampleLanguage.model';
 import { MWQMSample } from 'src/app/models/generated/db/MWQMSample.model';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { WebBase } from 'src/app/models/generated/web/WebBase.model';
 
 export class WebMWQMSample {
     MWQMSampleLanguageList: MWQMSampleLanguage[];
     MWQMSampleList: MWQMSample[];
+    TVItemModel: TVItemModel;
     TVItemParentList: WebBase[];
 }

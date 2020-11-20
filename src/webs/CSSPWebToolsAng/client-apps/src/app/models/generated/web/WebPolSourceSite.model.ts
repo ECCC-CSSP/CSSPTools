@@ -6,9 +6,11 @@
  */
 
 import { PolSourceSiteModel } from 'src/app/models/generated/web/PolSourceSiteModel.model';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { WebBase } from 'src/app/models/generated/web/WebBase.model';
 
 export class WebPolSourceSite {
     PolSourceSiteModelList: PolSourceSiteModel[];
+    TVItemModel: TVItemModel;
     TVItemParentList: WebBase[];
 }
