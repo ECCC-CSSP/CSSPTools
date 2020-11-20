@@ -103,6 +103,8 @@ export class WebAreaService {
       BreadCrumbWebBaseList: x?.TVItemParentList
     });
 
+    this.appStateService.AppState$.getValue().History.push(this.appLoadedService.AppLoaded$.getValue()?.WebArea?.TVItemModel);
+
     if (this.DoOther) {
       if (this.componentDataLoadedService.DataLoadedArea()) {
         this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });

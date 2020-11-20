@@ -123,6 +123,7 @@ export interface AppLanguage {
 
     ShellApplicationName: string[];
     ShellOpenContextMenu: string[];
+    ShellOpenHistoryMenu: string[];
     ShellReturnHome: string[];
     ShellShowMap: string[];
     ShellResizeMap: string[];

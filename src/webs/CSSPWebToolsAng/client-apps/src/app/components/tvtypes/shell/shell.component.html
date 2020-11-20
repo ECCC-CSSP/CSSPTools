@@ -1,9 +1,24 @@
 <mat-toolbar class="header">
     <span class="toolbar">
-        <button (click)="togglesService.ToggleMenu()" mat-button title="{{ appLanguageService.AppLanguage.ShellOpenContextMenu[appStateService.AppState$?.getValue().Language] }}">
+        <button mat-button
+            title="{{ appLanguageService.AppLanguage.ShellOpenHistoryMenu[appStateService.AppState$?.getValue().Language] }}"
+            [matMenuTriggerFor]="historyMenu">
+            <mat-icon>history</mat-icon>
+        </button>
+        <mat-menu #historyMenu="matMenu">
+            <button mat-menu-item 
+            *ngFor="let history of appStateService.AppState$?.getValue()?.History"
+            (click)="NavigateTo(history)">
+                {{ history.TVItemLanguageList[appStateService.AppState$?.getValue().Language].TVText }}
+            </button>
+        </mat-menu>
+
+        <button (click)="togglesService.ToggleMenu()" mat-button
+            title="{{ appLanguageService.AppLanguage.ShellOpenContextMenu[appStateService.AppState$?.getValue().Language] }}">
             <mat-icon>menu</mat-icon>
         </button>
-        <button mat-button (click)="Home()" title="{{ appLanguageService.AppLanguage.ShellReturnHome[appStateService.AppState$?.getValue().Language] }}">
+        <button mat-button (click)="Home()"
+            title="{{ appLanguageService.AppLanguage.ShellReturnHome[appStateService.AppState$?.getValue().Language] }}">
             {{ appLanguageService.AppLanguage.ShellApplicationName[appStateService.AppState$?.getValue().Language] }}
         </button>
         <span>
@@ -19,11 +34,13 @@
             (click)="SetLanguage(languageEnum.en)">English</button>
         <button mat-button *ngIf="(appStateService.AppState$?.getValue()?.Language == languageEnum.en)"
             (click)="SetLanguage(languageEnum.fr)">Français</button>
-        <button mat-button (click)="togglesService.ToggleMap()" title="{{ appLanguageService.AppLanguage.ShellShowMap[appStateService.AppState$?.getValue().Language] }}">
+        <button mat-button (click)="togglesService.ToggleMap()"
+            title="{{ appLanguageService.AppLanguage.ShellShowMap[appStateService.AppState$?.getValue().Language] }}">
             <mat-icon>map</mat-icon>
         </button>
-        <button mat-button title="{{ appLanguageService.AppLanguage.ShellResizeMap[appStateService.AppState$?.getValue().Language] }}" 
-        *ngIf="(appStateService.AppState$?.getValue()?.MapVisible)" [matMenuTriggerFor]="mapMenu">
+        <button mat-button
+            title="{{ appLanguageService.AppLanguage.ShellResizeMap[appStateService.AppState$?.getValue().Language] }}"
+            *ngIf="(appStateService.AppState$?.getValue()?.MapVisible)" [matMenuTriggerFor]="mapMenu">
             <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #mapMenu="matMenu">
@@ -52,7 +69,7 @@
         <app-map [AppState]="appStateService.AppState$?.getValue()"></app-map>
     </mat-sidenav>
     <span *ngIf="(appStateService.AppState$ | async).Working">
-        
+
     </span>
     <app-error [Error]="(appStateService.AppState$ | async).Error"></app-error>
     <app-bread-crumb [AppState]="appStateService.AppState$?.getValue()"></app-bread-crumb>
@@ -68,9 +85,11 @@
         </app-area>
         <app-sector *ngIf="appStateService.AppState$?.getValue().ShellSubComponent == shellSubComponentEnum.Sector">
         </app-sector>
-        <app-subsector *ngIf="appStateService.AppState$?.getValue().ShellSubComponent == shellSubComponentEnum.Subsector">
+        <app-subsector
+            *ngIf="appStateService.AppState$?.getValue().ShellSubComponent == shellSubComponentEnum.Subsector">
         </app-subsector>
-        <app-municipality *ngIf="appStateService.AppState$?.getValue().ShellSubComponent == shellSubComponentEnum.Municipality">
+        <app-municipality
+            *ngIf="appStateService.AppState$?.getValue().ShellSubComponent == shellSubComponentEnum.Municipality">
         </app-municipality>
     </div>
 

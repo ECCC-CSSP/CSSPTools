@@ -134,7 +134,8 @@ export class AppLanguageService {
       SearchSearch: ['', 'Search', 'Rechercher'],
 
       ShellApplicationName: ['', 'CSSP Web Tools', 'PCCSM: outils Web'],
-      ShellOpenContextMenu: ['', 'Open context menu', 'ouvrir le menu contextuel'],
+      ShellOpenContextMenu: ['', 'Open context menu', 'Ouvrir le menu contextuel'],
+      ShellOpenHistoryMenu: ['', 'Open history menu', 'Ouvrir le menu historique'],
       ShellReturnHome: ['', 'Return home', 'Retour à la page d\'accueil'],
       ShellShowMap: ['', 'Show map', 'Montrer carte'],
       ShellResizeMap: ['', 'Resize map', 'Redimentionnez la carte'],

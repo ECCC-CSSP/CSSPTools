@@ -107,6 +107,8 @@ export class WebCountryService {
       BreadCrumbWebBaseList: x?.TVItemParentList
     });
 
+    this.appStateService.AppState$.getValue().History.push(this.appLoadedService.AppLoaded$.getValue()?.WebCountry?.TVItemModel);
+
     if (this.DoOther) {
       if (this.componentDataLoadedService.DataLoadedCountry()) {
         this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });

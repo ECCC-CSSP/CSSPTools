@@ -31,6 +31,9 @@ export class AppStateService {
       Error: null,
       Status: null,
 
+      // http history related
+      History: [],
+
       // search http loading related
       SearchWorking: null,
 

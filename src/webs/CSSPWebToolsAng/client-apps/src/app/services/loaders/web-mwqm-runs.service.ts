@@ -89,6 +89,8 @@ export class WebMWQMRunService {
             BreadCrumbWebBaseList: x?.TVItemParentList
         });
 
+        this.appStateService.AppState$.getValue().History.push(this.appLoadedService.AppLoaded$.getValue()?.WebMWQMRun?.TVItemModel);
+
         if (this.DoOther) {
             if (this.componentDataLoadedService.DataLoadedSubsector()) {
                 this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });

@@ -16,12 +16,16 @@ import { ShellSubComponentEnum } from 'src/app/enums/generated/ShellSubComponent
 import { SubsectorSubComponentEnum } from 'src/app/enums/generated/SubsectorSubComponentEnum';
 import { TopComponentEnum } from 'src/app/enums/generated/TopComponentEnum';
 import { MikeScenarioSubComponentEnum } from '../enums/generated/MikeScenarioSubComponentEnum';
+import { TVItemModel } from './generated/web/TVItemModel.model';
 
 export interface AppState {
     // http loading related
     Working?: boolean;
     Error?: HttpErrorResponse;
     Status?: string;
+
+    // http history related
+    History: TVItemModel[],
 
     // search http loading related
     SearchWorking?: boolean;

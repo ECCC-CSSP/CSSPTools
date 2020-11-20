@@ -121,6 +121,8 @@ export class WebProvinceService {
       BreadCrumbWebBaseList: x?.TVItemParentList
     });
 
+    this.appStateService.AppState$.getValue().History.push(this.appLoadedService.AppLoaded$.getValue()?.WebProvince?.TVItemModel);
+
     if (this.DoOther) {
       if (this.componentDataLoadedService.DataLoadedProvince()) {
         this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
