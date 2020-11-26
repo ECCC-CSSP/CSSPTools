@@ -147,6 +147,8 @@ export interface AppLanguage {
     SectorShowMIKEScenarios: string[];
     SectorMIKEScenarios: string[];
 
+    StatSampleNumber: string[];
+    
     SubsectorShowMWQMSites: string[];
     SubsectorMWQMSites: string[];
     SubsectorShowAnalysis: string[];

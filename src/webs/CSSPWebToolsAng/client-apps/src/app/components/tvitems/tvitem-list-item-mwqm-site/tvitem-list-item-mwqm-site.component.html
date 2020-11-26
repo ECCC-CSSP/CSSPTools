@@ -1,0 +1,44 @@
+<span
+    *ngIf="Index == 1">{{ appLanguageService.AppLanguage.StatSampleNumber[this.appStateService.AppState$.getValue().Language] }}:&nbsp;</span>
+
+<mat-button-toggle-group *ngIf="Index == 1">
+    <mat-button-toggle (click)="SetStatRunsForDetail(10)"
+        [ngClass]="(appStateService.AppState$.getValue().StatRunsForDetail == 10) ? 'selected' : ''">
+        10
+    </mat-button-toggle>
+    <mat-button-toggle (click)="SetStatRunsForDetail(15)"
+        [ngClass]="(appStateService.AppState$.getValue().StatRunsForDetail == 15) ? 'selected' : ''">
+        15
+    </mat-button-toggle>
+    <mat-button-toggle (click)="SetStatRunsForDetail(20)"
+        [ngClass]="(appStateService.AppState$.getValue().StatRunsForDetail == 20) ? 'selected' : ''">
+        20
+    </mat-button-toggle>
+    <mat-button-toggle (click)="SetStatRunsForDetail(25)"
+        [ngClass]="(appStateService.AppState$.getValue().StatRunsForDetail == 25) ? 'selected' : ''">
+        25
+    </mat-button-toggle>
+    <mat-button-toggle (click)="SetStatRunsForDetail(30)"
+        [ngClass]="(appStateService.AppState$.getValue().StatRunsForDetail == 30) ? 'selected' : ''">
+        30
+    </mat-button-toggle>
+    <mat-button-toggle (click)="SetStatRunsForDetail(35)"
+        [ngClass]="(appStateService.AppState$.getValue().StatRunsForDetail == 35) ? 'selected' : ''">
+        35
+    </mat-button-toggle>
+    <mat-button-toggle (click)="SetStatRunsForDetail(40)"
+        [ngClass]="(appStateService.AppState$.getValue().StatRunsForDetail == 40) ? 'selected' : ''">
+        40
+    </mat-button-toggle>
+</mat-button-toggle-group>
+<br *ngIf="Index == 1" />
+
+<app-tvitem-list-item-mwqm-site-button [AppState]="AppState" [TVItemModel]="TVItemModel" [Index]="Index"
+[StatMWQMSite]="webMWQMSamplesService.GetMWQMSiteDetail(TVItemModel)">
+</app-tvitem-list-item-mwqm-site-button>
+
+<app-tvitem-list-detail-mwqm-site *ngIf="AppState?.DetailVisible" [AppState]="AppState" [TVItemModel]="TVItemModel"
+    [StatMWQMSite]="webMWQMSamplesService.GetMWQMSiteDetail(TVItemModel)">
+</app-tvitem-list-detail-mwqm-site>
+
+<p *ngIf="false">{{ TVItemModel | json }}</p>

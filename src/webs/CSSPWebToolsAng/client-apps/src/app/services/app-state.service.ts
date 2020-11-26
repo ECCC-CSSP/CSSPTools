@@ -17,6 +17,7 @@ import { ShellSubComponentEnum } from 'src/app/enums/generated/ShellSubComponent
 import { SubsectorSubComponentEnum } from 'src/app/enums/generated/SubsectorSubComponentEnum';
 import { TopComponentEnum } from 'src/app/enums/generated/TopComponentEnum';
 import { AppState } from 'src/app/models/AppState.model';
+import { AnalysisCalculationTypeEnum } from '../enums/generated/AnalysisCalculationTypeEnum';
 
 @Injectable({
   providedIn: 'root'
@@ -36,6 +37,15 @@ export class AppStateService {
 
       // search http loading related
       SearchWorking: null,
+
+      // stat
+      StatRunsForDetail: 30,
+      StatStartDate: new Date(2050, 1, 1),
+      StatEndDate: new Date(1980, 1, 1),
+      StatRuns: 30,
+      StatFullYear: true,
+      StatShowUsed: false,
+      StatCalculation: AnalysisCalculationTypeEnum.AllAllAll,
 
       // visual related
       TopComponent: TopComponentEnum.Home, // home | shell
@@ -119,7 +129,7 @@ export class AppStateService {
       MapPolylineColorInfrastructureLiftStationToOutfall: '#ff00ff',
       MapPolylineColorInfrastructureLiftStationToWWTP: '#ffff00',
       MapPolylineColorInfrastructureWWTPToOutfall: '#00ffff',
-  
+
       MapPolygonColorArea: '#ff0000',
       MapPolygonColorCountry: '#00ff00',
       MapPolygonColorProvince: '#0000ff',

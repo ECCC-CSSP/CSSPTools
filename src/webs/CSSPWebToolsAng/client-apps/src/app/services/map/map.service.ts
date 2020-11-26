@@ -80,7 +80,7 @@ export class MapService {
     });
   }
 
-  ShowItem(tvItemModel: TVItemModel) {
+  ShowItem(tvItemModel: TVItemModel, event: Event) {
     let length: number = this.appLoadedService.AppLoaded$.getValue().GoogleCrossPolylineListMVC.getLength();
     for (let i = 0; i < length; i++) {
       this.appLoadedService.AppLoaded$.getValue().GoogleCrossPolylineListMVC.getAt(i).setMap(null);
@@ -112,6 +112,7 @@ export class MapService {
       map: this.appLoadedService.AppLoaded$.getValue().Map,
       zIndex: 200,
     });
+
     this.appLoadedService.AppLoaded$.getValue().GoogleCrossPolylineListMVC.push(polyl1);
     let CoordList2 = [];
     CoordList2.push(new google.maps.LatLng(ne.lat(), sw.lng()));
@@ -125,7 +126,10 @@ export class MapService {
       map: this.appLoadedService.AppLoaded$.getValue().Map,
       zIndex: 200,
     });
+
     this.appLoadedService.AppLoaded$.getValue().GoogleCrossPolylineListMVC.push(polyl2);
+  
+    event.stopPropagation();
   }
 
 }

@@ -1,0 +1,21 @@
+<button mat-button (click)="subPageService.SetSubPage(TVItemModel)">
+    <mat-icon *ngIf="appStateService.AppState$?.getValue()?.MapVisible"
+        (click)="mapService.ShowItem(TVItemModel, $event)">place</mat-icon>
+    <span [ngClass]="TVItemModel?.TVItem?.IsActive ? '' : 'inactive'">
+        <span *ngIf="appStateService.AppState$?.getValue()?.MapVisible">
+            {{ Index }}&nbsp;-&nbsp;
+        </span>
+        <span *ngIf="appStateService.AppState$?.getValue()?.DetailVisible">
+            [{{ TVItemModel.TVItem.TVItemID }}]
+        </span>
+        {{ TVItemModel?.TVItemLanguageList[this.appStateService.AppState$.getValue().Language]?.TVText }}
+    </span>
+    <app-stat-count *ngIf="appStateService.AppState$.getValue().StatCountVisible" [TVType]="null"
+        [TVItemModel]="TVItemModel"></app-stat-count>
+    <app-last-udpate-tv-item-model *ngIf="appStateService.AppState$?.getValue()?.LastUpdateVisible"
+        [TVItemModel]="TVItemModel"></app-last-udpate-tv-item-model>
+</button>
+<app-tvitem-list-detail-subsector [AppState]="AppState" *ngIf="!IsBreadCrumb && AppState?.DetailVisible"
+    [TVItemModel]="TVItemModel"></app-tvitem-list-detail-subsector>
+
+<p *ngIf="false">{{ TVItemModel | json }}</p>

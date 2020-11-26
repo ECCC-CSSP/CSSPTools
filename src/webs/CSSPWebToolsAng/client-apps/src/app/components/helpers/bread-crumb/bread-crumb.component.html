@@ -1,3 +1,12 @@
-<mat-list *ngFor="let webBase of appLoadedService.AppLoaded$?.getValue()?.BreadCrumbWebBaseList; let i = index" >
-    <app-tvitem-list-item [IsLast]="IsLast(i)" [AppState]="AppState" [IsBreadCrumb]="true" [TVItemModel]="webBase.TVItemModel"></app-tvitem-list-item>
-</mat-list>
+<button mat-button *ngFor="let webBase of appLoadedService.AppLoaded$?.getValue()?.BreadCrumbWebBaseList; let i = index"
+    [ngClass]="(appLoadedService.AppLoaded$.getValue().BreadCrumbWebBaseList.length - 1 == i) ? 'selected' : ''"
+    (click)="subPageService.SetSubPage(webBase.TVItemModel)">
+    <span [ngClass]="webBase.TVItemModel?.TVItem?.IsActive ? '' : 'inactive'">
+        <span *ngIf="appStateService.AppState$?.getValue()?.DetailVisible">
+            [{{ webBase.TVItemModel.TVItem.TVItemID }}]
+        </span>
+        {{ webBase.TVItemModel?.TVItemLanguageList[this.appStateService.AppState$.getValue().Language]?.TVText }}
+    </span>
+    <app-stat-count *ngIf="appStateService.AppState$.getValue().StatCountVisible" [TVType]="null"
+            [TVItemModel]="webBase.TVItemModel"></app-stat-count>
+</button>

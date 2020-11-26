@@ -40,7 +40,7 @@ namespace GenerateAngularCSSPHelperModels
             {
                 "VPAmbient", "VPResult", "VPScenario", "LabSheet", "Contact", 
                 "TVItemUserAuthorization", "TVTypeUserAuthorization", "TVFile", 
-                "SamplingPlan", "TVItem", "TVItemLanguage", "TVItemLink"
+                "SamplingPlan", "TVItem", "TVItemLanguage", "TVItemLink", "MWQMSite"
             };
 
 

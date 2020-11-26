@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
 import { LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
+import { MWQMRun } from 'src/app/models/generated/db/MWQMRun.model';
+import { MWQMSample } from 'src/app/models/generated/db/MWQMSample.model';
+import { StatMWQMSiteSample } from 'src/app/models/generated/web/StatMWQMSiteSample.model';
 import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { AppLanguageService } from 'src/app/services/app-language.service';
@@ -14,30 +17,72 @@ export class DateFormatService {
     private appLanguageService: AppLanguageService) {
   }
 
+  GetStatMWQMSiteSampleSampleLastSampleDate(statMWQMSiteSample: StatMWQMSiteSample) {
+    if (statMWQMSiteSample === undefined) {
+      return "";
+    }
+
+    if (statMWQMSiteSample.LastSampleDate === undefined)
+    {
+      return "";
+    }
+
+    return this.GetDateFromDateText(statMWQMSiteSample.LastSampleDate.toString(), true);
+  }
+
+  GetMWQMRunDateTime_LocalDigit(mwqmRun: MWQMRun) {
+    let DateText: string = mwqmRun.DateTime_Local.toString();
+
+    return `${DateText.substring(0, 4)}-${DateText.substring(5, 7)}-${DateText.substring(8, 10)}`;
+  }
+
+  GetMWQMSampleDateTime_LocalDigit(mwqmSample: MWQMSample) {
+    let DateText: string = mwqmSample.SampleDateTime_Local.toString();
+
+    return `${DateText.substring(0, 4)}-${DateText.substring(5, 7)}-${DateText.substring(8, 10)}`;
+  }
+
+  GetMWQMSampleSampleDateTime_Local(mwqmSample: MWQMSample) {
+    return this.GetDateFromDateText(mwqmSample.SampleDateTime_Local.toString(), false);
+  }
+
   GetLastUpdateDateTVItemModel(tvItemModel: TVItemModel) {
-    return this.GetDateFromDateText(tvItemModel.TVItem.LastUpdateDate_UTC.toString());
+    return this.GetDateFromDateText(tvItemModel.TVItem.LastUpdateDate_UTC.toString(), false);
   }
 
   GetLastUpdateDateTVFileModel(tvFileModel: TVFileModel) {
-    return this.GetDateFromDateText(tvFileModel.TVFile.LastUpdateDate_UTC.toString());
+    return this.GetDateFromDateText(tvFileModel.TVFile.LastUpdateDate_UTC.toString(), false);
   }
 
   GetFileCreateDate(tvFileModel: TVFileModel) {
-    return this.GetDateFromDateText(tvFileModel.TVFile.FileCreatedDate_UTC.toString());
+    return this.GetDateFromDateText(tvFileModel.TVFile.FileCreatedDate_UTC.toString(), false);
   }
 
-  private GetDateFromDateText(DateText: string) {
+  private GetDateFromDateText(DateText: string, DateOnly: boolean) {
     let Year: number = parseInt(DateText.substring(0, 4));
     let Month: number = parseInt(DateText.substring(5, 7));
     let Day: number = parseInt(DateText.substring(8, 10));
-    let Hour: number = parseInt(DateText.substring(11, 13));
-    let Minute: number = parseInt(DateText.substring(14, 16));
-    let Second: number = parseInt(DateText.substring(17, 19));
-    if (this.appStateService.AppState$.getValue().Language == LanguageEnum.fr) {
-      return `${Day} ${this.GetMonthName(Month, false)} ${Year} ${Hour}:${Minute}:${Second} (utc)`;
-    }
+    if (!DateOnly) {
+      let Hour: number = parseInt(DateText.substring(11, 13));
+      let Minute: number = parseInt(DateText.substring(14, 16));
+      let Second: number = parseInt(DateText.substring(17, 19));
+      let HourText: string = Hour < 10 ? `0${Hour}` : `${Hour}`;
+      let MinuteText: string = Minute < 10 ? `0${Minute}` : `${Minute}`;
+      let SecondText: string = Second < 10 ? `0${Second}` : `${Second}`;
+      if (this.appStateService.AppState$.getValue().Language == LanguageEnum.fr) {
+        return `${Day} ${this.GetMonthName(Month, false)} ${Year} ${HourText}:${MinuteText}:${SecondText} (utc)`;
+      }
 
-    return `${this.GetMonthName(Month, false)} ${Day}, ${Year} ${Hour}:${Minute}:${Second} (utc)`;
+      return `${this.GetMonthName(Month, false)} ${Day}, ${Year} ${HourText}:${MinuteText}:${SecondText} (utc)`;
+    }
+    else {
+      if (this.appStateService.AppState$.getValue().Language == LanguageEnum.fr) {
+        return `${Day} ${this.GetMonthName(Month, false)} ${Year}`;
+      }
+
+      return `${this.GetMonthName(Month, false)} ${Day}, ${Year}`;
+
+    }
   }
 
   private GetMonthName(month: number, acronym: boolean = false): string {

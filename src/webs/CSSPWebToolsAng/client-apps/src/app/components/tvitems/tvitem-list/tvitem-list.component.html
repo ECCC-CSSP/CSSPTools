@@ -1,3 +1,32 @@
 <mat-list *ngFor="let webBase of TVItemList; let i = index">
-    <app-tvitem-list-item [Index]="i + 1" [AppState]="AppState" [TVItemModel]="webBase?.TVItemModel"></app-tvitem-list-item>
+    <app-tvitem-list-item-area [Index]="i + 1" [AppState]="AppState" [TVItemModel]="webBase?.TVItemModel"
+        *ngIf="webBase?.TVItemModel.TVItem.TVType == tvTypeEnum.Area">
+    </app-tvitem-list-item-area>
+    <app-tvitem-list-item-country [Index]="i + 1" [AppState]="AppState" [TVItemModel]="webBase?.TVItemModel"
+        *ngIf="webBase?.TVItemModel.TVItem.TVType == tvTypeEnum.Country">
+    </app-tvitem-list-item-country>
+    <app-tvitem-list-item-mike-scenario [Index]="i + 1" [AppState]="AppState" [TVItemModel]="webBase?.TVItemModel"
+        *ngIf="webBase?.TVItemModel.TVItem.TVType == tvTypeEnum.MikeScenario">
+    </app-tvitem-list-item-mike-scenario>
+    <app-tvitem-list-item-municipality [Index]="i + 1" [AppState]="AppState" [TVItemModel]="webBase?.TVItemModel"
+        *ngIf="webBase?.TVItemModel.TVItem.TVType == tvTypeEnum.Municipality">
+    </app-tvitem-list-item-municipality>
+    <app-tvitem-list-item-mwqm-run [Index]="i + 1" [AppState]="AppState" [TVItemModel]="webBase?.TVItemModel"
+        *ngIf="webBase?.TVItemModel.TVItem.TVType == tvTypeEnum.MWQMRun">
+    </app-tvitem-list-item-mwqm-run>
+    <app-tvitem-list-item-mwqm-site [Index]="i + 1" [AppState]="AppState" [TVItemModel]="webBase?.TVItemModel"
+        *ngIf="webBase?.TVItemModel.TVItem.TVType == tvTypeEnum.MWQMSite">
+    </app-tvitem-list-item-mwqm-site>
+    <app-tvitem-list-item-pol-source-site [Index]="i + 1" [AppState]="AppState" [TVItemModel]="webBase?.TVItemModel"
+        *ngIf="webBase?.TVItemModel.TVItem.TVType == tvTypeEnum.PolSourceSite">
+    </app-tvitem-list-item-pol-source-site>
+    <app-tvitem-list-item-province [Index]="i + 1" [AppState]="AppState" [TVItemModel]="webBase?.TVItemModel"
+        *ngIf="webBase?.TVItemModel.TVItem.TVType == tvTypeEnum.Province">
+    </app-tvitem-list-item-province>
+    <app-tvitem-list-item-sector [Index]="i + 1" [AppState]="AppState" [TVItemModel]="webBase?.TVItemModel"
+        *ngIf="webBase?.TVItemModel.TVItem.TVType == tvTypeEnum.Sector">
+    </app-tvitem-list-item-sector>
+    <app-tvitem-list-item-subsector [Index]="i + 1" [AppState]="AppState" [TVItemModel]="webBase?.TVItemModel"
+        *ngIf="webBase?.TVItemModel.TVItem.TVType == tvTypeEnum.Subsector">
+    </app-tvitem-list-item-subsector>
 </mat-list>

@@ -24,21 +24,4 @@ namespace CSSPWebModels
         }
         #endregion Constructors
     }
-
-    [NotMapped]
-    public partial class MWQMSiteModel : WebBase
-    {
-        #region Properties
-        public MWQMSite MWQMSite { get; set; }
-        public List<MWQMSiteStartEndDate> MWQMSiteStartEndDateList { get; set; }
-        #endregion Properties
-
-        #region Constructors
-        public MWQMSiteModel()
-        {
-            MWQMSite = new MWQMSite();
-            MWQMSiteStartEndDateList = new List<MWQMSiteStartEndDate>();
-        }
-        #endregion Constructors
-    }
 }

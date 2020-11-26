@@ -3,14 +3,16 @@ import { Injectable } from '@angular/core';
 import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
+import { SampleTypeEnum } from 'src/app/enums/generated/SampleTypeEnum';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
 import { AppState } from 'src/app/models/AppState.model';
+import { MWQMRun } from 'src/app/models/generated/db/MWQMRun.model';
 import { WebMWQMRun } from 'src/app/models/generated/web/WebMWQMRun.model';
-import { WebPolSourceSite } from 'src/app/models/generated/web/WebPolSourceSite.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { AppLanguageService } from '../app-language.service';
 import { ComponentDataLoadedService } from '../helpers/component-data-loaded.service';
+import { SortMWQMRunListService } from '../helpers/sort-mwqm-run-list-desc.service';
 import { WebPolSourceSiteService } from './web-pol-source-sites.service';
 
 @Injectable({
@@ -25,6 +27,7 @@ export class WebMWQMRunService {
         private appStateService: AppStateService,
         private appLoadedService: AppLoadedService,
         private appLanguageService: AppLanguageService,
+        private sortMWQMRunListDescService: SortMWQMRunListService,
         private webPolSourceSiteService: WebPolSourceSiteService,
         private componentDataLoadedService: ComponentDataLoadedService) {
     }
@@ -83,8 +86,17 @@ export class WebMWQMRunService {
     }
 
     private UpdateWebMWQMRun(x: WebMWQMRun) {
+        let mwqmRunList: MWQMRun[] = [];
+        let count: number = x.MWQMRunModelList.length;
+        for (let i = 0; i < count; i++) {
+            if (x.MWQMRunModelList[i].MWQMRun.RunSampleType == SampleTypeEnum.Routine) {
+                mwqmRunList.push(x.MWQMRunModelList[i].MWQMRun);
+            }
+        }
+
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
             WebMWQMRun: x,
+            MWQMRunRoutingList: mwqmRunList,
             BreadCrumbMWQMRunWebBaseList: x?.TVItemParentList,
             BreadCrumbWebBaseList: x?.TVItemParentList
         });

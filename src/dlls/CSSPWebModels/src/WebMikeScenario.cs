@@ -30,21 +30,4 @@ namespace CSSPWebModels
         }
         #endregion Constructors
     }
-
-
-    [NotMapped]
-    public partial class MikeBoundaryConditionModel : WebBase
-    {
-        #region Properties
-        public List<MikeBoundaryCondition> MikeBoundaryConditionList { get; set; }
-        #endregion Properties
-
-        #region Constructors
-        public MikeBoundaryConditionModel()
-        {
-            MikeBoundaryConditionList = new List<MikeBoundaryCondition>();
-        }
-        #endregion Constructors
-
-    }
 }

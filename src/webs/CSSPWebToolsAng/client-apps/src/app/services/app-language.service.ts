@@ -159,6 +159,8 @@ export class AppLanguageService {
       SectorShowMIKEScenarios: ['', 'Show MIKE scenarios', 'Montrer scénarios MIKE'],
       SectorMIKEScenarios: ['', 'MIKE Scenarios', 'Scénarios MIKE'],
 
+      StatSampleNumber: ['', 'Stat sample number', 'Nombre d\'échantillon pour stat'],
+      
       SubsectorShowMWQMSites: ['', 'Show MWQM sites', 'Montrer sites PSQEM'],
       SubsectorMWQMSites: ['', 'MWQM Sites', 'Sites PSQEM'],
       SubsectorShowAnalysis: ['', 'Show analysis', 'Montrer analyse'],

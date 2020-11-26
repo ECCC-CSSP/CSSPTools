@@ -24,21 +24,4 @@ namespace CSSPWebModels
         }
         #endregion Constructors
     }
-
-    [NotMapped]
-    public partial class MWQMRunModel : WebBase
-    {
-        #region Properties
-        public MWQMRun MWQMRun { get; set; }
-        public List<MWQMRunLanguage> MWQMRunLanguageList { get; set; }
-        #endregion Properties
-
-        #region Constructors
-        public MWQMRunModel()
-        {
-            MWQMRun = new MWQMRun();
-            MWQMRunLanguageList = new List<MWQMRunLanguage>();
-        }
-        #endregion Constructors
-    }
 }

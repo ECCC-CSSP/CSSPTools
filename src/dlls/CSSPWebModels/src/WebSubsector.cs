@@ -38,39 +38,4 @@ namespace CSSPWebModels
         }
         #endregion Constructors
     }
-
-    [NotMapped]
-    public partial class LabSheetModel
-    {
-        #region Properties
-        public LabSheet LabSheet { get; set; }
-        public List<LabSheetDetailModel> LabSheetDetailModelList { get; set; }
-        #endregion Properties
-
-        #region Constructors
-        public LabSheetModel()
-        {
-            LabSheet = new LabSheet();
-            LabSheetDetailModelList = new List<LabSheetDetailModel>();
-        }
-        #endregion Constructors
-    }
-
-    [NotMapped]
-    public partial class LabSheetDetailModel
-    {
-        #region Properties
-        public LabSheetDetail LabSheetDetail { get; set; }
-        public List<LabSheetTubeMPNDetail> LabSheetTubeMPNDetailList { get; set; }
-        #endregion Properties
-
-        #region Constructors
-        public LabSheetDetailModel()
-        {
-            LabSheetDetail = new LabSheetDetail();
-            LabSheetTubeMPNDetailList = new List<LabSheetTubeMPNDetail>();
-
-        }
-        #endregion Constructors
-    }
 }

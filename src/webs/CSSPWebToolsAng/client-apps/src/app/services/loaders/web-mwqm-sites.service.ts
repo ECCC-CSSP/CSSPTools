@@ -5,6 +5,7 @@ import { catchError, map } from 'rxjs/operators';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
 import { AppState } from 'src/app/models/AppState.model';
+import { MWQMSite } from 'src/app/models/generated/db/MWQMSite.model';
 import { WebMWQMSite } from 'src/app/models/generated/web/WebMWQMSite.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
@@ -82,8 +83,15 @@ export class WebMWQMSiteService {
     }
 
     private UpdateWebMWQMSite(x: WebMWQMSite) {
+        let mwqmSiteList: MWQMSite[] = [];
+        let count: number = x.MWQMSiteModelList.length;
+        for (let i = 0; i < count; i++) {
+                mwqmSiteList.push(x.MWQMSiteModelList[i].MWQMSite);
+        }
+
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
             WebMWQMSite: x,
+            MWQMSiteList: mwqmSiteList,
             BreadCrumbMWQMSiteWebBaseList: x?.TVItemParentList,
             BreadCrumbWebBaseList: x?.TVItemParentList
         });

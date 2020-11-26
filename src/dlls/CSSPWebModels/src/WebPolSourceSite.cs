@@ -24,42 +24,4 @@ namespace CSSPWebModels
         }
         #endregion Constructors
     }
-
-    [NotMapped]
-    public partial class PolSourceSiteModel : WebBase
-    {
-        #region Properties
-        public PolSourceSite PolSourceSite { get; set; }
-        public Address PolSourceSiteCivicAddress { get; set; }
-        public List<PolSourceObservationModel> PolSourceObservationModelList { get; set; }
-        public List<PolSourceSiteEffect> PolSourceSiteEffectList { get; set; }
-        #endregion Properties
-
-        #region Constructors
-        public PolSourceSiteModel()
-        {
-            PolSourceSite = new PolSourceSite();
-            PolSourceSiteCivicAddress = new Address();
-            PolSourceObservationModelList = new List<PolSourceObservationModel>();
-            PolSourceSiteEffectList = new List<PolSourceSiteEffect>();
-        }
-        #endregion Constructors
-    }
-
-    [NotMapped]
-    public partial class PolSourceObservationModel
-    {
-        #region Properties
-        public PolSourceObservation PolSourceObservation { get; set; }
-        public List<PolSourceObservationIssue> PolSourceObservationIssueList { get; set; }
-        #endregion Properties
-
-        #region Constructors
-        public PolSourceObservationModel()
-        {
-            PolSourceObservation = new PolSourceObservation();
-            PolSourceObservationIssueList = new List<PolSourceObservationIssue>();
-        }
-        #endregion Constructors
-    }
 }

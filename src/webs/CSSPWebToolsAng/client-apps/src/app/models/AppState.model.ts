@@ -15,6 +15,7 @@ import { SectorSubComponentEnum } from 'src/app/enums/generated/SectorSubCompone
 import { ShellSubComponentEnum } from 'src/app/enums/generated/ShellSubComponentEnum';
 import { SubsectorSubComponentEnum } from 'src/app/enums/generated/SubsectorSubComponentEnum';
 import { TopComponentEnum } from 'src/app/enums/generated/TopComponentEnum';
+import { AnalysisCalculationTypeEnum } from '../enums/generated/AnalysisCalculationTypeEnum';
 import { MikeScenarioSubComponentEnum } from '../enums/generated/MikeScenarioSubComponentEnum';
 import { TVItemModel } from './generated/web/TVItemModel.model';
 
@@ -29,6 +30,15 @@ export interface AppState {
 
     // search http loading related
     SearchWorking?: boolean;
+
+    // stat
+    StatRunsForDetail?: number;
+    StatStartDate?: Date;
+    StatEndDate?: Date;
+    StatRuns?: number;
+    StatFullYear?: boolean;
+    StatShowUsed?: boolean;
+    StatCalculation?: AnalysisCalculationTypeEnum;
 
     // visual related
     TopComponent?: TopComponentEnum; // home | shell

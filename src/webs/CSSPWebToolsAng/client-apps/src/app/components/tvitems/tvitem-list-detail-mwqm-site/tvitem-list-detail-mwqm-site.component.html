@@ -1,0 +1,24 @@
+<blockquote *ngIf="StatMWQMSite">
+    <strong>Statistics:</strong>
+    &nbsp;&nbsp;&nbsp;Samples (<strong>{{ StatMWQMSite?.StatMWQMSiteSampleList[0]?.Samples }}</strong>)
+    &nbsp;&nbsp;&nbsp;Dataset (<strong>{{ StatMWQMSite?.StatMWQMSiteSampleList[0]?.StartYear }} -
+        {{ StatMWQMSite?.StatMWQMSiteSampleList[0]?.EndYear }}</strong>)
+    &nbsp;&nbsp;&nbsp;Statistics period (<strong>{{ StatMWQMSite?.StatMWQMSiteSampleList[0]?.StatStartYear }} -
+        {{ StatMWQMSite?.StatMWQMSiteSampleList[0]?.StatEndYear }}</strong>)
+    &nbsp;&nbsp;&nbsp;Last sample date (<strong>
+        {{ dateFormatService.GetStatMWQMSiteSampleSampleLastSampleDate(StatMWQMSite?.StatMWQMSiteSampleList[0]) }}
+    </strong>)
+    &nbsp;&nbsp;&nbsp;Number of sample used for statistics
+    (<strong>{{ StatMWQMSite?.StatMWQMSiteSampleList[0]?.SampCount }}</strong>)
+    &nbsp;&nbsp;&nbsp;Minimum FC (<strong>{{ StatMWQMSite?.StatMWQMSiteSampleList[0]?.MinFC }}</strong>)
+    &nbsp;&nbsp;&nbsp;Maximum FC (<strong>{{ StatMWQMSite?.StatMWQMSiteSampleList[0]?.MaxFC }}</strong>)
+    &nbsp;&nbsp;&nbsp;Geometric mean
+    (<strong>{{ StatMWQMSite?.StatMWQMSiteSampleList[0]?.GeoMean | number:'1.1-1' }}</strong>)
+    &nbsp;&nbsp;&nbsp;Median (<strong>{{ StatMWQMSite?.StatMWQMSiteSampleList[0]?.Median | number:'1.1-1' }}</strong>)
+    &nbsp;&nbsp;&nbsp;P90 (<strong>{{ StatMWQMSite?.StatMWQMSiteSampleList[0]?.P90 | number:'1.1-1' }}</strong>)
+    &nbsp;&nbsp;&nbsp;Percentage of sample with FC > 43
+    (<strong>{{ StatMWQMSite?.StatMWQMSiteSampleList[0]?.PercOver43 | number:'1.1-1' }}%</strong>)
+    &nbsp;&nbsp;&nbsp;Percentage of sample with FC > 260
+    (<strong>{{ StatMWQMSite?.StatMWQMSiteSampleList[0]?.PercOver260 | number:'1.1-1' }}%</strong>)
+    <hr />
+</blockquote>

@@ -50,6 +50,8 @@ import { MWQMRun } from './generated/db/MWQMRun.model';
 import { MWQMSite } from './generated/db/MWQMSite.model';
 import { PolSourceSite } from './generated/db/PolSourceSite.model';
 import { Subscription } from 'rxjs';
+import { StatMWQMRun } from './generated/web/StatMWQMRun.model';
+import { StatMWQMSite } from './generated/web/StatMWQMSite.model';
 
 export interface AppLoaded {
     LoggedInContact?: Contact;
@@ -177,6 +179,11 @@ export interface AppLoaded {
     WebMWQMSample2050?: WebMWQMSample;
     WebMWQMSampleAll?: WebMWQMSample;
     WebDrogueRun?: WebDrogueRun;
+
+    MWQMRunRoutingList?: MWQMRun[];
+    MWQMSiteList?: MWQMSite[];
+    StatMWQMRunList?: StatMWQMRun[];
+    StatMWQMSiteList?: StatMWQMSite[];
 
     // Municipality TVItemID related -- this object is under province
     WebMunicipality?: WebMunicipality;
