@@ -554,21 +554,29 @@ namespace CreateGzFileServices
         private async Task<List<MWQMSite>> GetMWQMSiteListFromSubsector(TVItem tvItemSubsector)
         {
             return await (from c in db.TVItems
+                          from cl in db.TVItemLanguages
                           from s in db.MWQMSites
-                          where c.TVItemID == s.MWQMSiteTVItemID
+                          where c.TVItemID == cl.TVItemID
+                          && c.TVItemID == s.MWQMSiteTVItemID
                           && c.TVPath.Contains(tvItemSubsector.TVPath + "p")
                           && c.ParentID == tvItemSubsector.TVItemID
                           && c.TVType == TVTypeEnum.MWQMSite
+                          && cl.Language == LanguageEnum.en
+                          orderby c.IsActive, cl.TVText 
                           select s).AsNoTracking().ToListAsync();
         }
         private async Task<List<MWQMSiteStartEndDate>> GetMWQMSiteStartEndDateListFromSubsector(TVItem tvItemSubsector)
         {
             List<int> MWQMSiteIDList = await (from c in db.TVItems
+                                              from cl in db.TVItemLanguages
                                               from s in db.MWQMSites
-                                              where c.TVItemID == s.MWQMSiteTVItemID
+                                              where c.TVItemID == cl.TVItemID
+                                              && c.TVItemID == s.MWQMSiteTVItemID
                                               && c.TVPath.Contains(tvItemSubsector.TVPath + "p")
                                               && c.ParentID == tvItemSubsector.TVItemID
                                               && c.TVType == TVTypeEnum.MWQMSite
+                                              && cl.Language == LanguageEnum.en
+                                              orderby c.IsActive, cl.TVText
                                               select s.MWQMSiteID).ToListAsync();
 
             return await (from sd in db.MWQMSiteStartEndDates
@@ -578,6 +586,7 @@ namespace CreateGzFileServices
         private async Task<List<Contact>> GetAllContact()
         {
             return await (from c in db.Contacts
+                          orderby c.LastName, c.FirstName, c.Initial
                           select c).AsNoTracking().ToListAsync();
         }
         private async Task<List<ClimateSite>> GetClimateSiteListUnderProvince(TVItem tvItemProvince)

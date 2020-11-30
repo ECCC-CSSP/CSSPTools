@@ -130,6 +130,9 @@ export interface AppState {
     options?: google.maps.MapOptions;
     infoContent?: string;
 
+    CSSIconLoaded?: boolean;
+    GoogleJSLoaded?: boolean;
+
     // sorting
     AreaSectorsSortOrder?: AscDescEnum;
     AreaFilesSortByProp?: FilesSortPropEnum;

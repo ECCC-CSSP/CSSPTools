@@ -165,6 +165,9 @@
   <data name="butUpdateText" xml:space="preserve">
     <value>Mise à jour</value>
   </data>
+  <data name="CheckIfCSSIconJSFileExist" xml:space="preserve">
+    <value>Vérification si les filières de CSS, Icon et JS existes</value>
+  </data>
   <data name="CheckIfHelpFileExist" xml:space="preserve">
     <value>Vérification si les filières d'aide existes</value>
   </data>
@@ -233,6 +236,12 @@
   </data>
   <data name="CreatingAllRequiredDirectories" xml:space="preserve">
     <value>Création de tous les répertoires requis</value>
+  </data>
+  <data name="CSSIconJSFileFound_" xml:space="preserve">
+    <value>Filière de CSS, Icon ou JS trouvé {0}</value>
+  </data>
+  <data name="CSSIconJSFileNotFound_" xml:space="preserve">
+    <value>Filière de CSS, Icon ou JS non trouvé {0}</value>
   </data>
   <data name="CSSPDBSearchDatabaseSuccessfullyFilled" xml:space="preserve">
     <value>Remplissage de la base de données CSSPDBSearch avec success</value>

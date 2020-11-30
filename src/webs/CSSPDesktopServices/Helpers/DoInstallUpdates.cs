@@ -42,7 +42,7 @@ namespace CSSPDesktopServices.Services
             // Doing csspwebapislocal container 
             List<string> zipFileNameList = new List<string>()
             {
-                "helpdocs.zip", "csspwebapislocal.zip", "csspclient.zip"
+                "helpdocs.zip", "csspwebapislocal.zip", "csspclient.zip", "cssiconjsdocs.zip",
             };
 
             int zipCount = 0;
@@ -77,7 +77,6 @@ namespace CSSPDesktopServices.Services
 
             return await Task.FromResult(true);
         }
-
         private async Task<bool> DownloadJsonFilesFromAzure(string jsonFileName)
         {
             //string culture = "fr-CA";

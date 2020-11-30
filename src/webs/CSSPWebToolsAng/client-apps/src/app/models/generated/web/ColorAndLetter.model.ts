@@ -8,5 +8,6 @@
 
 export class ColorAndLetter {
     color: string;
+    hexColor: string;
     letter: string;
 }

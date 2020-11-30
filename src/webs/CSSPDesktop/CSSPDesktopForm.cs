@@ -658,6 +658,8 @@ namespace CSSPDesktop
 
             if (!await CSSPDesktopService.CheckIfHelpFilesExist()) return await Task.FromResult(false);
 
+            if (!await CSSPDesktopService.CheckIfCSSIconJSFilesExist()) return await Task.FromResult(false);
+
             lblStatus.Text = "";
 
             butLogin.Enabled = false;

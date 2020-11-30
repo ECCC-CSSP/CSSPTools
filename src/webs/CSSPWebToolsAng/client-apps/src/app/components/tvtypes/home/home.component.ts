@@ -7,6 +7,8 @@ import { AppState } from 'src/app/models/AppState.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { WebContactService } from 'src/app/services/loaders/web-contact.service';
+import { PreferenceService } from 'src/app/services/loaders/preferences.service';
+import { MapService } from 'src/app/services/map/map.service';
 
 @Component({
   selector: 'app-home',
@@ -20,9 +22,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   constructor(public appLoadedService: AppLoadedService,
     public appStateService: AppStateService,
     public appLanguageService: AppLanguageService,
-    public webContactService: WebContactService) { }
+    public webContactService: WebContactService,
+    private preferenceService: PreferenceService) { }
 
   ngOnInit(): void {
+    this.preferenceService.DoPreference();
     this.webContactService.DoWebContact(false);
   }
 

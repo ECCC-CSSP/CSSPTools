@@ -122,28 +122,30 @@ export class WebRootService {
             <WebBase>{ TVItemModel: this.appLoadedService.AppLoaded$.getValue().WebRoot.TVItemModel },
         ];
 
-        if (this.appStateService.AppState$.getValue().RootSubComponent == RootSubComponentEnum.Countries) {
-            this.mapService.ClearMap();
-            this.mapService.DrawObjects([
-                ...this.appLoadedService.AppLoaded$.getValue().RootCountryList,
-                ...webBaseRoot
-            ]);
-        }
+        if (this.appStateService.AppState$.getValue().GoogleJSLoaded) {
+            if (this.appStateService.AppState$.getValue().RootSubComponent == RootSubComponentEnum.Countries) {
+                this.mapService.ClearMap();
+                this.mapService.DrawObjects([
+                    ...this.appLoadedService.AppLoaded$.getValue().RootCountryList,
+                    ...webBaseRoot
+                ]);
+            }
 
-        if (this.appStateService.AppState$.getValue().RootSubComponent == RootSubComponentEnum.Files) {
-            this.mapService.ClearMap();
-            this.mapService.DrawObjects([
-                ...this.appLoadedService.AppLoaded$.getValue().RootCountryList,
-                ...webBaseRoot
-            ]);
-        }
+            if (this.appStateService.AppState$.getValue().RootSubComponent == RootSubComponentEnum.Files) {
+                this.mapService.ClearMap();
+                this.mapService.DrawObjects([
+                    ...this.appLoadedService.AppLoaded$.getValue().RootCountryList,
+                    ...webBaseRoot
+                ]);
+            }
 
-        if (this.appStateService.AppState$.getValue().RootSubComponent == RootSubComponentEnum.ExportArcGIS) {
-            this.mapService.ClearMap();
-            this.mapService.DrawObjects([
-                ...this.appLoadedService.AppLoaded$.getValue().RootCountryList,
-                ...webBaseRoot
-            ]);
+            if (this.appStateService.AppState$.getValue().RootSubComponent == RootSubComponentEnum.ExportArcGIS) {
+                this.mapService.ClearMap();
+                this.mapService.DrawObjects([
+                    ...this.appLoadedService.AppLoaded$.getValue().RootCountryList,
+                    ...webBaseRoot
+                ]);
+            }
         }
     }
 }

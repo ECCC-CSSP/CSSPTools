@@ -31,6 +31,7 @@ namespace CSSPWebAPIs.Controllers
     {
         Task<ActionResult<Contact>> Token(LoginModel loginModel);
         Task<ActionResult<string>> AzureStore();
+        Task<ActionResult<string>> GoogleMapKey();
         Task<ActionResult<Contact>> Register(RegisterModel registerModel);
     }
 
@@ -78,6 +79,15 @@ namespace CSSPWebAPIs.Controllers
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await ContactDBService.AzureStore();
+        }
+        [Route("GoogleMapKey")]
+        [HttpGet]
+        public async Task<ActionResult<string>> GoogleMapKey()
+        {
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await ContactDBService.GoogleMapKey();
         }
         [Route("Register")]
         [HttpPost]

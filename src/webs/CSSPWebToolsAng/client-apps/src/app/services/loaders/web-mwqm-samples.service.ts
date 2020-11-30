@@ -23,9 +23,13 @@ import { AppLanguageService } from '../app-language.service';
 import { ComponentDataLoadedService } from '../helpers/component-data-loaded.service';
 import { SortMWQMRunListService } from '../helpers/sort-mwqm-run-list-desc.service';
 import { SampleTypeEnum } from 'src/app/enums/generated/SampleTypeEnum';
-import { SortMWQMSiteSampleListService } from '../helpers/sort-mwqm-site-sample-list-desc.service';
+import { SortMWQMSiteSampleListService } from '../helpers/sort-mwqm-site-sample-list.service';
 import { ColorAndLetter } from 'src/app/models/generated/web/ColorAndLetter.model';
 import { SubsectorSubComponentEnum } from 'src/app/enums/generated/SubsectorSubComponentEnum';
+import { MapService } from '../map/map.service';
+import { SortMWQMSiteModelListService } from '../helpers/sort-mwqm-site-model-list.service';
+import { MatMonthView } from '@angular/material/datepicker';
+import { GetSameDayNextDayEnum } from 'src/app/enums/generated/SameDayNextDayEnum';
 
 @Injectable({
     providedIn: 'root'
@@ -41,6 +45,8 @@ export class WebMWQMSampleService {
         private appLoadedService: AppLoadedService,
         private appLanguageService: AppLanguageService,
         private sortMWQMRunListService: SortMWQMRunListService,
+        private sortMWQMSiteModelService: SortMWQMSiteModelListService,
+        private mapService: MapService,
         private componentDataLoadedService: ComponentDataLoadedService,
         private sortMWQMSiteSampleListService: SortMWQMSiteSampleListService) {
     }
@@ -143,15 +149,33 @@ export class WebMWQMSampleService {
     }
 
     FillStatMWQMSiteList() {
+        let StatMWQMRunList: StatMWQMRun[] = this.appLoadedService.AppLoaded$.getValue().StatMWQMRunList;
+        let countR: number = StatMWQMRunList.length;
+        for (let r = 0; r < countR; r++) {
+            StatMWQMRunList[r].UseInStat = false;
+        }
+
         let StatMWQMSiteList: StatMWQMSite[] = [];
-        let MWQMSiteList: MWQMSite[] = this.appLoadedService.AppLoaded$.getValue().MWQMSiteList;
-        let countSite: number = this.appLoadedService.AppLoaded$.getValue().MWQMSiteList.length;
+        let MWQMSiteModelActiveList: MWQMSiteModel[] = this.sortMWQMSiteModelService.SortMWQMSiteModelListByTVTextAsc(this.appLoadedService.AppLoaded$.getValue().WebMWQMSite.MWQMSiteModelList.filter(c => c.TVItemModel.TVItem.IsActive == true));
+        let MWQMSiteModelInactiveList: MWQMSiteModel[] = this.sortMWQMSiteModelService.SortMWQMSiteModelListByTVTextAsc(this.appLoadedService.AppLoaded$.getValue().WebMWQMSite.MWQMSiteModelList.filter(c => c.TVItemModel.TVItem.IsActive == false));
+        let countSite: number = MWQMSiteModelActiveList.length;
         for (let i = 0; i < countSite; i++) {
-            let MWQMSiteModelList: MWQMSiteModel[] = this.appLoadedService.AppLoaded$.getValue().WebMWQMSite.MWQMSiteModelList.filter(c => c.TVItemModel.TVItem.TVItemID == MWQMSiteList[i].MWQMSiteTVItemID);
+            let MWQMSiteList: MWQMSite[] = this.appLoadedService.AppLoaded$.getValue().MWQMSiteList.filter(c => c.MWQMSiteTVItemID == MWQMSiteModelActiveList[i].TVItemModel.TVItem.TVItemID);
 
-            let StatMWQMSiteSampleList: StatMWQMSiteSample[] = this.FillMWQMSiteSampleStat(MWQMSiteModelList[0].TVItemModel);
+            let StatMWQMSiteSampleList: StatMWQMSiteSample[] = this.FillMWQMSiteSampleStat(MWQMSiteModelActiveList[i].TVItemModel);
 
-            StatMWQMSiteList.push(<StatMWQMSite>{ MWQMSite: MWQMSiteList[i], StatMWQMSiteSampleList: StatMWQMSiteSampleList, TVItemModel: MWQMSiteModelList[0].TVItemModel });
+            StatMWQMSiteList.push(<StatMWQMSite>{ MWQMSite: MWQMSiteList[0], StatMWQMSiteSampleList: StatMWQMSiteSampleList, TVItemModel: MWQMSiteModelActiveList[i].TVItemModel });
+        }
+
+        if (this.appStateService.AppState$.getValue().InactVisible) {
+            countSite = MWQMSiteModelInactiveList.length;
+            for (let i = 0; i < countSite; i++) {
+                let MWQMSiteList: MWQMSite[] = this.appLoadedService.AppLoaded$.getValue().MWQMSiteList.filter(c => c.MWQMSiteTVItemID == MWQMSiteModelInactiveList[i].TVItemModel.TVItem.TVItemID);
+
+                let StatMWQMSiteSampleList: StatMWQMSiteSample[] = this.FillMWQMSiteSampleStat(MWQMSiteModelInactiveList[i].TVItemModel);
+
+                StatMWQMSiteList.push(<StatMWQMSite>{ MWQMSite: MWQMSiteList[0], StatMWQMSiteSampleList: StatMWQMSiteSampleList, TVItemModel: MWQMSiteModelInactiveList[i].TVItemModel });
+            }
         }
 
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ StatMWQMSiteList: StatMWQMSiteList });
@@ -230,7 +254,20 @@ export class WebMWQMSampleService {
 
         this.FillStatMWQMSiteList();
 
+        let webBaseSubsector: WebBase[] = <WebBase[]>[
+            <WebBase>{ TVItemModel: this.appLoadedService.AppLoaded$.getValue().WebSubsector.TVItemModel },
+        ];
+
+        if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.MWQMSites) {
+            this.mapService.ClearMap();
+            this.mapService.DrawObjects([
+                ...this.appLoadedService.AppLoaded$.getValue().SubsectorMWQMSiteList,
+                ...webBaseSubsector,
+            ]);
+        }
+
     }
+
 
     private FillStatMWQMRunList() {
         let StatMWQMRunList: StatMWQMRun[] = [];
@@ -241,6 +278,8 @@ export class WebMWQMSampleService {
         for (let i = 0; i < countRun; i++) {
             let DateText: string = MWQMRunRoutineDescList[i].DateTime_Local.toString();
             let Year: number = parseInt(DateText.substring(0, 4));
+            let Month: number = parseInt(DateText.substring(5, 7));
+            let Day: number = parseInt(DateText.substring(8, 10));
 
             let statMWQMRun: StatMWQMRun = <StatMWQMRun>{
                 EndTide: '',
@@ -261,6 +300,8 @@ export class WebMWQMSampleService {
                 RunDate: MWQMRunRoutineDescList[i].DateTime_Local,
                 RunIndex: i,
                 RunYear: Year,
+                RunMonth: Month,
+                RunDay: Day,
                 UseInStat: true,
             };
 
@@ -444,10 +485,12 @@ export class WebMWQMSampleService {
                 let StartYear = parseInt(MWQMSiteSampleSortedList[0].SampleDateTime_Local.toString());
 
                 if (MWQMSiteSampleSortedList.length > 0) {
+
                     let SampleCount: number = 0;
                     let countRun: number = StatMWQMRunList.length;
                     let countSample: number = MWQMSiteSampleSortedList.length;
                     let sUsed: number = 0;
+
                     for (let r = 0; r < countRun; r++) // at this point all run should be of SampleTypeEnum.Routine
                     {
                         let RunDateText: string = StatMWQMRunList[r].RunDate.toString();
@@ -477,7 +520,11 @@ export class WebMWQMSampleService {
                                     Temp: MWQMSiteSampleSortedList[s].WaterTemp_C,
                                     UseInStat: StatMWQMRunList[r].UseInStat,
                                     Samples: countSample,
+                                    SampleYear: SampleYear,
+                                    SampleMonth: SampleMonth,
+                                    SampleDay: SampleDate,
                                 });
+                                StatMWQMRunList[r].UseInStat = true;
                                 sUsed = s + 1;
                                 found = true;
                                 break;
@@ -499,9 +546,6 @@ export class WebMWQMSampleService {
                     let countRuns: number = StatMWQMSiteSampleList.length;
                     let LastSampleDate: Date;
                     for (let r = countRuns - 1; r >= 0; r--) {
-                        if (tvItemModel.TVItemLanguageList[1].TVText == '0001' && r == 0) {
-                            let lsiefj = 34;
-                        }
                         if (StatMWQMSiteSampleList[r].FC) {
                             LastSampleDate = StatMWQMSiteSampleList[r].SampleDate;
                             let SampleDateText: string = StatMWQMSiteSampleList[r].SampleDate.toString();
@@ -535,7 +579,7 @@ export class WebMWQMSampleService {
                                 StatMWQMSiteSampleList[r].PercOver43,
                                 StatMWQMSiteSampleList[r].PercOver260);
                             StatMWQMSiteSampleList[r].StatEndYear = this.MinYear(YearList);
-                            StatMWQMSiteSampleList[r].StatStartYear = this.MinYear(YearList);
+                            StatMWQMSiteSampleList[r].StatStartYear = this.MaxYear(YearList);
                             StatMWQMSiteSampleList[r].EndYear = EndYear;
                             StatMWQMSiteSampleList[r].StartYear = StartYear;
                         }
@@ -635,62 +679,62 @@ export class WebMWQMSampleService {
         }
         if ((GeoMean > 88) || (Median > 88) || (P90 > 260) || (PercOver260 > 10)) {
             if ((GeoMean > 181) || (Median > 181) || (P90 > 460) || (PercOver260 > 18)) {
-                colorAndLetter = <ColorAndLetter>{ color: 'bgbluef', letter: 'F' };
+                colorAndLetter = <ColorAndLetter>{ hexColor: '#8888ff', color: 'bgbluef', letter: 'F' };
             }
             else if ((GeoMean > 163) || (Median > 163) || (P90 > 420) || (PercOver260 > 17)) {
-                colorAndLetter = <ColorAndLetter>{ color: 'bgbluee', letter: 'E' };
+                colorAndLetter = <ColorAndLetter>{ hexColor: '#9999ff', color: 'bgbluee', letter: 'E' };
             }
             else if ((GeoMean > 144) || (Median > 144) || (P90 > 380) || (PercOver260 > 15)) {
-                colorAndLetter = <ColorAndLetter>{ color: 'bgblued', letter: 'D' };
+                colorAndLetter = <ColorAndLetter>{ hexColor: '#aaaaff', color: 'bgblued', letter: 'D' };
             }
             else if ((GeoMean > 125) || (Median > 125) || (P90 > 340) || (PercOver260 > 13)) {
-                colorAndLetter = <ColorAndLetter>{ color: 'bgbluec', letter: 'C' };
+                colorAndLetter = <ColorAndLetter>{ hexColor: '#bbbbff', color: 'bgbluec', letter: 'C' };
             }
             else if ((GeoMean > 107) || (Median > 107) || (P90 > 300) || (PercOver260 > 12)) {
-                colorAndLetter = <ColorAndLetter>{ color: 'bgblueb', letter: 'B' };
+                colorAndLetter = <ColorAndLetter>{ hexColor: '#ccccff', color: 'bgblueb', letter: 'B' };
             }
             else {
-                colorAndLetter = <ColorAndLetter>{ color: 'bgbluea', letter: 'A' };
+                colorAndLetter = <ColorAndLetter>{ hexColor: '#ddddff', color: 'bgbluea', letter: 'A' };
             }
         }
         else if ((GeoMean > 14) || (Median > 14) || (P90 > 43) || (PercOver43 > 10)) {
             if ((GeoMean > 76) || (Median > 76) || (P90 > 224) || (PercOver43 > 27)) {
-                colorAndLetter = <ColorAndLetter>{ color: 'bgredf', letter: 'F' };
+                colorAndLetter = <ColorAndLetter>{ hexColor: '#aa0000', color: 'bgredf', letter: 'F' };
             }
             else if ((GeoMean > 63) || (Median > 63) || (P90 > 188) || (PercOver43 > 23)) {
-                colorAndLetter = <ColorAndLetter>{ color: 'bgrede', letter: 'E' };
+                colorAndLetter = <ColorAndLetter>{ hexColor: '#cc0000', color: 'bgrede', letter: 'E' };
             }
             else if ((GeoMean > 51) || (Median > 51) || (P90 > 152) || (PercOver43 > 20)) {
-                colorAndLetter = <ColorAndLetter>{ color: 'bgredd', letter: 'D' };
+                colorAndLetter = <ColorAndLetter>{ hexColor: '#ff1111', color: 'bgredd', letter: 'D' };
             }
             else if ((GeoMean > 39) || (Median > 39) || (P90 > 115) || (PercOver43 > 17)) {
-                colorAndLetter = <ColorAndLetter>{ color: 'bgredc', letter: 'C' };
+                colorAndLetter = <ColorAndLetter>{ hexColor: '#ff4444', color: 'bgredc', letter: 'C' };
             }
             else if ((GeoMean > 26) || (Median > 26) || (P90 > 79) || (PercOver43 > 13)) {
-                colorAndLetter = <ColorAndLetter>{ color: 'bgredb', letter: 'B' };
+                colorAndLetter = <ColorAndLetter>{ hexColor: '#ff9999', color: 'bgredb', letter: 'B' };
             }
             else {
-                colorAndLetter = <ColorAndLetter>{ color: 'bgreda', letter: 'A' };
+                colorAndLetter = <ColorAndLetter>{ hexColor: '#ffcccc', color: 'bgreda', letter: 'A' };
             }
         }
         else {
             if ((GeoMean > 12) || (Median > 12) || (P90 > 36) || (PercOver43 > 8)) {
-                colorAndLetter = <ColorAndLetter>{ color: 'bggreenf', letter: 'F' };
+                colorAndLetter = <ColorAndLetter>{ hexColor: '#ccffcc', color: 'bggreenf', letter: 'F' };
             }
             else if ((GeoMean > 9) || (Median > 9) || (P90 > 29) || (PercOver43 > 7)) {
-                colorAndLetter = <ColorAndLetter>{ color: 'bggreene', letter: 'E' };
+                colorAndLetter = <ColorAndLetter>{ hexColor: '#99ff99', color: 'bggreene', letter: 'E' };
             }
             else if ((GeoMean > 7) || (Median > 7) || (P90 > 22) || (PercOver43 > 5)) {
-                colorAndLetter = <ColorAndLetter>{ color: 'bggreend', letter: 'D' };
+                colorAndLetter = <ColorAndLetter>{ hexColor: '#44ff44', color: 'bggreend', letter: 'D' };
             }
             else if ((GeoMean > 5) || (Median > 5) || (P90 > 14) || (PercOver43 > 3)) {
-                colorAndLetter = <ColorAndLetter>{ color: 'bggreenc', letter: 'C' };
+                colorAndLetter = <ColorAndLetter>{ hexColor: '#11ff11', color: 'bggreenc', letter: 'C' };
             }
             else if ((GeoMean > 2) || (Median > 2) || (P90 > 7) || (PercOver43 > 2)) {
-                colorAndLetter = <ColorAndLetter>{ color: 'bggreenb', letter: 'B' };
+                colorAndLetter = <ColorAndLetter>{ hexColor: '#00bb00', color: 'bggreenb', letter: 'B' };
             }
             else {
-                colorAndLetter = <ColorAndLetter>{ color: 'bggreena', letter: 'A' };
+                colorAndLetter = <ColorAndLetter>{ hexColor: '#009900', color: 'bggreena', letter: 'A' };
             }
         }
 

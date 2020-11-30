@@ -23,7 +23,9 @@ export class StatMWQMRun {
     RainDay9?: number;
     RemoveFromStat?: boolean;
     RunDate?: Date;
+    RunDay?: number;
     RunIndex?: number;
+    RunMonth?: number;
     RunYear?: number;
     StartTide: string;
     UseInStat?: boolean;

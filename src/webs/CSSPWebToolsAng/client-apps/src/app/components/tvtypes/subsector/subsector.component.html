@@ -99,7 +99,11 @@
 </app-tvitem-list>
 
 <div *ngIf="appStateService.AppState$?.getValue()?.SubsectorSubComponent == subsectorSubComponentEnum.Analysis">
-    <app-analysis></app-analysis>
+    <app-analysis [AppState]="appStateService.AppState$?.getValue()"
+    [TVItemList]="appLoadedService.AppLoaded$?.getValue()?.SubsectorMWQMSiteList"
+    [StatMWQMSiteList]="appLoadedService.AppLoaded$?.getValue()?.StatMWQMSiteList"
+    [StatMWQMRunList]="appLoadedService.AppLoaded$?.getValue()?.StatMWQMRunList"
+    ></app-analysis>
 </div>
 
 <app-tvitem-list

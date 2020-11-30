@@ -18,6 +18,7 @@ namespace CSSPWebModels
         #endregion Properties in DB
 
         #region Properties not in DB
+        public string hexColor { get; set; }
         public string color { get; set; }
         public string letter { get; set; }
         #endregion Properties not in DB

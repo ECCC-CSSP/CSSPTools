@@ -30,7 +30,10 @@ export class StatMWQMSiteSample {
     Sal?: number;
     SampCount?: number;
     SampleDate: Date;
+    SampleDay?: number;
+    SampleMonth?: number;
     Samples?: number;
+    SampleYear?: number;
     StartYear?: number;
     StatEndYear?: number;
     StatStartYear?: number;

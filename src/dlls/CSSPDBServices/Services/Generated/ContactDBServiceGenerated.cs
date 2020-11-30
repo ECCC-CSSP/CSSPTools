@@ -37,6 +37,7 @@ namespace CSSPDBServices
         Task<ActionResult<Contact>> Put(Contact contact);
         Task<ActionResult<Contact>> Login(LoginModel loginModel);
         Task<ActionResult<string>> AzureStore();
+        Task<ActionResult<string>> GoogleMapKey();
         Task<ActionResult<Contact>> Register(RegisterModel registerModel);
     }
     public partial class ContactDBService : ControllerBase, IContactDBService
@@ -252,6 +253,16 @@ namespace CSSPDBServices
             if (string.IsNullOrWhiteSpace(sto))
             {
                 return await Task.FromResult(BadRequest(String.Format(CSSPCultureServicesRes.__CouldNotBeFound, "Configuration", "AzureStoreConnectionString")));
+            }
+
+            return await Task.FromResult(Ok(sto));
+        }
+        public async Task<ActionResult<string>> GoogleMapKey()
+        {
+            string sto = Configuration.GetValue<string>("GoogleMapKey");
+            if (string.IsNullOrWhiteSpace(sto))
+            {
+                return await Task.FromResult(BadRequest(String.Format(CSSPCultureServicesRes.__CouldNotBeFound, "Configuration", "GoogleMapKey")));
             }
 
             return await Task.FromResult(Ok(sto));

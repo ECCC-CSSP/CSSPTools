@@ -39,6 +39,8 @@ namespace CSSPWebModels
         public string EndTide { get; set; }
         public bool? UseInStat { get; set; }
         public int? RunYear { get; set; }
+        public int? RunMonth { get; set; }
+        public int? RunDay { get; set; }
         #endregion Properties not in DB
 
         #region Constructors

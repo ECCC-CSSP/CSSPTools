@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ClassificationTypeEnum } from 'src/app/enums/generated/ClassificationTypeEnum';
 import { MapInfoDrawTypeEnum } from 'src/app/enums/generated/MapInfoDrawTypeEnum';
-import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { WebBase } from 'src/app/models/generated/web/WebBase.model';
@@ -10,18 +8,23 @@ import { AppStateService } from 'src/app/services/app-state.service';
 import { MapMarkersService } from 'src/app/services/map/map-markers.service';
 import { MapPolygonsService } from 'src/app/services/map/map-polygons.service';
 import { MapPolylinesService } from 'src/app/services/map/map-polylines.service';
+import { PreferenceService } from '../loaders/preferences.service';
 import { MapHelperService } from './map-helper.service';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class MapService {
+  map: google.maps.Map;
+
   constructor(private appStateService: AppStateService,
     private appLoadedService: AppLoadedService,
     private mapMarkersService: MapMarkersService,
     private mapPolygonsService: MapPolygonsService,
     private mapPolylinesService: MapPolylinesService,
-    private mapHelperService: MapHelperService) {
+    private mapHelperService: MapHelperService,
+    private preferenceService: PreferenceService) {
   }
 
   ClearMap() {
@@ -128,7 +131,7 @@ export class MapService {
     });
 
     this.appLoadedService.AppLoaded$.getValue().GoogleCrossPolylineListMVC.push(polyl2);
-  
+
     event.stopPropagation();
   }
 

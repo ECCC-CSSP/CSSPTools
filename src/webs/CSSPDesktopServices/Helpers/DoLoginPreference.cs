@@ -57,6 +57,34 @@ namespace CSSPDesktopServices.Services
                     return await Task.FromResult(false);
                 }
 
+                // Getting googleMapKey
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
+                response = httpClient.GetAsync($"{ CSSPAzureUrl }api/{ culture }/Auth/GoogleMapKey").Result;
+                if ((int)response.StatusCode != 200)
+                {
+                    if ((int)response.StatusCode == 401)
+                    {
+                        AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.NeedToBeLoggedIn));
+                        return await Task.FromResult(false);
+                    }
+                    else
+                    {
+                        AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.ServerNotRespondingDoYouHaveInternetConnection));
+                        return await Task.FromResult(false);
+                    }
+                }
+
+                string GoogleMapKey = "";
+                try
+                {
+                    GoogleMapKey = response.Content.ReadAsStringAsync().Result;
+                }
+                catch (Exception)
+                {
+                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotReadAzureStoreFrom_, $"{ CSSPAzureUrl }api/{ culture }/Auth/GoogleMapKey")));
+                    return await Task.FromResult(false);
+                }
+
                 List<string> VariableNameList = new List<string>()
                 {
                     "AzureStore",
@@ -64,7 +92,8 @@ namespace CSSPDesktopServices.Services
                     "Password",
                     "Token",
                     "HasInternetConnection",
-                    "LoggedIn"
+                    "LoggedIn",
+                    "GoogleMapKey",
                 };
 
                 List<string> VariableValueList = new List<string>()
@@ -75,6 +104,7 @@ namespace CSSPDesktopServices.Services
                     contact.Token,
                     "true",
                     "true",
+                    GoogleMapKey,
                 };
 
                 for (int i = 0; i < VariableNameList.Count; i++)

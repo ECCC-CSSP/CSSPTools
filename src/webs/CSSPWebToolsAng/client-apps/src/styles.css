@@ -76,3 +76,24 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .bgbluef {
   background-color: #8888ff;
 }
+
+.bgpurple {
+  background-color: purple;
+}
+.bgred {
+  background-color: red;
+}
+.bggreen {
+  background-color: green;
+}
+.bgblack {
+  background-color: black;
+}
+.bgwhite {
+  background-color: white;
+}
+
+.noWrapCenter {
+  white-space: nowrap;
+  text-align: center;
+}

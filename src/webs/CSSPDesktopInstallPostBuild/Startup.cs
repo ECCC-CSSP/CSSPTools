@@ -26,6 +26,7 @@ namespace CSSPDesktopInstallPostBuild
         {
             if (!await FillVariables()) return await Task.FromResult(false);
             if (!await HelpDocsCompressAndSendToAzure()) return await Task.FromResult(false);
+            if (!await CSSIconJSDocsCompressAndSendToAzure()) return await Task.FromResult(false);
             if (!await CSSPWebAPIsLocalCompressAndSendToAzure()) return await Task.FromResult(false);
             if (!await CSSPClientCompressAndSendToAzure()) return await Task.FromResult(false);
 

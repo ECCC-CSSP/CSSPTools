@@ -241,6 +241,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Checking if CSS, Icon and JS files exist.
+        /// </summary>
+        public static string CheckIfCSSIconJSFileExist {
+            get {
+                return ResourceManager.GetString("CheckIfCSSIconJSFileExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Checking if help files exist.
         /// </summary>
         public static string CheckIfHelpFileExist {
@@ -444,6 +453,24 @@ namespace CSSPCultureServices.Resources {
         public static string CreatingAllRequiredDirectories {
             get {
                 return ResourceManager.GetString("CreatingAllRequiredDirectories", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CSS, Icon or JS file found {0}.
+        /// </summary>
+        public static string CSSIconJSFileFound_ {
+            get {
+                return ResourceManager.GetString("CSSIconJSFileFound_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CSS, Icon or JS file not found {0}.
+        /// </summary>
+        public static string CSSIconJSFileNotFound_ {
+            get {
+                return ResourceManager.GetString("CSSIconJSFileNotFound_", resourceCulture);
             }
         }
         

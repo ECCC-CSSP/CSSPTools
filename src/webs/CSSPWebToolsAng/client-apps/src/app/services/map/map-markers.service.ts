@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
 import { MapInfoDrawTypeEnum } from 'src/app/enums/generated/MapInfoDrawTypeEnum';
+import { SubsectorSubComponentEnum } from 'src/app/enums/generated/SubsectorSubComponentEnum';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
+import { StatMWQMSite } from 'src/app/models/generated/web/StatMWQMSite.model';
 import { WebBase } from 'src/app/models/generated/web/WebBase.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
+import { WebMWQMSampleService } from '../loaders/web-mwqm-samples.service';
 import { MapHelperService } from './map-helper.service';
 
 @Injectable({
@@ -37,6 +40,16 @@ export class MapMarkersService {
           if (label.text) {
             if (label.text.length < 6) {
               path = this.appStateService.AppState$.getValue().MapMarkerPathCharacters[label.text.length];
+            }
+          }
+
+          if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.MWQMSites) {
+            let statMWQMSiteList: StatMWQMSite[] = this.appLoadedService.AppLoaded$.getValue()?.StatMWQMSiteList?.filter(c => c.TVItemModel.TVItem.TVItemID == webBase.TVItemModel.TVItem.TVItemID);
+
+            if (statMWQMSiteList && statMWQMSiteList.length > 0) {
+              strokeColor = statMWQMSiteList[0]?.StatMWQMSiteSampleList[0]?.ColorAndLetter?.hexColor;
+              fillColor = statMWQMSiteList[0]?.StatMWQMSiteSampleList[0]?.ColorAndLetter?.hexColor;
+              label.text = `${label.text} ${statMWQMSiteList[0]?.StatMWQMSiteSampleList[0]?.ColorAndLetter?.letter}`;
             }
           }
 

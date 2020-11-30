@@ -34,7 +34,7 @@ namespace CSSPWebModels
         public double? Temp { get; set; }
         public double? PH { get; set; }
         public double? DO { get; set; }
-        public double? Depth { get; set; }
+        public double? Depth { get; set; } 
         public int? SampCount { get; set; }
         public int? MinFC { get; set; }
         public int? MaxFC { get; set; }
@@ -47,6 +47,9 @@ namespace CSSPWebModels
         public DateTime? LastSampleDate { get; set; }
         public int? StatStartYear { get; set; }
         public int? StatEndYear { get; set; }
+        public int? SampleYear { get; set; }
+        public int? SampleMonth { get; set; }
+        public int? SampleDay { get; set; }
         #endregion Properties not in DB
 
         #region Constructors

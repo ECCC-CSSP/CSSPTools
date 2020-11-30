@@ -137,14 +137,17 @@ export class AppStateService {
       MapPolygonColorSubsector: '#ffff00',
 
       zoom: 12,
-      center: <google.maps.LatLngLiteral>{ lat: 46.0915449, lng: -64.7242012 },
-      options: <google.maps.MapOptions>{
+      center: /*<google.maps.LatLngLiteral> */{ lat: 46.0915449, lng: -64.7242012 },
+      options: /* <google.maps.MapOptions> */{
         zoomControl: true,
         scrollwheel: true,
         disableDoubleClickZoom: false,
-        mapTypeId: google.maps.MapTypeId.SATELLITE,
+        mapTypeId: 'satellite', //google.maps.MapTypeId.SATELLITE,
       },
       infoContent: '',
+
+      CSSIconLoaded: false,
+      GoogleJSLoaded: false,
 
       // sorting
       AreaSectorsSortOrder: AscDescEnum.Ascending,

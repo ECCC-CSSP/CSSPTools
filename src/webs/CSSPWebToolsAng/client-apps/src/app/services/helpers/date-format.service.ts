@@ -85,7 +85,7 @@ export class DateFormatService {
     }
   }
 
-  private GetMonthName(month: number, acronym: boolean = false): string {
+  GetMonthName(month: number, acronym: boolean = false): string {
     switch (month) {
       case 1:
         {

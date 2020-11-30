@@ -16,7 +16,6 @@ import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 import { WebRootService } from 'src/app/services/loaders/web-root.service';
 import { WebCountryService } from 'src/app/services/loaders/web-country.service';
 import { WebProvinceService } from 'src/app/services/loaders/web-province.service';
-import { WebMunicipalitiesService } from 'src/app/services/loaders/web-municipalities.service';
 import { WebAreaService } from 'src/app/services/loaders/web-area.service';
 import { WebSectorService } from 'src/app/services/loaders/web-sector.service';
 import { WebSubsectorService } from 'src/app/services/loaders/web-subsector.service';
@@ -24,6 +23,8 @@ import { WebMunicipalityService } from 'src/app/services/loaders/web-municipalty
 import { WebMWQMSiteService } from 'src/app/services/loaders/web-mwqm-sites.service';
 import { WebMWQMRunService } from 'src/app/services/loaders/web-mwqm-runs.service';
 import { WebPolSourceSiteService } from 'src/app/services/loaders/web-pol-source-sites.service';
+import { PreferenceService } from 'src/app/services/loaders/preferences.service';
+import { MapService } from 'src/app/services/map/map.service';
 
 @Component({
   selector: 'app-shell',
@@ -46,14 +47,14 @@ export class ShellComponent implements OnInit, OnDestroy {
     private webRootService: WebRootService,
     private webCountryService: WebCountryService,
     private webProvinceService: WebProvinceService,
-    private webMunicipalitiesService: WebMunicipalitiesService,
     private webAreaService: WebAreaService,
     private webSectorService: WebSectorService,
     private webSubsectorService: WebSubsectorService,
     private webMunicipalityService: WebMunicipalityService,
     private webMWQMSiteService: WebMWQMSiteService,
     private webMWQMRunService: WebMWQMRunService,
-    private webPolSourceSiteService: WebPolSourceSiteService) { }
+    private webPolSourceSiteService: WebPolSourceSiteService,
+    public preferenceService: PreferenceService) { }
 
 
   ngOnInit(): void {
