@@ -130,6 +130,8 @@ export interface AppState {
     options?: google.maps.MapOptions;
     infoContent?: string;
 
+    HasInternetConnection?: boolean;
+    GoogleMapKey?: string;
     CSSIconLoaded?: boolean;
     GoogleJSLoaded?: boolean;
 

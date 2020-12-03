@@ -16,7 +16,7 @@ namespace CSSPDesktopServices.Services
 
             List<string> DirectoryToCreateList = new List<string>()
             {
-               CSSPDesktopPath, CSSPDatabasesPath, CSSPWebAPIsLocalPath, CSSPJSONPath, CSSPFilesPath, CSSPCSSIconJSPath
+               CSSPDesktopPath, CSSPDatabasesPath, CSSPWebAPIsLocalPath, CSSPJSONPath, CSSPFilesPath, CSSPOtherFilesPath
             };
 
             foreach (string dirStr in DirectoryToCreateList)

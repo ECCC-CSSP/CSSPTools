@@ -32,7 +32,7 @@ namespace CSSPDesktopServices.Services
         bool LoginRequired { get; set; }
         bool UpdateIsNeeded { get; set; }
         //bool HasNewTVItemsOrTVItemLanguages { get; set; }
-        bool HasHelpFiles { get; set; }
+        bool HasCSSPOtherFiles { get; set; }
         string CSSPDBFilesManagement { get; set; }
         string CSSPDBPreference { get; set; }
         string CSSPDBLocal { get; set; }
@@ -41,6 +41,7 @@ namespace CSSPDesktopServices.Services
         string CSSPAzureUrl { get; set; }
         string CSSPLocalUrl { get; set; }       
         string CSSPWebAPIsLocalPath { get; set; }
+        string CSSPOtherFilesPath { get; set; }
         Contact contact { get; set; }
         //string AzureStore { get; set; }
         //string LoginEmail { get; set; }
@@ -50,8 +51,7 @@ namespace CSSPDesktopServices.Services
         //string Token { get; set; }
 
         // Functions
-        Task<bool> CheckIfCSSIconJSFilesExist();
-        Task<bool> CheckIfHelpFilesExist();
+        Task<bool> CheckIfCSSPOtherFilesExist();
         Task<bool> CheckIfLoginIsRequired();
         Task<bool> CheckIfNewTVItemsOrTVItemLanguagesExist();
         Task<bool> CheckIfUpdateIsNeeded();
@@ -80,13 +80,10 @@ namespace CSSPDesktopServices.Services
         #endregion Variables
 
         #region Properties public
-        //public AppTextModel appTextModel { get; set; }
         public bool IsEnglish { get; set; }
         public bool LoginRequired { get; set; } = false;
         public bool UpdateIsNeeded { get; set; } = false;
-        //public bool HasNewTVItemsOrTVItemLanguages { get; set; } = false;
-        public bool HasCSSIconJSFiles { get; set; } = false;
-        public bool HasHelpFiles { get; set; } = false;
+        public bool HasCSSPOtherFiles { get; set; } = false;
         public string CSSPDBFilesManagement { get; set; }
         public string CSSPDBPreference { get; set; }
         public string CSSPDBLocal { get; set; }
@@ -95,13 +92,8 @@ namespace CSSPDesktopServices.Services
         public string CSSPAzureUrl { get; set; }
         public string CSSPLocalUrl { get; set; }
         public string CSSPWebAPIsLocalPath { get; set; }
+        public  string CSSPOtherFilesPath { get; set; }
         public Contact contact { get; set; }
-        //public string AzureStore { get; set; }
-        //public string LoginEmail { get; set; }
-        //public string Password { get; set; }
-        //public bool HasInternetConnection { get; set; }
-        //public bool LoggedIn { get; set; }
-        //public string Token { get; set; }
         #endregion Properties public
 
         #region Properties private
@@ -121,7 +113,6 @@ namespace CSSPDesktopServices.Services
         private string CSSPDatabasesPath { get; set; }
         private string CSSPJSONPath { get; set; }
         private string CSSPFilesPath { get; set; }
-        private string CSSPCSSIconJSPath { get; set; }
         private string AzureStoreCSSPWebAPIsLocalPath { get; set; }
         private string AzureStoreCSSPJSONPath { get; set; }
         private string AzureStoreCSSPFilesPath { get; set; }
@@ -151,15 +142,9 @@ namespace CSSPDesktopServices.Services
         #endregion Constructors
 
         #region Functions public
-        public async Task<bool> CheckIfCSSIconJSFilesExist()
+        public async Task<bool> CheckIfCSSPOtherFilesExist()
         {
-            if (!await DoCheckIfCSSIconJSFilesExist()) return await Task.FromResult(false);
-
-            return await Task.FromResult(true);
-        }
-        public async Task<bool> CheckIfHelpFilesExist()
-        {
-            if (!await DoCheckIfHelpFilesExist()) return await Task.FromResult(false);
+            if (!await DoCheckIfCSSPOtherFilesExist()) return await Task.FromResult(false);
 
             return await Task.FromResult(true);
         }

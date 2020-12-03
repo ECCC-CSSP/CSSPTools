@@ -20,6 +20,7 @@ namespace DownloadFileServices
 {
     public interface IDownloadFileService
     {
+        Task<ActionResult> DownloadOtherFile(string FileName);
         Task<ActionResult> DownloadFile(int ParentTVItemID, string FileName);
         Task<ActionResult<bool>> DownloadGzFile(WebTypeEnum webType, int TVItemID, WebTypeYearEnum webTypeYearEnum);
         Task<ActionResult<bool>> LocalizeAzureFile(int ParentTVItemID, string FileName);
@@ -39,6 +40,7 @@ namespace DownloadFileServices
         private string AzureStoreConnectionString { get; set; }
         private string AzureStoreCSSPFilesPath { get; set; }
         private string CSSPFilesPath { get; set; }
+        private string CSSPOtherFilesPath { get; set; }
         private string AzureStoreCSSPJSONPath { get; set; }
         private string CSSPJSONPath { get; set; }
         #endregion Properties
@@ -56,12 +58,17 @@ namespace DownloadFileServices
             AzureStoreConnectionString = Configuration.GetValue<string>("AzureStoreConnectionString");
             AzureStoreCSSPFilesPath = Configuration.GetValue<string>("AzureStoreCSSPFilesPath");
             CSSPFilesPath = Configuration.GetValue<string>("CSSPFilesPath");
+            CSSPOtherFilesPath = Configuration.GetValue<string>("CSSPOtherFilesPath");
             AzureStoreCSSPJSONPath = Configuration.GetValue<string>("AzureStoreCSSPJSONPath");
             CSSPJSONPath = Configuration.GetValue<string>("CSSPJSONPath");
         }
         #endregion Constructors
 
         #region Functions public
+        public async Task<ActionResult> DownloadOtherFile(string FileName)
+        {
+            return await DoDownloadOtherFile(FileName);
+        }
         public async Task<ActionResult> DownloadFile(int ParentTVItemID, string FileName)
         {
             return await DoDownloadFile(ParentTVItemID, FileName);

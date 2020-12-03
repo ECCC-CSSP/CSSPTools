@@ -146,6 +146,8 @@ export class AppStateService {
       },
       infoContent: '',
 
+      HasInternetConnection: false,
+      GoogleMapKey: '',
       CSSIconLoaded: false,
       GoogleJSLoaded: false,
 

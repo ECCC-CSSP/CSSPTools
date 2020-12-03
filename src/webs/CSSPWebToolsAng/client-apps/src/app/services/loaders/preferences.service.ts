@@ -20,6 +20,8 @@ export class PreferenceService {
     private CSSIconJSLoaded;
     private GoogleJSLoaded;
 
+    languageEnum = GetLanguageEnum();
+
     constructor(private httpClient: HttpClient,
         private appStateService: AppStateService,
         private appLoadedService: AppLoadedService) {
@@ -61,7 +63,6 @@ export class PreferenceService {
         }
     }
 
-
     private LoadCSSIconJS() {
         if (!this.CSSIconJSLoaded) { // load once
             new Promise((resolve) => {
@@ -71,7 +72,12 @@ export class PreferenceService {
                 // }
                 console.log('loading..')
                 const node = document.createElement('link');
-                node.href = 'https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap';
+                if (this.appStateService.AppState$?.getValue()?.HasInternetConnection) {
+                    node.href = 'https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap';
+                }
+                else {
+                    node.href = `${this.appLoadedService.BaseApiUrl}${this.languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/CSSIconJS/GoogleMapCSS`;
+                }
                 node.rel = 'stylesheet',
                     //node.type = 'text/javascript';
                     document.getElementsByTagName('head')[0].appendChild(node);
@@ -84,13 +90,18 @@ export class PreferenceService {
                 // }
                 console.log('loading..')
                 const node = document.createElement('link');
-                node.href = 'https://fonts.googleapis.com/icon?family=Material+Icons';
+                if (this.appStateService.AppState$?.getValue()?.HasInternetConnection) {
+                    node.href = 'https://fonts.googleapis.com/icon?family=Material+Icons';
+                }
+                else {
+                    node.href = `${this.appLoadedService.BaseApiUrl}${this.languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/CSSIconJS/GoogleMaterialIcon`;
+                }
                 node.rel = 'stylesheet',
                     //node.type = 'text/javascript';
                     document.getElementsByTagName('head')[0].appendChild(node);
             });
 
-            this.appStateService.UpdateAppState(<AppState> { CSSIconLoaded: true })
+            this.appStateService.UpdateAppState(<AppState>{ CSSIconLoaded: true })
         }
 
         return this.CSSIconJSLoaded;
@@ -109,7 +120,12 @@ export class PreferenceService {
                     }
                     console.log('loading..')
                     const node = document.createElement('script');
-                    node.src = `https://maps.googleapis.com/maps/api/js?key=${GoogleMapKeyList[0].VariableValue}&callback=__onGapiLoaded`;
+                    if (this.appStateService.AppState$?.getValue()?.HasInternetConnection) {
+                        node.src = `https://maps.googleapis.com/maps/api/js?key=${GoogleMapKeyList[0].VariableValue}&callback=__onGapiLoaded`;
+                    }
+                    else {
+                        node.src = `${this.appLoadedService.BaseApiUrl}${this.languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/CSSIconJS/GoogleMapJS`;
+                    }
                     node.type = 'text/javascript';
                     document.getElementsByTagName('head')[0].appendChild(node);
                     this.appStateService.UpdateAppState(<AppState>{ GoogleJSLoaded: true })
@@ -142,15 +158,15 @@ export class PreferenceService {
 
     UpdatePreference(x: Preference[]) {
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ PreferenceList: x, });
-        this.appStateService.UpdateAppState(<AppState>{ Working: false });
+        this.appStateService.UpdateAppState(<AppState>{ Working: false, HasInternetConnection: this.GetHasInternetConnection(), GoogleMapKey: this.GetGoogleMapKey() });
     }
 
-    GetHasInternetConnection(): boolean {
+    private GetHasInternetConnection(): boolean {
         let PreferenceList: Preference[] = this.appLoadedService.AppLoaded$?.getValue()?.PreferenceList?.filter(c => c.VariableName == 'HasInternetConnection');
         return (PreferenceList !== undefined && PreferenceList.length > 0) ? ('true' == PreferenceList[0].VariableValue.toLowerCase()) : null;
     }
 
-    GetGoogleMapKey(): string {
+    private GetGoogleMapKey(): string {
         let PreferenceList: Preference[] = this.appLoadedService.AppLoaded$?.getValue()?.PreferenceList?.filter(c => c.VariableName == 'GoogleMapKey');
         return (PreferenceList !== undefined && PreferenceList.length > 0) ? PreferenceList[0].VariableValue : null;
     }

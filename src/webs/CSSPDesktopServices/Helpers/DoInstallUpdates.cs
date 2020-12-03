@@ -42,7 +42,7 @@ namespace CSSPDesktopServices.Services
             // Doing csspwebapislocal container 
             List<string> zipFileNameList = new List<string>()
             {
-                "helpdocs.zip", "csspwebapislocal.zip", "csspclient.zip", "cssiconjsdocs.zip",
+                "csspwebapislocal.zip", "csspclient.zip", "csspotherfiles.zip",
             };
 
             int zipCount = 0;
@@ -299,6 +299,10 @@ namespace CSSPDesktopServices.Services
                 if (zipFileName.Contains("csspclient"))
                 {
                     ZipFile.ExtractToDirectory(fiLocal.FullName, CSSPWebAPIsLocalPath + "\\csspclient", true);
+                }
+                else if (zipFileName.Contains("csspotherfiles"))
+                {
+                    ZipFile.ExtractToDirectory(fiLocal.FullName, CSSPOtherFilesPath, true);
                 }
                 else
                 {

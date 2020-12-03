@@ -86,10 +86,10 @@ namespace CSSPDesktopServices.Services
                 return await Task.FromResult(false);
             }
 
-            CSSPCSSIconJSPath = Configuration.GetValue<string>("CSSPCSSIconJSPath");
-            if (string.IsNullOrWhiteSpace(CSSPCSSIconJSPath))
+            CSSPOtherFilesPath = Configuration.GetValue<string>("CSSPOtherFilesPath");
+            if (string.IsNullOrWhiteSpace(CSSPOtherFilesPath))
             {
-                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes._CouldNotBeFoundInConfigurationFile_, "CSSPCSSIconJSPath", "appsettings_csspdesktop.json")));
+                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes._CouldNotBeFoundInConfigurationFile_, "CSSPOtherFilesPath", "appsettings_csspdesktop.json")));
                 return await Task.FromResult(false);
             }
 

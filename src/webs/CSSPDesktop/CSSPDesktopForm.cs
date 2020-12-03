@@ -656,9 +656,7 @@ namespace CSSPDesktop
 
             if (!await CheckInternetConnection()) return await Task.FromResult(false);
 
-            if (!await CSSPDesktopService.CheckIfHelpFilesExist()) return await Task.FromResult(false);
-
-            if (!await CSSPDesktopService.CheckIfCSSIconJSFilesExist()) return await Task.FromResult(false);
+            if (!await CSSPDesktopService.CheckIfCSSPOtherFilesExist()) return await Task.FromResult(false);
 
             lblStatus.Text = "";
 
@@ -761,7 +759,7 @@ namespace CSSPDesktop
             panelHelp.Visible = false;
             panelCommandsCenter.Visible = false;
 
-            if (CSSPDesktopService.HasHelpFiles)
+            if (CSSPDesktopService.HasCSSPOtherFiles)
             {
                 butShowHelpPanel.Visible = true;
             }
@@ -828,7 +826,7 @@ namespace CSSPDesktop
                         panelTop.Visible = false;
                         panelLoginEmail.Visible = false;
                         string fileToOpen = IsEnglish ? "HelpDocEN.rtf" : "HelpDocFR.rtf";
-                        richTextBoxHelp.LoadFile($"{ CSSPDesktopService.CSSPWebAPIsLocalPath }{ fileToOpen }");
+                        richTextBoxHelp.LoadFile($"{ CSSPDesktopService.CSSPOtherFilesPath }{ fileToOpen }");
                         panelHelp.Visible = true;
 
                         butHideHelpPanel.Focus();

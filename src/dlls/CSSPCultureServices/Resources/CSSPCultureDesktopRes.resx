@@ -165,11 +165,8 @@
   <data name="butUpdateText" xml:space="preserve">
     <value>Update</value>
   </data>
-  <data name="CheckIfCSSIconJSFileExist" xml:space="preserve">
-    <value>Checking if CSS, Icon and JS files exist</value>
-  </data>
-  <data name="CheckIfHelpFileExist" xml:space="preserve">
-    <value>Checking if help files exist</value>
+  <data name="CheckIfCSSPOtherFilesExist" xml:space="preserve">
+    <value>Checking if CSSP other files exist</value>
   </data>
   <data name="CheckIfLoginIsRequired" xml:space="preserve">
     <value>Checking if login is required</value>
@@ -237,11 +234,11 @@
   <data name="CreatingAllRequiredDirectories" xml:space="preserve">
     <value>Creating all required directories</value>
   </data>
-  <data name="CSSIconJSFileFound_" xml:space="preserve">
-    <value>CSS, Icon or JS file found {0}</value>
+  <data name="CSSPOtherFileFound_" xml:space="preserve">
+    <value>CSSP other file found {0}</value>
   </data>
-  <data name="CSSIconJSFileNotFound_" xml:space="preserve">
-    <value>CSS, Icon or JS file not found {0}</value>
+  <data name="CSSPOtherFileNotFound_" xml:space="preserve">
+    <value>CSSP other file not found {0}</value>
   </data>
   <data name="CSSPDBSearchDatabaseSuccessfullyFilled" xml:space="preserve">
     <value>CSSPDBSearch database successfully filled</value>
@@ -311,12 +308,6 @@
   </data>
   <data name="Found_InDBLogin_" xml:space="preserve">
     <value>Found {0} in DBLogin {1}</value>
-  </data>
-  <data name="HelpFileFound_" xml:space="preserve">
-    <value>Help file found {0}</value>
-  </data>
-  <data name="HelpFileNotFound_" xml:space="preserve">
-    <value>Help file not found {0}</value>
   </data>
   <data name="InstallUpdates" xml:space="preserve">
     <value>Installation of updates</value>

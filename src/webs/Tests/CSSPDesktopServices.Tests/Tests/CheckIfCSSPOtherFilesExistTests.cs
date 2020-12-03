@@ -29,11 +29,11 @@ namespace CSSPDesktopServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task CSSPDesktopService_CheckIfHelpFilesExist_Good_Test(string culture)
+        public async Task CSSPDesktopService_CheckIfCSSPOtherFilesExist_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
             
-            Assert.True(await CSSPDesktopService.CheckIfHelpFilesExist());
+            Assert.True(await CSSPDesktopService.CheckIfCSSPOtherFilesExist());
         }
         #endregion Tests
 

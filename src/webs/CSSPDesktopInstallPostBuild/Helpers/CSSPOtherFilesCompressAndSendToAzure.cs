@@ -10,9 +10,9 @@ namespace CSSPDesktopInstallPostBuild
 {
     public partial class Startup
     {
-        private async Task<bool> CSSIconJSDocsCompressAndSendToAzure()
+        private async Task<bool> CSSPOtherFilesCompressAndSendToAzure()
         {
-            DirectoryInfo di = new DirectoryInfo(@"C:\CSSPTools\src\webs\CSSPDesktop\cssiconjsdocs\");
+            DirectoryInfo di = new DirectoryInfo(@"C:\CSSPTools\src\webs\CSSPDesktop\csspotherfiles\");
 
             if (!di.Exists)
             {
@@ -20,7 +20,7 @@ namespace CSSPDesktopInstallPostBuild
                 return await Task.FromResult(false);
             }
 
-            FileInfo fi = new FileInfo($@"C:\CSSPTools\src\webs\CSSPDesktop\cssiconjsdocs.zip");
+            FileInfo fi = new FileInfo($@"C:\CSSPTools\src\webs\CSSPDesktop\csspotherfiles.zip");
             if (fi.Exists)
             {
                 try
@@ -36,7 +36,7 @@ namespace CSSPDesktopInstallPostBuild
 
             ZipFile.CreateFromDirectory(di.FullName, fi.FullName);
 
-            fi = new FileInfo($@"C:\CSSPTools\src\webs\CSSPDesktop\cssiconjsdocs.zip");
+            fi = new FileInfo($@"C:\CSSPTools\src\webs\CSSPDesktop\csspotherfiles.zip");
 
             if (!fi.Exists)
             {

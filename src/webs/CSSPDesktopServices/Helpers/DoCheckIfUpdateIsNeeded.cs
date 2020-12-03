@@ -57,7 +57,7 @@ namespace CSSPDesktopServices.Services
             // doing required file from csspwebapislocal container
             List<string> zipFileNameList = new List<string>()
             {
-                "csspwebapislocal.zip", "csspclient.zip", "helpdocs.zip"
+                "csspwebapislocal.zip", "csspclient.zip", "csspotherfiles.zip"
             };
 
             foreach (string zipFileName in zipFileNameList)

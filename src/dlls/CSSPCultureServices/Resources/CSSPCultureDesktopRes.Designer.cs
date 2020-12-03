@@ -241,20 +241,11 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Checking if CSS, Icon and JS files exist.
+        ///   Looks up a localized string similar to Checking if CSSP other files exist.
         /// </summary>
-        public static string CheckIfCSSIconJSFileExist {
+        public static string CheckIfCSSPOtherFilesExist {
             get {
-                return ResourceManager.GetString("CheckIfCSSIconJSFileExist", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Checking if help files exist.
-        /// </summary>
-        public static string CheckIfHelpFileExist {
-            get {
-                return ResourceManager.GetString("CheckIfHelpFileExist", resourceCulture);
+                return ResourceManager.GetString("CheckIfCSSPOtherFilesExist", resourceCulture);
             }
         }
         
@@ -457,24 +448,6 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CSS, Icon or JS file found {0}.
-        /// </summary>
-        public static string CSSIconJSFileFound_ {
-            get {
-                return ResourceManager.GetString("CSSIconJSFileFound_", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to CSS, Icon or JS file not found {0}.
-        /// </summary>
-        public static string CSSIconJSFileNotFound_ {
-            get {
-                return ResourceManager.GetString("CSSIconJSFileNotFound_", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to CSSPDBSearch database successfully filled.
         /// </summary>
         public static string CSSPDBSearchDatabaseSuccessfullyFilled {
@@ -534,6 +507,24 @@ namespace CSSPCultureServices.Resources {
         public static string CSSPFilesManagementUpdateAzureStorage_AzureFileName_ {
             get {
                 return ResourceManager.GetString("CSSPFilesManagementUpdateAzureStorage_AzureFileName_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CSSP other file found {0}.
+        /// </summary>
+        public static string CSSPOtherFileFound_ {
+            get {
+                return ResourceManager.GetString("CSSPOtherFileFound_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CSSP other file not found {0}.
+        /// </summary>
+        public static string CSSPOtherFileNotFound_ {
+            get {
+                return ResourceManager.GetString("CSSPOtherFileNotFound_", resourceCulture);
             }
         }
         
@@ -678,24 +669,6 @@ namespace CSSPCultureServices.Resources {
         public static string Found_InDBLogin_ {
             get {
                 return ResourceManager.GetString("Found_InDBLogin_", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Help file found {0}.
-        /// </summary>
-        public static string HelpFileFound_ {
-            get {
-                return ResourceManager.GetString("HelpFileFound_", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Help file not found {0}.
-        /// </summary>
-        public static string HelpFileNotFound_ {
-            get {
-                return ResourceManager.GetString("HelpFileNotFound_", resourceCulture);
             }
         }
         

@@ -46,7 +46,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="helpdocs\images\" />
+    <Folder Include="csspotherfiles\images\" />
   </ItemGroup>
 
   <ItemGroup>
