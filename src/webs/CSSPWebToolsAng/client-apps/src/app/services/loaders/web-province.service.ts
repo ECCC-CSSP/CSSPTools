@@ -17,6 +17,7 @@ import { ComponentDataLoadedService } from '../helpers/component-data-loaded.ser
 import { WebMunicipalitiesService } from './web-municipalities.service';
 import { AppState } from 'src/app/models/AppState.model';
 import { AppLanguageService } from '../app-language.service';
+import { HistoryService } from '../helpers/history.service';
 
 @Injectable({
   providedIn: 'root'
@@ -34,7 +35,8 @@ export class WebProvinceService {
     private sortTVItemListService: SortTVItemListService,
     private structureTVFileListService: StructureTVFileListService,
     private mapService: MapService,
-    private componentDataLoadedService: ComponentDataLoadedService) {
+    private componentDataLoadedService: ComponentDataLoadedService,
+    private historyService: HistoryService) {
   }
 
   DoWebProvince(TVItemID: number, DoOther: boolean) {
@@ -121,7 +123,7 @@ export class WebProvinceService {
       BreadCrumbWebBaseList: x?.TVItemParentList
     });
 
-    this.appStateService.AppState$.getValue().History.push(this.appLoadedService.AppLoaded$.getValue()?.WebProvince?.TVItemModel);
+    this.historyService.AddHistory(this.appLoadedService.AppLoaded$.getValue()?.WebProvince?.TVItemModel);
 
     if (this.DoOther) {
       if (this.componentDataLoadedService.DataLoadedProvince()) {
@@ -136,45 +138,46 @@ export class WebProvinceService {
       <WebBase>{ TVItemModel: this.appLoadedService.AppLoaded$.getValue().WebProvince.TVItemModel },
     ];
 
-    if (this.appStateService.AppState$.getValue().ProvinceSubComponent == ProvinceSubComponentEnum.Areas) {
-      this.mapService.ClearMap();
-      this.mapService.DrawObjects([
-        ...this.appLoadedService.AppLoaded$.getValue().ProvinceAreaList,
-        ...webBaseProvince
-      ]);
-    }
+    if (this.appStateService.AppState$.getValue().GoogleJSLoaded) {
+      if (this.appStateService.AppState$.getValue().ProvinceSubComponent == ProvinceSubComponentEnum.Areas) {
+        this.mapService.ClearMap();
+        this.mapService.DrawObjects([
+          ...this.appLoadedService.AppLoaded$.getValue().ProvinceAreaList,
+          ...webBaseProvince
+        ]);
+      }
 
-    if (this.appStateService.AppState$.getValue().ProvinceSubComponent == ProvinceSubComponentEnum.Files) {
-      this.mapService.ClearMap();
-      this.mapService.DrawObjects([
-        ...this.appLoadedService.AppLoaded$.getValue().ProvinceAreaList,
-        ...webBaseProvince
-      ]);
-    }
+      if (this.appStateService.AppState$.getValue().ProvinceSubComponent == ProvinceSubComponentEnum.Files) {
+        this.mapService.ClearMap();
+        this.mapService.DrawObjects([
+          ...this.appLoadedService.AppLoaded$.getValue().ProvinceAreaList,
+          ...webBaseProvince
+        ]);
+      }
 
-    if (this.appStateService.AppState$.getValue().ProvinceSubComponent == ProvinceSubComponentEnum.OpenData) {
-      this.mapService.ClearMap();
-      this.mapService.DrawObjects([
-        ...this.appLoadedService.AppLoaded$.getValue().ProvinceAreaList,
-        ...webBaseProvince
-      ]);
-    }
+      if (this.appStateService.AppState$.getValue().ProvinceSubComponent == ProvinceSubComponentEnum.OpenData) {
+        this.mapService.ClearMap();
+        this.mapService.DrawObjects([
+          ...this.appLoadedService.AppLoaded$.getValue().ProvinceAreaList,
+          ...webBaseProvince
+        ]);
+      }
 
-    if (this.appStateService.AppState$.getValue().ProvinceSubComponent == ProvinceSubComponentEnum.SamplingPlan) {
-      this.mapService.ClearMap();
-      this.mapService.DrawObjects([
-        ...this.appLoadedService.AppLoaded$.getValue().ProvinceAreaList,
-        ...webBaseProvince
-      ]);
-    }
+      if (this.appStateService.AppState$.getValue().ProvinceSubComponent == ProvinceSubComponentEnum.SamplingPlan) {
+        this.mapService.ClearMap();
+        this.mapService.DrawObjects([
+          ...this.appLoadedService.AppLoaded$.getValue().ProvinceAreaList,
+          ...webBaseProvince
+        ]);
+      }
 
-    if (this.appStateService.AppState$.getValue().ProvinceSubComponent == ProvinceSubComponentEnum.ProvinceTools) {
-      this.mapService.ClearMap();
-      this.mapService.DrawObjects([
-        ...this.appLoadedService.AppLoaded$.getValue().ProvinceAreaList,
-        ...webBaseProvince
-      ]);
+      if (this.appStateService.AppState$.getValue().ProvinceSubComponent == ProvinceSubComponentEnum.ProvinceTools) {
+        this.mapService.ClearMap();
+        this.mapService.DrawObjects([
+          ...this.appLoadedService.AppLoaded$.getValue().ProvinceAreaList,
+          ...webBaseProvince
+        ]);
+      }
     }
-
   }
 }

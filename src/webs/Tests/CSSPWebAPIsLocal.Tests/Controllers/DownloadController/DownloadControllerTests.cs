@@ -22,7 +22,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System.Linq;
 
-namespace CSSPWebAPIsLocal.ReadController.Tests
+namespace CSSPWebAPIsLocal.DownloadController.Tests
 {
     public partial class CSSPWebAPIsLocalDownloadControllerTests
     {

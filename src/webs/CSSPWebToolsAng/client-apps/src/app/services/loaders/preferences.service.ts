@@ -17,7 +17,8 @@ declare var window: any;
 })
 export class PreferenceService {
     sub: Subscription;
-    private CSSIconJSLoaded;
+    private CSSLoaded;
+    private IconLoaded;
     private GoogleJSLoaded;
 
     languageEnum = GetLanguageEnum();
@@ -32,79 +33,20 @@ export class PreferenceService {
         this.sub ? this.sub.unsubscribe() : null;
 
         if (this.appLoadedService.AppLoaded$.getValue()?.PreferenceList?.length > 0) {
-            this.DoCSSIconJS();
+            // just keep the PreferenceList we already have in memory
         }
         else {
             this.sub = this.LoadPreference().subscribe();
         }
     }
 
-    DoCSSIconJS() {
-
-        this.sub ? this.sub.unsubscribe() : null;
-
-        if (this.appStateService.AppState$.getValue()?.CSSIconLoaded) {
-            // just keep the PreferenceList we already have in memory
-        }
-        else {
-            this.sub = this.LoadCSSIconJS().subscribe();
-        }
-    }
-
     DoGoogleJS() {
-
-        this.sub ? this.sub.unsubscribe() : null;
-
         if (this.appStateService.AppState$.getValue()?.GoogleJSLoaded) {
-            // just keep the PreferenceList we already have in memory
+            // just keep the Google JS we already have in memory
         }
         else {
-            this.sub = this.LoadGoogleJS().subscribe();
+            this.LoadGoogleJS();
         }
-    }
-
-    private LoadCSSIconJS() {
-        if (!this.CSSIconJSLoaded) { // load once
-            new Promise((resolve) => {
-                // window['__onGapiLoaded'] = (ev) => {
-                //   console.log('gapi loaded css')
-                //   resolve(window.gapi);
-                // }
-                console.log('loading..')
-                const node = document.createElement('link');
-                if (this.appStateService.AppState$?.getValue()?.HasInternetConnection) {
-                    node.href = 'https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap';
-                }
-                else {
-                    node.href = `${this.appLoadedService.BaseApiUrl}${this.languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/CSSIconJS/GoogleMapCSS`;
-                }
-                node.rel = 'stylesheet',
-                    //node.type = 'text/javascript';
-                    document.getElementsByTagName('head')[0].appendChild(node);
-            });
-
-            new Promise((resolve) => {
-                // window['__onGapiLoaded'] = (ev) => {
-                //   console.log('gapi loaded icon')
-                //   resolve(window.gapi);
-                // }
-                console.log('loading..')
-                const node = document.createElement('link');
-                if (this.appStateService.AppState$?.getValue()?.HasInternetConnection) {
-                    node.href = 'https://fonts.googleapis.com/icon?family=Material+Icons';
-                }
-                else {
-                    node.href = `${this.appLoadedService.BaseApiUrl}${this.languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/CSSIconJS/GoogleMaterialIcon`;
-                }
-                node.rel = 'stylesheet',
-                    //node.type = 'text/javascript';
-                    document.getElementsByTagName('head')[0].appendChild(node);
-            });
-
-            this.appStateService.UpdateAppState(<AppState>{ CSSIconLoaded: true })
-        }
-
-        return this.CSSIconJSLoaded;
     }
 
     private LoadGoogleJS() {
@@ -115,7 +57,7 @@ export class PreferenceService {
             if (GoogleMapKeyList != undefined) {
                 this.GoogleJSLoaded = new Promise((resolve) => {
                     window['__onGapiLoaded'] = (ev) => {
-                        console.log('gapi loaded')
+                        console.log('gapi loaded');
                         resolve(window.gapi);
                     }
                     console.log('loading..')
@@ -124,11 +66,11 @@ export class PreferenceService {
                         node.src = `https://maps.googleapis.com/maps/api/js?key=${GoogleMapKeyList[0].VariableValue}&callback=__onGapiLoaded`;
                     }
                     else {
-                        node.src = `${this.appLoadedService.BaseApiUrl}${this.languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/CSSIconJS/GoogleMapJS`;
+                        node.src = `${this.appLoadedService.BaseApiUrl}${this.languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/DownloadOther/GoogleMap.js`;
                     }
                     node.type = 'text/javascript';
                     document.getElementsByTagName('head')[0].appendChild(node);
-                    this.appStateService.UpdateAppState(<AppState>{ GoogleJSLoaded: true })
+                    this.appStateService.UpdateAppState(<AppState>{ GoogleJSLoaded: true });
                 });
             }
         }
@@ -146,8 +88,9 @@ export class PreferenceService {
             map((x: any) => {
                 this.UpdatePreference(x);
                 console.debug(x);
-                this.DoCSSIconJS();
-                this.DoGoogleJS();
+                if (this.appStateService.AppState$?.getValue()?.HasInternetConnection) {
+                    this.DoGoogleJS();
+                }
             }),
             catchError(e => of(e).pipe(map(e => {
                 this.appStateService.UpdateAppState(<AppState>{ Working: false, Error: <HttpErrorResponse>e });

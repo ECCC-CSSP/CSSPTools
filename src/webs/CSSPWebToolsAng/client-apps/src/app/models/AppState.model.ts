@@ -132,7 +132,8 @@ export interface AppState {
 
     HasInternetConnection?: boolean;
     GoogleMapKey?: string;
-    CSSIconLoaded?: boolean;
+    CSSLoaded?: boolean;
+    IconLoaded?: boolean;
     GoogleJSLoaded?: boolean;
 
     // sorting

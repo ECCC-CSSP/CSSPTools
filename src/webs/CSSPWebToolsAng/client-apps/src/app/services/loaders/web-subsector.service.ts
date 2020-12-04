@@ -17,6 +17,7 @@ import { WebTypeYearEnum } from 'src/app/enums/generated/WebTypeYearEnum';
 import { AppState } from 'src/app/models/AppState.model';
 import { AppLanguageService } from '../app-language.service';
 import { WebMWQMSiteService } from './web-mwqm-sites.service';
+import { HistoryService } from '../helpers/history.service';
 
 @Injectable({
     providedIn: 'root'
@@ -34,7 +35,8 @@ export class WebSubsectorService {
         private structureTVFileListService: StructureTVFileListService,
         private mapService: MapService,
         private componentDataLoadedService: ComponentDataLoadedService,
-        private webMWQMSiteService: WebMWQMSiteService) {
+        private webMWQMSiteService: WebMWQMSiteService,
+        private historyService: HistoryService) {
     }
 
     DoWebSubsector(TVItemID: number, DoOther: boolean) {
@@ -142,7 +144,7 @@ export class WebSubsectorService {
             BreadCrumbWebBaseList: x?.TVItemParentList
         });
 
-        this.appStateService.AppState$.getValue().History.push(this.appLoadedService.AppLoaded$.getValue()?.WebSubsector?.TVItemModel);
+        this.historyService.AddHistory(this.appLoadedService.AppLoaded$.getValue()?.WebSubsector?.TVItemModel);
 
         if (this.DoOther) {
             if (this.componentDataLoadedService.DataLoadedSubsector()) {
@@ -157,57 +159,59 @@ export class WebSubsectorService {
             <WebBase>{ TVItemModel: this.appLoadedService.AppLoaded$.getValue().WebSubsector.TVItemModel },
         ];
 
-        if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.MWQMSites) {
-            this.mapService.ClearMap();
-            this.mapService.DrawObjects([
-                ...this.appLoadedService.AppLoaded$.getValue().SubsectorMWQMSiteList,
-                ...webBaseSubsector,
-            ]);
-        }
+        if (this.appStateService.AppState$.getValue().GoogleJSLoaded) {
+            if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.MWQMSites) {
+                this.mapService.ClearMap();
+                this.mapService.DrawObjects([
+                    ...this.appLoadedService.AppLoaded$.getValue().SubsectorMWQMSiteList,
+                    ...webBaseSubsector,
+                ]);
+            }
 
-        if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.Analysis) {
-            this.mapService.ClearMap();
-            this.mapService.DrawObjects([
-                ...this.appLoadedService.AppLoaded$.getValue().SubsectorMWQMSiteList,
-                ...webBaseSubsector
-            ]);
-        }
+            if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.Analysis) {
+                this.mapService.ClearMap();
+                this.mapService.DrawObjects([
+                    ...this.appLoadedService.AppLoaded$.getValue().SubsectorMWQMSiteList,
+                    ...webBaseSubsector
+                ]);
+            }
 
-        if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.MWQMRuns) {
-            this.mapService.ClearMap();
-            this.mapService.DrawObjects([
-                ...this.appLoadedService.AppLoaded$.getValue().SubsectorMWQMRunList,
-                ...webBaseSubsector
-            ]);
-        }
+            if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.MWQMRuns) {
+                this.mapService.ClearMap();
+                this.mapService.DrawObjects([
+                    ...this.appLoadedService.AppLoaded$.getValue().SubsectorMWQMRunList,
+                    ...webBaseSubsector
+                ]);
+            }
 
-        if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.PollutionSourceSites) {
-            this.mapService.ClearMap();
-            this.mapService.DrawObjects([
-                ...this.appLoadedService.AppLoaded$.getValue().SubsectorPolSourceSiteList,
-                ...webBaseSubsector
-            ]);
-        }
+            if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.PollutionSourceSites) {
+                this.mapService.ClearMap();
+                this.mapService.DrawObjects([
+                    ...this.appLoadedService.AppLoaded$.getValue().SubsectorPolSourceSiteList,
+                    ...webBaseSubsector
+                ]);
+            }
 
-        if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.Files) {
-            this.mapService.ClearMap();
-            this.mapService.DrawObjects([
-                ...webBaseSubsector
-            ]);
-        }
+            if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.Files) {
+                this.mapService.ClearMap();
+                this.mapService.DrawObjects([
+                    ...webBaseSubsector
+                ]);
+            }
 
-        if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.SubsectorTools) {
-            this.mapService.ClearMap();
-            this.mapService.DrawObjects([
-                ...webBaseSubsector
-            ]);
-        }
+            if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.SubsectorTools) {
+                this.mapService.ClearMap();
+                this.mapService.DrawObjects([
+                    ...webBaseSubsector
+                ]);
+            }
 
-        if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.LogBook) {
-            this.mapService.ClearMap();
-            this.mapService.DrawObjects([
-                ...webBaseSubsector
-            ]);
+            if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.LogBook) {
+                this.mapService.ClearMap();
+                this.mapService.DrawObjects([
+                    ...webBaseSubsector
+                ]);
+            }
         }
     }
 }

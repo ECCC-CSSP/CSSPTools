@@ -105,13 +105,14 @@ export class WebMunicipalitiesService {
       <WebBase>{ TVItemModel: this.appLoadedService.AppLoaded$.getValue().WebProvince.TVItemModel },
     ];
 
-    if (this.appStateService.AppState$.getValue().ProvinceSubComponent == ProvinceSubComponentEnum.Municipalities) {
-      this.mapService.ClearMap();
-      this.mapService.DrawObjects([
-        ...this.appLoadedService.AppLoaded$.getValue().ProvinceMunicipalityList,
-        ...webBaseProvince
-      ]);
+    if (this.appStateService.AppState$.getValue().GoogleJSLoaded) {
+      if (this.appStateService.AppState$.getValue().ProvinceSubComponent == ProvinceSubComponentEnum.Municipalities) {
+        this.mapService.ClearMap();
+        this.mapService.DrawObjects([
+          ...this.appLoadedService.AppLoaded$.getValue().ProvinceMunicipalityList,
+          ...webBaseProvince
+        ]);
+      }
     }
-
   }
 }

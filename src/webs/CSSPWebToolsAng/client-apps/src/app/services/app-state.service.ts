@@ -148,7 +148,8 @@ export class AppStateService {
 
       HasInternetConnection: false,
       GoogleMapKey: '',
-      CSSIconLoaded: false,
+      CSSLoaded: false,
+      IconLoaded: false,
       GoogleJSLoaded: false,
 
       // sorting

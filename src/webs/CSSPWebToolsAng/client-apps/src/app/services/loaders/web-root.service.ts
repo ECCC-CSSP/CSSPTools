@@ -16,6 +16,7 @@ import { ComponentDataLoadedService } from '../helpers/component-data-loaded.ser
 import { AppState } from 'src/app/models/AppState.model';
 import { AppLanguageService } from '../app-language.service';
 import { WebContactService } from './web-contact.service';
+import { HistoryService } from '../helpers/history.service';
 
 @Injectable({
     providedIn: 'root'
@@ -32,7 +33,8 @@ export class WebRootService {
         private structureTVFileListService: StructureTVFileListService,
         private mapService: MapService,
         private webContactService: WebContactService,
-        private componentDataLoadedService: ComponentDataLoadedService) {
+        private componentDataLoadedService: ComponentDataLoadedService,
+        private historyService: HistoryService) {
     }
 
     DoWebRoot(DoOther: boolean) {
@@ -107,7 +109,7 @@ export class WebRootService {
             BreadCrumbWebBaseList: x?.TVItemParentList
         });
 
-        this.appStateService.AppState$.getValue().History.push(this.appLoadedService.AppLoaded$.getValue()?.WebRoot?.TVItemModel);
+        this.historyService.AddHistory(this.appLoadedService.AppLoaded$.getValue()?.WebRoot?.TVItemModel);
 
         if (this.DoOther) {
             if (this.componentDataLoadedService.DataLoadedRoot()) {

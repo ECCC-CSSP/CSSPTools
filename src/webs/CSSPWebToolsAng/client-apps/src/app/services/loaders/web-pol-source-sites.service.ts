@@ -11,6 +11,7 @@ import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { AppLanguageService } from '../app-language.service';
 import { ComponentDataLoadedService } from '../helpers/component-data-loaded.service';
+import { HistoryService } from '../helpers/history.service';
 import { WebDrogueRunService } from './web-drogue-run.service';
 
 @Injectable({
@@ -26,7 +27,8 @@ export class WebPolSourceSiteService {
         private appLoadedService: AppLoadedService,
         private appLanguageService: AppLanguageService,
         private webDrogueRunService: WebDrogueRunService,
-        private componentDataLoadedService: ComponentDataLoadedService) {
+        private componentDataLoadedService: ComponentDataLoadedService,
+        private historyService: HistoryService) {
     }
 
     DoWebPolSourceSite(TVItemID: number, DoOther: boolean) {
@@ -89,7 +91,7 @@ export class WebPolSourceSiteService {
             BreadCrumbWebBaseList: x?.TVItemParentList
         });
 
-        this.appStateService.AppState$.getValue().History.push(this.appLoadedService.AppLoaded$.getValue()?.WebPolSourceSite?.TVItemModel);
+        this.historyService.AddHistory(this.appLoadedService.AppLoaded$.getValue()?.WebPolSourceSite?.TVItemModel);
 
         if (this.DoOther) {
             if (this.componentDataLoadedService.DataLoadedSubsector()) {

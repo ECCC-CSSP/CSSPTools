@@ -12,6 +12,7 @@ import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { AppLanguageService } from '../app-language.service';
 import { ComponentDataLoadedService } from '../helpers/component-data-loaded.service';
+import { HistoryService } from '../helpers/history.service';
 import { SortMWQMRunListService } from '../helpers/sort-mwqm-run-list-desc.service';
 import { WebPolSourceSiteService } from './web-pol-source-sites.service';
 
@@ -29,7 +30,8 @@ export class WebMWQMRunService {
         private appLanguageService: AppLanguageService,
         private sortMWQMRunListDescService: SortMWQMRunListService,
         private webPolSourceSiteService: WebPolSourceSiteService,
-        private componentDataLoadedService: ComponentDataLoadedService) {
+        private componentDataLoadedService: ComponentDataLoadedService,
+        private historyService: HistoryService) {
     }
 
     DoWebMWQMRun(TVItemID: number, DoOther: boolean) {
@@ -101,7 +103,7 @@ export class WebMWQMRunService {
             BreadCrumbWebBaseList: x?.TVItemParentList
         });
 
-        this.appStateService.AppState$.getValue().History.push(this.appLoadedService.AppLoaded$.getValue()?.WebMWQMRun?.TVItemModel);
+        this.historyService.AddHistory(this.appLoadedService.AppLoaded$.getValue()?.WebMWQMRun?.TVItemModel);
 
         if (this.DoOther) {
             if (this.componentDataLoadedService.DataLoadedSubsector()) {

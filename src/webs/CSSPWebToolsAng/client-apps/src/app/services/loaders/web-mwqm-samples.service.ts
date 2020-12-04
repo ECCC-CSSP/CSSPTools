@@ -258,14 +258,15 @@ export class WebMWQMSampleService {
             <WebBase>{ TVItemModel: this.appLoadedService.AppLoaded$.getValue().WebSubsector.TVItemModel },
         ];
 
-        if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.MWQMSites) {
-            this.mapService.ClearMap();
-            this.mapService.DrawObjects([
-                ...this.appLoadedService.AppLoaded$.getValue().SubsectorMWQMSiteList,
-                ...webBaseSubsector,
-            ]);
+        if (this.appStateService.AppState$.getValue().GoogleJSLoaded) {
+            if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.MWQMSites) {
+                this.mapService.ClearMap();
+                this.mapService.DrawObjects([
+                    ...this.appLoadedService.AppLoaded$.getValue().SubsectorMWQMSiteList,
+                    ...webBaseSubsector,
+                ]);
+            }
         }
-
     }
 
 

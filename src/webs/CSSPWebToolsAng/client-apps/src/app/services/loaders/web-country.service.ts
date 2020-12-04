@@ -15,6 +15,7 @@ import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { ComponentDataLoadedService } from '../helpers/component-data-loaded.service';
 import { AppState } from 'src/app/models/AppState.model';
 import { AppLanguageService } from '../app-language.service';
+import { HistoryService } from '../helpers/history.service';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +32,8 @@ export class WebCountryService {
     private sortTVItemListService: SortTVItemListService,
     private structureTVFileListService: StructureTVFileListService,
     private mapService: MapService,
-    private componentDataLoadedService: ComponentDataLoadedService) {
+    private componentDataLoadedService: ComponentDataLoadedService,
+    private historyService: HistoryService) {
   }
 
   DoWebCountry(TVItemID: number, DoOther: boolean) {
@@ -83,7 +85,7 @@ export class WebCountryService {
       // nothing more to add in the chain
     }
   }
-  
+
   private UpdateWebCountry(x: WebCountry) {
     let CountryProvinceList: WebBase[] = [];
 
@@ -107,7 +109,7 @@ export class WebCountryService {
       BreadCrumbWebBaseList: x?.TVItemParentList
     });
 
-    this.appStateService.AppState$.getValue().History.push(this.appLoadedService.AppLoaded$.getValue()?.WebCountry?.TVItemModel);
+    this.historyService.AddHistory(this.appLoadedService.AppLoaded$.getValue()?.WebCountry?.TVItemModel);
 
     if (this.DoOther) {
       if (this.componentDataLoadedService.DataLoadedCountry()) {
@@ -122,44 +124,46 @@ export class WebCountryService {
       <WebBase>{ TVItemModel: this.appLoadedService.AppLoaded$.getValue().WebCountry.TVItemModel },
     ];
 
-    if (this.appStateService.AppState$.getValue().CountrySubComponent == CountrySubComponentEnum.Provinces) {
-      this.mapService.ClearMap();
-      this.mapService.DrawObjects([
-        ...this.appLoadedService.AppLoaded$.getValue().CountryProvinceList,
-        ...webBaseCountry
-      ]);
-    }
+    if (this.appStateService.AppState$.getValue().GoogleJSLoaded) {
+      if (this.appStateService.AppState$.getValue().CountrySubComponent == CountrySubComponentEnum.Provinces) {
+        this.mapService.ClearMap();
+        this.mapService.DrawObjects([
+          ...this.appLoadedService.AppLoaded$.getValue().CountryProvinceList,
+          ...webBaseCountry
+        ]);
+      }
 
-    if (this.appStateService.AppState$.getValue().CountrySubComponent == CountrySubComponentEnum.Files) {
-      this.mapService.ClearMap();
-      this.mapService.DrawObjects([
-        ...this.appLoadedService.AppLoaded$.getValue().CountryProvinceList,
-        ...webBaseCountry
-      ]);
-    }
+      if (this.appStateService.AppState$.getValue().CountrySubComponent == CountrySubComponentEnum.Files) {
+        this.mapService.ClearMap();
+        this.mapService.DrawObjects([
+          ...this.appLoadedService.AppLoaded$.getValue().CountryProvinceList,
+          ...webBaseCountry
+        ]);
+      }
 
-    if (this.appStateService.AppState$.getValue().CountrySubComponent == CountrySubComponentEnum.OpenDataNational) {
-      this.mapService.ClearMap();
-      this.mapService.DrawObjects([
-        ...this.appLoadedService.AppLoaded$.getValue().CountryProvinceList,
-        ...webBaseCountry
-      ]);
-    }
+      if (this.appStateService.AppState$.getValue().CountrySubComponent == CountrySubComponentEnum.OpenDataNational) {
+        this.mapService.ClearMap();
+        this.mapService.DrawObjects([
+          ...this.appLoadedService.AppLoaded$.getValue().CountryProvinceList,
+          ...webBaseCountry
+        ]);
+      }
 
-    if (this.appStateService.AppState$.getValue().CountrySubComponent == CountrySubComponentEnum.EmailDistributionList) {
-      this.mapService.ClearMap();
-      this.mapService.DrawObjects([
-        ...this.appLoadedService.AppLoaded$.getValue().CountryProvinceList,
-        ...webBaseCountry
-      ]);
-    }
+      if (this.appStateService.AppState$.getValue().CountrySubComponent == CountrySubComponentEnum.EmailDistributionList) {
+        this.mapService.ClearMap();
+        this.mapService.DrawObjects([
+          ...this.appLoadedService.AppLoaded$.getValue().CountryProvinceList,
+          ...webBaseCountry
+        ]);
+      }
 
-    if (this.appStateService.AppState$.getValue().CountrySubComponent == CountrySubComponentEnum.RainExceedance) {
-      this.mapService.ClearMap();
-      this.mapService.DrawObjects([
-        ...this.appLoadedService.AppLoaded$.getValue().CountryProvinceList,
-        ...webBaseCountry
-      ]);
+      if (this.appStateService.AppState$.getValue().CountrySubComponent == CountrySubComponentEnum.RainExceedance) {
+        this.mapService.ClearMap();
+        this.mapService.DrawObjects([
+          ...this.appLoadedService.AppLoaded$.getValue().CountryProvinceList,
+          ...webBaseCountry
+        ]);
+      }
     }
   }
 }

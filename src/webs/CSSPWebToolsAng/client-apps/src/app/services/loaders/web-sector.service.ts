@@ -15,6 +15,7 @@ import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { ComponentDataLoadedService } from '../helpers/component-data-loaded.service';
 import { AppState } from 'src/app/models/AppState.model';
 import { AppLanguageService } from '../app-language.service';
+import { HistoryService } from '../helpers/history.service';
 
 
 @Injectable({
@@ -32,7 +33,8 @@ export class WebSectorService {
     private sortTVItemListService: SortTVItemListService,
     private structureTVFileListService: StructureTVFileListService,
     private mapService: MapService,
-    private componentDataLoadedService: ComponentDataLoadedService) {
+    private componentDataLoadedService: ComponentDataLoadedService,
+    private historyService: HistoryService) {
   }
 
   DoWebSector(TVItemID: number, DoOther: boolean) {
@@ -115,7 +117,7 @@ export class WebSectorService {
       BreadCrumbWebBaseList: x?.TVItemParentList
     });
 
-    this.appStateService.AppState$.getValue().History.push(this.appLoadedService.AppLoaded$.getValue()?.WebSector?.TVItemModel);
+    this.historyService.AddHistory(this.appLoadedService.AppLoaded$.getValue()?.WebSector?.TVItemModel);
 
     if (this.DoOther) {
       if (this.componentDataLoadedService.DataLoadedSector()) {
@@ -130,21 +132,23 @@ export class WebSectorService {
       <WebBase>{ TVItemModel: this.appLoadedService.AppLoaded$.getValue().WebSector.TVItemModel },
     ];
 
-    if (this.appStateService.AppState$.getValue().SectorSubComponent == SectorSubComponentEnum.Subsectors) {
-      this.mapService.ClearMap();
-      this.mapService.DrawObjects([
-        ...this.appLoadedService.AppLoaded$.getValue().SectorSubsectorList,
-        ...webBaseSector
-      ]);
-    }
+    if (this.appStateService.AppState$.getValue().GoogleJSLoaded) {
+      if (this.appStateService.AppState$.getValue().SectorSubComponent == SectorSubComponentEnum.Subsectors) {
+        this.mapService.ClearMap();
+        this.mapService.DrawObjects([
+          ...this.appLoadedService.AppLoaded$.getValue().SectorSubsectorList,
+          ...webBaseSector
+        ]);
+      }
 
-    if (this.appStateService.AppState$.getValue().SectorSubComponent == SectorSubComponentEnum.MIKEScenarios) {
-      this.mapService.ClearMap();
-      this.mapService.DrawObjects([
-        ...this.appLoadedService.AppLoaded$.getValue().SectorSubsectorList,
-        ...webBaseSector,
-        ...this.appLoadedService.AppLoaded$.getValue().SectorMIKEScenarioList
-      ]);
+      if (this.appStateService.AppState$.getValue().SectorSubComponent == SectorSubComponentEnum.MIKEScenarios) {
+        this.mapService.ClearMap();
+        this.mapService.DrawObjects([
+          ...this.appLoadedService.AppLoaded$.getValue().SectorSubsectorList,
+          ...webBaseSector,
+          ...this.appLoadedService.AppLoaded$.getValue().SectorMIKEScenarioList
+        ]);
+      }
     }
   }
 }

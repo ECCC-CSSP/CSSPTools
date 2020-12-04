@@ -19,7 +19,7 @@ using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Text;
 
-namespace CSSPWebAPIsLocal.ReadController.Tests
+namespace CSSPWebAPIsLocal.DownloadController.Tests
 {
     public partial class CSSPWebAPIsLocalDownloadControllerTests
     {

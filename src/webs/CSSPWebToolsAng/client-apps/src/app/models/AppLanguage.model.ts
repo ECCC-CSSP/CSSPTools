@@ -127,6 +127,7 @@ export interface AppLanguage {
     ShellReturnHome: string[];
     ShellShowMap: string[];
     ShellResizeMap: string[];
+    ShellNoInternet: string[];
 
     SideNavMenuContextMenu: string[];
     SideNavMenuShowInactiveItems: string[];

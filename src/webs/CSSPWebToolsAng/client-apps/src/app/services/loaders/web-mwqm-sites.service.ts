@@ -11,6 +11,7 @@ import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { AppLanguageService } from '../app-language.service';
 import { ComponentDataLoadedService } from '../helpers/component-data-loaded.service';
+import { HistoryService } from '../helpers/history.service';
 import { WebMWQMRunService } from './web-mwqm-runs.service';
 
 @Injectable({
@@ -26,7 +27,8 @@ export class WebMWQMSiteService {
         private appLoadedService: AppLoadedService,
         private appLanguageService: AppLanguageService,
         private webMWQMRunService: WebMWQMRunService,
-        private componentDataLoadedService: ComponentDataLoadedService) {
+        private componentDataLoadedService: ComponentDataLoadedService,
+        private historyService: HistoryService) {
     }
 
     DoWebMWQMSite(TVItemID: number, DoOther: boolean) {
@@ -96,7 +98,7 @@ export class WebMWQMSiteService {
             BreadCrumbWebBaseList: x?.TVItemParentList
         });
 
-        this.appStateService.AppState$.getValue().History.push(this.appLoadedService.AppLoaded$.getValue()?.WebMWQMSite?.TVItemModel);
+        this.historyService.AddHistory(this.appLoadedService.AppLoaded$.getValue()?.WebMWQMSite?.TVItemModel);
 
         if (this.DoOther) {
             if (this.componentDataLoadedService.DataLoadedSubsector()) {

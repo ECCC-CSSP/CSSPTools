@@ -139,6 +139,7 @@ export class AppLanguageService {
       ShellReturnHome: ['', 'Return home', 'Retour à la page d\'accueil'],
       ShellShowMap: ['', 'Show map', 'Montrer carte'],
       ShellResizeMap: ['', 'Resize map', 'Redimentionnez la carte'],
+      ShellNoInternet: ['', 'No Internet', 'Pas d\'internet'],
 
       SideNavMenuContextMenu: ['', 'Context menu', 'Menu contextuel'],
       SideNavMenuShowInactiveItems: ['', 'Show inactive items', 'Montrer items inactifs'],

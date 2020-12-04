@@ -26,7 +26,7 @@ export class WebMunicipalityService {
     private TVItemID: number;
     private DoOther: boolean;
     private sub: Subscription;
-  
+
     constructor(private httpClient: HttpClient,
         private appStateService: AppStateService,
         private appLoadedService: AppLoadedService,
@@ -40,17 +40,17 @@ export class WebMunicipalityService {
     DoWebMunicipality(TVItemID: number, DoOther: boolean) {
         this.TVItemID = TVItemID;
         this.DoOther = DoOther;
-    
+
         this.sub ? this.sub.unsubscribe() : null;
-    
+
         if (this.appLoadedService.AppLoaded$.getValue()?.WebMunicipality?.TVItemModel?.TVItem?.TVItemID == TVItemID) {
-          this.KeepWebMunicipality();
+            this.KeepWebMunicipality();
         }
         else {
-          this.sub = this.GetWebMunicipality().subscribe();
+            this.sub = this.GetWebMunicipality().subscribe();
         }
-      }
-    
+    }
+
     private GetWebMunicipality() {
         let languageEnum = GetLanguageEnum();
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
@@ -125,37 +125,38 @@ export class WebMunicipalityService {
             <WebBase>{ TVItemModel: this.appLoadedService.AppLoaded$.getValue().WebMunicipality.TVItemModel },
         ];
 
-        if (this.appStateService.AppState$.getValue().MunicipalitySubComponent == MunicipalitySubComponentEnum.Infrastructures) {
-            this.mapService.ClearMap();
-            this.mapService.DrawObjects([
-                ...this.appLoadedService.AppLoaded$.getValue().InfrastructureModelList,
-                ...webBaseMunicipality
-            ]);
-        }
+        if (this.appStateService.AppState$.getValue().GoogleJSLoaded) {
+            if (this.appStateService.AppState$.getValue().MunicipalitySubComponent == MunicipalitySubComponentEnum.Infrastructures) {
+                this.mapService.ClearMap();
+                this.mapService.DrawObjects([
+                    ...this.appLoadedService.AppLoaded$.getValue().InfrastructureModelList,
+                    ...webBaseMunicipality
+                ]);
+            }
 
-        if (this.appStateService.AppState$.getValue().MunicipalitySubComponent == MunicipalitySubComponentEnum.Contacts) {
-            this.mapService.ClearMap();
-            this.mapService.DrawObjects([
-                ...this.appLoadedService.AppLoaded$.getValue().InfrastructureModelList,
-                ...webBaseMunicipality
-            ]);
-        }
+            if (this.appStateService.AppState$.getValue().MunicipalitySubComponent == MunicipalitySubComponentEnum.Contacts) {
+                this.mapService.ClearMap();
+                this.mapService.DrawObjects([
+                    ...this.appLoadedService.AppLoaded$.getValue().InfrastructureModelList,
+                    ...webBaseMunicipality
+                ]);
+            }
 
-        if (this.appStateService.AppState$.getValue().MunicipalitySubComponent == MunicipalitySubComponentEnum.MIKEScenarios) {
-            this.mapService.ClearMap();
-            this.mapService.DrawObjects([
-                ...this.appLoadedService.AppLoaded$.getValue().InfrastructureModelList,
-                ...webBaseMunicipality
-            ]);
-        }
+            if (this.appStateService.AppState$.getValue().MunicipalitySubComponent == MunicipalitySubComponentEnum.MIKEScenarios) {
+                this.mapService.ClearMap();
+                this.mapService.DrawObjects([
+                    ...this.appLoadedService.AppLoaded$.getValue().InfrastructureModelList,
+                    ...webBaseMunicipality
+                ]);
+            }
 
-        if (this.appStateService.AppState$.getValue().MunicipalitySubComponent == MunicipalitySubComponentEnum.Files) {
-            this.mapService.ClearMap();
-            this.mapService.DrawObjects([
-                ...this.appLoadedService.AppLoaded$.getValue().InfrastructureModelList,
-                ...webBaseMunicipality
-            ]);
+            if (this.appStateService.AppState$.getValue().MunicipalitySubComponent == MunicipalitySubComponentEnum.Files) {
+                this.mapService.ClearMap();
+                this.mapService.DrawObjects([
+                    ...this.appLoadedService.AppLoaded$.getValue().InfrastructureModelList,
+                    ...webBaseMunicipality
+                ]);
+            }
         }
-
     }
 }

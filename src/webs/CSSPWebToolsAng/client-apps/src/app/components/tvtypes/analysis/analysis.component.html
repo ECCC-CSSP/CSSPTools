@@ -2,22 +2,24 @@
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </span>
 
-<table>
-    <tbody>
+<table class="table-fixed">
+    <thead>
         <tr>
-            <th colspan="11">
+            <td colspan="11">
                 <div>
                     This section will hold the buttons<br />
                     This section will hold the buttons<br />
                     This section will hold the buttons<br />
                 </div>
-            </th>
+            </td>
             <ng-container *ngFor="let StatMWQMRun of StatMWQMRunList; let i = index">
                 <th [ngClass]="StatMWQMRun.UseInStat ? 'selected' : ''">
                     {{ StatMWQMRun.RunYear }}<br />{{ dateFormatService.GetMonthName(StatMWQMRun.RunMonth, true) }}<br />{{ StatMWQMRun.RunDay }}
                 </th>
             </ng-container>
         </tr>
+    </thead>
+    <tbody>
         <tr>
             <td class="noWrapCenter">Site</td>
             <td class="noWrapCenter">Samples</td>
@@ -73,7 +75,7 @@
         </ng-container>
         <tr>
             <th colspan="11" class="verticalRight">&nbsp;</th>
-            <th colspan="5">Precipitation</th>
+            <th colspan="3">Precipitation</th>
         </tr>
         <tr>
             <th colspan="9" rowspan="14">
@@ -194,7 +196,9 @@
                     </tbody>
                 </table>
                 <span>Color and letter schema
-                    <button><mat-icon>arrow</mat-icon></button>
+                    <button>
+                        <mat-icon>arrow</mat-icon>
+                    </button>
                 </span>
                 <table *ngIf="false">
                     <tbody>
@@ -278,7 +282,7 @@
             <td class="noWrapCenter" colspan="2">
                 Run Day (0)
             </td>
-            <td *ngFor="let StatMWQMRun of StatMWQMRunList">
+            <td class="noWrapCenter" *ngFor="let StatMWQMRun of StatMWQMRunList">
                 {{ StatMWQMRun.RainDay0 | number:'0.0-0' }}
             </td>
         </tr>
@@ -286,7 +290,7 @@
             <td class="noWrapCenter" colspan="2">
                 0-24h (-1)
             </td>
-            <td *ngFor="let StatMWQMRun of StatMWQMRunList">
+            <td class="noWrapCenter" *ngFor="let StatMWQMRun of StatMWQMRunList">
                 {{ StatMWQMRun.RainDay1 | number:'0.0-0' }}
             </td>
         </tr>
@@ -294,7 +298,7 @@
             <td class="noWrapCenter" colspan="2">
                 24-48h (-2)
             </td>
-            <td *ngFor="let StatMWQMRun of StatMWQMRunList">
+            <td class="noWrapCenter" *ngFor="let StatMWQMRun of StatMWQMRunList">
                 {{ StatMWQMRun.RainDay2 | number:'0.0-0' }}
             </td>
         </tr>
@@ -302,7 +306,7 @@
             <td class="noWrapCenter" colspan="2">
                 48-72h (-3)
             </td>
-            <td *ngFor="let StatMWQMRun of StatMWQMRunList">
+            <td class="noWrapCenter" *ngFor="let StatMWQMRun of StatMWQMRunList">
                 {{ StatMWQMRun.RainDay3 | number:'0.0-0' }}
             </td>
         </tr>
@@ -310,7 +314,7 @@
             <td class="noWrapCenter" colspan="2">
                 72-96h (-4)
             </td>
-            <td *ngFor="let StatMWQMRun of StatMWQMRunList">
+            <td class="noWrapCenter" *ngFor="let StatMWQMRun of StatMWQMRunList">
                 {{ StatMWQMRun.RainDay4 | number:'0.0-0' }}
             </td>
         </tr>
@@ -318,7 +322,7 @@
             <td class="noWrapCenter" colspan="2">
                 (-5)
             </td>
-            <td *ngFor="let StatMWQMRun of StatMWQMRunList">
+            <td class="noWrapCenter" *ngFor="let StatMWQMRun of StatMWQMRunList">
                 {{ StatMWQMRun.RainDay5 | number:'0.0-0' }}
             </td>
         </tr>
@@ -326,7 +330,7 @@
             <td class="noWrapCenter" colspan="2">
                 (-6)
             </td>
-            <td *ngFor="let StatMWQMRun of StatMWQMRunList">
+            <td class="noWrapCenter" *ngFor="let StatMWQMRun of StatMWQMRunList">
                 {{ StatMWQMRun.RainDay6 | number:'0.0-0' }}
             </td>
         </tr>
@@ -334,7 +338,7 @@
             <td class="noWrapCenter" colspan="2">
                 (-7)
             </td>
-            <td *ngFor="let StatMWQMRun of StatMWQMRunList">
+            <td class="noWrapCenter" *ngFor="let StatMWQMRun of StatMWQMRunList">
                 {{ StatMWQMRun.RainDay7 | number:'0.0-0' }}
             </td>
         </tr>
@@ -342,7 +346,7 @@
             <td class="noWrapCenter" colspan="2">
                 (-8)
             </td>
-            <td *ngFor="let StatMWQMRun of StatMWQMRunList">
+            <td class="noWrapCenter" *ngFor="let StatMWQMRun of StatMWQMRunList">
                 {{ StatMWQMRun.RainDay8 | number:'0.0-0' }}
             </td>
         </tr>
@@ -350,7 +354,7 @@
             <td class="noWrapCenter" colspan="2">
                 (-9)
             </td>
-            <td *ngFor="let StatMWQMRun of StatMWQMRunList">
+            <td class="noWrapCenter" *ngFor="let StatMWQMRun of StatMWQMRunList">
                 {{ StatMWQMRun.RainDay9 | number:'0.0-0' }}
             </td>
         </tr>
@@ -358,7 +362,7 @@
             <td class="noWrapCenter" colspan="2">
                 (-10)
             </td>
-            <td *ngFor="let StatMWQMRun of StatMWQMRunList">
+            <td class="noWrapCenter" class="noWrapCenter" *ngFor="let StatMWQMRun of StatMWQMRunList">
                 {{ StatMWQMRun.RainDay10 | number:'0.0-0' }}
             </td>
         </tr>
@@ -366,7 +370,7 @@
             <td class="noWrapCenter" colspan="2">
                 Start Tide
             </td>
-            <td *ngFor="let StatMWQMRun of StatMWQMRunList">
+            <td class="noWrapCenter" class="noWrapCenter" *ngFor="let StatMWQMRun of StatMWQMRunList">
                 {{ StatMWQMRun.StartTide }}
             </td>
         </tr>
@@ -374,7 +378,7 @@
             <td class="noWrapCenter" colspan="2">
                 End Tide
             </td>
-            <td *ngFor="let StatMWQMRun of StatMWQMRunList">
+            <td class="noWrapCenter" *ngFor="let StatMWQMRun of StatMWQMRunList">
                 {{ StatMWQMRun.EndTide }}
             </td>
         </tr>
