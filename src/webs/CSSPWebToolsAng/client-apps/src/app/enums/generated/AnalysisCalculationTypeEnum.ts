@@ -10,13 +10,9 @@ import { EnumIDAndText } from 'src/app/models/generated/helper/EnumIDAndText.mod
 import { LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 
 export enum AnalysisCalculationTypeEnum {
-    AllAllAll = 1,
-    WetAllAll = 2,
-    DryAllAll = 3,
-    WetWetAll = 4,
-    DryDryAll = 5,
-    WetDryAll = 6,
-    DryWetAll = 7,
+    All = 1,
+    Wet = 2,
+    Dry = 3,
 }
 
 export function GetAnalysisCalculationTypeEnum(): typeof AnalysisCalculationTypeEnum
@@ -27,22 +23,14 @@ export function GetAnalysisCalculationTypeEnum(): typeof AnalysisCalculationType
 export function AnalysisCalculationTypeEnum_GetOrderedText(appStateService: AppStateService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
     if (appStateService.AppState$?.getValue().Language == LanguageEnum.fr) {
-        enumTextOrderedList.push({ EnumID: 1, EnumText: 'All - All - All' });
-        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Wet - All - All (fr)' });
-        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Dry - All - All (fr)' });
-        enumTextOrderedList.push({ EnumID: 4, EnumText: 'Wet - Wet - All (fr)' });
-        enumTextOrderedList.push({ EnumID: 5, EnumText: 'Dry - Dry - All (fr)' });
-        enumTextOrderedList.push({ EnumID: 6, EnumText: 'Wet - Dry - All (fr)' });
-        enumTextOrderedList.push({ EnumID: 7, EnumText: 'Dry - Wet - All (fr)' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'All' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Wet' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Dry' });
     }
     else {
-        enumTextOrderedList.push({ EnumID: 1, EnumText: 'All - All - All' });
-        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Wet - All - All' });
-        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Dry - All - All' });
-        enumTextOrderedList.push({ EnumID: 4, EnumText: 'Wet - Wet - All' });
-        enumTextOrderedList.push({ EnumID: 5, EnumText: 'Dry - Dry - All' });
-        enumTextOrderedList.push({ EnumID: 6, EnumText: 'Wet - Dry - All' });
-        enumTextOrderedList.push({ EnumID: 7, EnumText: 'Dry - Wet - All' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'All' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Wet' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Dry' });
     }
 
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));

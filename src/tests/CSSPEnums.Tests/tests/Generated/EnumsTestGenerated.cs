@@ -338,26 +338,14 @@ namespace CSSPEnums.Tests
 
                 switch ((AnalysisCalculationTypeEnum)i)
                 {
-                    case AnalysisCalculationTypeEnum.AllAllAll:
-                        Assert.Equal(CSSPCultureEnumsRes.AnalysisCalculationTypeEnumAllAllAll, retStr);
+                    case AnalysisCalculationTypeEnum.All:
+                        Assert.Equal(CSSPCultureEnumsRes.AnalysisCalculationTypeEnumAll, retStr);
                         break;
-                    case AnalysisCalculationTypeEnum.WetAllAll:
-                        Assert.Equal(CSSPCultureEnumsRes.AnalysisCalculationTypeEnumWetAllAll, retStr);
+                    case AnalysisCalculationTypeEnum.Wet:
+                        Assert.Equal(CSSPCultureEnumsRes.AnalysisCalculationTypeEnumWet, retStr);
                         break;
-                    case AnalysisCalculationTypeEnum.DryAllAll:
-                        Assert.Equal(CSSPCultureEnumsRes.AnalysisCalculationTypeEnumDryAllAll, retStr);
-                        break;
-                    case AnalysisCalculationTypeEnum.WetWetAll:
-                        Assert.Equal(CSSPCultureEnumsRes.AnalysisCalculationTypeEnumWetWetAll, retStr);
-                        break;
-                    case AnalysisCalculationTypeEnum.DryDryAll:
-                        Assert.Equal(CSSPCultureEnumsRes.AnalysisCalculationTypeEnumDryDryAll, retStr);
-                        break;
-                    case AnalysisCalculationTypeEnum.WetDryAll:
-                        Assert.Equal(CSSPCultureEnumsRes.AnalysisCalculationTypeEnumWetDryAll, retStr);
-                        break;
-                    case AnalysisCalculationTypeEnum.DryWetAll:
-                        Assert.Equal(CSSPCultureEnumsRes.AnalysisCalculationTypeEnumDryWetAll, retStr);
+                    case AnalysisCalculationTypeEnum.Dry:
+                        Assert.Equal(CSSPCultureEnumsRes.AnalysisCalculationTypeEnumDry, retStr);
                         break;
                     default:
                         Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -5850,13 +5838,9 @@ namespace CSSPEnums.Tests
 
                 switch ((AnalysisCalculationTypeEnum)i)
                 {
-                     case AnalysisCalculationTypeEnum.AllAllAll:
-                     case AnalysisCalculationTypeEnum.WetAllAll:
-                     case AnalysisCalculationTypeEnum.DryAllAll:
-                     case AnalysisCalculationTypeEnum.WetWetAll:
-                     case AnalysisCalculationTypeEnum.DryDryAll:
-                     case AnalysisCalculationTypeEnum.WetDryAll:
-                     case AnalysisCalculationTypeEnum.DryWetAll:
+                     case AnalysisCalculationTypeEnum.All:
+                     case AnalysisCalculationTypeEnum.Wet:
+                     case AnalysisCalculationTypeEnum.Dry:
                         Assert.Equal("", retStr);
                         break;
                     default:

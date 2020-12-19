@@ -925,22 +925,22 @@
     <value>Site PSQEM dernière classification</value>
   </data>
   <data name="MWQMSiteLatestClassificationEnumApproved" xml:space="preserve">
-    <value>Approved (fr)</value>
+    <value>Agréé</value>
   </data>
   <data name="MWQMSiteLatestClassificationEnumConditionallyApproved" xml:space="preserve">
-    <value>ConditionallyApproved (fr)</value>
+    <value>Agréé sous conditions</value>
   </data>
   <data name="MWQMSiteLatestClassificationEnumConditionallyRestricted" xml:space="preserve">
-    <value>ConditionallyRestricted (fr)</value>
+    <value>Restreint sous conditions</value>
   </data>
   <data name="MWQMSiteLatestClassificationEnumProhibited" xml:space="preserve">
-    <value>Prohibited (fr)</value>
+    <value>Interdit</value>
   </data>
   <data name="MWQMSiteLatestClassificationEnumRestricted" xml:space="preserve">
-    <value>Restricted (fr)</value>
+    <value>Restreint</value>
   </data>
   <data name="MWQMSiteLatestClassificationEnumUnclassified" xml:space="preserve">
-    <value>Unclassified (fr)</value>
+    <value>Non classifié</value>
   </data>
   <data name="PolSourceInactiveReason" xml:space="preserve">
     <value>PolSourceInactiveReason</value>
@@ -1992,23 +1992,14 @@
   <data name="AddContactTypeEnumRegister" xml:space="preserve">
     <value>Register</value>
   </data>
-  <data name="AnalysisCalculationTypeEnumDryAllAll" xml:space="preserve">
-    <value>Dry - All - All (fr)</value>
+  <data name="AnalysisCalculationTypeEnumAll" xml:space="preserve">
+    <value>All</value>
   </data>
-  <data name="AnalysisCalculationTypeEnumDryDryAll" xml:space="preserve">
-    <value>Dry - Dry - All (fr)</value>
+  <data name="AnalysisCalculationTypeEnumDry" xml:space="preserve">
+    <value>Dry</value>
   </data>
-  <data name="AnalysisCalculationTypeEnumDryWetAll" xml:space="preserve">
-    <value>Dry - Wet - All (fr)</value>
-  </data>
-  <data name="AnalysisCalculationTypeEnumWetAllAll" xml:space="preserve">
-    <value>Wet - All - All (fr)</value>
-  </data>
-  <data name="AnalysisCalculationTypeEnumWetDryAll" xml:space="preserve">
-    <value>Wet - Dry - All (fr)</value>
-  </data>
-  <data name="AnalysisCalculationTypeEnumWetWetAll" xml:space="preserve">
-    <value>Wet - Wet - All (fr)</value>
+  <data name="AnalysisCalculationTypeEnumWet" xml:space="preserve">
+    <value>Wet</value>
   </data>
   <data name="AddContactType" xml:space="preserve">
     <value>AddContactType</value>

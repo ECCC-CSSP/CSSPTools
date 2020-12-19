@@ -103,13 +103,9 @@ namespace CSSPEnums
     }
     public enum AnalysisCalculationTypeEnum
     {
-        AllAllAll = 1,
-        WetAllAll = 2,
-        DryAllAll = 3,
-        WetWetAll = 4,
-        DryDryAll = 5,
-        WetDryAll = 6,
-        DryWetAll = 7,
+        All = 1,
+        Wet = 2,
+        Dry = 3,
     }
     public enum AnalysisReportExportCommandEnum
     {

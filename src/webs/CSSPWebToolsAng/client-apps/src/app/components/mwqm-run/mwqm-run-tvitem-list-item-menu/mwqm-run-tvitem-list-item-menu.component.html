@@ -1,0 +1,23 @@
+<button mat-button [matMenuTriggerFor]="menu">
+    <mat-icon>more_vert</mat-icon>
+</button>
+<mat-menu #menu="matMenu">
+    <button mat-menu-item class="{{ showItemService.TVItemModelVisible(TVItemModel) ? 'selected' : '' }}"
+        (click)="showItemService.ToggleShowTVItemModel(TVItemModel)">
+        <mat-icon>more_horiz</mat-icon>
+        <span>Show Item</span>
+    </button>
+    <ng-container *ngIf="appStateService.AppState$?.getValue()?.EditVisible">
+        <button mat-menu-item class="{{ showItemForEditService.TVItemModelForEditVisible(TVItemModel) ? 'selected' : '' }}"
+            (click)="showItemForEditService.ToggleShowTVItemForEdit(TVItemModel)">
+            <mat-icon>edit</mat-icon>
+            <span>Edit Item</span>
+        </button>
+    </ng-container>
+    <ng-container *ngIf="appStateService.AppState$?.getValue()?.MapVisible">
+        <button mat-menu-item (click)="mapService.ShowItem(TVItemModel, $event)">
+            <mat-icon>place</mat-icon>
+            <span>Show item on map</span>
+        </button>
+    </ng-container>
+</mat-menu>

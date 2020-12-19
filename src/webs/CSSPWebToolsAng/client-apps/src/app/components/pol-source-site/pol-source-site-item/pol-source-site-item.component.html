@@ -1,0 +1,8 @@
+<span *ngIf="(appStateService.AppState$ | async).Working">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</span>
+<p class="loading-status" *ngIf="(appStateService.AppState$ | async).Status">
+    {{ appStateService.AppState$?.getValue()?.Status }}
+</p>
+
+<p>This is the pol source site component</p>

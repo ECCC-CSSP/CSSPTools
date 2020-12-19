@@ -26,12 +26,12 @@ export function GetMWQMSiteLatestClassificationEnum(): typeof MWQMSiteLatestClas
 export function MWQMSiteLatestClassificationEnum_GetOrderedText(appStateService: AppStateService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
     if (appStateService.AppState$?.getValue().Language == LanguageEnum.fr) {
-        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Approved (fr)' });
-        enumTextOrderedList.push({ EnumID: 2, EnumText: 'ConditionallyApproved (fr)' });
-        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Restricted (fr)' });
-        enumTextOrderedList.push({ EnumID: 4, EnumText: 'ConditionallyRestricted (fr)' });
-        enumTextOrderedList.push({ EnumID: 5, EnumText: 'Prohibited (fr)' });
-        enumTextOrderedList.push({ EnumID: 6, EnumText: 'Unclassified (fr)' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Agréé' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Agréé sous conditions' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Restreint' });
+        enumTextOrderedList.push({ EnumID: 4, EnumText: 'Restreint sous conditions' });
+        enumTextOrderedList.push({ EnumID: 5, EnumText: 'Interdit' });
+        enumTextOrderedList.push({ EnumID: 6, EnumText: 'Non classifié' });
     }
     else {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'Approved' });

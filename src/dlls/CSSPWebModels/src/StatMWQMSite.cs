@@ -22,6 +22,7 @@ namespace CSSPWebModels
         public TVItemModel TVItemModel { get; set; }
         public MWQMSite MWQMSite { get; set; }
         public List<StatMWQMSiteSample> StatMWQMSiteSampleList { get; set; }
+        public double SalinityAverage { get; set; }
         #endregion Properties not in DB
 
         #region Constructors

@@ -17,6 +17,7 @@ import { SubsectorSubComponentEnum } from 'src/app/enums/generated/SubsectorSubC
 import { TopComponentEnum } from 'src/app/enums/generated/TopComponentEnum';
 import { AnalysisCalculationTypeEnum } from '../enums/generated/AnalysisCalculationTypeEnum';
 import { MikeScenarioSubComponentEnum } from '../enums/generated/MikeScenarioSubComponentEnum';
+import { StatMWQMRun } from './generated/web/StatMWQMRun.model';
 import { TVItemModel } from './generated/web/TVItemModel.model';
 
 export interface AppState {
@@ -33,12 +34,39 @@ export interface AppState {
 
     // stat
     StatRunsForDetail?: number;
-    StatStartDate?: Date;
-    StatEndDate?: Date;
-    StatRuns?: number;
-    StatFullYear?: boolean;
-    StatShowUsed?: boolean;
-    StatCalculation?: AnalysisCalculationTypeEnum;
+
+    // showing item
+    ShowTVItemModelList?: TVItemModel[];
+
+    // showing item for editing
+    ShowEditTVItemModelList?: TVItemModel[];
+
+    // Analysis
+    AnalysisStartRun?: StatMWQMRun;
+    AnalysisEndRun?: StatMWQMRun;
+    AnalysisRuns?: number;
+    AnalysisFullYear?: boolean;
+    AnalysisShowOnlyUsed?: boolean;
+    AnalysisCalculationType?: AnalysisCalculationTypeEnum;
+    AnalysisHighlightSalFromAverage?: number;
+    AnalysisShortRange?: number;
+    AnalysisMidRange?: number;
+    AnalysisDry24h?: number;
+    AnalysisDry48h?: number;
+    AnalysisDry72h?: number;
+    AnalysisDry96h?: number;
+    AnalysisWet24h?: number;
+    AnalysisWet48h?: number;
+    AnalysisWet72h?: number;
+    AnalysisWet96h?: number;
+    AnalysisFCDataVisible?: boolean;
+    AnalysisTempDataVisible?: boolean;
+    AnalysisSalDataVisible?: boolean;
+    AnalysisP90DataVisible?: boolean;
+    AnalysisGeoMeanDataVisible?: boolean;
+    AnalysisMedianDataVisible?: boolean;
+    AnalysisPerOver43DataVisible?: boolean;
+    AnalysisPerOver260DataVisible?: boolean;
 
     // visual related
     TopComponent?: TopComponentEnum; // home | shell

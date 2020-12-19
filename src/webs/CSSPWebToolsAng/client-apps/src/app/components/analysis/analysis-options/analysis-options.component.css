@@ -1,0 +1,11 @@
+mat-form-field, mat-checkbox {
+    margin: 10px;
+}
+
+.margin10 {
+    margin: 10px;
+}
+
+.narrow {
+    width: 100px;
+}

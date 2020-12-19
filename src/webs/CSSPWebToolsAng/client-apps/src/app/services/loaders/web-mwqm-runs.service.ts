@@ -100,7 +100,7 @@ export class WebMWQMRunService {
             WebMWQMRun: x,
             MWQMRunRoutingList: mwqmRunList,
             BreadCrumbMWQMRunWebBaseList: x?.TVItemParentList,
-            BreadCrumbWebBaseList: x?.TVItemParentList
+            BreadCrumbWebBaseList: x?.TVItemParentList,
         });
 
         this.historyService.AddHistory(this.appLoadedService.AppLoaded$.getValue()?.WebMWQMRun?.TVItemModel);

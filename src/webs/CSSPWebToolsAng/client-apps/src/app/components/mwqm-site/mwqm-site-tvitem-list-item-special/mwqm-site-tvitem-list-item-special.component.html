@@ -1,0 +1,33 @@
+<span>
+    {{ StatMWQMSite?.StatMWQMSiteSampleList[0]?.ColorAndLetter?.letter }}
+</span>
+<span>&nbsp;</span>
+<span class="{{ StatMWQMSite?.StatMWQMSiteSampleList[0]?.ColorAndLetter?.color }}">
+    &nbsp;&nbsp;
+</span>
+<span>&nbsp;</span>
+<span [ngClass]="TVItemModel?.TVItem?.IsActive ? '' : 'inactive'">
+    <span *ngIf="appStateService.AppState$?.getValue()?.MapVisible">
+        {{ Index }}&nbsp;-&nbsp;
+    </span>
+    <span *ngIf="appStateService.AppState$?.getValue()?.DetailVisible">
+        [{{ TVItemModel.TVItem.TVItemID }}]
+    </span>
+    {{ TVItemModel?.TVItemLanguageList[this.appStateService.AppState$.getValue().Language]?.TVText }}
+</span>
+<span>
+    ({{ GetMWQMSiteLatestClassificationEnum_GetIDText(StatMWQMSite?.MWQMSite?.MWQMSiteLatestClassification) }})
+</span>
+<app-stat-count *ngIf="appStateService.AppState$.getValue().StatCountVisible" [TVType]="tvTypeEnum.MWQMSiteSample"
+    [TVItemModel]="TVItemModel"></app-stat-count>
+<app-last-udpate-tv-item-model *ngIf="appStateService.AppState$?.getValue()?.LastUpdateVisible"
+    [TVItemModel]="TVItemModel"></app-last-udpate-tv-item-model>
+
+<span *ngFor="let statMWQMSiteSample of StatMWQMSite?.StatMWQMSiteSampleList">
+    <span *ngIf="IsFirstOfNewYear(statMWQMSiteSample?.SampleDate?.toString())">
+        <span title="{{ statMWQMSiteSample?.LastSampleDate | date:'yyyy' }}"
+            class="{{ statMWQMSiteSample?.ColorAndLetter?.color }}">&nbsp;{{ statMWQMSiteSample?.ColorAndLetter?.letter
+            }}&nbsp;</span>
+        <span *ngIf="Year % 10 == 0">{{Year}}</span>
+    </span>
+</span>

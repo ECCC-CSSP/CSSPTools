@@ -1,0 +1,48 @@
+<span *ngIf="(appStateService.AppState$ | async).Working">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</span>
+<p class="loading-status" *ngIf="(appStateService.AppState$ | async).Status">
+    {{ appStateService.AppState$?.getValue()?.Status }}
+</p>
+
+<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionArea(areaSubComponentEnum.Sectors)"
+    (click)="componentShowService.ShowArea(areaSubComponentEnum.Sectors)"
+    title="{{ appLanguageService.AppLanguage.AreaShowSectors[appStateService.AppState$?.getValue().Language] }}">
+    <span>
+        {{ appLanguageService.AppLanguage.AreaSectors[appStateService.AppState$?.getValue().Language] }}
+        <span class="badge-stat" *ngIf="appStateService.AppState$.getValue().StatCountVisible">
+            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebArea?.TVItemModel, tvTypeEnum.Sector) }}&nbsp;&nbsp;
+        </span>
+    </span>
+    <span class="biggerArrow"
+        (click)="tvItemSortOrderService.ChangeTVItemSortOrder(sortOrderAngular.AreaSectors, ascDescEnum.Ascending)"
+        *ngIf="appStateService.AppState$.getValue().AreaSectorsSortOrder == ascDescEnum.Descending">
+        &nbsp;&nbsp;&uarr;
+    </span>
+    <span class="biggerArrow"
+        (click)="tvItemSortOrderService.ChangeTVItemSortOrder(sortOrderAngular.AreaSectors, ascDescEnum.Descending)"
+        *ngIf="appStateService.AppState$.getValue().AreaSectorsSortOrder == ascDescEnum.Ascending">
+        &nbsp;&nbsp;&darr;
+    </span>
+</button>
+<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionArea(areaSubComponentEnum.Files)"
+    (click)="componentShowService.ShowArea(areaSubComponentEnum.Files)"
+    title="{{ appLanguageService.AppLanguage.AreaShowFiles[appStateService.AppState$?.getValue().Language] }}">
+    <span>
+        {{ appLanguageService.AppLanguage.AreaFiles[appStateService.AppState$?.getValue().Language] }}
+        <span class="badge-stat" *ngIf="appStateService.AppState$.getValue().StatCountVisible">
+            &nbsp;&nbsp;({{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebArea?.TVItemModel, tvTypeEnum.File) }}/
+            {{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebArea?.TVItemModel, tvTypeEnum.TotalFile) }})&nbsp;&nbsp;
+        </span>
+    </span>
+</button>
+
+<app-sector-tvitem-list-item *ngIf="appStateService.AppState$?.getValue()?.AreaSubComponent == areaSubComponentEnum.Sectors"
+    [AppState]="appStateService.AppState$?.getValue()"
+    [TVItemList]="appLoadedService.AppLoaded$?.getValue()?.AreaSectorList">
+</app-sector-tvitem-list-item>
+
+<app-file-list *ngIf="appStateService.AppState$?.getValue()?.AreaSubComponent == areaSubComponentEnum.Files"
+    [AppState]="appStateService.AppState$?.getValue()"
+    [TVFileModelListList]="appLoadedService.AppLoaded$?.getValue()?.AreaFileListList">
+</app-file-list>

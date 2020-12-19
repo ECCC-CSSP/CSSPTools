@@ -1,4 +1,45 @@
 export interface AppLanguage {
+
+    AnalysisSite: string[];
+    AnalysisSamples: string[];
+    AnalysisPeriod: string[];
+    AnalysisMinFC: string[];
+    AnalysisMaxFC: string[];
+    AnalysisGMean: string[];
+    AnalysisMedian: string[];
+    AnalysisP90: string[];
+    AnalysisPerOver43: string[];
+    AnalysisPerOver260: string[];
+    AnalysisPrecipitation: string[];
+    AnalysisRunDay: string[];
+    AnalysisStartTide: string[];
+    AnalysisEndTide: string[];
+    AnalysisInactive: string[];
+
+    AnalysisDataVisibleFecalColiform: string[];
+    AnalysisDataVisibleTemperature: string[];
+    AnalysisDataVisibleSalinity: string[];
+    AnalysisDataVisibleP90: string[];
+    AnalysisDataVisibleGeometriMean: string[];
+    AnalysisDataVisibleMedian: string[];
+    AnalysisDataVisiblePerAbove43: string[];
+    AnalysisDataVisiblePerAbove260: string[];
+
+    AnalysisOptionsAnalysisOptions: string[];
+    AnalysisOptionsStart: string[];
+    AnalysisOptionsEnd: string[];
+    AnalysisOptionsRuns: string[];
+    AnalysisOptionsCalculation: string[];
+    AnalysisOptionsStartDate: string[];
+    AnalysisOptionsEndDate: string[];
+    AnalysisOptionsPPT: string[];
+    AnalysisOptionsHighlightSal: string[];
+    AnalysisOptionsUpperLowerRainLimit: string[];
+    AnalysisOptionsConsideredDry: string[];
+    AnalysisOptionsConsideredWet: string[];
+    AnalysisOptionsDry: string[];
+    AnalysisOptionsWet: string[];
+
     AreaShowSectors: string[];
     AreaSectors: string[];
     AreaShowFiles: string[];
@@ -192,6 +233,23 @@ export interface AppLanguage {
     TVItemListDetailMunicipalityMikeScenario: string[];
     TVItemListDetailMunicipalityBoxModel: string[];
     TVItemListDetailMunicipalityVPScenario: string[];
+
+    TVItemListDetailMWQMRunDetailPrecipitations: string[];
+    TVItemListDetailMWQMRunDetailDay: string[];
+
+    TVItemListDetailMWQMSiteDetailStatistics: string[];
+    TVItemListDetailMWQMSiteDetailSamples: string[];
+    TVItemListDetailMWQMSiteDetailDataset: string[];
+    TVItemListDetailMWQMSiteDetailStatisticsPeriod: string[];
+    TVItemListDetailMWQMSiteDetailLastSampleDate: string[];
+    TVItemListDetailMWQMSiteDetailNumberOfSample: string[];
+    TVItemListDetailMWQMSiteDetailMinimumFC: string[];
+    TVItemListDetailMWQMSiteDetailMaximumFC: string[];
+    TVItemListDetailMWQMSiteDetailGeometricMean: string[];
+    TVItemListDetailMWQMSiteDetailMedian: string[];
+    TVItemListDetailMWQMSiteDetailP90: string[];
+    TVItemListDetailMWQMSiteDetailPerOfSampleWithFCOver43: string[];
+    TVItemListDetailMWQMSiteDetailPerOfSampleWithFCOver260: string[];
 
     TVItemListDetailProvinceMunicipality: string[];
     TVItemListDetailProvinceLiftStation: string[];

@@ -295,65 +295,29 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to All - All - All.
+        ///   Looks up a localized string similar to All.
         /// </summary>
-        public static string AnalysisCalculationTypeEnumAllAllAll {
+        public static string AnalysisCalculationTypeEnumAll {
             get {
-                return ResourceManager.GetString("AnalysisCalculationTypeEnumAllAllAll", resourceCulture);
+                return ResourceManager.GetString("AnalysisCalculationTypeEnumAll", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Dry - All - All.
+        ///   Looks up a localized string similar to Dry.
         /// </summary>
-        public static string AnalysisCalculationTypeEnumDryAllAll {
+        public static string AnalysisCalculationTypeEnumDry {
             get {
-                return ResourceManager.GetString("AnalysisCalculationTypeEnumDryAllAll", resourceCulture);
+                return ResourceManager.GetString("AnalysisCalculationTypeEnumDry", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Dry - Dry - All.
+        ///   Looks up a localized string similar to Wet.
         /// </summary>
-        public static string AnalysisCalculationTypeEnumDryDryAll {
+        public static string AnalysisCalculationTypeEnumWet {
             get {
-                return ResourceManager.GetString("AnalysisCalculationTypeEnumDryDryAll", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Dry - Wet - All.
-        /// </summary>
-        public static string AnalysisCalculationTypeEnumDryWetAll {
-            get {
-                return ResourceManager.GetString("AnalysisCalculationTypeEnumDryWetAll", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Wet - All - All.
-        /// </summary>
-        public static string AnalysisCalculationTypeEnumWetAllAll {
-            get {
-                return ResourceManager.GetString("AnalysisCalculationTypeEnumWetAllAll", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Wet - Dry - All.
-        /// </summary>
-        public static string AnalysisCalculationTypeEnumWetDryAll {
-            get {
-                return ResourceManager.GetString("AnalysisCalculationTypeEnumWetDryAll", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Wet - Wet - All.
-        /// </summary>
-        public static string AnalysisCalculationTypeEnumWetWetAll {
-            get {
-                return ResourceManager.GetString("AnalysisCalculationTypeEnumWetWetAll", resourceCulture);
+                return ResourceManager.GetString("AnalysisCalculationTypeEnumWet", resourceCulture);
             }
         }
         

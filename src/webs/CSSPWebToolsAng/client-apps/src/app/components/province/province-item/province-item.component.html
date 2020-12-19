@@ -1,0 +1,101 @@
+<span *ngIf="(appStateService.AppState$ | async).Working">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</span>
+<p class="loading-status" *ngIf="(appStateService.AppState$ | async).Status">
+    {{ appStateService.AppState$?.getValue()?.Status }}
+</p>
+
+<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionProvince(provinceSubComponentEnum.Areas)"
+    (click)="componentShowService.ShowProvince(provinceSubComponentEnum.Areas)"
+    title="{{ appLanguageService.AppLanguage.ProvinceShowAreas[appStateService.AppState$?.getValue().Language] }}">
+    <span>
+        {{ appLanguageService.AppLanguage.ProvinceAreas[appStateService.AppState$?.getValue().Language] }}
+        <span class="badge-stat" *ngIf="appStateService.AppState$.getValue().StatCountVisible">
+            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebProvince?.TVItemModel, tvTypeEnum.Area) }}&nbsp;&nbsp;
+        </span>                                                                        
+    </span>
+    <span class="biggerArrow"
+        (click)="tvItemSortOrderService.ChangeTVItemSortOrder(sortOrderAngular.ProvinceAreas, ascDescEnum.Ascending)"
+        *ngIf="appStateService.AppState$.getValue().ProvinceAreasSortOrder == ascDescEnum.Descending">
+        &nbsp;&nbsp;&uarr;
+    </span>
+    <span class="biggerArrow"
+        (click)="tvItemSortOrderService.ChangeTVItemSortOrder(sortOrderAngular.ProvinceAreas, ascDescEnum.Descending)"
+        *ngIf="appStateService.AppState$.getValue().ProvinceAreasSortOrder == ascDescEnum.Ascending">
+        &nbsp;&nbsp;&darr;
+    </span>
+</button>
+<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionProvince(provinceSubComponentEnum.Municipalities)"
+    (click)="componentShowService.ShowProvince(provinceSubComponentEnum.Municipalities)"
+    title="{{ appLanguageService.AppLanguage.ProvinceShowMunicipalities[appStateService.AppState$?.getValue().Language] }}">
+    <span>
+        {{ appLanguageService.AppLanguage.ProvinceMunicipalities[appStateService.AppState$?.getValue().Language] }}
+        <span class="badge-stat" *ngIf="appStateService.AppState$.getValue().StatCountVisible">
+            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebProvince?.TVItemModel, tvTypeEnum.Municipality) }}&nbsp;&nbsp;
+        </span>                                                                                
+    </span>
+    <span class="biggerArrow"
+        (click)="tvItemSortOrderService.ChangeTVItemSortOrder(sortOrderAngular.ProvinceMunicipalities, ascDescEnum.Ascending)"
+        *ngIf="appStateService.AppState$.getValue().ProvinceMunicipalitiesSortOrder == ascDescEnum.Descending">
+        &nbsp;&nbsp;&uarr;
+    </span>
+    <span class="biggerArrow"
+        (click)="tvItemSortOrderService.ChangeTVItemSortOrder(sortOrderAngular.ProvinceMunicipalities, ascDescEnum.Descending)"
+        *ngIf="appStateService.AppState$.getValue().ProvinceMunicipalitiesSortOrder == ascDescEnum.Ascending">
+        &nbsp;&nbsp;&darr;
+    </span>
+</button>
+<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionProvince(provinceSubComponentEnum.Files)"
+    (click)="componentShowService.ShowProvince(provinceSubComponentEnum.Files)"
+    title="{{ appLanguageService.AppLanguage.ProvinceShowFiles[appStateService.AppState$?.getValue().Language] }}">
+    <span>
+        {{ appLanguageService.AppLanguage.ProvinceFiles[appStateService.AppState$?.getValue().Language] }}
+        <span class="badge-stat" *ngIf="appStateService.AppState$.getValue().StatCountVisible">
+            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebProvince?.TVItemModel, tvTypeEnum.File) }}/
+            {{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebProvince?.TVItemModel, tvTypeEnum.TotalFile) }}&nbsp;&nbsp;
+        </span>                                                                                        
+    </span>
+</button>
+<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionProvince(provinceSubComponentEnum.OpenData)"
+    (click)="componentShowService.ShowProvince(provinceSubComponentEnum.OpenData)"
+    title="{{ appLanguageService.AppLanguage.ProvinceShowOpenData[appStateService.AppState$?.getValue().Language] }}">
+    {{ appLanguageService.AppLanguage.ProvinceOpenData[appStateService.AppState$?.getValue().Language] }}
+</button>
+<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionProvince(provinceSubComponentEnum.SamplingPlan)"
+    (click)="componentShowService.ShowProvince(provinceSubComponentEnum.SamplingPlan)"
+    title="{{ appLanguageService.AppLanguage.ProvinceShowSamplingPlan[appStateService.AppState$?.getValue().Language] }}">
+    {{ appLanguageService.AppLanguage.ProvinceSamplingPlan[appStateService.AppState$?.getValue().Language] }}
+</button>
+<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionProvince(provinceSubComponentEnum.ProvinceTools)"
+    (click)="componentShowService.ShowProvince(provinceSubComponentEnum.ProvinceTools)"
+    title="{{ appLanguageService.AppLanguage.ProvinceShowProvinceTools[appStateService.AppState$?.getValue().Language] }}">
+    {{ appLanguageService.AppLanguage.ProvinceProvinceTools[appStateService.AppState$?.getValue().Language] }}
+</button>
+
+<app-area-tvitem-list-item *ngIf="appStateService.AppState$?.getValue()?.ProvinceSubComponent == provinceSubComponentEnum.Areas"
+    [AppState]="appStateService.AppState$?.getValue()"
+    [TVItemList]="appLoadedService.AppLoaded$?.getValue()?.ProvinceAreaList">
+</app-area-tvitem-list-item>
+
+<app-province-tvitem-list-item
+    *ngIf="appStateService.AppState$?.getValue()?.ProvinceSubComponent == provinceSubComponentEnum.Municipalities"
+    [AppState]="appStateService.AppState$?.getValue()"
+    [TVItemList]="appLoadedService.AppLoaded$?.getValue()?.ProvinceMunicipalityList">
+</app-province-tvitem-list-item>
+
+<app-file-list *ngIf="appStateService.AppState$?.getValue()?.ProvinceSubComponent == provinceSubComponentEnum.Files"
+    [AppState]="appStateService.AppState$?.getValue()"
+    [TVFileModelListList]="appLoadedService.AppLoaded$?.getValue()?.ProvinceFileListList">
+</app-file-list>
+
+<div *ngIf="appStateService.AppState$?.getValue()?.ProvinceSubComponent == provinceSubComponentEnum.OpenData">
+    <app-open-data-item></app-open-data-item>
+</div>
+
+<div *ngIf="appStateService.AppState$?.getValue()?.ProvinceSubComponent == provinceSubComponentEnum.SamplingPlan">
+    <app-sampling-plan-item></app-sampling-plan-item>
+</div>
+
+<div *ngIf="appStateService.AppState$?.getValue()?.ProvinceSubComponent == provinceSubComponentEnum.ProvinceTools">
+    <app-provincial-tools-item></app-provincial-tools-item>
+</div>

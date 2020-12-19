@@ -1,0 +1,73 @@
+table {
+  border: 1px solid black;
+  margin: 10px;
+  padding: 10px;
+}
+.table-fixed {
+    width: 100%;
+  }
+  
+  /*This will work on every browser but Chrome Browser*/
+  .table-fixed thead {
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+  
+  }
+  
+  /*This will work on every browser*/
+  .table-fixed thead th {
+      position: sticky;
+      position: -webkit-sticky;
+      top: 0;
+  
+  }
+ 
+  tr th td {
+    padding: 0px;
+    margin: 0px;
+  }
+  
+  .borderBottom {
+    border-bottom: 1px solid #dddddd;
+  }
+
+  .borderBottomGreen {
+    border-bottom: 2px solid green;
+  }
+
+  .borderRight {
+    border-right: 1px solid black;
+  }
+
+  .borderLeft {
+    border-left: 1px solid black;
+  }
+
+  .borderTop {
+    border-top: 1px solid #dddddd;
+  }
+
+  .borderRangeTop {
+    border-top: 2px solid green;
+  }
+
+  .textAlignLeft {
+    text-align: left;
+  }
+
+  .highlightYellow {
+    background-color: #fcf8e3;
+  }
+
+  .highlightRed {
+    background-color: #f2dede;
+  }
+
+  .borderBottomRed {
+    border-bottom: 2px solid red;
+  }
+
+  .removeFromStat {
+    background-color: red;
+  }

@@ -28,29 +28,29 @@ export class MapService {
   }
 
   ClearMap() {
-    let length: number = this.appLoadedService.AppLoaded$.getValue().GoogleCrossPolylineListMVC.getLength();
+    let length: number = this.appLoadedService.AppLoaded$.getValue()?.GoogleCrossPolylineListMVC?.getLength();
     for (let i = 0; i < length; i++) {
       this.appLoadedService.AppLoaded$.getValue().GoogleCrossPolylineListMVC.getAt(i).setMap(null);
     }
 
-    length = this.appLoadedService.AppLoaded$.getValue().GoogleMarkerListMVC.getLength();
+    length = this.appLoadedService.AppLoaded$.getValue()?.GoogleMarkerListMVC?.getLength();
     for (let i = 0; i < length; i++) {
       this.appLoadedService.AppLoaded$.getValue().GoogleMarkerListMVC.getAt(i).setMap(null);
     }
 
-    length = this.appLoadedService.AppLoaded$.getValue().GooglePolygonListMVC.getLength();
+    length = this.appLoadedService.AppLoaded$.getValue()?.GooglePolygonListMVC?.getLength();
     for (let i = 0; i < length; i++) {
       this.appLoadedService.AppLoaded$.getValue().GooglePolygonListMVC.getAt(i).setMap(null);
     }
 
-    length = this.appLoadedService.AppLoaded$.getValue().GooglePolylineListMVC.getLength();
+    length = this.appLoadedService.AppLoaded$.getValue()?.GooglePolylineListMVC?.getLength();
     for (let i = 0; i < length; i++) {
       this.appLoadedService.AppLoaded$.getValue().GooglePolylineListMVC.getAt(i).setMap(null);
     }
 
-    this.appLoadedService.AppLoaded$.getValue().GoogleMarkerListMVC.clear();
-    this.appLoadedService.AppLoaded$.getValue().GooglePolygonListMVC.clear();
-    this.appLoadedService.AppLoaded$.getValue().GooglePolylineListMVC.clear();
+    this.appLoadedService.AppLoaded$.getValue()?.GoogleMarkerListMVC?.clear();
+    this.appLoadedService.AppLoaded$.getValue()?.GooglePolygonListMVC?.clear();
+    this.appLoadedService.AppLoaded$.getValue()?.GooglePolylineListMVC?.clear();
 
     this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
       GoogleMarkerListMVC: new google.maps.MVCArray<google.maps.Marker>([]),
@@ -132,7 +132,7 @@ export class MapService {
 
     this.appLoadedService.AppLoaded$.getValue().GoogleCrossPolylineListMVC.push(polyl2);
 
-    event.stopPropagation();
+    //event.stopPropagation();
   }
 
 }

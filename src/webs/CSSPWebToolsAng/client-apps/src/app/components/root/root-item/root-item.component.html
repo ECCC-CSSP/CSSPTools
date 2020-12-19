@@ -1,0 +1,58 @@
+<span *ngIf="(appStateService.AppState$ | async).Working">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</span>
+<p class="loading-status" *ngIf="(appStateService.AppState$ | async).Status">
+    {{ appStateService.AppState$?.getValue()?.Status }}
+</p>
+
+<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionRoot(rootSubComponentEnum.Countries)"
+    (click)="componentShowService.ShowRoot(rootSubComponentEnum.Countries)"
+    title="{{ appLanguageService.AppLanguage.RootShowCountries[appStateService.AppState$?.getValue().Language] }}">
+    <span>
+        {{ appLanguageService.AppLanguage.RootCountries[appStateService.AppState$?.getValue().Language] }}
+        <span class="badge-stat" *ngIf="appStateService.AppState$.getValue().StatCountVisible">
+            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.AppLoaded$?.getValue()?.WebRoot?.TVItemModel, tvTypeEnum.Country) }}&nbsp;&nbsp;
+        </span>
+    </span>
+    <span class="biggerArrow"
+        (click)="tvItemSortOrderService.ChangeTVItemSortOrder(sortOrderAngular.RootCountries, ascDescEnum.Ascending)"
+        *ngIf="appStateService.AppState$.getValue().RootCountriesSortOrder == ascDescEnum.Descending">
+        &nbsp;&nbsp;&uarr;
+    </span>
+    <span class="biggerArrow"
+        (click)="tvItemSortOrderService.ChangeTVItemSortOrder(sortOrderAngular.RootCountries, ascDescEnum.Descending)"
+        *ngIf="appStateService.AppState$.getValue().RootCountriesSortOrder == ascDescEnum.Ascending">
+        &nbsp;&nbsp;&darr;
+    </span>
+</button>
+
+<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionRoot(rootSubComponentEnum.Files)"
+    (click)="componentShowService.ShowRoot(rootSubComponentEnum.Files)"
+    title="{{ appLanguageService.AppLanguage.RootShowFiles[appStateService.AppState$?.getValue().Language] }}">
+    <span>
+        {{ appLanguageService.AppLanguage.RootFiles[appStateService.AppState$?.getValue().Language] }}
+        <span class="badge-stat" *ngIf="appStateService.AppState$.getValue().StatCountVisible">
+            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.AppLoaded$?.getValue()?.WebRoot?.TVItemModel, tvTypeEnum.File) }}/
+            {{ statCountService.GetStatCount(appLoadedService.AppLoaded$?.getValue()?.WebRoot?.TVItemModel, tvTypeEnum.TotalFile) }}&nbsp;&nbsp;
+        </span>
+    </span>
+</button>
+<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionRoot(rootSubComponentEnum.ExportArcGIS)"
+    (click)="componentShowService.ShowRoot(rootSubComponentEnum.ExportArcGIS)"
+    title="{{ appLanguageService.AppLanguage.RootShowExportArcGISTools[appStateService.AppState$?.getValue().Language] }}">
+    {{ appLanguageService.AppLanguage.RootExportArcGIS[appStateService.AppState$?.getValue().Language] }}
+</button>
+
+<app-country-tvitem-list-item *ngIf="appStateService.AppState$?.getValue()?.RootSubComponent == rootSubComponentEnum.Countries"
+    [AppState]="appStateService.AppState$?.getValue()"
+    [TVItemList]="appLoadedService.AppLoaded$?.getValue()?.RootCountryList">
+</app-country-tvitem-list-item>
+
+<app-file-list *ngIf="appStateService.AppState$?.getValue()?.RootSubComponent == rootSubComponentEnum.Files"
+    [AppState]="appStateService.AppState$?.getValue()"
+    [TVFileModelListList]="appLoadedService.AppLoaded$?.getValue()?.RootFileListList">
+</app-file-list>
+
+<div *ngIf="appStateService.AppState$?.getValue()?.RootSubComponent == rootSubComponentEnum.ExportArcGIS">
+    <app-export-arc-gis-item></app-export-arc-gis-item>
+</div>

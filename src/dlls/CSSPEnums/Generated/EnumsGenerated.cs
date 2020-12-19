@@ -474,20 +474,12 @@ namespace CSSPEnums
 
             switch (analysisCalculationType)
             {
-                case AnalysisCalculationTypeEnum.AllAllAll:
-                    return CSSPCultureEnumsRes.AnalysisCalculationTypeEnumAllAllAll;
-                case AnalysisCalculationTypeEnum.WetAllAll:
-                    return CSSPCultureEnumsRes.AnalysisCalculationTypeEnumWetAllAll;
-                case AnalysisCalculationTypeEnum.DryAllAll:
-                    return CSSPCultureEnumsRes.AnalysisCalculationTypeEnumDryAllAll;
-                case AnalysisCalculationTypeEnum.WetWetAll:
-                    return CSSPCultureEnumsRes.AnalysisCalculationTypeEnumWetWetAll;
-                case AnalysisCalculationTypeEnum.DryDryAll:
-                    return CSSPCultureEnumsRes.AnalysisCalculationTypeEnumDryDryAll;
-                case AnalysisCalculationTypeEnum.WetDryAll:
-                    return CSSPCultureEnumsRes.AnalysisCalculationTypeEnumWetDryAll;
-                case AnalysisCalculationTypeEnum.DryWetAll:
-                    return CSSPCultureEnumsRes.AnalysisCalculationTypeEnumDryWetAll;
+                case AnalysisCalculationTypeEnum.All:
+                    return CSSPCultureEnumsRes.AnalysisCalculationTypeEnumAll;
+                case AnalysisCalculationTypeEnum.Wet:
+                    return CSSPCultureEnumsRes.AnalysisCalculationTypeEnumWet;
+                case AnalysisCalculationTypeEnum.Dry:
+                    return CSSPCultureEnumsRes.AnalysisCalculationTypeEnumDry;
                 default:
                     return CSSPCultureEnumsRes.Empty;
             }

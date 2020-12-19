@@ -1,0 +1,227 @@
+<div class="margin10">
+    <mat-accordion>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    {{
+                    appLanguageService.AppLanguage.AnalysisOptionsAnalysisOptions[appStateService.AppState$?.getValue()?.Language]
+                    }}
+                </mat-panel-title>
+                <mat-panel-description>
+                    <strong>{{
+                        appLanguageService.AppLanguage.AnalysisOptionsStart[appStateService.AppState$?.getValue()?.Language]
+                        }}:</strong>&nbsp;
+                    {{ appStateService.AppState$.getValue()?.AnalysisStartRun?.RunDate | date:'yyyy-MMM-dd' }}&nbsp;
+                    <strong>{{
+                        appLanguageService.AppLanguage.AnalysisOptionsEnd[appStateService.AppState$?.getValue()?.Language]
+                        }}:</strong>&nbsp;
+                    {{ appStateService.AppState$.getValue()?.AnalysisEndRun?.RunDate | date:'yyyy-MMM-dd' }}&nbsp;
+                    <strong>{{
+                        appLanguageService.AppLanguage.AnalysisOptionsRuns[appStateService.AppState$?.getValue()?.Language]
+                        }}:</strong>&nbsp;
+                    {{ appStateService.AppState$.getValue()?.AnalysisRuns }}&nbsp;
+                    <strong>{{
+                        appLanguageService.AppLanguage.AnalysisOptionsCalculation[appStateService.AppState$?.getValue()?.Language]
+                        }}:</strong>&nbsp;
+                    {{
+                    analysisService.GetAnalysisCalculationTypeEnum_GetIDText(appStateService.AppState$?.getValue()?.AnalysisCalculationType)
+                    }}&nbsp;
+                    <!-- <strong>{{ appStateService.AppState$.getValue()?.AnalysisShowOnlyUsed ? 'Show only used' : 'Show All' }}</strong>&nbsp; -->
+
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <mat-card>
+                <mat-card-content>
+                    <form [formGroup]="formStat">
+                        <mat-form-field>
+                            <mat-select #SR formControlName="AnalysisStartRun"
+                                (selectionChange)="analysisService.SetStartRun(SR.value)">
+                                <mat-option
+                                    *ngFor="let StatStartMWQMRun of (appLoadedService.AppLoaded$ | async).StatMWQMRunList"
+                                    [value]="StatStartMWQMRun">
+                                    {{ StatStartMWQMRun?.RunDate | date:'yyyy-MMM-dd' }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-label>{{
+                                appLanguageService.AppLanguage.AnalysisOptionsStartDate[appStateService.AppState$?.getValue()?.Language]
+                                }}</mat-label>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-select #ER formControlName="AnalysisEndRun"
+                                (selectionChange)="analysisService.SetEndRun(ER.value)">
+                                <mat-option
+                                    *ngFor="let StatEndMWQMRun of (appLoadedService.AppLoaded$ | async).StatMWQMRunList"
+                                    [value]="StatEndMWQMRun">
+                                    {{ StatEndMWQMRun?.RunDate | date:'yyyy-MMM-dd' }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-label>{{
+                                appLanguageService.AppLanguage.AnalysisOptionsEndDate[appStateService.AppState$?.getValue()?.Language]
+                                }}</mat-label>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-select #R formControlName="AnalysisRuns"
+                                (selectionChange)="analysisService.SetRuns(R.value)">
+                                <mat-option *ngFor="let r of StatMWQMRunList; let i = index" [value]="i">
+                                    {{ i }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-label>{{
+                                appLanguageService.AppLanguage.AnalysisOptionsRuns[appStateService.AppState$?.getValue()?.Language]
+                                }}</mat-label>
+                        </mat-form-field>
+                        <!-- <mat-checkbox (click)="togglesService.ToggleAnalysisFullYear()"
+                            formControlName="AnalysisFullYear"
+                            [value]="appStateService?.AppState$?.getValue()?.AnalysisFullYear">
+                            Full Year</mat-checkbox>
+                        <mat-checkbox (click)="togglesService.ToggleAnalysisShowOnlyUsed()"
+                            formControlName="AnalysisShowOnlyUsed"
+                            [value]="appStateService?.AppState$?.getValue()?.AnalysisShowOnlyUsed">Show only used
+                        </mat-checkbox> -->
+                        <br />
+                        <mat-form-field>
+                            <mat-select #Cal formControlName="AnalysisCalculationType"
+                                (selectionChange)="analysisService.SetCalculationType(Cal.value)">
+                                <mat-option *ngFor="let CalType of enumIDAndTextList" [value]="CalType.EnumID">
+                                    {{ CalType.EnumText }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-label>{{
+                                appLanguageService.AppLanguage.AnalysisOptionsCalculation[appStateService.AppState$?.getValue()?.Language]
+                                }}</mat-label>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-select #Sal formControlName="AnalysisHighlightSalFromAverage"
+                                (selectionChange)="analysisService.SetHighlightSalFromAverage(Sal.value)">
+                                <mat-option *ngFor="let val of salDevVal" [value]="val">
+                                    {{ val }} {{
+                                    appLanguageService.AppLanguage.AnalysisOptionsPPT[appStateService.AppState$?.getValue()?.Language]
+                                    }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-label>{{
+                                appLanguageService.AppLanguage.AnalysisOptionsHighlightSal[appStateService.AppState$?.getValue()?.Language]
+                                }}</mat-label>
+                        </mat-form-field>
+                        <!-- <mat-form-field>
+                            <mat-select #ShortRange formControlName="AnalysisShortRange"
+                                (selectionChange)="SetShortRange(ShortRange.value)">
+                                <mat-option *ngFor="let val of rangeVal" [value]="val">
+                                    Last {{ val }} days
+                                </mat-option>
+                            </mat-select>
+                            <mat-label>Short Range</mat-label>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-select #MidRange formControlName="AnalysisMidRange"
+                                (selectionChange)="SetMidRange(MidRange.value)">
+                                <mat-option *ngFor="let val of rangeVal" [value]="val">
+                                    Extra {{ val }} days from short range
+                                </mat-option>
+                            </mat-select>
+                            <mat-label>Mid Range (will add short range on top)</mat-label>
+                        </mat-form-field> -->
+                        <h2>{{
+                            appLanguageService.AppLanguage.AnalysisOptionsUpperLowerRainLimit[appStateService.AppState$?.getValue()?.Language]
+                            }}</h2>
+                        <span>{{
+                            appLanguageService.AppLanguage.AnalysisOptionsConsideredDry[appStateService.AppState$?.getValue()?.Language]
+                            }}:&nbsp;</span>
+                        <mat-form-field class="narrow">
+                            <mat-select #Dry24h formControlName="AnalysisDry24h"
+                                (selectionChange)="analysisService.SetDry24h(Dry24h.value)">
+                                <mat-option *ngFor="let val of dryRain_mm_List" [value]="val">
+                                    {{ val }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-label>{{
+                                appLanguageService.AppLanguage.AnalysisOptionsDry[appStateService.AppState$?.getValue()?.Language]
+                                }} 24 h (mm)</mat-label>
+                        </mat-form-field>
+                        <mat-form-field class="narrow">
+                            <mat-select #Dry48h formControlName="AnalysisDry48h"
+                                (selectionChange)="analysisService.SetDry48h(Dry48h.value)">
+                                <mat-option *ngFor="let val of dryRain_mm_List" [value]="val">
+                                    {{ val }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-label>{{
+                                appLanguageService.AppLanguage.AnalysisOptionsDry[appStateService.AppState$?.getValue()?.Language]
+                                }} 48 h (mm)</mat-label>
+                        </mat-form-field>
+                        <mat-form-field class="narrow">
+                            <mat-select #Dry72h formControlName="AnalysisDry72h"
+                                (selectionChange)="analysisService.SetDry72h(Dry72h.value)">
+                                <mat-option *ngFor="let val of dryRain_mm_List" [value]="val">
+                                    {{ val }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-label>{{
+                                appLanguageService.AppLanguage.AnalysisOptionsDry[appStateService.AppState$?.getValue()?.Language]
+                                }} 72 h (mm)</mat-label>
+                        </mat-form-field>
+                        <mat-form-field class="narrow">
+                            <mat-select #Dry96h formControlName="AnalysisDry96h"
+                                (selectionChange)="analysisService.SetDry96h(Dry96h.value)">
+                                <mat-option *ngFor="let val of dryRain_mm_List" [value]="val">
+                                    {{ val }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-label>{{
+                                appLanguageService.AppLanguage.AnalysisOptionsDry[appStateService.AppState$?.getValue()?.Language]
+                                }} 96 h (mm)</mat-label>
+                        </mat-form-field>
+                        <br />
+                        <span>{{
+                            appLanguageService.AppLanguage.AnalysisOptionsConsideredWet[appStateService.AppState$?.getValue()?.Language]
+                            }}:&nbsp;</span>
+                        <mat-form-field class="narrow">
+                            <mat-select #Wet24h formControlName="AnalysisWet24h"
+                                (selectionChange)="analysisService.SetWet24h(Wet24h.value)">
+                                <mat-option *ngFor="let val of wetRain_mm_List" [value]="val">
+                                    {{ val }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-label>{{
+                                appLanguageService.AppLanguage.AnalysisOptionsWet[appStateService.AppState$?.getValue()?.Language]
+                                }} 24 h (mm)</mat-label>
+                        </mat-form-field>
+                        <mat-form-field class="narrow">
+                            <mat-select #Wet48h formControlName="AnalysisWet48h"
+                                (selectionChange)="analysisService.SetWet48h(Wet48h.value)">
+                                <mat-option *ngFor="let val of wetRain_mm_List" [value]="val">
+                                    {{ val }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-label>{{
+                                appLanguageService.AppLanguage.AnalysisOptionsWet[appStateService.AppState$?.getValue()?.Language]
+                                }} 48 h (mm)</mat-label>
+                        </mat-form-field>
+                        <mat-form-field class="narrow">
+                            <mat-select #Wet72h formControlName="AnalysisWet72h"
+                                (selectionChange)="analysisService.SetWet72h(Wet72h.value)">
+                                <mat-option *ngFor="let val of wetRain_mm_List" [value]="val">
+                                    {{ val }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-label>{{
+                                appLanguageService.AppLanguage.AnalysisOptionsWet[appStateService.AppState$?.getValue()?.Language]
+                                }} 72 h (mm)</mat-label>
+                        </mat-form-field>
+                        <mat-form-field class="narrow">
+                            <mat-select #Wet96h formControlName="AnalysisWet96h"
+                                (selectionChange)="analysisService.SetWet96h(Wet96h.value)">
+                                <mat-option *ngFor="let val of wetRain_mm_List" [value]="val">
+                                    {{ val }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-label>{{
+                                appLanguageService.AppLanguage.AnalysisOptionsWet[appStateService.AppState$?.getValue()?.Language]
+                                }} 96 h (mm)</mat-label>
+                        </mat-form-field>
+                    </form>
+                </mat-card-content>
+            </mat-card>
+        </mat-expansion-panel>
+    </mat-accordion>
+</div>

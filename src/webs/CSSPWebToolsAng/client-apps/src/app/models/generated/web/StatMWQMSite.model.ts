@@ -11,6 +11,7 @@ import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 
 export class StatMWQMSite {
     MWQMSite: MWQMSite;
+    SalinityAverage: number;
     StatMWQMSiteSampleList: StatMWQMSiteSample[];
     TVItemModel: TVItemModel;
 }

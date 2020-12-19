@@ -1,5 +1,7 @@
 <mat-list-item>
     <span mat-line>
+        <app-file-list-item-menu [TVFileModel]="TVFileModel" [AppState]="AppState">
+        </app-file-list-item-menu>
         <button mat-button (click)="download(TVFileModel)">
             <img src="{{ fileIconService.GetFileIcon(TVFileModel) }}" />
             <span>&nbsp;&nbsp;</span>
@@ -8,15 +10,14 @@
             <span>{{ appLanguageService.AppLanguage.KB[appStateService.AppState$?.getValue().Language] }} | </span>
             <span>{{ dateFormatService.GetFileCreateDate(TVFileModel) }}</span>
             <app-last-udpate-tv-file-model *ngIf="appStateService.AppState$?.getValue()?.LastUpdateVisible"
-            [TVFileModel]="TVFileModel"></app-last-udpate-tv-file-model>        
+                [TVFileModel]="TVFileModel"></app-last-udpate-tv-file-model>
         </button>
     </span>
     <span mat-line *ngIf="download$ | async as download">
-        <mat-progress-bar 
-            [mode]="download.state == 'PENDING' ? 'buffer' : 'determinate'" [value]="download.progress">
+        <mat-progress-bar [mode]="download.state == 'PENDING' ? 'buffer' : 'determinate'" [value]="download.progress">
         </mat-progress-bar>
-    </span> 
+    </span>
 </mat-list-item>
+
 <app-file-list-item-detail [AppState]="AppState" *ngIf="AppState.DetailVisible" [TVFileModel]="TVFileModel">
 </app-file-list-item-detail>
-<p *ngIf="false">{{ TVFileModel | json }}</p>

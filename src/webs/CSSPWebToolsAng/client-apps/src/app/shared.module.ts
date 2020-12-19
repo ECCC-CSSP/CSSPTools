@@ -13,117 +13,155 @@ import { FooterComponent } from 'src/app/components/helpers/footer/footer.compon
 import { SearchOptionComponent } from 'src/app/components/helpers/search-option/search-option.component';
 import { SearchComponent } from 'src/app/components/helpers/search/search.component';
 import { StatCountComponent } from 'src/app/components/helpers/stat-count/stat-count.component';
-import { MapComponent } from 'src/app/components/maps/map/map.component';
+import { MapItemComponent } from 'src/app/components/map/map-item/map-item.component';
 import { SideNavMenuComponent } from 'src/app/components/sidenavs/sidenav-menu/sidenav-menu.component';
-import { TVItemListDetailAreaComponent } from 'src/app/components/tvitems/tvitem-list-detail-area/tvitem-list-detail-area.component';
-import { TVItemListDetailCountryComponent } from 'src/app/components/tvitems/tvitem-list-detail-country/tvitem-list-detail-country.component';
-import { TVItemListDetailMunicipalityComponent } from 'src/app/components/tvitems/tvitem-list-detail-municipality/tvitem-list-detail-municipality.component';
-import { TVItemListDetailProvinceComponent } from 'src/app/components/tvitems/tvitem-list-detail-province/tvitem-list-detail-province.component';
-import { TVItemListDetailSectorComponent } from 'src/app/components/tvitems/tvitem-list-detail-sector/tvitem-list-detail-sector.component';
-import { TVItemListDetailSubsectorComponent } from 'src/app/components/tvitems/tvitem-list-detail-subsector/tvitem-list-detail-subsector.component';
-import { TVItemListComponent } from 'src/app/components/tvitems/tvitem-list/tvitem-list.component';
-import { AreaComponent } from 'src/app/components/tvtypes/area/area.component';
-import { CountryComponent } from 'src/app/components/tvtypes/country/country.component';
-import { HomeComponent } from 'src/app/components/tvtypes/home/home.component';
-import { ProvinceComponent } from 'src/app/components/tvtypes/province/province.component';
-import { RootComponent } from 'src/app/components/tvtypes/root/root.component';
-import { SectorComponent } from 'src/app/components/tvtypes/Sector/sector.component';
-import { ShellComponent } from 'src/app/components/tvtypes/shell/shell.component';
-import { SubsectorComponent } from 'src/app/components/tvtypes/subsector/subsector.component';
+import { AreaTVItemListDetailComponent } from 'src/app/components/area/area-tvitem-list-detail/area-tvitem-list-detail.component';
+import { AnalysisDataVisibleComponent } from './components/analysis/analysis-data-visible/analysis-data-visible.component';
+import { AnalysisOptionsComponent } from './components/analysis/analysis-options/analysis-options.component';
 import { LastUpdateTVFileModelComponent } from './components/helpers/last-update-tvfilemodel/last-update-tvfilemodel.component';
 import { LastUpdateTVItemModelComponent } from './components/helpers/last-update-tvitemmodel/last-update-tvitemmodel.component';
-import { TVItemListDetailMikeScenarioComponent } from './components/tvitems/tvitem-list-detail-mike-scenario/tvitem-list-detail-mike-scenario.component';
-import { TVItemListDetailMWQMRunComponent } from './components/tvitems/tvitem-list-detail-mwqm-run/tvitem-list-detail-mwqm-run.component';
-import { TVItemListDetailMWQMSiteComponent } from './components/tvitems/tvitem-list-detail-mwqm-site/tvitem-list-detail-mwqm-site.component';
-import { TVItemListDetailPolSourceSiteComponent } from './components/tvitems/tvitem-list-detail-pol-source-site/tvitem-list-detail-pol-source-site.component';
-import { TVItemListItemAreaComponent } from './components/tvitems/tvitem-list-item-area/tvitem-list-item-area.component';
-import { TVItemListItemCountryComponent } from './components/tvitems/tvitem-list-item-country/tvitem-list-item-country.component';
-import { TVItemListItemMikeScenarioComponent } from './components/tvitems/tvitem-list-item-mike-scenario/tvitem-list-item-mike-scenario.component';
-import { TVItemListItemMunicipalityComponent } from './components/tvitems/tvitem-list-item-municipality/tvitem-list-item-municipality.component';
-import { TVItemListItemMWQMRunComponent } from './components/tvitems/tvitem-list-item-mwqm-run/tvitem-list-item-mwqm-run.component';
-import { TVItemListItemMWQMSiteButtonComponent } from './components/tvitems/tvitem-list-item-mwqm-site-button/tvitem-list-item-mwqm-site-button.component';
-import { TVItemListItemMWQMSiteComponent } from './components/tvitems/tvitem-list-item-mwqm-site/tvitem-list-item-mwqm-site.component';
-import { TVItemListItemPolSourceSiteComponent } from './components/tvitems/tvitem-list-item-pol-source-site/tvitem-list-item-pol-source-site.component';
-import { TVItemListItemProvinceComponent } from './components/tvitems/tvitem-list-item-province/tvitem-list-item-province.component';
-import { TVItemListItemSectorComponent } from './components/tvitems/tvitem-list-item-sector/tvitem-list-item-sector.component';
-import { TVItemListItemSubsectorComponent } from './components/tvitems/tvitem-list-item-subsector/tvitem-list-item-subsector.component';
-import { AnalysisComponent } from './components/tvtypes/analysis/analysis.component';
-import { ContactComponent } from './components/tvtypes/contact/contact.component';
-import { EmailDistributionListComponent } from './components/tvtypes/email-distribution-list/email-distribution-list.component';
-import { ExportArcGISComponent } from './components/tvtypes/export-arc-gis/export-arc-gis.component';
-import { InfrastructureComponent } from './components/tvtypes/infrastructure/infrastructure.component';
-import { InfrastructuresComponent } from './components/tvtypes/infrastructures/infrastructures.component';
-import { LogBookComponent } from './components/tvtypes/log-book/log-book.component';
-import { MikeScenarioComponent } from './components/tvtypes/mike-scenario/mike-scenario.component';
-import { MunicipalityComponent } from './components/tvtypes/municipality/municipality.component';
-import { OpenDataNationalComponent } from './components/tvtypes/open-data-national/open-data-national.component';
-import { OpenDataComponent } from './components/tvtypes/open-data/open-data.component';
-import { ProvincialToolsComponent } from './components/tvtypes/provincial-tools/provincial-tools.component';
-import { RainExceedanceComponent } from './components/tvtypes/rain-exceedance/rain-exceedance.component';
-import { SamplingPlanComponent } from './components/tvtypes/sampling-plan/sampling-plan.component';
-import { SubsectorToolsComponent } from './components/tvtypes/subsector-tools/subsector-tools.component';
+import { AreaTVItemListItemComponent } from './components/area/area-tvitem-list-item/area-tvitem-list-item.component';
+import { AnalysisItemComponent } from './components/analysis/analysis-item/analysis-item.component';
+import { AreaItemComponent } from './components/area/area-item/area-item.component';
+import { AreaTVItemListItemMenuComponent } from './components/area/area-tvitem-list-item-menu/area-tvitem-list-item-menu.component';
+import { CountryItemComponent } from './components/country/country-item/country-item.component';
+import { CountryTVItemListDetailComponent } from './components/country/country-tvitem-list-detail/country-tvitem-list-detail.component';
+import { CountryTVItemListItemComponent } from './components/country/country-tvitem-list-item/country-tvitem-list-item.component';
+import { CountryTVItemListItemMenuComponent } from './components/country/country-tvitem-list-item-menu/country-tvitem-list-item-menu.component';
+import { ContactItemComponent } from './components/contact/contact-item/contact-item.component';
+import { EmailDistributionListItemComponent } from './components/email-distribution-list/email-distribution-list-item/email-distribution-list-item.component';
+import { ExportArcGISItemComponent } from './components/export-arc-gis/export-arc-gis-item/export-arc-gis-item.component';
+import { InfrastructureItemComponent } from './components/infrastructure/infrastructure-item/infrastructure-item.component';
+import { LogBookItemComponent } from './components/log-book/log-book-item/log-book-item.component';
+import { MikeScenarioItemComponent } from './components/mike-scenario/mike-scenario-item/mike-scenario-item.component';
+import { MunicipalityItemComponent } from './components/municipality/municipality-item/municipality-item.component';
+import { OpenDataNationalItemComponent } from './components/open-data-national/open-data-national-item/open-data-national-item.component';
+import { ProvincialToolsItemComponent } from './components/provincial-tools/provincial-tools-item/provincial-tools-item.component';
+import { RainExceedanceItemComponent } from './components/rain-exceedance/rain-exceedance-item/rain-exceedance-item.component';
+import { SamplingPlanItemComponent } from './components/sampling-plan/sampling-plan-item/sampling-plan-item.component';
+import { SubsectorToolsItemComponent } from './components/subsector-tools/subsector-tools-item/subsector-tools-item.component';
+import { HomeItemComponent } from './components/home/home-item/home-item.component';
+import { ProvinceItemComponent } from './components/province/province-item/province-item.component';
+import { RootItemComponent } from './components/root/root-item/root-item.component';
+import { SectorItemComponent } from './components/sector/sector-item/sector-item.component';
+import { ShellItemComponent } from './components/shell/shell-item/shell-item.component';
+import { SubsectorItemComponent } from './components/subsector/subsector-item/subsector-item.component';
+import { MapMenuComponent } from './components/map/map-menu/map-menu.component';
+import { MikeScenarioTVItemListDetailComponent } from './components/mike-scenario/mike-scenario-tvitem-list-detail/mike-scenario-tvitem-list-detail.component';
+import { MikeScenarioTVItemListItemComponent } from './components/mike-scenario/mike-scenario-tvitem-list-item/mike-scenario-tvitem-list-item.component';
+import { MikeScenarioTVItemListItemMenuComponent } from './components/mike-scenario/mike-scenario-tvitem-list-item-menu/mike-scenario-tvitem-list-item-menu.component';
+import { MunicipalityTVItemListDetailComponent } from './components/municipality/municipality-tvitem-list-detail/municipality-tvitem-list-detail.component';
+import { MunicipalityTVItemListItemComponent } from './components/municipality/municipality-tvitem-list-item/municipality-tvitem-list-item.component';
+import { MunicipalityTVItemListItemMenuComponent } from './components/municipality/municipality-tvitem-list-item-menu/municipality-tvitem-list-item-menu.component';
+import { MWQMRunItemComponent } from './components/mwqm-run/mwqm-run-item/mwqm-run-item.component';
+import { MWQMRunTVItemListDetailComponent } from './components/mwqm-run/mwqm-run-tvitem-list-detail/mwqm-run-tvitem-list-detail.component';
+import { MWQMRunTVItemListItemComponent } from './components/mwqm-run/mwqm-run-tvitem-list-item/mwqm-run-tvitem-list-item.component';
+import { MWQMRunTVItemListItemMenuComponent } from './components/mwqm-run/mwqm-run-tvitem-list-item-menu/mwqm-run-tvitem-list-item-menu.component';
+import { MWQMSiteItemComponent } from './components/mwqm-site/mwqm-site-item/mwqm-site-item.component';
+import { MWQMSiteTVItemListDetailComponent } from './components/mwqm-site/mwqm-site-tvitem-list-detail/mwqm-site-tvitem-list-detail.component';
+import { MWQMSiteTVItemListItemComponent } from './components/mwqm-site/mwqm-site-tvitem-list-item/mwqm-site-tvitem-list-item.component';
+import { MWQMSiteTVItemListItemMenuComponent } from './components/mwqm-site/mwqm-site-tvitem-list-item-menu/mwqm-site-tvitem-list-item-menu.component';
+import { OpenDataItemComponent } from './components/open-data/open-data-item/open-data-item.component';
+import { PolSourceSiteItemComponent } from './components/pol-source-site/pol-source-site-item/pol-source-site-item.component';
+import { PolSourceSiteTVItemListDetailComponent } from './components/pol-source-site/pol-source-site-tvitem-list-detail/pol-source-site-tvitem-list-detail.component';
+import { PolSourceSiteTVItemListItemComponent } from './components/pol-source-site/pol-source-site-tvitem-list-item/pol-source-site-tvitem-list-item.component';
+import { PolSourceSiteTVItemListItemMenuComponent } from './components/pol-source-site/pol-source-site-tvitem-list-item-menu/pol-source-site-tvitem-list-item-menu.component';
+import { ProvinceTVItemListDetailComponent } from './components/province/province-tvitem-list-detail/province-tvitem-list-detail.component';
+import { ProvinceTVItemListItemComponent } from './components/province/province-tvitem-list-item/province-tvitem-list-item.component';
+import { ProvinceTVItemListItemMenuComponent } from './components/province/province-tvitem-list-item-menu/province-tvitem-list-item-menu.component';
+import { SectorTVItemListDetailComponent } from './components/sector/sector-tvitem-list-detail/sector-tvitem-list-detail.component';
+import { SectorTVItemListItemComponent } from './components/sector/sector-tvitem-list-item/sector-tvitem-list-item.component';
+import { SectorTVItemListItemMenuComponent } from './components/sector/sector-tvitem-list-item-menu/sector-tvitem-list-item-menu.component';
+import { SubsectorTVItemListDetailComponent } from './components/subsector/subsector-tvitem-list-detail/subsector-tvitem-list-detail.component';
+import { SubsectorTVItemListItemComponent } from './components/subsector/subsector-tvitem-list-item/subsector-tvitem-list-item.component';
+import { SubsectorTVItemListItemMenuComponent } from './components/subsector/subsector-tvitem-list-item-menu/subsector-tvitem-list-item-menu.component';
+import { MWQMSiteTVItemListItemSpecialComponent } from './components/mwqm-site/mwqm-site-tvitem-list-item-special/mwqm-site-tvitem-list-item-special.component';
+import { FileListItemMenuComponent } from './components/files/file-list-item-menu/file-list-item-menu.component';
+import { AnalysisItemMenuComponent } from './components/analysis/analysis-item-menu/analysis-item-menu.component';
+import { MWQMSiteItemEditComponent } from './components/mwqm-site/mwqm-site-item-edit/mwqm-site-item-edit.component';
+import { PolSourceSiteItemEditComponent } from './components/pol-source-site/pol-source-site-item-edit/pol-source-site-item-edit.component';
+import { MWQMRunItemEditComponent } from './components/mwqm-run/mwqm-run-item-edit/mwqm-run-item-edit.component';
 
 @NgModule({
   declarations: [
-    AnalysisComponent,
-    AreaComponent,
+    AnalysisDataVisibleComponent,
+    AnalysisItemComponent,
+    AnalysisItemMenuComponent,
+    AnalysisOptionsComponent,
+    AreaItemComponent,
+    AreaTVItemListDetailComponent,
+    AreaTVItemListItemComponent,
+    AreaTVItemListItemMenuComponent,
     BreadCrumbComponent,
-    ContactComponent,
-    CountryComponent,
-    EmailDistributionListComponent,
+    ContactItemComponent,
+    CountryItemComponent,
+    CountryTVItemListDetailComponent,
+    CountryTVItemListItemComponent,
+    CountryTVItemListItemMenuComponent,
+    EmailDistributionListItemComponent,
     ErrorComponent,
-    ExportArcGISComponent,
+    ExportArcGISItemComponent,
     FileListComponent,
     FileListItemComponent,
     FileListItemDetailComponent,
+    FileListItemMenuComponent,
     FileUploadComponent,
     FooterComponent,
-    HomeComponent,
-    InfrastructureComponent,
-    InfrastructuresComponent,
+    HomeItemComponent,
+    InfrastructureItemComponent,
     LastUpdateTVFileModelComponent,
     LastUpdateTVItemModelComponent,
-    LogBookComponent,
-    MapComponent,
-    MikeScenarioComponent,
-    MunicipalityComponent,
-    OpenDataComponent,
-    OpenDataNationalComponent,
-    ProvincialToolsComponent,
-    ProvinceComponent,
-    RainExceedanceComponent,
-    RootComponent,
-    SamplingPlanComponent,
+    LogBookItemComponent,
+    MapItemComponent,
+    MapMenuComponent,
+    MikeScenarioItemComponent,
+    MikeScenarioTVItemListDetailComponent,
+    MikeScenarioTVItemListItemComponent,
+    MikeScenarioTVItemListItemMenuComponent,
+    MunicipalityItemComponent,
+    MunicipalityTVItemListDetailComponent,
+    MunicipalityTVItemListItemComponent,
+    MunicipalityTVItemListItemMenuComponent,
+    MWQMRunItemComponent,
+    MWQMRunItemEditComponent,
+    MWQMRunTVItemListDetailComponent,
+    MWQMRunTVItemListItemComponent,
+    MWQMRunTVItemListItemMenuComponent,
+    MWQMSiteItemComponent,
+    MWQMSiteItemEditComponent,
+    MWQMSiteTVItemListDetailComponent,
+    MWQMSiteTVItemListItemComponent,
+    MWQMSiteTVItemListItemMenuComponent,
+    MWQMSiteTVItemListItemSpecialComponent,
+    OpenDataItemComponent,
+    OpenDataNationalItemComponent,
+    PolSourceSiteItemComponent,
+    PolSourceSiteItemEditComponent,
+    PolSourceSiteTVItemListDetailComponent,
+    PolSourceSiteTVItemListItemComponent,
+    PolSourceSiteTVItemListItemMenuComponent,
+    ProvinceItemComponent,
+    ProvinceTVItemListDetailComponent,
+    ProvinceTVItemListItemComponent,
+    ProvinceTVItemListItemMenuComponent,
+    ProvincialToolsItemComponent,
+    RainExceedanceItemComponent,
+    RootItemComponent,
+    SamplingPlanItemComponent,
     SearchComponent,
     SearchOptionComponent,
-    SectorComponent,
-    ShellComponent,
+    SectorItemComponent,
+    SectorTVItemListDetailComponent,
+    SectorTVItemListItemComponent,
+    SectorTVItemListItemMenuComponent,
+    ShellItemComponent,
     SideNavMenuComponent,
     StatCountComponent,
-    SubsectorComponent,
-    SubsectorToolsComponent,
-    TVItemListComponent,
-    TVItemListDetailAreaComponent,
-    TVItemListDetailMikeScenarioComponent,
-    TVItemListDetailMunicipalityComponent,
-    TVItemListDetailMWQMRunComponent,
-    TVItemListDetailMWQMSiteComponent,
-    TVItemListDetailCountryComponent,
-    TVItemListDetailPolSourceSiteComponent,
-    TVItemListDetailProvinceComponent,
-    TVItemListDetailSectorComponent,
-    TVItemListDetailSubsectorComponent,
-    TVItemListItemAreaComponent,
-    TVItemListItemCountryComponent,
-    TVItemListItemMikeScenarioComponent,   
-    TVItemListItemMunicipalityComponent,
-    TVItemListItemMWQMRunComponent,
-    TVItemListItemMWQMSiteButtonComponent,
-    TVItemListItemMWQMSiteComponent,
-    TVItemListItemPolSourceSiteComponent,
-    TVItemListItemProvinceComponent,
-    TVItemListItemSectorComponent,
-    TVItemListItemSubsectorComponent,
+    SubsectorItemComponent,
+    SubsectorTVItemListDetailComponent,
+    SubsectorTVItemListItemComponent,
+    SubsectorTVItemListItemMenuComponent,
+    SubsectorToolsItemComponent,
   ],
   imports: [
     CommonModule,
@@ -139,65 +177,84 @@ import { SubsectorToolsComponent } from './components/tvtypes/subsector-tools/su
     MaterialModule,
     ReactiveFormsModule,
 
-    AnalysisComponent,
-    AreaComponent,
+    AnalysisDataVisibleComponent,
+    AnalysisItemComponent,
+    AnalysisItemMenuComponent,
+    AnalysisOptionsComponent,
+    AreaItemComponent,
+    AreaTVItemListDetailComponent,
+    AreaTVItemListItemComponent,
+    AreaTVItemListItemMenuComponent,
     BreadCrumbComponent,
-    ContactComponent,
-    CountryComponent,
-    EmailDistributionListComponent,
+    ContactItemComponent,
+    CountryItemComponent,
+    CountryTVItemListDetailComponent,
+    CountryTVItemListItemComponent,
+    CountryTVItemListItemMenuComponent,
+    EmailDistributionListItemComponent,
     ErrorComponent,
-    ExportArcGISComponent,
+    ExportArcGISItemComponent,
     FileListComponent,
     FileListItemComponent,
     FileListItemDetailComponent,
+    FileListItemMenuComponent,
     FileUploadComponent,
     FooterComponent,
+    HomeItemComponent,
+    InfrastructureItemComponent,
     LastUpdateTVFileModelComponent,
     LastUpdateTVItemModelComponent,
-    LogBookComponent,
-    HomeComponent,
-    InfrastructureComponent,
-    InfrastructuresComponent,
-    MapComponent,
-    MikeScenarioComponent,
-    MunicipalityComponent,
-    OpenDataComponent,
-    OpenDataNationalComponent,
-    ProvincialToolsComponent,
-    ProvinceComponent,
-    RainExceedanceComponent,
-    RootComponent,
-    SamplingPlanComponent,
+    LogBookItemComponent,
+    MapItemComponent,
+    MapMenuComponent,
+    MikeScenarioItemComponent,
+    MikeScenarioTVItemListDetailComponent,
+    MikeScenarioTVItemListItemComponent,
+    MikeScenarioTVItemListItemMenuComponent,
+    MunicipalityItemComponent,
+    MunicipalityTVItemListDetailComponent,
+    MunicipalityTVItemListItemComponent,
+    MunicipalityTVItemListItemMenuComponent,
+    MWQMRunItemComponent,
+    MWQMRunItemEditComponent,
+    MWQMRunTVItemListDetailComponent,
+    MWQMRunTVItemListItemComponent,
+    MWQMRunTVItemListItemMenuComponent,
+    MWQMSiteItemComponent,
+    MWQMSiteItemEditComponent,
+    MWQMSiteTVItemListDetailComponent,
+    MWQMSiteTVItemListItemComponent,
+    MWQMSiteTVItemListItemMenuComponent,
+    MWQMSiteTVItemListItemSpecialComponent,
+    OpenDataItemComponent,
+    OpenDataNationalItemComponent,
+    PolSourceSiteItemComponent,
+    PolSourceSiteItemEditComponent,
+    PolSourceSiteTVItemListDetailComponent,
+    PolSourceSiteTVItemListItemComponent,
+    PolSourceSiteTVItemListItemMenuComponent,
+    ProvinceItemComponent,
+    ProvinceTVItemListDetailComponent,
+    ProvinceTVItemListItemComponent,
+    ProvinceTVItemListItemMenuComponent,
+    ProvincialToolsItemComponent,
+    RainExceedanceItemComponent,
+    RootItemComponent,
+    SamplingPlanItemComponent,
     SearchComponent,
     SearchOptionComponent,
-    SectorComponent,
-    ShellComponent,
+    SectorItemComponent,
+    SectorTVItemListDetailComponent,
+    SectorTVItemListItemComponent,
+    SectorTVItemListItemMenuComponent,
+    ShellItemComponent,
     SideNavMenuComponent,
     StatCountComponent,
-    SubsectorComponent,
-    SubsectorToolsComponent,
-    TVItemListComponent,
-    TVItemListDetailAreaComponent, 
-    TVItemListDetailCountryComponent,
-    TVItemListDetailMikeScenarioComponent,
-    TVItemListDetailMunicipalityComponent,
-    TVItemListDetailMWQMRunComponent,
-    TVItemListDetailMWQMSiteComponent,
-    TVItemListDetailPolSourceSiteComponent,
-    TVItemListDetailProvinceComponent,
-    TVItemListDetailSectorComponent,
-    TVItemListDetailSubsectorComponent,
-    TVItemListItemAreaComponent,
-    TVItemListItemCountryComponent,
-    TVItemListItemMikeScenarioComponent,   
-    TVItemListItemMunicipalityComponent,
-    TVItemListItemMWQMRunComponent,
-    TVItemListItemMWQMSiteButtonComponent,
-    TVItemListItemMWQMSiteComponent,
-    TVItemListItemPolSourceSiteComponent,
-    TVItemListItemProvinceComponent,
-    TVItemListItemSectorComponent,
-    TVItemListItemSubsectorComponent,
+    SubsectorItemComponent,
+    SubsectorTVItemListDetailComponent,
+    SubsectorTVItemListItemComponent,
+    SubsectorTVItemListItemMenuComponent,
+    SubsectorToolsItemComponent,
   ]
 })
 export class SharedModule { }

@@ -126,4 +126,5 @@ export class TogglesService {
         this.appStateService.UpdateAppState(<AppState>{ StatCountVisible: !this.appStateService.AppState$.getValue().StatCountVisible, Working: false });
     }
 
+
 }

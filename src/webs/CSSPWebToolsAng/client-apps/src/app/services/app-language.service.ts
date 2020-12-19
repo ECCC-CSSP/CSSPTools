@@ -1,16 +1,59 @@
 import { Injectable } from '@angular/core';
 import { AppLanguage } from 'src/app/models/AppLanguage.model';
+import { GetLanguageEnum } from '../enums/generated/LanguageEnum';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AppLanguageService {
 
+  languageEnum = GetLanguageEnum();
+
   constructor() {
   }
 
   get AppLanguage(): AppLanguage {
     return {
+      AnalysisSite: ['', 'Site', 'Site'],
+      AnalysisSamples: ['', 'Samples', 'Échantillons'],
+      AnalysisPeriod: ['', 'Period', 'Période'],
+      AnalysisMinFC: ['', 'Min FC', 'CF min'],
+      AnalysisMaxFC: ['', 'Max FC', 'CF max'],
+      AnalysisGMean: ['', 'Geo. Mean', 'Moyenne Geo.'],
+      AnalysisMedian: ['', 'Median', 'Médianne'],
+      AnalysisP90: ['', 'P90', 'P90'],
+      AnalysisPerOver43: ['', '% > 43', '% > 43'],
+      AnalysisPerOver260: ['', '% > 260', '% > 260'],
+      AnalysisPrecipitation: ['', 'Precipitation', 'Précipitation'],
+      AnalysisRunDay: ['', 'Run Day', 'Tournée'],
+      AnalysisStartTide: ['', 'Start Tide', 'Marée de début'],
+      AnalysisEndTide: ['', 'End Tide', 'Marée de fin'],
+      AnalysisInactive: ['', 'Inactive', 'Inactif'],
+
+      AnalysisDataVisibleFecalColiform: ['', 'Fecal Coliform / 100 mL', 'Coliformes fécaux / 100 mL'],
+      AnalysisDataVisibleTemperature: ['', 'Temperature (C)', 'Température (C)'],
+      AnalysisDataVisibleSalinity: ['', 'Salinity (ppt)', 'Salinité (ppm)'],
+      AnalysisDataVisibleP90: ['', 'P90', 'P90'],
+      AnalysisDataVisibleGeometriMean: ['', 'Geometric Mean', 'Moyenne géométrique'],
+      AnalysisDataVisibleMedian: ['', 'Median', 'Médiane'],
+      AnalysisDataVisiblePerAbove43: ['', '% > 43', '% > 43'],
+      AnalysisDataVisiblePerAbove260: ['', '% > 260', '% > 260'],
+
+      AnalysisOptionsAnalysisOptions: ['', 'Analysis Options', 'Options d\'analyses'],
+      AnalysisOptionsStart: ['', 'Start', 'Début'],
+      AnalysisOptionsEnd: ['', 'End', 'Fin'],
+      AnalysisOptionsRuns: ['', 'Runs', 'Tournées'],
+      AnalysisOptionsCalculation: ['', 'Calculation', 'Calcul'],
+      AnalysisOptionsStartDate: ['', 'Start Date', 'Date de début'],
+      AnalysisOptionsEndDate: ['', 'End Date', 'Date de fin'],
+      AnalysisOptionsPPT: ['', 'ppt', 'ppm'],
+      AnalysisOptionsHighlightSal: ['', 'Highlight salinity deviation from average', 'Souligner l\'écart de salinité par rapport à la moyenne'],
+      AnalysisOptionsUpperLowerRainLimit: ['', 'Upper and lower rain limit considered dry or wet', 'Limite de pluie supérieure et inférieure considérée comme sèche ou humide'],
+      AnalysisOptionsConsideredDry: ['', 'Considered Dry', 'Considéré sec'],
+      AnalysisOptionsConsideredWet: ['', 'Considered Wet', 'Considéré pluie'],
+      AnalysisOptionsDry: ['', 'Dry', 'Sec'],
+      AnalysisOptionsWet: ['', 'Wet', 'Pluie'],
+
       AreaShowSectors: ['', 'Show sectors', 'Montrer secteurs'],
       AreaSectors: ['', 'Sectors', 'Secteurs'],
       AreaShowFiles: ['', 'Show files', 'Montrer filières'],
@@ -161,7 +204,7 @@ export class AppLanguageService {
       SectorMIKEScenarios: ['', 'MIKE Scenarios', 'Scénarios MIKE'],
 
       StatSampleNumber: ['', 'Stat sample number', 'Nombre d\'échantillon pour stat'],
-      
+
       SubsectorShowMWQMSites: ['', 'Show MWQM sites', 'Montrer sites PSQEM'],
       SubsectorMWQMSites: ['', 'MWQM Sites', 'Sites PSQEM'],
       SubsectorShowAnalysis: ['', 'Show analysis', 'Montrer analyse'],
@@ -204,6 +247,24 @@ export class AppLanguageService {
       TVItemListDetailMunicipalityMikeScenario: ['', 'MIKE scenario', 'Scénario de MIKE'],
       TVItemListDetailMunicipalityBoxModel: ['', 'Box model scenario', 'Scénario boitiers'],
       TVItemListDetailMunicipalityVPScenario: ['', 'VP scenario', 'Scénario de MIKE'],
+
+      TVItemListDetailMWQMRunDetailPrecipitations: ['', 'Precipitations', 'Précipitations'],
+      TVItemListDetailMWQMRunDetailDay: ['', 'Day', 'Jour'],
+
+      TVItemListDetailMWQMSiteDetailStatistics: ['', 'Statistics', 'Statistiques'],
+      TVItemListDetailMWQMSiteDetailSamples: ['', 'Samples', 'Échantillons'],
+      TVItemListDetailMWQMSiteDetailDataset: ['', 'Dataset', 'Ensemble de données'],
+      TVItemListDetailMWQMSiteDetailStatisticsPeriod: ['', 'Statistics period', 'Période des statistiques'],
+      TVItemListDetailMWQMSiteDetailLastSampleDate: ['', 'Last sample date', 'Date du dernier échantillon'],
+      TVItemListDetailMWQMSiteDetailNumberOfSample: ['', 'Number of sample used for statistics', 'Nombre d\'échantillons utilisés dans les statistiques'],
+      TVItemListDetailMWQMSiteDetailMinimumFC: ['', 'Minimum FC', 'CF minimum'],
+      TVItemListDetailMWQMSiteDetailMaximumFC: ['', 'Maximum FC', 'CF maximum'],
+      TVItemListDetailMWQMSiteDetailGeometricMean: ['', 'Geometric mean', 'Moyenne géométrique'],
+      TVItemListDetailMWQMSiteDetailMedian: ['', 'Median', 'Médiane'],
+      TVItemListDetailMWQMSiteDetailP90: ['', 'P90', 'P90'],
+      TVItemListDetailMWQMSiteDetailPerOfSampleWithFCOver43: ['', 'Percentage of sample with FC > 43', 'Pourcentage des échantillons ayant des CF > 43'],
+      TVItemListDetailMWQMSiteDetailPerOfSampleWithFCOver260: ['', 'Percentage of sample with FC > 260', 'Pourcentage des échantillons ayant des CF > 260'],
+
 
       TVItemListDetailProvinceMunicipality: ['', 'Municipality', 'Municipalité'],
       TVItemListDetailProvinceLiftStation: ['', 'Lift station', 'Poste de pompage'],

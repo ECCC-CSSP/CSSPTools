@@ -1,0 +1,64 @@
+<blockquote *ngIf="MWQMRunModelSiteAndSample">
+    <strong>{{
+        appLanguageService.AppLanguage.TVItemListDetailMWQMRunDetailPrecipitations[appStateService.AppState$?.getValue()?.Language]
+        }} </strong>
+    <span> (mm) : {{
+        appLanguageService.AppLanguage.TVItemListDetailMWQMRunDetailDay[appStateService.AppState$?.getValue()?.Language]
+        }}
+    </span>
+    <span>
+        (0) [<strong>{{ MWQMRunModelSiteAndSample?.MWQMRunModel?.MWQMRun?.RainDay0_mm | number:'1.1-1'
+            }}</strong>]&nbsp;&nbsp;
+    </span>
+    <span>
+        (-1) [<strong>{{ MWQMRunModelSiteAndSample?.MWQMRunModel?.MWQMRun?.RainDay1_mm | number:'1.1-1'
+            }}</strong>]&nbsp;&nbsp;
+    </span>
+    <span>
+        (-2) [<strong>{{ MWQMRunModelSiteAndSample?.MWQMRunModel?.MWQMRun?.RainDay2_mm | number:'1.1-1'
+            }}</strong>]&nbsp;&nbsp;
+    </span>
+    <span>
+        (-3) [<strong>{{ MWQMRunModelSiteAndSample?.MWQMRunModel?.MWQMRun?.RainDay3_mm | number:'1.1-1'
+            }}</strong>]&nbsp;&nbsp;
+    </span>
+    <span>
+        (-4) [<strong>{{ MWQMRunModelSiteAndSample?.MWQMRunModel?.MWQMRun?.RainDay4_mm | number:'1.1-1'
+            }}</strong>]&nbsp;&nbsp;
+    </span>
+    <span>
+        (-5) [<strong>{{ MWQMRunModelSiteAndSample?.MWQMRunModel?.MWQMRun?.RainDay5_mm | number:'1.1-1'
+            }}</strong>]&nbsp;&nbsp;
+    </span>
+    <span>
+        (-6) [<strong>{{ MWQMRunModelSiteAndSample?.MWQMRunModel?.MWQMRun?.RainDay6_mm | number:'1.1-1'
+            }}</strong>]&nbsp;&nbsp;
+    </span>
+    <span>
+        (-7) [<strong>{{ MWQMRunModelSiteAndSample?.MWQMRunModel?.MWQMRun?.RainDay7_mm | number:'1.1-1'
+            }}</strong>]&nbsp;&nbsp;
+    </span>
+    <span>
+        (-8) [<strong>{{ MWQMRunModelSiteAndSample?.MWQMRunModel?.MWQMRun?.RainDay8_mm | number:'1.1-1'
+            }}</strong>]&nbsp;&nbsp;
+    </span>
+    <span>
+        (-9) [<strong>{{ MWQMRunModelSiteAndSample?.MWQMRunModel?.MWQMRun?.RainDay9_mm | number:'1.1-1'
+            }}</strong>]&nbsp;&nbsp;
+    </span>
+    <span>
+        (-10) [<strong>{{ MWQMRunModelSiteAndSample?.MWQMRunModel?.MWQMRun?.RainDay10_mm | number:'1.1-1'
+            }}</strong>]&nbsp;&nbsp;
+    </span>
+    <p>
+        <span *ngFor="let MWQMSiteModelAndSample of MWQMRunModelSiteAndSample?.MWQMSiteModelAndSampleList">
+            <span class="{{ GetClassFromFCValue(MWQMSiteModelAndSample?.MWQMSample?.FecCol_MPN_100ml) }}">
+                {{
+                MWQMSiteModelAndSample?.MWQMSiteModel?.TVItemModel?.TVItemLanguageList[appStateService.AppState$?.getValue()?.Language].TVText
+                }}&nbsp;({{ MWQMSiteModelAndSample?.MWQMSample?.FecCol_MPN_100ml }})
+            </span>
+        </span>
+
+    </p>
+    <hr />
+</blockquote>

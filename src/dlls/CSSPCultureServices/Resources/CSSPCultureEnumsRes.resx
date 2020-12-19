@@ -2457,26 +2457,14 @@
   <data name="AddContactTypeEnumRegister" xml:space="preserve">
     <value>Register</value>
   </data>
-  <data name="AnalysisCalculationTypeEnumAllAllAll" xml:space="preserve">
-    <value>All - All - All</value>
+  <data name="AnalysisCalculationTypeEnumAll" xml:space="preserve">
+    <value>All</value>
   </data>
-  <data name="AnalysisCalculationTypeEnumDryAllAll" xml:space="preserve">
-    <value>Dry - All - All</value>
+  <data name="AnalysisCalculationTypeEnumDry" xml:space="preserve">
+    <value>Dry</value>
   </data>
-  <data name="AnalysisCalculationTypeEnumDryDryAll" xml:space="preserve">
-    <value>Dry - Dry - All</value>
-  </data>
-  <data name="AnalysisCalculationTypeEnumDryWetAll" xml:space="preserve">
-    <value>Dry - Wet - All</value>
-  </data>
-  <data name="AnalysisCalculationTypeEnumWetAllAll" xml:space="preserve">
-    <value>Wet - All - All</value>
-  </data>
-  <data name="AnalysisCalculationTypeEnumWetDryAll" xml:space="preserve">
-    <value>Wet - Dry - All</value>
-  </data>
-  <data name="AnalysisCalculationTypeEnumWetWetAll" xml:space="preserve">
-    <value>Wet - Wet - All</value>
+  <data name="AnalysisCalculationTypeEnumWet" xml:space="preserve">
+    <value>Wet</value>
   </data>
   <data name="AddContactType" xml:space="preserve">
     <value>AddContactType</value>

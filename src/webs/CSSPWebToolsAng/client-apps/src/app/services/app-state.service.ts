@@ -40,12 +40,39 @@ export class AppStateService {
 
       // stat
       StatRunsForDetail: 30,
-      StatStartDate: new Date(2050, 1, 1),
-      StatEndDate: new Date(1980, 1, 1),
-      StatRuns: 30,
-      StatFullYear: true,
-      StatShowUsed: false,
-      StatCalculation: AnalysisCalculationTypeEnum.AllAllAll,
+
+      // showing item
+      ShowTVItemModelList: [],
+
+      // showing item for editing
+      ShowEditTVItemModelList: [],
+
+      // Analysis
+      AnalysisStartRun: null,
+      AnalysisEndRun: null,
+      AnalysisRuns: 20,
+      AnalysisFullYear: true,
+      AnalysisShowOnlyUsed: false,
+      AnalysisCalculationType: AnalysisCalculationTypeEnum.All,
+      AnalysisHighlightSalFromAverage: 8,
+      AnalysisShortRange: 3,
+      AnalysisMidRange: 3,
+      AnalysisDry24h: 4,
+      AnalysisDry48h: 8,
+      AnalysisDry72h: 12,
+      AnalysisDry96h: 16,
+      AnalysisWet24h: 12,
+      AnalysisWet48h: 25,
+      AnalysisWet72h: 37,
+      AnalysisWet96h: 50,
+      AnalysisFCDataVisible: true,
+      AnalysisTempDataVisible: false,
+      AnalysisSalDataVisible: false,
+      AnalysisP90DataVisible: false,
+      AnalysisGeoMeanDataVisible: false,
+      AnalysisMedianDataVisible: false,
+      AnalysisPerOver43DataVisible: false,
+      AnalysisPerOver260DataVisible: false,
 
       // visual related
       TopComponent: TopComponentEnum.Home, // home | shell

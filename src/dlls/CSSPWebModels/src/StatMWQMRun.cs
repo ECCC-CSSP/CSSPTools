@@ -2,6 +2,7 @@
  * Manually edited
  * 
  */
+using CSSPDBModels;
 using CSSPEnums;
 using System;
 using System.Collections.Generic;
@@ -35,8 +36,10 @@ namespace CSSPWebModels
         public double? RainDay8 { get; set; }
         public double? RainDay9 { get; set; }
         public double? RainDay10 { get; set; }
-        public string StartTide { get; set; }
-        public string EndTide { get; set; }
+        [CSSPEnumType]
+        public TideTextEnum StartTide { get; set; }
+        [CSSPEnumType]
+        public TideTextEnum EndTide { get; set; }
         public bool? UseInStat { get; set; }
         public int? RunYear { get; set; }
         public int? RunMonth { get; set; }

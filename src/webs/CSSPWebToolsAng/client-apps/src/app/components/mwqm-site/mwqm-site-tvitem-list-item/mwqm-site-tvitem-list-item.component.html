@@ -1,0 +1,59 @@
+<mat-list>
+    <span>{{
+        appLanguageService.AppLanguage.StatSampleNumber[this.appStateService.AppState$.getValue().Language]
+        }}:&nbsp;</span>
+
+    <mat-button-toggle-group>
+        <mat-button-toggle (click)="SetStatRunsForDetail(10)"
+            [ngClass]="(AppState.StatRunsForDetail == 10) ? 'selected' : ''">
+            10
+        </mat-button-toggle>
+        <mat-button-toggle (click)="SetStatRunsForDetail(15)"
+            [ngClass]="(AppState.StatRunsForDetail == 15) ? 'selected' : ''">
+            15
+        </mat-button-toggle>
+        <mat-button-toggle (click)="SetStatRunsForDetail(20)"
+            [ngClass]="(AppState.StatRunsForDetail == 20) ? 'selected' : ''">
+            20
+        </mat-button-toggle>
+        <mat-button-toggle (click)="SetStatRunsForDetail(25)"
+            [ngClass]="(AppState.StatRunsForDetail == 25) ? 'selected' : ''">
+            25
+        </mat-button-toggle>
+        <mat-button-toggle (click)="SetStatRunsForDetail(30)"
+            [ngClass]="(AppState.StatRunsForDetail == 30) ? 'selected' : ''">
+            30
+        </mat-button-toggle>
+        <mat-button-toggle (click)="SetStatRunsForDetail(35)"
+            [ngClass]="(AppState.StatRunsForDetail == 35) ? 'selected' : ''">
+            35
+        </mat-button-toggle>
+        <mat-button-toggle (click)="SetStatRunsForDetail(40)"
+            [ngClass]="(AppState.StatRunsForDetail == 40) ? 'selected' : ''">
+            40
+        </mat-button-toggle>
+    </mat-button-toggle-group>
+    <br />
+</mat-list>
+
+<mat-list *ngFor="let webBase of TVItemList; let i = index">
+    <app-mwqm-site-tvitem-list-item-menu [TVItemModel]="webBase?.TVItemModel" [AppState]="AppState">
+    </app-mwqm-site-tvitem-list-item-menu>
+
+    <app-mwqm-site-tvitem-list-item-special [TVItemModel]="webBase?.TVItemModel" [Index]="i + 1" [AppState]="AppState"
+        [StatMWQMSite]="webMWQMSamplesService.GetMWQMSiteDetail(webBase?.TVItemModel)">
+    </app-mwqm-site-tvitem-list-item-special>
+
+    <app-mwqm-site-item *ngIf="showItemService.TVItemModelVisible(webBase?.TVItemModel)"
+        [TVItemModel]="webBase?.TVItemModel" [AppState]="AppState">
+    </app-mwqm-site-item>
+
+    <app-mwqm-site-item-edit *ngIf="showItemForEditService.TVItemModelForEditVisible(webBase?.TVItemModel)"
+        [TVItemModel]="webBase?.TVItemModel" [AppState]="AppState">
+    </app-mwqm-site-item-edit>
+
+    <app-mwqm-site-tvitem-list-detail *ngIf="appStateService.AppState$?.getValue()?.DetailVisible"
+        [TVItemModel]="webBase?.TVItemModel" [AppState]="AppState"
+        [StatMWQMSite]="webMWQMSamplesService.GetMWQMSiteDetail(webBase?.TVItemModel)">
+    </app-mwqm-site-tvitem-list-detail>
+</mat-list>

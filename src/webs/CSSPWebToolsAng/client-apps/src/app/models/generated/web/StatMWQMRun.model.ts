@@ -5,9 +5,10 @@
  *
  */
 
+import { TideTextEnum } from 'src/app/enums/generated/TideTextEnum';
 
 export class StatMWQMRun {
-    EndTide: string;
+    EndTide: TideTextEnum;
     IsOKRun?: boolean;
     MWQMRunTVItemID?: number;
     RainDay0?: number;
@@ -27,6 +28,6 @@ export class StatMWQMRun {
     RunIndex?: number;
     RunMonth?: number;
     RunYear?: number;
-    StartTide: string;
+    StartTide: TideTextEnum;
     UseInStat?: boolean;
 }
