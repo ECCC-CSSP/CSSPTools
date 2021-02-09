@@ -74,7 +74,7 @@ namespace CSSPWebAPIs
             //{
             //    //DBConnStr = Configuration.GetValue<string>("LocalTestDB");
 
-            //    DBConnStr = Configuration.GetValue<string>("LocalCSSPDB2");
+            //    DBConnStr = Configuration.GetValue<string>("LocalCSSPDB");
             //}
             //else
             //{

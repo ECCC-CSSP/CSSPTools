@@ -116,9 +116,9 @@
 //            {
 //                string DBToUse = Configuration.GetValue<string>("DBToUse");
 
-//                if (DBToUse == "CSSPDB2")
+//                if (DBToUse == "CSSPDB")
 //                {
-//                    DBConnStr = Configuration.GetValue<string>("CSSPDB2");
+//                    DBConnStr = Configuration.GetValue<string>("CSSPDB");
 //                }
 
 //                if (DBToUse == "TestDB")
@@ -129,7 +129,7 @@
 //            }
 
 //            /* ---------------------------------------------------------------------------------
-//             * Setting up the required CSSPDB, CSSPDB2, TestDB or AzureCSSPDB with ApplicationUser
+//             * Setting up the required CSSPDB, CSSPDB, TestDB or AzureCSSPDB with ApplicationUser
 //             * ---------------------------------------------------------------------------------      
 //             */
 

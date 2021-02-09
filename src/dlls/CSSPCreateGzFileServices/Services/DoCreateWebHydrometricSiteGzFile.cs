@@ -21,9 +21,9 @@ namespace CreateGzFileServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            TVItem tvItemProvince = await GetTVItemWithTVItemID(ProvinceTVItemID);
+            TVItem TVItemProvince = await GetTVItemWithTVItemID(ProvinceTVItemID);
 
-            if (tvItemProvince == null || tvItemProvince.TVType != TVTypeEnum.Province)
+            if (TVItemProvince == null || TVItemProvince.TVType != TVTypeEnum.Province)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._CouldNotBeFoundFor_Equal_And_Equal_,
                     "TVItem", ProvinceTVItemID.ToString(), "TVType", TVTypeEnum.Province.ToString())));
@@ -33,16 +33,16 @@ namespace CreateGzFileServices
 
             try
             {
-                await FillTVItemModel(webHydrometricSite.TVItemModel, tvItemProvince);
+                await FillTVItemModel(webHydrometricSite.TVItemModel, TVItemProvince);
 
-                await FillParentListTVItemModelList(webHydrometricSite.TVItemParentList, tvItemProvince);
+                await FillParentListTVItemModelList(webHydrometricSite.TVItemParentList, TVItemProvince);
 
-                webHydrometricSite.HydrometricSiteList = await GetHydrometricSiteListUnderProvince(tvItemProvince);
+                webHydrometricSite.HydrometricSiteList = await GetHydrometricSiteListUnderProvince(TVItemProvince);
 
-                await FillChildListTVItemModelList(webHydrometricSite.TVItemHydrometricSiteList, tvItemProvince, TVTypeEnum.HydrometricSite);
+                await FillChildListTVItemModelList(webHydrometricSite.TVItemHydrometricSiteList, TVItemProvince, TVTypeEnum.HydrometricSite);
 
-                webHydrometricSite.RatingCurveList = await GetRatingCurveListUnderProvince(tvItemProvince);
-                webHydrometricSite.RatingCurveValueList = await GetRatingCurveValueListUnderProvince(tvItemProvince);
+                webHydrometricSite.RatingCurveList = await GetRatingCurveListUnderProvince(TVItemProvince);
+                webHydrometricSite.RatingCurveValueList = await GetRatingCurveValueListUnderProvince(TVItemProvince);
 
                 await DoStore<WebHydrometricSite>(webHydrometricSite, $"WebHydrometricSite_{ProvinceTVItemID}.gz");
             }

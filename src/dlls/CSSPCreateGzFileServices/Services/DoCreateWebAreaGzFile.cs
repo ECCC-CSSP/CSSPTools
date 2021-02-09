@@ -4,13 +4,13 @@
  */
 using CSSPCultureServices.Resources;
 using CSSPEnums;
-using CSSPDBModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
 using CSSPWebModels;
+using CSSPDBModels;
 
 namespace CreateGzFileServices
 {
@@ -23,9 +23,9 @@ namespace CreateGzFileServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            TVItem tvItemArea = await GetTVItemWithTVItemID(AreaTVItemID);
+            TVItem TVItemArea = await GetTVItemWithTVItemID(AreaTVItemID);
 
-            if (tvItemArea == null || tvItemArea.TVType != TVTypeEnum.Area)
+            if (TVItemArea == null || TVItemArea.TVType != TVTypeEnum.Area)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._CouldNotBeFoundFor_Equal_And_Equal_, 
                     "TVItem", AreaTVItemID.ToString(), "TVType", TVTypeEnum.Area.ToString())));
@@ -35,11 +35,11 @@ namespace CreateGzFileServices
 
             try
             {
-                await FillTVItemModel(webArea.TVItemModel, tvItemArea);
+                await FillTVItemModel(webArea.TVItemModel, TVItemArea);
 
-                await FillParentListTVItemModelList(webArea.TVItemParentList, tvItemArea);
+                await FillParentListTVItemModelList(webArea.TVItemParentList, TVItemArea);
 
-                await FillChildListTVItemModelList(webArea.TVItemSectorList, tvItemArea, TVTypeEnum.Sector);
+                await FillChildListTVItemModelList(webArea.TVItemSectorList, TVItemArea, TVTypeEnum.Sector);
 
                 await DoStore<WebArea>(webArea, $"WebArea_{AreaTVItemID}.gz");
             }

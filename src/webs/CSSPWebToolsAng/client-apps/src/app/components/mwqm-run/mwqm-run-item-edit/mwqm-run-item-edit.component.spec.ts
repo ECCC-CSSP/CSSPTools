@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MWQMRunItemComponent } from 'src/app/components/mwqm-run/mwqm-run-item/mwqm-run-item.component';
+import { MWQMRunItemEditComponent } from 'src/app/components/mwqm-run/mwqm-run-item-edit/mwqm-run-item-edit.component';
 
-describe('MWQMRunItemComponent', () => {
-  let component: MWQMRunItemComponent;
-  let fixture: ComponentFixture<MWQMRunItemComponent>;
+describe('MWQMRunItemEditComponent', () => {
+  let component: MWQMRunItemEditComponent;
+  let fixture: ComponentFixture<MWQMRunItemEditComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ MWQMRunItemComponent ]
+      declarations: [ MWQMRunItemEditComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MWQMRunItemComponent);
+    fixture = TestBed.createComponent(MWQMRunItemEditComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

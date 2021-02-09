@@ -21,6 +21,8 @@ namespace CSSPDBModels
         public virtual DbSet<Classification> Classifications { get; set; }
         public virtual DbSet<ClimateDataValue> ClimateDataValues { get; set; }
         public virtual DbSet<ClimateSite> ClimateSites { get; set; }
+        public virtual DbSet<CoCoRaHSSite> CoCoRaHSSites { get; set; }
+        public virtual DbSet<CoCoRaHSValue> CoCoRaHSValues { get; set; }
         public virtual DbSet<Contact> Contacts { get; set; }
         public virtual DbSet<ContactPreference> ContactPreferences { get; set; }
         public virtual DbSet<ContactShortcut> ContactShortcuts { get; set; }

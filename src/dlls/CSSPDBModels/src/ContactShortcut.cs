@@ -16,6 +16,8 @@ namespace CSSPDBModels
         #region Properties in DB
         [Key]
         public int ContactShortcutID { get; set; }
+        [CSSPEnumType]
+        public DBCommandEnum DBCommand { get; set; }
         [CSSPExist(ExistTypeName = "Contact", ExistPlurial = "s", ExistFieldID = "ContactID")]
         [CSSPForeignKey(TableName = "Contacts", FieldName = "ContactID")]
         public int ContactID { get; set; }

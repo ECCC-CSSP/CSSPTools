@@ -16,6 +16,8 @@ namespace CSSPDBModels
         #region Properties in DB
         [Key]
         public int HydrometricDataValueID { get; set; }
+        [CSSPEnumType]
+        public DBCommandEnum DBCommand { get; set; }
         [CSSPExist(ExistTypeName = "HydrometricSite", ExistPlurial = "s", ExistFieldID = "HydrometricSiteID")]
         [CSSPForeignKey(TableName = "HydrometricSites", FieldName = "HydrometricSiteID")]
         public int HydrometricSiteID { get; set; }

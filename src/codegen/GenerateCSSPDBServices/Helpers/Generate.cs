@@ -144,6 +144,7 @@ namespace GenerateCSSPDBServices
                     {
                         sb.AppendLine($@"        Task<ActionResult<Contact>> Login(LoginModel loginModel);");
                         sb.AppendLine($@"        Task<ActionResult<string>> AzureStore();");
+                        sb.AppendLine($@"        Task<ActionResult<string>> GoogleMapKey();");
                         sb.AppendLine($@"        Task<ActionResult<Contact>> Register(RegisterModel registerModel);");
                     }
                     sb.AppendLine(@"    }");
@@ -252,6 +253,7 @@ namespace GenerateCSSPDBServices
                     {
                         if (!await CreateLogin(dllTypeInfoModels, dllTypeInfoModels.Type.Name, TypeNameLower, sb)) return await Task.FromResult(false);
                         if (!await CreateAzureStore(dllTypeInfoModels, dllTypeInfoModels.Type.Name, TypeNameLower, sb)) return await Task.FromResult(false);
+                        if (!await CreateGoogleMapKey(dllTypeInfoModels, dllTypeInfoModels.Type.Name, TypeNameLower, sb)) return await Task.FromResult(false);
                     }
                     sb.AppendLine(@"        #endregion Functions public");
                     sb.AppendLine(@"");

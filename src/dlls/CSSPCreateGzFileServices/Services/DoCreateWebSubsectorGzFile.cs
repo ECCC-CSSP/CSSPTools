@@ -21,9 +21,9 @@ namespace CreateGzFileServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            TVItem tvItemSubsector = await GetTVItemWithTVItemID(SubsectorTVItemID);
+            TVItem TVItemSubsector = await GetTVItemWithTVItemID(SubsectorTVItemID);
 
-            if (tvItemSubsector == null || tvItemSubsector.TVType != TVTypeEnum.Subsector)
+            if (TVItemSubsector == null || TVItemSubsector.TVType != TVTypeEnum.Subsector)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._CouldNotBeFoundFor_Equal_And_Equal_,
                     "TVItem", SubsectorTVItemID.ToString(), "TVType", TVTypeEnum.Subsector.ToString())));
@@ -33,19 +33,19 @@ namespace CreateGzFileServices
 
             try
             {
-                await FillTVItemModel(webSubsector.TVItemModel, tvItemSubsector);
+                await FillTVItemModel(webSubsector.TVItemModel, TVItemSubsector);
 
-                await FillParentListTVItemModelList(webSubsector.TVItemParentList, tvItemSubsector);
+                await FillParentListTVItemModelList(webSubsector.TVItemParentList, TVItemSubsector);
 
-                await FillChildListTVItemModelList(webSubsector.TVItemMWQMSiteList, tvItemSubsector, TVTypeEnum.MWQMSite);
+                await FillChildListTVItemModelList(webSubsector.TVItemMWQMSiteList, TVItemSubsector, TVTypeEnum.MWQMSite);
 
-                await FillChildListTVItemModelList(webSubsector.TVItemMWQMRunList, tvItemSubsector, TVTypeEnum.MWQMRun);
+                await FillChildListTVItemModelList(webSubsector.TVItemMWQMRunList, TVItemSubsector, TVTypeEnum.MWQMRun);
 
-                await FillChildListTVItemModelList(webSubsector.TVItemPolSourceSiteList, tvItemSubsector, TVTypeEnum.PolSourceSite);
+                await FillChildListTVItemModelList(webSubsector.TVItemPolSourceSiteList, TVItemSubsector, TVTypeEnum.PolSourceSite);
 
                 webSubsector.MWQMAnalysisReportParameterList = await GetMWQMAnalysisReportParameterListUnderSubsector(SubsectorTVItemID);
 
-                await FillLabSheetModelList(webSubsector.LabSheetModelList, tvItemSubsector);
+                await FillLabSheetModelList(webSubsector.LabSheetModelList, TVItemSubsector);
 
                 webSubsector.MWQMSubsector = await GetMWQMSubsector(SubsectorTVItemID);
                 webSubsector.MWQMSubsectorLanguageList = await GetMWQMSubsectorLanguageList(SubsectorTVItemID);

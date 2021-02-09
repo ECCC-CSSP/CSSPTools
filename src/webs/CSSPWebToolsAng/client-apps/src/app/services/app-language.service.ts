@@ -174,6 +174,8 @@ export class AppLanguageService {
       RootShowExportArcGISTools: ['', 'Show export Arc GIS tools', 'Montrer outils pour exportation Arc GIS'],
       RootExportArcGIS: ['', 'Export Arc GIS', 'Exportation Arc GIS'],
 
+      Saving: ['', 'Saving', 'Sauvegarde'],
+      
       SearchSearch: ['', 'Search', 'Rechercher'],
 
       ShellApplicationName: ['', 'CSSP Web Tools', 'PCCSM: outils Web'],

@@ -16,6 +16,8 @@ namespace CSSPDBModels
         #region Properties in DB
         [Key]
         public int AppTaskLanguageID { get; set; }
+        [CSSPEnumType]
+        public DBCommandEnum DBCommand { get; set; }
         [CSSPExist(ExistTypeName = "AppTask", ExistPlurial = "s", ExistFieldID = "AppTaskID")]
         [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int AppTaskID { get; set; }

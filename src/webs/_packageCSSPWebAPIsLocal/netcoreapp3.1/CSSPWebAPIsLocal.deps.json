@@ -2241,6 +2241,7 @@
       },
       "CSSPWebModels/1.0.0": {
         "dependencies": {
+          "CSSPDBLocalModels": "1.0.0",
           "CSSPEnums": "1.0.0",
           "CSSPHelperModels": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.8",

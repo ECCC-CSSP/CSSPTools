@@ -1,23 +1,32 @@
 <mat-list *ngFor="let webBase of TVItemList; let i = index">
-    <app-area-tvitem-list-item-menu [TVItemModel]="webBase.TVItemModel" [AppState]="AppState">
-    </app-area-tvitem-list-item-menu>
-    
-    <button mat-button (click)="subPageService.SetSubPage(webBase.TVItemModel)">
-        <span [ngClass]="webBase.TVItemModel?.TVItem?.IsActive ? '' : 'inactive'">
+    <app-tvitem-menu [TVItemModel]="webBase?.TVItemModel" [AppState]="AppState">
+    </app-tvitem-menu>
+
+    <button mat-button (click)="subPageService.SetSubPage(webBase?.TVItemModel)">
+        <span [ngClass]="webBase?.TVItemModel?.TVItem?.IsActive ? '' : 'inactive'">
             <span *ngIf="appStateService.AppState$?.getValue()?.MapVisible">
                 {{ i + 1 }}&nbsp;-&nbsp;
             </span>
             <span *ngIf="appStateService.AppState$?.getValue()?.DetailVisible">
-                [{{ webBase.TVItemModel.TVItem.TVItemID }}]
+                [{{ webBase?.TVItemModel.TVItem.TVItemID }}]
             </span>
-            {{ webBase.TVItemModel?.TVItemLanguageList[this.appStateService.AppState$.getValue().Language]?.TVText }}
+            {{ webBase?.TVItemModel?.TVItemLanguageList[this.appStateService.AppState$.getValue().Language]?.TVText }}
         </span>
         <app-stat-count *ngIf="appStateService.AppState$.getValue().StatCountVisible" [TVType]="null"
-            [TVItemModel]="webBase.TVItemModel"></app-stat-count>
+            [TVItemModel]="webBase?.TVItemModel"></app-stat-count>
         <app-last-udpate-tv-item-model *ngIf="appStateService.AppState$?.getValue()?.LastUpdateVisible"
-            [TVItemModel]="webBase.TVItemModel"></app-last-udpate-tv-item-model>
+            [TVItemModel]="webBase?.TVItemModel"></app-last-udpate-tv-item-model>
     </button>
-    
-    <app-area-tvitem-list-detail [AppState]="AppState" *ngIf="AppState?.DetailVisible" [TVItemModel]="webBase.TVItemModel">
+
+    <app-area-item-view *ngIf="showTVItemService.TVItemVisible(webBase?.TVItemModel)"
+        [TVItemModel]="webBase?.TVItemModel" [AppState]="AppState">
+    </app-area-item-view>
+
+    <app-area-item-edit *ngIf="AppState.EditVisible"
+        [TVItemModel]="webBase?.TVItemModel" [AppState]="AppState">
+    </app-area-item-edit>
+
+    <app-area-tvitem-list-detail [AppState]="AppState" *ngIf="AppState?.DetailVisible"
+        [TVItemModel]="webBase?.TVItemModel">
     </app-area-tvitem-list-detail>
 </mat-list>

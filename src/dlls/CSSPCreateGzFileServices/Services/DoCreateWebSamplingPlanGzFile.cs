@@ -20,31 +20,31 @@ namespace CreateGzFileServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            SamplingPlan samplingPlan = await GetSamplingPlanWithSamplingPlanID(SamplingPlanID);
+            SamplingPlan SamplingPlan = await GetSamplingPlanWithSamplingPlanID(SamplingPlanID);
 
-            if (samplingPlan == null)
+            if (SamplingPlan == null)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._CouldNotBeFoundFor_Equal_,
                     "SamplingPlan", "SamplingPlanID", SamplingPlanID.ToString())));
             }
 
-            TVItem tvItemProvince = await GetTVItemWithTVItemID(samplingPlan.ProvinceTVItemID);
+            TVItem TVItemProvince = await GetTVItemWithTVItemID(SamplingPlan.ProvinceTVItemID);
 
-            if (tvItemProvince == null)
+            if (TVItemProvince == null)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._CouldNotBeFoundFor_Equal_,
-                    "TVItem", "ProvinceTVItemID", samplingPlan.ProvinceTVItemID.ToString())));
+                    "TVItem", "ProvinceTVItemID", SamplingPlan.ProvinceTVItemID.ToString())));
             }
 
             WebSamplingPlan webSamplingPlan = new WebSamplingPlan();
 
             try
             {
-                await FillTVItemModel(webSamplingPlan.TVItemModel, tvItemProvince);
+                await FillTVItemModel(webSamplingPlan.TVItemModel, TVItemProvince);
 
-                await FillParentListTVItemModelList(webSamplingPlan.TVItemParentList, tvItemProvince);
+                await FillParentListTVItemModelList(webSamplingPlan.TVItemParentList, TVItemProvince);
 
-                await FillSamplingPlanModel(webSamplingPlan.SamplingPlanModel, samplingPlan);
+                await FillSamplingPlanModel(webSamplingPlan.SamplingPlanModel, SamplingPlan);
 
                 await DoStore<WebSamplingPlan>(webSamplingPlan, $"WebSamplingPlan_{SamplingPlanID}.gz");
             }

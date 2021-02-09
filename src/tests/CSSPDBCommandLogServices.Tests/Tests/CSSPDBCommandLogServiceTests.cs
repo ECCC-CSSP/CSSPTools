@@ -175,7 +175,7 @@ namespace CSSPDBCommandLogServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            LocalService.LoggedInContactInfo = null;
+//            LocalService.LoggedInContactInfo = null;
 
             CSSPCommandLog csspCSSPCommandLog = new CSSPCommandLog()
             {

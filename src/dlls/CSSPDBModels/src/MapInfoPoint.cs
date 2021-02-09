@@ -16,6 +16,8 @@ namespace CSSPDBModels
         #region Properties in DB
         [Key]
         public int MapInfoPointID { get; set; }
+        [CSSPEnumType]
+        public DBCommandEnum DBCommand { get; set; }
         [CSSPExist(ExistTypeName = "MapInfo", ExistPlurial = "s", ExistFieldID = "MapInfoID")]
         [CSSPForeignKey(TableName = "MapInfos", FieldName = "MapInfoID")]
         public int MapInfoID { get; set; }

@@ -2751,15 +2751,6 @@
   <data name="PolSourceSiteSubComponentEnumInformation" xml:space="preserve">
     <value>Information</value>
   </data>
-  <data name="LocalDBCommandEnumChange" xml:space="preserve">
-    <value>Changer</value>
-  </data>
-  <data name="LocalDBCommandEnumDelete" xml:space="preserve">
-    <value>Effacer</value>
-  </data>
-  <data name="LocalDBCommandEnumNew" xml:space="preserve">
-    <value>Nouveau</value>
-  </data>
   <data name="MikeScenarioSubComponentEnumFiles" xml:space="preserve">
     <value>Fichiers</value>
   </data>
@@ -2777,5 +2768,17 @@
   </data>
   <data name="ShellSubComponentEnumMikeScenario" xml:space="preserve">
     <value>Scénario MIKE</value>
+  </data>
+  <data name="DBCommandEnumCreated" xml:space="preserve">
+    <value>Créé</value>
+  </data>
+  <data name="DBCommandEnumDeleted" xml:space="preserve">
+    <value>Effacé</value>
+  </data>
+  <data name="DBCommandEnumModified" xml:space="preserve">
+    <value>Modifié</value>
+  </data>
+  <data name="DBCommandEnumOriginal" xml:space="preserve">
+    <value>Original</value>
   </data>
 </root>

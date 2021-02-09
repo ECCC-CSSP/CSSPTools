@@ -1,6 +1,6 @@
 <mat-list *ngFor="let webBase of TVItemList; let i = index">
-    <app-mike-scenario-tvitem-list-item-menu [TVItemModel]="webBase.TVItemModel" [AppState]="AppState">
-    </app-mike-scenario-tvitem-list-item-menu>
+    <app-tvitem-menu [TVItemModel]="webBase.TVItemModel" [AppState]="AppState">
+    </app-tvitem-menu>
 
     <button mat-button (click)="subPageService.SetSubPage(webBase.TVItemModel)">
         <span [ngClass]="webBase.TVItemModel?.TVItem?.IsActive ? '' : 'inactive'">
@@ -17,7 +17,15 @@
         <app-last-udpate-tv-item-model *ngIf="appStateService.AppState$?.getValue()?.LastUpdateVisible"
             [TVItemModel]="webBase.TVItemModel"></app-last-udpate-tv-item-model>
     </button>
-    
+
+    <app-mike-scenario-item-view *ngIf="showTVItemService.TVItemVisible(webBase?.TVItemModel)"
+        [TVItemModel]="webBase?.TVItemModel" [AppState]="AppState">
+    </app-mike-scenario-item-view>
+
+    <app-mike-scenario-item-edit *ngIf="AppState.EditVisible"
+        [TVItemModel]="webBase?.TVItemModel" [AppState]="AppState">
+    </app-mike-scenario-item-edit>
+
     <app-mike-scenario-tvitem-list-detail [AppState]="AppState" *ngIf="AppState?.DetailVisible"
         [TVItemModel]="webBase.TVItemModel">
     </app-mike-scenario-tvitem-list-detail>

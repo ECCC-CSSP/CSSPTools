@@ -8,7 +8,7 @@ using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
 using Xunit;
-using LocalServices;
+//using LocalServices;
 using CSSPEnums;
 using CSSPDBPreferenceServices;
 using CSSPDBPreferenceModels;
@@ -26,7 +26,7 @@ namespace PreferenceServices.Tests
         private IServiceProvider ServiceProvider { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
         private IPreferenceService PreferenceService { get; set; }
-        private ILocalService LocalService { get; set; }
+//        private ILocalService LocalService { get; set; }
         private string CSSPDBPreferenceFileName { get; set; }
         #endregion Properties
 
@@ -52,7 +52,7 @@ namespace PreferenceServices.Tests
             ServiceCollection.AddSingleton<IConfiguration>(Configuration);
             ServiceCollection.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             ServiceCollection.AddSingleton<IEnums, Enums>();
-            ServiceCollection.AddSingleton<ILocalService, LocalService>();
+//            ServiceCollection.AddSingleton<ILocalService, LocalService>();
             ServiceCollection.AddSingleton<IPreferenceService, PreferenceService>();
 
             /* ---------------------------------------------------------------------------------

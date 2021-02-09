@@ -160,6 +160,8 @@ export interface AppLanguage {
     RootShowExportArcGISTools: string[];
     RootExportArcGIS: string[];
 
+    Saving: string[];
+    
     SearchSearch: string[];
 
     ShellApplicationName: string[];

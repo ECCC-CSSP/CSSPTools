@@ -10,7 +10,6 @@ using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
-using CSSPDBLocalModels;
 using CSSPDBPreferenceModels;
 using CSSPDBCommandLogModels;
 using CSSPDBSearchModels;
@@ -42,7 +41,7 @@ namespace CSSPSQLiteServices
 
         #region Properties
         public string Error { get; set; }
-        private CSSPDBLocalContext dbLocal { get; }
+        private CSSPDBContext dbLocal { get; }
         private CSSPDBSearchContext dbSearch { get; }
         private CSSPDBCommandLogContext dbCommandLog { get; }
         private CSSPDBPreferenceContext dbLogin { get; }
@@ -55,7 +54,7 @@ namespace CSSPSQLiteServices
 
         #region Constructors
         public CSSPSQLiteService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, 
-            CSSPDBLocalContext dbLocal, CSSPDBSearchContext dbSearch, CSSPDBCommandLogContext dbCommandLog,
+            CSSPDBContext dbLocal, CSSPDBSearchContext dbSearch, CSSPDBCommandLogContext dbCommandLog,
             CSSPDBPreferenceContext dbLogin, CSSPDBFilesManagementContext dbFM)
         {
             this.Configuration = Configuration;

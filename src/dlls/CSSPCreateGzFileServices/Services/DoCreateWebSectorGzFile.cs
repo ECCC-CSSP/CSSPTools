@@ -23,9 +23,9 @@ namespace CreateGzFileServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            TVItem tvItemSector = await GetTVItemWithTVItemID(SectorTVItemID);
+            TVItem TVItemSector = await GetTVItemWithTVItemID(SectorTVItemID);
 
-            if (tvItemSector == null || tvItemSector.TVType != TVTypeEnum.Sector)
+            if (TVItemSector == null || TVItemSector.TVType != TVTypeEnum.Sector)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._CouldNotBeFoundFor_Equal_And_Equal_,
                     "TVItem", SectorTVItemID.ToString(), "TVType", TVTypeEnum.Sector.ToString())));
@@ -35,15 +35,15 @@ namespace CreateGzFileServices
 
             try
             {
-                await FillTVItemModel(webSector.TVItemModel, tvItemSector);
+                await FillTVItemModel(webSector.TVItemModel, TVItemSector);
 
-                await FillParentListTVItemModelList(webSector.TVItemParentList, tvItemSector);
+                await FillParentListTVItemModelList(webSector.TVItemParentList, TVItemSector);
 
-                await FillChildListTVItemModelList(webSector.TVItemSubsectorList, tvItemSector, TVTypeEnum.Subsector);
+                await FillChildListTVItemModelList(webSector.TVItemSubsectorList, TVItemSector, TVTypeEnum.Subsector);
 
-                await FillChildListTVItemMIKEScenarioModelList(webSector.MIKEScenarioModelList, tvItemSector, TVTypeEnum.MikeScenario);
+                await FillChildListTVItemMIKEScenarioModelList(webSector.MIKEScenarioModelList, TVItemSector, TVTypeEnum.MikeScenario);
 
-                await FillChildListTVItemModelList(webSector.TVItemMikeScenarioList, tvItemSector, TVTypeEnum.MikeScenario);
+                await FillChildListTVItemModelList(webSector.TVItemMikeScenarioList, TVItemSector, TVTypeEnum.MikeScenario);
 
                 await DoStore<WebSector>(webSector, $"WebSector_{SectorTVItemID}.gz");
             }

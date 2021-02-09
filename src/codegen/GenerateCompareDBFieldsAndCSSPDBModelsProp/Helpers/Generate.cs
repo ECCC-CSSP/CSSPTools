@@ -12,11 +12,11 @@ namespace GenerateCompareDBFieldsAndCSSPDBModelsProp
         public async Task<bool> Generate()
         {
 
-            string CSSPDB2 = Config.GetValue<string>("CSSPDB2");
+            string CSSPDB = Config.GetValue<string>("CSSPDB");
 
-            if (CSSPDB2 == null)
+            if (CSSPDB == null)
             {
-                Console.WriteLine("CSSPDB2 == null");
+                Console.WriteLine("CSSPDB == null");
                 return await Task.FromResult(false);
             }
 
@@ -28,7 +28,7 @@ namespace GenerateCompareDBFieldsAndCSSPDBModelsProp
             List<TypeProp> typePropList = new List<TypeProp>();
 
             // loading what currently exist in the DB
-            if (!await LoadDBInfo(tableCSSPWebList, CSSPDB2)) return await Task.FromResult(false);
+            if (!await LoadDBInfo(tableCSSPWebList, CSSPDB)) return await Task.FromResult(false);
 
             // Loading what exist in the compiled CSSPDBModels.dll
             if (!await LoadCSSPDBModelsDLLInfo(typePropList)) return await Task.FromResult(false);

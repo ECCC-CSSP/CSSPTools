@@ -21,9 +21,9 @@ namespace CreateGzFileServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            TVItem tvItemMunicipality = await GetTVItemWithTVItemID(MunicipalityTVItemID);
+            TVItem TVItemMunicipality = await GetTVItemWithTVItemID(MunicipalityTVItemID);
 
-            if (tvItemMunicipality == null || tvItemMunicipality.TVType != TVTypeEnum.Municipality)
+            if (TVItemMunicipality == null || TVItemMunicipality.TVType != TVTypeEnum.Municipality)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._CouldNotBeFoundFor_Equal_And_Equal_,
                     "TVItem", MunicipalityTVItemID.ToString(), "TVType", TVTypeEnum.Municipality.ToString())));
@@ -33,19 +33,19 @@ namespace CreateGzFileServices
 
             try
             {
-                await FillTVItemModel(webMunicipality.TVItemModel, tvItemMunicipality);
+                await FillTVItemModel(webMunicipality.TVItemModel, TVItemMunicipality);
 
-                await FillParentListTVItemModelList(webMunicipality.TVItemParentList, tvItemMunicipality);
+                await FillParentListTVItemModelList(webMunicipality.TVItemParentList, TVItemMunicipality);
 
-                await FillChildListTVItemModelList(webMunicipality.TVItemMikeScenarioList, tvItemMunicipality, TVTypeEnum.MikeScenario);
+                await FillChildListTVItemModelList(webMunicipality.TVItemMikeScenarioList, TVItemMunicipality, TVTypeEnum.MikeScenario);
 
-                await FillChildListTVItemInfrastructureModelList(webMunicipality.InfrastructureModelList, tvItemMunicipality, TVTypeEnum.Infrastructure);
+                await FillChildListTVItemInfrastructureModelList(webMunicipality.InfrastructureModelList, TVItemMunicipality, TVTypeEnum.Infrastructure);
 
-                await FillChildListTVItemMIKEScenarioModelList(webMunicipality.MIKEScenarioModelList, tvItemMunicipality, TVTypeEnum.MikeScenario);
+                await FillChildListTVItemMIKEScenarioModelList(webMunicipality.MIKEScenarioModelList, TVItemMunicipality, TVTypeEnum.MikeScenario);
 
-                await FillChildListTVItemContactModelList(webMunicipality.MunicipalityContactModelList, tvItemMunicipality);
+                await FillChildListTVItemContactModelList(webMunicipality.MunicipalityContactModelList, TVItemMunicipality);
 
-                webMunicipality.MunicipalityTVItemLinkList = await GetInfrastructureTVItemLinkListUnderMunicipality(tvItemMunicipality);
+                webMunicipality.MunicipalityTVItemLinkList = await GetInfrastructureTVItemLinkListUnderMunicipality(TVItemMunicipality);
 
                 await DoStore<WebMunicipality>(webMunicipality, $"WebMunicipality_{MunicipalityTVItemID}.gz");
             }

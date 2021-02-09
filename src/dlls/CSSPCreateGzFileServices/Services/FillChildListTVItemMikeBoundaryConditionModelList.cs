@@ -27,31 +27,31 @@ namespace CreateGzFileServices
 
             foreach (TVItem tvItem in TVItemList)
             {
-                MikeBoundaryConditionModel mikeBoundaryConditionModel = new MikeBoundaryConditionModel();
-                mikeBoundaryConditionModel.TVItemModel.TVItem = tvItem;
-                mikeBoundaryConditionModel.TVItemModel.TVItemLanguageList = new List<TVItemLanguage>()
+                MikeBoundaryConditionModel MikeBoundaryConditionModel = new MikeBoundaryConditionModel();
+                MikeBoundaryConditionModel.TVItemModel.TVItem = tvItem;
+                MikeBoundaryConditionModel.TVItemModel.TVItemLanguageList = new List<TVItemLanguage>()
                 {
                     TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID && c.Language == LanguageEnum.en).FirstOrDefault(),
                     TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID && c.Language == LanguageEnum.en).FirstOrDefault(),
                     TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID && c.Language == LanguageEnum.fr).FirstOrDefault()
                 };
 
-                mikeBoundaryConditionModel.TVItemModel.TVItemStatList = TVItemStatList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
+                MikeBoundaryConditionModel.TVItemModel.TVItemStatList = TVItemStatList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
 
-                foreach (MapInfo mapInfo in MapInfoList)
+                foreach (MapInfo MapInfo in MapInfoList)
                 {
-                    if (mapInfo.TVItemID == tvItem.TVItemID)
+                    if (MapInfo.TVItemID == tvItem.TVItemID)
                     {
-                        MapInfoModel mapInfoModel = new MapInfoModel();
-                        mapInfoModel.MapInfo = mapInfo;
-                        mapInfoModel.MapInfoPointList = MapInfoPointList.Where(c => c.MapInfoID == mapInfo.MapInfoID).Select(c => c).ToList();
-                        mikeBoundaryConditionModel.TVItemModel.MapInfoModelList.Add(mapInfoModel);
+                        MapInfoModel MapInfoModel = new MapInfoModel();
+                        MapInfoModel.MapInfo = MapInfo;
+                        MapInfoModel.MapInfoPointList = MapInfoPointList.Where(c => c.MapInfoID == MapInfo.MapInfoID).Select(c => c).ToList();
+                        MikeBoundaryConditionModel.TVItemModel.MapInfoModelList.Add(MapInfoModel);
                     }
                 }
 
-                mikeBoundaryConditionModel.MikeBoundaryConditionList = MikeBoundaryConditionList.Where(c => c.MikeBoundaryConditionTVItemID == tvItem.TVItemID && c.TVType == TVType).ToList();
+                MikeBoundaryConditionModel.MikeBoundaryConditionList = MikeBoundaryConditionList.Where(c => c.MikeBoundaryConditionTVItemID == tvItem.TVItemID && c.TVType == TVType).ToList();
 
-                MikeBoundaryConditionModelList.Add(mikeBoundaryConditionModel);
+                MikeBoundaryConditionModelList.Add(MikeBoundaryConditionModel);
             }
         }
     }

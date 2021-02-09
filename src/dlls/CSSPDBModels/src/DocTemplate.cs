@@ -17,6 +17,8 @@ namespace CSSPDBModels
         [Key]
         public int DocTemplateID { get; set; }
         [CSSPEnumType]
+        public DBCommandEnum DBCommand { get; set; }
+        [CSSPEnumType]
         public LanguageEnum Language { get; set; }
         [CSSPEnumType]
         public TVTypeEnum TVType { get; set; }

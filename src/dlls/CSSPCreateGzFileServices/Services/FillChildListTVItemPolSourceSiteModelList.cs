@@ -32,43 +32,43 @@ namespace CreateGzFileServices
 
             foreach (TVItem tvItem in TVItemList)
             {
-                PolSourceSiteModel polSourceSiteModel = new PolSourceSiteModel();
-                polSourceSiteModel.TVItemModel.TVItem = tvItem;
-                polSourceSiteModel.TVItemModel.TVItemLanguageList = new List<TVItemLanguage>()
+                PolSourceSiteModel PolSourceSiteModel = new PolSourceSiteModel();
+                PolSourceSiteModel.TVItemModel.TVItem = tvItem;
+                PolSourceSiteModel.TVItemModel.TVItemLanguageList = new List<TVItemLanguage>()
                 {
                     TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID && c.Language == LanguageEnum.en).FirstOrDefault(),
                     TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID && c.Language == LanguageEnum.en).FirstOrDefault(),
                     TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID && c.Language == LanguageEnum.fr).FirstOrDefault()
                 };
 
-                polSourceSiteModel.TVItemModel.TVItemStatList = TVItemStatList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
+                PolSourceSiteModel.TVItemModel.TVItemStatList = TVItemStatList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
 
-                foreach (MapInfo mapInfo in MapInfoList)
+                foreach (MapInfo MapInfo in MapInfoList)
                 {
-                    if (mapInfo.TVItemID == tvItem.TVItemID)
+                    if (MapInfo.TVItemID == tvItem.TVItemID)
                     {
-                        MapInfoModel mapInfoModel = new MapInfoModel();
-                        mapInfoModel.MapInfo = mapInfo;
-                        mapInfoModel.MapInfoPointList = MapInfoPointList.Where(c => c.MapInfoID == mapInfo.MapInfoID).Select(c => c).ToList();
-                        polSourceSiteModel.TVItemModel.MapInfoModelList.Add(mapInfoModel);
+                        MapInfoModel MapInfoModel = new MapInfoModel();
+                        MapInfoModel.MapInfo = MapInfo;
+                        MapInfoModel.MapInfoPointList = MapInfoPointList.Where(c => c.MapInfoID == MapInfo.MapInfoID).Select(c => c).ToList();
+                        PolSourceSiteModel.TVItemModel.MapInfoModelList.Add(MapInfoModel);
                     }
                 }
 
-                polSourceSiteModel.PolSourceSite = PolSourceSiteList.Where(c => c.PolSourceSiteTVItemID == tvItem.TVItemID).FirstOrDefault();
+                PolSourceSiteModel.PolSourceSite = PolSourceSiteList.Where(c => c.PolSourceSiteTVItemID == tvItem.TVItemID).FirstOrDefault();
 
-                foreach (PolSourceObservation polSourceObservation in PolSourceObservationList.Where(c => c.PolSourceSiteID == polSourceSiteModel.PolSourceSite.PolSourceSiteID))
+                foreach (PolSourceObservation PolSourceObservation in PolSourceObservationList.Where(c => c.PolSourceSiteID == PolSourceSiteModel.PolSourceSite.PolSourceSiteID))
                 {
-                    PolSourceObservationModel polSourceObservationModel = new PolSourceObservationModel();
-                    polSourceObservationModel.PolSourceObservation = polSourceObservation;
-                    polSourceObservationModel.PolSourceObservationIssueList = PolSourceObservationIssueList.Where(c => c.PolSourceObservationID == polSourceObservation.PolSourceObservationID).ToList();
+                    PolSourceObservationModel PolSourceObservationModel = new PolSourceObservationModel();
+                    PolSourceObservationModel.PolSourceObservation = PolSourceObservation;
+                    PolSourceObservationModel.PolSourceObservationIssueList = PolSourceObservationIssueList.Where(c => c.PolSourceObservationID == PolSourceObservation.PolSourceObservationID).ToList();
 
-                    polSourceSiteModel.PolSourceObservationModelList.Add(polSourceObservationModel);
+                    PolSourceSiteModel.PolSourceObservationModelList.Add(PolSourceObservationModel);
                 }
 
-                polSourceSiteModel.PolSourceSiteEffectList = PolSourceSiteEffectList.Where(c => c.PolSourceSiteOrInfrastructureTVItemID == tvItem.TVItemID).ToList();
-                polSourceSiteModel.PolSourceSiteCivicAddress = PolSourceSiteCivicAddressList.Where(c => c.AddressTVItemID == tvItem.TVItemID).FirstOrDefault();
+                PolSourceSiteModel.PolSourceSiteEffectList = PolSourceSiteEffectList.Where(c => c.PolSourceSiteOrInfrastructureTVItemID == tvItem.TVItemID).ToList();
+                PolSourceSiteModel.PolSourceSiteCivicAddress = PolSourceSiteCivicAddressList.Where(c => c.AddressTVItemID == tvItem.TVItemID).FirstOrDefault();
 
-                PolSourceSiteModelList.Add(polSourceSiteModel);
+                PolSourceSiteModelList.Add(PolSourceSiteModel);
             }
         }
     }

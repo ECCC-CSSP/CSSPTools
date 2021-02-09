@@ -9,7 +9,7 @@ using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
 using Xunit;
-using LocalServices;
+//using LocalServices;
 using CSSPDBPreferenceModels;
 using CSSPDBCommandLogModels;
 
@@ -26,7 +26,7 @@ namespace CSSPDBCommandLogServices.Tests
         private IServiceProvider ServiceProvider { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
         private ICSSPDBCommandLogService CSSPDBCommandLogService { get; set; }
-        private ILocalService LocalService { get; set; }
+//        private ILocalService LocalService { get; set; }
         private string CSSPDBCommandLogFileName { get; set; }
         private string CSSPDBPreferenceFileName { get; set; }
         private string Id { get; set; }
@@ -53,7 +53,7 @@ namespace CSSPDBCommandLogServices.Tests
 
             ServiceCollection.AddSingleton<IConfiguration>(Configuration);
             ServiceCollection.AddSingleton<ICSSPCultureService, CSSPCultureService>();
-            ServiceCollection.AddSingleton<ILocalService, LocalService>();
+//            ServiceCollection.AddSingleton<ILocalService, LocalService>();
             ServiceCollection.AddSingleton<ICSSPDBCommandLogService, CSSPDBCommandLogService>();
 
             /* ---------------------------------------------------------------------------------
@@ -103,12 +103,12 @@ namespace CSSPDBCommandLogServices.Tests
             CSSPDBCommandLogService = ServiceProvider.GetService<ICSSPDBCommandLogService>();
             Assert.NotNull(CSSPDBCommandLogService);
 
-            LocalService = ServiceProvider.GetService<ILocalService>();
-            Assert.NotNull(LocalService);
+            //LocalService = ServiceProvider.GetService<ILocalService>();
+            //Assert.NotNull(LocalService);
 
-            await LocalService.SetLoggedInContactInfo();
-            Assert.NotNull(LocalService.LoggedInContactInfo);
-            Assert.NotNull(LocalService.LoggedInContactInfo.LoggedInContact);
+            //await LocalService.SetLoggedInContactInfo();
+            //Assert.NotNull(LocalService.LoggedInContactInfo);
+            //Assert.NotNull(LocalService.LoggedInContactInfo.LoggedInContact);
 
 
             return await Task.FromResult(true);

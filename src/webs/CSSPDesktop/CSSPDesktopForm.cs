@@ -26,7 +26,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using CSSPDBPreferenceModels;
 using CSSPHelperModels;
-using CSSPDBLocalModels;
 using CSSPDBSearchModels;
 using CSSPDBCommandLogModels;
 using CSSPDBFilesManagementModels;
@@ -493,7 +492,7 @@ namespace CSSPDesktop
 
             FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocal);
 
-            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            Services.AddDbContext<CSSPDBContext>(options =>
             {
                 options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
             });

@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace CreateGzFileServices
 {
@@ -36,6 +37,7 @@ namespace CreateGzFileServices
                           where c.TVItemID == cl.TVItemID
                           && c.TVItemID == TVItemID
                           select cl).AsNoTracking().ToListAsync();
+
         }
         private async Task<List<TVItemStat>> GetTVItemStatListWithTVItemID(int TVItemID)
         {
@@ -83,55 +85,57 @@ namespace CreateGzFileServices
                           && c.TVItemID == TVItemID
                           select fl).AsNoTracking().ToListAsync();
         }
-        private async Task<List<TVItem>> GetTVItemChildrenListWithTVItemID(TVItem parentTVItem, TVTypeEnum tvType)
+        private async Task<List<TVItem>> GetTVItemChildrenListWithTVItemID(TVItem ParentTVItem, TVTypeEnum tvType)
         {
             if (tvType == TVTypeEnum.MikeBoundaryConditionMesh || tvType == TVTypeEnum.MikeBoundaryConditionWebTide)
             {
                 return await (from c in db.TVItems
-                              where c.TVPath.Contains(parentTVItem.TVPath + "p")
-                              && c.ParentID == parentTVItem.TVItemID
+                              where c.TVPath.Contains(ParentTVItem.TVPath + "p")
+                              && c.ParentID == ParentTVItem.TVItemID
                               && (c.TVType == TVTypeEnum.MikeBoundaryConditionMesh
                               || c.TVType == TVTypeEnum.MikeBoundaryConditionWebTide)
                               select c).AsNoTracking().ToListAsync();
             }
 
             return await (from c in db.TVItems
-                          where c.TVPath.Contains(parentTVItem.TVPath + "p")
-                          && c.ParentID == parentTVItem.TVItemID
+                          where c.TVPath.Contains(ParentTVItem.TVPath + "p")
+                          && c.ParentID == ParentTVItem.TVItemID
                           && c.TVType == tvType
                           select c).AsNoTracking().ToListAsync();
         }
-        private async Task<List<TVItemLanguage>> GetTVItemLanguageChildrenListWithTVItemID(TVItem parentTVItem, TVTypeEnum tvType)
+        private async Task<List<TVItemLanguage>> GetTVItemLanguageChildrenListWithTVItemID(TVItem ParentTVItem, TVTypeEnum tvType)
         {
             if (tvType == TVTypeEnum.MikeBoundaryConditionMesh || tvType == TVTypeEnum.MikeBoundaryConditionWebTide)
             {
                 return await (from c in db.TVItems
                               from cl in db.TVItemLanguages
                               where c.TVItemID == cl.TVItemID
-                              && c.TVPath.Contains(parentTVItem.TVPath + "p")
-                              && c.ParentID == parentTVItem.TVItemID
+                              && c.TVPath.Contains(ParentTVItem.TVPath + "p")
+                              && c.ParentID == ParentTVItem.TVItemID
                               && (c.TVType == TVTypeEnum.MikeBoundaryConditionMesh
                               || c.TVType == TVTypeEnum.MikeBoundaryConditionWebTide)
                               select cl).AsNoTracking().ToListAsync();
+
             }
 
             return await (from c in db.TVItems
                           from cl in db.TVItemLanguages
                           where c.TVItemID == cl.TVItemID
-                          && c.TVPath.Contains(parentTVItem.TVPath + "p")
-                          && c.ParentID == parentTVItem.TVItemID
+                          && c.TVPath.Contains(ParentTVItem.TVPath + "p")
+                          && c.ParentID == ParentTVItem.TVItemID
                           && c.TVType == tvType
                           select cl).AsNoTracking().ToListAsync();
+
         }
-        private async Task<List<TVItemStat>> GetTVItemStatChildrenListWithTVItemID(TVItem parentTVItem, TVTypeEnum tvType)
+        private async Task<List<TVItemStat>> GetTVItemStatChildrenListWithTVItemID(TVItem ParentTVItem, TVTypeEnum tvType)
         {
             if (tvType == TVTypeEnum.MikeBoundaryConditionMesh || tvType == TVTypeEnum.MikeBoundaryConditionWebTide)
             {
                 return await (from c in db.TVItems
                               from cs in db.TVItemStats
                               where c.TVItemID == cs.TVItemID
-                              && c.TVPath.Contains(parentTVItem.TVPath + "p")
-                              && c.ParentID == parentTVItem.TVItemID
+                              && c.TVPath.Contains(ParentTVItem.TVPath + "p")
+                              && c.ParentID == ParentTVItem.TVItemID
                               && (c.TVType == TVTypeEnum.MikeBoundaryConditionMesh
                               || c.TVType == TVTypeEnum.MikeBoundaryConditionWebTide)
                               select cs).AsNoTracking().ToListAsync();
@@ -140,20 +144,20 @@ namespace CreateGzFileServices
             return await (from c in db.TVItems
                           from cs in db.TVItemStats
                           where c.TVItemID == cs.TVItemID
-                          && c.TVPath.Contains(parentTVItem.TVPath + "p")
-                          && c.ParentID == parentTVItem.TVItemID
+                          && c.TVPath.Contains(ParentTVItem.TVPath + "p")
+                          && c.ParentID == ParentTVItem.TVItemID
                           && c.TVType == tvType
                           select cs).AsNoTracking().ToListAsync();
         }
-        private async Task<List<MapInfo>> GetMapInfoChildrenListWithTVItemID(TVItem parentTVItem, TVTypeEnum tvType)
+        private async Task<List<MapInfo>> GetMapInfoChildrenListWithTVItemID(TVItem ParentTVItem, TVTypeEnum tvType)
         {
             if (tvType == TVTypeEnum.MikeBoundaryConditionMesh || tvType == TVTypeEnum.MikeBoundaryConditionWebTide)
             {
                 return await (from c in db.TVItems
                               from mi in db.MapInfos
                               where c.TVItemID == mi.TVItemID
-                              && c.TVPath.Contains(parentTVItem.TVPath + "p")
-                              && c.ParentID == parentTVItem.TVItemID
+                              && c.TVPath.Contains(ParentTVItem.TVPath + "p")
+                              && c.ParentID == ParentTVItem.TVItemID
                               && (c.TVType == TVTypeEnum.MikeBoundaryConditionMesh
                               || c.TVType == TVTypeEnum.MikeBoundaryConditionWebTide)
                               select mi).AsNoTracking().ToListAsync();
@@ -162,12 +166,12 @@ namespace CreateGzFileServices
             return await (from c in db.TVItems
                           from mi in db.MapInfos
                           where c.TVItemID == mi.TVItemID
-                          && c.TVPath.Contains(parentTVItem.TVPath + "p")
-                          && c.ParentID == parentTVItem.TVItemID
+                          && c.TVPath.Contains(ParentTVItem.TVPath + "p")
+                          && c.ParentID == ParentTVItem.TVItemID
                           && c.TVType == tvType
                           select mi).AsNoTracking().ToListAsync();
         }
-        private async Task<List<MapInfoPoint>> GetMapInfoPointChildrenListWithTVItemID(TVItem parentTVItem, TVTypeEnum tvType)
+        private async Task<List<MapInfoPoint>> GetMapInfoPointChildrenListWithTVItemID(TVItem ParentTVItem, TVTypeEnum tvType)
         {
             if (tvType == TVTypeEnum.MikeBoundaryConditionMesh || tvType == TVTypeEnum.MikeBoundaryConditionWebTide)
             {
@@ -176,8 +180,8 @@ namespace CreateGzFileServices
                               from mip in db.MapInfoPoints
                               where c.TVItemID == mi.TVItemID
                               && mi.MapInfoID == mip.MapInfoID
-                              && c.TVPath.Contains(parentTVItem.TVPath + "p")
-                              && c.ParentID == parentTVItem.TVItemID
+                              && c.TVPath.Contains(ParentTVItem.TVPath + "p")
+                              && c.ParentID == ParentTVItem.TVItemID
                               && (c.TVType == TVTypeEnum.MikeBoundaryConditionMesh
                               || c.TVType == TVTypeEnum.MikeBoundaryConditionWebTide)
                               select mip).AsNoTracking().ToListAsync();
@@ -188,8 +192,8 @@ namespace CreateGzFileServices
                           from mip in db.MapInfoPoints
                           where c.TVItemID == mi.TVItemID
                           && mi.MapInfoID == mip.MapInfoID
-                          && c.TVPath.Contains(parentTVItem.TVPath + "p")
-                          && c.ParentID == parentTVItem.TVItemID
+                          && c.TVPath.Contains(ParentTVItem.TVPath + "p")
+                          && c.ParentID == ParentTVItem.TVItemID
                           && c.TVType == tvType
                           select mip).AsNoTracking().ToListAsync();
         }
@@ -199,49 +203,49 @@ namespace CreateGzFileServices
                           where c.ProvinceTVItemID == provinceTVItemID
                           select c).AsNoTracking().ToListAsync();
         }
-        private async Task<List<Infrastructure>> GetInfrastructureListUnderMunicipality(TVItem tvItemMunicipality)
+        private async Task<List<Infrastructure>> GetInfrastructureListUnderMunicipality(TVItem TVItemMunicipality)
         {
             return await (from c in db.TVItems
                           from ci in db.Infrastructures
                           where c.TVItemID == ci.InfrastructureTVItemID
-                          && c.TVPath.Contains(tvItemMunicipality.TVPath + "p")
-                          && c.ParentID == tvItemMunicipality.TVItemID
+                          && c.TVPath.Contains(TVItemMunicipality.TVPath + "p")
+                          && c.ParentID == TVItemMunicipality.TVItemID
                           && c.TVType == TVTypeEnum.Infrastructure
                           select ci).AsNoTracking().ToListAsync();
         }
-        private async Task<List<MikeScenario>> GetMikeScenarioListUnderMunicipality(TVItem tvItemMunicipality)
+        private async Task<List<MikeScenario>> GetMikeScenarioListUnderMunicipality(TVItem TVItemMunicipality)
         {
             return await (from c in db.TVItems
                           from ci in db.MikeScenarios
                           where c.TVItemID == ci.MikeScenarioTVItemID
-                          && c.TVPath.Contains(tvItemMunicipality.TVPath + "p")
-                          && c.ParentID == tvItemMunicipality.TVItemID
+                          && c.TVPath.Contains(TVItemMunicipality.TVPath + "p")
+                          && c.ParentID == TVItemMunicipality.TVItemID
                           && c.TVType == TVTypeEnum.MikeScenario
                           select ci).AsNoTracking().ToListAsync();
         }
-        private async Task<List<MikeSource>> GetMikeSourceListUnderMunicipality(TVItem tvItemMunicipality)
+        private async Task<List<MikeSource>> GetMikeSourceListUnderMunicipality(TVItem TVItemMunicipality)
         {
             return await (from c in db.TVItems
                           from ci in db.MikeSources
                           where c.TVItemID == ci.MikeSourceTVItemID
-                          && c.TVPath.Contains(tvItemMunicipality.TVPath + "p")
-                          && c.ParentID == tvItemMunicipality.TVItemID
+                          && c.TVPath.Contains(TVItemMunicipality.TVPath + "p")
+                          && c.ParentID == TVItemMunicipality.TVItemID
                           && c.TVType == TVTypeEnum.MikeSource
                           select ci).AsNoTracking().ToListAsync();
         }
-        private async Task<List<MikeSourceStartEnd>> GetMikeSourceStartEndListUnderMunicipality(TVItem tvItemMunicipality)
+        private async Task<List<MikeSourceStartEnd>> GetMikeSourceStartEndListUnderMunicipality(TVItem TVItemMunicipality)
         {
             return await (from c in db.TVItems
                           from ci in db.MikeSources
                           from se in db.MikeSourceStartEnds
                           where c.TVItemID == ci.MikeSourceTVItemID
                           && ci.MikeSourceID == se.MikeSourceID
-                          && c.TVPath.Contains(tvItemMunicipality.TVPath + "p")
-                          && c.ParentID == tvItemMunicipality.TVItemID
+                          && c.TVPath.Contains(TVItemMunicipality.TVPath + "p")
+                          && c.ParentID == TVItemMunicipality.TVItemID
                           && c.TVType == TVTypeEnum.MikeSource
                           select se).AsNoTracking().ToListAsync();
         }
-        private async Task<List<TVItemLink>> GetInfrastructureTVItemLinkListUnderMunicipality(TVItem tvItemMunicipality)
+        private async Task<List<TVItemLink>> GetInfrastructureTVItemLinkListUnderMunicipality(TVItem TVItemMunicipality)
         {
             return await (from c in db.TVItems
                           from ci in db.Infrastructures
@@ -249,39 +253,39 @@ namespace CreateGzFileServices
                           where c.TVItemID == ci.InfrastructureTVItemID
                           && (c.TVItemID == t.FromTVItemID
                           || c.TVItemID == t.ToTVItemID)
-                          && c.TVPath.Contains(tvItemMunicipality.TVPath + "p")
-                          && c.ParentID == tvItemMunicipality.TVItemID
+                          && c.TVPath.Contains(TVItemMunicipality.TVPath + "p")
+                          && c.ParentID == TVItemMunicipality.TVItemID
                           && c.TVType == TVTypeEnum.Infrastructure
                           && t.FromTVType == TVTypeEnum.Infrastructure
                           && t.ToTVType == TVTypeEnum.Infrastructure
                           select t).AsNoTracking().ToListAsync();
         }
-        private async Task<Address> GetInfrastructureCivicAddressListUnderMunicipality(TVItem tvItemMunicipality)
+        private async Task<Address> GetInfrastructureCivicAddressListUnderMunicipality(TVItem TVItemMunicipality)
         {
             return await (from c in db.TVItems
                           from ci in db.Infrastructures
                           from a in db.Addresses
                           where c.TVItemID == ci.InfrastructureTVItemID
-                          && c.TVPath.Contains(tvItemMunicipality.TVPath + "p")
-                          && c.ParentID == tvItemMunicipality.TVItemID
+                          && c.TVPath.Contains(TVItemMunicipality.TVPath + "p")
+                          && c.ParentID == TVItemMunicipality.TVItemID
                           && c.TVType == TVTypeEnum.Infrastructure
                           && ci.CivicAddressTVItemID != null
                           && ci.CivicAddressTVItemID == a.AddressTVItemID
                           select a).AsNoTracking().FirstOrDefaultAsync();
         }
-        private async Task<List<MapInfo>> GetInfrastructureMapInfoListUnderMunicipality(TVItem tvItemMunicipality)
+        private async Task<List<MapInfo>> GetInfrastructureMapInfoListUnderMunicipality(TVItem TVItemMunicipality)
         {
             return await (from c in db.TVItems
                           from ci in db.Infrastructures
                           from mi in db.MapInfos
                           where c.TVItemID == ci.InfrastructureTVItemID
                           && c.TVItemID == mi.TVItemID
-                          && c.TVPath.Contains(tvItemMunicipality.TVPath + "p")
-                          && c.ParentID == tvItemMunicipality.TVItemID
+                          && c.TVPath.Contains(TVItemMunicipality.TVPath + "p")
+                          && c.ParentID == TVItemMunicipality.TVItemID
                           && c.TVType == TVTypeEnum.Infrastructure
                           select mi).AsNoTracking().ToListAsync();
         }
-        private async Task<List<MapInfoPoint>> GetInfrastructureMapInfoPointListUnderMunicipality(TVItem tvItemMunicipality)
+        private async Task<List<MapInfoPoint>> GetInfrastructureMapInfoPointListUnderMunicipality(TVItem TVItemMunicipality)
         {
             return await (from c in db.TVItems
                           from ci in db.Infrastructures
@@ -290,36 +294,36 @@ namespace CreateGzFileServices
                           where c.TVItemID == ci.InfrastructureTVItemID
                           && c.TVItemID == mi.TVItemID
                           && mi.MapInfoID == mip.MapInfoID
-                          && c.TVPath.Contains(tvItemMunicipality.TVPath + "p")
-                          && c.ParentID == tvItemMunicipality.TVItemID
+                          && c.TVPath.Contains(TVItemMunicipality.TVPath + "p")
+                          && c.ParentID == TVItemMunicipality.TVItemID
                           && c.TVType == TVTypeEnum.Infrastructure
                           select mip).AsNoTracking().ToListAsync();
         }
-        private async Task<List<InfrastructureLanguage>> GetInfrastructureLanguageListUnderMunicipality(TVItem tvItemMunicipality)
+        private async Task<List<InfrastructureLanguage>> GetInfrastructureLanguageListUnderMunicipality(TVItem TVItemMunicipality)
         {
             return await (from c in db.TVItems
                           from ci in db.Infrastructures
                           from cil in db.InfrastructureLanguages
                           where c.TVItemID == ci.InfrastructureTVItemID
                           && ci.InfrastructureID == cil.InfrastructureID
-                          && c.TVPath.Contains(tvItemMunicipality.TVPath + "p")
-                          && c.ParentID == tvItemMunicipality.TVItemID
+                          && c.TVPath.Contains(TVItemMunicipality.TVPath + "p")
+                          && c.ParentID == TVItemMunicipality.TVItemID
                           && c.TVType == TVTypeEnum.Infrastructure
                           select cil).AsNoTracking().ToListAsync();
         }
-        private async Task<List<BoxModel>> GetBoxModelListUnderMunicipality(TVItem tvItemMunicipality)
+        private async Task<List<BoxModel>> GetBoxModelListUnderMunicipality(TVItem TVItemMunicipality)
         {
             return await (from c in db.TVItems
                           from ci in db.Infrastructures
                           from bm in db.BoxModels
                           where c.TVItemID == ci.InfrastructureTVItemID
                           && ci.InfrastructureTVItemID == bm.InfrastructureTVItemID
-                          && c.TVPath.Contains(tvItemMunicipality.TVPath + "p")
-                          && c.ParentID == tvItemMunicipality.TVItemID
+                          && c.TVPath.Contains(TVItemMunicipality.TVPath + "p")
+                          && c.ParentID == TVItemMunicipality.TVItemID
                           && c.TVType == TVTypeEnum.Infrastructure
                           select bm).AsNoTracking().ToListAsync();
         }
-        private async Task<List<BoxModelLanguage>> GetBoxModelLanguageListUnderMunicipality(TVItem tvItemMunicipality)
+        private async Task<List<BoxModelLanguage>> GetBoxModelLanguageListUnderMunicipality(TVItem TVItemMunicipality)
         {
             return await (from c in db.TVItems
                           from ci in db.Infrastructures
@@ -328,12 +332,12 @@ namespace CreateGzFileServices
                           where c.TVItemID == ci.InfrastructureTVItemID
                           && ci.InfrastructureTVItemID == bm.InfrastructureTVItemID
                           && bm.BoxModelID == bml.BoxModelID
-                          && c.TVPath.Contains(tvItemMunicipality.TVPath + "p")
-                          && c.ParentID == tvItemMunicipality.TVItemID
+                          && c.TVPath.Contains(TVItemMunicipality.TVPath + "p")
+                          && c.ParentID == TVItemMunicipality.TVItemID
                           && c.TVType == TVTypeEnum.Infrastructure
                           select bml).AsNoTracking().ToListAsync();
         }
-        private async Task<List<BoxModelResult>> GetBoxModelResultListUnderMunicipality(TVItem tvItemMunicipality)
+        private async Task<List<BoxModelResult>> GetBoxModelResultListUnderMunicipality(TVItem TVItemMunicipality)
         {
             return await (from c in db.TVItems
                           from ci in db.Infrastructures
@@ -342,24 +346,24 @@ namespace CreateGzFileServices
                           where c.TVItemID == ci.InfrastructureTVItemID
                           && ci.InfrastructureTVItemID == bm.InfrastructureTVItemID
                           && bm.BoxModelID == bmr.BoxModelID
-                          && c.TVPath.Contains(tvItemMunicipality.TVPath + "p")
-                          && c.ParentID == tvItemMunicipality.TVItemID
+                          && c.TVPath.Contains(TVItemMunicipality.TVPath + "p")
+                          && c.ParentID == TVItemMunicipality.TVItemID
                           && c.TVType == TVTypeEnum.Infrastructure
                           select bmr).AsNoTracking().ToListAsync();
         }
-        private async Task<List<VPScenario>> GetVPScenarioListUnderMunicipality(TVItem tvItemMunicipality)
+        private async Task<List<VPScenario>> GetVPScenarioListUnderMunicipality(TVItem TVItemMunicipality)
         {
             return await (from c in db.TVItems
                           from ci in db.Infrastructures
                           from vps in db.VPScenarios
                           where c.TVItemID == ci.InfrastructureTVItemID
                           && ci.InfrastructureTVItemID == vps.InfrastructureTVItemID
-                          && c.TVPath.Contains(tvItemMunicipality.TVPath + "p")
-                          && c.ParentID == tvItemMunicipality.TVItemID
+                          && c.TVPath.Contains(TVItemMunicipality.TVPath + "p")
+                          && c.ParentID == TVItemMunicipality.TVItemID
                           && c.TVType == TVTypeEnum.Infrastructure
                           select vps).AsNoTracking().ToListAsync();
         }
-        private async Task<List<VPScenarioLanguage>> GetVPScenarioLanguageListUnderMunicipality(TVItem tvItemMunicipality)
+        private async Task<List<VPScenarioLanguage>> GetVPScenarioLanguageListUnderMunicipality(TVItem TVItemMunicipality)
         {
             return await (from c in db.TVItems
                           from ci in db.Infrastructures
@@ -368,12 +372,12 @@ namespace CreateGzFileServices
                           where c.TVItemID == ci.InfrastructureTVItemID
                           && ci.InfrastructureTVItemID == vps.InfrastructureTVItemID
                           && vps.VPScenarioID == vpsl.VPScenarioID
-                          && c.TVPath.Contains(tvItemMunicipality.TVPath + "p")
-                          && c.ParentID == tvItemMunicipality.TVItemID
+                          && c.TVPath.Contains(TVItemMunicipality.TVPath + "p")
+                          && c.ParentID == TVItemMunicipality.TVItemID
                           && c.TVType == TVTypeEnum.Infrastructure
                           select vpsl).AsNoTracking().ToListAsync();
         }
-        private async Task<List<VPAmbient>> GetVPAmbientListUnderMunicipality(TVItem tvItemMunicipality)
+        private async Task<List<VPAmbient>> GetVPAmbientListUnderMunicipality(TVItem TVItemMunicipality)
         {
             return await (from c in db.TVItems
                           from ci in db.Infrastructures
@@ -382,12 +386,12 @@ namespace CreateGzFileServices
                           where c.TVItemID == ci.InfrastructureTVItemID
                           && ci.InfrastructureTVItemID == vps.InfrastructureTVItemID
                           && vps.VPScenarioID == vpa.VPScenarioID
-                          && c.TVPath.Contains(tvItemMunicipality.TVPath + "p")
-                          && c.ParentID == tvItemMunicipality.TVItemID
+                          && c.TVPath.Contains(TVItemMunicipality.TVPath + "p")
+                          && c.ParentID == TVItemMunicipality.TVItemID
                           && c.TVType == TVTypeEnum.Infrastructure
                           select vpa).AsNoTracking().ToListAsync();
         }
-        private async Task<List<VPResult>> GetVPResultListUnderMunicipality(TVItem tvItemMunicipality)
+        private async Task<List<VPResult>> GetVPResultListUnderMunicipality(TVItem TVItemMunicipality)
         {
             return await (from c in db.TVItems
                           from ci in db.Infrastructures
@@ -396,8 +400,8 @@ namespace CreateGzFileServices
                           where c.TVItemID == ci.InfrastructureTVItemID
                           && ci.InfrastructureTVItemID == vps.InfrastructureTVItemID
                           && vps.VPScenarioID == vpr.VPScenarioID
-                          && c.TVPath.Contains(tvItemMunicipality.TVPath + "p")
-                          && c.ParentID == tvItemMunicipality.TVItemID
+                          && c.TVPath.Contains(TVItemMunicipality.TVPath + "p")
+                          && c.ParentID == TVItemMunicipality.TVItemID
                           && c.TVType == TVTypeEnum.Infrastructure
                           select vpr).AsNoTracking().ToListAsync();
         }
@@ -409,24 +413,24 @@ namespace CreateGzFileServices
                           && c.ToTVType == TVTypeEnum.Contact
                           select c).AsNoTracking().ToListAsync();
         }
-        private async Task<List<Contact>> GetMunicipalityContactListUnderMunicipality(TVItem tvItemMunicipality)
+        private async Task<List<Contact>> GetMunicipalityContactListUnderMunicipality(TVItem lcoalTVItemMunicipality)
         {
             return await (from tl in db.TVItemLinks
                           from c in db.Contacts
                           where tl.ToTVItemID == c.ContactTVItemID
-                          && tl.FromTVItemID == tvItemMunicipality.TVItemID
+                          && tl.FromTVItemID == lcoalTVItemMunicipality.TVItemID
                           && tl.FromTVType == TVTypeEnum.Municipality
                           && tl.ToTVType == TVTypeEnum.Contact
                           select c).AsNoTracking().ToListAsync();
         }
-        private async Task<List<Email>> GetMunicipalityContactEmailListUnderMunicipality(TVItem tvItemMunicipality)
+        private async Task<List<Email>> GetMunicipalityContactEmailListUnderMunicipality(TVItem TVItemMunicipality)
         {
             return await (from tl in db.TVItemLinks
                           from c in db.Contacts
                           from e in db.Emails
                           from tl2 in db.TVItemLinks
                           where tl.ToTVItemID == c.ContactTVItemID
-                          && tl.FromTVItemID == tvItemMunicipality.TVItemID
+                          && tl.FromTVItemID == TVItemMunicipality.TVItemID
                           && tl.FromTVType == TVTypeEnum.Municipality
                           && tl.ToTVType == TVTypeEnum.Contact
                           && tl2.FromTVItemID == tl.ToTVItemID
@@ -435,14 +439,14 @@ namespace CreateGzFileServices
                           && tl2.ToTVType == TVTypeEnum.Email
                           select e).AsNoTracking().ToListAsync();
         }
-        private async Task<List<Tel>> GetMunicipalityContactTelListUnderMunicipality(TVItem tvItemMunicipality)
+        private async Task<List<Tel>> GetMunicipalityContactTelListUnderMunicipality(TVItem TVItemMunicipality)
         {
             return await (from tl in db.TVItemLinks
                           from c in db.Contacts
                           from t in db.Tels
                           from tl2 in db.TVItemLinks
                           where tl.ToTVItemID == c.ContactTVItemID
-                          && tl.FromTVItemID == tvItemMunicipality.TVItemID
+                          && tl.FromTVItemID == TVItemMunicipality.TVItemID
                           && tl.FromTVType == TVTypeEnum.Municipality
                           && tl.ToTVType == TVTypeEnum.Contact
                           && tl2.FromTVItemID == tl.ToTVItemID
@@ -451,14 +455,14 @@ namespace CreateGzFileServices
                           && tl2.ToTVType == TVTypeEnum.Tel
                           select t).AsNoTracking().ToListAsync();
         }
-        private async Task<List<Address>> GetMunicipalityContactAddressListUnderMunicipality(TVItem tvItemMunicipality)
+        private async Task<List<Address>> GetMunicipalityContactAddressListUnderMunicipality(TVItem TVItemMunicipality)
         {
             return await (from tl in db.TVItemLinks
                           from c in db.Contacts
                           from a in db.Addresses
                           from tl2 in db.TVItemLinks
                           where tl.ToTVItemID == c.ContactTVItemID
-                          && tl.FromTVItemID == tvItemMunicipality.TVItemID
+                          && tl.FromTVItemID == TVItemMunicipality.TVItemID
                           && tl.FromTVType == TVTypeEnum.Municipality
                           && tl.ToTVType == TVTypeEnum.Contact
                           && tl2.FromTVItemID == tl.ToTVItemID
@@ -471,7 +475,7 @@ namespace CreateGzFileServices
         {
             return await (from c in db.SamplingPlans
                           where c.SamplingPlanID == samplingPlanID
-                          select c).FirstOrDefaultAsync();
+                          select c).AsNoTracking().FirstOrDefaultAsync();
         }
         private async Task<List<SamplingPlanEmail>> GetSamplingPlanEmailListWithSamplingPlanID(int samplingPlanID)
         {
@@ -493,7 +497,7 @@ namespace CreateGzFileServices
                           && c.SamplingPlanID == samplingPlanID
                           select cs).AsNoTracking().ToListAsync();
         }
-        private async Task<List<MWQMSample>> GetWQMSampleListFromSubsector10Years(TVItem tvItemSubsector, int Year)
+        private async Task<List<MWQMSample>> GetWQMSampleListFromSubsector10Years(TVItem TVItemSubsector, int Year)
         {
             DateTime StartDate = new DateTime(Year, 1, 1);
             DateTime EndDate = new DateTime(Year + 9, 12, 31);
@@ -501,14 +505,14 @@ namespace CreateGzFileServices
             return await (from c in db.TVItems
                           from sa in db.MWQMSamples
                           where c.TVItemID == sa.MWQMSiteTVItemID
-                          && c.TVPath.Contains(tvItemSubsector.TVPath + "p")
-                          && c.ParentID == tvItemSubsector.TVItemID
+                          && c.TVPath.Contains(TVItemSubsector.TVPath + "p")
+                          && c.ParentID == TVItemSubsector.TVItemID
                           && c.TVType == TVTypeEnum.MWQMSite
                           && sa.SampleDateTime_Local >= StartDate
                           && sa.SampleDateTime_Local <= EndDate
                           select sa).AsNoTracking().ToListAsync();
         }
-        private async Task<List<MWQMSampleLanguage>> GetWQMSampleLanguageListFromSubsector10Years(TVItem tvItemSubsector, int Year)
+        private async Task<List<MWQMSampleLanguage>> GetWQMSampleLanguageListFromSubsector10Years(TVItem TVItemSubsector, int Year)
         {
             DateTime StartDate = new DateTime(Year, 1, 1);
             DateTime EndDate = new DateTime(Year + 9, 12, 31);
@@ -516,8 +520,8 @@ namespace CreateGzFileServices
             List<int> MWQMSampleIDList = await (from c in db.TVItems
                                                 from sa in db.MWQMSamples
                                                 where c.TVItemID == sa.MWQMSiteTVItemID
-                                                && c.TVPath.Contains(tvItemSubsector.TVPath + "p")
-                                                && c.ParentID == tvItemSubsector.TVItemID
+                                                && c.TVPath.Contains(TVItemSubsector.TVPath + "p")
+                                                && c.ParentID == TVItemSubsector.TVItemID
                                                 && c.TVType == TVTypeEnum.MWQMSite
                                                 && sa.SampleDateTime_Local >= StartDate
                                                 && sa.SampleDateTime_Local <= EndDate
@@ -527,23 +531,23 @@ namespace CreateGzFileServices
                           where MWQMSampleIDList.Contains(sal.MWQMSampleID)
                           select sal).AsNoTracking().ToListAsync();
         }
-        private async Task<List<MWQMRun>> GetMWQMRunListFromSubsector(TVItem tvItemSubsector)
+        private async Task<List<MWQMRun>> GetMWQMRunListFromSubsector(TVItem TVItemSubsector)
         {
             return await (from c in db.TVItems
                           from r in db.MWQMRuns
                           where c.TVItemID == r.MWQMRunTVItemID
-                          && c.TVPath.Contains(tvItemSubsector.TVPath + "p")
-                          && c.ParentID == tvItemSubsector.TVItemID
+                          && c.TVPath.Contains(TVItemSubsector.TVPath + "p")
+                          && c.ParentID == TVItemSubsector.TVItemID
                           && c.TVType == TVTypeEnum.MWQMRun
                           select r).AsNoTracking().ToListAsync();
         }
-        private async Task<List<MWQMRunLanguage>> GetMWQMRunLanguageListFromSubsector(TVItem tvItemSubsector)
+        private async Task<List<MWQMRunLanguage>> GetMWQMRunLanguageListFromSubsector(TVItem TVItemSubsector)
         {
             List<int> MWQMRunIDList = await (from c in db.TVItems
                                              from r in db.MWQMRuns
                                              where c.TVItemID == r.MWQMRunTVItemID
-                                             && c.TVPath.Contains(tvItemSubsector.TVPath + "p")
-                                             && c.ParentID == tvItemSubsector.TVItemID
+                                             && c.TVPath.Contains(TVItemSubsector.TVPath + "p")
+                                             && c.ParentID == TVItemSubsector.TVItemID
                                              && c.TVType == TVTypeEnum.MWQMRun
                                              select r.MWQMRunID).ToListAsync();
 
@@ -551,29 +555,29 @@ namespace CreateGzFileServices
                           where MWQMRunIDList.Contains(rl.MWQMRunID)
                           select rl).AsNoTracking().ToListAsync();
         }
-        private async Task<List<MWQMSite>> GetMWQMSiteListFromSubsector(TVItem tvItemSubsector)
+        private async Task<List<MWQMSite>> GetMWQMSiteListFromSubsector(TVItem TVItemSubsector)
         {
             return await (from c in db.TVItems
                           from cl in db.TVItemLanguages
                           from s in db.MWQMSites
                           where c.TVItemID == cl.TVItemID
                           && c.TVItemID == s.MWQMSiteTVItemID
-                          && c.TVPath.Contains(tvItemSubsector.TVPath + "p")
-                          && c.ParentID == tvItemSubsector.TVItemID
+                          && c.TVPath.Contains(TVItemSubsector.TVPath + "p")
+                          && c.ParentID == TVItemSubsector.TVItemID
                           && c.TVType == TVTypeEnum.MWQMSite
                           && cl.Language == LanguageEnum.en
-                          orderby c.IsActive, cl.TVText 
+                          orderby c.IsActive, cl.TVText
                           select s).AsNoTracking().ToListAsync();
         }
-        private async Task<List<MWQMSiteStartEndDate>> GetMWQMSiteStartEndDateListFromSubsector(TVItem tvItemSubsector)
+        private async Task<List<MWQMSiteStartEndDate>> GetMWQMSiteStartEndDateListFromSubsector(TVItem TVItemSubsector)
         {
             List<int> MWQMSiteIDList = await (from c in db.TVItems
                                               from cl in db.TVItemLanguages
                                               from s in db.MWQMSites
                                               where c.TVItemID == cl.TVItemID
                                               && c.TVItemID == s.MWQMSiteTVItemID
-                                              && c.TVPath.Contains(tvItemSubsector.TVPath + "p")
-                                              && c.ParentID == tvItemSubsector.TVItemID
+                                              && c.TVPath.Contains(TVItemSubsector.TVPath + "p")
+                                              && c.ParentID == TVItemSubsector.TVItemID
                                               && c.TVType == TVTypeEnum.MWQMSite
                                               && cl.Language == LanguageEnum.en
                                               orderby c.IsActive, cl.TVText
@@ -589,39 +593,39 @@ namespace CreateGzFileServices
                           orderby c.LastName, c.FirstName, c.Initial
                           select c).AsNoTracking().ToListAsync();
         }
-        private async Task<List<ClimateSite>> GetClimateSiteListUnderProvince(TVItem tvItemProvince)
+        private async Task<List<ClimateSite>> GetClimateSiteListUnderProvince(TVItem TVItemProvince)
         {
             return await (from c in db.TVItems
                           from cs in db.ClimateSites
                           where c.TVItemID == cs.ClimateSiteTVItemID
-                          && c.TVPath.Contains(tvItemProvince.TVPath + "p")
-                          && c.ParentID == tvItemProvince.TVItemID
+                          && c.TVPath.Contains(TVItemProvince.TVPath + "p")
+                          && c.ParentID == TVItemProvince.TVItemID
                           && c.TVType == TVTypeEnum.ClimateSite
                           select cs).AsNoTracking().ToListAsync();
         }
-        private async Task<List<HydrometricSite>> GetHydrometricSiteListUnderProvince(TVItem tvItemProvince)
+        private async Task<List<HydrometricSite>> GetHydrometricSiteListUnderProvince(TVItem TVItemProvince)
         {
             return await (from c in db.TVItems
                           from hs in db.HydrometricSites
                           where c.TVItemID == hs.HydrometricSiteTVItemID
-                          && c.TVPath.Contains(tvItemProvince.TVPath + "p")
-                          && c.ParentID == tvItemProvince.TVItemID
+                          && c.TVPath.Contains(TVItemProvince.TVPath + "p")
+                          && c.ParentID == TVItemProvince.TVItemID
                           && c.TVType == TVTypeEnum.HydrometricSite
                           select hs).AsNoTracking().ToListAsync();
         }
-        private async Task<List<RatingCurve>> GetRatingCurveListUnderProvince(TVItem tvItemProvince)
+        private async Task<List<RatingCurve>> GetRatingCurveListUnderProvince(TVItem TVItemProvince)
         {
             return await (from c in db.TVItems
                           from hs in db.HydrometricSites
                           from rc in db.RatingCurves
                           where c.TVItemID == hs.HydrometricSiteTVItemID
                           && hs.HydrometricSiteID == rc.HydrometricSiteID
-                          && c.TVPath.Contains(tvItemProvince.TVPath + "p")
-                          && c.ParentID == tvItemProvince.TVItemID
+                          && c.TVPath.Contains(TVItemProvince.TVPath + "p")
+                          && c.ParentID == TVItemProvince.TVItemID
                           && c.TVType == TVTypeEnum.HydrometricSite
                           select rc).AsNoTracking().ToListAsync();
         }
-        private async Task<List<RatingCurveValue>> GetRatingCurveValueListUnderProvince(TVItem tvItemProvince)
+        private async Task<List<RatingCurveValue>> GetRatingCurveValueListUnderProvince(TVItem TVItemProvince)
         {
             return await (from c in db.TVItems
                           from hs in db.HydrometricSites
@@ -630,8 +634,8 @@ namespace CreateGzFileServices
                           where c.TVItemID == hs.HydrometricSiteTVItemID
                           && hs.HydrometricSiteID == rc.HydrometricSiteID
                           && rc.RatingCurveID == rcv.RatingCurveID
-                          && c.TVPath.Contains(tvItemProvince.TVPath + "p")
-                          && c.ParentID == tvItemProvince.TVItemID
+                          && c.TVPath.Contains(TVItemProvince.TVPath + "p")
+                          && c.ParentID == TVItemProvince.TVItemID
                           && c.TVType == TVTypeEnum.HydrometricSite
                           select rcv).AsNoTracking().ToListAsync();
         }
@@ -686,17 +690,17 @@ namespace CreateGzFileServices
                           && c.TVType == TVTypeEnum.MikeSource
                           select ms).AsNoTracking().ToListAsync();
         }
-        private async Task<List<MikeSourceStartEnd>> GetMikeSourceStartEndListUnderMikeScenario(TVItem tvItemMikeScenario)
+        private async Task<List<MikeSourceStartEnd>> GetMikeSourceStartEndListUnderMikeScenario(TVItem TVItemMikeScenario)
         {
             return await (from c in db.TVItems
                           from ms in db.MikeSources
-                          from msse in db.MikeSourceStartEnds
+                          from se in db.MikeSourceStartEnds
                           where c.TVItemID == ms.MikeSourceTVItemID
-                          && ms.MikeSourceID == msse.MikeSourceID
-                          && c.TVPath.Contains(tvItemMikeScenario.TVPath + "p")
-                          && c.ParentID == tvItemMikeScenario.TVItemID
+                          && ms.MikeSourceID == se.MikeSourceID
+                          && c.TVPath.Contains(TVItemMikeScenario.TVPath + "p")
+                          && c.ParentID == TVItemMikeScenario.TVItemID
                           && c.TVType == TVTypeEnum.MikeSource
-                          select msse).AsNoTracking().ToListAsync();
+                          select se).AsNoTracking().ToListAsync();
         }
         private async Task<List<EmailDistributionList>> GetEmailDistributionListListUnderCountry(int TVItemID)
         {
@@ -741,10 +745,10 @@ namespace CreateGzFileServices
         private async Task<List<HydrometricDataValue>> GetHydrometricDataValueListForHydrometricSite(int TVItemID)
         {
             return await (from c in db.HydrometricSites
-                          from cv in db.HydrometricDataValues
-                          where c.HydrometricSiteID == cv.HydrometricSiteID
+                          from hv in db.HydrometricDataValues
+                          where c.HydrometricSiteID == hv.HydrometricSiteID
                           && c.HydrometricSiteTVItemID == TVItemID
-                          select cv).AsNoTracking().ToListAsync();
+                          select hv).AsNoTracking().ToListAsync();
         }
         private async Task<List<HelpDoc>> GetHelpDoc()
         {
@@ -800,42 +804,42 @@ namespace CreateGzFileServices
                           where c.SubsectorTVItemID == subsectorTVItemID
                           select c).AsNoTracking().ToListAsync();
         }
-        private async Task<List<PolSourceSite>> GetPolSourceSiteListFromSubsector(TVItem tvItemSubsector)
+        private async Task<List<PolSourceSite>> GetPolSourceSiteListFromSubsector(TVItem TVItemSubsector)
         {
             return await (from c in db.TVItems
                           from p in db.PolSourceSites
                           where c.TVItemID == p.PolSourceSiteTVItemID
-                          && c.TVPath.Contains(tvItemSubsector.TVPath + "p")
-                          && c.ParentID == tvItemSubsector.TVItemID
+                          && c.TVPath.Contains(TVItemSubsector.TVPath + "p")
+                          && c.ParentID == TVItemSubsector.TVItemID
                           && c.TVType == TVTypeEnum.PolSourceSite
                           select p).AsNoTracking().ToListAsync();
         }
-        private async Task<List<Address>> GetPolSourceSiteAddressListFromSubsector(TVItem tvItemSubsector)
+        private async Task<List<Address>> GetPolSourceSiteAddressListFromSubsector(TVItem TVItemSubsector)
         {
             return await (from c in db.TVItems
                           from p in db.PolSourceSites
                           from a in db.Addresses
                           where c.TVItemID == p.PolSourceSiteTVItemID
                           && p.CivicAddressTVItemID != null
-                          && c.TVPath.Contains(tvItemSubsector.TVPath + "p")
-                          && c.ParentID == tvItemSubsector.TVItemID
+                          && c.TVPath.Contains(TVItemSubsector.TVPath + "p")
+                          && c.ParentID == TVItemSubsector.TVItemID
                           && c.TVType == TVTypeEnum.PolSourceSite
                           && p.CivicAddressTVItemID == a.AddressTVItemID
                           select a).AsNoTracking().ToListAsync();
         }
-        private async Task<List<PolSourceObservation>> GetPolSourceObservationListFromSubsector(TVItem tvItemSubsector)
+        private async Task<List<PolSourceObservation>> GetPolSourceObservationListFromSubsector(TVItem TVItemSubsector)
         {
             return await (from c in db.TVItems
                           from p in db.PolSourceSites
                           from po in db.PolSourceObservations
                           where c.TVItemID == p.PolSourceSiteTVItemID
                           && p.PolSourceSiteID == po.PolSourceSiteID
-                          && c.TVPath.Contains(tvItemSubsector.TVPath + "p")
-                          && c.ParentID == tvItemSubsector.TVItemID
+                          && c.TVPath.Contains(TVItemSubsector.TVPath + "p")
+                          && c.ParentID == TVItemSubsector.TVItemID
                           && c.TVType == TVTypeEnum.PolSourceSite
                           select po).AsNoTracking().ToListAsync();
         }
-        private async Task<List<PolSourceObservationIssue>> GetPolSourceObservationIssueListFromSubsector(TVItem tvItemSubsector)
+        private async Task<List<PolSourceObservationIssue>> GetPolSourceObservationIssueListFromSubsector(TVItem TVItemSubsector)
         {
             return await (from c in db.TVItems
                           from p in db.PolSourceSites
@@ -844,24 +848,24 @@ namespace CreateGzFileServices
                           where c.TVItemID == p.PolSourceSiteTVItemID
                           && p.PolSourceSiteID == po.PolSourceSiteID
                           && po.PolSourceObservationID == poi.PolSourceObservationID
-                          && c.TVPath.Contains(tvItemSubsector.TVPath + "p")
-                          && c.ParentID == tvItemSubsector.TVItemID
+                          && c.TVPath.Contains(TVItemSubsector.TVPath + "p")
+                          && c.ParentID == TVItemSubsector.TVItemID
                           && c.TVType == TVTypeEnum.PolSourceSite
                           select poi).AsNoTracking().ToListAsync();
         }
-        private async Task<List<PolSourceSiteEffect>> GetPolSourceSiteEffectListFromSubsector(TVItem tvItemSubsector)
+        private async Task<List<PolSourceSiteEffect>> GetPolSourceSiteEffectListFromSubsector(TVItem TVItemSubsector)
         {
             return await (from c in db.TVItems
                           from p in db.PolSourceSites
                           from pe in db.PolSourceSiteEffects
                           where c.TVItemID == p.PolSourceSiteTVItemID
                           && p.PolSourceSiteID == pe.PolSourceSiteOrInfrastructureTVItemID
-                          && c.TVPath.Contains(tvItemSubsector.TVPath + "p")
-                          && c.ParentID == tvItemSubsector.TVItemID
+                          && c.TVPath.Contains(TVItemSubsector.TVPath + "p")
+                          && c.ParentID == TVItemSubsector.TVItemID
                           && c.TVType == TVTypeEnum.PolSourceSite
                           select pe).AsNoTracking().ToListAsync();
         }
-        private async Task<List<PolSourceSiteEffectTerm>> GetPolSourceSiteEffectTermListFromSubsector(TVItem tvItemSubsector)
+        private async Task<List<PolSourceSiteEffectTerm>> GetPolSourceSiteEffectTermListFromSubsector(TVItem TVItemSubsector)
         {
             return await (from c in db.TVItems
                           from p in db.PolSourceSites
@@ -870,8 +874,8 @@ namespace CreateGzFileServices
                           where c.TVItemID == p.PolSourceSiteTVItemID
                           && p.PolSourceSiteID == pe.PolSourceSiteOrInfrastructureTVItemID
                           && pe.PolSourceSiteEffectID == pet.PolSourceSiteEffectTermID
-                          && c.TVPath.Contains(tvItemSubsector.TVPath + "p")
-                          && c.ParentID == tvItemSubsector.TVItemID
+                          && c.TVPath.Contains(TVItemSubsector.TVPath + "p")
+                          && c.ParentID == TVItemSubsector.TVItemID
                           && c.TVType == TVTypeEnum.PolSourceSite
                           select pet).AsNoTracking().ToListAsync();
         }
@@ -907,21 +911,21 @@ namespace CreateGzFileServices
         }
         private async Task<List<TVItemLanguage>> GetAllTVItemLanguage()
         {
-            return await (from c in db.TVItemLanguages
-                          select c).AsNoTracking().ToListAsync();
+            return await (from cl in db.TVItemLanguages
+                          select cl).AsNoTracking().ToListAsync();
         }
-        private async Task<List<TVItem>> GetTVItemParentListWithTVItemID(TVItem tvItem)
+        private async Task<List<TVItem>> GetTVItemParentListWithTVItemID(TVItem TVItem)
         {
-            List<int> ParentsTVItemID = tvItem.TVPath.Split("p", StringSplitOptions.RemoveEmptyEntries).Select(c => int.Parse(c)).ToList();
+            List<int> ParentsTVItemID = TVItem.TVPath.Split("p", StringSplitOptions.RemoveEmptyEntries).Select(c => int.Parse(c)).ToList();
 
             return await (from c in db.TVItems
                           where ParentsTVItemID.Contains(c.TVItemID)
                           orderby c.TVLevel
                           select c).AsNoTracking().ToListAsync();
         }
-        private async Task<List<TVItemLanguage>> GetTVItemLanguageParentListWithTVItemID(TVItem tvItem)
+        private async Task<List<TVItemLanguage>> GetTVItemLanguageParentListWithTVItemID(TVItem TVItem)
         {
-            List<int> ParentsTVItemID = tvItem.TVPath.Split("p", StringSplitOptions.RemoveEmptyEntries).Select(c => int.Parse(c)).ToList();
+            List<int> ParentsTVItemID = TVItem.TVPath.Split("p", StringSplitOptions.RemoveEmptyEntries).Select(c => int.Parse(c)).ToList();
 
             return await (from c in db.TVItems
                           from cl in db.TVItemLanguages
@@ -930,9 +934,9 @@ namespace CreateGzFileServices
                           select cl).AsNoTracking().ToListAsync();
 
         }
-        private async Task<List<TVItemStat>> GetTVItemStatParentListWithTVItemID(TVItem tvItem)
+        private async Task<List<TVItemStat>> GetTVItemStatParentListWithTVItemID(TVItem TVItem)
         {
-            List<int> ParentsTVItemID = tvItem.TVPath.Split("p", StringSplitOptions.RemoveEmptyEntries).Select(c => int.Parse(c)).ToList();
+            List<int> ParentsTVItemID = TVItem.TVPath.Split("p", StringSplitOptions.RemoveEmptyEntries).Select(c => int.Parse(c)).ToList();
 
             return await (from c in db.TVItems
                           from cs in db.TVItemStats
@@ -940,9 +944,9 @@ namespace CreateGzFileServices
                           && ParentsTVItemID.Contains(c.TVItemID)
                           select cs).AsNoTracking().ToListAsync();
         }
-        private async Task<List<MapInfo>> GetMapInfoParentListWithTVItemID(TVItem tvItem)
+        private async Task<List<MapInfo>> GetMapInfoParentListWithTVItemID(TVItem TVItem)
         {
-            List<int> ParentsTVItemID = tvItem.TVPath.Split("p", StringSplitOptions.RemoveEmptyEntries).Select(c => int.Parse(c)).ToList();
+            List<int> ParentsTVItemID = TVItem.TVPath.Split("p", StringSplitOptions.RemoveEmptyEntries).Select(c => int.Parse(c)).ToList();
 
             return await (from c in db.TVItems
                           from mi in db.MapInfos
@@ -950,9 +954,9 @@ namespace CreateGzFileServices
                           && ParentsTVItemID.Contains(c.TVItemID)
                           select mi).AsNoTracking().ToListAsync();
         }
-        private async Task<List<MapInfoPoint>> GetMapInfoPointParentListWithTVItemID(TVItem tvItem)
+        private async Task<List<MapInfoPoint>> GetMapInfoPointParentListWithTVItemID(TVItem TVItem)
         {
-            List<int> ParentsTVItemID = tvItem.TVPath.Split("p", StringSplitOptions.RemoveEmptyEntries).Select(c => int.Parse(c)).ToList();
+            List<int> ParentsTVItemID = TVItem.TVPath.Split("p", StringSplitOptions.RemoveEmptyEntries).Select(c => int.Parse(c)).ToList();
 
             return await (from c in db.TVItems
                           from mi in db.MapInfos

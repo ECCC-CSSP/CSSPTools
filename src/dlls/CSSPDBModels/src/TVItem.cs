@@ -16,6 +16,8 @@ namespace CSSPDBModels
         #region Properties in DB
         [Key]
         public int TVItemID { get; set; }
+        [CSSPEnumType]
+        public DBCommandEnum DBCommand { get; set; }
         [CSSPRange(0, 100)]
         public int TVLevel { get; set; }
         [CSSPMaxLength(250)]

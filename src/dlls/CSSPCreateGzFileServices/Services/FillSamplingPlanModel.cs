@@ -24,13 +24,13 @@ namespace CreateGzFileServices
             List<SamplingPlanSubsector> SamplingPlanSubsectorList = await GetSamplingPlanSubsectorListWithSamplingPlanID(SamplingPlan.SamplingPlanID);
             List<SamplingPlanSubsectorSite> SamplingPlanSubsectorSiteList = await GetSamplingPlanSubsectorSiteListWithSamplingPlanID(SamplingPlan.SamplingPlanID);
 
-            foreach(SamplingPlanSubsector samplingPlanSubsector in SamplingPlanSubsectorList)
+            foreach(SamplingPlanSubsector SamplingPlanSubsector in SamplingPlanSubsectorList)
             {
-                SamplingPlanSubsectorModel samplingPlanSubsectorModel = new SamplingPlanSubsectorModel();
-                samplingPlanSubsectorModel.SamplingPlanSubsector = samplingPlanSubsector;
-                samplingPlanSubsectorModel.SamplingPlanSubsectorSiteList = SamplingPlanSubsectorSiteList.Where(c => c.SamplingPlanSubsectorID == samplingPlanSubsector.SamplingPlanSubsectorID).ToList();
+                SamplingPlanSubsectorModel SamplingPlanSubsectorModel = new SamplingPlanSubsectorModel();
+                SamplingPlanSubsectorModel.SamplingPlanSubsector = SamplingPlanSubsector;
+                SamplingPlanSubsectorModel.SamplingPlanSubsectorSiteList = SamplingPlanSubsectorSiteList.Where(c => c.SamplingPlanSubsectorID == SamplingPlanSubsector.SamplingPlanSubsectorID).ToList();
 
-                SamplingPlanModel.SamplingPlanSubsectorModelList.Add(samplingPlanSubsectorModel);
+                SamplingPlanModel.SamplingPlanSubsectorModelList.Add(SamplingPlanSubsectorModel);
             }
         }
     }

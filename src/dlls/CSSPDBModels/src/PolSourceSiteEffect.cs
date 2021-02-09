@@ -16,6 +16,8 @@ namespace CSSPDBModels
         #region Properties in DB
         [Key]
         public int PolSourceSiteEffectID { get; set; }
+        [CSSPEnumType]
+        public DBCommandEnum DBCommand { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "10,17")]
         [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int PolSourceSiteOrInfrastructureTVItemID { get; set; }

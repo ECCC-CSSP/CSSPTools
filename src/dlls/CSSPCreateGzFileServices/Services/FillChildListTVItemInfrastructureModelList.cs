@@ -37,60 +37,60 @@ namespace CreateGzFileServices
 
             foreach (TVItem tvItem in TVItemList)
             {
-                InfrastructureModel infrastructureModel = new InfrastructureModel();
-                infrastructureModel.TVItemModel.TVItem = tvItem;
-                infrastructureModel.TVItemModel.TVItemLanguageList = new List<TVItemLanguage>()
+                InfrastructureModel InfrastructureModel = new InfrastructureModel();
+                InfrastructureModel.TVItemModel.TVItem = tvItem;
+                InfrastructureModel.TVItemModel.TVItemLanguageList = new List<TVItemLanguage>()
                 {
                     TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID && c.Language == LanguageEnum.en).FirstOrDefault(),
                     TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID && c.Language == LanguageEnum.en).FirstOrDefault(),
                     TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID && c.Language == LanguageEnum.fr).FirstOrDefault()
                 };
 
-                infrastructureModel.TVItemModel.TVItemStatList = TVItemStatList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
+                InfrastructureModel.TVItemModel.TVItemStatList = TVItemStatList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
 
-                foreach (MapInfo mapInfo in MapInfoList)
+                foreach (MapInfo MapInfo in MapInfoList)
                 {
-                    if (mapInfo.TVItemID == tvItem.TVItemID)
+                    if (MapInfo.TVItemID == tvItem.TVItemID)
                     {
-                        MapInfoModel mapInfoModel = new MapInfoModel();
-                        mapInfoModel.MapInfo = mapInfo;
-                        mapInfoModel.MapInfoPointList = MapInfoPointList.Where(c => c.MapInfoID == mapInfo.MapInfoID).Select(c => c).ToList();
-                        infrastructureModel.TVItemModel.MapInfoModelList.Add(mapInfoModel);
+                        MapInfoModel MapInfoModel = new MapInfoModel();
+                        MapInfoModel.MapInfo = MapInfo;
+                        MapInfoModel.MapInfoPointList = MapInfoPointList.Where(c => c.MapInfoID == MapInfo.MapInfoID).Select(c => c).ToList();
+                        InfrastructureModel.TVItemModel.MapInfoModelList.Add(MapInfoModel);
                     }
                 }
 
-                infrastructureModel.Infrastructure = InfrastructureList.Where(c => c.InfrastructureTVItemID == tvItem.TVItemID).FirstOrDefault();
-                infrastructureModel.InfrastructureLanguageList = InfrastructureLanguageList.Where(c => c.InfrastructureID == infrastructureModel.Infrastructure.InfrastructureID).ToList();
-                infrastructureModel.InfrastructureCivicAddress = InfrastructureCivicAddress;
+                InfrastructureModel.Infrastructure = InfrastructureList.Where(c => c.InfrastructureTVItemID == tvItem.TVItemID).FirstOrDefault();
+                InfrastructureModel.InfrastructureLanguageList = InfrastructureLanguageList.Where(c => c.InfrastructureID == InfrastructureModel.Infrastructure.InfrastructureID).ToList();
+                InfrastructureModel.InfrastructureCivicAddress = InfrastructureCivicAddress;
 
-                foreach (BoxModel boxModel in BoxModelList)
+                foreach (BoxModel BoxModel in BoxModelList)
                 {
-                    if (boxModel.InfrastructureTVItemID == tvItem.TVItemID)
+                    if (BoxModel.InfrastructureTVItemID == tvItem.TVItemID)
                     {
-                        BoxModelModel boxModelModel = new BoxModelModel();
-                        boxModelModel.BoxModel = boxModel;
-                        boxModelModel.BoxModelLanguageList = BoxModelLanguageList.Where(c => c.BoxModelID == boxModelModel.BoxModel.BoxModelID).ToList();
-                        boxModelModel.BoxModelResultList = BoxModelResultList.Where(c => c.BoxModelID == boxModelModel.BoxModel.BoxModelID).ToList();
+                        BoxModelModel BoxModelModel = new BoxModelModel();
+                        BoxModelModel.BoxModel = BoxModel;
+                        BoxModelModel.BoxModelLanguageList = BoxModelLanguageList.Where(c => c.BoxModelID == BoxModelModel.BoxModel.BoxModelID).ToList();
+                        BoxModelModel.BoxModelResultList = BoxModelResultList.Where(c => c.BoxModelID == BoxModelModel.BoxModel.BoxModelID).ToList();
 
-                        infrastructureModel.BoxModelModelList.Add(boxModelModel);
+                        InfrastructureModel.BoxModelModelList.Add(BoxModelModel);
                     }
                 }
 
-                foreach (VPScenario vpScenario in VPScenarioList)
+                foreach (VPScenario VPScenario in VPScenarioList)
                 {
-                    if (vpScenario.InfrastructureTVItemID == tvItem.TVItemID)
+                    if (VPScenario.InfrastructureTVItemID == tvItem.TVItemID)
                     {
-                        VPScenarioModel vpScenarioModel = new VPScenarioModel();
-                        vpScenarioModel.VPScenario = vpScenario;
-                        vpScenarioModel.VPScenarioLanguageList = VPScenarioLanguageList.Where(c => c.VPScenarioID == vpScenarioModel.VPScenario.VPScenarioID).ToList();
-                        vpScenarioModel.VPAmbientList = VPAmbientList.Where(c => c.VPScenarioID == vpScenarioModel.VPScenario.VPScenarioID).ToList();
-                        vpScenarioModel.VPResultList = VPResultList.Where(c => c.VPScenarioID == vpScenarioModel.VPScenario.VPScenarioID).ToList();
+                        VPScenarioModel VPScenarioModel = new VPScenarioModel();
+                        VPScenarioModel.VPScenario = VPScenario;
+                        VPScenarioModel.VPScenarioLanguageList = VPScenarioLanguageList.Where(c => c.VPScenarioID == VPScenarioModel.VPScenario.VPScenarioID).ToList();
+                        VPScenarioModel.VPAmbientList = VPAmbientList.Where(c => c.VPScenarioID == VPScenarioModel.VPScenario.VPScenarioID).ToList();
+                        VPScenarioModel.VPResultList = VPResultList.Where(c => c.VPScenarioID == VPScenarioModel.VPScenario.VPScenarioID).ToList();
 
-                        infrastructureModel.VPScenarioModelList.Add(vpScenarioModel);
+                        InfrastructureModel.VPScenarioModelList.Add(VPScenarioModel);
                     }
                 }
 
-                InfrastructureModelList.Add(infrastructureModel);
+                InfrastructureModelList.Add(InfrastructureModel);
             }
         }
     }

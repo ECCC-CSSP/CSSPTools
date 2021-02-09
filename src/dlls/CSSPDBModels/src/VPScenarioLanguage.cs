@@ -16,6 +16,8 @@ namespace CSSPDBModels
         #region Properties in DB
         [Key]
         public int VPScenarioLanguageID { get; set; }
+        [CSSPEnumType]
+        public DBCommandEnum DBCommand { get; set; }
         [CSSPExist(ExistTypeName = "VPScenario", ExistPlurial = "s", ExistFieldID = "VPScenarioID")]
         [CSSPForeignKey(TableName = "VPScenarios", FieldName = "VPScenarioID")]
         public int VPScenarioID { get; set; }

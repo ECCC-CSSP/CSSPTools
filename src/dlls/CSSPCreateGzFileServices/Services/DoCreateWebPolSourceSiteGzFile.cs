@@ -21,9 +21,9 @@ namespace CreateGzFileServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            TVItem tvItemSubsector = await GetTVItemWithTVItemID(SubsectorTVItemID);
+            TVItem TVItemSubsector = await GetTVItemWithTVItemID(SubsectorTVItemID);
 
-            if (tvItemSubsector == null || tvItemSubsector.TVType != TVTypeEnum.Subsector)
+            if (TVItemSubsector == null || TVItemSubsector.TVType != TVTypeEnum.Subsector)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._CouldNotBeFoundFor_Equal_And_Equal_,
                     "TVItem", SubsectorTVItemID.ToString(), "TVType", TVTypeEnum.Subsector.ToString())));
@@ -33,11 +33,11 @@ namespace CreateGzFileServices
 
             try
             {
-                await FillTVItemModel(webPolSourceSite.TVItemModel, tvItemSubsector);
+                await FillTVItemModel(webPolSourceSite.TVItemModel, TVItemSubsector);
 
-                await FillParentListTVItemModelList(webPolSourceSite.TVItemParentList, tvItemSubsector);
+                await FillParentListTVItemModelList(webPolSourceSite.TVItemParentList, TVItemSubsector);
 
-                await FillChildListTVItemPolSourceSiteModelList(webPolSourceSite.PolSourceSiteModelList, tvItemSubsector, TVTypeEnum.PolSourceSite);
+                await FillChildListTVItemPolSourceSiteModelList(webPolSourceSite.PolSourceSiteModelList, TVItemSubsector, TVTypeEnum.PolSourceSite);
 
                 await DoStore<WebPolSourceSite>(webPolSourceSite, $"WebPolSourceSite_{SubsectorTVItemID}.gz");
             }

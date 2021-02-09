@@ -40,10 +40,6 @@ export class TogglesService {
         this.appStateService.UpdateAppState(<AppState>{ DetailVisible: !this.appStateService.AppState$.getValue().DetailVisible, Working: false });
     }
 
-    ToggleEdit(): void {
-        this.appStateService.UpdateAppState(<AppState>{ EditVisible: !this.appStateService.AppState$.getValue().EditVisible, Working: false });
-    }
-
     ToggleInactive(appState: AppState): void {
         this.appStateService.UpdateAppState(<AppState>{ InactVisible: !this.appStateService.AppState$.getValue().InactVisible });
         switch (appState.ShellSubComponent) {
@@ -126,5 +122,8 @@ export class TogglesService {
         this.appStateService.UpdateAppState(<AppState>{ StatCountVisible: !this.appStateService.AppState$.getValue().StatCountVisible, Working: false });
     }
 
+    ToggleEdit(): void {
+        this.appStateService.UpdateAppState(<AppState>{ EditVisible: !this.appStateService.AppState$.getValue().EditVisible, Working: false });
+    }
 
 }

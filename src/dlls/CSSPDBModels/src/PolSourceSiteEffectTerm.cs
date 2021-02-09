@@ -16,6 +16,8 @@ namespace CSSPDBModels
         #region Properties in DB
         [Key]
         public int PolSourceSiteEffectTermID { get; set; }
+        [CSSPEnumType]
+        public DBCommandEnum DBCommand { get; set; }
         public bool IsGroup { get; set; }
         [CSSPExist(ExistTypeName = "PolSourceSiteEffectTerm", ExistPlurial = "s", ExistFieldID = "PolSourceSiteEffectTermID")]
         [CSSPForeignKey(TableName = "PolSourceSiteEffectTerms", FieldName = "PolSourceSiteEffectTermID")]

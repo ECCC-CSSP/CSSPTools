@@ -14,7 +14,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using LocalServices;
+//using LocalServices;
 using CSSPDBPreferenceModels;
 
 namespace CSSPDBPreferenceServices
@@ -39,7 +39,7 @@ namespace CSSPDBPreferenceServices
         #region Properties
         private CSSPDBPreferenceContext dbPreference { get; }
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILocalService LocalService { get; }
+//        private ILocalService LocalService { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         private List<int> skip { get; set; } = new List<int>()
         {
@@ -58,10 +58,10 @@ namespace CSSPDBPreferenceServices
         #endregion Properties
 
         #region Constructors
-        public PreferenceService(ICSSPCultureService CSSPCultureService, ILocalService LocalService, IEnums enums, CSSPDBPreferenceContext dbPreference)
+        public PreferenceService(ICSSPCultureService CSSPCultureService, /*ILocalService LocalService, */ IEnums enums, CSSPDBPreferenceContext dbPreference)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LocalService = LocalService;
+//            this.LocalService = LocalService;
             this.dbPreference = dbPreference;
         }
         #endregion Constructors

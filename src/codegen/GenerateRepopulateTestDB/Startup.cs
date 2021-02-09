@@ -35,10 +35,10 @@ namespace GenerateRepopulateTestDB
                 options.UseSqlServer(TestDBConnString);
             });
 
-            string CSSPDBConnString = Config.GetValue<string>("CSSPDB2");
+            string CSSPDBConnString = Config.GetValue<string>("CSSPDB");
             if (CSSPDBConnString == null)
             {
-                Console.WriteLine($"Could not find parameter CSSPDB2 in appsettings.json");
+                Console.WriteLine($"Could not find parameter CSSPDB in appsettings.json");
                 return;
             }
 

@@ -23,11 +23,9 @@ import { LastUpdateTVItemModelComponent } from './components/helpers/last-update
 import { AreaTVItemListItemComponent } from './components/area/area-tvitem-list-item/area-tvitem-list-item.component';
 import { AnalysisItemComponent } from './components/analysis/analysis-item/analysis-item.component';
 import { AreaItemComponent } from './components/area/area-item/area-item.component';
-import { AreaTVItemListItemMenuComponent } from './components/area/area-tvitem-list-item-menu/area-tvitem-list-item-menu.component';
 import { CountryItemComponent } from './components/country/country-item/country-item.component';
 import { CountryTVItemListDetailComponent } from './components/country/country-tvitem-list-detail/country-tvitem-list-detail.component';
 import { CountryTVItemListItemComponent } from './components/country/country-tvitem-list-item/country-tvitem-list-item.component';
-import { CountryTVItemListItemMenuComponent } from './components/country/country-tvitem-list-item-menu/country-tvitem-list-item-menu.component';
 import { ContactItemComponent } from './components/contact/contact-item/contact-item.component';
 import { EmailDistributionListItemComponent } from './components/email-distribution-list/email-distribution-list-item/email-distribution-list-item.component';
 import { ExportArcGISItemComponent } from './components/export-arc-gis/export-arc-gis-item/export-arc-gis-item.component';
@@ -49,38 +47,51 @@ import { SubsectorItemComponent } from './components/subsector/subsector-item/su
 import { MapMenuComponent } from './components/map/map-menu/map-menu.component';
 import { MikeScenarioTVItemListDetailComponent } from './components/mike-scenario/mike-scenario-tvitem-list-detail/mike-scenario-tvitem-list-detail.component';
 import { MikeScenarioTVItemListItemComponent } from './components/mike-scenario/mike-scenario-tvitem-list-item/mike-scenario-tvitem-list-item.component';
-import { MikeScenarioTVItemListItemMenuComponent } from './components/mike-scenario/mike-scenario-tvitem-list-item-menu/mike-scenario-tvitem-list-item-menu.component';
 import { MunicipalityTVItemListDetailComponent } from './components/municipality/municipality-tvitem-list-detail/municipality-tvitem-list-detail.component';
 import { MunicipalityTVItemListItemComponent } from './components/municipality/municipality-tvitem-list-item/municipality-tvitem-list-item.component';
-import { MunicipalityTVItemListItemMenuComponent } from './components/municipality/municipality-tvitem-list-item-menu/municipality-tvitem-list-item-menu.component';
 import { MWQMRunItemComponent } from './components/mwqm-run/mwqm-run-item/mwqm-run-item.component';
 import { MWQMRunTVItemListDetailComponent } from './components/mwqm-run/mwqm-run-tvitem-list-detail/mwqm-run-tvitem-list-detail.component';
 import { MWQMRunTVItemListItemComponent } from './components/mwqm-run/mwqm-run-tvitem-list-item/mwqm-run-tvitem-list-item.component';
-import { MWQMRunTVItemListItemMenuComponent } from './components/mwqm-run/mwqm-run-tvitem-list-item-menu/mwqm-run-tvitem-list-item-menu.component';
 import { MWQMSiteItemComponent } from './components/mwqm-site/mwqm-site-item/mwqm-site-item.component';
 import { MWQMSiteTVItemListDetailComponent } from './components/mwqm-site/mwqm-site-tvitem-list-detail/mwqm-site-tvitem-list-detail.component';
 import { MWQMSiteTVItemListItemComponent } from './components/mwqm-site/mwqm-site-tvitem-list-item/mwqm-site-tvitem-list-item.component';
-import { MWQMSiteTVItemListItemMenuComponent } from './components/mwqm-site/mwqm-site-tvitem-list-item-menu/mwqm-site-tvitem-list-item-menu.component';
 import { OpenDataItemComponent } from './components/open-data/open-data-item/open-data-item.component';
 import { PolSourceSiteItemComponent } from './components/pol-source-site/pol-source-site-item/pol-source-site-item.component';
 import { PolSourceSiteTVItemListDetailComponent } from './components/pol-source-site/pol-source-site-tvitem-list-detail/pol-source-site-tvitem-list-detail.component';
 import { PolSourceSiteTVItemListItemComponent } from './components/pol-source-site/pol-source-site-tvitem-list-item/pol-source-site-tvitem-list-item.component';
-import { PolSourceSiteTVItemListItemMenuComponent } from './components/pol-source-site/pol-source-site-tvitem-list-item-menu/pol-source-site-tvitem-list-item-menu.component';
 import { ProvinceTVItemListDetailComponent } from './components/province/province-tvitem-list-detail/province-tvitem-list-detail.component';
 import { ProvinceTVItemListItemComponent } from './components/province/province-tvitem-list-item/province-tvitem-list-item.component';
-import { ProvinceTVItemListItemMenuComponent } from './components/province/province-tvitem-list-item-menu/province-tvitem-list-item-menu.component';
 import { SectorTVItemListDetailComponent } from './components/sector/sector-tvitem-list-detail/sector-tvitem-list-detail.component';
 import { SectorTVItemListItemComponent } from './components/sector/sector-tvitem-list-item/sector-tvitem-list-item.component';
-import { SectorTVItemListItemMenuComponent } from './components/sector/sector-tvitem-list-item-menu/sector-tvitem-list-item-menu.component';
 import { SubsectorTVItemListDetailComponent } from './components/subsector/subsector-tvitem-list-detail/subsector-tvitem-list-detail.component';
 import { SubsectorTVItemListItemComponent } from './components/subsector/subsector-tvitem-list-item/subsector-tvitem-list-item.component';
-import { SubsectorTVItemListItemMenuComponent } from './components/subsector/subsector-tvitem-list-item-menu/subsector-tvitem-list-item-menu.component';
 import { MWQMSiteTVItemListItemSpecialComponent } from './components/mwqm-site/mwqm-site-tvitem-list-item-special/mwqm-site-tvitem-list-item-special.component';
-import { FileListItemMenuComponent } from './components/files/file-list-item-menu/file-list-item-menu.component';
 import { AnalysisItemMenuComponent } from './components/analysis/analysis-item-menu/analysis-item-menu.component';
 import { MWQMSiteItemEditComponent } from './components/mwqm-site/mwqm-site-item-edit/mwqm-site-item-edit.component';
 import { PolSourceSiteItemEditComponent } from './components/pol-source-site/pol-source-site-item-edit/pol-source-site-item-edit.component';
 import { MWQMRunItemEditComponent } from './components/mwqm-run/mwqm-run-item-edit/mwqm-run-item-edit.component';
+import { AreaItemEditComponent } from './components/area/area-item-edit/area-item-edit.component';
+import { TVItemMenuComponent } from './components/helpers/tvitem-menu/tvitem-menu.component';
+import { CountryItemModifyComponent } from './components/country/country-item-modify/country-item-modify.component';
+import { ProvinceItemEditComponent } from './components/province/province-item-edit/province-item-edit.component';
+import { MunicipalityItemEditComponent } from './components/municipality/municipality-item-edit/municipality-item-edit.component';
+import { TVFileMenuComponent } from './components/helpers/tvfile-menu/tvfile-menu.component';
+import { FileListItemEditComponent } from './components/files/file-list-item-edit/file-list-item-edit.component';
+import { SubsectorItemEditComponent } from './components/subsector/subsector-item-edit/subsector-item-edit.component';
+import { SectorItemEditComponent } from './components/sector/sector-item-edit/sector-item-edit.component';
+import { MikeScenarioItemEditComponent } from './components/mike-scenario/mike-scenario-item-edit/mike-scenario-item-edit.component';
+import { FileListItemViewComponent } from './components/files/file-list-item-view/file-list-item-view.component';
+import { AreaItemViewComponent } from './components/area/area-item-view/area-item-view.component';
+import { CountryItemViewComponent } from './components/country/country-item-view/country-item-view.component';
+import { MikeScenarioItemViewComponent } from './components/mike-scenario/mike-scenario-item-view/mike-scenario-item-view.component';
+import { MunicipalityItemViewComponent } from './components/municipality/municipality-item-view/municipality-item-view.component';
+import { MWQMRunItemViewComponent } from './components/mwqm-run/mwqm-run-item-view/mwqm-run-item-view.component';
+import { MWQMSiteItemViewComponent } from './components/mwqm-site/mwqm-site-item-view/mwqm-site-item-view.component';
+import { PolSourceSiteItemViewComponent } from './components/pol-source-site/pol-source-site-item-view/pol-source-site-item-view.component';
+import { ProvinceItemViewComponent } from './components/province/province-item-view/province-item-view.component';
+import { SectorItemViewComponent } from './components/sector/sector-item-view/sector-item-view.component';
+import { SubsectorItemViewComponent } from './components/subsector/subsector-item-view/subsector-item-view.component';
+import { CountryItemCreateComponent } from './components/country/country-item-create/country-item-create.component';
 
 @NgModule({
   declarations: [
@@ -89,22 +100,26 @@ import { MWQMRunItemEditComponent } from './components/mwqm-run/mwqm-run-item-ed
     AnalysisItemMenuComponent,
     AnalysisOptionsComponent,
     AreaItemComponent,
+    AreaItemEditComponent,
+    AreaItemViewComponent,
     AreaTVItemListDetailComponent,
     AreaTVItemListItemComponent,
-    AreaTVItemListItemMenuComponent,
     BreadCrumbComponent,
     ContactItemComponent,
     CountryItemComponent,
+    CountryItemCreateComponent,
+    CountryItemModifyComponent,
+    CountryItemViewComponent,
     CountryTVItemListDetailComponent,
     CountryTVItemListItemComponent,
-    CountryTVItemListItemMenuComponent,
     EmailDistributionListItemComponent,
     ErrorComponent,
     ExportArcGISItemComponent,
     FileListComponent,
     FileListItemComponent,
     FileListItemDetailComponent,
-    FileListItemMenuComponent,
+    FileListItemEditComponent,
+    FileListItemViewComponent,
     FileUploadComponent,
     FooterComponent,
     HomeItemComponent,
@@ -115,35 +130,38 @@ import { MWQMRunItemEditComponent } from './components/mwqm-run/mwqm-run-item-ed
     MapItemComponent,
     MapMenuComponent,
     MikeScenarioItemComponent,
+    MikeScenarioItemEditComponent,
+    MikeScenarioItemViewComponent,
     MikeScenarioTVItemListDetailComponent,
     MikeScenarioTVItemListItemComponent,
-    MikeScenarioTVItemListItemMenuComponent,
     MunicipalityItemComponent,
+    MunicipalityItemEditComponent,
+    MunicipalityItemViewComponent,
     MunicipalityTVItemListDetailComponent,
     MunicipalityTVItemListItemComponent,
-    MunicipalityTVItemListItemMenuComponent,
     MWQMRunItemComponent,
     MWQMRunItemEditComponent,
+    MWQMRunItemViewComponent,
     MWQMRunTVItemListDetailComponent,
     MWQMRunTVItemListItemComponent,
-    MWQMRunTVItemListItemMenuComponent,
     MWQMSiteItemComponent,
     MWQMSiteItemEditComponent,
+    MWQMSiteItemViewComponent,
     MWQMSiteTVItemListDetailComponent,
     MWQMSiteTVItemListItemComponent,
-    MWQMSiteTVItemListItemMenuComponent,
     MWQMSiteTVItemListItemSpecialComponent,
     OpenDataItemComponent,
     OpenDataNationalItemComponent,
     PolSourceSiteItemComponent,
     PolSourceSiteItemEditComponent,
+    PolSourceSiteItemViewComponent,
     PolSourceSiteTVItemListDetailComponent,
     PolSourceSiteTVItemListItemComponent,
-    PolSourceSiteTVItemListItemMenuComponent,
     ProvinceItemComponent,
+    ProvinceItemEditComponent,
+    ProvinceItemViewComponent,
     ProvinceTVItemListDetailComponent,
     ProvinceTVItemListItemComponent,
-    ProvinceTVItemListItemMenuComponent,
     ProvincialToolsItemComponent,
     RainExceedanceItemComponent,
     RootItemComponent,
@@ -151,17 +169,21 @@ import { MWQMRunItemEditComponent } from './components/mwqm-run/mwqm-run-item-ed
     SearchComponent,
     SearchOptionComponent,
     SectorItemComponent,
+    SectorItemEditComponent,
+    SectorItemViewComponent,
     SectorTVItemListDetailComponent,
     SectorTVItemListItemComponent,
-    SectorTVItemListItemMenuComponent,
     ShellItemComponent,
     SideNavMenuComponent,
     StatCountComponent,
     SubsectorItemComponent,
+    SubsectorItemEditComponent,
+    SubsectorItemViewComponent,
     SubsectorTVItemListDetailComponent,
     SubsectorTVItemListItemComponent,
-    SubsectorTVItemListItemMenuComponent,
     SubsectorToolsItemComponent,
+    TVFileMenuComponent,
+    TVItemMenuComponent
   ],
   imports: [
     CommonModule,
@@ -182,22 +204,26 @@ import { MWQMRunItemEditComponent } from './components/mwqm-run/mwqm-run-item-ed
     AnalysisItemMenuComponent,
     AnalysisOptionsComponent,
     AreaItemComponent,
+    AreaItemEditComponent,
+    AreaItemViewComponent,
     AreaTVItemListDetailComponent,
     AreaTVItemListItemComponent,
-    AreaTVItemListItemMenuComponent,
     BreadCrumbComponent,
     ContactItemComponent,
     CountryItemComponent,
+    CountryItemCreateComponent,
+    CountryItemModifyComponent,
+    CountryItemViewComponent,
     CountryTVItemListDetailComponent,
     CountryTVItemListItemComponent,
-    CountryTVItemListItemMenuComponent,
     EmailDistributionListItemComponent,
     ErrorComponent,
     ExportArcGISItemComponent,
     FileListComponent,
     FileListItemComponent,
     FileListItemDetailComponent,
-    FileListItemMenuComponent,
+    FileListItemEditComponent,
+    FileListItemViewComponent,
     FileUploadComponent,
     FooterComponent,
     HomeItemComponent,
@@ -208,35 +234,38 @@ import { MWQMRunItemEditComponent } from './components/mwqm-run/mwqm-run-item-ed
     MapItemComponent,
     MapMenuComponent,
     MikeScenarioItemComponent,
+    MikeScenarioItemEditComponent,
+    MikeScenarioItemViewComponent,
     MikeScenarioTVItemListDetailComponent,
     MikeScenarioTVItemListItemComponent,
-    MikeScenarioTVItemListItemMenuComponent,
     MunicipalityItemComponent,
+    MunicipalityItemEditComponent,
+    MunicipalityItemViewComponent,
     MunicipalityTVItemListDetailComponent,
     MunicipalityTVItemListItemComponent,
-    MunicipalityTVItemListItemMenuComponent,
     MWQMRunItemComponent,
     MWQMRunItemEditComponent,
+    MWQMRunItemViewComponent,
     MWQMRunTVItemListDetailComponent,
     MWQMRunTVItemListItemComponent,
-    MWQMRunTVItemListItemMenuComponent,
     MWQMSiteItemComponent,
     MWQMSiteItemEditComponent,
+    MWQMSiteItemViewComponent,
     MWQMSiteTVItemListDetailComponent,
     MWQMSiteTVItemListItemComponent,
-    MWQMSiteTVItemListItemMenuComponent,
     MWQMSiteTVItemListItemSpecialComponent,
     OpenDataItemComponent,
     OpenDataNationalItemComponent,
     PolSourceSiteItemComponent,
     PolSourceSiteItemEditComponent,
+    PolSourceSiteItemViewComponent,
     PolSourceSiteTVItemListDetailComponent,
     PolSourceSiteTVItemListItemComponent,
-    PolSourceSiteTVItemListItemMenuComponent,
     ProvinceItemComponent,
+    ProvinceItemEditComponent,
+    ProvinceItemViewComponent,
     ProvinceTVItemListDetailComponent,
     ProvinceTVItemListItemComponent,
-    ProvinceTVItemListItemMenuComponent,
     ProvincialToolsItemComponent,
     RainExceedanceItemComponent,
     RootItemComponent,
@@ -244,17 +273,22 @@ import { MWQMRunItemEditComponent } from './components/mwqm-run/mwqm-run-item-ed
     SearchComponent,
     SearchOptionComponent,
     SectorItemComponent,
+    SectorItemEditComponent,
+    SectorItemViewComponent,
     SectorTVItemListDetailComponent,
     SectorTVItemListItemComponent,
-    SectorTVItemListItemMenuComponent,
     ShellItemComponent,
     SideNavMenuComponent,
     StatCountComponent,
     SubsectorItemComponent,
+    SubsectorItemEditComponent,
+    SubsectorItemViewComponent,
     SubsectorTVItemListDetailComponent,
     SubsectorTVItemListItemComponent,
-    SubsectorTVItemListItemMenuComponent,
     SubsectorToolsItemComponent,
+    TVFileMenuComponent,
+    TVItemMenuComponent
   ]
 })
 export class SharedModule { }
+ 

@@ -16,6 +16,8 @@ namespace CSSPDBModels
         #region Properties in DB
         [Key]
         public int SamplingPlanSubsectorSiteID { get; set; }
+        [CSSPEnumType]
+        public DBCommandEnum DBCommand { get; set; }
         [CSSPExist(ExistTypeName = "SamplingPlanSubsector", ExistPlurial = "s", ExistFieldID = "SamplingPlanSubsectorID")]
         [CSSPForeignKey(TableName = "SamplingPlanSubsectors", FieldName = "SamplingPlanSubsectorID")]
         public int SamplingPlanSubsectorID { get; set; }

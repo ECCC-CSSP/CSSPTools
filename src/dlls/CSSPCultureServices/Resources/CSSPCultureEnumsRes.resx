@@ -3222,14 +3222,14 @@
   <data name="PolSourceSiteSubComponentEnumInformation" xml:space="preserve">
     <value>Information</value>
   </data>
-  <data name="LocalDBCommandEnumChange" xml:space="preserve">
-    <value>Change</value>
+  <data name="DBCommandEnumModified" xml:space="preserve">
+    <value>Modified</value>
   </data>
-  <data name="LocalDBCommandEnumDelete" xml:space="preserve">
-    <value>Delete</value>
+  <data name="DBCommandEnumDeleted" xml:space="preserve">
+    <value>Deleted</value>
   </data>
-  <data name="LocalDBCommandEnumNew" xml:space="preserve">
-    <value>New</value>
+  <data name="DBCommandEnumCreated" xml:space="preserve">
+    <value>Created</value>
   </data>
   <data name="MikeScenarioSubComponentEnumFiles" xml:space="preserve">
     <value>Files</value>
@@ -3281,5 +3281,8 @@
   </data>
   <data name="SortOrderAngularEnumSubsectorPolSourceSites" xml:space="preserve">
     <value>SubsectorPolSourceSites</value>
+  </data>
+  <data name="DBCommandEnumOriginal" xml:space="preserve">
+    <value>Original</value>
   </data>
 </root>

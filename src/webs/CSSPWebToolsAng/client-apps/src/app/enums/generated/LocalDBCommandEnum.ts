@@ -10,9 +10,10 @@ import { EnumIDAndText } from 'src/app/models/generated/helper/EnumIDAndText.mod
 import { LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 
 export enum LocalDBCommandEnum {
-    Change = 1,
-    New = 2,
-    Delete = 3,
+    Original = 1,
+    Modified = 2,
+    Created = 3,
+    Deleted = 4,
 }
 
 export function GetLocalDBCommandEnum(): typeof LocalDBCommandEnum
@@ -23,14 +24,16 @@ export function GetLocalDBCommandEnum(): typeof LocalDBCommandEnum
 export function LocalDBCommandEnum_GetOrderedText(appStateService: AppStateService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
     if (appStateService.AppState$?.getValue().Language == LanguageEnum.fr) {
-        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Changer' });
-        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Nouveau' });
-        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Effacer' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Original' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Modifié' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Créé' });
+        enumTextOrderedList.push({ EnumID: 4, EnumText: 'Effacé' });
     }
     else {
-        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Change' });
-        enumTextOrderedList.push({ EnumID: 2, EnumText: 'New' });
-        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Delete' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Original' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Modified' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Created' });
+        enumTextOrderedList.push({ EnumID: 4, EnumText: 'Deleted' });
     }
 
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));

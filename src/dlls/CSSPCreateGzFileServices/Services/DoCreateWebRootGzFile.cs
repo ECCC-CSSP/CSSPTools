@@ -23,9 +23,9 @@ namespace CreateGzFileServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            TVItem tvItemRoot = await GetTVItemRoot();
+            TVItem TVItemRoot = await GetTVItemRoot();
 
-            if (tvItemRoot == null)
+            if (TVItemRoot == null)
             {
                 return await Task.FromResult(BadRequest(CSSPCultureServicesRes.TVItemRootCouldNotBeFound));
             }
@@ -34,11 +34,11 @@ namespace CreateGzFileServices
 
             try
             {
-                await FillTVItemModel(webRoot.TVItemModel, tvItemRoot);
+                await FillTVItemModel(webRoot.TVItemModel, TVItemRoot);
 
-                await FillParentListTVItemModelList(webRoot.TVItemParentList, tvItemRoot);
+                await FillParentListTVItemModelList(webRoot.TVItemParentList, TVItemRoot);
 
-                await FillChildListTVItemModelList(webRoot.TVItemCountryList, tvItemRoot, TVTypeEnum.Country);
+                await FillChildListTVItemModelList(webRoot.TVItemCountryList, TVItemRoot, TVTypeEnum.Country);
 
                 await DoStore<WebRoot>(webRoot, "WebRoot.gz");
             }

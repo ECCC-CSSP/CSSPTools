@@ -4,7 +4,6 @@
  */
 
 using CSSPEnums;
-using CSSPDBModels;
 using CSSPCultureServices.Resources;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -265,11 +264,11 @@ namespace CSSPDBFilesManagementServices
                 yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "AzureETag", "100"), new[] { nameof(csspFile.AzureETag) });
             }
 
-            // doing AzureCreationTimeUTC
-            if (csspFile.AzureCreationTimeUTC == null)
-            {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "AzureCreationTimeUTC"), new[] { nameof(csspFile.AzureCreationTimeUTC) });
-            }
+            //// doing AzureCreationTimeUTC
+            //if (csspFile.AzureCreationTimeUTC == null)
+            //{
+            //    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "AzureCreationTimeUTC"), new[] { nameof(csspFile.AzureCreationTimeUTC) });
+            //}
 
             if (csspFile.AzureCreationTimeUTC.Year < 1980)
             {

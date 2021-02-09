@@ -28,7 +28,7 @@ namespace GenerateCSSPWebAPIsLocal_TestsController
             sb.AppendLine(@"            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();");
             sb.AppendLine(@"            Services.AddSingleton<IEnums, Enums>();");
             sb.AppendLine(@"            Services.AddSingleton<ILocalService, LocalService>();");
-            sb.AppendLine(@"            Services.AddSingleton<ILocalContactDBService, LocalContactDBService>();");
+            sb.AppendLine(@"            Services.AddSingleton<IContactDBService, ContactDBService>();");
             sb.AppendLine($@"            Services.AddSingleton<I{ TypeName }DBService, { TypeName }DBService>();");
             sb.AppendLine($@"            Services.AddSingleton<I{ TypeName }Controller, { TypeName }Controller>();");
             sb.AppendLine(@"");

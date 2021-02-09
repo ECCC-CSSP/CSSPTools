@@ -70,8 +70,8 @@ namespace GenerateCSSPWebAPIsLocal_TestsController
                     sb.AppendLine(@" */");
                     sb.AppendLine(@"");
                     sb.AppendLine(@"using CSSPEnums;");
-                    sb.AppendLine(@"using CSSPDBLocalModels;");
-                    sb.AppendLine(@"using CSSPDBLocalServices;");
+                    sb.AppendLine(@"using CSSPDBModels;");
+                    sb.AppendLine(@"using CSSPDBServices;");
                     sb.AppendLine(@"using CSSPWebAPIs.Controllers;");
                     sb.AppendLine(@"using CSSPCultureServices.Services;");
                     sb.AppendLine(@"using Microsoft.AspNetCore.Mvc;");

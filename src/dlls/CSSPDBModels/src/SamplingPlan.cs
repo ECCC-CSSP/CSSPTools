@@ -16,6 +16,8 @@ namespace CSSPDBModels
         #region Properties in DB
         [Key]
         public int SamplingPlanID { get; set; }
+        [CSSPEnumType]
+        public DBCommandEnum DBCommand { get; set; }
         public bool IsActive { get; set; }
         [CSSPMaxLength(200)]
         public string SamplingPlanName { get; set; }

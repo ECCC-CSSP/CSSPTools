@@ -7,7 +7,6 @@ import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { WebContactService } from 'src/app/services/loaders/web-contact.service';
 import { PreferenceService } from 'src/app/services/loaders/preferences.service';
-import { WebSubsectorService } from 'src/app/services/loaders/web-subsector.service';
 
 @Component({
   selector: 'app-home-item',
@@ -22,25 +21,21 @@ export class HomeItemComponent implements OnInit, OnDestroy {
     public appStateService: AppStateService,
     public appLanguageService: AppLanguageService,
     public webContactService: WebContactService,
-    // delete line below after testing
-    public webSubsectorService: WebSubsectorService,
     private preferenceService: PreferenceService) { }
 
   ngOnInit(): void {
     this.preferenceService.DoPreference();
     this.webContactService.DoWebContact(false);
-    // delete line below after testing
-    this.webSubsectorService.DoWebSubsector(635, true);
   }
 
   ngOnDestroy() {
   }
 
   English() {
-    this.appStateService.UpdateAppState(<AppState>{ Language: LanguageEnum.en, TopComponent: TopComponentEnum.Shell });
+    this.appStateService.UpdateAppState(<AppState>{ Language: LanguageEnum.en, TopComponent: TopComponentEnum.Shell, Working: false });
   }
 
   French() {
-    this.appStateService.UpdateAppState(<AppState>{ Language: LanguageEnum.fr, TopComponent: TopComponentEnum.Shell });
+    this.appStateService.UpdateAppState(<AppState>{ Language: LanguageEnum.fr, TopComponent: TopComponentEnum.Shell, Working: false });
   }
 }

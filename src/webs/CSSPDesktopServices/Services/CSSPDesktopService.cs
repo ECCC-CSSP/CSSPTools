@@ -17,7 +17,6 @@ using System.Text;
 using System.Threading.Tasks;
 using CSSPHelperModels;
 using CSSPDBPreferenceModels;
-using CSSPDBLocalModels;
 using CSSPDBSearchModels;
 using CSSPDBCommandLogModels;
 using CSSPDBFilesManagementModels;
@@ -97,7 +96,7 @@ namespace CSSPDesktopServices.Services
         #endregion Properties public
 
         #region Properties private
-        private CSSPDBLocalContext dbLocal { get; }
+        private CSSPDBContext dbLocal { get; }
         private CSSPDBSearchContext dbSearch { get; }
         private CSSPDBCommandLogContext dbCommandLog { get; }
         private CSSPDBPreferenceContext dbLogin { get; }
@@ -122,7 +121,7 @@ namespace CSSPDesktopServices.Services
 
         #region Constructors
         public CSSPDesktopService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, 
-            ILocalService LocalService, CSSPDBLocalContext dbLocal, CSSPDBSearchContext dbSearch, CSSPDBCommandLogContext dbCommandLog, 
+            ILocalService LocalService, CSSPDBContext dbLocal, CSSPDBSearchContext dbSearch, CSSPDBCommandLogContext dbCommandLog, 
             CSSPDBPreferenceContext dbLogin, CSSPDBFilesManagementContext dbFM, IReadGzFileService ReadGzFileService, IPreferenceService PreferenceService)
         {
             this.Configuration = Configuration;

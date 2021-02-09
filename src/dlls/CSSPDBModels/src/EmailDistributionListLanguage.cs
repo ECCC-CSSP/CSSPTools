@@ -16,6 +16,8 @@ namespace CSSPDBModels
         #region Properties in DB
         [Key]
         public int EmailDistributionListLanguageID { get; set; }
+        [CSSPEnumType]
+        public DBCommandEnum DBCommand { get; set; }
         [CSSPExist(ExistTypeName = "EmailDistributionList", ExistPlurial = "s", ExistFieldID = "EmailDistributionListID")]
         [CSSPForeignKey(TableName = "EmailDistributionLists", FieldName = "EmailDistributionListID")]
         public int EmailDistributionListID { get; set; }

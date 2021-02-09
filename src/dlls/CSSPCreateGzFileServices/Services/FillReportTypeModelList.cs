@@ -21,13 +21,13 @@ namespace CreateGzFileServices
             List<ReportType> ReportTypeList = await GetReportTypeList();
             List<ReportSection> ReportSectionList = await GetReportSectionList();
 
-            foreach(ReportType reportType in ReportTypeList)
+            foreach(ReportType ReportType in ReportTypeList)
             {
-                ReportTypeModel reportTypeModel = new ReportTypeModel();
-                reportTypeModel.ReportType = reportType;
-                reportTypeModel.ReportSectionList = ReportSectionList.Where(c => c.ReportTypeID == reportType.ReportTypeID).ToList();
+                ReportTypeModel ReportTypeModel = new ReportTypeModel();
+                ReportTypeModel.ReportType = ReportType;
+                ReportTypeModel.ReportSectionList = ReportSectionList.Where(c => c.ReportTypeID == ReportType.ReportTypeID).ToList();
 
-                ReportTypeModelList.Add(reportTypeModel);
+                ReportTypeModelList.Add(ReportTypeModel);
             }
         }
     }

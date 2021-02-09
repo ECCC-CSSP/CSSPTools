@@ -17,6 +17,8 @@ namespace CSSPDBModels
         [Key]
         public int ReportTypeID { get; set; }
         [CSSPEnumType]
+        public DBCommandEnum DBCommand { get; set; }
+        [CSSPEnumType]
         public TVTypeEnum TVType { get; set; }
         [CSSPEnumType]
         public FileTypeEnum FileType { get; set; }

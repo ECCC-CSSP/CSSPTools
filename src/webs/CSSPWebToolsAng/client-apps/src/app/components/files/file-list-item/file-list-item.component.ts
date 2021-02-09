@@ -10,6 +10,7 @@ import { DateFormatService } from 'src/app/services/helpers/date-format.service'
 import { Download } from 'src/app/services/helpers/file-download';
 import { DownloadService } from 'src/app/services/helpers/file-download.service';
 import { FileIconService } from 'src/app/services/helpers/file-icon.service';
+import { ShowTVFileService } from 'src/app/services/helpers/show-tvfile.service';
 import { FileService } from 'src/app/services/loaders/file.service';
 
 @Component({
@@ -32,6 +33,7 @@ export class FileListItemComponent implements OnInit, OnDestroy {
     public fileIconService: FileIconService,
     public fileService: FileService,
     private downloads: DownloadService,
+    public showTVFileService: ShowTVFileService,
     @Inject(DOCUMENT) private document: Document) {
   }
 

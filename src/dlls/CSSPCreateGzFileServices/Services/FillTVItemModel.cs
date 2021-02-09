@@ -34,20 +34,20 @@ namespace CreateGzFileServices
             };
             TVItemModel.TVItemStatList = TVItemStatList.Select(c => c).ToList();
 
-            foreach (MapInfo mapInfo in MapInfoList)
+            foreach (MapInfo MapInfo in MapInfoList)
             {
-                MapInfoModel mapInfoModel = new MapInfoModel();
-                mapInfoModel.MapInfoPointList = MapInfoPointList.Where(c => c.MapInfoID == mapInfo.MapInfoID).Select(c => c).ToList();
-                mapInfoModel.MapInfo = mapInfo;
-                TVItemModel.MapInfoModelList.Add(mapInfoModel);
+                MapInfoModel MapInfoModel = new MapInfoModel();
+                MapInfoModel.MapInfoPointList = MapInfoPointList.Where(c => c.MapInfoID == MapInfo.MapInfoID).Select(c => c).ToList();
+                MapInfoModel.MapInfo = MapInfo;
+                TVItemModel.MapInfoModelList.Add(MapInfoModel);
             }
 
-            foreach (TVFile tvFile in TVFileList)
+            foreach (TVFile TVFile in TVFileList)
             {
                 TVItemModel.TVFileModelList.Add(new TVFileModel()
                 {
                     ParentTVItemID = TVItem.TVItemID,
-                    TVFile = tvFile,
+                    TVFile = TVFile,
                     TVFileLanguageList = new List<TVFileLanguage>() {
                         TVFileLanguageList.Where(c => c.Language == LanguageEnum.en).FirstOrDefault(),
                         TVFileLanguageList.Where(c => c.Language == LanguageEnum.en).FirstOrDefault(),

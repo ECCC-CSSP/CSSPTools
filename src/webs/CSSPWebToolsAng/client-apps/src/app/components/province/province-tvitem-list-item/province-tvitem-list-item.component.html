@@ -1,23 +1,31 @@
 <mat-list *ngFor="let webBase of TVItemList; let i = index">
-    <app-province-tvitem-list-item-menu [TVItemModel]="webBase.TVItemModel" [AppState]="AppState">
-    </app-province-tvitem-list-item-menu>
+    <app-tvitem-menu [TVItemModel]="webBase?.TVItemModel" [AppState]="AppState">
+    </app-tvitem-menu>
 
-    <button mat-button (click)="subPageService.SetSubPage(webBase.TVItemModel)">
-        <span [ngClass]="webBase.TVItemModel?.TVItem?.IsActive ? '' : 'inactive'">
+    <button mat-button (click)="subPageService.SetSubPage(webBase?.TVItemModel)">
+        <span [ngClass]="webBase?.TVItemModel?.TVItem?.IsActive ? '' : 'inactive'">
             <span *ngIf="appStateService.AppState$?.getValue()?.MapVisible">
                 {{ i + 1 }}&nbsp;-&nbsp;
             </span>
             <span *ngIf="appStateService.AppState$?.getValue()?.DetailVisible">
-                [{{ webBase.TVItemModel.TVItem.TVItemID }}]
+                [{{ webBase?.TVItemModel.TVItem.TVItemID }}]
             </span>
-            {{ webBase.TVItemModel?.TVItemLanguageList[this.appStateService.AppState$.getValue().Language]?.TVText }}
+            {{ webBase?.TVItemModel?.TVItemLanguageList[this.appStateService.AppState$.getValue().Language]?.TVText }}
         </span>
         <app-stat-count *ngIf="appStateService.AppState$.getValue().StatCountVisible" [TVType]="null"
-            [TVItemModel]="webBase.TVItemModel"></app-stat-count>
+            [TVItemModel]="webBase?.TVItemModel"></app-stat-count>
         <app-last-udpate-tv-item-model *ngIf="appStateService.AppState$?.getValue()?.LastUpdateVisible"
-            [TVItemModel]="webBase.TVItemModel"></app-last-udpate-tv-item-model>
+            [TVItemModel]="webBase?.TVItemModel"></app-last-udpate-tv-item-model>
     </button>
-    
+
+    <app-province-item-view *ngIf="showTVItemService.TVItemVisible(webBase?.TVItemModel)"
+        [TVItemModel]="webBase?.TVItemModel" [AppState]="AppState">
+    </app-province-item-view>
+
+    <app-province-item-edit *ngIf="AppState.EditVisible"
+        [TVItemModel]="webBase?.TVItemModel" [AppState]="AppState">
+    </app-province-item-edit>
+
     <app-province-tvitem-list-detail [AppState]="AppState" *ngIf="!IsBreadCrumb && AppState?.DetailVisible"
-        [TVItemModel]="webBase.TVItemModel"></app-province-tvitem-list-detail>
+        [TVItemModel]="webBase?.TVItemModel"></app-province-tvitem-list-detail>
 </mat-list>

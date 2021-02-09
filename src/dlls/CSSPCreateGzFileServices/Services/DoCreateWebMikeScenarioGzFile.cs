@@ -21,9 +21,9 @@ namespace CreateGzFileServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            TVItem tvItemMikeScenario = await GetTVItemWithTVItemID(MikeScenarioTVItemID);
+            TVItem TVItemMikeScenario = await GetTVItemWithTVItemID(MikeScenarioTVItemID);
 
-            if (tvItemMikeScenario == null || tvItemMikeScenario.TVType != TVTypeEnum.MikeScenario)
+            if (TVItemMikeScenario == null || TVItemMikeScenario.TVType != TVTypeEnum.MikeScenario)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._CouldNotBeFoundFor_Equal_And_Equal_,
                     "TVItem", MikeScenarioTVItemID.ToString(), "TVType", TVTypeEnum.MikeScenario.ToString())));
@@ -33,15 +33,15 @@ namespace CreateGzFileServices
 
             try
             {
-                await FillTVItemModel(webMikeScenario.TVItemModel, tvItemMikeScenario);
+                await FillTVItemModel(webMikeScenario.TVItemModel, TVItemMikeScenario);
 
-                await FillParentListTVItemModelList(webMikeScenario.TVItemParentList, tvItemMikeScenario);
+                await FillParentListTVItemModelList(webMikeScenario.TVItemParentList, TVItemMikeScenario);
 
-                await FillChildListTVItemMikeSourceModelList(webMikeScenario.MikeSourceModelList, tvItemMikeScenario, TVTypeEnum.MikeSource);
+                await FillChildListTVItemMikeSourceModelList(webMikeScenario.MikeSourceModelList, TVItemMikeScenario, TVTypeEnum.MikeSource);
 
-                await FillChildListTVItemMikeBoundaryConditionModelList(webMikeScenario.MikeBoundaryConditionModelWebTideList, tvItemMikeScenario, TVTypeEnum.MikeBoundaryConditionWebTide);
+                await FillChildListTVItemMikeBoundaryConditionModelList(webMikeScenario.MikeBoundaryConditionModelWebTideList, TVItemMikeScenario, TVTypeEnum.MikeBoundaryConditionWebTide);
 
-                await FillChildListTVItemMikeBoundaryConditionModelList(webMikeScenario.MikeBoundaryConditionModelMeshList, tvItemMikeScenario, TVTypeEnum.MikeBoundaryConditionMesh);
+                await FillChildListTVItemMikeBoundaryConditionModelList(webMikeScenario.MikeBoundaryConditionModelMeshList, TVItemMikeScenario, TVTypeEnum.MikeBoundaryConditionMesh);
 
                 await DoStore<WebMikeScenario>(webMikeScenario, $"WebMikeScenario_{MikeScenarioTVItemID}.gz");
             }

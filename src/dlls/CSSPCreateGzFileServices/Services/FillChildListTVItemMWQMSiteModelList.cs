@@ -29,32 +29,32 @@ namespace CreateGzFileServices
 
             foreach (TVItem tvItem in TVItemList)
             {
-                MWQMSiteModel mwqmSiteModel = new MWQMSiteModel();
-                mwqmSiteModel.TVItemModel.TVItem = tvItem;
-                mwqmSiteModel.TVItemModel.TVItemLanguageList = new List<TVItemLanguage>()
+                MWQMSiteModel MWQMSiteModel = new MWQMSiteModel();
+                MWQMSiteModel.TVItemModel.TVItem = tvItem;
+                MWQMSiteModel.TVItemModel.TVItemLanguageList = new List<TVItemLanguage>()
                 {
                     TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID && c.Language == LanguageEnum.en).FirstOrDefault(),
                     TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID && c.Language == LanguageEnum.en).FirstOrDefault(),
                     TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID && c.Language == LanguageEnum.fr).FirstOrDefault()
                 };
 
-                mwqmSiteModel.TVItemModel.TVItemStatList = TVItemStatList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
+                MWQMSiteModel.TVItemModel.TVItemStatList = TVItemStatList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
 
-                foreach (MapInfo mapInfo in MapInfoList)
+                foreach (MapInfo MapInfo in MapInfoList)
                 {
-                    if (mapInfo.TVItemID == tvItem.TVItemID)
+                    if (MapInfo.TVItemID == tvItem.TVItemID)
                     {
-                        MapInfoModel mapInfoModel = new MapInfoModel();
-                        mapInfoModel.MapInfo = mapInfo;
-                        mapInfoModel.MapInfoPointList = MapInfoPointList.Where(c => c.MapInfoID == mapInfo.MapInfoID).Select(c => c).ToList();
-                        mwqmSiteModel.TVItemModel.MapInfoModelList.Add(mapInfoModel);
+                        MapInfoModel MapInfoModel = new MapInfoModel();
+                        MapInfoModel.MapInfo = MapInfo;
+                        MapInfoModel.MapInfoPointList = MapInfoPointList.Where(c => c.MapInfoID == MapInfo.MapInfoID).Select(c => c).ToList();
+                        MWQMSiteModel.TVItemModel.MapInfoModelList.Add(MapInfoModel);
                     }
                 }
 
-                mwqmSiteModel.MWQMSite = MWQMSiteList.Where(c => c.MWQMSiteTVItemID == tvItem.TVItemID).FirstOrDefault();
-                mwqmSiteModel.MWQMSiteStartEndDateList = MWQMSiteStartEndDateList.Where(c => c.MWQMSiteTVItemID == tvItem.TVItemID).ToList();
+                MWQMSiteModel.MWQMSite = MWQMSiteList.Where(c => c.MWQMSiteTVItemID == tvItem.TVItemID).FirstOrDefault();
+                MWQMSiteModel.MWQMSiteStartEndDateList = MWQMSiteStartEndDateList.Where(c => c.MWQMSiteTVItemID == tvItem.TVItemID).ToList();
 
-                MWQMSiteModelList.Add(mwqmSiteModel);
+                MWQMSiteModelList.Add(MWQMSiteModel);
             }
         }
     }

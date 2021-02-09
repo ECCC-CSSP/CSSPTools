@@ -19,7 +19,6 @@ using LocalServices;
 using DownloadFileServices;
 using ReadGzFileServices;
 using CSSPDBPreferenceServices;
-using CSSPDBLocalModels;
 using CSSPDBFilesManagementModels;
 using CSSPDBPreferenceModels;
 
@@ -75,7 +74,7 @@ namespace DownloadFileServices.Tests
 
             FileInfo fiCSSPDBLocalFileName = new FileInfo(CSSPDBLocalFileName);
 
-            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            Services.AddDbContext<CSSPDBContext>(options =>
             {
                 options.UseSqlite($"Data Source={ fiCSSPDBLocalFileName.FullName }");
             });

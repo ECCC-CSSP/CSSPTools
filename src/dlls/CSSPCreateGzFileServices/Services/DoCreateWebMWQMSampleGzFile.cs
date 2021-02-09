@@ -21,9 +21,9 @@ namespace CreateGzFileServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            TVItem tvItemSubsector = await GetTVItemWithTVItemID(SubsectorTVItemID);
-
-            if (tvItemSubsector == null || tvItemSubsector.TVType != TVTypeEnum.Subsector)
+            TVItem TVItemSubsector = await GetTVItemWithTVItemID(SubsectorTVItemID);
+            
+            if (TVItemSubsector == null || TVItemSubsector.TVType != TVTypeEnum.Subsector)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._CouldNotBeFoundFor_Equal_And_Equal_,
                     "TVItem", SubsectorTVItemID.ToString(), "TVType", TVTypeEnum.Subsector.ToString())));
@@ -33,12 +33,12 @@ namespace CreateGzFileServices
 
             try
             {
-                await FillTVItemModel(webMWQMSample.TVItemModel, tvItemSubsector);
+                await FillTVItemModel(webMWQMSample.TVItemModel, TVItemSubsector);
 
-                await FillParentListTVItemModelList(webMWQMSample.TVItemParentList, tvItemSubsector);
+                await FillParentListTVItemModelList(webMWQMSample.TVItemParentList, TVItemSubsector);
 
-                webMWQMSample.MWQMSampleList = await GetWQMSampleListFromSubsector10Years(tvItemSubsector, Year);
-                webMWQMSample.MWQMSampleLanguageList = await GetWQMSampleLanguageListFromSubsector10Years(tvItemSubsector, Year);
+                webMWQMSample.MWQMSampleList = await GetWQMSampleListFromSubsector10Years(TVItemSubsector, Year);
+                webMWQMSample.MWQMSampleLanguageList = await GetWQMSampleLanguageListFromSubsector10Years(TVItemSubsector, Year);
 
                 await DoStore<WebMWQMSample>(webMWQMSample, $"WebMWQMSample_{SubsectorTVItemID}_{Year}_{Year + 9}.gz");
             }

@@ -16,6 +16,8 @@ namespace CSSPDBModels
         #region Properties in DB
         [Key]
         public int ClimateDataValueID { get; set; }
+        [CSSPEnumType]
+        public DBCommandEnum DBCommand { get; set; }
         [CSSPExist(ExistTypeName = "ClimateSite", ExistPlurial = "s", ExistFieldID = "ClimateSiteID")]
         [CSSPForeignKey(TableName = "ClimateSites", FieldName = "ClimateSiteID")]
         public int ClimateSiteID { get; set; }

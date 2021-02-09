@@ -16,6 +16,8 @@ namespace CSSPDBModels
         #region Properties in DB
         [Key]
         public int MikeSourceStartEndID { get; set; }
+        [CSSPEnumType]
+        public DBCommandEnum DBCommand { get; set; }
         [CSSPExist(ExistTypeName = "MikeSource", ExistPlurial = "s", ExistFieldID = "MikeSourceID")]
         [CSSPForeignKey(TableName = "MikeSources", FieldName = "MikeSourceID")]
         public int MikeSourceID { get; set; }

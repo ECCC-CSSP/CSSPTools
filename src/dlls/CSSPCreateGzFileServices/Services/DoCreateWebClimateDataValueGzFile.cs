@@ -4,11 +4,11 @@
  */
 using CSSPCultureServices.Resources;
 using CSSPEnums;
-using CSSPDBModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 using CSSPWebModels;
+using CSSPDBModels;
 
 namespace CreateGzFileServices
 {
@@ -21,9 +21,9 @@ namespace CreateGzFileServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            TVItem tvItemClimateSite = await GetTVItemWithTVItemID(ClimateSiteTVItemID);
+            TVItem TVItemClimateSite = await GetTVItemWithTVItemID(ClimateSiteTVItemID);
 
-            if (tvItemClimateSite == null || tvItemClimateSite.TVType != TVTypeEnum.ClimateSite)
+            if (TVItemClimateSite == null || TVItemClimateSite.TVType != TVTypeEnum.ClimateSite)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._CouldNotBeFoundFor_Equal_And_Equal_,
                     "TVItem", ClimateSiteTVItemID.ToString(), "TVType", TVTypeEnum.ClimateSite.ToString())));
@@ -33,11 +33,11 @@ namespace CreateGzFileServices
 
             try
             {
-                await FillTVItemModel(webClimateDataValue.TVItemModel, tvItemClimateSite);
+                await FillTVItemModel(webClimateDataValue.TVItemModel, TVItemClimateSite);
 
-                await FillParentListTVItemModelList(webClimateDataValue.TVItemParentList, tvItemClimateSite);
+                await FillParentListTVItemModelList(webClimateDataValue.TVItemParentList, TVItemClimateSite);
 
-                webClimateDataValue.ClimateDataValueList = await GetClimateDataValueListForClimateSite(tvItemClimateSite.TVItemID);
+                webClimateDataValue.ClimateDataValueList = await GetClimateDataValueListForClimateSite(TVItemClimateSite.TVItemID);
 
                 await DoStore<WebClimateDataValue>(webClimateDataValue, $"WebClimateDataValue_{ClimateSiteTVItemID}.gz");
             }

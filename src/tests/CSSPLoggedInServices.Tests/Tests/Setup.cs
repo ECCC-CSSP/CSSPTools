@@ -9,7 +9,6 @@ using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
 using Xunit;
-using CSSPDBModels;
 
 namespace LoggedInServices.Tests
 {
@@ -58,7 +57,7 @@ namespace LoggedInServices.Tests
             ServiceCollection.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             ServiceCollection.AddSingleton<ILoggedInService, LoggedInService>();
 
-            string CSSPDBConnString = Configuration.GetValue<string>("CSSPDB2");
+            string CSSPDBConnString = Configuration.GetValue<string>("CSSPDB");
             Assert.NotNull(CSSPDBConnString);
 
             ServiceCollection.AddDbContext<CSSPDBContext>(options =>

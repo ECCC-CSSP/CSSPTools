@@ -16,6 +16,8 @@ namespace CSSPDBModels
         #region Properties in DB
         [Key]
         public int MWQMLookupMPNID { get; set; }
+        [CSSPEnumType]
+        public DBCommandEnum DBCommand { get; set; }
         [CSSPRange(0, 5)]
         public int Tubes10 { get; set; }
         [CSSPRange(0, 5)]

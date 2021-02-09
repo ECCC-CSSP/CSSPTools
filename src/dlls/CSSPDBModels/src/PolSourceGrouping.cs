@@ -16,6 +16,8 @@ namespace CSSPDBModels
         #region Properties in DB
         [Key]
         public int PolSourceGroupingID { get; set; }
+        [CSSPEnumType]
+        public DBCommandEnum DBCommand { get; set; }
         [CSSPRange(10000, 100000)]
         public int CSSPID { get; set; }
         [CSSPMaxLength(500)]

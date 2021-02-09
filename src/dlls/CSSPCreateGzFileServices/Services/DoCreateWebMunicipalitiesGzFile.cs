@@ -21,9 +21,9 @@ namespace CreateGzFileServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            TVItem tvItemProvince = await GetTVItemWithTVItemID(ProvinceTVItemID);
+            TVItem TVItemProvince = await GetTVItemWithTVItemID(ProvinceTVItemID);
 
-            if (tvItemProvince == null || tvItemProvince.TVType != TVTypeEnum.Province)
+            if (TVItemProvince == null || TVItemProvince.TVType != TVTypeEnum.Province)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._CouldNotBeFoundFor_Equal_And_Equal_,
                     "TVItem", ProvinceTVItemID.ToString(), "TVType", TVTypeEnum.Province.ToString())));
@@ -33,11 +33,11 @@ namespace CreateGzFileServices
 
             try
             {
-                await FillTVItemModel(webMunicipalities.TVItemModel, tvItemProvince);
+                await FillTVItemModel(webMunicipalities.TVItemModel, TVItemProvince);
 
-                await FillParentListTVItemModelList(webMunicipalities.TVItemParentList, tvItemProvince);
+                await FillParentListTVItemModelList(webMunicipalities.TVItemParentList, TVItemProvince);
 
-                await FillChildListTVItemModelList(webMunicipalities.TVItemMunicipalityList, tvItemProvince, TVTypeEnum.Municipality);
+                await FillChildListTVItemModelList(webMunicipalities.TVItemMunicipalityList, TVItemProvince, TVTypeEnum.Municipality);
 
                 await DoStore<WebMunicipalities>(webMunicipalities, $"WebMunicipalities_{ProvinceTVItemID}.gz");
             }

@@ -1,5 +1,4 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
 import { GetRootSubComponentEnum } from 'src/app/enums/generated/RootSubComponentEnum';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
@@ -11,7 +10,6 @@ import { TVItemSortOrderService } from 'src/app/services/helpers/tvitem-sort-ord
 import { StatCountService } from 'src/app/services/helpers/stat-count.service';
 import { ComponentButtonSelectionService } from 'src/app/services/helpers/component-button-selection.service';
 import { ComponentShowService } from 'src/app/services/helpers/component-show.service';
-import { ComponentDataClearService } from 'src/app/services/helpers/component-data-clear.service';
 import { GetSortOrderAngularEnum } from 'src/app/enums/generated/SortOrderAngularEnum';
 
 @Component({
@@ -33,8 +31,7 @@ export class RootItemComponent implements OnInit, OnDestroy {
     public tvItemSortOrderService: TVItemSortOrderService,
     public statCountService: StatCountService,
     public componentButtonSelectionService: ComponentButtonSelectionService,
-    public componentShowService: ComponentShowService,
-    private componentDataClearService: ComponentDataClearService) {
+    public componentShowService: ComponentShowService) {
   }
 
   ngOnInit(): void {

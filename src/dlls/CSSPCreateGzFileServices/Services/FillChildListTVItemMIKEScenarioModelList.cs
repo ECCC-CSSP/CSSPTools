@@ -32,53 +32,53 @@ namespace CreateGzFileServices
 
             foreach (TVItem tvItem in TVItemList)
             {
-                MIKEScenarioModel mikeScenarioModel = new MIKEScenarioModel();
-                mikeScenarioModel.TVItemModel.TVItem = tvItem;
-                mikeScenarioModel.TVItemModel.TVItemLanguageList = new List<TVItemLanguage>()
+                MIKEScenarioModel MikeScenarioModel = new MIKEScenarioModel();
+                MikeScenarioModel.TVItemModel.TVItem = tvItem;
+                MikeScenarioModel.TVItemModel.TVItemLanguageList = new List<TVItemLanguage>()
                 {
                     TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID && c.Language == LanguageEnum.en).FirstOrDefault(),
                     TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID && c.Language == LanguageEnum.en).FirstOrDefault(),
                     TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID && c.Language == LanguageEnum.fr).FirstOrDefault()
                 };
 
-                mikeScenarioModel.TVItemModel.TVItemStatList = TVItemStatList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
+                MikeScenarioModel.TVItemModel.TVItemStatList = TVItemStatList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
 
-                foreach (MapInfo mapInfo in MapInfoList)
+                foreach (MapInfo MapInfo in MapInfoList)
                 {
-                    if (mapInfo.TVItemID == tvItem.TVItemID)
+                    if (MapInfo.TVItemID == tvItem.TVItemID)
                     {
-                        MapInfoModel mapInfoModel = new MapInfoModel();
-                        mapInfoModel.MapInfo = mapInfo;
-                        mapInfoModel.MapInfoPointList = MapInfoPointList.Where(c => c.MapInfoID == mapInfo.MapInfoID).Select(c => c).ToList();
-                        mikeScenarioModel.TVItemModel.MapInfoModelList.Add(mapInfoModel);
+                        MapInfoModel MapInfoModel = new MapInfoModel();
+                        MapInfoModel.MapInfo = MapInfo;
+                        MapInfoModel.MapInfoPointList = MapInfoPointList.Where(c => c.MapInfoID == MapInfo.MapInfoID).Select(c => c).ToList();
+                        MikeScenarioModel.TVItemModel.MapInfoModelList.Add(MapInfoModel);
                     }
                 }
 
-                mikeScenarioModel.MikeScenario = MIKEScenarioList.Where(c => c.MikeScenarioTVItemID == tvItem.TVItemID).FirstOrDefault();
+                MikeScenarioModel.MikeScenario = MIKEScenarioList.Where(c => c.MikeScenarioTVItemID == tvItem.TVItemID).FirstOrDefault();
 
                 List<MikeSourceModel> MIKESourceModelList = new List<MikeSourceModel>();
 
-                foreach (TVItem tvItemMikeSource in TVItemMikeSourceList)
+                foreach (TVItem TVItemMikeSource in TVItemMikeSourceList)
                 {
-                    MikeSourceModel mikeSourceModel = new MikeSourceModel();
-                    if (tvItemMikeSource.ParentID == tvItem.TVItemID)
+                    MikeSourceModel MikeSourceModel = new MikeSourceModel();
+                    if (TVItemMikeSource.ParentID == tvItem.TVItemID)
                     {
-                        mikeSourceModel.TVItemModel.TVItem = tvItemMikeSource;
-                        mikeSourceModel.TVItemModel.TVItemLanguageList = new List<TVItemLanguage>()
+                        MikeSourceModel.TVItemModel.TVItem = TVItemMikeSource;
+                        MikeSourceModel.TVItemModel.TVItemLanguageList = new List<TVItemLanguage>()
                         {
-                            TVItemLanguageMikeSourceList.Where(c => c.TVItemID == tvItemMikeSource.TVItemID && c.Language == LanguageEnum.en).FirstOrDefault(),
-                            TVItemLanguageMikeSourceList.Where(c => c.TVItemID == tvItemMikeSource.TVItemID && c.Language == LanguageEnum.en).FirstOrDefault(),
-                            TVItemLanguageMikeSourceList.Where(c => c.TVItemID == tvItemMikeSource.TVItemID && c.Language == LanguageEnum.fr).FirstOrDefault()
+                            TVItemLanguageMikeSourceList.Where(c => c.TVItemID == TVItemMikeSource.TVItemID && c.Language == LanguageEnum.en).FirstOrDefault(),
+                            TVItemLanguageMikeSourceList.Where(c => c.TVItemID == TVItemMikeSource.TVItemID && c.Language == LanguageEnum.en).FirstOrDefault(),
+                            TVItemLanguageMikeSourceList.Where(c => c.TVItemID == TVItemMikeSource.TVItemID && c.Language == LanguageEnum.fr).FirstOrDefault()
                         };
 
-                        mikeSourceModel.MikeSource = MIKESourceList.Where(c => c.MikeSourceTVItemID == tvItemMikeSource.TVItemID).FirstOrDefault();
-                        mikeSourceModel.MikeSourceStartEndList = MIKESourceStartEndList.Where(c => c.MikeSourceID == mikeSourceModel.MikeSource.MikeSourceID).ToList();
+                        MikeSourceModel.MikeSource = MIKESourceList.Where(c => c.MikeSourceTVItemID == TVItemMikeSource.TVItemID).FirstOrDefault();
+                        MikeSourceModel.MikeSourceStartEndList = MIKESourceStartEndList.Where(c => c.MikeSourceID == MikeSourceModel.MikeSource.MikeSourceID).ToList();
                     }
 
-                    mikeScenarioModel.MikeSourceModelList.Add(mikeSourceModel);
+                    MikeScenarioModel.MikeSourceModelList.Add(MikeSourceModel);
                 }
 
-                MIKEScenarioModelList.Add(mikeScenarioModel);
+                MIKEScenarioModelList.Add(MikeScenarioModel);
             }
         }
     }

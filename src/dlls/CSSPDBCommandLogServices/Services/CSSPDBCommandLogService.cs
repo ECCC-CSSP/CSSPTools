@@ -15,7 +15,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using LocalServices;
+//using LocalServices;
 using CSSPDBCommandLogModels;
 
 namespace CSSPDBCommandLogServices
@@ -43,15 +43,15 @@ namespace CSSPDBCommandLogServices
         public CSSPDBCommandLogContext dbCommandLog { get; set; }
 
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILocalService LocalService { get; }
+//        private ILocalService LocalService { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public CSSPDBCommandLogService(ICSSPCultureService CSSPCultureService, ILocalService LocalService, CSSPDBCommandLogContext dbCommandLog)
+        public CSSPDBCommandLogService(ICSSPCultureService CSSPCultureService, /*ILocalService LocalService, */ CSSPDBCommandLogContext dbCommandLog)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LocalService = LocalService;
+//            this.LocalService = LocalService;
             this.dbCommandLog = dbCommandLog;
         }
         #endregion Constructors
@@ -59,10 +59,10 @@ namespace CSSPDBCommandLogServices
         #region Functions public 
         public async Task<ActionResult<int>> GetCSSPCommandLogNextIndexToUse()
         {
-            if (LocalService.LoggedInContactInfo == null)
-            {
-                return await Task.FromResult(Unauthorized(""));
-            }
+            //if (LocalService.LoggedInContactInfo == null)
+            //{
+            //    return await Task.FromResult(Unauthorized(""));
+            //}
 
             int? LastIndex = (from c in dbCommandLog.CSSPCommandLogs
                               orderby c.CSSPCommandLogID descending
@@ -74,10 +74,10 @@ namespace CSSPDBCommandLogServices
         }
         public async Task<ActionResult<CSSPCommandLog>> GetWithCSSPCommandLogID(int CSSPCommandLogID)
         {
-            if (LocalService.LoggedInContactInfo == null)
-            {
-                return await Task.FromResult(Unauthorized(""));
-            }
+            //if (LocalService.LoggedInContactInfo == null)
+            //{
+            //    return await Task.FromResult(Unauthorized(""));
+            //}
 
             CSSPCommandLog CSSPCommandLog = (from c in dbCommandLog.CSSPCommandLogs.AsNoTracking()
                                              where c.CSSPCommandLogID == CSSPCommandLogID
@@ -113,10 +113,10 @@ namespace CSSPDBCommandLogServices
         }
         public async Task<ActionResult<List<CSSPCommandLog>>> GetCSSPCommandLogBetweenDatesList(DateTime StartDate, DateTime EndDate)
         {
-            if (LocalService.LoggedInContactInfo == null)
-            {
-                return await Task.FromResult(Unauthorized(""));
-            }
+            //if (LocalService.LoggedInContactInfo == null)
+            //{
+            //    return await Task.FromResult(Unauthorized(""));
+            //}
 
             List<CSSPCommandLog> CSSPCommandLogList = (from c in dbCommandLog.CSSPCommandLogs.AsNoTracking()
                                                        where c.DateTimeUTC >= StartDate
@@ -129,10 +129,10 @@ namespace CSSPDBCommandLogServices
 
         public async Task<ActionResult<bool>> Delete(int CSSPCommandLogID)
         {
-            if (LocalService.LoggedInContactInfo == null)
-            {
-                return await Task.FromResult(Unauthorized(""));
-            }
+            //if (LocalService.LoggedInContactInfo == null)
+            //{
+            //    return await Task.FromResult(Unauthorized(""));
+            //}
 
             CSSPCommandLog CSSPCommandLog = (from c in dbCommandLog.CSSPCommandLogs
                                              where c.CSSPCommandLogID == CSSPCommandLogID
@@ -157,10 +157,10 @@ namespace CSSPDBCommandLogServices
         }
         public async Task<ActionResult<CSSPCommandLog>> Post(CSSPCommandLog CSSPCommandLog)
         {
-            if (LocalService.LoggedInContactInfo == null)
-            {
-                return await Task.FromResult(Unauthorized(""));
-            }
+            //if (LocalService.LoggedInContactInfo == null)
+            //{
+            //    return await Task.FromResult(Unauthorized(""));
+            //}
 
             if (CSSPCommandLog == null)
             {
@@ -194,10 +194,10 @@ namespace CSSPDBCommandLogServices
         }
         public async Task<ActionResult<CSSPCommandLog>> Put(CSSPCommandLog CSSPCommandLog)
         {
-            if (LocalService.LoggedInContactInfo == null)
-            {
-                return await Task.FromResult(Unauthorized(""));
-            }
+            //if (LocalService.LoggedInContactInfo == null)
+            //{
+            //    return await Task.FromResult(Unauthorized(""));
+            //}
 
             if (CSSPCommandLog == null)
             {
@@ -264,11 +264,11 @@ namespace CSSPDBCommandLogServices
                 yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "CommandName", "200"), new[] { nameof(CSSPCommandLog.CommandName) });
             }
 
-            // doing DateTimeUTC
-            if (CSSPCommandLog.DateTimeUTC == null)
-            {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DateTimeUTC"), new[] { nameof(CSSPCommandLog.DateTimeUTC) });
-            }
+            //// doing DateTimeUTC
+            //if (CSSPCommandLog.DateTimeUTC == null)
+            //{
+            //    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DateTimeUTC"), new[] { nameof(CSSPCommandLog.DateTimeUTC) });
+            //}
 
             if (CSSPCommandLog.DateTimeUTC.Year < 1980)
             {

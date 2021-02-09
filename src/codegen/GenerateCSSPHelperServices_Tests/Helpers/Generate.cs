@@ -17,7 +17,7 @@ namespace GenerateCSSPHelperServices_Tests
         {
             Console.WriteLine("Generate Starting ...");
 
-            string CSSPDB2 = Config.GetValue<string>("CSSPDB2");
+            string CSSPDB = Config.GetValue<string>("CSSPDB");
             string TestDB = Config.GetValue<string>("TestDB");
 
             FileInfo fiDLL = new FileInfo(Config.GetValue<string>("CSSPHelperModels"));

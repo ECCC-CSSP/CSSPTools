@@ -22,7 +22,6 @@ using ReadGzFileServices;
 using CSSPDBSearchServices;
 using CSSPDBPreferenceServices;
 using Microsoft.AspNetCore.Http.Features;
-using CSSPDBLocalModels;
 using CSSPDBPreferenceModels;
 using CSSPDBFilesManagementModels;
 using CSSPDBCommandLogModels;
@@ -65,7 +64,7 @@ namespace CSSPWebAPIsLocal
 
             FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocalFileName);
 
-            services.AddDbContext<CSSPDBLocalContext>(options =>
+            services.AddDbContext<CSSPDBContext>(options =>
             {
                 options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
             });

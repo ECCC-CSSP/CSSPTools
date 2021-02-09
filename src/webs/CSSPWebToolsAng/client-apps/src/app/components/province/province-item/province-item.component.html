@@ -77,11 +77,11 @@
     [TVItemList]="appLoadedService.AppLoaded$?.getValue()?.ProvinceAreaList">
 </app-area-tvitem-list-item>
 
-<app-province-tvitem-list-item
+<app-municipality-tvitem-list-item
     *ngIf="appStateService.AppState$?.getValue()?.ProvinceSubComponent == provinceSubComponentEnum.Municipalities"
     [AppState]="appStateService.AppState$?.getValue()"
     [TVItemList]="appLoadedService.AppLoaded$?.getValue()?.ProvinceMunicipalityList">
-</app-province-tvitem-list-item>
+</app-municipality-tvitem-list-item>
 
 <app-file-list *ngIf="appStateService.AppState$?.getValue()?.ProvinceSubComponent == provinceSubComponentEnum.Files"
     [AppState]="appStateService.AppState$?.getValue()"

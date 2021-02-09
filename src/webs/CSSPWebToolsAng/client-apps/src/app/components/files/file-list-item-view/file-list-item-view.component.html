@@ -1,0 +1,10 @@
+<blockquote>
+    <span *ngIf="(appStateService.AppState$ | async).Working">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </span>
+    <p class="loading-status" *ngIf="(appStateService.AppState$ | async).Status">
+        {{ appStateService.AppState$?.getValue()?.Status }}
+    </p>
+
+    <p style="background-color: chartreuse;">This is the file view component</p>
+</blockquote>

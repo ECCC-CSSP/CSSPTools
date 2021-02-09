@@ -16,6 +16,8 @@ namespace CSSPDBModels
         #region Properties in DB
         [Key]
         public int PolSourceObservationIssueID { get; set; }
+        [CSSPEnumType]
+        public DBCommandEnum DBCommand { get; set; }
         [CSSPExist(ExistTypeName = "PolSourceObservation", ExistPlurial = "s", ExistFieldID = "PolSourceObservationID")]
         [CSSPForeignKey(TableName = "PolSourceObservations", FieldName = "PolSourceObservationID")]
         public int PolSourceObservationID { get; set; }

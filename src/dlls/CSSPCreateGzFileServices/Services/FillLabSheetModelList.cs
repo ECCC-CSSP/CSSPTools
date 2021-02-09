@@ -22,21 +22,21 @@ namespace CreateGzFileServices
             List<LabSheetDetail> LabSheetDetailList = await GetLabSheetDetailListUnderSubsector(TVItem.TVItemID);
             List<LabSheetTubeMPNDetail> LabSheetTubeMPNDetailList = await GetLabSheetTubeMPNDetailListUnderSubsector(TVItem.TVItemID);
 
-            foreach (LabSheet labSheet in LabSheetList)
+            foreach (LabSheet LabSheet in LabSheetList)
             {
-                LabSheetModel labSheetModel = new LabSheetModel();
-                labSheetModel.LabSheet = labSheet;
+                LabSheetModel LabSheetModel = new LabSheetModel();
+                LabSheetModel.LabSheet = LabSheet;
 
-                foreach(LabSheetDetail labSheetDetail in LabSheetDetailList)
+                foreach(LabSheetDetail LabSheetDetail in LabSheetDetailList)
                 {
-                    LabSheetDetailModel labSheetDetailModel = new LabSheetDetailModel();
-                    labSheetDetailModel.LabSheetDetail = labSheetDetail;
-                    labSheetDetailModel.LabSheetTubeMPNDetailList = LabSheetTubeMPNDetailList.Where(c => c.LabSheetDetailID == labSheetDetail.LabSheetDetailID).ToList();
+                    LabSheetDetailModel LabSheetDetailModel = new LabSheetDetailModel();
+                    LabSheetDetailModel.LabSheetDetail = LabSheetDetail;
+                    LabSheetDetailModel.LabSheetTubeMPNDetailList = LabSheetTubeMPNDetailList.Where(c => c.LabSheetDetailID == LabSheetDetail.LabSheetDetailID).ToList();
 
-                    labSheetModel.LabSheetDetailModelList.Add(labSheetDetailModel);
+                    LabSheetModel.LabSheetDetailModelList.Add(LabSheetDetailModel);
                 }
 
-                LabSheetModelList.Add(labSheetModel);
+                LabSheetModelList.Add(LabSheetModel);
             }
         }
     }

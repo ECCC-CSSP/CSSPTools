@@ -14,7 +14,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using LocalServices;
-using CSSPDBLocalModels;
 using CSSPDBCommandLogModels;
 using CSSPDBPreferenceModels;
 using CSSPDBFilesManagementModels;
@@ -32,7 +31,7 @@ namespace CSSPSQLiteServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
-        private CSSPDBLocalContext dbLocal { get; set; }
+        private CSSPDBContext dbLocal { get; set; }
         private CSSPDBInMemoryContext dbIM { get; set; }
         private ICSSPSQLiteService CSSPSQLiteService { get; set; }
         private FileInfo fiCSSPDBLocal { get; set; }
@@ -64,7 +63,7 @@ namespace CSSPSQLiteServices.Tests
 
             fiCSSPDBLocal = new FileInfo(CSSPDBLocal);
 
-            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            Services.AddDbContext<CSSPDBContext>(options =>
             {
                 options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
             });

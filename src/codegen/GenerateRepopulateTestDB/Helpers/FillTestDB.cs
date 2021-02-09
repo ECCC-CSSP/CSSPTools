@@ -633,6 +633,25 @@ namespace GenerateRepopulateTestDB
                     if (!await AddObject("BoxModelResult", boxModelResult)) return await Task.FromResult(false);
                 }
                 #endregion BoxModelResult Bouctouche WWTP
+                #region CoCoRaHSSite and CoCoRaHSValue
+                Console.WriteLine($"doing ... CoCoRaHSSite and CoCoRaHSValue");
+                // BoxModel Bouctouche WWTP TVItemID = 28689
+                List<CoCoRaHSSite> coCoRaHSSiteList = dbCSSPDB.CoCoRaHSSites.AsNoTracking().Take(10).ToList();
+                foreach (CoCoRaHSSite coCoRaHSSite in coCoRaHSSiteList)
+                {
+                    int CoCoRaHSSiteID = coCoRaHSSite.CoCoRaHSSiteID;
+
+                    if (!await AddObject("CoCoRaHSSite", coCoRaHSSite)) return await Task.FromResult(false);
+
+                    List<CoCoRaHSValue> coCoRaHSValueList = dbCSSPDB.CoCoRaHSValues.Where(c => c.CoCoRaHSSiteID == CoCoRaHSSiteID).AsNoTracking().Take(10).ToList();
+                    foreach (CoCoRaHSValue coCoRaHSValue in coCoRaHSValueList)
+                    {
+                        coCoRaHSValue.CoCoRaHSSiteID = coCoRaHSSite.CoCoRaHSSiteID;
+
+                        if (!await AddObject("CoCoRaHSValue", coCoRaHSValue)) return await Task.FromResult(false);
+                    }
+                }
+                #endregion CoCoRaHSSite and CoCoRaHSValue
                 #region VPScenario Bouctouche WWTP 
                 Console.WriteLine($"doing ... Bouctouche WWTP Infrastructure VPScenario");
 
@@ -1475,7 +1494,7 @@ namespace GenerateRepopulateTestDB
                 mwqmAnalysisReportParameter.AnalysisReportYear = 2016;
                 mwqmAnalysisReportParameter.StartDate = new DateTime(2010, 1, 1);
                 mwqmAnalysisReportParameter.EndDate = new DateTime(2016, 12, 31);
-                mwqmAnalysisReportParameter.AnalysisCalculationType = AnalysisCalculationTypeEnum.AllAllAll;
+                mwqmAnalysisReportParameter.AnalysisCalculationType = AnalysisCalculationTypeEnum.All;
                 mwqmAnalysisReportParameter.NumberOfRuns = 30;
                 mwqmAnalysisReportParameter.FullYear = true;
                 mwqmAnalysisReportParameter.SalinityHighlightDeviationFromAverage = 8.0f;

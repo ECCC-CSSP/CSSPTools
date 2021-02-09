@@ -69,7 +69,7 @@ namespace GenerateCSSPWebAPIsController
 
                 if (!ClassNotMapped)
                 {
-                    sbForDBServices.AppendLine($"            services.AddScoped<ILocal{ TypeName.Replace("Local", "") }DBService, Local{ TypeName.Replace("Local", "") }DBService>();");
+                    sbForDBServices.AppendLine($"            services.AddScoped<I{ TypeName }DBService, { TypeName }DBService>();");
 
                     sb.AppendLine($@"/* Auto generated from { AppDomain.CurrentDomain.BaseDirectory }{ AppDomain.CurrentDomain.FriendlyName}.exe");
                     sb.AppendLine(@" *");
@@ -82,8 +82,8 @@ namespace GenerateCSSPWebAPIsController
                     {
                         sb.AppendLine(@"using CSSPEnums;");
                     }
-                    sb.AppendLine(@"using CSSPDBLocalModels;");
-                    sb.AppendLine(@"using CSSPDBLocalServices;");
+                    sb.AppendLine(@"using CSSPDBModels;");
+                    sb.AppendLine(@"using CSSPDBServices;");
                     sb.AppendLine(@"using CSSPCultureServices.Services;");
                     sb.AppendLine(@"using Microsoft.AspNetCore.Authorization;");
                     sb.AppendLine(@"using Microsoft.AspNetCore.Mvc;");
@@ -251,7 +251,7 @@ namespace GenerateCSSPWebAPIsController
             sb2.AppendLine(@" *");
             sb2.AppendLine(@" */");
             sb2.AppendLine(@"");
-            sb2.AppendLine(@"using CSSPDBLocalServices;");
+            sb2.AppendLine(@"using CSSPDBServices;");
             sb2.AppendLine(@"using Microsoft.Extensions.DependencyInjection;");
             sb2.AppendLine(@"");
             sb2.AppendLine(@"namespace CSSPWebAPIsLocal");

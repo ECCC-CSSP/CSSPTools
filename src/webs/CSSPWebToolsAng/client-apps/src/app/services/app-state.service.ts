@@ -44,8 +44,8 @@ export class AppStateService {
       // showing item
       ShowTVItemModelList: [],
 
-      // showing item for editing
-      ShowEditTVItemModelList: [],
+      // showing file item
+      ShowTVFileModelList: [],
 
       // Analysis
       AnalysisStartRun: null,
@@ -94,9 +94,9 @@ export class AppStateService {
       DetailVisible: false,
       StatCountVisible: false,
       LastUpdateVisible: false,
-      EditVisible: false,
       InactVisible: false,
       MenuVisible: false,
+      EditVisible: true,
 
       // map 
       MapVisible: true,

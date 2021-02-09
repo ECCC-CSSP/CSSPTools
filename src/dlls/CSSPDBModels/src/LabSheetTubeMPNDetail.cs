@@ -16,6 +16,8 @@ namespace CSSPDBModels
         #region Properties in DB
         [Key]
         public int LabSheetTubeMPNDetailID { get; set; }
+        [CSSPEnumType]
+        public DBCommandEnum DBCommand { get; set; }
         [CSSPExist(ExistTypeName = "LabSheetDetail", ExistPlurial = "s", ExistFieldID = "LabSheetDetailID")]
         [CSSPForeignKey(TableName = "LabSheetDetails", FieldName = "LabSheetDetailID")]
         public int LabSheetDetailID { get; set; }

@@ -9,8 +9,7 @@ import { AppLanguageService } from 'src/app/services/app-language.service';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { DateFormatService } from 'src/app/services/helpers/date-format.service';
-import { ShowItemForEditService } from 'src/app/services/helpers/show-item-for-edit.service';
-import { ShowItemService } from 'src/app/services/helpers/show-item.service';
+import { ShowTVItemService } from 'src/app/services/helpers/show-tvitem.service';
 import { SubPageService } from 'src/app/services/helpers/sub-page.service';
 import { WebMWQMSampleService } from 'src/app/services/loaders/web-mwqm-samples.service';
 import { MapService } from 'src/app/services/map/map.service';
@@ -39,8 +38,7 @@ export class MWQMSiteTVItemListItemComponent implements OnInit, OnDestroy {
     public mapService: MapService,
     public dateFormatService: DateFormatService,
     public webMWQMSamplesService: WebMWQMSampleService,
-    public showItemService: ShowItemService,
-    public showItemForEditService: ShowItemForEditService) {
+    public showTVItemService: ShowTVItemService) {
   }
 
   ngOnInit() {

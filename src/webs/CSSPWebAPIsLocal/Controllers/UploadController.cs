@@ -46,19 +46,19 @@ namespace CSSPWebAPIsLocal.Controllers
 
                     string allDone = "All done...";
 
-                    return Ok(new { allDone });
+                    return await Task.FromResult(Ok(new { allDone }));
 
                 }
                 else
                 {
-                    return BadRequest("This is a bad request");
+                    return await Task.FromResult(BadRequest("This is a bad request"));
                 }
 
 
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Internal server error: {ex}");
+                return await Task.FromResult(StatusCode(500, $"Internal server error: {ex}"));
             }
         }
     }

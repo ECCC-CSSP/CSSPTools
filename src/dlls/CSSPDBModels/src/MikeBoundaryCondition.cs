@@ -16,6 +16,8 @@ namespace CSSPDBModels
         #region Properties in DB
         [Key]
         public int MikeBoundaryConditionID { get; set; }
+        [CSSPEnumType]
+        public DBCommandEnum DBCommand { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "12,11")]
         [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int MikeBoundaryConditionTVItemID { get; set; }

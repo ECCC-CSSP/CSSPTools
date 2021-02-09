@@ -16,6 +16,8 @@ namespace CSSPDBModels
         #region Properties in DB
         [Key]
         public int TideLocationID { get; set; }
+        [CSSPEnumType]
+        public DBCommandEnum DBCommand { get; set; }
         [CSSPRange(0, 10000)]
         public int Zone { get; set; }
         [CSSPMaxLength(100)]

@@ -30,6 +30,8 @@ namespace GenerateCSSPSQLiteServices
                     "BoxModelLanguages",
                     "BoxModelResults",
                     "BoxModels",
+                    "CoCoRaHSValues",
+                    "CoCoRaHSSites",
                     "UseOfSites",
                     "PolSourceSiteEffectTerms",
                     "PolSourceSiteEffects",

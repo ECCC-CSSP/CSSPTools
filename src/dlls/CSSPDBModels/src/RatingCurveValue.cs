@@ -16,6 +16,8 @@ namespace CSSPDBModels
         #region Properties in DB
         [Key]
         public int RatingCurveValueID { get; set; }
+        [CSSPEnumType]
+        public DBCommandEnum DBCommand { get; set; }
         [CSSPExist(ExistTypeName = "RatingCurve", ExistPlurial = "s", ExistFieldID = "RatingCurveID")]
         [CSSPForeignKey(TableName = "RatingCurves", FieldName = "RatingCurveID")]
         public int RatingCurveID { get; set; }

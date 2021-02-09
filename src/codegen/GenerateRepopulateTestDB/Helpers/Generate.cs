@@ -13,14 +13,14 @@ namespace GenerateRepopulateTestDB
         {
             Console.WriteLine("Generate Starting ...");
             
-            string CSSPDB2 = Config.GetValue<string>("CSSPDB2");
+            string CSSPDB = Config.GetValue<string>("CSSPDB");
             string TestDB = Config.GetValue<string>("TestDB");
 
             List<Table> tableCSSPDBList = new List<Table>();
             List<Table> tableTestDBList = new List<Table>();
 
-            Console.WriteLine("Loading CSSPDB2 table information ...");
-            if (!await LoadDBInfo(tableCSSPDBList, CSSPDB2)) return await Task.FromResult(false);
+            Console.WriteLine("Loading CSSPDB table information ...");
+            if (!await LoadDBInfo(tableCSSPDBList, CSSPDB)) return await Task.FromResult(false);
 
             Console.WriteLine("Loading TestWeb table information ...");
             if (!await LoadDBInfo(tableTestDBList, TestDB)) return await Task.FromResult(false);

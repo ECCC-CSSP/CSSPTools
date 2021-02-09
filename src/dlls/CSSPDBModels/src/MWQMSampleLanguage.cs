@@ -16,6 +16,8 @@ namespace CSSPDBModels
         #region Properties in DB
         [Key]
         public int MWQMSampleLanguageID { get; set; }
+        [CSSPEnumType]
+        public DBCommandEnum DBCommand { get; set; }
         [CSSPExist(ExistTypeName = "MWQMSample", ExistPlurial = "s", ExistFieldID = "MWQMSampleID")]
         [CSSPForeignKey(TableName = "MWQMSamples", FieldName = "MWQMSampleID")]
         public int MWQMSampleID { get; set; }

@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.AuthController.Tests
 
             Services.AddSingleton<IConfiguration>(Configuration);
 
-            string DBConnString = Configuration.GetValue<string>("CSSPDB2");
+            string DBConnString = Configuration.GetValue<string>("CSSPDB");
             Assert.NotNull(DBConnString);
 
             Services.AddDbContext<CSSPDBContext>(options =>

@@ -1,7 +1,7 @@
 <mat-list *ngFor="let webBase of TVItemList; let i = index">
-    <app-subsector-tvitem-list-item-menu [TVItemModel]="webBase.TVItemModel" [AppState]="AppState">
-    </app-subsector-tvitem-list-item-menu>
-    
+    <app-tvitem-menu [TVItemModel]="webBase.TVItemModel" [AppState]="AppState">
+    </app-tvitem-menu>
+
     <button mat-button (click)="subPageService.SetSubPage(webBase.TVItemModel)">
         <span [ngClass]="webBase.TVItemModel?.TVItem?.IsActive ? '' : 'inactive'">
             <span *ngIf="appStateService.AppState$?.getValue()?.MapVisible">
@@ -17,6 +17,14 @@
         <app-last-udpate-tv-item-model *ngIf="appStateService.AppState$?.getValue()?.LastUpdateVisible"
             [TVItemModel]="webBase.TVItemModel"></app-last-udpate-tv-item-model>
     </button>
+
+    <app-sector-item-view *ngIf="showTVItemService.TVItemVisible(webBase?.TVItemModel)"
+        [TVItemModel]="webBase?.TVItemModel" [AppState]="AppState">
+    </app-sector-item-view>
+
+    <app-sector-item-edit *ngIf="AppState.EditVisible"
+        [TVItemModel]="webBase?.TVItemModel" [AppState]="AppState">
+    </app-sector-item-edit>
 
     <app-sector-tvitem-list-detail [AppState]="AppState" *ngIf="!IsBreadCrumb && AppState?.DetailVisible"
         [TVItemModel]="webBase.TVItemModel"></app-sector-tvitem-list-detail>

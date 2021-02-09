@@ -21,7 +21,7 @@ namespace UploadAllFilesToAzure
 
             DirectoryInfo di = new DirectoryInfo(@"E:\inetpub\wwwroot\csspwebtools\App_Data\");
 
-            List<DirectoryInfo> diList = di.GetDirectories().ToList().Skip(0).Take(10000).ToList();
+            List<DirectoryInfo> diList = di.GetDirectories().ToList().Skip(0).Take(15000).ToList();
 
             int count = 0;
             foreach (DirectoryInfo d in diList)
@@ -73,8 +73,11 @@ namespace UploadAllFilesToAzure
                             ShareFileClient file = directory.GetFileClient(fi.Name);
                             using (FileStream stream = File.OpenRead(fi.FullName))
                             {
-                                file.Create(stream.Length);
-                                file.Upload(stream);
+                                if (fi.Length != 0)
+                                {
+                                    file.Create(stream.Length);
+                                    file.Upload(stream);
+                                }
                             }
                         }
                         catch (Exception ex)

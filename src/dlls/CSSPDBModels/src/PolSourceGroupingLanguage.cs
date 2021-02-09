@@ -16,6 +16,8 @@ namespace CSSPDBModels
         #region Properties in DB
         [Key]
         public int PolSourceGroupingLanguageID { get; set; }
+        [CSSPEnumType]
+        public DBCommandEnum DBCommand { get; set; }
         [CSSPExist(ExistTypeName = "PolSourceGrouping", ExistPlurial = "s", ExistFieldID = "PolSourceGroupingID")]
         [CSSPForeignKey(TableName = "PolSourceGroupings", FieldName = "PolSourceGroupingID")]
         public int PolSourceGroupingID { get; set; }

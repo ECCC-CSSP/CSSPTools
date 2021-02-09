@@ -16,7 +16,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ReadGzFileServices;
 using Xunit;
-using CSSPDBLocalModels;
 using CSSPDBCommandLogModels;
 using CSSPDBSearchModels;
 using CSSPDBFilesManagementModels;
@@ -80,7 +79,7 @@ namespace CSSPDesktopServices.Tests
 
             FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocal);
 
-            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            Services.AddDbContext<CSSPDBContext>(options =>
             {
                 options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
             });

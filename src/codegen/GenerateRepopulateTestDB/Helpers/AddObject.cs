@@ -85,6 +85,20 @@ namespace GenerateRepopulateTestDB
                         dbTestDB.ClimateSites.Add((ClimateSite)objTarget);
                     }
                     break;
+                case "CoCoRaHSSite":
+                    {
+                        ((CoCoRaHSSite)objTarget).CoCoRaHSSiteID = 0;
+                        ((CoCoRaHSSite)objTarget).LastUpdateContactTVItemID = 2;
+                        dbTestDB.CoCoRaHSSites.Add((CoCoRaHSSite)objTarget);
+                    }
+                    break;
+                case "CoCoRaHSValue":
+                    {
+                        ((CoCoRaHSValue)objTarget).CoCoRaHSValueID = 0;
+                        ((CoCoRaHSValue)objTarget).LastUpdateContactTVItemID = 2;
+                        dbTestDB.CoCoRaHSValues.Add((CoCoRaHSValue)objTarget);
+                    }
+                    break;
                 case "Contact":
                     {
                         ((Contact)objTarget).ContactID = 0;

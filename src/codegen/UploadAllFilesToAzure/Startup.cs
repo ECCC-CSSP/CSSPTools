@@ -27,15 +27,12 @@ namespace UploadAllFilesToAzure
         }
         #endregion Constructors
 
-        #region Tests Generated CRUD
-        #endregion Tests Generated CRUD
-
         #region Functions private
         public bool Setup()
         {
             Configuration = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-               .AddJsonFile("appsettings.json")
+               .AddJsonFile("appsettings_uploadallfilestoazure.json")
                .AddUserSecrets("6dbd872a-7041-4f22-93b7-74da4fd9eadb")
                .Build();
 

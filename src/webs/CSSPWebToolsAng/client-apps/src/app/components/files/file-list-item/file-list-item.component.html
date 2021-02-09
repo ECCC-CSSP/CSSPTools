@@ -1,7 +1,8 @@
 <mat-list-item>
     <span mat-line>
-        <app-file-list-item-menu [TVFileModel]="TVFileModel" [AppState]="AppState">
-        </app-file-list-item-menu>
+        <app-tvfile-menu [TVFileModel]="TVFileModel" [AppState]="AppState">
+        </app-tvfile-menu>
+
         <button mat-button (click)="download(TVFileModel)">
             <img src="{{ fileIconService.GetFileIcon(TVFileModel) }}" />
             <span>&nbsp;&nbsp;</span>
@@ -17,7 +18,17 @@
         <mat-progress-bar [mode]="download.state == 'PENDING' ? 'buffer' : 'determinate'" [value]="download.progress">
         </mat-progress-bar>
     </span>
+
 </mat-list-item>
+
+<ng-container *ngIf="showTVFileService.TVFileVisible(TVFileModel)">
+    <app-file-list-item-view *ngIf="!AppState.EditVisible" [TVFileModel]="TVFileModel"
+        [AppState]="AppState">
+    </app-file-list-item-view>
+
+    <app-file-list-item-edit *ngIf="AppState.EditVisible" [TVFileModel]="TVFileModel" [AppState]="AppState">
+    </app-file-list-item-edit>
+</ng-container>
 
 <app-file-list-item-detail [AppState]="AppState" *ngIf="AppState.DetailVisible" [TVFileModel]="TVFileModel">
 </app-file-list-item-detail>

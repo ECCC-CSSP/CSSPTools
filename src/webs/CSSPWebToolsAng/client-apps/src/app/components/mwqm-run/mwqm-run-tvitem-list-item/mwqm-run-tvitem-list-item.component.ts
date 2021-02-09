@@ -3,8 +3,7 @@ import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { AppState } from 'src/app/models/AppState.model';
 import { WebBase } from 'src/app/models/generated/web/WebBase.model';
 import { AppStateService } from 'src/app/services/app-state.service';
-import { ShowItemForEditService } from 'src/app/services/helpers/show-item-for-edit.service';
-import { ShowItemService } from 'src/app/services/helpers/show-item.service';
+import { ShowTVItemService } from 'src/app/services/helpers/show-tvitem.service';
 import { SubPageService } from 'src/app/services/helpers/sub-page.service';
 import { WebMWQMSampleService } from 'src/app/services/loaders/web-mwqm-samples.service';
 import { MapService } from 'src/app/services/map/map.service';
@@ -26,8 +25,7 @@ export class MWQMRunTVItemListItemComponent implements OnInit, OnDestroy {
     public subPageService: SubPageService,
     public mapService: MapService,
     public webMWQMSamplesService: WebMWQMSampleService,
-    public showItemService: ShowItemService,
-    public showItemForEditService: ShowItemForEditService) {
+    public showTVItemService: ShowTVItemService) {
   }
 
   ngOnInit() {

@@ -16,6 +16,8 @@ namespace CSSPDBModels
         #region Properties in DB
         [Key]
         public int AppErrLogID { get; set; }
+        [CSSPEnumType]
+        public DBCommandEnum DBCommand { get; set; }
         [CSSPMaxLength(100)]
         public string Tag { get; set; }
         [CSSPRange(1, -1)]

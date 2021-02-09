@@ -1730,6 +1730,42 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Created.
+        /// </summary>
+        public static string DBCommandEnumCreated {
+            get {
+                return ResourceManager.GetString("DBCommandEnumCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deleted.
+        /// </summary>
+        public static string DBCommandEnumDeleted {
+            get {
+                return ResourceManager.GetString("DBCommandEnumDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Modified.
+        /// </summary>
+        public static string DBCommandEnumModified {
+            get {
+                return ResourceManager.GetString("DBCommandEnumModified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Original.
+        /// </summary>
+        public static string DBCommandEnumOriginal {
+            get {
+                return ResourceManager.GetString("DBCommandEnumOriginal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to In Memory.
         /// </summary>
         public static string DBLocationEnumInMemory {
@@ -3400,33 +3436,6 @@ namespace CSSPCultureServices.Resources {
         public static string LanguageEnumfr {
             get {
                 return ResourceManager.GetString("LanguageEnumfr", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Change.
-        /// </summary>
-        public static string LocalDBCommandEnumChange {
-            get {
-                return ResourceManager.GetString("LocalDBCommandEnumChange", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Delete.
-        /// </summary>
-        public static string LocalDBCommandEnumDelete {
-            get {
-                return ResourceManager.GetString("LocalDBCommandEnumDelete", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to New.
-        /// </summary>
-        public static string LocalDBCommandEnumNew {
-            get {
-                return ResourceManager.GetString("LocalDBCommandEnumNew", resourceCulture);
             }
         }
         

@@ -1,0 +1,26 @@
+﻿using GenerateCodeBaseServices.Models;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace GenerateCSSPDBServices
+{
+    public partial class Startup
+    {
+        private async Task<bool> CreateGoogleMapKey(DLLTypeInfo dllTypeInto, string TypeName, string TypeNameLower, StringBuilder sb)
+        {
+            sb.AppendLine(@"        public async Task<ActionResult<string>> GoogleMapKey()");
+            sb.AppendLine(@"        {");
+            sb.AppendLine(@"            string sto = Configuration.GetValue<string>(""GoogleMapKey"");");
+            sb.AppendLine(@"            if (string.IsNullOrWhiteSpace(sto))");
+            sb.AppendLine(@"            {");
+            sb.AppendLine(@"                return await Task.FromResult(BadRequest(String.Format(CSSPCultureServicesRes.__CouldNotBeFound, ""Configuration"", ""GoogleMapKey"")));");
+            sb.AppendLine(@"            }");
+            sb.AppendLine(@"");
+            sb.AppendLine(@"            return await Task.FromResult(Ok(sto));");
+            sb.AppendLine(@"        }");
+
+            return await Task.FromResult(true);
+        }
+    }
+}

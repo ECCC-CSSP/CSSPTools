@@ -23,10 +23,10 @@ namespace CSSPDBSearchServices
     {
         private async Task<ActionResult<List<TVItemLanguage>>> DoSearch(string SearchTerm, int TVItemID)
         {
-            if (LocalService.LoggedInContactInfo == null)
-            {
-                return await Task.FromResult(Unauthorized());
-            }
+            //if (LocalService.LoggedInContactInfo == null)
+            //{
+            //    return await Task.FromResult(Unauthorized());
+            //}
 
             LanguageEnum LanguageRequest = LanguageEnum.en;
             if (CSSPCultureServicesRes.Culture.TwoLetterISOLanguageName == "fr")

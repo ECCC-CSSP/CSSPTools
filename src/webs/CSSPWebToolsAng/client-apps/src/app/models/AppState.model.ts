@@ -18,6 +18,7 @@ import { TopComponentEnum } from 'src/app/enums/generated/TopComponentEnum';
 import { AnalysisCalculationTypeEnum } from '../enums/generated/AnalysisCalculationTypeEnum';
 import { MikeScenarioSubComponentEnum } from '../enums/generated/MikeScenarioSubComponentEnum';
 import { StatMWQMRun } from './generated/web/StatMWQMRun.model';
+import { TVFileModel } from './generated/web/TVFileModel.model';
 import { TVItemModel } from './generated/web/TVItemModel.model';
 
 export interface AppState {
@@ -38,8 +39,8 @@ export interface AppState {
     // showing item
     ShowTVItemModelList?: TVItemModel[];
 
-    // showing item for editing
-    ShowEditTVItemModelList?: TVItemModel[];
+    // showing file item
+    ShowTVFileModelList?: TVFileModel[];
 
     // Analysis
     AnalysisStartRun?: StatMWQMRun;
@@ -89,9 +90,9 @@ export interface AppState {
     DetailVisible?: boolean;
     StatCountVisible?: boolean;
     LastUpdateVisible?: boolean;
-    EditVisible?: boolean;
     InactVisible?: boolean;
     MenuVisible?: boolean;
+    EditVisible?: boolean;
 
     // map
     MapVisible?: boolean;

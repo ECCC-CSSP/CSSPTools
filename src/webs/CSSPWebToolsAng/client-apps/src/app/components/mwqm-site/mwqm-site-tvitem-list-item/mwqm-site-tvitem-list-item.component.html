@@ -37,18 +37,18 @@
 </mat-list>
 
 <mat-list *ngFor="let webBase of TVItemList; let i = index">
-    <app-mwqm-site-tvitem-list-item-menu [TVItemModel]="webBase?.TVItemModel" [AppState]="AppState">
-    </app-mwqm-site-tvitem-list-item-menu>
+    <app-tvitem-menu [TVItemModel]="webBase?.TVItemModel" [AppState]="AppState">
+    </app-tvitem-menu>
 
     <app-mwqm-site-tvitem-list-item-special [TVItemModel]="webBase?.TVItemModel" [Index]="i + 1" [AppState]="AppState"
         [StatMWQMSite]="webMWQMSamplesService.GetMWQMSiteDetail(webBase?.TVItemModel)">
     </app-mwqm-site-tvitem-list-item-special>
 
-    <app-mwqm-site-item *ngIf="showItemService.TVItemModelVisible(webBase?.TVItemModel)"
+    <app-mwqm-site-item-view *ngIf="showTVItemService.TVItemVisible(webBase?.TVItemModel)"
         [TVItemModel]="webBase?.TVItemModel" [AppState]="AppState">
-    </app-mwqm-site-item>
+    </app-mwqm-site-item-view>
 
-    <app-mwqm-site-item-edit *ngIf="showItemForEditService.TVItemModelForEditVisible(webBase?.TVItemModel)"
+    <app-mwqm-site-item-edit *ngIf="AppState.EditVisible"
         [TVItemModel]="webBase?.TVItemModel" [AppState]="AppState">
     </app-mwqm-site-item-edit>
 
