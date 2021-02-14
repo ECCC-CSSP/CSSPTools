@@ -43,7 +43,7 @@ namespace CreateGzFileServices
             List<SamplingPlan> samplingPlanList = (from c in db.SamplingPlans
                                                    select c).ToList();
 
-            foreach(SamplingPlan samplingPlan in samplingPlanList)
+            foreach (SamplingPlan samplingPlan in samplingPlanList)
             {
                 Console.WriteLine($"CreateWebSamplingPlan [{samplingPlan.SamplingPlanID}] doing...");
                 await CreateGzFile(WebTypeEnum.WebSamplingPlan, samplingPlan.SamplingPlanID, 0);
@@ -148,6 +148,12 @@ namespace CreateGzFileServices
                                 await CreateGzFile(WebTypeEnum.WebMWQMSample, tvItem.TVItemID, WebTypeYearEnum.Year2010);
                                 Console.WriteLine($"CreateWeb10YearOfSample2020_2029FromSubsector [{tvItem.TVItemID}] doing...");
                                 await CreateGzFile(WebTypeEnum.WebMWQMSample, tvItem.TVItemID, WebTypeYearEnum.Year2020);
+                                Console.WriteLine($"CreateWeb10YearOfSample2030_2039FromSubsector [{tvItem.TVItemID}] doing...");
+                                await CreateGzFile(WebTypeEnum.WebMWQMSample, tvItem.TVItemID, WebTypeYearEnum.Year2030);
+                                Console.WriteLine($"CreateWeb10YearOfSample2040_2049FromSubsector [{tvItem.TVItemID}] doing...");
+                                await CreateGzFile(WebTypeEnum.WebMWQMSample, tvItem.TVItemID, WebTypeYearEnum.Year2040);
+                                Console.WriteLine($"CreateWeb10YearOfSample2050_2059FromSubsector [{tvItem.TVItemID}] doing...");
+                                await CreateGzFile(WebTypeEnum.WebMWQMSample, tvItem.TVItemID, WebTypeYearEnum.Year2050);
                             }
                             break;
                         default:

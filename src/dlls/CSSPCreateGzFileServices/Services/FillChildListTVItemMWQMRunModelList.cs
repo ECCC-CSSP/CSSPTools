@@ -52,7 +52,14 @@ namespace CreateGzFileServices
                 }
 
                 MWQMRunModel.MWQMRun = MWQMRunList.Where(c => c.MWQMRunTVItemID == tvItem.TVItemID).FirstOrDefault();
-                MWQMRunModel.MWQMRunLanguageList = MWQMRunLanguageList.Where(c => c.MWQMRunID == MWQMRunModel.MWQMRun.MWQMRunID).ToList();
+                if (MWQMRunModel.MWQMRun == null)
+                {
+                    MWQMRunModel.MWQMRunLanguageList = new List<MWQMRunLanguage>();
+                }
+                else
+                {
+                    MWQMRunModel.MWQMRunLanguageList = MWQMRunLanguageList.Where(c => c.MWQMRunID == MWQMRunModel.MWQMRun.MWQMRunID).ToList();
+                }
 
                 MWQMRunModelList.Add(MWQMRunModel);
             }

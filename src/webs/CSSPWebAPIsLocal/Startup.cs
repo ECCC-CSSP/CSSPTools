@@ -26,6 +26,9 @@ using CSSPDBPreferenceModels;
 using CSSPDBFilesManagementModels;
 using CSSPDBCommandLogModels;
 using CSSPDBSearchModels;
+using LoggedInServices;
+using CSSPDBServices;
+using CSSPScrambleServices;
 
 namespace CSSPWebAPIsLocal
 {
@@ -143,12 +146,14 @@ namespace CSSPWebAPIsLocal
 
             services.AddScoped<ICSSPCultureService, CSSPCultureService>();
             services.AddScoped<IEnums, Enums>();
+            services.AddScoped<IScrambleService, ScrambleService>();
+            services.AddScoped<ILoggedInService, LoggedInService>();
+            services.AddScoped<ILoginModelService, LoginModelService>();
 
             LoadAllDBServices(services);
 
             services.AddScoped<ILocalService, LocalService>();
             services.AddScoped<ICSSPDBFilesManagementService, CSSPDBFilesManagementService>();
-            services.AddScoped<IDownloadFileService, DownloadFileService>();
             services.AddScoped<IDownloadFileService, DownloadFileService>();
             services.AddScoped<IReadGzFileService, ReadGzFileService>();
             services.AddScoped<IPreferenceService, PreferenceService>();

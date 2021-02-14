@@ -57,8 +57,8 @@ namespace CreateGzFileServices
         #region Functions public
         public async Task<bool> CreateAllGzFiles()
         {
-            return await Task.FromResult(false);
-            //return await DoCreateAllGzFiles();
+            //return await Task.FromResult(false);
+            return await DoCreateAllGzFiles();
         }
         public async Task<ActionResult<bool>> CreateGzFile(WebTypeEnum webType, int TVItemID, WebTypeYearEnum webTypeYear)
         {           
