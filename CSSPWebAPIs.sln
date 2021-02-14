@@ -97,7 +97,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPDBModels", "src\dlls\CS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPLocalServices", "src\dlls\CSSPLocalServices\CSSPLocalServices.csproj", "{6DD7B9EB-CD7F-46C3-9006-E6A2ED2DF406}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSSPScrambleServices", "src\dlls\CSSPScrambleServices\CSSPScrambleServices.csproj", "{F830D066-156E-4E38-8B1B-B2684BA110B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPScrambleServices", "src\dlls\CSSPScrambleServices\CSSPScrambleServices.csproj", "{F830D066-156E-4E38-8B1B-B2684BA110B9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -131,8 +131,8 @@ Global
 		{95CAA5ED-5ECC-461A-AE98-DC441E395EC6}.Release|ARM64.Build.0 = Release|Any CPU
 		{95CAA5ED-5ECC-461A-AE98-DC441E395EC6}.Release|x64.ActiveCfg = Release|x64
 		{95CAA5ED-5ECC-461A-AE98-DC441E395EC6}.Release|x64.Build.0 = Release|x64
-		{95CAA5ED-5ECC-461A-AE98-DC441E395EC6}.Release|x86.ActiveCfg = Release|x86
-		{95CAA5ED-5ECC-461A-AE98-DC441E395EC6}.Release|x86.Build.0 = Release|x86
+		{95CAA5ED-5ECC-461A-AE98-DC441E395EC6}.Release|x86.ActiveCfg = Release|Any CPU
+		{95CAA5ED-5ECC-461A-AE98-DC441E395EC6}.Release|x86.Build.0 = Release|Any CPU
 		{71220674-7B40-4F4B-AF8E-814B01BF49DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{71220674-7B40-4F4B-AF8E-814B01BF49DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{71220674-7B40-4F4B-AF8E-814B01BF49DB}.Debug|ARM.ActiveCfg = Debug|Any CPU
