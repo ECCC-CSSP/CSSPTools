@@ -10,6 +10,92 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\src\Generated\AddressControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\AppErrLogControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\AppTaskControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\AppTaskLanguageControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\BoxModelControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\BoxModelLanguageControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\BoxModelResultControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\ClassificationControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\ClimateDataValueControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\ClimateSiteControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\CoCoRaHSSiteControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\CoCoRaHSValueControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\ContactPreferenceControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\ContactShortcutControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\DocTemplateControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\DrogueRunControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\DrogueRunPositionControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\EmailControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\EmailDistributionListContactControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\EmailDistributionListContactLanguageControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\EmailDistributionListControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\EmailDistributionListLanguageControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\HelpDocControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\HydrometricDataValueControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\HydrometricSiteControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\InfrastructureControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\InfrastructureLanguageControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\LabSheetControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\LabSheetDetailControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\LabSheetTubeMPNDetailControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\LogControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\MapInfoControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\MapInfoPointControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\MikeBoundaryConditionControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\MikeScenarioControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\MikeScenarioResultControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\MikeSourceControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\MikeSourceStartEndControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\MWQMAnalysisReportParameterControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\MWQMLookupMPNControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\MWQMRunControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\MWQMRunLanguageControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\MWQMSampleControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\MWQMSampleLanguageControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\MWQMSiteControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\MWQMSiteStartEndDateControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\MWQMSubsectorControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\MWQMSubsectorLanguageControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\PolSourceGroupingControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\PolSourceGroupingLanguageControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\PolSourceObservationControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\PolSourceObservationIssueControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\PolSourceSiteControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\PolSourceSiteEffectControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\PolSourceSiteEffectTermControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\RainExceedanceClimateSiteControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\RainExceedanceControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\RatingCurveControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\RatingCurveValueControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\ReportSectionControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\ReportTypeControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\ResetPasswordControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\SamplingPlanControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\SamplingPlanEmailControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\SamplingPlanSubsectorControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\SamplingPlanSubsectorSiteControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\SpillControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\SpillLanguageControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\TelControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\TideDataValueControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\TideLocationControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\TideSiteControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\TVFileControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\TVFileLanguageControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\TVItemControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\TVItemLanguageControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\TVItemLinkControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\TVItemStatControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\UseOfSiteControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\VPAmbientControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\VPResultControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\VPScenarioControllerGenerated.cs" />
+    <Compile Remove="Controllers\src\Generated\VPScenarioLanguageControllerGenerated.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="5.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Certificate" Version="5.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.2" />
@@ -35,10 +121,6 @@
     <Content Update="appsettings_csspwebapis.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
- 
-  <ItemGroup>
-    <Folder Include="Controllers\src\Generated\" />
   </ItemGroup>
 
 </Project>

@@ -38,7 +38,7 @@ namespace CSSPDBModels.Tests
         [Fact]
         public void Contact_Properties_Test()
         {
-            List<string> propNameList = new List<string>() { "ContactID", "DBCommand", "Id", "ContactTVItemID", "LoginEmail", "FirstName", "LastName", "Initial", "WebName", "ContactTitle", "IsAdmin", "EmailValidated", "Disabled", "IsNew", "SamplingPlanner_ProvincesTVItemID", "Token", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
+            List<string> propNameList = new List<string>() { "ContactID", "DBCommand", "Id", "ContactTVItemID", "LoginEmail", "FirstName", "LastName", "Initial", "CellNumber", "CellNumberConfirmed", "WebName", "ContactTitle", "IsAdmin", "EmailValidated", "Disabled", "IsNew", "SamplingPlanner_ProvincesTVItemID", "PasswordHash", "Token", "AccessFailedCount", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(Contact).GetProperties().OrderBy(c => c.Name))
@@ -128,35 +128,47 @@ namespace CSSPDBModels.Tests
                contact.Initial = val8;
                Assert.Equal(val8, contact.Initial);
                string val9 = "Some text";
-               contact.WebName = val9;
-               Assert.Equal(val9, contact.WebName);
-               ContactTitleEnum val10 = (ContactTitleEnum)3;
-               contact.ContactTitle = val10;
-               Assert.Equal(val10, contact.ContactTitle);
-               bool val11 = true;
-               contact.IsAdmin = val11;
-               Assert.Equal(val11, contact.IsAdmin);
-               bool val12 = true;
-               contact.EmailValidated = val12;
-               Assert.Equal(val12, contact.EmailValidated);
+               contact.CellNumber = val9;
+               Assert.Equal(val9, contact.CellNumber);
+               bool val10 = true;
+               contact.CellNumberConfirmed = val10;
+               Assert.Equal(val10, contact.CellNumberConfirmed);
+               string val11 = "Some text";
+               contact.WebName = val11;
+               Assert.Equal(val11, contact.WebName);
+               ContactTitleEnum val12 = (ContactTitleEnum)3;
+               contact.ContactTitle = val12;
+               Assert.Equal(val12, contact.ContactTitle);
                bool val13 = true;
-               contact.Disabled = val13;
-               Assert.Equal(val13, contact.Disabled);
+               contact.IsAdmin = val13;
+               Assert.Equal(val13, contact.IsAdmin);
                bool val14 = true;
-               contact.IsNew = val14;
-               Assert.Equal(val14, contact.IsNew);
-               string val15 = "Some text";
-               contact.SamplingPlanner_ProvincesTVItemID = val15;
-               Assert.Equal(val15, contact.SamplingPlanner_ProvincesTVItemID);
-               string val16 = "Some text";
-               contact.Token = val16;
-               Assert.Equal(val16, contact.Token);
-               DateTime val17 = new DateTime(2010, 3, 4);
-               contact.LastUpdateDate_UTC = val17;
-               Assert.Equal(val17, contact.LastUpdateDate_UTC);
-               int val18 = 45;
-               contact.LastUpdateContactTVItemID = val18;
-               Assert.Equal(val18, contact.LastUpdateContactTVItemID);
+               contact.EmailValidated = val14;
+               Assert.Equal(val14, contact.EmailValidated);
+               bool val15 = true;
+               contact.Disabled = val15;
+               Assert.Equal(val15, contact.Disabled);
+               bool val16 = true;
+               contact.IsNew = val16;
+               Assert.Equal(val16, contact.IsNew);
+               string val17 = "Some text";
+               contact.SamplingPlanner_ProvincesTVItemID = val17;
+               Assert.Equal(val17, contact.SamplingPlanner_ProvincesTVItemID);
+               string val18 = "Some text";
+               contact.PasswordHash = val18;
+               Assert.Equal(val18, contact.PasswordHash);
+               string val19 = "Some text";
+               contact.Token = val19;
+               Assert.Equal(val19, contact.Token);
+               int val20 = 45;
+               contact.AccessFailedCount = val20;
+               Assert.Equal(val20, contact.AccessFailedCount);
+               DateTime val21 = new DateTime(2010, 3, 4);
+               contact.LastUpdateDate_UTC = val21;
+               Assert.Equal(val21, contact.LastUpdateDate_UTC);
+               int val22 = 45;
+               contact.LastUpdateContactTVItemID = val22;
+               Assert.Equal(val22, contact.LastUpdateContactTVItemID);
         }
         #endregion Tests Functions public
     }

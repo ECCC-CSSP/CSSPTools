@@ -1314,6 +1314,7 @@
           "Azure.Storage.Blobs": "12.8.0",
           "CSSPDBCommandLogModels": "1.0.0",
           "CSSPDBPreferenceModels": "1.0.0",
+          "CSSPScrambleServices": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.2",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.2",
           "Microsoft.EntityFrameworkCore": "5.0.2",
@@ -1340,7 +1341,6 @@
       "CSSPHelperModels/1.0.0": {
         "dependencies": {
           "CSSPDBModels": "1.0.0",
-          "CSSPEnums": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.2",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.2",
           "Microsoft.EntityFrameworkCore": "5.0.2",
@@ -1374,6 +1374,11 @@
         },
         "runtime": {
           "CSSPLocalServices.dll": {}
+        }
+      },
+      "CSSPScrambleServices/1.0.0": {
+        "runtime": {
+          "CSSPScrambleServices.dll": {}
         }
       }
     }
@@ -2291,6 +2296,11 @@
       "sha512": ""
     },
     "CSSPLocalServices/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "CSSPScrambleServices/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

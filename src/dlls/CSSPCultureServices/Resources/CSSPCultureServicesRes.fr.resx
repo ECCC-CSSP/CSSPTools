@@ -813,4 +813,7 @@
   <data name="CouldNotLogin" xml:space="preserve">
     <value>Dans l'impossibilité de connecter</value>
   </data>
+  <data name="ErrorParsingPassword" xml:space="preserve">
+    <value>Error parsing password (fr)</value>
+  </data>
 </root>

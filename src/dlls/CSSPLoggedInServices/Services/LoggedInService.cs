@@ -16,7 +16,7 @@ namespace LoggedInServices
     {
         LoggedInContactInfo LoggedInContactInfo { get; set; }
 
-        Task<bool> SetLoggedInContactInfo(string Id);
+        Task<bool> SetLoggedInContactInfo(string LoginEmail);
     }
     public class LoggedInService : ILoggedInService
     {
@@ -41,18 +41,18 @@ namespace LoggedInServices
         #endregion Constructors
 
         #region Functions public
-        public async Task<bool> SetLoggedInContactInfo(string Id)
+        public async Task<bool> SetLoggedInContactInfo(string LoginEmail)
         {
             LoggedInContactInfo = new LoggedInContactInfo();
 
             LoggedInContactInfo.LoggedInContact = (from c in dbIM.Contacts
-                                                   where c.Id == Id
+                                                   where c.LoginEmail == LoginEmail
                                                    select c).FirstOrDefault();
 
             if (LoggedInContactInfo.LoggedInContact == null)
             {
                 LoggedInContactInfo.LoggedInContact = (from c in db.Contacts
-                                                       where c.Id == Id
+                                                       where c.LoginEmail == LoginEmail
                                                        select c).FirstOrDefault();
 
                 if (LoggedInContactInfo.LoggedInContact == null)
@@ -70,7 +70,7 @@ namespace LoggedInServices
                     catch (Exception)
                     {
                         // nothing yet
-                        return await Task.FromResult(false);
+                        //return await Task.FromResult(false);
                     }
 
                     LoggedInContactInfo.TVTypeUserAuthorizationList = (from c in db.TVTypeUserAuthorizations
@@ -87,7 +87,7 @@ namespace LoggedInServices
                         catch (Exception)
                         {
                             // nothing yet
-                            return await Task.FromResult(false);
+                            //return await Task.FromResult(false);
                         }
                     }
 
@@ -105,7 +105,7 @@ namespace LoggedInServices
                         catch (Exception)
                         {
                             // nothing yet
-                            return await Task.FromResult(false);
+                            //return await Task.FromResult(false);
                         }
                     }
                 }

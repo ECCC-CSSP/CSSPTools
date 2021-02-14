@@ -15,35 +15,35 @@ using System;
 
 namespace CSSPWebAPIs.Controllers
 {
-    public partial interface ITVItemLanguageController
-    {
-        Task<ActionResult<List<TVItemLanguage>>> GetTVItemLanguageStartDateList(int Year, int Month, int Day);
-    }
+    //public partial interface ITVItemLanguageController
+    //{
+    //    Task<ActionResult<List<TVItemLanguage>>> GetTVItemLanguageStartDateList(int Year, int Month, int Day);
+    //}
 
-    public partial class TVItemLanguageController : ControllerBase, ITVItemLanguageController
-    {
-        #region Variables
-        #endregion Variables
+    //public partial class TVItemLanguageController : ControllerBase, ITVItemLanguageController
+    //{
+    //    #region Variables
+    //    #endregion Variables
 
-        #region Properties
-        #endregion Properties
+    //    #region Properties
+    //    #endregion Properties
 
-        #region Constructors
-        #endregion Constructors
+    //    #region Constructors
+    //    #endregion Constructors
 
-        #region Functions public
-        [Route("GetTVItemLanguageStartDateList/{Year}/{Month}/{Day}")]
-        [HttpGet]
-        public async Task<ActionResult<List<TVItemLanguage>>> GetTVItemLanguageStartDateList(int Year, int Month, int Day)
-        {
-            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+    //    #region Functions public
+    //    [Route("GetTVItemLanguageStartDateList/{Year}/{Month}/{Day}")]
+    //    [HttpGet]
+    //    public async Task<ActionResult<List<TVItemLanguage>>> GetTVItemLanguageStartDateList(int Year, int Month, int Day)
+    //    {
+    //        CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
+    //        await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await TVItemLanguageDBService.GetTVItemLanguageStartDateList(Year, Month, Day);
-        }
-        #endregion Functions public
+    //        return await TVItemLanguageDBService.GetTVItemLanguageStartDateList(Year, Month, Day);
+    //    }
+    //    #endregion Functions public
 
-        #region Functions private
-        #endregion Functions private
-    }
+    //    #region Functions private
+    //    #endregion Functions private
+    //}
 }

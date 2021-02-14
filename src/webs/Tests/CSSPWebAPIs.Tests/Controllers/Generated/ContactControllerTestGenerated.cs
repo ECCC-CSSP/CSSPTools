@@ -214,7 +214,7 @@ namespace CSSPWebAPIs.Tests.Controllers
             LoggedInService = Provider.GetService<ILoggedInService>();
             Assert.NotNull(LoggedInService);
 
-            await LoggedInService.SetLoggedInContactInfo(contact2.Id);
+            await LoggedInService.SetLoggedInContactInfo(contact2.LoginEmail);
             Assert.NotNull(LoggedInService.LoggedInContactInfo);
 
             ContactDBService = Provider.GetService<IContactDBService>();

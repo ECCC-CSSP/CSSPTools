@@ -118,8 +118,8 @@ namespace CSSPDBServices.Tests
             LoggedInService = Provider.GetService<ILoggedInService>();
             Assert.NotNull(LoggedInService);
 
-            string Id = Configuration.GetValue<string>("Id");
-            Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
+            string LoginEmail = Configuration.GetValue<string>("LoginEmail");
+            Assert.True(await LoggedInService.SetLoggedInContactInfo(LoginEmail));
 
             TVItemUserAuthorizationDBService = Provider.GetService<ITVItemUserAuthorizationDBService>();
             Assert.NotNull(TVItemUserAuthorizationDBService);

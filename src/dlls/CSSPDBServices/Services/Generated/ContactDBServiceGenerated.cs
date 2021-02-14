@@ -25,6 +25,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using CSSPHelperModels;
+using CSSPScrambleServices;
 
 namespace CSSPDBServices
 {
@@ -38,7 +39,7 @@ namespace CSSPDBServices
         Task<ActionResult<Contact>> Login(LoginModel loginModel);
         Task<ActionResult<string>> AzureStore();
         Task<ActionResult<string>> GoogleMapKey();
-        Task<ActionResult<Contact>> Register(RegisterModel registerModel);
+        //Task<ActionResult<Contact>> Register(RegisterModel registerModel);
     }
     public partial class ContactDBService : ControllerBase, IContactDBService
     {
@@ -48,11 +49,11 @@ namespace CSSPDBServices
         #region Properties
         private CSSPDBContext db { get; }
         private IConfiguration Configuration { get; }
-        private UserManager<ApplicationUser> UserManager { get; }
         private ILoginModelService LoginModelService { get; }
-        private IRegisterModelService RegisterModelService { get; }
+        //private IRegisterModelService RegisterModelService { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
+        private IScrambleService ScrambleService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
@@ -61,16 +62,17 @@ namespace CSSPDBServices
         public ContactDBService(IConfiguration Configuration,
            ICSSPCultureService CSSPCultureService, IEnums enums,
            ILoginModelService LoginModelService,
-           IRegisterModelService RegisterModelService,
+           //IRegisterModelService RegisterModelService,
            ILoggedInService LoggedInService,
-           CSSPDBContext db, UserManager<ApplicationUser> UserManager)
+           IScrambleService ScrambleService,
+           CSSPDBContext db)
         {
-            this.UserManager = UserManager;
             this.LoginModelService = LoginModelService;
-            this.RegisterModelService = RegisterModelService;
+            //this.RegisterModelService = RegisterModelService;
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
+            this.ScrambleService = ScrambleService;
             this.enums = enums;
             this.db = db;
         }
@@ -194,33 +196,17 @@ namespace CSSPDBServices
 
             try
             {
-                ApplicationUser appUser = await UserManager.FindByNameAsync(loginModel.LoginEmail);
+                Contact contact = (from c in db.Contacts
+                   where c.LoginEmail == loginModel.LoginEmail
+                   select c).FirstOrDefault();
 
-                if (appUser == null)
-                {
-                    return await Task.FromResult(BadRequest(String.Format(CSSPCultureServicesRes.__CouldNotBeFound, CSSPCultureServicesRes.Email, loginModel.LoginEmail)));
-                }
-
-                bool HasPassword = await UserManager.CheckPasswordAsync(appUser, loginModel.Password);
-                if (!HasPassword)
+                if (contact == null)
                 {
                     return await Task.FromResult(BadRequest(String.Format(CSSPCultureServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail)));
                 }
-
-                if (HasPassword == true)
+                
+                if (contact.PasswordHash == await ScrambleService.Descramble(loginModel.Password))
                 {
-                    var actionContact = await GetContactWithId(appUser.Id);
-                    if (((ObjectResult)actionContact.Result).StatusCode != 200)
-                    {
-                        return await Task.FromResult(BadRequest(String.Format(CSSPCultureServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail)));
-                    }
-
-                    Contact contact = (Contact)((OkObjectResult)actionContact.Result).Value;
-
-                    if (contact == null)
-                    {
-                        return await Task.FromResult(BadRequest(String.Format(CSSPCultureServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail)));
-                    }
 
                     byte[] key = Encoding.ASCII.GetBytes(Configuration.GetValue<string>("APISecret"));
 
@@ -229,7 +215,7 @@ namespace CSSPDBServices
                     {
                         Subject = new ClaimsIdentity(new Claim[]
                         {
-                            new Claim(ClaimTypes.Name, contact.Id.ToString())
+                            new Claim(ClaimTypes.Name, contact.LoginEmail)
                         }),
                         Expires = DateTime.UtcNow.AddDays(2),
                         SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -270,10 +256,10 @@ namespace CSSPDBServices
         #endregion Functions public
 
         #region Functions private
-        private async Task<ActionResult<Contact>> GetContactWithId(string Id)
+        private async Task<ActionResult<Contact>> GetContactWithLoginEmail(string LoginEmail)
         {
             Contact contact = (from c in db.Contacts.AsNoTracking()
-                               where c.Id == Id
+                               where c.LoginEmail == LoginEmail
                                select c).FirstOrDefault();
 
             if (contact == null)
@@ -388,6 +374,11 @@ namespace CSSPDBServices
                 yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Initial", "50"), new[] { nameof(contact.Initial) });
             }
 
+            if (!string.IsNullOrWhiteSpace(contact.CellNumber) && contact.CellNumber.Length > 50)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "CellNumber", "50"), new[] { nameof(contact.CellNumber) });
+            }
+
             if (string.IsNullOrWhiteSpace(contact.WebName))
             {
                 yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "WebName"), new[] { nameof(contact.WebName) });
@@ -412,9 +403,22 @@ namespace CSSPDBServices
                 yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SamplingPlanner_ProvincesTVItemID", "200"), new[] { nameof(contact.SamplingPlanner_ProvincesTVItemID) });
             }
 
+            if (!string.IsNullOrWhiteSpace(contact.PasswordHash) && contact.PasswordHash.Length > 255)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "PasswordHash", "255"), new[] { nameof(contact.PasswordHash) });
+            }
+
             if (!string.IsNullOrWhiteSpace(contact.Token) && contact.Token.Length > 255)
             {
                 yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Token", "255"), new[] { nameof(contact.Token) });
+            }
+
+            if (contact.AccessFailedCount != null)
+            {
+                if (contact.AccessFailedCount < 0 || contact.AccessFailedCount > 10)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "AccessFailedCount", "0", "10"), new[] { nameof(contact.AccessFailedCount) });
+                }
             }
 
             if (contact.LastUpdateDate_UTC.Year == 1)

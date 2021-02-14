@@ -90,6 +90,19 @@ namespace GenerateCSSPDBServices_Tests
                                             }
                                         }
                                         break;
+                                    case "CoCoRaHSSite":
+                                        {
+                                            CoCoRaHSSite coCoRaHSSite = dbTestDB.CoCoRaHSSites.AsNoTracking().FirstOrDefault();
+                                            if (coCoRaHSSite == null)
+                                            {
+                                                sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
+                                            }
+                                            else
+                                            {
+                                                sb.AppendLine($@"            if (OmitPropName != ""{ prop.Name }"") { TypeNameLower }.{ prop.Name } = { coCoRaHSSite.CoCoRaHSSiteID };");
+                                            }
+                                        }
+                                        break;
                                     case "Contact":
                                         {
                                             Contact contact = dbTestDB.Contacts.AsNoTracking().FirstOrDefault();

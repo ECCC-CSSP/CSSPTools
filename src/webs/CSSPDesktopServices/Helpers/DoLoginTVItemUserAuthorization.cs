@@ -45,18 +45,18 @@ namespace CSSPDesktopServices.Services
 
                 }
 
-                // Adding TVItemUserAuthorization item in dbLogin
+                // Adding TVItemUserAuthorization item in dbPreference
                 List<TVItemUserAuthorization> tvItemUserAuthorizationList = JsonSerializer.Deserialize<List<TVItemUserAuthorization>>(response.Content.ReadAsStringAsync().Result);
 
-                List<TVItemUserAuthorization> tvItemUserAuthorizationToDeleteList = (from c in dbLogin.TVItemUserAuthorizations
+                List<TVItemUserAuthorization> tvItemUserAuthorizationToDeleteList = (from c in dbPreference.TVItemUserAuthorizations
                                                                                      select c).ToList();
 
                 if (tvItemUserAuthorizationToDeleteList.Count > 0)
                 {
                     try
                     {
-                        dbLogin.TVItemUserAuthorizations.RemoveRange(tvItemUserAuthorizationToDeleteList);
-                        dbLogin.SaveChanges();
+                        dbPreference.TVItemUserAuthorizations.RemoveRange(tvItemUserAuthorizationToDeleteList);
+                        dbPreference.SaveChanges();
                     }
                     catch (Exception ex)
                     {
@@ -67,8 +67,8 @@ namespace CSSPDesktopServices.Services
 
                 try
                 {
-                    dbLogin.TVItemUserAuthorizations.AddRange(tvItemUserAuthorizationList);
-                    dbLogin.SaveChanges();
+                    dbPreference.TVItemUserAuthorizations.AddRange(tvItemUserAuthorizationList);
+                    dbPreference.SaveChanges();
 
                     AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes._StoredInTable_AndDatabase_, "TVItemUserAuthorization", "TVItemUserAuthorizations", "CSSPDBPreference.db")));
                 }

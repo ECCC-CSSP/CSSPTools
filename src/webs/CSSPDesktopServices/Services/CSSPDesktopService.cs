@@ -99,7 +99,7 @@ namespace CSSPDesktopServices.Services
         private CSSPDBContext dbLocal { get; }
         private CSSPDBSearchContext dbSearch { get; }
         private CSSPDBCommandLogContext dbCommandLog { get; }
-        private CSSPDBPreferenceContext dbLogin { get; }
+        private CSSPDBPreferenceContext dbPreference { get; }
         private CSSPDBFilesManagementContext dbFM { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
@@ -122,7 +122,7 @@ namespace CSSPDesktopServices.Services
         #region Constructors
         public CSSPDesktopService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, 
             ILocalService LocalService, CSSPDBContext dbLocal, CSSPDBSearchContext dbSearch, CSSPDBCommandLogContext dbCommandLog, 
-            CSSPDBPreferenceContext dbLogin, CSSPDBFilesManagementContext dbFM, IReadGzFileService ReadGzFileService, IPreferenceService PreferenceService)
+            CSSPDBPreferenceContext dbPreference, CSSPDBFilesManagementContext dbFM, IReadGzFileService ReadGzFileService, IPreferenceService PreferenceService)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
@@ -131,7 +131,7 @@ namespace CSSPDesktopServices.Services
             this.dbLocal = dbLocal;
             this.dbSearch = dbSearch;
             this.dbCommandLog = dbCommandLog;
-            this.dbLogin = dbLogin;
+            this.dbPreference = dbPreference;
             this.dbFM = dbFM;
             this.ReadGzFileService = ReadGzFileService;
             this.PreferenceService = PreferenceService;

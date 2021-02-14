@@ -21,6 +21,7 @@ using System.ComponentModel.DataAnnotations;
 using CSSPCultureServices.Resources;
 using LoggedInServices;
 using CSSPHelperModels;
+using CSSPScrambleServices;
 
 namespace CSSPDBServices.Tests
 {
@@ -36,6 +37,7 @@ namespace CSSPDBServices.Tests
         private IServiceCollection Services { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
         private ILoggedInService LoggedInService { get; set; }
+        private IScrambleService ScrambleService { get; set; }
         private IContactDBService ContactDBService { get; set; }
         private CSSPDBContext db { get; set; }
         private Contact contact { get; set; }
@@ -61,36 +63,36 @@ namespace CSSPDBServices.Tests
             Assert.NotNull(LoggedInService);
             Assert.NotNull(ContactDBService);
         }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task ContactServiceManual_Register_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
+        //[Theory]
+        //[InlineData("en-CA")]
+        ////[InlineData("fr-CA")]
+        //public async Task ContactServiceManual_Register_Good_Test(string culture)
+        //{
+        //    Assert.True(await Setup(culture));
 
-            RegisterModel registerModel = new RegisterModel()
-            {
-                LoginEmail = "Allo@test.com",
-                FirstName = "Testing",
-                Initial = "T",
-                LastName = "Rouge",
-                Password = Password,
-                ConfirmPassword = Password
-            };
+        //    RegisterModel registerModel = new RegisterModel()
+        //    {
+        //        LoginEmail = "Allo@test.com",
+        //        FirstName = "Testing",
+        //        Initial = "T",
+        //        LastName = "Rouge",
+        //        Password = Password,
+        //        ConfirmPassword = Password
+        //    };
 
-            var actionResContact = await ContactDBService.Register(registerModel);
-            Assert.Equal(200, ((ObjectResult)actionResContact.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionResContact.Result).Value);
-            Contact contactRes = (Contact)((OkObjectResult)actionResContact.Result).Value;
-            Assert.NotNull(contactRes);
+        //    var actionResContact = await ContactDBService.Register(registerModel);
+        //    Assert.Equal(200, ((ObjectResult)actionResContact.Result).StatusCode);
+        //    Assert.NotNull(((OkObjectResult)actionResContact.Result).Value);
+        //    Contact contactRes = (Contact)((OkObjectResult)actionResContact.Result).Value;
+        //    Assert.NotNull(contactRes);
 
-            var actionRe = await ContactDBService.RemoveAspNetUserAndContact(contactRes.Id);
-            Assert.Equal(200, ((ObjectResult)actionRe.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionRe.Result).Value);
-            bool boolRes = (bool)((OkObjectResult)actionRe.Result).Value;
-            Assert.True(boolRes);
+        //    var actionRe = await ContactDBService.RemoveContact(contactRes.LoginEmail);
+        //    Assert.Equal(200, ((ObjectResult)actionRe.Result).StatusCode);
+        //    Assert.NotNull(((OkObjectResult)actionRe.Result).Value);
+        //    bool boolRes = (bool)((OkObjectResult)actionRe.Result).Value;
+        //    Assert.True(boolRes);
 
-        }
+        //}
         #endregion Tests 
 
         #region Functions private
@@ -132,6 +134,7 @@ namespace CSSPDBServices.Tests
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<ILoginModelService, LoginModelService>();
             Services.AddSingleton<IRegisterModelService, RegisterModelService>();
+            Services.AddSingleton<IScrambleService, ScrambleService>();
             Services.AddSingleton<IContactDBService, ContactDBService>();
 
             Provider = Services.BuildServiceProvider();
@@ -148,8 +151,11 @@ namespace CSSPDBServices.Tests
             Password = Configuration.GetValue<string>("Password");
             Assert.NotNull(Password);
 
-            string Id = Configuration.GetValue<string>("Id");
-            Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
+            string LoginEmail = Configuration.GetValue<string>("LoginEmail");
+            Assert.True(await LoggedInService.SetLoggedInContactInfo(LoginEmail));
+
+            ScrambleService = Provider.GetService<IScrambleService>();
+            Assert.NotNull(ScrambleService);
 
             ContactDBService = Provider.GetService<IContactDBService>();
             Assert.NotNull(ContactDBService);

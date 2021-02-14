@@ -16,47 +16,47 @@ using CreateGzFileServices;
 
 namespace CSSPWebAPIs.Controllers
 {
-    public partial interface ICreateGzFileController
-    {
-        Task<ActionResult<bool>> CreateGzFile(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear);
-    }
+    //public partial interface ICreateGzFileController
+    //{
+    //    Task<ActionResult<bool>> CreateGzFile(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear);
+    //}
 
-    [Route("api/{culture}/[controller]")]
-    [ApiController]
-    [Authorize]
-    public partial class CreateGzFileController : ControllerBase, ICreateGzFileController
-    {
-        #region Variables
-        #endregion Variables
+    //[Route("api/{culture}/[controller]")]
+    //[ApiController]
+    //[Authorize]
+    //public partial class CreateGzFileController : ControllerBase, ICreateGzFileController
+    //{
+    //    #region Variables
+    //    #endregion Variables
 
-        #region Properties
-        private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
-        private ICreateGzFileService CreateGzFileService { get; }
-        #endregion Properties
+    //    #region Properties
+    //    private ICSSPCultureService CSSPCultureService { get; }
+    //    private ILoggedInService LoggedInService { get; }
+    //    private ICreateGzFileService CreateGzFileService { get; }
+    //    #endregion Properties
 
-        #region Constructors
-        public CreateGzFileController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, ICreateGzFileService CreateGzFileService)
-        {
-            this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
-            this.CreateGzFileService = CreateGzFileService;
-        }
-        #endregion Constructors
+    //    #region Constructors
+    //    public CreateGzFileController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, ICreateGzFileService CreateGzFileService)
+    //    {
+    //        this.CSSPCultureService = CSSPCultureService;
+    //        this.LoggedInService = LoggedInService;
+    //        this.CreateGzFileService = CreateGzFileService;
+    //    }
+    //    #endregion Constructors
 
-        #region Functions public
-        [Route("{WebType:int}/{TVItemID:int}/{WebTypeYear:int}")]
-        [HttpGet]
-        public async Task<ActionResult<bool>> CreateGzFile(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear)
-        {
-            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+    //    #region Functions public
+    //    [Route("{WebType:int}/{TVItemID:int}/{WebTypeYear:int}")]
+    //    [HttpGet]
+    //    public async Task<ActionResult<bool>> CreateGzFile(WebTypeEnum WebType, int TVItemID, WebTypeYearEnum WebTypeYear)
+    //    {
+    //        CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
+    //        await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await CreateGzFileService.CreateGzFile(WebType, TVItemID, WebTypeYear);
-        }
-        #endregion Functions public
+    //        return await CreateGzFileService.CreateGzFile(WebType, TVItemID, WebTypeYear);
+    //    }
+    //    #endregion Functions public
 
-        #region Functions private
-        #endregion Functions private
-    }
+    //    #region Functions private
+    //    #endregion Functions private
+    //}
 }

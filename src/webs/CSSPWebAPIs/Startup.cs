@@ -18,6 +18,7 @@ using System.Linq;
 using System.Text;
 using LoggedInServices;
 using CreateGzFileServices;
+using CSSPScrambleServices;
 
 namespace CSSPWebAPIs
 {
@@ -94,6 +95,7 @@ namespace CSSPWebAPIs
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddScoped<ICSSPCultureService, CSSPCultureService>();
+            services.AddScoped<IScrambleService, ScrambleService>();
             services.AddScoped<IEnums, Enums>();
 
             services.AddScoped<ILoginModelService, LoginModelService>();

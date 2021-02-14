@@ -29,6 +29,7 @@ using CSSPHelperModels;
 using CSSPDBSearchModels;
 using CSSPDBCommandLogModels;
 using CSSPDBFilesManagementModels;
+using CSSPScrambleServices;
 
 namespace CSSPDesktop
 {
@@ -476,6 +477,7 @@ namespace CSSPDesktop
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<ICSSPDesktopService, CSSPDesktopService>();
             Services.AddSingleton<ILocalService, LocalService>();
+            Services.AddSingleton<IScrambleService, ScrambleService>();
             Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
             Services.AddSingleton<ICSSPDBFilesManagementService, CSSPDBFilesManagementService>();
             Services.AddSingleton<IDownloadFileService, DownloadFileService>();

@@ -19,6 +19,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using LoggedInServices;
 using Microsoft.Extensions.Configuration;
+using CSSPScrambleServices;
 
 namespace CSSPDBServices
 {
@@ -40,6 +41,7 @@ namespace CSSPDBServices
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
+        private IScrambleService ScrambleService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
@@ -52,6 +54,7 @@ namespace CSSPDBServices
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
+            this.ScrambleService = ScrambleService;
             this.enums = enums;
             this.db = db;
         }

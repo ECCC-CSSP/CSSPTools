@@ -13,7 +13,7 @@ namespace GenerateCSSPDBServices_Tests
             sb.AppendLine(@"            Config = new ConfigurationBuilder()");
             sb.AppendLine(@"               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)");
             sb.AppendLine(@"               .AddJsonFile(""appsettings_csspdbservicestests.json"")");
-            sb.AppendLine(@"               .AddUserSecrets(""70c662c1-a1a8-4b2c-b594-d7834bb5e6db"")");
+            sb.AppendLine(@"               .AddUserSecrets(""a79b4a81-ba75-4dfc-8d95-46259f73f055"")");
             sb.AppendLine(@"               .Build();");
             sb.AppendLine(@"");
             sb.AppendLine(@"            Services = new ServiceCollection();");
@@ -33,14 +33,14 @@ namespace GenerateCSSPDBServices_Tests
             sb.AppendLine(@"                options.UseInMemoryDatabase(CSSPDBConnString);");
             sb.AppendLine(@"            });");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            Services.AddDbContext<ApplicationDbContext>(options =>");
-            sb.AppendLine(@"            {");
-            sb.AppendLine(@"                options.UseSqlServer(CSSPDBConnString);");
-            sb.AppendLine(@"            });");
-            sb.AppendLine(@"");
-            sb.AppendLine(@"            Services.AddIdentityCore<ApplicationUser>()");
-            sb.AppendLine(@"                .AddEntityFrameworkStores<ApplicationDbContext>();");
-            sb.AppendLine(@"");
+            //sb.AppendLine(@"            Services.AddDbContext<ApplicationDbContext>(options =>");
+            //sb.AppendLine(@"            {");
+            //sb.AppendLine(@"                options.UseSqlServer(CSSPDBConnString);");
+            //sb.AppendLine(@"            });");
+            //sb.AppendLine(@"");
+            //sb.AppendLine(@"            Services.AddIdentityCore<ApplicationUser>()");
+            //sb.AppendLine(@"                .AddEntityFrameworkStores<ApplicationDbContext>();");
+            //sb.AppendLine(@"");
             sb.AppendLine(@"            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();");
             sb.AppendLine(@"            Services.AddSingleton<ILoggedInService, LoggedInService>();");
             sb.AppendLine(@"            Services.AddSingleton<IEnums, Enums>();");
@@ -48,6 +48,7 @@ namespace GenerateCSSPDBServices_Tests
             {
                 sb.AppendLine(@"            Services.AddSingleton<ILoginModelService, LoginModelService>();");
                 sb.AppendLine(@"            Services.AddSingleton<IRegisterModelService, RegisterModelService>();");
+                sb.AppendLine(@"            Services.AddSingleton<IScrambleService, ScrambleService>();");
             }
             else
             {
@@ -65,11 +66,20 @@ namespace GenerateCSSPDBServices_Tests
             sb.AppendLine(@"            LoggedInService = Provider.GetService<ILoggedInService>();");
             sb.AppendLine(@"            Assert.NotNull(LoggedInService);");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            string Id = Config.GetValue<string>(""Id"");");
-            sb.AppendLine(@"            Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));");
+            sb.AppendLine(@"            string LoginEmail = Config.GetValue<string>(""LoginEmail"");");
+            sb.AppendLine(@"            Assert.True(await LoggedInService.SetLoggedInContactInfo(LoginEmail));");
             sb.AppendLine(@"");
             sb.AppendLine(@"            db = Provider.GetService<CSSPDBContext>();");
             sb.AppendLine(@"            Assert.NotNull(db);");
+            sb.AppendLine(@"");
+            sb.AppendLine(@"            dbIM = Provider.GetService<CSSPDBContext>();");
+            sb.AppendLine(@"            Assert.NotNull(dbIM);");
+            if (TypeName == "Contact")
+            {
+                sb.AppendLine(@"");
+                sb.AppendLine($@"            ScrambleService = Provider.GetService<IScrambleService>();");
+                sb.AppendLine($@"            Assert.NotNull(ScrambleService);");
+            }
             sb.AppendLine(@"");
             sb.AppendLine($@"            { TypeName }DBService = Provider.GetService<I{ TypeName }DBService>();");
             sb.AppendLine($@"            Assert.NotNull({ TypeName }DBService);");

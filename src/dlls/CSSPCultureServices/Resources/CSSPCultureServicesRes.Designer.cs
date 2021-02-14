@@ -1240,6 +1240,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error parsing password.
+        /// </summary>
+        public static string ErrorParsingPassword {
+            get {
+                return ResourceManager.GetString("ErrorParsingPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error while creating code [{0}].
         /// </summary>
         public static string ErrorWhileCreatingCode_ {

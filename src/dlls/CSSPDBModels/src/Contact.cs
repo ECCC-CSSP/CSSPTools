@@ -36,6 +36,11 @@ namespace CSSPDBModels
         [CSSPMaxLength(50)]
         [CSSPAllowNull]
         public string Initial { get; set; }
+        [CSSPMaxLength(50)]
+        [CSSPAllowNull]
+        public string CellNumber { get; set; }
+        [CSSPAllowNull]
+        public bool? CellNumberConfirmed { get; set; }
         [CSSPMaxLength(100)]
         public string WebName { get; set; }
         [CSSPEnumType]
@@ -50,7 +55,13 @@ namespace CSSPDBModels
         public string SamplingPlanner_ProvincesTVItemID { get; set; }
         [CSSPMaxLength(255)]
         [CSSPAllowNull]
+        public string PasswordHash { get; set; }
+        [CSSPMaxLength(255)]
+        [CSSPAllowNull]
         public string Token { get; set; }
+        [CSSPRange(0, 10)]
+        [CSSPAllowNull]
+        public int? AccessFailedCount { get; set; }
         #endregion Properties in DB
 
         #region Constructors

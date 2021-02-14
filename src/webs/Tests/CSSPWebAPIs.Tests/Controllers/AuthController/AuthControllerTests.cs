@@ -125,297 +125,297 @@ namespace CSSPWebAPIs.AuthController.Tests
                 Assert.NotEmpty(AzureStore);
             }
         }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task AuthController_Register_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
+        //[Theory]
+        //[InlineData("en-CA")]
+        ////[InlineData("fr-CA")]
+        //public async Task AuthController_Register_Good_Test(string culture)
+        //{
+        //    Assert.True(await Setup(culture));
 
-            Password = Configuration.GetValue<string>("Password");
-            Assert.NotNull(Password);
+        //    Password = Configuration.GetValue<string>("Password");
+        //    Assert.NotNull(Password);
 
-            RegisterModel registerModel = new RegisterModel()
-            {
-                FirstName = "AlAlAl",
-                Initial = "T",
-                LastName = "BlBlBl",
-                ContactTitle = ContactTitleEnum.DirectorGeneral,
-                LoginEmail = "AlAlAl.BlBlBl@somewhere.com",
-                Password = Password,
-                ConfirmPassword = Password,
-            };
+        //    RegisterModel registerModel = new RegisterModel()
+        //    {
+        //        FirstName = "AlAlAl",
+        //        Initial = "T",
+        //        LastName = "BlBlBl",
+        //        ContactTitle = ContactTitleEnum.DirectorGeneral,
+        //        LoginEmail = "AlAlAl.BlBlBl@somewhere.com",
+        //        Password = Password,
+        //        ConfirmPassword = Password,
+        //    };
 
-            CSSPAzureUrl = Configuration.GetValue<string>("CSSPAzureUrl");
-            Assert.NotNull(CSSPAzureUrl);
+        //    CSSPAzureUrl = Configuration.GetValue<string>("CSSPAzureUrl");
+        //    Assert.NotNull(CSSPAzureUrl);
 
-            using (HttpClient httpClient = new HttpClient())
-            {
-                var contentType = new MediaTypeWithQualityHeaderValue("application/json");
-                httpClient.DefaultRequestHeaders.Accept.Add(contentType);
+        //    using (HttpClient httpClient = new HttpClient())
+        //    {
+        //        var contentType = new MediaTypeWithQualityHeaderValue("application/json");
+        //        httpClient.DefaultRequestHeaders.Accept.Add(contentType);
 
-                string stringData = JsonSerializer.Serialize(registerModel);
-                var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = httpClient.PostAsync($"{ CSSPAzureUrl }api/en-CA/auth/register", contentData).Result;
-                Assert.True((int)response.StatusCode == 200);
+        //        string stringData = JsonSerializer.Serialize(registerModel);
+        //        var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
+        //        HttpResponseMessage response = httpClient.PostAsync($"{ CSSPAzureUrl }api/en-CA/auth/register", contentData).Result;
+        //        Assert.True((int)response.StatusCode == 200);
 
-                contact = JsonSerializer.Deserialize<Contact>(response.Content.ReadAsStringAsync().Result);
-            }
+        //        contact = JsonSerializer.Deserialize<Contact>(response.Content.ReadAsStringAsync().Result);
+        //    }
 
-            await LoggedInService.SetLoggedInContactInfo(contact.Id);
+        //    await LoggedInService.SetLoggedInContactInfo(contact.LoginEmail);
 
-            string Id = contact.Id;
-            int ContactTVItemID = contact.ContactTVItemID;
+        //    //string Id = contact.Id;
+        //    int ContactTVItemID = contact.ContactTVItemID;
 
-            var actionRet2 = await ContactDBService.RemoveAspNetUserAndContact(Id);
-            Assert.Equal(200, ((ObjectResult)actionRet2.Result).StatusCode);
-            Assert.True((bool)((OkObjectResult)actionRet2.Result).Value);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task AuthController_Register_FirstName_Empty_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
+        //    var actionRet2 = await ContactDBService.RemoveContact(LoginEmail);
+        //    Assert.Equal(200, ((ObjectResult)actionRet2.Result).StatusCode);
+        //    Assert.True((bool)((OkObjectResult)actionRet2.Result).Value);
+        //}
+        //[Theory]
+        //[InlineData("en-CA")]
+        ////[InlineData("fr-CA")]
+        //public async Task AuthController_Register_FirstName_Empty_Good_Test(string culture)
+        //{
+        //    Assert.True(await Setup(culture));
 
-            Password = Configuration.GetValue<string>("Password");
-            Assert.NotNull(Password);
+        //    Password = Configuration.GetValue<string>("Password");
+        //    Assert.NotNull(Password);
 
-            RegisterModel registerModel = new RegisterModel()
-            {
-                FirstName = "", // "AlAlAl",
-                Initial = "T",
-                LastName = "BlBlBl",
-                ContactTitle = ContactTitleEnum.DirectorGeneral,
-                LoginEmail = "AlAlAl.BlBlBl@somewhere.com",
-                Password = Password,
-                ConfirmPassword = Password,
-            };
+        //    RegisterModel registerModel = new RegisterModel()
+        //    {
+        //        FirstName = "", // "AlAlAl",
+        //        Initial = "T",
+        //        LastName = "BlBlBl",
+        //        ContactTitle = ContactTitleEnum.DirectorGeneral,
+        //        LoginEmail = "AlAlAl.BlBlBl@somewhere.com",
+        //        Password = Password,
+        //        ConfirmPassword = Password,
+        //    };
 
-            CSSPAzureUrl = Configuration.GetValue<string>("CSSPAzureUrl");
-            Assert.NotNull(CSSPAzureUrl);
+        //    CSSPAzureUrl = Configuration.GetValue<string>("CSSPAzureUrl");
+        //    Assert.NotNull(CSSPAzureUrl);
 
-            using (HttpClient httpClient = new HttpClient())
-            {
-                var contentType = new MediaTypeWithQualityHeaderValue("application/json");
-                httpClient.DefaultRequestHeaders.Accept.Add(contentType);
+        //    using (HttpClient httpClient = new HttpClient())
+        //    {
+        //        var contentType = new MediaTypeWithQualityHeaderValue("application/json");
+        //        httpClient.DefaultRequestHeaders.Accept.Add(contentType);
 
-                string stringData = JsonSerializer.Serialize(registerModel);
-                var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = httpClient.PostAsync($"{ CSSPAzureUrl }api/en-CA/auth/register", contentData).Result;
-                Assert.True((int)response.StatusCode == 400);
-            }
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task AuthController_Register_LastName_Empty_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
+        //        string stringData = JsonSerializer.Serialize(registerModel);
+        //        var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
+        //        HttpResponseMessage response = httpClient.PostAsync($"{ CSSPAzureUrl }api/en-CA/auth/register", contentData).Result;
+        //        Assert.True((int)response.StatusCode == 400);
+        //    }
+        //}
+        //[Theory]
+        //[InlineData("en-CA")]
+        ////[InlineData("fr-CA")]
+        //public async Task AuthController_Register_LastName_Empty_Good_Test(string culture)
+        //{
+        //    Assert.True(await Setup(culture));
 
-            Password = Configuration.GetValue<string>("Password");
-            Assert.NotNull(Password);
+        //    Password = Configuration.GetValue<string>("Password");
+        //    Assert.NotNull(Password);
 
-            RegisterModel registerModel = new RegisterModel()
-            {
-                FirstName = "AlAlAl",
-                Initial = "T",
-                LastName = "", // "BlBlBl",
-                ContactTitle = ContactTitleEnum.DirectorGeneral,
-                LoginEmail = "AlAlAl.BlBlBl@somewhere.com",
-                Password = Password,
-                ConfirmPassword = Password,
-            };
+        //    RegisterModel registerModel = new RegisterModel()
+        //    {
+        //        FirstName = "AlAlAl",
+        //        Initial = "T",
+        //        LastName = "", // "BlBlBl",
+        //        ContactTitle = ContactTitleEnum.DirectorGeneral,
+        //        LoginEmail = "AlAlAl.BlBlBl@somewhere.com",
+        //        Password = Password,
+        //        ConfirmPassword = Password,
+        //    };
 
-            CSSPAzureUrl = Configuration.GetValue<string>("CSSPAzureUrl");
-            Assert.NotNull(CSSPAzureUrl);
+        //    CSSPAzureUrl = Configuration.GetValue<string>("CSSPAzureUrl");
+        //    Assert.NotNull(CSSPAzureUrl);
 
-            using (HttpClient httpClient = new HttpClient())
-            {
-                var contentType = new MediaTypeWithQualityHeaderValue("application/json");
-                httpClient.DefaultRequestHeaders.Accept.Add(contentType);
+        //    using (HttpClient httpClient = new HttpClient())
+        //    {
+        //        var contentType = new MediaTypeWithQualityHeaderValue("application/json");
+        //        httpClient.DefaultRequestHeaders.Accept.Add(contentType);
 
-                string stringData = JsonSerializer.Serialize(registerModel);
-                var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = httpClient.PostAsync($"{ CSSPAzureUrl }api/en-CA/auth/register", contentData).Result;
-                Assert.True((int)response.StatusCode == 400);
-            }
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task AuthController_Register_LoginEmail_Empty_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
+        //        string stringData = JsonSerializer.Serialize(registerModel);
+        //        var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
+        //        HttpResponseMessage response = httpClient.PostAsync($"{ CSSPAzureUrl }api/en-CA/auth/register", contentData).Result;
+        //        Assert.True((int)response.StatusCode == 400);
+        //    }
+        //}
+        //[Theory]
+        //[InlineData("en-CA")]
+        ////[InlineData("fr-CA")]
+        //public async Task AuthController_Register_LoginEmail_Empty_Good_Test(string culture)
+        //{
+        //    Assert.True(await Setup(culture));
 
-            Password = Configuration.GetValue<string>("Password");
-            Assert.NotNull(Password);
+        //    Password = Configuration.GetValue<string>("Password");
+        //    Assert.NotNull(Password);
 
-            RegisterModel registerModel = new RegisterModel()
-            {
-                FirstName = "AlAlAl",
-                Initial = "T",
-                LastName = "BlBlBl",
-                ContactTitle = ContactTitleEnum.DirectorGeneral,
-                LoginEmail = "", // "AlAlAl.BlBlBl@somewhere.com",
-                Password = Password,
-                ConfirmPassword = Password,
-            };
+        //    RegisterModel registerModel = new RegisterModel()
+        //    {
+        //        FirstName = "AlAlAl",
+        //        Initial = "T",
+        //        LastName = "BlBlBl",
+        //        ContactTitle = ContactTitleEnum.DirectorGeneral,
+        //        LoginEmail = "", // "AlAlAl.BlBlBl@somewhere.com",
+        //        Password = Password,
+        //        ConfirmPassword = Password,
+        //    };
 
-            CSSPAzureUrl = Configuration.GetValue<string>("CSSPAzureUrl");
-            Assert.NotNull(CSSPAzureUrl);
+        //    CSSPAzureUrl = Configuration.GetValue<string>("CSSPAzureUrl");
+        //    Assert.NotNull(CSSPAzureUrl);
 
-            using (HttpClient httpClient = new HttpClient())
-            {
-                var contentType = new MediaTypeWithQualityHeaderValue("application/json");
-                httpClient.DefaultRequestHeaders.Accept.Add(contentType);
+        //    using (HttpClient httpClient = new HttpClient())
+        //    {
+        //        var contentType = new MediaTypeWithQualityHeaderValue("application/json");
+        //        httpClient.DefaultRequestHeaders.Accept.Add(contentType);
 
-                string stringData = JsonSerializer.Serialize(registerModel);
-                var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = httpClient.PostAsync($"{ CSSPAzureUrl }api/en-CA/auth/register", contentData).Result;
-                Assert.True((int)response.StatusCode == 400);
-            }
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task AuthController_Register_Password_Empty_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
+        //        string stringData = JsonSerializer.Serialize(registerModel);
+        //        var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
+        //        HttpResponseMessage response = httpClient.PostAsync($"{ CSSPAzureUrl }api/en-CA/auth/register", contentData).Result;
+        //        Assert.True((int)response.StatusCode == 400);
+        //    }
+        //}
+        //[Theory]
+        //[InlineData("en-CA")]
+        ////[InlineData("fr-CA")]
+        //public async Task AuthController_Register_Password_Empty_Good_Test(string culture)
+        //{
+        //    Assert.True(await Setup(culture));
 
-            Password = Configuration.GetValue<string>("Password");
-            Assert.NotNull(Password);
+        //    Password = Configuration.GetValue<string>("Password");
+        //    Assert.NotNull(Password);
 
-            RegisterModel registerModel = new RegisterModel()
-            {
-                FirstName = "AlAlAl",
-                Initial = "T",
-                LastName = "BlBlBl",
-                ContactTitle = ContactTitleEnum.DirectorGeneral,
-                LoginEmail = "AlAlAl.BlBlBl@somewhere.com",
-                Password = "", // Password,
-                ConfirmPassword = Password,
-            };
+        //    RegisterModel registerModel = new RegisterModel()
+        //    {
+        //        FirstName = "AlAlAl",
+        //        Initial = "T",
+        //        LastName = "BlBlBl",
+        //        ContactTitle = ContactTitleEnum.DirectorGeneral,
+        //        LoginEmail = "AlAlAl.BlBlBl@somewhere.com",
+        //        Password = "", // Password,
+        //        ConfirmPassword = Password,
+        //    };
 
-            CSSPAzureUrl = Configuration.GetValue<string>("CSSPAzureUrl");
-            Assert.NotNull(CSSPAzureUrl);
+        //    CSSPAzureUrl = Configuration.GetValue<string>("CSSPAzureUrl");
+        //    Assert.NotNull(CSSPAzureUrl);
 
-            using (HttpClient httpClient = new HttpClient())
-            {
-                var contentType = new MediaTypeWithQualityHeaderValue("application/json");
-                httpClient.DefaultRequestHeaders.Accept.Add(contentType);
+        //    using (HttpClient httpClient = new HttpClient())
+        //    {
+        //        var contentType = new MediaTypeWithQualityHeaderValue("application/json");
+        //        httpClient.DefaultRequestHeaders.Accept.Add(contentType);
 
-                string stringData = JsonSerializer.Serialize(registerModel);
-                var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = httpClient.PostAsync($"{ CSSPAzureUrl }api/en-CA/auth/register", contentData).Result;
-                Assert.True((int)response.StatusCode == 400);
-            }
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task AuthController_Register_PasswordAndConfirmPasswordNotEqual_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
+        //        string stringData = JsonSerializer.Serialize(registerModel);
+        //        var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
+        //        HttpResponseMessage response = httpClient.PostAsync($"{ CSSPAzureUrl }api/en-CA/auth/register", contentData).Result;
+        //        Assert.True((int)response.StatusCode == 400);
+        //    }
+        //}
+        //[Theory]
+        //[InlineData("en-CA")]
+        ////[InlineData("fr-CA")]
+        //public async Task AuthController_Register_PasswordAndConfirmPasswordNotEqual_Good_Test(string culture)
+        //{
+        //    Assert.True(await Setup(culture));
 
-            Password = Configuration.GetValue<string>("Password");
-            Assert.NotNull(Password);
+        //    Password = Configuration.GetValue<string>("Password");
+        //    Assert.NotNull(Password);
 
-            RegisterModel registerModel = new RegisterModel()
-            {
-                FirstName = "AlAlAl",
-                Initial = "T",
-                LastName = "BlBlBl",
-                ContactTitle = ContactTitleEnum.DirectorGeneral,
-                LoginEmail = "AlAlAl.BlBlBl@somewhere.com",
-                Password = Password,
-                ConfirmPassword = Password + "a",
-            };
+        //    RegisterModel registerModel = new RegisterModel()
+        //    {
+        //        FirstName = "AlAlAl",
+        //        Initial = "T",
+        //        LastName = "BlBlBl",
+        //        ContactTitle = ContactTitleEnum.DirectorGeneral,
+        //        LoginEmail = "AlAlAl.BlBlBl@somewhere.com",
+        //        Password = Password,
+        //        ConfirmPassword = Password + "a",
+        //    };
 
-            CSSPAzureUrl = Configuration.GetValue<string>("CSSPAzureUrl");
-            Assert.NotNull(CSSPAzureUrl);
+        //    CSSPAzureUrl = Configuration.GetValue<string>("CSSPAzureUrl");
+        //    Assert.NotNull(CSSPAzureUrl);
 
-            using (HttpClient httpClient = new HttpClient())
-            {
-                var contentType = new MediaTypeWithQualityHeaderValue("application/json");
-                httpClient.DefaultRequestHeaders.Accept.Add(contentType);
+        //    using (HttpClient httpClient = new HttpClient())
+        //    {
+        //        var contentType = new MediaTypeWithQualityHeaderValue("application/json");
+        //        httpClient.DefaultRequestHeaders.Accept.Add(contentType);
 
-                string stringData = JsonSerializer.Serialize(registerModel);
-                var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = httpClient.PostAsync($"{ CSSPAzureUrl }api/en-CA/auth/register", contentData).Result;
-                Assert.True((int)response.StatusCode == 400);
-            }
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task AuthController_Register_FullNameAlreadyExist_Empty_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
+        //        string stringData = JsonSerializer.Serialize(registerModel);
+        //        var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
+        //        HttpResponseMessage response = httpClient.PostAsync($"{ CSSPAzureUrl }api/en-CA/auth/register", contentData).Result;
+        //        Assert.True((int)response.StatusCode == 400);
+        //    }
+        //}
+        //[Theory]
+        //[InlineData("en-CA")]
+        ////[InlineData("fr-CA")]
+        //public async Task AuthController_Register_FullNameAlreadyExist_Empty_Good_Test(string culture)
+        //{
+        //    Assert.True(await Setup(culture));
 
-            Password = Configuration.GetValue<string>("Password");
-            Assert.NotNull(Password);
+        //    Password = Configuration.GetValue<string>("Password");
+        //    Assert.NotNull(Password);
 
-            RegisterModel registerModel = new RegisterModel()
-            {
-                FirstName = "Charles", // "AlAlAl",
-                Initial = "G", // "T",
-                LastName = "LeBlanc", // "BlBlBl",
-                ContactTitle = ContactTitleEnum.DirectorGeneral,
-                LoginEmail = "AlAlAl.BlBlBl@somewhere.com",
-                Password = Password,
-                ConfirmPassword = Password,
-            };
+        //    RegisterModel registerModel = new RegisterModel()
+        //    {
+        //        FirstName = "Charles", // "AlAlAl",
+        //        Initial = "G", // "T",
+        //        LastName = "LeBlanc", // "BlBlBl",
+        //        ContactTitle = ContactTitleEnum.DirectorGeneral,
+        //        LoginEmail = "AlAlAl.BlBlBl@somewhere.com",
+        //        Password = Password,
+        //        ConfirmPassword = Password,
+        //    };
 
-            CSSPAzureUrl = Configuration.GetValue<string>("CSSPAzureUrl");
-            Assert.NotNull(CSSPAzureUrl);
+        //    CSSPAzureUrl = Configuration.GetValue<string>("CSSPAzureUrl");
+        //    Assert.NotNull(CSSPAzureUrl);
 
-            using (HttpClient httpClient = new HttpClient())
-            {
-                var contentType = new MediaTypeWithQualityHeaderValue("application/json");
-                httpClient.DefaultRequestHeaders.Accept.Add(contentType);
+        //    using (HttpClient httpClient = new HttpClient())
+        //    {
+        //        var contentType = new MediaTypeWithQualityHeaderValue("application/json");
+        //        httpClient.DefaultRequestHeaders.Accept.Add(contentType);
 
-                string stringData = JsonSerializer.Serialize(registerModel);
-                var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = httpClient.PostAsync($"{ CSSPAzureUrl }api/en-CA/auth/register", contentData).Result;
-                Assert.True((int)response.StatusCode == 400);
-            }
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task AuthController_Register_LoginEmailAlreadyExist_Empty_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
+        //        string stringData = JsonSerializer.Serialize(registerModel);
+        //        var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
+        //        HttpResponseMessage response = httpClient.PostAsync($"{ CSSPAzureUrl }api/en-CA/auth/register", contentData).Result;
+        //        Assert.True((int)response.StatusCode == 400);
+        //    }
+        //}
+        //[Theory]
+        //[InlineData("en-CA")]
+        ////[InlineData("fr-CA")]
+        //public async Task AuthController_Register_LoginEmailAlreadyExist_Empty_Good_Test(string culture)
+        //{
+        //    Assert.True(await Setup(culture));
 
-            Password = Configuration.GetValue<string>("Password");
-            Assert.NotNull(Password);
+        //    Password = Configuration.GetValue<string>("Password");
+        //    Assert.NotNull(Password);
 
-            RegisterModel registerModel = new RegisterModel()
-            {
-                FirstName = "AlAlAl",
-                Initial = "T",
-                LastName = "BlBlBl",
-                ContactTitle = ContactTitleEnum.DirectorGeneral,
-                LoginEmail = "Charles.LeBlanc2@canada.ca",
-                Password = Password,
-                ConfirmPassword = Password,
-            };
+        //    RegisterModel registerModel = new RegisterModel()
+        //    {
+        //        FirstName = "AlAlAl",
+        //        Initial = "T",
+        //        LastName = "BlBlBl",
+        //        ContactTitle = ContactTitleEnum.DirectorGeneral,
+        //        LoginEmail = "Charles.LeBlanc2@canada.ca",
+        //        Password = Password,
+        //        ConfirmPassword = Password,
+        //    };
 
-            CSSPAzureUrl = Configuration.GetValue<string>("CSSPAzureUrl");
-            Assert.NotNull(CSSPAzureUrl);
+        //    CSSPAzureUrl = Configuration.GetValue<string>("CSSPAzureUrl");
+        //    Assert.NotNull(CSSPAzureUrl);
 
-            using (HttpClient httpClient = new HttpClient())
-            {
-                var contentType = new MediaTypeWithQualityHeaderValue("application/json");
-                httpClient.DefaultRequestHeaders.Accept.Add(contentType);
+        //    using (HttpClient httpClient = new HttpClient())
+        //    {
+        //        var contentType = new MediaTypeWithQualityHeaderValue("application/json");
+        //        httpClient.DefaultRequestHeaders.Accept.Add(contentType);
 
-                string stringData = JsonSerializer.Serialize(registerModel);
-                var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = httpClient.PostAsync($"{ CSSPAzureUrl }api/en-CA/auth/register", contentData).Result;
-                Assert.True((int)response.StatusCode == 400);
-            }
-        }
+        //        string stringData = JsonSerializer.Serialize(registerModel);
+        //        var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
+        //        HttpResponseMessage response = httpClient.PostAsync($"{ CSSPAzureUrl }api/en-CA/auth/register", contentData).Result;
+        //        Assert.True((int)response.StatusCode == 400);
+        //    }
+        //}
         #endregion Functions public
 
         #region Functions private

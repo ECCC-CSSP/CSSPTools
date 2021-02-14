@@ -39,6 +39,7 @@ namespace CSSPDBServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private IRatingCurveValueDBService RatingCurveValueDBService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBContext dbIM { get; set; }
         private RatingCurveValue ratingCurveValue { get; set; }
         #endregion Properties
 
@@ -287,7 +288,7 @@ namespace CSSPDBServices.Tests
             Config = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
                .AddJsonFile("appsettings_csspdbservicestests.json")
-               .AddUserSecrets("70c662c1-a1a8-4b2c-b594-d7834bb5e6db")
+               .AddUserSecrets("a79b4a81-ba75-4dfc-8d95-46259f73f055")
                .Build();
 
             Services = new ServiceCollection();
@@ -307,14 +308,6 @@ namespace CSSPDBServices.Tests
                 options.UseInMemoryDatabase(CSSPDBConnString);
             });
 
-            Services.AddDbContext<ApplicationDbContext>(options =>
-            {
-                options.UseSqlServer(CSSPDBConnString);
-            });
-
-            Services.AddIdentityCore<ApplicationUser>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
-
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IEnums, Enums>();
@@ -331,11 +324,14 @@ namespace CSSPDBServices.Tests
             LoggedInService = Provider.GetService<ILoggedInService>();
             Assert.NotNull(LoggedInService);
 
-            string Id = Config.GetValue<string>("Id");
-            Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
+            string LoginEmail = Config.GetValue<string>("LoginEmail");
+            Assert.True(await LoggedInService.SetLoggedInContactInfo(LoginEmail));
 
             db = Provider.GetService<CSSPDBContext>();
             Assert.NotNull(db);
+
+            dbIM = Provider.GetService<CSSPDBContext>();
+            Assert.NotNull(dbIM);
 
             RatingCurveValueDBService = Provider.GetService<IRatingCurveValueDBService>();
             Assert.NotNull(RatingCurveValueDBService);

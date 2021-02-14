@@ -420,6 +420,7 @@
             this.linkLabelGotoRegister.TabIndex = 8;
             this.linkLabelGotoRegister.TabStop = true;
             this.linkLabelGotoRegister.Text = "Go to register";
+            this.linkLabelGotoRegister.Visible = false;
             this.linkLabelGotoRegister.Click += new System.EventHandler(this.linkLabelGotoRegister_Click);
             // 
             // lblInternetRequiredLogin

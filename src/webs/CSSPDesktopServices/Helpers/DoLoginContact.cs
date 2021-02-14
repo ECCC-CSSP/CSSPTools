@@ -83,16 +83,16 @@ namespace CSSPDesktopServices.Services
                     return await Task.FromResult(false);
                 }
 
-                // Addgin Contact item in dbLogin
-                List<Contact> contactToDeleteList = (from c in dbLogin.Contacts
+                // Addgin Contact item in dbPreference
+                List<Contact> contactToDeleteList = (from c in dbPreference.Contacts
                                                      select c).ToList();
 
                 if (contactToDeleteList.Count > 0)
                 {
                     try
                     {
-                        dbLogin.Contacts.RemoveRange(contactToDeleteList);
-                        dbLogin.SaveChanges();
+                        dbPreference.Contacts.RemoveRange(contactToDeleteList);
+                        dbPreference.SaveChanges();
                     }
                     catch (Exception ex)
                     {
@@ -103,8 +103,8 @@ namespace CSSPDesktopServices.Services
 
                 try
                 {
-                    dbLogin.Contacts.Add(contact);
-                    dbLogin.SaveChanges();
+                    dbPreference.Contacts.Add(contact);
+                    dbPreference.SaveChanges();
 
                     AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes._StoredInTable_AndDatabase_, "Contact", "Contacts", "CSSPDBPreference.db")));
                 }

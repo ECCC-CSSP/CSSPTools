@@ -45,12 +45,12 @@ namespace LoggedInServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task LoggedInService_SetLoggedInContactInfo_With_Id_Good_Test(string culture)
+        public async Task LoggedInService_SetLoggedInContactInfo_With_LoginEmail_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
             await LoggedInService.SetLoggedInContactInfo(Id);
-            Assert.Equal(Id, LoggedInService.LoggedInContactInfo.LoggedInContact.Id);
+            Assert.Equal(Id, LoggedInService.LoggedInContactInfo.LoggedInContact.LoginEmail);
 
             Contact contact = LoggedInService.LoggedInContactInfo.LoggedInContact;
             Assert.Equal(FirstName1, contact.FirstName);
@@ -66,12 +66,12 @@ namespace LoggedInServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task LoggedInService_SetLoggedInContactInfo_With_Id2_Good_Test(string culture)
+        public async Task LoggedInService_SetLoggedInContactInfo_With_LoginEmail2_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
             await LoggedInService.SetLoggedInContactInfo(Id2);
-            Assert.Equal(Id2, LoggedInService.LoggedInContactInfo.LoggedInContact.Id);
+            Assert.Equal(Id2, LoggedInService.LoggedInContactInfo.LoggedInContact.LoginEmail);
 
             Contact contact = LoggedInService.LoggedInContactInfo.LoggedInContact;
             Assert.Equal(FirstName2, contact.FirstName);
@@ -86,7 +86,7 @@ namespace LoggedInServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task LoggedInService_SetLoggedInContactInfo_With_Id3_Good_Test(string culture)
+        public async Task LoggedInService_SetLoggedInContactInfo_With_LoginEmail3_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -104,11 +104,11 @@ namespace LoggedInServices.Tests
 
             // first time it will get the LoggedInContactInfo from the read DB
             await LoggedInService.SetLoggedInContactInfo(Id);
-            Assert.Equal(Id, LoggedInService.LoggedInContactInfo.LoggedInContact.Id);
+            Assert.Equal(Id, LoggedInService.LoggedInContactInfo.LoggedInContact.LoginEmail);
 
             // first time it will get the LoggedInContactInfo from the InMemory DB
             await LoggedInService.SetLoggedInContactInfo(Id);
-            Assert.Equal(Id, LoggedInService.LoggedInContactInfo.LoggedInContact.Id);
+            Assert.Equal(Id, LoggedInService.LoggedInContactInfo.LoggedInContact.LoginEmail);
         }
         #endregion Tests
 

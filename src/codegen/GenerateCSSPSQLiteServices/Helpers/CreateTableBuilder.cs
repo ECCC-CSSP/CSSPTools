@@ -194,7 +194,6 @@ namespace GenerateCSSPSQLiteServices
 
                     sb.AppendLine($@"                case ""{ TypeName + plurial }"":");
                     sb.AppendLine($@"                    CreateTable = ""CREATE TABLE { TypeName + plurial } ("" +");
-                    sb.AppendLine($@"                    ""DBCommand INTEGER NOT NULL, "" +");
 
                     int countProp = 0;
                     int TotCountProp = type.GetProperties().Count();

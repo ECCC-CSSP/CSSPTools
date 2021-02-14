@@ -56,7 +56,7 @@ namespace LocalServices.Tests
             Assert.True(await Setup(culture));
 
             await LocalService.SetLoggedInContactInfo();
-            Assert.NotNull(LocalService.LoggedInContactInfo.LoggedInContact.Id);
+            Assert.NotNull(LocalService.LoggedInContactInfo.LoggedInContact.LoginEmail);
 
             Contact contact = LocalService.LoggedInContactInfo.LoggedInContact;
             Assert.Equal(FirstName, contact.FirstName);
@@ -70,7 +70,7 @@ namespace LocalServices.Tests
             Assert.True(TVItemUserAuthorizationList.Count == 0);
 
             await LocalService.SetLoggedInContactInfo();
-            Assert.NotNull(LocalService.LoggedInContactInfo.LoggedInContact.Id);
+            Assert.NotNull(LocalService.LoggedInContactInfo.LoggedInContact.LoginEmail);
 
             // Second time should use the In Memory
             contact = LocalService.LoggedInContactInfo.LoggedInContact;

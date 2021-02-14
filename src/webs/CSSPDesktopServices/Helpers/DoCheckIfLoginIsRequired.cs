@@ -20,7 +20,7 @@ namespace CSSPDesktopServices.Services
             AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.CheckIfLoginIsRequired));
 
             // doing Contact
-            contact = (from c in dbLogin.Contacts
+            contact = (from c in dbPreference.Contacts
                        select c).FirstOrDefault();
 
             if (contact == null)

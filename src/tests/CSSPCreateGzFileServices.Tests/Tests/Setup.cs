@@ -142,7 +142,7 @@ namespace CreateGzFileServices.Tests
             LoggedInService = Provider.GetService<ILoggedInService>();
             Assert.NotNull(LoggedInService);
 
-            await LoggedInService.SetLoggedInContactInfo(contact.Id);
+            await LoggedInService.SetLoggedInContactInfo(contact.LoginEmail);
             Assert.NotNull(LoggedInService.LoggedInContactInfo);
 
             CreateGzFileService = Provider.GetService<ICreateGzFileService>();

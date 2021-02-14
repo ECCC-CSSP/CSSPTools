@@ -9,7 +9,15 @@
       "DEBUG",
       "NET",
       "NET5_0",
-      "NETCOREAPP"
+      "NETCOREAPP",
+      "NET5_0_OR_GREATER",
+      "NETCOREAPP1_0_OR_GREATER",
+      "NETCOREAPP1_1_OR_GREATER",
+      "NETCOREAPP2_0_OR_GREATER",
+      "NETCOREAPP2_1_OR_GREATER",
+      "NETCOREAPP2_2_OR_GREATER",
+      "NETCOREAPP3_0_OR_GREATER",
+      "NETCOREAPP3_1_OR_GREATER"
     ],
     "languageVersion": "9.0",
     "platform": "",
@@ -1833,6 +1841,7 @@
           "Azure.Storage.Blobs": "12.8.0",
           "CSSPHelperServices": "1.0.0",
           "CSSPLoggedInServices": "1.0.0",
+          "CSSPScrambleServices": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.2",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.2",
           "Microsoft.EntityFrameworkCore": "5.0.2",
@@ -1865,7 +1874,6 @@
       "CSSPHelperModels/1.0.0": {
         "dependencies": {
           "CSSPDBModels": "1.0.0",
-          "CSSPEnums": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.2",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.2",
           "Microsoft.EntityFrameworkCore": "5.0.2",
@@ -1928,6 +1936,14 @@
         },
         "compile": {
           "CSSPLoggedInServices.dll": {}
+        }
+      },
+      "CSSPScrambleServices/1.0.0": {
+        "runtime": {
+          "CSSPScrambleServices.dll": {}
+        },
+        "compile": {
+          "CSSPScrambleServices.dll": {}
         }
       },
       "CSSPWebModels/1.0.0": {
@@ -4560,6 +4576,11 @@
       "sha512": ""
     },
     "CSSPLoggedInServices/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "CSSPScrambleServices/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

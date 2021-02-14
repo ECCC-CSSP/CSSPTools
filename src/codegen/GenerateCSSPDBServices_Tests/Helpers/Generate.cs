@@ -64,7 +64,7 @@ namespace GenerateCSSPDBServices_Tests
                     }
                 }
 
-                //if (TypeName != "AspNetUser")
+                //if (TypeName != "Contact")
                 //{
                 //    continue;
                 //}
@@ -93,6 +93,10 @@ namespace GenerateCSSPDBServices_Tests
                 sb.AppendLine(@"using System.ComponentModel.DataAnnotations;");
                 sb.AppendLine(@"using CSSPCultureServices.Resources;");
                 sb.AppendLine(@"using LoggedInServices;");
+                if (TypeName == "Contact")
+                {
+                    sb.AppendLine(@"using CSSPScrambleServices;");
+                }
                 sb.AppendLine(@"");
                 sb.AppendLine($@"namespace CSSPDBServices.Tests");
                 sb.AppendLine(@"{");
@@ -113,8 +117,13 @@ namespace GenerateCSSPDBServices_Tests
                     sb.AppendLine(@"        private IServiceCollection Services { get; set; }");
                     sb.AppendLine(@"        private ICSSPCultureService CSSPCultureService { get; set; }");
                     sb.AppendLine(@"        private ILoggedInService LoggedInService { get; set; }");
+                    if (TypeName == "Contact")
+                    {
+                        sb.AppendLine(@"        private IScrambleService ScrambleService { get; set; }");
+                    }
                     sb.AppendLine($@"        private I{ TypeName }DBService { TypeName }DBService {{ get; set; }}");
                     sb.AppendLine(@"        private CSSPDBContext db { get; set; }");
+                    sb.AppendLine(@"        private CSSPDBContext dbIM { get; set; }");
                     sb.AppendLine($@"        private { TypeName } { TypeNameLower } {{ get; set; }}");
                 }
                 else

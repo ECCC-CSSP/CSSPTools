@@ -19,7 +19,6 @@ namespace CSSPSQLiteServices
             {
                 case "Addresses":
                     CreateTable = "CREATE TABLE Addresses (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "AddressID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "AddressTVItemID INTEGER  NOT NULL  , " +
@@ -37,7 +36,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "AppErrLogs":
                     CreateTable = "CREATE TABLE AppErrLogs (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "AppErrLogID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "Tag TEXT  NOT NULL  , " +
@@ -50,7 +48,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "AppTasks":
                     CreateTable = "CREATE TABLE AppTasks (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "AppTaskID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "TVItemID INTEGER  NOT NULL  , " +
@@ -69,7 +66,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "AppTaskLanguages":
                     CreateTable = "CREATE TABLE AppTaskLanguages (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "AppTaskLanguageID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "AppTaskID INTEGER  NOT NULL  , " +
@@ -82,7 +78,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "AspNetRoles":
                     CreateTable = "CREATE TABLE AspNetRoles (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "Id TEXT  NOT NULL  UNIQUE , " +
                     "Name TEXT   , " +
                     "NormalizeName TEXT   , " +
@@ -90,7 +85,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "AspNetRoleClaims":
                     CreateTable = "CREATE TABLE AspNetRoleClaims (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "Id TEXT  NOT NULL  UNIQUE , " +
                     "RoleId TEXT  NOT NULL  , " +
                     "ClaimType TEXT   , " +
@@ -98,7 +92,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "AspNetUsers":
                     CreateTable = "CREATE TABLE AspNetUsers (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "Id TEXT  NOT NULL  UNIQUE , " +
                     "Email TEXT   , " +
                     "EmailConfirmed INTEGER  NOT NULL  , " +
@@ -118,7 +111,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "AspNetUserClaims":
                     CreateTable = "CREATE TABLE AspNetUserClaims (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "Id INTEGER  NOT NULL  UNIQUE , " +
                     "UserId TEXT  NOT NULL  , " +
                     "ClaimType TEXT   , " +
@@ -126,7 +118,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "AspNetUserLogins":
                     CreateTable = "CREATE TABLE AspNetUserLogins (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "LoginProvider TEXT  NOT NULL  , " +
                     "ProviderKey TEXT  NOT NULL  , " +
                     "ProviderDisplayName TEXT   , " +
@@ -134,13 +125,11 @@ namespace CSSPSQLiteServices
                     break;
                 case "AspNetUserRoles":
                     CreateTable = "CREATE TABLE AspNetUserRoles (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "UserId TEXT  NOT NULL  , " +
                     "RoleId TEXT  NOT NULL  )";
                     break;
                 case "AspNetUserTokens":
                     CreateTable = "CREATE TABLE AspNetUserTokens (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "UserId TEXT  NOT NULL  , " +
                     "LoginProvider TEXT  NOT NULL  , " +
                     "Name TEXT  NOT NULL  , " +
@@ -148,7 +137,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "BoxModels":
                     CreateTable = "CREATE TABLE BoxModels (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "BoxModelID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "InfrastructureTVItemID INTEGER  NOT NULL  , " +
@@ -167,7 +155,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "BoxModelLanguages":
                     CreateTable = "CREATE TABLE BoxModelLanguages (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "BoxModelLanguageID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "BoxModelID INTEGER  NOT NULL  , " +
@@ -179,7 +166,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "BoxModelResults":
                     CreateTable = "CREATE TABLE BoxModelResults (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "BoxModelResultID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "BoxModelID INTEGER  NOT NULL  , " +
@@ -202,7 +188,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "Classifications":
                     CreateTable = "CREATE TABLE Classifications (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "ClassificationID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "ClassificationTVItemID INTEGER  NOT NULL  , " +
@@ -213,7 +198,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "ClimateDataValues":
                     CreateTable = "CREATE TABLE ClimateDataValues (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "ClimateDataValueID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "ClimateSiteID INTEGER  NOT NULL  , " +
@@ -238,7 +222,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "ClimateSites":
                     CreateTable = "CREATE TABLE ClimateSites (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "ClimateSiteID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "ClimateSiteTVItemID INTEGER  NOT NULL  , " +
@@ -267,7 +250,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "CoCoRaHSSites":
                     CreateTable = "CREATE TABLE CoCoRaHSSites (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "CoCoRaHSSiteID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "StationNumber TEXT  NOT NULL  , " +
@@ -279,7 +261,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "CoCoRaHSValues":
                     CreateTable = "CREATE TABLE CoCoRaHSValues (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "CoCoRaHSValueID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "CoCoRaHSSiteID INTEGER  NOT NULL  , " +
@@ -294,7 +275,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "Contacts":
                     CreateTable = "CREATE TABLE Contacts (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "ContactID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "Id TEXT  NOT NULL  , " +
@@ -303,6 +283,8 @@ namespace CSSPSQLiteServices
                     "FirstName TEXT  NOT NULL  , " +
                     "LastName TEXT  NOT NULL  , " +
                     "Initial TEXT   , " +
+                    "CellNumber TEXT   , " +
+                    "CellNumberConfirmed INTEGER   , " +
                     "WebName TEXT  NOT NULL  , " +
                     "ContactTitle INTEGER   , " +
                     "IsAdmin INTEGER  NOT NULL  , " +
@@ -310,13 +292,14 @@ namespace CSSPSQLiteServices
                     "Disabled INTEGER  NOT NULL  , " +
                     "IsNew INTEGER  NOT NULL  , " +
                     "SamplingPlanner_ProvincesTVItemID TEXT   , " +
+                    "PasswordHash TEXT   , " +
                     "Token TEXT   , " +
+                    "AccessFailedCount INTEGER   , " +
                     "LastUpdateDate_UTC TEXT  NOT NULL  , " +
                     "LastUpdateContactTVItemID INTEGER  NOT NULL  )";
                     break;
                 case "ContactPreferences":
                     CreateTable = "CREATE TABLE ContactPreferences (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "ContactPreferenceID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "ContactID INTEGER  NOT NULL  , " +
@@ -327,7 +310,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "ContactShortcuts":
                     CreateTable = "CREATE TABLE ContactShortcuts (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "ContactShortcutID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "ContactID INTEGER  NOT NULL  , " +
@@ -338,7 +320,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "DeviceCodes":
                     CreateTable = "CREATE TABLE DeviceCodes (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "UserCode TEXT  NOT NULL  UNIQUE , " +
                     "DeviceCode_ TEXT  NOT NULL  , " +
                     "SubjectId TEXT   , " +
@@ -349,7 +330,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "DocTemplates":
                     CreateTable = "CREATE TABLE DocTemplates (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "DocTemplateID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "Language INTEGER  NOT NULL  , " +
@@ -361,7 +341,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "DrogueRuns":
                     CreateTable = "CREATE TABLE DrogueRuns (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "DrogueRunID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "SubsectorTVItemID INTEGER  NOT NULL  , " +
@@ -374,7 +353,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "DrogueRunPositions":
                     CreateTable = "CREATE TABLE DrogueRunPositions (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "DrogueRunPositionID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "DrogueRunID INTEGER  NOT NULL  , " +
@@ -389,7 +367,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "Emails":
                     CreateTable = "CREATE TABLE Emails (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "EmailID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "EmailTVItemID INTEGER  NOT NULL  , " +
@@ -400,7 +377,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "EmailDistributionLists":
                     CreateTable = "CREATE TABLE EmailDistributionLists (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "EmailDistributionListID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "ParentTVItemID INTEGER  NOT NULL  , " +
@@ -410,7 +386,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "EmailDistributionListContacts":
                     CreateTable = "CREATE TABLE EmailDistributionListContacts (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "EmailDistributionListContactID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "EmailDistributionListID INTEGER  NOT NULL  , " +
@@ -427,7 +402,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "EmailDistributionListContactLanguages":
                     CreateTable = "CREATE TABLE EmailDistributionListContactLanguages (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "EmailDistributionListContactLanguageID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "EmailDistributionListContactID INTEGER  NOT NULL  , " +
@@ -439,7 +413,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "EmailDistributionListLanguages":
                     CreateTable = "CREATE TABLE EmailDistributionListLanguages (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "EmailDistributionListLanguageID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "EmailDistributionListID INTEGER  NOT NULL  , " +
@@ -451,7 +424,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "HelpDocs":
                     CreateTable = "CREATE TABLE HelpDocs (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "HelpDocID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "DocKey TEXT  NOT NULL  , " +
@@ -462,7 +434,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "HydrometricDataValues":
                     CreateTable = "CREATE TABLE HydrometricDataValues (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "HydrometricDataValueID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "HydrometricSiteID INTEGER  NOT NULL  , " +
@@ -479,7 +450,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "HydrometricSites":
                     CreateTable = "CREATE TABLE HydrometricSites (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "HydrometricSiteID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "HydrometricSiteTVItemID INTEGER  NOT NULL  , " +
@@ -506,7 +476,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "Infrastructures":
                     CreateTable = "CREATE TABLE Infrastructures (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "InfrastructureID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "InfrastructureTVItemID INTEGER  NOT NULL  , " +
@@ -561,7 +530,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "InfrastructureLanguages":
                     CreateTable = "CREATE TABLE InfrastructureLanguages (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "InfrastructureLanguageID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "InfrastructureID INTEGER  NOT NULL  , " +
@@ -573,7 +541,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "LabSheets":
                     CreateTable = "CREATE TABLE LabSheets (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "LabSheetID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "OtherServerLabSheetID INTEGER  NOT NULL  , " +
@@ -600,7 +567,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "LabSheetDetails":
                     CreateTable = "CREATE TABLE LabSheetDetails (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "LabSheetDetailID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "LabSheetID INTEGER  NOT NULL  , " +
@@ -670,7 +636,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "LabSheetTubeMPNDetails":
                     CreateTable = "CREATE TABLE LabSheetTubeMPNDetails (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "LabSheetTubeMPNDetailID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "LabSheetDetailID INTEGER  NOT NULL  , " +
@@ -691,7 +656,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "Logs":
                     CreateTable = "CREATE TABLE Logs (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "LogID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "TableName TEXT  NOT NULL  , " +
@@ -703,7 +667,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "MapInfos":
                     CreateTable = "CREATE TABLE MapInfos (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "MapInfoID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "TVItemID INTEGER  NOT NULL  , " +
@@ -718,7 +681,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "MapInfoPoints":
                     CreateTable = "CREATE TABLE MapInfoPoints (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "MapInfoPointID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "MapInfoID INTEGER  NOT NULL  , " +
@@ -730,7 +692,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "MikeBoundaryConditions":
                     CreateTable = "CREATE TABLE MikeBoundaryConditions (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "MikeBoundaryConditionID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "MikeBoundaryConditionTVItemID INTEGER  NOT NULL  , " +
@@ -748,7 +709,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "MikeScenarios":
                     CreateTable = "CREATE TABLE MikeScenarios (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "MikeScenarioID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "MikeScenarioTVItemID INTEGER  NOT NULL  , " +
@@ -785,7 +745,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "MikeScenarioResults":
                     CreateTable = "CREATE TABLE MikeScenarioResults (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "MikeScenarioResultID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "MikeScenarioTVItemID INTEGER  NOT NULL  , " +
@@ -795,7 +754,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "MikeSources":
                     CreateTable = "CREATE TABLE MikeSources (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "MikeSourceID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "MikeSourceTVItemID INTEGER  NOT NULL  , " +
@@ -812,7 +770,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "MikeSourceStartEnds":
                     CreateTable = "CREATE TABLE MikeSourceStartEnds (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "MikeSourceStartEndID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "MikeSourceID INTEGER  NOT NULL  , " +
@@ -831,7 +788,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "MWQMAnalysisReportParameters":
                     CreateTable = "CREATE TABLE MWQMAnalysisReportParameters (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "MWQMAnalysisReportParameterID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "SubsectorTVItemID INTEGER  NOT NULL  , " +
@@ -862,7 +818,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "MWQMLookupMPNs":
                     CreateTable = "CREATE TABLE MWQMLookupMPNs (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "MWQMLookupMPNID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "Tubes10 INTEGER  NOT NULL  , " +
@@ -874,7 +829,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "MWQMRuns":
                     CreateTable = "CREATE TABLE MWQMRuns (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "MWQMRunID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "SubsectorTVItemID INTEGER  NOT NULL  , " +
@@ -921,7 +875,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "MWQMRunLanguages":
                     CreateTable = "CREATE TABLE MWQMRunLanguages (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "MWQMRunLanguageID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "MWQMRunID INTEGER  NOT NULL  , " +
@@ -935,7 +888,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "MWQMSamples":
                     CreateTable = "CREATE TABLE MWQMSamples (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "MWQMSampleID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "MWQMSiteTVItemID INTEGER  NOT NULL  , " +
@@ -959,7 +911,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "MWQMSampleLanguages":
                     CreateTable = "CREATE TABLE MWQMSampleLanguages (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "MWQMSampleLanguageID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "MWQMSampleID INTEGER  NOT NULL  , " +
@@ -971,7 +922,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "MWQMSites":
                     CreateTable = "CREATE TABLE MWQMSites (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "MWQMSiteID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "MWQMSiteTVItemID INTEGER  NOT NULL  , " +
@@ -984,7 +934,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "MWQMSiteStartEndDates":
                     CreateTable = "CREATE TABLE MWQMSiteStartEndDates (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "MWQMSiteStartEndDateID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "MWQMSiteTVItemID INTEGER  NOT NULL  , " +
@@ -995,7 +944,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "MWQMSubsectors":
                     CreateTable = "CREATE TABLE MWQMSubsectors (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "MWQMSubsectorID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "MWQMSubsectorTVItemID INTEGER  NOT NULL  , " +
@@ -1006,7 +954,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "MWQMSubsectorLanguages":
                     CreateTable = "CREATE TABLE MWQMSubsectorLanguages (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "MWQMSubsectorLanguageID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "MWQMSubsectorID INTEGER  NOT NULL  , " +
@@ -1020,7 +967,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "PersistedGrants":
                     CreateTable = "CREATE TABLE PersistedGrants (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "Key TEXT  NOT NULL  UNIQUE , " +
                     "Type TEXT  NOT NULL  , " +
                     "SubjectId TEXT   , " +
@@ -1031,7 +977,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "PolSourceGroupings":
                     CreateTable = "CREATE TABLE PolSourceGroupings (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "PolSourceGroupingID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "CSSPID INTEGER  NOT NULL  , " +
@@ -1043,7 +988,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "PolSourceGroupingLanguages":
                     CreateTable = "CREATE TABLE PolSourceGroupingLanguages (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "PolSourceGroupingLanguageID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "PolSourceGroupingID INTEGER  NOT NULL  , " +
@@ -1064,7 +1008,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "PolSourceObservations":
                     CreateTable = "CREATE TABLE PolSourceObservations (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "PolSourceObservationID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "PolSourceSiteID INTEGER  NOT NULL  , " +
@@ -1077,7 +1020,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "PolSourceObservationIssues":
                     CreateTable = "CREATE TABLE PolSourceObservationIssues (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "PolSourceObservationIssueID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "PolSourceObservationID INTEGER  NOT NULL  , " +
@@ -1089,7 +1031,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "PolSourceSites":
                     CreateTable = "CREATE TABLE PolSourceSites (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "PolSourceSiteID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "PolSourceSiteTVItemID INTEGER  NOT NULL  , " +
@@ -1105,7 +1046,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "PolSourceSiteEffects":
                     CreateTable = "CREATE TABLE PolSourceSiteEffects (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "PolSourceSiteEffectID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "PolSourceSiteOrInfrastructureTVItemID INTEGER  NOT NULL  , " +
@@ -1118,7 +1058,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "PolSourceSiteEffectTerms":
                     CreateTable = "CREATE TABLE PolSourceSiteEffectTerms (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "PolSourceSiteEffectTermID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "IsGroup INTEGER  NOT NULL  , " +
@@ -1130,7 +1069,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "RainExceedances":
                     CreateTable = "CREATE TABLE RainExceedances (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "RainExceedanceID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "RainExceedanceTVItemID INTEGER  NOT NULL  , " +
@@ -1147,7 +1085,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "RainExceedanceClimateSites":
                     CreateTable = "CREATE TABLE RainExceedanceClimateSites (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "RainExceedanceClimateSiteID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "RainExceedanceTVItemID INTEGER  NOT NULL  , " +
@@ -1157,7 +1094,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "RatingCurves":
                     CreateTable = "CREATE TABLE RatingCurves (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "RatingCurveID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "HydrometricSiteID INTEGER  NOT NULL  , " +
@@ -1167,7 +1103,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "RatingCurveValues":
                     CreateTable = "CREATE TABLE RatingCurveValues (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "RatingCurveValueID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "RatingCurveID INTEGER  NOT NULL  , " +
@@ -1178,7 +1113,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "ReportSections":
                     CreateTable = "CREATE TABLE ReportSections (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "ReportSectionID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "ReportTypeID INTEGER  NOT NULL  , " +
@@ -1197,7 +1131,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "ReportTypes":
                     CreateTable = "CREATE TABLE ReportTypes (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "ReportTypeID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "TVType INTEGER  NOT NULL  , " +
@@ -1212,7 +1145,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "ResetPasswords":
                     CreateTable = "CREATE TABLE ResetPasswords (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "ResetPasswordID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "Email TEXT  NOT NULL  , " +
@@ -1223,7 +1155,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "SamplingPlans":
                     CreateTable = "CREATE TABLE SamplingPlans (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "SamplingPlanID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "IsActive INTEGER  NOT NULL  , " +
@@ -1250,7 +1181,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "SamplingPlanEmails":
                     CreateTable = "CREATE TABLE SamplingPlanEmails (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "SamplingPlanEmailID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "SamplingPlanID INTEGER  NOT NULL  , " +
@@ -1265,7 +1195,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "SamplingPlanSubsectors":
                     CreateTable = "CREATE TABLE SamplingPlanSubsectors (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "SamplingPlanSubsectorID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "SamplingPlanID INTEGER  NOT NULL  , " +
@@ -1275,7 +1204,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "SamplingPlanSubsectorSites":
                     CreateTable = "CREATE TABLE SamplingPlanSubsectorSites (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "SamplingPlanSubsectorSiteID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "SamplingPlanSubsectorID INTEGER  NOT NULL  , " +
@@ -1286,7 +1214,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "Spills":
                     CreateTable = "CREATE TABLE Spills (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "SpillID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "MunicipalityTVItemID INTEGER  NOT NULL  , " +
@@ -1299,7 +1226,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "SpillLanguages":
                     CreateTable = "CREATE TABLE SpillLanguages (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "SpillLanguageID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "SpillID INTEGER  NOT NULL  , " +
@@ -1311,7 +1237,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "Tels":
                     CreateTable = "CREATE TABLE Tels (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "TelID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "TelTVItemID INTEGER  NOT NULL  , " +
@@ -1322,7 +1247,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "TideDataValues":
                     CreateTable = "CREATE TABLE TideDataValues (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "TideDataValueID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "TideSiteTVItemID INTEGER  NOT NULL  , " +
@@ -1340,7 +1264,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "TideLocations":
                     CreateTable = "CREATE TABLE TideLocations (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "TideLocationID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "Zone INTEGER  NOT NULL  , " +
@@ -1354,7 +1277,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "TideSites":
                     CreateTable = "CREATE TABLE TideSites (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "TideSiteID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "TideSiteTVItemID INTEGER  NOT NULL  , " +
@@ -1367,7 +1289,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "TVFiles":
                     CreateTable = "CREATE TABLE TVFiles (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "TVFileID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "TVFileTVItemID INTEGER  NOT NULL  , " +
@@ -1390,7 +1311,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "TVFileLanguages":
                     CreateTable = "CREATE TABLE TVFileLanguages (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "TVFileLanguageID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "TVFileID INTEGER  NOT NULL  , " +
@@ -1402,7 +1322,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "TVItems":
                     CreateTable = "CREATE TABLE TVItems (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "TVItemID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "TVLevel INTEGER  NOT NULL  , " +
@@ -1415,7 +1334,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "TVItemLanguages":
                     CreateTable = "CREATE TABLE TVItemLanguages (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "TVItemLanguageID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "TVItemID INTEGER  NOT NULL  , " +
@@ -1427,7 +1345,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "TVItemLinks":
                     CreateTable = "CREATE TABLE TVItemLinks (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "TVItemLinkID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "FromTVItemID INTEGER  NOT NULL  , " +
@@ -1445,7 +1362,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "TVItemStats":
                     CreateTable = "CREATE TABLE TVItemStats (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "TVItemStatID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "TVItemID INTEGER  NOT NULL  , " +
@@ -1456,7 +1372,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "TVItemUserAuthorizations":
                     CreateTable = "CREATE TABLE TVItemUserAuthorizations (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "TVItemUserAuthorizationID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "ContactTVItemID INTEGER  NOT NULL  , " +
@@ -1470,7 +1385,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "TVTypeUserAuthorizations":
                     CreateTable = "CREATE TABLE TVTypeUserAuthorizations (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "TVTypeUserAuthorizationID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "ContactTVItemID INTEGER  NOT NULL  , " +
@@ -1481,7 +1395,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "UseOfSites":
                     CreateTable = "CREATE TABLE UseOfSites (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "UseOfSiteID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "SiteTVItemID INTEGER  NOT NULL  , " +
@@ -1502,7 +1415,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "VPAmbients":
                     CreateTable = "CREATE TABLE VPAmbients (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "VPAmbientID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "VPScenarioID INTEGER  NOT NULL  , " +
@@ -1522,7 +1434,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "VPResults":
                     CreateTable = "CREATE TABLE VPResults (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "VPResultID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "VPScenarioID INTEGER  NOT NULL  , " +
@@ -1537,7 +1448,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "VPScenarios":
                     CreateTable = "CREATE TABLE VPScenarios (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "VPScenarioID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "InfrastructureTVItemID INTEGER  NOT NULL  , " +
@@ -1564,7 +1474,6 @@ namespace CSSPSQLiteServices
                     break;
                 case "VPScenarioLanguages":
                     CreateTable = "CREATE TABLE VPScenarioLanguages (" +
-                    "DBCommand INTEGER NOT NULL, " +
                     "VPScenarioLanguageID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
                     "VPScenarioID INTEGER  NOT NULL  , " +

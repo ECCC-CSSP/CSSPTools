@@ -819,4 +819,7 @@
   <data name="CouldNotLogin" xml:space="preserve">
     <value>Could not login</value>
   </data>
+  <data name="ErrorParsingPassword" xml:space="preserve">
+    <value>Error parsing password</value>
+  </data>
 </root>

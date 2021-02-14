@@ -101,8 +101,9 @@ namespace GenerateCSSPDBServices
                     sb.AppendLine(@"using System.IdentityModel.Tokens.Jwt;");
                     sb.AppendLine(@"using System.Security.Claims;");
                     sb.AppendLine(@"using System.Text;");
-                    sb.AppendLine(@"using CSSPHelperModels;");                   
+                    sb.AppendLine(@"using CSSPHelperModels;");
                 }
+                sb.AppendLine(@"using CSSPScrambleServices;");
                 sb.AppendLine(@"");
                 sb.AppendLine($@"namespace CSSPDBServices");
                 sb.AppendLine(@"{");
@@ -160,12 +161,12 @@ namespace GenerateCSSPDBServices
                     sb.AppendLine(@"        private IConfiguration Configuration { get; }");
                     if (dllTypeInfoModels.Type.Name == "Contact")
                     {
-                        sb.AppendLine(@"        private UserManager<ApplicationUser> UserManager { get; }");
                         sb.AppendLine(@"        private ILoginModelService LoginModelService { get; }");
                         sb.AppendLine(@"        private IRegisterModelService RegisterModelService { get; }");
                     }
                     sb.AppendLine(@"        private ICSSPCultureService CSSPCultureService { get; }");
                     sb.AppendLine(@"        private ILoggedInService LoggedInService { get; }");
+                    sb.AppendLine(@"        private IScrambleService ScrambleService { get; }");
                     sb.AppendLine(@"        private IEnums enums { get; }");
                     sb.AppendLine(@"        private IEnumerable<ValidationResult> ValidationResults { get; set; }");
                     sb.AppendLine(@"        #endregion Properties");
@@ -186,7 +187,8 @@ namespace GenerateCSSPDBServices
                         sb.AppendLine($@"           ILoginModelService LoginModelService,");
                         sb.AppendLine($@"           IRegisterModelService RegisterModelService,");
                         sb.AppendLine($@"           ILoggedInService LoggedInService,");
-                        sb.AppendLine($@"           CSSPDBContext db, UserManager<ApplicationUser> UserManager)");
+                        sb.AppendLine($@"           IScrambleService ScrambleService,");
+                        sb.AppendLine($@"           CSSPDBContext db)");
                     }
                     else
                     {
@@ -197,13 +199,13 @@ namespace GenerateCSSPDBServices
                     sb.AppendLine(@"        {");
                     if (dllTypeInfoModels.Type.Name == "Contact")
                     {
-                        sb.AppendLine(@"            this.UserManager = UserManager;");
                         sb.AppendLine(@"            this.LoginModelService = LoginModelService;");
                         sb.AppendLine(@"            this.RegisterModelService = RegisterModelService;");
                     }
                     sb.AppendLine(@"            this.Configuration = Configuration;");
                     sb.AppendLine(@"            this.CSSPCultureService = CSSPCultureService;");
                     sb.AppendLine(@"            this.LoggedInService = LoggedInService;");
+                    sb.AppendLine(@"            this.ScrambleService = ScrambleService;");
                     sb.AppendLine(@"            this.enums = enums;");
                     sb.AppendLine(@"            this.db = db;");
                     if (dllTypeInfoModels.Type.Name == "AspNetUser"

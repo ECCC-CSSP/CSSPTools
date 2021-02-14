@@ -22,6 +22,7 @@ using Xunit;
 using System.ComponentModel.DataAnnotations;
 using CSSPCultureServices.Resources;
 using LoggedInServices;
+using CSSPScrambleServices;
 
 namespace CSSPDBServices.Tests
 {
@@ -37,8 +38,10 @@ namespace CSSPDBServices.Tests
         private IServiceCollection Services { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
         private ILoggedInService LoggedInService { get; set; }
+        private IScrambleService ScrambleService { get; set; }
         private IContactDBService ContactDBService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBContext dbIM { get; set; }
         private Contact contact { get; set; }
         #endregion Properties
 
@@ -244,6 +247,25 @@ namespace CSSPDBServices.Tests
             //Assert.AreEqual(count, contactDBService.GetContactList().Count());
 
             // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(50)]
+            // contact.CellNumber   (String)
+            // -----------------------------------
+
+            contact = null;
+            contact = GetFilledRandomContact("");
+            contact.CellNumber = GetRandomString("", 51);
+            actionContact = await ContactDBService.Post(contact, AddContactTypeEnum.First);
+            Assert.IsType<BadRequestObjectResult>(actionContact.Result);
+            //Assert.AreEqual(count, contactDBService.GetContactList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // contact.CellNumberConfirmed   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
             // Is NOT Nullable
             // [CSSPMaxLength(100)]
             // contact.WebName   (String)
@@ -314,12 +336,44 @@ namespace CSSPDBServices.Tests
             // -----------------------------------
             // Is Nullable
             // [CSSPMaxLength(255)]
+            // contact.PasswordHash   (String)
+            // -----------------------------------
+
+            contact = null;
+            contact = GetFilledRandomContact("");
+            contact.PasswordHash = GetRandomString("", 256);
+            actionContact = await ContactDBService.Post(contact, AddContactTypeEnum.First);
+            Assert.IsType<BadRequestObjectResult>(actionContact.Result);
+            //Assert.AreEqual(count, contactDBService.GetContactList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(255)]
             // contact.Token   (String)
             // -----------------------------------
 
             contact = null;
             contact = GetFilledRandomContact("");
             contact.Token = GetRandomString("", 256);
+            actionContact = await ContactDBService.Post(contact, AddContactTypeEnum.First);
+            Assert.IsType<BadRequestObjectResult>(actionContact.Result);
+            //Assert.AreEqual(count, contactDBService.GetContactList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 10)]
+            // contact.AccessFailedCount   (Int32)
+            // -----------------------------------
+
+            contact = null;
+            contact = GetFilledRandomContact("");
+            contact.AccessFailedCount = -1;
+            actionContact = await ContactDBService.Post(contact, AddContactTypeEnum.First);
+            Assert.IsType<BadRequestObjectResult>(actionContact.Result);
+            //Assert.AreEqual(count, contactService.GetContactList().Count());
+            contact = null;
+            contact = GetFilledRandomContact("");
+            contact.AccessFailedCount = 11;
             actionContact = await ContactDBService.Post(contact, AddContactTypeEnum.First);
             Assert.IsType<BadRequestObjectResult>(actionContact.Result);
             //Assert.AreEqual(count, contactDBService.GetContactList().Count());
@@ -422,7 +476,7 @@ namespace CSSPDBServices.Tests
             Config = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
                .AddJsonFile("appsettings_csspdbservicestests.json")
-               .AddUserSecrets("70c662c1-a1a8-4b2c-b594-d7834bb5e6db")
+               .AddUserSecrets("a79b4a81-ba75-4dfc-8d95-46259f73f055")
                .Build();
 
             Services = new ServiceCollection();
@@ -442,19 +496,12 @@ namespace CSSPDBServices.Tests
                 options.UseInMemoryDatabase(CSSPDBConnString);
             });
 
-            Services.AddDbContext<ApplicationDbContext>(options =>
-            {
-                options.UseSqlServer(CSSPDBConnString);
-            });
-
-            Services.AddIdentityCore<ApplicationUser>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
-
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<ILoginModelService, LoginModelService>();
             Services.AddSingleton<IRegisterModelService, RegisterModelService>();
+            Services.AddSingleton<IScrambleService, ScrambleService>();
             Services.AddSingleton<IContactDBService, ContactDBService>();
 
             Provider = Services.BuildServiceProvider();
@@ -468,11 +515,17 @@ namespace CSSPDBServices.Tests
             LoggedInService = Provider.GetService<ILoggedInService>();
             Assert.NotNull(LoggedInService);
 
-            string Id = Config.GetValue<string>("Id");
-            Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
+            string LoginEmail = Config.GetValue<string>("LoginEmail");
+            Assert.True(await LoggedInService.SetLoggedInContactInfo(LoginEmail));
 
             db = Provider.GetService<CSSPDBContext>();
             Assert.NotNull(db);
+
+            dbIM = Provider.GetService<CSSPDBContext>();
+            Assert.NotNull(dbIM);
+
+            ScrambleService = Provider.GetService<IScrambleService>();
+            Assert.NotNull(ScrambleService);
 
             ContactDBService = Provider.GetService<IContactDBService>();
             Assert.NotNull(ContactDBService);
@@ -490,6 +543,8 @@ namespace CSSPDBServices.Tests
             if (OmitPropName != "FirstName") contact.FirstName = GetRandomString("", 5);
             if (OmitPropName != "LastName") contact.LastName = GetRandomString("", 5);
             if (OmitPropName != "Initial") contact.Initial = GetRandomString("", 5);
+            if (OmitPropName != "CellNumber") contact.CellNumber = GetRandomString("", 5);
+            if (OmitPropName != "CellNumberConfirmed") contact.CellNumberConfirmed = true;
             if (OmitPropName != "WebName") contact.WebName = GetRandomString("", 5);
             if (OmitPropName != "ContactTitle") contact.ContactTitle = (ContactTitleEnum)GetRandomEnumType(typeof(ContactTitleEnum));
             if (OmitPropName != "IsAdmin") contact.IsAdmin = true;
@@ -497,7 +552,9 @@ namespace CSSPDBServices.Tests
             if (OmitPropName != "Disabled") contact.Disabled = true;
             if (OmitPropName != "IsNew") contact.IsNew = true;
             if (OmitPropName != "SamplingPlanner_ProvincesTVItemID") contact.SamplingPlanner_ProvincesTVItemID = GetRandomString("", 5);
+            if (OmitPropName != "PasswordHash") contact.PasswordHash = GetRandomString("", 5);
             if (OmitPropName != "Token") contact.Token = GetRandomString("", 5);
+            if (OmitPropName != "AccessFailedCount") contact.AccessFailedCount = GetRandomInt(0, 10);
             if (OmitPropName != "LastUpdateDate_UTC") contact.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") contact.LastUpdateContactTVItemID = 2;
 
@@ -515,6 +572,14 @@ namespace CSSPDBServices.Tests
             {
                 Assert.False(string.IsNullOrWhiteSpace(contactList[0].Initial));
             }
+            if (!string.IsNullOrWhiteSpace(contactList[0].CellNumber))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(contactList[0].CellNumber));
+            }
+            if (contactList[0].CellNumberConfirmed != null)
+            {
+                Assert.NotNull(contactList[0].CellNumberConfirmed);
+            }
             Assert.False(string.IsNullOrWhiteSpace(contactList[0].WebName));
             if (contactList[0].ContactTitle != null)
             {
@@ -524,9 +589,17 @@ namespace CSSPDBServices.Tests
             {
                 Assert.False(string.IsNullOrWhiteSpace(contactList[0].SamplingPlanner_ProvincesTVItemID));
             }
+            if (!string.IsNullOrWhiteSpace(contactList[0].PasswordHash))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(contactList[0].PasswordHash));
+            }
             if (!string.IsNullOrWhiteSpace(contactList[0].Token))
             {
                 Assert.False(string.IsNullOrWhiteSpace(contactList[0].Token));
+            }
+            if (contactList[0].AccessFailedCount != null)
+            {
+                Assert.NotNull(contactList[0].AccessFailedCount);
             }
         }
 

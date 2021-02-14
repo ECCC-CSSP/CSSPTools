@@ -1193,7 +1193,6 @@
       "CSSPHelperModels/1.0.0": {
         "dependencies": {
           "CSSPDBModels": "1.0.0",
-          "CSSPEnums": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.2",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.2",
           "Microsoft.EntityFrameworkCore": "5.0.2",
