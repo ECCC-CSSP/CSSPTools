@@ -165,10 +165,10 @@ namespace CSSPSearchServices.Tests
                 options.UseSqlite($"Data Source={ fiCSSPDBPreference.FullName }");
             });
 
-            ServiceCollection.AddDbContext<CSSPDBPreferenceInMemoryContext>(options =>
-            {
-                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBPreference.FullName }");
-            });
+            //ServiceCollection.AddDbContext<CSSPDBPreferenceInMemoryContext>(options =>
+            //{
+            //    options.UseInMemoryDatabase($"Data Source={ fiCSSPDBPreference.FullName }");
+            //});
 
             string CSSPDBSearchFileName = Configuration.GetValue<string>("CSSPDBSearch");
             Assert.NotNull(CSSPDBSearchFileName);

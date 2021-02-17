@@ -55,15 +55,6 @@ namespace ReadGzFileServices
 
             if (HasInternetConnection)
             {
-                string AzureStore = "";
-
-                var actionPreferenceAzureStore = await PreferenceService.GetPreferenceWithVariableName("AzureStore");
-                if (((ObjectResult)actionPreferenceAzureStore.Result).StatusCode == 200)
-                {
-                    Preference preference = (Preference)((OkObjectResult)actionPreferenceAzureStore.Result).Value;
-                    AzureStore = preference.VariableValue;
-                }
-
                 BlobClient blobClient = new BlobClient(AzureStore, AzureStoreCSSPJSONPath, fileName);
                 BlobProperties blobProperties = null;
 

@@ -36,7 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="appsettings_creategzfileservicestests.json">
+    <None Update="appsettings_csspcreategzfileservicestests.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

@@ -17,6 +17,7 @@ using CSSPDBFilesManagementServices;
 using DownloadFileServices;
 using CSSPDBFilesManagementModels;
 using CSSPDBPreferenceServices;
+using CSSPScrambleServices;
 
 namespace ReadGzFileServices
 {
@@ -37,25 +38,29 @@ namespace ReadGzFileServices
         private IEnums enums { get; }
         private IDownloadFileService DownloadFileService { get; }
         private ICSSPDBFilesManagementService CSSPDBFilesManagementService { get; }
+        private IScrambleService ScrambleService { get; }
         private IPreferenceService PreferenceService { get; }
+        private string AzureStore { get; set; }
         private string AzureStoreCSSPJSONPath { get; set; }
         private string CSSPJSONPath { get; set; }
         private string CSSPAzureUrl { get; set; }
         #endregion Properties
 
         #region Constructors
-        public ReadGzFileService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, ILocalService LocalService, 
+        public ReadGzFileService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, ILocalService LocalService, IScrambleService ScrambleService,
             IEnums enums, IDownloadFileService DownloadFileService, ICSSPDBFilesManagementService CSSPDBFilesManagementService, IPreferenceService PreferenceService)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LocalService = LocalService;
+            this.ScrambleService = ScrambleService;
             this.enums = enums;
             this.DownloadFileService = DownloadFileService;
             this.CSSPDBFilesManagementService = CSSPDBFilesManagementService;
             this.PreferenceService = PreferenceService;
 
             AzureStoreCSSPJSONPath = Configuration.GetValue<string>("AzureStoreCSSPJSONPath");
+            AzureStore = ScrambleService.Descramble(Configuration.GetValue<string>("AzureStore"));
             CSSPJSONPath = Configuration.GetValue<string>("CSSPJSONPath");
             CSSPAzureUrl = Configuration.GetValue<string>("CSSPAzureUrl");
         }

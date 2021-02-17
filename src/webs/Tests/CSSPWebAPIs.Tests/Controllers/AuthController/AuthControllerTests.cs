@@ -102,29 +102,29 @@ namespace CSSPWebAPIs.AuthController.Tests
 
             }
         }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task AuthController_AzureStore_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
+        //[Theory]
+        //[InlineData("en-CA")]
+        ////[InlineData("fr-CA")]
+        //public async Task AuthController_AzureStore_Good_Test(string culture)
+        //{
+        //    Assert.True(await Setup(culture));
 
-            Assert.NotNull(contact);
-            Assert.NotEmpty(contact.Token);
+        //    Assert.NotNull(contact);
+        //    Assert.NotEmpty(contact.Token);
 
-            using (HttpClient httpClient = new HttpClient())
-            {
-                var contentType = new MediaTypeWithQualityHeaderValue("application/json");
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
-                httpClient.DefaultRequestHeaders.Accept.Add(contentType);
+        //    using (HttpClient httpClient = new HttpClient())
+        //    {
+        //        var contentType = new MediaTypeWithQualityHeaderValue("application/json");
+        //        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
+        //        httpClient.DefaultRequestHeaders.Accept.Add(contentType);
 
-                HttpResponseMessage response = httpClient.GetAsync($"{ CSSPAzureUrl }api/en-CA/auth/azurestore").Result;
-                Assert.True((int)response.StatusCode == 200);
+        //        HttpResponseMessage response = httpClient.GetAsync($"{ CSSPAzureUrl }api/en-CA/auth/azurestore").Result;
+        //        Assert.True((int)response.StatusCode == 200);
 
-                string AzureStore = JsonSerializer.Deserialize<string>(response.Content.ReadAsStringAsync().Result);
-                Assert.NotEmpty(AzureStore);
-            }
-        }
+        //        string AzureStore = JsonSerializer.Deserialize<string>(response.Content.ReadAsStringAsync().Result);
+        //        Assert.NotEmpty(AzureStore);
+        //    }
+        //}
         //[Theory]
         //[InlineData("en-CA")]
         ////[InlineData("fr-CA")]

@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31005.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPDesktop", "CSSPDesktop.csproj", "{21FADEE4-149D-4F92-B5B0-776E479654BB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{21FADEE4-149D-4F92-B5B0-776E479654BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21FADEE4-149D-4F92-B5B0-776E479654BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21FADEE4-149D-4F92-B5B0-776E479654BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21FADEE4-149D-4F92-B5B0-776E479654BB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {66E670E6-E6B0-4D3B-8487-0C1CDC112F87}
+	EndGlobalSection
+EndGlobal

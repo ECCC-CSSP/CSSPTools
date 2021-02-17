@@ -18,6 +18,7 @@ using System.Linq;
 using CSSPDBServices;
 using LoggedInServices;
 using CSSPHelperModels;
+using CSSPScrambleServices;
 
 namespace CreateGzFileServices.Tests
 {
@@ -63,7 +64,7 @@ namespace CreateGzFileServices.Tests
             AzureStoreCSSPJSONPath = Configuration.GetValue<string>("AzureStoreCSSPJSONPath");
             Assert.NotNull(AzureStoreCSSPJSONPath);
 
-            string CSSPDBConnString = Configuration.GetValue<string>("AzureCSSPDB");
+            string CSSPDBConnString = Configuration.GetValue<string>("CSSPDB");
             Assert.NotNull(CSSPDBConnString);
 
             Services.AddDbContext<CSSPDBContext>(options =>
@@ -87,6 +88,7 @@ namespace CreateGzFileServices.Tests
             Services.AddSingleton<IRegisterModelService, RegisterModelService>();
             Services.AddSingleton<IContactDBService, ContactDBService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<IScrambleService, ScrambleService>();
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<ICreateGzFileService, CreateGzFileService>();
             Services.AddSingleton<ITVItemDBService, TVItemDBService>();

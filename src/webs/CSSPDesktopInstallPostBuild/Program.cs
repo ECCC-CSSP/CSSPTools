@@ -1,5 +1,7 @@
 ﻿using Azure.Storage.Blobs;
+using CSSPScrambleServices;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -21,15 +23,32 @@ namespace CSSPDesktopInstallPostBuild
         #region Entry
         static async Task<int> Main(string[] args)
         {
-            IConfiguration Configuration = new ConfigurationBuilder()
-                          .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-                          .AddJsonFile("appsettings_csspdesktopinstallpostbuild.json")
-                          .AddUserSecrets("1f0910b7-2452-49bd-b68e-4661df5d54d7")
-                          .Build();
+            IConfiguration Configuration;
+            IServiceProvider Provider;
+            IServiceCollection Services;
+            IScrambleService ScrambleService;
 
-            Startup startup = new Startup(Configuration);
+            Configuration = new ConfigurationBuilder()
+                              .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+                              .AddJsonFile("appsettings_csspdesktopinstallpostbuild.json")
+                              .AddUserSecrets("1f0910b7-2452-49bd-b68e-4661df5d54d7")
+                              .Build();
 
-            if (! await startup.Run()) return await Task.FromResult(1);
+            Services = new ServiceCollection();
+
+            Services.AddSingleton<IConfiguration>(Configuration);
+            Services.AddSingleton<IScrambleService, ScrambleService>();
+
+            Provider = Services.BuildServiceProvider();
+            if (Provider == null) return await Task.FromResult(1);
+
+            ScrambleService = Provider.GetService<IScrambleService>();
+            if (ScrambleService == null) return await Task.FromResult(1);
+
+
+            Startup startup = new Startup(Configuration, ScrambleService);
+
+            if (!await startup.Run()) return await Task.FromResult(1);
 
             return await Task.FromResult(0);
         }

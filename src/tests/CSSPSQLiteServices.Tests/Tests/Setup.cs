@@ -90,10 +90,10 @@ namespace CSSPSQLiteServices.Tests
                 options.UseSqlite($"Data Source={ fiCSSPDBPreference.FullName }");
             });
 
-            Services.AddDbContext<CSSPDBPreferenceInMemoryContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiCSSPDBPreference.FullName }");
-            });
+            //Services.AddDbContext<CSSPDBPreferenceInMemoryContext>(options =>
+            //{
+            //    options.UseSqlite($"Data Source={ fiCSSPDBPreference.FullName }");
+            //});
 
             // doing CSSPFilesManagementDB
             string CSSPFilesManagementDB = Configuration.GetValue<string>("CSSPDBFilesManagement");

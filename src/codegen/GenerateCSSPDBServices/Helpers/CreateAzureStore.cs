@@ -11,10 +11,10 @@ namespace GenerateCSSPDBServices
         {
             sb.AppendLine(@"        public async Task<ActionResult<string>> AzureStore()");
             sb.AppendLine(@"        {");
-            sb.AppendLine(@"            string sto = Configuration.GetValue<string>(""AzureStoreConnectionString"");");
+            sb.AppendLine(@"            string sto = Configuration.GetValue<string>(""AzureStore"");");
             sb.AppendLine(@"            if (string.IsNullOrWhiteSpace(sto))");
             sb.AppendLine(@"            {");
-            sb.AppendLine(@"                return await Task.FromResult(BadRequest(String.Format(CSSPCultureServicesRes.__CouldNotBeFound, ""Configuration"", ""AzureStoreConnectionString"")));");
+            sb.AppendLine(@"                return await Task.FromResult(BadRequest(String.Format(CSSPCultureServicesRes.__CouldNotBeFound, ""Configuration"", ""AzureStore"")));");
             sb.AppendLine(@"            }");
             sb.AppendLine(@"");
             sb.AppendLine(@"            return await Task.FromResult(Ok(sto));");

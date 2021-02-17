@@ -79,12 +79,6 @@ namespace CSSPDesktopServices.Services
         }
         private async Task<bool> DownloadJsonFilesFromAzure(string jsonFileName)
         {
-            //string culture = "fr-CA";
-            //if (IsEnglish)
-            //{
-            //    culture = "en-CA";
-            //}
-
             string enumTypeName = jsonFileName.Substring(0, jsonFileName.IndexOf("."));
 
             WebTypeEnum webType = WebTypeEnum.WebRoot;
@@ -103,15 +97,15 @@ namespace CSSPDesktopServices.Services
 
             FileInfo fi = new FileInfo($"{ CSSPJSONPath }{ jsonFileName }");
 
-            Preference preferenceAzureStore = await GetPreferenceWithVariableName("AzureStore");
+            //Preference preferenceAzureStore = await GetPreferenceWithVariableName("AzureStore");
 
-            if (preferenceAzureStore == null)
-            {
-                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotFind_InDBLogin_, "AzureStore", "Preferences")));
-                return await Task.FromResult(false);
-            }
+            //if (preferenceAzureStore == null)
+            //{
+            //    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotFind_InDBLogin_, "AzureStore", "Preferences")));
+            //    return await Task.FromResult(false);
+            //}
 
-            string AzureStore = preferenceAzureStore.VariableValue;
+            //string AzureStore = preferenceAzureStore.VariableValue;
 
             if (string.IsNullOrWhiteSpace(AzureStore))
             {
@@ -125,32 +119,35 @@ namespace CSSPDesktopServices.Services
             {
                 blobProperties = blobClient.GetProperties();
             }
-            catch (RequestFailedException ex)
+            catch (RequestFailedException)
             {
-                if (ex.Status == 404)
-                {
-                    using (HttpClient httpClient = new HttpClient())
-                    {
-                        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", LocalService.LoggedInContactInfo.LoggedInContact.Token);
-                        HttpResponseMessage response = httpClient.GetAsync($"{ CSSPAzureUrl }api/en-CA/CreateGzFile/{ (int)webType }/0/1").Result;
+                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotGetPropertiesFromAzureStore_AndFile_, "csspjson", jsonFileName)));
+                return await Task.FromResult(false);
 
-                        if ((int)response.StatusCode != 200)
-                        {
-                            if ((int)response.StatusCode == 401)
-                            {
-                                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotGetPropertiesFromAzureStore_AndFile_, "csspjson", jsonFileName)));
-                                AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.NeedToBeLoggedIn));
-                                return await Task.FromResult(false);
-                            }
-                            else
-                            {
-                                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotGetPropertiesFromAzureStore_AndFile_, "csspjson", jsonFileName)));
-                                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes.UnmanagedServerError_, response.Content.ReadAsStringAsync())));
-                                return await Task.FromResult(false);
-                            }
-                        }
-                    }
-                }
+                //if (ex.Status == 404)
+                //{
+                //    using (HttpClient httpClient = new HttpClient())
+                //    {
+                //        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", LocalService.LoggedInContactInfo.LoggedInContact.Token);
+                //        HttpResponseMessage response = httpClient.GetAsync($"{ CSSPAzureUrl }api/en-CA/CreateGzFile/{ (int)webType }/0/1").Result;
+
+                //        if ((int)response.StatusCode != 200)
+                //        {
+                //            if ((int)response.StatusCode == 401)
+                //            {
+                //                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotGetPropertiesFromAzureStore_AndFile_, "csspjson", jsonFileName)));
+                //                AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.NeedToBeLoggedIn));
+                //                return await Task.FromResult(false);
+                //            }
+                //            else
+                //            {
+                //                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotGetPropertiesFromAzureStore_AndFile_, "csspjson", jsonFileName)));
+                //                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes.UnmanagedServerError_, response.Content.ReadAsStringAsync())));
+                //                return await Task.FromResult(false);
+                //            }
+                //        }
+                //    }
+                //}
             }
 
             CSSPFile csspFile = (from c in dbFM.CSSPFiles
@@ -204,12 +201,12 @@ namespace CSSPDesktopServices.Services
             }
             else
             {
-                if (jsonFileName == "WebAllTVItemLanguage.gz")
-                {
-                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.UpdatingCSSPDBSearchDatabase)));
+                //if (jsonFileName == "WebAllTVItemLanguage.gz")
+                //{
+                //    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.UpdatingCSSPDBSearchDatabase)));
 
-                    if (!await UpdateCSSPDBSearch()) return await Task.FromResult(false);
-                }
+                //    if (!await UpdateCSSPDBSearch()) return await Task.FromResult(false);
+                //}
             }
 
             return await Task.FromResult(true);
@@ -220,25 +217,25 @@ namespace CSSPDesktopServices.Services
 
             FileInfo fi = new FileInfo($"{ CSSPDesktopPath }{ zipFileName }");
 
-            Preference preferenceAzureStore = await GetPreferenceWithVariableName("AzureStore");
+            //Preference preferenceAzureStore = await GetPreferenceWithVariableName("AzureStore");
 
-            if (preferenceAzureStore == null)
-            {
-                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotFind_InDBLogin_, "AzureStore", "Preferences")));
-                return await Task.FromResult(false);
-            }
+            //if (preferenceAzureStore == null)
+            //{
+            //    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotFind_InDBLogin_, "AzureStore", "Preferences")));
+            //    return await Task.FromResult(false);
+            //}
 
-            string AzureStore = preferenceAzureStore.VariableValue;
-
-            if (string.IsNullOrWhiteSpace(AzureStore))
-            {
-                return await Task.FromResult(true);
-            }
+            //string AzureStore = preferenceAzureStore.VariableValue;
 
             if (string.IsNullOrWhiteSpace(AzureStore))
             {
                 return await Task.FromResult(true);
             }
+
+            //if (string.IsNullOrWhiteSpace(AzureStore))
+            //{
+            //    return await Task.FromResult(true);
+            //}
 
             BlobClient blobClient = new BlobClient(AzureStore, AzureStoreCSSPWebAPIsLocalPath, zipFileName);
             BlobProperties blobProperties = null;

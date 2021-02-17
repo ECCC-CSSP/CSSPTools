@@ -39,15 +39,15 @@ namespace CSSPDesktopServices.Services
                 return await Task.FromResult(true);
             }
 
-            Preference preferenceAzureStore = await GetPreferenceWithVariableName("AzureStore");
+            //Preference preferenceAzureStore = await GetPreferenceWithVariableName("AzureStore");
 
-            if (preferenceAzureStore == null)
-            {
-                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotFind_InDBLogin_, "AzureStore", "Preferences")));
-                return await Task.FromResult(false);
-            }
+            //if (preferenceAzureStore == null)
+            //{
+            //    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotFind_InDBLogin_, "AzureStore", "Preferences")));
+            //    return await Task.FromResult(false);
+            //}
 
-            string AzureStore = preferenceAzureStore.VariableValue;
+            //string AzureStore = preferenceAzureStore.VariableValue;
 
             if (string.IsNullOrWhiteSpace(AzureStore))
             {
@@ -63,7 +63,6 @@ namespace CSSPDesktopServices.Services
             foreach (string zipFileName in zipFileNameList)
             {
                 FileInfo fi = new FileInfo($"{ CSSPDesktopPath }{ zipFileName }");
-
 
                 BlobClient blobClient = new BlobClient(AzureStore, AzureStoreCSSPWebAPIsLocalPath, zipFileName);
                 BlobProperties blobProperties = null;

@@ -118,7 +118,7 @@
             // 
             this.butSetLanguageToFrancais.AutoSize = true;
             this.butSetLanguageToFrancais.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.butSetLanguageToFrancais.Location = new System.Drawing.Point(172, 39);
+            this.butSetLanguageToFrancais.Location = new System.Drawing.Point(162, 39);
             this.butSetLanguageToFrancais.Name = "butSetLanguageToFrancais";
             this.butSetLanguageToFrancais.Size = new System.Drawing.Size(92, 42);
             this.butSetLanguageToFrancais.TabIndex = 1;
@@ -676,7 +676,7 @@
             this.butStop.AutoSize = true;
             this.butStop.Enabled = false;
             this.butStop.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.butStop.Location = new System.Drawing.Point(198, 19);
+            this.butStop.Location = new System.Drawing.Point(178, 19);
             this.butStop.Name = "butStop";
             this.butStop.Size = new System.Drawing.Size(110, 45);
             this.butStop.TabIndex = 1;

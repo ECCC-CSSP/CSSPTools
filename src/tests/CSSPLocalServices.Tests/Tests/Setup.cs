@@ -70,15 +70,15 @@ namespace LocalServices.Tests
                 options.UseSqlite($"Data Source={ fiCSSPDBPreference.FullName }");
             });
 
-            /* ---------------------------------------------------------------------------------
-             * using CSSPDBPreferenceInMemory
-             * ---------------------------------------------------------------------------------      
-             */
+            ///* ---------------------------------------------------------------------------------
+            // * using CSSPDBPreferenceInMemory
+            // * ---------------------------------------------------------------------------------      
+            // */
 
-            ServiceCollection.AddDbContext<CSSPDBPreferenceInMemoryContext>(options =>
-            {
-                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBPreference.FullName }");
-            });
+            //ServiceCollection.AddDbContext<CSSPDBPreferenceInMemoryContext>(options =>
+            //{
+            //    options.UseInMemoryDatabase($"Data Source={ fiCSSPDBPreference.FullName }");
+            //});
 
             ServiceProvider = ServiceCollection.BuildServiceProvider();
             Assert.NotNull(ServiceProvider);

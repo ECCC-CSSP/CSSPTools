@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using CSSPScrambleServices;
+using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
 
 namespace CSSPDesktopInstallPostBuild
@@ -9,15 +10,17 @@ namespace CSSPDesktopInstallPostBuild
         #endregion Variables
 
         #region Properties
-        private IConfiguration Configuration { get; set; }
-        private string AzureStoreConnectionString { get; set; }
+        private IConfiguration Configuration { get; }
+        private IScrambleService ScrambleService { get; }
+        private string AzureStore { get; set; }
         private string AzureStoreCSSPWebAPIsLocalPath { get; set; }
         #endregion Properties
 
         #region Constructors
-        public Startup(IConfiguration Configuration)
+        public Startup(IConfiguration Configuration, IScrambleService ScrambleService)
         {
             this.Configuration = Configuration;
+            this.ScrambleService = ScrambleService;
         }
         #endregion Constructors
 

@@ -21,6 +21,7 @@ using ReadGzFileServices;
 using CSSPDBPreferenceServices;
 using CSSPDBFilesManagementModels;
 using CSSPDBPreferenceModels;
+using CSSPScrambleServices;
 
 namespace DownloadFileServices.Tests
 {
@@ -99,10 +100,10 @@ namespace DownloadFileServices.Tests
                 options.UseSqlite($"Data Source={ fiCSSPDBPreferenceFileName.FullName }");
             });
 
-            Services.AddDbContext<CSSPDBPreferenceInMemoryContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiCSSPDBPreferenceFileName.FullName }");
-            });
+            //Services.AddDbContext<CSSPDBPreferenceInMemoryContext>(options =>
+            //{
+            //    options.UseSqlite($"Data Source={ fiCSSPDBPreferenceFileName.FullName }");
+            //});
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
@@ -110,6 +111,7 @@ namespace DownloadFileServices.Tests
             Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
             Services.AddSingleton<IDownloadFileService, DownloadFileService>();
             Services.AddSingleton<ILocalService, LocalService>();
+            Services.AddSingleton<IScrambleService, ScrambleService>();
             Services.AddSingleton<IPreferenceService, PreferenceService>();
 
             Provider = Services.BuildServiceProvider();

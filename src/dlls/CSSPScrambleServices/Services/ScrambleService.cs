@@ -13,8 +13,8 @@ namespace CSSPScrambleServices
 {
     public partial interface IScrambleService
     {
-        Task<string> Descramble(string Text);
-        Task<string> Scramble(string Text);
+        string Descramble(string Text);
+        string Scramble(string Text);
     }
     public partial class ScrambleService : IScrambleService
     {
@@ -45,7 +45,7 @@ namespace CSSPScrambleServices
         #endregion Constructors
 
         #region Functions public 
-        public async Task<string> Descramble(string Text)
+        public string Descramble(string Text)
         {
             string retStr = "";
             if (string.IsNullOrWhiteSpace(Text)) return "";
@@ -69,14 +69,14 @@ namespace CSSPScrambleServices
                 i += 1;
             }
 
-            return await Task.FromResult(retStr);
+            return retStr;
         }
-        public async Task<string> Scramble(string Text)
+        public string Scramble(string Text)
         {
             Random r = new Random();
             int Start = r.Next(1, 9);
 
-            if (Text.Length == 0) return await Task.FromResult("");
+            if (Text.Length == 0) return "";
 
             string retStr = Start.ToString();
             int i = 0;
@@ -93,7 +93,7 @@ namespace CSSPScrambleServices
                 retStr2 += retStr[j].ToString();
             }
 
-            return await Task.FromResult(retStr2);
+            return retStr2;
         }
         #endregion Functions public
 

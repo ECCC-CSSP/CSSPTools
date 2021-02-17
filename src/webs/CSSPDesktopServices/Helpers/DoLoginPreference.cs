@@ -29,37 +29,37 @@ namespace CSSPDesktopServices.Services
 
             using (HttpClient httpClient = new HttpClient())
             {
-                // Getting AzureStore
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
-                HttpResponseMessage response = httpClient.GetAsync($"{ CSSPAzureUrl }api/{ culture }/Auth/AzureStore").Result;
-                if ((int)response.StatusCode != 200)
-                {
-                    if ((int)response.StatusCode == 401)
-                    {
-                        AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.NeedToBeLoggedIn));
-                        return await Task.FromResult(false);
-                    }
-                    else
-                    {
-                        AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.ServerNotRespondingDoYouHaveInternetConnection));
-                        return await Task.FromResult(false);
-                    }
-                }
+                //// Getting AzureStore
+                //httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
+                //HttpResponseMessage response = httpClient.GetAsync($"{ CSSPAzureUrl }api/{ culture }/Auth/AzureStore").Result;
+                //if ((int)response.StatusCode != 200)
+                //{
+                //    if ((int)response.StatusCode == 401)
+                //    {
+                //        AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.NeedToBeLoggedIn));
+                //        return await Task.FromResult(false);
+                //    }
+                //    else
+                //    {
+                //        AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.ServerNotRespondingDoYouHaveInternetConnection));
+                //        return await Task.FromResult(false);
+                //    }
+                //}
 
-                string AzureStore = "";
-                try
-                {
-                    AzureStore = response.Content.ReadAsStringAsync().Result;
-                }
-                catch (Exception)
-                {
-                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotReadAzureStoreFrom_, $"{ CSSPAzureUrl }api/{ culture }/Auth/AzureStore")));
-                    return await Task.FromResult(false);
-                }
+                //string AzureStore = "";
+                //try
+                //{
+                //    AzureStore = response.Content.ReadAsStringAsync().Result;
+                //}
+                //catch (Exception)
+                //{
+                //    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotReadAzureStoreFrom_, $"{ CSSPAzureUrl }api/{ culture }/Auth/AzureStore")));
+                //    return await Task.FromResult(false);
+                //}
 
                 // Getting googleMapKey
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
-                response = httpClient.GetAsync($"{ CSSPAzureUrl }api/{ culture }/Auth/GoogleMapKey").Result;
+                HttpResponseMessage response = httpClient.GetAsync($"{ CSSPAzureUrl }api/{ culture }/Auth/GoogleMapKey").Result;
                 if ((int)response.StatusCode != 200)
                 {
                     if ((int)response.StatusCode == 401)
@@ -87,7 +87,7 @@ namespace CSSPDesktopServices.Services
 
                 List<string> VariableNameList = new List<string>()
                 {
-                    "AzureStore",
+                    //"AzureStore",
                     "LoginEmail",
                     "Password",
                     "Token",
@@ -98,7 +98,7 @@ namespace CSSPDesktopServices.Services
 
                 List<string> VariableValueList = new List<string>()
                 {
-                    AzureStore,
+                    //AzureStore,
                     loginModel.LoginEmail,
                     loginModel.Password,
                     contact.Token,

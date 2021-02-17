@@ -26,7 +26,7 @@ namespace UploadAllJsonFilesToAzure
         private IServiceCollection Services { get; set; }
         public ICreateGzFileService CreateGzFileService { get; set; }
         public ILoggedInService LoggedInService { get; set; }
-        public string AzureStoreConnectionString { get; set; }
+        public string AzureStore { get; set; }
         public string AzureStoreCSSPJSONPath { get; set; }
         #endregion Properties
 
@@ -49,8 +49,8 @@ namespace UploadAllJsonFilesToAzure
 
             Services.AddSingleton<IConfiguration>(Configuration);
 
-            AzureStoreConnectionString = Configuration.GetValue<string>("AzureStoreConnectionString");
-            if (string.IsNullOrEmpty(AzureStoreConnectionString))
+            AzureStore = Configuration.GetValue<string>("AzureStore");
+            if (string.IsNullOrEmpty(AzureStore))
             {
                 Console.WriteLine("Error: Could not find AzureStoreCSSPJSONPath withing UserSecret");
                 return false;

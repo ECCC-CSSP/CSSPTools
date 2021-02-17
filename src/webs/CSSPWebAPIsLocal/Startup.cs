@@ -94,15 +94,15 @@ namespace CSSPWebAPIsLocal
                 options.UseSqlite($"Data Source={ fiCSSPDBPreference.FullName }");
             });
 
-            /* ---------------------------------------------------------------------------------
-             * using CSSPDBPreferenceInMemory
-             * ---------------------------------------------------------------------------------      
-             */
+            ///* ---------------------------------------------------------------------------------
+            // * using CSSPDBPreferenceInMemory
+            // * ---------------------------------------------------------------------------------      
+            // */
 
-            services.AddDbContext<CSSPDBPreferenceInMemoryContext>(options =>
-            {
-                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBPreference.FullName }");
-            });
+            //services.AddDbContext<CSSPDBPreferenceInMemoryContext>(options =>
+            //{
+            //    options.UseInMemoryDatabase($"Data Source={ fiCSSPDBPreference.FullName }");
+            //});
 
             /* ---------------------------------------------------------------------------------
              * using CSSPDBFileManagement

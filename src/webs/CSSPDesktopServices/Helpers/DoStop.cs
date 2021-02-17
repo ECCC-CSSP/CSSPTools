@@ -13,21 +13,21 @@ namespace CSSPDesktopServices.Services
         {
             AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.StoppingBrowserAndCSSPWebAPIsLocalProcesses));
 
-            if (processBrowser != null)
-            {
-                if (!processBrowser.HasExited)
-                {
-                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.Stopping_, processBrowser.ProcessName)));
-                    processBrowser.Kill();
-                }
-            }
-
             if (processCSSPWebAPIsLocal != null)
             {
                 if (!processCSSPWebAPIsLocal.HasExited)
                 {
                     AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.Stopping_, processBrowser.ProcessName)));
                     processCSSPWebAPIsLocal.Kill();
+                }
+            }
+
+            if (processBrowser != null)
+            {
+                if (!processBrowser.HasExited)
+                {
+                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.Stopping_, processBrowser.ProcessName)));
+                    processBrowser.Kill();
                 }
             }
 

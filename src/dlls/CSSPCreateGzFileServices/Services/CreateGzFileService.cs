@@ -14,6 +14,9 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using LoggedInServices;
 using CSSPDBFilesManagementModels;
+using CSSPDBPreferenceServices;
+using CSSPDBPreferenceModels;
+using CSSPScrambleServices;
 
 namespace CreateGzFileServices
 {
@@ -34,23 +37,25 @@ namespace CreateGzFileServices
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
+        private IScrambleService ScrambleService { get; }
         private IEnums enums { get; }
-        private string AzureStoreConnectionString { get; set; }
+        private string AzureStore { get; set; }
         private string AzureStoreCSSPJSONPath { get; set; }
         #endregion Properties
 
         #region Constructors
-        public CreateGzFileService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, 
-            IEnums enums, CSSPDBContext db)
+        public CreateGzFileService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService,
+            IScrambleService ScrambleService, IEnums enums, CSSPDBContext db)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
+            this.ScrambleService = ScrambleService;
             this.enums = enums;
             this.db = db;
 
-            AzureStoreConnectionString = Configuration.GetValue<string>("AzureStoreConnectionString");
             AzureStoreCSSPJSONPath = Configuration.GetValue<string>("AzureStoreCSSPJSONPath");
+            AzureStore = ScrambleService.Descramble(Configuration.GetValue<string>("AzureStore"));
         }
         #endregion Constructors
 
@@ -61,7 +66,7 @@ namespace CreateGzFileServices
             return await DoCreateAllGzFiles();
         }
         public async Task<ActionResult<bool>> CreateGzFile(WebTypeEnum webType, int TVItemID, WebTypeYearEnum webTypeYear)
-        {           
+        {
             switch (webType)
             {
                 case WebTypeEnum.WebAllTVItem:

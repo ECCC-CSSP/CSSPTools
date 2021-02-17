@@ -9,7 +9,7 @@ import { AppStateService } from 'src/app/services/app-state.service';
 })
 export class AppLoadedService {
   AppLoaded$: BehaviorSubject<AppLoaded> = new BehaviorSubject<AppLoaded>(<AppLoaded>{});
-  BaseApiUrl = 'https://localhost:4447/api/';
+  BaseApiUrl = 'https://localhost:4447/api/'; 
   //BaseApiUrl = 'https://localhost:44346/api/';
 
   constructor(public httpClient: HttpClient,

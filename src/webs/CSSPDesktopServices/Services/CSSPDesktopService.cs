@@ -20,6 +20,7 @@ using CSSPDBPreferenceModels;
 using CSSPDBSearchModels;
 using CSSPDBCommandLogModels;
 using CSSPDBFilesManagementModels;
+using CSSPScrambleServices;
 
 namespace CSSPDesktopServices.Services
 {
@@ -52,7 +53,7 @@ namespace CSSPDesktopServices.Services
         // Functions
         Task<bool> CheckIfCSSPOtherFilesExist();
         Task<bool> CheckIfLoginIsRequired();
-        Task<bool> CheckIfNewTVItemsOrTVItemLanguagesExist();
+        //Task<bool> CheckIfNewTVItemsOrTVItemLanguagesExist();
         Task<bool> CheckIfUpdateIsNeeded();
         Task<bool> CheckingInternetConnection();
         Task<bool> CreateAllRequiredDirectories();
@@ -64,7 +65,7 @@ namespace CSSPDesktopServices.Services
         Task<bool> Register(RegisterModel registerModel);
         Task<bool> Start();
         Task<bool> Stop();
-        Task<bool> UpdateCSSPDBSearch();
+        //Task<bool> UpdateCSSPDBSearch();
         Task<Preference> GetPreferenceWithVariableName(string VariableName);
 
         // Events
@@ -92,6 +93,7 @@ namespace CSSPDesktopServices.Services
         public string CSSPLocalUrl { get; set; }
         public string CSSPWebAPIsLocalPath { get; set; }
         public  string CSSPOtherFilesPath { get; set; }
+        public string AzureStore { get; set; }
         public Contact contact { get; set; }
         #endregion Properties public
 
@@ -106,6 +108,7 @@ namespace CSSPDesktopServices.Services
         private IEnums enums { get; }
         private ILocalService LocalService { get; }
         private IReadGzFileService ReadGzFileService { get; }
+        private IScrambleService ScrambleService { get; }
         private IPreferenceService PreferenceService { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         private string CSSPDesktopPath { get; set; }
@@ -122,7 +125,8 @@ namespace CSSPDesktopServices.Services
         #region Constructors
         public CSSPDesktopService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, 
             ILocalService LocalService, CSSPDBContext dbLocal, CSSPDBSearchContext dbSearch, CSSPDBCommandLogContext dbCommandLog, 
-            CSSPDBPreferenceContext dbPreference, CSSPDBFilesManagementContext dbFM, IReadGzFileService ReadGzFileService, IPreferenceService PreferenceService)
+            CSSPDBPreferenceContext dbPreference, CSSPDBFilesManagementContext dbFM, IReadGzFileService ReadGzFileService, 
+            IScrambleService ScrambleService, IPreferenceService PreferenceService)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
@@ -134,6 +138,7 @@ namespace CSSPDesktopServices.Services
             this.dbPreference = dbPreference;
             this.dbFM = dbFM;
             this.ReadGzFileService = ReadGzFileService;
+            this.ScrambleService = ScrambleService;
             this.PreferenceService = PreferenceService;
 
             contact = new Contact();
@@ -161,12 +166,12 @@ namespace CSSPDesktopServices.Services
 
             return await Task.FromResult(true);
         }
-        public async Task<bool> CheckIfNewTVItemsOrTVItemLanguagesExist()
-        {
-            if (!await DoCheckIfNewTVItemsOrTVItemLanguagesExist()) return await Task.FromResult(false);
+        //public async Task<bool> CheckIfNewTVItemsOrTVItemLanguagesExist()
+        //{
+        //    if (!await DoCheckIfNewTVItemsOrTVItemLanguagesExist()) return await Task.FromResult(false);
 
-            return await Task.FromResult(true);
-        }
+        //    return await Task.FromResult(true);
+        //}
         public async Task<bool> CheckingInternetConnection()
         {
             if(!await DoCheckingInternetConnection()) return await Task.FromResult(false);
@@ -237,10 +242,10 @@ namespace CSSPDesktopServices.Services
 
             return await Task.FromResult(true);
         }
-        public async Task<bool> UpdateCSSPDBSearch()
-        {
-            return await DoUpdateCSSPDBSearch();
-        }
+        //public async Task<bool> UpdateCSSPDBSearch()
+        //{
+        //    return await DoUpdateCSSPDBSearch();
+        //}
         public async Task<Preference> GetPreferenceWithVariableName(string VariableName)
         {
             return await DoGetPreferenceWithVariableName(VariableName);

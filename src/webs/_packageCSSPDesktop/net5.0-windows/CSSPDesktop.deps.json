@@ -1379,7 +1379,6 @@
       "CSSPDesktopServices/1.0.0": {
         "dependencies": {
           "Azure.Storage.Blobs": "12.8.0",
-          "CSSPCultureServices": "1.0.0",
           "CSSPDBSearchServices": "1.0.0",
           "CSSPReadGzFileServices": "1.0.0",
           "CSSPSQLiteServices": "1.0.0",

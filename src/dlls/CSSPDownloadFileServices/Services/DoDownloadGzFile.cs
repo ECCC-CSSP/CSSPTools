@@ -33,7 +33,7 @@ namespace DownloadFileServices
 
             try
             {
-                BlobClient blobClient = new BlobClient(AzureStoreConnectionString, AzureStoreCSSPJSONPath, FileName);
+                BlobClient blobClient = new BlobClient(AzureStore, AzureStoreCSSPJSONPath, FileName);
 
                 Response response = blobClient.DownloadTo($"{ CSSPJSONPath }{ FileName }");
                 if (response.Status == 206)

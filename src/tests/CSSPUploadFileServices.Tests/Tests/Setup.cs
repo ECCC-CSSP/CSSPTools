@@ -18,6 +18,7 @@ using CSSPDBFilesManagementServices;
 using LocalServices;
 using CSSPDBFilesManagementModels;
 using CSSPDBPreferenceModels;
+using CSSPScrambleServices;
 
 namespace UploadFileServices.Tests
 {
@@ -95,16 +96,17 @@ namespace UploadFileServices.Tests
                 options.UseSqlite($"Data Source={ fiCSSPDBPreferenceFileName.FullName }");
             });
 
-            Services.AddDbContext<CSSPDBPreferenceInMemoryContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiCSSPDBPreferenceFileName.FullName }");
-            });
+            //Services.AddDbContext<CSSPDBPreferenceInMemoryContext>(options =>
+            //{
+            //    options.UseSqlite($"Data Source={ fiCSSPDBPreferenceFileName.FullName }");
+            //});
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<ICSSPDBFilesManagementService, CSSPDBFilesManagementService>();
             Services.AddSingleton<IUploadFileService, UploadFileService>();
             Services.AddSingleton<ILocalService, LocalService>();
+            Services.AddSingleton<IScrambleService, ScrambleService>();
 
             Provider = Services.BuildServiceProvider();
             Assert.NotNull(Provider);

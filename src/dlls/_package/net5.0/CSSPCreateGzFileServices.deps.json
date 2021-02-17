@@ -10,6 +10,7 @@
         "dependencies": {
           "Azure.Storage.Blobs": "12.8.0",
           "CSSPDBFilesManagementModels": "1.0.0",
+          "CSSPDBPreferenceServices": "1.0.0",
           "CSSPLoggedInServices": "1.0.0",
           "CSSPWebModels": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.2",
@@ -1204,6 +1205,24 @@
           }
         }
       },
+      "CSSPDBCommandLogModels/1.0.0": {
+        "dependencies": {
+          "CSSPEnums": "1.0.0",
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.2",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.2",
+          "Microsoft.EntityFrameworkCore": "5.0.2",
+          "Microsoft.EntityFrameworkCore.InMemory": "5.0.2",
+          "Microsoft.EntityFrameworkCore.SqlServer": "5.0.2",
+          "Microsoft.EntityFrameworkCore.Sqlite": "5.0.2",
+          "Microsoft.Extensions.Configuration": "5.0.0",
+          "Microsoft.Extensions.Configuration.Json": "5.0.0",
+          "Microsoft.Extensions.DependencyInjection": "5.0.1",
+          "System.IdentityModel.Tokens.Jwt": "6.8.0"
+        },
+        "runtime": {
+          "CSSPDBCommandLogModels.dll": {}
+        }
+      },
       "CSSPDBFilesManagementModels/1.0.0": {
         "dependencies": {
           "CSSPEnums": "1.0.0",
@@ -1240,6 +1259,44 @@
         },
         "runtime": {
           "CSSPDBModels.dll": {}
+        }
+      },
+      "CSSPDBPreferenceModels/1.0.0": {
+        "dependencies": {
+          "CSSPDBModels": "1.0.0",
+          "CSSPEnums": "1.0.0",
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.2",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.2",
+          "Microsoft.EntityFrameworkCore": "5.0.2",
+          "Microsoft.EntityFrameworkCore.InMemory": "5.0.2",
+          "Microsoft.EntityFrameworkCore.SqlServer": "5.0.2",
+          "Microsoft.EntityFrameworkCore.Sqlite": "5.0.2",
+          "Microsoft.Extensions.Configuration": "5.0.0",
+          "Microsoft.Extensions.Configuration.Json": "5.0.0",
+          "Microsoft.Extensions.DependencyInjection": "5.0.1",
+          "System.IdentityModel.Tokens.Jwt": "6.8.0"
+        },
+        "runtime": {
+          "CSSPDBPreferenceModels.dll": {}
+        }
+      },
+      "CSSPDBPreferenceServices/1.0.0": {
+        "dependencies": {
+          "Azure.Storage.Blobs": "12.8.0",
+          "CSSPDBCommandLogModels": "1.0.0",
+          "CSSPDBPreferenceModels": "1.0.0",
+          "CSSPScrambleServices": "1.0.0",
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.2",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.2",
+          "Microsoft.EntityFrameworkCore": "5.0.2",
+          "Microsoft.EntityFrameworkCore.InMemory": "5.0.2",
+          "Microsoft.EntityFrameworkCore.SqlServer": "5.0.2",
+          "Microsoft.EntityFrameworkCore.Sqlite": "5.0.2",
+          "Microsoft.Extensions.Configuration": "5.0.0",
+          "Microsoft.Extensions.Configuration.Json": "5.0.0"
+        },
+        "runtime": {
+          "CSSPDBPreferenceServices.dll": {}
         }
       },
       "CSSPEnums/1.0.0": {
@@ -1289,6 +1346,11 @@
         },
         "runtime": {
           "CSSPLoggedInServices.dll": {}
+        }
+      },
+      "CSSPScrambleServices/1.0.0": {
+        "runtime": {
+          "CSSPScrambleServices.dll": {}
         }
       },
       "CSSPWebModels/1.0.0": {
@@ -2180,12 +2242,27 @@
       "serviceable": false,
       "sha512": ""
     },
+    "CSSPDBCommandLogModels/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
     "CSSPDBFilesManagementModels/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
     "CSSPDBModels/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "CSSPDBPreferenceModels/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "CSSPDBPreferenceServices/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -2201,6 +2278,11 @@
       "sha512": ""
     },
     "CSSPLoggedInServices/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "CSSPScrambleServices/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

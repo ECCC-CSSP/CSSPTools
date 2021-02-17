@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using LocalServices;
 using CSSPDBFilesManagementServices;
 using CSSPDBFilesManagementModels;
+using CSSPScrambleServices;
 
 namespace DownloadFileServices
 {
@@ -35,9 +36,10 @@ namespace DownloadFileServices
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILocalService LocalService { get; }
+        private IScrambleService ScrambleService { get; }
         private IEnums enums { get; }
         private ICSSPDBFilesManagementService CSSPDBFilesManagementService { get; }
-        private string AzureStoreConnectionString { get; set; }
+        private string AzureStore { get; set; }
         private string AzureStoreCSSPFilesPath { get; set; }
         private string CSSPFilesPath { get; set; }
         private string CSSPOtherFilesPath { get; set; }
@@ -47,7 +49,7 @@ namespace DownloadFileServices
 
         #region Constructors
         public DownloadFileService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, ILocalService LocalService, 
-            IEnums enums, ICSSPDBFilesManagementService CSSPDBFilesManagementService) : base()
+            IScrambleService ScrambleService, IEnums enums, ICSSPDBFilesManagementService CSSPDBFilesManagementService) : base()
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
@@ -55,7 +57,7 @@ namespace DownloadFileServices
             this.enums = enums;
             this.CSSPDBFilesManagementService = CSSPDBFilesManagementService;
 
-            AzureStoreConnectionString = Configuration.GetValue<string>("AzureStoreConnectionString");
+            AzureStore = ScrambleService.Descramble(Configuration.GetValue<string>("AzureStore"));
             AzureStoreCSSPFilesPath = Configuration.GetValue<string>("AzureStoreCSSPFilesPath");
             CSSPFilesPath = Configuration.GetValue<string>("CSSPFilesPath");
             CSSPOtherFilesPath = Configuration.GetValue<string>("CSSPOtherFilesPath");

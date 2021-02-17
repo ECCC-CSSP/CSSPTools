@@ -94,7 +94,7 @@ namespace CSSPDBPreferenceServices
             {
                 PreferenceID = preference.PreferenceID,
                 VariableName = preference.VariableName,
-                VariableValue = await ScrambleService.Descramble(preference.VariableValue),
+                VariableValue = ScrambleService.Descramble(preference.VariableValue),
             };
 
             return await Task.FromResult(Ok(preferenceToReturn));
@@ -116,7 +116,7 @@ namespace CSSPDBPreferenceServices
                 {
                     PreferenceID = preference.PreferenceID,
                     VariableName = preference.VariableName,
-                    VariableValue = await ScrambleService.Descramble(preference.VariableValue),
+                    VariableValue = ScrambleService.Descramble(preference.VariableValue),
                 });
             }
 
@@ -142,7 +142,7 @@ namespace CSSPDBPreferenceServices
             {
                 PreferenceID = preference.PreferenceID,
                 VariableName = VariableName,
-                VariableValue = await ScrambleService.Descramble(preference.VariableValue)
+                VariableValue = ScrambleService.Descramble(preference.VariableValue)
             };
 
             return await Task.FromResult(Ok(preferenceToReturn));
@@ -199,7 +199,7 @@ namespace CSSPDBPreferenceServices
             try
             {
                 preference.PreferenceID = (int)LastIndex;
-                preference.VariableValue = await ScrambleService.Scramble(preference.VariableValue);
+                preference.VariableValue = ScrambleService.Scramble(preference.VariableValue);
                 dbPreference.Preferences.Add(preference);
                 dbPreference.SaveChanges();
             }
@@ -234,7 +234,7 @@ namespace CSSPDBPreferenceServices
 
             try
             {
-                preference.VariableValue = await ScrambleService.Scramble(preference.VariableValue);
+                preference.VariableValue = ScrambleService.Scramble(preference.VariableValue);
                 dbPreference.Preferences.Update(preference);
                 dbPreference.SaveChanges();
             }

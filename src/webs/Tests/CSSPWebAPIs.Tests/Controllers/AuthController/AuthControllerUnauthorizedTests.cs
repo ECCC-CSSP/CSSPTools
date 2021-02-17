@@ -37,26 +37,26 @@ namespace CSSPWebAPIs.AuthController.Tests
         #endregion Constructors
 
         #region Functions public
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task AuthController_AzureStore_Unauthorized_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
+        //[Theory]
+        //[InlineData("en-CA")]
+        ////[InlineData("fr-CA")]
+        //public async Task AuthController_AzureStore_Unauthorized_Good_Test(string culture)
+        //{
+        //    Assert.True(await Setup(culture));
 
-            CSSPAzureUrl = Configuration.GetValue<string>("CSSPAzureUrl");
-            Assert.NotNull(CSSPAzureUrl);
+        //    CSSPAzureUrl = Configuration.GetValue<string>("CSSPAzureUrl");
+        //    Assert.NotNull(CSSPAzureUrl);
 
-            using (HttpClient httpClient = new HttpClient())
-            {
-                var contentType = new MediaTypeWithQualityHeaderValue("application/json");
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "TokenWillNotWork");
-                httpClient.DefaultRequestHeaders.Accept.Add(contentType);
+        //    using (HttpClient httpClient = new HttpClient())
+        //    {
+        //        var contentType = new MediaTypeWithQualityHeaderValue("application/json");
+        //        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "TokenWillNotWork");
+        //        httpClient.DefaultRequestHeaders.Accept.Add(contentType);
 
-                HttpResponseMessage response = httpClient.GetAsync($"{ CSSPAzureUrl }api/en-CA/auth/azurestore").Result;
-                Assert.True((int)response.StatusCode == 401);
-            }
-        }
+        //        HttpResponseMessage response = httpClient.GetAsync($"{ CSSPAzureUrl }api/en-CA/auth/azurestore").Result;
+        //        Assert.True((int)response.StatusCode == 401);
+        //    }
+        //}
         #endregion Functions public
 
         #region Functions private

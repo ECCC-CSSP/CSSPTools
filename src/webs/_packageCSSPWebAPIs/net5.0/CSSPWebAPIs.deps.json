@@ -1173,11 +1173,7 @@
           "System.Threading.Tasks": "4.3.0"
         }
       },
-      "System.Collections.Immutable/5.0.0": {
-        "compile": {
-          "lib/netstandard2.0/System.Collections.Immutable.dll": {}
-        }
-      },
+      "System.Collections.Immutable/5.0.0": {},
       "System.Collections.NonGeneric/4.3.0": {
         "dependencies": {
           "System.Diagnostics.Debug": "4.3.0",
@@ -1204,11 +1200,7 @@
           "System.Runtime": "4.3.0"
         }
       },
-      "System.ComponentModel.Annotations/5.0.0": {
-        "compile": {
-          "ref/netstandard2.1/System.ComponentModel.Annotations.dll": {}
-        }
-      },
+      "System.ComponentModel.Annotations/5.0.0": {},
       "System.ComponentModel.Primitives/4.3.0": {
         "dependencies": {
           "System.ComponentModel": "4.3.0",
@@ -1767,6 +1759,7 @@
         "dependencies": {
           "Azure.Storage.Blobs": "12.8.0",
           "CSSPDBFilesManagementModels": "1.0.0",
+          "CSSPDBPreferenceServices": "1.0.0",
           "CSSPLoggedInServices": "1.0.0",
           "CSSPWebModels": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.2",
@@ -1798,6 +1791,27 @@
         },
         "compile": {
           "CSSPCultureServices.dll": {}
+        }
+      },
+      "CSSPDBCommandLogModels/1.0.0": {
+        "dependencies": {
+          "CSSPEnums": "1.0.0",
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.2",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.2",
+          "Microsoft.EntityFrameworkCore": "5.0.2",
+          "Microsoft.EntityFrameworkCore.InMemory": "5.0.2",
+          "Microsoft.EntityFrameworkCore.SqlServer": "5.0.2",
+          "Microsoft.EntityFrameworkCore.Sqlite": "5.0.2",
+          "Microsoft.Extensions.Configuration": "5.0.0",
+          "Microsoft.Extensions.Configuration.Json": "5.0.0",
+          "Microsoft.Extensions.DependencyInjection": "5.0.1",
+          "System.IdentityModel.Tokens.Jwt": "6.8.0"
+        },
+        "runtime": {
+          "CSSPDBCommandLogModels.dll": {}
+        },
+        "compile": {
+          "CSSPDBCommandLogModels.dll": {}
         }
       },
       "CSSPDBFilesManagementModels/1.0.0": {
@@ -1842,6 +1856,50 @@
         },
         "compile": {
           "CSSPDBModels.dll": {}
+        }
+      },
+      "CSSPDBPreferenceModels/1.0.0": {
+        "dependencies": {
+          "CSSPDBModels": "1.0.0",
+          "CSSPEnums": "1.0.0",
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.2",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.2",
+          "Microsoft.EntityFrameworkCore": "5.0.2",
+          "Microsoft.EntityFrameworkCore.InMemory": "5.0.2",
+          "Microsoft.EntityFrameworkCore.SqlServer": "5.0.2",
+          "Microsoft.EntityFrameworkCore.Sqlite": "5.0.2",
+          "Microsoft.Extensions.Configuration": "5.0.0",
+          "Microsoft.Extensions.Configuration.Json": "5.0.0",
+          "Microsoft.Extensions.DependencyInjection": "5.0.1",
+          "System.IdentityModel.Tokens.Jwt": "6.8.0"
+        },
+        "runtime": {
+          "CSSPDBPreferenceModels.dll": {}
+        },
+        "compile": {
+          "CSSPDBPreferenceModels.dll": {}
+        }
+      },
+      "CSSPDBPreferenceServices/1.0.0": {
+        "dependencies": {
+          "Azure.Storage.Blobs": "12.8.0",
+          "CSSPDBCommandLogModels": "1.0.0",
+          "CSSPDBPreferenceModels": "1.0.0",
+          "CSSPScrambleServices": "1.0.0",
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.2",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.2",
+          "Microsoft.EntityFrameworkCore": "5.0.2",
+          "Microsoft.EntityFrameworkCore.InMemory": "5.0.2",
+          "Microsoft.EntityFrameworkCore.SqlServer": "5.0.2",
+          "Microsoft.EntityFrameworkCore.Sqlite": "5.0.2",
+          "Microsoft.Extensions.Configuration": "5.0.0",
+          "Microsoft.Extensions.Configuration.Json": "5.0.0"
+        },
+        "runtime": {
+          "CSSPDBPreferenceServices.dll": {}
+        },
+        "compile": {
+          "CSSPDBPreferenceServices.dll": {}
         }
       },
       "CSSPDBServices/1.0.0": {
@@ -4553,12 +4611,27 @@
       "serviceable": false,
       "sha512": ""
     },
+    "CSSPDBCommandLogModels/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
     "CSSPDBFilesManagementModels/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
     "CSSPDBModels/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "CSSPDBPreferenceModels/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "CSSPDBPreferenceServices/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

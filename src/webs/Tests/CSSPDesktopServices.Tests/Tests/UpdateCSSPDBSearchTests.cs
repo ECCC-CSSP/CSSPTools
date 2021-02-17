@@ -46,8 +46,8 @@ namespace CSSPDesktopServices.Tests
             bool retBool2 = await CSSPDesktopService.CheckIfLoginIsRequired();
             Assert.True(retBool2);
 
-            bool retBool3 = await CSSPDesktopService.UpdateCSSPDBSearch();
-            Assert.True(retBool3);
+            //bool retBool3 = await CSSPDesktopService.UpdateCSSPDBSearch();
+            //Assert.True(retBool3);
         }
         #endregion Tests
 

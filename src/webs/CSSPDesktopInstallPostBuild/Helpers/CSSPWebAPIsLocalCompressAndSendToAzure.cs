@@ -12,7 +12,7 @@ namespace CSSPDesktopInstallPostBuild
     {
         private async Task<bool> CSSPWebAPIsLocalCompressAndSendToAzure()
         {
-            DirectoryInfo di = new DirectoryInfo(@"C:\CSSPTools\src\webs\_packageCSSPWebAPIsLocal\netcoreapp3.1\");
+            DirectoryInfo di = new DirectoryInfo(@"C:\CSSPTools\src\webs\_packageCSSPWebAPIsLocal\net5.0\");
 
             if (!di.Exists)
             {
@@ -44,7 +44,7 @@ namespace CSSPDesktopInstallPostBuild
 
             try
             {
-                BlobClient blobClient = new BlobClient(AzureStoreConnectionString, AzureStoreCSSPWebAPIsLocalPath, fi.Name);
+                BlobClient blobClient = new BlobClient(AzureStore, AzureStoreCSSPWebAPIsLocalPath, fi.Name);
                 Console.WriteLine($"Uploading file { fi.Name }");
                 await blobClient.UploadAsync(fi.FullName, true);
                 Console.WriteLine($"Uploaded file { fi.Name }");

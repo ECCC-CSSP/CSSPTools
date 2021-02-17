@@ -20,6 +20,7 @@ using DownloadFileServices;
 using CSSPDBPreferenceServices;
 using CSSPDBFilesManagementModels;
 using CSSPDBPreferenceModels;
+using CSSPScrambleServices;
 
 namespace ReadGzFileServices.Tests
 {
@@ -71,7 +72,7 @@ namespace ReadGzFileServices.Tests
             CSSPJSONPath = Configuration.GetValue<string>("CSSPJSONPath");
             Assert.NotNull(CSSPJSONPath);
 
-            string CSSPDBConnString = Configuration.GetValue<string>("CSSPDB2");
+            string CSSPDBConnString = Configuration.GetValue<string>("CSSPDB");
             Assert.NotNull(CSSPDBConnString);
 
             Services.AddDbContext<CSSPDBContext>(options =>
@@ -120,10 +121,10 @@ namespace ReadGzFileServices.Tests
                 options.UseSqlite($"Data Source={ fiCSSPDBPreferenceFileName.FullName }");
             });
 
-            Services.AddDbContext<CSSPDBPreferenceInMemoryContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiCSSPDBPreferenceFileName.FullName }");
-            });
+            //Services.AddDbContext<CSSPDBPreferenceInMemoryContext>(options =>
+            //{
+            //    options.UseSqlite($"Data Source={ fiCSSPDBPreferenceFileName.FullName }");
+            //});
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
@@ -131,6 +132,7 @@ namespace ReadGzFileServices.Tests
             Services.AddSingleton<IDownloadFileService, DownloadFileService>();
             Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
             Services.AddSingleton<ILocalService, LocalService>();
+            Services.AddSingleton<IScrambleService, ScrambleService>();
             Services.AddSingleton<IPreferenceService, PreferenceService>();
 
             Provider = Services.BuildServiceProvider();

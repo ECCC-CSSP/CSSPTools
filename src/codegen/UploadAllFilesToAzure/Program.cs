@@ -29,7 +29,7 @@ namespace UploadAllFilesToAzure
                 count += 1;
                 Console.WriteLine($"{ count } --- { d.FullName }");
 
-                ShareClient shareClient = new ShareClient(startup.AzureStoreConnectionString, startup.AzureStoreCSSPFilesPath);
+                ShareClient shareClient = new ShareClient(startup.AzureStore, startup.AzureStoreCSSPFilesPath);
                 ShareDirectoryClient directory = shareClient.GetDirectoryClient(d.Name);
 
                 if (!directory.Exists())

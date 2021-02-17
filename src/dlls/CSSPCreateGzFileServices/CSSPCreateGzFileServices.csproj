@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CSSPDBFilesManagementModels\CSSPDBFilesManagementModels.csproj" />
+    <ProjectReference Include="..\CSSPDBPreferenceServices\CSSPDBPreferenceServices.csproj" />
     <ProjectReference Include="..\CSSPLoggedInServices\CSSPLoggedInServices.csproj" />
     <ProjectReference Include="..\CSSPWebModels\CSSPWebModels.csproj" />
   </ItemGroup>

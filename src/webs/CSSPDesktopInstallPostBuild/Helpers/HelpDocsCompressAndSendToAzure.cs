@@ -46,7 +46,7 @@
 
 //            try
 //            {
-//                BlobClient blobClient = new BlobClient(AzureStoreConnectionString, AzureStoreCSSPWebAPIsLocalPath, fi.Name);
+//                BlobClient blobClient = new BlobClient(AzureStore, AzureStoreCSSPWebAPIsLocalPath, fi.Name);
 //                await blobClient.UploadAsync(fi.FullName, true);
 //            }
 //            catch (Exception ex)

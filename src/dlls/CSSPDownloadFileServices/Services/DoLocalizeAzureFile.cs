@@ -36,7 +36,7 @@ namespace DownloadFileServices
             ShareFileProperties shareFileProperties;
             try
             {
-                ShareClient shareClient = new ShareClient(AzureStoreConnectionString, AzureStoreCSSPFilesPath);
+                ShareClient shareClient = new ShareClient(AzureStore, AzureStoreCSSPFilesPath);
                 ShareDirectoryClient shareDirectoryClient = shareClient.GetDirectoryClient($"{ParentTVItemID}");
                 shareFileClient = shareDirectoryClient.GetFileClient(FileName);
                 shareFileProperties = shareFileClient.GetProperties();

@@ -46,6 +46,7 @@ namespace CSSPDesktop
         private ICSSPCultureService CSSPCultureService { get; set; }
         private ICSSPDesktopService CSSPDesktopService { get; set; }
         private ICSSPSQLiteService CSSPSQLiteService { get; set; }
+        private IScrambleService ScrambleService { get; set; }
         bool IsEnglish { get; set; } = true;
         #endregion Properties
 
@@ -482,6 +483,7 @@ namespace CSSPDesktop
             Services.AddSingleton<ICSSPDBFilesManagementService, CSSPDBFilesManagementService>();
             Services.AddSingleton<IDownloadFileService, DownloadFileService>();
             Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
+            Services.AddSingleton<IScrambleService, ScrambleService>();
             Services.AddSingleton<IPreferenceService, PreferenceService>();
 
             // doing CSSPLocal
@@ -564,10 +566,10 @@ namespace CSSPDesktop
                 options.UseSqlite($"Data Source={ fiCSSPDBPreference.FullName }");
             });
 
-            Services.AddDbContext<CSSPDBPreferenceInMemoryContext>(options =>
-            {
-                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBPreference.FullName }");
-            });
+            //Services.AddDbContext<CSSPDBPreferenceInMemoryContext>(options =>
+            //{
+            //    options.UseInMemoryDatabase($"Data Source={ fiCSSPDBPreference.FullName }");
+            //});
 
             Provider = Services.BuildServiceProvider();
             if (Provider == null)
@@ -584,6 +586,13 @@ namespace CSSPDesktop
             }
 
             CSSPCultureService.SetCulture("en-CA");
+
+            ScrambleService = Provider.GetService<IScrambleService>();
+            if (ScrambleService == null)
+            {
+                richTextBoxStatus.AppendText("ScrambleService should not be null\r\n");
+                return await Task.FromResult(false);
+            }
 
             CSSPDesktopService = Provider.GetService<ICSSPDesktopService>();
             if (CSSPDesktopService == null)

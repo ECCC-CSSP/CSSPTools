@@ -133,10 +133,10 @@ namespace CSSPDesktopServices.Tests
                 options.UseSqlite($"Data Source={ fiCSSPDBPreference.FullName }");
             });
 
-            Services.AddDbContext<CSSPDBPreferenceInMemoryContext>(options =>
-            {
-                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBPreference.FullName }");
-            });
+            //Services.AddDbContext<CSSPDBPreferenceInMemoryContext>(options =>
+            //{
+            //    options.UseInMemoryDatabase($"Data Source={ fiCSSPDBPreference.FullName }");
+            //});
 
             Provider = Services.BuildServiceProvider();
             Assert.NotNull(Provider);

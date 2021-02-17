@@ -205,7 +205,7 @@ namespace CSSPDBServices
                     return await Task.FromResult(BadRequest(String.Format(CSSPCultureServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail)));
                 }
                 
-                if (contact.PasswordHash == await ScrambleService.Descramble(loginModel.Password))
+                if (loginModel.Password == ScrambleService.Descramble(contact.PasswordHash))
                 {
 
                     byte[] key = Encoding.ASCII.GetBytes(Configuration.GetValue<string>("APISecret"));
@@ -235,10 +235,10 @@ namespace CSSPDBServices
         }
         public async Task<ActionResult<string>> AzureStore()
         {
-            string sto = Configuration.GetValue<string>("AzureStoreConnectionString");
+            string sto = ScrambleService.Descramble(Configuration.GetValue<string>("AzureStore"));
             if (string.IsNullOrWhiteSpace(sto))
             {
-                return await Task.FromResult(BadRequest(String.Format(CSSPCultureServicesRes.__CouldNotBeFound, "Configuration", "AzureStoreConnectionString")));
+                return await Task.FromResult(BadRequest(String.Format(CSSPCultureServicesRes.__CouldNotBeFound, "Configuration", "AzureStore")));
             }
 
             return await Task.FromResult(Ok(sto));

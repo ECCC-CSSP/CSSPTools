@@ -17,64 +17,64 @@ namespace CSSPDesktopServices.Services
 {
     public partial class CSSPDesktopService : ICSSPDesktopService
     {
-        private async Task<bool> DoCheckIfNewTVItemsOrTVItemLanguagesExist()
-        {
-            AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.CheckIfNewTVItemsOrTVItemLanguagesExist));
+        //private async Task<bool> DoCheckIfNewTVItemsOrTVItemLanguagesExist()
+        //{
+        //    AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.CheckIfNewTVItemsOrTVItemLanguagesExist));
 
-            Preference preferenceHasInternetConnection = await GetPreferenceWithVariableName("HasInternetConnection");
+        //    Preference preferenceHasInternetConnection = await GetPreferenceWithVariableName("HasInternetConnection");
 
-            if (preferenceHasInternetConnection == null)
-            {
-                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotFind_InDBLogin_, "HasInternetConnection", "Preferences")));
-                return await Task.FromResult(true);
-            }
+        //    if (preferenceHasInternetConnection == null)
+        //    {
+        //        AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotFind_InDBLogin_, "HasInternetConnection", "Preferences")));
+        //        return await Task.FromResult(true);
+        //    }
 
-            bool HasInternetConnection = bool.Parse(preferenceHasInternetConnection.VariableValue);
+        //    bool HasInternetConnection = bool.Parse(preferenceHasInternetConnection.VariableValue);
 
-            //HasNewTVItemsOrTVItemLanguages = false;
+        //    //HasNewTVItemsOrTVItemLanguages = false;
 
-            if (!HasInternetConnection)
-            {
-                return await Task.FromResult(true);
-            }
+        //    if (!HasInternetConnection)
+        //    {
+        //        return await Task.FromResult(true);
+        //    }
 
-            TVItem LastTVItem = await (from c in dbSearch.TVItems
-                                       orderby c.LastUpdateDate_UTC descending
-                                       select c).FirstOrDefaultAsync();
+        //    TVItem LastTVItem = await (from c in dbSearch.TVItems
+        //                               orderby c.LastUpdateDate_UTC descending
+        //                               select c).FirstOrDefaultAsync();
 
-            if (LastTVItem == null)
-            {
-                AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.CSSPDBSearchIsEmpty));
-                AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.UpdatingCSSPDBSearchThisCanTakeSomeTime));
+        //    if (LastTVItem == null)
+        //    {
+        //        AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.CSSPDBSearchIsEmpty));
+        //        AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.UpdatingCSSPDBSearchThisCanTakeSomeTime));
 
-                if (!await FillCSSPDBSearch()) return await Task.FromResult(false);
+        //        if (!await FillCSSPDBSearch()) return await Task.FromResult(false);
 
-                int numberOfTVItem = await (from c in dbSearch.TVItems
-                                            select c).CountAsync();
+        //        int numberOfTVItem = await (from c in dbSearch.TVItems
+        //                                    select c).CountAsync();
 
-                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CSSPDBSearchHasBeenUpdated_TVItems, numberOfTVItem.ToString())));
-            }
-            else
-            {
-                AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.CSSPDBSearchIsNotEmpty));
-                AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.UpdatingCSSPDBSearchThisCanTakeSomeTime));
+        //        AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CSSPDBSearchHasBeenUpdated_TVItems, numberOfTVItem.ToString())));
+        //    }
+        //    else
+        //    {
+        //        AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.CSSPDBSearchIsNotEmpty));
+        //        AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.UpdatingCSSPDBSearchThisCanTakeSomeTime));
 
-                int numberOfTVItem = await (from c in dbSearch.TVItems
-                                            select c).CountAsync();
+        //        int numberOfTVItem = await (from c in dbSearch.TVItems
+        //                                    select c).CountAsync();
 
-                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CSSPDBSearchHas_TVItems, numberOfTVItem.ToString())));
+        //        AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CSSPDBSearchHas_TVItems, numberOfTVItem.ToString())));
 
-                if (!await UpdateCSSPDBSearch()) return await Task.FromResult(false);
+        //        if (!await UpdateCSSPDBSearch()) return await Task.FromResult(false);
 
-                numberOfTVItem = await (from c in dbSearch.TVItems
-                                        select c).CountAsync();
+        //        numberOfTVItem = await (from c in dbSearch.TVItems
+        //                                select c).CountAsync();
 
-                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CSSPDBSearchHasBeenUpdated_TVItems, numberOfTVItem.ToString())));
-            }
+        //        AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CSSPDBSearchHasBeenUpdated_TVItems, numberOfTVItem.ToString())));
+        //    }
 
-            AppendStatus(new AppendEventArgs(""));
+        //    AppendStatus(new AppendEventArgs(""));
 
-            return await Task.FromResult(true);
-        }
+        //    return await Task.FromResult(true);
+        //}
     }
 }

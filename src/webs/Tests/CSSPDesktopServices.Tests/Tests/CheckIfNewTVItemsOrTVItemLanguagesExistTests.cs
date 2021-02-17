@@ -27,26 +27,26 @@ namespace CSSPDesktopServices.Tests
         #endregion Constructors
 
         #region Tests
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task CSSPDesktopService_CheckIfNewTVItemsOrTVItemLanguagesExist_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
+        //[Theory]
+        //[InlineData("en-CA")]
+        ////[InlineData("fr-CA")]
+        //public async Task CSSPDesktopService_CheckIfNewTVItemsOrTVItemLanguagesExist_Good_Test(string culture)
+        //{
+        //    Assert.True(await Setup(culture));
 
-            Assert.True(await CSSPDesktopService.CheckingInternetConnection());
+        //    Assert.True(await CSSPDesktopService.CheckingInternetConnection());
 
-            LoginModel loginModel = new LoginModel()
-            {
-                LoginEmail = Configuration.GetValue<string>("LoginEmail"),
-                Password = Configuration.GetValue<string>("Password"),
-            };
+        //    LoginModel loginModel = new LoginModel()
+        //    {
+        //        LoginEmail = Configuration.GetValue<string>("LoginEmail"),
+        //        Password = Configuration.GetValue<string>("Password"),
+        //    };
 
-            bool retBool = await CSSPDesktopService.Login(loginModel);
-            Assert.True(retBool);
+        //    bool retBool = await CSSPDesktopService.Login(loginModel);
+        //    Assert.True(retBool);
 
-            Assert.True(await CSSPDesktopService.CheckIfNewTVItemsOrTVItemLanguagesExist());
-        }
+        //    Assert.True(await CSSPDesktopService.CheckIfNewTVItemsOrTVItemLanguagesExist());
+        //}
         #endregion Tests
 
         #region Functions private
