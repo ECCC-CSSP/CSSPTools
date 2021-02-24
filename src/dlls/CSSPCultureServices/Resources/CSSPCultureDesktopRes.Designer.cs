@@ -124,6 +124,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Browser if it was previously open by CSSP Desktop.
+        /// </summary>
+        public static string BrowserIfOpenByCSSPDesktop {
+            get {
+                return ResourceManager.GetString("BrowserIfOpenByCSSPDesktop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         public static string butCancelUpdateText {

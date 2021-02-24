@@ -122,8 +122,7 @@ namespace CSSPWebAPIsLocal.SearchController.Tests
             LoggedInService = Provider.GetService<ILoggedInService>();
             Assert.NotNull(LoggedInService);
 
-            string LoginEmail = Configuration.GetValue<string>("LoginEmail");
-            await LoggedInService.SetLoggedInContactInfo(LoginEmail);
+            await LoggedInService.SetLoggedInLocalContactInfo();
             Assert.NotNull(LoggedInService.LoggedInContactInfo);
             Assert.NotNull(LoggedInService.LoggedInContactInfo.LoggedInContact);
 

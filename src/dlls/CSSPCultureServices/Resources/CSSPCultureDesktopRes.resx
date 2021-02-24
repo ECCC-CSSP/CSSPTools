@@ -447,4 +447,7 @@
   <data name="_StoredInTable_AndDatabase_" xml:space="preserve">
     <value>{0} stored in table {1} and {2}</value>
   </data>
+  <data name="BrowserIfOpenByCSSPDesktop" xml:space="preserve">
+    <value>Browser if it was previously open by CSSP Desktop</value>
+  </data>
 </root>
