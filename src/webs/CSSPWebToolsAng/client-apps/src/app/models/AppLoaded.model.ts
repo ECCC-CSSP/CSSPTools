@@ -52,6 +52,9 @@ import { PolSourceSite } from './generated/db/PolSourceSite.model';
 import { Subscription } from 'rxjs';
 import { StatMWQMRun } from './generated/web/StatMWQMRun.model';
 import { StatMWQMSite } from './generated/web/StatMWQMSite.model';
+import { WebAllCountries } from './generated/web/WebAllCountries.model';
+import { WebAllMunicipalities } from './generated/web/WebAllMunicipalities.model';
+import { WebAllProvinces } from './generated/web/WebAllProvinces.model';
 
 export interface AppLoaded {
     LoggedInContact?: Contact;
@@ -100,6 +103,9 @@ export interface AppLoaded {
     // Complete list not related to a TVItemID
     WebContact?: WebContact;
     AdminContactList?: Contact[];
+    WebAllCountries?: WebAllCountries;
+    WebAllMunicipalities?: WebAllMunicipalities;
+    WebAllProvinces?: WebAllProvinces;
     WebHelpDoc?: WebHelpDoc;
     WebMWQMLookupMPN?: WebMWQMLookupMPN;
     WebPolSourceGrouping?: WebPolSourceGrouping;

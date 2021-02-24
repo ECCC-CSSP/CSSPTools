@@ -69,6 +69,12 @@ namespace CreateGzFileServices
         {
             switch (webType)
             {
+                case WebTypeEnum.WebAllCountries:
+                    return await DoCreateWebAllCountriesGzFile();
+                case WebTypeEnum.WebAllMunicipalities:
+                    return await DoCreateWebAllMunicipalitiesGzFile();
+                case WebTypeEnum.WebAllProvinces:
+                    return await DoCreateWebAllProvincesGzFile();
                 case WebTypeEnum.WebAllTVItem:
                     return await DoCreateWebAllTVItemGzFile();
                 case WebTypeEnum.WebAllTVItemLanguage:

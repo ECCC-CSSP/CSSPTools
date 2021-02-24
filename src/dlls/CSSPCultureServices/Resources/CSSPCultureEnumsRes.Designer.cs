@@ -9210,6 +9210,33 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to WebAllCountries.
+        /// </summary>
+        public static string WebTypeEnumWebAllCountries {
+            get {
+                return ResourceManager.GetString("WebTypeEnumWebAllCountries", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebAllMunicipalities.
+        /// </summary>
+        public static string WebTypeEnumWebAllMunicipalities {
+            get {
+                return ResourceManager.GetString("WebTypeEnumWebAllMunicipalities", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebAllProvinces.
+        /// </summary>
+        public static string WebTypeEnumWebAllProvinces {
+            get {
+                return ResourceManager.GetString("WebTypeEnumWebAllProvinces", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to WebAllTVItem.
         /// </summary>
         public static string WebTypeEnumWebAllTVItem {

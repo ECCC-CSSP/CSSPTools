@@ -67,6 +67,15 @@ namespace ReadGzFileServices
 
             switch (webType)
             {
+                case WebTypeEnum.WebAllCountries:
+                    fileName = $"WebAllCountries.gz";
+                    break;
+                case WebTypeEnum.WebAllMunicipalities:
+                    fileName = $"WebAllMunicipalities.gz";
+                    break;
+                case WebTypeEnum.WebAllProvinces:
+                    fileName = $"WebAllProvinces.gz";
+                    break;
                 case WebTypeEnum.WebArea:
                     fileName = $"WebArea_{ TVItemID }.gz";
                     break;

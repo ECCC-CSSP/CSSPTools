@@ -35,6 +35,12 @@ namespace CreateGzFileServices
             await CreateGzFile(WebTypeEnum.WebRoot, 0, 0);
             Console.WriteLine("CreateWebTideLocation doing...");
             await CreateGzFile(WebTypeEnum.WebTideLocation, 0, 0);
+            Console.WriteLine("CreateAllMunicipalities doing...");
+            await CreateGzFile(WebTypeEnum.WebAllMunicipalities, 0, 0);
+            Console.WriteLine("CreateAllProvinces doing...");
+            await CreateGzFile(WebTypeEnum.WebAllProvinces, 0, 0);
+            Console.WriteLine("CreateAllCountries doing...");
+            await CreateGzFile(WebTypeEnum.WebAllCountries, 0, 0);
             Console.WriteLine("CreateWebAllTVItem doing...");
             await CreateGzFile(WebTypeEnum.WebAllTVItem, 0, 0);
             Console.WriteLine("CreateWebAllTVItemLanguage doing...");

@@ -142,6 +142,21 @@ namespace ReadGzFileServices
                     {
                         switch (typeof(T).Name)
                         {
+                            case "WebAllCountries":
+                                {
+                                    WebAppLoadedService.webAppLoaded.WebAllCountries = JsonSerializer.Deserialize<WebAllCountries>(sr.ReadToEnd());
+                                }
+                                break;
+                            case "WebAllMunicipalities":
+                                {
+                                    WebAppLoadedService.webAppLoaded.WebAllMunicipalities = JsonSerializer.Deserialize<WebAllMunicipalities>(sr.ReadToEnd());
+                                }
+                                break;
+                            case "WebAllProvinces":
+                                {
+                                    WebAppLoadedService.webAppLoaded.WebAllProvinces = JsonSerializer.Deserialize<WebAllProvinces>(sr.ReadToEnd());
+                                }
+                                break;
                             case "WebArea":
                                 {
                                     WebAppLoadedService.webAppLoaded.WebArea = JsonSerializer.Deserialize<WebArea>(sr.ReadToEnd());

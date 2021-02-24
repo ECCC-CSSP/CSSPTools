@@ -3273,4 +3273,13 @@
   <data name="DBCommandEnumOriginal" xml:space="preserve">
     <value>Original</value>
   </data>
+  <data name="WebTypeEnumWebAllCountries" xml:space="preserve">
+    <value>WebAllCountries</value>
+  </data>
+  <data name="WebTypeEnumWebAllMunicipalities" xml:space="preserve">
+    <value>WebAllMunicipalities</value>
+  </data>
+  <data name="WebTypeEnumWebAllProvinces" xml:space="preserve">
+    <value>WebAllProvinces</value>
+  </data>
 </root>

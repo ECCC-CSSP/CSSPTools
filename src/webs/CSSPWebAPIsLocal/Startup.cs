@@ -70,7 +70,7 @@ namespace CSSPWebAPIsLocal
             services.AddDbContext<CSSPDBLocalContext>(options =>
             {
                 options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
-            }, ServiceLifetime.Transient);
+            });
 
             /* ---------------------------------------------------------------------------------
             /* ---------------------------------------------------------------------------------
@@ -84,7 +84,7 @@ namespace CSSPWebAPIsLocal
             services.AddDbContext<CSSPDBPreferenceContext>(options =>
             {
                 options.UseSqlite($"Data Source={ fiCSSPDBPreference.FullName }");
-            }, ServiceLifetime.Transient);
+            });
 
             /* ---------------------------------------------------------------------------------
              * using CSSPDBFileManagement
@@ -97,7 +97,7 @@ namespace CSSPWebAPIsLocal
             services.AddDbContext<CSSPDBFilesManagementContext>(options =>
             {
                 options.UseSqlite($"Data Source={ fiCSSPDBFilesManagement.FullName }");
-            }, ServiceLifetime.Transient);
+            });
 
             /* ---------------------------------------------------------------------------------
              * using CSSPDBCommandLog
@@ -110,7 +110,7 @@ namespace CSSPWebAPIsLocal
             services.AddDbContext<CSSPDBCommandLogContext>(options =>
             {
                 options.UseSqlite($"Data Source={ fiCSSPDBCommandLog.FullName }");
-            }, ServiceLifetime.Transient);
+            });
 
             /* ---------------------------------------------------------------------------------
              * using CSSPDBSearch
@@ -123,24 +123,24 @@ namespace CSSPWebAPIsLocal
             services.AddDbContext<CSSPDBSearchContext>(options =>
             {
                 options.UseSqlite($"Data Source={ fiCSSPDBSearch.FullName }");
-            }, ServiceLifetime.Transient);
+            });
 
 
-            services.AddTransient<ICSSPCultureService, CSSPCultureService>();
-            services.AddTransient<IEnums, Enums>();
-            services.AddTransient<IScrambleService, ScrambleService>();
-            services.AddTransient<ILoggedInService, LoggedInService>();
-            services.AddTransient<ILoginModelService, LoginModelService>();
+            services.AddScoped<ICSSPCultureService, CSSPCultureService>();
+            services.AddScoped<IEnums, Enums>();
+            services.AddScoped<IScrambleService, ScrambleService>();
+            services.AddScoped<ILoggedInService, LoggedInService>();
+            services.AddScoped<ILoginModelService, LoginModelService>();
 
             //LoadAllDBServices(services);
 
-            services.AddTransient<ICSSPDBFilesManagementService, CSSPDBFilesManagementService>();
-            services.AddTransient<IDownloadFileService, DownloadFileService>();
-            services.AddTransient<IReadGzFileService, ReadGzFileService>();
-            services.AddTransient<IPreferenceService, PreferenceService>();
-            services.AddTransient<ICSSPDBSearchService, CSSPDBSearchService>();
+            services.AddScoped<ICSSPDBFilesManagementService, CSSPDBFilesManagementService>();
+            services.AddScoped<IDownloadFileService, DownloadFileService>();
+            services.AddScoped<IReadGzFileService, ReadGzFileService>();
+            services.AddScoped<IPreferenceService, PreferenceService>();
+            services.AddScoped<ICSSPDBSearchService, CSSPDBSearchService>();
 
-            services.AddSingleton<IWebAppLoadedService, WebAppLoadedService>();
+            services.AddScoped<IWebAppLoadedService, WebAppLoadedService>();
 
             services.AddSpaStaticFiles(configuration =>
             {

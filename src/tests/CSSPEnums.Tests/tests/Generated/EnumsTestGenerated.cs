@@ -5370,6 +5370,15 @@ namespace CSSPEnums.Tests
                     case WebTypeEnum.WebAllTVItemLanguage:
                         Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebAllTVItemLanguage, retStr);
                         break;
+                    case WebTypeEnum.WebAllMunicipalities:
+                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebAllMunicipalities, retStr);
+                        break;
+                    case WebTypeEnum.WebAllProvinces:
+                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebAllProvinces, retStr);
+                        break;
+                    case WebTypeEnum.WebAllCountries:
+                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebAllCountries, retStr);
+                        break;
                     default:
                         Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
                         break;
@@ -9297,6 +9306,9 @@ namespace CSSPEnums.Tests
                      case WebTypeEnum.WebAllTVItem:
                      case WebTypeEnum.WebPolSourceSiteEffectTerm:
                      case WebTypeEnum.WebAllTVItemLanguage:
+                     case WebTypeEnum.WebAllMunicipalities:
+                     case WebTypeEnum.WebAllProvinces:
+                     case WebTypeEnum.WebAllCountries:
                         Assert.Equal("", retStr);
                         break;
                     default:

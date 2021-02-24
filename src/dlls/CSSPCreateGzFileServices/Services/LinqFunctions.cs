@@ -91,7 +91,6 @@ namespace CreateGzFileServices
             {
                 return await (from c in db.TVItems
                               where c.TVPath.Contains(ParentTVItem.TVPath + "p")
-                              && c.ParentID == ParentTVItem.TVItemID
                               && (c.TVType == TVTypeEnum.MikeBoundaryConditionMesh
                               || c.TVType == TVTypeEnum.MikeBoundaryConditionWebTide)
                               select c).AsNoTracking().ToListAsync();
@@ -99,7 +98,6 @@ namespace CreateGzFileServices
 
             return await (from c in db.TVItems
                           where c.TVPath.Contains(ParentTVItem.TVPath + "p")
-                          && c.ParentID == ParentTVItem.TVItemID
                           && c.TVType == tvType
                           select c).AsNoTracking().ToListAsync();
         }
@@ -111,7 +109,6 @@ namespace CreateGzFileServices
                               from cl in db.TVItemLanguages
                               where c.TVItemID == cl.TVItemID
                               && c.TVPath.Contains(ParentTVItem.TVPath + "p")
-                              && c.ParentID == ParentTVItem.TVItemID
                               && (c.TVType == TVTypeEnum.MikeBoundaryConditionMesh
                               || c.TVType == TVTypeEnum.MikeBoundaryConditionWebTide)
                               select cl).AsNoTracking().ToListAsync();
@@ -122,7 +119,6 @@ namespace CreateGzFileServices
                           from cl in db.TVItemLanguages
                           where c.TVItemID == cl.TVItemID
                           && c.TVPath.Contains(ParentTVItem.TVPath + "p")
-                          && c.ParentID == ParentTVItem.TVItemID
                           && c.TVType == tvType
                           select cl).AsNoTracking().ToListAsync();
 
@@ -135,7 +131,6 @@ namespace CreateGzFileServices
                               from cs in db.TVItemStats
                               where c.TVItemID == cs.TVItemID
                               && c.TVPath.Contains(ParentTVItem.TVPath + "p")
-                              && c.ParentID == ParentTVItem.TVItemID
                               && (c.TVType == TVTypeEnum.MikeBoundaryConditionMesh
                               || c.TVType == TVTypeEnum.MikeBoundaryConditionWebTide)
                               select cs).AsNoTracking().ToListAsync();
@@ -145,7 +140,6 @@ namespace CreateGzFileServices
                           from cs in db.TVItemStats
                           where c.TVItemID == cs.TVItemID
                           && c.TVPath.Contains(ParentTVItem.TVPath + "p")
-                          && c.ParentID == ParentTVItem.TVItemID
                           && c.TVType == tvType
                           select cs).AsNoTracking().ToListAsync();
         }
@@ -157,7 +151,6 @@ namespace CreateGzFileServices
                               from mi in db.MapInfos
                               where c.TVItemID == mi.TVItemID
                               && c.TVPath.Contains(ParentTVItem.TVPath + "p")
-                              && c.ParentID == ParentTVItem.TVItemID
                               && (c.TVType == TVTypeEnum.MikeBoundaryConditionMesh
                               || c.TVType == TVTypeEnum.MikeBoundaryConditionWebTide)
                               select mi).AsNoTracking().ToListAsync();
@@ -167,7 +160,6 @@ namespace CreateGzFileServices
                           from mi in db.MapInfos
                           where c.TVItemID == mi.TVItemID
                           && c.TVPath.Contains(ParentTVItem.TVPath + "p")
-                          && c.ParentID == ParentTVItem.TVItemID
                           && c.TVType == tvType
                           select mi).AsNoTracking().ToListAsync();
         }
@@ -181,7 +173,6 @@ namespace CreateGzFileServices
                               where c.TVItemID == mi.TVItemID
                               && mi.MapInfoID == mip.MapInfoID
                               && c.TVPath.Contains(ParentTVItem.TVPath + "p")
-                              && c.ParentID == ParentTVItem.TVItemID
                               && (c.TVType == TVTypeEnum.MikeBoundaryConditionMesh
                               || c.TVType == TVTypeEnum.MikeBoundaryConditionWebTide)
                               select mip).AsNoTracking().ToListAsync();
@@ -193,7 +184,6 @@ namespace CreateGzFileServices
                           where c.TVItemID == mi.TVItemID
                           && mi.MapInfoID == mip.MapInfoID
                           && c.TVPath.Contains(ParentTVItem.TVPath + "p")
-                          && c.ParentID == ParentTVItem.TVItemID
                           && c.TVType == tvType
                           select mip).AsNoTracking().ToListAsync();
         }
@@ -209,7 +199,6 @@ namespace CreateGzFileServices
                           from ci in db.Infrastructures
                           where c.TVItemID == ci.InfrastructureTVItemID
                           && c.TVPath.Contains(TVItemMunicipality.TVPath + "p")
-                          && c.ParentID == TVItemMunicipality.TVItemID
                           && c.TVType == TVTypeEnum.Infrastructure
                           select ci).AsNoTracking().ToListAsync();
         }
@@ -219,7 +208,6 @@ namespace CreateGzFileServices
                           from ci in db.MikeScenarios
                           where c.TVItemID == ci.MikeScenarioTVItemID
                           && c.TVPath.Contains(TVItemMunicipality.TVPath + "p")
-                          && c.ParentID == TVItemMunicipality.TVItemID
                           && c.TVType == TVTypeEnum.MikeScenario
                           select ci).AsNoTracking().ToListAsync();
         }
@@ -229,7 +217,6 @@ namespace CreateGzFileServices
                           from ci in db.MikeSources
                           where c.TVItemID == ci.MikeSourceTVItemID
                           && c.TVPath.Contains(TVItemMunicipality.TVPath + "p")
-                          && c.ParentID == TVItemMunicipality.TVItemID
                           && c.TVType == TVTypeEnum.MikeSource
                           select ci).AsNoTracking().ToListAsync();
         }
@@ -241,7 +228,6 @@ namespace CreateGzFileServices
                           where c.TVItemID == ci.MikeSourceTVItemID
                           && ci.MikeSourceID == se.MikeSourceID
                           && c.TVPath.Contains(TVItemMunicipality.TVPath + "p")
-                          && c.ParentID == TVItemMunicipality.TVItemID
                           && c.TVType == TVTypeEnum.MikeSource
                           select se).AsNoTracking().ToListAsync();
         }
@@ -254,7 +240,6 @@ namespace CreateGzFileServices
                           && (c.TVItemID == t.FromTVItemID
                           || c.TVItemID == t.ToTVItemID)
                           && c.TVPath.Contains(TVItemMunicipality.TVPath + "p")
-                          && c.ParentID == TVItemMunicipality.TVItemID
                           && c.TVType == TVTypeEnum.Infrastructure
                           && t.FromTVType == TVTypeEnum.Infrastructure
                           && t.ToTVType == TVTypeEnum.Infrastructure
@@ -267,7 +252,6 @@ namespace CreateGzFileServices
                           from a in db.Addresses
                           where c.TVItemID == ci.InfrastructureTVItemID
                           && c.TVPath.Contains(TVItemMunicipality.TVPath + "p")
-                          && c.ParentID == TVItemMunicipality.TVItemID
                           && c.TVType == TVTypeEnum.Infrastructure
                           && ci.CivicAddressTVItemID != null
                           && ci.CivicAddressTVItemID == a.AddressTVItemID
@@ -281,7 +265,6 @@ namespace CreateGzFileServices
                           where c.TVItemID == ci.InfrastructureTVItemID
                           && c.TVItemID == mi.TVItemID
                           && c.TVPath.Contains(TVItemMunicipality.TVPath + "p")
-                          && c.ParentID == TVItemMunicipality.TVItemID
                           && c.TVType == TVTypeEnum.Infrastructure
                           select mi).AsNoTracking().ToListAsync();
         }
@@ -295,7 +278,6 @@ namespace CreateGzFileServices
                           && c.TVItemID == mi.TVItemID
                           && mi.MapInfoID == mip.MapInfoID
                           && c.TVPath.Contains(TVItemMunicipality.TVPath + "p")
-                          && c.ParentID == TVItemMunicipality.TVItemID
                           && c.TVType == TVTypeEnum.Infrastructure
                           select mip).AsNoTracking().ToListAsync();
         }
@@ -307,7 +289,6 @@ namespace CreateGzFileServices
                           where c.TVItemID == ci.InfrastructureTVItemID
                           && ci.InfrastructureID == cil.InfrastructureID
                           && c.TVPath.Contains(TVItemMunicipality.TVPath + "p")
-                          && c.ParentID == TVItemMunicipality.TVItemID
                           && c.TVType == TVTypeEnum.Infrastructure
                           select cil).AsNoTracking().ToListAsync();
         }
@@ -319,7 +300,6 @@ namespace CreateGzFileServices
                           where c.TVItemID == ci.InfrastructureTVItemID
                           && ci.InfrastructureTVItemID == bm.InfrastructureTVItemID
                           && c.TVPath.Contains(TVItemMunicipality.TVPath + "p")
-                          && c.ParentID == TVItemMunicipality.TVItemID
                           && c.TVType == TVTypeEnum.Infrastructure
                           select bm).AsNoTracking().ToListAsync();
         }
@@ -333,7 +313,6 @@ namespace CreateGzFileServices
                           && ci.InfrastructureTVItemID == bm.InfrastructureTVItemID
                           && bm.BoxModelID == bml.BoxModelID
                           && c.TVPath.Contains(TVItemMunicipality.TVPath + "p")
-                          && c.ParentID == TVItemMunicipality.TVItemID
                           && c.TVType == TVTypeEnum.Infrastructure
                           select bml).AsNoTracking().ToListAsync();
         }
@@ -347,7 +326,6 @@ namespace CreateGzFileServices
                           && ci.InfrastructureTVItemID == bm.InfrastructureTVItemID
                           && bm.BoxModelID == bmr.BoxModelID
                           && c.TVPath.Contains(TVItemMunicipality.TVPath + "p")
-                          && c.ParentID == TVItemMunicipality.TVItemID
                           && c.TVType == TVTypeEnum.Infrastructure
                           select bmr).AsNoTracking().ToListAsync();
         }
@@ -359,7 +337,6 @@ namespace CreateGzFileServices
                           where c.TVItemID == ci.InfrastructureTVItemID
                           && ci.InfrastructureTVItemID == vps.InfrastructureTVItemID
                           && c.TVPath.Contains(TVItemMunicipality.TVPath + "p")
-                          && c.ParentID == TVItemMunicipality.TVItemID
                           && c.TVType == TVTypeEnum.Infrastructure
                           select vps).AsNoTracking().ToListAsync();
         }
@@ -373,7 +350,6 @@ namespace CreateGzFileServices
                           && ci.InfrastructureTVItemID == vps.InfrastructureTVItemID
                           && vps.VPScenarioID == vpsl.VPScenarioID
                           && c.TVPath.Contains(TVItemMunicipality.TVPath + "p")
-                          && c.ParentID == TVItemMunicipality.TVItemID
                           && c.TVType == TVTypeEnum.Infrastructure
                           select vpsl).AsNoTracking().ToListAsync();
         }
@@ -387,7 +363,6 @@ namespace CreateGzFileServices
                           && ci.InfrastructureTVItemID == vps.InfrastructureTVItemID
                           && vps.VPScenarioID == vpa.VPScenarioID
                           && c.TVPath.Contains(TVItemMunicipality.TVPath + "p")
-                          && c.ParentID == TVItemMunicipality.TVItemID
                           && c.TVType == TVTypeEnum.Infrastructure
                           select vpa).AsNoTracking().ToListAsync();
         }
@@ -401,7 +376,6 @@ namespace CreateGzFileServices
                           && ci.InfrastructureTVItemID == vps.InfrastructureTVItemID
                           && vps.VPScenarioID == vpr.VPScenarioID
                           && c.TVPath.Contains(TVItemMunicipality.TVPath + "p")
-                          && c.ParentID == TVItemMunicipality.TVItemID
                           && c.TVType == TVTypeEnum.Infrastructure
                           select vpr).AsNoTracking().ToListAsync();
         }
@@ -506,7 +480,6 @@ namespace CreateGzFileServices
                           from sa in db.MWQMSamples
                           where c.TVItemID == sa.MWQMSiteTVItemID
                           && c.TVPath.Contains(TVItemSubsector.TVPath + "p")
-                          && c.ParentID == TVItemSubsector.TVItemID
                           && c.TVType == TVTypeEnum.MWQMSite
                           && sa.SampleDateTime_Local >= StartDate
                           && sa.SampleDateTime_Local <= EndDate
@@ -521,7 +494,6 @@ namespace CreateGzFileServices
                                                 from sa in db.MWQMSamples
                                                 where c.TVItemID == sa.MWQMSiteTVItemID
                                                 && c.TVPath.Contains(TVItemSubsector.TVPath + "p")
-                                                && c.ParentID == TVItemSubsector.TVItemID
                                                 && c.TVType == TVTypeEnum.MWQMSite
                                                 && sa.SampleDateTime_Local >= StartDate
                                                 && sa.SampleDateTime_Local <= EndDate
@@ -537,7 +509,6 @@ namespace CreateGzFileServices
                           from r in db.MWQMRuns
                           where c.TVItemID == r.MWQMRunTVItemID
                           && c.TVPath.Contains(TVItemSubsector.TVPath + "p")
-                          && c.ParentID == TVItemSubsector.TVItemID
                           && c.TVType == TVTypeEnum.MWQMRun
                           select r).AsNoTracking().ToListAsync();
         }
@@ -547,7 +518,6 @@ namespace CreateGzFileServices
                                              from r in db.MWQMRuns
                                              where c.TVItemID == r.MWQMRunTVItemID
                                              && c.TVPath.Contains(TVItemSubsector.TVPath + "p")
-                                             && c.ParentID == TVItemSubsector.TVItemID
                                              && c.TVType == TVTypeEnum.MWQMRun
                                              select r.MWQMRunID).ToListAsync();
 
@@ -563,7 +533,6 @@ namespace CreateGzFileServices
                           where c.TVItemID == cl.TVItemID
                           && c.TVItemID == s.MWQMSiteTVItemID
                           && c.TVPath.Contains(TVItemSubsector.TVPath + "p")
-                          && c.ParentID == TVItemSubsector.TVItemID
                           && c.TVType == TVTypeEnum.MWQMSite
                           && cl.Language == LanguageEnum.en
                           orderby c.IsActive, cl.TVText
@@ -577,7 +546,6 @@ namespace CreateGzFileServices
                                               where c.TVItemID == cl.TVItemID
                                               && c.TVItemID == s.MWQMSiteTVItemID
                                               && c.TVPath.Contains(TVItemSubsector.TVPath + "p")
-                                              && c.ParentID == TVItemSubsector.TVItemID
                                               && c.TVType == TVTypeEnum.MWQMSite
                                               && cl.Language == LanguageEnum.en
                                               orderby c.IsActive, cl.TVText
@@ -599,7 +567,6 @@ namespace CreateGzFileServices
                           from cs in db.ClimateSites
                           where c.TVItemID == cs.ClimateSiteTVItemID
                           && c.TVPath.Contains(TVItemProvince.TVPath + "p")
-                          && c.ParentID == TVItemProvince.TVItemID
                           && c.TVType == TVTypeEnum.ClimateSite
                           select cs).AsNoTracking().ToListAsync();
         }
@@ -609,7 +576,6 @@ namespace CreateGzFileServices
                           from hs in db.HydrometricSites
                           where c.TVItemID == hs.HydrometricSiteTVItemID
                           && c.TVPath.Contains(TVItemProvince.TVPath + "p")
-                          && c.ParentID == TVItemProvince.TVItemID
                           && c.TVType == TVTypeEnum.HydrometricSite
                           select hs).AsNoTracking().ToListAsync();
         }
@@ -621,7 +587,6 @@ namespace CreateGzFileServices
                           where c.TVItemID == hs.HydrometricSiteTVItemID
                           && hs.HydrometricSiteID == rc.HydrometricSiteID
                           && c.TVPath.Contains(TVItemProvince.TVPath + "p")
-                          && c.ParentID == TVItemProvince.TVItemID
                           && c.TVType == TVTypeEnum.HydrometricSite
                           select rc).AsNoTracking().ToListAsync();
         }
@@ -635,7 +600,6 @@ namespace CreateGzFileServices
                           && hs.HydrometricSiteID == rc.HydrometricSiteID
                           && rc.RatingCurveID == rcv.RatingCurveID
                           && c.TVPath.Contains(TVItemProvince.TVPath + "p")
-                          && c.ParentID == TVItemProvince.TVItemID
                           && c.TVType == TVTypeEnum.HydrometricSite
                           select rcv).AsNoTracking().ToListAsync();
         }
@@ -675,7 +639,6 @@ namespace CreateGzFileServices
                           from bc in db.MikeBoundaryConditions
                           where c.TVItemID == bc.MikeBoundaryConditionTVItemID
                           && c.TVPath.Contains(tvItemMikeScenario.TVPath + "p")
-                          && c.ParentID == tvItemMikeScenario.TVItemID
                           && (c.TVType == TVTypeEnum.MikeBoundaryConditionMesh
                           || c.TVType == TVTypeEnum.MikeBoundaryConditionWebTide)
                           select bc).AsNoTracking().ToListAsync();
@@ -686,7 +649,6 @@ namespace CreateGzFileServices
                           from ms in db.MikeSources
                           where c.TVItemID == ms.MikeSourceTVItemID
                           && c.TVPath.Contains(tvItemMikeScenario.TVPath + "p")
-                          && c.ParentID == tvItemMikeScenario.TVItemID
                           && c.TVType == TVTypeEnum.MikeSource
                           select ms).AsNoTracking().ToListAsync();
         }
@@ -698,7 +660,6 @@ namespace CreateGzFileServices
                           where c.TVItemID == ms.MikeSourceTVItemID
                           && ms.MikeSourceID == se.MikeSourceID
                           && c.TVPath.Contains(TVItemMikeScenario.TVPath + "p")
-                          && c.ParentID == TVItemMikeScenario.TVItemID
                           && c.TVType == TVTypeEnum.MikeSource
                           select se).AsNoTracking().ToListAsync();
         }
@@ -810,7 +771,6 @@ namespace CreateGzFileServices
                           from p in db.PolSourceSites
                           where c.TVItemID == p.PolSourceSiteTVItemID
                           && c.TVPath.Contains(TVItemSubsector.TVPath + "p")
-                          && c.ParentID == TVItemSubsector.TVItemID
                           && c.TVType == TVTypeEnum.PolSourceSite
                           select p).AsNoTracking().ToListAsync();
         }
@@ -822,7 +782,6 @@ namespace CreateGzFileServices
                           where c.TVItemID == p.PolSourceSiteTVItemID
                           && p.CivicAddressTVItemID != null
                           && c.TVPath.Contains(TVItemSubsector.TVPath + "p")
-                          && c.ParentID == TVItemSubsector.TVItemID
                           && c.TVType == TVTypeEnum.PolSourceSite
                           && p.CivicAddressTVItemID == a.AddressTVItemID
                           select a).AsNoTracking().ToListAsync();
@@ -835,7 +794,6 @@ namespace CreateGzFileServices
                           where c.TVItemID == p.PolSourceSiteTVItemID
                           && p.PolSourceSiteID == po.PolSourceSiteID
                           && c.TVPath.Contains(TVItemSubsector.TVPath + "p")
-                          && c.ParentID == TVItemSubsector.TVItemID
                           && c.TVType == TVTypeEnum.PolSourceSite
                           select po).AsNoTracking().ToListAsync();
         }
@@ -849,7 +807,6 @@ namespace CreateGzFileServices
                           && p.PolSourceSiteID == po.PolSourceSiteID
                           && po.PolSourceObservationID == poi.PolSourceObservationID
                           && c.TVPath.Contains(TVItemSubsector.TVPath + "p")
-                          && c.ParentID == TVItemSubsector.TVItemID
                           && c.TVType == TVTypeEnum.PolSourceSite
                           select poi).AsNoTracking().ToListAsync();
         }
@@ -861,7 +818,6 @@ namespace CreateGzFileServices
                           where c.TVItemID == p.PolSourceSiteTVItemID
                           && p.PolSourceSiteID == pe.PolSourceSiteOrInfrastructureTVItemID
                           && c.TVPath.Contains(TVItemSubsector.TVPath + "p")
-                          && c.ParentID == TVItemSubsector.TVItemID
                           && c.TVType == TVTypeEnum.PolSourceSite
                           select pe).AsNoTracking().ToListAsync();
         }
@@ -875,7 +831,6 @@ namespace CreateGzFileServices
                           && p.PolSourceSiteID == pe.PolSourceSiteOrInfrastructureTVItemID
                           && pe.PolSourceSiteEffectID == pet.PolSourceSiteEffectTermID
                           && c.TVPath.Contains(TVItemSubsector.TVPath + "p")
-                          && c.ParentID == TVItemSubsector.TVItemID
                           && c.TVType == TVTypeEnum.PolSourceSite
                           select pet).AsNoTracking().ToListAsync();
         }

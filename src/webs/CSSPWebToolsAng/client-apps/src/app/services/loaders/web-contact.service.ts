@@ -11,7 +11,7 @@ import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { AppLanguageService } from '../app-language.service';
 import { ComponentDataLoadedService } from '../helpers/component-data-loaded.service';
-import { WebHelpDocService } from './web-help-doc.service';
+import { WebAllCountriesService } from './web-all-countries.service';
 
 
 @Injectable({
@@ -25,7 +25,7 @@ export class WebContactService {
         private appStateService: AppStateService,
         private appLoadedService: AppLoadedService,
         private appLanguageService: AppLanguageService,
-        private webHelpDocService: WebHelpDocService,
+        private webAllCountriesService: WebAllCountriesService,
         private componentDataLoadedService: ComponentDataLoadedService) {
     }
 
@@ -55,7 +55,7 @@ export class WebContactService {
                 this.UpdateWebContact(x);
                 console.debug(x);
                 if (this.DoOther) {
-                    this.DoWebHelpDoc();
+                    this.DoWebAllCountries();
                 }
             }),
             catchError(e => of(e).pipe(map(e => {
@@ -65,15 +65,15 @@ export class WebContactService {
         );
     }
 
-    private DoWebHelpDoc() {
-        this.webHelpDocService.DoWebHelpDoc(this.DoOther);
+    private DoWebAllCountries() {
+        this.webAllCountriesService.DoWebAllCountries(this.DoOther);
     }
 
     private KeepWebContact() {
         this.UpdateWebContact(this.appLoadedService.AppLoaded$?.getValue()?.WebContact);
         console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebContact);
         if (this.DoOther) {
-            this.DoWebHelpDoc();
+            this.DoWebAllCountries();
         }
     }
 

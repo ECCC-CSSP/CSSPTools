@@ -3152,6 +3152,12 @@ namespace CSSPEnums
                     return CSSPCultureEnumsRes.WebTypeEnumWebPolSourceSiteEffectTerm;
                 case WebTypeEnum.WebAllTVItemLanguage:
                     return CSSPCultureEnumsRes.WebTypeEnumWebAllTVItemLanguage;
+                case WebTypeEnum.WebAllMunicipalities:
+                    return CSSPCultureEnumsRes.WebTypeEnumWebAllMunicipalities;
+                case WebTypeEnum.WebAllProvinces:
+                    return CSSPCultureEnumsRes.WebTypeEnumWebAllProvinces;
+                case WebTypeEnum.WebAllCountries:
+                    return CSSPCultureEnumsRes.WebTypeEnumWebAllCountries;
                 default:
                     return CSSPCultureEnumsRes.Empty;
             }

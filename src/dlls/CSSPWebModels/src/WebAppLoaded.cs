@@ -11,6 +11,9 @@ namespace CSSPWebModels
     public partial class WebAppLoaded
     {
         #region Properties
+        public WebAllCountries WebAllCountries { get; set; }
+        public WebAllMunicipalities WebAllMunicipalities { get; set; }
+        public WebAllProvinces WebAllProvinces { get; set; }
         public WebArea WebArea { get; set; }
         public WebClimateDataValue WebClimateDataValue { get; set; }
         public WebClimateSite WebClimateSite { get; set; }

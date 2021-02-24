@@ -58,7 +58,8 @@ namespace CSSPDesktopServices.Services
             // Doing csspjson container 
             List<string> jsonFileNameList = new List<string>()
             {
-                "WebContact.gz", "WebHelpDoc.gz", "WebMWQMLookupMPN.gz", "WebPolSourceGrouping.gz", "WebPolSourceSiteEffectTerm.gz",
+                "WebAllCountries.gz", "WebAllProvinces.gz", "WebAllMunicipalities.gz", "WebContact.gz", 
+                "WebHelpDoc.gz", "WebMWQMLookupMPN.gz", "WebPolSourceGrouping.gz", "WebPolSourceSiteEffectTerm.gz",
                 "WebReportType.gz", "WebRoot.gz", "WebTideLocation.gz", "WebAllTVItem.gz", "WebAllTVItemLanguage.gz"
             };
 

@@ -9,6 +9,39 @@ export class ComponentDataLoadedService {
   constructor(private appLoadedService: AppLoadedService) {
   }
 
+  DataLoadedAllCountries(): boolean {
+    let AllTrue: boolean = true;
+    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllCountries === undefined
+      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllCountries).length === 0
+        && this.appLoadedService.AppLoaded$.getValue()?.WebAllCountries.constructor === Object)) {
+      AllTrue = false;
+    }
+
+    return AllTrue;
+  }
+
+  DataLoadedAllMunicipalities(): boolean {
+    let AllTrue: boolean = true;
+    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllMunicipalities === undefined
+      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllMunicipalities).length === 0
+        && this.appLoadedService.AppLoaded$.getValue()?.WebAllMunicipalities.constructor === Object)) {
+      AllTrue = false;
+    }
+
+    return AllTrue;
+  }
+
+  DataLoadedAllProvinces(): boolean {
+    let AllTrue: boolean = true;
+    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllProvinces === undefined
+      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllProvinces).length === 0
+        && this.appLoadedService.AppLoaded$.getValue()?.WebAllProvinces.constructor === Object)) {
+      AllTrue = false;
+    }
+
+    return AllTrue;
+  }
+
   DataLoadedArea(): boolean {
     let AllTrue: boolean = true;
     if (this.appLoadedService.AppLoaded$.getValue()?.WebArea === undefined
@@ -388,6 +421,21 @@ export class ComponentDataLoadedService {
     if (this.appLoadedService.AppLoaded$.getValue()?.WebContact === undefined
       || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebContact).length === 0
         && this.appLoadedService.AppLoaded$.getValue()?.WebContact.constructor === Object)) {
+      AllTrue = false;
+    }
+    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllCountries === undefined
+      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllCountries).length === 0
+        && this.appLoadedService.AppLoaded$.getValue()?.WebAllCountries.constructor === Object)) {
+      AllTrue = false;
+    }
+    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllProvinces === undefined
+      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllProvinces).length === 0
+        && this.appLoadedService.AppLoaded$.getValue()?.WebAllProvinces.constructor === Object)) {
+      AllTrue = false;
+    }
+    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllMunicipalities === undefined
+      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllMunicipalities).length === 0
+        && this.appLoadedService.AppLoaded$.getValue()?.WebAllMunicipalities.constructor === Object)) {
       AllTrue = false;
     }
     if (this.appLoadedService.AppLoaded$.getValue()?.WebHelpDoc === undefined

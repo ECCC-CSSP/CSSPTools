@@ -20,6 +20,9 @@ namespace CSSPWebAPIsLocal.Controllers
 {
     public partial interface IReadController
     {
+        Task<ActionResult<WebAllCountries>> WebAllCountries(int TVItemID, WebTypeYearEnum WebTypeYear);
+        Task<ActionResult<WebAllMunicipalities>> WebAllMunicipalities(int TVItemID, WebTypeYearEnum WebTypeYear);
+        Task<ActionResult<WebAllProvinces>> WebAllProvinces(int TVItemID, WebTypeYearEnum WebTypeYear);
         Task<ActionResult<WebArea>> WebArea(int TVItemID, WebTypeYearEnum WebTypeYear);
         Task<ActionResult<WebClimateDataValue>> WebClimateDataValue(int TVItemID, WebTypeYearEnum WebTypeYear);
         Task<ActionResult<WebClimateSite>> WebClimateSite(int TVItemID, WebTypeYearEnum WebTypeYear);
@@ -75,6 +78,36 @@ namespace CSSPWebAPIsLocal.Controllers
         #endregion Constructors
 
         #region Functions public
+        [Route("WebAllCountries/{TVItemID:int}/{WebTypeYear:int}")]
+        [HttpGet]
+        public async Task<ActionResult<WebAllCountries>> WebAllCountries(int TVItemID, WebTypeYearEnum WebTypeYear)
+        {
+            // TVItemID = 0 -- not used
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInLocalContactInfo();
+
+            return await ReadGzFileService.ReadJSON<WebAllCountries>(WebTypeEnum.WebAllCountries, TVItemID, WebTypeYear);
+        }
+        [Route("WebAllMunicipalities/{TVItemID:int}/{WebTypeYear:int}")]
+        [HttpGet]
+        public async Task<ActionResult<WebAllMunicipalities>> WebAllMunicipalities(int TVItemID, WebTypeYearEnum WebTypeYear)
+        {
+            // TVItemID = 0 -- not used
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInLocalContactInfo();
+
+            return await ReadGzFileService.ReadJSON<WebAllMunicipalities>(WebTypeEnum.WebAllMunicipalities, TVItemID, WebTypeYear);
+        }
+        [Route("WebAllProvinces/{TVItemID:int}/{WebTypeYear:int}")]
+        [HttpGet]
+        public async Task<ActionResult<WebAllProvinces>> WebAllProvinces(int TVItemID, WebTypeYearEnum WebTypeYear)
+        {
+            // TVItemID = 0 -- not used
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInLocalContactInfo();
+
+            return await ReadGzFileService.ReadJSON<WebAllProvinces>(WebTypeEnum.WebAllProvinces, TVItemID, WebTypeYear);
+        }
         [Route("WebArea/{TVItemID:int}/{WebTypeYear:int}")]
         [HttpGet]
         public async Task<ActionResult<WebArea>> WebArea(int TVItemID, WebTypeYearEnum WebTypeYear)
