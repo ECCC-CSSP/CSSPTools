@@ -50,6 +50,21 @@ namespace DownloadFileServices.Tests
             int ParentTVItemID = 1;
             string FileName = "BarTopBottom.png";
 
+            FileInfo fi = new FileInfo($"{ CSSPFilesPath }{ParentTVItemID}\\{FileName}");
+
+            if (fi.Exists)
+            {
+                try
+                {
+                    fi.Delete();
+                }
+                catch (Exception ex)
+                {
+
+                    Assert.True(false, ex.Message);
+                }
+            }
+
             // Download file
             var actionRes2 = await DownloadFileService.DownloadFile(ParentTVItemID, FileName);
             Assert.NotNull(((FileStreamResult)actionRes2).FileStream);

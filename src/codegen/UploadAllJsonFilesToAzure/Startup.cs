@@ -75,11 +75,6 @@ namespace UploadAllJsonFilesToAzure
                 options.UseSqlServer(CSSPDBConnString);
             });
 
-            Services.AddDbContext<CSSPDBInMemoryContext>(options =>
-            {
-                options.UseInMemoryDatabase(CSSPDBConnString);
-            });
-
             Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(CSSPDBConnString));
 

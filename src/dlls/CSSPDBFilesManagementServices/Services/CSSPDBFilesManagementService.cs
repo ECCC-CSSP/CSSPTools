@@ -14,8 +14,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using LocalServices;
 using CSSPDBFilesManagementModels;
+using LoggedInServices;
 
 namespace CSSPDBFilesManagementServices
 {
@@ -39,15 +39,15 @@ namespace CSSPDBFilesManagementServices
         public CSSPDBFilesManagementContext dbFM { get; set; }
 
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILocalService LocalService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public CSSPDBFilesManagementService(ICSSPCultureService CSSPCultureService, ILocalService LocalService, CSSPDBFilesManagementContext dbFM)
+        public CSSPDBFilesManagementService(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, CSSPDBFilesManagementContext dbFM)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LocalService = LocalService;
+            this.LoggedInService = LoggedInService;
             this.dbFM = dbFM;
         }
         #endregion Constructors
@@ -55,7 +55,7 @@ namespace CSSPDBFilesManagementServices
         #region Functions public 
         public async Task<ActionResult<int>> GetCSSPFileNextIndexToUse()
         {
-            if (LocalService.LoggedInContactInfo == null)
+            if (LoggedInService.LoggedInContactInfo == null)
             {
                 return await Task.FromResult(Unauthorized(""));
             }
@@ -70,7 +70,7 @@ namespace CSSPDBFilesManagementServices
         }
         public async Task<ActionResult<CSSPFile>> GetWithCSSPFileID(int CSSPFileID)
         {
-            if (LocalService.LoggedInContactInfo == null)
+            if (LoggedInService.LoggedInContactInfo == null)
             {
                 return await Task.FromResult(Unauthorized(""));
             }
@@ -88,7 +88,7 @@ namespace CSSPDBFilesManagementServices
         }
         public async Task<ActionResult<CSSPFile>> GetWithAzureStorageAndAzureFileName(string AzureStorage, string AzureFileName)
         {
-            if (LocalService.LoggedInContactInfo == null)
+            if (LoggedInService.LoggedInContactInfo == null)
             {
                 return await Task.FromResult(Unauthorized(""));
             }
@@ -107,7 +107,7 @@ namespace CSSPDBFilesManagementServices
         }
         public async Task<ActionResult<List<CSSPFile>>> GetCSSPFileList(int skip = 0, int take = 100)
         {
-            if (LocalService.LoggedInContactInfo == null)
+            if (LoggedInService.LoggedInContactInfo == null)
             {
                 return await Task.FromResult(Unauthorized(""));
             }
@@ -118,7 +118,7 @@ namespace CSSPDBFilesManagementServices
         }
         public async Task<ActionResult<bool>> Delete(int CSSPFileID)
         {
-            if (LocalService.LoggedInContactInfo == null)
+            if (LoggedInService.LoggedInContactInfo == null)
             {
                 return await Task.FromResult(Unauthorized(""));
             }
@@ -146,7 +146,7 @@ namespace CSSPDBFilesManagementServices
         }
         public async Task<ActionResult<CSSPFile>> Post(CSSPFile csspFile)
         {
-            if (LocalService.LoggedInContactInfo == null)
+            if (LoggedInService.LoggedInContactInfo == null)
             {
                 return await Task.FromResult(Unauthorized(""));
             }
@@ -183,7 +183,7 @@ namespace CSSPDBFilesManagementServices
         }
         public async Task<ActionResult<CSSPFile>> Put(CSSPFile csspFile)
         {
-            if (LocalService.LoggedInContactInfo == null)
+            if (LoggedInService.LoggedInContactInfo == null)
             {
                 return await Task.FromResult(Unauthorized(""));
             }

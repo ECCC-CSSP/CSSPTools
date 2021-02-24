@@ -26,7 +26,7 @@ namespace UploadFileServices
     {
         private async Task<ActionResult> DoUploadFile(int ParentTVItemID, string FileName)
         {
-            if (LocalService.LoggedInContactInfo == null)
+            if (LoggedInService.LoggedInContactInfo == null)
             {
                 return await Task.FromResult(Unauthorized(""));
             }

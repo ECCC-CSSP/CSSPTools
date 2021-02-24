@@ -1,15 +1,8 @@
-<mat-card>
-    <mat-card-header>
-        <mat-card-title color="primary">Create new item</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-        <form [formGroup]="formCountryCreate" (ngSubmit)="Create()" >
-            <mat-form-field>
-                <mat-label>Country Name</mat-label>
-                <input matInput placeholder="Country Name" formControlName="TVText" />
-            </mat-form-field>
-
-            <button mat-button type="submit" [disabled]="!formCountryCreate.valid">Create</button>
-        </form>
-    </mat-card-content>
-</mat-card>
+<form [formGroup]="formCountryCreate" (ngSubmit)="Create()">
+    <mat-form-field>
+        <mat-label>New country name</mat-label>
+        <input matInput formControlName="TVText" />
+        <mat-error *ngIf="f.TVText?.errors?.required">Required</mat-error>
+    </mat-form-field>
+    <button mat-button type="submit" [disabled]="!formCountryCreate.valid">Create</button>
+</form>

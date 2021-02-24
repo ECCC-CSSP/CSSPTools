@@ -18,10 +18,10 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Text;
-using LocalServices;
 using CSSPDBSearchServices;
 using CSSPDBSearchModels;
 using CSSPDBPreferenceModels;
+using LoggedInServices;
 
 namespace CSSPWebAPIsLocal.SearchController.Tests
 {
@@ -34,7 +34,7 @@ namespace CSSPWebAPIsLocal.SearchController.Tests
         private IConfiguration Configuration { get; set; }
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
-        private ILocalService LocalService { get; set; }
+        private ILoggedInService LoggedInService { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
         private ICSSPDBSearchService CSSPDBSearchService { get; set; }
         private string LocalUrl { get; set; }
@@ -93,15 +93,6 @@ namespace CSSPWebAPIsLocal.SearchController.Tests
             });
 
             ///* ---------------------------------------------------------------------------------
-            // * using CSSPDBPreferenceInMemory
-            // * ---------------------------------------------------------------------------------      
-            // */
-
-            //Services.AddDbContext<CSSPDBPreferenceInMemoryContext>(options =>
-            //{
-            //    options.UseInMemoryDatabase($"Data Source={ fiCSSPDBPreference.FullName }");
-            //});
-
             ///* ---------------------------------------------------------------------------------
             // * using CSSPDBCommandLog
             // * ---------------------------------------------------------------------------------      
@@ -117,7 +108,7 @@ namespace CSSPWebAPIsLocal.SearchController.Tests
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
-            Services.AddSingleton<ILocalService, LocalService>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<ICSSPDBSearchService, CSSPDBSearchService>();
 
             Provider = Services.BuildServiceProvider();
@@ -128,10 +119,13 @@ namespace CSSPWebAPIsLocal.SearchController.Tests
 
             CSSPCultureService.SetCulture(culture);
 
-            LocalService = Provider.GetService<ILocalService>();
-            Assert.NotNull(LocalService);
+            LoggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(LoggedInService);
 
-            await LocalService.SetLoggedInContactInfo();
+            string LoginEmail = Configuration.GetValue<string>("LoginEmail");
+            await LoggedInService.SetLoggedInContactInfo(LoginEmail);
+            Assert.NotNull(LoggedInService.LoggedInContactInfo);
+            Assert.NotNull(LoggedInService.LoggedInContactInfo.LoggedInContact);
 
             CSSPDBSearchService = Provider.GetService<ICSSPDBSearchService>();
             Assert.NotNull(CSSPDBSearchService);

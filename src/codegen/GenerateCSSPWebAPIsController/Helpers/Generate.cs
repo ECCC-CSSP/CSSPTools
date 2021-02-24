@@ -16,6 +16,10 @@ namespace GenerateCSSPWebAPIsController
         {
             Console.WriteLine("Generate Starting ...");
 
+            Console.WriteLine("No document generated ...");
+
+            Console.WriteLine("Not needed anymore ...");
+
             FileInfo fiDLL = new FileInfo(Config.GetValue<string>("CSSPDBModels"));
 
             var importAssembly = Assembly.LoadFile(fiDLL.FullName);

@@ -589,20 +589,9 @@ namespace CreateGzFileServices
         }
         private async Task<List<Contact>> GetAllContact()
         {
-            try
-            {
-                var a = await (from c in db.Contacts
-                               orderby c.LastName, c.FirstName, c.Initial
-                               select c).AsNoTracking().ToListAsync();
-
-                return a;
-
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
+            return await (from c in db.Contacts
+                          orderby c.LastName, c.FirstName, c.Initial
+                          select c).AsNoTracking().ToListAsync();
         }
         private async Task<List<ClimateSite>> GetClimateSiteListUnderProvince(TVItem TVItemProvince)
         {

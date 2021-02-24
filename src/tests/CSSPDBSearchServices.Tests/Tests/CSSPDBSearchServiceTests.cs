@@ -16,11 +16,11 @@ using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Text;
 using System.Linq;
-using LocalServices;
 using CSSPDBSearchServices;
 using CSSPHelperModels;
 using CSSPDBPreferenceModels;
 using CSSPDBSearchModels;
+using LoggedInServices;
 
 namespace CSSPSearchServices.Tests
 {
@@ -33,7 +33,7 @@ namespace CSSPSearchServices.Tests
         private IConfiguration Configuration { get; set; }
         private IServiceCollection ServiceCollection { get; set; }
         private IServiceProvider ServiceProvider { get; set; }
-        private ILocalService LocalService { get; set; }
+        private ILoggedInService LoggedInService { get; set; }
         private ICSSPDBSearchService CSSPDBSearchService { get; set; }
         #endregion Properties
 
@@ -51,7 +51,7 @@ namespace CSSPSearchServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            Assert.NotNull(LocalService);
+            Assert.NotNull(LoggedInService);
             Assert.NotNull(CSSPDBSearchService);
         }
         [Theory]
@@ -145,6 +145,7 @@ namespace CSSPSearchServices.Tests
             Configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
                .AddJsonFile("appsettings_csspdbsearchservicestests.json")
+               .AddUserSecrets("38d7fa5b-72c7-4b05-9a17-24bb2ba5f559")
                 .Build();
 
             ServiceCollection = new ServiceCollection();
@@ -152,9 +153,40 @@ namespace CSSPSearchServices.Tests
             ServiceCollection.AddSingleton<IConfiguration>(Configuration);
             ServiceCollection.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             ServiceCollection.AddSingleton<IEnums, Enums>();
-            ServiceCollection.AddSingleton<ILocalService, LocalService>();
+            ServiceCollection.AddSingleton<ILoggedInService, LoggedInService>();
             ServiceCollection.AddSingleton<ICSSPDBSearchService, CSSPDBSearchService>();
 
+            /* ---------------------------------------------------------------------------------
+             * using TestDB
+             * ---------------------------------------------------------------------------------      
+             */
+            string TestDB = Configuration.GetValue<string>("TestDB");
+            Assert.NotNull(TestDB);
+
+            ServiceCollection.AddDbContext<CSSPDBContext>(options =>
+            {
+                options.UseSqlServer(TestDB);
+            });
+
+            /* ---------------------------------------------------------------------------------
+             * using CSSPDBLocal
+             * ---------------------------------------------------------------------------------      
+             */
+            string CSSPDBLocal = Configuration.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocal);
+
+            FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocal);
+            Assert.True(fiCSSPDBLocal.Exists);
+
+            ServiceCollection.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
+            });
+
+            /* ---------------------------------------------------------------------------------
+             * using CSSPDBPreference
+             * ---------------------------------------------------------------------------------      
+             */
             string CSSPDBPreference = Configuration.GetValue<string>("CSSPDBPreference");
             Assert.NotNull(CSSPDBPreference);
 
@@ -165,11 +197,10 @@ namespace CSSPSearchServices.Tests
                 options.UseSqlite($"Data Source={ fiCSSPDBPreference.FullName }");
             });
 
-            //ServiceCollection.AddDbContext<CSSPDBPreferenceInMemoryContext>(options =>
-            //{
-            //    options.UseInMemoryDatabase($"Data Source={ fiCSSPDBPreference.FullName }");
-            //});
-
+            /* ---------------------------------------------------------------------------------
+             * using CSSPDBSearch
+             * ---------------------------------------------------------------------------------      
+             */
             string CSSPDBSearchFileName = Configuration.GetValue<string>("CSSPDBSearch");
             Assert.NotNull(CSSPDBSearchFileName);
 
@@ -184,11 +215,13 @@ namespace CSSPSearchServices.Tests
             ServiceProvider = ServiceCollection.BuildServiceProvider();
             Assert.NotNull(ServiceProvider);
 
-            LocalService = ServiceProvider.GetService<ILocalService>();
-            Assert.NotNull(LocalService);
+            LoggedInService = ServiceProvider.GetService<ILoggedInService>();
+            Assert.NotNull(LoggedInService);
 
-            await LocalService.SetLoggedInContactInfo();
-            Assert.NotNull(LocalService.LoggedInContactInfo);
+            string LoginEmail = Configuration.GetValue<string>("LoginEmail");
+            await LoggedInService.SetLoggedInContactInfo(LoginEmail);
+            Assert.NotNull(LoggedInService.LoggedInContactInfo);
+            Assert.NotNull(LoggedInService.LoggedInContactInfo.LoggedInContact);
 
             CSSPDBSearchService = ServiceProvider.GetService<ICSSPDBSearchService>();
             Assert.NotNull(CSSPDBSearchService);

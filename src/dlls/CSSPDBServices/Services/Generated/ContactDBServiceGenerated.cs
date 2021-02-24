@@ -39,7 +39,6 @@ namespace CSSPDBServices
         Task<ActionResult<Contact>> Login(LoginModel loginModel);
         Task<ActionResult<string>> AzureStore();
         Task<ActionResult<string>> GoogleMapKey();
-        //Task<ActionResult<Contact>> Register(RegisterModel registerModel);
     }
     public partial class ContactDBService : ControllerBase, IContactDBService
     {
@@ -50,7 +49,7 @@ namespace CSSPDBServices
         private CSSPDBContext db { get; }
         private IConfiguration Configuration { get; }
         private ILoginModelService LoginModelService { get; }
-        //private IRegisterModelService RegisterModelService { get; }
+        private IRegisterModelService RegisterModelService { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IScrambleService ScrambleService { get; }
@@ -62,13 +61,13 @@ namespace CSSPDBServices
         public ContactDBService(IConfiguration Configuration,
            ICSSPCultureService CSSPCultureService, IEnums enums,
            ILoginModelService LoginModelService,
-           //IRegisterModelService RegisterModelService,
+           IRegisterModelService RegisterModelService,
            ILoggedInService LoggedInService,
            IScrambleService ScrambleService,
            CSSPDBContext db)
         {
             this.LoginModelService = LoginModelService;
-            //this.RegisterModelService = RegisterModelService;
+            this.RegisterModelService = RegisterModelService;
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
@@ -235,7 +234,7 @@ namespace CSSPDBServices
         }
         public async Task<ActionResult<string>> AzureStore()
         {
-            string sto = ScrambleService.Descramble(Configuration.GetValue<string>("AzureStore"));
+            string sto = Configuration.GetValue<string>("AzureStore");
             if (string.IsNullOrWhiteSpace(sto))
             {
                 return await Task.FromResult(BadRequest(String.Format(CSSPCultureServicesRes.__CouldNotBeFound, "Configuration", "AzureStore")));

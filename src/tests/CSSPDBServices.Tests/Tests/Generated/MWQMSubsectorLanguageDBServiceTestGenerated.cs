@@ -22,6 +22,7 @@ using Xunit;
 using System.ComponentModel.DataAnnotations;
 using CSSPCultureServices.Resources;
 using LoggedInServices;
+using CSSPDBPreferenceModels;
 
 namespace CSSPDBServices.Tests
 {
@@ -320,15 +321,36 @@ namespace CSSPDBServices.Tests
                 options.UseSqlServer(CSSPDBConnString);
             });
 
-            Services.AddDbContext<CSSPDBInMemoryContext>(options =>
-            {
-                options.UseInMemoryDatabase(CSSPDBConnString);
-            });
-
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<IMWQMSubsectorLanguageDBService, MWQMSubsectorLanguageDBService>();
+
+            /* ---------------------------------------------------------------------------------
+             * using TestDB
+             * ---------------------------------------------------------------------------------      
+             */
+            string TestDB = Config.GetValue<string>("TestDB");
+            Assert.NotNull(TestDB);
+
+            Services.AddDbContext<CSSPDBContext>(options =>
+            {
+                options.UseSqlServer(TestDB);
+            });
+
+            /* ---------------------------------------------------------------------------------
+             * using CSSPDBPreference
+             * ---------------------------------------------------------------------------------
+             */
+            string CSSPDBPreference = Config.GetValue<string>("CSSPDBPreference"); 
+            Assert.NotNull(CSSPDBPreference);
+
+            FileInfo fiCSSPDBPreference = new FileInfo(CSSPDBPreference);
+
+            Services.AddDbContext<CSSPDBPreferenceContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiCSSPDBPreference.FullName }");
+            });
 
             Provider = Services.BuildServiceProvider();
             Assert.NotNull(Provider);
@@ -368,8 +390,6 @@ namespace CSSPDBServices.Tests
             if (OmitPropName != "TranslationStatusLogBook") mwqmSubsectorLanguage.TranslationStatusLogBook = (TranslationStatusEnum)GetRandomEnumType(typeof(TranslationStatusEnum));
             if (OmitPropName != "LastUpdateDate_UTC") mwqmSubsectorLanguage.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") mwqmSubsectorLanguage.LastUpdateContactTVItemID = 2;
-
-
 
             return mwqmSubsectorLanguage;
         }

@@ -18,11 +18,12 @@ export class CountryItemCreateComponent implements OnInit, OnDestroy {
   @Input() AppState: AppState;
 
   formCountryCreate: FormGroup;
-  
+
+  get f() { return this.formCountryCreate.controls; }
+
   constructor(public appStateService: AppStateService,
     public appLoadedService: AppLoadedService,
     public appLanguageService: AppLanguageService,
-    public showTVItemService: ShowTVItemService,
     private fb: FormBuilder) {
 
   }

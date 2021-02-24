@@ -12,11 +12,11 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using LocalServices;
 using CSSPDBFilesManagementServices;
 using CSSPDBFilesManagementModels;
 using System.Runtime.CompilerServices;
 using CSSPScrambleServices;
+using LoggedInServices;
 
 namespace UploadFileServices
 {
@@ -33,7 +33,7 @@ namespace UploadFileServices
         private CSSPDBFilesManagementContext dbFM { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILocalService LocalService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IScrambleService ScrambleService { get; }
         private IEnums enums { get; }
         private ICSSPDBFilesManagementService CSSPDBFilesManagementService { get; }
@@ -45,12 +45,12 @@ namespace UploadFileServices
         #endregion Properties
 
         #region Constructors
-        public UploadFileService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, ILocalService LocalService, 
+        public UploadFileService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, 
             IScrambleService ScrambleService, IEnums enums, ICSSPDBFilesManagementService CSSPDBFilesManagementService) : base()
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
-            this.LocalService = LocalService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.CSSPDBFilesManagementService = CSSPDBFilesManagementService;
 

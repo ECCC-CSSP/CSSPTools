@@ -17,10 +17,10 @@ namespace GenerateCSSPDBLocalServices_Tests
         {
             Console.WriteLine("Generate Starting ...");
 
-            string CSSPDB2 = Config.GetValue<string>("CSSPDB2");
+            string CSSPDB2 = Config.GetValue<string>("CSSPDB");
             string TestDB = Config.GetValue<string>("TestDB");
 
-            FileInfo fiDLL = new FileInfo(Config.GetValue<string>("CSSPDBLocalModels"));
+            FileInfo fiDLL = new FileInfo(Config.GetValue<string>("CSSPDBModels"));
 
             var importAssembly = Assembly.LoadFile(fiDLL.FullName);
             List<Type> types = importAssembly.GetTypes().ToList();
@@ -64,10 +64,10 @@ namespace GenerateCSSPDBLocalServices_Tests
                     }
                 }
 
-                //if (TypeName != "AspNetUser")
-                //{
-                //    continue;
-                //}
+                if (TypeName != "Address")
+                {
+                    continue;
+                }
 
                 sb.AppendLine($@"/* Auto generated from { AppDomain.CurrentDomain.BaseDirectory }{ AppDomain.CurrentDomain.FriendlyName}.exe");
                 sb.AppendLine(@" *");
@@ -76,7 +76,6 @@ namespace GenerateCSSPDBLocalServices_Tests
                 sb.AppendLine(@" */");
                 sb.AppendLine(@"");
                 sb.AppendLine(@"using CSSPEnums;");
-                sb.AppendLine(@"using CSSPDBLocalModels;");
                 sb.AppendLine(@"using CSSPCultureServices.Services;");
                 sb.AppendLine(@"using Microsoft.AspNetCore.Mvc;");
                 sb.AppendLine(@"using Microsoft.EntityFrameworkCore;");
@@ -92,41 +91,26 @@ namespace GenerateCSSPDBLocalServices_Tests
                 sb.AppendLine(@"using Xunit;");
                 sb.AppendLine(@"using System.ComponentModel.DataAnnotations;");
                 sb.AppendLine(@"using CSSPCultureServices.Resources;");
-                sb.AppendLine(@"using LocalServices;");
+                sb.AppendLine(@"using LoggedInServices;");
                 sb.AppendLine(@"using CSSPDBModels;");
                 sb.AppendLine(@"");
                 sb.AppendLine($@"namespace CSSPDBLocalServices.Tests");
                 sb.AppendLine(@"{");
-                if (!ClassNotMapped)
-                {
-                    sb.AppendLine(@"    [Collection(""Sequential"")]");
-                }
+                sb.AppendLine(@"    [Collection(""Sequential"")]");
                 sb.AppendLine($@"    public partial class { TypeName }DBServiceTest : TestHelper");
                 sb.AppendLine(@"    {");
                 sb.AppendLine(@"        #region Variables");
                 sb.AppendLine(@"        #endregion Variables");
                 sb.AppendLine(@"");
                 sb.AppendLine(@"        #region Properties");
-                if (!ClassNotMapped)
-                {
-                    sb.AppendLine(@"        private IConfiguration Config { get; set; }");
-                    sb.AppendLine(@"        private IServiceProvider Provider { get; set; }");
-                    sb.AppendLine(@"        private IServiceCollection Services { get; set; }");
-                    sb.AppendLine(@"        private ICSSPCultureService CSSPCultureService { get; set; }");
-                    sb.AppendLine(@"        private ILocalService LocalService { get; set; }");
-                    sb.AppendLine($@"        private I{ TypeName }DBService { TypeName }DBService {{ get; set; }}");
-                    sb.AppendLine(@"        private CSSPDBLocalContext dbLocal { get; set; }");
-                    sb.AppendLine($@"        private { TypeName } { TypeNameLower } {{ get; set; }}");
-                }
-                else
-                {
-                    //sb.AppendLine(@"        private IConfiguration Config { get; set; }");
-                    //sb.AppendLine(@"        private IServiceProvider Provider { get; set; }");
-                    //sb.AppendLine(@"        private IServiceCollection Services { get; set; }");
-                    //sb.AppendLine(@"        private ICSSPCultureService CSSPCultureService { get; set; }");
-                    //sb.AppendLine($@"        private I{ TypeName }Service { TypeName }Service {{ get; set; }}");
-                    //sb.AppendLine($@"        private { TypeName } { TypeNameLower } {{ get; set; }}");
-                }
+                sb.AppendLine(@"        private IConfiguration Config { get; set; }");
+                sb.AppendLine(@"        private IServiceProvider Provider { get; set; }");
+                sb.AppendLine(@"        private IServiceCollection Services { get; set; }");
+                sb.AppendLine(@"        private ICSSPCultureService CSSPCultureService { get; set; }");
+                sb.AppendLine(@"        private ILoggedInService LoggedInService { get; set; }");
+                sb.AppendLine($@"        private I{ TypeName }DBService { TypeName }DBService {{ get; set; }}");
+                sb.AppendLine(@"        private CSSPDBLocalContext dbLocal { get; set; }");
+                sb.AppendLine($@"        private { TypeName } { TypeNameLower } {{ get; set; }}");
                 sb.AppendLine(@"        #endregion Properties");
                 sb.AppendLine(@"");
                 sb.AppendLine(@"        #region Constructors");
@@ -136,29 +120,13 @@ namespace GenerateCSSPDBLocalServices_Tests
                 sb.AppendLine(@"        }");
                 sb.AppendLine(@"        #endregion Constructors");
                 sb.AppendLine(@"");
-                if (!ClassNotMapped)
-                {
-                    if (!await GenerateCRUDTestCode(TypeName, TypeNameLower, sb)) return await Task.FromResult(false);
-                    if (!await GeneratePropertiesTestCode(TypeName, TypeNameLower, type, sb)) return await Task.FromResult(false);
-                }
-                else
-                {
-                    //if (!await GenerateBasicTestNotMapped(TypeName, TypeNameLower, sb)) return await Task.FromResult(false);
-                }
+                if (!await GenerateCRUDTestCode(TypeName, TypeNameLower, sb)) return await Task.FromResult(false);
+                if (!await GeneratePropertiesTestCode(TypeName, TypeNameLower, type, sb)) return await Task.FromResult(false);
 
                 sb.AppendLine(@"        #region Functions private");
-                if (!ClassNotMapped)
-                {
-                    if (!await GenerateDoCRUDTest(TypeName, TypeNameLower, sb)) return await Task.FromResult(false);
-                    if (!await GenerateSetupTestCode(TypeName, TypeNameLower, sb)) return await Task.FromResult(false);
-                    if (!await GenerateGetFilledRandomClassnameTestCode(type, TypeName, TypeNameLower, sb)) return await Task.FromResult(false);
-                }
-                else
-                {
-                    //if (!await GenerateSetupTestCodeNotMapped(TypeName, TypeNameLower, sb)) return await Task.FromResult(false);
-                    //if (!await GenerateGetFilledRandomClassnameTestCodeNotMapped(type, TypeName, TypeNameLower, sb)) return await Task.FromResult(false);
-                }
-
+                if (!await GenerateDoCRUDTest(TypeName, TypeNameLower, sb)) return await Task.FromResult(false);
+                if (!await GenerateSetupTestCode(TypeName, TypeNameLower, sb)) return await Task.FromResult(false);
+                if (!await GenerateGetFilledRandomClassnameTestCode(type, TypeName, TypeNameLower, sb)) return await Task.FromResult(false);
                 if (!await GenerateCheckClassNameFieldsTestCode(type, types, TypeName, TypeNameLower, sb)) return await Task.FromResult(false);
 
                 sb.AppendLine(@"");

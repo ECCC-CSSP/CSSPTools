@@ -15,13 +15,14 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using CSSPDBFilesManagementServices;
-using LocalServices;
 using DownloadFileServices;
 using ReadGzFileServices;
 using CSSPDBPreferenceServices;
 using CSSPDBFilesManagementModels;
 using CSSPDBPreferenceModels;
 using CSSPScrambleServices;
+using LoggedInServices;
+using WebAppLoadedServices;
 
 namespace DownloadFileServices.Tests
 {
@@ -38,10 +39,11 @@ namespace DownloadFileServices.Tests
         private ICSSPDBFilesManagementService CSSPDBFilesManagementService { get; set; }
         private IReadGzFileService ReadGzFileService { get; set; }
         private IDownloadFileService DownloadFileService { get; set; }
-        private ILocalService LocalService { get; set; }
+        private ILoggedInService LoggedInService { get; set; }
         private CSSPDBContext db { get; set; }
         private string AzureStoreCSSPJSONPath { get; set; }
         private string CSSPJSONPath { get; set; }
+        private string CSSPFilesPath { get; set; }
         private string CSSPAzureUrl { get; set; }
         #endregion Properties
 
@@ -70,16 +72,40 @@ namespace DownloadFileServices.Tests
             CSSPJSONPath = Configuration.GetValue<string>("CSSPJSONPath");
             Assert.NotNull(CSSPJSONPath);
 
-            string CSSPDBLocalFileName = Configuration.GetValue<string>("CSSPDBLocal");
-            Assert.NotNull(CSSPDBLocalFileName);
+            CSSPFilesPath = Configuration.GetValue<string>("CSSPFilesPath");
+            Assert.NotNull(CSSPFilesPath);
 
-            FileInfo fiCSSPDBLocalFileName = new FileInfo(CSSPDBLocalFileName);
+            /* ---------------------------------------------------------------------------------
+             * using TestDB
+             * ---------------------------------------------------------------------------------      
+             */
+            string TestDB = Configuration.GetValue<string>("TestDB");
+            Assert.NotNull(TestDB);
 
             Services.AddDbContext<CSSPDBContext>(options =>
             {
-                options.UseSqlite($"Data Source={ fiCSSPDBLocalFileName.FullName }");
+                options.UseSqlServer(TestDB);
             });
 
+            /* ---------------------------------------------------------------------------------
+             * using CSSPDBLocal
+             * ---------------------------------------------------------------------------------      
+             */
+            string CSSPDBLocal = Configuration.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocal);
+
+            FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocal);
+            Assert.True(fiCSSPDBLocal.Exists);
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
+            });
+
+            /* ---------------------------------------------------------------------------------
+             * using CSSPDBFilesManagement
+             * ---------------------------------------------------------------------------------      
+             */
             string CSSPDBFilesManagementFileName = Configuration.GetValue<string>("CSSPDBFilesManagement");
             Assert.NotNull(CSSPDBFilesManagementFileName);
 
@@ -90,6 +116,10 @@ namespace DownloadFileServices.Tests
                 options.UseSqlite($"Data Source={ fiCSSPDBFilesManagementFileName.FullName }");
             });
 
+            /* ---------------------------------------------------------------------------------
+             * using CSSPDBPreference
+             * ---------------------------------------------------------------------------------      
+             */
             string CSSPDBPreferenceFileName = Configuration.GetValue<string>("CSSPDBPreference");
             Assert.NotNull(CSSPDBPreferenceFileName);
 
@@ -100,19 +130,15 @@ namespace DownloadFileServices.Tests
                 options.UseSqlite($"Data Source={ fiCSSPDBPreferenceFileName.FullName }");
             });
 
-            //Services.AddDbContext<CSSPDBPreferenceInMemoryContext>(options =>
-            //{
-            //    options.UseSqlite($"Data Source={ fiCSSPDBPreferenceFileName.FullName }");
-            //});
-
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<ICSSPDBFilesManagementService, CSSPDBFilesManagementService>();
             Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
             Services.AddSingleton<IDownloadFileService, DownloadFileService>();
-            Services.AddSingleton<ILocalService, LocalService>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IScrambleService, ScrambleService>();
             Services.AddSingleton<IPreferenceService, PreferenceService>();
+            Services.AddSingleton<IWebAppLoadedService, WebAppLoadedService>();
 
             Provider = Services.BuildServiceProvider();
             Assert.NotNull(Provider);
@@ -125,14 +151,12 @@ namespace DownloadFileServices.Tests
             CSSPAzureUrl = Configuration.GetValue<string>("CSSPAzureUrl");
             Assert.NotNull(CSSPAzureUrl);
 
-            LocalService = Provider.GetService<ILocalService>();
-            Assert.NotNull(LocalService);
+            LoggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(LoggedInService);
 
-            await LocalService.SetLoggedInContactInfo();
-            Assert.NotNull(LocalService.LoggedInContactInfo);
-
-            LocalService = Provider.GetService<ILocalService>();
-            Assert.NotNull(LocalService);
+            await LoggedInService.SetLoggedInLocalContactInfo();
+            Assert.NotNull(LoggedInService.LoggedInContactInfo);
+            Assert.NotNull(LoggedInService.LoggedInContactInfo.LoggedInContact);
 
             CSSPDBFilesManagementService = Provider.GetService<ICSSPDBFilesManagementService>();
             Assert.NotNull(CSSPDBFilesManagementService);

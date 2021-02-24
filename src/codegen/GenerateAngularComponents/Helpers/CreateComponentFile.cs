@@ -28,14 +28,14 @@ namespace GenerateAngularComponents
             sb.AppendLine($@"import {{ { dllTypeInfoModels.Name }Service }} from './{ dllTypeInfoModels.Name.ToLower() }.service';");
             sb.AppendLine($@"import {{ LoadLocales{ dllTypeInfoModels.Name }Text }} from './{ dllTypeInfoModels.Name.ToLower() }.locales';");
             sb.AppendLine(@"import { Subscription } from 'rxjs';");
-            bool HasEnums = false;
+            //bool HasEnums = false;
             foreach (DLLPropertyInfo dllPropertyInfo in dllTypeInfoModels.PropertyInfoList)
             {
                 if (dllPropertyInfo.CSSPProp.HasCSSPEnumTypeAttribute)
                 {
                     if (!usedPropTypeList.Contains(dllPropertyInfo.CSSPProp.PropType))
                     {
-                        HasEnums = true;
+                        //HasEnums = true;
                         sb.AppendLine($@"import {{ { dllPropertyInfo.CSSPProp.PropType }_GetIDText }} from '../../../enums/generated/{ dllPropertyInfo.CSSPProp.PropType }';");
 
                         usedPropTypeList.Add(dllPropertyInfo.CSSPProp.PropType);

@@ -76,7 +76,7 @@ namespace GenerateAngularCSSPHelperModels
             Console.WriteLine("");
             Console.WriteLine("Generate Finished ...");
 
-            return true;
+            return await Task.FromResult(true);
         }
     }
 }

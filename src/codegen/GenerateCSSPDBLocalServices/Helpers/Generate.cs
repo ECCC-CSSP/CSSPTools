@@ -18,12 +18,12 @@ namespace GenerateCSSPDBServices
             Console.WriteLine("Generate Starting ...");
 
             #region Variables and loading DLL properties
-            FileInfo fiCSSPDBLocalModelsDLL = new FileInfo(Config.GetValue<string>("CSSPDBLocalModels"));
+            FileInfo fiCSSPDBModelsDLL = new FileInfo(Config.GetValue<string>("CSSPDBModels"));
 
             List<DLLTypeInfo> DLLTypeInfoCSSPDBLocalModelsList = new List<DLLTypeInfo>();
-            if (GenerateCodeBase.FillDLLTypeInfoList(fiCSSPDBLocalModelsDLL, DLLTypeInfoCSSPDBLocalModelsList))
+            if (GenerateCodeBase.FillDLLTypeInfoList(fiCSSPDBModelsDLL, DLLTypeInfoCSSPDBLocalModelsList))
             {
-                Console.WriteLine($"Could not find file { fiCSSPDBLocalModelsDLL.FullName }");
+                Console.WriteLine($"Could not find file { fiCSSPDBModelsDLL.FullName }");
                 return false;
             }
             #endregion Variables and loading DLL properties
@@ -42,10 +42,10 @@ namespace GenerateCSSPDBServices
                     continue;
                 }
 
-                //if (dllTypeInfoModels.Type.Name != "Address")
-                //{
-                //    continue;
-                //}
+                if (dllTypeInfoModels.Type.Name != "Address")
+                {
+                    continue;
+                }
 
                 if (dllTypeInfoModels.HasNotMappedAttribute)
                 {
@@ -66,7 +66,7 @@ namespace GenerateCSSPDBServices
                 sb.AppendLine(@"");
 
                 sb.AppendLine(@"using CSSPEnums;");
-                sb.AppendLine(@"using CSSPDBLocalModels;");
+                sb.AppendLine(@"using CSSPDBModels;");
                 sb.AppendLine(@"using CSSPCultureServices.Resources;");
                 sb.AppendLine(@"using CSSPCultureServices.Services;");
                 sb.AppendLine(@"using Microsoft.AspNetCore.Mvc;");
@@ -77,16 +77,9 @@ namespace GenerateCSSPDBServices
                 sb.AppendLine(@"using System.Linq;");
                 sb.AppendLine(@"using System.Text.RegularExpressions;");
                 sb.AppendLine(@"using System.Threading.Tasks;");
-                sb.AppendLine(@"using LocalServices;");
+                sb.AppendLine(@"using LoggedInServices;");
                 sb.AppendLine(@"using Microsoft.Extensions.Configuration;");
-                //if (dllTypeInfoModels.Type.Name == "LocalContact")
-                //{
-                //    sb.AppendLine(@"using Microsoft.AspNetCore.Identity;");
-                //    sb.AppendLine(@"using Microsoft.IdentityModel.Tokens;");
-                //    sb.AppendLine(@"using System.IdentityModel.Tokens.Jwt;");
-                //    sb.AppendLine(@"using System.Security.Claims;");
-                //    sb.AppendLine(@"using System.Text;");
-                //}
+                sb.AppendLine(@"using WebAppLoadedServices;");
                 sb.AppendLine(@"");
                 sb.AppendLine($@"namespace CSSPDBLocalServices");
                 sb.AppendLine(@"{");
@@ -98,38 +91,11 @@ namespace GenerateCSSPDBServices
                     #region Interface
                     sb.AppendLine($@"    public partial interface I{ dllTypeInfoModels.Type.Name }DBService");
                     sb.AppendLine(@"    {");
-                    if (dllTypeInfoModels.Type.Name == "LocalAspNetUser")
-                    {
-                        sb.AppendLine($@"        Task<ActionResult<bool>> Delete(string Id);");
-                    }
-                    else
-                    {
-                        sb.AppendLine($@"        Task<ActionResult<bool>> Delete(int { dllTypeInfoModels.Type.Name }ID);");
-                    }
+                    sb.AppendLine($@"        Task<ActionResult<bool>> Delete(int { dllTypeInfoModels.Type.Name }ID);");
                     sb.AppendLine($@"        Task<ActionResult<List<{ dllTypeInfoModels.Type.Name }>>> Get{ dllTypeInfoModels.Type.Name }List(int skip = 0, int take = 100);");
-                    if (dllTypeInfoModels.Type.Name == "LocalAspNetUser")
-                    {
-                        sb.AppendLine($@"        Task<ActionResult<{ dllTypeInfoModels.Type.Name }>> Get{ dllTypeInfoModels.Type.Name }WithId(string Id);");
-                    }
-                    else
-                    {
-                        sb.AppendLine($@"        Task<ActionResult<{ dllTypeInfoModels.Type.Name }>> Get{ dllTypeInfoModels.Type.Name }With{ dllTypeInfoModels.Type.Name.Replace("Local", "") }ID(int { dllTypeInfoModels.Type.Name.Replace("Local", "") }ID);");
-                    }
-                    //if (dllTypeInfoModels.Type.Name == "LocalContact")
-                    //{
-                    //    sb.AppendLine($@"        Task<ActionResult<{ dllTypeInfoModels.Type.Name }>> Post({ dllTypeInfoModels.Type.Name } { dllTypeInfoModels.Type.Name.ToLower() }, AddContactTypeEnum addContactType);");
-                    //}
-                    //else
-                    //{
-                        sb.AppendLine($@"        Task<ActionResult<{ dllTypeInfoModels.Type.Name }>> Post({ dllTypeInfoModels.Type.Name } { dllTypeInfoModels.Type.Name.ToLower() });");
-                    //}
+                    sb.AppendLine($@"        Task<ActionResult<{ dllTypeInfoModels.Type.Name }>> Get{ dllTypeInfoModels.Type.Name }With{ dllTypeInfoModels.Type.Name.Replace("Local", "") }ID(int { dllTypeInfoModels.Type.Name.Replace("Local", "") }ID);");
+                    sb.AppendLine($@"        Task<ActionResult<{ dllTypeInfoModels.Type.Name }>> Post({ dllTypeInfoModels.Type.Name } { dllTypeInfoModels.Type.Name.ToLower() });");
                     sb.AppendLine($@"        Task<ActionResult<{ dllTypeInfoModels.Type.Name }>> Put({ dllTypeInfoModels.Type.Name } { dllTypeInfoModels.Type.Name.ToLower() });");
-                    //if (dllTypeInfoModels.Type.Name == "LocalContact")
-                    //{
-                    //    sb.AppendLine($@"        Task<ActionResult<Contact>> Login(LoginModel loginModel);");
-                    //    sb.AppendLine($@"        Task<ActionResult<string>> AzureStore();");
-                    //    sb.AppendLine($@"        Task<ActionResult<Contact>> Register(RegisterModel registerModel);");
-                    //}
                     sb.AppendLine(@"    }");
                     #endregion Interface
 
@@ -139,63 +105,25 @@ namespace GenerateCSSPDBServices
                     sb.AppendLine(@"        #endregion Variables");
                     sb.AppendLine(@"");
                     sb.AppendLine(@"        #region Properties");
-                    sb.AppendLine(@"        private CSSPDBLocalContext db { get; }");
+                    sb.AppendLine(@"        private CSSPDBLocalContext dbLocal { get; }");
                     sb.AppendLine(@"        private IConfiguration Configuration { get; }");
-                    //if (dllTypeInfoModels.Type.Name == "LocalContact")
-                    //{
-                    //    sb.AppendLine(@"        private UserManager<ApplicationUser> UserManager { get; }");
-                    //    sb.AppendLine(@"        private ILoginModelService LoginModelService { get; }");
-                    //    sb.AppendLine(@"        private IRegisterModelService RegisterModelService { get; }");
-                    //}
                     sb.AppendLine(@"        private ICSSPCultureService CSSPCultureService { get; }");
-                    sb.AppendLine(@"        private ILocalService LocalService { get; }");
+                    sb.AppendLine(@"        private ILoggedInService LoggedInService { get; }");
                     sb.AppendLine(@"        private IEnums enums { get; }");
                     sb.AppendLine(@"        private IEnumerable<ValidationResult> ValidationResults { get; set; }");
+                    sb.AppendLine(@"        private IWebAppLoadedService WebAppLoadedService { get; }");
                     sb.AppendLine(@"        #endregion Properties");
                     sb.AppendLine(@"");
                     sb.AppendLine(@"        #region Constructors");
-                    //if (dllTypeInfoModels.Type.Name == "LocalAspNetUser"
-                    //    || dllTypeInfoModels.Type.Name == "LocalTVItemUserAuthorization"
-                    //    || dllTypeInfoModels.Type.Name == "LocalTVTypeUserAuthorization")
-                    //{
-                    //    sb.AppendLine($@"        public { dllTypeInfoModels.Type.Name }DBService(ICSSPCultureService CSSPCultureService, IEnums enums,");
-                    //    sb.AppendLine($@"           ILocalService LocalService,");
-                    //    sb.AppendLine($@"           CSSPDBLocalContext db)");
-                    //}
-                    //else if (dllTypeInfoModels.Type.Name == "LocalContact")
-                    //{
-                    //    sb.AppendLine($@"        public { dllTypeInfoModels.Type.Name }DBService(IConfiguration Configuration,");
-                    //    sb.AppendLine($@"           ICSSPCultureService CSSPCultureService, IEnums enums,");
-                    //    sb.AppendLine($@"           ILoginModelService LoginModelService,");
-                    //    sb.AppendLine($@"           IRegisterModelService RegisterModelService,");
-                    //    sb.AppendLine($@"           ILocalService LocalService,");
-                    //    sb.AppendLine($@"           CSSPDBLocalContext db, UserManager<ApplicationUser> UserManager)");
-                    //}
-                    //else
-                    //{
-                        sb.AppendLine($@"        public { dllTypeInfoModels.Type.Name }DBService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums,");
-                        sb.AppendLine($@"           ILocalService LocalService,");
-                        sb.AppendLine($@"           CSSPDBLocalContext db)");
-                    //}
+                    sb.AppendLine($@"        public { dllTypeInfoModels.Type.Name }DBService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, ILoggedInService LoggedInService,");
+                    sb.AppendLine($@"           CSSPDBLocalContext dbLocal, IWebAppLoadedService WebAppLoadedService)");
                     sb.AppendLine(@"        {");
-                    //if (dllTypeInfoModels.Type.Name == "LocalContact")
-                    //{
-                    //    sb.AppendLine(@"            this.UserManager = UserManager;");
-                    //    sb.AppendLine(@"            this.LoginModelService = LoginModelService;");
-                    //    sb.AppendLine(@"            this.RegisterModelService = RegisterModelService;");
-                    //}
                     sb.AppendLine(@"            this.Configuration = Configuration;");
                     sb.AppendLine(@"            this.CSSPCultureService = CSSPCultureService;");
-                    sb.AppendLine(@"            this.LocalService = LocalService;");
+                    sb.AppendLine(@"            this.LoggedInService = LoggedInService;");
                     sb.AppendLine(@"            this.enums = enums;");
-                    sb.AppendLine(@"            this.db = db;");
-                    //if (dllTypeInfoModels.Type.Name == "LocalAspNetUser"
-                    //    || dllTypeInfoModels.Type.Name == "LocalContact"
-                    //    || dllTypeInfoModels.Type.Name == "LocalTVItemUserAuthorization"
-                    //    || dllTypeInfoModels.Type.Name == "LocalTVTypeUserAuthorization")
-                    //{
-                    //    //sb.AppendLine(@"            this.dbLogin = dbLogin;");
-                    //}
+                    sb.AppendLine(@"            this.dbLocal = dbLocal;");
+                    sb.AppendLine(@"            this.WebAppLoadedService = WebAppLoadedService;");
                     sb.AppendLine(@"        }");
                     sb.AppendLine(@"        #endregion Constructors");
                     sb.AppendLine(@"");
@@ -232,11 +160,6 @@ namespace GenerateCSSPDBServices
                     sb.AppendLine(@"        #region Functions public ");
                     if (!await CreateClassServiceFunctionsPublicGenerateGet(dllTypeInfoModels, DLLTypeInfoCSSPDBLocalModelsList, dllTypeInfoModels.Type.Name, TypeNameLower, sb)) return await Task.FromResult(false);
                     if (!await CreateClassServiceFunctionsPublicGenerateCRUD(dllTypeInfoModels, dllTypeInfoModels.Type.Name, TypeNameLower, sb)) return await Task.FromResult(false);
-                    //if (dllTypeInfoModels.Type.Name == "LocalContact")
-                    //{
-                    //    if (!await CreateLogin(dllTypeInfoModels, dllTypeInfoModels.Type.Name, TypeNameLower, sb)) return await Task.FromResult(false);
-                    //    if (!await CreateAzureStore(dllTypeInfoModels, dllTypeInfoModels.Type.Name, TypeNameLower, sb)) return await Task.FromResult(false);
-                    //}
                     sb.AppendLine(@"        #endregion Functions public");
                     sb.AppendLine(@"");
 

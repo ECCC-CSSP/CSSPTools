@@ -24,7 +24,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\dlls\CSSPDBModels\CSSPDBModels.csproj" />
-    <ProjectReference Include="..\..\dlls\CSSPLocalServices\CSSPLocalServices.csproj" />
     <ProjectReference Include="..\GenerateCodeBaseHelper\GenerateCodeBaseHelper.csproj" />
   </ItemGroup>
 

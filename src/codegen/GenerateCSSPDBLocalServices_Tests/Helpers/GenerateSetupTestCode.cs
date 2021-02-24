@@ -53,7 +53,7 @@ namespace GenerateCSSPDBLocalServices_Tests
             sb.AppendLine(@"            });");
             sb.AppendLine(@"");
             sb.AppendLine(@"            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();");
-            sb.AppendLine(@"            Services.AddSingleton<ILocalService, LocalService>();");
+            sb.AppendLine(@"            Services.AddSingleton<ILoggedInService, LoggedInService>();");
             sb.AppendLine(@"            Services.AddSingleton<IEnums, Enums>();");
             if (TypeName == "Contact")
             {
@@ -73,11 +73,10 @@ namespace GenerateCSSPDBLocalServices_Tests
             sb.AppendLine(@"");
             sb.AppendLine(@"            CSSPCultureService.SetCulture(culture);");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            LocalService = Provider.GetService<ILocalService>();");
-            sb.AppendLine(@"            Assert.NotNull(LocalService);");
+            sb.AppendLine(@"            LoggedInService = Provider.GetService<ILoggedInService>();");
+            sb.AppendLine(@"            Assert.NotNull(LoggedInService);");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            string Id = Config.GetValue<string>(""Id"");");
-            sb.AppendLine(@"            Assert.True(await LocalService.SetLoggedInContactInfo());");
+            sb.AppendLine(@"            Assert.True(await LoggedInService.SetLoggedInLocalContactInfo());");
             sb.AppendLine(@"");
             sb.AppendLine(@"            dbLocal = Provider.GetService<CSSPDBLocalContext>();");
             sb.AppendLine(@"            Assert.NotNull(dbLocal);");

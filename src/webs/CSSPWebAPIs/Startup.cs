@@ -70,23 +70,11 @@ namespace CSSPWebAPIs
                 };
             });
 
-            //string DBConnStr = "";
-            //if (Configuration.GetValue<string>("Environment") == "Development")
-            //{
-            //    //DBConnStr = Configuration.GetValue<string>("LocalTestDB");
-
-            //    DBConnStr = Configuration.GetValue<string>("LocalCSSPDB");
-            //}
-            //else
-            //{
-                string DBConnStr = Configuration.GetValue<string>("AzureCSSPDB");
-            //}
+            string DBConnStr = Configuration.GetValue<string>("AzureCSSPDB");
 
             services.AddDbContext<CSSPDBContext>(options =>
                 options.UseSqlServer(DBConnStr));
 
-            services.AddDbContext<CSSPDBInMemoryContext>(options =>
-                options.UseInMemoryDatabase(DBConnStr));
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(DBConnStr));
@@ -95,16 +83,14 @@ namespace CSSPWebAPIs
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddScoped<ICSSPCultureService, CSSPCultureService>();
-            services.AddScoped<IScrambleService, ScrambleService>();
             services.AddScoped<IEnums, Enums>();
+            services.AddScoped<IScrambleService, ScrambleService>();
+            services.AddScoped<ILoggedInService, LoggedInService>();
 
             services.AddScoped<ILoginModelService, LoginModelService>();
             services.AddScoped<IRegisterModelService, RegisterModelService>();
 
             LoadAllDBServices(services);
-
-            services.AddScoped<ILoggedInService, LoggedInService>();
-            services.AddScoped<ICreateGzFileService, CreateGzFileService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

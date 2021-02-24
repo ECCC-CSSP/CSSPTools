@@ -281,13 +281,6 @@ namespace CSSPEnums
         Subsector = 1,
         Municipality = 2,
     }
-    public enum DBLocationEnum
-    {
-        Local = 1,
-        Server = 2,
-        InMemory = 3,
-        Login = 4,
-    }
     public enum DailyOrHourlyDataEnum
     {
         Daily = 1,

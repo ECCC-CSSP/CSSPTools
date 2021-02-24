@@ -14,13 +14,14 @@ using System.Text.Json;
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using LocalServices;
 using CSSPDBFilesManagementServices;
 using DownloadFileServices;
 using CSSPDBPreferenceServices;
 using CSSPDBFilesManagementModels;
 using CSSPDBPreferenceModels;
 using CSSPScrambleServices;
+using LoggedInServices;
+using WebAppLoadedServices;
 
 namespace ReadGzFileServices.Tests
 {
@@ -35,9 +36,9 @@ namespace ReadGzFileServices.Tests
         private IServiceCollection Services { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
         private ICSSPDBFilesManagementService CSSPDBFilesManagementService { get; set; }
-        //private IPreferenceService PreferenceService { get; set; }
         private IReadGzFileService ReadGzFileService { get; set; }
-        private ILocalService LocalService { get; set; }
+        private ILoggedInService LoggedInService { get; set; }
+        private IWebAppLoadedService WebAppLoadedService { get; set; }
         private CSSPDBContext db { get; set; }
         private string AzureStoreCSSPJSONPath { get; set; }
         private string CSSPJSONPath { get; set; }
@@ -80,11 +81,6 @@ namespace ReadGzFileServices.Tests
                 options.UseSqlServer(CSSPDBConnString);
             });
 
-            Services.AddDbContext<CSSPDBInMemoryContext>(options =>
-            {
-                options.UseInMemoryDatabase(CSSPDBConnString);
-            });
-
             Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(CSSPDBConnString));
 
@@ -96,7 +92,7 @@ namespace ReadGzFileServices.Tests
 
             FileInfo fiCSSPDBLocalFileName = new FileInfo(CSSPDBLocalFileName);
 
-            Services.AddDbContext<CSSPDBContext>(options =>
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
             {
                 options.UseSqlite($"Data Source={ fiCSSPDBLocalFileName.FullName }");
             });
@@ -121,17 +117,13 @@ namespace ReadGzFileServices.Tests
                 options.UseSqlite($"Data Source={ fiCSSPDBPreferenceFileName.FullName }");
             });
 
-            //Services.AddDbContext<CSSPDBPreferenceInMemoryContext>(options =>
-            //{
-            //    options.UseSqlite($"Data Source={ fiCSSPDBPreferenceFileName.FullName }");
-            //});
-
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<ICSSPDBFilesManagementService, CSSPDBFilesManagementService>();
             Services.AddSingleton<IDownloadFileService, DownloadFileService>();
             Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
-            Services.AddSingleton<ILocalService, LocalService>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<IWebAppLoadedService, WebAppLoadedService>();
             Services.AddSingleton<IScrambleService, ScrambleService>();
             Services.AddSingleton<IPreferenceService, PreferenceService>();
 
@@ -146,16 +138,22 @@ namespace ReadGzFileServices.Tests
             CSSPAzureUrl = Configuration.GetValue<string>("CSSPAzureUrl");
             Assert.NotNull(CSSPAzureUrl);
 
-            LocalService = Provider.GetService<ILocalService>();
-            Assert.NotNull(LocalService);
+            LoggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(LoggedInService);
 
-            await LocalService.SetLoggedInContactInfo();
+            string LoginEmail = Configuration.GetValue<string>("LoginEmail");
+            await LoggedInService.SetLoggedInContactInfo(LoginEmail);
+            Assert.NotNull(LoggedInService.LoggedInContactInfo);
+            Assert.NotNull(LoggedInService.LoggedInContactInfo.LoggedInContact);
 
             CSSPDBFilesManagementService = Provider.GetService<ICSSPDBFilesManagementService>();
             Assert.NotNull(CSSPDBFilesManagementService);
 
             ReadGzFileService = Provider.GetService<IReadGzFileService>();
             Assert.NotNull(ReadGzFileService);
+
+            WebAppLoadedService = Provider.GetService<IWebAppLoadedService>();
+            Assert.NotNull(WebAppLoadedService);
 
             return await Task.FromResult(true);
         }

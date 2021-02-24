@@ -28,11 +28,6 @@ namespace GenerateCSSPHelperServices_Tests
             sb.AppendLine(@"                options.UseSqlServer(CSSPDBConnString);");
             sb.AppendLine(@"            });");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            Services.AddDbContext<CSSPDBInMemoryContext>(options =>");
-            sb.AppendLine(@"            {");
-            sb.AppendLine(@"                options.UseInMemoryDatabase(CSSPDBConnString);");
-            sb.AppendLine(@"            });");
-            sb.AppendLine(@"");
             sb.AppendLine(@"            Services.AddDbContext<ApplicationDbContext>(options =>");
             sb.AppendLine(@"            {");
             sb.AppendLine(@"                options.UseSqlServer(CSSPDBConnString);");

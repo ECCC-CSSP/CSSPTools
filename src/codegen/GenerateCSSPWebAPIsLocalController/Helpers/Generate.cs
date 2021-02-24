@@ -89,7 +89,7 @@ namespace GenerateCSSPWebAPIsController
                     sb.AppendLine(@"using Microsoft.AspNetCore.Mvc;");
                     sb.AppendLine(@"using System.Collections.Generic;");
                     sb.AppendLine(@"using System.Threading.Tasks;");
-                    sb.AppendLine(@"using LocalServices;");
+                    sb.AppendLine(@"using LoggedInServices;");
                     sb.AppendLine(@"");
                     sb.AppendLine(@"namespace CSSPWebAPIs.Controllers");
                     sb.AppendLine(@"{");
@@ -125,15 +125,16 @@ namespace GenerateCSSPWebAPIsController
                     sb.AppendLine(@"");
                     sb.AppendLine(@"        #region Properties");
                     sb.AppendLine(@"        private ICSSPCultureService CSSPCultureService { get; }");
-                    sb.AppendLine(@"        private ILocalService LocalService { get; }");
+                    sb.AppendLine(@"        private ILoggedInService LoggedInService { get; }");
                     sb.AppendLine($@"        private I{ TypeName }DBService { TypeName }DBService {{ get; }}");
                     sb.AppendLine(@"        #endregion Properties");
                     sb.AppendLine(@"");
                     sb.AppendLine(@"        #region Constructors");
-                    sb.AppendLine($@"        public { TypeName }Controller(ICSSPCultureService CSSPCultureService, ILocalService LocalService, I{ TypeName }DBService { TypeName }DBService)");
+                    sb.AppendLine($@"        public { TypeName }Controller(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService,");
+                    sb.AppendLine($@"           I{ TypeName }DBService { TypeName }DBService)");
                     sb.AppendLine(@"        {");
                     sb.AppendLine(@"            this.CSSPCultureService = CSSPCultureService;");
-                    sb.AppendLine(@"            this.LocalService = LocalService;");
+                    sb.AppendLine(@"            this.LoggedInService = LoggedInService;");
                     sb.AppendLine($@"            this.{ TypeName }DBService = { TypeName }DBService;");
                     sb.AppendLine(@"        }");
                     sb.AppendLine(@"        #endregion Constructors");
@@ -144,7 +145,7 @@ namespace GenerateCSSPWebAPIsController
                     sb.AppendLine($@"        public async Task<ActionResult<List<{ TypeName }>>> Get()");
                     sb.AppendLine(@"        {");
                     sb.AppendLine($@"            CSSPCultureService.SetCulture((string)RouteData.Values[""culture""]);");
-                    sb.AppendLine($@"            await LocalService.SetLoggedInContactInfo();");
+                    sb.AppendLine($@"            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);");
                     sb.AppendLine(@"");
                     sb.AppendLine($@"            return await { TypeName }DBService.Get{ TypeName }List();");
                     sb.AppendLine(@"        }");
@@ -161,7 +162,7 @@ namespace GenerateCSSPWebAPIsController
                     }
                     sb.AppendLine(@"        {");
                     sb.AppendLine($@"            CSSPCultureService.SetCulture((string)RouteData.Values[""culture""]);");
-                    sb.AppendLine($@"            await LocalService.SetLoggedInContactInfo();");
+                    sb.AppendLine($@"            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);");
                     sb.AppendLine(@"");
                     if (TypeName == "AspNetUser")
                     {
@@ -177,7 +178,7 @@ namespace GenerateCSSPWebAPIsController
                     sb.AppendLine($@"        public async Task<ActionResult<{ TypeName }>> Post({ TypeName } { TypeName })");
                     sb.AppendLine(@"        {");
                     sb.AppendLine($@"            CSSPCultureService.SetCulture((string)RouteData.Values[""culture""]);");
-                    sb.AppendLine($@"            await LocalService.SetLoggedInContactInfo();");
+                    sb.AppendLine($@"            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);");
                     sb.AppendLine(@"");
                     if (TypeName == "Contact")
                     {
@@ -193,7 +194,7 @@ namespace GenerateCSSPWebAPIsController
                     sb.AppendLine($@"        public async Task<ActionResult<{ TypeName }>> Put({ TypeName } { TypeName })");
                     sb.AppendLine(@"        {");
                     sb.AppendLine($@"            CSSPCultureService.SetCulture((string)RouteData.Values[""culture""]);");
-                    sb.AppendLine($@"            await LocalService.SetLoggedInContactInfo();");
+                    sb.AppendLine($@"            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);");
                     sb.AppendLine(@"");
                     sb.AppendLine($@"            return await { TypeName }DBService.Put({ TypeName });");
                     sb.AppendLine(@"        }");
@@ -210,7 +211,7 @@ namespace GenerateCSSPWebAPIsController
                     }
                     sb.AppendLine(@"        {");
                     sb.AppendLine($@"            CSSPCultureService.SetCulture((string)RouteData.Values[""culture""]);");
-                    sb.AppendLine($@"            await LocalService.SetLoggedInContactInfo();");
+                    sb.AppendLine($@"            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);");
                     sb.AppendLine(@"");
                     if (TypeName == "AspNetUser")
                     {

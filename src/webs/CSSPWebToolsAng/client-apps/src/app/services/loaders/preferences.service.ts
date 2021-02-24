@@ -79,11 +79,9 @@ export class PreferenceService {
     }
 
     private LoadPreference() {
-        let languageEnum = GetLanguageEnum();
-
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ PreferenceList: [] });
         this.appStateService.UpdateAppState(<AppState>{ Working: true });
-        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Preference`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${this.languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Preference`;
         return this.httpClient.get<Preference[]>(url).pipe(
             map((x: any) => {
                 this.UpdatePreference(x);

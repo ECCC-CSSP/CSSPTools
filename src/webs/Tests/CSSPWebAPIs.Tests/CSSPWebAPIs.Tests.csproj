@@ -13,18 +13,12 @@
     <Compile Remove="Controllers\CreateGzFileController\**" />
     <Compile Remove="Controllers\TVItemController\**" />
     <Compile Remove="Controllers\TVItemLanguageController\**" />
-    <Compile Remove="Controllers\TVItemUserAuthorizationController\**" />
-    <Compile Remove="Controllers\TVTypeUserAuthorizationController\**" />
     <EmbeddedResource Remove="Controllers\CreateGzFileController\**" />
     <EmbeddedResource Remove="Controllers\TVItemController\**" />
     <EmbeddedResource Remove="Controllers\TVItemLanguageController\**" />
-    <EmbeddedResource Remove="Controllers\TVItemUserAuthorizationController\**" />
-    <EmbeddedResource Remove="Controllers\TVTypeUserAuthorizationController\**" />
     <None Remove="Controllers\CreateGzFileController\**" />
     <None Remove="Controllers\TVItemController\**" />
     <None Remove="Controllers\TVItemLanguageController\**" />
-    <None Remove="Controllers\TVItemUserAuthorizationController\**" />
-    <None Remove="Controllers\TVTypeUserAuthorizationController\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -138,7 +132,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\dlls\CSSPDBPreferenceModels\CSSPDBPreferenceModels.csproj" />
     <ProjectReference Include="..\..\CSSPWebAPIs\CSSPWebAPIs.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\Generated\" />
   </ItemGroup>
 
 </Project>

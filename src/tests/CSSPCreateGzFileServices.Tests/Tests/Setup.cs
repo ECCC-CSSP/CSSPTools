@@ -19,6 +19,7 @@ using CSSPDBServices;
 using LoggedInServices;
 using CSSPHelperModels;
 using CSSPScrambleServices;
+using CSSPDBPreferenceModels;
 
 namespace CreateGzFileServices.Tests
 {
@@ -64,25 +65,6 @@ namespace CreateGzFileServices.Tests
             AzureStoreCSSPJSONPath = Configuration.GetValue<string>("AzureStoreCSSPJSONPath");
             Assert.NotNull(AzureStoreCSSPJSONPath);
 
-            string CSSPDBConnString = Configuration.GetValue<string>("CSSPDB");
-            Assert.NotNull(CSSPDBConnString);
-
-            Services.AddDbContext<CSSPDBContext>(options =>
-            {
-                options.UseSqlServer(CSSPDBConnString);
-            });
-
-            Services.AddDbContext<CSSPDBInMemoryContext>(options =>
-            {
-                options.UseInMemoryDatabase(CSSPDBConnString);
-            });
-
-            Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(CSSPDBConnString));
-
-            Services.AddIdentityCore<ApplicationUser>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
-
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<ILoginModelService, LoginModelService>();
             Services.AddSingleton<IRegisterModelService, RegisterModelService>();
@@ -92,6 +74,32 @@ namespace CreateGzFileServices.Tests
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<ICreateGzFileService, CreateGzFileService>();
             Services.AddSingleton<ITVItemDBService, TVItemDBService>();
+
+            /* ---------------------------------------------------------------------------------
+             * using CSSPDB
+             * ---------------------------------------------------------------------------------      
+             */
+            string CSSPDB = Configuration.GetValue<string>("CSSPDB");
+            Assert.NotNull(CSSPDB);
+
+            Services.AddDbContext<CSSPDBContext>(options =>
+            {
+                options.UseSqlServer(CSSPDB);
+            });
+
+            /* ---------------------------------------------------------------------------------
+             * using CSSPDBPreference
+             * ---------------------------------------------------------------------------------
+             */
+            string CSSPDBPreference = Configuration.GetValue<string>("CSSPDBPreference");
+            Assert.NotNull(CSSPDBPreference);
+
+            FileInfo fiCSSPDBPreference = new FileInfo(CSSPDBPreference);
+
+            Services.AddDbContext<CSSPDBPreferenceContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiCSSPDBPreference.FullName }");
+            });
 
             Provider = Services.BuildServiceProvider();
             Assert.NotNull(Provider);

@@ -2904,18 +2904,6 @@
   <data name="ReportGenerateObjectsKeywordEnumSUBSECTOR_MUNICIPALITIES_FULL" xml:space="preserve">
     <value>SUBSECTOR_MUNICIPALITIES_FULL</value>
   </data>
-  <data name="DBLocationEnumInMemory" xml:space="preserve">
-    <value>In Memory</value>
-  </data>
-  <data name="DBLocationEnumLocal" xml:space="preserve">
-    <value>Local</value>
-  </data>
-  <data name="DBLocationEnumServer" xml:space="preserve">
-    <value>Server</value>
-  </data>
-  <data name="DBLocationEnumLogin" xml:space="preserve">
-    <value>Login</value>
-  </data>
   <data name="RunningOnEnumAzure" xml:space="preserve">
     <value>Azure</value>
   </data>

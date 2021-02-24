@@ -15,7 +15,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using LocalServices;
 using CSSPDBFilesManagementServices;
 using DownloadFileServices;
 using ReadGzFileServices;
@@ -29,6 +28,7 @@ using CSSPDBSearchModels;
 using LoggedInServices;
 using CSSPDBServices;
 using CSSPScrambleServices;
+using WebAppLoadedServices;
 
 namespace CSSPWebAPIsLocal
 {
@@ -67,20 +67,12 @@ namespace CSSPWebAPIsLocal
 
             FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocalFileName);
 
-            services.AddDbContext<CSSPDBContext>(options =>
+            services.AddDbContext<CSSPDBLocalContext>(options =>
             {
                 options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
-            });
+            }, ServiceLifetime.Transient);
 
             /* ---------------------------------------------------------------------------------
-             * using CSSPDBLocalInMemory 
-             * ---------------------------------------------------------------------------------      
-             */
-            services.AddDbContext<CSSPDBInMemoryContext>(options =>
-            {
-                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBLocal.FullName }");
-            });
-
             /* ---------------------------------------------------------------------------------
              * using CSSPDBPreference
              * ---------------------------------------------------------------------------------      
@@ -92,17 +84,7 @@ namespace CSSPWebAPIsLocal
             services.AddDbContext<CSSPDBPreferenceContext>(options =>
             {
                 options.UseSqlite($"Data Source={ fiCSSPDBPreference.FullName }");
-            });
-
-            ///* ---------------------------------------------------------------------------------
-            // * using CSSPDBPreferenceInMemory
-            // * ---------------------------------------------------------------------------------      
-            // */
-
-            //services.AddDbContext<CSSPDBPreferenceInMemoryContext>(options =>
-            //{
-            //    options.UseInMemoryDatabase($"Data Source={ fiCSSPDBPreference.FullName }");
-            //});
+            }, ServiceLifetime.Transient);
 
             /* ---------------------------------------------------------------------------------
              * using CSSPDBFileManagement
@@ -115,7 +97,7 @@ namespace CSSPWebAPIsLocal
             services.AddDbContext<CSSPDBFilesManagementContext>(options =>
             {
                 options.UseSqlite($"Data Source={ fiCSSPDBFilesManagement.FullName }");
-            });
+            }, ServiceLifetime.Transient);
 
             /* ---------------------------------------------------------------------------------
              * using CSSPDBCommandLog
@@ -128,7 +110,7 @@ namespace CSSPWebAPIsLocal
             services.AddDbContext<CSSPDBCommandLogContext>(options =>
             {
                 options.UseSqlite($"Data Source={ fiCSSPDBCommandLog.FullName }");
-            });
+            }, ServiceLifetime.Transient);
 
             /* ---------------------------------------------------------------------------------
              * using CSSPDBSearch
@@ -141,23 +123,24 @@ namespace CSSPWebAPIsLocal
             services.AddDbContext<CSSPDBSearchContext>(options =>
             {
                 options.UseSqlite($"Data Source={ fiCSSPDBSearch.FullName }");
-            });
+            }, ServiceLifetime.Transient);
 
 
-            services.AddScoped<ICSSPCultureService, CSSPCultureService>();
-            services.AddScoped<IEnums, Enums>();
-            services.AddScoped<IScrambleService, ScrambleService>();
-            services.AddScoped<ILoggedInService, LoggedInService>();
-            services.AddScoped<ILoginModelService, LoginModelService>();
+            services.AddTransient<ICSSPCultureService, CSSPCultureService>();
+            services.AddTransient<IEnums, Enums>();
+            services.AddTransient<IScrambleService, ScrambleService>();
+            services.AddTransient<ILoggedInService, LoggedInService>();
+            services.AddTransient<ILoginModelService, LoginModelService>();
 
-            LoadAllDBServices(services);
+            //LoadAllDBServices(services);
 
-            services.AddScoped<ILocalService, LocalService>();
-            services.AddScoped<ICSSPDBFilesManagementService, CSSPDBFilesManagementService>();
-            services.AddScoped<IDownloadFileService, DownloadFileService>();
-            services.AddScoped<IReadGzFileService, ReadGzFileService>();
-            services.AddScoped<IPreferenceService, PreferenceService>();
-            services.AddScoped<ICSSPDBSearchService, CSSPDBSearchService>();
+            services.AddTransient<ICSSPDBFilesManagementService, CSSPDBFilesManagementService>();
+            services.AddTransient<IDownloadFileService, DownloadFileService>();
+            services.AddTransient<IReadGzFileService, ReadGzFileService>();
+            services.AddTransient<IPreferenceService, PreferenceService>();
+            services.AddTransient<ICSSPDBSearchService, CSSPDBSearchService>();
+
+            services.AddSingleton<IWebAppLoadedService, WebAppLoadedService>();
 
             services.AddSpaStaticFiles(configuration =>
             {

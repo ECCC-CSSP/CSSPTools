@@ -13,7 +13,7 @@ namespace GenerateCSSPDBServices
             sb.AppendLine(@"        {");
             sb.AppendLine(@"            try");
             sb.AppendLine(@"            {");
-            sb.AppendLine(@"                db.SaveChanges();");
+            sb.AppendLine(@"                dbLocal.SaveChanges();");
             sb.AppendLine(@"            }");
             sb.AppendLine(@"            catch (Exception ex)");
             sb.AppendLine(@"            {");

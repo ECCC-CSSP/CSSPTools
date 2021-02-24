@@ -50,6 +50,7 @@ namespace ReadGzFileServices.Tests
             WebArea webArea = (WebArea)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webArea);
             Assert.NotNull(webArea.TVItemModel);
+            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebArea);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -69,6 +70,7 @@ namespace ReadGzFileServices.Tests
             WebClimateDataValue webClimateDataValue = (WebClimateDataValue)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webClimateDataValue);
             Assert.NotNull(webClimateDataValue.ClimateDataValueList);
+            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebClimateDataValue);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -88,6 +90,7 @@ namespace ReadGzFileServices.Tests
             WebClimateSite webClimateSite = (WebClimateSite)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webClimateSite);
             Assert.NotNull(webClimateSite.ClimateSiteList);
+            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebClimateSite);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -107,6 +110,7 @@ namespace ReadGzFileServices.Tests
             WebContact webContact = (WebContact)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webContact);
             Assert.NotNull(webContact.ContactList);
+            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebContact);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -126,6 +130,7 @@ namespace ReadGzFileServices.Tests
             WebCountry webCountry = (WebCountry)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webCountry);
             Assert.NotNull(webCountry.TVItemModel);
+            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebCountry);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -145,6 +150,7 @@ namespace ReadGzFileServices.Tests
             WebDrogueRun webDrogueRun = (WebDrogueRun)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webDrogueRun);
             Assert.NotNull(webDrogueRun.DrogueRunList);
+            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebDrogueRun);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -164,6 +170,7 @@ namespace ReadGzFileServices.Tests
             WebHelpDoc webHelpDoc = (WebHelpDoc)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webHelpDoc);
             Assert.NotNull(webHelpDoc.HelpDocList);
+            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebHelpDoc);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -183,6 +190,7 @@ namespace ReadGzFileServices.Tests
             WebHydrometricDataValue webHydrometricDataValue = (WebHydrometricDataValue)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webHydrometricDataValue);
             Assert.NotNull(webHydrometricDataValue.HydrometricDataValueList);
+            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebHydrometricDataValue);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -202,6 +210,7 @@ namespace ReadGzFileServices.Tests
             WebHydrometricSite webHydrometricSite = (WebHydrometricSite)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webHydrometricSite);
             Assert.NotNull(webHydrometricSite.HydrometricSiteList);
+            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebHydrometricSite);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -221,6 +230,7 @@ namespace ReadGzFileServices.Tests
             WebMikeScenario webMikeScenario = (WebMikeScenario)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webMikeScenario);
             Assert.NotNull(webMikeScenario.TVItemModel);
+            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebMikeScenario);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -240,6 +250,7 @@ namespace ReadGzFileServices.Tests
             WebMunicipalities webMunicipalities = (WebMunicipalities)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webMunicipalities);
             Assert.NotNull(webMunicipalities.TVItemMunicipalityList);
+            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebMunicipalities);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -259,6 +270,7 @@ namespace ReadGzFileServices.Tests
             WebMunicipality webMunicipality = (WebMunicipality)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webMunicipality);
             Assert.NotNull(webMunicipality.TVItemModel);
+            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebMunicipality);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -278,6 +290,7 @@ namespace ReadGzFileServices.Tests
             WebMWQMLookupMPN webMWQMLookupMPN = (WebMWQMLookupMPN)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webMWQMLookupMPN);
             Assert.NotNull(webMWQMLookupMPN.MWQMLookupMPNList);
+            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebMWQMLookupMPN);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -297,6 +310,7 @@ namespace ReadGzFileServices.Tests
             WebMWQMRun webMWQMRun = (WebMWQMRun)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webMWQMRun);
             Assert.NotNull(webMWQMRun.MWQMRunModelList);
+            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebMWQMRun);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -316,6 +330,7 @@ namespace ReadGzFileServices.Tests
             WebMWQMSample webMWQMSample = (WebMWQMSample)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webMWQMSample);
             Assert.NotNull(webMWQMSample.MWQMSampleList);
+            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebMWQMSample1980_1989);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -335,6 +350,7 @@ namespace ReadGzFileServices.Tests
             WebMWQMSample webMWQMSample = (WebMWQMSample)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webMWQMSample);
             Assert.NotNull(webMWQMSample.MWQMSampleList);
+            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebMWQMSample1990_1999);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -354,6 +370,7 @@ namespace ReadGzFileServices.Tests
             WebMWQMSample webMWQMSample = (WebMWQMSample)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webMWQMSample);
             Assert.NotNull(webMWQMSample.MWQMSampleList);
+            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebMWQMSample2000_2009);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -373,6 +390,7 @@ namespace ReadGzFileServices.Tests
             WebMWQMSample webMWQMSample = (WebMWQMSample)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webMWQMSample);
             Assert.NotNull(webMWQMSample.MWQMSampleList);
+            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebMWQMSample2010_2019);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -392,6 +410,7 @@ namespace ReadGzFileServices.Tests
             WebMWQMSample webMWQMSample = (WebMWQMSample)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webMWQMSample);
             Assert.NotNull(webMWQMSample.MWQMSampleList);
+            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebMWQMSample2020_2029);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -411,6 +430,7 @@ namespace ReadGzFileServices.Tests
             WebMWQMSample webMWQMSample = (WebMWQMSample)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webMWQMSample);
             Assert.NotNull(webMWQMSample.MWQMSampleList);
+            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebMWQMSample2030_2039);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -430,6 +450,7 @@ namespace ReadGzFileServices.Tests
             WebMWQMSample webMWQMSample = (WebMWQMSample)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webMWQMSample);
             Assert.NotNull(webMWQMSample.MWQMSampleList);
+            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebMWQMSample2040_2049);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -449,6 +470,7 @@ namespace ReadGzFileServices.Tests
             WebMWQMSample webMWQMSample = (WebMWQMSample)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webMWQMSample);
             Assert.NotNull(webMWQMSample.MWQMSampleList);
+            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebMWQMSample2050_2059);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -468,6 +490,7 @@ namespace ReadGzFileServices.Tests
             WebMWQMSite webMWQMSite = (WebMWQMSite)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webMWQMSite);
             Assert.NotNull(webMWQMSite.MWQMSiteModelList);
+            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebMWQMSite);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -487,6 +510,7 @@ namespace ReadGzFileServices.Tests
             WebPolSourceGrouping webPolSourceGrouping = (WebPolSourceGrouping)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webPolSourceGrouping);
             Assert.NotNull(webPolSourceGrouping.PolSourceGroupingList);
+            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebPolSourceGrouping);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -506,6 +530,7 @@ namespace ReadGzFileServices.Tests
             WebPolSourceSite webPolSourceSite = (WebPolSourceSite)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webPolSourceSite);
             Assert.NotNull(webPolSourceSite.PolSourceSiteModelList);
+            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebPolSourceSite);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -525,6 +550,7 @@ namespace ReadGzFileServices.Tests
             WebPolSourceSiteEffectTerm webPolSourceSiteEffectTerm = (WebPolSourceSiteEffectTerm)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webPolSourceSiteEffectTerm);
             Assert.NotNull(webPolSourceSiteEffectTerm.PolSourceSiteEffectTermList);
+            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebPolSourceSiteEffectTerm);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -544,6 +570,7 @@ namespace ReadGzFileServices.Tests
             WebProvince webProvince = (WebProvince)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webProvince);
             Assert.NotNull(webProvince.TVItemModel);
+            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebProvince);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -563,6 +590,7 @@ namespace ReadGzFileServices.Tests
             WebReportType webReportType = (WebReportType)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webReportType);
             Assert.NotNull(webReportType.ReportTypeModelList);
+            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebReportType);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -581,6 +609,7 @@ namespace ReadGzFileServices.Tests
             WebRoot webRoot = (WebRoot)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webRoot);
             Assert.NotNull(webRoot.TVItemModel);
+            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebRoot);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -600,6 +629,7 @@ namespace ReadGzFileServices.Tests
             WebSamplingPlan webSamplingPlan = (WebSamplingPlan)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webSamplingPlan);
             Assert.NotNull(webSamplingPlan.SamplingPlanModel);
+            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebSamplingPlan);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -619,6 +649,7 @@ namespace ReadGzFileServices.Tests
             WebSector webSector = (WebSector)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webSector);
             Assert.NotNull(webSector.TVItemModel);
+            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebSector);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -657,6 +688,7 @@ namespace ReadGzFileServices.Tests
             WebTideLocation webTideLocation = (WebTideLocation)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webTideLocation);
             Assert.NotNull(webTideLocation.TideLocationList);
+            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebTideLocation);
         }
         [Theory]
         [InlineData("en-CA")]

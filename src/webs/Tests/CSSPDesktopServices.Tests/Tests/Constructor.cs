@@ -10,7 +10,6 @@ using CSSPEnums;
 using CSSPDBModels;
 using CSSPSQLiteServices;
 using DownloadFileServices;
-using LocalServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,6 +19,10 @@ using CSSPDBCommandLogModels;
 using CSSPDBSearchModels;
 using CSSPDBFilesManagementModels;
 using CSSPDBPreferenceModels;
+using LoggedInServices;
+using CSSPScrambleServices;
+using WebAppLoadedServices;
+using CSSPDBPreferenceServices;
 
 namespace CSSPDesktopServices.Tests
 {
@@ -66,30 +69,46 @@ namespace CSSPDesktopServices.Tests
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
-            Services.AddSingleton<ILocalService, LocalService>();
-            Services.AddSingleton<ICSSPDesktopService, CSSPDesktopService>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<IScrambleService, ScrambleService>();
+            Services.AddSingleton<IPreferenceService, PreferenceService>();
             Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
             Services.AddSingleton<ICSSPDBFilesManagementService, CSSPDBFilesManagementService>();
             Services.AddSingleton<IDownloadFileService, DownloadFileService>();
             Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
+            Services.AddSingleton<IWebAppLoadedService, WebAppLoadedService>();
+            Services.AddSingleton<ICSSPDesktopService, CSSPDesktopService>();
 
-            // Doing CSSPDBLocalContext
+            /* ---------------------------------------------------------------------------------
+             * using TestDB
+             * ---------------------------------------------------------------------------------      
+             */
+            string TestDB = Configuration.GetValue<string>("TestDB");
+            Assert.NotNull(TestDB);
+
+            Services.AddDbContext<CSSPDBContext>(options =>
+            {
+                options.UseSqlServer(TestDB);
+            });
+
+            /* ---------------------------------------------------------------------------------
+             * using CSSPDBLocal
+             * ---------------------------------------------------------------------------------      
+             */
             string CSSPDBLocal = Configuration.GetValue<string>("CSSPDBLocal");
             Assert.NotNull(CSSPDBLocal);
 
             FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocal);
 
-            Services.AddDbContext<CSSPDBContext>(options =>
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
             {
                 options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
             });
 
-            //Services.AddDbContext<CSSPDBInMemoryContext>(options =>
-            //{
-            //    options.UseInMemoryDatabase($"Data Source={ fiCSSPDBLocal.FullName }");
-            //});
-
-            // Doing CSSPDBSearchContext
+            /* ---------------------------------------------------------------------------------
+             * using CSSPDBSearch
+             * ---------------------------------------------------------------------------------      
+             */
             string CSSPDBSearch = Configuration.GetValue<string>("CSSPDBSearch");
             Assert.NotNull(CSSPDBSearch);
 
@@ -100,7 +119,10 @@ namespace CSSPDesktopServices.Tests
                 options.UseSqlite($"Data Source={ fiCSSPDBSearch.FullName }");
             });
 
-            // Doing CSSPDBCommandLogContext
+            /* ---------------------------------------------------------------------------------
+             * using CSSPDBCommandLog
+             * ---------------------------------------------------------------------------------      
+             */
             string CSSPDBCommandLog = Configuration.GetValue<string>("CSSPDBCommandLog");
             Assert.NotNull(CSSPDBCommandLog);
 
@@ -111,7 +133,10 @@ namespace CSSPDesktopServices.Tests
                 options.UseSqlite($"Data Source={ fiCSSPDBCommandLog.FullName }");
             });
 
-            // Doing CSSPDBFilesManagementContext
+            /* ---------------------------------------------------------------------------------
+             * using CSSPDBFilesManagement
+             * ---------------------------------------------------------------------------------      
+             */
             string CSSPDBFilesManagement = Configuration.GetValue<string>("CSSPDBFilesManagement");
             Assert.NotNull(CSSPDBFilesManagement);
 
@@ -122,7 +147,10 @@ namespace CSSPDesktopServices.Tests
                 options.UseSqlite($"Data Source={ fiCSSPDBFileManagement.FullName }");
             });
 
-            // Doing CSSPDBPreferenceContext
+            /* ---------------------------------------------------------------------------------
+             * using CSSPDBPreference
+             * ---------------------------------------------------------------------------------      
+             */
             string CSSPDBPreference = Configuration.GetValue<string>("CSSPDBPreference");
             Assert.NotNull(CSSPDBPreference);
 
@@ -133,17 +161,11 @@ namespace CSSPDesktopServices.Tests
                 options.UseSqlite($"Data Source={ fiCSSPDBPreference.FullName }");
             });
 
-            //Services.AddDbContext<CSSPDBPreferenceInMemoryContext>(options =>
-            //{
-            //    options.UseInMemoryDatabase($"Data Source={ fiCSSPDBPreference.FullName }");
-            //});
-
             Provider = Services.BuildServiceProvider();
             Assert.NotNull(Provider);
 
             CSSPCultureService = Provider.GetService<ICSSPCultureService>();
             Assert.NotNull(CSSPCultureService);
-
 
             CSSPDesktopService = Provider.GetService<ICSSPDesktopService>();
             Assert.NotNull(CSSPDesktopService);

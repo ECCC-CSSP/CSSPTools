@@ -12,12 +12,13 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using LocalServices;
 using CSSPDBFilesManagementServices;
 using DownloadFileServices;
 using CSSPDBFilesManagementModels;
 using CSSPDBPreferenceServices;
 using CSSPScrambleServices;
+using LoggedInServices;
+using WebAppLoadedServices;
 
 namespace ReadGzFileServices
 {
@@ -34,12 +35,13 @@ namespace ReadGzFileServices
         private CSSPDBFilesManagementContext dbFM { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILocalService LocalService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IDownloadFileService DownloadFileService { get; }
         private ICSSPDBFilesManagementService CSSPDBFilesManagementService { get; }
         private IScrambleService ScrambleService { get; }
         private IPreferenceService PreferenceService { get; }
+        private IWebAppLoadedService WebAppLoadedService { get; }
         private string AzureStore { get; set; }
         private string AzureStoreCSSPJSONPath { get; set; }
         private string CSSPJSONPath { get; set; }
@@ -47,17 +49,19 @@ namespace ReadGzFileServices
         #endregion Properties
 
         #region Constructors
-        public ReadGzFileService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, ILocalService LocalService, IScrambleService ScrambleService,
-            IEnums enums, IDownloadFileService DownloadFileService, ICSSPDBFilesManagementService CSSPDBFilesManagementService, IPreferenceService PreferenceService)
+        public ReadGzFileService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, 
+            IScrambleService ScrambleService, IEnums enums, IDownloadFileService DownloadFileService, 
+            ICSSPDBFilesManagementService CSSPDBFilesManagementService, IPreferenceService PreferenceService, IWebAppLoadedService WebAppLoadedService)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
-            this.LocalService = LocalService;
+            this.LoggedInService = LoggedInService;
             this.ScrambleService = ScrambleService;
             this.enums = enums;
             this.DownloadFileService = DownloadFileService;
             this.CSSPDBFilesManagementService = CSSPDBFilesManagementService;
             this.PreferenceService = PreferenceService;
+            this.WebAppLoadedService = WebAppLoadedService;
 
             AzureStoreCSSPJSONPath = Configuration.GetValue<string>("AzureStoreCSSPJSONPath");
             AzureStore = ScrambleService.Descramble(Configuration.GetValue<string>("AzureStore"));

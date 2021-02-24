@@ -13,7 +13,7 @@ namespace GenerateCSSPDBServices_Tests
 {
     public partial class Startup
     {
-        private async Task<bool> CreateGetFilledRandomClass(PropertyInfo prop, CSSPProp csspProp, string TypeName, string TypeNameLower, StringBuilder sb, StringBuilder sbInMemory)
+        private async Task<bool> CreateGetFilledRandomClass(PropertyInfo prop, CSSPProp csspProp, string TypeName, string TypeNameLower, StringBuilder sb)
         {
             switch (csspProp.PropType)
             {

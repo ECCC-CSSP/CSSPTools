@@ -146,7 +146,7 @@ namespace GenerateCSSPDBServices
                         sb.AppendLine($@"        Task<ActionResult<Contact>> Login(LoginModel loginModel);");
                         sb.AppendLine($@"        Task<ActionResult<string>> AzureStore();");
                         sb.AppendLine($@"        Task<ActionResult<string>> GoogleMapKey();");
-                        sb.AppendLine($@"        Task<ActionResult<Contact>> Register(RegisterModel registerModel);");
+                        //sb.AppendLine($@"        Task<ActionResult<Contact>> Register(RegisterModel registerModel);");
                     }
                     sb.AppendLine(@"    }");
                     #endregion Interface

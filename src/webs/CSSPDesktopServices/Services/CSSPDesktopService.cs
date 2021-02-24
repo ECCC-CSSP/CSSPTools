@@ -3,7 +3,6 @@ using CSSPDBPreferenceServices;
 using CSSPDesktopServices.Models;
 using CSSPEnums;
 using CSSPDBModels;
-using LocalServices;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ReadGzFileServices;
@@ -21,6 +20,8 @@ using CSSPDBSearchModels;
 using CSSPDBCommandLogModels;
 using CSSPDBFilesManagementModels;
 using CSSPScrambleServices;
+using LoggedInServices;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CSSPDesktopServices.Services
 {
@@ -62,7 +63,7 @@ namespace CSSPDesktopServices.Services
         Task<bool> Login(LoginModel loginModel);
         Task<bool> Logoff();
         Task<bool> ReadConfiguration();
-        Task<bool> Register(RegisterModel registerModel);
+        //Task<bool> Register(RegisterModel registerModel);
         Task<bool> Start();
         Task<bool> Stop();
         //Task<bool> UpdateCSSPDBSearch();
@@ -98,7 +99,7 @@ namespace CSSPDesktopServices.Services
         #endregion Properties public
 
         #region Properties private
-        private CSSPDBContext dbLocal { get; }
+        private CSSPDBLocalContext dbLocal { get; }
         private CSSPDBSearchContext dbSearch { get; }
         private CSSPDBCommandLogContext dbCommandLog { get; }
         private CSSPDBPreferenceContext dbPreference { get; }
@@ -106,7 +107,7 @@ namespace CSSPDesktopServices.Services
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private IEnums enums { get; }
-        private ILocalService LocalService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IReadGzFileService ReadGzFileService { get; }
         private IScrambleService ScrambleService { get; }
         private IPreferenceService PreferenceService { get; }
@@ -123,15 +124,15 @@ namespace CSSPDesktopServices.Services
         #endregion Properties private
 
         #region Constructors
-        public CSSPDesktopService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, 
-            ILocalService LocalService, CSSPDBContext dbLocal, CSSPDBSearchContext dbSearch, CSSPDBCommandLogContext dbCommandLog, 
+        public CSSPDesktopService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, ILoggedInService LoggedInService,
+            CSSPDBLocalContext dbLocal, CSSPDBSearchContext dbSearch, CSSPDBCommandLogContext dbCommandLog, 
             CSSPDBPreferenceContext dbPreference, CSSPDBFilesManagementContext dbFM, IReadGzFileService ReadGzFileService, 
             IScrambleService ScrambleService, IPreferenceService PreferenceService)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.enums = enums;
-            this.LocalService = LocalService;
+            this.LoggedInService = LoggedInService;
             this.dbLocal = dbLocal;
             this.dbSearch = dbSearch;
             this.dbCommandLog = dbCommandLog;
@@ -160,7 +161,15 @@ namespace CSSPDesktopServices.Services
         }
         public async Task<bool> CheckIfUpdateIsNeeded()
         {
-            if (!await LocalService.SetLoggedInContactInfo()) return await Task.FromResult(false);
+            string LoginEmail = "";
+            var actionPreference = await PreferenceService.GetPreferenceWithVariableName("LoginEmail");
+            if (await DoStatusActionPreference(actionPreference, "LoginEmail"))
+            {
+                Preference preference = (Preference)((OkObjectResult)actionPreference.Result).Value;
+                LoginEmail = preference.VariableValue;
+            }
+
+            if (!await LoggedInService.SetLoggedInContactInfo(LoginEmail)) return await Task.FromResult(false);
 
             if (!await DoCheckIfUpdateIsNeeded()) return await Task.FromResult(false);
 
@@ -198,7 +207,15 @@ namespace CSSPDesktopServices.Services
 
             if (!await Stop()) await Task.FromResult(false);
 
-            if (!await LocalService.SetLoggedInContactInfo()) await Task.FromResult(false);           
+            string LoginEmail = "";
+            var actionPreference = await PreferenceService.GetPreferenceWithVariableName("LoginEmail");
+            if (await DoStatusActionPreference(actionPreference, "LoginEmail"))
+            {
+                Preference preference = (Preference)((OkObjectResult)actionPreference.Result).Value;
+                LoginEmail = preference.VariableValue;
+            }
+
+            if (!await LoggedInService.SetLoggedInContactInfo(LoginEmail)) return await Task.FromResult(false);
 
             if (!await DoInstallUpdates()) return await Task.FromResult(false);
 
@@ -208,7 +225,15 @@ namespace CSSPDesktopServices.Services
         {
             if (!await DoLogin(loginModel)) return await Task.FromResult(false);
 
-            if (!await LocalService.SetLoggedInContactInfo()) return await Task.FromResult(false);
+            string LoginEmail = "";
+            var actionPreference = await PreferenceService.GetPreferenceWithVariableName("LoginEmail");
+            if (await DoStatusActionPreference(actionPreference, "LoginEmail"))
+            {
+                Preference preference = (Preference)((OkObjectResult)actionPreference.Result).Value;
+                LoginEmail = preference.VariableValue;
+            }
+
+            if (!await LoggedInService.SetLoggedInContactInfo(LoginEmail)) return await Task.FromResult(false);
 
             return await Task.FromResult(true);
         }
@@ -224,12 +249,12 @@ namespace CSSPDesktopServices.Services
 
             return await Task.FromResult(true);
         }
-        public async Task<bool> Register(RegisterModel registerModel)
-        {
-            if (!await DoRegister(registerModel)) return await Task.FromResult(false);
+        //public async Task<bool> Register(RegisterModel registerModel)
+        //{
+        //    if (!await DoRegister(registerModel)) return await Task.FromResult(false);
 
-            return await Task.FromResult(true);
-        }
+        //    return await Task.FromResult(true);
+        //}
         public async Task<bool> Start()
         {
             if (!await DoStart()) return await Task.FromResult(false);

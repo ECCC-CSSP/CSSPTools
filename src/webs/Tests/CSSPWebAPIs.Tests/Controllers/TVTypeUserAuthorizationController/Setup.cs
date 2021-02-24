@@ -79,11 +79,6 @@ namespace CSSPWebAPIs.TVTypeUserAuthorizationManualController.Tests
                 options.UseSqlServer(DBConnStr);
             });
 
-            Services.AddDbContext<CSSPDBInMemoryContext>(options =>
-            {
-                options.UseInMemoryDatabase(DBConnStr);
-            });
-
             Services.AddIdentityCore<ApplicationUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 

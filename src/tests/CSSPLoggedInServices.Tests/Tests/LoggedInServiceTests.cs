@@ -33,14 +33,11 @@ namespace LoggedInServices.Tests
             Assert.True(await Setup(culture));
             Assert.NotNull(CSSPCultureService);
             Assert.NotNull(LoggedInService);
-            Assert.NotNull(Id);
+            Assert.NotNull(LoginEmail);
             Assert.NotNull(FirstName1);
             Assert.NotNull(Initial1);
             Assert.NotNull(LastName1);
-            Assert.NotNull(Id2);
-            Assert.NotNull(FirstName2);
-            Assert.NotNull(LastName2);
-            Assert.NotNull(Id3);
+            Assert.NotNull(LoginEmail3);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -49,8 +46,8 @@ namespace LoggedInServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            await LoggedInService.SetLoggedInContactInfo(Id);
-            Assert.Equal(Id, LoggedInService.LoggedInContactInfo.LoggedInContact.LoginEmail);
+            await LoggedInService.SetLoggedInContactInfo(LoginEmail);
+            Assert.Equal(LoginEmail, LoggedInService.LoggedInContactInfo.LoggedInContact.LoginEmail);
 
             Contact contact = LoggedInService.LoggedInContactInfo.LoggedInContact;
             Assert.Equal(FirstName1, contact.FirstName);
@@ -61,27 +58,7 @@ namespace LoggedInServices.Tests
             Assert.True(TVTypeUserAuthorizationList.Count > 0);
 
             List<TVItemUserAuthorization> TVItemUserAuthorizationList = LoggedInService.LoggedInContactInfo.TVItemUserAuthorizationList;
-            Assert.True(TVItemUserAuthorizationList.Count == 0);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task LoggedInService_SetLoggedInContactInfo_With_LoginEmail2_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            await LoggedInService.SetLoggedInContactInfo(Id2);
-            Assert.Equal(Id2, LoggedInService.LoggedInContactInfo.LoggedInContact.LoginEmail);
-
-            Contact contact = LoggedInService.LoggedInContactInfo.LoggedInContact;
-            Assert.Equal(FirstName2, contact.FirstName);
-            Assert.Equal(LastName2, contact.LastName);
-
-            List<TVTypeUserAuthorization> TVTypeUserAuthorizationList = LoggedInService.LoggedInContactInfo.TVTypeUserAuthorizationList;
-            Assert.True(TVTypeUserAuthorizationList.Count == 1);
-
-            List<TVItemUserAuthorization> TVItemUserAuthorizationList = LoggedInService.LoggedInContactInfo.TVItemUserAuthorizationList;
-            Assert.True(TVItemUserAuthorizationList.Count == 1);
+            Assert.True(TVItemUserAuthorizationList.Count > 0);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -90,7 +67,7 @@ namespace LoggedInServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            await LoggedInService.SetLoggedInContactInfo(Id3);
+            await LoggedInService.SetLoggedInContactInfo(LoginEmail3);
             Assert.Null(LoggedInService.LoggedInContactInfo.LoggedInContact);
             Assert.True(LoggedInService.LoggedInContactInfo.TVTypeUserAuthorizationList.Count == 0);
             Assert.True(LoggedInService.LoggedInContactInfo.TVItemUserAuthorizationList.Count == 0);
@@ -98,17 +75,14 @@ namespace LoggedInServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task LoggedInService_Contact_Should_Exist_In_Memory_DB_Good_Test(string culture)
+        public async Task LoggedInService_SetLoggedInLocalContactInf_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            // first time it will get the LoggedInContactInfo from the read DB
-            await LoggedInService.SetLoggedInContactInfo(Id);
-            Assert.Equal(Id, LoggedInService.LoggedInContactInfo.LoggedInContact.LoginEmail);
-
-            // first time it will get the LoggedInContactInfo from the InMemory DB
-            await LoggedInService.SetLoggedInContactInfo(Id);
-            Assert.Equal(Id, LoggedInService.LoggedInContactInfo.LoggedInContact.LoginEmail);
+            await LoggedInService.SetLoggedInLocalContactInfo();
+            Assert.NotNull(LoggedInService.LoggedInContactInfo.LoggedInContact);
+            Assert.True(LoggedInService.LoggedInContactInfo.TVTypeUserAuthorizationList.Count > 0);
+            Assert.True(LoggedInService.LoggedInContactInfo.TVItemUserAuthorizationList.Count > 0);
         }
         #endregion Tests
 

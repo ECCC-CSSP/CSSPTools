@@ -28,7 +28,7 @@ namespace GenerateCSSPDBServices
             sb.AppendLine(@"                    return await Task.FromResult(BadRequest(String.Format(CSSPCultureServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail)));");
             sb.AppendLine(@"                }");
             sb.AppendLine(@"                ");
-            sb.AppendLine(@"                if (contact.PasswordHash == await ScrambleService.Descramble(loginModel.Password))");
+            sb.AppendLine(@"                if (loginModel.Password == ScrambleService.Descramble(contact.PasswordHash))");
             sb.AppendLine(@"                {");
             //sb.AppendLine(@"                ApplicationUser appUser = await UserManager.FindByNameAsync(loginModel.LoginEmail);");
             //sb.AppendLine(@"");

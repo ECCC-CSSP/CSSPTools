@@ -10,13 +10,13 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using CSSPEnums;
 using CSSPCultureServices.Resources;
-using LocalServices;
 using ReadGzFileServices;
 using System.Linq;
 using System.Threading;
 using CSSPDBPreferenceServices;
 using CSSPDBPreferenceModels;
 using CSSPHelperModels;
+using LoggedInServices;
 
 namespace CSSPWebAPIsLocal.Controllers
 {
@@ -36,15 +36,15 @@ namespace CSSPWebAPIsLocal.Controllers
 
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILocalService LocalService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IPreferenceService PreferenceService { get; }
         #endregion Properties
 
         #region Constructors
-        public PreferenceController(ICSSPCultureService CSSPCultureService, ILocalService LocalService, IPreferenceService PreferenceService)
+        public PreferenceController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IPreferenceService PreferenceService)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LocalService = LocalService;
+            this.LoggedInService = LoggedInService;
             this.PreferenceService = PreferenceService;
         }
         #endregion Constructors
@@ -55,7 +55,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = AreaTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LocalService.SetLoggedInContactInfo();
+            await LoggedInService.SetLoggedInLocalContactInfo();
 
             return await PreferenceService.GetPreferenceList();
         }
@@ -64,7 +64,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = AreaTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LocalService.SetLoggedInContactInfo();
+            await LoggedInService.SetLoggedInLocalContactInfo();
 
             return await PreferenceService.AddOrChange(varNameAndValue.VariableName, varNameAndValue.VariableValue);
         }
@@ -74,7 +74,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = AreaTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LocalService.SetLoggedInContactInfo();
+            await LoggedInService.SetLoggedInLocalContactInfo();
 
             return await PreferenceService.Delete(PreferenceID);
         }

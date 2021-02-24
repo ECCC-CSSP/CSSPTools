@@ -64,13 +64,13 @@ namespace CSSPSQLiteServices
                     "DBCommand INTEGER  NOT NULL  , " +
                     "Id TEXT  NOT NULL  , " +
                     "ContactTVItemID INTEGER  NOT NULL  , " +
-                    "LoginEmail TEXT  NOT NULL  , " +
-                    "FirstName TEXT  NOT NULL  , " +
-                    "LastName TEXT  NOT NULL  , " +
-                    "Initial TEXT   , " +
+                    "LoginEmail TEXT  NOT NULL COLLATE NOCASE, " +
+                    "FirstName TEXT  NOT NULL COLLATE NOCASE, " +
+                    "LastName TEXT  NOT NULL COLLATE NOCASE, " +
+                    "Initial TEXT COLLATE NOCASE, " +
                     "CellNumber TEXT   , " +
                     "CellNumberConfirmed INTEGER   , " +
-                    "WebName TEXT  NOT NULL  , " +
+                    "WebName TEXT  NOT NULL COLLATE NOCASE, " +
                     "ContactTitle INTEGER   , " +
                     "IsAdmin INTEGER  NOT NULL  , " +
                     "EmailValidated INTEGER  NOT NULL  , " +

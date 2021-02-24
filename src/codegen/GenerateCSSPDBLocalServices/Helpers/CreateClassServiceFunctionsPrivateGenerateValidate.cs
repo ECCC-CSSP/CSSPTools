@@ -37,14 +37,7 @@ namespace GenerateCSSPDBServices
                 }
             }
 
-            //if (dllTypeInfoModels.Type.Name == "LocalContact")
-            //{
-            //    sb.AppendLine(@"        private IEnumerable<ValidationResult> Validate(ValidationContext validationContext, ActionDBTypeEnum actionDBType, AddContactTypeEnum addContactType)");
-            //}
-            //else
-            //{
-                sb.AppendLine(@"        private IEnumerable<ValidationResult> Validate(ValidationContext validationContext, ActionDBTypeEnum actionDBType)");
-            //}
+            sb.AppendLine(@"        private IEnumerable<ValidationResult> Validate(ValidationContext validationContext, ActionDBTypeEnum actionDBType)");
             sb.AppendLine(@"        {");
             if (EnumExist)
             {

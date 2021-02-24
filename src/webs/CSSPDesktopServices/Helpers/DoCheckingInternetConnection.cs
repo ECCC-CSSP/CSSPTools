@@ -25,7 +25,7 @@ namespace CSSPDesktopServices.Services
             {
                 AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.TryingToDownload_, "https://www.google.com/")));
 
-                if (await LocalService.CheckInternetConnection())
+                if (await CheckInternetConnection())
                 {
                     AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.InternetConnectionDetected));
                     HasInternetConnection = true;
@@ -48,6 +48,29 @@ namespace CSSPDesktopServices.Services
             AppendStatus(new AppendEventArgs(""));
 
             return await Task.FromResult(true);
+        }
+
+        private async Task<bool> CheckInternetConnection()
+        {
+            string url = "https://www.google.com/";
+
+            try
+            {
+                HttpClient httpClient = new HttpClient();
+                string ret = httpClient.GetStringAsync(url).GetAwaiter().GetResult();
+                if (!string.IsNullOrWhiteSpace(ret))
+                {
+                    return await Task.FromResult(true);
+                }
+                else
+                {
+                    return await Task.FromResult(false);
+                }
+            }
+            catch (Exception)
+            {
+                return await Task.FromResult(false);
+            }
         }
     }
 }

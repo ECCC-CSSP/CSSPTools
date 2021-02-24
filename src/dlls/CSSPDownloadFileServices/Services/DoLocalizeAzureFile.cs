@@ -27,7 +27,7 @@ namespace DownloadFileServices
     {
         private async Task<ActionResult<bool>> DoLocalizeAzureFile(int ParentTVItemID, string FileName)
         {
-            if (LocalService.LoggedInContactInfo == null)
+            if (LoggedInService.LoggedInContactInfo == null)
             {
                 return await Task.FromResult(Unauthorized(""));
             }

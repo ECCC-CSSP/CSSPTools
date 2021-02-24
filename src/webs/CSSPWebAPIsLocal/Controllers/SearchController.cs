@@ -10,9 +10,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using CSSPEnums;
 using CSSPCultureServices.Resources;
-using LocalServices;
 using CSSPDBSearchServices;
 using Microsoft.Extensions.Configuration;
+using LoggedInServices;
 
 namespace CSSPWebAPIsLocal.Controllers
 {
@@ -32,16 +32,16 @@ namespace CSSPWebAPIsLocal.Controllers
         #region Properties
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILocalService LocalService { get; }
+        private ILoggedInService LoggedInService { get; }
         private ICSSPDBSearchService CSSPDBSearchService { get; }
         #endregion Properties
 
         #region Constructors
-        public SearchController(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, ILocalService LocalService, ICSSPDBSearchService CSSPDBSearchService)
+        public SearchController(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, ICSSPDBSearchService CSSPDBSearchService)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
-            this.LocalService = LocalService;
+            this.LoggedInService = LoggedInService;
             this.CSSPDBSearchService = CSSPDBSearchService;
         }
         #endregion Constructors
@@ -52,7 +52,7 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<List<TVItemLanguage>>> Search(string SearchTerm, int TVItemID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LocalService.SetLoggedInContactInfo();
+            await LoggedInService.SetLoggedInLocalContactInfo();
 
             return await CSSPDBSearchService.Search(SearchTerm, TVItemID);
         }

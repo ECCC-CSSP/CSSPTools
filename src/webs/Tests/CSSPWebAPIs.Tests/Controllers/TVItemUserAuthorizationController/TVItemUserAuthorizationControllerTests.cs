@@ -63,13 +63,29 @@ namespace CSSPWebAPIs.TVItemUserAuthorizationManualController.Tests
             using (HttpClient httpClient = new HttpClient())
             {
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
-                string url = $"{ CSSPAzureUrl }api/{ culture }/TVItemUserAuthorization/GetWithContactTVItemID/3";
+                string url = $"{ CSSPAzureUrl }api/{ culture }/TVItemUserAuthorization/GetWithContactTVItemID/{contact.ContactTVItemID}";
                 var response = await httpClient.GetAsync(url);
                 Assert.Equal(HttpStatusCode.OK, response.StatusCode);
                 string responseContent = await response.Content.ReadAsStringAsync();
                 List<TVItemUserAuthorization> tvItemUserAuthorizationList = JsonSerializer.Deserialize<List<TVItemUserAuthorization>>(responseContent);
                 Assert.NotNull(tvItemUserAuthorizationList);
                 Assert.True(tvItemUserAuthorizationList.Count > 0);
+            }
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task TVItemUserAuthorizationController_GetWithContactTVItemID_Unauthorize_Error_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+            Assert.NotNull(contact);
+            Assert.NotEmpty(contact.Token);
+
+            using (HttpClient httpClient = new HttpClient())
+            {
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token + "notworking");
+                var response = await httpClient.GetAsync($"{ CSSPAzureUrl }api/{ culture }/TVItemUserAuthorization/GetWithContactTVItemID/{contact.ContactTVItemID}");
+                Assert.True((int)response.StatusCode == 401);
             }
         }
         #endregion Functions private

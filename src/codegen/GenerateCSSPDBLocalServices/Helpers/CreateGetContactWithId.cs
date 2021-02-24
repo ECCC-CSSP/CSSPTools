@@ -11,7 +11,7 @@ namespace GenerateCSSPDBServices
         {
             sb.AppendLine(@"        private async Task<ActionResult<LocalContact>> GetLocalContactWithId(string Id)");
             sb.AppendLine(@"        {");
-            sb.AppendLine(@"            LocalContact localContact = (from c in db.LocalContacts.AsNoTracking()");
+            sb.AppendLine(@"            LocalContact localContact = (from c in dbLocal.LocalContacts.AsNoTracking()");
             sb.AppendLine(@"                               where c.Id == Id");
             sb.AppendLine(@"                               select c).FirstOrDefault();");
             sb.AppendLine(@"");

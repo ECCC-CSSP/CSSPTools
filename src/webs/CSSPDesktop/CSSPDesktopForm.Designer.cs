@@ -328,17 +328,17 @@
             this.lblInternetRequiredRegister.TabIndex = 13;
             this.lblInternetRequiredRegister.Text = "Internet connection is required to login";
             this.lblInternetRequiredRegister.Visible = false;
-            // 
-            // butRegister
-            // 
-            this.butRegister.AutoSize = true;
-            this.butRegister.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.butRegister.Location = new System.Drawing.Point(120, 265);
-            this.butRegister.Name = "butRegister";
-            this.butRegister.Size = new System.Drawing.Size(139, 44);
-            this.butRegister.TabIndex = 6;
-            this.butRegister.Text = "Register";
-            this.butRegister.Click += new System.EventHandler(this.butRegister_Click);
+            //// 
+            //// butRegister
+            //// 
+            //this.butRegister.AutoSize = true;
+            //this.butRegister.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            //this.butRegister.Location = new System.Drawing.Point(120, 265);
+            //this.butRegister.Name = "butRegister";
+            //this.butRegister.Size = new System.Drawing.Size(139, 44);
+            //this.butRegister.TabIndex = 6;
+            //this.butRegister.Text = "Register";
+            //this.butRegister.Click += new System.EventHandler(this.butRegister_Click);
             // 
             // textBoxPasswordRegister
             // 

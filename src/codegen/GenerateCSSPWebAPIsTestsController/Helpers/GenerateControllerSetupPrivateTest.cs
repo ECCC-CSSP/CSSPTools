@@ -30,11 +30,6 @@ namespace GenerateCSSPWebAPIsTestsController
             sb.AppendLine(@"                options.UseSqlServer(TestDB);");
             sb.AppendLine(@"            });");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            Services.AddDbContext<CSSPDBInMemoryContext>(options =>");
-            sb.AppendLine(@"            {");
-            sb.AppendLine(@"                options.UseInMemoryDatabase(TestDB);");
-            sb.AppendLine(@"            });");
-            sb.AppendLine(@"");
             sb.AppendLine(@"            Services.AddDbContext<ApplicationDbContext>(options =>");
             sb.AppendLine(@"                options.UseSqlServer(TestDB));");
             sb.AppendLine(@"");

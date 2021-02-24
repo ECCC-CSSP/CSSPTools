@@ -72,6 +72,22 @@ namespace CSSPWebAPIs.TVTypeUserAuthorizationManualController.Tests
                 Assert.True(tvTypeUserAuthorizationList.Count > 0);
             }
         }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task TVTypeUserAuthorizationController_GetWithContactTVItemID_Unauthorize_Error_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+            Assert.NotNull(contact);
+            Assert.NotEmpty(contact.Token);
+
+            using (HttpClient httpClient = new HttpClient())
+            {
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token + "notworking");
+                var response = await httpClient.GetAsync($"{ CSSPAzureUrl }api/{ culture }/TVTypeUserAuthorization/GetWithContactTVItemID/{ contact.ContactTVItemID }");
+                Assert.True((int)response.StatusCode == 401);
+            }
+        }
         #endregion Functions private
     }
 }

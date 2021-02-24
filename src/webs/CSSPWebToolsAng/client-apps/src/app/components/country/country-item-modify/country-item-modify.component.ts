@@ -18,18 +18,19 @@ export class CountryItemModifyComponent implements OnInit, OnDestroy {
   @Input() AppState: AppState;
 
   formCountryModify: FormGroup;
-  
+
+  get f() { return this.formCountryModify.controls; }
+
   constructor(public appStateService: AppStateService,
     public appLoadedService: AppLoadedService,
     public appLanguageService: AppLanguageService,
-    public showTVItemService: ShowTVItemService,
     private fb: FormBuilder) {
 
   }
 
   ngOnInit(): void {
     this.formCountryModify = this.fb.group({
-      TVText: [ this.TVItemModel.TVItemLanguageList[<number>this.appStateService.AppState$.getValue().Language].TVText,
+      TVText: [this.TVItemModel.TVItemLanguageList[<number>this.appStateService.AppState$.getValue().Language].TVText,
       [
         Validators.required,
         //Validators.email,
@@ -40,8 +41,7 @@ export class CountryItemModifyComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
   }
 
-  Modify()
-  {
+  Modify() {
     console.debug(this.formCountryModify.value);
     console.debug(this.TVItemModel);
   }

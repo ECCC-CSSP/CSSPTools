@@ -1,4 +1,8 @@
-﻿using System;
+﻿/*
+ * Manually edited
+ * 
+ */
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,7 +18,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpGet]
         public string Get()
         {
-            return "Empty Just to see if its working February 15, 2021";
+            return "Empty Just to see if its working February 18, 2021";
         }
     }
 }

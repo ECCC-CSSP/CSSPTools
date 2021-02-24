@@ -18,7 +18,6 @@
     <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="5.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="5.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
@@ -41,6 +40,7 @@
     <ProjectReference Include="..\..\dlls\CSSPDBSearchServices\CSSPDBSearchServices.csproj" />
     <ProjectReference Include="..\..\dlls\CSSPDBServices\CSSPDBServices.csproj" />
     <ProjectReference Include="..\..\dlls\CSSPReadGzFileServices\CSSPReadGzFileServices.csproj" />
+    <ProjectReference Include="..\..\dlls\CSSPWebAppLoadedServices\CSSPWebAppLoadedlServices.csproj" />
     <ProjectReference Include="..\..\dlls\CSSPWebModels\CSSPWebModels.csproj" />
   </ItemGroup>
 

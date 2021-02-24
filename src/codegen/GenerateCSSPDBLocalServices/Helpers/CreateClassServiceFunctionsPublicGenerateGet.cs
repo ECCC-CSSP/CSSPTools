@@ -10,7 +10,7 @@ namespace GenerateCSSPDBServices
     {
         private async Task<bool> CreateClassServiceFunctionsPublicGenerateGet(DLLTypeInfo dllTypeInfo, List<DLLTypeInfo> DLLTypeInfoCSSPDBLocalModelsList, string TypeName, string TypeNameLower, StringBuilder sb)
         {
-            List<string> TypeNameWithPlurial_es = new List<string>() { "LocalAddress", };
+            List<string> TypeNameWithPlurial_es = new List<string>() { "Address" };
 
             string Plurial = "s";
             if (TypeNameWithPlurial_es.Contains(TypeName))
@@ -52,31 +52,15 @@ namespace GenerateCSSPDBServices
                         continue;
                     }
 
-                    if (TypeName == "AspNetUser")
-                    {
-                        //sb.AppendLine($@"        public async Task<ActionResult<{ TypeName }>> Get{ TypeName }WithId(string Id)");
-                    }
-                    else
-                    {
-                        sb.AppendLine($@"        public async Task<ActionResult<{ TypeName }>> Get{ TypeName }With{ TypeName.Replace("Local", "") }ID(int { TypeName.Replace("Local", "") }ID)");
-                    }
+                    sb.AppendLine($@"        public async Task<ActionResult<{ TypeName }>> Get{ TypeName }With{ TypeName.Replace("Local", "") }ID(int { TypeName.Replace("Local", "") }ID)");
                     sb.AppendLine(@"        {");
-                    sb.AppendLine(@"            if (LocalService.LoggedInContactInfo.LoggedInContact == null)");
+                    sb.AppendLine(@"            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)");
                     sb.AppendLine(@"            {");
                     sb.AppendLine(@"                return await Task.FromResult(Unauthorized(""""));");
                     sb.AppendLine(@"            }");
                     sb.AppendLine(@"");
-
-                    sb.AppendLine($@"            { TypeName } { TypeNameLower } = (from c in db.{ TypeName }{ Plurial }.AsNoTracking()");
-
-                    if (currentDLLTypeInfo.Name == "AspNetUser")
-                    {
-                        //sb.AppendLine(@"                    where c.Id == Id");
-                    }
-                    else
-                    {
-                        sb.AppendLine($@"                    where c.{ TypeName.Replace("Local", "") }ID == { TypeName.Replace("Local", "") }ID");
-                    }
+                    sb.AppendLine($@"            { TypeName } { TypeNameLower } = (from c in dbLocal.{ TypeName }{ Plurial }.AsNoTracking()");
+                    sb.AppendLine($@"                    where c.{ TypeName.Replace("Local", "") }ID == { TypeName.Replace("Local", "") }ID");
                     sb.AppendLine(@"                    select c).FirstOrDefault();");
                     sb.AppendLine(@"");
                     sb.AppendLine($@"            if ({ TypeNameLower } == null)");
@@ -85,25 +69,15 @@ namespace GenerateCSSPDBServices
                     sb.AppendLine(@"            }");
                     sb.AppendLine(@"");
                     sb.AppendLine($@"            return await Task.FromResult(Ok({ TypeNameLower }));");
-
                     sb.AppendLine(@"        }");
-
                     sb.AppendLine($@"        public async Task<ActionResult<List<{ TypeName }>>> Get{ TypeName }List(int skip = 0, int take = 100)");
                     sb.AppendLine(@"        {");
-                    sb.AppendLine(@"            if (LocalService.LoggedInContactInfo.LoggedInContact == null)");
+                    sb.AppendLine(@"            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)");
                     sb.AppendLine(@"            {");
                     sb.AppendLine(@"                return await Task.FromResult(Unauthorized(""""));");
                     sb.AppendLine(@"            }");
                     sb.AppendLine(@"");
-
-                    if (TypeName == "AspNetUser")
-                    {
-                        //sb.AppendLine($@"            List<{ TypeName }> { TypeNameLower }List = (from c in db.{ TypeName }{ Plurial }.AsNoTracking() orderby c.Email select c).Skip(skip).Take(take).ToList();");
-                    }
-                    else
-                    {
-                        sb.AppendLine($@"            List<{ TypeName }> { TypeNameLower }List = (from c in db.{ TypeName }{ Plurial }.AsNoTracking() orderby c.{ TypeName.Replace("Local", "") }ID select c).Skip(skip).Take(take).ToList();");
-                    }
+                    sb.AppendLine($@"            List<{ TypeName }> { TypeNameLower }List = (from c in dbLocal.{ TypeName }{ Plurial }.AsNoTracking() orderby c.{ TypeName.Replace("Local", "") }ID select c).Skip(skip).Take(take).ToList();");
                     sb.AppendLine(@"");
                     sb.AppendLine($@"            return await Task.FromResult(Ok({ TypeNameLower }List));");
 

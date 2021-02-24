@@ -28,11 +28,6 @@ namespace GenerateCSSPDBServices_Tests
             sb.AppendLine(@"                options.UseSqlServer(CSSPDBConnString);");
             sb.AppendLine(@"            });");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            Services.AddDbContext<CSSPDBInMemoryContext>(options =>");
-            sb.AppendLine(@"            {");
-            sb.AppendLine(@"                options.UseInMemoryDatabase(CSSPDBConnString);");
-            sb.AppendLine(@"            });");
-            sb.AppendLine(@"");
             //sb.AppendLine(@"            Services.AddDbContext<ApplicationDbContext>(options =>");
             //sb.AppendLine(@"            {");
             //sb.AppendLine(@"                options.UseSqlServer(CSSPDBConnString);");
@@ -54,6 +49,32 @@ namespace GenerateCSSPDBServices_Tests
             {
             }
             sb.AppendLine($@"            Services.AddSingleton<I{ TypeName }DBService, { TypeName }DBService>();");
+            sb.AppendLine($@"");
+            sb.AppendLine($@"            /* ---------------------------------------------------------------------------------");
+            sb.AppendLine($@"             * using TestDB");
+            sb.AppendLine($@"             * ---------------------------------------------------------------------------------      ");
+            sb.AppendLine($@"             */");
+            sb.AppendLine($@"            string TestDB = Config.GetValue<string>(""TestDB"");");
+            sb.AppendLine($@"            Assert.NotNull(TestDB);");
+            sb.AppendLine($@"");
+            sb.AppendLine($@"            Services.AddDbContext<CSSPDBContext>(options =>");
+            sb.AppendLine($@"            {{");
+            sb.AppendLine($@"                options.UseSqlServer(TestDB);");
+            sb.AppendLine($@"            }});");
+            sb.AppendLine($@"");
+            sb.AppendLine($@"            /* ---------------------------------------------------------------------------------");
+            sb.AppendLine($@"             * using CSSPDBPreference");
+            sb.AppendLine($@"             * ---------------------------------------------------------------------------------");
+            sb.AppendLine($@"             */");
+            sb.AppendLine($@"            string CSSPDBPreference = Config.GetValue<string>(""CSSPDBPreference""); ");
+            sb.AppendLine($@"            Assert.NotNull(CSSPDBPreference);");
+            sb.AppendLine($@"");
+            sb.AppendLine($@"            FileInfo fiCSSPDBPreference = new FileInfo(CSSPDBPreference);");
+            sb.AppendLine($@"");
+            sb.AppendLine($@"            Services.AddDbContext<CSSPDBPreferenceContext>(options =>");
+            sb.AppendLine($@"            {{");
+            sb.AppendLine($@"                options.UseSqlite($""Data Source={{ fiCSSPDBPreference.FullName }}"");");
+            sb.AppendLine($@"            }});");
             sb.AppendLine(@"");
             sb.AppendLine(@"            Provider = Services.BuildServiceProvider();");
             sb.AppendLine(@"            Assert.NotNull(Provider);");

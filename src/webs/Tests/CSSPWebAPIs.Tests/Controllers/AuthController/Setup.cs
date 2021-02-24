@@ -26,6 +26,7 @@ using System.Net.Http.Headers;
 using System.Text.Json;
 using CSSPHelperModels;
 using CSSPScrambleServices;
+using CSSPDBPreferenceModels;
 
 namespace CSSPWebAPIs.AuthController.Tests
 {
@@ -73,6 +74,10 @@ namespace CSSPWebAPIs.AuthController.Tests
 
             Services.AddSingleton<IConfiguration>(Configuration);
 
+            /* ---------------------------------------------------------------------------------
+             * using CSSPDB
+             * ---------------------------------------------------------------------------------      
+             */
             string DBConnString = Configuration.GetValue<string>("CSSPDB");
             Assert.NotNull(DBConnString);
 
@@ -81,16 +86,40 @@ namespace CSSPWebAPIs.AuthController.Tests
                 options.UseSqlServer(DBConnString);
             });
 
-            Services.AddDbContext<CSSPDBInMemoryContext>(options =>
-            {
-                options.UseInMemoryDatabase(DBConnString);
-            });
-
             Services.AddIdentityCore<ApplicationUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(DBConnString));
+
+            /* ---------------------------------------------------------------------------------
+             * using CSSPDBLocal
+             * ---------------------------------------------------------------------------------      
+             */
+            string CSSPDBLocal = Configuration.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocal);
+
+            FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocal);
+            Assert.True(fiCSSPDBLocal.Exists);
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
+            });
+
+            /* ---------------------------------------------------------------------------------
+             * using CSSPDBPreference
+             * ---------------------------------------------------------------------------------      
+             */
+            string CSSPDBPreferenceFileName = Configuration.GetValue<string>("CSSPDBPreference");
+            Assert.NotNull(CSSPDBPreferenceFileName);
+
+            FileInfo fiCSSPDBPreferenceFileName = new FileInfo(CSSPDBPreferenceFileName);
+
+            Services.AddDbContext<CSSPDBPreferenceContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiCSSPDBPreferenceFileName.FullName }");
+            });
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();

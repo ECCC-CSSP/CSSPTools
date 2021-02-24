@@ -12,8 +12,6 @@ namespace GenerateCSSPDBServices_Tests
     {
         private async Task<bool> GenerateGetFilledRandomClassnameTestCodeNotMapped(Type type, string TypeName, string TypeNameLower, StringBuilder sb, string DBType)
         {
-            StringBuilder sbInMemory = new StringBuilder();
-
             sb.AppendLine($@"        private { TypeName } GetFilledRandom{ TypeName }(string OmitPropName)");
             sb.AppendLine(@"        {");
             sb.AppendLine($@"            { TypeName } { TypeNameLower } = new { TypeName }();");
@@ -32,11 +30,9 @@ namespace GenerateCSSPDBServices_Tests
                     continue;
                 }
 
-                if (!await CreateGetFilledRandomClass(prop, csspProp, TypeName, TypeNameLower, sb, sbInMemory)) return await Task.FromResult(false);
+                if (!await CreateGetFilledRandomClass(prop, csspProp, TypeName, TypeNameLower, sb)) return await Task.FromResult(false);
             }
 
-            sb.AppendLine(@"");
-            sb.AppendLine(sbInMemory.ToString());
             sb.AppendLine(@"");
             sb.AppendLine($@"            return { TypeNameLower };");
             sb.AppendLine(@"        }");

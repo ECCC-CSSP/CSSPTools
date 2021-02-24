@@ -43,9 +43,9 @@ namespace CSSPWebAPIsLocal.SearchController.Tests
             Assert.True(await Setup(culture));
 
             Assert.NotNull(CSSPCultureService);
-            Assert.NotNull(LocalService);
-            Assert.NotNull(LocalService.LoggedInContactInfo);
-            Assert.NotNull(LocalService.LoggedInContactInfo.LoggedInContact);
+            Assert.NotNull(LoggedInService);
+            Assert.NotNull(LoggedInService.LoggedInContactInfo);
+            Assert.NotNull(LoggedInService.LoggedInContactInfo.LoggedInContact);
             Assert.NotNull(CSSPDBSearchService);
         }
         [Theory]

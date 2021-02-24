@@ -136,9 +136,6 @@
 //            Services.AddDbContext<CSSPDBContext>(options =>
 //                    options.UseSqlServer(DBConnStr));
 
-//            //Services.AddDbContext<CSSPDBInMemoryContext>(options =>
-//            //        options.UseInMemoryDatabase(DBConnStr));
-
 //            Services.AddDbContext<ApplicationDbContext>(options =>
 //                options.UseSqlServer(DBConnStr));
 

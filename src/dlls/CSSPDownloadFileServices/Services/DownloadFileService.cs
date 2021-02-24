@@ -12,10 +12,11 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using LocalServices;
 using CSSPDBFilesManagementServices;
 using CSSPDBFilesManagementModels;
 using CSSPScrambleServices;
+using LoggedInServices;
+using WebAppLoadedServices;
 
 namespace DownloadFileServices
 {
@@ -35,10 +36,11 @@ namespace DownloadFileServices
         private CSSPDBFilesManagementContext dbFM { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILocalService LocalService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IScrambleService ScrambleService { get; }
         private IEnums enums { get; }
         private ICSSPDBFilesManagementService CSSPDBFilesManagementService { get; }
+        private IWebAppLoadedService WebAppLoadedService { get;  }
         private string AzureStore { get; set; }
         private string AzureStoreCSSPFilesPath { get; set; }
         private string CSSPFilesPath { get; set; }
@@ -48,14 +50,15 @@ namespace DownloadFileServices
         #endregion Properties
 
         #region Constructors
-        public DownloadFileService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, ILocalService LocalService, 
-            IScrambleService ScrambleService, IEnums enums, ICSSPDBFilesManagementService CSSPDBFilesManagementService) : base()
+        public DownloadFileService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, 
+            IScrambleService ScrambleService, IEnums enums, ICSSPDBFilesManagementService CSSPDBFilesManagementService, IWebAppLoadedService WebAppLoadedService) : base()
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
-            this.LocalService = LocalService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.CSSPDBFilesManagementService = CSSPDBFilesManagementService;
+            this.WebAppLoadedService = WebAppLoadedService;
 
             AzureStore = ScrambleService.Descramble(Configuration.GetValue<string>("AzureStore"));
             AzureStoreCSSPFilesPath = Configuration.GetValue<string>("AzureStoreCSSPFilesPath");

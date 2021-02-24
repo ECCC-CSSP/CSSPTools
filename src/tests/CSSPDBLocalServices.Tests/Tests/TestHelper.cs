@@ -23,12 +23,7 @@ namespace CSSPDBLocalServices.Tests
         #endregion Variables
 
         #region Properties
-        //public CSSPDBContext dbTestDB { get; set; }
-        //public CSSPDBContext dbMemoryTestDB { get; set; }
         public LanguageEnum LanguageRequest { get; set; }
-        //public List<CultureInfo> AllowableCulture { get; set; }
-        //public int ContactID = 2;
-        //public CultureInfo culture { get; set; }
         #endregion Properties
 
         #region Constructors

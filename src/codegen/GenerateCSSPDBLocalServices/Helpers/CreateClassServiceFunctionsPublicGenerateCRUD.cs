@@ -9,7 +9,7 @@ namespace GenerateCSSPDBServices
     {
         private async Task<bool> CreateClassServiceFunctionsPublicGenerateCRUD(DLLTypeInfo dllTypeInto, string TypeName, string TypeNameLower, StringBuilder sb)
         {
-            List<string> TypeNameWithPlurial_es = new List<string>() { "LocalAddress", };
+            List<string> TypeNameWithPlurial_es = new List<string>() { "Address" };
 
             string Plurial = "s";
             if (TypeNameWithPlurial_es.Contains(TypeName))
@@ -18,47 +18,26 @@ namespace GenerateCSSPDBServices
             }
 
             // Doing Delete
-            if (TypeName == "AspNetUser")
-            {
-                //sb.AppendLine($@"        public async Task<ActionResult<bool>> Delete(string Id)");
-            }
-            else
-            {
-                sb.AppendLine($@"        public async Task<ActionResult<bool>> Delete(int { TypeName }ID)");
-            }
+            sb.AppendLine($@"        public async Task<ActionResult<bool>> Delete(int { TypeName }ID)");
             sb.AppendLine(@"        {");
-            sb.AppendLine(@"            if (LocalService.LoggedInContactInfo.LoggedInContact == null)");
+            sb.AppendLine(@"            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)");
             sb.AppendLine(@"            {");
             sb.AppendLine(@"                return await Task.FromResult(Unauthorized());");
             sb.AppendLine(@"            }");
             sb.AppendLine(@"");
-            sb.AppendLine($@"            { TypeName } { TypeNameLower } = (from c in db.{ TypeName }{ Plurial }");
-            if (TypeName == "AspNetUser")
-            {
-                //sb.AppendLine($@"                    where c.Id == Id");
-            }
-            else
-            {
-                sb.AppendLine($@"                    where c.{ TypeName.Replace("Local", "") }ID == { TypeName }ID");
-            }
+            sb.AppendLine($@"            { TypeName } { TypeNameLower } = (from c in dbLocal.{ TypeName }{ Plurial }");
+            sb.AppendLine($@"                    where c.{ TypeName.Replace("Local", "") }ID == { TypeName }ID");
             sb.AppendLine($@"                    select c).FirstOrDefault();");
             sb.AppendLine(@"");
             sb.AppendLine($@"            if ({ TypeNameLower } == null)");
             sb.AppendLine(@"            {");
-            if (TypeName == "AspNetUser")
-            {
-                //sb.AppendLine($@"                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""Id"", Id)));");
-            }
-            else
-            {
-                sb.AppendLine($@"                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""{ TypeName }ID"", { TypeName }ID.ToString())));");
-            }
+            sb.AppendLine($@"                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""{ TypeName }ID"", { TypeName }ID.ToString())));");
             sb.AppendLine(@"            }");
             sb.AppendLine(@"");
             sb.AppendLine($@"            try");
             sb.AppendLine(@"            {");
-            sb.AppendLine($@"                db.{ TypeName }{ Plurial }.Remove({ TypeNameLower });");
-            sb.AppendLine($@"                db.SaveChanges();");
+            sb.AppendLine($@"                dbLocal.{ TypeName }{ Plurial }.Remove({ TypeNameLower });");
+            sb.AppendLine($@"                dbLocal.SaveChanges();");
             sb.AppendLine(@"            }");
             sb.AppendLine($@"            catch (Exception ex)");
             sb.AppendLine(@"            {");
@@ -79,7 +58,7 @@ namespace GenerateCSSPDBServices
                 sb.AppendLine($@"        public async Task<ActionResult<{ TypeName }>> Post({ TypeName } { TypeNameLower })");
             }
             sb.AppendLine(@"        {");
-            sb.AppendLine(@"            if (LocalService.LoggedInContactInfo.LoggedInContact == null)");
+            sb.AppendLine(@"            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)");
             sb.AppendLine(@"            {");
             sb.AppendLine(@"                return await Task.FromResult(Unauthorized());");
             sb.AppendLine(@"            }");
@@ -99,8 +78,8 @@ namespace GenerateCSSPDBServices
             sb.AppendLine(@"");
             sb.AppendLine($@"            try");
             sb.AppendLine(@"            {");
-            sb.AppendLine($@"                db.{ TypeName }{ Plurial }.Add({ TypeNameLower });");
-            sb.AppendLine($@"                db.SaveChanges();");
+            sb.AppendLine($@"                dbLocal.{ TypeName }{ Plurial }.Add({ TypeNameLower });");
+            sb.AppendLine($@"                dbLocal.SaveChanges();");
             sb.AppendLine(@"            }");
             sb.AppendLine($@"            catch (Exception ex)");
             sb.AppendLine(@"            {");
@@ -114,7 +93,7 @@ namespace GenerateCSSPDBServices
             // doing Put
             sb.AppendLine($@"        public async Task<ActionResult<{ TypeName }>> Put({ TypeName } { TypeNameLower })");
             sb.AppendLine(@"        {");
-            sb.AppendLine(@"            if (LocalService.LoggedInContactInfo.LoggedInContact == null)");
+            sb.AppendLine(@"            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)");
             sb.AppendLine(@"            {");
             sb.AppendLine(@"                return await Task.FromResult(Unauthorized());");
             sb.AppendLine(@"            }");
@@ -134,8 +113,8 @@ namespace GenerateCSSPDBServices
             sb.AppendLine(@"");
             sb.AppendLine($@"            try");
             sb.AppendLine(@"            {");
-            sb.AppendLine($@"                db.{ TypeName }{ Plurial }.Update({ TypeNameLower });");
-            sb.AppendLine($@"                db.SaveChanges();");
+            sb.AppendLine($@"                dbLocal.{ TypeName }{ Plurial }.Update({ TypeNameLower });");
+            sb.AppendLine($@"                dbLocal.SaveChanges();");
             sb.AppendLine(@"            }");
             sb.AppendLine($@"            catch (Exception ex)");
             sb.AppendLine(@"            {");

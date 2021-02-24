@@ -14,7 +14,7 @@ namespace GenerateCSSPWebAPIsLocal_TestsController
             sb.AppendLine(@"        {");
             sb.AppendLine(@"            Assert.True(await Setup(culture));");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            Assert.NotNull(LocalService);");
+            sb.AppendLine(@"            Assert.NotNull(LoggedInService);");
             sb.AppendLine($@"            Assert.NotNull({ TypeName }DBService);");
             sb.AppendLine($@"            Assert.NotNull({ TypeName }Controller);");
             sb.AppendLine(@"        }");

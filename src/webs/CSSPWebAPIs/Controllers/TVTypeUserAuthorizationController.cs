@@ -1,5 +1,6 @@
-/*  
+/*
  * Manually edited
+ * 
  */
 
 using CSSPDBModels;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LoggedInServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -17,15 +19,27 @@ namespace CSSPWebAPIs.Controllers
         Task<ActionResult<List<TVTypeUserAuthorization>>> GetWithContactTVItemID(int ContactTVItemID);
     }
 
+    [Route("api/{culture}/[controller]")]
+    [ApiController]
+    [Authorize]
     public partial class TVTypeUserAuthorizationController : ControllerBase, ITVTypeUserAuthorizationController
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private ICSSPCultureService CSSPCultureService { get; }
+        private ILoggedInService LoggedInService { get; }
+        private ITVTypeUserAuthorizationDBService TVTypeUserAuthorizationDBService { get; }
         #endregion Properties
 
         #region Constructors
+        public TVTypeUserAuthorizationController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, ITVTypeUserAuthorizationDBService TVTypeUserAuthorizationDBService)
+        {
+            this.CSSPCultureService = CSSPCultureService;
+            this.LoggedInService = LoggedInService;
+            this.TVTypeUserAuthorizationDBService = TVTypeUserAuthorizationDBService;
+        }
         #endregion Constructors
 
         #region Functions public

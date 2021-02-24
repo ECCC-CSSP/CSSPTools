@@ -19,14 +19,40 @@
     </button>
 
     <ng-container *ngIf="showTVItemService.TVItemVisible(webBase?.TVItemModel)">
-        <app-country-item-view [TVItemModel]="webBase?.TVItemModel" [AppState]="AppState">
-        </app-country-item-view>
-
-        <app-country-item-modify *ngIf="AppState.EditVisible" [TVItemModel]="webBase?.TVItemModel" [AppState]="AppState">
-        </app-country-item-modify>
-
-        <app-country-item-create *ngIf="AppState.EditVisible" [TVItemModel]="webBase?.TVItemModel" [AppState]="AppState">
-        </app-country-item-create>
+        <mat-accordion multi>
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        <mat-icon>preview</mat-icon>
+                        &nbsp;&nbsp;&nbsp;View
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <app-country-item-view [TVItemModel]="webBase?.TVItemModel" [AppState]="AppState">
+                </app-country-item-view>
+            </mat-expansion-panel>
+            <mat-expansion-panel *ngIf="AppState.EditVisible">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        <mat-icon>edit</mat-icon>
+                        &nbsp;&nbsp;&nbsp;Modify
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <app-country-item-modify [TVItemModel]="webBase?.TVItemModel"
+                    [AppState]="AppState">
+                </app-country-item-modify>
+            </mat-expansion-panel>
+            <mat-expansion-panel *ngIf="AppState.EditVisible">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        <mat-icon>add</mat-icon>
+                        &nbsp;&nbsp;&nbsp;Create
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <app-country-item-create [TVItemModel]="webBase?.TVItemModel"
+                    [AppState]="AppState">
+                </app-country-item-create>
+            </mat-expansion-panel>
+        </mat-accordion>
     </ng-container>
 
     <app-country-tvitem-list-detail [AppState]="AppState" *ngIf="!IsBreadCrumb && AppState?.DetailVisible"

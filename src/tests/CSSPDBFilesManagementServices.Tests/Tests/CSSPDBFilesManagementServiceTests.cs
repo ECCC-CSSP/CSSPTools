@@ -136,7 +136,7 @@ namespace CSSPDBFilesManagementServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            LocalService.LoggedInContactInfo = null;
+            LoggedInService.LoggedInContactInfo = null;
 
             CSSPFile csspFile = new CSSPFile()
             {

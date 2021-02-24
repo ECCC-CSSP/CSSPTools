@@ -1,16 +1,8 @@
-<mat-card>
-    <mat-card-header>
-        <mat-card-title color="primary">Modify item [{{ this.TVItemModel.TVItemLanguageList[this.appStateService.AppState$.getValue().Language].TVText }}]</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-        <form [formGroup]="formCountryModify" (ngSubmit)="Modify()" >
-            <mat-form-field>
-                <mat-label>Country Name</mat-label>
-                <input matInput placeholder="Country Name" formControlName="TVText" />
-            </mat-form-field>
-
-            <button mat-button type="submit" [disabled]="!formCountryModify.valid">Modify</button>
-        </form>
-    </mat-card-content>
-</mat-card>
-
+<form [formGroup]="formCountryModify" (ngSubmit)="Modify()">
+    <mat-form-field>
+        <mat-label>Country Name</mat-label>
+        <input matInput formControlName="TVText" />
+        <mat-error *ngIf="f.TVText?.errors?.required">Required</mat-error>
+    </mat-form-field>
+    <button mat-button type="submit" [disabled]="!formCountryModify.valid">Modify</button>
+</form>

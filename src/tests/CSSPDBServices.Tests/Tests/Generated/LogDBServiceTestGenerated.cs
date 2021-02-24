@@ -22,6 +22,7 @@ using Xunit;
 using System.ComponentModel.DataAnnotations;
 using CSSPCultureServices.Resources;
 using LoggedInServices;
+using CSSPDBPreferenceModels;
 
 namespace CSSPDBServices.Tests
 {
@@ -299,15 +300,36 @@ namespace CSSPDBServices.Tests
                 options.UseSqlServer(CSSPDBConnString);
             });
 
-            Services.AddDbContext<CSSPDBInMemoryContext>(options =>
-            {
-                options.UseInMemoryDatabase(CSSPDBConnString);
-            });
-
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<ILogDBService, LogDBService>();
+
+            /* ---------------------------------------------------------------------------------
+             * using TestDB
+             * ---------------------------------------------------------------------------------      
+             */
+            string TestDB = Config.GetValue<string>("TestDB");
+            Assert.NotNull(TestDB);
+
+            Services.AddDbContext<CSSPDBContext>(options =>
+            {
+                options.UseSqlServer(TestDB);
+            });
+
+            /* ---------------------------------------------------------------------------------
+             * using CSSPDBPreference
+             * ---------------------------------------------------------------------------------
+             */
+            string CSSPDBPreference = Config.GetValue<string>("CSSPDBPreference"); 
+            Assert.NotNull(CSSPDBPreference);
+
+            FileInfo fiCSSPDBPreference = new FileInfo(CSSPDBPreference);
+
+            Services.AddDbContext<CSSPDBPreferenceContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiCSSPDBPreference.FullName }");
+            });
 
             Provider = Services.BuildServiceProvider();
             Assert.NotNull(Provider);
@@ -345,8 +367,6 @@ namespace CSSPDBServices.Tests
             if (OmitPropName != "Information") log.Information = GetRandomString("", 20);
             if (OmitPropName != "LastUpdateDate_UTC") log.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") log.LastUpdateContactTVItemID = 2;
-
-
 
             return log;
         }

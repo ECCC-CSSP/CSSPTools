@@ -36,7 +36,7 @@ namespace GenerateAngularComponents
             sb.AppendLine(@"  </h3>");
 
             int objCount = 0;
-            string space;
+            //string space;
             foreach (DLLPropertyInfo dllPropertyInfo in dllTypeInfoModels.PropertyInfoList)
             {
                 if (objCount % 4 == 0)
@@ -46,11 +46,11 @@ namespace GenerateAngularComponents
                         sb.AppendLine($@"  </p>");
                     }
                     sb.AppendLine($@"  <p>");
-                    space = "";
+                    //space = "";
                 }
                 else
                 {
-                    space = " --- ";
+                    //space = " --- ";
                 }
 
                 objCount += 1;

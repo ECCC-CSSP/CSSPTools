@@ -13,7 +13,6 @@
           "CSSPReadGzFileServices": "1.0.0",
           "CSSPSQLiteServices": "1.0.0",
           "CSSPWebModels": "1.0.0",
-          "Microsoft.EntityFrameworkCore.InMemory": "5.0.3",
           "Microsoft.EntityFrameworkCore.SqlServer": "5.0.3",
           "Microsoft.EntityFrameworkCore.Sqlite": "5.0.3",
           "Microsoft.Extensions.Configuration": "5.0.0",
@@ -270,17 +269,6 @@
           "lib/netstandard2.1/Microsoft.EntityFrameworkCore.Design.dll": {
             "assemblyVersion": "5.0.2.0",
             "fileVersion": "5.0.220.61114"
-          }
-        }
-      },
-      "Microsoft.EntityFrameworkCore.InMemory/5.0.3": {
-        "dependencies": {
-          "Microsoft.EntityFrameworkCore": "5.0.3"
-        },
-        "runtime": {
-          "lib/netstandard2.1/Microsoft.EntityFrameworkCore.InMemory.dll": {
-            "assemblyVersion": "5.0.3.0",
-            "fileVersion": "5.0.321.6417"
           }
         }
       },
@@ -1220,7 +1208,6 @@
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.2",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.2",
           "Microsoft.EntityFrameworkCore": "5.0.3",
-          "Microsoft.EntityFrameworkCore.InMemory": "5.0.3",
           "Microsoft.EntityFrameworkCore.SqlServer": "5.0.3",
           "Microsoft.EntityFrameworkCore.Sqlite": "5.0.3",
           "Microsoft.Extensions.Configuration": "5.0.0",
@@ -1237,10 +1224,10 @@
           "Azure.Storage.Blobs": "12.8.0",
           "CSSPDBCommandLogModels": "1.0.0",
           "CSSPDBModels": "1.0.0",
+          "CSSPLoggedInServices": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.2",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.2",
           "Microsoft.EntityFrameworkCore": "5.0.3",
-          "Microsoft.EntityFrameworkCore.InMemory": "5.0.3",
           "Microsoft.EntityFrameworkCore.SqlServer": "5.0.3",
           "Microsoft.EntityFrameworkCore.Sqlite": "5.0.3",
           "Microsoft.Extensions.Configuration": "5.0.0",
@@ -1256,7 +1243,6 @@
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.2",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.2",
           "Microsoft.EntityFrameworkCore": "5.0.3",
-          "Microsoft.EntityFrameworkCore.InMemory": "5.0.3",
           "Microsoft.EntityFrameworkCore.SqlServer": "5.0.3",
           "Microsoft.EntityFrameworkCore.Sqlite": "5.0.3",
           "Microsoft.Extensions.Configuration": "5.0.0",
@@ -1273,11 +1259,10 @@
           "Azure.Storage.Blobs": "12.8.0",
           "CSSPDBCommandLogModels": "1.0.0",
           "CSSPDBFilesManagementModels": "1.0.0",
-          "CSSPLocalServices": "1.0.0",
+          "CSSPLoggedInServices": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.2",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.2",
           "Microsoft.EntityFrameworkCore": "5.0.3",
-          "Microsoft.EntityFrameworkCore.InMemory": "5.0.3",
           "Microsoft.EntityFrameworkCore.SqlServer": "5.0.3",
           "Microsoft.EntityFrameworkCore.Sqlite": "5.0.3",
           "Microsoft.Extensions.Configuration": "5.0.0",
@@ -1294,7 +1279,6 @@
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.2",
           "Microsoft.EntityFrameworkCore": "5.0.3",
           "Microsoft.EntityFrameworkCore.Design": "5.0.2",
-          "Microsoft.EntityFrameworkCore.InMemory": "5.0.3",
           "Microsoft.EntityFrameworkCore.SqlServer": "5.0.3",
           "Microsoft.EntityFrameworkCore.Sqlite": "5.0.3",
           "Microsoft.EntityFrameworkCore.Tools": "5.0.2",
@@ -1314,7 +1298,6 @@
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.2",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.2",
           "Microsoft.EntityFrameworkCore": "5.0.3",
-          "Microsoft.EntityFrameworkCore.InMemory": "5.0.3",
           "Microsoft.EntityFrameworkCore.SqlServer": "5.0.3",
           "Microsoft.EntityFrameworkCore.Sqlite": "5.0.3",
           "Microsoft.Extensions.Configuration": "5.0.0",
@@ -1335,7 +1318,6 @@
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.2",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.2",
           "Microsoft.EntityFrameworkCore": "5.0.3",
-          "Microsoft.EntityFrameworkCore.InMemory": "5.0.3",
           "Microsoft.EntityFrameworkCore.SqlServer": "5.0.3",
           "Microsoft.EntityFrameworkCore.Sqlite": "5.0.3",
           "Microsoft.Extensions.Configuration": "5.0.0",
@@ -1352,7 +1334,6 @@
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.2",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.2",
           "Microsoft.EntityFrameworkCore": "5.0.3",
-          "Microsoft.EntityFrameworkCore.InMemory": "5.0.3",
           "Microsoft.EntityFrameworkCore.SqlServer": "5.0.3",
           "Microsoft.EntityFrameworkCore.Sqlite": "5.0.3",
           "Microsoft.Extensions.Configuration": "5.0.0",
@@ -1372,7 +1353,6 @@
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.2",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.2",
           "Microsoft.EntityFrameworkCore": "5.0.3",
-          "Microsoft.EntityFrameworkCore.InMemory": "5.0.3",
           "Microsoft.EntityFrameworkCore.SqlServer": "5.0.3",
           "Microsoft.EntityFrameworkCore.Sqlite": "5.0.3",
           "Microsoft.Extensions.Configuration": "5.0.0",
@@ -1386,12 +1366,10 @@
         "dependencies": {
           "Azure.Storage.Blobs": "12.8.0",
           "CSSPHelperServices": "1.0.0",
-          "CSSPLoggedInServices": "1.0.0",
           "CSSPScrambleServices": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.2",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.2",
           "Microsoft.EntityFrameworkCore": "5.0.3",
-          "Microsoft.EntityFrameworkCore.InMemory": "5.0.3",
           "Microsoft.EntityFrameworkCore.SqlServer": "5.0.3",
           "Microsoft.EntityFrameworkCore.Sqlite": "5.0.3",
           "Microsoft.Extensions.Configuration": "5.0.0",
@@ -1407,11 +1385,11 @@
           "Azure.Storage.Files.Shares": "12.6.0",
           "CSSPDBFilesManagementServices": "1.0.0",
           "CSSPDBModels": "1.0.0",
-          "CSSPLocalServices": "1.0.0",
+          "CSSPScrambleServices": "1.0.0",
+          "CSSPWebAppLoadedlServices": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.2",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.2",
           "Microsoft.EntityFrameworkCore": "5.0.3",
-          "Microsoft.EntityFrameworkCore.InMemory": "5.0.3",
           "Microsoft.EntityFrameworkCore.SqlServer": "5.0.3",
           "Microsoft.EntityFrameworkCore.Sqlite": "5.0.3",
           "Microsoft.Extensions.Configuration": "5.0.0",
@@ -1438,7 +1416,6 @@
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.2",
           "Microsoft.EntityFrameworkCore": "5.0.3",
           "Microsoft.EntityFrameworkCore.Design": "5.0.2",
-          "Microsoft.EntityFrameworkCore.InMemory": "5.0.3",
           "Microsoft.EntityFrameworkCore.SqlServer": "5.0.3",
           "Microsoft.EntityFrameworkCore.Sqlite": "5.0.3",
           "Microsoft.EntityFrameworkCore.Tools": "5.0.2",
@@ -1459,7 +1436,6 @@
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.2",
           "Microsoft.EntityFrameworkCore": "5.0.3",
           "Microsoft.EntityFrameworkCore.Design": "5.0.2",
-          "Microsoft.EntityFrameworkCore.InMemory": "5.0.3",
           "Microsoft.EntityFrameworkCore.SqlServer": "5.0.3",
           "Microsoft.EntityFrameworkCore.Sqlite": "5.0.3",
           "Microsoft.EntityFrameworkCore.Tools": "5.0.2",
@@ -1470,33 +1446,15 @@
           "CSSPHelperServices.dll": {}
         }
       },
-      "CSSPLocalServices/1.0.0": {
-        "dependencies": {
-          "Azure.Storage.Blobs": "12.8.0",
-          "CSSPDBPreferenceServices": "1.0.0",
-          "CSSPHelperModels": "1.0.0",
-          "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.2",
-          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.2",
-          "Microsoft.EntityFrameworkCore": "5.0.3",
-          "Microsoft.EntityFrameworkCore.InMemory": "5.0.3",
-          "Microsoft.EntityFrameworkCore.SqlServer": "5.0.3",
-          "Microsoft.EntityFrameworkCore.Sqlite": "5.0.3",
-          "Microsoft.Extensions.Configuration": "5.0.0",
-          "Microsoft.Extensions.Configuration.Json": "5.0.0"
-        },
-        "runtime": {
-          "CSSPLocalServices.dll": {}
-        }
-      },
       "CSSPLoggedInServices/1.0.0": {
         "dependencies": {
           "Azure.Storage.Blobs": "12.8.0",
+          "CSSPDBPreferenceModels": "1.0.0",
           "CSSPHelperModels": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.2",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.2",
           "Microsoft.EntityFrameworkCore": "5.0.3",
           "Microsoft.EntityFrameworkCore.Design": "5.0.2",
-          "Microsoft.EntityFrameworkCore.InMemory": "5.0.3",
           "Microsoft.EntityFrameworkCore.SqlServer": "5.0.3",
           "Microsoft.EntityFrameworkCore.Sqlite": "5.0.3",
           "Microsoft.EntityFrameworkCore.Tools": "5.0.2",
@@ -1512,11 +1470,11 @@
           "Azure.Storage.Blobs": "12.8.0",
           "CSSPDBPreferenceServices": "1.0.0",
           "CSSPDownloadFileServices": "1.0.0",
+          "CSSPWebAppLoadedlServices": "1.0.0",
           "CSSPWebModels": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.2",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.2",
           "Microsoft.EntityFrameworkCore": "5.0.3",
-          "Microsoft.EntityFrameworkCore.InMemory": "5.0.3",
           "Microsoft.EntityFrameworkCore.SqlServer": "5.0.3",
           "Microsoft.EntityFrameworkCore.Sqlite": "5.0.3",
           "Microsoft.Extensions.Configuration": "5.0.0",
@@ -1542,7 +1500,6 @@
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.2",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.2",
           "Microsoft.EntityFrameworkCore": "5.0.3",
-          "Microsoft.EntityFrameworkCore.InMemory": "5.0.3",
           "Microsoft.EntityFrameworkCore.SqlServer": "5.0.3",
           "Microsoft.EntityFrameworkCore.Sqlite": "5.0.3",
           "Microsoft.Extensions.Configuration": "5.0.0",
@@ -1550,6 +1507,23 @@
         },
         "runtime": {
           "CSSPSQLiteServices.dll": {}
+        }
+      },
+      "CSSPWebAppLoadedlServices/1.0.0": {
+        "dependencies": {
+          "Azure.Storage.Blobs": "12.8.0",
+          "CSSPDBPreferenceServices": "1.0.0",
+          "CSSPWebModels": "1.0.0",
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.2",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.2",
+          "Microsoft.EntityFrameworkCore": "5.0.3",
+          "Microsoft.EntityFrameworkCore.SqlServer": "5.0.3",
+          "Microsoft.EntityFrameworkCore.Sqlite": "5.0.3",
+          "Microsoft.Extensions.Configuration": "5.0.0",
+          "Microsoft.Extensions.Configuration.Json": "5.0.0"
+        },
+        "runtime": {
+          "CSSPWebAppLoadedlServices.dll": {}
         }
       },
       "CSSPWebModels/1.0.0": {
@@ -1561,7 +1535,6 @@
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.2",
           "Microsoft.EntityFrameworkCore": "5.0.3",
           "Microsoft.EntityFrameworkCore.Design": "5.0.2",
-          "Microsoft.EntityFrameworkCore.InMemory": "5.0.3",
           "Microsoft.EntityFrameworkCore.SqlServer": "5.0.3",
           "Microsoft.EntityFrameworkCore.Sqlite": "5.0.3",
           "Microsoft.EntityFrameworkCore.Tools": "5.0.2",
@@ -1714,13 +1687,6 @@
       "sha512": "sha512-Bn1aa2M16p3aIS68q7aXb2Shv0G8evtwdp6SNfnxzTw5vdKH1BBe1g/4BPrY5a2YLp2dVwep2Jtjvk5VB9E0qA==",
       "path": "microsoft.entityframeworkcore.design/5.0.2",
       "hashPath": "microsoft.entityframeworkcore.design.5.0.2.nupkg.sha512"
-    },
-    "Microsoft.EntityFrameworkCore.InMemory/5.0.3": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-TWNs01wuxmtYS8tThmOW2YPXjZEMUiStFWYw/vCIYfru+wlgQa/OAQxQjIJyFpRgy6ORj3KSqZkXbkjjHRv7MQ==",
-      "path": "microsoft.entityframeworkcore.inmemory/5.0.3",
-      "hashPath": "microsoft.entityframeworkcore.inmemory.5.0.3.nupkg.sha512"
     },
     "Microsoft.EntityFrameworkCore.Relational/5.0.3": {
       "type": "package",
@@ -2518,11 +2484,6 @@
       "serviceable": false,
       "sha512": ""
     },
-    "CSSPLocalServices/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
     "CSSPLoggedInServices/1.0.0": {
       "type": "project",
       "serviceable": false,
@@ -2539,6 +2500,11 @@
       "sha512": ""
     },
     "CSSPSQLiteServices/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "CSSPWebAppLoadedlServices/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

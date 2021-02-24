@@ -90,6 +90,15 @@ namespace CSSPSQLiteServices.Tests
         {
             Assert.True(await Setup(culture));
 
+            try
+            {
+                fiCSSPDBSearch.Delete();
+            }
+            catch (Exception ex)
+            {
+                Assert.True(false, ex.Message);
+            }
+
             bool retBool = await CSSPSQLiteService.CreateSQLiteCSSPDBSearch();
             Assert.True(retBool);
         }
@@ -296,15 +305,15 @@ namespace CSSPSQLiteServices.Tests
             retBool = await CSSPSQLiteService.CSSPDBPreferenceIsEmpty();
             Assert.True(retBool);
 
-            RegisterModel registerModelNew = new RegisterModel()
-            {
-                FirstName = "TestFirstName",
-                Initial = "TestInit",
-                LastName = "TestLastName",
-                LoginEmail = "TestLoginEmail@Somewhere.com",
-                Password = "TestPassword",
-                ConfirmPassword = "TestPassword",
-            };
+            //RegisterModel registerModelNew = new RegisterModel()
+            //{
+            //    FirstName = "TestFirstName",
+            //    Initial = "TestInit",
+            //    LastName = "TestLastName",
+            //    LoginEmail = "TestLoginEmail@Somewhere.com",
+            //    Password = "TestPassword",
+            //    ConfirmPassword = "TestPassword",
+            //};
 
             // will need to add some information to CSSPDBLocal to fully check if CSSPDBPreferenceIsEmpty is really working
 

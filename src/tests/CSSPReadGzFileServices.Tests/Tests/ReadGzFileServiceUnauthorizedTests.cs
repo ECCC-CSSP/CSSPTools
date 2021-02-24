@@ -27,7 +27,7 @@ namespace ReadGzFileServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            LocalService.LoggedInContactInfo = null;
+            LoggedInService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebArea;
             int TVItemID = 629;
@@ -44,7 +44,7 @@ namespace ReadGzFileServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            LocalService.LoggedInContactInfo = null;
+            LoggedInService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebClimateDataValue;
             int TVItemID = 229465;
@@ -61,7 +61,7 @@ namespace ReadGzFileServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            LocalService.LoggedInContactInfo = null;
+            LoggedInService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebClimateSite;
             int TVItemID = 7;
@@ -78,7 +78,7 @@ namespace ReadGzFileServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            LocalService.LoggedInContactInfo = null;
+            LoggedInService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebContact;
             int TVItemID = 0;
@@ -95,7 +95,7 @@ namespace ReadGzFileServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            LocalService.LoggedInContactInfo = null;
+            LoggedInService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebCountry;
             int TVItemID = 5;
@@ -112,7 +112,7 @@ namespace ReadGzFileServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            LocalService.LoggedInContactInfo = null;
+            LoggedInService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebDrogueRun;
             int TVItemID = 556;
@@ -129,7 +129,7 @@ namespace ReadGzFileServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            LocalService.LoggedInContactInfo = null;
+            LoggedInService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebHelpDoc;
             int TVItemID = 0;
@@ -146,7 +146,7 @@ namespace ReadGzFileServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            LocalService.LoggedInContactInfo = null;
+            LoggedInService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebHydrometricDataValue;
             int TVItemID = 51705;
@@ -163,7 +163,7 @@ namespace ReadGzFileServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            LocalService.LoggedInContactInfo = null;
+            LoggedInService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebHydrometricSite;
             int TVItemID = 7;
@@ -180,7 +180,7 @@ namespace ReadGzFileServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            LocalService.LoggedInContactInfo = null;
+            LoggedInService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebMikeScenario;
             int TVItemID = 12281;
@@ -197,7 +197,7 @@ namespace ReadGzFileServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            LocalService.LoggedInContactInfo = null;
+            LoggedInService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebMunicipalities;
             int TVItemID = 7;
@@ -214,7 +214,7 @@ namespace ReadGzFileServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            LocalService.LoggedInContactInfo = null;
+            LoggedInService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebMunicipality;
             int TVItemID = 12110;
@@ -231,7 +231,7 @@ namespace ReadGzFileServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            LocalService.LoggedInContactInfo = null;
+            LoggedInService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebMWQMLookupMPN;
             int TVItemID = 0;
@@ -248,7 +248,7 @@ namespace ReadGzFileServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            LocalService.LoggedInContactInfo = null;
+            LoggedInService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebMWQMRun;
             int TVItemID = 635;
@@ -265,7 +265,7 @@ namespace ReadGzFileServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            LocalService.LoggedInContactInfo = null;
+            LoggedInService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebMWQMSample;
             int TVItemID = 635;
@@ -282,7 +282,7 @@ namespace ReadGzFileServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            LocalService.LoggedInContactInfo = null;
+            LoggedInService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebMWQMSample;
             int TVItemID = 635;
@@ -299,7 +299,7 @@ namespace ReadGzFileServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            LocalService.LoggedInContactInfo = null;
+            LoggedInService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebMWQMSample;
             int TVItemID = 635;
@@ -316,7 +316,7 @@ namespace ReadGzFileServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            LocalService.LoggedInContactInfo = null;
+            LoggedInService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebMWQMSample;
             int TVItemID = 635;
@@ -333,7 +333,7 @@ namespace ReadGzFileServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            LocalService.LoggedInContactInfo = null;
+            LoggedInService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebMWQMSample;
             int TVItemID = 635;
@@ -350,7 +350,7 @@ namespace ReadGzFileServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            LocalService.LoggedInContactInfo = null;
+            LoggedInService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebMWQMSample;
             int TVItemID = 635;
@@ -367,7 +367,7 @@ namespace ReadGzFileServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            LocalService.LoggedInContactInfo = null;
+            LoggedInService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebMWQMSample;
             int TVItemID = 635;
@@ -384,7 +384,7 @@ namespace ReadGzFileServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            LocalService.LoggedInContactInfo = null;
+            LoggedInService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebMWQMSample;
             int TVItemID = 635;
@@ -401,7 +401,7 @@ namespace ReadGzFileServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            LocalService.LoggedInContactInfo = null;
+            LoggedInService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebMWQMSite;
             int TVItemID = 635;
@@ -418,7 +418,7 @@ namespace ReadGzFileServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            LocalService.LoggedInContactInfo = null;
+            LoggedInService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebPolSourceGrouping;
             int TVItemID = 0;
@@ -435,7 +435,7 @@ namespace ReadGzFileServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            LocalService.LoggedInContactInfo = null;
+            LoggedInService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebPolSourceSite;
             int TVItemID = 635;
@@ -452,7 +452,7 @@ namespace ReadGzFileServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            LocalService.LoggedInContactInfo = null;
+            LoggedInService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebPolSourceSiteEffectTerm;
             int TVItemID = 635;
@@ -469,7 +469,7 @@ namespace ReadGzFileServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            LocalService.LoggedInContactInfo = null;
+            LoggedInService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebProvince;
             int TVItemID = 7;
@@ -486,7 +486,7 @@ namespace ReadGzFileServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            LocalService.LoggedInContactInfo = null;
+            LoggedInService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebReportType;
             int TVItemID = 0;
@@ -503,7 +503,7 @@ namespace ReadGzFileServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            LocalService.LoggedInContactInfo = null;
+            LoggedInService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebRoot;
             int TVItemID = 0;
@@ -520,7 +520,7 @@ namespace ReadGzFileServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            LocalService.LoggedInContactInfo = null;
+            LoggedInService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebSamplingPlan;
             int TVItemID = 8; // which is SamplingPlanID in reality
@@ -537,7 +537,7 @@ namespace ReadGzFileServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            LocalService.LoggedInContactInfo = null;
+            LoggedInService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebSector;
             int TVItemID = 633;
@@ -554,7 +554,7 @@ namespace ReadGzFileServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            LocalService.LoggedInContactInfo = null;
+            LoggedInService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebSubsector;
             int TVItemID = 635;
@@ -571,7 +571,7 @@ namespace ReadGzFileServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            LocalService.LoggedInContactInfo = null;
+            LoggedInService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebTideLocation;
             int TVItemID = 0;
@@ -588,7 +588,7 @@ namespace ReadGzFileServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            LocalService.LoggedInContactInfo = null;
+            LoggedInService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebAllTVItem;
             int TVItemID = 0;
@@ -605,7 +605,7 @@ namespace ReadGzFileServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            LocalService.LoggedInContactInfo = null;
+            LoggedInService.LoggedInContactInfo = null;
 
             WebTypeEnum webType = WebTypeEnum.WebAllTVItemLanguage;
             int TVItemID = 0;

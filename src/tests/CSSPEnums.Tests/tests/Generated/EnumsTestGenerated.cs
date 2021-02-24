@@ -1163,46 +1163,6 @@ namespace CSSPEnums.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
-        public async Task GetResValueForTypeAndID_ForEnum_DBLocationEnum_Test(string culture)
-        {
-            Assert.True(await SetupTest(culture));
-
-            string retStr = enums.GetResValueForTypeAndID(typeof(DBLocationEnum), -100);
-            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
-
-            retStr = enums.GetResValueForTypeAndID(typeof(DBLocationEnum), 10000000);
-            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
-
-            retStr = enums.GetResValueForTypeAndID(typeof(DBLocationEnum), null);
-            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
-
-            foreach (int i in Enum.GetValues(typeof(DBLocationEnum)))
-            {
-                retStr = enums.GetResValueForTypeAndID(typeof(DBLocationEnum), i);
-
-                switch ((DBLocationEnum)i)
-                {
-                    case DBLocationEnum.Local:
-                        Assert.Equal(CSSPCultureEnumsRes.DBLocationEnumLocal, retStr);
-                        break;
-                    case DBLocationEnum.Server:
-                        Assert.Equal(CSSPCultureEnumsRes.DBLocationEnumServer, retStr);
-                        break;
-                    case DBLocationEnum.InMemory:
-                        Assert.Equal(CSSPCultureEnumsRes.DBLocationEnumInMemory, retStr);
-                        break;
-                    case DBLocationEnum.Login:
-                        Assert.Equal(CSSPCultureEnumsRes.DBLocationEnumLogin, retStr);
-                        break;
-                    default:
-                        Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
-                        break;
-                }
-            }
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_DailyOrHourlyDataEnum_Test(string culture)
         {
             Assert.True(await SetupTest(culture));
@@ -6427,40 +6387,6 @@ namespace CSSPEnums.Tests
                         break;
                     default:
                         Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "CSSPWQInputTypeEnum"), retStr);
-                        break;
-                }
-            }
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task Enums_DBLocationOK_Test(string culture)
-        {
-            Assert.True(await SetupTest(culture));
-
-            string retStr = enums.EnumTypeOK(typeof(DBLocationEnum), null);
-            Assert.Equal("", retStr);
-
-            retStr = enums.EnumTypeOK(typeof(DBLocationEnum), -100);
-            Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "DBLocationEnum"), retStr);
-
-            retStr = enums.EnumTypeOK(typeof(DBLocationEnum), 10000000);
-            Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "DBLocationEnum"), retStr);
-
-            foreach (int i in Enum.GetValues(typeof(DBLocationEnum)))
-            {
-                retStr = enums.EnumTypeOK(typeof(DBLocationEnum), i);
-
-                switch ((DBLocationEnum)i)
-                {
-                     case DBLocationEnum.Local:
-                     case DBLocationEnum.Server:
-                     case DBLocationEnum.InMemory:
-                     case DBLocationEnum.Login:
-                        Assert.Equal("", retStr);
-                        break;
-                    default:
-                        Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "DBLocationEnum"), retStr);
                         break;
                 }
             }
@@ -11704,32 +11630,6 @@ namespace CSSPEnums.Tests
             enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
             List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(CSSPWQInputTypeEnum));
-            Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
-
-            EnumIDAndText enumTextOrdered = new EnumIDAndText();
-            Assert.NotNull(enumTextOrdered);
-
-            for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
-            {
-                Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
-            }
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task Enums_DBLocationEnumTextOrdered_Test(string culture)
-        {
-            Assert.True(await SetupTest(culture));
-
-            List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
-            foreach (int i in Enum.GetValues(typeof(DBLocationEnum)))
-            {
-                enumTextOrderedList.Add(new EnumIDAndText() { EnumID = i, EnumText = enums.GetResValueForTypeAndID(typeof(DBLocationEnum), i) });
-            }
-            enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
-
-            List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(DBLocationEnum));
             Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
             EnumIDAndText enumTextOrdered = new EnumIDAndText();

@@ -93,6 +93,7 @@ namespace GenerateCSSPDBServices_Tests
                 sb.AppendLine(@"using System.ComponentModel.DataAnnotations;");
                 sb.AppendLine(@"using CSSPCultureServices.Resources;");
                 sb.AppendLine(@"using LoggedInServices;");
+                sb.AppendLine(@"using CSSPDBPreferenceModels;");
                 if (TypeName == "Contact")
                 {
                     sb.AppendLine(@"using CSSPScrambleServices;");

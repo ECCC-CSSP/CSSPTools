@@ -89,7 +89,13 @@ namespace GenerateCSSPWebAPIsLocal_TestsController
                     sb.AppendLine(@"using System.Threading.Tasks;");
                     sb.AppendLine(@"using System.Transactions;");
                     sb.AppendLine(@"using Xunit;");
-                    sb.AppendLine(@"using LocalServices;");
+                    sb.AppendLine(@"using CSSPDBPreferenceServices;");
+                    sb.AppendLine(@"using CSSPScrambleServices;");
+                    sb.AppendLine(@"using CSSPDBPreferenceModels;");
+                    sb.AppendLine(@"using CSSPDBFilesManagementModels;");
+                    sb.AppendLine(@"using CSSPDBCommandLogModels;");
+                    sb.AppendLine(@"using CSSPDBSearchModels;");
+                    sb.AppendLine(@"using LoggedInServices;");
                     sb.AppendLine(@"");
                     sb.AppendLine(@"namespace CSSPWebAPIsLocalControllerTests");
                     sb.AppendLine(@"{");
@@ -103,10 +109,11 @@ namespace GenerateCSSPWebAPIsLocal_TestsController
                     sb.AppendLine(@"        private IServiceProvider Provider { get; set; }");
                     sb.AppendLine(@"        private IServiceCollection Services { get; set; }");
                     sb.AppendLine(@"        private ICSSPCultureService CSSPCultureService { get; set; }");
-                    sb.AppendLine(@"        private ILocalService LocalService { get; set; }");
+                    sb.AppendLine(@"        private ILoggedInService LoggedInService { get; set; }");
                     sb.AppendLine($@"        private I{ TypeName }DBService { TypeName }DBService {{ get; set; }}");
                     sb.AppendLine(@"        private string CSSPAzureUrl { get; set; }");
                     sb.AppendLine(@"        private string LocalUrl { get; set; }");
+                    sb.AppendLine(@"        private CSSPDBContext db { get; set; }");
                     sb.AppendLine($@"        private I{ TypeName }Controller { TypeName }Controller {{ get; set; }}");
                     if (TypeName == "Contact")
                     {

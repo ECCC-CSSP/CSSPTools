@@ -24,7 +24,7 @@ namespace GenerateCSSPDBServices
                     sb.AppendLine(@"            if (localTVItem.TVType != TVTypeEnum.Root)");
                     sb.AppendLine(@"            {");
                     sb.AppendLine($@"                Local{ csspProp.ExistTypeName } local{ csspProp.ExistTypeName }{ csspProp.PropName } = null;");
-                    sb.AppendLine($@"                local{ csspProp.ExistTypeName }{ csspProp.PropName } = (from c in db.Local{ csspProp.ExistTypeName }{ csspProp.ExistPlurial }.AsNoTracking() where c.{ csspProp.ExistFieldID } == { TypeNameLower }.{ csspProp.PropName } select c).FirstOrDefault();");
+                    sb.AppendLine($@"                local{ csspProp.ExistTypeName }{ csspProp.PropName } = (from c in dbLocal.Local{ csspProp.ExistTypeName }{ csspProp.ExistPlurial }.AsNoTracking() where c.{ csspProp.ExistFieldID } == { TypeNameLower }.{ csspProp.PropName } select c).FirstOrDefault();");
                     sb.AppendLine(@"");
                     sb.AppendLine($@"                if (local{ csspProp.ExistTypeName }{ csspProp.PropName } == null)");
                     sb.AppendLine(@"                {");
@@ -57,7 +57,7 @@ namespace GenerateCSSPDBServices
                         sb.AppendLine($@"            if ({ TypeNameLower }.{ csspProp.PropName } != null)");
                         sb.AppendLine(@"            {");
                         sb.AppendLine($@"                Local{ csspProp.ExistTypeName } local{ csspProp.ExistTypeName }{ csspProp.PropName } = null;");
-                        sb.AppendLine($@"                local{ csspProp.ExistTypeName }{ csspProp.PropName } = (from c in db.Local{ csspProp.ExistTypeName }{ csspProp.ExistPlurial }.AsNoTracking() where c.{ csspProp.ExistFieldID } == { TypeNameLower }.{ csspProp.PropName } select c).FirstOrDefault();");
+                        sb.AppendLine($@"                local{ csspProp.ExistTypeName }{ csspProp.PropName } = (from c in dbLocal.Local{ csspProp.ExistTypeName }{ csspProp.ExistPlurial }.AsNoTracking() where c.{ csspProp.ExistFieldID } == { TypeNameLower }.{ csspProp.PropName } select c).FirstOrDefault();");
                         sb.AppendLine(@"");
                         sb.AppendLine($@"                if (local{ csspProp.ExistTypeName }{ csspProp.PropName } == null)");
                         sb.AppendLine(@"                {");
@@ -85,18 +85,18 @@ namespace GenerateCSSPDBServices
                     }
                     else
                     {
-                        sb.AppendLine($@"            Local{ csspProp.ExistTypeName } local{ csspProp.ExistTypeName }{ csspProp.PropName } = null;");
-                        sb.AppendLine($@"            local{ csspProp.ExistTypeName }{ csspProp.PropName } = (from c in db.Local{ csspProp.ExistTypeName }{ csspProp.ExistPlurial }.AsNoTracking() where c.{ csspProp.ExistFieldID } == { TypeNameLower }.{ csspProp.PropName } select c).FirstOrDefault();");
+                        sb.AppendLine($@"            { csspProp.ExistTypeName } { csspProp.ExistTypeName }{ csspProp.PropName } = null;");
+                        sb.AppendLine($@"            { csspProp.ExistTypeName }{ csspProp.PropName } = (from c in dbLocal.{ csspProp.ExistTypeName }{ csspProp.ExistPlurial }.AsNoTracking() where c.{ csspProp.ExistFieldID } == { TypeNameLower }.{ csspProp.PropName } select c).FirstOrDefault();");
                         sb.AppendLine(@"");
-                        sb.AppendLine($@"            if (local{ csspProp.ExistTypeName }{ csspProp.PropName } == null)");
+                        sb.AppendLine($@"            if ({ csspProp.ExistTypeName }{ csspProp.PropName } == null)");
                         sb.AppendLine(@"            {");
                         if (TypeName == "Contact" && csspProp.PropName == "Id")
                         {
-                            sb.AppendLine($@"                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, ""Local{ csspProp.ExistTypeName }"", ""{ csspProp.PropName }"", ({ TypeNameLower }.{ csspProp.PropName } == null ? """" : { TypeNameLower }.{ csspProp.PropName }.ToString())), new[] {{ nameof({ TypeNameLower }.{ csspProp.PropName }) }});");
+                            sb.AppendLine($@"                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, ""{ csspProp.ExistTypeName }"", ""{ csspProp.PropName }"", ({ TypeNameLower }.{ csspProp.PropName } == null ? """" : { TypeNameLower }.{ csspProp.PropName }.ToString())), new[] {{ nameof({ TypeNameLower }.{ csspProp.PropName }) }});");
                         }
                         else
                         {
-                            sb.AppendLine($@"                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, ""Local{ csspProp.ExistTypeName }"", ""{ csspProp.PropName }"", { TypeNameLower }.{ csspProp.PropName }.ToString()), new[] {{ nameof({ TypeNameLower }.{ csspProp.PropName }) }});");
+                            sb.AppendLine($@"                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, ""{ csspProp.ExistTypeName }"", ""{ csspProp.PropName }"", { TypeNameLower }.{ csspProp.PropName }.ToString()), new[] {{ nameof({ TypeNameLower }.{ csspProp.PropName }) }});");
                         }
                         sb.AppendLine(@"            }");
                         if (csspProp.ExistTypeName == "TVItem")
@@ -110,7 +110,7 @@ namespace GenerateCSSPDBServices
                                 sb.AppendLine($@"                    TVTypeEnum.{ tvType },");
                             }
                             sb.AppendLine(@"                };");
-                            sb.AppendLine($@"                if (!AllowableTVTypes.Contains(local{ csspProp.ExistTypeName }{ csspProp.PropName }.TVType))");
+                            sb.AppendLine($@"                if (!AllowableTVTypes.Contains({ csspProp.ExistTypeName }{ csspProp.PropName }.TVType))");
                             sb.AppendLine(@"                {");
                             sb.AppendLine($@"                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, ""{ csspProp.PropName }"", ""{ String.Join(",", csspProp.AllowableTVTypeList) }""), new[] {{ nameof({ TypeNameLower }.{ csspProp.PropName }) }});");
                             sb.AppendLine(@"                }");

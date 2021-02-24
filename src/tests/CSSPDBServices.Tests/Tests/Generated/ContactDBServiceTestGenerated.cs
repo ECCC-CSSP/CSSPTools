@@ -22,6 +22,7 @@ using Xunit;
 using System.ComponentModel.DataAnnotations;
 using CSSPCultureServices.Resources;
 using LoggedInServices;
+using CSSPDBPreferenceModels;
 using CSSPScrambleServices;
 
 namespace CSSPDBServices.Tests
@@ -491,11 +492,6 @@ namespace CSSPDBServices.Tests
                 options.UseSqlServer(CSSPDBConnString);
             });
 
-            Services.AddDbContext<CSSPDBInMemoryContext>(options =>
-            {
-                options.UseInMemoryDatabase(CSSPDBConnString);
-            });
-
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IEnums, Enums>();
@@ -503,6 +499,32 @@ namespace CSSPDBServices.Tests
             Services.AddSingleton<IRegisterModelService, RegisterModelService>();
             Services.AddSingleton<IScrambleService, ScrambleService>();
             Services.AddSingleton<IContactDBService, ContactDBService>();
+
+            /* ---------------------------------------------------------------------------------
+             * using TestDB
+             * ---------------------------------------------------------------------------------      
+             */
+            string TestDB = Config.GetValue<string>("TestDB");
+            Assert.NotNull(TestDB);
+
+            Services.AddDbContext<CSSPDBContext>(options =>
+            {
+                options.UseSqlServer(TestDB);
+            });
+
+            /* ---------------------------------------------------------------------------------
+             * using CSSPDBPreference
+             * ---------------------------------------------------------------------------------
+             */
+            string CSSPDBPreference = Config.GetValue<string>("CSSPDBPreference"); 
+            Assert.NotNull(CSSPDBPreference);
+
+            FileInfo fiCSSPDBPreference = new FileInfo(CSSPDBPreference);
+
+            Services.AddDbContext<CSSPDBPreferenceContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiCSSPDBPreference.FullName }");
+            });
 
             Provider = Services.BuildServiceProvider();
             Assert.NotNull(Provider);
@@ -557,8 +579,6 @@ namespace CSSPDBServices.Tests
             if (OmitPropName != "AccessFailedCount") contact.AccessFailedCount = GetRandomInt(0, 10);
             if (OmitPropName != "LastUpdateDate_UTC") contact.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") contact.LastUpdateContactTVItemID = 2;
-
-
 
             return contact;
         }

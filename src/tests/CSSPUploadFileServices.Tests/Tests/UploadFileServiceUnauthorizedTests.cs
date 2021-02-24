@@ -27,7 +27,7 @@ namespace UploadFileServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            LocalService.LoggedInContactInfo = null;
+            LoggedInService.LoggedInContactInfo = null;
 
             int ParentTVItemID = 1;
             string FileName = "BarTopBottom.png";

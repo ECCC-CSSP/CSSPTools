@@ -9,6 +9,7 @@ using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
 using Xunit;
+using CSSPDBPreferenceModels;
 
 namespace LoggedInServices.Tests
 {
@@ -23,14 +24,15 @@ namespace LoggedInServices.Tests
         private IServiceProvider ServiceProvider { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
         private ILoggedInService LoggedInService { get; set; }
-        private string Id { get; set; }
+        private string LoginEmail { get; set; }
         private string FirstName1 { get; set; }
         private string Initial1 { get; set; }
         private string LastName1 { get; set; }
-        private string Id2 { get; set; }
+        private string LoginEmail2 { get; set; }
         private string FirstName2 { get; set; }
         private string LastName2 { get; set; }
-        private string Id3 { get; set; }
+        private string LoginEmail3 { get; set; }
+        private string CSSPDBPreferenceFileName { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -57,17 +59,31 @@ namespace LoggedInServices.Tests
             ServiceCollection.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             ServiceCollection.AddSingleton<ILoggedInService, LoggedInService>();
 
-            string CSSPDBConnString = Configuration.GetValue<string>("CSSPDB");
-            Assert.NotNull(CSSPDBConnString);
+            /* ---------------------------------------------------------------------------------
+             * using TestDB
+             * ---------------------------------------------------------------------------------      
+             */
+            string TestDB = Configuration.GetValue<string>("TestDB");
+            Assert.NotNull(TestDB);
 
             ServiceCollection.AddDbContext<CSSPDBContext>(options =>
             {
-                options.UseSqlServer(CSSPDBConnString);
+                options.UseSqlServer(TestDB);
             });
 
-            ServiceCollection.AddDbContext<CSSPDBInMemoryContext>(options =>
+            /* ---------------------------------------------------------------------------------
+             * using CSSPDBPreference
+             * ---------------------------------------------------------------------------------      
+             */
+            CSSPDBPreferenceFileName = Configuration.GetValue<string>("CSSPDBPreference");
+            Assert.NotNull(CSSPDBPreferenceFileName);
+
+            FileInfo fiCSSPDBPreference = new FileInfo(CSSPDBPreferenceFileName);
+            Assert.True(fiCSSPDBPreference.Exists);
+
+            ServiceCollection.AddDbContext<CSSPDBPreferenceContext>(options =>
             {
-                options.UseInMemoryDatabase(CSSPDBConnString);
+                options.UseSqlite($"Data Source={ fiCSSPDBPreference.FullName }");
             });
 
             ServiceProvider = ServiceCollection.BuildServiceProvider();
@@ -81,8 +97,8 @@ namespace LoggedInServices.Tests
             LoggedInService = ServiceProvider.GetService<ILoggedInService>();
             Assert.NotNull(LoggedInService);
 
-            Id = Configuration.GetValue<string>("Id");
-            Assert.NotEmpty(Id);
+            LoginEmail = Configuration.GetValue<string>("LoginEmail");
+            Assert.NotEmpty(LoginEmail);
 
             FirstName1 = Configuration.GetValue<string>("FirstName1");
             Assert.NotEmpty(FirstName1);
@@ -93,17 +109,8 @@ namespace LoggedInServices.Tests
             LastName1 = Configuration.GetValue<string>("LastName1");
             Assert.NotEmpty(LastName1);
 
-            Id2 = Configuration.GetValue<string>("Id2");
-            Assert.NotEmpty(Id2);
-
-            FirstName2 = Configuration.GetValue<string>("FirstName2");
-            Assert.NotEmpty(FirstName2);
-
-            LastName2 = Configuration.GetValue<string>("LastName2");
-            Assert.NotEmpty(LastName2);
-
-            Id3 = Configuration.GetValue<string>("Id3");
-            Assert.NotEmpty(Id3);
+            LoginEmail3 = Configuration.GetValue<string>("LoginEmail3");
+            Assert.NotEmpty(LoginEmail3);
 
             return await Task.FromResult(true);
         }

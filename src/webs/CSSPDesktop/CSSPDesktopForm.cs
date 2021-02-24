@@ -8,7 +8,6 @@ using CSSPEnums;
 using CSSPDBModels;
 using CSSPSQLiteServices;
 using DownloadFileServices;
-using LocalServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,6 +29,8 @@ using CSSPDBSearchModels;
 using CSSPDBCommandLogModels;
 using CSSPDBFilesManagementModels;
 using CSSPScrambleServices;
+using LoggedInServices;
+using WebAppLoadedServices;
 
 namespace CSSPDesktop
 {
@@ -190,14 +191,14 @@ namespace CSSPDesktop
         }
         #endregion Login
         #region Register
-        private void butRegister_Click(object sender, EventArgs e)
-        {
-            butRegister.Enabled = false;
-            butRegister.Text = CSSPCultureDesktopRes.RegisteringIn;
-            Register().GetAwaiter().GetResult();
-            butRegister.Text = CSSPCultureDesktopRes.butRegisterText;
-            butRegister.Enabled = true;
-        }
+        //private void butRegister_Click(object sender, EventArgs e)
+        //{
+        //    butRegister.Enabled = false;
+        //    butRegister.Text = CSSPCultureDesktopRes.RegisteringIn;
+        //    Register().GetAwaiter().GetResult();
+        //    butRegister.Text = CSSPCultureDesktopRes.butRegisterText;
+        //    butRegister.Enabled = true;
+        //}
         private void linkLabelGoToLogin_Click(object sender, EventArgs e)
         {
             ShowPanels(ShowPanel.Login);
@@ -343,23 +344,23 @@ namespace CSSPDesktop
 
             return await Task.FromResult(true);
         }
-        private async Task<bool> Register()
-        {
-            RegisterModel registerModel = new RegisterModel()
-            {
-                LoginEmail = textBoxLoginEmailRegister.Text.Trim(),
-                FirstName = textBoxFirstNameRegister.Text.Trim(),
-                LastName = textBoxLastNameRegister.Text.Trim(),
-                Initial = textBoxInitialRegister.Text.Trim(),
-                Password = textBoxPasswordRegister.Text.Trim(),
-                ConfirmPassword = textBoxConfirmPasswordRegister.Text.Trim(),
-            };
+        //private async Task<bool> Register()
+        //{
+        //    RegisterModel registerModel = new RegisterModel()
+        //    {
+        //        LoginEmail = textBoxLoginEmailRegister.Text.Trim(),
+        //        FirstName = textBoxFirstNameRegister.Text.Trim(),
+        //        LastName = textBoxLastNameRegister.Text.Trim(),
+        //        Initial = textBoxInitialRegister.Text.Trim(),
+        //        Password = textBoxPasswordRegister.Text.Trim(),
+        //        ConfirmPassword = textBoxConfirmPasswordRegister.Text.Trim(),
+        //    };
 
-            if (!await CSSPDesktopService.Register(registerModel)) return await Task.FromResult(false);
-            if (!await StartTheAppWithLanguage()) return await Task.FromResult(false);
+        //    if (!await CSSPDesktopService.Register(registerModel)) return await Task.FromResult(false);
+        //    if (!await StartTheAppWithLanguage()) return await Task.FromResult(false);
 
-            return await Task.FromResult(true);
-        }
+        //    return await Task.FromResult(true);
+        //}
         private void Logoff()
         {
             CSSPDesktopService.Logoff();
@@ -477,7 +478,7 @@ namespace CSSPDesktop
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<ICSSPDesktopService, CSSPDesktopService>();
-            Services.AddSingleton<ILocalService, LocalService>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IScrambleService, ScrambleService>();
             Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
             Services.AddSingleton<ICSSPDBFilesManagementService, CSSPDBFilesManagementService>();
@@ -485,8 +486,28 @@ namespace CSSPDesktop
             Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
             Services.AddSingleton<IScrambleService, ScrambleService>();
             Services.AddSingleton<IPreferenceService, PreferenceService>();
+            Services.AddSingleton<IWebAppLoadedService, WebAppLoadedService>();
 
-            // doing CSSPLocal
+            /* ---------------------------------------------------------------------------------
+             * using TestDB
+             * ---------------------------------------------------------------------------------      
+             */
+            string CSSPDB = Configuration.GetValue<string>("CSSPDB");
+            if (string.IsNullOrWhiteSpace(CSSPDB))
+            {
+                richTextBoxStatus.AppendText(string.Format(_CouldNotBeFoundInConfigurationFile_, "CSSPDB", "appsettings_csspdesktop.json"));
+                return await Task.FromResult(false);
+            }
+
+            Services.AddDbContext<CSSPDBContext>(options =>
+            {
+                options.UseSqlServer(CSSPDB);
+            });
+
+            /* ---------------------------------------------------------------------------------
+             * using CSSPDBLocal
+             * ---------------------------------------------------------------------------------      
+             */
             string CSSPDBLocal = Configuration.GetValue<string>("CSSPDBLocal");
             if (string.IsNullOrWhiteSpace(CSSPDBLocal))
             {
@@ -496,17 +517,15 @@ namespace CSSPDesktop
 
             FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocal);
 
-            Services.AddDbContext<CSSPDBContext>(options =>
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
             {
                 options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
             });
 
-            Services.AddDbContext<CSSPDBInMemoryContext>(options =>
-            {
-                options.UseInMemoryDatabase($"Data Source={ fiCSSPDBLocal.FullName }");
-            });
-
-            // doing CSSPSearch
+            /* ---------------------------------------------------------------------------------
+             * using CSSPDBSearch
+             * ---------------------------------------------------------------------------------      
+             */
             string CSSPDBSearch = Configuration.GetValue<string>("CSSPDBSearch");
             if (string.IsNullOrWhiteSpace(CSSPDBSearch))
             {
@@ -521,7 +540,10 @@ namespace CSSPDesktop
                 options.UseSqlite($"Data Source={ fiCSSPDBSearch.FullName }");
             });
 
-            // doing CSSPDBCommandLog
+            /* ---------------------------------------------------------------------------------
+             * using CSSPDBCommandLog
+             * ---------------------------------------------------------------------------------      
+             */
             string CSSPDBCommandLog = Configuration.GetValue<string>("CSSPDBCommandLog");
             if (string.IsNullOrWhiteSpace(CSSPDBCommandLog))
             {
@@ -536,7 +558,10 @@ namespace CSSPDesktop
                 options.UseSqlite($"Data Source={ fiCSSPDBCommandLog.FullName }");
             });
 
-            // doing CSSPDBFilesManagement
+            /* ---------------------------------------------------------------------------------
+             * using CSSPDBFilesManagement
+             * ---------------------------------------------------------------------------------      
+             */
             string CSSPDBFilesManagement = Configuration.GetValue<string>("CSSPDBFilesManagement");
             if (string.IsNullOrWhiteSpace(CSSPDBFilesManagement))
             {
@@ -551,7 +576,10 @@ namespace CSSPDesktop
                 options.UseSqlite($"Data Source={ fiCSSPDBFileManagement.FullName }");
             });
 
-            // doing CSSPLogin
+            /* ---------------------------------------------------------------------------------
+             * using CSSPDBPreference
+             * ---------------------------------------------------------------------------------      
+             */
             string CSSPDBPreference = Configuration.GetValue<string>("CSSPDBPreference");
             if (string.IsNullOrWhiteSpace(CSSPDBPreference))
             {
@@ -565,11 +593,6 @@ namespace CSSPDesktop
             {
                 options.UseSqlite($"Data Source={ fiCSSPDBPreference.FullName }");
             });
-
-            //Services.AddDbContext<CSSPDBPreferenceInMemoryContext>(options =>
-            //{
-            //    options.UseInMemoryDatabase($"Data Source={ fiCSSPDBPreference.FullName }");
-            //});
 
             Provider = Services.BuildServiceProvider();
             if (Provider == null)

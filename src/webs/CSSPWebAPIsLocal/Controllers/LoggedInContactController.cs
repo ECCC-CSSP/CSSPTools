@@ -10,10 +10,10 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using CSSPEnums;
 using CSSPCultureServices.Resources;
-using LocalServices;
 using ReadGzFileServices;
 using System.Linq;
 using System.Threading;
+using LoggedInServices;
 
 namespace CSSPWebAPIsLocal.Controllers
 {
@@ -31,14 +31,14 @@ namespace CSSPWebAPIsLocal.Controllers
 
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILocalService LocalService { get; }
+        private ILoggedInService LoggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public LoggedInContactController(ICSSPCultureService CSSPCultureService, ILocalService LocalService)
+        public LoggedInContactController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LocalService = LocalService;
+            this.LoggedInService = LoggedInService;
         }
         #endregion Constructors
 
@@ -48,9 +48,9 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = AreaTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LocalService.SetLoggedInContactInfo();
+            await LoggedInService.SetLoggedInLocalContactInfo();
 
-            return await Task.FromResult(Ok(LocalService.LoggedInContactInfo.LoggedInContact));
+            return await Task.FromResult(Ok(LoggedInService.LoggedInContactInfo.LoggedInContact));
         }
         #endregion Functions public
 

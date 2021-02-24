@@ -13,8 +13,6 @@ namespace GenerateCSSPDBServices_Tests
     {
         private async Task<bool> GenerateGetFilledRandomClassnameTestCode(Type type, string TypeName, string TypeNameLower, StringBuilder sb)
         {
-            StringBuilder sbInMemory = new StringBuilder();
-
             sb.AppendLine($@"        private { TypeName } GetFilledRandom{ TypeName }(string OmitPropName)");
             sb.AppendLine(@"        {");
             sb.AppendLine($@"            { TypeName } { TypeNameLower } = new { TypeName }();");
@@ -29,7 +27,7 @@ namespace GenerateCSSPDBServices_Tests
 
                 if (TypeName == "AspNetUser" && prop.Name == "Id")
                 {
-                    if (!await CreateGetFilledRandomClass(prop, csspProp, TypeName, TypeNameLower, sb, sbInMemory)) return await Task.FromResult(false);
+                    if (!await CreateGetFilledRandomClass(prop, csspProp, TypeName, TypeNameLower, sb)) return await Task.FromResult(false);
                 }
                 else
                 {
@@ -38,12 +36,10 @@ namespace GenerateCSSPDBServices_Tests
                         continue;
                     }
 
-                    if (!await CreateGetFilledRandomClass(prop, csspProp, TypeName, TypeNameLower, sb, sbInMemory)) return await Task.FromResult(false);
+                    if (!await CreateGetFilledRandomClass(prop, csspProp, TypeName, TypeNameLower, sb)) return await Task.FromResult(false);
                 }
             }
 
-            sb.AppendLine(@"");
-            sb.AppendLine(sbInMemory.ToString());
             sb.AppendLine(@"");
             sb.AppendLine($@"            return { TypeNameLower };");
             sb.AppendLine(@"        }");

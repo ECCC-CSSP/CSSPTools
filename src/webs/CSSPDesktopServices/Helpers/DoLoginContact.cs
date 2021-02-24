@@ -12,6 +12,8 @@ using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.AspNetCore.SignalR;
 using CSSPHelperModels;
+using CSSPDBPreferenceModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CSSPDesktopServices.Services
 {
@@ -114,7 +116,16 @@ namespace CSSPDesktopServices.Services
                     return await Task.FromResult(false);
                 }
 
-                await LocalService.SetLoggedInContactInfo();
+                string LoginEmail = "";
+                var actionPreference = await PreferenceService.GetPreferenceWithVariableName("LoginEmail");
+                if (await DoStatusActionPreference(actionPreference, "LoginEmail"))
+                {
+                    Preference preference = (Preference)((OkObjectResult)actionPreference.Result).Value;
+                    LoginEmail = preference.VariableValue;
+                }
+
+                if (!await LoggedInService.SetLoggedInContactInfo(LoginEmail)) return await Task.FromResult(false);
+                //await LocalService.SetLoggedInContactInfo();
             }
 
             return await Task.FromResult(true);

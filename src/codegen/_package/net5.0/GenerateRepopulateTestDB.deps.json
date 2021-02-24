@@ -9,7 +9,6 @@
       "GenerateRepopulateTestDB/1.0.0": {
         "dependencies": {
           "CSSPDBModels": "1.0.0",
-          "CSSPLocalServices": "1.0.0",
           "GenerateCodeBaseHelper": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.2",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.2",
@@ -24,46 +23,6 @@
         },
         "runtime": {
           "GenerateRepopulateTestDB.dll": {}
-        }
-      },
-      "Azure.Core/1.8.1": {
-        "dependencies": {
-          "Microsoft.Bcl.AsyncInterfaces": "1.0.0",
-          "System.Buffers": "4.5.0",
-          "System.Diagnostics.DiagnosticSource": "5.0.1",
-          "System.Memory": "4.5.3",
-          "System.Numerics.Vectors": "4.5.0",
-          "System.Text.Json": "4.6.0",
-          "System.Threading.Tasks.Extensions": "4.5.2"
-        },
-        "runtime": {
-          "lib/net5.0/Azure.Core.dll": {
-            "assemblyVersion": "1.8.1.0",
-            "fileVersion": "1.800.121.6102"
-          }
-        }
-      },
-      "Azure.Storage.Blobs/12.8.0": {
-        "dependencies": {
-          "Azure.Storage.Common": "12.7.0",
-          "System.Text.Json": "4.6.0"
-        },
-        "runtime": {
-          "lib/netstandard2.0/Azure.Storage.Blobs.dll": {
-            "assemblyVersion": "12.8.0.0",
-            "fileVersion": "12.800.21.6201"
-          }
-        }
-      },
-      "Azure.Storage.Common/12.7.0": {
-        "dependencies": {
-          "Azure.Core": "1.8.1"
-        },
-        "runtime": {
-          "lib/netstandard2.0/Azure.Storage.Common.dll": {
-            "assemblyVersion": "12.7.0.0",
-            "fileVersion": "12.700.21.6201"
-          }
         }
       },
       "Humanizer.Core/2.8.26": {
@@ -113,14 +72,6 @@
           "lib/net5.0/Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll": {
             "assemblyVersion": "5.0.2.0",
             "fileVersion": "5.0.220.61302"
-          }
-        }
-      },
-      "Microsoft.Bcl.AsyncInterfaces/1.0.0": {
-        "runtime": {
-          "lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll": {
-            "assemblyVersion": "1.0.0.0",
-            "fileVersion": "4.700.19.46214"
           }
         }
       },
@@ -257,17 +208,6 @@
         },
         "runtime": {
           "lib/netstandard2.1/Microsoft.EntityFrameworkCore.Design.dll": {
-            "assemblyVersion": "5.0.2.0",
-            "fileVersion": "5.0.220.61114"
-          }
-        }
-      },
-      "Microsoft.EntityFrameworkCore.InMemory/5.0.2": {
-        "dependencies": {
-          "Microsoft.EntityFrameworkCore": "5.0.2"
-        },
-        "runtime": {
-          "lib/netstandard2.1/Microsoft.EntityFrameworkCore.InMemory.dll": {
             "assemblyVersion": "5.0.2.0",
             "fileVersion": "5.0.220.61114"
           }
@@ -641,7 +581,6 @@
           }
         }
       },
-      "System.Buffers/4.5.0": {},
       "System.Collections/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "3.1.0",
@@ -855,7 +794,6 @@
           "System.Runtime.Handles": "4.3.0"
         }
       },
-      "System.Numerics.Vectors/4.5.0": {},
       "System.Private.DataContractSerialization/4.3.0": {
         "dependencies": {
           "System.Collections": "4.3.0",
@@ -1098,7 +1036,6 @@
           "System.Text.Encoding": "4.3.0"
         }
       },
-      "System.Text.Json/4.6.0": {},
       "System.Text.RegularExpressions/4.3.0": {
         "dependencies": {
           "System.Runtime": "4.3.0"
@@ -1117,7 +1054,13 @@
           "System.Runtime": "4.3.0"
         }
       },
-      "System.Threading.Tasks.Extensions/4.5.2": {},
+      "System.Threading.Tasks.Extensions/4.3.0": {
+        "dependencies": {
+          "System.Collections": "4.3.0",
+          "System.Runtime": "4.3.0",
+          "System.Threading.Tasks": "4.3.0"
+        }
+      },
       "System.Windows.Extensions/4.7.0": {
         "dependencies": {
           "System.Drawing.Common": "4.7.0"
@@ -1139,7 +1082,7 @@
           "System.Text.Encoding.Extensions": "4.3.0",
           "System.Text.RegularExpressions": "4.3.0",
           "System.Threading.Tasks": "4.3.0",
-          "System.Threading.Tasks.Extensions": "4.5.2"
+          "System.Threading.Tasks.Extensions": "4.3.0"
         }
       },
       "System.Xml.XDocument/4.3.0": {
@@ -1203,24 +1146,6 @@
           }
         }
       },
-      "CSSPDBCommandLogModels/1.0.0": {
-        "dependencies": {
-          "CSSPEnums": "1.0.0",
-          "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.2",
-          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.2",
-          "Microsoft.EntityFrameworkCore": "5.0.2",
-          "Microsoft.EntityFrameworkCore.InMemory": "5.0.2",
-          "Microsoft.EntityFrameworkCore.SqlServer": "5.0.2",
-          "Microsoft.EntityFrameworkCore.Sqlite": "5.0.2",
-          "Microsoft.Extensions.Configuration": "5.0.0",
-          "Microsoft.Extensions.Configuration.Json": "5.0.0",
-          "Microsoft.Extensions.DependencyInjection": "5.0.1",
-          "System.IdentityModel.Tokens.Jwt": "6.8.0"
-        },
-        "runtime": {
-          "CSSPDBCommandLogModels.dll": {}
-        }
-      },
       "CSSPDBModels/1.0.0": {
         "dependencies": {
           "CSSPEnums": "1.0.0",
@@ -1228,7 +1153,6 @@
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.2",
           "Microsoft.EntityFrameworkCore": "5.0.2",
           "Microsoft.EntityFrameworkCore.Design": "5.0.2",
-          "Microsoft.EntityFrameworkCore.InMemory": "5.0.2",
           "Microsoft.EntityFrameworkCore.SqlServer": "5.0.2",
           "Microsoft.EntityFrameworkCore.Sqlite": "5.0.2",
           "Microsoft.EntityFrameworkCore.Tools": "5.0.2",
@@ -1241,44 +1165,6 @@
           "CSSPDBModels.dll": {}
         }
       },
-      "CSSPDBPreferenceModels/1.0.0": {
-        "dependencies": {
-          "CSSPDBModels": "1.0.0",
-          "CSSPEnums": "1.0.0",
-          "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.2",
-          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.2",
-          "Microsoft.EntityFrameworkCore": "5.0.2",
-          "Microsoft.EntityFrameworkCore.InMemory": "5.0.2",
-          "Microsoft.EntityFrameworkCore.SqlServer": "5.0.2",
-          "Microsoft.EntityFrameworkCore.Sqlite": "5.0.2",
-          "Microsoft.Extensions.Configuration": "5.0.0",
-          "Microsoft.Extensions.Configuration.Json": "5.0.0",
-          "Microsoft.Extensions.DependencyInjection": "5.0.1",
-          "System.IdentityModel.Tokens.Jwt": "6.8.0"
-        },
-        "runtime": {
-          "CSSPDBPreferenceModels.dll": {}
-        }
-      },
-      "CSSPDBPreferenceServices/1.0.0": {
-        "dependencies": {
-          "Azure.Storage.Blobs": "12.8.0",
-          "CSSPDBCommandLogModels": "1.0.0",
-          "CSSPDBPreferenceModels": "1.0.0",
-          "CSSPScrambleServices": "1.0.0",
-          "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.2",
-          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.2",
-          "Microsoft.EntityFrameworkCore": "5.0.2",
-          "Microsoft.EntityFrameworkCore.InMemory": "5.0.2",
-          "Microsoft.EntityFrameworkCore.SqlServer": "5.0.2",
-          "Microsoft.EntityFrameworkCore.Sqlite": "5.0.2",
-          "Microsoft.Extensions.Configuration": "5.0.0",
-          "Microsoft.Extensions.Configuration.Json": "5.0.0"
-        },
-        "runtime": {
-          "CSSPDBPreferenceServices.dll": {}
-        }
-      },
       "CSSPEnums/1.0.0": {
         "dependencies": {
           "CSSPCultureServices": "1.0.0",
@@ -1287,49 +1173,6 @@
         },
         "runtime": {
           "CSSPEnums.dll": {}
-        }
-      },
-      "CSSPHelperModels/1.0.0": {
-        "dependencies": {
-          "CSSPDBModels": "1.0.0",
-          "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.2",
-          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.2",
-          "Microsoft.EntityFrameworkCore": "5.0.2",
-          "Microsoft.EntityFrameworkCore.Design": "5.0.2",
-          "Microsoft.EntityFrameworkCore.InMemory": "5.0.2",
-          "Microsoft.EntityFrameworkCore.SqlServer": "5.0.2",
-          "Microsoft.EntityFrameworkCore.Sqlite": "5.0.2",
-          "Microsoft.EntityFrameworkCore.Tools": "5.0.2",
-          "Microsoft.Extensions.Configuration": "5.0.0",
-          "Microsoft.Extensions.Configuration.Json": "5.0.0",
-          "Microsoft.Extensions.DependencyInjection": "5.0.1",
-          "System.IdentityModel.Tokens.Jwt": "6.8.0"
-        },
-        "runtime": {
-          "CSSPHelperModels.dll": {}
-        }
-      },
-      "CSSPLocalServices/1.0.0": {
-        "dependencies": {
-          "Azure.Storage.Blobs": "12.8.0",
-          "CSSPDBPreferenceServices": "1.0.0",
-          "CSSPHelperModels": "1.0.0",
-          "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.2",
-          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.2",
-          "Microsoft.EntityFrameworkCore": "5.0.2",
-          "Microsoft.EntityFrameworkCore.InMemory": "5.0.2",
-          "Microsoft.EntityFrameworkCore.SqlServer": "5.0.2",
-          "Microsoft.EntityFrameworkCore.Sqlite": "5.0.2",
-          "Microsoft.Extensions.Configuration": "5.0.0",
-          "Microsoft.Extensions.Configuration.Json": "5.0.0"
-        },
-        "runtime": {
-          "CSSPLocalServices.dll": {}
-        }
-      },
-      "CSSPScrambleServices/1.0.0": {
-        "runtime": {
-          "CSSPScrambleServices.dll": {}
         }
       },
       "GenerateCodeBaseHelper/1.0.0": {
@@ -1347,27 +1190,6 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
-    },
-    "Azure.Core/1.8.1": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-BoGOCcdRa4ngAxBcyyndauFWgId6/SETDJnd9+4iHtXZ9JsVA4hs8pvK0H2ml4MHWwaYPmpepd70reAUm2u52g==",
-      "path": "azure.core/1.8.1",
-      "hashPath": "azure.core.1.8.1.nupkg.sha512"
-    },
-    "Azure.Storage.Blobs/12.8.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-LrnOTVdRk2n8obV8Z0R7ZpuFd6SlyxPiX4+M4TyCKbFEJlTPAStewqrXHr4JMDJYzn+b5sr1CMsz75CoHYabhg==",
-      "path": "azure.storage.blobs/12.8.0",
-      "hashPath": "azure.storage.blobs.12.8.0.nupkg.sha512"
-    },
-    "Azure.Storage.Common/12.7.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-w2hcSk80NbkUIvb0x81zYAvpx7RzhRVJjWterjYpEI9DRNLoqxap3b7LOSnLfcA5jgSVaeKlOZzneUrXx7+wnA==",
-      "path": "azure.storage.common/12.7.0",
-      "hashPath": "azure.storage.common.12.7.0.nupkg.sha512"
     },
     "Humanizer.Core/2.8.26": {
       "type": "package",
@@ -1403,13 +1225,6 @@
       "sha512": "sha512-IgqlEOIEFHAAVivQKRkimdTMdCkJIP3gEQ7NMefvFvGvVE7S7yKkrh7H/nP4trkaIevjjna8vTwIoD74+eSsuQ==",
       "path": "microsoft.aspnetcore.identity.entityframeworkcore/5.0.2",
       "hashPath": "microsoft.aspnetcore.identity.entityframeworkcore.5.0.2.nupkg.sha512"
-    },
-    "Microsoft.Bcl.AsyncInterfaces/1.0.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-K63Y4hORbBcKLWH5wnKgzyn7TOfYzevIEwIedQHBIkmkEBA9SCqgvom+XTuE+fAFGvINGkhFItaZ2dvMGdT5iw==",
-      "path": "microsoft.bcl.asyncinterfaces/1.0.0",
-      "hashPath": "microsoft.bcl.asyncinterfaces.1.0.0.nupkg.sha512"
     },
     "Microsoft.CSharp/4.7.0": {
       "type": "package",
@@ -1473,13 +1288,6 @@
       "sha512": "sha512-Bn1aa2M16p3aIS68q7aXb2Shv0G8evtwdp6SNfnxzTw5vdKH1BBe1g/4BPrY5a2YLp2dVwep2Jtjvk5VB9E0qA==",
       "path": "microsoft.entityframeworkcore.design/5.0.2",
       "hashPath": "microsoft.entityframeworkcore.design.5.0.2.nupkg.sha512"
-    },
-    "Microsoft.EntityFrameworkCore.InMemory/5.0.2": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-J8/Fn3hfbgKmCpMwtCOipv6q4BNORmUy9AE2KEUZFHCtyaq3Ftox0x0ZybvWWrUW1eNkddaz5KbaPGL9qt8JCA==",
-      "path": "microsoft.entityframeworkcore.inmemory/5.0.2",
-      "hashPath": "microsoft.entityframeworkcore.inmemory.5.0.2.nupkg.sha512"
     },
     "Microsoft.EntityFrameworkCore.Relational/5.0.2": {
       "type": "package",
@@ -1747,13 +1555,6 @@
       "path": "sqlitepclraw.provider.dynamic_cdecl/2.0.4",
       "hashPath": "sqlitepclraw.provider.dynamic_cdecl.2.0.4.nupkg.sha512"
     },
-    "System.Buffers/4.5.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-pL2ChpaRRWI/p4LXyy4RgeWlYF2sgfj/pnVMvBqwNFr5cXg7CXNnWZWxrOONLg8VGdFB8oB+EG2Qw4MLgTOe+A==",
-      "path": "system.buffers/4.5.0",
-      "hashPath": "system.buffers.4.5.0.nupkg.sha512"
-    },
     "System.Collections/4.3.0": {
       "type": "package",
       "serviceable": true,
@@ -1928,13 +1729,6 @@
       "sha512": "sha512-qOu+hDwFwoZPbzPvwut2qATe3ygjeQBDQj91xlsaqGFQUI5i4ZnZb8yyQuLGpDGivEPIt8EJkd1BVzVoP31FXA==",
       "path": "system.net.primitives/4.3.0",
       "hashPath": "system.net.primitives.4.3.0.nupkg.sha512"
-    },
-    "System.Numerics.Vectors/4.5.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-QQTlPTl06J/iiDbJCiepZ4H//BVraReU4O4EoRw1U02H5TLUIT7xn3GnDp9AXPSlJUDyFs4uWjWafNX6WrAojQ==",
-      "path": "system.numerics.vectors/4.5.0",
-      "hashPath": "system.numerics.vectors.4.5.0.nupkg.sha512"
     },
     "System.Private.DataContractSerialization/4.3.0": {
       "type": "package",
@@ -2132,13 +1926,6 @@
       "path": "system.text.encoding.extensions/4.3.0",
       "hashPath": "system.text.encoding.extensions.4.3.0.nupkg.sha512"
     },
-    "System.Text.Json/4.6.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-4F8Xe+JIkVoDJ8hDAZ7HqLkjctN/6WItJIzQaifBwClC7wmoLSda/Sv2i6i1kycqDb3hWF4JCVbpAweyOKHEUA==",
-      "path": "system.text.json/4.6.0",
-      "hashPath": "system.text.json.4.6.0.nupkg.sha512"
-    },
     "System.Text.RegularExpressions/4.3.0": {
       "type": "package",
       "serviceable": true,
@@ -2160,12 +1947,12 @@
       "path": "system.threading.tasks/4.3.0",
       "hashPath": "system.threading.tasks.4.3.0.nupkg.sha512"
     },
-    "System.Threading.Tasks.Extensions/4.5.2": {
+    "System.Threading.Tasks.Extensions/4.3.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-BG/TNxDFv0svAzx8OiMXDlsHfGw623BZ8tCXw4YLhDFDvDhNUEV58jKYMGRnkbJNm7c3JNNJDiN7JBMzxRBR2w==",
-      "path": "system.threading.tasks.extensions/4.5.2",
-      "hashPath": "system.threading.tasks.extensions.4.5.2.nupkg.sha512"
+      "sha512": "sha512-npvJkVKl5rKXrtl1Kkm6OhOUaYGEiF9wFbppFRWSMoApKzt2PiPHT2Bb8a5sAWxprvdOAtvaARS9QYMznEUtug==",
+      "path": "system.threading.tasks.extensions/4.3.0",
+      "hashPath": "system.threading.tasks.extensions.4.3.0.nupkg.sha512"
     },
     "System.Windows.Extensions/4.7.0": {
       "type": "package",
@@ -2207,42 +1994,12 @@
       "serviceable": false,
       "sha512": ""
     },
-    "CSSPDBCommandLogModels/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
     "CSSPDBModels/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "CSSPDBPreferenceModels/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "CSSPDBPreferenceServices/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
     "CSSPEnums/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "CSSPHelperModels/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "CSSPLocalServices/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "CSSPScrambleServices/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

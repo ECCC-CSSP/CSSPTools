@@ -26,7 +26,7 @@ namespace DownloadFileServices
         {
             string FileName = await BaseGzFileService.GetFileName(webType, TVItemID, webTypeYear);
 
-            if (LocalService.LoggedInContactInfo == null)
+            if (LoggedInService.LoggedInContactInfo == null)
             {
                 return await Task.FromResult(Unauthorized());
             }

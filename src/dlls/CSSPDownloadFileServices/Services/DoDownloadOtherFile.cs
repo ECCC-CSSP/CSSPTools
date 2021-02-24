@@ -26,7 +26,7 @@ namespace DownloadFileServices
     {
         private async Task<ActionResult> DoDownloadOtherFile(string FileName)
         {
-            if (LocalService.LoggedInContactInfo == null)
+            if (LoggedInService.LoggedInContactInfo == null)
             {
                 return await Task.FromResult(Unauthorized(""));
             }

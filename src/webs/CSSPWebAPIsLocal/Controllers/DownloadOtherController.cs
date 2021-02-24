@@ -10,9 +10,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using CSSPEnums;
 using CSSPCultureServices.Resources;
-using LocalServices;
 using System.Threading;
 using DownloadFileServices;
+using LoggedInServices;
 
 namespace CSSPWebAPIsLocal.Controllers
 {
@@ -30,15 +30,15 @@ namespace CSSPWebAPIsLocal.Controllers
 
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILocalService LocalService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IDownloadFileService DownloadFileService { get; }
         #endregion Properties
 
         #region Constructors
-        public DownloadOtherController(ICSSPCultureService CSSPCultureService, ILocalService LocalService, IDownloadFileService DownloadFileService)
+        public DownloadOtherController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IDownloadFileService DownloadFileService)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LocalService = LocalService;
+            this.LoggedInService = LoggedInService;
             this.DownloadFileService = DownloadFileService;
 
         }
@@ -51,7 +51,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = AreaTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LocalService.SetLoggedInContactInfo();
+            await LoggedInService.SetLoggedInLocalContactInfo();
 
             return await DownloadFileService.DownloadOtherFile(FileName);
         }

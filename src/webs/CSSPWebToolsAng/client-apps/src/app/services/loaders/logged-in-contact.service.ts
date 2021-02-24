@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
 import { AppState } from 'src/app/models/AppState.model';
 import { Contact } from 'src/app/models/generated/db/Contact.model';
@@ -20,16 +21,16 @@ export class LoggedInContactService {
     }
 
     DoLoggedInContact() {
-        this.sub ? this.sub.unsubscribe() : null;
-    
+        this.sub ? this.sub.unsubscribe() : null;   
         this.sub = this.GetLoggedInContact().subscribe();
     }
     
     
     private GetLoggedInContact() {
+        let languageEnum = GetLanguageEnum();
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ LoggedInContact: {} });
         this.appStateService.UpdateAppState(<AppState>{ Working: true });
-        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appStateService.AppState$.getValue().Language}-CA/LoggedInContact`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/LoggedInContact`;
         return this.httpClient.get<Contact>(url).pipe(
             map((x: any) => {
                 this.UpdateLoggedInContact(x);
