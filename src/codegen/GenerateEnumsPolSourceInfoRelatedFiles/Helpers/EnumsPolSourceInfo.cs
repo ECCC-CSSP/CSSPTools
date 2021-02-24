@@ -25,7 +25,7 @@ namespace GenerateEnumsPolSourceInfoRelatedFiles
         {
             StringBuilder sb = new StringBuilder();
 
-            FileInfo fi = new FileInfo(Config.GetValue<string>("EnumsPolSourceInfoGenerated_cs"));
+            FileInfo fi = new FileInfo(Configuration.GetValue<string>("EnumsPolSourceInfoGenerated_cs"));
 
             List<string> groupList = (from c in polSourceGroupingExcelFileReadService.GroupChoiceChildLevelList
                                       select c.Group).Distinct().ToList();

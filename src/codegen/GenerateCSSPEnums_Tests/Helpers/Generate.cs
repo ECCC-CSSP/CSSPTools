@@ -15,8 +15,8 @@ namespace GenerateCSSPEnums_Tests
             Console.WriteLine("Generate Starting ...");
 
             StringBuilder sb = new StringBuilder();
-            FileInfo fiDLL = new FileInfo(Config.GetValue<string>("CSSPEnums"));
-            FileInfo fi = new FileInfo(Config.GetValue<string>("EnumsTestGenerated"));
+            FileInfo fiDLL = new FileInfo(Configuration.GetValue<string>("CSSPEnums"));
+            FileInfo fi = new FileInfo(Configuration.GetValue<string>("EnumsTestGenerated"));
 
             sb.AppendLine(@"/*");
             sb.AppendLine($@" * Auto generated from { AppDomain.CurrentDomain.BaseDirectory }{ AppDomain.CurrentDomain.FriendlyName}.exe");

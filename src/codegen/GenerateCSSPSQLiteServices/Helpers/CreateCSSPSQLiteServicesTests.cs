@@ -105,7 +105,7 @@ namespace GenerateCSSPSQLiteServices
             sb.AppendLine(@"}");
 
 
-            FileInfo fiOutputGen = new FileInfo(Config.GetValue<string>("CreateTableBuilderTests"));
+            FileInfo fiOutputGen = new FileInfo(Configuration.GetValue<string>("CreateTableBuilderTests"));
 
             using (StreamWriter sw = fiOutputGen.CreateText())
             {

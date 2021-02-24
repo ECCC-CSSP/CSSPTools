@@ -9,19 +9,19 @@ namespace GenerateAngularEnums
 {
     public partial class Startup
     {
-        private IConfiguration Config { get; set; }
+        private IConfiguration Configuration { get; set; }
         public IServiceProvider Provider { get; set; }
         public IServiceCollection Services { get; set; }
         public ICSSPCultureService CSSPCultureService { get; set; }
         public IEnums Enums { get; set; }
 
-        public Startup(IConfiguration Config)
+        public Startup(IConfiguration Configuration)
         {
-            this.Config = Config;
+            this.Configuration = Configuration;
 
             Services = new ServiceCollection();
 
-            Services.AddSingleton<IConfiguration>(Config);
+            Services.AddSingleton<IConfiguration>(Configuration);
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
 
@@ -37,7 +37,7 @@ namespace GenerateAngularEnums
                 throw new Exception($"{ AppDomain.CurrentDomain.FriendlyName } CultureService == null");
             }
 
-            CSSPCultureService.SetCulture(Config.GetValue<string>("CSSPCulture"));
+            CSSPCultureService.SetCulture(Configuration.GetValue<string>("CSSPCulture"));
 
             Enums = Provider.GetService<IEnums>();
             if (Enums == null)

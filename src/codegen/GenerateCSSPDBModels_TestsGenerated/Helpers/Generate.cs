@@ -18,7 +18,7 @@ namespace GenerateCSSPDBModels_TestsGenerated
         {
             Console.WriteLine("Generate Starting ...");
 
-            FileInfo fiDLL = new FileInfo(Config.GetValue<string>("CSSPDBModels"));
+            FileInfo fiDLL = new FileInfo(Configuration.GetValue<string>("CSSPDBModels"));
 
             var importAssembly = Assembly.LoadFile(fiDLL.FullName);
             Type[] types = importAssembly.GetTypes();
@@ -457,7 +457,7 @@ namespace GenerateCSSPDBModels_TestsGenerated
                 sb.AppendLine(@"    }");
                 sb.AppendLine(@"}");
 
-                FileInfo fiOutput = new FileInfo(Config.GetValue<string>("TypeNameTestGenerated").Replace("{TypeName}", type.Name));
+                FileInfo fiOutput = new FileInfo(Configuration.GetValue<string>("TypeNameTestGenerated").Replace("{TypeName}", type.Name));
 
                 using (StreamWriter sw = fiOutput.CreateText())
                 {

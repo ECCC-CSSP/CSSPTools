@@ -28,12 +28,12 @@ namespace SampleApp.Controllers
         // limits for request body data.
         private static readonly FormOptions _defaultFormOptions = new FormOptions();
 
-        public StreamingController(IConfiguration config)
+        public StreamingController(IConfiguration configuration)
         {
-            _fileSizeLimit = 5000000; //config.GetValue<long>("FileSizeLimit");
+            _fileSizeLimit = 5000000; //configuration.GetValue<long>("FileSizeLimit");
 
             // To save physical files to a path provided by configuration:
-            _targetFilePath = @"C:\CSSP\";  //config.GetValue<string>("StoredFilesPath");
+            _targetFilePath = @"C:\CSSP\";  //configuration.GetValue<string>("StoredFilesPath");
 
             // To save physical files to the temporary files folder, use:
             //_targetFilePath = Path.GetTempPath();

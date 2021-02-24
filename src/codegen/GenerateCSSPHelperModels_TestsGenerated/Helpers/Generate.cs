@@ -18,7 +18,7 @@ namespace GenerateCSSPHelperModels_TestsGenerated
         {
             Console.WriteLine("Generate Starting ...");
 
-            FileInfo fiDLL = new FileInfo(Config.GetValue<string>("CSSPHelperModels"));
+            FileInfo fiDLL = new FileInfo(Configuration.GetValue<string>("CSSPHelperModels"));
 
             var importAssembly = Assembly.LoadFile(fiDLL.FullName);
             Type[] types = importAssembly.GetTypes();
@@ -458,7 +458,7 @@ namespace GenerateCSSPHelperModels_TestsGenerated
                 sb.AppendLine(@"    }");
                 sb.AppendLine(@"}");
 
-                FileInfo fiOutput = new FileInfo(Config.GetValue<string>("TypeNameTestGenerated").Replace("{TypeName}", type.Name));
+                FileInfo fiOutput = new FileInfo(Configuration.GetValue<string>("TypeNameTestGenerated").Replace("{TypeName}", type.Name));
 
                 using (StreamWriter sw = fiOutput.CreateText())
                 {

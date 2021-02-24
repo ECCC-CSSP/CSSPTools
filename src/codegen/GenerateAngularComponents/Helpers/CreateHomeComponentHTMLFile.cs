@@ -44,7 +44,7 @@ namespace GenerateAngularComponents
 
             sb.AppendLine(@"<router-outlet></router-outlet>");
 
-            FileInfo fiOutputGen = new FileInfo(Config.GetValue<string>("HomeComponentHTMLFileName"));
+            FileInfo fiOutputGen = new FileInfo(Configuration.GetValue<string>("HomeComponentHTMLFileName"));
             using (StreamWriter sw2 = fiOutputGen.CreateText())
             {
                 sw2.Write(sb.ToString());

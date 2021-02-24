@@ -22,8 +22,8 @@ namespace CSSPDBCommandLogServices.Tests
 
         #region Properties
         private IConfiguration Configuration { get; set; }
-        private IServiceCollection ServiceCollection { get; set; }
-        private IServiceProvider ServiceProvider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private IServiceProvider Provider { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
         private ICSSPDBCommandLogService CSSPDBCommandLogService { get; set; }
         private ILoggedInService LoggedInService { get; set; }
@@ -50,12 +50,12 @@ namespace CSSPDBCommandLogServices.Tests
                 .AddUserSecrets("48e29e5a-1f36-42a7-ad09-cc1f51c56c46")
                 .Build();
 
-            ServiceCollection = new ServiceCollection();
+            Services = new ServiceCollection();
 
-            ServiceCollection.AddSingleton<IConfiguration>(Configuration);
-            ServiceCollection.AddSingleton<ICSSPCultureService, CSSPCultureService>();
-            ServiceCollection.AddSingleton<ILoggedInService, LoggedInService>();
-            ServiceCollection.AddSingleton<ICSSPDBCommandLogService, CSSPDBCommandLogService>();
+            Services.AddSingleton<IConfiguration>(Configuration);
+            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<ICSSPDBCommandLogService, CSSPDBCommandLogService>();
 
             /* ---------------------------------------------------------------------------------
              * using TestDB
@@ -64,7 +64,7 @@ namespace CSSPDBCommandLogServices.Tests
             string TestDB = Configuration.GetValue<string>("TestDB");
             Assert.NotNull(TestDB);
 
-            ServiceCollection.AddDbContext<CSSPDBContext>(options =>
+            Services.AddDbContext<CSSPDBContext>(options =>
             {
                 options.UseSqlServer(TestDB);
             });
@@ -79,7 +79,7 @@ namespace CSSPDBCommandLogServices.Tests
             FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocal);
             Assert.True(fiCSSPDBLocal.Exists);
 
-            ServiceCollection.AddDbContext<CSSPDBLocalContext>(options =>
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
             {
                 options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
             });
@@ -94,7 +94,7 @@ namespace CSSPDBCommandLogServices.Tests
             FileInfo fiCSSPDBPreference = new FileInfo(CSSPDBPreferenceFileName);
             Assert.True(fiCSSPDBPreference.Exists);
 
-            ServiceCollection.AddDbContext<CSSPDBPreferenceContext>(options =>
+            Services.AddDbContext<CSSPDBPreferenceContext>(options =>
             {
                 options.UseSqlite($"Data Source={ fiCSSPDBPreference.FullName }");
             });
@@ -106,27 +106,27 @@ namespace CSSPDBCommandLogServices.Tests
             FileInfo fiCSSPDBCommandLogFileName = new FileInfo(CSSPDBCommandLogFileName);
             Assert.True(fiCSSPDBCommandLogFileName.Exists);
 
-            ServiceCollection.AddDbContext<CSSPDBCommandLogContext>(options =>
+            Services.AddDbContext<CSSPDBCommandLogContext>(options =>
             {
                 options.UseSqlite($"Data Source={ fiCSSPDBCommandLogFileName.FullName }");
             });
 
-            ServiceProvider = ServiceCollection.BuildServiceProvider();
-            Assert.NotNull(ServiceProvider);
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
 
-            CSSPCultureService = ServiceProvider.GetService<ICSSPCultureService>();
+            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
             Assert.NotNull(CSSPCultureService);
 
             CSSPCultureService.SetCulture(culture);
 
-            LoggedInService = ServiceProvider.GetService<ILoggedInService>();
+            LoggedInService = Provider.GetService<ILoggedInService>();
             Assert.NotNull(LoggedInService);
 
             await LoggedInService.SetLoggedInLocalContactInfo();
             Assert.NotNull(LoggedInService.LoggedInContactInfo);
             Assert.NotNull(LoggedInService.LoggedInContactInfo.LoggedInContact);
 
-            CSSPDBCommandLogService = ServiceProvider.GetService<ICSSPDBCommandLogService>();
+            CSSPDBCommandLogService = Provider.GetService<ICSSPDBCommandLogService>();
             Assert.NotNull(CSSPDBCommandLogService);
 
 

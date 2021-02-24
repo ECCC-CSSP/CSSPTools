@@ -16,8 +16,8 @@ namespace GenerateAngularComponents
         {
             Console.WriteLine("Generate Starting ...");
 
-            FileInfo fiCSSPEnumsDLL = new FileInfo(Config.GetValue<string>("CSSPEnums"));
-            FileInfo fiCSSPDBModelsDLL = new FileInfo(Config.GetValue<string>("CSSPDBModels"));
+            FileInfo fiCSSPEnumsDLL = new FileInfo(Configuration.GetValue<string>("CSSPEnums"));
+            FileInfo fiCSSPDBModelsDLL = new FileInfo(Configuration.GetValue<string>("CSSPDBModels"));
 
             Console.WriteLine($"Reading [{ fiCSSPEnumsDLL.FullName }] ...");
             List<DLLTypeInfo> DLLTypeInfoCSSPEnumsList = new List<DLLTypeInfo>();

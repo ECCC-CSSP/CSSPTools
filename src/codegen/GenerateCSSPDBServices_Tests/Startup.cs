@@ -9,20 +9,20 @@ namespace GenerateCSSPDBServices_Tests
 {
     public partial class Startup
     {
-        private IConfiguration Config { get; set; }
+        private IConfiguration Configuration { get; set; }
         public IServiceProvider Provider { get; set; }
         private TestDBContext dbTestDB { get; set; }
 
 
-        public Startup(IConfiguration Config)
+        public Startup(IConfiguration Configuration)
         {
-            this.Config = Config;
+            this.Configuration = Configuration;
 
             ServiceCollection Services = new ServiceCollection();
 
-            Services.AddSingleton<IConfiguration>(Config);
+            Services.AddSingleton<IConfiguration>(Configuration);
 
-            string TestDBConnString = Config.GetValue<string>("TestDB");
+            string TestDBConnString = Configuration.GetValue<string>("TestDB");
             if (TestDBConnString == null)
             {
                 Console.WriteLine($"Could not find parameter TestDB in appsettings.json");

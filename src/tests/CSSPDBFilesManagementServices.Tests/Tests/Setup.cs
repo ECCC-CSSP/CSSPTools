@@ -22,8 +22,8 @@ namespace CSSPDBFilesManagementServices.Tests
 
         #region Properties
         private IConfiguration Configuration { get; set; }
-        private IServiceCollection ServiceCollection { get; set; }
-        private IServiceProvider ServiceProvider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private IServiceProvider Provider { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
         private ICSSPDBFilesManagementService CSSPDBFilesManagementService { get; set; }
         private ILoggedInService LoggedInService { get; set; }
@@ -50,12 +50,12 @@ namespace CSSPDBFilesManagementServices.Tests
                 .AddUserSecrets("27667b6d-6208-4074-be00-1041ba61f0c0")
                 .Build();
 
-            ServiceCollection = new ServiceCollection();
+            Services = new ServiceCollection();
 
-            ServiceCollection.AddSingleton<IConfiguration>(Configuration);
-            ServiceCollection.AddSingleton<ICSSPCultureService, CSSPCultureService>();
-            ServiceCollection.AddSingleton<ILoggedInService, LoggedInService>();
-            ServiceCollection.AddSingleton<ICSSPDBFilesManagementService, CSSPDBFilesManagementService>();
+            Services.AddSingleton<IConfiguration>(Configuration);
+            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<ICSSPDBFilesManagementService, CSSPDBFilesManagementService>();
 
             /* ---------------------------------------------------------------------------------
              * using TestDB
@@ -64,7 +64,7 @@ namespace CSSPDBFilesManagementServices.Tests
             string TestDB = Configuration.GetValue<string>("TestDB");
             Assert.NotNull(TestDB);
 
-            ServiceCollection.AddDbContext<CSSPDBContext>(options =>
+            Services.AddDbContext<CSSPDBContext>(options =>
             {
                 options.UseSqlServer(TestDB);
             });
@@ -79,7 +79,7 @@ namespace CSSPDBFilesManagementServices.Tests
             FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocal);
             Assert.True(fiCSSPDBLocal.Exists);
 
-            ServiceCollection.AddDbContext<CSSPDBLocalContext>(options =>
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
             {
                 options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
             });
@@ -94,7 +94,7 @@ namespace CSSPDBFilesManagementServices.Tests
             FileInfo fiCSSPDBPreference = new FileInfo(CSSPDBPreferenceFileName);
             Assert.True(fiCSSPDBPreference.Exists);
 
-            ServiceCollection.AddDbContext<CSSPDBPreferenceContext>(options =>
+            Services.AddDbContext<CSSPDBPreferenceContext>(options =>
             {
                 options.UseSqlite($"Data Source={ fiCSSPDBPreference.FullName }");
             });
@@ -109,20 +109,20 @@ namespace CSSPDBFilesManagementServices.Tests
             FileInfo fiCSSPDBFilesManagementFileName = new FileInfo(CSSPDBFilesManagementFileName);
             Assert.True(fiCSSPDBFilesManagementFileName.Exists);
 
-            ServiceCollection.AddDbContext<CSSPDBFilesManagementContext>(options =>
+            Services.AddDbContext<CSSPDBFilesManagementContext>(options =>
             {
                 options.UseSqlite($"Data Source={ fiCSSPDBFilesManagementFileName.FullName }");
             });
 
-            ServiceProvider = ServiceCollection.BuildServiceProvider();
-            Assert.NotNull(ServiceProvider);
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
 
-            CSSPCultureService = ServiceProvider.GetService<ICSSPCultureService>();
+            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
             Assert.NotNull(CSSPCultureService);
 
             CSSPCultureService.SetCulture(culture);
 
-            LoggedInService = ServiceProvider.GetService<ILoggedInService>();
+            LoggedInService = Provider.GetService<ILoggedInService>();
             Assert.NotNull(LoggedInService);
 
             string LoginEmail = Configuration.GetValue<string>("LoginEmail");
@@ -130,7 +130,7 @@ namespace CSSPDBFilesManagementServices.Tests
             Assert.NotNull(LoggedInService.LoggedInContactInfo);
             Assert.NotNull(LoggedInService.LoggedInContactInfo.LoggedInContact);
 
-            CSSPDBFilesManagementService = ServiceProvider.GetService<ICSSPDBFilesManagementService>();
+            CSSPDBFilesManagementService = Provider.GetService<ICSSPDBFilesManagementService>();
             Assert.NotNull(CSSPDBFilesManagementService);
 
 

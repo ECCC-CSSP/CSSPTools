@@ -15,7 +15,7 @@ namespace CSSPCultureServices.Tests
         #endregion Variables
 
         #region Properties
-        private IConfiguration Config { get; set; }
+        private IConfiguration Configuration { get; set; }
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }

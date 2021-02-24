@@ -16,7 +16,7 @@ namespace GenerateCSSPWebAPIsLocal_TestsController
         {
             Console.WriteLine("Generate Starting ...");
 
-            FileInfo fiDLL = new FileInfo(Config.GetValue<string>("CSSPDBLocalModels"));
+            FileInfo fiDLL = new FileInfo(Configuration.GetValue<string>("CSSPDBLocalModels"));
 
             var importAssembly = Assembly.LoadFile(fiDLL.FullName);
             Type[] types = importAssembly.GetTypes();
@@ -105,7 +105,7 @@ namespace GenerateCSSPWebAPIsLocal_TestsController
                     sb.AppendLine(@"        #endregion Variables");
                     sb.AppendLine(@"");
                     sb.AppendLine(@"        #region Properties");
-                    sb.AppendLine(@"        private IConfiguration Config { get; set; }");
+                    sb.AppendLine(@"        private IConfiguration Configuration { get; set; }");
                     sb.AppendLine(@"        private IServiceProvider Provider { get; set; }");
                     sb.AppendLine(@"        private IServiceCollection Services { get; set; }");
                     sb.AppendLine(@"        private ICSSPCultureService CSSPCultureService { get; set; }");
@@ -153,7 +153,7 @@ namespace GenerateCSSPWebAPIsLocal_TestsController
 
                     string fileName = "TypeNameFile";
 
-                    FileInfo fiOutputGen = new FileInfo(Config.GetValue<string>(fileName).Replace("{TypeName}", TypeName));
+                    FileInfo fiOutputGen = new FileInfo(Configuration.GetValue<string>(fileName).Replace("{TypeName}", TypeName));
                     using (StreamWriter sw2 = fiOutputGen.CreateText())
                     {
                         sw2.Write(sb.ToString());

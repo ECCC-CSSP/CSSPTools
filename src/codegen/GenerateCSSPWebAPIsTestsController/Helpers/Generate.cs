@@ -104,7 +104,7 @@ namespace GenerateCSSPWebAPIsTestsController
             //        sb.AppendLine(@"        #endregion Variables");
             //        sb.AppendLine(@"");
             //        sb.AppendLine(@"        #region Properties");
-            //        sb.AppendLine(@"        private IConfiguration Config { get; set; }");
+            //        sb.AppendLine(@"        private IConfiguration Configuration { get; set; }");
             //        sb.AppendLine(@"        private IServiceProvider Provider { get; set; }");
             //        sb.AppendLine(@"        private IServiceCollection Services { get; set; }");
             //        sb.AppendLine(@"        private ICSSPCultureService CSSPCultureService { get; set; }");

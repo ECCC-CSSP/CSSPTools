@@ -9,7 +9,7 @@ namespace GenerateCSSPDBServices_Tests
         {
             sb.AppendLine(@"        private async Task<bool> Setup(string culture)");
             sb.AppendLine(@"        {");
-            sb.AppendLine(@"            Config = new ConfigurationBuilder()");
+            sb.AppendLine(@"            Configuration = new ConfigurationBuilder()");
             sb.AppendLine(@"               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)");
             sb.AppendLine(@"               .AddJsonFile(""appsettings_CSSPDBServicestests.json"")");
             sb.AppendLine(@"               .AddUserSecrets(""6f27cbbe-6ffb-4154-b49b-d739597c4f60"")");
@@ -17,7 +17,7 @@ namespace GenerateCSSPDBServices_Tests
             sb.AppendLine(@"");
             sb.AppendLine(@"            Services = new ServiceCollection();");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            Services.AddSingleton<IConfiguration>(Config);");
+            sb.AppendLine(@"            Services.AddSingleton<IConfiguration>(Configuration);");
             sb.AppendLine(@"");
             sb.AppendLine(@"            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();");
             sb.AppendLine(@"            Services.AddSingleton<IEnums, Enums>();");

@@ -15,7 +15,7 @@ namespace GenerateAngularCSSPDBLocalModels
         {
             Console.WriteLine("Generate Starting ...");
 
-            DirectoryInfo diOutputGen = new DirectoryInfo(Config.GetValue<string>("OutputDir"));
+            DirectoryInfo diOutputGen = new DirectoryInfo(Configuration.GetValue<string>("OutputDir"));
             if (!diOutputGen.Exists)
             {
                 try
@@ -29,8 +29,8 @@ namespace GenerateAngularCSSPDBLocalModels
                 }
             }
 
-            FileInfo fiCSSPEnumsDLL = new FileInfo(Config.GetValue<string>("CSSPEnums"));
-            FileInfo fiCSSPDBModelsDLL = new FileInfo(Config.GetValue<string>("CSSPDBModels"));
+            FileInfo fiCSSPEnumsDLL = new FileInfo(Configuration.GetValue<string>("CSSPEnums"));
+            FileInfo fiCSSPDBModelsDLL = new FileInfo(Configuration.GetValue<string>("CSSPDBModels"));
 
 
             Console.WriteLine($"Reading [{ fiCSSPEnumsDLL.FullName }] ...");

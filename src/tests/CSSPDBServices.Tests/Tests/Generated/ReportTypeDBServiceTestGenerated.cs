@@ -33,7 +33,7 @@ namespace CSSPDBServices.Tests
         #endregion Variables
 
         #region Properties
-        private IConfiguration Config { get; set; }
+        private IConfiguration Configuration { get; set; }
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
@@ -323,7 +323,7 @@ namespace CSSPDBServices.Tests
         }
         private async Task<bool> Setup(string culture)
         {
-            Config = new ConfigurationBuilder()
+            Configuration = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
                .AddJsonFile("appsettings_csspdbservicestests.json")
                .AddUserSecrets("a79b4a81-ba75-4dfc-8d95-46259f73f055")
@@ -331,9 +331,9 @@ namespace CSSPDBServices.Tests
 
             Services = new ServiceCollection();
 
-            Services.AddSingleton<IConfiguration>(Config);
+            Services.AddSingleton<IConfiguration>(Configuration);
 
-            string CSSPDBConnString = Config.GetValue<string>("TestDB");
+            string CSSPDBConnString = Configuration.GetValue<string>("TestDB");
             Assert.NotNull(CSSPDBConnString);
 
             Services.AddDbContext<CSSPDBContext>(options =>
@@ -350,7 +350,7 @@ namespace CSSPDBServices.Tests
              * using TestDB
              * ---------------------------------------------------------------------------------      
              */
-            string TestDB = Config.GetValue<string>("TestDB");
+            string TestDB = Configuration.GetValue<string>("TestDB");
             Assert.NotNull(TestDB);
 
             Services.AddDbContext<CSSPDBContext>(options =>
@@ -362,7 +362,7 @@ namespace CSSPDBServices.Tests
              * using CSSPDBPreference
              * ---------------------------------------------------------------------------------
              */
-            string CSSPDBPreference = Config.GetValue<string>("CSSPDBPreference"); 
+            string CSSPDBPreference = Configuration.GetValue<string>("CSSPDBPreference"); 
             Assert.NotNull(CSSPDBPreference);
 
             FileInfo fiCSSPDBPreference = new FileInfo(CSSPDBPreference);
@@ -383,7 +383,7 @@ namespace CSSPDBServices.Tests
             LoggedInService = Provider.GetService<ILoggedInService>();
             Assert.NotNull(LoggedInService);
 
-            string LoginEmail = Config.GetValue<string>("LoginEmail");
+            string LoginEmail = Configuration.GetValue<string>("LoginEmail");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(LoginEmail));
 
             db = Provider.GetService<CSSPDBContext>();

@@ -9,16 +9,16 @@ namespace GenerateCompareDBFieldsAndCSSPDBModelsProp
 {
     partial class Startup
     {
-        private IConfiguration Config { get; set; }
+        private IConfiguration Configuration { get; set; }
 
         private List<TableFieldEnumException> TableFieldEnumExceptionList { get; set; }
         private List<TableFieldEmail> TableFieldEmailList { get; set; }
         private List<TableFieldIDException> TableFieldIDExceptionList { get; set; }
 
 
-        public Startup(IConfiguration Config)
+        public Startup(IConfiguration Configuration)
         {
-            this.Config = Config;
+            this.Configuration = Configuration;
         }
 
     }

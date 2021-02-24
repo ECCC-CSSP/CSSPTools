@@ -18,7 +18,7 @@ namespace GenerateCSSPHelperServices
             Console.WriteLine("Generate Starting ...");
 
             #region Variables and loading DLL properties
-            FileInfo fiCSSPHelperModelsDLL = new FileInfo(Config.GetValue<string>("CSSPHelperModels"));
+            FileInfo fiCSSPHelperModelsDLL = new FileInfo(Configuration.GetValue<string>("CSSPHelperModels"));
 
             List<DLLTypeInfo> DLLTypeInfoCSSPHelperModelsList = new List<DLLTypeInfo>();
             if (GenerateCodeBase.FillDLLTypeInfoList(fiCSSPHelperModelsDLL, DLLTypeInfoCSSPHelperModelsList))
@@ -281,7 +281,7 @@ namespace GenerateCSSPHelperServices
                 FileName = "ClassNameDBFile";
 
                 FileInfo fiOutputGen = null;
-                fiOutputGen = new FileInfo(Config.GetValue<string>(FileName).Replace("{TypeName}", dllTypeInfoModels.Type.Name));
+                fiOutputGen = new FileInfo(Configuration.GetValue<string>(FileName).Replace("{TypeName}", dllTypeInfoModels.Type.Name));
 
                 using (StreamWriter sw2 = fiOutputGen.CreateText())
                 {

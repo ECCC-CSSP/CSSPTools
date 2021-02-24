@@ -20,8 +20,8 @@ namespace LoggedInServices.Tests
 
         #region Properties
         private IConfiguration Configuration { get; set; }
-        private IServiceCollection ServiceCollection { get; set; }
-        private IServiceProvider ServiceProvider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private IServiceProvider Provider { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
         private ILoggedInService LoggedInService { get; set; }
         private string LoginEmail { get; set; }
@@ -53,11 +53,11 @@ namespace LoggedInServices.Tests
                 .AddUserSecrets("88fc6657-c426-4796-95bb-ca3d0daf2ff0")
                 .Build();
 
-            ServiceCollection = new ServiceCollection();
+            Services = new ServiceCollection();
 
-            ServiceCollection.AddSingleton<IConfiguration>(Configuration);
-            ServiceCollection.AddSingleton<ICSSPCultureService, CSSPCultureService>();
-            ServiceCollection.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<IConfiguration>(Configuration);
+            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
 
             /* ---------------------------------------------------------------------------------
              * using TestDB
@@ -66,7 +66,7 @@ namespace LoggedInServices.Tests
             string TestDB = Configuration.GetValue<string>("TestDB");
             Assert.NotNull(TestDB);
 
-            ServiceCollection.AddDbContext<CSSPDBContext>(options =>
+            Services.AddDbContext<CSSPDBContext>(options =>
             {
                 options.UseSqlServer(TestDB);
             });
@@ -81,20 +81,20 @@ namespace LoggedInServices.Tests
             FileInfo fiCSSPDBPreference = new FileInfo(CSSPDBPreferenceFileName);
             Assert.True(fiCSSPDBPreference.Exists);
 
-            ServiceCollection.AddDbContext<CSSPDBPreferenceContext>(options =>
+            Services.AddDbContext<CSSPDBPreferenceContext>(options =>
             {
                 options.UseSqlite($"Data Source={ fiCSSPDBPreference.FullName }");
             });
 
-            ServiceProvider = ServiceCollection.BuildServiceProvider();
-            Assert.NotNull(ServiceProvider);
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
 
-            CSSPCultureService = ServiceProvider.GetService<ICSSPCultureService>();
+            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
             Assert.NotNull(CSSPCultureService);
 
             CSSPCultureService.SetCulture(culture);
 
-            LoggedInService = ServiceProvider.GetService<ILoggedInService>();
+            LoggedInService = Provider.GetService<ILoggedInService>();
             Assert.NotNull(LoggedInService);
 
             LoginEmail = Configuration.GetValue<string>("LoginEmail");

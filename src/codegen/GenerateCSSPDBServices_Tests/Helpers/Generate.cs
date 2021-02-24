@@ -17,10 +17,10 @@ namespace GenerateCSSPDBServices_Tests
         {
             Console.WriteLine("Generate Starting ...");
 
-            string CSSPDB = Config.GetValue<string>("CSSPDB");
-            string TestDB = Config.GetValue<string>("TestDB");
+            string CSSPDB = Configuration.GetValue<string>("CSSPDB");
+            string TestDB = Configuration.GetValue<string>("TestDB");
 
-            FileInfo fiDLL = new FileInfo(Config.GetValue<string>("CSSPDBModels"));
+            FileInfo fiDLL = new FileInfo(Configuration.GetValue<string>("CSSPDBModels"));
 
             var importAssembly = Assembly.LoadFile(fiDLL.FullName);
             List<Type> types = importAssembly.GetTypes().ToList();
@@ -113,7 +113,7 @@ namespace GenerateCSSPDBServices_Tests
                 sb.AppendLine(@"        #region Properties");
                 if (!ClassNotMapped)
                 {
-                    sb.AppendLine(@"        private IConfiguration Config { get; set; }");
+                    sb.AppendLine(@"        private IConfiguration Configuration { get; set; }");
                     sb.AppendLine(@"        private IServiceProvider Provider { get; set; }");
                     sb.AppendLine(@"        private IServiceCollection Services { get; set; }");
                     sb.AppendLine(@"        private ICSSPCultureService CSSPCultureService { get; set; }");
@@ -129,7 +129,7 @@ namespace GenerateCSSPDBServices_Tests
                 }
                 else
                 {
-                    //sb.AppendLine(@"        private IConfiguration Config { get; set; }");
+                    //sb.AppendLine(@"        private IConfiguration Configuration { get; set; }");
                     //sb.AppendLine(@"        private IServiceProvider Provider { get; set; }");
                     //sb.AppendLine(@"        private IServiceCollection Services { get; set; }");
                     //sb.AppendLine(@"        private ICSSPCultureService CSSPCultureService { get; set; }");
@@ -178,7 +178,7 @@ namespace GenerateCSSPDBServices_Tests
                 string FileName = "";
                 FileName = "ClassNameDBFile";
 
-                FileInfo fiOutputGen = new FileInfo(Config.GetValue<string>(FileName).Replace("{TypeName}", TypeName));
+                FileInfo fiOutputGen = new FileInfo(Configuration.GetValue<string>(FileName).Replace("{TypeName}", TypeName));
                 using (StreamWriter sw2 = fiOutputGen.CreateText())
                 {
                     sw2.Write(sb.ToString());

@@ -18,7 +18,7 @@ namespace GenerateCSSPSQLiteServices
 
             StringBuilder sb = new StringBuilder();
 
-            FileInfo fiDLL = new FileInfo(Config.GetValue<string>("CSSPDBModels"));
+            FileInfo fiDLL = new FileInfo(Configuration.GetValue<string>("CSSPDBModels"));
 
             if (!fiDLL.Exists)
             {

@@ -11,7 +11,7 @@ namespace GenerateCSSPDBModels_Tests
         #endregion Variables
 
         #region Properties
-        private IConfiguration Config { get; set; }
+        private IConfiguration Configuration { get; set; }
         #endregion Properties
 
         #region Entry

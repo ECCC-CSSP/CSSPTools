@@ -15,7 +15,7 @@ namespace GenerateAngularCSSPHelperModels
         {
             Console.WriteLine("Generate Starting ...");
 
-            DirectoryInfo diOutputGen = new DirectoryInfo(Config.GetValue<string>("OutputDir"));
+            DirectoryInfo diOutputGen = new DirectoryInfo(Configuration.GetValue<string>("OutputDir"));
             if (!diOutputGen.Exists)
             {
                 try
@@ -29,8 +29,8 @@ namespace GenerateAngularCSSPHelperModels
                 }
             }
 
-            FileInfo fiCSSPEnumsDLL = new FileInfo(Config.GetValue<string>("CSSPEnums"));
-            FileInfo fiCSSPHelperModelsDLL = new FileInfo(Config.GetValue<string>("CSSPHelperModels"));
+            FileInfo fiCSSPEnumsDLL = new FileInfo(Configuration.GetValue<string>("CSSPEnums"));
+            FileInfo fiCSSPHelperModelsDLL = new FileInfo(Configuration.GetValue<string>("CSSPHelperModels"));
 
 
             Console.WriteLine($"Reading [{ fiCSSPEnumsDLL.FullName }] ...");

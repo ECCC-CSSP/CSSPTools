@@ -10,7 +10,7 @@ namespace GenerateCSSPHelperServices_Tests
         {
             sb.AppendLine(@"        private async Task<bool> Setup(string culture)");
             sb.AppendLine(@"        {");
-            sb.AppendLine(@"            Config = new ConfigurationBuilder()");
+            sb.AppendLine(@"            Configuration = new ConfigurationBuilder()");
             sb.AppendLine(@"               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)");
             sb.AppendLine(@"               .AddJsonFile(""appsettings_csspdbservicestests.json"")");
             sb.AppendLine(@"               .AddUserSecrets(""70c662c1-a1a8-4b2c-b594-d7834bb5e6db"")");
@@ -18,7 +18,7 @@ namespace GenerateCSSPHelperServices_Tests
             sb.AppendLine(@"");
             sb.AppendLine(@"            Services = new ServiceCollection();");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            Services.AddSingleton<IConfiguration>(Config);");
+            sb.AppendLine(@"            Services.AddSingleton<IConfiguration>(Configuration);");
             sb.AppendLine(@"");
             sb.AppendLine(@"            string CSSPDBConnString = Config.GetValue<string>(""TestDB"");");
             sb.AppendLine(@"            Assert.NotNull(CSSPDBConnString);");

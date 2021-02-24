@@ -2009,14 +2009,6 @@
         "runtime": {
           "CSSPLoggedInServices.dll": {}
         }
-      },
-      "CSSPLocalServices/1.0.0.0": {
-        "runtime": {
-          "CSSPLocalServices.dll": {
-            "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.0.0.0"
-          }
-        }
       }
     }
   },
@@ -3239,11 +3231,6 @@
     },
     "CSSPLoggedInServices/1.0.0": {
       "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "CSSPLocalServices/1.0.0.0": {
-      "type": "reference",
       "serviceable": false,
       "sha512": ""
     }

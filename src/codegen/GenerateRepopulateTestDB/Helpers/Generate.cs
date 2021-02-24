@@ -13,8 +13,8 @@ namespace GenerateRepopulateTestDB
         {
             Console.WriteLine("Generate Starting ...");
             
-            string CSSPDB = Config.GetValue<string>("CSSPDB");
-            string TestDB = Config.GetValue<string>("TestDB");
+            string CSSPDB = Configuration.GetValue<string>("CSSPDB");
+            string TestDB = Configuration.GetValue<string>("TestDB");
 
             List<Table> tableCSSPDBList = new List<Table>();
             List<Table> tableTestDBList = new List<Table>();

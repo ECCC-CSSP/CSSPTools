@@ -23,8 +23,8 @@ namespace GenerateCompareOldAndNewEnums
             Console.WriteLine("CompareDLLs Starting...");
 
 
-            FileInfo fiDLL = new FileInfo(Config.GetValue<string>(NewEnumsDLL));
-            FileInfo fiOldDLL = new FileInfo(Config.GetValue<string>(OldEnumsDLL));
+            FileInfo fiDLL = new FileInfo(Configuration.GetValue<string>(NewEnumsDLL));
+            FileInfo fiOldDLL = new FileInfo(Configuration.GetValue<string>(OldEnumsDLL));
 
             var importAssembly = Assembly.LoadFile(fiDLL.FullName);
             List<Type> typeList = importAssembly.GetTypes().ToList();

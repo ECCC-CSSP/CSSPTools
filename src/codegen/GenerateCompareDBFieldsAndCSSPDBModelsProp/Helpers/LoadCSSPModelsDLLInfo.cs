@@ -13,7 +13,7 @@ namespace GenerateCompareDBFieldsAndCSSPDBModelsProp
     {
         private async Task<bool> LoadCSSPDBModelsDLLInfo(List<TypeProp> typePropList)
         {
-            FileInfo fiDLL = new FileInfo(Config.GetValue<string>("CSSPDBModels"));
+            FileInfo fiDLL = new FileInfo(Configuration.GetValue<string>("CSSPDBModels"));
 
             try
             {

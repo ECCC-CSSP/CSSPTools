@@ -9,7 +9,7 @@ namespace GenerateCSSPWebAPIsLocal_TestsController
         {
             sb.AppendLine(@"        private async Task<bool> Setup(string culture)");
             sb.AppendLine(@"        {");
-            sb.AppendLine(@"            Config = new ConfigurationBuilder()");
+            sb.AppendLine(@"            Configuration = new ConfigurationBuilder()");
             sb.AppendLine(@"               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)");
             sb.AppendLine(@"               .AddJsonFile(""appsettings_csspwebapislocaltests.json"")");
             sb.AppendLine(@"               .AddUserSecrets(""61f396b6-8b79-4328-a2b7-a07921135f96"")");
@@ -17,7 +17,7 @@ namespace GenerateCSSPWebAPIsLocal_TestsController
             sb.AppendLine(@"");
             sb.AppendLine(@"            Services = new ServiceCollection();");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            Services.AddSingleton<IConfiguration>(Config);");
+            sb.AppendLine(@"            Services.AddSingleton<IConfiguration>(Configuration);");
             sb.AppendLine(@"");
             sb.AppendLine(@"            CSSPAzureUrl = Config.GetValue<string>(""CSSPAzureUrl"");");
             sb.AppendLine(@"            Assert.NotNull(CSSPAzureUrl);");

@@ -15,9 +15,9 @@ namespace GenerateCSSPEnums
             Console.WriteLine("Generate Starting ...");
 
             StringBuilder sb = new StringBuilder();
-            FileInfo fiDLL = new FileInfo(Config.GetValue<string>("CSSPEnums"));
-            FileInfo fiInterface = new FileInfo(Config.GetValue<string>("IEnumsGenerated"));
-            FileInfo fi = new FileInfo(Config.GetValue<string>("EnumsGenerated"));
+            FileInfo fiDLL = new FileInfo(Configuration.GetValue<string>("CSSPEnums"));
+            FileInfo fiInterface = new FileInfo(Configuration.GetValue<string>("IEnumsGenerated"));
+            FileInfo fi = new FileInfo(Configuration.GetValue<string>("EnumsGenerated"));
 
             var importAssembly = Assembly.LoadFile(fiDLL.FullName);
             Type[] types = importAssembly.GetTypes();

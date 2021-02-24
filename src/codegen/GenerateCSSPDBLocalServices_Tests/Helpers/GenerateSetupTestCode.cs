@@ -10,7 +10,7 @@ namespace GenerateCSSPDBLocalServices_Tests
         {
             sb.AppendLine(@"        private async Task<bool> Setup(string culture)");
             sb.AppendLine(@"        {");
-            sb.AppendLine(@"            Config = new ConfigurationBuilder()");
+            sb.AppendLine(@"            Configuration = new ConfigurationBuilder()");
             sb.AppendLine(@"               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)");
             sb.AppendLine(@"               .AddJsonFile(""appsettings_csspdbservicestests.json"")");
             sb.AppendLine(@"               .AddUserSecrets(""91a273aa-0169-4298-82eb-86ff2429a2f8"")");
@@ -18,7 +18,7 @@ namespace GenerateCSSPDBLocalServices_Tests
             sb.AppendLine(@"");
             sb.AppendLine(@"            Services = new ServiceCollection();");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            Services.AddSingleton<IConfiguration>(Config);");
+            sb.AppendLine(@"            Services.AddSingleton<IConfiguration>(Configuration);");
             sb.AppendLine(@"");
 
             sb.AppendLine(@"            string CSSPDBConnString = Config.GetValue<string>(""TestDB"");");

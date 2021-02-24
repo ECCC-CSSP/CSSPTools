@@ -20,7 +20,7 @@ namespace GenerateCSSPWebAPIsController
 
             Console.WriteLine("Not needed anymore ...");
 
-            FileInfo fiDLL = new FileInfo(Config.GetValue<string>("CSSPDBModels"));
+            FileInfo fiDLL = new FileInfo(Configuration.GetValue<string>("CSSPDBModels"));
 
             var importAssembly = Assembly.LoadFile(fiDLL.FullName);
             Type[] types = importAssembly.GetTypes();
@@ -237,7 +237,7 @@ namespace GenerateCSSPWebAPIsController
                     string fileName = "TypeNameFile";
 
                     FileInfo fiOutputGen = null;
-                    fiOutputGen = new FileInfo(Config.GetValue<string>(fileName).Replace("{TypeName}", TypeName));
+                    fiOutputGen = new FileInfo(Configuration.GetValue<string>(fileName).Replace("{TypeName}", TypeName));
 
                     using (StreamWriter sw2 = fiOutputGen.CreateText())
                     {
@@ -273,7 +273,7 @@ namespace GenerateCSSPWebAPIsController
             string fileNameLoadAll = "LoadAllDBServices";
 
             FileInfo fiOutputGenServices = null;
-            fiOutputGenServices = new FileInfo(Config.GetValue<string>(fileNameLoadAll));
+            fiOutputGenServices = new FileInfo(Configuration.GetValue<string>(fileNameLoadAll));
 
             using (StreamWriter sw2 = fiOutputGenServices.CreateText())
             {

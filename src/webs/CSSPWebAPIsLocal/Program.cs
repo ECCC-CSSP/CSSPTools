@@ -22,10 +22,10 @@ namespace CSSPWebAPIsLocal
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.ConfigureAppConfiguration(config =>
+                    webBuilder.ConfigureAppConfiguration(configuration =>
                     {
-                        config.AddJsonFile("appsettings_csspwebapislocal.json");
-                        config.AddUserSecrets("020a40b5-fa5d-4b19-b696-4462333fab23");
+                        configuration.AddJsonFile("appsettings_csspwebapislocal.json");
+                        configuration.AddUserSecrets("020a40b5-fa5d-4b19-b696-4462333fab23");
                     });
                     webBuilder.UseStartup<Startup>();
                     webBuilder.UseUrls("http://localhost:4446", "https://localhost:4447");

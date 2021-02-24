@@ -31,7 +31,7 @@ namespace GenerateAngularCSSPHelperModels
             sb.AppendLine(@"}");
 
 
-            FileInfo fiOutputGen = new FileInfo(Config.GetValue<string>("OutputDir") + "CSSPFile.model.ts");
+            FileInfo fiOutputGen = new FileInfo(Configuration.GetValue<string>("OutputDir") + "CSSPFile.model.ts");
             using (StreamWriter sw2 = fiOutputGen.CreateText())
             {
                 sw2.Write(sb.ToString());

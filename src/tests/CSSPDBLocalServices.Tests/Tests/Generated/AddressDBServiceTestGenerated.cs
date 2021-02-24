@@ -32,7 +32,7 @@ namespace CSSPDBLocalServices.Tests
         #endregion Variables
 
         #region Properties
-        private IConfiguration Config { get; set; }
+        private IConfiguration Configuration { get; set; }
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
@@ -393,7 +393,7 @@ namespace CSSPDBLocalServices.Tests
         }
         private async Task<bool> Setup(string culture)
         {
-            Config = new ConfigurationBuilder()
+            Configuration = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
                .AddJsonFile("appsettings_csspdbservicestests.json")
                .AddUserSecrets("91a273aa-0169-4298-82eb-86ff2429a2f8")
@@ -401,9 +401,9 @@ namespace CSSPDBLocalServices.Tests
 
             Services = new ServiceCollection();
 
-            Services.AddSingleton<IConfiguration>(Config);
+            Services.AddSingleton<IConfiguration>(Configuration);
 
-            string CSSPDBConnString = Config.GetValue<string>("TestDB");
+            string CSSPDBConnString = Configuration.GetValue<string>("TestDB");
             Assert.NotNull(CSSPDBConnString);
 
             Services.AddDbContext<CSSPDBContext>(options =>
@@ -422,7 +422,7 @@ namespace CSSPDBLocalServices.Tests
              * using CSSPDBLocalContext
              * ---------------------------------------------------------------------------------      
              */
-            string CSSPDBLocal = Config.GetValue<string>("CSSPDBLocal");
+            string CSSPDBLocal = Configuration.GetValue<string>("CSSPDBLocal");
             Assert.NotNull(CSSPDBLocal);
 
             FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocal);

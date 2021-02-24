@@ -25,7 +25,7 @@ namespace GenerateEnumsPolSourceInfoRelatedFiles
         {
             StringBuilder sb = new StringBuilder();
 
-            FileInfo fi = new FileInfo(Config.GetValue<string>("CSSPCulturePolSourcesResFR_resx"));
+            FileInfo fi = new FileInfo(Configuration.GetValue<string>("CSSPCulturePolSourcesResFR_resx"));
 
             if (!await ResxTopPart(sb)) return await Task.FromResult(false);
 

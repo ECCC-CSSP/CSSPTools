@@ -12,7 +12,7 @@ namespace GenerateCompareDBFieldsAndCSSPDBModelsProp
         public async Task<bool> Generate()
         {
 
-            string CSSPDB = Config.GetValue<string>("CSSPDB");
+            string CSSPDB = Configuration.GetValue<string>("CSSPDB");
 
             if (CSSPDB == null)
             {

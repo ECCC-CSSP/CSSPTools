@@ -18,7 +18,7 @@ namespace GenerateCSSPDBServices
             Console.WriteLine("Generate Starting ...");
 
             #region Variables and loading DLL properties
-            FileInfo fiCSSPDBModelsDLL = new FileInfo(Config.GetValue<string>("CSSPDBModels"));
+            FileInfo fiCSSPDBModelsDLL = new FileInfo(Configuration.GetValue<string>("CSSPDBModels"));
 
             List<DLLTypeInfo> DLLTypeInfoCSSPDBLocalModelsList = new List<DLLTypeInfo>();
             if (GenerateCodeBase.FillDLLTypeInfoList(fiCSSPDBModelsDLL, DLLTypeInfoCSSPDBLocalModelsList))
@@ -189,7 +189,7 @@ namespace GenerateCSSPDBServices
                 FileName = "ClassNameDBFile";
 
                 FileInfo fiOutputGen = null;
-                fiOutputGen = new FileInfo(Config.GetValue<string>(FileName).Replace("{TypeName}", dllTypeInfoModels.Type.Name));
+                fiOutputGen = new FileInfo(Configuration.GetValue<string>(FileName).Replace("{TypeName}", dllTypeInfoModels.Type.Name));
 
                 using (StreamWriter sw2 = fiOutputGen.CreateText())
                 {

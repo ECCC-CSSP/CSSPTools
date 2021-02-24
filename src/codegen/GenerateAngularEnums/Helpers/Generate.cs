@@ -21,7 +21,7 @@ namespace GenerateAngularEnums
         {
             Console.WriteLine("Generate Starting ...");
 
-            DirectoryInfo diOutputGen = new DirectoryInfo(Config.GetValue<string>("OutputDir"));
+            DirectoryInfo diOutputGen = new DirectoryInfo(Configuration.GetValue<string>("OutputDir"));
             if (!diOutputGen.Exists)
             {
                 try
@@ -35,7 +35,7 @@ namespace GenerateAngularEnums
                 }
             }
 
-            FileInfo fiCSSPEnumsDLL = new FileInfo(Config.GetValue<string>("CSSPEnums"));
+            FileInfo fiCSSPEnumsDLL = new FileInfo(Configuration.GetValue<string>("CSSPEnums"));
 
             Console.WriteLine($"Reading [{ fiCSSPEnumsDLL.FullName }] ...");
 
@@ -154,7 +154,7 @@ namespace GenerateAngularEnums
                     sb.AppendLine(@"    return addressTypeEnunText;");
                     sb.AppendLine(@"}");
 
-                    FileInfo fiOutputGen = new FileInfo(Config.GetValue<string>("EnumNameFile").Replace("{EnumName}", dllTypeInfoEnums.Name.Replace("enum", ".enum")));
+                    FileInfo fiOutputGen = new FileInfo(Configuration.GetValue<string>("EnumNameFile").Replace("{EnumName}", dllTypeInfoEnums.Name.Replace("enum", ".enum")));
 
                     using (StreamWriter sw2 = fiOutputGen.CreateText())
                     {

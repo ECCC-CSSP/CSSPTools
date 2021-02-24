@@ -10,7 +10,7 @@ namespace GenerateCSSPDBServices_Tests
         {
             sb.AppendLine(@"        private async Task<bool> Setup(string culture)");
             sb.AppendLine(@"        {");
-            sb.AppendLine(@"            Config = new ConfigurationBuilder()");
+            sb.AppendLine(@"            Configuration = new ConfigurationBuilder()");
             sb.AppendLine(@"               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)");
             sb.AppendLine(@"               .AddJsonFile(""appsettings_csspdbservicestests.json"")");
             sb.AppendLine(@"               .AddUserSecrets(""a79b4a81-ba75-4dfc-8d95-46259f73f055"")");
@@ -18,9 +18,9 @@ namespace GenerateCSSPDBServices_Tests
             sb.AppendLine(@"");
             sb.AppendLine(@"            Services = new ServiceCollection();");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            Services.AddSingleton<IConfiguration>(Config);");
+            sb.AppendLine(@"            Services.AddSingleton<IConfiguration>(Configuration);");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            string CSSPDBConnString = Config.GetValue<string>(""TestDB"");");
+            sb.AppendLine(@"            string CSSPDBConnString = Configuration.GetValue<string>(""TestDB"");");
             sb.AppendLine(@"            Assert.NotNull(CSSPDBConnString);");
             sb.AppendLine(@"");
             sb.AppendLine(@"            Services.AddDbContext<CSSPDBContext>(options =>");
@@ -54,7 +54,7 @@ namespace GenerateCSSPDBServices_Tests
             sb.AppendLine($@"             * using TestDB");
             sb.AppendLine($@"             * ---------------------------------------------------------------------------------      ");
             sb.AppendLine($@"             */");
-            sb.AppendLine($@"            string TestDB = Config.GetValue<string>(""TestDB"");");
+            sb.AppendLine($@"            string TestDB = Configuration.GetValue<string>(""TestDB"");");
             sb.AppendLine($@"            Assert.NotNull(TestDB);");
             sb.AppendLine($@"");
             sb.AppendLine($@"            Services.AddDbContext<CSSPDBContext>(options =>");
@@ -66,7 +66,7 @@ namespace GenerateCSSPDBServices_Tests
             sb.AppendLine($@"             * using CSSPDBPreference");
             sb.AppendLine($@"             * ---------------------------------------------------------------------------------");
             sb.AppendLine($@"             */");
-            sb.AppendLine($@"            string CSSPDBPreference = Config.GetValue<string>(""CSSPDBPreference""); ");
+            sb.AppendLine($@"            string CSSPDBPreference = Configuration.GetValue<string>(""CSSPDBPreference""); ");
             sb.AppendLine($@"            Assert.NotNull(CSSPDBPreference);");
             sb.AppendLine($@"");
             sb.AppendLine($@"            FileInfo fiCSSPDBPreference = new FileInfo(CSSPDBPreference);");
@@ -87,7 +87,7 @@ namespace GenerateCSSPDBServices_Tests
             sb.AppendLine(@"            LoggedInService = Provider.GetService<ILoggedInService>();");
             sb.AppendLine(@"            Assert.NotNull(LoggedInService);");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            string LoginEmail = Config.GetValue<string>(""LoginEmail"");");
+            sb.AppendLine(@"            string LoginEmail = Configuration.GetValue<string>(""LoginEmail"");");
             sb.AppendLine(@"            Assert.True(await LoggedInService.SetLoggedInContactInfo(LoginEmail));");
             sb.AppendLine(@"");
             sb.AppendLine(@"            db = Provider.GetService<CSSPDBContext>();");

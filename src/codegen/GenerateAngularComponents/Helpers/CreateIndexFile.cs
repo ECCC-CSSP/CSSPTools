@@ -25,7 +25,7 @@ namespace GenerateAngularComponents
             sb.AppendLine($@"export* from './{ dllTypeInfoModels.Name }.models';");
             sb.AppendLine($@"export * from './{ dllTypeInfoModels.Name }.service';");
 
-            DirectoryInfo di = new DirectoryInfo(Config.GetValue<string>("OutputDir").Replace("{TypeNameLower}", dllTypeInfoModels.Name.ToLower()));
+            DirectoryInfo di = new DirectoryInfo(Configuration.GetValue<string>("OutputDir").Replace("{TypeNameLower}", dllTypeInfoModels.Name.ToLower()));
             if (!di.Exists)
             {
                 try
@@ -40,7 +40,7 @@ namespace GenerateAngularComponents
                 }
             }
 
-            FileInfo fiOutputGen = new FileInfo(Config.GetValue<string>("IndexFileName").Replace("{TypeNameLower}", dllTypeInfoModels.Name.ToLower()).Replace("{TypeNameLower}", dllTypeInfoModels.Name.ToLower()));
+            FileInfo fiOutputGen = new FileInfo(Configuration.GetValue<string>("IndexFileName").Replace("{TypeNameLower}", dllTypeInfoModels.Name.ToLower()).Replace("{TypeNameLower}", dllTypeInfoModels.Name.ToLower()));
             using (StreamWriter sw2 = fiOutputGen.CreateText())
             {
                 sw2.Write(sb.ToString());

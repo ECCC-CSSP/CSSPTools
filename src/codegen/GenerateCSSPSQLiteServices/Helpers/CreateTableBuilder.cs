@@ -20,7 +20,7 @@ namespace GenerateCSSPSQLiteServices
             if (!await FillCSSPDBTableList(ListCSSPDBTableList)) return false;
 
             List<Table> tableCSSPDBList = new List<Table>();
-            string CSSPDB = Config.GetValue<string>("CSSPDB");
+            string CSSPDB = Configuration.GetValue<string>("CSSPDB");
             if (!await LoadDBInfo(tableCSSPDBList, CSSPDB)) return await Task.FromResult(false);
 
             StringBuilder sb = new StringBuilder();
@@ -340,7 +340,7 @@ namespace GenerateCSSPSQLiteServices
             sb.AppendLine(@"    }");
             sb.AppendLine(@"}");
 
-            FileInfo fiOutputGen = new FileInfo(Config.GetValue<string>("CreateTableBuilder"));
+            FileInfo fiOutputGen = new FileInfo(Configuration.GetValue<string>("CreateTableBuilder"));
 
             using (StreamWriter sw = fiOutputGen.CreateText())
             {

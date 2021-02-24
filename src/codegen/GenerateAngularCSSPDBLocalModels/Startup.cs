@@ -7,11 +7,11 @@ namespace GenerateAngularCSSPDBLocalModels
 {
     public partial class Startup
     {
-        private IConfiguration Config { get; set; }
+        private IConfiguration Configuration { get; set; }
 
-        public Startup(IConfiguration Config)
+        public Startup(IConfiguration Configuration)
         {
-            this.Config = Config;
+            this.Configuration = Configuration;
         }
     }
 }

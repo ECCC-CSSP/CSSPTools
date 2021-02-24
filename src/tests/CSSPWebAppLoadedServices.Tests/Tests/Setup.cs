@@ -20,8 +20,8 @@ namespace WebAppLoadedServices.Tests
 
         #region Properties
         private IConfiguration Configuration { get; set; }
-        private IServiceCollection ServiceCollection { get; set; }
-        private IServiceProvider ServiceProvider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private IServiceProvider Provider { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
         private string FirstName { get; set; }
         private string Initial { get; set; }
@@ -49,10 +49,10 @@ namespace WebAppLoadedServices.Tests
                 .AddUserSecrets("bbf8e532-7685-4d08-a552-9cb1b5482267")
                 .Build();
 
-            ServiceCollection = new ServiceCollection();
+            Services = new ServiceCollection();
 
-            ServiceCollection.AddSingleton<IConfiguration>(Configuration);
-            ServiceCollection.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+            Services.AddSingleton<IConfiguration>(Configuration);
+            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
 
             /* ---------------------------------------------------------------------------------
              * using CSSPDBPreference
@@ -62,16 +62,16 @@ namespace WebAppLoadedServices.Tests
 
             FileInfo fiCSSPDBPreference = new FileInfo(CSSPDBPreferenceFileName);
 
-            ServiceCollection.AddDbContext<CSSPDBPreferenceContext>(options =>
+            Services.AddDbContext<CSSPDBPreferenceContext>(options =>
             {
                 options.UseSqlite($"Data Source={ fiCSSPDBPreference.FullName }");
             });
 
             ///* ---------------------------------------------------------------------------------
-            ServiceProvider = ServiceCollection.BuildServiceProvider();
-            Assert.NotNull(ServiceProvider);
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
 
-            CSSPCultureService = ServiceProvider.GetService<ICSSPCultureService>();
+            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
             Assert.NotNull(CSSPCultureService);
 
             CSSPCultureService.SetCulture(culture);

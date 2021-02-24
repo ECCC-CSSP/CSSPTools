@@ -9,21 +9,21 @@ namespace GenerateRepopulateTestDB
 {
     public partial class Startup
     {
-        private IConfiguration Config { get; set; }
+        private IConfiguration Configuration { get; set; }
         public IServiceProvider Provider { get; set; }
         private TestDBContext dbTestDB { get; set; }
         private CSSPDBContext dbCSSPDB { get; set; }
 
 
-        public Startup(IConfiguration Config)
+        public Startup(IConfiguration Configuration)
         {
-            this.Config = Config;
+            this.Configuration = Configuration;
 
             ServiceCollection Services = new ServiceCollection();
 
-            Services.AddSingleton<IConfiguration>(Config);
+            Services.AddSingleton<IConfiguration>(Configuration);
 
-            string TestDBConnString = Config.GetValue<string>("TestDB");
+            string TestDBConnString = Configuration.GetValue<string>("TestDB");
             if (TestDBConnString == null)
             {
                 Console.WriteLine($"Could not find parameter TestDB in appsettings.json");
@@ -35,7 +35,7 @@ namespace GenerateRepopulateTestDB
                 options.UseSqlServer(TestDBConnString);
             });
 
-            string CSSPDBConnString = Config.GetValue<string>("CSSPDB");
+            string CSSPDBConnString = Configuration.GetValue<string>("CSSPDB");
             if (CSSPDBConnString == null)
             {
                 Console.WriteLine($"Could not find parameter CSSPDB in appsettings.json");

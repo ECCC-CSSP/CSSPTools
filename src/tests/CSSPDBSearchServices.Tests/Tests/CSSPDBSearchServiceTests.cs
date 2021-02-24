@@ -31,8 +31,8 @@ namespace CSSPSearchServices.Tests
 
         #region Properties
         private IConfiguration Configuration { get; set; }
-        private IServiceCollection ServiceCollection { get; set; }
-        private IServiceProvider ServiceProvider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private IServiceProvider Provider { get; set; }
         private ILoggedInService LoggedInService { get; set; }
         private ICSSPDBSearchService CSSPDBSearchService { get; set; }
         #endregion Properties
@@ -148,13 +148,13 @@ namespace CSSPSearchServices.Tests
                .AddUserSecrets("38d7fa5b-72c7-4b05-9a17-24bb2ba5f559")
                 .Build();
 
-            ServiceCollection = new ServiceCollection();
+            Services = new ServiceCollection();
 
-            ServiceCollection.AddSingleton<IConfiguration>(Configuration);
-            ServiceCollection.AddSingleton<ICSSPCultureService, CSSPCultureService>();
-            ServiceCollection.AddSingleton<IEnums, Enums>();
-            ServiceCollection.AddSingleton<ILoggedInService, LoggedInService>();
-            ServiceCollection.AddSingleton<ICSSPDBSearchService, CSSPDBSearchService>();
+            Services.AddSingleton<IConfiguration>(Configuration);
+            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<ICSSPDBSearchService, CSSPDBSearchService>();
 
             /* ---------------------------------------------------------------------------------
              * using TestDB
@@ -163,7 +163,7 @@ namespace CSSPSearchServices.Tests
             string TestDB = Configuration.GetValue<string>("TestDB");
             Assert.NotNull(TestDB);
 
-            ServiceCollection.AddDbContext<CSSPDBContext>(options =>
+            Services.AddDbContext<CSSPDBContext>(options =>
             {
                 options.UseSqlServer(TestDB);
             });
@@ -178,7 +178,7 @@ namespace CSSPSearchServices.Tests
             FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocal);
             Assert.True(fiCSSPDBLocal.Exists);
 
-            ServiceCollection.AddDbContext<CSSPDBLocalContext>(options =>
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
             {
                 options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
             });
@@ -192,7 +192,7 @@ namespace CSSPSearchServices.Tests
 
             FileInfo fiCSSPDBPreference = new FileInfo(CSSPDBPreference);
 
-            ServiceCollection.AddDbContext<CSSPDBPreferenceContext>(options =>
+            Services.AddDbContext<CSSPDBPreferenceContext>(options =>
             {
                 options.UseSqlite($"Data Source={ fiCSSPDBPreference.FullName }");
             });
@@ -207,15 +207,15 @@ namespace CSSPSearchServices.Tests
             FileInfo fiCSSPDBSearchFileName = new FileInfo(CSSPDBSearchFileName);
             Assert.True(fiCSSPDBSearchFileName.Exists);
 
-            ServiceCollection.AddDbContext<CSSPDBSearchContext>(options =>
+            Services.AddDbContext<CSSPDBSearchContext>(options =>
             {
                 options.UseSqlite($"Data Source={ fiCSSPDBSearchFileName.FullName }");
             });
 
-            ServiceProvider = ServiceCollection.BuildServiceProvider();
-            Assert.NotNull(ServiceProvider);
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
 
-            LoggedInService = ServiceProvider.GetService<ILoggedInService>();
+            LoggedInService = Provider.GetService<ILoggedInService>();
             Assert.NotNull(LoggedInService);
 
             string LoginEmail = Configuration.GetValue<string>("LoginEmail");
@@ -223,7 +223,7 @@ namespace CSSPSearchServices.Tests
             Assert.NotNull(LoggedInService.LoggedInContactInfo);
             Assert.NotNull(LoggedInService.LoggedInContactInfo.LoggedInContact);
 
-            CSSPDBSearchService = ServiceProvider.GetService<ICSSPDBSearchService>();
+            CSSPDBSearchService = Provider.GetService<ICSSPDBSearchService>();
             Assert.NotNull(CSSPDBSearchService);
 
             return await Task.FromResult(true);

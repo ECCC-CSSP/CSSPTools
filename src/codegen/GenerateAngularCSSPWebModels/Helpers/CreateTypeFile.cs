@@ -153,7 +153,7 @@ namespace GenerateAngularCSSPWebModels
 
             sb.AppendLine(@"}");
 
-            FileInfo fiOutputGen = new FileInfo(Config.GetValue<string>("ModelFileName").Replace("{TypeName}", dllTypeInfoModels.Name));
+            FileInfo fiOutputGen = new FileInfo(Configuration.GetValue<string>("ModelFileName").Replace("{TypeName}", dllTypeInfoModels.Name));
             using (StreamWriter sw2 = fiOutputGen.CreateText())
             {
                 sw2.Write(sb.ToString());

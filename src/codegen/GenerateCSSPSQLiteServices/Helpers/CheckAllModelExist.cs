@@ -17,7 +17,7 @@ namespace GenerateCSSPSQLiteServices
             List<Table> tableCSSPDBList = new List<Table>();
             List<string> ListCSSPDBTableList = new List<string>();
 
-            string CSSPDB = Config.GetValue<string>("CSSPDB");
+            string CSSPDB = Configuration.GetValue<string>("CSSPDB");
 
             if (!await LoadDBInfo(tableCSSPDBList, CSSPDB)) return await Task.FromResult(false);
             if (! await FillCSSPDBTableList(ListCSSPDBTableList)) return await Task.FromResult(false);

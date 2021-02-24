@@ -52,7 +52,7 @@ namespace GenerateCSSPSQLiteServices
             sb.AppendLine(@"    }");
             sb.AppendLine(@"}");
 
-            FileInfo fiOutputGen = new FileInfo(Config.GetValue<string>("FillListTableToDelete"));
+            FileInfo fiOutputGen = new FileInfo(Configuration.GetValue<string>("FillListTableToDelete"));
 
             using (StreamWriter sw = fiOutputGen.CreateText())
             {

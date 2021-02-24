@@ -15,7 +15,7 @@ namespace GenerateAngularCSSPWebModels
         {
             Console.WriteLine("Generate Starting ...");
 
-            DirectoryInfo diOutputGen = new DirectoryInfo(Config.GetValue<string>("OutputDir"));
+            DirectoryInfo diOutputGen = new DirectoryInfo(Configuration.GetValue<string>("OutputDir"));
             if (!diOutputGen.Exists)
             {
                 try
@@ -29,8 +29,8 @@ namespace GenerateAngularCSSPWebModels
                 }
             }
 
-            FileInfo fiCSSPEnumsDLL = new FileInfo(Config.GetValue<string>("CSSPEnums"));
-            FileInfo fiCSSPWebModelsDLL = new FileInfo(Config.GetValue<string>("CSSPWebModels"));
+            FileInfo fiCSSPEnumsDLL = new FileInfo(Configuration.GetValue<string>("CSSPEnums"));
+            FileInfo fiCSSPWebModelsDLL = new FileInfo(Configuration.GetValue<string>("CSSPWebModels"));
 
 
             Console.WriteLine($"Reading [{ fiCSSPEnumsDLL.FullName }] ...");

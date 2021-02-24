@@ -59,7 +59,7 @@ namespace GenerateAngularComponents
             sb.AppendLine(@"})");
             sb.AppendLine(@"export class HomeRoutingModule { }");
 
-            FileInfo fiOutputGen = new FileInfo(Config.GetValue<string>("HomeRoutingModuleFileName"));
+            FileInfo fiOutputGen = new FileInfo(Configuration.GetValue<string>("HomeRoutingModuleFileName"));
             using (StreamWriter sw2 = fiOutputGen.CreateText())
             {
                 sw2.Write(sb.ToString());

@@ -15,7 +15,7 @@ namespace GenerateEnumsPolSourceInfoRelatedFiles
 
             Console.WriteLine($"Reading Excel document and checking");
 
-            FileInfo fiExcel = new FileInfo(Config.GetValue<string>("ExcelFileName"));
+            FileInfo fiExcel = new FileInfo(Configuration.GetValue<string>("ExcelFileName"));
 
             if (!await polSourceGroupingExcelFileReadService.ReadExcelSheet(fiExcel.FullName, false))
             {
