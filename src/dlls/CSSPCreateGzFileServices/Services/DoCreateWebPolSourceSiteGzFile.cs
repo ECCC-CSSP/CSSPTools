@@ -39,7 +39,7 @@ namespace CreateGzFileServices
 
                 await FillChildListTVItemPolSourceSiteModelList(webPolSourceSite.PolSourceSiteModelList, TVItemSubsector, TVTypeEnum.PolSourceSite);
 
-                await DoStore<WebPolSourceSite>(webPolSourceSite, $"WebPolSourceSite_{SubsectorTVItemID}.gz");
+                await DoStore<WebPolSourceSite>(webPolSourceSite, $"{ WebTypeEnum.WebPolSourceSite }_{ SubsectorTVItemID }.gz");
             }
             catch (Exception ex)
             {

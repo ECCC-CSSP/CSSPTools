@@ -105,8 +105,19 @@ namespace CSSPDesktopServices.Services
             // doing required file from csspjson container
             List<string> jsonFileNameList = new List<string>()
             {
-                "WebContact.gz", "WebHelpDoc.gz", "WebMWQMLookupMPN.gz", "WebPolSourceGrouping.gz", "WebPolSourceSiteEffectTerm.gz",
-                "WebReportType.gz", "WebRoot.gz", "WebTideLocation.gz", "WebAllTVItem.gz", "WebAllTVItemLanguage.gz"
+                $"{ WebTypeEnum.WebAllContacts }.gz",
+                $"{ WebTypeEnum.WebAllCountries }.gz",
+                $"{ WebTypeEnum.WebAllMunicipalities }.gz",
+                $"{ WebTypeEnum.WebAllHelpDocs }.gz",
+                $"{ WebTypeEnum.WebAllMWQMLookupMPNs }.gz",
+                $"{ WebTypeEnum.WebAllPolSourceGroupings }.gz",
+                $"{ WebTypeEnum.WebAllPolSourceSiteEffectTerms }.gz",
+                $"{ WebTypeEnum.WebAllProvinces }.gz",
+                $"{ WebTypeEnum.WebAllReportTypes }.gz",
+                $"{ WebTypeEnum.WebRoot }.gz",
+                $"{ WebTypeEnum.WebAllTideLocations }.gz",
+                $"{ WebTypeEnum.WebAllTVItems }.gz",
+                $"{ WebTypeEnum.WebAllTVItemLanguages }.gz"
             };
 
             foreach (string jsonFileName in jsonFileNameList)
@@ -166,7 +177,6 @@ namespace CSSPDesktopServices.Services
                     AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.AzureFile_DidNotChanged, jsonFileName)));
                 }
             }
-
 
             TVItem tvItem = await (from c in dbSearch.TVItems
                                    select c).FirstOrDefaultAsync();

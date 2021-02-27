@@ -38,15 +38,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\Generated\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\CSSPCultureServices\CSSPCultureServices.csproj" />
     <ProjectReference Include="..\CSSPDBModels\CSSPDBModels.csproj" />
     <ProjectReference Include="..\CSSPEnums\CSSPEnums.csproj" />
     <ProjectReference Include="..\CSSPHelperModels\CSSPHelperModels.csproj" />
     <ProjectReference Include="..\CSSPLoggedInServices\CSSPLoggedInServices.csproj" />
+    <ProjectReference Include="..\CSSPReadGzFileServices\CSSPReadGzFileServices.csproj" />
     <ProjectReference Include="..\CSSPWebAppLoadedServices\CSSPWebAppLoadedlServices.csproj" />
   </ItemGroup>
 

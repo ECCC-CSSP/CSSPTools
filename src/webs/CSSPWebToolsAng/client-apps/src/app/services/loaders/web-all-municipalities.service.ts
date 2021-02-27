@@ -10,7 +10,7 @@ import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { AppLanguageService } from '../app-language.service';
 import { ComponentDataLoadedService } from '../helpers/component-data-loaded.service';
-import { WebHelpDocService } from './web-help-doc.service';
+import { WebAllHelpDocsService } from './web-all-help-docs.service';
 
 @Injectable({
     providedIn: 'root'
@@ -23,7 +23,7 @@ export class WebAllMunicipalitiesService {
         private appStateService: AppStateService,
         private appLoadedService: AppLoadedService,
         private appLanguageService: AppLanguageService,
-        private webHelpDocService: WebHelpDocService,
+        private webAllHelpDocsService: WebAllHelpDocsService,
         private componentDataLoadedService: ComponentDataLoadedService) {
     }
 
@@ -53,7 +53,7 @@ export class WebAllMunicipalitiesService {
                 this.UpdateWebAllMunicipalities(x);
                 console.debug(x);
                 if (this.DoOther) {
-                    this.DoWebHelpDoc();
+                    this.DoWebAllHelpDocs();
                 }
             }),
             catchError(e => of(e).pipe(map(e => {
@@ -63,15 +63,15 @@ export class WebAllMunicipalitiesService {
         );
     }
 
-    private DoWebHelpDoc() {
-        this.webHelpDocService.DoWebHelpDoc(this.DoOther);
+    private DoWebAllHelpDocs() {
+        this.webAllHelpDocsService.DoWebAllHelpDocs(this.DoOther);
     }
     
     private KeepWebAllMunicipalities() {
         this.UpdateWebAllMunicipalities(this.appLoadedService.AppLoaded$?.getValue()?.WebAllMunicipalities);
         console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebAllMunicipalities);
         if (this.DoOther) {
-            this.DoWebHelpDoc();
+            this.DoWebAllHelpDocs();
         }
     }
 

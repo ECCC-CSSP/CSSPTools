@@ -69,30 +69,40 @@ namespace CreateGzFileServices
         {
             switch (webType)
             {
+                case WebTypeEnum.WebAllContacts:
+                    return await DoCreateWebAllContactsGzFile();
                 case WebTypeEnum.WebAllCountries:
                     return await DoCreateWebAllCountriesGzFile();
+                case WebTypeEnum.WebAllHelpDocs:
+                    return await DoCreateWebAllHelpDocsGzFile();
                 case WebTypeEnum.WebAllMunicipalities:
                     return await DoCreateWebAllMunicipalitiesGzFile();
+                case WebTypeEnum.WebAllMWQMLookupMPNs:
+                    return await DoCreateWebAllMWQMLookupMPNsGzFile();
+                case WebTypeEnum.WebAllPolSourceGroupings:
+                    return await DoCreateWebAllPolSourceGroupingsGzFile();
+                case WebTypeEnum.WebAllPolSourceSiteEffectTerms:
+                    return await DoCreateWebAllPolSourceSiteEffectTermsGzFile();
                 case WebTypeEnum.WebAllProvinces:
                     return await DoCreateWebAllProvincesGzFile();
-                case WebTypeEnum.WebAllTVItem:
-                    return await DoCreateWebAllTVItemGzFile();
-                case WebTypeEnum.WebAllTVItemLanguage:
-                    return await DoCreateWebAllTVItemLanguageGzFile();
+                case WebTypeEnum.WebAllReportTypes:
+                    return await DoCreateWebAllReportTypesGzFile();
+                case WebTypeEnum.WebAllTideLocations:
+                    return await DoCreateWebAllTideLocationsGzFile();
+                case WebTypeEnum.WebAllTVItems:
+                    return await DoCreateWebAllTVItemsGzFile();
+                case WebTypeEnum.WebAllTVItemLanguages:
+                    return await DoCreateWebAllTVItemLanguagesGzFile();
                 case WebTypeEnum.WebArea:
                     return await DoCreateWebAreaGzFile(TVItemID); // TVItemID = AreaTVItemID
                 case WebTypeEnum.WebClimateDataValue:
                     return await DoCreateWebClimateDataValueGzFile(TVItemID); // TVItemID = ClimateSiteTVItemID
                 case WebTypeEnum.WebClimateSite:
                     return await DoCreateWebClimateSiteGzFile(TVItemID); // TVItemID = ProvinceTVItemID
-                case WebTypeEnum.WebContact:
-                    return await DoCreateWebContactGzFile();
                 case WebTypeEnum.WebCountry:
                     return await DoCreateWebCountryGzFile(TVItemID); // TVItemID = CountryTVItemID
                 case WebTypeEnum.WebDrogueRun:
                     return await DoCreateWebDrogueRunGzFile(TVItemID); // TVItemID = SubsectorTVItemID
-                case WebTypeEnum.WebHelpDoc:
-                    return await DoCreateWebHelpDocGzFile();
                 case WebTypeEnum.WebHydrometricDataValue:
                     return await DoCreateWebHydrometricDataValueGzFile(TVItemID); // TVItemID = HydrometricSiteTVItemID
                 case WebTypeEnum.WebHydrometricSite:
@@ -103,8 +113,6 @@ namespace CreateGzFileServices
                     return await DoCreateWebMunicipalitiesGzFile(TVItemID); // TVItemID = ProvinceTVItemID
                 case WebTypeEnum.WebMunicipality:
                     return await DoCreateWebMunicipalityGzFile(TVItemID); // TVItemID = MunicipalityTVItemID
-                case WebTypeEnum.WebMWQMLookupMPN:
-                    return await DoCreateWebMWQMLookupMPNGzFile();
                 case WebTypeEnum.WebMWQMRun:
                     return await DoCreateWebMWQMRunGzFile(TVItemID); // TVItemID = SubsectorTVItemID
                 case WebTypeEnum.WebMWQMSample:
@@ -133,16 +141,10 @@ namespace CreateGzFileServices
                     }
                 case WebTypeEnum.WebMWQMSite:
                     return await DoCreateWebMWQMSiteGzFile(TVItemID); // TVItemID = SubsectorTVItemID
-                case WebTypeEnum.WebPolSourceGrouping:
-                    return await DoCreateWebPolSourceGroupingGzFile();
-                case WebTypeEnum.WebPolSourceSiteEffectTerm:
-                    return await DoCreateWebPolSourceSiteEffectTermGzFile();
                 case WebTypeEnum.WebPolSourceSite:
                     return await DoCreateWebPolSourceSiteGzFile(TVItemID); // TVItemID = SubsectorTVItemID
                 case WebTypeEnum.WebProvince:
                     return await DoCreateWebProvinceGzFile(TVItemID); // TVItemID = ProvinceTVItemID
-                case WebTypeEnum.WebReportType:
-                    return await DoCreateWebReportTypeGzFile();
                 case WebTypeEnum.WebRoot:
                     return await DoCreateWebRootGzFile();
                 case WebTypeEnum.WebSamplingPlan:
@@ -151,8 +153,6 @@ namespace CreateGzFileServices
                     return await DoCreateWebSectorGzFile(TVItemID); // TVItemID = SectorTVItemID
                 case WebTypeEnum.WebSubsector:
                     return await DoCreateWebSubsectorGzFile(TVItemID); // TVItemID = SubsectorTVItemID
-                case WebTypeEnum.WebTideLocation:
-                    return await DoCreateWebTideLocationGzFile();
                 default:
                     return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._NotImplementedYet, $"{ webType }")));
             }

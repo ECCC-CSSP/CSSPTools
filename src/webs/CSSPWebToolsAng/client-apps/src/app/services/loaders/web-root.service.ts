@@ -15,7 +15,7 @@ import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { ComponentDataLoadedService } from '../helpers/component-data-loaded.service';
 import { AppState } from 'src/app/models/AppState.model';
 import { AppLanguageService } from '../app-language.service';
-import { WebContactService } from './web-contact.service';
+import { WebAllContactsService } from './web-all-contacts.service';
 import { HistoryService } from '../helpers/history.service';
 
 @Injectable({
@@ -32,7 +32,7 @@ export class WebRootService {
         private sortTVItemListService: SortTVItemListService,
         private structureTVFileListService: StructureTVFileListService,
         private mapService: MapService,
-        private webContactService: WebContactService,
+        private webAllContactsService: WebAllContactsService,
         private componentDataLoadedService: ComponentDataLoadedService,
         private historyService: HistoryService) {
     }
@@ -80,7 +80,7 @@ export class WebRootService {
     }
 
     private DoWebContact() {
-        this.webContactService.DoWebContact(this.DoOther);
+        this.webAllContactsService.DoWebAllContacts(this.DoOther);
     }
 
     private KeepWebRoot() {

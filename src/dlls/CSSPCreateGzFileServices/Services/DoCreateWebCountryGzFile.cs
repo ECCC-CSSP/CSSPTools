@@ -44,7 +44,7 @@ namespace CreateGzFileServices
                 webCountry.EmailDistributionListContactList = await GetEmailDistributionListContactListUnderCountry(TVItemCountry.TVItemID);
                 webCountry.EmailDistributionListContactLanguageList = await GetEmailDistributionListContactLanguageListUnderCountry(TVItemCountry.TVItemID);
 
-                await DoStore<WebCountry>(webCountry, $"WebCountry_{CountryTVItemID}.gz");
+                await DoStore<WebCountry>(webCountry, $"{ WebTypeEnum.WebCountry }_{ CountryTVItemID }.gz");
             }
             catch (Exception ex)
             {

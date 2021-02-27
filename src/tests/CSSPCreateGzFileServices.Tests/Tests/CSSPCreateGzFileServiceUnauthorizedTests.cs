@@ -73,13 +73,13 @@ namespace CreateGzFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task CreateWebContact_Unauthorized_Good_Test(string culture)
+        public async Task CreateWebAllContacts_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
             await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
 
-            WebTypeEnum webType = WebTypeEnum.WebContact;
+            WebTypeEnum webType = WebTypeEnum.WebAllContacts;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
@@ -124,13 +124,13 @@ namespace CreateGzFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task CreateWebHelpDoc_Unauthorized_Good_Test(string culture)
+        public async Task CreateWebAllHelpDocs_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
             await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
 
-            WebTypeEnum webType = WebTypeEnum.WebHelpDoc;
+            WebTypeEnum webType = WebTypeEnum.WebAllHelpDocs;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
@@ -226,13 +226,13 @@ namespace CreateGzFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task CreateWebMWQMLookupMPN_Unauthorized_Good_Test(string culture)
+        public async Task CreateWebAllMWQMLookupMPNs_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
             await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
 
-            WebTypeEnum webType = WebTypeEnum.WebMWQMLookupMPN;
+            WebTypeEnum webType = WebTypeEnum.WebAllMWQMLookupMPNs;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
@@ -413,13 +413,13 @@ namespace CreateGzFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task CreateWebPolSourceGrouping_Unauthorized_Good_Test(string culture)
+        public async Task CreateWebAllPolSourceGroupings_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
             await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
 
-            WebTypeEnum webType = WebTypeEnum.WebPolSourceGrouping;
+            WebTypeEnum webType = WebTypeEnum.WebAllPolSourceGroupings;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
@@ -447,13 +447,13 @@ namespace CreateGzFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task CreateWebPolSourceSiteEffectTerm_Unauthorized_Good_Test(string culture)
+        public async Task CreateWebAllPolSourceSiteEffectTerms_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
             await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
 
-            WebTypeEnum webType = WebTypeEnum.WebPolSourceSiteEffectTerm;
+            WebTypeEnum webType = WebTypeEnum.WebAllPolSourceSiteEffectTerms;
             int TVItemID = 635;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
@@ -481,13 +481,13 @@ namespace CreateGzFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task CreateWebReportType_Unauthorized_Good_Test(string culture)
+        public async Task CreateWebAllReportTypes_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
             await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
 
-            WebTypeEnum webType = WebTypeEnum.WebReportType;
+            WebTypeEnum webType = WebTypeEnum.WebAllReportTypes;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
@@ -566,13 +566,13 @@ namespace CreateGzFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task CreateWebTideLocation_Unauthorized_Good_Test(string culture)
+        public async Task CreateWebAllTideLocations_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
             await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
 
-            WebTypeEnum webType = WebTypeEnum.WebTideLocation;
+            WebTypeEnum webType = WebTypeEnum.WebAllTideLocations;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
@@ -583,13 +583,13 @@ namespace CreateGzFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task CreateWebAllTVItem_Unauthorized_Good_Test(string culture)
+        public async Task CreateWebAllTVItems_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
             await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
 
-            WebTypeEnum webType = WebTypeEnum.WebAllTVItem;
+            WebTypeEnum webType = WebTypeEnum.WebAllTVItems;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
@@ -600,13 +600,13 @@ namespace CreateGzFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task CreateWebAllTVItemLanguage_Unauthorized_Good_Test(string culture)
+        public async Task CreateWebAllTVItemLanguages_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
             await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
 
-            WebTypeEnum webType = WebTypeEnum.WebAllTVItemLanguage;
+            WebTypeEnum webType = WebTypeEnum.WebAllTVItemLanguages;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 

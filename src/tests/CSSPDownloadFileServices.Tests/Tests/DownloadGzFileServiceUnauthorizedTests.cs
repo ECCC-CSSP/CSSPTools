@@ -73,13 +73,13 @@ namespace DownloadFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task DownloadWebContact_Unauthorized_Good_Test(string culture)
+        public async Task DownloadWebAllContacts_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
             LoggedInService.LoggedInContactInfo = null;
 
-            WebTypeEnum webType = WebTypeEnum.WebContact;
+            WebTypeEnum webType = WebTypeEnum.WebAllContacts;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
@@ -124,13 +124,13 @@ namespace DownloadFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task DownloadWebHelpDoc_Unauthorized_Good_Test(string culture)
+        public async Task DownloadWebAllHelpDocs_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
             LoggedInService.LoggedInContactInfo = null;
 
-            WebTypeEnum webType = WebTypeEnum.WebHelpDoc;
+            WebTypeEnum webType = WebTypeEnum.WebAllHelpDocs;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
@@ -226,13 +226,13 @@ namespace DownloadFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task DownloadWebMWQMLookupMPN_Unauthorized_Good_Test(string culture)
+        public async Task DownloadWebAllMWQMLookupMPNs_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
             LoggedInService.LoggedInContactInfo = null;
 
-            WebTypeEnum webType = WebTypeEnum.WebMWQMLookupMPN;
+            WebTypeEnum webType = WebTypeEnum.WebAllMWQMLookupMPNs;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
@@ -413,13 +413,13 @@ namespace DownloadFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task DownloadWebPolSourceGrouping_Unauthorized_Good_Test(string culture)
+        public async Task DownloadWebAllPolSourceGroupings_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
             LoggedInService.LoggedInContactInfo = null;
 
-            WebTypeEnum webType = WebTypeEnum.WebPolSourceGrouping;
+            WebTypeEnum webType = WebTypeEnum.WebAllPolSourceGroupings;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
@@ -447,13 +447,13 @@ namespace DownloadFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task DownloadWebPolSourceSiteEffectTerm_Unauthorized_Good_Test(string culture)
+        public async Task DownloadWebAllPolSourceSiteEffectTerms_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
             LoggedInService.LoggedInContactInfo = null;
 
-            WebTypeEnum webType = WebTypeEnum.WebPolSourceSiteEffectTerm;
+            WebTypeEnum webType = WebTypeEnum.WebAllPolSourceSiteEffectTerms;
             int TVItemID = 635;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
@@ -481,13 +481,13 @@ namespace DownloadFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task DownloadWebReportType_Unauthorized_Good_Test(string culture)
+        public async Task DownloadWebAllReportTypes_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
             LoggedInService.LoggedInContactInfo = null;
 
-            WebTypeEnum webType = WebTypeEnum.WebReportType;
+            WebTypeEnum webType = WebTypeEnum.WebAllReportTypes;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
@@ -566,13 +566,13 @@ namespace DownloadFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task DownloadWebTideLocation_Unauthorized_Good_Test(string culture)
+        public async Task DownloadWebAllTideLocations_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
             LoggedInService.LoggedInContactInfo = null;
 
-            WebTypeEnum webType = WebTypeEnum.WebTideLocation;
+            WebTypeEnum webType = WebTypeEnum.WebAllTideLocations;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
@@ -583,13 +583,13 @@ namespace DownloadFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task DownloadWebAllTVItem_Unauthorized_Good_Test(string culture)
+        public async Task DownloadWebAllTVItems_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
             LoggedInService.LoggedInContactInfo = null;
 
-            WebTypeEnum webType = WebTypeEnum.WebAllTVItem;
+            WebTypeEnum webType = WebTypeEnum.WebAllTVItems;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
@@ -600,13 +600,13 @@ namespace DownloadFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task DownloadWebAllTVItemLanguage_Unauthorized_Good_Test(string culture)
+        public async Task DownloadWebAllTVItemLanguages_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
             LoggedInService.LoggedInContactInfo = null;
 
-            WebTypeEnum webType = WebTypeEnum.WebAllTVItemLanguage;
+            WebTypeEnum webType = WebTypeEnum.WebAllTVItemLanguages;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 

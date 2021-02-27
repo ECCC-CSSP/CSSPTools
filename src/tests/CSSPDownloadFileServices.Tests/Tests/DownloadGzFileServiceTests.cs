@@ -84,11 +84,11 @@ namespace DownloadFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task DownloadFileService_DownloadWebContact_Good_Test(string culture)
+        public async Task DownloadFileService_DownloadWebAllContacts_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebContact;
+            WebTypeEnum webType = WebTypeEnum.WebAllContacts;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
@@ -135,11 +135,11 @@ namespace DownloadFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task DownloadFileService_DownloadWebHelpDoc_Good_Test(string culture)
+        public async Task DownloadFileService_DownloadWebAllHelpDocs_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebHelpDoc;
+            WebTypeEnum webType = WebTypeEnum.WebAllHelpDocs;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
@@ -237,11 +237,11 @@ namespace DownloadFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task DownloadFileService_DownloadWebMWQMLookupMPN_Good_Test(string culture)
+        public async Task DownloadFileService_DownloadWebAllMWQMLookupMPNs_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebMWQMLookupMPN;
+            WebTypeEnum webType = WebTypeEnum.WebAllMWQMLookupMPNs;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
@@ -424,11 +424,11 @@ namespace DownloadFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task DownloadFileService_DownloadWebPolSourceGrouping_Good_Test(string culture)
+        public async Task DownloadFileService_DownloadWebAllPolSourceGroupings_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebPolSourceGrouping;
+            WebTypeEnum webType = WebTypeEnum.WebAllPolSourceGroupings;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
 
@@ -458,11 +458,11 @@ namespace DownloadFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task DownloadFileService_DownloadWebPolSourceSiteEffectTerm_Good_Test(string culture)
+        public async Task DownloadFileService_DownloadWebAllPolSourceSiteEffectTerms_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebPolSourceSiteEffectTerm;
+            WebTypeEnum webType = WebTypeEnum.WebAllPolSourceSiteEffectTerms;
             int TVItemID = 635;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
 
@@ -492,11 +492,11 @@ namespace DownloadFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task DownloadFileService_DownloadWebReportType_Good_Test(string culture)
+        public async Task DownloadFileService_DownloadWebAllReportTypes_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebReportType;
+            WebTypeEnum webType = WebTypeEnum.WebAllReportTypes;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
 
@@ -577,11 +577,11 @@ namespace DownloadFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task DownloadFileService_DownloadWebTideLocation_Good_Test(string culture)
+        public async Task DownloadFileService_DownloadWebAllTideLocations_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebTideLocation;
+            WebTypeEnum webType = WebTypeEnum.WebAllTideLocations;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
 
@@ -594,11 +594,11 @@ namespace DownloadFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task DownloadFileService_DownloadWebAllTVItem_Good_Test(string culture)
+        public async Task DownloadFileService_DownloadWebAllTVItems_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebAllTVItem;
+            WebTypeEnum webType = WebTypeEnum.WebAllTVItems;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
 
@@ -611,11 +611,11 @@ namespace DownloadFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task DownloadFileService_DownloadWebAllTVItemLanguage_Good_Test(string culture)
+        public async Task DownloadFileService_DownloadWebAllTVItemLanguages_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebAllTVItemLanguage;
+            WebTypeEnum webType = WebTypeEnum.WebAllTVItemLanguages;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
 

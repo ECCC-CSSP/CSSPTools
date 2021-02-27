@@ -44,7 +44,7 @@ namespace CreateGzFileServices
                 webHydrometricSite.RatingCurveList = await GetRatingCurveListUnderProvince(TVItemProvince);
                 webHydrometricSite.RatingCurveValueList = await GetRatingCurveValueListUnderProvince(TVItemProvince);
 
-                await DoStore<WebHydrometricSite>(webHydrometricSite, $"WebHydrometricSite_{ProvinceTVItemID}.gz");
+                await DoStore<WebHydrometricSite>(webHydrometricSite, $"{ WebTypeEnum.WebHydrometricSite }_{ ProvinceTVItemID }.gz");
             }
             catch (Exception ex)
             {

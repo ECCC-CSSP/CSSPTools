@@ -74,18 +74,18 @@ namespace ReadGzFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadGzFileService_ReadWebContact_Unauthorized_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebAllContacts_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
             LoggedInService.LoggedInContactInfo = null;
 
-            WebTypeEnum webType = WebTypeEnum.WebContact;
+            WebTypeEnum webType = WebTypeEnum.WebAllContacts;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
             // Read gz
-            var actionWeb = await ReadGzFileService.ReadJSON<WebContact>(webType, TVItemID, webTypeYear);
+            var actionWeb = await ReadGzFileService.ReadJSON<WebAllContacts>(webType, TVItemID, webTypeYear);
             Assert.Equal(401, ((UnauthorizedResult)actionWeb.Result).StatusCode);
         }
         [Theory]
@@ -125,18 +125,18 @@ namespace ReadGzFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadGzFileService_ReadWebHelpDoc_Unauthorized_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebAllHelpDocs_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
             LoggedInService.LoggedInContactInfo = null;
 
-            WebTypeEnum webType = WebTypeEnum.WebHelpDoc;
+            WebTypeEnum webType = WebTypeEnum.WebAllHelpDocs;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
             // Read gz
-            var actionWeb = await ReadGzFileService.ReadJSON<WebHelpDoc>(webType, TVItemID, webTypeYear);
+            var actionWeb = await ReadGzFileService.ReadJSON<WebAllHelpDocs>(webType, TVItemID, webTypeYear);
             Assert.Equal(401, ((UnauthorizedResult)actionWeb.Result).StatusCode);
         }
         [Theory]
@@ -227,18 +227,18 @@ namespace ReadGzFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadGzFileService_ReadWebMWQMLookupMPN_Unauthorized_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebAllMWQMLookupMPNs_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
             LoggedInService.LoggedInContactInfo = null;
 
-            WebTypeEnum webType = WebTypeEnum.WebMWQMLookupMPN;
+            WebTypeEnum webType = WebTypeEnum.WebAllMWQMLookupMPNs;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
             // Read gz
-            var actionWeb = await ReadGzFileService.ReadJSON<WebMWQMLookupMPN>(webType, TVItemID, webTypeYear);
+            var actionWeb = await ReadGzFileService.ReadJSON<WebAllMWQMLookupMPNs>(webType, TVItemID, webTypeYear);
             Assert.Equal(401, ((UnauthorizedResult)actionWeb.Result).StatusCode);
         }
         [Theory]
@@ -414,18 +414,18 @@ namespace ReadGzFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadGzFileService_ReadWebPolSourceGrouping_Unauthorized_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebAllPolSourceGroupings_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
             LoggedInService.LoggedInContactInfo = null;
 
-            WebTypeEnum webType = WebTypeEnum.WebPolSourceGrouping;
+            WebTypeEnum webType = WebTypeEnum.WebAllPolSourceGroupings;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
             // Read gz
-            var actionWeb = await ReadGzFileService.ReadJSON<WebPolSourceGrouping>(webType, TVItemID, webTypeYear);
+            var actionWeb = await ReadGzFileService.ReadJSON<WebAllPolSourceGroupings>(webType, TVItemID, webTypeYear);
             Assert.Equal(401, ((UnauthorizedResult)actionWeb.Result).StatusCode);
         }
         [Theory]
@@ -448,18 +448,18 @@ namespace ReadGzFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadGzFileService_ReadWebPolSourceSiteEffectTerm_Unauthorized_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebAllPolSourceSiteEffectTerms_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
             LoggedInService.LoggedInContactInfo = null;
 
-            WebTypeEnum webType = WebTypeEnum.WebPolSourceSiteEffectTerm;
+            WebTypeEnum webType = WebTypeEnum.WebAllPolSourceSiteEffectTerms;
             int TVItemID = 635;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
             // Read gz
-            var actionWeb = await ReadGzFileService.ReadJSON<WebPolSourceSiteEffectTerm>(webType, TVItemID, webTypeYear);
+            var actionWeb = await ReadGzFileService.ReadJSON<WebAllPolSourceSiteEffectTerms>(webType, TVItemID, webTypeYear);
             Assert.Equal(401, ((UnauthorizedResult)actionWeb.Result).StatusCode);
         }
         [Theory]
@@ -482,18 +482,18 @@ namespace ReadGzFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadGzFileService_ReadWebReportType_Unauthorized_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebAllReportTypes_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
             LoggedInService.LoggedInContactInfo = null;
 
-            WebTypeEnum webType = WebTypeEnum.WebReportType;
+            WebTypeEnum webType = WebTypeEnum.WebAllReportTypes;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
             // Read gz
-            var actionWeb = await ReadGzFileService.ReadJSON<WebReportType>(webType, TVItemID, webTypeYear);
+            var actionWeb = await ReadGzFileService.ReadJSON<WebAllReportTypes>(webType, TVItemID, webTypeYear);
             Assert.Equal(401, ((UnauthorizedResult)actionWeb.Result).StatusCode);
         }
         [Theory]
@@ -567,52 +567,52 @@ namespace ReadGzFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadGzFileService_ReadWebTideLocation_Unauthorized_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebAllTideLocations_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
             LoggedInService.LoggedInContactInfo = null;
 
-            WebTypeEnum webType = WebTypeEnum.WebTideLocation;
+            WebTypeEnum webType = WebTypeEnum.WebAllTideLocations;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
             // Read gz
-            var actionWeb = await ReadGzFileService.ReadJSON<WebTideLocation>(webType, TVItemID, webTypeYear);
+            var actionWeb = await ReadGzFileService.ReadJSON<WebAllTideLocations>(webType, TVItemID, webTypeYear);
             Assert.Equal(401, ((UnauthorizedResult)actionWeb.Result).StatusCode);
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadGzFileService_ReadWebAllTVItem_Unauthorized_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebAllTVItems_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
             LoggedInService.LoggedInContactInfo = null;
 
-            WebTypeEnum webType = WebTypeEnum.WebAllTVItem;
+            WebTypeEnum webType = WebTypeEnum.WebAllTVItems;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
             // Read gz
-            var actionWeb = await ReadGzFileService.ReadJSON<WebAllTVItem>(webType, TVItemID, webTypeYear);
+            var actionWeb = await ReadGzFileService.ReadJSON<WebAllTVItems>(webType, TVItemID, webTypeYear);
             Assert.Equal(401, ((UnauthorizedResult)actionWeb.Result).StatusCode);
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadGzFileService_ReadWebAllTVItemLanguage_Unauthorized_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebAllTVItemLanguages_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
             LoggedInService.LoggedInContactInfo = null;
 
-            WebTypeEnum webType = WebTypeEnum.WebAllTVItemLanguage;
+            WebTypeEnum webType = WebTypeEnum.WebAllTVItemLanguages;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
             // Read gz
-            var actionWeb = await ReadGzFileService.ReadJSON<WebAllTVItemLanguage>(webType, TVItemID, webTypeYear);
+            var actionWeb = await ReadGzFileService.ReadJSON<WebAllTVItemLanguages>(webType, TVItemID, webTypeYear);
             Assert.Equal(401, ((UnauthorizedResult)actionWeb.Result).StatusCode);
         }
         #endregion Tests 

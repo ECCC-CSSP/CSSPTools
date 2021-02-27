@@ -21,30 +21,30 @@ namespace CreateGzFileServices
                 return await Task.FromResult(false);
             }
 
-            Console.WriteLine("CreateWebContact doing...");
-            await CreateGzFile(WebTypeEnum.WebContact, 0, 0);
-            Console.WriteLine("GetHelpDoc doing...");
-            await CreateGzFile(WebTypeEnum.WebHelpDoc, 0, 0);
-            Console.WriteLine("GetMWQMLookupMPN doing...");
-            await CreateGzFile(WebTypeEnum.WebMWQMLookupMPN, 0, 0);
-            Console.WriteLine("CreateWebPolSourceGrouping doing...");
-            await CreateGzFile(WebTypeEnum.WebPolSourceGrouping, 0, 0);
-            Console.WriteLine("CreateWebReportType doing...");
-            await CreateGzFile(WebTypeEnum.WebReportType, 0, 0);
+            Console.WriteLine("CreateAllWebContacts doing...");
+            await CreateGzFile(WebTypeEnum.WebAllContacts, 0, 0);
+            Console.WriteLine("GetAllHelpDocs doing...");
+            await CreateGzFile(WebTypeEnum.WebAllHelpDocs, 0, 0);
+            Console.WriteLine("GetAllMWQMLookupMPNs doing...");
+            await CreateGzFile(WebTypeEnum.WebAllMWQMLookupMPNs, 0, 0);
+            Console.WriteLine("CreateWebAllPolSourceGroupings doing...");
+            await CreateGzFile(WebTypeEnum.WebAllPolSourceGroupings, 0, 0);
+            Console.WriteLine("CreateWebAllReportTypes doing...");
+            await CreateGzFile(WebTypeEnum.WebAllReportTypes, 0, 0);
             Console.WriteLine("CreateWebRoot doing...");
             await CreateGzFile(WebTypeEnum.WebRoot, 0, 0);
-            Console.WriteLine("CreateWebTideLocation doing...");
-            await CreateGzFile(WebTypeEnum.WebTideLocation, 0, 0);
+            Console.WriteLine("CreateWebAllTideLocations doing...");
+            await CreateGzFile(WebTypeEnum.WebAllTideLocations, 0, 0);
             Console.WriteLine("CreateAllMunicipalities doing...");
             await CreateGzFile(WebTypeEnum.WebAllMunicipalities, 0, 0);
             Console.WriteLine("CreateAllProvinces doing...");
             await CreateGzFile(WebTypeEnum.WebAllProvinces, 0, 0);
             Console.WriteLine("CreateAllCountries doing...");
             await CreateGzFile(WebTypeEnum.WebAllCountries, 0, 0);
-            Console.WriteLine("CreateWebAllTVItem doing...");
-            await CreateGzFile(WebTypeEnum.WebAllTVItem, 0, 0);
-            Console.WriteLine("CreateWebAllTVItemLanguage doing...");
-            await CreateGzFile(WebTypeEnum.WebAllTVItemLanguage, 0, 0);
+            Console.WriteLine("CreateWebAllTVItems doing...");
+            await CreateGzFile(WebTypeEnum.WebAllTVItems, 0, 0);
+            Console.WriteLine("CreateWebAllTVItemLanguages doing...");
+            await CreateGzFile(WebTypeEnum.WebAllTVItemLanguages, 0, 0);
 
             List<SamplingPlan> samplingPlanList = (from c in db.SamplingPlans
                                                    select c).ToList();

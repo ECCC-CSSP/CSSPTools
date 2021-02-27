@@ -22,22 +22,25 @@ export enum WebTypeEnum {
     WebSamplingPlan = 10,
     WebMWQMRun = 11,
     WebMWQMSite = 12,
-    WebContact = 13,
+    WebAllContacts = 13,
     WebClimateSite = 14,
     WebHydrometricSite = 15,
     WebDrogueRun = 16,
-    WebMWQMLookupMPN = 17,
+    WebAllMWQMLookupMPNs = 17,
     WebMikeScenario = 18,
     WebClimateDataValue = 19,
     WebHydrometricDataValue = 20,
-    WebHelpDoc = 21,
-    WebTideLocation = 22,
+    WebAllHelpDocs = 21,
+    WebAllTideLocations = 22,
     WebPolSourceSite = 23,
-    WebPolSourceGrouping = 24,
-    WebReportType = 25,
+    WebAllPolSourceGroupings = 24,
+    WebAllReportTypes = 25,
     WebAllTVItem = 26,
-    WebPolSourceSiteEffectTerm = 27,
+    WebAllPolSourceSiteEffectTerms = 27,
     WebAllTVItemLanguage = 28,
+    WebAllMunicipalities = 29,
+    WebAllProvinces = 30,
+    WebAllCountries = 31,
 }
 
 export function GetWebTypeEnum(): typeof WebTypeEnum
@@ -48,34 +51,37 @@ export function GetWebTypeEnum(): typeof WebTypeEnum
 export function WebTypeEnum_GetOrderedText(appStateService: AppStateService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
     if (appStateService.AppState$?.getValue().Language == LanguageEnum.fr) {
-        enumTextOrderedList.push({ EnumID: 1, EnumText: 'WebRoot (fr)' });
-        enumTextOrderedList.push({ EnumID: 2, EnumText: 'WebCountry (fr)' });
-        enumTextOrderedList.push({ EnumID: 3, EnumText: 'WebProvince (fr)' });
-        enumTextOrderedList.push({ EnumID: 4, EnumText: 'WebArea (fr)' });
-        enumTextOrderedList.push({ EnumID: 5, EnumText: 'WebMunicipalities (fr)' });
-        enumTextOrderedList.push({ EnumID: 6, EnumText: 'WebSector (fr)' });
-        enumTextOrderedList.push({ EnumID: 7, EnumText: 'WebSubsector (fr)' });
-        enumTextOrderedList.push({ EnumID: 8, EnumText: 'WebMunicipality (fr)' });
-        enumTextOrderedList.push({ EnumID: 9, EnumText: 'WebMWQMSample (fr)' });
-        enumTextOrderedList.push({ EnumID: 10, EnumText: 'WebSamplingPlan (fr)' });
-        enumTextOrderedList.push({ EnumID: 11, EnumText: 'WebMWQMRun (fr)' });
-        enumTextOrderedList.push({ EnumID: 12, EnumText: 'WebMWQMSite (fr)' });
-        enumTextOrderedList.push({ EnumID: 13, EnumText: 'WebContact (fr)' });
-        enumTextOrderedList.push({ EnumID: 14, EnumText: 'WebClimateSite (fr)' });
-        enumTextOrderedList.push({ EnumID: 15, EnumText: 'WebHydrometricSite (fr)' });
-        enumTextOrderedList.push({ EnumID: 16, EnumText: 'WebDrogueRun (fr)' });
-        enumTextOrderedList.push({ EnumID: 17, EnumText: 'WebMWQMLookupMPN (fr)' });
-        enumTextOrderedList.push({ EnumID: 18, EnumText: 'WebMikeScenario (fr)' });
-        enumTextOrderedList.push({ EnumID: 19, EnumText: 'WebClimateDataValue (fr)' });
-        enumTextOrderedList.push({ EnumID: 20, EnumText: 'WebHydrometricDataValue (fr)' });
-        enumTextOrderedList.push({ EnumID: 21, EnumText: 'WebHelpDoc (fr)' });
-        enumTextOrderedList.push({ EnumID: 22, EnumText: 'WebTideLocation (fr)' });
-        enumTextOrderedList.push({ EnumID: 23, EnumText: 'WebPolSourceSite (fr)' });
-        enumTextOrderedList.push({ EnumID: 24, EnumText: 'WebPolSourceGrouping (fr)' });
-        enumTextOrderedList.push({ EnumID: 25, EnumText: 'WebReportType (fr)' });
-        enumTextOrderedList.push({ EnumID: 26, EnumText: 'WebAllTVItem (fr)' });
-        enumTextOrderedList.push({ EnumID: 27, EnumText: 'WebPolSourceSiteEffectTerm' });
-        enumTextOrderedList.push({ EnumID: 28, EnumText: 'WebAllTVItemLanguage (fr)' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'WebRoot' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'WebCountry' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'WebProvince' });
+        enumTextOrderedList.push({ EnumID: 4, EnumText: 'WebArea' });
+        enumTextOrderedList.push({ EnumID: 5, EnumText: 'WebMunicipalities' });
+        enumTextOrderedList.push({ EnumID: 6, EnumText: 'WebSector' });
+        enumTextOrderedList.push({ EnumID: 7, EnumText: 'WebSubsector' });
+        enumTextOrderedList.push({ EnumID: 8, EnumText: 'WebMunicipality' });
+        enumTextOrderedList.push({ EnumID: 9, EnumText: 'WebMWQMSample' });
+        enumTextOrderedList.push({ EnumID: 10, EnumText: 'WebSamplingPlan' });
+        enumTextOrderedList.push({ EnumID: 11, EnumText: 'WebMWQMRun' });
+        enumTextOrderedList.push({ EnumID: 12, EnumText: 'WebMWQMSite' });
+        enumTextOrderedList.push({ EnumID: 13, EnumText: 'WebAllContacts' });
+        enumTextOrderedList.push({ EnumID: 14, EnumText: 'WebClimateSite' });
+        enumTextOrderedList.push({ EnumID: 15, EnumText: 'WebHydrometricSite' });
+        enumTextOrderedList.push({ EnumID: 16, EnumText: 'WebDrogueRun' });
+        enumTextOrderedList.push({ EnumID: 17, EnumText: 'WebAllMWQMLookupMPNs' });
+        enumTextOrderedList.push({ EnumID: 18, EnumText: 'WebMikeScenario' });
+        enumTextOrderedList.push({ EnumID: 19, EnumText: 'WebClimateDataValue' });
+        enumTextOrderedList.push({ EnumID: 20, EnumText: 'WebHydrometricDataValue' });
+        enumTextOrderedList.push({ EnumID: 21, EnumText: 'WebAllHelpDocs' });
+        enumTextOrderedList.push({ EnumID: 22, EnumText: 'WebAllTideLocations' });
+        enumTextOrderedList.push({ EnumID: 23, EnumText: 'WebPolSourceSite' });
+        enumTextOrderedList.push({ EnumID: 24, EnumText: 'WebAllPolSourceGroupings' });
+        enumTextOrderedList.push({ EnumID: 25, EnumText: 'WebAllReportTypes' });
+        enumTextOrderedList.push({ EnumID: 26, EnumText: 'WebAllTVItem' });
+        enumTextOrderedList.push({ EnumID: 27, EnumText: 'WebAllPolSourceSiteEffectTerms' });
+        enumTextOrderedList.push({ EnumID: 28, EnumText: 'WebAllTVItemLanguage' });
+        enumTextOrderedList.push({ EnumID: 29, EnumText: 'WebAllMunicipalities' });
+        enumTextOrderedList.push({ EnumID: 30, EnumText: 'WebAllProvinces' });
+        enumTextOrderedList.push({ EnumID: 31, EnumText: 'WebAllCountries' });
     }
     else {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'WebRoot' });
@@ -90,22 +96,25 @@ export function WebTypeEnum_GetOrderedText(appStateService: AppStateService): En
         enumTextOrderedList.push({ EnumID: 10, EnumText: 'WebSamplingPlan' });
         enumTextOrderedList.push({ EnumID: 11, EnumText: 'WebMWQMRun' });
         enumTextOrderedList.push({ EnumID: 12, EnumText: 'WebMWQMSite' });
-        enumTextOrderedList.push({ EnumID: 13, EnumText: 'WebContact' });
+        enumTextOrderedList.push({ EnumID: 13, EnumText: 'WebAllContacts' });
         enumTextOrderedList.push({ EnumID: 14, EnumText: 'WebClimateSite' });
         enumTextOrderedList.push({ EnumID: 15, EnumText: 'WebHydrometricSite' });
         enumTextOrderedList.push({ EnumID: 16, EnumText: 'WebDrogueRun' });
-        enumTextOrderedList.push({ EnumID: 17, EnumText: 'WebMWQMLookupMPN' });
+        enumTextOrderedList.push({ EnumID: 17, EnumText: 'WebAllMWQMLookupMPNs' });
         enumTextOrderedList.push({ EnumID: 18, EnumText: 'WebMikeScenario' });
         enumTextOrderedList.push({ EnumID: 19, EnumText: 'WebClimateDataValue' });
         enumTextOrderedList.push({ EnumID: 20, EnumText: 'WebHydrometricDataValue' });
-        enumTextOrderedList.push({ EnumID: 21, EnumText: 'WebHelpDoc' });
-        enumTextOrderedList.push({ EnumID: 22, EnumText: 'WebTideLocation' });
+        enumTextOrderedList.push({ EnumID: 21, EnumText: 'WebAllHelpDocs' });
+        enumTextOrderedList.push({ EnumID: 22, EnumText: 'WebAllTideLocations' });
         enumTextOrderedList.push({ EnumID: 23, EnumText: 'WebPolSourceSite' });
-        enumTextOrderedList.push({ EnumID: 24, EnumText: 'WebPolSourceGrouping' });
-        enumTextOrderedList.push({ EnumID: 25, EnumText: 'WebReportType' });
+        enumTextOrderedList.push({ EnumID: 24, EnumText: 'WebAllPolSourceGroupings' });
+        enumTextOrderedList.push({ EnumID: 25, EnumText: 'WebAllReportTypes' });
         enumTextOrderedList.push({ EnumID: 26, EnumText: 'WebAllTVItem' });
-        enumTextOrderedList.push({ EnumID: 27, EnumText: 'WebPolSourceSiteEffectTerm' });
+        enumTextOrderedList.push({ EnumID: 27, EnumText: 'WebAllPolSourceSiteEffectTerms' });
         enumTextOrderedList.push({ EnumID: 28, EnumText: 'WebAllTVItemLanguage' });
+        enumTextOrderedList.push({ EnumID: 29, EnumText: 'WebAllMunicipalities' });
+        enumTextOrderedList.push({ EnumID: 30, EnumText: 'WebAllProvinces' });
+        enumTextOrderedList.push({ EnumID: 31, EnumText: 'WebAllCountries' });
     }
 
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));

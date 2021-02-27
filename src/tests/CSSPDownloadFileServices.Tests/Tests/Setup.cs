@@ -22,7 +22,7 @@ using CSSPDBFilesManagementModels;
 using CSSPDBPreferenceModels;
 using CSSPScrambleServices;
 using LoggedInServices;
-using WebAppLoadedServices;
+//using WebAppLoadedServices;
 
 namespace DownloadFileServices.Tests
 {
@@ -138,7 +138,7 @@ namespace DownloadFileServices.Tests
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IScrambleService, ScrambleService>();
             Services.AddSingleton<IPreferenceService, PreferenceService>();
-            Services.AddSingleton<IWebAppLoadedService, WebAppLoadedService>();
+            //Services.AddSingleton<IWebAppLoadedService, WebAppLoadedService>();
 
             Provider = Services.BuildServiceProvider();
             Assert.NotNull(Provider);

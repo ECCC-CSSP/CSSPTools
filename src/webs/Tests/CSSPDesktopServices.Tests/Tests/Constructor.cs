@@ -21,7 +21,7 @@ using CSSPDBFilesManagementModels;
 using CSSPDBPreferenceModels;
 using LoggedInServices;
 using CSSPScrambleServices;
-using WebAppLoadedServices;
+//using WebAppLoadedServices;
 using CSSPDBPreferenceServices;
 
 namespace CSSPDesktopServices.Tests
@@ -76,7 +76,7 @@ namespace CSSPDesktopServices.Tests
             Services.AddSingleton<ICSSPDBFilesManagementService, CSSPDBFilesManagementService>();
             Services.AddSingleton<IDownloadFileService, DownloadFileService>();
             Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
-            Services.AddSingleton<IWebAppLoadedService, WebAppLoadedService>();
+            //Services.AddSingleton<IWebAppLoadedService, WebAppLoadedService>();
             Services.AddSingleton<ICSSPDesktopService, CSSPDesktopService>();
 
             /* ---------------------------------------------------------------------------------

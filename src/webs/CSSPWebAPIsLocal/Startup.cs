@@ -28,7 +28,7 @@ using CSSPDBSearchModels;
 using LoggedInServices;
 using CSSPDBServices;
 using CSSPScrambleServices;
-using WebAppLoadedServices;
+//using WebAppLoadedServices;
 
 namespace CSSPWebAPIsLocal
 {
@@ -140,7 +140,7 @@ namespace CSSPWebAPIsLocal
             services.AddScoped<IPreferenceService, PreferenceService>();
             services.AddScoped<ICSSPDBSearchService, CSSPDBSearchService>();
 
-            services.AddScoped<IWebAppLoadedService, WebAppLoadedService>();
+            //services.AddScoped<IWebAppLoadedService, WebAppLoadedService>();
 
             services.AddSpaStaticFiles(configuration =>
             {

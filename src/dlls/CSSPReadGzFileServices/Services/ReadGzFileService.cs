@@ -18,13 +18,14 @@ using CSSPDBFilesManagementModels;
 using CSSPDBPreferenceServices;
 using CSSPScrambleServices;
 using LoggedInServices;
-using WebAppLoadedServices;
+//using WebAppLoadedServices;
 
 namespace ReadGzFileServices
 {
     public interface IReadGzFileService
     {
         Task<ActionResult<T>> ReadJSON<T>(WebTypeEnum webType, int TVItemID, WebTypeYearEnum webTypeYear);
+        Task<T> GetUncompressJSON<T>(WebTypeEnum webType, int TVItemID, WebTypeYearEnum webTypeYear);
     }
     public partial class ReadGzFileService : ControllerBase, IReadGzFileService
     {
@@ -41,7 +42,7 @@ namespace ReadGzFileServices
         private ICSSPDBFilesManagementService CSSPDBFilesManagementService { get; }
         private IScrambleService ScrambleService { get; }
         private IPreferenceService PreferenceService { get; }
-        private IWebAppLoadedService WebAppLoadedService { get; }
+        //private IWebAppLoadedService WebAppLoadedService { get; }
         private string AzureStore { get; set; }
         private string AzureStoreCSSPJSONPath { get; set; }
         private string CSSPJSONPath { get; set; }
@@ -51,7 +52,7 @@ namespace ReadGzFileServices
         #region Constructors
         public ReadGzFileService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, 
             IScrambleService ScrambleService, IEnums enums, IDownloadFileService DownloadFileService, 
-            ICSSPDBFilesManagementService CSSPDBFilesManagementService, IPreferenceService PreferenceService, IWebAppLoadedService WebAppLoadedService)
+            ICSSPDBFilesManagementService CSSPDBFilesManagementService, IPreferenceService PreferenceService/*, IWebAppLoadedService WebAppLoadedService*/)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
@@ -61,7 +62,7 @@ namespace ReadGzFileServices
             this.DownloadFileService = DownloadFileService;
             this.CSSPDBFilesManagementService = CSSPDBFilesManagementService;
             this.PreferenceService = PreferenceService;
-            this.WebAppLoadedService = WebAppLoadedService;
+//            this.WebAppLoadedService = WebAppLoadedService;
 
             AzureStoreCSSPJSONPath = Configuration.GetValue<string>("AzureStoreCSSPJSONPath");
             AzureStore = ScrambleService.Descramble(Configuration.GetValue<string>("AzureStore"));
@@ -75,6 +76,12 @@ namespace ReadGzFileServices
         {
             return await DoReadJSON<T>(webType, TVItemID, webTypeYear);
         }
+        public async Task<T> GetUncompressJSON<T>(WebTypeEnum webType, int TVItemID, WebTypeYearEnum webTypeYear)
+        {
+            var actionRes = await ReadJSON<T>(webType, TVItemID, webTypeYear);
+            return (T)((OkObjectResult)actionRes.Result).Value;
+        }
+
         #endregion Functions public
 
         #region Functions private

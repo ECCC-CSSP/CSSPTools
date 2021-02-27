@@ -50,7 +50,6 @@ namespace ReadGzFileServices.Tests
             WebArea webArea = (WebArea)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webArea);
             Assert.NotNull(webArea.TVItemModel);
-            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebArea);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -70,7 +69,6 @@ namespace ReadGzFileServices.Tests
             WebClimateDataValue webClimateDataValue = (WebClimateDataValue)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webClimateDataValue);
             Assert.NotNull(webClimateDataValue.ClimateDataValueList);
-            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebClimateDataValue);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -90,27 +88,25 @@ namespace ReadGzFileServices.Tests
             WebClimateSite webClimateSite = (WebClimateSite)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webClimateSite);
             Assert.NotNull(webClimateSite.ClimateSiteList);
-            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebClimateSite);
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadGzFileService_ReadWebContact_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebAllContacts_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebContact;
+            WebTypeEnum webType = WebTypeEnum.WebAllContacts;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
             // Read gz
-            var actionRes = await ReadGzFileService.ReadJSON<WebContact>(webType, TVItemID, webTypeYear);
+            var actionRes = await ReadGzFileService.ReadJSON<WebAllContacts>(webType, TVItemID, webTypeYear);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
-            WebContact webContact = (WebContact)((OkObjectResult)actionRes.Result).Value;
-            Assert.NotNull(webContact);
-            Assert.NotNull(webContact.ContactList);
-            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebContact);
+            WebAllContacts webAllContacts = (WebAllContacts)((OkObjectResult)actionRes.Result).Value;
+            Assert.NotNull(webAllContacts);
+            Assert.NotNull(webAllContacts.ContactList);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -130,7 +126,6 @@ namespace ReadGzFileServices.Tests
             WebCountry webCountry = (WebCountry)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webCountry);
             Assert.NotNull(webCountry.TVItemModel);
-            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebCountry);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -150,27 +145,25 @@ namespace ReadGzFileServices.Tests
             WebDrogueRun webDrogueRun = (WebDrogueRun)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webDrogueRun);
             Assert.NotNull(webDrogueRun.DrogueRunList);
-            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebDrogueRun);
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadGzFileService_ReadWebHelpDoc_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebAllHelpDocs_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebHelpDoc;
+            WebTypeEnum webType = WebTypeEnum.WebAllHelpDocs;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
             // Read gz
-            var actionRes = await ReadGzFileService.ReadJSON<WebHelpDoc>(webType, TVItemID, webTypeYear);
+            var actionRes = await ReadGzFileService.ReadJSON<WebAllHelpDocs>(webType, TVItemID, webTypeYear);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
-            WebHelpDoc webHelpDoc = (WebHelpDoc)((OkObjectResult)actionRes.Result).Value;
-            Assert.NotNull(webHelpDoc);
-            Assert.NotNull(webHelpDoc.HelpDocList);
-            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebHelpDoc);
+            WebAllHelpDocs webAllHelpDocs = (WebAllHelpDocs)((OkObjectResult)actionRes.Result).Value;
+            Assert.NotNull(webAllHelpDocs);
+            Assert.NotNull(webAllHelpDocs.HelpDocList);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -190,7 +183,6 @@ namespace ReadGzFileServices.Tests
             WebHydrometricDataValue webHydrometricDataValue = (WebHydrometricDataValue)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webHydrometricDataValue);
             Assert.NotNull(webHydrometricDataValue.HydrometricDataValueList);
-            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebHydrometricDataValue);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -210,7 +202,6 @@ namespace ReadGzFileServices.Tests
             WebHydrometricSite webHydrometricSite = (WebHydrometricSite)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webHydrometricSite);
             Assert.NotNull(webHydrometricSite.HydrometricSiteList);
-            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebHydrometricSite);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -230,7 +221,6 @@ namespace ReadGzFileServices.Tests
             WebMikeScenario webMikeScenario = (WebMikeScenario)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webMikeScenario);
             Assert.NotNull(webMikeScenario.TVItemModel);
-            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebMikeScenario);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -250,7 +240,6 @@ namespace ReadGzFileServices.Tests
             WebMunicipalities webMunicipalities = (WebMunicipalities)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webMunicipalities);
             Assert.NotNull(webMunicipalities.TVItemMunicipalityList);
-            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebMunicipalities);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -270,27 +259,25 @@ namespace ReadGzFileServices.Tests
             WebMunicipality webMunicipality = (WebMunicipality)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webMunicipality);
             Assert.NotNull(webMunicipality.TVItemModel);
-            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebMunicipality);
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadGzFileService_ReadWebMWQMLookupMPN_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebAllMWQMLookupMPNs_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebMWQMLookupMPN;
+            WebTypeEnum webType = WebTypeEnum.WebAllMWQMLookupMPNs;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
             // Read gz
-            var actionRes = await ReadGzFileService.ReadJSON<WebMWQMLookupMPN>(webType, TVItemID, webTypeYear);
+            var actionRes = await ReadGzFileService.ReadJSON<WebAllMWQMLookupMPNs>(webType, TVItemID, webTypeYear);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
-            WebMWQMLookupMPN webMWQMLookupMPN = (WebMWQMLookupMPN)((OkObjectResult)actionRes.Result).Value;
-            Assert.NotNull(webMWQMLookupMPN);
-            Assert.NotNull(webMWQMLookupMPN.MWQMLookupMPNList);
-            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebMWQMLookupMPN);
+            WebAllMWQMLookupMPNs webAllMWQMLookupMPNs = (WebAllMWQMLookupMPNs)((OkObjectResult)actionRes.Result).Value;
+            Assert.NotNull(webAllMWQMLookupMPNs);
+            Assert.NotNull(webAllMWQMLookupMPNs.MWQMLookupMPNList);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -310,7 +297,6 @@ namespace ReadGzFileServices.Tests
             WebMWQMRun webMWQMRun = (WebMWQMRun)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webMWQMRun);
             Assert.NotNull(webMWQMRun.MWQMRunModelList);
-            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebMWQMRun);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -330,7 +316,6 @@ namespace ReadGzFileServices.Tests
             WebMWQMSample webMWQMSample = (WebMWQMSample)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webMWQMSample);
             Assert.NotNull(webMWQMSample.MWQMSampleList);
-            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebMWQMSample1980_1989);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -350,7 +335,6 @@ namespace ReadGzFileServices.Tests
             WebMWQMSample webMWQMSample = (WebMWQMSample)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webMWQMSample);
             Assert.NotNull(webMWQMSample.MWQMSampleList);
-            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebMWQMSample1990_1999);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -370,7 +354,6 @@ namespace ReadGzFileServices.Tests
             WebMWQMSample webMWQMSample = (WebMWQMSample)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webMWQMSample);
             Assert.NotNull(webMWQMSample.MWQMSampleList);
-            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebMWQMSample2000_2009);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -390,7 +373,6 @@ namespace ReadGzFileServices.Tests
             WebMWQMSample webMWQMSample = (WebMWQMSample)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webMWQMSample);
             Assert.NotNull(webMWQMSample.MWQMSampleList);
-            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebMWQMSample2010_2019);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -410,7 +392,6 @@ namespace ReadGzFileServices.Tests
             WebMWQMSample webMWQMSample = (WebMWQMSample)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webMWQMSample);
             Assert.NotNull(webMWQMSample.MWQMSampleList);
-            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebMWQMSample2020_2029);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -430,7 +411,6 @@ namespace ReadGzFileServices.Tests
             WebMWQMSample webMWQMSample = (WebMWQMSample)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webMWQMSample);
             Assert.NotNull(webMWQMSample.MWQMSampleList);
-            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebMWQMSample2030_2039);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -450,7 +430,6 @@ namespace ReadGzFileServices.Tests
             WebMWQMSample webMWQMSample = (WebMWQMSample)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webMWQMSample);
             Assert.NotNull(webMWQMSample.MWQMSampleList);
-            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebMWQMSample2040_2049);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -470,7 +449,6 @@ namespace ReadGzFileServices.Tests
             WebMWQMSample webMWQMSample = (WebMWQMSample)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webMWQMSample);
             Assert.NotNull(webMWQMSample.MWQMSampleList);
-            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebMWQMSample2050_2059);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -490,27 +468,25 @@ namespace ReadGzFileServices.Tests
             WebMWQMSite webMWQMSite = (WebMWQMSite)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webMWQMSite);
             Assert.NotNull(webMWQMSite.MWQMSiteModelList);
-            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebMWQMSite);
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadGzFileService_ReadWebPolSourceGrouping_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebAllPolSourceGroupings_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebPolSourceGrouping;
+            WebTypeEnum webType = WebTypeEnum.WebAllPolSourceGroupings;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
 
             // Read gz
-            var actionRes = await ReadGzFileService.ReadJSON<WebPolSourceGrouping>(webType, TVItemID, webTypeYear);
+            var actionRes = await ReadGzFileService.ReadJSON<WebAllPolSourceGroupings>(webType, TVItemID, webTypeYear);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
-            WebPolSourceGrouping webPolSourceGrouping = (WebPolSourceGrouping)((OkObjectResult)actionRes.Result).Value;
-            Assert.NotNull(webPolSourceGrouping);
-            Assert.NotNull(webPolSourceGrouping.PolSourceGroupingList);
-            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebPolSourceGrouping);
+            WebAllPolSourceGroupings webAllPolSourceGroupings = (WebAllPolSourceGroupings)((OkObjectResult)actionRes.Result).Value;
+            Assert.NotNull(webAllPolSourceGroupings);
+            Assert.NotNull(webAllPolSourceGroupings.PolSourceGroupingList);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -530,27 +506,25 @@ namespace ReadGzFileServices.Tests
             WebPolSourceSite webPolSourceSite = (WebPolSourceSite)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webPolSourceSite);
             Assert.NotNull(webPolSourceSite.PolSourceSiteModelList);
-            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebPolSourceSite);
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadGzFileService_ReadWebPolSourceSiteEffectTerm_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebAllPolSourceSiteEffectTerms_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebPolSourceSiteEffectTerm;
+            WebTypeEnum webType = WebTypeEnum.WebAllPolSourceSiteEffectTerms;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
             // Read gz
-            var actionRes = await ReadGzFileService.ReadJSON<WebPolSourceSiteEffectTerm>(webType, TVItemID, webTypeYear);
+            var actionRes = await ReadGzFileService.ReadJSON<WebAllPolSourceSiteEffectTerms>(webType, TVItemID, webTypeYear);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
-            WebPolSourceSiteEffectTerm webPolSourceSiteEffectTerm = (WebPolSourceSiteEffectTerm)((OkObjectResult)actionRes.Result).Value;
-            Assert.NotNull(webPolSourceSiteEffectTerm);
-            Assert.NotNull(webPolSourceSiteEffectTerm.PolSourceSiteEffectTermList);
-            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebPolSourceSiteEffectTerm);
+            WebAllPolSourceSiteEffectTerms webAllPolSourceSiteEffectTerms = (WebAllPolSourceSiteEffectTerms)((OkObjectResult)actionRes.Result).Value;
+            Assert.NotNull(webAllPolSourceSiteEffectTerms);
+            Assert.NotNull(webAllPolSourceSiteEffectTerms.PolSourceSiteEffectTermList);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -570,27 +544,25 @@ namespace ReadGzFileServices.Tests
             WebProvince webProvince = (WebProvince)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webProvince);
             Assert.NotNull(webProvince.TVItemModel);
-            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebProvince);
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadGzFileService_ReadWebReportType_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebAllReportTypes_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebReportType;
+            WebTypeEnum webType = WebTypeEnum.WebAllReportTypes;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
 
             // Read gz
-            var actionRes = await ReadGzFileService.ReadJSON<WebReportType>(webType, TVItemID, webTypeYear);
+            var actionRes = await ReadGzFileService.ReadJSON<WebAllReportTypes>(webType, TVItemID, webTypeYear);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
-            WebReportType webReportType = (WebReportType)((OkObjectResult)actionRes.Result).Value;
-            Assert.NotNull(webReportType);
-            Assert.NotNull(webReportType.ReportTypeModelList);
-            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebReportType);
+            WebAllReportTypes webAllReportTypes = (WebAllReportTypes)((OkObjectResult)actionRes.Result).Value;
+            Assert.NotNull(webAllReportTypes);
+            Assert.NotNull(webAllReportTypes.ReportTypeModelList);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -609,7 +581,6 @@ namespace ReadGzFileServices.Tests
             WebRoot webRoot = (WebRoot)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webRoot);
             Assert.NotNull(webRoot.TVItemModel);
-            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebRoot);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -629,7 +600,6 @@ namespace ReadGzFileServices.Tests
             WebSamplingPlan webSamplingPlan = (WebSamplingPlan)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webSamplingPlan);
             Assert.NotNull(webSamplingPlan.SamplingPlanModel);
-            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebSamplingPlan);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -649,7 +619,6 @@ namespace ReadGzFileServices.Tests
             WebSector webSector = (WebSector)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webSector);
             Assert.NotNull(webSector.TVItemModel);
-            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebSector);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -673,60 +642,59 @@ namespace ReadGzFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadGzFileService_ReadWebTideLocation_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebAllTideLocations_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebTideLocation;
+            WebTypeEnum webType = WebTypeEnum.WebAllTideLocations;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
 
             // Read gz
-            var actionRes = await ReadGzFileService.ReadJSON<WebTideLocation>(webType, TVItemID, webTypeYear);
+            var actionRes = await ReadGzFileService.ReadJSON<WebAllTideLocations>(webType, TVItemID, webTypeYear);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
-            WebTideLocation webTideLocation = (WebTideLocation)((OkObjectResult)actionRes.Result).Value;
-            Assert.NotNull(webTideLocation);
-            Assert.NotNull(webTideLocation.TideLocationList);
-            Assert.NotNull(WebAppLoadedService.webAppLoaded.WebTideLocation);
+            WebAllTideLocations webAllTideLocations = (WebAllTideLocations)((OkObjectResult)actionRes.Result).Value;
+            Assert.NotNull(webAllTideLocations);
+            Assert.NotNull(webAllTideLocations.TideLocationList);
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadGzFileService_ReadWebAllTVItem_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebAllTVItems_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebAllTVItem;
+            WebTypeEnum webType = WebTypeEnum.WebAllTVItems;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
 
             // Read gz
-            var actionRes = await ReadGzFileService.ReadJSON<WebAllTVItem>(webType, TVItemID, webTypeYear);
+            var actionRes = await ReadGzFileService.ReadJSON<WebAllTVItems>(webType, TVItemID, webTypeYear);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
-            WebAllTVItem webWebAllTVItem = (WebAllTVItem)((OkObjectResult)actionRes.Result).Value;
-            Assert.NotNull(webWebAllTVItem);
-            Assert.NotNull(webWebAllTVItem.TVItemList);
+            WebAllTVItems webWebAllTVItems = (WebAllTVItems)((OkObjectResult)actionRes.Result).Value;
+            Assert.NotNull(webWebAllTVItems);
+            Assert.NotNull(webWebAllTVItems.TVItemList);
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadGzFileService_ReadWebAllTVItemLanguage_Good_Test(string culture)
+        public async Task ReadGzFileService_ReadWebAllTVItemLanguages_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebAllTVItemLanguage;
+            WebTypeEnum webType = WebTypeEnum.WebAllTVItemLanguages;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
 
             // Read gz
-            var actionRes = await ReadGzFileService.ReadJSON<WebAllTVItemLanguage>(webType, TVItemID, webTypeYear);
+            var actionRes = await ReadGzFileService.ReadJSON<WebAllTVItemLanguages>(webType, TVItemID, webTypeYear);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
-            WebAllTVItemLanguage webWebAllTVItemLanguage = (WebAllTVItemLanguage)((OkObjectResult)actionRes.Result).Value;
-            Assert.NotNull(webWebAllTVItemLanguage);
-            Assert.NotNull(webWebAllTVItemLanguage.TVItemLanguageList);
+            WebAllTVItemLanguages webWebAllTVItemLanguages = (WebAllTVItemLanguages)((OkObjectResult)actionRes.Result).Value;
+            Assert.NotNull(webWebAllTVItemLanguages);
+            Assert.NotNull(webWebAllTVItemLanguages.TVItemLanguageList);
         }
         #endregion Tests 
 

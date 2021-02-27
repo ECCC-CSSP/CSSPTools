@@ -40,7 +40,7 @@ namespace CreateGzFileServices
 
                 await FillChildListTVItemModelList(webRoot.TVItemCountryList, TVItemRoot, TVTypeEnum.Country);
 
-                await DoStore<WebRoot>(webRoot, "WebRoot.gz");
+                await DoStore<WebRoot>(webRoot, $"{ WebTypeEnum.WebRoot }.gz");
             }
             catch (Exception ex)
             {

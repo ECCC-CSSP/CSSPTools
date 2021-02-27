@@ -39,7 +39,7 @@ namespace CreateGzFileServices
 
                 await FillChildListTVItemModelList(webMunicipalities.TVItemMunicipalityList, TVItemProvince, TVTypeEnum.Municipality);
 
-                await DoStore<WebMunicipalities>(webMunicipalities, $"WebMunicipalities_{ProvinceTVItemID}.gz");
+                await DoStore<WebMunicipalities>(webMunicipalities, $"{ WebTypeEnum.WebMunicipalities }_{ ProvinceTVItemID }.gz");
             }
             catch (Exception ex)
             {

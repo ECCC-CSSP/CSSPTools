@@ -40,7 +40,7 @@ namespace CreateGzFileServices
                 webDrogueRun.DrogueRunList = await GetDrogueRunListUnderProvince(TVItemSubsector.TVItemID);
                 webDrogueRun.DrogueRunPositionList = await GetDrogueRunPositionListUnderProvince(TVItemSubsector.TVItemID);
 
-                await DoStore<WebDrogueRun>(webDrogueRun, $"WebDrogueRun_{SubsectorTVItemID}.gz");
+                await DoStore<WebDrogueRun>(webDrogueRun, $"{ WebTypeEnum.WebDrogueRun }_{ SubsectorTVItemID }.gz");
             }
             catch (Exception ex)
             {

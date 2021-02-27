@@ -112,11 +112,11 @@ namespace CSSPWebAPIsLocal.ReadController.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadController_WebContact_Good_Test(string culture)
+        public async Task ReadController_WebAllContacts_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebContact;
+            WebTypeEnum webType = WebTypeEnum.WebAllContacts;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
@@ -126,7 +126,7 @@ namespace CSSPWebAPIsLocal.ReadController.Tests
                 var response = await httpClient.GetAsync(url);
                 Assert.Equal(HttpStatusCode.OK, response.StatusCode);
                 string responseContent = await response.Content.ReadAsStringAsync();
-                WebContact webContact = JsonSerializer.Deserialize<WebContact>(responseContent);
+                WebAllContacts webContact = JsonSerializer.Deserialize<WebAllContacts>(responseContent);
                 Assert.NotNull(webContact);
                 Assert.NotNull(webContact.ContactList);
             }
@@ -178,11 +178,11 @@ namespace CSSPWebAPIsLocal.ReadController.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadController_WebHelpDoc_Good_Test(string culture)
+        public async Task ReadController_WebAllHelpDocs_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebHelpDoc;
+            WebTypeEnum webType = WebTypeEnum.WebAllHelpDocs;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
@@ -192,7 +192,7 @@ namespace CSSPWebAPIsLocal.ReadController.Tests
                 var response = await httpClient.GetAsync(url);
                 Assert.Equal(HttpStatusCode.OK, response.StatusCode);
                 string responseContent = await response.Content.ReadAsStringAsync();
-                WebHelpDoc webHelpDoc = JsonSerializer.Deserialize<WebHelpDoc>(responseContent);
+                WebAllHelpDocs webHelpDoc = JsonSerializer.Deserialize<WebAllHelpDocs>(responseContent);
                 Assert.NotNull(webHelpDoc);
                 Assert.NotNull(webHelpDoc.HelpDocList);
             }
@@ -310,11 +310,11 @@ namespace CSSPWebAPIsLocal.ReadController.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadController_WebMWQMLookupMPN_Good_Test(string culture)
+        public async Task ReadController_WebAllMWQMLookupMPNs_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebMWQMLookupMPN;
+            WebTypeEnum webType = WebTypeEnum.WebAllMWQMLookupMPNs;
             int TVItemID = 7;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
@@ -324,7 +324,7 @@ namespace CSSPWebAPIsLocal.ReadController.Tests
                 var response = await httpClient.GetAsync(url);
                 Assert.Equal(HttpStatusCode.OK, response.StatusCode);
                 string responseContent = await response.Content.ReadAsStringAsync();
-                WebMWQMLookupMPN webMWQMLookupMPN = JsonSerializer.Deserialize<WebMWQMLookupMPN>(responseContent);
+                WebAllMWQMLookupMPNs webMWQMLookupMPN = JsonSerializer.Deserialize<WebAllMWQMLookupMPNs>(responseContent);
                 Assert.NotNull(webMWQMLookupMPN);
                 Assert.NotNull(webMWQMLookupMPN.MWQMLookupMPNList);
             }
@@ -552,11 +552,11 @@ namespace CSSPWebAPIsLocal.ReadController.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadController_WebPolSourceGrouping_Good_Test(string culture)
+        public async Task ReadController_WebAllPolSourceGroupings_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebPolSourceGrouping;
+            WebTypeEnum webType = WebTypeEnum.WebAllPolSourceGroupings;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
@@ -566,7 +566,7 @@ namespace CSSPWebAPIsLocal.ReadController.Tests
                 var response = await httpClient.GetAsync(url);
                 Assert.Equal(HttpStatusCode.OK, response.StatusCode);
                 string responseContent = await response.Content.ReadAsStringAsync();
-                WebPolSourceGrouping webPolSourceGrouping = JsonSerializer.Deserialize<WebPolSourceGrouping>(responseContent);
+                WebAllPolSourceGroupings webPolSourceGrouping = JsonSerializer.Deserialize<WebAllPolSourceGroupings>(responseContent);
                 Assert.NotNull(webPolSourceGrouping);
                 Assert.NotNull(webPolSourceGrouping.PolSourceGroupingList);
             }
@@ -596,11 +596,11 @@ namespace CSSPWebAPIsLocal.ReadController.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadController_WebPolSourceSiteEffectTerm_Good_Test(string culture)
+        public async Task ReadController_WebAllPolSourceSiteEffectTerms_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebPolSourceSiteEffectTerm;
+            WebTypeEnum webType = WebTypeEnum.WebAllPolSourceSiteEffectTerms;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
@@ -610,7 +610,7 @@ namespace CSSPWebAPIsLocal.ReadController.Tests
                 var response = await httpClient.GetAsync(url);
                 Assert.Equal(HttpStatusCode.OK, response.StatusCode);
                 string responseContent = await response.Content.ReadAsStringAsync();
-                WebPolSourceSiteEffectTerm webPolSourceSiteEffectTerm = JsonSerializer.Deserialize<WebPolSourceSiteEffectTerm>(responseContent);
+                WebAllPolSourceSiteEffectTerms webPolSourceSiteEffectTerm = JsonSerializer.Deserialize<WebAllPolSourceSiteEffectTerms>(responseContent);
                 Assert.NotNull(webPolSourceSiteEffectTerm);
                 Assert.NotNull(webPolSourceSiteEffectTerm.PolSourceSiteEffectTermList);
             }
@@ -640,11 +640,11 @@ namespace CSSPWebAPIsLocal.ReadController.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadController_WebReportType_Good_Test(string culture)
+        public async Task ReadController_WebAllReportTypes_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebReportType;
+            WebTypeEnum webType = WebTypeEnum.WebAllReportTypes;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
@@ -654,9 +654,9 @@ namespace CSSPWebAPIsLocal.ReadController.Tests
                 var response = await httpClient.GetAsync(url);
                 Assert.Equal(HttpStatusCode.OK, response.StatusCode);
                 string responseContent = await response.Content.ReadAsStringAsync();
-                WebReportType webReportType = JsonSerializer.Deserialize<WebReportType>(responseContent);
-                Assert.NotNull(webReportType);
-                Assert.NotNull(webReportType.ReportTypeModelList);
+                WebAllReportTypes webAllReportTypes = JsonSerializer.Deserialize<WebAllReportTypes>(responseContent);
+                Assert.NotNull(webAllReportTypes);
+                Assert.NotNull(webAllReportTypes.ReportTypeModelList);
             }
         }
         [Theory]
@@ -750,11 +750,11 @@ namespace CSSPWebAPIsLocal.ReadController.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadController_WebTideLocation_Good_Test(string culture)
+        public async Task ReadController_WebAllTideLocations_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebTideLocation;
+            WebTypeEnum webType = WebTypeEnum.WebAllTideLocations;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
@@ -764,7 +764,7 @@ namespace CSSPWebAPIsLocal.ReadController.Tests
                 var response = await httpClient.GetAsync(url);
                 Assert.Equal(HttpStatusCode.OK, response.StatusCode);
                 string responseContent = await response.Content.ReadAsStringAsync();
-                WebTideLocation webTideLocation = JsonSerializer.Deserialize<WebTideLocation>(responseContent);
+                WebAllTideLocations webTideLocation = JsonSerializer.Deserialize<WebAllTideLocations>(responseContent);
                 Assert.NotNull(webTideLocation);
                 Assert.NotNull(webTideLocation.TideLocationList);
             }
@@ -772,11 +772,11 @@ namespace CSSPWebAPIsLocal.ReadController.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadController_WebAllTVItem_Good_Test(string culture)
+        public async Task ReadController_WebAllTVItems_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebAllTVItem;
+            WebTypeEnum webType = WebTypeEnum.WebAllTVItems;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
@@ -786,19 +786,19 @@ namespace CSSPWebAPIsLocal.ReadController.Tests
                 var response = await httpClient.GetAsync(url);
                 Assert.Equal(HttpStatusCode.OK, response.StatusCode);
                 string responseContent = await response.Content.ReadAsStringAsync();
-                WebAllTVItem webAllTVItem = JsonSerializer.Deserialize<WebAllTVItem>(responseContent);
-                Assert.NotNull(webAllTVItem);
-                Assert.NotNull(webAllTVItem.TVItemList);
+                WebAllTVItems webAllTVItems = JsonSerializer.Deserialize<WebAllTVItems>(responseContent);
+                Assert.NotNull(webAllTVItems);
+                Assert.NotNull(webAllTVItems.TVItemList);
             }
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadController_WebAllTVItemLanguage_Good_Test(string culture)
+        public async Task ReadController_WebAllTVItemLanguages_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebAllTVItemLanguage;
+            WebTypeEnum webType = WebTypeEnum.WebAllTVItemLanguages;
             int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
@@ -808,9 +808,9 @@ namespace CSSPWebAPIsLocal.ReadController.Tests
                 var response = await httpClient.GetAsync(url);
                 Assert.Equal(HttpStatusCode.OK, response.StatusCode);
                 string responseContent = await response.Content.ReadAsStringAsync();
-                WebAllTVItemLanguage webAllTVItemLanguage = JsonSerializer.Deserialize<WebAllTVItemLanguage>(responseContent);
-                Assert.NotNull(webAllTVItemLanguage);
-                Assert.NotNull(webAllTVItemLanguage.TVItemLanguageList);
+                WebAllTVItemLanguages webAllTVItemLanguages = JsonSerializer.Deserialize<WebAllTVItemLanguages>(responseContent);
+                Assert.NotNull(webAllTVItemLanguages);
+                Assert.NotNull(webAllTVItemLanguages.TVItemLanguageList);
             }
         }
         #endregion Tests

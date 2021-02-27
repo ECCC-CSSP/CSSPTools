@@ -77,9 +77,9 @@ export class ComponentDataLoadedService {
 
   DataLoadedContact(): boolean {
     let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebContact === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebContact).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebContact.constructor === Object)) {
+    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllContacts === undefined
+      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllContacts).length === 0
+        && this.appLoadedService.AppLoaded$.getValue()?.WebAllContacts.constructor === Object)) {
       AllTrue = false;
     }
 
@@ -110,9 +110,9 @@ export class ComponentDataLoadedService {
 
   DataLoadedHelpDoc(): boolean {
     let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebHelpDoc === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebHelpDoc).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebHelpDoc.constructor === Object)) {
+    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllHelpDocs === undefined
+      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllHelpDocs).length === 0
+        && this.appLoadedService.AppLoaded$.getValue()?.WebAllHelpDocs.constructor === Object)) {
       AllTrue = false;
     }
 
@@ -176,9 +176,9 @@ export class ComponentDataLoadedService {
 
   DataLoadedMWQMLookupMPN(): boolean {
     let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebMWQMLookupMPN === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebMWQMLookupMPN).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebMWQMLookupMPN.constructor === Object)) {
+    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllMWQMLookupMPNs === undefined
+      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllMWQMLookupMPNs).length === 0
+        && this.appLoadedService.AppLoaded$.getValue()?.WebAllMWQMLookupMPNs.constructor === Object)) {
       AllTrue = false;
     }
 
@@ -354,9 +354,9 @@ export class ComponentDataLoadedService {
 
   DataLoadedPolSourceGrouping(): boolean {
     let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebPolSourceGrouping === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebPolSourceGrouping).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebPolSourceGrouping.constructor === Object)) {
+    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceGroupings === undefined
+      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceGroupings).length === 0
+        && this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceGroupings.constructor === Object)) {
       AllTrue = false;
     }
 
@@ -365,9 +365,9 @@ export class ComponentDataLoadedService {
 
   DataLoadedPolSourceSiteEffectTerm(): boolean {
     let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebPolSourceSiteEffectTerm === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebPolSourceSiteEffectTerm).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebPolSourceSiteEffectTerm.constructor === Object)) {
+    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceSiteEffectTerms === undefined
+      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceSiteEffectTerms).length === 0
+        && this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceSiteEffectTerms.constructor === Object)) {
       AllTrue = false;
     }
 
@@ -402,9 +402,9 @@ export class ComponentDataLoadedService {
 
   DataLoadedReportType(): boolean {
     let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebReportType === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebReportType).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebReportType.constructor === Object)) {
+    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllReportTypes === undefined
+      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllReportTypes).length === 0
+        && this.appLoadedService.AppLoaded$.getValue()?.WebAllReportTypes.constructor === Object)) {
       AllTrue = false;
     }
 
@@ -418,9 +418,9 @@ export class ComponentDataLoadedService {
         && this.appLoadedService.AppLoaded$.getValue()?.WebRoot.constructor === Object)) {
       AllTrue = false;
     }
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebContact === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebContact).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebContact.constructor === Object)) {
+    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllContacts === undefined
+      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllContacts).length === 0
+        && this.appLoadedService.AppLoaded$.getValue()?.WebAllContacts.constructor === Object)) {
       AllTrue = false;
     }
     if (this.appLoadedService.AppLoaded$.getValue()?.WebAllCountries === undefined
@@ -438,34 +438,34 @@ export class ComponentDataLoadedService {
         && this.appLoadedService.AppLoaded$.getValue()?.WebAllMunicipalities.constructor === Object)) {
       AllTrue = false;
     }
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebHelpDoc === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebHelpDoc).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebHelpDoc.constructor === Object)) {
+    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllHelpDocs === undefined
+      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllHelpDocs).length === 0
+        && this.appLoadedService.AppLoaded$.getValue()?.WebAllHelpDocs.constructor === Object)) {
       AllTrue = false;
     }
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebMWQMLookupMPN === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebMWQMLookupMPN).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebMWQMLookupMPN.constructor === Object)) {
+    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllMWQMLookupMPNs === undefined
+      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllMWQMLookupMPNs).length === 0
+        && this.appLoadedService.AppLoaded$.getValue()?.WebAllMWQMLookupMPNs.constructor === Object)) {
       AllTrue = false;
     }
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebPolSourceGrouping === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebPolSourceGrouping).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebPolSourceGrouping.constructor === Object)) {
+    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceGroupings === undefined
+      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceGroupings).length === 0
+        && this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceGroupings.constructor === Object)) {
       AllTrue = false;
     }
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebPolSourceSiteEffectTerm === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebPolSourceSiteEffectTerm).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebPolSourceSiteEffectTerm.constructor === Object)) {
+    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceSiteEffectTerms === undefined
+      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceSiteEffectTerms).length === 0
+        && this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceSiteEffectTerms.constructor === Object)) {
       AllTrue == false;
     }
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebReportType === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebReportType).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebReportType.constructor === Object)) {
+    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllReportTypes === undefined
+      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllReportTypes).length === 0
+        && this.appLoadedService.AppLoaded$.getValue()?.WebAllReportTypes.constructor === Object)) {
       AllTrue = false;
     }
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebTideLocation === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebTideLocation).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebTideLocation.constructor === Object)) {
+    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllTideLocations === undefined
+      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllTideLocations).length === 0
+        && this.appLoadedService.AppLoaded$.getValue()?.WebAllTideLocations.constructor === Object)) {
       AllTrue == false;
     }
 
@@ -567,9 +567,9 @@ export class ComponentDataLoadedService {
 
   DataLoadedTideLocation(): boolean {
     let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebTideLocation === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebTideLocation).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebTideLocation.constructor === Object)) {
+    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllTideLocations === undefined
+      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllTideLocations).length === 0
+        && this.appLoadedService.AppLoaded$.getValue()?.WebAllTideLocations.constructor === Object)) {
       AllTrue = false;
     }
 

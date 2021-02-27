@@ -9,14 +9,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CSSPWebModels
 {
     [NotMapped]
-    public partial class WebMWQMLookupMPN
+    public partial class WebAllMWQMLookupMPNs
     {
         #region Properties
         public List<MWQMLookupMPN> MWQMLookupMPNList { get; set; }
         #endregion Properties
 
         #region Constructors
-        public WebMWQMLookupMPN()
+        public WebAllMWQMLookupMPNs()
         {
             MWQMLookupMPNList = new List<MWQMLookupMPN>();
         }

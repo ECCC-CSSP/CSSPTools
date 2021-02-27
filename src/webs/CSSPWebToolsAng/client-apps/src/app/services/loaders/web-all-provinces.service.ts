@@ -11,7 +11,6 @@ import { AppStateService } from 'src/app/services/app-state.service';
 import { AppLanguageService } from '../app-language.service';
 import { ComponentDataLoadedService } from '../helpers/component-data-loaded.service';
 import { WebAllMunicipalitiesService } from './web-all-municipalities.service';
-import { WebHelpDocService } from './web-help-doc.service';
 
 @Injectable({
     providedIn: 'root'

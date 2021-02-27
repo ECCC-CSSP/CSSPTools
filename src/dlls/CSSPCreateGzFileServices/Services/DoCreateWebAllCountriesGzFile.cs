@@ -35,7 +35,7 @@ namespace CreateGzFileServices
             {
                 await FillChildListTVItemModelList(webAllCountries.TVItemAllCountryList, TVItemRoot, TVTypeEnum.Country);
 
-                await DoStore<WebAllCountries>(webAllCountries, $"WebAllCountries.gz");
+                await DoStore<WebAllCountries>(webAllCountries, $"{ WebTypeEnum.WebAllCountries }.gz");
             }
             catch (Exception ex)
             {

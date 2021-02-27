@@ -39,7 +39,7 @@ namespace CreateGzFileServices
 
                 await FillChildListTVItemMWQMRunModelList(webMWQMRun.MWQMRunModelList, TVItemSubsector, TVTypeEnum.MWQMRun);
 
-                await DoStore<WebMWQMRun>(webMWQMRun, $"WebMWQMRun_{SubsectorTVItemID}.gz");
+                await DoStore<WebMWQMRun>(webMWQMRun, $"{ WebTypeEnum.WebMWQMRun }_{ SubsectorTVItemID }.gz");
             }
             catch (Exception ex)
             {

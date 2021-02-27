@@ -4,6 +4,7 @@
  */
 using CSSPCultureServices.Resources;
 using CSSPDBModels;
+using CSSPEnums;
 using CSSPWebModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -46,7 +47,7 @@ namespace CreateGzFileServices
 
                 await FillSamplingPlanModel(webSamplingPlan.SamplingPlanModel, SamplingPlan);
 
-                await DoStore<WebSamplingPlan>(webSamplingPlan, $"WebSamplingPlan_{SamplingPlanID}.gz");
+                await DoStore<WebSamplingPlan>(webSamplingPlan, $"{ WebTypeEnum.WebSamplingPlan }_{ SamplingPlanID }.gz");
             }
             catch (Exception ex)
             {

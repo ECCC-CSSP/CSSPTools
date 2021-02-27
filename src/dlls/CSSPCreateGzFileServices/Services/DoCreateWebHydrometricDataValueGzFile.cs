@@ -39,7 +39,7 @@ namespace CreateGzFileServices
 
                 webHydrometricDataValue.HydrometricDataValueList = await GetHydrometricDataValueListForHydrometricSite(TVItemHydrometric.TVItemID);
 
-                await DoStore<WebHydrometricDataValue>(webHydrometricDataValue, $"WebHydrometricDataValue_{HydrometricSiteTVItemID}.gz");
+                await DoStore<WebHydrometricDataValue>(webHydrometricDataValue, $"{ WebTypeEnum.WebHydrometricDataValue }_{ HydrometricSiteTVItemID }.gz");
             }
             catch (Exception ex)
             {

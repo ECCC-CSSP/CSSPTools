@@ -23,29 +23,22 @@ import { WebArea } from 'src/app/models/generated/web/WebArea.model';
 import { WebBase } from 'src/app/models/generated/web/WebBase.model';
 import { WebClimateDataValue } from 'src/app/models/generated/web/WebClimateDataValue.model';
 import { WebClimateSite } from 'src/app/models/generated/web/WebClimateSite.model';
-import { WebContact } from 'src/app/models/generated/web/WebContact.model';
 import { WebCountry } from 'src/app/models/generated/web/WebCountry.model';
 import { WebDrogueRun } from 'src/app/models/generated/web/WebDrogueRun.model';
-import { WebHelpDoc } from 'src/app/models/generated/web/WebHelpDoc.model';
 import { WebHydrometricDataValue } from 'src/app/models/generated/web/WebHydrometricDataValue.model';
 import { WebHydrometricSite } from 'src/app/models/generated/web/WebHydrometricSite.model';
 import { WebMikeScenario } from 'src/app/models/generated/web/WebMikeScenario.model';
 import { WebMunicipalities } from 'src/app/models/generated/web/WebMunicipalities.model';
 import { WebMunicipality } from 'src/app/models/generated/web/WebMunicipality.model';
-import { WebMWQMLookupMPN } from 'src/app/models/generated/web/WebMWQMLookupMPN.model';
 import { WebMWQMRun } from 'src/app/models/generated/web/WebMWQMRun.model';
 import { WebMWQMSample } from 'src/app/models/generated/web/WebMWQMSample.model';
 import { WebMWQMSite } from 'src/app/models/generated/web/WebMWQMSite.model';
-import { WebPolSourceGrouping } from 'src/app/models/generated/web/WebPolSourceGrouping.model';
 import { WebPolSourceSite } from 'src/app/models/generated/web/WebPolSourceSite.model';
-import { WebPolSourceSiteEffectTerm } from 'src/app/models/generated/web/WebPolSourceSiteEffectTerm.model';
 import { WebProvince } from 'src/app/models/generated/web/WebProvince.model';
-import { WebReportType } from 'src/app/models/generated/web/WebReportType.model';
 import { WebRoot } from 'src/app/models/generated/web/WebRoot.model';
 import { WebSamplingPlan } from 'src/app/models/generated/web/WebSamplingPlan.model';
 import { WebSector } from 'src/app/models/generated/web/WebSector.model';
 import { WebSubsector } from 'src/app/models/generated/web/WebSubsector.model';
-import { WebTideLocation } from 'src/app/models/generated/web/WebTideLocation.model';
 import { MWQMRun } from './generated/db/MWQMRun.model';
 import { MWQMSite } from './generated/db/MWQMSite.model';
 import { PolSourceSite } from './generated/db/PolSourceSite.model';
@@ -55,6 +48,13 @@ import { StatMWQMSite } from './generated/web/StatMWQMSite.model';
 import { WebAllCountries } from './generated/web/WebAllCountries.model';
 import { WebAllMunicipalities } from './generated/web/WebAllMunicipalities.model';
 import { WebAllProvinces } from './generated/web/WebAllProvinces.model';
+import { WebAllReportTypes } from './generated/web/WebAllReportTypes.model';
+import { WebAllContacts } from './generated/web/WebAllContacts.model';
+import { WebAllHelpDocs } from './generated/web/WebAllHelpDocs.model';
+import { WebAllMWQMLookupMPNs } from './generated/web/WebAllMWQMLookupMPNs.model';
+import { WebAllPolSourceGroupings } from './generated/web/WebAllPolSourceGroupings.model';
+import { WebAllPolSourceSiteEffectTerms } from './generated/web/WebAllPolSourceSiteEffectTerms.model';
+import { WebAllTideLocations } from './generated/web/WebAllTideLocations.model';
 
 export interface AppLoaded {
     LoggedInContact?: Contact;
@@ -81,12 +81,12 @@ export interface AppLoaded {
     WebPolSourceSiteEffectTermSubscription: Subscription;
     WebPolSourceSiteSubscription: Subscription;
     WebProvinceSubscription: Subscription;
-    WebReportTypeSubscription: Subscription;
+    WebAllReportTypesSubscription: Subscription;
     WebRootSubscription: Subscription;
     WebSamplingPlanSubscription: Subscription;
     WebSectorSubscription: Subscription;
     WebSubsectorSubscription: Subscription;
-    WebTideLocationSubscription: Subscription;
+    WebAllTideLocationsSubscription: Subscription;
     WebSubscription: Subscription;
 
     // Map related items
@@ -101,17 +101,17 @@ export interface AppLoaded {
     InfoContent?: string;
 
     // Complete list not related to a TVItemID
-    WebContact?: WebContact;
+    WebAllContacts?: WebAllContacts;
     AdminContactList?: Contact[];
     WebAllCountries?: WebAllCountries;
     WebAllMunicipalities?: WebAllMunicipalities;
     WebAllProvinces?: WebAllProvinces;
-    WebHelpDoc?: WebHelpDoc;
-    WebMWQMLookupMPN?: WebMWQMLookupMPN;
-    WebPolSourceGrouping?: WebPolSourceGrouping;
-    WebPolSourceSiteEffectTerm?: WebPolSourceSiteEffectTerm;
-    WebReportType?: WebReportType;
-    WebTideLocation?: WebTideLocation;
+    WebAllHelpDocs?: WebAllHelpDocs;
+    WebAllMWQMLookupMPNs?: WebAllMWQMLookupMPNs;
+    WebAllPolSourceGroupings?: WebAllPolSourceGroupings;
+    WebAllPolSourceSiteEffectTerms?: WebAllPolSourceSiteEffectTerms;
+    WebAllReportTypes?: WebAllReportTypes;
+    WebAllTideLocations?: WebAllTideLocations;
     MapInfoModelList?: MapInfoModel[];
 
     SearchResult?: SearchResult[];

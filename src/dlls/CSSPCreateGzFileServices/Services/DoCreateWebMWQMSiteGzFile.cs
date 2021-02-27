@@ -39,7 +39,7 @@ namespace CreateGzFileServices
 
                 await FillChildListTVItemMWQMSiteModelList(webMWQMSite.MWQMSiteModelList, TVItemSubsector, TVTypeEnum.MWQMSite);
 
-                await DoStore<WebMWQMSite>(webMWQMSite, $"WebMWQMSite_{SubsectorTVItemID}.gz");
+                await DoStore<WebMWQMSite>(webMWQMSite, $"{ WebTypeEnum.WebMWQMSite }_{ SubsectorTVItemID }.gz");
             }
             catch (Exception ex)
             {

@@ -43,7 +43,7 @@ namespace CreateGzFileServices
 
                 await FillChildListTVItemMikeBoundaryConditionModelList(webMikeScenario.MikeBoundaryConditionModelMeshList, TVItemMikeScenario, TVTypeEnum.MikeBoundaryConditionMesh);
 
-                await DoStore<WebMikeScenario>(webMikeScenario, $"WebMikeScenario_{MikeScenarioTVItemID}.gz");
+                await DoStore<WebMikeScenario>(webMikeScenario, $"{ WebTypeEnum.WebMikeScenario }_{ MikeScenarioTVItemID }.gz");
             }
             catch (Exception ex)
             {

@@ -27,7 +27,7 @@ namespace GenerateCSSPDBLocalServices_Tests
 
             foreach (Type type in types)
             {
-                bool ClassNotMapped = false;
+                //bool ClassNotMapped = false;
                 StringBuilder sb = new StringBuilder();
                 string TypeName = type.Name;
 
@@ -59,7 +59,7 @@ namespace GenerateCSSPDBLocalServices_Tests
                 {
                     if (customAttributeData.AttributeType.Name == "NotMappedAttribute")
                     {
-                        ClassNotMapped = true;
+                        //ClassNotMapped = true;
                         break;
                     }
                 }

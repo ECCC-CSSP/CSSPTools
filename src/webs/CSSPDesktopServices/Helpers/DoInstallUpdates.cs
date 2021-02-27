@@ -58,9 +58,19 @@ namespace CSSPDesktopServices.Services
             // Doing csspjson container 
             List<string> jsonFileNameList = new List<string>()
             {
-                "WebAllCountries.gz", "WebAllProvinces.gz", "WebAllMunicipalities.gz", "WebContact.gz", 
-                "WebHelpDoc.gz", "WebMWQMLookupMPN.gz", "WebPolSourceGrouping.gz", "WebPolSourceSiteEffectTerm.gz",
-                "WebReportType.gz", "WebRoot.gz", "WebTideLocation.gz", "WebAllTVItem.gz", "WebAllTVItemLanguage.gz"
+                $"{ WebTypeEnum.WebAllContacts }.gz",
+                $"{ WebTypeEnum.WebAllCountries }.gz",
+                $"{ WebTypeEnum.WebAllMunicipalities }.gz",
+                $"{ WebTypeEnum.WebAllHelpDocs }.gz",
+                $"{ WebTypeEnum.WebAllMWQMLookupMPNs }.gz",
+                $"{ WebTypeEnum.WebAllPolSourceGroupings }.gz",
+                $"{ WebTypeEnum.WebAllPolSourceSiteEffectTerms }.gz",
+                $"{ WebTypeEnum.WebAllProvinces }.gz",
+                $"{ WebTypeEnum.WebAllReportTypes }.gz",
+                $"{ WebTypeEnum.WebRoot }.gz",
+                $"{ WebTypeEnum.WebAllTideLocations }.gz",
+                $"{ WebTypeEnum.WebAllTVItems }.gz",
+                $"{ WebTypeEnum.WebAllTVItemLanguages }.gz"
             };
 
             int jsonCount = 0;
@@ -193,7 +203,7 @@ namespace CSSPDesktopServices.Services
                     return await Task.FromResult(false);
                 }
 
-                if (jsonFileName == "WebAllTVItemLanguage.gz")
+                if (jsonFileName == "WebAllTVItemLanguages.gz")
                 {
                     AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.FillingCSSPDBSearchDatabaseWith_Info, jsonFileName.Replace("Language", "") + " & " + jsonFileName)));
 
@@ -202,7 +212,7 @@ namespace CSSPDesktopServices.Services
             }
             else
             {
-                //if (jsonFileName == "WebAllTVItemLanguage.gz")
+                //if (jsonFileName == "WebAllTVItemLanguages.gz")
                 //{
                 //    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.UpdatingCSSPDBSearchDatabase)));
 

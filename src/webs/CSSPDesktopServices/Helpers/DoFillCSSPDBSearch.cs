@@ -24,8 +24,8 @@ namespace CSSPDesktopServices.Services
     {
         private async Task<bool> DoFillCSSPDBSearch()
         {
-            WebAllTVItem webAllTVItem = null;
-            WebAllTVItemLanguage webAllTVItemLanguage = null;
+            WebAllTVItems webAllTVItems = null;
+            WebAllTVItemLanguages webAllTVItemLanguages = null;
             int skip = 0;
             int take = 50000;
 
@@ -36,11 +36,11 @@ namespace CSSPDesktopServices.Services
             {
                 try
                 {
-                    #region doing WebAllTVItem
-                    var actionWebAllTVItem = await ReadGzFileService.ReadJSON<WebAllTVItem>(WebTypeEnum.WebAllTVItem, 0, WebTypeYearEnum.Year1980);
-                    if (((ObjectResult)actionWebAllTVItem.Result).StatusCode == 200)
+                    #region doing WebAllTVItems
+                    var actionWebAllTVItems = await ReadGzFileService.ReadJSON<WebAllTVItems>(WebTypeEnum.WebAllTVItems, 0, WebTypeYearEnum.Year1980);
+                    if (((ObjectResult)actionWebAllTVItems.Result).StatusCode == 200)
                     {
-                        webAllTVItem = (WebAllTVItem)((OkObjectResult)actionWebAllTVItem.Result).Value;
+                        webAllTVItems = (WebAllTVItems)((OkObjectResult)actionWebAllTVItems.Result).Value;
                     }
                     else
                     {
@@ -49,11 +49,11 @@ namespace CSSPDesktopServices.Services
                     }
 
                     int count = 1;
-                    int total = webAllTVItem.TVItemList.Count;
+                    int total = webAllTVItems.TVItemList.Count;
 
                     while (count > 0)
                     {
-                        List<TVItem> tvItemList = webAllTVItem.TVItemList.Skip(skip).Take(take).ToList();
+                        List<TVItem> tvItemList = webAllTVItems.TVItemList.Skip(skip).Take(take).ToList();
 
                         count = tvItemList.Count;
 
@@ -88,13 +88,13 @@ namespace CSSPDesktopServices.Services
                         InstallingStatus(new InstallingEventArgs(25 + (30 * skip/ total)));
 
                     }
-                    #endregion Doing WebAllTVItem
+                    #endregion Doing WebAllTVItemLanguages
 
                     #region doing WebAllTVItemLanguage
-                    var actionWebAllTVItemLanguage = await ReadGzFileService.ReadJSON<WebAllTVItemLanguage>(WebTypeEnum.WebAllTVItemLanguage, 0, WebTypeYearEnum.Year1980);
-                    if (((ObjectResult)actionWebAllTVItemLanguage.Result).StatusCode == 200)
+                    var actionWebAllTVItemLanguages = await ReadGzFileService.ReadJSON<WebAllTVItemLanguages>(WebTypeEnum.WebAllTVItemLanguages, 0, WebTypeYearEnum.Year1980);
+                    if (((ObjectResult)actionWebAllTVItemLanguages.Result).StatusCode == 200)
                     {
-                        webAllTVItemLanguage = (WebAllTVItemLanguage)((OkObjectResult)actionWebAllTVItemLanguage.Result).Value;
+                        webAllTVItemLanguages = (WebAllTVItemLanguages)((OkObjectResult)actionWebAllTVItemLanguages.Result).Value;
                     }
                     else
                     {
@@ -104,10 +104,10 @@ namespace CSSPDesktopServices.Services
 
                     skip = 0;
                     count = 1;
-                    total = webAllTVItemLanguage.TVItemLanguageList.Count;
+                    total = webAllTVItemLanguages.TVItemLanguageList.Count;
                     while (count > 0)
                     {
-                        List<TVItemLanguage> tvItemLanguageList = webAllTVItemLanguage.TVItemLanguageList.Skip(skip).Take(take).ToList();
+                        List<TVItemLanguage> tvItemLanguageList = webAllTVItemLanguages.TVItemLanguageList.Skip(skip).Take(take).ToList();
 
                         count = tvItemLanguageList.Count;
 

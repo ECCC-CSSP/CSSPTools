@@ -4,7 +4,7 @@ import { GetTopComponentEnum } from 'src/app/enums/generated/TopComponentEnum';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { LoggedInContactService } from 'src/app/services/loaders/logged-in-contact.service';
-import { WebContactService } from 'src/app/services/loaders/web-contact.service';
+import { WebAllContactsService } from 'src/app/services/loaders/web-all-contacts.service';
 
 @Component({
   selector: 'app-root',
@@ -18,12 +18,12 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(
     public appLoadedService: AppLoadedService,
     public appStateService: AppStateService,
-    public webContactService: WebContactService,
+    public webAllContactsService: WebAllContactsService,
     public loggedInContactService: LoggedInContactService) {
   }
 
   ngOnInit() {
-    this.webContactService.DoWebContact(false);
+    this.webAllContactsService.DoWebAllContacts(false);
     this.loggedInContactService.DoLoggedInContact();
   }
 

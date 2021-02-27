@@ -8,7 +8,7 @@ import { AppState } from 'src/app/models/AppState.model';
 import { Preference } from 'src/app/models/generated/helper/Preference.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
-import { WebContactService } from './web-contact.service';
+import { WebAllContactsService } from './web-all-contacts.service';
 
 declare var window: any;
 

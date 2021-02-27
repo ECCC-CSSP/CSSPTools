@@ -51,7 +51,7 @@ namespace CreateGzFileServices
                 webSubsector.MWQMSubsectorLanguageList = await GetMWQMSubsectorLanguageList(SubsectorTVItemID);
                 webSubsector.UseOfSiteList = await GetUseOfSiteList(SubsectorTVItemID);
 
-                await DoStore<WebSubsector>(webSubsector, $"WebSubsector_{SubsectorTVItemID}.gz");
+                await DoStore<WebSubsector>(webSubsector, $"{ WebTypeEnum.WebSubsector }_{ SubsectorTVItemID }.gz");
             }
             catch (Exception ex)
             {

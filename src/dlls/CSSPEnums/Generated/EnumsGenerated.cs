@@ -3120,38 +3120,38 @@ namespace CSSPEnums
                     return CSSPCultureEnumsRes.WebTypeEnumWebMWQMRun;
                 case WebTypeEnum.WebMWQMSite:
                     return CSSPCultureEnumsRes.WebTypeEnumWebMWQMSite;
-                case WebTypeEnum.WebContact:
-                    return CSSPCultureEnumsRes.WebTypeEnumWebContact;
+                case WebTypeEnum.WebAllContacts:
+                    return CSSPCultureEnumsRes.WebTypeEnumWebAllContacts;
                 case WebTypeEnum.WebClimateSite:
                     return CSSPCultureEnumsRes.WebTypeEnumWebClimateSite;
                 case WebTypeEnum.WebHydrometricSite:
                     return CSSPCultureEnumsRes.WebTypeEnumWebHydrometricSite;
                 case WebTypeEnum.WebDrogueRun:
                     return CSSPCultureEnumsRes.WebTypeEnumWebDrogueRun;
-                case WebTypeEnum.WebMWQMLookupMPN:
-                    return CSSPCultureEnumsRes.WebTypeEnumWebMWQMLookupMPN;
+                case WebTypeEnum.WebAllMWQMLookupMPNs:
+                    return CSSPCultureEnumsRes.WebTypeEnumWebAllMWQMLookupMPNs;
                 case WebTypeEnum.WebMikeScenario:
                     return CSSPCultureEnumsRes.WebTypeEnumWebMikeScenario;
                 case WebTypeEnum.WebClimateDataValue:
                     return CSSPCultureEnumsRes.WebTypeEnumWebClimateDataValue;
                 case WebTypeEnum.WebHydrometricDataValue:
                     return CSSPCultureEnumsRes.WebTypeEnumWebHydrometricDataValue;
-                case WebTypeEnum.WebHelpDoc:
-                    return CSSPCultureEnumsRes.WebTypeEnumWebHelpDoc;
-                case WebTypeEnum.WebTideLocation:
-                    return CSSPCultureEnumsRes.WebTypeEnumWebTideLocation;
+                case WebTypeEnum.WebAllHelpDocs:
+                    return CSSPCultureEnumsRes.WebTypeEnumWebAllHelpDocs;
+                case WebTypeEnum.WebAllTideLocations:
+                    return CSSPCultureEnumsRes.WebTypeEnumWebAllTideLocations;
                 case WebTypeEnum.WebPolSourceSite:
                     return CSSPCultureEnumsRes.WebTypeEnumWebPolSourceSite;
-                case WebTypeEnum.WebPolSourceGrouping:
-                    return CSSPCultureEnumsRes.WebTypeEnumWebPolSourceGrouping;
-                case WebTypeEnum.WebReportType:
-                    return CSSPCultureEnumsRes.WebTypeEnumWebReportType;
-                case WebTypeEnum.WebAllTVItem:
-                    return CSSPCultureEnumsRes.WebTypeEnumWebAllTVItem;
-                case WebTypeEnum.WebPolSourceSiteEffectTerm:
-                    return CSSPCultureEnumsRes.WebTypeEnumWebPolSourceSiteEffectTerm;
-                case WebTypeEnum.WebAllTVItemLanguage:
-                    return CSSPCultureEnumsRes.WebTypeEnumWebAllTVItemLanguage;
+                case WebTypeEnum.WebAllPolSourceGroupings:
+                    return CSSPCultureEnumsRes.WebTypeEnumWebAllPolSourceGroupings;
+                case WebTypeEnum.WebAllReportTypes:
+                    return CSSPCultureEnumsRes.WebTypeEnumWebAllReportTypes;
+                case WebTypeEnum.WebAllTVItems:
+                    return CSSPCultureEnumsRes.WebTypeEnumWebAllTVItems;
+                case WebTypeEnum.WebAllPolSourceSiteEffectTerms:
+                    return CSSPCultureEnumsRes.WebTypeEnumWebAllPolSourceSiteEffectTerms;
+                case WebTypeEnum.WebAllTVItemLanguages:
+                    return CSSPCultureEnumsRes.WebTypeEnumWebAllTVItemLanguages;
                 case WebTypeEnum.WebAllMunicipalities:
                     return CSSPCultureEnumsRes.WebTypeEnumWebAllMunicipalities;
                 case WebTypeEnum.WebAllProvinces:

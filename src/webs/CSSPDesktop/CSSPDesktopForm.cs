@@ -30,7 +30,7 @@ using CSSPDBCommandLogModels;
 using CSSPDBFilesManagementModels;
 using CSSPScrambleServices;
 using LoggedInServices;
-using WebAppLoadedServices;
+//using WebAppLoadedServices;
 
 namespace CSSPDesktop
 {
@@ -486,7 +486,7 @@ namespace CSSPDesktop
             Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
             Services.AddSingleton<IScrambleService, ScrambleService>();
             Services.AddSingleton<IPreferenceService, PreferenceService>();
-            Services.AddSingleton<IWebAppLoadedService, WebAppLoadedService>();
+            //Services.AddSingleton<IWebAppLoadedService, WebAppLoadedService>();
 
             /* ---------------------------------------------------------------------------------
              * using TestDB

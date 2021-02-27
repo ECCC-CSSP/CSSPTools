@@ -68,6 +68,18 @@
           }
         }
       },
+      "Azure.Storage.Files.Shares/12.6.0": {
+        "dependencies": {
+          "Azure.Storage.Common": "12.7.0",
+          "System.Text.Json": "4.6.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Azure.Storage.Files.Shares.dll": {
+            "assemblyVersion": "12.6.0.0",
+            "fileVersion": "12.600.21.6201"
+          }
+        }
+      },
       "Humanizer.Core/2.8.26": {
         "runtime": {
           "lib/netstandard2.0/Humanizer.dll": {
@@ -1953,6 +1965,41 @@
           "CSSPDBCommandLogModels.dll": {}
         }
       },
+      "CSSPDBFilesManagementModels/1.0.0": {
+        "dependencies": {
+          "CSSPEnums": "1.0.0",
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.2",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.2",
+          "Microsoft.EntityFrameworkCore": "5.0.2",
+          "Microsoft.EntityFrameworkCore.SqlServer": "5.0.2",
+          "Microsoft.EntityFrameworkCore.Sqlite": "5.0.2",
+          "Microsoft.Extensions.Configuration": "5.0.0",
+          "Microsoft.Extensions.Configuration.Json": "5.0.0",
+          "Microsoft.Extensions.DependencyInjection": "5.0.1",
+          "System.IdentityModel.Tokens.Jwt": "6.8.0"
+        },
+        "runtime": {
+          "CSSPDBFilesManagementModels.dll": {}
+        }
+      },
+      "CSSPDBFilesManagementServices/1.0.0": {
+        "dependencies": {
+          "Azure.Storage.Blobs": "12.8.0",
+          "CSSPDBCommandLogModels": "1.0.0",
+          "CSSPDBFilesManagementModels": "1.0.0",
+          "CSSPLoggedInServices": "1.0.0",
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.2",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.2",
+          "Microsoft.EntityFrameworkCore": "5.0.2",
+          "Microsoft.EntityFrameworkCore.SqlServer": "5.0.2",
+          "Microsoft.EntityFrameworkCore.Sqlite": "5.0.2",
+          "Microsoft.Extensions.Configuration": "5.0.0",
+          "Microsoft.Extensions.Configuration.Json": "5.0.0"
+        },
+        "runtime": {
+          "CSSPDBFilesManagementServices.dll": {}
+        }
+      },
       "CSSPDBLocalServices/1.0.0": {
         "dependencies": {
           "Azure.Storage.Blobs": "12.8.0",
@@ -1961,6 +2008,7 @@
           "CSSPEnums": "1.0.0",
           "CSSPHelperModels": "1.0.0",
           "CSSPLoggedInServices": "1.0.0",
+          "CSSPReadGzFileServices": "1.0.0",
           "CSSPWebAppLoadedlServices": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.2",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.2",
@@ -2030,6 +2078,26 @@
           "CSSPDBPreferenceServices.dll": {}
         }
       },
+      "CSSPDownloadFileServices/1.0.0": {
+        "dependencies": {
+          "Azure.Storage.Blobs": "12.8.0",
+          "Azure.Storage.Files.Shares": "12.6.0",
+          "CSSPDBFilesManagementServices": "1.0.0",
+          "CSSPDBModels": "1.0.0",
+          "CSSPScrambleServices": "1.0.0",
+          "CSSPWebAppLoadedlServices": "1.0.0",
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.2",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.2",
+          "Microsoft.EntityFrameworkCore": "5.0.2",
+          "Microsoft.EntityFrameworkCore.SqlServer": "5.0.2",
+          "Microsoft.EntityFrameworkCore.Sqlite": "5.0.2",
+          "Microsoft.Extensions.Configuration": "5.0.0",
+          "Microsoft.Extensions.Configuration.Json": "5.0.0"
+        },
+        "runtime": {
+          "CSSPDownloadFileServices.dll": {}
+        }
+      },
       "CSSPEnums/1.0.0": {
         "dependencies": {
           "CSSPCultureServices": "1.0.0",
@@ -2076,6 +2144,25 @@
         },
         "runtime": {
           "CSSPLoggedInServices.dll": {}
+        }
+      },
+      "CSSPReadGzFileServices/1.0.0": {
+        "dependencies": {
+          "Azure.Storage.Blobs": "12.8.0",
+          "CSSPDBPreferenceServices": "1.0.0",
+          "CSSPDownloadFileServices": "1.0.0",
+          "CSSPWebAppLoadedlServices": "1.0.0",
+          "CSSPWebModels": "1.0.0",
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.2",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.2",
+          "Microsoft.EntityFrameworkCore": "5.0.2",
+          "Microsoft.EntityFrameworkCore.SqlServer": "5.0.2",
+          "Microsoft.EntityFrameworkCore.Sqlite": "5.0.2",
+          "Microsoft.Extensions.Configuration": "5.0.0",
+          "Microsoft.Extensions.Configuration.Json": "5.0.0"
+        },
+        "runtime": {
+          "CSSPReadGzFileServices.dll": {}
         }
       },
       "CSSPScrambleServices/1.0.0": {
@@ -2149,6 +2236,13 @@
       "sha512": "sha512-w2hcSk80NbkUIvb0x81zYAvpx7RzhRVJjWterjYpEI9DRNLoqxap3b7LOSnLfcA5jgSVaeKlOZzneUrXx7+wnA==",
       "path": "azure.storage.common/12.7.0",
       "hashPath": "azure.storage.common.12.7.0.nupkg.sha512"
+    },
+    "Azure.Storage.Files.Shares/12.6.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-tJSLVt9fagVbARDC7gsWA2BmF1M+LKpvvbTkU+UMQssj/S0npw6RCGFS8e5rOyFv8KLHqB12fEs3RqO3W/BYeA==",
+      "path": "azure.storage.files.shares/12.6.0",
+      "hashPath": "azure.storage.files.shares.12.6.0.nupkg.sha512"
     },
     "Humanizer.Core/2.8.26": {
       "type": "package",
@@ -3343,6 +3437,16 @@
       "serviceable": false,
       "sha512": ""
     },
+    "CSSPDBFilesManagementModels/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "CSSPDBFilesManagementServices/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
     "CSSPDBLocalServices/1.0.0": {
       "type": "project",
       "serviceable": false,
@@ -3363,6 +3467,11 @@
       "serviceable": false,
       "sha512": ""
     },
+    "CSSPDownloadFileServices/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
     "CSSPEnums/1.0.0": {
       "type": "project",
       "serviceable": false,
@@ -3374,6 +3483,11 @@
       "sha512": ""
     },
     "CSSPLoggedInServices/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "CSSPReadGzFileServices/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

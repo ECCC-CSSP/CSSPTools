@@ -10,6 +10,9 @@ import { ContactTitleEnum } from 'src/app/enums/generated/ContactTitleEnum';
 import { DBCommandEnum } from 'src/app/enums/generated/DBCommandEnum';
 
 export class Contact extends LastUpdate {
+    AccessFailedCount?: number;
+    CellNumber: string;
+    CellNumberConfirmed?: boolean;
     ContactID: number;
     ContactTitle?: ContactTitleEnum;
     ContactTVItemID: number;
@@ -25,6 +28,7 @@ export class Contact extends LastUpdate {
     LastUpdateContactTVItemID: number;
     LastUpdateDate_UTC: Date;
     LoginEmail: string;
+    PasswordHash: string;
     SamplingPlanner_ProvincesTVItemID: string;
     Token: string;
     WebName: string;

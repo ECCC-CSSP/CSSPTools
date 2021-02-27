@@ -41,7 +41,7 @@ namespace CreateGzFileServices
 
                 webProvince.SamplingPlanList = await GetSamplingPlanListWithProvinceTVItemID(TVItemProvince.TVItemID);
 
-                await DoStore<WebProvince>(webProvince, $"WebProvince_{ProvinceTVItemID}.gz");
+                await DoStore<WebProvince>(webProvince, $"{ WebTypeEnum.WebProvince }_{ ProvinceTVItemID }.gz");
             }
             catch (Exception ex)
             {

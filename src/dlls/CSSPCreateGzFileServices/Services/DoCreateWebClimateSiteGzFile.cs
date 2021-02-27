@@ -29,7 +29,7 @@ namespace CreateGzFileServices
                     "TVItem", ProvinceTVItemID.ToString(), "TVType", TVTypeEnum.Province.ToString())));
             }
 
-            WebClimateSite webClimateSite  = new WebClimateSite();
+            WebClimateSite webClimateSite = new WebClimateSite();
 
             try
             {
@@ -41,7 +41,7 @@ namespace CreateGzFileServices
 
                 await FillChildListTVItemModelList(webClimateSite.TVItemClimateSiteList, TVItemProvince, TVTypeEnum.ClimateSite);
 
-                await DoStore<WebClimateSite>(webClimateSite, $"WebClimateSite_{ProvinceTVItemID}.gz");
+                await DoStore<WebClimateSite>(webClimateSite, $"{ WebTypeEnum.WebClimateSite }_{ ProvinceTVItemID }.gz");
             }
             catch (Exception ex)
             {

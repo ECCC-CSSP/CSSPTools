@@ -9210,11 +9210,29 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to WebAllContacts.
+        /// </summary>
+        public static string WebTypeEnumWebAllContacts {
+            get {
+                return ResourceManager.GetString("WebTypeEnumWebAllContacts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to WebAllCountries.
         /// </summary>
         public static string WebTypeEnumWebAllCountries {
             get {
                 return ResourceManager.GetString("WebTypeEnumWebAllCountries", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebAllHelpDocs.
+        /// </summary>
+        public static string WebTypeEnumWebAllHelpDocs {
+            get {
+                return ResourceManager.GetString("WebTypeEnumWebAllHelpDocs", resourceCulture);
             }
         }
         
@@ -9228,6 +9246,33 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to WebAllMWQMLookupMPNs.
+        /// </summary>
+        public static string WebTypeEnumWebAllMWQMLookupMPNs {
+            get {
+                return ResourceManager.GetString("WebTypeEnumWebAllMWQMLookupMPNs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebAllPolSourceGroupings.
+        /// </summary>
+        public static string WebTypeEnumWebAllPolSourceGroupings {
+            get {
+                return ResourceManager.GetString("WebTypeEnumWebAllPolSourceGroupings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebAllPolSourceSiteEffectTerms.
+        /// </summary>
+        public static string WebTypeEnumWebAllPolSourceSiteEffectTerms {
+            get {
+                return ResourceManager.GetString("WebTypeEnumWebAllPolSourceSiteEffectTerms", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to WebAllProvinces.
         /// </summary>
         public static string WebTypeEnumWebAllProvinces {
@@ -9237,20 +9282,38 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to WebAllTVItem.
+        ///   Looks up a localized string similar to WebAllReportTypes.
         /// </summary>
-        public static string WebTypeEnumWebAllTVItem {
+        public static string WebTypeEnumWebAllReportTypes {
             get {
-                return ResourceManager.GetString("WebTypeEnumWebAllTVItem", resourceCulture);
+                return ResourceManager.GetString("WebTypeEnumWebAllReportTypes", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to WebAllTVItemLanguage.
+        ///   Looks up a localized string similar to WebAllTideLocations.
         /// </summary>
-        public static string WebTypeEnumWebAllTVItemLanguage {
+        public static string WebTypeEnumWebAllTideLocations {
             get {
-                return ResourceManager.GetString("WebTypeEnumWebAllTVItemLanguage", resourceCulture);
+                return ResourceManager.GetString("WebTypeEnumWebAllTideLocations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebAllTVItemLanguages.
+        /// </summary>
+        public static string WebTypeEnumWebAllTVItemLanguages {
+            get {
+                return ResourceManager.GetString("WebTypeEnumWebAllTVItemLanguages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebAllTVItems.
+        /// </summary>
+        public static string WebTypeEnumWebAllTVItems {
+            get {
+                return ResourceManager.GetString("WebTypeEnumWebAllTVItems", resourceCulture);
             }
         }
         
@@ -9282,15 +9345,6 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to WebContact.
-        /// </summary>
-        public static string WebTypeEnumWebContact {
-            get {
-                return ResourceManager.GetString("WebTypeEnumWebContact", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to WebCountry.
         /// </summary>
         public static string WebTypeEnumWebCountry {
@@ -9305,15 +9359,6 @@ namespace CSSPCultureServices.Resources {
         public static string WebTypeEnumWebDrogueRun {
             get {
                 return ResourceManager.GetString("WebTypeEnumWebDrogueRun", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to WebHelpDoc.
-        /// </summary>
-        public static string WebTypeEnumWebHelpDoc {
-            get {
-                return ResourceManager.GetString("WebTypeEnumWebHelpDoc", resourceCulture);
             }
         }
         
@@ -9363,15 +9408,6 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to WebMWQMLookupMPN.
-        /// </summary>
-        public static string WebTypeEnumWebMWQMLookupMPN {
-            get {
-                return ResourceManager.GetString("WebTypeEnumWebMWQMLookupMPN", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to WebMWQMRun.
         /// </summary>
         public static string WebTypeEnumWebMWQMRun {
@@ -9399,15 +9435,6 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to WebPolSourceGrouping.
-        /// </summary>
-        public static string WebTypeEnumWebPolSourceGrouping {
-            get {
-                return ResourceManager.GetString("WebTypeEnumWebPolSourceGrouping", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to WebPolSourceSite.
         /// </summary>
         public static string WebTypeEnumWebPolSourceSite {
@@ -9417,29 +9444,11 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to WebPolSourceSiteEffectTerm.
-        /// </summary>
-        public static string WebTypeEnumWebPolSourceSiteEffectTerm {
-            get {
-                return ResourceManager.GetString("WebTypeEnumWebPolSourceSiteEffectTerm", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to WebProvince.
         /// </summary>
         public static string WebTypeEnumWebProvince {
             get {
                 return ResourceManager.GetString("WebTypeEnumWebProvince", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to WebReportType.
-        /// </summary>
-        public static string WebTypeEnumWebReportType {
-            get {
-                return ResourceManager.GetString("WebTypeEnumWebReportType", resourceCulture);
             }
         }
         
@@ -9476,15 +9485,6 @@ namespace CSSPCultureServices.Resources {
         public static string WebTypeEnumWebSubsector {
             get {
                 return ResourceManager.GetString("WebTypeEnumWebSubsector", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to WebTideLocation.
-        /// </summary>
-        public static string WebTypeEnumWebTideLocation {
-            get {
-                return ResourceManager.GetString("WebTypeEnumWebTideLocation", resourceCulture);
             }
         }
         

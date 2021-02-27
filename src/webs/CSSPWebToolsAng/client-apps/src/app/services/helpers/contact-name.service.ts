@@ -26,8 +26,8 @@ export class ContactNameService {
 
   private GetContactName(LastUpdateContactTVItemID: number)
   {
-    if (this.appLoadedService.AppLoaded$?.getValue()?.WebContact) {
-      const contactList: Contact[] = this.appLoadedService.AppLoaded$?.getValue()?.WebContact.ContactList.filter((c) => { return c.ContactTVItemID == LastUpdateContactTVItemID });
+    if (this.appLoadedService.AppLoaded$?.getValue()?.WebAllContacts) {
+      const contactList: Contact[] = this.appLoadedService.AppLoaded$?.getValue()?.WebAllContacts.ContactList.filter((c) => { return c.ContactTVItemID == LastUpdateContactTVItemID });
       if (contactList && contactList.length > 0) {
         return `${contactList[0].FirstName} ${contactList[0].LastName}`;
       }

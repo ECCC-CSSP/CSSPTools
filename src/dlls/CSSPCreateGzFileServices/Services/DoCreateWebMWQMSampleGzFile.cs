@@ -40,7 +40,7 @@ namespace CreateGzFileServices
                 webMWQMSample.MWQMSampleList = await GetWQMSampleListFromSubsector10Years(TVItemSubsector, Year);
                 webMWQMSample.MWQMSampleLanguageList = await GetWQMSampleLanguageListFromSubsector10Years(TVItemSubsector, Year);
 
-                await DoStore<WebMWQMSample>(webMWQMSample, $"WebMWQMSample_{SubsectorTVItemID}_{Year}_{Year + 9}.gz");
+                await DoStore<WebMWQMSample>(webMWQMSample, $"{ WebTypeEnum.WebMWQMSample }_{ SubsectorTVItemID }_{Year}_{Year + 9}.gz");
             }
             catch (Exception ex)
             {

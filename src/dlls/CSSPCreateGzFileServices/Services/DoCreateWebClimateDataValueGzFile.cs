@@ -39,7 +39,7 @@ namespace CreateGzFileServices
 
                 webClimateDataValue.ClimateDataValueList = await GetClimateDataValueListForClimateSite(TVItemClimateSite.TVItemID);
 
-                await DoStore<WebClimateDataValue>(webClimateDataValue, $"WebClimateDataValue_{ClimateSiteTVItemID}.gz");
+                await DoStore<WebClimateDataValue>(webClimateDataValue, $"{ WebTypeEnum.WebClimateDataValue }_{ ClimateSiteTVItemID }.gz");
             }
             catch (Exception ex)
             {

@@ -47,7 +47,7 @@ namespace CreateGzFileServices
 
                 webMunicipality.MunicipalityTVItemLinkList = await GetInfrastructureTVItemLinkListUnderMunicipality(TVItemMunicipality);
 
-                await DoStore<WebMunicipality>(webMunicipality, $"WebMunicipality_{MunicipalityTVItemID}.gz");
+                await DoStore<WebMunicipality>(webMunicipality, $"{ WebTypeEnum.WebMunicipality }_{ MunicipalityTVItemID }.gz");
             }
             catch (Exception ex)
             {
