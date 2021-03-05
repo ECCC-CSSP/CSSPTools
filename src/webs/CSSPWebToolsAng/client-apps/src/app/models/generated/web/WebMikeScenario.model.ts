@@ -8,14 +8,17 @@
 import { MikeBoundaryConditionModel } from 'src/app/models/generated/web/MikeBoundaryConditionModel.model';
 import { MikeScenario } from 'src/app/models/generated/db/MikeScenario.model';
 import { MikeSourceModel } from 'src/app/models/generated/web/MikeSourceModel.model';
-import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { WebBase } from 'src/app/models/generated/web/WebBase.model';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 
 export class WebMikeScenario {
     MikeBoundaryConditionModelMeshList: MikeBoundaryConditionModel[];
     MikeBoundaryConditionModelWebTideList: MikeBoundaryConditionModel[];
     MikeScenario: MikeScenario;
     MikeSourceModelList: MikeSourceModel[];
+    TVItemMikeBoundaryConditionMeshList: WebBase[];
+    TVItemMikeBoundaryConditionWebTideList: WebBase[];
+    TVItemMikeSourceList: WebBase[];
     TVItemModel: TVItemModel;
     TVItemParentList: WebBase[];
 }

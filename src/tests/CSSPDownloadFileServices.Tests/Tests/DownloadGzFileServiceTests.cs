@@ -101,6 +101,57 @@ namespace DownloadFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
+        public async Task DownloadFileService_DownloadWebAllAddresses_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebAllAddresses;
+            int TVItemID = 0;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
+
+            // Download gz
+            var actionRes = await DownloadFileService.DownloadGzFile(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task DownloadFileService_DownloadWebAllEmails_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebAllEmails;
+            int TVItemID = 0;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
+
+            // Download gz
+            var actionRes = await DownloadFileService.DownloadGzFile(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task DownloadFileService_DownloadWebAllTels_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebAllTels;
+            int TVItemID = 0;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
+
+            // Download gz
+            var actionRes = await DownloadFileService.DownloadGzFile(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
         public async Task DownloadFileService_DownloadWebCountry_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));

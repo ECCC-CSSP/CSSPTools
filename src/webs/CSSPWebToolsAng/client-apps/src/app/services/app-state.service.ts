@@ -96,7 +96,7 @@ export class AppStateService {
       LastUpdateVisible: false,
       InactVisible: false,
       MenuVisible: false,
-      EditVisible: true,
+      EditVisible: false,
 
       // map 
       MapVisible: true,

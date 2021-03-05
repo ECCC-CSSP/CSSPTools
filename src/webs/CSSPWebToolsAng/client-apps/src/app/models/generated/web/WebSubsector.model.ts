@@ -9,8 +9,8 @@ import { LabSheetModel } from 'src/app/models/generated/web/LabSheetModel.model'
 import { MWQMAnalysisReportParameter } from 'src/app/models/generated/db/MWQMAnalysisReportParameter.model';
 import { MWQMSubsector } from 'src/app/models/generated/db/MWQMSubsector.model';
 import { MWQMSubsectorLanguage } from 'src/app/models/generated/db/MWQMSubsectorLanguage.model';
-import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { WebBase } from 'src/app/models/generated/web/WebBase.model';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { UseOfSite } from 'src/app/models/generated/db/UseOfSite.model';
 
 export class WebSubsector {
@@ -18,6 +18,7 @@ export class WebSubsector {
     MWQMAnalysisReportParameterList: MWQMAnalysisReportParameter[];
     MWQMSubsector: MWQMSubsector;
     MWQMSubsectorLanguageList: MWQMSubsectorLanguage[];
+    TVItemClassificationList: WebBase[];
     TVItemModel: TVItemModel;
     TVItemMWQMRunList: WebBase[];
     TVItemMWQMSiteList: WebBase[];

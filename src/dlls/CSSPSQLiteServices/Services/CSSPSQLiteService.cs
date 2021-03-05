@@ -41,7 +41,7 @@ namespace CSSPSQLiteServices
 
         #region Properties
         public string Error { get; set; }
-        private CSSPDBContext dbLocal { get; }
+        private CSSPDBLocalContext dbLocal { get; }
         private CSSPDBSearchContext dbSearch { get; }
         private CSSPDBCommandLogContext dbCommandLog { get; }
         private CSSPDBPreferenceContext dbLogin { get; }
@@ -54,7 +54,7 @@ namespace CSSPSQLiteServices
 
         #region Constructors
         public CSSPSQLiteService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, 
-            CSSPDBContext dbLocal, CSSPDBSearchContext dbSearch, CSSPDBCommandLogContext dbCommandLog,
+            CSSPDBLocalContext dbLocal, CSSPDBSearchContext dbSearch, CSSPDBCommandLogContext dbCommandLog,
             CSSPDBPreferenceContext dbLogin, CSSPDBFilesManagementContext dbFM)
         {
             this.Configuration = Configuration;

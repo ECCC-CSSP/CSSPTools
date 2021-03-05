@@ -21,7 +21,6 @@ using CSSPDBFilesManagementModels;
 using CSSPDBPreferenceModels;
 using CSSPScrambleServices;
 using LoggedInServices;
-//using WebAppLoadedServices;
 
 namespace ReadGzFileServices.Tests
 {
@@ -38,7 +37,6 @@ namespace ReadGzFileServices.Tests
         private ICSSPDBFilesManagementService CSSPDBFilesManagementService { get; set; }
         private IReadGzFileService ReadGzFileService { get; set; }
         private ILoggedInService LoggedInService { get; set; }
-        //private IWebAppLoadedService WebAppLoadedService { get; set; }
         private CSSPDBContext db { get; set; }
         private string AzureStoreCSSPJSONPath { get; set; }
         private string CSSPJSONPath { get; set; }
@@ -123,7 +121,6 @@ namespace ReadGzFileServices.Tests
             Services.AddSingleton<IDownloadFileService, DownloadFileService>();
             Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
-            //Services.AddSingleton<IWebAppLoadedService, WebAppLoadedService>();
             Services.AddSingleton<IScrambleService, ScrambleService>();
             Services.AddSingleton<IPreferenceService, PreferenceService>();
 
@@ -141,8 +138,7 @@ namespace ReadGzFileServices.Tests
             LoggedInService = Provider.GetService<ILoggedInService>();
             Assert.NotNull(LoggedInService);
 
-            string LoginEmail = Configuration.GetValue<string>("LoginEmail");
-            await LoggedInService.SetLoggedInContactInfo(LoginEmail);
+            await LoggedInService.SetLoggedInLocalContactInfo();
             Assert.NotNull(LoggedInService.LoggedInContactInfo);
             Assert.NotNull(LoggedInService.LoggedInContactInfo.LoggedInContact);
 
@@ -151,9 +147,6 @@ namespace ReadGzFileServices.Tests
 
             ReadGzFileService = Provider.GetService<IReadGzFileService>();
             Assert.NotNull(ReadGzFileService);
-
-            //WebAppLoadedService = Provider.GetService<IWebAppLoadedService>();
-            //Assert.NotNull(WebAppLoadedService);
 
             return await Task.FromResult(true);
         }

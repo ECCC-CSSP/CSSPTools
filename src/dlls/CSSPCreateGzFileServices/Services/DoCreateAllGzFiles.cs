@@ -21,6 +21,12 @@ namespace CreateGzFileServices
                 return await Task.FromResult(false);
             }
 
+            Console.WriteLine("CreateAllWebAddresses doing...");
+            await CreateGzFile(WebTypeEnum.WebAllAddresses, 0, 0);
+            Console.WriteLine("CreateAllWebEmails doing...");
+            await CreateGzFile(WebTypeEnum.WebAllEmails, 0, 0);
+            Console.WriteLine("CreateAllWebTels doing...");
+            await CreateGzFile(WebTypeEnum.WebAllTels, 0, 0);
             Console.WriteLine("CreateAllWebContacts doing...");
             await CreateGzFile(WebTypeEnum.WebAllContacts, 0, 0);
             Console.WriteLine("GetAllHelpDocs doing...");

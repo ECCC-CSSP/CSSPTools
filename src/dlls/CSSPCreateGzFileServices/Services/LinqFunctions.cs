@@ -503,6 +503,15 @@ namespace CreateGzFileServices
                           where MWQMSampleIDList.Contains(sal.MWQMSampleID)
                           select sal).AsNoTracking().ToListAsync();
         }
+        private async Task<List<Classification>> GetClassificationListFromSubsector(TVItem TVItemSubsector)
+        {
+            return await (from c in db.TVItems
+                          from r in db.Classifications
+                          where c.TVItemID == r.ClassificationTVItemID
+                          && c.TVPath.Contains(TVItemSubsector.TVPath + "p")
+                          && c.TVType == TVTypeEnum.Classification
+                          select r).AsNoTracking().ToListAsync();
+        }
         private async Task<List<MWQMRun>> GetMWQMRunListFromSubsector(TVItem TVItemSubsector)
         {
             return await (from c in db.TVItems
@@ -557,8 +566,34 @@ namespace CreateGzFileServices
         }
         private async Task<List<Contact>> GetAllContact()
         {
-            return await (from c in db.Contacts
-                          orderby c.LastName, c.FirstName, c.Initial
+            List<Contact> contactList = await (from c in db.Contacts
+                                               orderby c.LastName, c.FirstName, c.Initial
+                                               select c).AsNoTracking().ToListAsync();
+
+            foreach(Contact contact in contactList)
+            {
+                contact.PasswordHash = "";
+                contact.Token = "";
+            }
+
+            return contactList;
+        }
+        private async Task<List<Address>> GetAllAddress()
+        {
+            return await (from c in db.Addresses
+                          orderby c.GoogleAddressText, c.PostalCode
+                          select c).AsNoTracking().ToListAsync();
+        }
+        private async Task<List<Email>> GetAllEmail()
+        {
+            return await (from c in db.Emails
+                          orderby c.EmailAddress
+                          select c).AsNoTracking().ToListAsync();
+        }
+        private async Task<List<Tel>> GetAllTel()
+        {
+            return await (from c in db.Tels
+                          orderby c.TelNumber
                           select c).AsNoTracking().ToListAsync();
         }
         private async Task<List<ClimateSite>> GetClimateSiteListUnderProvince(TVItem TVItemProvince)

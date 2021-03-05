@@ -115,6 +115,7 @@ namespace CSSPDesktopServices.Services
         private string CSSPDesktopPath { get; set; }
         private string CSSPDatabasesPath { get; set; }
         private string CSSPJSONPath { get; set; }
+        private string CSSPJSONPathLocal { get; set; }
         private string CSSPFilesPath { get; set; }
         private string AzureStoreCSSPWebAPIsLocalPath { get; set; }
         private string AzureStoreCSSPJSONPath { get; set; }

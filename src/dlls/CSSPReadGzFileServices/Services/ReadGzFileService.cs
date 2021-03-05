@@ -18,12 +18,13 @@ using CSSPDBFilesManagementModels;
 using CSSPDBPreferenceServices;
 using CSSPScrambleServices;
 using LoggedInServices;
-//using WebAppLoadedServices;
+using CSSPWebModels;
 
 namespace ReadGzFileServices
 {
     public interface IReadGzFileService
     {
+        WebAppLoaded webAppLoaded { get; set; }
         Task<ActionResult<T>> ReadJSON<T>(WebTypeEnum webType, int TVItemID, WebTypeYearEnum webTypeYear);
         Task<T> GetUncompressJSON<T>(WebTypeEnum webType, int TVItemID, WebTypeYearEnum webTypeYear);
     }
@@ -33,6 +34,8 @@ namespace ReadGzFileServices
         #endregion Variables
 
         #region Properties
+        public WebAppLoaded webAppLoaded { get; set; } = new WebAppLoaded();
+
         private CSSPDBFilesManagementContext dbFM { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
@@ -42,17 +45,17 @@ namespace ReadGzFileServices
         private ICSSPDBFilesManagementService CSSPDBFilesManagementService { get; }
         private IScrambleService ScrambleService { get; }
         private IPreferenceService PreferenceService { get; }
-        //private IWebAppLoadedService WebAppLoadedService { get; }
         private string AzureStore { get; set; }
         private string AzureStoreCSSPJSONPath { get; set; }
         private string CSSPJSONPath { get; set; }
+        private string CSSPJSONPathLocal { get; set; }
         private string CSSPAzureUrl { get; set; }
         #endregion Properties
 
         #region Constructors
         public ReadGzFileService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, 
             IScrambleService ScrambleService, IEnums enums, IDownloadFileService DownloadFileService, 
-            ICSSPDBFilesManagementService CSSPDBFilesManagementService, IPreferenceService PreferenceService/*, IWebAppLoadedService WebAppLoadedService*/)
+            ICSSPDBFilesManagementService CSSPDBFilesManagementService, IPreferenceService PreferenceService)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
@@ -62,11 +65,11 @@ namespace ReadGzFileServices
             this.DownloadFileService = DownloadFileService;
             this.CSSPDBFilesManagementService = CSSPDBFilesManagementService;
             this.PreferenceService = PreferenceService;
-//            this.WebAppLoadedService = WebAppLoadedService;
 
             AzureStoreCSSPJSONPath = Configuration.GetValue<string>("AzureStoreCSSPJSONPath");
             AzureStore = ScrambleService.Descramble(Configuration.GetValue<string>("AzureStore"));
             CSSPJSONPath = Configuration.GetValue<string>("CSSPJSONPath");
+            CSSPJSONPathLocal = Configuration.GetValue<string>("CSSPJSONPathLocal");
             CSSPAzureUrl = Configuration.GetValue<string>("CSSPAzureUrl");
         }
         #endregion Constructors

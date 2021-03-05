@@ -30,7 +30,7 @@ namespace CSSPSQLiteServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
-        private CSSPDBContext dbLocal { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
         private ICSSPSQLiteService CSSPSQLiteService { get; set; }
         private FileInfo fiCSSPDBLocal { get; set; }
         private FileInfo fiCSSPDBCommandLog { get; set; }

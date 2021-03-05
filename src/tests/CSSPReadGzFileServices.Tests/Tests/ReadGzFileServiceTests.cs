@@ -111,6 +111,63 @@ namespace ReadGzFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
+        public async Task ReadGzFileService_ReadWebAllAddresses_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebAllAddresses;
+            int TVItemID = 0;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
+
+            // Read gz
+            var actionRes = await ReadGzFileService.ReadJSON<WebAllAddresses>(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+            WebAllAddresses WebAllAddresses = (WebAllAddresses)((OkObjectResult)actionRes.Result).Value;
+            Assert.NotNull(WebAllAddresses);
+            Assert.NotNull(WebAllAddresses.AddressList);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task ReadGzFileService_ReadWebAllEmails_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebAllEmails;
+            int TVItemID = 0;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
+
+            // Read gz
+            var actionRes = await ReadGzFileService.ReadJSON<WebAllEmails>(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+            WebAllEmails WebAllEmails = (WebAllEmails)((OkObjectResult)actionRes.Result).Value;
+            Assert.NotNull(WebAllEmails);
+            Assert.NotNull(WebAllEmails.EmailList);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task ReadGzFileService_ReadWebAllTels_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebAllTels;
+            int TVItemID = 0;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
+
+            // Read gz
+            var actionRes = await ReadGzFileService.ReadJSON<WebAllTels>(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+            WebAllTels WebAllTels = (WebAllTels)((OkObjectResult)actionRes.Result).Value;
+            Assert.NotNull(WebAllTels);
+            Assert.NotNull(WebAllTels.TelList);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
         public async Task ReadGzFileService_ReadWebCountry_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));

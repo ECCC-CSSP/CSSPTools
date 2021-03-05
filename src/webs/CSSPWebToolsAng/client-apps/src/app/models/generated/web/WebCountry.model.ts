@@ -20,4 +20,5 @@ export class WebCountry {
     TVItemModel: TVItemModel;
     TVItemParentList: WebBase[];
     TVItemProvinceList: WebBase[];
+    TVItemRainExceedanceList: WebBase[];
 }

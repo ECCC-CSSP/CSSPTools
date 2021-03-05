@@ -17,6 +17,7 @@ export class WebMunicipality {
     MIKEScenarioModelList: MIKEScenarioModel[];
     MunicipalityContactModelList: ContactModel[];
     MunicipalityTVItemLinkList: TVItemLink[];
+    TVItemInfrastructureList: WebBase[];
     TVItemMikeScenarioList: WebBase[];
     TVItemModel: TVItemModel;
     TVItemParentList: WebBase[];

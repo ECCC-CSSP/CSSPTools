@@ -105,8 +105,10 @@ namespace CSSPDesktopServices.Services
             // doing required file from csspjson container
             List<string> jsonFileNameList = new List<string>()
             {
+                $"{ WebTypeEnum.WebAllAddresses }.gz",
                 $"{ WebTypeEnum.WebAllContacts }.gz",
                 $"{ WebTypeEnum.WebAllCountries }.gz",
+                $"{ WebTypeEnum.WebAllEmails }.gz",
                 $"{ WebTypeEnum.WebAllMunicipalities }.gz",
                 $"{ WebTypeEnum.WebAllHelpDocs }.gz",
                 $"{ WebTypeEnum.WebAllMWQMLookupMPNs }.gz",
@@ -115,6 +117,7 @@ namespace CSSPDesktopServices.Services
                 $"{ WebTypeEnum.WebAllProvinces }.gz",
                 $"{ WebTypeEnum.WebAllReportTypes }.gz",
                 $"{ WebTypeEnum.WebRoot }.gz",
+                $"{ WebTypeEnum.WebAllTels }.gz",
                 $"{ WebTypeEnum.WebAllTideLocations }.gz",
                 $"{ WebTypeEnum.WebAllTVItems }.gz",
                 $"{ WebTypeEnum.WebAllTVItemLanguages }.gz"

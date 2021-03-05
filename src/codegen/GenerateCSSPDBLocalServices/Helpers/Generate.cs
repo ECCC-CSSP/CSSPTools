@@ -42,7 +42,7 @@ namespace GenerateCSSPDBServices
                     continue;
                 }
 
-                if (dllTypeInfoModels.Type.Name != "Address")
+                if (dllTypeInfoModels.Type.Name != "TVItem")
                 {
                     continue;
                 }

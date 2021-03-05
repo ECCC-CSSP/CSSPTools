@@ -816,4 +816,7 @@
   <data name="ErrorParsingPassword" xml:space="preserve">
     <value>Error parsing password (fr)</value>
   </data>
+  <data name="_ShouldBeEqualToTVItemParentParentID" xml:space="preserve">
+    <value>{0} should be equal to TVItemParent ParentID (fr)</value>
+  </data>
 </root>

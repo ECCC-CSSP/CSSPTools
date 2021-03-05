@@ -64,7 +64,7 @@ namespace GenerateCSSPDBLocalServices_Tests
                     }
                 }
 
-                if (TypeName != "Address")
+                if (TypeName != "TVItem")
                 {
                     continue;
                 }

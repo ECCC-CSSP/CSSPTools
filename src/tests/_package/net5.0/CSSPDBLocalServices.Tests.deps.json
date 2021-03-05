@@ -1938,6 +1938,27 @@
           }
         }
       },
+      "CSSPCreateGzFileLocalServices/1.0.0": {
+        "dependencies": {
+          "Azure.Storage.Blobs": "12.8.0",
+          "CSSPDBFilesManagementModels": "1.0.0",
+          "CSSPDBPreferenceServices": "1.0.0",
+          "CSSPLoggedInServices": "1.0.0",
+          "CSSPWebModels": "1.0.0",
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.2",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.2",
+          "Microsoft.EntityFrameworkCore": "5.0.2",
+          "Microsoft.EntityFrameworkCore.Design": "5.0.2",
+          "Microsoft.EntityFrameworkCore.SqlServer": "5.0.2",
+          "Microsoft.EntityFrameworkCore.Sqlite": "5.0.2",
+          "Microsoft.EntityFrameworkCore.Tools": "5.0.2",
+          "Microsoft.Extensions.Configuration": "5.0.0",
+          "Microsoft.Extensions.Configuration.Json": "5.0.0"
+        },
+        "runtime": {
+          "CSSPCreateGzFileLocalServices.dll": {}
+        }
+      },
       "CSSPCultureServices/1.0.0": {
         "runtime": {
           "CSSPCultureServices.dll": {}
@@ -2003,6 +2024,7 @@
       "CSSPDBLocalServices/1.0.0": {
         "dependencies": {
           "Azure.Storage.Blobs": "12.8.0",
+          "CSSPCreateGzFileLocalServices": "1.0.0",
           "CSSPCultureServices": "1.0.0",
           "CSSPDBModels": "1.0.0",
           "CSSPEnums": "1.0.0",
@@ -2017,7 +2039,8 @@
           "Microsoft.EntityFrameworkCore.SqlServer": "5.0.2",
           "Microsoft.EntityFrameworkCore.Sqlite": "5.0.2",
           "Microsoft.Extensions.Configuration": "5.0.0",
-          "Microsoft.Extensions.Configuration.Json": "5.0.0"
+          "Microsoft.Extensions.Configuration.Json": "5.0.0",
+          "Microsoft.Extensions.Configuration.UserSecrets": "5.0.0"
         },
         "runtime": {
           "CSSPDBLocalServices.dll": {}
@@ -3426,6 +3449,11 @@
       "sha512": "sha512-7e/1jqBpcb7frLkB6XDrHCGXAbKN4Rtdb88epYxCSRQuZDRW8UtTfdTEVpdTl8s4T56e07hOBVd4G0OdCxIY2A==",
       "path": "xunit.extensibility.execution/2.4.1",
       "hashPath": "xunit.extensibility.execution.2.4.1.nupkg.sha512"
+    },
+    "CSSPCreateGzFileLocalServices/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     },
     "CSSPCultureServices/1.0.0": {
       "type": "project",

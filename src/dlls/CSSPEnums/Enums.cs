@@ -1228,6 +1228,9 @@ namespace CSSPEnums
         WebAllMunicipalities = 29,
         WebAllProvinces = 30,
         WebAllCountries = 31,
+        WebAllAddresses = 32,
+        WebAllEmails = 33,
+        WebAllTels = 34,
     }
     public enum WebTypeYearEnum
     {

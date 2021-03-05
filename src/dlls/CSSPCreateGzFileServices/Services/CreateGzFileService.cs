@@ -69,6 +69,12 @@ namespace CreateGzFileServices
         {
             switch (webType)
             {
+                case WebTypeEnum.WebAllAddresses:
+                    return await DoCreateWebAllAddressesGzFile();
+                case WebTypeEnum.WebAllEmails:
+                    return await DoCreateWebAllEmailsGzFile();
+                case WebTypeEnum.WebAllTels:
+                    return await DoCreateWebAllTelsGzFile();
                 case WebTypeEnum.WebAllContacts:
                     return await DoCreateWebAllContactsGzFile();
                 case WebTypeEnum.WebAllCountries:

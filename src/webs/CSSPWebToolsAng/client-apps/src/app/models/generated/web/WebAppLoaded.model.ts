@@ -5,53 +5,63 @@
  *
  */
 
+import { WebAllAddresses } from 'src/app/models/generated/web/WebAllAddresses.model';
+import { WebAllContacts } from 'src/app/models/generated/web/WebAllContacts.model';
 import { WebAllCountries } from 'src/app/models/generated/web/WebAllCountries.model';
+import { WebAllEmails } from 'src/app/models/generated/web/WebAllEmails.model';
 import { WebAllMunicipalities } from 'src/app/models/generated/web/WebAllMunicipalities.model';
+import { WebAllMWQMLookupMPNs } from 'src/app/models/generated/web/WebAllMWQMLookupMPNs.model';
+import { WebAllPolSourceGroupings } from 'src/app/models/generated/web/WebAllPolSourceGroupings.model';
+import { WebAllPolSourceSiteEffectTerms } from 'src/app/models/generated/web/WebAllPolSourceSiteEffectTerms.model';
 import { WebAllProvinces } from 'src/app/models/generated/web/WebAllProvinces.model';
+import { WebAllReportTypes } from 'src/app/models/generated/web/WebAllReportTypes.model';
+import { WebAllTels } from 'src/app/models/generated/web/WebAllTels.model';
+import { WebAllTideLocations } from 'src/app/models/generated/web/WebAllTideLocations.model';
 import { WebArea } from 'src/app/models/generated/web/WebArea.model';
 import { WebClimateDataValue } from 'src/app/models/generated/web/WebClimateDataValue.model';
 import { WebClimateSite } from 'src/app/models/generated/web/WebClimateSite.model';
-import { WebContact } from 'src/app/models/generated/web/WebContact.model';
 import { WebCountry } from 'src/app/models/generated/web/WebCountry.model';
 import { WebDrogueRun } from 'src/app/models/generated/web/WebDrogueRun.model';
-import { WebHelpDoc } from 'src/app/models/generated/web/WebHelpDoc.model';
+import { WebAllHelpDocs } from 'src/app/models/generated/web/WebAllHelpDocs.model';
 import { WebHydrometricDataValue } from 'src/app/models/generated/web/WebHydrometricDataValue.model';
 import { WebHydrometricSite } from 'src/app/models/generated/web/WebHydrometricSite.model';
 import { WebMikeScenario } from 'src/app/models/generated/web/WebMikeScenario.model';
 import { WebMunicipalities } from 'src/app/models/generated/web/WebMunicipalities.model';
 import { WebMunicipality } from 'src/app/models/generated/web/WebMunicipality.model';
-import { WebMWQMLookupMPN } from 'src/app/models/generated/web/WebMWQMLookupMPN.model';
 import { WebMWQMRun } from 'src/app/models/generated/web/WebMWQMRun.model';
 import { WebMWQMSample } from 'src/app/models/generated/web/WebMWQMSample.model';
 import { WebMWQMSite } from 'src/app/models/generated/web/WebMWQMSite.model';
-import { WebPolSourceGrouping } from 'src/app/models/generated/web/WebPolSourceGrouping.model';
 import { WebPolSourceSite } from 'src/app/models/generated/web/WebPolSourceSite.model';
-import { WebPolSourceSiteEffectTerm } from 'src/app/models/generated/web/WebPolSourceSiteEffectTerm.model';
 import { WebProvince } from 'src/app/models/generated/web/WebProvince.model';
-import { WebReportType } from 'src/app/models/generated/web/WebReportType.model';
 import { WebRoot } from 'src/app/models/generated/web/WebRoot.model';
 import { WebSamplingPlan } from 'src/app/models/generated/web/WebSamplingPlan.model';
 import { WebSector } from 'src/app/models/generated/web/WebSector.model';
 import { WebSubsector } from 'src/app/models/generated/web/WebSubsector.model';
-import { WebTideLocation } from 'src/app/models/generated/web/WebTideLocation.model';
 
 export class WebAppLoaded {
+    WebAllAddresses: WebAllAddresses;
+    WebAllContacts: WebAllContacts;
     WebAllCountries: WebAllCountries;
+    WebAllEmails: WebAllEmails;
     WebAllMunicipalities: WebAllMunicipalities;
+    WebAllMWQMLookupMPNs: WebAllMWQMLookupMPNs;
+    WebAllPolSourceGroupings: WebAllPolSourceGroupings;
+    WebAllPolSourceSiteEffectTerms: WebAllPolSourceSiteEffectTerms;
     WebAllProvinces: WebAllProvinces;
+    WebAllReportTypes: WebAllReportTypes;
+    WebAllTels: WebAllTels;
+    WebAllTideLocations: WebAllTideLocations;
     WebArea: WebArea;
     WebClimateDataValue: WebClimateDataValue;
     WebClimateSite: WebClimateSite;
-    WebContact: WebContact;
     WebCountry: WebCountry;
     WebDrogueRun: WebDrogueRun;
-    WebHelpDoc: WebHelpDoc;
+    WebHelpDocs: WebAllHelpDocs;
     WebHydrometricDataValue: WebHydrometricDataValue;
     WebHydrometricSite: WebHydrometricSite;
     WebMikeScenario: WebMikeScenario;
     WebMunicipalities: WebMunicipalities;
     WebMunicipality: WebMunicipality;
-    WebMWQMLookupMPN: WebMWQMLookupMPN;
     WebMWQMRun: WebMWQMRun;
     WebMWQMSample1980_1989: WebMWQMSample;
     WebMWQMSample1990_1999: WebMWQMSample;
@@ -62,14 +72,10 @@ export class WebAppLoaded {
     WebMWQMSample2040_2049: WebMWQMSample;
     WebMWQMSample2050_2059: WebMWQMSample;
     WebMWQMSite: WebMWQMSite;
-    WebPolSourceGrouping: WebPolSourceGrouping;
     WebPolSourceSite: WebPolSourceSite;
-    WebPolSourceSiteEffectTerm: WebPolSourceSiteEffectTerm;
     WebProvince: WebProvince;
-    WebReportType: WebReportType;
     WebRoot: WebRoot;
     WebSamplingPlan: WebSamplingPlan;
     WebSector: WebSector;
     WebSubsector: WebSubsector;
-    WebTideLocation: WebTideLocation;
 }

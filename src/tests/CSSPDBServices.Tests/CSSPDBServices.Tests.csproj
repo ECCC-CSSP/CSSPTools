@@ -40,8 +40,4 @@
     <ProjectReference Include="..\..\dlls\CSSPDBServices\CSSPDBServices.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Tests\Generated\" />
-  </ItemGroup>
-
 </Project>

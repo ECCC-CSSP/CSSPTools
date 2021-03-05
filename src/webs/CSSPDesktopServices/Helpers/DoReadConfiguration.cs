@@ -79,6 +79,13 @@ namespace CSSPDesktopServices.Services
                 return await Task.FromResult(false);
             }
 
+            CSSPJSONPathLocal = Configuration.GetValue<string>("CSSPJSONPathLocal");
+            if (string.IsNullOrWhiteSpace(CSSPJSONPathLocal))
+            {
+                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes._CouldNotBeFoundInConfigurationFile_, "CSSPJSONPathLocal", "appsettings_csspdesktop.json")));
+                return await Task.FromResult(false);
+            }
+
             CSSPFilesPath = Configuration.GetValue<string>("CSSPFilesPath");
             if (string.IsNullOrWhiteSpace(CSSPFilesPath))
             {

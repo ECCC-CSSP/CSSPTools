@@ -35,12 +35,15 @@ export enum WebTypeEnum {
     WebPolSourceSite = 23,
     WebAllPolSourceGroupings = 24,
     WebAllReportTypes = 25,
-    WebAllTVItem = 26,
+    WebAllTVItems = 26,
     WebAllPolSourceSiteEffectTerms = 27,
-    WebAllTVItemLanguage = 28,
+    WebAllTVItemLanguages = 28,
     WebAllMunicipalities = 29,
     WebAllProvinces = 30,
     WebAllCountries = 31,
+    WebAllAddresses = 32,
+    WebAllEmails = 33,
+    WebAllTels = 34,
 }
 
 export function GetWebTypeEnum(): typeof WebTypeEnum
@@ -76,12 +79,15 @@ export function WebTypeEnum_GetOrderedText(appStateService: AppStateService): En
         enumTextOrderedList.push({ EnumID: 23, EnumText: 'WebPolSourceSite' });
         enumTextOrderedList.push({ EnumID: 24, EnumText: 'WebAllPolSourceGroupings' });
         enumTextOrderedList.push({ EnumID: 25, EnumText: 'WebAllReportTypes' });
-        enumTextOrderedList.push({ EnumID: 26, EnumText: 'WebAllTVItem' });
+        enumTextOrderedList.push({ EnumID: 26, EnumText: 'WebAllTVItems' });
         enumTextOrderedList.push({ EnumID: 27, EnumText: 'WebAllPolSourceSiteEffectTerms' });
-        enumTextOrderedList.push({ EnumID: 28, EnumText: 'WebAllTVItemLanguage' });
+        enumTextOrderedList.push({ EnumID: 28, EnumText: 'WebAllTVItemLanguages' });
         enumTextOrderedList.push({ EnumID: 29, EnumText: 'WebAllMunicipalities' });
         enumTextOrderedList.push({ EnumID: 30, EnumText: 'WebAllProvinces' });
         enumTextOrderedList.push({ EnumID: 31, EnumText: 'WebAllCountries' });
+        enumTextOrderedList.push({ EnumID: 32, EnumText: 'Empty (fr)' });
+        enumTextOrderedList.push({ EnumID: 33, EnumText: 'Empty (fr)' });
+        enumTextOrderedList.push({ EnumID: 34, EnumText: 'Empty (fr)' });
     }
     else {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'WebRoot' });
@@ -109,12 +115,15 @@ export function WebTypeEnum_GetOrderedText(appStateService: AppStateService): En
         enumTextOrderedList.push({ EnumID: 23, EnumText: 'WebPolSourceSite' });
         enumTextOrderedList.push({ EnumID: 24, EnumText: 'WebAllPolSourceGroupings' });
         enumTextOrderedList.push({ EnumID: 25, EnumText: 'WebAllReportTypes' });
-        enumTextOrderedList.push({ EnumID: 26, EnumText: 'WebAllTVItem' });
+        enumTextOrderedList.push({ EnumID: 26, EnumText: 'WebAllTVItems' });
         enumTextOrderedList.push({ EnumID: 27, EnumText: 'WebAllPolSourceSiteEffectTerms' });
-        enumTextOrderedList.push({ EnumID: 28, EnumText: 'WebAllTVItemLanguage' });
+        enumTextOrderedList.push({ EnumID: 28, EnumText: 'WebAllTVItemLanguages' });
         enumTextOrderedList.push({ EnumID: 29, EnumText: 'WebAllMunicipalities' });
         enumTextOrderedList.push({ EnumID: 30, EnumText: 'WebAllProvinces' });
         enumTextOrderedList.push({ EnumID: 31, EnumText: 'WebAllCountries' });
+        enumTextOrderedList.push({ EnumID: 32, EnumText: 'Empty' });
+        enumTextOrderedList.push({ EnumID: 33, EnumText: 'Empty' });
+        enumTextOrderedList.push({ EnumID: 34, EnumText: 'Empty' });
     }
 
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));

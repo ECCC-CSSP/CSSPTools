@@ -37,6 +37,12 @@ namespace CreateGzFileServices
 
                 await FillParentListTVItemModelList(webMikeScenario.TVItemParentList, TVItemMikeScenario);
 
+                await FillChildListTVItemModelList(webMikeScenario.TVItemMikeSourceList, TVItemMikeScenario, TVTypeEnum.MikeSource);
+
+                await FillChildListTVItemModelList(webMikeScenario.TVItemMikeBoundaryConditionMeshList, TVItemMikeScenario, TVTypeEnum.MikeBoundaryConditionMesh);
+
+                await FillChildListTVItemModelList(webMikeScenario.TVItemMikeBoundaryConditionWebTideList, TVItemMikeScenario, TVTypeEnum.MikeBoundaryConditionWebTide);
+
                 await FillChildListTVItemMikeSourceModelList(webMikeScenario.MikeSourceModelList, TVItemMikeScenario, TVTypeEnum.MikeSource);
 
                 await FillChildListTVItemMikeBoundaryConditionModelList(webMikeScenario.MikeBoundaryConditionModelWebTideList, TVItemMikeScenario, TVTypeEnum.MikeBoundaryConditionWebTide);

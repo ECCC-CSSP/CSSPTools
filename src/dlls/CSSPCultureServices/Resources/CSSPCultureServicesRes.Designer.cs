@@ -394,6 +394,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} should be equal to TVItemParent ParentID.
+        /// </summary>
+        public static string _ShouldBeEqualToTVItemParentParentID {
+            get {
+                return ResourceManager.GetString("_ShouldBeEqualToTVItemParentParentID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} should not be null or empty.
         /// </summary>
         public static string _ShouldNotBeNullOrEmpty {
