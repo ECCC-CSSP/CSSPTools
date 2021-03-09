@@ -96,6 +96,14 @@ export interface AppState {
 
     // map
     MapVisible?: boolean;
+    EditMapVisible?: boolean;
+    EditMapChanged?: boolean;
+    MarkerDragStartPos: google.maps.LatLng;
+    MarkerDragEndPos: google.maps.LatLng;
+    MarkerTVItemID: number;
+    MarkerMapInfoID: number;
+    MarkerLabel: string;
+
     MapSize?: MapSizeEnum; // Size30 | Size40 | Size50 | Size60 | Size70
 
     MapMarkerPathCharacters: string[];

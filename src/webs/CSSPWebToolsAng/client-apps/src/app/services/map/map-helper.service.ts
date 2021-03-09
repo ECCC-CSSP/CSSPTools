@@ -1,10 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ClassificationTypeEnum } from 'src/app/enums/generated/ClassificationTypeEnum';
-import { MapInfoDrawTypeEnum } from 'src/app/enums/generated/MapInfoDrawTypeEnum';
 import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
-import { AppLoaded } from 'src/app/models/AppLoaded.model';
-import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
-import { WebBase } from 'src/app/models/generated/web/WebBase.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 

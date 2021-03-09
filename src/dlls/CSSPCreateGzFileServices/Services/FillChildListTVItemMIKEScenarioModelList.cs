@@ -78,6 +78,8 @@ namespace CreateGzFileServices
                     MikeScenarioModel.MikeSourceModelList.Add(MikeSourceModel);
                 }
 
+                await FillChildListTVItemModelList(MikeScenarioModel.TVItemFileList, tvItem, TVTypeEnum.File);
+
                 MIKEScenarioModelList.Add(MikeScenarioModel);
             }
         }

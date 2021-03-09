@@ -41,6 +41,8 @@ namespace CreateGzFileServices
 
                 await FillChildListTVItemModelList(webArea.TVItemSectorList, TVItemArea, TVTypeEnum.Sector);
 
+                await FillChildListTVItemModelList(webArea.TVItemFileList, TVItemArea, TVTypeEnum.File);
+
                 await DoStore<WebArea>(webArea, $"{ WebTypeEnum.WebArea }_{ AreaTVItemID }.gz");
             }
             catch (Exception ex)

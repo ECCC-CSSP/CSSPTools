@@ -14,6 +14,7 @@ namespace CSSPWebModels
         #region Properties
         public List<WebBase> TVItemParentList { get; set; }
         public List<WebBase> TVItemProvinceList { get; set; }
+        public List<WebBase> TVItemFileList { get; set; }
         public List<WebBase> TVItemRainExceedanceList { get; set; }
         public List<EmailDistributionList> EmailDistributionListList { get; set; }
         public List<EmailDistributionListLanguage> EmailDistributionListLanguageList { get; set; }
@@ -26,6 +27,7 @@ namespace CSSPWebModels
         {
             TVItemParentList = new List<WebBase>();
             TVItemProvinceList = new List<WebBase>();
+            TVItemFileList = new List<WebBase>();
             TVItemRainExceedanceList = new List<WebBase>();
             EmailDistributionListList = new List<EmailDistributionList>();
             EmailDistributionListLanguageList = new List<EmailDistributionListLanguage>();

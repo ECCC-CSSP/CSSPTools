@@ -29,6 +29,9 @@ namespace ReadGzFileServices
     {
         private void DoMergeJsonWebRoot(WebRoot webRoot, WebRoot webRootLocal)
         {
+            // -----------------------------------------------------------
+            // doing TVItemCountryList
+            // -----------------------------------------------------------
             int count = webRoot.TVItemCountryList.Count;
             for (int i = 0; i < count; i++)
             {
@@ -49,9 +52,37 @@ namespace ReadGzFileServices
                                                  where c.TVItemModel.TVItem.DBCommand == DBCommandEnum.Created
                                                  select c).ToList();
 
-            foreach(WebBase webBaseNew in webBaseLocalNewList)
+            foreach (WebBase webBaseNew in webBaseLocalNewList)
             {
                 webRoot.TVItemCountryList.Add(webBaseNew);
+            }
+
+            // -----------------------------------------------------------
+            // doing TVItemFileList
+            // -----------------------------------------------------------
+            count = webRoot.TVItemFileList.Count;
+            for (int i = 0; i < count; i++)
+            {
+                WebBase webBaseLocal = (from c in webRootLocal.TVItemFileList
+                                        where c.TVItemModel.TVItem.TVItemID == webRoot.TVItemFileList[i].TVItemModel.TVItem.TVItemID
+                                        && (c.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
+                                        || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.en].DBCommand != DBCommandEnum.Original
+                                        || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].DBCommand != DBCommandEnum.Original)
+                                        select c).FirstOrDefault();
+
+                if (webBaseLocal != null)
+                {
+                    webRoot.TVItemFileList[i] = webBaseLocal;
+                }
+            }
+
+            webBaseLocalNewList = (from c in webRootLocal.TVItemFileList
+                                   where c.TVItemModel.TVItem.DBCommand == DBCommandEnum.Created
+                                   select c).ToList();
+
+            foreach (WebBase webBaseNew in webBaseLocalNewList)
+            {
+                webRoot.TVItemFileList.Add(webBaseNew);
             }
 
             return;

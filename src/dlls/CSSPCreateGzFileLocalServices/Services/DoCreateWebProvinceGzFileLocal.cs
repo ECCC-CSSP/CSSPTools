@@ -39,6 +39,8 @@ namespace CreateGzFileLocalServices
 
                 await FillChildListTVItemModelListLocal(webProvince.TVItemAreaList, TVItemProvince, TVTypeEnum.Area);
 
+                await FillChildListTVItemModelListLocal(webProvince.TVItemFileList, TVItemProvince, TVTypeEnum.File);
+
                 webProvince.SamplingPlanList = await GetSamplingPlanListWithProvinceTVItemID(TVItemProvince.TVItemID);
 
                 DoStoreLocal<WebProvince>(webProvince, $"{ WebTypeEnum.WebProvince }_{ ProvinceTVItemID }.gz");

@@ -27,16 +27,16 @@ namespace ReadGzFileServices
 {
     public partial class ReadGzFileService : ControllerBase, IReadGzFileService
     {
-        private void DoMergeJsonWebCountry(WebCountry WebCountry, WebCountry WebCountryLocal)
+        private void DoMergeJsonWebCountry(WebCountry webCountry, WebCountry webCountryLocal)
         {
             // -----------------------------------------------------------
             // doing TVItemProvinceList
             // -----------------------------------------------------------
-            int count = WebCountry.TVItemProvinceList.Count;
+            int count = webCountry.TVItemProvinceList.Count;
             for (int i = 0; i < count; i++)
             {
-                WebBase webBaseLocal = (from c in WebCountryLocal.TVItemProvinceList
-                                        where c.TVItemModel.TVItem.TVItemID == WebCountry.TVItemProvinceList[i].TVItemModel.TVItem.TVItemID
+                WebBase webBaseLocal = (from c in webCountryLocal.TVItemProvinceList
+                                        where c.TVItemModel.TVItem.TVItemID == webCountry.TVItemProvinceList[i].TVItemModel.TVItem.TVItemID
                                         && (c.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
                                         || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.en].DBCommand != DBCommandEnum.Original
                                         || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].DBCommand != DBCommandEnum.Original)
@@ -44,27 +44,27 @@ namespace ReadGzFileServices
 
                 if (webBaseLocal != null)
                 {
-                    WebCountry.TVItemProvinceList[i] = webBaseLocal;
+                    webCountry.TVItemProvinceList[i] = webBaseLocal;
                 }
             }
 
-            List<WebBase> webBaseLocalNewList = (from c in WebCountryLocal.TVItemProvinceList
+            List<WebBase> webBaseLocalNewList = (from c in webCountryLocal.TVItemProvinceList
                                                  where c.TVItemModel.TVItem.DBCommand == DBCommandEnum.Created
                                                  select c).ToList();
 
             foreach(WebBase webBaseNew in webBaseLocalNewList)
             {
-                WebCountry.TVItemProvinceList.Add(webBaseNew);
+                webCountry.TVItemProvinceList.Add(webBaseNew);
             }
 
             // -----------------------------------------------------------
             // doing TVItemRainExceedanceList
             // -----------------------------------------------------------
-            count = WebCountry.TVItemRainExceedanceList.Count;
+            count = webCountry.TVItemRainExceedanceList.Count;
             for (int i = 0; i < count; i++)
             {
-                WebBase webBaseLocal = (from c in WebCountryLocal.TVItemRainExceedanceList
-                                        where c.TVItemModel.TVItem.TVItemID == WebCountry.TVItemRainExceedanceList[i].TVItemModel.TVItem.TVItemID
+                WebBase webBaseLocal = (from c in webCountryLocal.TVItemRainExceedanceList
+                                        where c.TVItemModel.TVItem.TVItemID == webCountry.TVItemRainExceedanceList[i].TVItemModel.TVItem.TVItemID
                                         && (c.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
                                         || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.en].DBCommand != DBCommandEnum.Original
                                         || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].DBCommand != DBCommandEnum.Original)
@@ -72,18 +72,47 @@ namespace ReadGzFileServices
 
                 if (webBaseLocal != null)
                 {
-                    WebCountry.TVItemRainExceedanceList[i] = webBaseLocal;
+                    webCountry.TVItemRainExceedanceList[i] = webBaseLocal;
                 }
             }
 
-            webBaseLocalNewList = (from c in WebCountryLocal.TVItemRainExceedanceList
+            webBaseLocalNewList = (from c in webCountryLocal.TVItemRainExceedanceList
                                                  where c.TVItemModel.TVItem.DBCommand == DBCommandEnum.Created
                                                  select c).ToList();
 
             foreach (WebBase webBaseNew in webBaseLocalNewList)
             {
-                WebCountry.TVItemRainExceedanceList.Add(webBaseNew);
+                webCountry.TVItemRainExceedanceList.Add(webBaseNew);
             }
+
+            // -----------------------------------------------------------
+            // doing TVItemFileList
+            // -----------------------------------------------------------
+            count = webCountry.TVItemFileList.Count;
+            for (int i = 0; i < count; i++)
+            {
+                WebBase webBaseLocal = (from c in webCountryLocal.TVItemFileList
+                                        where c.TVItemModel.TVItem.TVItemID == webCountry.TVItemFileList[i].TVItemModel.TVItem.TVItemID
+                                        && (c.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
+                                        || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.en].DBCommand != DBCommandEnum.Original
+                                        || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].DBCommand != DBCommandEnum.Original)
+                                        select c).FirstOrDefault();
+
+                if (webBaseLocal != null)
+                {
+                    webCountry.TVItemFileList[i] = webBaseLocal;
+                }
+            }
+
+            webBaseLocalNewList = (from c in webCountryLocal.TVItemFileList
+                                   where c.TVItemModel.TVItem.DBCommand == DBCommandEnum.Created
+                                   select c).ToList();
+
+            foreach (WebBase webBaseNew in webBaseLocalNewList)
+            {
+                webCountry.TVItemFileList.Add(webBaseNew);
+            }
+
 
             return;
         }

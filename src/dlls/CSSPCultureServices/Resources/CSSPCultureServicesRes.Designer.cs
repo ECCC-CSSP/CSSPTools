@@ -412,6 +412,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} should not be of type {1}.
+        /// </summary>
+        public static string _ShouldNotBeOfType_ {
+            get {
+                return ResourceManager.GetString("_ShouldNotBeOfType_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} value should be between {1} and {2}.
         /// </summary>
         public static string _ValueShouldBeBetween_And_ {

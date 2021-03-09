@@ -33,6 +33,261 @@ namespace CreateGzFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
+        public async Task CreateGzFileService_CreateWebAllAddresses_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebAllAddresses;
+            int TVItemID = 0;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
+
+            // Create gz
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task CreateGzFileService_CreateWebAllContacts_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebAllContacts;
+            int TVItemID = 0;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
+
+            // Create gz
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task CreateGzFileService_CreateWebAllCountries_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebAllCountries;
+            int TVItemID = 0;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
+
+            // Create gz
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task CreateGzFileService_CreateWebAllEmails_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebAllEmails;
+            int TVItemID = 0;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
+
+            // Create gz
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task CreateGzFileService_CreateWebAllHelpDocs_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebAllHelpDocs;
+            int TVItemID = 0;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
+
+            // Create gz
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task CreateGzFileService_CreateWebAllMunicipalities_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebAllMunicipalities;
+            int TVItemID = 0;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
+
+            // Create gz
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task CreateGzFileService_CreateWebAllMWQMLookupMPNs_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebAllMWQMLookupMPNs;
+            int TVItemID = 0;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
+
+            // Create gz
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task CreateGzFileService_CreateWebAllPolSourceGroupings_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebAllPolSourceGroupings;
+            int TVItemID = 0;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
+
+            // Create gz
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task CreateGzFileService_CreateWebAllPolSourceSiteEffectTerms_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebAllPolSourceSiteEffectTerms;
+            int TVItemID = 0;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
+
+            // Create gz
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task CreateGzFileService_CreateWebAllProvinces_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebAllProvinces;
+            int TVItemID = 0;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
+
+            // Create gz
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task CreateGzFileService_CreateWebAllReportTypes_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebAllReportTypes;
+            int TVItemID = 0;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
+
+            // Create gz
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task CreateGzFileService_CreateWebAllTels_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebAllTels;
+            int TVItemID = 0;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
+
+            // Create gz
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task CreateGzFileService_CreateWebAllTideLocations_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebAllTideLocations;
+            int TVItemID = 0;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
+
+            // Create gz
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task CreateGzFileService_CreateWebAllTVItemLanguages_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebAllTVItemLanguages;
+            int TVItemID = 0;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
+
+            // Create gz
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task CreateGzFileService_CreateWebAllTVItems_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebAllTVItems;
+            int TVItemID = 0;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
+
+            // Create gz
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
         public async Task CreateGzFileService_CreateWebAreaGzFile_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -84,74 +339,6 @@ namespace CreateGzFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task CreateGzFileService_CreateWebAllContacts_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            WebTypeEnum webType = WebTypeEnum.WebAllContacts;
-            int TVItemID = 0;
-            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
-
-            // Create gz
-            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
-            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
-            Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task CreateGzFileService_CreateWebAllAddresses_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            WebTypeEnum webType = WebTypeEnum.WebAllAddresses;
-            int TVItemID = 0;
-            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
-
-            // Create gz
-            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
-            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
-            Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task CreateGzFileService_CreateWebAllEmails_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            WebTypeEnum webType = WebTypeEnum.WebAllEmails;
-            int TVItemID = 0;
-            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
-
-            // Create gz
-            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
-            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
-            Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task CreateGzFileService_CreateWebAllTels_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            WebTypeEnum webType = WebTypeEnum.WebAllTels;
-            int TVItemID = 0;
-            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
-
-            // Create gz
-            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
-            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
-            Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
         public async Task CreateGzFileService_CreateWebCountry_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -175,23 +362,6 @@ namespace CreateGzFileServices.Tests
 
             WebTypeEnum webType = WebTypeEnum.WebDrogueRun;
             int TVItemID = 556;
-            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
-
-            // Create gz
-            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
-            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
-            Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task CreateGzFileService_CreateWebAllHelpDocs_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            WebTypeEnum webType = WebTypeEnum.WebAllHelpDocs;
-            int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
             // Create gz
@@ -242,7 +412,7 @@ namespace CreateGzFileServices.Tests
             Assert.True(await Setup(culture));
 
             WebTypeEnum webType = WebTypeEnum.WebMikeScenario;
-            int TVItemID = 28475;
+            int TVItemID = 12281;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
             // Create gz
@@ -277,23 +447,6 @@ namespace CreateGzFileServices.Tests
 
             WebTypeEnum webType = WebTypeEnum.WebMunicipality;
             int TVItemID = 27764;
-            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
-
-            // Create gz
-            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
-            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
-            Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task CreateGzFileService_CreateWebAllMWQMLookupMPNs_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            WebTypeEnum webType = WebTypeEnum.WebAllMWQMLookupMPNs;
-            int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
             // Create gz
@@ -475,23 +628,6 @@ namespace CreateGzFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task CreateGzFileService_CreateWebAllPolSourceGroupings_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            WebTypeEnum webType = WebTypeEnum.WebAllPolSourceGroupings;
-            int TVItemID = 0;
-            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
-
-            // Create gz
-            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
-            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
-            Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
         public async Task CreateGzFileService_CreateWebPolSourceSite_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -509,46 +645,12 @@ namespace CreateGzFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task CreateGzFileService_CreateWebAllPolSourceSiteEffectTerms_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            WebTypeEnum webType = WebTypeEnum.WebAllPolSourceSiteEffectTerms;
-            int TVItemID = 0;
-            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
-
-            // Create gz
-            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
-            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
-            Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
         public async Task CreateGzFileService_CreateWebProvince_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
             WebTypeEnum webType = WebTypeEnum.WebProvince;
             int TVItemID = 7;
-            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
-
-            // Create gz
-            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
-            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
-            Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task CreateGzFileService_CreateWebAllReportTypes_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            WebTypeEnum webType = WebTypeEnum.WebAllReportTypes;
-            int TVItemID = 0;
             WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
 
             // Create gz
@@ -625,16 +727,16 @@ namespace CreateGzFileServices.Tests
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
         }
-        [Theory]
+        [Theory(Skip = "WebTideSite does not yet have items")]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task CreateGzFileService_CreateWebAllTideLocations_Good_Test(string culture)
+        public async Task CreateGzFileService_CreateWebTideDataValue_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebAllTideLocations;
-            int TVItemID = 0;
-            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
+            WebTypeEnum webType = WebTypeEnum.WebTideDataValue;
+            int TVItemID = 10;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
             // Create gz
             var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
@@ -645,30 +747,13 @@ namespace CreateGzFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task CreateGzFileService_CreateWebAllTVItems_Good_Test(string culture)
+        public async Task CreateGzFileService_CreateWebTideSite_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebAllTVItems;
-            int TVItemID = 0;
-            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
-
-            // Create gz
-            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
-            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
-            Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task CreateGzFileService_CreateWebAllTVItemLanguages_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            WebTypeEnum webType = WebTypeEnum.WebAllTVItemLanguages;
-            int TVItemID = 0;
-            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
+            WebTypeEnum webType = WebTypeEnum.WebTideSite;
+            int TVItemID = 7;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
             // Create gz
             var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);

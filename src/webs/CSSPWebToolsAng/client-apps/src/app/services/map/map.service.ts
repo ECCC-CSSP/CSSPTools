@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MapInfoDrawTypeEnum } from 'src/app/enums/generated/MapInfoDrawTypeEnum';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
+import { AppState } from 'src/app/models/AppState.model';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { WebBase } from 'src/app/models/generated/web/WebBase.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
@@ -8,7 +9,6 @@ import { AppStateService } from 'src/app/services/app-state.service';
 import { MapMarkersService } from 'src/app/services/map/map-markers.service';
 import { MapPolygonsService } from 'src/app/services/map/map-polygons.service';
 import { MapPolylinesService } from 'src/app/services/map/map-polylines.service';
-import { PreferenceService } from '../loaders/preferences.service';
 import { MapHelperService } from './map-helper.service';
 
 
@@ -23,8 +23,17 @@ export class MapService {
     private mapMarkersService: MapMarkersService,
     private mapPolygonsService: MapPolygonsService,
     private mapPolylinesService: MapPolylinesService,
-    private mapHelperService: MapHelperService,
-    private preferenceService: PreferenceService) {
+    private mapHelperService: MapHelperService) {
+  }
+
+  MapMarkerSaveChanges()
+  {
+    let coordText: string = (<HTMLInputElement>document.getElementById('ChangedLatLng')).value;
+    let lat: number = parseFloat(coordText.substring(0, coordText.indexOf(' ')));
+    let lng: number = parseFloat(coordText.substring(coordText.indexOf(' ')));
+    alert(`${ this.appStateService.AppState$.getValue()?.MarkerTVItemID } ||| ${ this.appStateService.AppState$.getValue()?.MarkerMapInfoID } ||| ${ lat } ${ lng }`);
+
+    this.appStateService.UpdateAppState(<AppState>{ MarkerLabel: '', EditMapChanged: false, MarkerMapInfoID: 0, MarkerDragStartPos: null, MarkerDragEndPos: null });
   }
 
   ClearMap() {
@@ -80,7 +89,25 @@ export class MapService {
       GoogleMarkerListMVC: new google.maps.MVCArray<google.maps.Marker>([]),
       GooglePolygonListMVC: new google.maps.MVCArray<google.maps.Polygon>([]),
       GooglePolylineListMVC: new google.maps.MVCArray<google.maps.Polyline>([]),
+      MarkerOriginal: null,
+      MarkerChanged: null,
     });
+
+    this.appLoadedService.AppLoaded$.getValue().Map.controls[google.maps.ControlPosition.TOP_CENTER].push(document.getElementById("MapTopCenterID"));
+
+    google.maps.event.addListener(this.appLoadedService.AppLoaded$.getValue().Map, "mousemove", (evt: google.maps.MouseEvent) => {
+      if (!this.appStateService.AppState$.getValue().EditMapChanged) {
+        (<HTMLInputElement>document.getElementById("CurrentLatLng")).value = (evt.latLng.lat().toString().substring(0, 8) +
+          ' ' + evt.latLng.lng().toString().substring(0, 8));
+      }
+      else{
+        (<HTMLInputElement>document.getElementById("CurrentLatLng")).value = (this.appStateService.AppState$.getValue().MarkerDragStartPos.lat().toFixed(6) +
+        ' ' + this.appStateService.AppState$.getValue().MarkerDragStartPos.lng().toFixed(6));
+      }
+    });
+
+
+
   }
 
   ShowItem(tvItemModel: TVItemModel, event: Event) {
@@ -131,8 +158,6 @@ export class MapService {
     });
 
     this.appLoadedService.AppLoaded$.getValue().GoogleCrossPolylineListMVC.push(polyl2);
-
-    //event.stopPropagation();
   }
 
 }

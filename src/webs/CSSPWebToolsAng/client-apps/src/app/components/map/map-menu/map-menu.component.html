@@ -1,23 +1,22 @@
 <ng-container>
-    <button mat-button [matMenuTriggerFor]="menu">
-        <mat-icon>more_vert</mat-icon>
-    </button>
-    <mat-menu #menu="matMenu">
-        <ng-container *ngIf="appStateService.AppState$?.getValue()?.EditVisible">
-            <button class="selected" mat-menu-item (click)="ShowEdit(TVItemModel)">
-                <mat-icon>edit</mat-icon>
-                <span>Edit</span>
-            </button>
-        </ng-container>
-        <button mat-menu-item (click)="ShowData(TVItemModel)">
-            <mat-icon>more_horiz</mat-icon>
-            <span>More information</span>
+    <div id="MapTopCenterID">
+        <button [ngClass]="AppState.EditMapVisible ? 'selected' : ''" mat-raised-button (click)="togglesService.ToggleEditMap(AppState)">
+            <mat-icon>edit</mat-icon>
+            <span>&nbsp;Edit</span>
         </button>
-        <ng-container *ngIf="appStateService.AppState$?.getValue()?.MapVisible">
-            <button mat-menu-item class="true ? 'selected' : ''" (click)="mapService.ShowItem(TVItemModel, $event)">
-                <mat-icon>place</mat-icon>
-                <span>Show item on map</span>
-            </button>
-        </ng-container>
-    </mat-menu>
+        <span>&nbsp;&nbsp;</span>
+        <button mat-raised-button>
+            <input mat-matInput id="CurrentLatLng" type="text" />
+        </button>
+        <br /><br />
+        <button mat-raised-button color="warn" *ngIf="AppState.EditMapVisible && AppState.EditMapChanged" (click)="mapService.MapMarkerSaveChanges()">
+            <mat-icon title="Save Changes">save</mat-icon>
+            <span>&nbsp;Save</span>
+        </button>
+        <span>&nbsp;&nbsp;</span>
+        <button mat-raised-button *ngIf="AppState.EditMapVisible && AppState.EditMapChanged" >
+            <input mat-matInput id="ChangedLatLng" type="text" />
+            <span>&nbsp;&nbsp;Item&nbsp;&nbsp;[{{ AppState.MarkerLabel }}]</span>
+        </button>
+    </div>
 </ng-container>

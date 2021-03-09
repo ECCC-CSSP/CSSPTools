@@ -13,6 +13,7 @@ namespace CSSPWebModels
     {
         #region Properties
         public MikeScenario MikeScenario { get; set; }
+        public List<WebBase> TVItemFileList { get; set; }
         public List<MikeSourceModel> MikeSourceModelList { get; set; }
         #endregion Properties
 
@@ -20,6 +21,7 @@ namespace CSSPWebModels
         public MIKEScenarioModel()
         {
             MikeScenario = new MikeScenario();
+            TVItemFileList = new List<WebBase>();
             MikeSourceModelList = new List<MikeSourceModel>();
         }
         #endregion Constructors

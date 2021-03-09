@@ -42,6 +42,18 @@ export class MapPolygonsService {
           };
 
           polygonList.push(new google.maps.Polygon(options));
+
+          google.maps.event.addListener(polygonList[polygonList.length - 1], "mousemove", (evt: google.maps.MouseEvent) => {
+            if (!this.appStateService.AppState$.getValue().EditMapChanged) {
+              (<HTMLInputElement>document.getElementById("CurrentLatLng")).value = (evt.latLng.lat().toString().substring(0, 8) +
+                ' ' + evt.latLng.lng().toString().substring(0, 8));
+            }
+            else{
+              (<HTMLInputElement>document.getElementById("CurrentLatLng")).value = (this.appStateService.AppState$.getValue().MarkerDragStartPos.lat().toFixed(6) +
+              ' ' + this.appStateService.AppState$.getValue().MarkerDragStartPos.lng().toFixed(6));
+            }
+          });
+
         }
       };
     }

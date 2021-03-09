@@ -100,6 +100,14 @@ export class AppStateService {
 
       // map 
       MapVisible: true,
+      EditMapVisible: false,
+      EditMapChanged: false,
+      MarkerDragStartPos: null,
+      MarkerDragEndPos: null,
+      MarkerTVItemID: 0,
+      MarkerMapInfoID: 0,
+      MarkerLabel: '',
+      
       MapSize: MapSizeEnum.Size50, // Size30 | Size40 | Size50 | Size60 | Size70
 
       MapMarkerPathCharacters: [

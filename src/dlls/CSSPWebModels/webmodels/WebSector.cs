@@ -12,9 +12,8 @@ namespace CSSPWebModels
     {
         #region Properties
         public List<WebBase> TVItemParentList { get; set; }
-        public List<WebBase> TVItemSubsectorList { get; set; }      
-        public List<WebBase> TVItemMikeScenarioList { get; set; }
-        public List<MIKEScenarioModel> MIKEScenarioModelList { get; set; }
+        public List<WebBase> TVItemSubsectorList { get; set; }
+        public List<WebBase> TVItemFileList { get; set; }      
         #endregion Properties
 
         #region Constructors
@@ -22,8 +21,7 @@ namespace CSSPWebModels
         {
             TVItemParentList = new List<WebBase>();
             TVItemSubsectorList = new List<WebBase>();
-            TVItemMikeScenarioList = new List<WebBase>();
-            MIKEScenarioModelList = new List<MIKEScenarioModel>();
+            TVItemFileList = new List<WebBase>();
         }
         #endregion Constructors
     }

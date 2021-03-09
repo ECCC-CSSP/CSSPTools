@@ -43,8 +43,12 @@ namespace CreateGzFileLocalServices.Tests
         private IReadGzFileService ReadGzFileService { get; set; }
         private ICreateGzFileLocalService CreateGzFileLocalService { get; set; }
         private ILoggedInService LoggedInService { get; set; }
+        private IScrambleService ScrambleService { get; set; }
         private CSSPDBLocalContext dbLocalTest { get; set; }
+        private string CSSPJSONPath { get; set; }
         private string CSSPJSONPathLocal { get; set; }
+        private string AzureStoreCSSPJSONPath { get; set; }
+        private string AzureStore { get; set; }
         private Contact contact { get; set; }
         #endregion Properties
 
@@ -60,14 +64,93 @@ namespace CreateGzFileLocalServices.Tests
             Configuration = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
                .AddJsonFile("appsettings_csspcreategzfilelocalservicestests.json")
+               .AddUserSecrets("188587c9-b0c4-4f06-a16f-0845e3f1b425")
                .Build();
 
             Services = new ServiceCollection();
 
             Services.AddSingleton<IConfiguration>(Configuration);
 
+            AzureStoreCSSPJSONPath = Configuration.GetValue<string>("AzureStoreCSSPJSONPath");
+            Assert.NotNull(AzureStoreCSSPJSONPath);
+
+            CSSPJSONPath = Configuration.GetValue<string>("CSSPJSONPath");
+            Assert.NotNull(CSSPJSONPath);
+
             CSSPJSONPathLocal = Configuration.GetValue<string>("CSSPJSONPathLocal");
             Assert.NotNull(CSSPJSONPathLocal);
+
+            DirectoryInfo di = new DirectoryInfo($"{ CSSPJSONPathLocal }");
+            if (di.Exists)
+            {
+                try
+                {
+                    di.Delete(true);
+                    di.Create(); // creates "C:\\CSSPDesktop\\csspjsonlocaltest\\"
+                }
+                catch (Exception ex)
+                {
+                    Assert.True(false, ex.Message);
+                }
+            }
+            else
+            {
+                try
+                {
+                    di.Create();
+                }
+                catch (Exception ex)
+                {
+                    Assert.True(false, ex.Message);
+                }
+            }
+
+            /* ---------------------------------------------------------------------------------
+             * using Copying CSSPDBLocal To CSSPDBLocalTest
+             * ---------------------------------------------------------------------------------      
+             */
+
+            string CSSPDBLocal = Configuration.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocal);
+
+            string CSSPDBLocalTest = Configuration.GetValue<string>("CSSPDBLocalTest");
+            Assert.NotNull(CSSPDBLocalTest);
+
+            FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocal);
+            FileInfo fiCSSPDBLocalTest = new FileInfo(CSSPDBLocalTest);
+
+            if (!fiCSSPDBLocal.Exists)
+            {
+                Assert.True(false, $"File does not exist { fiCSSPDBLocal.FullName }");
+            }
+
+            if (!fiCSSPDBLocalTest.Exists)
+            {
+                try
+                {
+                    File.Copy(fiCSSPDBLocal.FullName, fiCSSPDBLocalTest.FullName);
+                }
+                catch (Exception ex)
+                {
+                    Assert.True(false, ex.Message);
+                }
+            }
+            else
+            {
+                if (fiCSSPDBLocalTest.Length < 200)
+                {
+                    try
+                    {
+                        fiCSSPDBLocalTest.Delete();
+                        File.Copy(fiCSSPDBLocal.FullName, fiCSSPDBLocalTest.FullName);
+                    }
+                    catch (Exception ex)
+                    {
+                        Assert.True(false, ex.Message);
+                    }
+                }
+            }
+
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
@@ -84,10 +167,6 @@ namespace CreateGzFileLocalServices.Tests
              * using CSSPDBLocalTest
              * ---------------------------------------------------------------------------------
              */
-            string CSSPDBLocalTest = Configuration.GetValue<string>("CSSPDBLocalTest");
-            Assert.NotNull(CSSPDBLocalTest);
-
-            FileInfo fiCSSPDBLocalTest = new FileInfo(CSSPDBLocalTest);
 
             Services.AddDbContext<CSSPDBLocalContext>(options =>
             {
@@ -149,6 +228,12 @@ namespace CreateGzFileLocalServices.Tests
             Assert.NotNull(LoggedInService);
 
             Assert.True(await LoggedInService.SetLoggedInLocalContactInfo());
+
+            ScrambleService = Provider.GetService<IScrambleService>();
+            Assert.NotNull(ScrambleService);
+
+            AzureStore = ScrambleService.Descramble(Configuration.GetValue<string>("AzureStore"));
+            Assert.NotNull(AzureStore);
 
             dbLocalTest = Provider.GetService<CSSPDBLocalContext>();
             Assert.NotNull(dbLocalTest);

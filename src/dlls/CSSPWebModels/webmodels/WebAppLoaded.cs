@@ -50,6 +50,7 @@ namespace CSSPWebModels
         public WebSamplingPlan WebSamplingPlan { get; set; }
         public WebSector WebSector { get; set; }
         public WebSubsector WebSubsector { get; set; }
+        public WebTideSite WebTideSite { get; set; }
 
         #endregion Properties
 

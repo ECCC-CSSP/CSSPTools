@@ -39,6 +39,8 @@ namespace CreateGzFileServices
 
                 await FillChildListTVItemModelList(webCountry.TVItemProvinceList, TVItemCountry, TVTypeEnum.Province);
 
+                await FillChildListTVItemModelList(webCountry.TVItemFileList, TVItemCountry, TVTypeEnum.File);
+
                 await FillChildListTVItemModelList(webCountry.TVItemRainExceedanceList, TVItemCountry, TVTypeEnum.RainExceedance);
 
                 webCountry.EmailDistributionListList = await GetEmailDistributionListListUnderCountry(TVItemCountry.TVItemID);

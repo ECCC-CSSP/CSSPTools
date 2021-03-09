@@ -88,13 +88,16 @@
     <div class="margin10">
         <app-root-item *ngIf="appStateService.AppState$?.getValue().ShellSubComponent == shellSubComponentEnum.Root">
         </app-root-item>
-        <app-country-item *ngIf="appStateService.AppState$?.getValue().ShellSubComponent == shellSubComponentEnum.Country">
+        <app-country-item
+            *ngIf="appStateService.AppState$?.getValue().ShellSubComponent == shellSubComponentEnum.Country">
         </app-country-item>
-        <app-province-item *ngIf="appStateService.AppState$?.getValue().ShellSubComponent == shellSubComponentEnum.Province">
+        <app-province-item
+            *ngIf="appStateService.AppState$?.getValue().ShellSubComponent == shellSubComponentEnum.Province">
         </app-province-item>
         <app-area-item *ngIf="appStateService.AppState$?.getValue().ShellSubComponent == shellSubComponentEnum.Area">
         </app-area-item>
-        <app-sector-item *ngIf="appStateService.AppState$?.getValue().ShellSubComponent == shellSubComponentEnum.Sector">
+        <app-sector-item
+            *ngIf="appStateService.AppState$?.getValue().ShellSubComponent == shellSubComponentEnum.Sector">
         </app-sector-item>
         <app-subsector-item
             *ngIf="appStateService.AppState$?.getValue().ShellSubComponent == shellSubComponentEnum.Subsector">

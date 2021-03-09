@@ -54,6 +54,8 @@ namespace CreateGzFileServices
                 MWQMSiteModel.MWQMSite = MWQMSiteList.Where(c => c.MWQMSiteTVItemID == tvItem.TVItemID).FirstOrDefault();
                 MWQMSiteModel.MWQMSiteStartEndDateList = MWQMSiteStartEndDateList.Where(c => c.MWQMSiteTVItemID == tvItem.TVItemID).ToList();
 
+                await FillChildListTVItemModelList(MWQMSiteModel.TVItemFileList, tvItem, TVTypeEnum.File);
+
                 MWQMSiteModelList.Add(MWQMSiteModel);
             }
         }

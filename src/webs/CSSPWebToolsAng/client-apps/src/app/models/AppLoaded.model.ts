@@ -100,6 +100,9 @@ export interface AppLoaded {
     GooglePolylineListMVC?: google.maps.MVCArray<google.maps.Polyline>;
     InfoContent?: string;
 
+    MarkerOriginal?: google.maps.LatLngLiteral;
+    MarkerChanged?: google.maps.LatLngLiteral;   
+
     // Complete list not related to a TVItemID
     WebAllContacts?: WebAllContacts;
     AdminContactList?: Contact[];

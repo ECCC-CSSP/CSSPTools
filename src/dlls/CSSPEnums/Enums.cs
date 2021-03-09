@@ -1231,6 +1231,8 @@ namespace CSSPEnums
         WebAllAddresses = 32,
         WebAllEmails = 33,
         WebAllTels = 34,
+        WebTideSite = 35,
+        WebTideDataValue = 36,
     }
     public enum WebTypeYearEnum
     {

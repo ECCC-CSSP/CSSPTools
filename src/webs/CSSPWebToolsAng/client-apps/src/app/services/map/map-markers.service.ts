@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import { MapInfoDrawTypeEnum } from 'src/app/enums/generated/MapInfoDrawTypeEnum';
 import { SubsectorSubComponentEnum } from 'src/app/enums/generated/SubsectorSubComponentEnum';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
+import { AppState } from 'src/app/models/AppState.model';
+import { MapInfoModel } from 'src/app/models/generated/web/MapInfoModel.model';
 import { StatMWQMSite } from 'src/app/models/generated/web/StatMWQMSite.model';
 import { WebBase } from 'src/app/models/generated/web/WebBase.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
-import { WebMWQMSampleService } from '../loaders/web-mwqm-samples.service';
 import { MapHelperService } from './map-helper.service';
 
 @Injectable({
@@ -14,21 +15,28 @@ import { MapHelperService } from './map-helper.service';
 })
 export class MapMarkersService {
 
+  webBaseList: WebBase[];
+
   constructor(private appStateService: AppStateService,
     private appLoadedService: AppLoadedService,
     private mapHelperService: MapHelperService) {
   }
 
   DrawMarkers(webBaseList: WebBase[]) {
+    this.webBaseList = webBaseList;
+
     let map: google.maps.Map = this.appLoadedService.AppLoaded$.getValue().Map;
 
     let markerList: google.maps.Marker[] = [];
 
     let count: number = 0;
     for (let webBase of webBaseList) {
-      count += 1;
       for (let mapInfoModel of webBase.TVItemModel.MapInfoModelList) {
         if (mapInfoModel.MapInfo?.MapInfoDrawType == MapInfoDrawTypeEnum.Point) {
+          let mark: google.maps.Marker = new google.maps.Marker();
+
+          count += 1;
+
           let position: google.maps.LatLngLiteral = { lat: mapInfoModel.MapInfoPointList[0].Lat, lng: mapInfoModel.MapInfoPointList[0].Lng };
           let label: google.maps.MarkerLabel = { color: '00ff00', fontWeight: 'bold', text: count.toString() };
           let title = webBase.TVItemModel.TVItemLanguageList[this.appStateService.AppState$.getValue().Language].TVText;
@@ -68,14 +76,56 @@ export class MapMarkersService {
               scale: 0.8,
               labelOrigin: new google.maps.Point(0, -18),
             },
-            map: this.appLoadedService.AppLoaded$.getValue().Map,
+            map: map,
+            draggable: this.appStateService.AppState$.getValue().EditMapVisible,
+            zIndex: mapInfoModel.MapInfo.MapInfoID,
           };
 
-          markerList.push(new google.maps.Marker(options));
+          mark = new google.maps.Marker(options);
+
+          if (this.appStateService.AppState$.getValue().EditMapVisible) {
+            google.maps.event.addListener(mark, "mousemove", (evt: google.maps.MouseEvent) => {
+              if (!this.appStateService.AppState$.getValue().EditMapChanged) {
+                (<HTMLInputElement>document.getElementById("CurrentLatLng")).value = (evt.latLng.lat().toString().substring(0, 8) +
+                  ' ' + evt.latLng.lng().toString().substring(0, 8));
+              }
+              else{
+                (<HTMLInputElement>document.getElementById("CurrentLatLng")).value = (this.appStateService.AppState$.getValue().MarkerDragStartPos.lat().toFixed(6) +
+                ' ' + this.appStateService.AppState$.getValue().MarkerDragStartPos.lng().toFixed(6));
+              }
+            });
+
+            google.maps.event.addListener(mark, 'dragstart', () => {
+              this.appStateService.UpdateAppState(<AppState>{
+                MarkerTVItemID: mapInfoModel.MapInfo.TVItemID,
+                MarkerMapInfoID: mapInfoModel.MapInfo.MapInfoID,
+                MarkerDragStartPos: this.GetMapInfoCoord(mapInfoModel),
+                EditMapChanged: true,
+                MarkerLabel: mark.getLabel().text,
+              });
+              (<HTMLInputElement>document.getElementById("CurrentLatLng")).value = (this.appStateService.AppState$.getValue().MarkerDragStartPos.lat().toFixed(6) +
+                ' ' + this.appStateService.AppState$.getValue().MarkerDragStartPos.lng().toFixed(6));
+            });
+            google.maps.event.addListener(mark, 'drag', () => {
+              (<HTMLInputElement>document.getElementById("ChangedLatLng")).value = (mark.getPosition().lat().toFixed(6) +
+                ' ' + mark.getPosition().lng().toFixed(6));
+            });
+            google.maps.event.addListener(mark, 'dragend', () => {
+              this.appStateService.UpdateAppState(<AppState>{ MarkerDragEndPos: mark.getPosition() });
+              (<HTMLInputElement>document.getElementById("ChangedLatLng")).value = (mark.getPosition().lat().toFixed(6) +
+                ' ' + mark.getPosition().lng().toFixed(6));
+            });
+          }
+          markerList.push(mark);
+
         }
       };
     }
 
     this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ GoogleMarkerListMVC: new google.maps.MVCArray<google.maps.Marker>(markerList) });
+  }
+
+  GetMapInfoCoord(mapInfoModel: MapInfoModel): google.maps.LatLng {
+    return new google.maps.LatLng(mapInfoModel.MapInfoPointList[0].Lat, mapInfoModel.MapInfoPointList[0].Lng);
   }
 }

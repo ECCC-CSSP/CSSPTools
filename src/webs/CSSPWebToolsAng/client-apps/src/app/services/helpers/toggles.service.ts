@@ -42,6 +42,36 @@ export class TogglesService {
 
     ToggleInactive(appState: AppState): void {
         this.appStateService.UpdateAppState(<AppState>{ InactVisible: !this.appStateService.AppState$.getValue().InactVisible });
+        this.ReloadPage(appState);
+    }
+
+    ToggleLastUpdate(): void {
+        this.appStateService.UpdateAppState(<AppState>{ LastUpdateVisible: !this.appStateService.AppState$.getValue().LastUpdateVisible, Working: false });
+    }
+
+    ToggleMap(): void {
+        this.appStateService.UpdateAppState(<AppState>{ MapVisible: !this.appStateService.AppState$.getValue().MapVisible });
+    }
+
+    ToggleMenu(): void {
+        this.appStateService.UpdateAppState(<AppState>{ MenuVisible: !this.appStateService.AppState$.getValue().MenuVisible });
+    }
+
+    ToggleStatCount(): void {
+        this.appStateService.UpdateAppState(<AppState>{ StatCountVisible: !this.appStateService.AppState$.getValue().StatCountVisible, Working: false });
+    }
+
+    ToggleEdit(): void {
+        this.appStateService.UpdateAppState(<AppState>{ EditVisible: !this.appStateService.AppState$.getValue().EditVisible, Working: false });
+    }
+
+    ToggleEditMap(appState:AppState): void {
+        this.appStateService.UpdateAppState(<AppState>{ EditMapVisible: !this.appStateService.AppState$.getValue().EditMapVisible, Working: false });
+        this.ReloadPage(appState);
+    }
+
+    private ReloadPage(appState: AppState)
+    {
         switch (appState.ShellSubComponent) {
             case ShellSubComponentEnum.Area:
                 {
@@ -105,25 +135,4 @@ export class TogglesService {
                 break;
         }
     }
-
-    ToggleLastUpdate(): void {
-        this.appStateService.UpdateAppState(<AppState>{ LastUpdateVisible: !this.appStateService.AppState$.getValue().LastUpdateVisible, Working: false });
-    }
-
-    ToggleMap(): void {
-        this.appStateService.UpdateAppState(<AppState>{ MapVisible: !this.appStateService.AppState$.getValue().MapVisible });
-    }
-
-    ToggleMenu(): void {
-        this.appStateService.UpdateAppState(<AppState>{ MenuVisible: !this.appStateService.AppState$.getValue().MenuVisible });
-    }
-
-    ToggleStatCount(): void {
-        this.appStateService.UpdateAppState(<AppState>{ StatCountVisible: !this.appStateService.AppState$.getValue().StatCountVisible, Working: false });
-    }
-
-    ToggleEdit(): void {
-        this.appStateService.UpdateAppState(<AppState>{ EditVisible: !this.appStateService.AppState$.getValue().EditVisible, Working: false });
-    }
-
 }

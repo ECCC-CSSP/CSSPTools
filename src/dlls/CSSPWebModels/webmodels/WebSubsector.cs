@@ -13,6 +13,8 @@ namespace CSSPWebModels
     {
         #region Properties
         public List<WebBase> TVItemParentList { get; set; }
+        public List<WebBase> TVItemFileList { get; set; }
+
         public List<WebBase> TVItemClassificationList { get; set; }
         public List<WebBase> TVItemMWQMSiteList { get; set; }
         public List<WebBase> TVItemMWQMRunList { get; set; }
@@ -28,6 +30,7 @@ namespace CSSPWebModels
         public WebSubsector()
         {
             TVItemParentList = new List<WebBase>();
+            TVItemFileList = new List<WebBase>();
             TVItemClassificationList = new List<WebBase>();
             TVItemMWQMSiteList = new List<WebBase>();
             TVItemMWQMRunList = new List<WebBase>();

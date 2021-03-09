@@ -96,6 +96,15 @@ namespace CreateGzFileServices
                               select c).AsNoTracking().ToListAsync();
             }
 
+            if (tvType == TVTypeEnum.File)
+            {
+                return await (from c in db.TVItems
+                              where c.TVPath.Contains(ParentTVItem.TVPath + "p")
+                              && c.TVType == tvType
+                              && c.TVLevel == ParentTVItem.TVLevel + 1 
+                              select c).AsNoTracking().ToListAsync();
+            }
+
             return await (from c in db.TVItems
                           where c.TVPath.Contains(ParentTVItem.TVPath + "p")
                           && c.TVType == tvType
@@ -113,6 +122,17 @@ namespace CreateGzFileServices
                               || c.TVType == TVTypeEnum.MikeBoundaryConditionWebTide)
                               select cl).AsNoTracking().ToListAsync();
 
+            }
+
+            if (tvType == TVTypeEnum.File)
+            {
+                return await (from c in db.TVItems
+                              from cl in db.TVItemLanguages
+                              where c.TVItemID == cl.TVItemID
+                              && c.TVPath.Contains(ParentTVItem.TVPath + "p")
+                              && c.TVType == tvType
+                              && c.TVLevel == ParentTVItem.TVLevel + 1
+                              select cl).AsNoTracking().ToListAsync();
             }
 
             return await (from c in db.TVItems
@@ -136,6 +156,16 @@ namespace CreateGzFileServices
                               select cs).AsNoTracking().ToListAsync();
             }
 
+            if (tvType == TVTypeEnum.File)
+            {
+                return await (from c in db.TVItems
+                              from cs in db.TVItemStats
+                              where c.TVItemID == cs.TVItemID
+                              && c.TVPath.Contains(ParentTVItem.TVPath + "p")
+                              && c.TVType == tvType
+                              && c.TVLevel == ParentTVItem.TVLevel + 1
+                              select cs).AsNoTracking().ToListAsync();
+            }
             return await (from c in db.TVItems
                           from cs in db.TVItemStats
                           where c.TVItemID == cs.TVItemID
@@ -154,6 +184,18 @@ namespace CreateGzFileServices
                               && (c.TVType == TVTypeEnum.MikeBoundaryConditionMesh
                               || c.TVType == TVTypeEnum.MikeBoundaryConditionWebTide)
                               select mi).AsNoTracking().ToListAsync();
+            }
+
+            if (tvType == TVTypeEnum.File)
+            {
+                return await (from c in db.TVItems
+                              from mi in db.MapInfos
+                              where c.TVItemID == mi.TVItemID
+                              && c.TVPath.Contains(ParentTVItem.TVPath + "p")
+                              && c.TVType == tvType
+                              && c.TVLevel == ParentTVItem.TVLevel + 1
+                              select mi).AsNoTracking().ToListAsync();
+
             }
 
             return await (from c in db.TVItems
@@ -175,6 +217,19 @@ namespace CreateGzFileServices
                               && c.TVPath.Contains(ParentTVItem.TVPath + "p")
                               && (c.TVType == TVTypeEnum.MikeBoundaryConditionMesh
                               || c.TVType == TVTypeEnum.MikeBoundaryConditionWebTide)
+                              select mip).AsNoTracking().ToListAsync();
+            }
+
+            if (tvType == TVTypeEnum.File)
+            {
+                return await (from c in db.TVItems
+                              from mi in db.MapInfos
+                              from mip in db.MapInfoPoints
+                              where c.TVItemID == mi.TVItemID
+                              && mi.MapInfoID == mip.MapInfoID
+                              && c.TVPath.Contains(ParentTVItem.TVPath + "p")
+                              && c.TVType == tvType
+                              && c.TVLevel == ParentTVItem.TVLevel + 1
                               select mip).AsNoTracking().ToListAsync();
             }
 
@@ -570,7 +625,7 @@ namespace CreateGzFileServices
                                                orderby c.LastName, c.FirstName, c.Initial
                                                select c).AsNoTracking().ToListAsync();
 
-            foreach(Contact contact in contactList)
+            foreach (Contact contact in contactList)
             {
                 contact.PasswordHash = "";
                 contact.Token = "";
@@ -603,6 +658,15 @@ namespace CreateGzFileServices
                           where c.TVItemID == cs.ClimateSiteTVItemID
                           && c.TVPath.Contains(TVItemProvince.TVPath + "p")
                           && c.TVType == TVTypeEnum.ClimateSite
+                          select cs).AsNoTracking().ToListAsync();
+        }
+        private async Task<List<TideSite>> GetTideSiteListUnderProvince(TVItem TVItemProvince)
+        {
+            return await (from c in db.TVItems
+                          from cs in db.TideSites
+                          where c.TVItemID == cs.TideSiteTVItemID
+                          && c.TVPath.Contains(TVItemProvince.TVPath + "p")
+                          && c.TVType == TVTypeEnum.TideSite
                           select cs).AsNoTracking().ToListAsync();
         }
         private async Task<List<HydrometricSite>> GetHydrometricSiteListUnderProvince(TVItem TVItemProvince)
@@ -736,6 +800,14 @@ namespace CreateGzFileServices
                           from cv in db.ClimateDataValues
                           where c.ClimateSiteID == cv.ClimateSiteID
                           && c.ClimateSiteTVItemID == TVItemID
+                          select cv).AsNoTracking().ToListAsync();
+        }
+        private async Task<List<TideDataValue>> GetTideDataValueListForTideSite(int TVItemID)
+        {
+            return await (from c in db.TideSites
+                          from cv in db.TideDataValues
+                          where c.TideSiteTVItemID == cv.TideSiteTVItemID
+                          && c.TideSiteTVItemID == TVItemID
                           select cv).AsNoTracking().ToListAsync();
         }
         private async Task<List<HydrometricDataValue>> GetHydrometricDataValueListForHydrometricSite(int TVItemID)

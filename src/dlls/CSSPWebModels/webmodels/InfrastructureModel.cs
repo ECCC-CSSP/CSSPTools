@@ -13,6 +13,7 @@ namespace CSSPWebModels
     {
         #region Properties
         public Infrastructure Infrastructure { get; set; }
+        public List<WebBase> TVItemFileList { get; set; }
         public List<InfrastructureLanguage> InfrastructureLanguageList { get; set; }
         public Address InfrastructureCivicAddress { get; set; }
         public List<BoxModelModel> BoxModelModelList { get; set; }
@@ -23,6 +24,7 @@ namespace CSSPWebModels
         public InfrastructureModel()
         {
             Infrastructure = new Infrastructure();
+            TVItemFileList = new List<WebBase>();
             InfrastructureLanguageList = new List<InfrastructureLanguage>();
             InfrastructureCivicAddress = new Address();
             BoxModelModelList = new List<BoxModelModel>();

@@ -13,6 +13,7 @@ namespace CSSPWebModels
     {
         #region Properties
         public MWQMSite MWQMSite { get; set; }
+        public List<WebBase> TVItemFileList { get; set; }
         public List<MWQMSiteStartEndDate> MWQMSiteStartEndDateList { get; set; }
         #endregion Properties
 
@@ -20,6 +21,7 @@ namespace CSSPWebModels
         public MWQMSiteModel()
         {
             MWQMSite = new MWQMSite();
+            TVItemFileList = new List<WebBase>();
             MWQMSiteStartEndDateList = new List<MWQMSiteStartEndDate>();
         }
         #endregion Constructors

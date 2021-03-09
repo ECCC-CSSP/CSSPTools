@@ -24,7 +24,6 @@ import { WebMWQMSiteService } from 'src/app/services/loaders/web-mwqm-sites.serv
 import { WebMWQMRunService } from 'src/app/services/loaders/web-mwqm-runs.service';
 import { WebPolSourceSiteService } from 'src/app/services/loaders/web-pol-source-sites.service';
 import { PreferenceService } from 'src/app/services/loaders/preferences.service';
-import { MapService } from 'src/app/services/map/map.service';
 
 @Component({
   selector: 'app-shell-item',

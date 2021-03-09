@@ -45,6 +45,8 @@ namespace CreateGzFileLocalServices
 
                 await FillChildListTVItemModelListLocal(webSubsector.TVItemClassificationList, TVItemSubsector, TVTypeEnum.Classification);
 
+                await FillChildListTVItemModelListLocal(webSubsector.TVItemFileList, TVItemSubsector, TVTypeEnum.File);
+
                 webSubsector.MWQMAnalysisReportParameterList = await GetMWQMAnalysisReportParameterListUnderSubsector(SubsectorTVItemID);
 
                 await FillLabSheetModelListLocal(webSubsector.LabSheetModelList, TVItemSubsector);

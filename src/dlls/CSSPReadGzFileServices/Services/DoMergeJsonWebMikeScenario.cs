@@ -27,44 +27,44 @@ namespace ReadGzFileServices
 {
     public partial class ReadGzFileService : ControllerBase, IReadGzFileService
     {
-        private void DoMergeJsonWebMikeScenario(WebMikeScenario WebMikeScenario, WebMikeScenario WebMikeScenarioLocal)
+        private void DoMergeJsonWebMikeScenario(WebMikeScenario webMikeScenario, WebMikeScenario webMikeScenarioLocal)
         {
             // -----------------------------------------------------------
             // doing TVItemMikeSourceList
             // -----------------------------------------------------------
-            int count = WebMikeScenario.TVItemMikeSourceList.Count;
+            int count = webMikeScenario.TVItemMikeSourceList.Count;
             for (int i = 0; i < count; i++)
             {
-                WebBase webBaseLocal = (from c in WebMikeScenarioLocal.TVItemMikeSourceList
-                                                                where c.TVItemModel.TVItem.TVItemID == WebMikeScenario.TVItemMikeSourceList[i].TVItemModel.TVItem.TVItemID
-                                                                && (c.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
-                                                                || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.en].DBCommand != DBCommandEnum.Original
-                                                                || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].DBCommand != DBCommandEnum.Original)
-                                                                select c).FirstOrDefault();
+                WebBase webBaseLocal = (from c in webMikeScenarioLocal.TVItemMikeSourceList
+                                        where c.TVItemModel.TVItem.TVItemID == webMikeScenario.TVItemMikeSourceList[i].TVItemModel.TVItem.TVItemID
+                                        && (c.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
+                                        || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.en].DBCommand != DBCommandEnum.Original
+                                        || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].DBCommand != DBCommandEnum.Original)
+                                        select c).FirstOrDefault();
 
                 if (webBaseLocal != null)
                 {
-                    WebMikeScenario.TVItemMikeSourceList[i] = webBaseLocal;
+                    webMikeScenario.TVItemMikeSourceList[i] = webBaseLocal;
                 }
             }
 
-            List<WebBase> WebBaseLocalNewList = (from c in WebMikeScenarioLocal.TVItemMikeSourceList
+            List<WebBase> webBaseLocalNewList = (from c in webMikeScenarioLocal.TVItemMikeSourceList
                                                  where c.TVItemModel.TVItem.DBCommand == DBCommandEnum.Created
                                                  select c).ToList();
 
-            foreach (WebBase WebBaseLocalNew in WebBaseLocalNewList)
+            foreach (WebBase WebBaseLocalNew in webBaseLocalNewList)
             {
-                WebMikeScenario.TVItemMikeSourceList.Add(WebBaseLocalNew);
+                webMikeScenario.TVItemMikeSourceList.Add(WebBaseLocalNew);
             }
 
             // -----------------------------------------------------------
             // doing TVItemMikeBoundaryConditionMeshList
             // -----------------------------------------------------------
-            count = WebMikeScenario.TVItemMikeBoundaryConditionMeshList.Count;
+            count = webMikeScenario.TVItemMikeBoundaryConditionMeshList.Count;
             for (int i = 0; i < count; i++)
             {
-                WebBase webBaseLocal = (from c in WebMikeScenarioLocal.TVItemMikeBoundaryConditionMeshList
-                                        where c.TVItemModel.TVItem.TVItemID == WebMikeScenario.TVItemMikeBoundaryConditionMeshList[i].TVItemModel.TVItem.TVItemID
+                WebBase webBaseLocal = (from c in webMikeScenarioLocal.TVItemMikeBoundaryConditionMeshList
+                                        where c.TVItemModel.TVItem.TVItemID == webMikeScenario.TVItemMikeBoundaryConditionMeshList[i].TVItemModel.TVItem.TVItemID
                                         && (c.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
                                         || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.en].DBCommand != DBCommandEnum.Original
                                         || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].DBCommand != DBCommandEnum.Original)
@@ -72,27 +72,27 @@ namespace ReadGzFileServices
 
                 if (webBaseLocal != null)
                 {
-                    WebMikeScenario.TVItemMikeBoundaryConditionMeshList[i] = webBaseLocal;
+                    webMikeScenario.TVItemMikeBoundaryConditionMeshList[i] = webBaseLocal;
                 }
             }
 
-            WebBaseLocalNewList = (from c in WebMikeScenarioLocal.TVItemMikeBoundaryConditionMeshList
-                                                 where c.TVItemModel.TVItem.DBCommand == DBCommandEnum.Created
-                                                 select c).ToList();
+            webBaseLocalNewList = (from c in webMikeScenarioLocal.TVItemMikeBoundaryConditionMeshList
+                                   where c.TVItemModel.TVItem.DBCommand == DBCommandEnum.Created
+                                   select c).ToList();
 
-            foreach (WebBase WebBaseLocalNew in WebBaseLocalNewList)
+            foreach (WebBase WebBaseLocalNew in webBaseLocalNewList)
             {
-                WebMikeScenario.TVItemMikeBoundaryConditionMeshList.Add(WebBaseLocalNew);
+                webMikeScenario.TVItemMikeBoundaryConditionMeshList.Add(WebBaseLocalNew);
             }
 
             // -----------------------------------------------------------
             // doing TVItemMikeBoundaryConditionWebTideList
             // -----------------------------------------------------------
-            count = WebMikeScenario.TVItemMikeBoundaryConditionWebTideList.Count;
+            count = webMikeScenario.TVItemMikeBoundaryConditionWebTideList.Count;
             for (int i = 0; i < count; i++)
             {
-                WebBase webBaseLocal = (from c in WebMikeScenarioLocal.TVItemMikeBoundaryConditionWebTideList
-                                        where c.TVItemModel.TVItem.TVItemID == WebMikeScenario.TVItemMikeBoundaryConditionWebTideList[i].TVItemModel.TVItem.TVItemID
+                WebBase webBaseLocal = (from c in webMikeScenarioLocal.TVItemMikeBoundaryConditionWebTideList
+                                        where c.TVItemModel.TVItem.TVItemID == webMikeScenario.TVItemMikeBoundaryConditionWebTideList[i].TVItemModel.TVItem.TVItemID
                                         && (c.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
                                         || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.en].DBCommand != DBCommandEnum.Original
                                         || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].DBCommand != DBCommandEnum.Original)
@@ -100,17 +100,46 @@ namespace ReadGzFileServices
 
                 if (webBaseLocal != null)
                 {
-                    WebMikeScenario.TVItemMikeBoundaryConditionWebTideList[i] = webBaseLocal;
+                    webMikeScenario.TVItemMikeBoundaryConditionWebTideList[i] = webBaseLocal;
                 }
             }
 
-            WebBaseLocalNewList = (from c in WebMikeScenarioLocal.TVItemMikeBoundaryConditionWebTideList
+            webBaseLocalNewList = (from c in webMikeScenarioLocal.TVItemMikeBoundaryConditionWebTideList
                                    where c.TVItemModel.TVItem.DBCommand == DBCommandEnum.Created
                                    select c).ToList();
 
-            foreach (WebBase WebBaseLocalNew in WebBaseLocalNewList)
+            foreach (WebBase WebBaseLocalNew in webBaseLocalNewList)
             {
-                WebMikeScenario.TVItemMikeBoundaryConditionWebTideList.Add(WebBaseLocalNew);
+                webMikeScenario.TVItemMikeBoundaryConditionWebTideList.Add(WebBaseLocalNew);
+            }
+
+
+            // -----------------------------------------------------------
+            // doing TVItemFileList
+            // -----------------------------------------------------------
+            count = webMikeScenario.TVItemFileList.Count;
+            for (int i = 0; i < count; i++)
+            {
+                WebBase webBaseLocal = (from c in webMikeScenarioLocal.TVItemFileList
+                                        where c.TVItemModel.TVItem.TVItemID == webMikeScenario.TVItemFileList[i].TVItemModel.TVItem.TVItemID
+                                        && (c.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
+                                        || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.en].DBCommand != DBCommandEnum.Original
+                                        || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].DBCommand != DBCommandEnum.Original)
+                                        select c).FirstOrDefault();
+
+                if (webBaseLocal != null)
+                {
+                    webMikeScenario.TVItemFileList[i] = webBaseLocal;
+                }
+            }
+
+            webBaseLocalNewList = (from c in webMikeScenarioLocal.TVItemFileList
+                                   where c.TVItemModel.TVItem.DBCommand == DBCommandEnum.Created
+                                   select c).ToList();
+
+            foreach (WebBase webBaseNew in webBaseLocalNewList)
+            {
+                webMikeScenario.TVItemFileList.Add(webBaseNew);
             }
 
             return;

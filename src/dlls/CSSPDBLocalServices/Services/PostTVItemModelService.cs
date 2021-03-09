@@ -127,6 +127,8 @@ namespace CSSPDBLocalServices
         //}
         public async Task<ActionResult<bool>> AddOrModify(PostTVItemModel postTVItemModel)
         {
+            ActionDBTypeEnum actionDBType = ActionDBTypeEnum.Update;
+
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
@@ -134,21 +136,14 @@ namespace CSSPDBLocalServices
 
             if (postTVItemModel.TVItemID == 0)
             {
-                ValidationResults = ValidateAndAddOrModify(new ValidationContext(postTVItemModel), ActionDBTypeEnum.Create);
-                if (ValidationResults.Count() > 0)
-                {
-                    return await Task.FromResult(BadRequest(ValidationResults));
-                }
-            }
-            else
-            {
-                ValidationResults = ValidateAndAddOrModify(new ValidationContext(postTVItemModel), ActionDBTypeEnum.Update);
-                if (ValidationResults.Count() > 0)
-                {
-                    return await Task.FromResult(BadRequest(ValidationResults));
-                }
+                actionDBType = ActionDBTypeEnum.Create;
             }
 
+            ValidationResults = ValidateAndAddOrModify(new ValidationContext(postTVItemModel), actionDBType);
+            if (ValidationResults.Count() > 0)
+            {
+                return await Task.FromResult(BadRequest(ValidationResults));
+            }
 
             return await Task.FromResult(Ok(true));
         }
@@ -157,53 +152,129 @@ namespace CSSPDBLocalServices
         #region Functions private
         private IEnumerable<ValidationResult> ValidateAndAddOrModify(ValidationContext validationContext, ActionDBTypeEnum actionDBType)
         {
+            string retStr = "";
             string TVItemErrorMessage = "";
             bool HasError = false;
             TVItem ParentTVItem = new TVItem();
             List<WebBase> tvItemParentList = new List<WebBase>();
             List<WebBase> tvItemSiblingList = new List<WebBase>();
+            List<WebBase> tvItemFileSiblingList = new List<WebBase>();
             PostTVItemModel postTVItemModel = validationContext.ObjectInstance as PostTVItemModel;
+
+            retStr = enums.EnumTypeOK(typeof(TVTypeEnum), (int?)postTVItemModel.ParentTVType);
+            if (!string.IsNullOrWhiteSpace(retStr))
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ParentTVType"), new[] { "ParentTVType" });
+            }
 
             if (postTVItemModel.ParentID == 0)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ParentID"), new[] { nameof(postTVItemModel.ParentID) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ParentID"), new[] { "ParentID" });
                 HasError = true;
             }
 
             if ((int)postTVItemModel.TVType == 0)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVType"), new[] { nameof(postTVItemModel.TVType) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVType"), new[] { "TVType" });
                 HasError = true;
             }
 
             if (string.IsNullOrWhiteSpace(postTVItemModel.TVTextEN))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVTextEN"), new[] { nameof(postTVItemModel.TVTextEN) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVTextEN"), new[] { "TVTextEN" });
                 HasError = true;
             }
 
             if (string.IsNullOrWhiteSpace(postTVItemModel.TVTextFR))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVTextFR"), new[] { nameof(postTVItemModel.TVTextFR) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVTextFR"), new[] { "TVTextFR" });
                 HasError = true;
             }
 
-            if (!HasError)
+            if (postTVItemModel.TVType == TVTypeEnum.File)
             {
-                //if (actionDBType == ActionDBTypeEnum.Update || actionDBType == ActionDBTypeEnum.Delete)
-                //{
-                //    if (postTVItemModel.TVItemID == 0)
-                //    {
-                //        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVItemID"), new[] { nameof(postTVItemModel.TVItemID) });
-                //    }
+                if (postTVItemModel.ParentTVType == TVTypeEnum.Infrastructure)
+                {
+                    if (postTVItemModel.GrandParentID == null || postTVItemModel.GrandParentID == 0)
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "GrandParentID"), new[] { "GrandParentID" });
+                        HasError = true;
+                    }
 
-                //    if (!(from c in dbLocal.TVItems.AsNoTracking() select c).Where(c => c.TVItemID == postTVItemModel.TVItemID).Any())
-                //    {
-                //        yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "TVItemID", postTVItemModel.TVItemID.ToString()), new[] { nameof(postTVItemModel.TVItemID) });
-                //    }
-                //}
+                    if (postTVItemModel.GrandParentTVType != TVTypeEnum.Municipality)
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ShouldNotBeOfType_, "GrandParentTVType", TVTypeEnum.Municipality.ToString()), new[] { "GrandParentTVType" });
+                        HasError = true;
+                    }
+                }
 
-                List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
+                if (postTVItemModel.ParentTVType == TVTypeEnum.MWQMSite)
+                {
+                    if (postTVItemModel.GrandParentID == null || postTVItemModel.GrandParentID == 0)
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "GrandParentID"), new[] { "GrandParentID" });
+                        HasError = true;
+                    }
+
+                    if (postTVItemModel.GrandParentTVType != TVTypeEnum.Subsector)
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ShouldNotBeOfType_, "GrandParentTVType", TVTypeEnum.Subsector.ToString()), new[] { "GrandParentTVType" });
+                        HasError = true;
+                    }
+                }
+                else if (postTVItemModel.ParentTVType == TVTypeEnum.PolSourceSite)
+                {
+                    if (postTVItemModel.GrandParentID == null || postTVItemModel.GrandParentID == 0)
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "GrandParentID"), new[] { "GrandParentID" });
+                        HasError = true;
+                    }
+
+                    if (postTVItemModel.GrandParentTVType != TVTypeEnum.Subsector)
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ShouldNotBeOfType_, "GrandParentTVType", TVTypeEnum.Subsector.ToString()), new[] { "GrandParentTVType" });
+                        HasError = true;
+                    }
+                }
+                else if (postTVItemModel.ParentTVType == TVTypeEnum.TideSite)
+                {
+                    if (postTVItemModel.GrandParentID == null || postTVItemModel.GrandParentID == 0)
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "GrandParentID"), new[] { "GrandParentID" });
+                        HasError = true;
+                    }
+
+                    if (postTVItemModel.GrandParentTVType != TVTypeEnum.Subsector)
+                    {
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ShouldNotBeOfType_, "GrandParentTVType", TVTypeEnum.Subsector.ToString()), new[] { "GrandParentTVType" });
+                        HasError = true;
+                    }
+                }
+                else
+                {
+                    if (postTVItemModel.GrandParentID == null)
+                    {
+                        postTVItemModel.GrandParentID = 1;
+                    }
+                    if (postTVItemModel.GrandParentTVType == null)
+                    {
+                        postTVItemModel.GrandParentTVType = TVTypeEnum.Root;
+                    }
+                }
+            }
+            else
+            {
+                if (postTVItemModel.GrandParentID == null)
+                {
+                    postTVItemModel.GrandParentID = 1;
+                }
+                if (postTVItemModel.GrandParentTVType == null)
+                {
+                    postTVItemModel.GrandParentTVType = TVTypeEnum.Root;
+                }
+            }
+
+            List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
                     {
                         TVTypeEnum.Root,
                         TVTypeEnum.Address,
@@ -213,6 +284,7 @@ namespace CSSPDBLocalServices
                         TVTypeEnum.Contact,
                         TVTypeEnum.Country,
                         TVTypeEnum.Email,
+                        TVTypeEnum.File,
                         TVTypeEnum.HydrometricSite,
                         TVTypeEnum.Infrastructure,
                         TVTypeEnum.MikeBoundaryConditionMesh,
@@ -229,21 +301,20 @@ namespace CSSPDBLocalServices
                         TVTypeEnum.Subsector,
                         TVTypeEnum.Tel,
                     };
-                if (!AllowableTVTypes.Contains(postTVItemModel.TVType))
-                {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "TVType", 
-                        "Root,Address,Area,Classification,ClimateSite,Contact,Country,Email,HydrometricSite,Infrastructure," +
-                        "MikeBoundaryConditionMesh,MikeBoundaryConditionWebTide,MikeScenario,MikeSource,Municipality,MWQMRun,MWQMSite," +
-                        "PolSourceSite,Province,RainExceedance,Sector,Subsector,Tel"), new[] { nameof(postTVItemModel.TVType) });
-                }
+            if (!AllowableTVTypes.Contains(postTVItemModel.TVType))
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "TVType",
+                    "Root,Address,Area,Classification,ClimateSite,Contact,Country,Email,File,HydrometricSite,Infrastructure," +
+                    "MikeBoundaryConditionMesh,MikeBoundaryConditionWebTide,MikeScenario,MikeSource,Municipality,MWQMRun,MWQMSite," +
+                    "PolSourceSite,Province,RainExceedance,Sector,Subsector,Tel"), new[] { nameof(postTVItemModel.TVType) });
 
+                HasError = true;
+            }
+
+            if (!HasError)
+            {
                 switch (postTVItemModel.TVType)
                 {
-                    case TVTypeEnum.Root:
-                        {
-                            // this should not happen for now
-                        }
-                        break;
                     case TVTypeEnum.Address:
                         {
                             if (ReadGzFileService.webAppLoaded.WebRoot == null)
@@ -325,6 +396,165 @@ namespace CSSPDBLocalServices
                             ParentTVItem = ReadGzFileService.webAppLoaded.WebRoot.TVItemModel.TVItem;
                             tvItemParentList = ReadGzFileService.webAppLoaded.WebRoot.TVItemParentList;
                             tvItemSiblingList = ReadGzFileService.webAppLoaded.WebRoot.TVItemCountryList;
+                        }
+                        break;
+                    case TVTypeEnum.File:
+                        {
+                            switch (postTVItemModel.ParentTVType)
+                            {
+                                case TVTypeEnum.Area:
+                                    {
+                                        if (ReadGzFileService.webAppLoaded.WebArea == null)
+                                        {
+                                            ReadGzFileService.webAppLoaded.WebArea = ReadGzFileService.GetUncompressJSON<WebArea>(WebTypeEnum.WebArea, postTVItemModel.ParentID, WebTypeYearEnum.Year1980).GetAwaiter().GetResult();
+                                        }
+
+                                        ParentTVItem = ReadGzFileService.webAppLoaded.WebArea.TVItemModel.TVItem;
+                                        tvItemParentList = ReadGzFileService.webAppLoaded.WebArea.TVItemParentList;
+                                        tvItemFileSiblingList = ReadGzFileService.webAppLoaded.WebArea.TVItemFileList;
+                                    }
+                                    break;
+                                case TVTypeEnum.Country:
+                                    {
+                                        if (ReadGzFileService.webAppLoaded.WebCountry == null)
+                                        {
+                                            ReadGzFileService.webAppLoaded.WebCountry = ReadGzFileService.GetUncompressJSON<WebCountry>(WebTypeEnum.WebCountry, postTVItemModel.ParentID, WebTypeYearEnum.Year1980).GetAwaiter().GetResult();
+                                        }
+
+                                        ParentTVItem = ReadGzFileService.webAppLoaded.WebCountry.TVItemModel.TVItem;
+                                        tvItemParentList = ReadGzFileService.webAppLoaded.WebCountry.TVItemParentList;
+                                        tvItemFileSiblingList = ReadGzFileService.webAppLoaded.WebCountry.TVItemFileList;
+                                    }
+                                    break;
+                                case TVTypeEnum.Infrastructure:
+                                    {
+                                        if (ReadGzFileService.webAppLoaded.WebMunicipality == null)
+                                        {
+                                            ReadGzFileService.webAppLoaded.WebMunicipality = ReadGzFileService.GetUncompressJSON<WebMunicipality>(WebTypeEnum.WebMunicipality, (int)postTVItemModel.GrandParentID, WebTypeYearEnum.Year1980).GetAwaiter().GetResult();
+                                        }
+
+                                        tvItemParentList = ReadGzFileService.webAppLoaded.WebMunicipality.TVItemParentList;
+                                        WebBase TVItemModelInfrastructure = ReadGzFileService.webAppLoaded.WebMunicipality.TVItemInfrastructureList.Where(c => c.TVItemModel.TVItem.TVItemID == postTVItemModel.ParentID).FirstOrDefault();
+                                        tvItemParentList.Add(TVItemModelInfrastructure);
+                                        foreach (InfrastructureModel infrastructureModel in ReadGzFileService.webAppLoaded.WebMunicipality.InfrastructureModelList.Where(c => c.TVItemModel.TVItem.TVItemID == postTVItemModel.ParentID))
+                                        {
+                                            tvItemFileSiblingList.AddRange(infrastructureModel.TVItemFileList);
+                                        }
+
+                                        ParentTVItem = ReadGzFileService.webAppLoaded.WebMunicipality.TVItemInfrastructureList.Where(c => c.TVItemModel.TVItem.TVItemID == postTVItemModel.ParentID).FirstOrDefault().TVItemModel.TVItem;
+                                    }
+                                    break;
+                                case TVTypeEnum.MikeScenario:
+                                    {
+                                        if (ReadGzFileService.webAppLoaded.WebMikeScenario == null)
+                                        {
+                                            ReadGzFileService.webAppLoaded.WebMikeScenario = ReadGzFileService.GetUncompressJSON<WebMikeScenario>(WebTypeEnum.WebMikeScenario, postTVItemModel.ParentID, WebTypeYearEnum.Year1980).GetAwaiter().GetResult();
+                                        }
+
+                                        ParentTVItem = ReadGzFileService.webAppLoaded.WebMikeScenario.TVItemModel.TVItem;
+                                        tvItemParentList = ReadGzFileService.webAppLoaded.WebMikeScenario.TVItemParentList;
+                                        tvItemFileSiblingList = ReadGzFileService.webAppLoaded.WebMikeScenario.TVItemFileList;
+                                    }
+                                    break;
+                                case TVTypeEnum.Municipality:
+                                    {
+                                        if (ReadGzFileService.webAppLoaded.WebMunicipality == null)
+                                        {
+                                            ReadGzFileService.webAppLoaded.WebMunicipality = ReadGzFileService.GetUncompressJSON<WebMunicipality>(WebTypeEnum.WebMunicipality, postTVItemModel.ParentID, WebTypeYearEnum.Year1980).GetAwaiter().GetResult();
+                                        }
+
+                                        ParentTVItem = ReadGzFileService.webAppLoaded.WebMunicipality.TVItemModel.TVItem;
+                                        tvItemParentList = ReadGzFileService.webAppLoaded.WebMunicipality.TVItemParentList;
+                                        tvItemFileSiblingList = ReadGzFileService.webAppLoaded.WebMunicipality.TVItemFileList;
+                                    }
+                                    break;
+                                case TVTypeEnum.MWQMSite:
+                                    {
+                                        if (ReadGzFileService.webAppLoaded.WebMWQMSite == null)
+                                        {
+                                            ReadGzFileService.webAppLoaded.WebMWQMSite = ReadGzFileService.GetUncompressJSON<WebMWQMSite>(WebTypeEnum.WebMWQMSite, (int)postTVItemModel.GrandParentID, WebTypeYearEnum.Year1980).GetAwaiter().GetResult();
+                                        }
+
+                                        tvItemParentList = ReadGzFileService.webAppLoaded.WebMWQMSite.TVItemParentList;
+                                        WebBase TVItemModelMWQMSite = ReadGzFileService.webAppLoaded.WebMWQMSite.MWQMSiteModelList.Where(c => c.TVItemModel.TVItem.TVItemID == postTVItemModel.ParentID).FirstOrDefault();
+                                        tvItemParentList.Add(TVItemModelMWQMSite);
+                                        foreach (MWQMSiteModel mwqmSiteModel in ReadGzFileService.webAppLoaded.WebMWQMSite.MWQMSiteModelList.Where(c => c.TVItemModel.TVItem.TVItemID == postTVItemModel.ParentID))
+                                        {
+                                            tvItemFileSiblingList.AddRange(mwqmSiteModel.TVItemFileList);
+                                        }
+
+                                        ParentTVItem = ReadGzFileService.webAppLoaded.WebMWQMSite.MWQMSiteModelList.Where(c => c.TVItemModel.TVItem.TVItemID == postTVItemModel.ParentID).FirstOrDefault().TVItemModel.TVItem;
+                                    }
+                                    break;
+                                case TVTypeEnum.PolSourceSite:
+                                    {
+                                        if (ReadGzFileService.webAppLoaded.WebPolSourceSite == null)
+                                        {
+                                            ReadGzFileService.webAppLoaded.WebPolSourceSite = ReadGzFileService.GetUncompressJSON<WebPolSourceSite>(WebTypeEnum.WebPolSourceSite, (int)postTVItemModel.GrandParentID, WebTypeYearEnum.Year1980).GetAwaiter().GetResult();
+                                        }
+
+                                        tvItemParentList = ReadGzFileService.webAppLoaded.WebPolSourceSite.TVItemParentList;
+                                        WebBase TVItemModelPolSourceSite = ReadGzFileService.webAppLoaded.WebPolSourceSite.PolSourceSiteModelList.Where(c => c.TVItemModel.TVItem.TVItemID == postTVItemModel.ParentID).FirstOrDefault();
+                                        tvItemParentList.Add(TVItemModelPolSourceSite);
+                                        foreach (PolSourceSiteModel polSourceSiteModel in ReadGzFileService.webAppLoaded.WebPolSourceSite.PolSourceSiteModelList.Where(c => c.TVItemModel.TVItem.TVItemID == postTVItemModel.ParentID))
+                                        {
+                                            tvItemFileSiblingList.AddRange(polSourceSiteModel.TVItemFileList);
+                                        }
+
+                                        ParentTVItem = ReadGzFileService.webAppLoaded.WebPolSourceSite.PolSourceSiteModelList.Where(c => c.TVItemModel.TVItem.TVItemID == postTVItemModel.ParentID).FirstOrDefault().TVItemModel.TVItem;
+                                    }
+                                    break;
+                                case TVTypeEnum.Province:
+                                    {
+                                        if (ReadGzFileService.webAppLoaded.WebProvince == null)
+                                        {
+                                            ReadGzFileService.webAppLoaded.WebProvince = ReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, postTVItemModel.ParentID, WebTypeYearEnum.Year1980).GetAwaiter().GetResult();
+                                        }
+
+                                        ParentTVItem = ReadGzFileService.webAppLoaded.WebProvince.TVItemModel.TVItem;
+                                        tvItemParentList = ReadGzFileService.webAppLoaded.WebProvince.TVItemParentList;
+                                        tvItemFileSiblingList = ReadGzFileService.webAppLoaded.WebProvince.TVItemFileList;
+                                    }
+                                    break;
+                                case TVTypeEnum.Root:
+                                    {
+                                        if (ReadGzFileService.webAppLoaded.WebRoot == null)
+                                        {
+                                            ReadGzFileService.webAppLoaded.WebRoot = ReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, postTVItemModel.ParentID, WebTypeYearEnum.Year1980).GetAwaiter().GetResult();
+                                        }
+
+                                        ParentTVItem = ReadGzFileService.webAppLoaded.WebRoot.TVItemModel.TVItem;
+                                        tvItemParentList = ReadGzFileService.webAppLoaded.WebRoot.TVItemParentList;
+                                        tvItemFileSiblingList = ReadGzFileService.webAppLoaded.WebRoot.TVItemFileList;
+                                    }
+                                    break;
+                                case TVTypeEnum.Sector:
+                                    {
+                                        if (ReadGzFileService.webAppLoaded.WebSector == null)
+                                        {
+                                            ReadGzFileService.webAppLoaded.WebSector = ReadGzFileService.GetUncompressJSON<WebSector>(WebTypeEnum.WebSector, postTVItemModel.ParentID, WebTypeYearEnum.Year1980).GetAwaiter().GetResult();
+                                        }
+
+                                        ParentTVItem = ReadGzFileService.webAppLoaded.WebSector.TVItemModel.TVItem;
+                                        tvItemParentList = ReadGzFileService.webAppLoaded.WebSector.TVItemParentList;
+                                        tvItemFileSiblingList = ReadGzFileService.webAppLoaded.WebSector.TVItemFileList;
+                                    }
+                                    break;
+                                case TVTypeEnum.Subsector:
+                                    {
+                                        if (ReadGzFileService.webAppLoaded.WebSubsector == null)
+                                        {
+                                            ReadGzFileService.webAppLoaded.WebSubsector = ReadGzFileService.GetUncompressJSON<WebSubsector>(WebTypeEnum.WebSubsector, postTVItemModel.ParentID, WebTypeYearEnum.Year1980).GetAwaiter().GetResult();
+                                        }
+
+                                        ParentTVItem = ReadGzFileService.webAppLoaded.WebSubsector.TVItemModel.TVItem;
+                                        tvItemParentList = ReadGzFileService.webAppLoaded.WebSubsector.TVItemParentList;
+                                        tvItemFileSiblingList = ReadGzFileService.webAppLoaded.WebSubsector.TVItemFileList;
+                                    }
+                                    break;
+                                default:
+                                    break;
+                            }
                         }
                         break;
                     case TVTypeEnum.Email:
@@ -490,6 +720,11 @@ namespace CSSPDBLocalServices
                             tvItemSiblingList = ReadGzFileService.webAppLoaded.WebCountry.TVItemRainExceedanceList;
                         }
                         break;
+                    case TVTypeEnum.Root:
+                        {
+                            // this should not happen for now
+                        }
+                        break;
                     case TVTypeEnum.Sector:
                         {
                             if (ReadGzFileService.webAppLoaded.WebArea == null)
@@ -564,7 +799,7 @@ namespace CSSPDBLocalServices
                         {
                             dbLocal.TVItems.Add(webBaseToAdd.TVItemModel.TVItem);
                             dbLocal.SaveChanges();
-                            AppendToRecreate(ToRecreateList, webBaseToAdd.TVItemModel.TVItem, 1982);
+                            AppendToRecreate(webBaseToAdd.TVItemModel.TVItem, 1982, postTVItemModel.ParentTVType, (int)postTVItemModel.GrandParentID);
                         }
                         catch (Exception ex)
                         {
@@ -628,7 +863,7 @@ namespace CSSPDBLocalServices
                     {
                         dbLocal.TVItems.Add(tvItemNew);
                         dbLocal.SaveChanges();
-                        AppendToRecreate(ToRecreateList, tvItemNew, 1982);
+                        AppendToRecreate(tvItemNew, 1982, postTVItemModel.ParentTVType, (int)postTVItemModel.GrandParentID);
                     }
                     catch (Exception ex)
                     {
@@ -698,7 +933,7 @@ namespace CSSPDBLocalServices
                         TVItem tvItemNew = WebBaseToChange.TVItemModel.TVItem;
 
                         dbLocal.TVItems.Add(tvItemNew);
-                        AppendToRecreate(ToRecreateList, tvItemNew, 1982);
+                        AppendToRecreate(tvItemNew, 1982, postTVItemModel.ParentTVType, (int)postTVItemModel.GrandParentID);
                         tvItem = tvItemNew;
                     }
                     else
@@ -743,7 +978,7 @@ namespace CSSPDBLocalServices
                             }
 
                             dbLocal.TVItemLanguages.Add(tvItemLanguageNew);
-                            AppendToRecreate(ToRecreateList, tvItem, 1982);
+                            AppendToRecreate(tvItem, 1982, postTVItemModel.ParentTVType, (int)postTVItemModel.GrandParentID);
                         }
                         else
                         {
@@ -760,7 +995,7 @@ namespace CSSPDBLocalServices
                         try
                         {
                             dbLocal.SaveChanges();
-                            AppendToRecreate(ToRecreateList, tvItem, 1982);
+                            AppendToRecreate(tvItem, 1982, postTVItemModel.ParentTVType, (int)postTVItemModel.GrandParentID);
                         }
                         catch (Exception ex)
                         {
@@ -775,7 +1010,7 @@ namespace CSSPDBLocalServices
                     }
                 }
 
-                foreach(ToRecreate toRecreate in ToRecreateList)
+                foreach (ToRecreate toRecreate in ToRecreateList)
                 {
                     CreateGzFileLocalService.CreateGzFileLocal(toRecreate.WebType, toRecreate.TVItemID, toRecreate.WebTypeYear);
                 }
@@ -784,15 +1019,10 @@ namespace CSSPDBLocalServices
         }
 
 
-        private void AppendToRecreate(List<ToRecreate> toRecreateList, TVItem tvItem, int year)
+        private void AppendToRecreate(TVItem tvItem, int year, TVTypeEnum ParentTVType, int GrandParentID)
         {
             switch (tvItem.TVType)
             {
-                case TVTypeEnum.Root:
-                    {
-                        ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebRoot, tvItem.TVItemID, GetWebTypeYear(year));
-                    }
-                    break;
                 case TVTypeEnum.Address:
                     {
                         ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebAllAddresses, (int)tvItem.ParentID, GetWebTypeYear(year));
@@ -830,6 +1060,76 @@ namespace CSSPDBLocalServices
                     }
                     break;
                 case TVTypeEnum.File:
+                    {
+                        switch (ParentTVType)
+                        {
+                            case TVTypeEnum.Area:
+                                {
+                                    ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebArea, tvItem.TVItemID, GetWebTypeYear(year));
+                                }
+                                break;
+                            case TVTypeEnum.Country:
+                                {
+                                    ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebCountry, tvItem.TVItemID, GetWebTypeYear(year));
+                                }
+                                break;
+                            case TVTypeEnum.Infrastructure:
+                                {
+                                    ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebMunicipality, (int)tvItem.ParentID, GetWebTypeYear(year));
+                                }
+                                break;
+                            case TVTypeEnum.MikeScenario:
+                                {
+                                    ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebMikeScenario, tvItem.TVItemID, GetWebTypeYear(year));
+                                }
+                                break;
+                            case TVTypeEnum.Municipality:
+                                {
+                                    ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebMunicipality, tvItem.TVItemID, GetWebTypeYear(year));
+                                }
+                                break;
+                            case TVTypeEnum.MWQMSite:
+                                {
+                                    ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebMWQMSite, GrandParentID, GetWebTypeYear(year));
+                                    ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebSubsector, GrandParentID, GetWebTypeYear(year));
+                                }
+                                break;
+                            case TVTypeEnum.PolSourceSite:
+                                {
+                                    ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebPolSourceSite, GrandParentID, GetWebTypeYear(year));
+                                    ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebSubsector, GrandParentID, GetWebTypeYear(year));
+                                }
+                                break;
+                            case TVTypeEnum.Province:
+                                {
+                                    ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebProvince, tvItem.TVItemID, GetWebTypeYear(year));
+                                }
+                                break;
+                            case TVTypeEnum.Root:
+                                {
+                                    ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebRoot, tvItem.TVItemID, GetWebTypeYear(year));
+                                }
+                                break;
+                            case TVTypeEnum.Sector:
+                                {
+                                    ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebSector, tvItem.TVItemID, GetWebTypeYear(year));
+                                }
+                                break;
+                            case TVTypeEnum.Subsector:
+                                {
+                                    ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebSubsector, tvItem.TVItemID, GetWebTypeYear(year));
+                                }
+                                break;
+                            case TVTypeEnum.TideSite:
+                                {
+                                    ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebTideSite, GrandParentID, GetWebTypeYear(year));
+                                    ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebSubsector, GrandParentID, GetWebTypeYear(year));
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                    }
                     break;
                 case TVTypeEnum.HydrometricSite:
                     {
@@ -898,6 +1198,11 @@ namespace CSSPDBLocalServices
                         ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebCountry, (int)tvItem.ParentID, GetWebTypeYear(year));
                     }
                     break;
+                case TVTypeEnum.Root:
+                    {
+                        ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebRoot, tvItem.TVItemID, GetWebTypeYear(year));
+                    }
+                    break;
                 case TVTypeEnum.Sector:
                     {
                         ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebSector, tvItem.TVItemID, GetWebTypeYear(year));
@@ -914,6 +1219,10 @@ namespace CSSPDBLocalServices
                     }
                     break;
                 case TVTypeEnum.TideSite:
+                    {
+                        ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebSubsector, (int)tvItem.ParentID, GetWebTypeYear(year));
+                        ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebTideSite, tvItem.TVItemID, GetWebTypeYear(year));
+                    }
                     break;
                 case TVTypeEnum.MWQMSiteSample:
                     {

@@ -41,6 +41,8 @@ namespace CreateGzFileLocalServices
 
                 await FillChildListTVItemModelListLocal(webMunicipality.TVItemInfrastructureList, TVItemMunicipality, TVTypeEnum.Infrastructure);
 
+                await FillChildListTVItemModelListLocal(webMunicipality.TVItemFileList, TVItemMunicipality, TVTypeEnum.File);
+
                 await FillChildListTVItemInfrastructureModelListLocal(webMunicipality.InfrastructureModelList, TVItemMunicipality, TVTypeEnum.Infrastructure);
 
                 await FillChildListTVItemMIKEScenarioModelListLocal(webMunicipality.MIKEScenarioModelList, TVItemMunicipality, TVTypeEnum.MikeScenario);

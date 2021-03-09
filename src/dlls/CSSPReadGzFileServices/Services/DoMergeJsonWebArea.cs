@@ -27,16 +27,16 @@ namespace ReadGzFileServices
 {
     public partial class ReadGzFileService : ControllerBase, IReadGzFileService
     {
-        private void DoMergeJsonWebArea(WebArea WebArea, WebArea WebAreaLocal)
+        private void DoMergeJsonWebArea(WebArea webArea, WebArea webAreaLocal)
         {
             // -----------------------------------------------------------
             // doing TVItemSectorList
             // -----------------------------------------------------------
-            int count = WebArea.TVItemSectorList.Count;
+            int count = webArea.TVItemSectorList.Count;
             for (int i = 0; i < count; i++)
             {
-                WebBase webBaseLocal = (from c in WebAreaLocal.TVItemSectorList
-                                        where c.TVItemModel.TVItem.TVItemID == WebArea.TVItemSectorList[i].TVItemModel.TVItem.TVItemID
+                WebBase webBaseLocal = (from c in webAreaLocal.TVItemSectorList
+                                        where c.TVItemModel.TVItem.TVItemID == webArea.TVItemSectorList[i].TVItemModel.TVItem.TVItemID
                                         && (c.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
                                         || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.en].DBCommand != DBCommandEnum.Original
                                         || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].DBCommand != DBCommandEnum.Original)
@@ -44,17 +44,45 @@ namespace ReadGzFileServices
 
                 if (webBaseLocal != null)
                 {
-                    WebArea.TVItemSectorList[i] = webBaseLocal;
+                    webArea.TVItemSectorList[i] = webBaseLocal;
                 }
             }
 
-            List<WebBase> webBaseLocalNewList = (from c in WebAreaLocal.TVItemSectorList
+            List<WebBase> webBaseLocalNewList = (from c in webAreaLocal.TVItemSectorList
                                                  where c.TVItemModel.TVItem.DBCommand == DBCommandEnum.Created
                                                  select c).ToList();
 
             foreach(WebBase webBaseNew in webBaseLocalNewList)
             {
-                WebArea.TVItemSectorList.Add(webBaseNew);
+                webArea.TVItemSectorList.Add(webBaseNew);
+            }
+
+            // -----------------------------------------------------------
+            // doing TVItemFileList
+            // -----------------------------------------------------------
+            count = webArea.TVItemFileList.Count;
+            for (int i = 0; i < count; i++)
+            {
+                WebBase webBaseLocal = (from c in webAreaLocal.TVItemFileList
+                                        where c.TVItemModel.TVItem.TVItemID == webArea.TVItemFileList[i].TVItemModel.TVItem.TVItemID
+                                        && (c.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
+                                        || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.en].DBCommand != DBCommandEnum.Original
+                                        || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].DBCommand != DBCommandEnum.Original)
+                                        select c).FirstOrDefault();
+
+                if (webBaseLocal != null)
+                {
+                    webArea.TVItemFileList[i] = webBaseLocal;
+                }
+            }
+
+            webBaseLocalNewList = (from c in webAreaLocal.TVItemFileList
+                                   where c.TVItemModel.TVItem.DBCommand == DBCommandEnum.Created
+                                   select c).ToList();
+
+            foreach (WebBase webBaseNew in webBaseLocalNewList)
+            {
+                webArea.TVItemFileList.Add(webBaseNew);
             }
 
             return;

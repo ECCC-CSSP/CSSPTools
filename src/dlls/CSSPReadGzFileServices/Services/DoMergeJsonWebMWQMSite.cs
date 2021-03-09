@@ -27,34 +27,69 @@ namespace ReadGzFileServices
 {
     public partial class ReadGzFileService : ControllerBase, IReadGzFileService
     {
-        private void DoMergeJsonWebMWQMSite(WebMWQMSite WebMWQMSite, WebMWQMSite WebMWQMSiteLocal)
+        private void DoMergeJsonWebMWQMSite(WebMWQMSite webMWQMSite, WebMWQMSite webMWQMSiteLocal)
         {
             // -----------------------------------------------------------
             // doing MWQMSiteModelList
             // -----------------------------------------------------------
-            int count = WebMWQMSite.MWQMSiteModelList.Count;
-            for (int i = 0; i < count; i++)
-            {
-                MWQMSiteModel MWQMSiteModelLocal = (from c in WebMWQMSiteLocal.MWQMSiteModelList
-                                                              where c.TVItemModel.TVItem.TVItemID == WebMWQMSite.MWQMSiteModelList[i].TVItemModel.TVItem.TVItemID
-                                                              && (c.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
-                                                              || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.en].DBCommand != DBCommandEnum.Original
-                                                              || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].DBCommand != DBCommandEnum.Original)
-                                                              select c).FirstOrDefault();
 
-                if (MWQMSiteModelLocal != null)
-                {
-                    WebMWQMSite.MWQMSiteModelList[i] = MWQMSiteModelLocal;
-                }
+            List<MWQMSiteModel> mwqmSiteModelLocalNewList = (from c in webMWQMSiteLocal.MWQMSiteModelList
+                                                             where c.TVItemModel.TVItem.DBCommand == DBCommandEnum.Created
+                                                             select c).ToList();
+
+            foreach (MWQMSiteModel mwqmSiteModel in mwqmSiteModelLocalNewList)
+            {
+                webMWQMSite.MWQMSiteModelList.Add(mwqmSiteModel);
             }
 
-            List<MWQMSiteModel> MWQMSiteModelLocalNewList = (from c in WebMWQMSiteLocal.MWQMSiteModelList
-                                                                       where c.TVItemModel.TVItem.DBCommand == DBCommandEnum.Created
-                                                                       select c).ToList();
-
-            foreach (MWQMSiteModel MWQMSiteModelNew in MWQMSiteModelLocalNewList)
+            int count = webMWQMSite.MWQMSiteModelList.Count;
+            for (int i = 0; i < count; i++)
             {
-                WebMWQMSite.MWQMSiteModelList.Add(MWQMSiteModelNew);
+                MWQMSiteModel mwqmSiteModelLocal = (from c in webMWQMSiteLocal.MWQMSiteModelList
+                                                    where c.TVItemModel.TVItem.TVItemID == webMWQMSite.MWQMSiteModelList[i].TVItemModel.TVItem.TVItemID
+                                                    select c).FirstOrDefault();
+
+                if (mwqmSiteModelLocal != null)
+                {
+                    if (mwqmSiteModelLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
+                        || mwqmSiteModelLocal.TVItemModel.TVItemLanguageList[(int)LanguageEnum.en].DBCommand != DBCommandEnum.Original
+                        || mwqmSiteModelLocal.TVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].DBCommand != DBCommandEnum.Original)
+                    {
+                        webMWQMSite.MWQMSiteModelList[i].TVItemModel = mwqmSiteModelLocal.TVItemModel;
+                    }
+
+                    // -----------------------------------------------------------
+                    // doing TVItemFileList
+                    // -----------------------------------------------------------
+                    int count2 = webMWQMSite.MWQMSiteModelList[i].TVItemFileList.Count;
+                    for (int j = 0; j < count2; j++)
+                    {
+                        WebBase webBaseLocal = (from c in mwqmSiteModelLocal.TVItemFileList
+                                                where c.TVItemModel.TVItem.TVItemID == webMWQMSite.MWQMSiteModelList[i].TVItemFileList[j].TVItemModel.TVItem.TVItemID
+                                                select c).FirstOrDefault();
+
+                        if (webBaseLocal != null)
+                        {
+                            if (webBaseLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
+                                || webBaseLocal.TVItemModel.TVItemLanguageList[(int)LanguageEnum.en].DBCommand != DBCommandEnum.Original
+                                || webBaseLocal.TVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].DBCommand != DBCommandEnum.Original)
+                            {
+                                webMWQMSite.MWQMSiteModelList[i].TVItemFileList[j] = webBaseLocal;
+                            }
+                        }
+                    }
+
+                    List<WebBase> webBaseLocalNewList = (from c in mwqmSiteModelLocal.TVItemFileList
+                                                         where c.TVItemModel.TVItem.DBCommand == DBCommandEnum.Created
+                                                         select c).ToList();
+
+                    foreach (WebBase webBaseNew in webBaseLocalNewList)
+                    {
+                        webMWQMSite.MWQMSiteModelList[i].TVItemFileList.Add(webBaseNew);
+                    }
+
+                    //webMWQMSite.MWQMSiteModelList[i] = mwqmSiteModelLocal;
+                }
             }
 
             return;

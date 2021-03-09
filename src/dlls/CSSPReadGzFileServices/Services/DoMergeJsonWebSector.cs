@@ -27,16 +27,16 @@ namespace ReadGzFileServices
 {
     public partial class ReadGzFileService : ControllerBase, IReadGzFileService
     {
-        private void DoMergeJsonWebSector(WebSector WebSector, WebSector WebSectorLocal)
+        private void DoMergeJsonWebSector(WebSector webSector, WebSector webSectorLocal)
         {
             // -----------------------------------------------------------
             // doing TVItemSubsectorList
             // -----------------------------------------------------------
-            int count = WebSector.TVItemSubsectorList.Count;
+            int count = webSector.TVItemSubsectorList.Count;
             for (int i = 0; i < count; i++)
             {
-                WebBase webBaseLocal = (from c in WebSectorLocal.TVItemSubsectorList
-                                        where c.TVItemModel.TVItem.TVItemID == WebSector.TVItemSubsectorList[i].TVItemModel.TVItem.TVItemID
+                WebBase webBaseLocal = (from c in webSectorLocal.TVItemSubsectorList
+                                        where c.TVItemModel.TVItem.TVItemID == webSector.TVItemSubsectorList[i].TVItemModel.TVItem.TVItemID
                                         && (c.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
                                         || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.en].DBCommand != DBCommandEnum.Original
                                         || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].DBCommand != DBCommandEnum.Original)
@@ -44,17 +44,45 @@ namespace ReadGzFileServices
 
                 if (webBaseLocal != null)
                 {
-                    WebSector.TVItemSubsectorList[i] = webBaseLocal;
+                    webSector.TVItemSubsectorList[i] = webBaseLocal;
                 }
             }
 
-            List<WebBase> webBaseLocalNewList = (from c in WebSectorLocal.TVItemSubsectorList
+            List<WebBase> webBaseLocalNewList = (from c in webSectorLocal.TVItemSubsectorList
                                                  where c.TVItemModel.TVItem.DBCommand == DBCommandEnum.Created
                                                  select c).ToList();
 
             foreach(WebBase webBaseNew in webBaseLocalNewList)
             {
-                WebSector.TVItemSubsectorList.Add(webBaseNew);
+                webSector.TVItemSubsectorList.Add(webBaseNew);
+            }
+
+            // -----------------------------------------------------------
+            // doing TVItemFileList
+            // -----------------------------------------------------------
+            count = webSector.TVItemFileList.Count;
+            for (int i = 0; i < count; i++)
+            {
+                WebBase webBaseLocal = (from c in webSectorLocal.TVItemFileList
+                                        where c.TVItemModel.TVItem.TVItemID == webSector.TVItemFileList[i].TVItemModel.TVItem.TVItemID
+                                        && (c.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
+                                        || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.en].DBCommand != DBCommandEnum.Original
+                                        || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].DBCommand != DBCommandEnum.Original)
+                                        select c).FirstOrDefault();
+
+                if (webBaseLocal != null)
+                {
+                    webSector.TVItemFileList[i] = webBaseLocal;
+                }
+            }
+
+            webBaseLocalNewList = (from c in webSectorLocal.TVItemFileList
+                                   where c.TVItemModel.TVItem.DBCommand == DBCommandEnum.Created
+                                   select c).ToList();
+
+            foreach (WebBase webBaseNew in webBaseLocalNewList)
+            {
+                webSector.TVItemFileList.Add(webBaseNew);
             }
 
             return;

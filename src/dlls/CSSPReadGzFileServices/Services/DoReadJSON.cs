@@ -160,20 +160,101 @@ namespace ReadGzFileServices
 
                             switch (webType)
                             {
-                                case WebTypeEnum.WebRoot:
-                                    DoMergeJsonWebRoot(FromAzureStore as WebRoot, FromLocal as WebRoot);
+                                case WebTypeEnum.WebAllAddresses:
+                                    DoMergeJsonWebAllAddresses(FromAzureStore as WebAllAddresses, FromLocal as WebAllAddresses);
                                     break;
-                                case WebTypeEnum.WebCountry:
-                                    DoMergeJsonWebCountry(FromAzureStore as WebCountry, FromLocal as WebCountry);
+                                case WebTypeEnum.WebAllContacts:
+                                    DoMergeJsonWebAllContacts(FromAzureStore as WebAllContacts, FromLocal as WebAllContacts);
                                     break;
-                                case WebTypeEnum.WebProvince:
-                                    DoMergeJsonWebProvince(FromAzureStore as WebProvince, FromLocal as WebProvince);
+                                case WebTypeEnum.WebAllCountries:
+                                    DoMergeJsonWebAllCountries(FromAzureStore as WebAllCountries, FromLocal as WebAllCountries);
+                                    break;
+                                case WebTypeEnum.WebAllEmails:
+                                    DoMergeJsonWebAllEmails(FromAzureStore as WebAllEmails, FromLocal as WebAllEmails);
+                                    break;
+                                case WebTypeEnum.WebAllHelpDocs:
+                                    DoMergeJsonWebAllHelpDocs(FromAzureStore as WebAllHelpDocs, FromLocal as WebAllHelpDocs);
+                                    break;
+                                case WebTypeEnum.WebAllMunicipalities:
+                                    DoMergeJsonWebAllMunicipalities(FromAzureStore as WebAllMunicipalities, FromLocal as WebAllMunicipalities);
+                                    break;
+                                case WebTypeEnum.WebAllMWQMLookupMPNs:
+                                    DoMergeJsonWebAllMWQMLookupMPNs(FromAzureStore as WebAllMWQMLookupMPNs, FromLocal as WebAllMWQMLookupMPNs);
+                                    break;
+                                case WebTypeEnum.WebAllPolSourceGroupings:
+                                    DoMergeJsonWebAllPolSourceGroupings(FromAzureStore as WebAllPolSourceGroupings, FromLocal as WebAllPolSourceGroupings);
+                                    break;
+                                case WebTypeEnum.WebAllPolSourceSiteEffectTerms:
+                                    DoMergeJsonWebAllPolSourceSiteEffectTerms(FromAzureStore as WebAllPolSourceSiteEffectTerms, FromLocal as WebAllPolSourceSiteEffectTerms);
+                                    break;
+                                case WebTypeEnum.WebAllProvinces:
+                                    DoMergeJsonWebAllProvinces(FromAzureStore as WebAllProvinces, FromLocal as WebAllProvinces);
+                                    break;
+                                case WebTypeEnum.WebAllReportTypes:
+                                    DoMergeJsonWebAllReportTypes(FromAzureStore as WebAllReportTypes, FromLocal as WebAllReportTypes);
+                                    break;
+                                case WebTypeEnum.WebAllTels:
+                                    DoMergeJsonWebAllTels(FromAzureStore as WebAllTels, FromLocal as WebAllTels); ;
+                                    break;
+                                case WebTypeEnum.WebAllTideLocations:
+                                    DoMergeJsonWebAllTideLocations(FromAzureStore as WebAllTideLocations, FromLocal as WebAllTideLocations); ;
+                                    break;
+                                case WebTypeEnum.WebAllTVItemLanguages:
+                                    DoMergeJsonWebAllTVItemLanguages(FromAzureStore as WebAllTVItemLanguages, FromLocal as WebAllTVItemLanguages); ;
+                                    break;
+                                case WebTypeEnum.WebAllTVItems:
+                                    DoMergeJsonWebAllTVItems(FromAzureStore as WebAllTVItems, FromLocal as WebAllTVItems); ;
                                     break;
                                 case WebTypeEnum.WebArea:
                                     DoMergeJsonWebArea(FromAzureStore as WebArea, FromLocal as WebArea);
                                     break;
+                                case WebTypeEnum.WebClimateDataValue:
+                                    DoMergeJsonWebClimateDataValue(FromAzureStore as WebClimateDataValue, FromLocal as WebClimateDataValue);
+                                    break;
+                                case WebTypeEnum.WebClimateSite:
+                                    DoMergeJsonWebClimateSite(FromAzureStore as WebClimateSite, FromLocal as WebClimateSite);
+                                    break;
+                                case WebTypeEnum.WebCountry:
+                                    DoMergeJsonWebCountry(FromAzureStore as WebCountry, FromLocal as WebCountry);
+                                    break;
+                                case WebTypeEnum.WebDrogueRun:
+                                    DoMergeJsonWebDrogueRun(FromAzureStore as WebDrogueRun, FromLocal as WebDrogueRun);
+                                    break;
+                                case WebTypeEnum.WebHydrometricDataValue:
+                                    DoMergeJsonWebHydrometricDataValue(FromAzureStore as WebHydrometricDataValue, FromLocal as WebHydrometricDataValue);
+                                    break;
+                                case WebTypeEnum.WebHydrometricSite:
+                                    DoMergeJsonWebHydrometricSite(FromAzureStore as WebHydrometricSite, FromLocal as WebHydrometricSite);
+                                    break;
+                                case WebTypeEnum.WebMikeScenario:
+                                    DoMergeJsonWebMikeScenario(FromAzureStore as WebMikeScenario, FromLocal as WebMikeScenario);
+                                    break;
                                 case WebTypeEnum.WebMunicipalities:
                                     DoMergeJsonWebMunicipalities(FromAzureStore as WebMunicipalities, FromLocal as WebMunicipalities);
+                                    break;
+                                case WebTypeEnum.WebMunicipality:
+                                    DoMergeJsonWebMunicipality(FromAzureStore as WebMunicipality, FromLocal as WebMunicipality);
+                                    break;
+                                case WebTypeEnum.WebMWQMRun:
+                                    DoMergeJsonWebMWQMRun(FromAzureStore as WebMWQMRun, FromLocal as WebMWQMRun);
+                                    break;
+                                case WebTypeEnum.WebMWQMSample:
+                                    DoMergeJsonWebMWQMSample(FromAzureStore as WebMWQMSample, FromLocal as WebMWQMSample);
+                                    break;
+                                case WebTypeEnum.WebMWQMSite:
+                                    DoMergeJsonWebMWQMSite(FromAzureStore as WebMWQMSite, FromLocal as WebMWQMSite);
+                                    break;
+                                case WebTypeEnum.WebPolSourceSite:
+                                    DoMergeJsonWebPolSourceSite(FromAzureStore as WebPolSourceSite, FromLocal as WebPolSourceSite);
+                                    break;
+                                case WebTypeEnum.WebProvince:
+                                    DoMergeJsonWebProvince(FromAzureStore as WebProvince, FromLocal as WebProvince);
+                                    break;
+                                case WebTypeEnum.WebRoot:
+                                    DoMergeJsonWebRoot(FromAzureStore as WebRoot, FromLocal as WebRoot);
+                                    break;
+                                case WebTypeEnum.WebSamplingPlan:
+                                    DoMergeJsonWebSamplingPlan(FromAzureStore as WebSamplingPlan, FromLocal as WebSamplingPlan);
                                     break;
                                 case WebTypeEnum.WebSector:
                                     DoMergeJsonWebSector(FromAzureStore as WebSector, FromLocal as WebSector);
@@ -181,73 +262,11 @@ namespace ReadGzFileServices
                                 case WebTypeEnum.WebSubsector:
                                     DoMergeJsonWebSubsector(FromAzureStore as WebSubsector, FromLocal as WebSubsector);
                                     break;
-                                case WebTypeEnum.WebMunicipality:
-                                    DoMergeJsonWebMunicipality(FromAzureStore as WebMunicipality, FromLocal as WebMunicipality);
+                                case WebTypeEnum.WebTideDataValue:
+                                    DoMergeJsonWebTideDataValue(FromAzureStore as WebTideDataValue, FromLocal as WebTideDataValue);
                                     break;
-                                //case WebTypeEnum.WebMWQMSample:
-                                //    break;
-                                //case WebTypeEnum.WebSamplingPlan:
-                                //    break;
-                                case WebTypeEnum.WebMWQMRun:
-                                    DoMergeJsonWebMWQMRun(FromAzureStore as WebMWQMRun, FromLocal as WebMWQMRun);
-                                    break;
-                                case WebTypeEnum.WebMWQMSite:
-                                    DoMergeJsonWebMWQMSite(FromAzureStore as WebMWQMSite, FromLocal as WebMWQMSite);
-                                    break;
-                                case WebTypeEnum.WebAllAddresses:
-                                    DoMergeJsonWebAllAddresses(FromAzureStore as WebAllAddresses, FromLocal as WebAllAddresses);
-                                    break;
-                                case WebTypeEnum.WebAllEmails:
-                                    DoMergeJsonWebAllEmails(FromAzureStore as WebAllEmails, FromLocal as WebAllEmails);
-                                    break;
-                                case WebTypeEnum.WebAllTels:
-                                    DoMergeJsonWebAllTels(FromAzureStore as WebAllTels, FromLocal as WebAllTels); ;
-                                    break;
-                                case WebTypeEnum.WebAllContacts:
-                                    DoMergeJsonWebAllContacts(FromAzureStore as WebAllContacts, FromLocal as WebAllContacts);
-                                    break;
-                                case WebTypeEnum.WebClimateSite:
-                                    DoMergeJsonWebClimateSite(FromAzureStore as WebClimateSite, FromLocal as WebClimateSite);
-                                    break;
-                                case WebTypeEnum.WebHydrometricSite:
-                                    DoMergeJsonWebHydrometricSite(FromAzureStore as WebHydrometricSite, FromLocal as WebHydrometricSite);
-                                    break;
-                                //case WebTypeEnum.WebDrogueRun:
-                                //    break;
-                                //case WebTypeEnum.WebAllMWQMLookupMPNs:
-                                //    break;
-                                case WebTypeEnum.WebMikeScenario:
-                                    DoMergeJsonWebMikeScenario(FromAzureStore as WebMikeScenario, FromLocal as WebMikeScenario);
-                                    break;
-                                //case WebTypeEnum.WebClimateDataValue:
-                                //    break;
-                                //case WebTypeEnum.WebHydrometricDataValue:
-                                //    break;
-                                //case WebTypeEnum.WebAllHelpDocs:
-                                //    break;
-                                //case WebTypeEnum.WebAllTideLocations:
-                                //    break;
-                                case WebTypeEnum.WebPolSourceSite:
-                                    DoMergeJsonWebPolSourceSite(FromAzureStore as WebPolSourceSite, FromLocal as WebPolSourceSite);
-                                    break;
-                                //case WebTypeEnum.WebAllPolSourceGroupings:
-                                //    break;
-                                //case WebTypeEnum.WebAllReportTypes:
-                                //    break;
-                                //case WebTypeEnum.WebAllTVItems:
-                                //    break;
-                                //case WebTypeEnum.WebAllPolSourceSiteEffectTerms:
-                                //    break;
-                                //case WebTypeEnum.WebAllTVItemLanguages:
-                                //    break;
-                                case WebTypeEnum.WebAllMunicipalities:
-                                    DoMergeJsonWebAllMunicipalities(FromAzureStore as WebAllMunicipalities, FromLocal as WebAllMunicipalities);
-                                    break;
-                                case WebTypeEnum.WebAllProvinces:
-                                    DoMergeJsonWebAllProvinces(FromAzureStore as WebAllProvinces, FromLocal as WebAllProvinces);
-                                    break;
-                                case WebTypeEnum.WebAllCountries:
-                                    DoMergeJsonWebAllCountries(FromAzureStore as WebAllCountries, FromLocal as WebAllCountries);
+                                case WebTypeEnum.WebTideSite:
+                                    DoMergeJsonWebTideSite(FromAzureStore as WebTideSite, FromLocal as WebTideSite);
                                     break;
                                 default:
                                     break;

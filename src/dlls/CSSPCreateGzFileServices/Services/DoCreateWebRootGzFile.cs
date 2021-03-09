@@ -38,13 +38,9 @@ namespace CreateGzFileServices
 
                 await FillParentListTVItemModelList(webRoot.TVItemParentList, TVItemRoot);
 
-                //await FillChildListTVItemModelList(webRoot.TVItemAddressList, TVItemRoot, TVTypeEnum.Address);
-
                 await FillChildListTVItemModelList(webRoot.TVItemCountryList, TVItemRoot, TVTypeEnum.Country);
 
-                //await FillChildListTVItemModelList(webRoot.TVItemEmailList, TVItemRoot, TVTypeEnum.Email);
-
-                //await FillChildListTVItemModelList(webRoot.TVItemTelList, TVItemRoot, TVTypeEnum.Tel);
+                await FillChildListTVItemModelList(webRoot.TVItemFileList, TVItemRoot, TVTypeEnum.File);
 
                 await DoStore<WebRoot>(webRoot, $"{ WebTypeEnum.WebRoot }.gz");
             }

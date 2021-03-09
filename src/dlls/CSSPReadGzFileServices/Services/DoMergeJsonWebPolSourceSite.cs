@@ -27,34 +27,69 @@ namespace ReadGzFileServices
 {
     public partial class ReadGzFileService : ControllerBase, IReadGzFileService
     {
-        private void DoMergeJsonWebPolSourceSite(WebPolSourceSite WebPolSourceSite, WebPolSourceSite WebPolSourceSiteLocal)
+        private void DoMergeJsonWebPolSourceSite(WebPolSourceSite webPolSourceSite, WebPolSourceSite webPolSourceSiteLocal)
         {
             // -----------------------------------------------------------
             // doing PolSourceSiteModelList
             // -----------------------------------------------------------
-            int count = WebPolSourceSite.PolSourceSiteModelList.Count;
-            for (int i = 0; i < count; i++)
-            {
-                PolSourceSiteModel PolSourceSiteModelLocal = (from c in WebPolSourceSiteLocal.PolSourceSiteModelList
-                                                              where c.TVItemModel.TVItem.TVItemID == WebPolSourceSite.PolSourceSiteModelList[i].TVItemModel.TVItem.TVItemID
-                                                              && (c.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
-                                                              || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.en].DBCommand != DBCommandEnum.Original
-                                                              || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].DBCommand != DBCommandEnum.Original)
-                                                              select c).FirstOrDefault();
 
-                if (PolSourceSiteModelLocal != null)
-                {
-                    WebPolSourceSite.PolSourceSiteModelList[i] = PolSourceSiteModelLocal;
-                }
+            List<PolSourceSiteModel> polSourceSiteModelLocalNewList = (from c in webPolSourceSiteLocal.PolSourceSiteModelList
+                                                             where c.TVItemModel.TVItem.DBCommand == DBCommandEnum.Created
+                                                             select c).ToList();
+
+            foreach (PolSourceSiteModel polSourceSiteModel in polSourceSiteModelLocalNewList)
+            {
+                webPolSourceSite.PolSourceSiteModelList.Add(polSourceSiteModel);
             }
 
-            List<PolSourceSiteModel> PolSourceSiteModelLocalNewList = (from c in WebPolSourceSiteLocal.PolSourceSiteModelList
-                                                                       where c.TVItemModel.TVItem.DBCommand == DBCommandEnum.Created
-                                                                       select c).ToList();
-
-            foreach (PolSourceSiteModel PolSourceSiteModelNew in PolSourceSiteModelLocalNewList)
+            int count = webPolSourceSite.PolSourceSiteModelList.Count;
+            for (int i = 0; i < count; i++)
             {
-                WebPolSourceSite.PolSourceSiteModelList.Add(PolSourceSiteModelNew);
+                PolSourceSiteModel polSourceSiteModelLocal = (from c in webPolSourceSiteLocal.PolSourceSiteModelList
+                                                    where c.TVItemModel.TVItem.TVItemID == webPolSourceSite.PolSourceSiteModelList[i].TVItemModel.TVItem.TVItemID
+                                                    select c).FirstOrDefault();
+
+                if (polSourceSiteModelLocal != null)
+                {
+                    if (polSourceSiteModelLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
+                        || polSourceSiteModelLocal.TVItemModel.TVItemLanguageList[(int)LanguageEnum.en].DBCommand != DBCommandEnum.Original
+                        || polSourceSiteModelLocal.TVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].DBCommand != DBCommandEnum.Original)
+                    {
+                        webPolSourceSite.PolSourceSiteModelList[i].TVItemModel = polSourceSiteModelLocal.TVItemModel;
+                    }
+
+                    // -----------------------------------------------------------
+                    // doing TVItemFileList
+                    // -----------------------------------------------------------
+                    int count2 = webPolSourceSite.PolSourceSiteModelList[i].TVItemFileList.Count;
+                    for (int j = 0; j < count2; j++)
+                    {
+                        WebBase webBaseLocal = (from c in polSourceSiteModelLocal.TVItemFileList
+                                                where c.TVItemModel.TVItem.TVItemID == webPolSourceSite.PolSourceSiteModelList[i].TVItemFileList[j].TVItemModel.TVItem.TVItemID
+                                                select c).FirstOrDefault();
+
+                        if (webBaseLocal != null)
+                        {
+                            if (webBaseLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
+                                || webBaseLocal.TVItemModel.TVItemLanguageList[(int)LanguageEnum.en].DBCommand != DBCommandEnum.Original
+                                || webBaseLocal.TVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].DBCommand != DBCommandEnum.Original)
+                            {
+                                webPolSourceSite.PolSourceSiteModelList[i].TVItemFileList[j] = webBaseLocal;
+                            }
+                        }
+                    }
+
+                    List<WebBase> webBaseLocalNewList = (from c in polSourceSiteModelLocal.TVItemFileList
+                                                         where c.TVItemModel.TVItem.DBCommand == DBCommandEnum.Created
+                                                         select c).ToList();
+
+                    foreach (WebBase webBaseNew in webBaseLocalNewList)
+                    {
+                        webPolSourceSite.PolSourceSiteModelList[i].TVItemFileList.Add(webBaseNew);
+                    }
+
+                    //webPolSourceSite.PolSourceSiteModelList[i] = polSourceSiteModelLocal;
+                }
             }
 
             return;

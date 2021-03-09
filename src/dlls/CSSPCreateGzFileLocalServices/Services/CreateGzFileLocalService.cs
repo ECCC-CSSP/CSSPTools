@@ -157,6 +157,10 @@ namespace CreateGzFileLocalServices
                     return await DoCreateWebSectorGzFileLocal(TVItemID); // TVItemID = SectorTVItemID
                 case WebTypeEnum.WebSubsector:
                     return await DoCreateWebSubsectorGzFileLocal(TVItemID); // TVItemID = SubsectorTVItemID
+                case WebTypeEnum.WebTideDataValue:
+                    return await DoCreateWebTideDataValueGzFileLocal(TVItemID); // TVItemID = ClimateSiteTVItemID
+                case WebTypeEnum.WebTideSite:
+                    return await DoCreateWebTideSiteGzFileLocal(TVItemID); // TVItemID = ProvinceTVItemID
                 default:
                     return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._NotImplementedYet, $"{ webType }")));
             }

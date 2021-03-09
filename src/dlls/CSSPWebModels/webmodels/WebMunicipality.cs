@@ -15,6 +15,7 @@ namespace CSSPWebModels
         public List<WebBase> TVItemParentList { get; set; }
         public List<WebBase> TVItemMikeScenarioList { get; set; }
         public List<WebBase> TVItemInfrastructureList { get; set; }
+        public List<WebBase> TVItemFileList { get; set; }
         public List<InfrastructureModel> InfrastructureModelList { get; set; }
         public List<MIKEScenarioModel> MIKEScenarioModelList { get; set; }
         public List<ContactModel> MunicipalityContactModelList { get; set; }
@@ -27,6 +28,7 @@ namespace CSSPWebModels
             TVItemParentList = new List<WebBase>();
             TVItemMikeScenarioList = new List<WebBase>();
             TVItemInfrastructureList = new List<WebBase>();
+            TVItemFileList = new List<WebBase>();
             InfrastructureModelList = new List<InfrastructureModel>();
             MIKEScenarioModelList = new List<MIKEScenarioModel>();
             MunicipalityContactModelList = new List<ContactModel>();

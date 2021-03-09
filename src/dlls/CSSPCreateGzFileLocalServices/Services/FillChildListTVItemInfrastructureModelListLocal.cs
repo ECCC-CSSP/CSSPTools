@@ -90,6 +90,8 @@ namespace CreateGzFileLocalServices
                     }
                 }
 
+                await FillChildListTVItemModelListLocal(InfrastructureModel.TVItemFileList, tvItem, TVTypeEnum.File);
+
                 InfrastructureModelList.Add(InfrastructureModel);
             }
         }

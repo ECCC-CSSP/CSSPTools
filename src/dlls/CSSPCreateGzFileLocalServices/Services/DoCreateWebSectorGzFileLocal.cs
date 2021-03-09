@@ -41,9 +41,7 @@ namespace CreateGzFileLocalServices
 
                 await FillChildListTVItemModelListLocal(webSector.TVItemSubsectorList, TVItemSector, TVTypeEnum.Subsector);
 
-                await FillChildListTVItemMIKEScenarioModelListLocal(webSector.MIKEScenarioModelList, TVItemSector, TVTypeEnum.MikeScenario);
-
-                await FillChildListTVItemModelListLocal(webSector.TVItemMikeScenarioList, TVItemSector, TVTypeEnum.MikeScenario);
+                await FillChildListTVItemModelListLocal(webSector.TVItemFileList, TVItemSector, TVTypeEnum.File);
 
                 DoStoreLocal<WebSector>(webSector, $"{ WebTypeEnum.WebSector }_{ SectorTVItemID }.gz");
             }

@@ -825,4 +825,7 @@
   <data name="_ShouldBeEqualToTVItemParentParentID" xml:space="preserve">
     <value>{0} should be equal to TVItemParent ParentID</value>
   </data>
+  <data name="_ShouldNotBeOfType_" xml:space="preserve">
+    <value>{0} should not be of type {1}</value>
+  </data>
 </root>

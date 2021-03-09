@@ -13,6 +13,7 @@ namespace CSSPWebModels
         #region Properties
         public List<WebBase> TVItemParentList { get; set; }
         public List<WebBase> TVItemSectorList { get; set; }
+        public List<WebBase> TVItemFileList { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -20,6 +21,7 @@ namespace CSSPWebModels
         {
             TVItemParentList = new List<WebBase>();
             TVItemSectorList = new List<WebBase>();
+            TVItemFileList = new List<WebBase>();
         }
         #endregion Constructors
     }
