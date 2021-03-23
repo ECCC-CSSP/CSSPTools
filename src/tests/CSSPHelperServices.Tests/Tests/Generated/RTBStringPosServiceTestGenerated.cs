@@ -22,30 +22,180 @@ using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
 using CSSPCultureServices.Resources;
-using LoggedInServices;
+using CSSPHelperServices.Tests;
 
-namespace CSSPDBServices.Tests
+namespace CSSPHelperServices.Tests
 {
-    public partial class RTBStringPosDBServiceTest : TestHelper
+    [Collection("Sequential")]
+    public partial class RTBStringPosServiceTest : TestHelper
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Configuration { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private ICSSPCultureService CSSPCultureService { get; set; }
+        private IEnums enums { get; set; }
+        private IRTBStringPosService RTBStringPosService { get; set; }
         #endregion Properties
 
         #region Constructors
-        public RTBStringPosDBServiceTest() : base()
+        public RTBStringPosServiceTest() : base()
         {
 
         }
         #endregion Constructors
 
-        #region Functions private
-        private void CheckRTBStringPosFields(List<RTBStringPos> rTBStringPosList)
+        #region Tests Generated Constructors
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task AppTaskParameter_Constructor_Test(string culture)
         {
-            Assert.False(string.IsNullOrWhiteSpace(rTBStringPosList[0].Text));
-            Assert.False(string.IsNullOrWhiteSpace(rTBStringPosList[0].TagText));
+            Assert.True(await Setup(culture));
+            Assert.NotNull(CSSPCultureService);
+            Assert.NotNull(enums);
+        }
+        #endregion Tests Generated Constructors
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task RTBStringPos_Properties_Test(string culture)
+        {
+            List<ValidationResult> ValidationResultList = new List<ValidationResult>();
+            IEnumerable<ValidationResult> validationResults;
+            Assert.True(await Setup(culture));
+
+
+
+            RTBStringPos rTBStringPos = GetFilledRandomRTBStringPos("");
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, -1)]
+            // rTBStringPos.StartPos   (Int32)
+            // -----------------------------------
+
+
+            rTBStringPos = null;
+            rTBStringPos = GetFilledRandomRTBStringPos("");
+            rTBStringPos.StartPos = -1;
+            validationResults = RTBStringPosService.Validate(new ValidationContext(rTBStringPos));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "StartPos", "0"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, -1)]
+            // rTBStringPos.EndPos   (Int32)
+            // -----------------------------------
+
+
+            rTBStringPos = null;
+            rTBStringPos = GetFilledRandomRTBStringPos("");
+            rTBStringPos.EndPos = -1;
+            validationResults = RTBStringPosService.Validate(new ValidationContext(rTBStringPos));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "EndPos", "0"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(100)]
+            // rTBStringPos.Text   (String)
+            // -----------------------------------
+
+
+            rTBStringPos = null;
+            rTBStringPos = GetFilledRandomRTBStringPos("Text");
+            validationResults = RTBStringPosService.Validate(new ValidationContext(rTBStringPos));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Text"))).Any());
+
+
+            rTBStringPos = null;
+            rTBStringPos = GetFilledRandomRTBStringPos("");
+            rTBStringPos.Text = GetRandomString("", 101);
+            validationResults = RTBStringPosService.Validate(new ValidationContext(rTBStringPos));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Text", "100"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(100)]
+            // rTBStringPos.TagText   (String)
+            // -----------------------------------
+
+
+            rTBStringPos = null;
+            rTBStringPos = GetFilledRandomRTBStringPos("TagText");
+            validationResults = RTBStringPosService.Validate(new ValidationContext(rTBStringPos));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "TagText"))).Any());
+
+
+            rTBStringPos = null;
+            rTBStringPos = GetFilledRandomRTBStringPos("");
+            rTBStringPos.TagText = GetRandomString("", 101);
+            validationResults = RTBStringPosService.Validate(new ValidationContext(rTBStringPos));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "TagText", "100"))).Any());
+        }
+        #endregion Tests Generated Properties
+
+        #region Functions private
+        private async Task<bool> Setup(string culture)
+        {
+            Configuration = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings_CSSPDBServicestests.json")
+               .AddUserSecrets("6f27cbbe-6ffb-4154-b49b-d739597c4f60")
+               .Build();
+
+            Services = new ServiceCollection();
+
+            Services.AddSingleton<IConfiguration>(Configuration);
+
+            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<IRTBStringPosService, RTBStringPosService>();
+
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+
+            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
+            Assert.NotNull(CSSPCultureService);
+
+            CSSPCultureService.SetCulture(culture);
+
+            enums = Provider.GetService<IEnums>();
+            Assert.NotNull(enums);
+
+            RTBStringPosService = Provider.GetService<IRTBStringPosService>();
+            Assert.NotNull(RTBStringPosService);
+
+            return await Task.FromResult(true);
+        }
+        private RTBStringPos GetFilledRandomRTBStringPos(string OmitPropName)
+        {
+            RTBStringPos rTBStringPos = new RTBStringPos();
+
+            if (OmitPropName != "StartPos") rTBStringPos.StartPos = GetRandomInt(0, 10);
+            if (OmitPropName != "EndPos") rTBStringPos.EndPos = GetRandomInt(0, 10);
+            if (OmitPropName != "Text") rTBStringPos.Text = GetRandomString("", 5);
+            if (OmitPropName != "TagText") rTBStringPos.TagText = GetRandomString("", 5);
+
+            return rTBStringPos;
         }
 
         #endregion Functions private

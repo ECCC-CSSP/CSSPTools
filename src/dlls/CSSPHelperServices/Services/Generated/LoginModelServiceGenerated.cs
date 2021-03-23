@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 using LoggedInServices;
 using Microsoft.Extensions.Configuration;
 
-namespace CSSPDBServices
+namespace CSSPHelperServices
 {
     public interface ILoginModelService
     {
@@ -32,15 +32,11 @@ namespace CSSPDBServices
         #endregion Variables
 
         #region Properties
-        private ICSSPCultureService CSSPCultureService { get; }
-        private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public LoginModelService(ICSSPCultureService CSSPCultureService, IEnums enums)
+        public LoginModelService()
         {
-            this.CSSPCultureService = CSSPCultureService;
-            this.enums = enums;
         }
         #endregion Constructors
 
@@ -51,29 +47,24 @@ namespace CSSPDBServices
 
             if (string.IsNullOrWhiteSpace(loginModel.LoginEmail))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LoginEmail"), new[] { nameof(loginModel.LoginEmail) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LoginEmail"), new[] { "LoginEmail" });
             }
 
             if (!string.IsNullOrWhiteSpace(loginModel.LoginEmail) && (loginModel.LoginEmail.Length < 5 || loginModel.LoginEmail.Length > 100))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "LoginEmail", "5", "100"), new[] { nameof(loginModel.LoginEmail) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "LoginEmail", "5", "100"), new[] { "LoginEmail" });
             }
 
             if (string.IsNullOrWhiteSpace(loginModel.Password))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Password"), new[] { nameof(loginModel.Password) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Password"), new[] { "Password" });
             }
 
             if (!string.IsNullOrWhiteSpace(loginModel.Password) && (loginModel.Password.Length < 5 || loginModel.Password.Length > 50))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "Password", "5", "50"), new[] { nameof(loginModel.Password) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "Password", "5", "50"), new[] { "Password" });
             }
 
-            bool a = false;
-            if (a)
-            {
-                yield return new ValidationResult("");
-            }
         }
         #endregion Functions public
     }

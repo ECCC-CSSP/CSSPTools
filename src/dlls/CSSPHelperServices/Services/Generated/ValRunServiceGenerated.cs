@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 using LoggedInServices;
 using Microsoft.Extensions.Configuration;
 
-namespace CSSPDBServices
+namespace CSSPHelperServices
 {
     public interface IValRunService
     {
@@ -32,15 +32,11 @@ namespace CSSPDBServices
         #endregion Variables
 
         #region Properties
-        private ICSSPCultureService CSSPCultureService { get; }
-        private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public ValRunService(ICSSPCultureService CSSPCultureService, IEnums enums)
+        public ValRunService()
         {
-            this.CSSPCultureService = CSSPCultureService;
-            this.enums = enums;
         }
         #endregion Constructors
 
@@ -52,6 +48,7 @@ namespace CSSPDBServices
             //val has no Range Attribute
 
             //run has no Range Attribute
+
 
             bool a = false;
             if (a)

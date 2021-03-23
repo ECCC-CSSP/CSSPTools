@@ -2,12 +2,8 @@
  * Manually edited
  * 
  */
-using CSSPEnums;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using CSSPCustomAttributes;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 
 namespace CSSPHelperModels
 {
@@ -22,6 +18,7 @@ namespace CSSPHelperModels
         public double XCoord { get; set; }
         [CSSPRange(-90.0D, 90.0D)]
         public double YCoord { get; set; }
+        [CSSPRange(-10000.0D, 10000.0D)]
         public double Z { get; set; }
         #endregion Properties not in DB
 

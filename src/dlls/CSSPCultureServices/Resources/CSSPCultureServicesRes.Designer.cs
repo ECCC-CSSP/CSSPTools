@@ -88,6 +88,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} already exists with different {1}.
+        /// </summary>
+        public static string _AlreadyExistsWithDifferent_ {
+            get {
+                return ResourceManager.GetString("_AlreadyExistsWithDifferent_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} and {1} are not identical..
         /// </summary>
         public static string _And_AreNotIdentical {
@@ -2181,6 +2190,15 @@ namespace CSSPCultureServices.Resources {
         public static string YouCanAddASpaceToFixTheProblem {
             get {
                 return ResourceManager.GetString("YouCanAddASpaceToFixTheProblem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You do not have authorization.
+        /// </summary>
+        public static string YouDoNotHaveAuthorization {
+            get {
+                return ResourceManager.GetString("YouDoNotHaveAuthorization", resourceCulture);
             }
         }
         

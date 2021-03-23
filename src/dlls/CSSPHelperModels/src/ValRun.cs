@@ -2,12 +2,9 @@
  * Manually edited
  * 
  */
-using CSSPEnums;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 
 namespace CSSPHelperModels
 {
@@ -18,7 +15,9 @@ namespace CSSPHelperModels
         #endregion Properties in DB
 
         #region Properties not in DB
+        [Range(1.0D, 10000000.0D)]
         public double val { get; set; }
+        [Range(1, 20)]
         public int run { get; set; }
         #endregion Properties not in DB
 

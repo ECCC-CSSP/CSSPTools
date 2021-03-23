@@ -94,7 +94,7 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized());
+                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
             }
 
             BoxModelResult boxModelResult = (from c in db.BoxModelResults
@@ -122,7 +122,7 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized());
+                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
             }
 
             ValidationResults = Validate(new ValidationContext(boxModelResult), ActionDBTypeEnum.Create);
@@ -147,7 +147,7 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized());
+                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
             }
 
             ValidationResults = Validate(new ValidationContext(boxModelResult), ActionDBTypeEnum.Update);

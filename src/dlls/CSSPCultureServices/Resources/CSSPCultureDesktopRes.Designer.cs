@@ -367,20 +367,20 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not find {0} in dbLogin.
+        ///   Looks up a localized string similar to Could not fill {0}.
         /// </summary>
-        public static string CouldNotFind_InDBLogin {
+        public static string CouldNotFill_ {
             get {
-                return ResourceManager.GetString("CouldNotFind_InDBLogin", resourceCulture);
+                return ResourceManager.GetString("CouldNotFill_", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not find {0} in CSSPDBPreference {1}.
+        ///   Looks up a localized string similar to Could not find {0} in CSSPDBPreference.db.
         /// </summary>
-        public static string CouldNotFind_InDBLogin_ {
+        public static string CouldNotFind_InPreferenceDB {
             get {
-                return ResourceManager.GetString("CouldNotFind_InDBLogin_", resourceCulture);
+                return ResourceManager.GetString("CouldNotFind_InPreferenceDB", resourceCulture);
             }
         }
         
@@ -1056,6 +1056,24 @@ namespace CSSPCultureServices.Resources {
         public static string UpdatingCSSPDBSearchThisCanTakeSomeTime {
             get {
                 return ResourceManager.GetString("UpdatingCSSPDBSearchThisCanTakeSomeTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User {0} is already logged in.
+        /// </summary>
+        public static string User_IsAlreadyLoggedIn {
+            get {
+                return ResourceManager.GetString("User_IsAlreadyLoggedIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User {0} is not logged in.
+        /// </summary>
+        public static string User_IsNotLoggedIn {
+            get {
+                return ResourceManager.GetString("User_IsNotLoggedIn", resourceCulture);
             }
         }
     }

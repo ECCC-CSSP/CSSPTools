@@ -52,14 +52,14 @@ namespace GenerateCSSPDBServices
                         continue;
                     }
 
-                    if (TypeName == "AspNetUser")
-                    {
-                        sb.AppendLine($@"        public async Task<ActionResult<{ TypeName }>> Get{ TypeName }WithId(string Id)");
-                    }
-                    else
-                    {
+                    //if (TypeName == "AspNetUser")
+                    //{
+                    //    sb.AppendLine($@"        public async Task<ActionResult<{ TypeName }>> Get{ TypeName }WithId(string Id)");
+                    //}
+                    //else
+                    //{
                         sb.AppendLine($@"        public async Task<ActionResult<{ TypeName }>> Get{ TypeName }With{ TypeName }ID(int { TypeName }ID)");
-                    }
+                    //}
                     sb.AppendLine(@"        {");
                     sb.AppendLine(@"            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)");
                     sb.AppendLine(@"            {");
@@ -69,14 +69,14 @@ namespace GenerateCSSPDBServices
 
                     sb.AppendLine($@"            { TypeName } { TypeNameLower } = (from c in db.{ TypeName }{ Plurial }.AsNoTracking()");
 
-                    if (currentDLLTypeInfo.Name == "AspNetUser")
-                    {
-                        sb.AppendLine(@"                    where c.Id == Id");
-                    }
-                    else
-                    {
+                    //if (currentDLLTypeInfo.Name == "AspNetUser")
+                    //{
+                    //    sb.AppendLine(@"                    where c.Id == Id");
+                    //}
+                    //else
+                    //{
                         sb.AppendLine($@"                    where c.{ TypeName }ID == { TypeName }ID");
-                    }
+                    //}
                     sb.AppendLine(@"                    select c).FirstOrDefault();");
                     sb.AppendLine(@"");
                     sb.AppendLine($@"            if ({ TypeNameLower } == null)");
@@ -96,14 +96,14 @@ namespace GenerateCSSPDBServices
                     sb.AppendLine(@"            }");
                     sb.AppendLine(@"");
 
-                    if (TypeName == "AspNetUser")
-                    {
-                        sb.AppendLine($@"            List<{ TypeName }> { TypeNameLower }List = (from c in db.{ TypeName }{ Plurial }.AsNoTracking() orderby c.Email select c).Skip(skip).Take(take).ToList();");
-                    }
-                    else
-                    {
+                    //if (TypeName == "AspNetUser")
+                    //{
+                    //    sb.AppendLine($@"            List<{ TypeName }> { TypeNameLower }List = (from c in db.{ TypeName }{ Plurial }.AsNoTracking() orderby c.Email select c).Skip(skip).Take(take).ToList();");
+                    //}
+                    //else
+                    //{
                         sb.AppendLine($@"            List<{ TypeName }> { TypeNameLower }List = (from c in db.{ TypeName }{ Plurial }.AsNoTracking() orderby c.{ TypeName }ID select c).Skip(skip).Take(take).ToList();");
-                    }
+                    //}
                     sb.AppendLine(@"");
                     sb.AppendLine($@"            return await Task.FromResult(Ok({ TypeNameLower }List));");
 

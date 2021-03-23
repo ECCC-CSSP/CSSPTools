@@ -18,7 +18,7 @@ namespace CreateGzFileServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized());
+                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
             }
 
             SamplingPlan SamplingPlan = await GetSamplingPlanWithSamplingPlanID(SamplingPlanID);

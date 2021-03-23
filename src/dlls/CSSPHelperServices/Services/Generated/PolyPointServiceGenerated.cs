@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 using LoggedInServices;
 using Microsoft.Extensions.Configuration;
 
-namespace CSSPDBServices
+namespace CSSPHelperServices
 {
     public interface IPolyPointService
     {
@@ -32,15 +32,11 @@ namespace CSSPDBServices
         #endregion Variables
 
         #region Properties
-        private ICSSPCultureService CSSPCultureService { get; }
-        private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public PolyPointService(ICSSPCultureService CSSPCultureService, IEnums enums)
+        public PolyPointService()
         {
-            this.CSSPCultureService = CSSPCultureService;
-            this.enums = enums;
         }
         #endregion Constructors
 
@@ -51,21 +47,19 @@ namespace CSSPDBServices
 
             if (polyPoint.XCoord < -180 || polyPoint.XCoord > 180)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "XCoord", "-180", "180"), new[] { nameof(polyPoint.XCoord) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "XCoord", "-180", "180"), new[] { "XCoord" });
             }
 
             if (polyPoint.YCoord < -90 || polyPoint.YCoord > 90)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "YCoord", "-90", "90"), new[] { nameof(polyPoint.YCoord) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "YCoord", "-90", "90"), new[] { "YCoord" });
             }
 
-            //Z has no Range Attribute
-
-            bool a = false;
-            if (a)
+            if (polyPoint.Z < -10000 || polyPoint.Z > 10000)
             {
-                yield return new ValidationResult("");
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Z", "-10000", "10000"), new[] { "Z" });
             }
+
         }
         #endregion Functions public
     }

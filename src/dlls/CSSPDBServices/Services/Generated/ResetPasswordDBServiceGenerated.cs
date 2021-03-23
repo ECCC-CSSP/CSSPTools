@@ -94,7 +94,7 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized());
+                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
             }
 
             ResetPassword resetPassword = (from c in db.ResetPasswords
@@ -122,7 +122,7 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized());
+                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
             }
 
             ValidationResults = Validate(new ValidationContext(resetPassword), ActionDBTypeEnum.Create);
@@ -147,7 +147,7 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized());
+                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
             }
 
             ValidationResults = Validate(new ValidationContext(resetPassword), ActionDBTypeEnum.Update);

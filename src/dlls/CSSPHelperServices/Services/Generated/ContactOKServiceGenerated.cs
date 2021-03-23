@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 using LoggedInServices;
 using Microsoft.Extensions.Configuration;
 
-namespace CSSPDBServices
+namespace CSSPHelperServices
 {
     public interface IContactOKService
     {
@@ -32,15 +32,11 @@ namespace CSSPDBServices
         #endregion Variables
 
         #region Properties
-        private ICSSPCultureService CSSPCultureService { get; }
-        private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public ContactOKService(ICSSPCultureService CSSPCultureService, IEnums enums)
+        public ContactOKService()
         {
-            this.CSSPCultureService = CSSPCultureService;
-            this.enums = enums;
         }
         #endregion Constructors
 
@@ -51,19 +47,14 @@ namespace CSSPDBServices
 
             if (contactOK.ContactID < 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContactID", "1"), new[] { nameof(contactOK.ContactID) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContactID", "1"), new[] { "ContactID" });
             }
 
             if (contactOK.ContactTVItemID < 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContactTVItemID", "1"), new[] { nameof(contactOK.ContactTVItemID) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContactTVItemID", "1"), new[] { "ContactTVItemID" });
             }
 
-            bool a = false;
-            if (a)
-            {
-                yield return new ValidationResult("");
-            }
         }
         #endregion Functions public
     }

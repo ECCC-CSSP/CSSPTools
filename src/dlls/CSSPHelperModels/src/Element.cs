@@ -2,12 +2,9 @@
  * Manually edited
  * 
  */
-using CSSPEnums;
-using System;
+using CSSPCustomAttributes;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 
 namespace CSSPHelperModels
 {
@@ -24,9 +21,13 @@ namespace CSSPHelperModels
         public int Type { get; set; }
         [CSSPRange(1, -1)]
         public int NumbOfNodes { get; set; }
+        [CSSPRange(-1.0D, -1.0D)]
         public double Value { get; set; }
+        [CSSPRange(-1.0D, -1.0D)]
         public double XNode0 { get; set; }
+        [CSSPRange(-1.0D, -1.0D)]
         public double YNode0 { get; set; }
+        [CSSPRange(-1.0D, -1.0D)]
         public double ZNode0 { get; set; }
         public List<Node> NodeList { get; set; }
         #endregion Properties not in DB

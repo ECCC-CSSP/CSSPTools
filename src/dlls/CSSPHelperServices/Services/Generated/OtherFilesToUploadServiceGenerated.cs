@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 using LoggedInServices;
 using Microsoft.Extensions.Configuration;
 
-namespace CSSPDBServices
+namespace CSSPHelperServices
 {
     public interface IOtherFilesToUploadService
     {
@@ -32,15 +32,11 @@ namespace CSSPDBServices
         #endregion Variables
 
         #region Properties
-        private ICSSPCultureService CSSPCultureService { get; }
-        private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public OtherFilesToUploadService(ICSSPCultureService CSSPCultureService, IEnums enums)
+        public OtherFilesToUploadService()
         {
-            this.CSSPCultureService = CSSPCultureService;
-            this.enums = enums;
         }
         #endregion Constructors
 
@@ -51,17 +47,12 @@ namespace CSSPDBServices
 
             if (otherFilesToUpload.MikeScenarioID < 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "MikeScenarioID", "1"), new[] { nameof(otherFilesToUpload.MikeScenarioID) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "MikeScenarioID", "1"), new[] { "MikeScenarioID" });
             }
 
                 //CSSPError: Type not implemented [TVFileList] of type [List`1]
 
                 //CSSPError: Type not implemented [TVFileList] of type [TVFile]
-            bool a = false;
-            if (a)
-            {
-                yield return new ValidationResult("");
-            }
         }
         #endregion Functions public
     }

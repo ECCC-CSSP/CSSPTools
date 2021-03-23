@@ -214,7 +214,7 @@ namespace CSSPDBServices
         //{
         //    if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
         //    {
-        //        return await Task.FromResult(Unauthorized());
+        //        return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
         //    }
 
         //    using (var beginTransaction = db.Database.BeginTransaction())

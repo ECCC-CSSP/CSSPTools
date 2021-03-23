@@ -29,7 +29,7 @@ namespace DownloadFileServices
 
             if (LoggedInService.LoggedInContactInfo == null)
             {
-                return await Task.FromResult(Unauthorized());
+                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
             }
 
             try
@@ -39,35 +39,28 @@ namespace DownloadFileServices
                 Response response = blobClient.DownloadTo($"{ CSSPJSONPath }{ FileName }");
                 if (response.Status == 206)
                 {
-                    CSSPFile csspFile = null;
+                    FilesManagement filesManagement = null;
 
-                    var actionCSSPFile = await CSSPDBFilesManagementService.GetWithAzureStorageAndAzureFileName(AzureStoreCSSPJSONPath, FileName);
+                    var actionCSSPFile = await FilesManagementService.GetWithAzureStorageAndAzureFileName(AzureStoreCSSPJSONPath, FileName);
                     if (((ObjectResult)actionCSSPFile.Result).StatusCode == 400)
                     {
-                        int NextIndex = -1;
-                        var actionInt = await CSSPDBFilesManagementService.GetCSSPFileNextIndexToUse();
-                        if (((ObjectResult)actionInt.Result).StatusCode == 200)
+                        filesManagement = new FilesManagement()
                         {
-                            NextIndex = (int)((OkObjectResult)actionInt.Result).Value;
-                        }
-
-                        csspFile = new CSSPFile()
-                        {
-                            CSSPFileID = NextIndex,
+                            FilesManagementID = 0,
                             AzureStorage = AzureStoreCSSPJSONPath,
                             AzureFileName = FileName,
                             AzureETag = response.Headers.ETag.ToString(),
                             AzureCreationTimeUTC = DateTime.Parse(response.Headers.Date.ToString()),
                         };
 
-                        var actionCSSPFileAdded = await CSSPDBFilesManagementService.Post(csspFile);
+                        var actionCSSPFileAdded = await FilesManagementService.AddOrModify(filesManagement);
                         if (((ObjectResult)actionCSSPFileAdded.Result).StatusCode == 200)
                         {
-                            csspFile = (CSSPFile)((OkObjectResult)actionCSSPFileAdded.Result).Value;
+                            filesManagement = (FilesManagement)((OkObjectResult)actionCSSPFileAdded.Result).Value;
                         }
                         else if (((ObjectResult)actionCSSPFileAdded.Result).StatusCode == 401)
                         {
-                            return await Task.FromResult(Unauthorized());
+                            return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
                         }
                         else
                         {
@@ -78,19 +71,19 @@ namespace DownloadFileServices
                     {
                         if (((OkObjectResult)actionCSSPFile.Result).StatusCode == 200)
                         {
-                            csspFile = (CSSPFile)((OkObjectResult)actionCSSPFile.Result).Value;
+                            filesManagement = (FilesManagement)((OkObjectResult)actionCSSPFile.Result).Value;
 
-                            csspFile.AzureETag = response.Headers.ETag.ToString();
-                            csspFile.AzureCreationTimeUTC = DateTime.Parse(response.Headers.Date.ToString());
+                            filesManagement.AzureETag = response.Headers.ETag.ToString();
+                            filesManagement.AzureCreationTimeUTC = DateTime.Parse(response.Headers.Date.ToString());
 
-                            var actionCSSPFilePut = await CSSPDBFilesManagementService.Put(csspFile);
+                            var actionCSSPFilePut = await FilesManagementService.AddOrModify(filesManagement);
                             if (((ObjectResult)actionCSSPFilePut.Result).StatusCode == 200)
                             {
-                                csspFile = (CSSPFile)((OkObjectResult)actionCSSPFilePut.Result).Value;
+                                filesManagement = (FilesManagement)((OkObjectResult)actionCSSPFilePut.Result).Value;
                             }
                             else if (((ObjectResult)actionCSSPFilePut.Result).StatusCode == 401)
                             {
-                                return await Task.FromResult(Unauthorized());
+                                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
                             }
                             else
                             {

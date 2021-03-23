@@ -1,5 +1,5 @@
 /*
- * Manually edited
++ * Manually edited
  *
  */
 
@@ -16,6 +16,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using CSSPHelperModels;
+using LoggedInServices;
 
 namespace CSSPDBSearchServices
 {
@@ -23,10 +24,10 @@ namespace CSSPDBSearchServices
     {
         private async Task<ActionResult<List<TVItemLanguage>>> DoSearch(string SearchTerm, int TVItemID)
         {
-            //if (LocalService.LoggedInContactInfo == null)
-            //{
-            //    return await Task.FromResult(Unauthorized());
-            //}
+            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
+            }
 
             LanguageEnum LanguageRequest = LanguageEnum.en;
             if (CSSPCultureServicesRes.Culture.TwoLetterISOLanguageName == "fr")
@@ -38,7 +39,7 @@ namespace CSSPDBSearchServices
 
             if (SearchTerm == "")
             {
-                return await Task.FromResult(Ok(new List<TVItemLanguage>()));
+                return await Task.FromResult(Ok(new List<SearchResult>()));
             }
 
             List<string> TermList = SearchTerm.Split(" ", StringSplitOptions.RemoveEmptyEntries).Select(c => c.Trim()).ToList();

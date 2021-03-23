@@ -15,7 +15,7 @@ namespace CSSPDBModels
         public virtual DbSet<AppErrLog> AppErrLogs { get; set; }
         public virtual DbSet<AppTask> AppTasks { get; set; }
         public virtual DbSet<AppTaskLanguage> AppTaskLanguages { get; set; }
-        public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
+        //public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
         public virtual DbSet<BoxModel> BoxModels { get; set; }
         public virtual DbSet<BoxModelLanguage> BoxModelLanguages { get; set; }
         public virtual DbSet<BoxModelResult> BoxModelResults { get; set; }
@@ -27,7 +27,7 @@ namespace CSSPDBModels
         public virtual DbSet<Contact> Contacts { get; set; }
         public virtual DbSet<ContactPreference> ContactPreferences { get; set; }
         public virtual DbSet<ContactShortcut> ContactShortcuts { get; set; }
-        public virtual DbSet<DeviceCode> DeviceCodes { get; set; }
+        //public virtual DbSet<DeviceCode> DeviceCodes { get; set; }
         public virtual DbSet<DocTemplate> DocTemplates { get; set; }
         public virtual DbSet<DrogueRun> DrogueRuns { get; set; }
         public virtual DbSet<DrogueRunPosition> DrogueRunPositions { get; set; }
@@ -62,7 +62,7 @@ namespace CSSPDBModels
         public virtual DbSet<MWQMSite> MWQMSites { get; set; }
         public virtual DbSet<MWQMSubsectorLanguage> MWQMSubsectorLanguages { get; set; }
         public virtual DbSet<MWQMSubsector> MWQMSubsectors { get; set; }
-        public virtual DbSet<PersistedGrant> PersistedGrants { get; set; }
+        //public virtual DbSet<PersistedGrant> PersistedGrants { get; set; }
         public virtual DbSet<PolSourceGroupingLanguage> PolSourceGroupingLanguages { get; set; }
         public virtual DbSet<PolSourceGrouping> PolSourceGroupings { get; set; }
         public virtual DbSet<PolSourceObservationIssue> PolSourceObservationIssues { get; set; }

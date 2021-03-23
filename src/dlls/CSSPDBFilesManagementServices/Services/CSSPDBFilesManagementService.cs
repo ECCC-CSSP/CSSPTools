@@ -14,37 +14,34 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using CSSPDBFilesManagementModels;
 using LoggedInServices;
+using CSSPDBFilesManagementModels;
 
-namespace CSSPDBFilesManagementServices
+namespace FilesManagementServices
 {
-    public partial interface ICSSPDBFilesManagementService
+    public partial interface IFilesManagementService
     {
+        Task<ActionResult<FilesManagement>> AddOrModify(FilesManagement csspFile);
         Task<ActionResult<bool>> Delete(int CSSPFileID);
-        Task<ActionResult<List<CSSPFile>>> GetCSSPFileList(int skip = 0, int take = 100);
-        Task<ActionResult<int>> GetCSSPFileNextIndexToUse();
-        Task<ActionResult<CSSPFile>> GetWithCSSPFileID(int CSSPFileID);
-        Task<ActionResult<CSSPFile>> GetWithAzureStorageAndAzureFileName(string AzureStorage, string AzureFileName);
-        Task<ActionResult<CSSPFile>> Post(CSSPFile csspFile);
-        Task<ActionResult<CSSPFile>> Put(CSSPFile csspFile);
-        CSSPDBFilesManagementContext dbFM { get; set; }
+        Task<ActionResult<List<FilesManagement>>> GetFilesManagementList(int skip = 0, int take = 100);
+        Task<ActionResult<int>> GetFilesManagementNextIndexToUse();
+        Task<ActionResult<FilesManagement>> GetWithAzureStorageAndAzureFileName(string AzureStorage, string AzureFileName);
+        Task<ActionResult<FilesManagement>> GetWithFilesManagementID(int CSSPFileID);
     }
-    public partial class CSSPDBFilesManagementService : ControllerBase, ICSSPDBFilesManagementService
+    public partial class FilesManagementService : ControllerBase, IFilesManagementService
     {
         #region Variables
         #endregion Variables
 
         #region Properties
-        public CSSPDBFilesManagementContext dbFM { get; set; }
-
+        private CSSPDBFilesManagementContext dbFM { get; set; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public CSSPDBFilesManagementService(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, CSSPDBFilesManagementContext dbFM)
+        public FilesManagementService(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, CSSPDBFilesManagementContext dbFM)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
@@ -53,88 +50,45 @@ namespace CSSPDBFilesManagementServices
         #endregion Constructors
 
         #region Functions public 
-        public async Task<ActionResult<int>> GetCSSPFileNextIndexToUse()
+        public async Task<ActionResult<FilesManagement>> AddOrModify(FilesManagement filesManagement)
         {
             if (LoggedInService.LoggedInContactInfo == null)
             {
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            int? LastIndex = (from c in dbFM.CSSPFiles
-                              orderby c.CSSPFileID descending
-                              select c.CSSPFileID).FirstOrDefault();
+            if (filesManagement == null)
+            {
+                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._IsNullOrEmpty, "filesManagement")));
+            }
 
-            LastIndex = LastIndex == null ? 1 : LastIndex + 1;
+            ValidationResults = ValidateAddOrModify(new ValidationContext(filesManagement));
+            if (ValidationResults.Count() > 0)
+            {
+                return await Task.FromResult(BadRequest(ValidationResults));
+            }
 
-            return await Task.FromResult(Ok(LastIndex));
+            return await DoAddOrModify(filesManagement);
         }
-        public async Task<ActionResult<CSSPFile>> GetWithCSSPFileID(int CSSPFileID)
+        public async Task<ActionResult<bool>> Delete(int FileManagementID)
         {
             if (LoggedInService.LoggedInContactInfo == null)
             {
                 return await Task.FromResult(Unauthorized(""));
             }
 
-            CSSPFile csspFile = (from c in dbFM.CSSPFiles.AsNoTracking()
-                                 where c.CSSPFileID == CSSPFileID
-                                 select c).FirstOrDefault();
+            FilesManagement filesManagement = (from c in dbFM.FilesManagements
+                                        where c.FilesManagementID == FileManagementID
+                                        select c).FirstOrDefault();
 
-            if (csspFile == null)
+            if (filesManagement == null)
             {
-                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "CSSPFile", "CSSPFileID", CSSPFileID.ToString())));
-            }
-
-            return await Task.FromResult(Ok(csspFile));
-        }
-        public async Task<ActionResult<CSSPFile>> GetWithAzureStorageAndAzureFileName(string AzureStorage, string AzureFileName)
-        {
-            if (LoggedInService.LoggedInContactInfo == null)
-            {
-                return await Task.FromResult(Unauthorized(""));
-            }
-
-            CSSPFile csspFile = (from c in dbFM.CSSPFiles.AsNoTracking()
-                                 where c.AzureStorage == AzureStorage
-                                 && c.AzureFileName == AzureFileName
-                                 select c).FirstOrDefault();
-
-            if (csspFile == null)
-            {
-                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "CSSPFile", "AzureStorage,AzureFileName", $"{ AzureStorage }, { AzureFileName }")));
-            }
-
-            return await Task.FromResult(Ok(csspFile));
-        }
-        public async Task<ActionResult<List<CSSPFile>>> GetCSSPFileList(int skip = 0, int take = 100)
-        {
-            if (LoggedInService.LoggedInContactInfo == null)
-            {
-                return await Task.FromResult(Unauthorized(""));
-            }
-
-            List<CSSPFile> csspFileList = (from c in dbFM.CSSPFiles.AsNoTracking() orderby c.CSSPFileID select c).Skip(skip).Take(take).ToList();
-
-            return await Task.FromResult(Ok(csspFileList));
-        }
-        public async Task<ActionResult<bool>> Delete(int CSSPFileID)
-        {
-            if (LoggedInService.LoggedInContactInfo == null)
-            {
-                return await Task.FromResult(Unauthorized(""));
-            }
-
-            CSSPFile csspFile = (from c in dbFM.CSSPFiles
-                                 where c.CSSPFileID == CSSPFileID
-                                 select c).FirstOrDefault();
-
-            if (csspFile == null)
-            {
-                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "CSSPFile", "CSSPFileID", CSSPFileID.ToString())));
+                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "FilesManagement", "FilesManagementID", FileManagementID.ToString())));
             }
 
             try
             {
-                dbFM.CSSPFiles.Remove(csspFile);
+                dbFM.FilesManagements.Remove(filesManagement);
                 dbFM.SaveChanges();
             }
             catch (DbUpdateException ex)
@@ -144,69 +98,65 @@ namespace CSSPDBFilesManagementServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<CSSPFile>> Post(CSSPFile csspFile)
+        public async Task<ActionResult<List<FilesManagement>>> GetFilesManagementList(int skip = 0, int take = 100)
         {
             if (LoggedInService.LoggedInContactInfo == null)
             {
                 return await Task.FromResult(Unauthorized(""));
             }
 
+            List<FilesManagement> csspFileList = (from c in dbFM.FilesManagements.AsNoTracking()
+                                                  orderby c.FilesManagementID
+                                                  select c).Skip(skip).Take(take).ToList();
+
+            return await Task.FromResult(Ok(csspFileList));
+        }
+        public async Task<ActionResult<int>> GetFilesManagementNextIndexToUse()
+        {
+            if (LoggedInService.LoggedInContactInfo == null)
+            {
+                return await Task.FromResult(Unauthorized(""));
+            }
+
+            int? LastIndex = (from c in dbFM.FilesManagements
+                              orderby c.FilesManagementID descending
+                              select c.FilesManagementID).FirstOrDefault() + 1;
+
+            return await Task.FromResult(Ok(LastIndex));
+        }
+        public async Task<ActionResult<FilesManagement>> GetWithFilesManagementID(int CSSPFileID)
+        {
+            if (LoggedInService.LoggedInContactInfo == null)
+            {
+                return await Task.FromResult(Unauthorized(""));
+            }
+
+            FilesManagement csspFile = (from c in dbFM.FilesManagements.AsNoTracking()
+                                        where c.FilesManagementID == CSSPFileID
+                                        select c).FirstOrDefault();
+
             if (csspFile == null)
             {
-                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._IsNullOrEmpty, "csspFile")));
-            }
-
-            ValidationResults = Validate(new ValidationContext(csspFile), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-                return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            int? LastIndex = (from c in dbFM.CSSPFiles
-                              orderby c.CSSPFileID descending
-                              select c.CSSPFileID).FirstOrDefault();
-
-            LastIndex = LastIndex == null ? 1 : LastIndex + 1;
-
-            try
-            {
-                csspFile.CSSPFileID = (int)LastIndex;
-                dbFM.CSSPFiles.Add(csspFile);
-                dbFM.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "FilesManagement", "FilesManagementID", CSSPFileID.ToString())));
             }
 
             return await Task.FromResult(Ok(csspFile));
         }
-        public async Task<ActionResult<CSSPFile>> Put(CSSPFile csspFile)
+        public async Task<ActionResult<FilesManagement>> GetWithAzureStorageAndAzureFileName(string AzureStorage, string AzureFileName)
         {
             if (LoggedInService.LoggedInContactInfo == null)
             {
                 return await Task.FromResult(Unauthorized(""));
             }
 
+            FilesManagement csspFile = (from c in dbFM.FilesManagements.AsNoTracking()
+                                        where c.AzureStorage == AzureStorage
+                                        && c.AzureFileName == AzureFileName
+                                        select c).FirstOrDefault();
+
             if (csspFile == null)
             {
-                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._IsNullOrEmpty, "csspFile")));
-            }
-
-            ValidationResults = Validate(new ValidationContext(csspFile), ActionDBTypeEnum.Update);
-            if (ValidationResults.Count() > 0)
-            {
-                return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-                dbFM.CSSPFiles.Update(csspFile);
-                dbFM.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "FilesManagement", "AzureStorage,AzureFileName", $"{ AzureStorage }, { AzureFileName }")));
             }
 
             return await Task.FromResult(Ok(csspFile));
@@ -214,66 +164,127 @@ namespace CSSPDBFilesManagementServices
         #endregion Functions public
 
         #region Functions private
-        private IEnumerable<ValidationResult> Validate(ValidationContext validationContext, ActionDBTypeEnum actionDBType)
+        #endregion Functions private
+
+        #region Functions private
+        private async Task<ActionResult<FilesManagement>> DoAddOrModify(FilesManagement filesManagement)
         {
-            CSSPFile csspFile = validationContext.ObjectInstance as CSSPFile;
+            FilesManagement filesManagementAddOrModify = new FilesManagement();
 
-            if (actionDBType == ActionDBTypeEnum.Update || actionDBType == ActionDBTypeEnum.Delete)
+            if (filesManagement.FilesManagementID == 0) // add
             {
-                if (csspFile.CSSPFileID == 0)
+                filesManagementAddOrModify = filesManagement;
+                int? LastIndex = (from c in dbFM.FilesManagements
+                                  orderby c.FilesManagementID descending
+                                  select c.FilesManagementID).FirstOrDefault() + 1;
+
+                filesManagement.FilesManagementID = (int)LastIndex;
+                dbFM.FilesManagements.Add(filesManagement);
+            }
+            else // modify
+            {
+                filesManagementAddOrModify = (from c in dbFM.FilesManagements
+                                              where c.FilesManagementID == filesManagement.FilesManagementID
+                                              select c).FirstOrDefault();
+
+                if (filesManagementAddOrModify == null)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "CSSPFileID"), new[] { nameof(csspFile.CSSPFileID) });
+                    return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "FilesManagement", "FilesManagementID", filesManagement.FilesManagementID.ToString())));
                 }
 
-                if (!(from c in dbFM.CSSPFiles select c).Where(c => c.CSSPFileID == csspFile.CSSPFileID).Any())
-                {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "CSSPFile", "CSSPFileID", csspFile.CSSPFileID.ToString()), new[] { nameof(csspFile.CSSPFileID) });
-                }
+                filesManagementAddOrModify.AzureCreationTimeUTC = filesManagement.AzureCreationTimeUTC;
+                filesManagementAddOrModify.AzureETag = filesManagement.AzureETag;
+                filesManagementAddOrModify.AzureFileName = filesManagement.AzureFileName;
+                filesManagementAddOrModify.AzureStorage = filesManagement.AzureStorage;
             }
+
+            try
+            {
+                dbFM.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(filesManagementAddOrModify));
+        }
+        private IEnumerable<ValidationResult> ValidateAddOrModify(ValidationContext validationContext)
+        {
+            FilesManagement filesManagement = validationContext.ObjectInstance as FilesManagement;
 
             // doing AzureStorage
-            if (string.IsNullOrWhiteSpace(csspFile.AzureStorage))
+            if (string.IsNullOrWhiteSpace(filesManagement.AzureStorage))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "AzureStorage"), new[] { nameof(csspFile.AzureStorage) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "AzureStorage"), new[] { "AzureStorage" });
             }
-
-            if (!string.IsNullOrWhiteSpace(csspFile.AzureStorage) && csspFile.AzureStorage.Length > 100)
+            else
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "AzureStorage", "100"), new[] { nameof(csspFile.AzureStorage) });
+                if (filesManagement.AzureStorage.Length > 100)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "AzureStorage", "100"), new[] { "AzureStorage" });
+                }
             }
 
             // doing AzureFileName
-            if (string.IsNullOrWhiteSpace(csspFile.AzureFileName))
+            if (string.IsNullOrWhiteSpace(filesManagement.AzureFileName))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "AzureFileName"), new[] { nameof(csspFile.AzureFileName) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "AzureFileName"), new[] { "AzureFileName" });
             }
-
-            if (!string.IsNullOrWhiteSpace(csspFile.AzureFileName) && csspFile.AzureFileName.Length > 100)
+            else
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "AzureFileName", "200"), new[] { nameof(csspFile.AzureFileName) });
+                if (filesManagement.AzureFileName.Length > 100)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "AzureFileName", "200"), new[] { "AzureFileName" });
+                }
             }
 
             // doing AzureETag
-            if (string.IsNullOrWhiteSpace(csspFile.AzureETag))
+            if (string.IsNullOrWhiteSpace(filesManagement.AzureETag))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "AzureETag"), new[] { nameof(csspFile.AzureETag) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "AzureETag"), new[] { "AzureETag" });
+            }
+            else
+            {
+                if (filesManagement.AzureETag.Length > 100)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "AzureETag", "100"), new[] { "AzureETag" });
+                }
             }
 
-            if (!string.IsNullOrWhiteSpace(csspFile.AzureETag) && csspFile.AzureETag.Length > 100)
+            if (filesManagement.AzureCreationTimeUTC.Year < 1980)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "AzureETag", "100"), new[] { nameof(csspFile.AzureETag) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "AzureCreationTimeUTC", "1980"), new[] { "AzureCreationTimeUTC" });
             }
 
-            //// doing AzureCreationTimeUTC
-            //if (csspFile.AzureCreationTimeUTC == null)
-            //{
-            //    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "AzureCreationTimeUTC"), new[] { nameof(csspFile.AzureCreationTimeUTC) });
-            //}
-
-            if (csspFile.AzureCreationTimeUTC.Year < 1980)
+            if (filesManagement.FilesManagementID == 0) // adding new
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "AzureCreationTimeUTC", "1980"), new[] { nameof(csspFile.AzureCreationTimeUTC) });
+                FilesManagement filesManagementAlreadyExist = (from c in dbFM.FilesManagements
+                                                               where c.AzureETag == filesManagement.AzureETag
+                                                               && c.AzureFileName == filesManagement.AzureFileName
+                                                               && c.AzureStorage == filesManagement.AzureStorage
+                                                               select c).FirstOrDefault();
+
+                if (filesManagementAlreadyExist != null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._AlreadyExists, "FilesManagement"), new[] { "" });
+                }
             }
+            else
+            {
+                FilesManagement filesManagementExist = (from c in dbFM.FilesManagements
+                                                        where c.AzureFileName == filesManagement.AzureFileName
+                                                        && c.AzureStorage == filesManagement.AzureStorage
+                                                        && c.FilesManagementID != filesManagement.FilesManagementID
+                                                        select c).FirstOrDefault();
+
+                if (filesManagementExist != null)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._AlreadyExistsWithDifferent_, "FilesManagement", "FilesManagementID"), new[] { "" });
+                }
+
+            }
+
         }
         #endregion Functions private
 

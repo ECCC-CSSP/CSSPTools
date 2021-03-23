@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 using LoggedInServices;
 using Microsoft.Extensions.Configuration;
 
-namespace CSSPDBServices
+namespace CSSPHelperServices
 {
     public interface IVPResValuesService
     {
@@ -32,15 +32,11 @@ namespace CSSPDBServices
         #endregion Variables
 
         #region Properties
-        private ICSSPCultureService CSSPCultureService { get; }
-        private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public VPResValuesService(ICSSPCultureService CSSPCultureService, IEnums enums)
+        public VPResValuesService()
         {
-            this.CSSPCultureService = CSSPCultureService;
-            this.enums = enums;
         }
         #endregion Constructors
 
@@ -51,24 +47,34 @@ namespace CSSPDBServices
 
             if (vpResValues.Conc < 0)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "Conc", "0"), new[] { nameof(vpResValues.Conc) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "Conc", "0"), new[] { "Conc" });
             }
 
-            //Dilu has no Range Attribute
-
-            //FarfieldWidth has no Range Attribute
-
-            //Distance has no Range Attribute
-
-            //TheTime has no Range Attribute
-
-            //Decay has no Range Attribute
-
-            bool a = false;
-            if (a)
+            if (vpResValues.Dilu < 0 || vpResValues.Dilu > 10000)
             {
-                yield return new ValidationResult("");
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Dilu", "0", "10000"), new[] { "Dilu" });
             }
+
+            if (vpResValues.FarfieldWidth < 0 || vpResValues.FarfieldWidth > 10000)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "FarfieldWidth", "0", "10000"), new[] { "FarfieldWidth" });
+            }
+
+            if (vpResValues.Distance < 0 || vpResValues.Distance > 100000)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Distance", "0", "100000"), new[] { "Distance" });
+            }
+
+            if (vpResValues.TheTime < 0 || vpResValues.TheTime > 100000)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "TheTime", "0", "100000"), new[] { "TheTime" });
+            }
+
+            if (vpResValues.Decay < 0 || vpResValues.Decay > 1000)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Decay", "0", "1000"), new[] { "Decay" });
+            }
+
         }
         #endregion Functions public
     }

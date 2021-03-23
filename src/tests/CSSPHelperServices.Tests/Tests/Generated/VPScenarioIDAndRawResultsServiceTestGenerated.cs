@@ -22,29 +22,140 @@ using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
 using CSSPCultureServices.Resources;
-using LoggedInServices;
+using CSSPHelperServices.Tests;
 
-namespace CSSPDBServices.Tests
+namespace CSSPHelperServices.Tests
 {
-    public partial class VPScenarioIDAndRawResultsDBServiceTest : TestHelper
+    [Collection("Sequential")]
+    public partial class VPScenarioIDAndRawResultsServiceTest : TestHelper
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Configuration { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private ICSSPCultureService CSSPCultureService { get; set; }
+        private IEnums enums { get; set; }
+        private IVPScenarioIDAndRawResultsService VPScenarioIDAndRawResultsService { get; set; }
         #endregion Properties
 
         #region Constructors
-        public VPScenarioIDAndRawResultsDBServiceTest() : base()
+        public VPScenarioIDAndRawResultsServiceTest() : base()
         {
 
         }
         #endregion Constructors
 
-        #region Functions private
-        private void CheckVPScenarioIDAndRawResultsFields(List<VPScenarioIDAndRawResults> vpScenarioIDAndRawResultsList)
+        #region Tests Generated Constructors
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task AppTaskParameter_Constructor_Test(string culture)
         {
-            Assert.False(string.IsNullOrWhiteSpace(vpScenarioIDAndRawResultsList[0].RawResults));
+            Assert.True(await Setup(culture));
+            Assert.NotNull(CSSPCultureService);
+            Assert.NotNull(enums);
+        }
+        #endregion Tests Generated Constructors
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task VPScenarioIDAndRawResults_Properties_Test(string culture)
+        {
+            List<ValidationResult> ValidationResultList = new List<ValidationResult>();
+            IEnumerable<ValidationResult> validationResults;
+            Assert.True(await Setup(culture));
+
+
+
+            VPScenarioIDAndRawResults vpScenarioIDAndRawResults = GetFilledRandomVPScenarioIDAndRawResults("");
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(1, -1)]
+            // vpScenarioIDAndRawResults.VPScenarioID   (Int32)
+            // -----------------------------------
+
+
+            vpScenarioIDAndRawResults = null;
+            vpScenarioIDAndRawResults = GetFilledRandomVPScenarioIDAndRawResults("");
+            vpScenarioIDAndRawResults.VPScenarioID = 0;
+            validationResults = VPScenarioIDAndRawResultsService.Validate(new ValidationContext(vpScenarioIDAndRawResults));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "VPScenarioID", "1"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(1000000)]
+            // vpScenarioIDAndRawResults.RawResults   (String)
+            // -----------------------------------
+
+
+            vpScenarioIDAndRawResults = null;
+            vpScenarioIDAndRawResults = GetFilledRandomVPScenarioIDAndRawResults("RawResults");
+            validationResults = VPScenarioIDAndRawResultsService.Validate(new ValidationContext(vpScenarioIDAndRawResults));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "RawResults"))).Any());
+
+
+            vpScenarioIDAndRawResults = null;
+            vpScenarioIDAndRawResults = GetFilledRandomVPScenarioIDAndRawResults("");
+            vpScenarioIDAndRawResults.RawResults = GetRandomString("", 1000001);
+            validationResults = VPScenarioIDAndRawResultsService.Validate(new ValidationContext(vpScenarioIDAndRawResults));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "RawResults", "1000000"))).Any());
+        }
+        #endregion Tests Generated Properties
+
+        #region Functions private
+        private async Task<bool> Setup(string culture)
+        {
+            Configuration = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings_CSSPDBServicestests.json")
+               .AddUserSecrets("6f27cbbe-6ffb-4154-b49b-d739597c4f60")
+               .Build();
+
+            Services = new ServiceCollection();
+
+            Services.AddSingleton<IConfiguration>(Configuration);
+
+            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<IVPScenarioIDAndRawResultsService, VPScenarioIDAndRawResultsService>();
+
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+
+            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
+            Assert.NotNull(CSSPCultureService);
+
+            CSSPCultureService.SetCulture(culture);
+
+            enums = Provider.GetService<IEnums>();
+            Assert.NotNull(enums);
+
+            VPScenarioIDAndRawResultsService = Provider.GetService<IVPScenarioIDAndRawResultsService>();
+            Assert.NotNull(VPScenarioIDAndRawResultsService);
+
+            return await Task.FromResult(true);
+        }
+        private VPScenarioIDAndRawResults GetFilledRandomVPScenarioIDAndRawResults(string OmitPropName)
+        {
+            VPScenarioIDAndRawResults vpScenarioIDAndRawResults = new VPScenarioIDAndRawResults();
+
+            if (OmitPropName != "VPScenarioID") vpScenarioIDAndRawResults.VPScenarioID = GetRandomInt(1, 11);
+            if (OmitPropName != "RawResults") vpScenarioIDAndRawResults.RawResults = GetRandomString("", 5);
+
+            return vpScenarioIDAndRawResults;
         }
 
         #endregion Functions private

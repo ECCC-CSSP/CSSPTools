@@ -7,14 +7,13 @@ using CreateGzFileLocalServices;
 using CSSPCultureServices.Resources;
 using CSSPCultureServices.Services;
 using CSSPDBFilesManagementModels;
-using CSSPDBFilesManagementServices;
 using CSSPDBModels;
 using CSSPDBPreferenceModels;
-using CSSPDBPreferenceServices;
 using CSSPEnums;
 using CSSPScrambleServices;
 using CSSPWebModels;
 using DownloadFileServices;
+using FilesManagementServices;
 using LoggedInServices;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -1695,6 +1694,7 @@ namespace CSSPDBLocalServices.Tests
 
             PostTVItemModel postTVItemModel = new PostTVItemModel()
             {
+                ParentTVType = TVTypeEnum.Root,
                 ParentID = 1,
                 TVItemID = 0, // 0 == add, > 0 == change
                 TVType = TVTypeEnum.Country,
@@ -1732,6 +1732,7 @@ namespace CSSPDBLocalServices.Tests
             // Change on Create and change on item already in DBLocal
             postTVItemModel = new PostTVItemModel()
             {
+                ParentTVType = TVTypeEnum.Root,
                 ParentID = 1,
                 TVItemID = -1, // 0 == add, > 0 == change
                 TVType = TVTypeEnum.Country,
@@ -1777,6 +1778,7 @@ namespace CSSPDBLocalServices.Tests
             // this will try to add a new TVItem with its TVItemLanguage (EN, FR)
             PostTVItemModel postTVItemModel = new PostTVItemModel()
             {
+                ParentTVType = TVTypeEnum.Root,
                 ParentID = 1,
                 TVItemID = 5, // 0 == add, > 0 == change
                 TVType = TVTypeEnum.Country,
@@ -1813,6 +1815,7 @@ namespace CSSPDBLocalServices.Tests
             // Change on changes and change on item already in DBLocal
             postTVItemModel = new PostTVItemModel()
             {
+                ParentTVType = TVTypeEnum.Root,
                 ParentID = 1,
                 TVItemID = 5, // 0 == add, > 0 == change
                 TVType = TVTypeEnum.Country,
@@ -2136,8 +2139,8 @@ namespace CSSPDBLocalServices.Tests
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<IScrambleService, ScrambleService>();
-            Services.AddSingleton<ICSSPDBFilesManagementService, CSSPDBFilesManagementService>();
-            Services.AddSingleton<IPreferenceService, PreferenceService>();
+            Services.AddSingleton<IFilesManagementService, FilesManagementService>();
+            //Services.AddSingleton<IPreferenceService, PreferenceService>();
             Services.AddSingleton<IDownloadFileService, DownloadFileService>();
             Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
             Services.AddSingleton<ICreateGzFileLocalService, CreateGzFileLocalService>();

@@ -9,7 +9,7 @@ using CSSPEnums;
 
 namespace CSSPDBModels.Tests
 {
-    public partial class AddressTest
+    public partial class CSSPAfterAttributeTest
     {
         // most of the tests are auto generated and are located under AddressTestGenerated.cs
         // use this section to add other manual test

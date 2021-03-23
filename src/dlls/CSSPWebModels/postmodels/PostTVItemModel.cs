@@ -2,6 +2,7 @@
  * Manually edited
  * 
  */
+using CSSPCustomAttributes;
 using CSSPDBModels;
 using CSSPEnums;
 using System.Collections.Generic;

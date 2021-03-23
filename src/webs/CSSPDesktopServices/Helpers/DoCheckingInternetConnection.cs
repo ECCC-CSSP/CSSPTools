@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using CSSPCultureServices.Resources;
 using CSSPDBModels;
+using CSSPDBPreferenceModels;
 
 namespace CSSPDesktopServices.Services
 {
@@ -42,8 +43,17 @@ namespace CSSPDesktopServices.Services
                 HasInternetConnection = false;
             }
 
-            var actionPreference = await PreferenceService.AddOrChange("HasInternetConnection", HasInternetConnection.ToString());
-            if (!await DoStatusActionPreference(actionPreference, "HasInternetConnection")) return await Task.FromResult(false);
+            contact.HasInternetConnection = HasInternetConnection;
+
+            try
+            {
+                dbPreference.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.UnmanagedServerError_, ex.Message)));
+                return await Task.FromResult(true);
+            }
 
             AppendStatus(new AppendEventArgs(""));
 

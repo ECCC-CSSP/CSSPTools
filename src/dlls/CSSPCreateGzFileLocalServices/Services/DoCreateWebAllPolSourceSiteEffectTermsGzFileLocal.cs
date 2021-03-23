@@ -7,6 +7,7 @@ using System;
 using System.Threading.Tasks;
 using CSSPWebModels;
 using CSSPEnums;
+using CSSPCultureServices.Resources;
 
 namespace CreateGzFileLocalServices
 {
@@ -16,7 +17,7 @@ namespace CreateGzFileLocalServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized());
+                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
             }
 
             WebAllPolSourceSiteEffectTerms webAllPolSourceSiteEffectTerms = new WebAllPolSourceSiteEffectTerms();

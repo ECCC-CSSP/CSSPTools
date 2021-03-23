@@ -22,28 +22,172 @@ using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
 using CSSPCultureServices.Resources;
-using LoggedInServices;
+using CSSPHelperServices.Tests;
 
-namespace CSSPDBServices.Tests
+namespace CSSPHelperServices.Tests
 {
-    public partial class PolyPointDBServiceTest : TestHelper
+    [Collection("Sequential")]
+    public partial class PolyPointServiceTest : TestHelper
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Configuration { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private ICSSPCultureService CSSPCultureService { get; set; }
+        private IEnums enums { get; set; }
+        private IPolyPointService PolyPointService { get; set; }
         #endregion Properties
 
         #region Constructors
-        public PolyPointDBServiceTest() : base()
+        public PolyPointServiceTest() : base()
         {
 
         }
         #endregion Constructors
 
-        #region Functions private
-        private void CheckPolyPointFields(List<PolyPoint> polyPointList)
+        #region Tests Generated Constructors
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task AppTaskParameter_Constructor_Test(string culture)
         {
+            Assert.True(await Setup(culture));
+            Assert.NotNull(CSSPCultureService);
+            Assert.NotNull(enums);
+        }
+        #endregion Tests Generated Constructors
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task PolyPoint_Properties_Test(string culture)
+        {
+            List<ValidationResult> ValidationResultList = new List<ValidationResult>();
+            IEnumerable<ValidationResult> validationResults;
+            Assert.True(await Setup(culture));
+
+
+
+            PolyPoint polyPoint = GetFilledRandomPolyPoint("");
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(-180, 180)]
+            // polyPoint.XCoord   (Double)
+            // -----------------------------------
+
+
+            polyPoint = null;
+            polyPoint = GetFilledRandomPolyPoint("");
+            polyPoint.XCoord = -181.0D;
+            validationResults = PolyPointService.Validate(new ValidationContext(polyPoint));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "XCoord", "-180", "180"))).Any());
+
+            polyPoint = null;
+            polyPoint = GetFilledRandomPolyPoint("");
+            polyPoint.XCoord = 181.0D;
+            validationResults = PolyPointService.Validate(new ValidationContext(polyPoint));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "XCoord", "-180", "180"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(-90, 90)]
+            // polyPoint.YCoord   (Double)
+            // -----------------------------------
+
+
+            polyPoint = null;
+            polyPoint = GetFilledRandomPolyPoint("");
+            polyPoint.YCoord = -91.0D;
+            validationResults = PolyPointService.Validate(new ValidationContext(polyPoint));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "YCoord", "-90", "90"))).Any());
+
+            polyPoint = null;
+            polyPoint = GetFilledRandomPolyPoint("");
+            polyPoint.YCoord = 91.0D;
+            validationResults = PolyPointService.Validate(new ValidationContext(polyPoint));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "YCoord", "-90", "90"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(-10000, 10000)]
+            // polyPoint.Z   (Double)
+            // -----------------------------------
+
+
+            polyPoint = null;
+            polyPoint = GetFilledRandomPolyPoint("");
+            polyPoint.Z = -10001.0D;
+            validationResults = PolyPointService.Validate(new ValidationContext(polyPoint));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Z", "-10000", "10000"))).Any());
+
+            polyPoint = null;
+            polyPoint = GetFilledRandomPolyPoint("");
+            polyPoint.Z = 10001.0D;
+            validationResults = PolyPointService.Validate(new ValidationContext(polyPoint));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Z", "-10000", "10000"))).Any());
+        }
+        #endregion Tests Generated Properties
+
+        #region Functions private
+        private async Task<bool> Setup(string culture)
+        {
+            Configuration = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings_CSSPDBServicestests.json")
+               .AddUserSecrets("6f27cbbe-6ffb-4154-b49b-d739597c4f60")
+               .Build();
+
+            Services = new ServiceCollection();
+
+            Services.AddSingleton<IConfiguration>(Configuration);
+
+            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<IPolyPointService, PolyPointService>();
+
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+
+            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
+            Assert.NotNull(CSSPCultureService);
+
+            CSSPCultureService.SetCulture(culture);
+
+            enums = Provider.GetService<IEnums>();
+            Assert.NotNull(enums);
+
+            PolyPointService = Provider.GetService<IPolyPointService>();
+            Assert.NotNull(PolyPointService);
+
+            return await Task.FromResult(true);
+        }
+        private PolyPoint GetFilledRandomPolyPoint(string OmitPropName)
+        {
+            PolyPoint polyPoint = new PolyPoint();
+
+            if (OmitPropName != "XCoord") polyPoint.XCoord = GetRandomDouble(-180.0D, 180.0D);
+            if (OmitPropName != "YCoord") polyPoint.YCoord = GetRandomDouble(-90.0D, 90.0D);
+            if (OmitPropName != "Z") polyPoint.Z = GetRandomDouble(-10000.0D, 10000.0D);
+
+            return polyPoint;
         }
 
         #endregion Functions private

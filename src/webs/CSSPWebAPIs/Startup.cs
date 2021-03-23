@@ -19,6 +19,7 @@ using System.Text;
 using LoggedInServices;
 using CreateGzFileServices;
 using CSSPScrambleServices;
+using CSSPHelperServices;
 
 namespace CSSPWebAPIs
 {
@@ -76,11 +77,11 @@ namespace CSSPWebAPIs
                 options.UseSqlServer(DBConnStr));
 
 
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(DBConnStr));
+            //services.AddDbContext<ApplicationDbContext>(options =>
+            //    options.UseSqlServer(DBConnStr));
 
-            services.AddIdentityCore<ApplicationUser>()
-            .AddEntityFrameworkStores<ApplicationDbContext>();
+            //services.AddIdentityCore<ApplicationUser>()
+            //.AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddScoped<ICSSPCultureService, CSSPCultureService>();
             services.AddScoped<IEnums, Enums>();

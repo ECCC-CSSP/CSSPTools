@@ -207,12 +207,6 @@
   <data name="CouldNotFindFile_" xml:space="preserve">
     <value>Dans l'impossibilité de trouver la filière [{0}]</value>
   </data>
-  <data name="CouldNotFind_InDBLogin" xml:space="preserve">
-    <value>{0} introuvable dans dbLogin</value>
-  </data>
-  <data name="CouldNotFind_InDBLogin_" xml:space="preserve">
-    <value>Dans l'impossibilité de trouver {0} dans CSSPDBPreference {1}</value>
-  </data>
   <data name="CouldNotGetPropertiesFromAzureStore_AndFile_" xml:space="preserve">
     <value>Dans l'impossibilité de lire les propriétés de Azure Store {0} et la filière {1}</value>
   </data>
@@ -449,5 +443,17 @@
   </data>
   <data name="BrowserIfOpenByCSSPDesktop" xml:space="preserve">
     <value>Navigateur s'il était précédemment ouvert par CSSP Desktop</value>
+  </data>
+  <data name="CouldNotFind_InPreferenceDB" xml:space="preserve">
+    <value>Dans l'impossibilité de trouver {0} dans CSSPDBPreference.db</value>
+  </data>
+  <data name="CouldNotFill_" xml:space="preserve">
+    <value>Dans l'impossibiliité de remplir {0}</value>
+  </data>
+  <data name="User_IsNotLoggedIn" xml:space="preserve">
+    <value>L'utilisateur {0} n'est pas connecté</value>
+  </data>
+  <data name="User_IsAlreadyLoggedIn" xml:space="preserve">
+    <value>L'utilisateur {0} est déjà connecté</value>
   </data>
 </root>

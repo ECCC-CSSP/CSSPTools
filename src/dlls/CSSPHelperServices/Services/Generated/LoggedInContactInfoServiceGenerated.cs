@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 using LoggedInServices;
 using Microsoft.Extensions.Configuration;
 
-namespace CSSPDBServices
+namespace CSSPHelperServices
 {
     public interface ILoggedInContactInfoService
     {
@@ -32,15 +32,11 @@ namespace CSSPDBServices
         #endregion Variables
 
         #region Properties
-        private ICSSPCultureService CSSPCultureService { get; }
-        private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public LoggedInContactInfoService(ICSSPCultureService CSSPCultureService, IEnums enums)
+        public LoggedInContactInfoService()
         {
-            this.CSSPCultureService = CSSPCultureService;
-            this.enums = enums;
         }
         #endregion Constructors
 
@@ -58,6 +54,7 @@ namespace CSSPDBServices
                 //CSSPError: Type not implemented [TVItemUserAuthorizationList] of type [List`1]
 
                 //CSSPError: Type not implemented [TVItemUserAuthorizationList] of type [TVItemUserAuthorization]
+
             bool a = false;
             if (a)
             {

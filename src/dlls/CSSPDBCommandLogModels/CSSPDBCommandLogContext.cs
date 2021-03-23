@@ -12,7 +12,7 @@ namespace CSSPDBCommandLogModels
     {
 
         #region Properties
-        public virtual DbSet<CSSPCommandLog> CSSPCommandLogs { get; set; }
+        public virtual DbSet<CommandLog> CommandLogs { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -25,15 +25,5 @@ namespace CSSPDBCommandLogModels
         {
         }
         #endregion Constructors
-
-        #region Overrides
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-        }
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-        }
-        #endregion Overrides
     }
 }

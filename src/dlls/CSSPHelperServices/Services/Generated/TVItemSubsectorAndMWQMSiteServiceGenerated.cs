@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 using LoggedInServices;
 using Microsoft.Extensions.Configuration;
 
-namespace CSSPDBServices
+namespace CSSPHelperServices
 {
     public interface ITVItemSubsectorAndMWQMSiteService
     {
@@ -32,15 +32,11 @@ namespace CSSPDBServices
         #endregion Variables
 
         #region Properties
-        private ICSSPCultureService CSSPCultureService { get; }
-        private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public TVItemSubsectorAndMWQMSiteService(ICSSPCultureService CSSPCultureService, IEnums enums)
+        public TVItemSubsectorAndMWQMSiteService()
         {
-            this.CSSPCultureService = CSSPCultureService;
-            this.enums = enums;
         }
         #endregion Constructors
 
@@ -58,6 +54,7 @@ namespace CSSPDBServices
                 //CSSPError: Type not implemented [TVItemMWQMSiteDuplicate] of type [TVItem]
 
                 //CSSPError: Type not implemented [TVItemMWQMSiteDuplicate] of type [TVItem]
+
             bool a = false;
             if (a)
             {

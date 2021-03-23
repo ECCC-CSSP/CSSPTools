@@ -13,6 +13,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="C:\Users\charl\.nuget\packages\microsoft.testplatform.testhost\16.9.1\build\netcoreapp2.1\x64\Microsoft.TestPlatform.PlatformAbstractions.dll" />
+    <Content Remove="C:\Users\charl\.nuget\packages\microsoft.testplatform.testhost\16.9.1\build\netcoreapp2.1\x64\testhost.dll" />
+    <Content Remove="C:\Users\charl\.nuget\packages\microsoft.testplatform.testhost\16.9.1\build\netcoreapp2.1\x64\testhost.exe" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="appsettings_cssphelperservicestests.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
@@ -36,12 +42,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\dlls\CSSPDBServices\CSSPDBServices.csproj" />
+    <Folder Include="Tests\Generated\" />
+    <Folder Include="Tests\Manual\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Tests\Generated\" />
-    <Folder Include="Tests\Manual\" />
+    <ProjectReference Include="..\..\dlls\CSSPHelperServices\CSSPHelperServices.csproj" />
   </ItemGroup>
 
 </Project>

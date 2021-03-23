@@ -2,12 +2,10 @@
  * Manually edited
  * 
  */
-using CSSPEnums;
+using CSSPCustomAttributes;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 
 namespace CSSPHelperModels
 {
@@ -21,6 +19,7 @@ namespace CSSPHelperModels
         [CSSPMaxLength(255)]
         [CSSPMinLength(1)]
         public string url { get; set; }
+        [Range(1, -1)]
         public int NumberOfSamples { get; set; }
         #endregion Properties not in DB
 

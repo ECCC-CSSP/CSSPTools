@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 using LoggedInServices;
 using Microsoft.Extensions.Configuration;
 
-namespace CSSPDBServices
+namespace CSSPHelperServices
 {
     public interface ITVItemInfrastructureTypeTVItemLinkService
     {
@@ -32,14 +32,12 @@ namespace CSSPDBServices
         #endregion Variables
 
         #region Properties
-        private ICSSPCultureService CSSPCultureService { get; }
         private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public TVItemInfrastructureTypeTVItemLinkService(ICSSPCultureService CSSPCultureService, IEnums enums)
+        public TVItemInfrastructureTypeTVItemLinkService(IEnums enums)
         {
-            this.CSSPCultureService = CSSPCultureService;
             this.enums = enums;
         }
         #endregion Constructors
@@ -53,14 +51,14 @@ namespace CSSPDBServices
             retStr = enums.EnumTypeOK(typeof(InfrastructureTypeEnum), (int?)tvItemInfrastructureTypeTVItemLink.InfrastructureType);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "InfrastructureType"), new[] { nameof(tvItemInfrastructureTypeTVItemLink.InfrastructureType) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "InfrastructureType"), new[] { "InfrastructureType" });
             }
 
             //SeeOtherMunicipalityTVItemID has no Range Attribute
 
             if (!string.IsNullOrWhiteSpace(tvItemInfrastructureTypeTVItemLink.InfrastructureTypeText) && tvItemInfrastructureTypeTVItemLink.InfrastructureTypeText.Length > 100)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "InfrastructureTypeText", "100"), new[] { nameof(tvItemInfrastructureTypeTVItemLink.InfrastructureTypeText) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "InfrastructureTypeText", "100"), new[] { "InfrastructureTypeText" });
             }
 
                 //CSSPError: Type not implemented [TVItem] of type [TVItem]
@@ -72,11 +70,6 @@ namespace CSSPDBServices
                 //CSSPError: Type not implemented [FlowTo] of type [TVItemInfrastructureTypeTVItemLink]
 
                 //CSSPError: Type not implemented [FlowTo] of type [TVItemInfrastructureTypeTVItemLink]
-            bool a = false;
-            if (a)
-            {
-                yield return new ValidationResult("");
-            }
         }
         #endregion Functions public
     }

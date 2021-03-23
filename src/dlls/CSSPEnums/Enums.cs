@@ -35,13 +35,13 @@ namespace CSSPEnums
         #endregion Variables
 
         #region Properties
-        private ICSSPCultureService CSSPCultureService { get; set; }
+        //private ICSSPCultureService CSSPCultureService { get; }
         #endregion Properties
 
         #region Constructors
-        public Enums(ICSSPCultureService CSSPCultureService)
+        public Enums(/*ICSSPCultureService CSSPCultureService*/)
         {
-            this.CSSPCultureService = CSSPCultureService;
+            //this.CSSPCultureService = CSSPCultureService;
         }
         #endregion Construtors
 

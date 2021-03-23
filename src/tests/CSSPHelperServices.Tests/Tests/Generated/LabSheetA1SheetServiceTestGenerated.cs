@@ -22,114 +22,2081 @@ using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
 using CSSPCultureServices.Resources;
-using LoggedInServices;
+using CSSPHelperServices.Tests;
 
-namespace CSSPDBServices.Tests
+namespace CSSPHelperServices.Tests
 {
-    public partial class LabSheetA1SheetDBServiceTest : TestHelper
+    [Collection("Sequential")]
+    public partial class LabSheetA1SheetServiceTest : TestHelper
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Configuration { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private ICSSPCultureService CSSPCultureService { get; set; }
+        private IEnums enums { get; set; }
+        private ILabSheetA1SheetService LabSheetA1SheetService { get; set; }
         #endregion Properties
 
         #region Constructors
-        public LabSheetA1SheetDBServiceTest() : base()
+        public LabSheetA1SheetServiceTest() : base()
         {
 
         }
         #endregion Constructors
 
-        #region Functions private
-        private void CheckLabSheetA1SheetFields(List<LabSheetA1Sheet> labSheetA1SheetList)
+        #region Tests Generated Constructors
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task AppTaskParameter_Constructor_Test(string culture)
         {
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].SubsectorName));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].SubsectorLocation));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].RunYear));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].RunMonth));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].RunDay));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].Tides));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].SampleCrewInitials));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].IncubationStartSameDay));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].IncubationBath1StartTime));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].IncubationBath2StartTime));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].IncubationBath3StartTime));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].IncubationBath1EndTime));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].IncubationBath2EndTime));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].IncubationBath3EndTime));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].IncubationBath1TimeCalculated));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].IncubationBath2TimeCalculated));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].IncubationBath3TimeCalculated));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].WaterBath1));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].WaterBath2));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].WaterBath3));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].TCField1));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].TCLab1));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].TCHas2Coolers));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].TCField2));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].TCLab2));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].TCFirst));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].TCAverage));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].ControlLot));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].Positive35));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].NonTarget35));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].Negative35));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].Bath1Positive44_5));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].Bath2Positive44_5));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].Bath3Positive44_5));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].Bath1NonTarget44_5));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].Bath2NonTarget44_5));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].Bath3NonTarget44_5));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].Bath1Negative44_5));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].Bath2Negative44_5));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].Bath3Negative44_5));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].Blank35));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].Bath1Blank44_5));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].Bath2Blank44_5));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].Bath3Blank44_5));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].Lot35));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].Lot44_5));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].RunComment));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].RunWeatherComment));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].SampleBottleLotNumber));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].SalinitiesReadBy));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].SalinitiesReadYear));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].SalinitiesReadMonth));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].SalinitiesReadDay));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].ResultsReadBy));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].ResultsReadYear));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].ResultsReadMonth));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].ResultsReadDay));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].ResultsRecordedBy));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].ResultsRecordedYear));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].ResultsRecordedMonth));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].ResultsRecordedDay));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].DailyDuplicateRLog));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].DailyDuplicatePrecisionCriteria));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].DailyDuplicateAcceptableOrUnacceptable));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].IntertechDuplicateRLog));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].IntertechDuplicatePrecisionCriteria));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].IntertechDuplicateAcceptableOrUnacceptable));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].IntertechReadAcceptableOrUnacceptable));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].ApprovalYear));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].ApprovalMonth));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].ApprovalDay));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].ApprovedBySupervisorInitials));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].BackupDirectory));
-            Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].Log));
-            if (!string.IsNullOrWhiteSpace(labSheetA1SheetList[0].SamplingPlanTypeText))
-            {
-                Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].SamplingPlanTypeText));
-            }
-            if (!string.IsNullOrWhiteSpace(labSheetA1SheetList[0].SampleTypeText))
-            {
-                Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].SampleTypeText));
-            }
-            if (!string.IsNullOrWhiteSpace(labSheetA1SheetList[0].LabSheetTypeText))
-            {
-                Assert.False(string.IsNullOrWhiteSpace(labSheetA1SheetList[0].LabSheetTypeText));
-            }
+            Assert.True(await Setup(culture));
+            Assert.NotNull(CSSPCultureService);
+            Assert.NotNull(enums);
+        }
+        #endregion Tests Generated Constructors
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task LabSheetA1Sheet_Properties_Test(string culture)
+        {
+            List<ValidationResult> ValidationResultList = new List<ValidationResult>();
+            IEnumerable<ValidationResult> validationResults;
+            Assert.True(await Setup(culture));
+
+
+
+            LabSheetA1Sheet labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(1, 100)]
+            // labSheetA1Sheet.Version   (Int32)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.Version = 0;
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Version", "1", "100"))).Any());
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.Version = 101;
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Version", "1", "100"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // labSheetA1Sheet.SamplingPlanType   (SamplingPlanTypeEnum)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.SamplingPlanType = (SamplingPlanTypeEnum)1000000;
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "SamplingPlanType"))).Any());
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // labSheetA1Sheet.SampleType   (SampleTypeEnum)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.SampleType = (SampleTypeEnum)1000000;
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "SampleType"))).Any());
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // labSheetA1Sheet.LabSheetType   (LabSheetTypeEnum)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.LabSheetType = (LabSheetTypeEnum)1000000;
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "LabSheetType"))).Any());
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(1000)]
+            // labSheetA1Sheet.SubsectorName   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("SubsectorName");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "SubsectorName"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.SubsectorName = GetRandomString("", 1001);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SubsectorName", "1000"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(1000)]
+            // labSheetA1Sheet.SubsectorLocation   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("SubsectorLocation");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "SubsectorLocation"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.SubsectorLocation = GetRandomString("", 1001);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SubsectorLocation", "1000"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(1, -1)]
+            // labSheetA1Sheet.SubsectorTVItemID   (Int32)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.SubsectorTVItemID = 0;
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "SubsectorTVItemID", "1"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(4)]
+            // labSheetA1Sheet.RunYear   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("RunYear");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "RunYear"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.RunYear = GetRandomString("", 5);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "RunYear", "4"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(2)]
+            // labSheetA1Sheet.RunMonth   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("RunMonth");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "RunMonth"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.RunMonth = GetRandomString("", 3);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "RunMonth", "2"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(2)]
+            // labSheetA1Sheet.RunDay   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("RunDay");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "RunDay"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.RunDay = GetRandomString("", 3);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "RunDay", "2"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(1, 100)]
+            // labSheetA1Sheet.RunNumber   (Int32)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.RunNumber = 0;
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "RunNumber", "1", "100"))).Any());
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.RunNumber = 101;
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "RunNumber", "1", "100"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(10)]
+            // labSheetA1Sheet.Tides   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("Tides");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Tides"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.Tides = GetRandomString("", 11);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Tides", "10"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(50)]
+            // labSheetA1Sheet.SampleCrewInitials   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("SampleCrewInitials");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "SampleCrewInitials"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.SampleCrewInitials = GetRandomString("", 51);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SampleCrewInitials", "50"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(8)]
+            // labSheetA1Sheet.IncubationStartSameDay   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("IncubationStartSameDay");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "IncubationStartSameDay"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.IncubationStartSameDay = GetRandomString("", 9);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "IncubationStartSameDay", "8"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(1, 5)]
+            // labSheetA1Sheet.WaterBathCount   (Int32)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.WaterBathCount = 0;
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "WaterBathCount", "1", "5"))).Any());
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.WaterBathCount = 6;
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "WaterBathCount", "1", "5"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(8)]
+            // labSheetA1Sheet.IncubationBath1StartTime   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("IncubationBath1StartTime");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "IncubationBath1StartTime"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.IncubationBath1StartTime = GetRandomString("", 9);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "IncubationBath1StartTime", "8"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(8)]
+            // labSheetA1Sheet.IncubationBath2StartTime   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("IncubationBath2StartTime");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "IncubationBath2StartTime"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.IncubationBath2StartTime = GetRandomString("", 9);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "IncubationBath2StartTime", "8"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(8)]
+            // labSheetA1Sheet.IncubationBath3StartTime   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("IncubationBath3StartTime");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "IncubationBath3StartTime"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.IncubationBath3StartTime = GetRandomString("", 9);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "IncubationBath3StartTime", "8"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(8)]
+            // labSheetA1Sheet.IncubationBath1EndTime   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("IncubationBath1EndTime");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "IncubationBath1EndTime"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.IncubationBath1EndTime = GetRandomString("", 9);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "IncubationBath1EndTime", "8"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(8)]
+            // labSheetA1Sheet.IncubationBath2EndTime   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("IncubationBath2EndTime");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "IncubationBath2EndTime"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.IncubationBath2EndTime = GetRandomString("", 9);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "IncubationBath2EndTime", "8"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(8)]
+            // labSheetA1Sheet.IncubationBath3EndTime   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("IncubationBath3EndTime");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "IncubationBath3EndTime"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.IncubationBath3EndTime = GetRandomString("", 9);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "IncubationBath3EndTime", "8"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(8)]
+            // labSheetA1Sheet.IncubationBath1TimeCalculated   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("IncubationBath1TimeCalculated");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "IncubationBath1TimeCalculated"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.IncubationBath1TimeCalculated = GetRandomString("", 9);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "IncubationBath1TimeCalculated", "8"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(8)]
+            // labSheetA1Sheet.IncubationBath2TimeCalculated   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("IncubationBath2TimeCalculated");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "IncubationBath2TimeCalculated"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.IncubationBath2TimeCalculated = GetRandomString("", 9);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "IncubationBath2TimeCalculated", "8"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(8)]
+            // labSheetA1Sheet.IncubationBath3TimeCalculated   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("IncubationBath3TimeCalculated");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "IncubationBath3TimeCalculated"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.IncubationBath3TimeCalculated = GetRandomString("", 9);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "IncubationBath3TimeCalculated", "8"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(5)]
+            // labSheetA1Sheet.WaterBath1   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("WaterBath1");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "WaterBath1"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.WaterBath1 = GetRandomString("", 6);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "WaterBath1", "5"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(5)]
+            // labSheetA1Sheet.WaterBath2   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("WaterBath2");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "WaterBath2"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.WaterBath2 = GetRandomString("", 6);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "WaterBath2", "5"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(5)]
+            // labSheetA1Sheet.WaterBath3   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("WaterBath3");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "WaterBath3"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.WaterBath3 = GetRandomString("", 6);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "WaterBath3", "5"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(5)]
+            // labSheetA1Sheet.TCField1   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("TCField1");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "TCField1"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.TCField1 = GetRandomString("", 6);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "TCField1", "5"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(5)]
+            // labSheetA1Sheet.TCLab1   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("TCLab1");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "TCLab1"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.TCLab1 = GetRandomString("", 6);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "TCLab1", "5"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(5)]
+            // labSheetA1Sheet.TCHas2Coolers   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("TCHas2Coolers");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "TCHas2Coolers"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.TCHas2Coolers = GetRandomString("", 6);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "TCHas2Coolers", "5"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(5)]
+            // labSheetA1Sheet.TCField2   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("TCField2");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "TCField2"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.TCField2 = GetRandomString("", 6);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "TCField2", "5"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(5)]
+            // labSheetA1Sheet.TCLab2   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("TCLab2");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "TCLab2"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.TCLab2 = GetRandomString("", 6);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "TCLab2", "5"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(5)]
+            // labSheetA1Sheet.TCFirst   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("TCFirst");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "TCFirst"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.TCFirst = GetRandomString("", 6);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "TCFirst", "5"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(5)]
+            // labSheetA1Sheet.TCAverage   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("TCAverage");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "TCAverage"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.TCAverage = GetRandomString("", 6);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "TCAverage", "5"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(100)]
+            // labSheetA1Sheet.ControlLot   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("ControlLot");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "ControlLot"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.ControlLot = GetRandomString("", 101);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ControlLot", "100"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(1)]
+            // labSheetA1Sheet.Positive35   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("Positive35");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Positive35"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.Positive35 = GetRandomString("", 2);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Positive35", "1"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(1)]
+            // labSheetA1Sheet.NonTarget35   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("NonTarget35");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "NonTarget35"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.NonTarget35 = GetRandomString("", 2);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "NonTarget35", "1"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(1)]
+            // labSheetA1Sheet.Negative35   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("Negative35");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Negative35"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.Negative35 = GetRandomString("", 2);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Negative35", "1"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(1)]
+            // labSheetA1Sheet.Bath1Positive44_5   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("Bath1Positive44_5");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Bath1Positive44_5"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.Bath1Positive44_5 = GetRandomString("", 2);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Bath1Positive44_5", "1"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(1)]
+            // labSheetA1Sheet.Bath2Positive44_5   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("Bath2Positive44_5");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Bath2Positive44_5"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.Bath2Positive44_5 = GetRandomString("", 2);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Bath2Positive44_5", "1"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(1)]
+            // labSheetA1Sheet.Bath3Positive44_5   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("Bath3Positive44_5");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Bath3Positive44_5"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.Bath3Positive44_5 = GetRandomString("", 2);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Bath3Positive44_5", "1"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(1)]
+            // labSheetA1Sheet.Bath1NonTarget44_5   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("Bath1NonTarget44_5");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Bath1NonTarget44_5"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.Bath1NonTarget44_5 = GetRandomString("", 2);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Bath1NonTarget44_5", "1"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(1)]
+            // labSheetA1Sheet.Bath2NonTarget44_5   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("Bath2NonTarget44_5");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Bath2NonTarget44_5"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.Bath2NonTarget44_5 = GetRandomString("", 2);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Bath2NonTarget44_5", "1"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(1)]
+            // labSheetA1Sheet.Bath3NonTarget44_5   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("Bath3NonTarget44_5");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Bath3NonTarget44_5"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.Bath3NonTarget44_5 = GetRandomString("", 2);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Bath3NonTarget44_5", "1"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(1)]
+            // labSheetA1Sheet.Bath1Negative44_5   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("Bath1Negative44_5");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Bath1Negative44_5"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.Bath1Negative44_5 = GetRandomString("", 2);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Bath1Negative44_5", "1"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(1)]
+            // labSheetA1Sheet.Bath2Negative44_5   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("Bath2Negative44_5");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Bath2Negative44_5"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.Bath2Negative44_5 = GetRandomString("", 2);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Bath2Negative44_5", "1"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(1)]
+            // labSheetA1Sheet.Bath3Negative44_5   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("Bath3Negative44_5");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Bath3Negative44_5"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.Bath3Negative44_5 = GetRandomString("", 2);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Bath3Negative44_5", "1"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(1)]
+            // labSheetA1Sheet.Blank35   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("Blank35");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Blank35"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.Blank35 = GetRandomString("", 2);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Blank35", "1"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(1)]
+            // labSheetA1Sheet.Bath1Blank44_5   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("Bath1Blank44_5");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Bath1Blank44_5"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.Bath1Blank44_5 = GetRandomString("", 2);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Bath1Blank44_5", "1"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(1)]
+            // labSheetA1Sheet.Bath2Blank44_5   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("Bath2Blank44_5");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Bath2Blank44_5"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.Bath2Blank44_5 = GetRandomString("", 2);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Bath2Blank44_5", "1"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(1)]
+            // labSheetA1Sheet.Bath3Blank44_5   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("Bath3Blank44_5");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Bath3Blank44_5"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.Bath3Blank44_5 = GetRandomString("", 2);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Bath3Blank44_5", "1"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(5)]
+            // labSheetA1Sheet.Lot35   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("Lot35");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Lot35"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.Lot35 = GetRandomString("", 6);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Lot35", "5"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(5)]
+            // labSheetA1Sheet.Lot44_5   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("Lot44_5");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Lot44_5"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.Lot44_5 = GetRandomString("", 6);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Lot44_5", "5"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(10000)]
+            // labSheetA1Sheet.RunComment   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("RunComment");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "RunComment"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.RunComment = GetRandomString("", 10001);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "RunComment", "10000"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(10000)]
+            // labSheetA1Sheet.RunWeatherComment   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("RunWeatherComment");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "RunWeatherComment"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.RunWeatherComment = GetRandomString("", 10001);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "RunWeatherComment", "10000"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(10)]
+            // labSheetA1Sheet.SampleBottleLotNumber   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("SampleBottleLotNumber");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "SampleBottleLotNumber"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.SampleBottleLotNumber = GetRandomString("", 11);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SampleBottleLotNumber", "10"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(100)]
+            // labSheetA1Sheet.SalinitiesReadBy   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("SalinitiesReadBy");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "SalinitiesReadBy"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.SalinitiesReadBy = GetRandomString("", 101);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SalinitiesReadBy", "100"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(4)]
+            // labSheetA1Sheet.SalinitiesReadYear   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("SalinitiesReadYear");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "SalinitiesReadYear"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.SalinitiesReadYear = GetRandomString("", 5);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SalinitiesReadYear", "4"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(2)]
+            // labSheetA1Sheet.SalinitiesReadMonth   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("SalinitiesReadMonth");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "SalinitiesReadMonth"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.SalinitiesReadMonth = GetRandomString("", 3);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SalinitiesReadMonth", "2"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(2)]
+            // labSheetA1Sheet.SalinitiesReadDay   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("SalinitiesReadDay");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "SalinitiesReadDay"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.SalinitiesReadDay = GetRandomString("", 3);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SalinitiesReadDay", "2"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(100)]
+            // labSheetA1Sheet.ResultsReadBy   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("ResultsReadBy");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "ResultsReadBy"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.ResultsReadBy = GetRandomString("", 101);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ResultsReadBy", "100"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(4)]
+            // labSheetA1Sheet.ResultsReadYear   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("ResultsReadYear");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "ResultsReadYear"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.ResultsReadYear = GetRandomString("", 5);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ResultsReadYear", "4"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(2)]
+            // labSheetA1Sheet.ResultsReadMonth   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("ResultsReadMonth");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "ResultsReadMonth"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.ResultsReadMonth = GetRandomString("", 3);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ResultsReadMonth", "2"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(2)]
+            // labSheetA1Sheet.ResultsReadDay   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("ResultsReadDay");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "ResultsReadDay"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.ResultsReadDay = GetRandomString("", 3);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ResultsReadDay", "2"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(100)]
+            // labSheetA1Sheet.ResultsRecordedBy   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("ResultsRecordedBy");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "ResultsRecordedBy"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.ResultsRecordedBy = GetRandomString("", 101);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ResultsRecordedBy", "100"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(4)]
+            // labSheetA1Sheet.ResultsRecordedYear   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("ResultsRecordedYear");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "ResultsRecordedYear"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.ResultsRecordedYear = GetRandomString("", 5);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ResultsRecordedYear", "4"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(2)]
+            // labSheetA1Sheet.ResultsRecordedMonth   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("ResultsRecordedMonth");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "ResultsRecordedMonth"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.ResultsRecordedMonth = GetRandomString("", 3);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ResultsRecordedMonth", "2"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(2)]
+            // labSheetA1Sheet.ResultsRecordedDay   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("ResultsRecordedDay");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "ResultsRecordedDay"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.ResultsRecordedDay = GetRandomString("", 3);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ResultsRecordedDay", "2"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(10)]
+            // labSheetA1Sheet.DailyDuplicateRLog   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("DailyDuplicateRLog");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "DailyDuplicateRLog"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.DailyDuplicateRLog = GetRandomString("", 11);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "DailyDuplicateRLog", "10"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(10)]
+            // labSheetA1Sheet.DailyDuplicatePrecisionCriteria   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("DailyDuplicatePrecisionCriteria");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "DailyDuplicatePrecisionCriteria"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.DailyDuplicatePrecisionCriteria = GetRandomString("", 11);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "DailyDuplicatePrecisionCriteria", "10"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(20)]
+            // labSheetA1Sheet.DailyDuplicateAcceptableOrUnacceptable   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("DailyDuplicateAcceptableOrUnacceptable");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "DailyDuplicateAcceptableOrUnacceptable"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.DailyDuplicateAcceptableOrUnacceptable = GetRandomString("", 21);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "DailyDuplicateAcceptableOrUnacceptable", "20"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(10)]
+            // labSheetA1Sheet.IntertechDuplicateRLog   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("IntertechDuplicateRLog");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "IntertechDuplicateRLog"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.IntertechDuplicateRLog = GetRandomString("", 11);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "IntertechDuplicateRLog", "10"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(10)]
+            // labSheetA1Sheet.IntertechDuplicatePrecisionCriteria   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("IntertechDuplicatePrecisionCriteria");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "IntertechDuplicatePrecisionCriteria"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.IntertechDuplicatePrecisionCriteria = GetRandomString("", 11);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "IntertechDuplicatePrecisionCriteria", "10"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(20)]
+            // labSheetA1Sheet.IntertechDuplicateAcceptableOrUnacceptable   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("IntertechDuplicateAcceptableOrUnacceptable");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "IntertechDuplicateAcceptableOrUnacceptable"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.IntertechDuplicateAcceptableOrUnacceptable = GetRandomString("", 21);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "IntertechDuplicateAcceptableOrUnacceptable", "20"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(20)]
+            // labSheetA1Sheet.IntertechReadAcceptableOrUnacceptable   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("IntertechReadAcceptableOrUnacceptable");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "IntertechReadAcceptableOrUnacceptable"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.IntertechReadAcceptableOrUnacceptable = GetRandomString("", 21);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "IntertechReadAcceptableOrUnacceptable", "20"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(4)]
+            // labSheetA1Sheet.ApprovalYear   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("ApprovalYear");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "ApprovalYear"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.ApprovalYear = GetRandomString("", 5);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ApprovalYear", "4"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(2)]
+            // labSheetA1Sheet.ApprovalMonth   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("ApprovalMonth");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "ApprovalMonth"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.ApprovalMonth = GetRandomString("", 3);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ApprovalMonth", "2"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(2)]
+            // labSheetA1Sheet.ApprovalDay   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("ApprovalDay");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "ApprovalDay"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.ApprovalDay = GetRandomString("", 3);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ApprovalDay", "2"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(10)]
+            // labSheetA1Sheet.ApprovedBySupervisorInitials   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("ApprovedBySupervisorInitials");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "ApprovedBySupervisorInitials"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.ApprovedBySupervisorInitials = GetRandomString("", 11);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ApprovedBySupervisorInitials", "10"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // labSheetA1Sheet.IncludeLaboratoryQAQC   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(250)]
+            // labSheetA1Sheet.BackupDirectory   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("BackupDirectory");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "BackupDirectory"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.BackupDirectory = GetRandomString("", 251);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "BackupDirectory", "250"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(1000000)]
+            // labSheetA1Sheet.Log   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("Log");
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Log"))).Any());
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.Log = GetRandomString("", 1000001);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Log", "1000000"))).Any());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(100)]
+            // labSheetA1Sheet.SamplingPlanTypeText   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.SamplingPlanTypeText = GetRandomString("", 101);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SamplingPlanTypeText", "100"))).Any());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(100)]
+            // labSheetA1Sheet.SampleTypeText   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.SampleTypeText = GetRandomString("", 101);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SampleTypeText", "100"))).Any());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(100)]
+            // labSheetA1Sheet.LabSheetTypeText   (String)
+            // -----------------------------------
+
+
+            labSheetA1Sheet = null;
+            labSheetA1Sheet = GetFilledRandomLabSheetA1Sheet("");
+            labSheetA1Sheet.LabSheetTypeText = GetRandomString("", 101);
+            validationResults = LabSheetA1SheetService.Validate(new ValidationContext(labSheetA1Sheet));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "LabSheetTypeText", "100"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // labSheetA1Sheet.LabSheetA1MeasurementList   (LabSheetA1Measurement)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [LabSheetA1MeasurementList]
+
+            //CSSPError: Type not implemented [LabSheetA1MeasurementList]
+
+        }
+        #endregion Tests Generated Properties
+
+        #region Functions private
+        private async Task<bool> Setup(string culture)
+        {
+            Configuration = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings_CSSPDBServicestests.json")
+               .AddUserSecrets("6f27cbbe-6ffb-4154-b49b-d739597c4f60")
+               .Build();
+
+            Services = new ServiceCollection();
+
+            Services.AddSingleton<IConfiguration>(Configuration);
+
+            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ILabSheetA1SheetService, LabSheetA1SheetService>();
+
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+
+            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
+            Assert.NotNull(CSSPCultureService);
+
+            CSSPCultureService.SetCulture(culture);
+
+            enums = Provider.GetService<IEnums>();
+            Assert.NotNull(enums);
+
+            LabSheetA1SheetService = Provider.GetService<ILabSheetA1SheetService>();
+            Assert.NotNull(LabSheetA1SheetService);
+
+            return await Task.FromResult(true);
+        }
+        private LabSheetA1Sheet GetFilledRandomLabSheetA1Sheet(string OmitPropName)
+        {
+            LabSheetA1Sheet labSheetA1Sheet = new LabSheetA1Sheet();
+
+            if (OmitPropName != "Version") labSheetA1Sheet.Version = GetRandomInt(1, 100);
+            if (OmitPropName != "SamplingPlanType") labSheetA1Sheet.SamplingPlanType = (SamplingPlanTypeEnum)GetRandomEnumType(typeof(SamplingPlanTypeEnum));
+            if (OmitPropName != "SampleType") labSheetA1Sheet.SampleType = (SampleTypeEnum)GetRandomEnumType(typeof(SampleTypeEnum));
+            if (OmitPropName != "LabSheetType") labSheetA1Sheet.LabSheetType = (LabSheetTypeEnum)GetRandomEnumType(typeof(LabSheetTypeEnum));
+            if (OmitPropName != "SubsectorName") labSheetA1Sheet.SubsectorName = GetRandomString("", 5);
+            if (OmitPropName != "SubsectorLocation") labSheetA1Sheet.SubsectorLocation = GetRandomString("", 5);
+            if (OmitPropName != "SubsectorTVItemID") labSheetA1Sheet.SubsectorTVItemID = GetRandomInt(1, 11);
+            if (OmitPropName != "RunYear") labSheetA1Sheet.RunYear = GetRandomString("", 4);
+            if (OmitPropName != "RunMonth") labSheetA1Sheet.RunMonth = GetRandomString("", 2);
+            if (OmitPropName != "RunDay") labSheetA1Sheet.RunDay = GetRandomString("", 2);
+            if (OmitPropName != "RunNumber") labSheetA1Sheet.RunNumber = GetRandomInt(1, 100);
+            if (OmitPropName != "Tides") labSheetA1Sheet.Tides = GetRandomString("", 5);
+            if (OmitPropName != "SampleCrewInitials") labSheetA1Sheet.SampleCrewInitials = GetRandomString("", 5);
+            if (OmitPropName != "IncubationStartSameDay") labSheetA1Sheet.IncubationStartSameDay = GetRandomString("", 5);
+            if (OmitPropName != "WaterBathCount") labSheetA1Sheet.WaterBathCount = GetRandomInt(1, 5);
+            if (OmitPropName != "IncubationBath1StartTime") labSheetA1Sheet.IncubationBath1StartTime = GetRandomString("", 5);
+            if (OmitPropName != "IncubationBath2StartTime") labSheetA1Sheet.IncubationBath2StartTime = GetRandomString("", 5);
+            if (OmitPropName != "IncubationBath3StartTime") labSheetA1Sheet.IncubationBath3StartTime = GetRandomString("", 5);
+            if (OmitPropName != "IncubationBath1EndTime") labSheetA1Sheet.IncubationBath1EndTime = GetRandomString("", 5);
+            if (OmitPropName != "IncubationBath2EndTime") labSheetA1Sheet.IncubationBath2EndTime = GetRandomString("", 5);
+            if (OmitPropName != "IncubationBath3EndTime") labSheetA1Sheet.IncubationBath3EndTime = GetRandomString("", 5);
+            if (OmitPropName != "IncubationBath1TimeCalculated") labSheetA1Sheet.IncubationBath1TimeCalculated = GetRandomString("", 5);
+            if (OmitPropName != "IncubationBath2TimeCalculated") labSheetA1Sheet.IncubationBath2TimeCalculated = GetRandomString("", 5);
+            if (OmitPropName != "IncubationBath3TimeCalculated") labSheetA1Sheet.IncubationBath3TimeCalculated = GetRandomString("", 5);
+            if (OmitPropName != "WaterBath1") labSheetA1Sheet.WaterBath1 = GetRandomString("", 5);
+            if (OmitPropName != "WaterBath2") labSheetA1Sheet.WaterBath2 = GetRandomString("", 5);
+            if (OmitPropName != "WaterBath3") labSheetA1Sheet.WaterBath3 = GetRandomString("", 5);
+            if (OmitPropName != "TCField1") labSheetA1Sheet.TCField1 = GetRandomString("", 5);
+            if (OmitPropName != "TCLab1") labSheetA1Sheet.TCLab1 = GetRandomString("", 5);
+            if (OmitPropName != "TCHas2Coolers") labSheetA1Sheet.TCHas2Coolers = GetRandomString("", 5);
+            if (OmitPropName != "TCField2") labSheetA1Sheet.TCField2 = GetRandomString("", 5);
+            if (OmitPropName != "TCLab2") labSheetA1Sheet.TCLab2 = GetRandomString("", 5);
+            if (OmitPropName != "TCFirst") labSheetA1Sheet.TCFirst = GetRandomString("", 5);
+            if (OmitPropName != "TCAverage") labSheetA1Sheet.TCAverage = GetRandomString("", 5);
+            if (OmitPropName != "ControlLot") labSheetA1Sheet.ControlLot = GetRandomString("", 5);
+            if (OmitPropName != "Positive35") labSheetA1Sheet.Positive35 = GetRandomString("", 1);
+            if (OmitPropName != "NonTarget35") labSheetA1Sheet.NonTarget35 = GetRandomString("", 1);
+            if (OmitPropName != "Negative35") labSheetA1Sheet.Negative35 = GetRandomString("", 1);
+            if (OmitPropName != "Bath1Positive44_5") labSheetA1Sheet.Bath1Positive44_5 = GetRandomString("", 1);
+            if (OmitPropName != "Bath2Positive44_5") labSheetA1Sheet.Bath2Positive44_5 = GetRandomString("", 1);
+            if (OmitPropName != "Bath3Positive44_5") labSheetA1Sheet.Bath3Positive44_5 = GetRandomString("", 1);
+            if (OmitPropName != "Bath1NonTarget44_5") labSheetA1Sheet.Bath1NonTarget44_5 = GetRandomString("", 1);
+            if (OmitPropName != "Bath2NonTarget44_5") labSheetA1Sheet.Bath2NonTarget44_5 = GetRandomString("", 1);
+            if (OmitPropName != "Bath3NonTarget44_5") labSheetA1Sheet.Bath3NonTarget44_5 = GetRandomString("", 1);
+            if (OmitPropName != "Bath1Negative44_5") labSheetA1Sheet.Bath1Negative44_5 = GetRandomString("", 1);
+            if (OmitPropName != "Bath2Negative44_5") labSheetA1Sheet.Bath2Negative44_5 = GetRandomString("", 1);
+            if (OmitPropName != "Bath3Negative44_5") labSheetA1Sheet.Bath3Negative44_5 = GetRandomString("", 1);
+            if (OmitPropName != "Blank35") labSheetA1Sheet.Blank35 = GetRandomString("", 1);
+            if (OmitPropName != "Bath1Blank44_5") labSheetA1Sheet.Bath1Blank44_5 = GetRandomString("", 1);
+            if (OmitPropName != "Bath2Blank44_5") labSheetA1Sheet.Bath2Blank44_5 = GetRandomString("", 1);
+            if (OmitPropName != "Bath3Blank44_5") labSheetA1Sheet.Bath3Blank44_5 = GetRandomString("", 1);
+            if (OmitPropName != "Lot35") labSheetA1Sheet.Lot35 = GetRandomString("", 5);
+            if (OmitPropName != "Lot44_5") labSheetA1Sheet.Lot44_5 = GetRandomString("", 5);
+            if (OmitPropName != "RunComment") labSheetA1Sheet.RunComment = GetRandomString("", 5);
+            if (OmitPropName != "RunWeatherComment") labSheetA1Sheet.RunWeatherComment = GetRandomString("", 5);
+            if (OmitPropName != "SampleBottleLotNumber") labSheetA1Sheet.SampleBottleLotNumber = GetRandomString("", 5);
+            if (OmitPropName != "SalinitiesReadBy") labSheetA1Sheet.SalinitiesReadBy = GetRandomString("", 5);
+            if (OmitPropName != "SalinitiesReadYear") labSheetA1Sheet.SalinitiesReadYear = GetRandomString("", 4);
+            if (OmitPropName != "SalinitiesReadMonth") labSheetA1Sheet.SalinitiesReadMonth = GetRandomString("", 2);
+            if (OmitPropName != "SalinitiesReadDay") labSheetA1Sheet.SalinitiesReadDay = GetRandomString("", 2);
+            if (OmitPropName != "ResultsReadBy") labSheetA1Sheet.ResultsReadBy = GetRandomString("", 5);
+            if (OmitPropName != "ResultsReadYear") labSheetA1Sheet.ResultsReadYear = GetRandomString("", 4);
+            if (OmitPropName != "ResultsReadMonth") labSheetA1Sheet.ResultsReadMonth = GetRandomString("", 2);
+            if (OmitPropName != "ResultsReadDay") labSheetA1Sheet.ResultsReadDay = GetRandomString("", 2);
+            if (OmitPropName != "ResultsRecordedBy") labSheetA1Sheet.ResultsRecordedBy = GetRandomString("", 5);
+            if (OmitPropName != "ResultsRecordedYear") labSheetA1Sheet.ResultsRecordedYear = GetRandomString("", 4);
+            if (OmitPropName != "ResultsRecordedMonth") labSheetA1Sheet.ResultsRecordedMonth = GetRandomString("", 2);
+            if (OmitPropName != "ResultsRecordedDay") labSheetA1Sheet.ResultsRecordedDay = GetRandomString("", 2);
+            if (OmitPropName != "DailyDuplicateRLog") labSheetA1Sheet.DailyDuplicateRLog = GetRandomString("", 5);
+            if (OmitPropName != "DailyDuplicatePrecisionCriteria") labSheetA1Sheet.DailyDuplicatePrecisionCriteria = GetRandomString("", 5);
+            if (OmitPropName != "DailyDuplicateAcceptableOrUnacceptable") labSheetA1Sheet.DailyDuplicateAcceptableOrUnacceptable = GetRandomString("", 5);
+            if (OmitPropName != "IntertechDuplicateRLog") labSheetA1Sheet.IntertechDuplicateRLog = GetRandomString("", 5);
+            if (OmitPropName != "IntertechDuplicatePrecisionCriteria") labSheetA1Sheet.IntertechDuplicatePrecisionCriteria = GetRandomString("", 5);
+            if (OmitPropName != "IntertechDuplicateAcceptableOrUnacceptable") labSheetA1Sheet.IntertechDuplicateAcceptableOrUnacceptable = GetRandomString("", 5);
+            if (OmitPropName != "IntertechReadAcceptableOrUnacceptable") labSheetA1Sheet.IntertechReadAcceptableOrUnacceptable = GetRandomString("", 5);
+            if (OmitPropName != "ApprovalYear") labSheetA1Sheet.ApprovalYear = GetRandomString("", 4);
+            if (OmitPropName != "ApprovalMonth") labSheetA1Sheet.ApprovalMonth = GetRandomString("", 2);
+            if (OmitPropName != "ApprovalDay") labSheetA1Sheet.ApprovalDay = GetRandomString("", 2);
+            if (OmitPropName != "ApprovedBySupervisorInitials") labSheetA1Sheet.ApprovedBySupervisorInitials = GetRandomString("", 5);
+            if (OmitPropName != "IncludeLaboratoryQAQC") labSheetA1Sheet.IncludeLaboratoryQAQC = true;
+            if (OmitPropName != "BackupDirectory") labSheetA1Sheet.BackupDirectory = GetRandomString("", 5);
+            if (OmitPropName != "Log") labSheetA1Sheet.Log = GetRandomString("", 5);
+            if (OmitPropName != "SamplingPlanTypeText") labSheetA1Sheet.SamplingPlanTypeText = GetRandomString("", 5);
+            if (OmitPropName != "SampleTypeText") labSheetA1Sheet.SampleTypeText = GetRandomString("", 5);
+            if (OmitPropName != "LabSheetTypeText") labSheetA1Sheet.LabSheetTypeText = GetRandomString("", 5);
+            //CSSPError: property [LabSheetA1MeasurementList] and type [LabSheetA1Sheet] is  not implemented
+
+            return labSheetA1Sheet;
         }
 
         #endregion Functions private

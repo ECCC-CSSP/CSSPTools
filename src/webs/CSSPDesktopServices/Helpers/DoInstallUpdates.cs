@@ -164,35 +164,35 @@ namespace CSSPDesktopServices.Services
                 //}
             }
 
-            CSSPFile csspFile = (from c in dbFM.CSSPFiles
-                                 where c.AzureStorage == "csspjson"
-                                 && c.AzureFileName == jsonFileName
-                                 select c).FirstOrDefault();
+            FilesManagement filesManagement = (from c in dbFM.FilesManagements
+                                               where c.AzureStorage == "csspjson"
+                                               && c.AzureFileName == jsonFileName
+                                               select c).FirstOrDefault();
 
-            if (csspFile == null || blobProperties.ETag.ToString().Replace("\"", "") != csspFile.AzureETag)
+            if (filesManagement == null || blobProperties.ETag.ToString().Replace("\"", "") != filesManagement.AzureETag)
             {
                 Response response = blobClient.DownloadTo(fi.FullName);
 
-                if (csspFile == null)
+                if (filesManagement == null)
                 {
-                    int LastID = (from c in dbFM.CSSPFiles
-                                  orderby c.CSSPFileID descending
-                                  select c.CSSPFileID).FirstOrDefault();
+                    int LastID = (from c in dbFM.FilesManagements
+                                  orderby c.FilesManagementID descending
+                                  select c.FilesManagementID).FirstOrDefault();
 
-                    csspFile = new CSSPFile()
+                    filesManagement = new FilesManagement()
                     {
-                        CSSPFileID = LastID + 1,
+                        FilesManagementID = LastID + 1,
                         AzureStorage = AzureStoreCSSPJSONPath,
                         AzureFileName = jsonFileName,
                         AzureETag = response.Headers.ETag.ToString(),
                         AzureCreationTimeUTC = DateTime.Parse(response.Headers.Date.ToString()),
                     };
 
-                    dbFM.CSSPFiles.Add(csspFile);
+                    dbFM.FilesManagements.Add(filesManagement);
                 }
                 else
                 {
-                    csspFile.AzureETag = response.Headers.ETag.ToString();
+                    filesManagement.AzureETag = response.Headers.ETag.ToString();
                 }
 
                 try
@@ -278,12 +278,12 @@ namespace CSSPDesktopServices.Services
                 return await Task.FromResult(false);
             }
 
-            CSSPFile csspFile = (from c in dbFM.CSSPFiles
-                                 where c.AzureStorage == AzureStoreCSSPWebAPIsLocalPath
-                                 && c.AzureFileName == zipFileName
-                                 select c).FirstOrDefault();
+            FilesManagement filesManagement = (from c in dbFM.FilesManagements
+                                               where c.AzureStorage == AzureStoreCSSPWebAPIsLocalPath
+                                               && c.AzureFileName == zipFileName
+                                               select c).FirstOrDefault();
 
-            if (csspFile == null || blobProperties.ETag.ToString().Replace("\"", "") != csspFile.AzureETag)
+            if (filesManagement == null || blobProperties.ETag.ToString().Replace("\"", "") != filesManagement.AzureETag)
             {
                 Response response = blobClient.DownloadTo(fi.FullName);
 
@@ -326,31 +326,31 @@ namespace CSSPDesktopServices.Services
                 return await Task.FromResult(false);
             }
 
-            CSSPFile csspFile = (from c in dbFM.CSSPFiles
-                                 where c.AzureStorage == AzureStoreCSSPWebAPIsLocalPath
-                                 && c.AzureFileName == zipFileName
-                                 select c).FirstOrDefault();
+            FilesManagement filesManagement = (from c in dbFM.FilesManagements
+                                               where c.AzureStorage == AzureStoreCSSPWebAPIsLocalPath
+                                               && c.AzureFileName == zipFileName
+                                               select c).FirstOrDefault();
 
-            if (csspFile == null)
+            if (filesManagement == null)
             {
-                int LastID = (from c in dbFM.CSSPFiles
-                              orderby c.CSSPFileID descending
-                              select c.CSSPFileID).FirstOrDefault();
+                int LastID = (from c in dbFM.FilesManagements
+                              orderby c.FilesManagementID descending
+                              select c.FilesManagementID).FirstOrDefault();
 
-                csspFile = new CSSPFile()
+                filesManagement = new FilesManagement()
                 {
-                    CSSPFileID = LastID + 1,
+                    FilesManagementID = LastID + 1,
                     AzureStorage = AzureStoreCSSPWebAPIsLocalPath,
                     AzureFileName = zipFileName,
                     AzureETag = response.Headers.ETag.ToString(),
                     AzureCreationTimeUTC = DateTime.Parse(response.Headers.Date.ToString()),
                 };
 
-                dbFM.CSSPFiles.Add(csspFile);
+                dbFM.FilesManagements.Add(filesManagement);
             }
             else
             {
-                csspFile.AzureETag = response.Headers.ETag.ToString();
+                filesManagement.AzureETag = response.Headers.ETag.ToString();
             }
 
             try

@@ -22,38 +22,315 @@ using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
 using CSSPCultureServices.Resources;
-using LoggedInServices;
+using CSSPHelperServices.Tests;
 
-namespace CSSPDBServices.Tests
+namespace CSSPHelperServices.Tests
 {
-    public partial class RegisterDBServiceTest : TestHelper
+    [Collection("Sequential")]
+    public partial class RegisterServiceTest : TestHelper
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Configuration { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private ICSSPCultureService CSSPCultureService { get; set; }
+        private IEnums enums { get; set; }
+        private IRegisterService RegisterService { get; set; }
         #endregion Properties
 
         #region Constructors
-        public RegisterDBServiceTest() : base()
+        public RegisterServiceTest() : base()
         {
 
         }
         #endregion Constructors
 
-        #region Functions private
-        private void CheckRegisterFields(List<Register> registerList)
+        #region Tests Generated Constructors
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task AppTaskParameter_Constructor_Test(string culture)
         {
-            Assert.False(string.IsNullOrWhiteSpace(registerList[0].LoginEmail));
-            Assert.False(string.IsNullOrWhiteSpace(registerList[0].FirstName));
-            if (!string.IsNullOrWhiteSpace(registerList[0].Initial))
-            {
-                Assert.False(string.IsNullOrWhiteSpace(registerList[0].Initial));
-            }
-            Assert.False(string.IsNullOrWhiteSpace(registerList[0].LastName));
-            Assert.False(string.IsNullOrWhiteSpace(registerList[0].WebName));
-            Assert.False(string.IsNullOrWhiteSpace(registerList[0].Password));
-            Assert.False(string.IsNullOrWhiteSpace(registerList[0].ConfirmPassword));
+            Assert.True(await Setup(culture));
+            Assert.NotNull(CSSPCultureService);
+            Assert.NotNull(enums);
+        }
+        #endregion Tests Generated Constructors
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task Register_Properties_Test(string culture)
+        {
+            List<ValidationResult> ValidationResultList = new List<ValidationResult>();
+            IEnumerable<ValidationResult> validationResults;
+            Assert.True(await Setup(culture));
+
+
+
+            Register register = GetFilledRandomRegister("");
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(255)]
+            // [CSSPMinLength(6)]
+            // register.LoginEmail   (String)
+            // -----------------------------------
+
+
+            register = null;
+            register = GetFilledRandomRegister("LoginEmail");
+            validationResults = RegisterService.Validate(new ValidationContext(register));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "LoginEmail"))).Any());
+
+
+            register = null;
+            register = GetFilledRandomRegister("");
+            register.LoginEmail = GetRandomString("", 256);
+            validationResults = RegisterService.Validate(new ValidationContext(register));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "LoginEmail", "6", "255"))).Any());
+
+            register = null;
+            register = GetFilledRandomRegister("");
+            register.LoginEmail = GetRandomString("", 256);
+            validationResults = RegisterService.Validate(new ValidationContext(register));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "LoginEmail", "6", "255"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(100)]
+            // [CSSPMinLength(1)]
+            // register.FirstName   (String)
+            // -----------------------------------
+
+
+            register = null;
+            register = GetFilledRandomRegister("FirstName");
+            validationResults = RegisterService.Validate(new ValidationContext(register));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "FirstName"))).Any());
+
+
+            register = null;
+            register = GetFilledRandomRegister("");
+            register.FirstName = GetRandomString("", 101);
+            validationResults = RegisterService.Validate(new ValidationContext(register));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "FirstName", "1", "100"))).Any());
+
+            register = null;
+            register = GetFilledRandomRegister("");
+            register.FirstName = GetRandomString("", 101);
+            validationResults = RegisterService.Validate(new ValidationContext(register));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "FirstName", "1", "100"))).Any());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(50)]
+            // register.Initial   (String)
+            // -----------------------------------
+
+
+            register = null;
+            register = GetFilledRandomRegister("");
+            register.Initial = GetRandomString("", 51);
+            validationResults = RegisterService.Validate(new ValidationContext(register));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Initial", "50"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(100)]
+            // [CSSPMinLength(1)]
+            // register.LastName   (String)
+            // -----------------------------------
+
+
+            register = null;
+            register = GetFilledRandomRegister("LastName");
+            validationResults = RegisterService.Validate(new ValidationContext(register));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "LastName"))).Any());
+
+
+            register = null;
+            register = GetFilledRandomRegister("");
+            register.LastName = GetRandomString("", 101);
+            validationResults = RegisterService.Validate(new ValidationContext(register));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "LastName", "1", "100"))).Any());
+
+            register = null;
+            register = GetFilledRandomRegister("");
+            register.LastName = GetRandomString("", 101);
+            validationResults = RegisterService.Validate(new ValidationContext(register));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "LastName", "1", "100"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(100)]
+            // [CSSPMinLength(1)]
+            // register.WebName   (String)
+            // -----------------------------------
+
+
+            register = null;
+            register = GetFilledRandomRegister("WebName");
+            validationResults = RegisterService.Validate(new ValidationContext(register));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "WebName"))).Any());
+
+
+            register = null;
+            register = GetFilledRandomRegister("");
+            register.WebName = GetRandomString("", 101);
+            validationResults = RegisterService.Validate(new ValidationContext(register));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "WebName", "1", "100"))).Any());
+
+            register = null;
+            register = GetFilledRandomRegister("");
+            register.WebName = GetRandomString("", 101);
+            validationResults = RegisterService.Validate(new ValidationContext(register));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "WebName", "1", "100"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(100)]
+            // [CSSPMinLength(6)]
+            // register.Password   (String)
+            // -----------------------------------
+
+
+            register = null;
+            register = GetFilledRandomRegister("Password");
+            validationResults = RegisterService.Validate(new ValidationContext(register));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Password"))).Any());
+
+
+            register = null;
+            register = GetFilledRandomRegister("");
+            register.Password = GetRandomString("", 101);
+            validationResults = RegisterService.Validate(new ValidationContext(register));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "Password", "6", "100"))).Any());
+
+            register = null;
+            register = GetFilledRandomRegister("");
+            register.Password = GetRandomString("", 101);
+            validationResults = RegisterService.Validate(new ValidationContext(register));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "Password", "6", "100"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPCompare(OtherField = )]
+            // [CSSPMaxLength(100)]
+            // [CSSPMinLength(6)]
+            // register.ConfirmPassword   (String)
+            // -----------------------------------
+
+
+            register = null;
+            register = GetFilledRandomRegister("ConfirmPassword");
+            validationResults = RegisterService.Validate(new ValidationContext(register));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "ConfirmPassword"))).Any());
+
+
+            register = null;
+            register = GetFilledRandomRegister("");
+            register.ConfirmPassword = GetRandomString("", 101);
+            validationResults = RegisterService.Validate(new ValidationContext(register));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "ConfirmPassword", "6", "100"))).Any());
+
+            register = null;
+            register = GetFilledRandomRegister("");
+            register.ConfirmPassword = GetRandomString("", 101);
+            validationResults = RegisterService.Validate(new ValidationContext(register));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "ConfirmPassword", "6", "100"))).Any());
+        }
+        #endregion Tests Generated Properties
+
+        #region Functions private
+        private async Task<bool> Setup(string culture)
+        {
+            Configuration = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings_CSSPDBServicestests.json")
+               .AddUserSecrets("6f27cbbe-6ffb-4154-b49b-d739597c4f60")
+               .Build();
+
+            Services = new ServiceCollection();
+
+            Services.AddSingleton<IConfiguration>(Configuration);
+
+            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<IRegisterService, RegisterService>();
+
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+
+            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
+            Assert.NotNull(CSSPCultureService);
+
+            CSSPCultureService.SetCulture(culture);
+
+            enums = Provider.GetService<IEnums>();
+            Assert.NotNull(enums);
+
+            RegisterService = Provider.GetService<IRegisterService>();
+            Assert.NotNull(RegisterService);
+
+            return await Task.FromResult(true);
+        }
+        private Register GetFilledRandomRegister(string OmitPropName)
+        {
+            Register register = new Register();
+
+            if (OmitPropName != "LoginEmail") register.LoginEmail = GetRandomString("", 11);
+            if (OmitPropName != "FirstName") register.FirstName = GetRandomString("", 6);
+            if (OmitPropName != "Initial") register.Initial = GetRandomString("", 5);
+            if (OmitPropName != "LastName") register.LastName = GetRandomString("", 6);
+            if (OmitPropName != "WebName") register.WebName = GetRandomString("", 6);
+            if (OmitPropName != "Password") register.Password = GetRandomString("", 11);
+            if (OmitPropName != "ConfirmPassword") register.ConfirmPassword = GetRandomString("", 11);
+
+            return register;
         }
 
         #endregion Functions private

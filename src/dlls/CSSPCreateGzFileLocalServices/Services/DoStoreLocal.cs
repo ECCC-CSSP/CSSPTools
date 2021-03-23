@@ -27,7 +27,7 @@ namespace CreateGzFileLocalServices
                 {
                     fi.Delete();
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     // Nothing for now
                 }

@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 using LoggedInServices;
 using Microsoft.Extensions.Configuration;
 
-namespace CSSPDBServices
+namespace CSSPHelperServices
 {
     public interface IContourPolygonService
     {
@@ -32,15 +32,11 @@ namespace CSSPDBServices
         #endregion Variables
 
         #region Properties
-        private ICSSPCultureService CSSPCultureService { get; }
-        private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public ContourPolygonService(ICSSPCultureService CSSPCultureService, IEnums enums)
+        public ContourPolygonService()
         {
-            this.CSSPCultureService = CSSPCultureService;
-            this.enums = enums;
         }
         #endregion Constructors
 
@@ -51,27 +47,22 @@ namespace CSSPDBServices
 
             if (contourPolygon.ContourValue < 0)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContourValue", "0"), new[] { nameof(contourPolygon.ContourValue) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContourValue", "0"), new[] { "ContourValue" });
             }
 
             if (contourPolygon.Layer < 1 || contourPolygon.Layer > 100)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Layer", "1", "100"), new[] { nameof(contourPolygon.Layer) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Layer", "1", "100"), new[] { "Layer" });
             }
 
             if (contourPolygon.Depth_m < 1 || contourPolygon.Depth_m > 10000)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Depth_m", "1", "10000"), new[] { nameof(contourPolygon.Depth_m) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Depth_m", "1", "10000"), new[] { "Depth_m" });
             }
 
                 //CSSPError: Type not implemented [ContourNodeList] of type [List`1]
 
                 //CSSPError: Type not implemented [ContourNodeList] of type [Node]
-            bool a = false;
-            if (a)
-            {
-                yield return new ValidationResult("");
-            }
         }
         #endregion Functions public
     }

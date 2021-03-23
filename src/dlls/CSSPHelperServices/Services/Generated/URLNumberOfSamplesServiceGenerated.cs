@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 using LoggedInServices;
 using Microsoft.Extensions.Configuration;
 
-namespace CSSPDBServices
+namespace CSSPHelperServices
 {
     public interface IURLNumberOfSamplesService
     {
@@ -32,15 +32,11 @@ namespace CSSPDBServices
         #endregion Variables
 
         #region Properties
-        private ICSSPCultureService CSSPCultureService { get; }
-        private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public URLNumberOfSamplesService(ICSSPCultureService CSSPCultureService, IEnums enums)
+        public URLNumberOfSamplesService()
         {
-            this.CSSPCultureService = CSSPCultureService;
-            this.enums = enums;
         }
         #endregion Constructors
 
@@ -51,21 +47,16 @@ namespace CSSPDBServices
 
             if (string.IsNullOrWhiteSpace(uRLNumberOfSamples.url))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "url"), new[] { nameof(uRLNumberOfSamples.url) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "url"), new[] { "url" });
             }
 
             if (!string.IsNullOrWhiteSpace(uRLNumberOfSamples.url) && (uRLNumberOfSamples.url.Length < 1 || uRLNumberOfSamples.url.Length > 255))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "url", "1", "255"), new[] { nameof(uRLNumberOfSamples.url) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "url", "1", "255"), new[] { "url" });
             }
 
             //NumberOfSamples has no Range Attribute
 
-            bool a = false;
-            if (a)
-            {
-                yield return new ValidationResult("");
-            }
         }
         #endregion Functions public
     }

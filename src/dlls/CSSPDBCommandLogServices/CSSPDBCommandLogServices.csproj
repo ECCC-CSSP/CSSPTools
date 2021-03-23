@@ -30,7 +30,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CSSPDBCommandLogModels\CSSPDBCommandLogModels.csproj" />
-    <ProjectReference Include="..\CSSPDBModels\CSSPDBModels.csproj" />
     <ProjectReference Include="..\CSSPLoggedInServices\CSSPLoggedInServices.csproj" />
   </ItemGroup>
 

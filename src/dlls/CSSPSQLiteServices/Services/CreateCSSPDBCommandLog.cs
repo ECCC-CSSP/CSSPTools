@@ -34,8 +34,8 @@ namespace CSSPSQLiteServices
                 }
             }
 
-            string CreateTable = "CREATE TABLE CSSPCommandLogs (" +
-                "CSSPCommandLogID INTEGER  NOT NULL UNIQUE, " +
+            string CreateTable = "CREATE TABLE CommandLogs (" +
+                "CommandLogID INTEGER  NOT NULL UNIQUE, " +
                 "AppName TEXT NOT NULL, " +
                 "CommandName TEXT NOT NULL, " +
                 "Successful INTEGER, " +

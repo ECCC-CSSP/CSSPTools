@@ -27,6 +27,7 @@ using System.Text.Json;
 using CSSPHelperModels;
 using CSSPScrambleServices;
 using CSSPDBPreferenceModels;
+using CSSPHelperServices;
 
 namespace CSSPWebAPIs.AuthController.Tests
 {
@@ -86,11 +87,11 @@ namespace CSSPWebAPIs.AuthController.Tests
                 options.UseSqlServer(DBConnString);
             });
 
-            Services.AddIdentityCore<ApplicationUser>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            //Services.AddIdentityCore<ApplicationUser>()
+            //    .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(DBConnString));
+            //Services.AddDbContext<ApplicationDbContext>(options =>
+            //    options.UseSqlServer(DBConnString));
 
             /* ---------------------------------------------------------------------------------
              * using CSSPDBLocal

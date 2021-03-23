@@ -15,11 +15,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using CSSPDBFilesManagementServices;
 using DownloadFileServices;
 using ReadGzFileServices;
 using CSSPDBSearchServices;
-using CSSPDBPreferenceServices;
 using Microsoft.AspNetCore.Http.Features;
 using CSSPDBPreferenceModels;
 using CSSPDBFilesManagementModels;
@@ -28,6 +26,8 @@ using CSSPDBSearchModels;
 using LoggedInServices;
 using CSSPDBServices;
 using CSSPScrambleServices;
+using CSSPHelperServices;
+using FilesManagementServices;
 //using WebAppLoadedServices;
 
 namespace CSSPWebAPIsLocal
@@ -134,10 +134,10 @@ namespace CSSPWebAPIsLocal
 
             //LoadAllDBServices(services);
 
-            services.AddScoped<ICSSPDBFilesManagementService, CSSPDBFilesManagementService>();
+            services.AddScoped<IFilesManagementService, FilesManagementService>();
             services.AddScoped<IDownloadFileService, DownloadFileService>();
             services.AddScoped<IReadGzFileService, ReadGzFileService>();
-            services.AddScoped<IPreferenceService, PreferenceService>();
+            //services.AddScoped<IPreferenceService, PreferenceService>();
             services.AddScoped<ICSSPDBSearchService, CSSPDBSearchService>();
 
             //services.AddScoped<IWebAppLoadedService, WebAppLoadedService>();

@@ -11,7 +11,6 @@ namespace LoggedInServices
     public interface ILoggedInService
     {
         LoggedInContactInfo LoggedInContactInfo { get; set; }
-
         Task<bool> SetLoggedInContactInfo(string LoginEmail);
         Task<bool> SetLoggedInLocalContactInfo();
     }
@@ -34,7 +33,6 @@ namespace LoggedInServices
             this.CSSPCultureService = CSSPCultureService;
             this.db = db;
             this.dbPreference = dbPreference;
-
             this.LoggedInContactInfo = new LoggedInContactInfo();
         }
         #endregion Constructors

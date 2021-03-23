@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 using LoggedInServices;
 using Microsoft.Extensions.Configuration;
 
-namespace CSSPDBServices
+namespace CSSPHelperServices
 {
     public interface IMapObjService
     {
@@ -32,14 +32,12 @@ namespace CSSPDBServices
         #endregion Variables
 
         #region Properties
-        private ICSSPCultureService CSSPCultureService { get; }
         private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public MapObjService(ICSSPCultureService CSSPCultureService, IEnums enums)
+        public MapObjService(IEnums enums)
         {
-            this.CSSPCultureService = CSSPCultureService;
             this.enums = enums;
         }
         #endregion Constructors
@@ -52,28 +50,23 @@ namespace CSSPDBServices
 
             if (mapObj.MapInfoID < 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "MapInfoID", "1"), new[] { nameof(mapObj.MapInfoID) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "MapInfoID", "1"), new[] { "MapInfoID" });
             }
 
             retStr = enums.EnumTypeOK(typeof(MapInfoDrawTypeEnum), (int?)mapObj.MapInfoDrawType);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "MapInfoDrawType"), new[] { nameof(mapObj.MapInfoDrawType) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "MapInfoDrawType"), new[] { "MapInfoDrawType" });
             }
 
             if (!string.IsNullOrWhiteSpace(mapObj.MapInfoDrawTypeText) && mapObj.MapInfoDrawTypeText.Length > 100)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "MapInfoDrawTypeText", "100"), new[] { nameof(mapObj.MapInfoDrawTypeText) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "MapInfoDrawTypeText", "100"), new[] { "MapInfoDrawTypeText" });
             }
 
                 //CSSPError: Type not implemented [CoordList] of type [List`1]
 
                 //CSSPError: Type not implemented [CoordList] of type [Coord]
-            bool a = false;
-            if (a)
-            {
-                yield return new ValidationResult("");
-            }
         }
         #endregion Functions public
     }

@@ -115,23 +115,23 @@ namespace GenerateCSSPDBServices
                     #region Interface
                     sb.AppendLine($@"    public partial interface I{ dllTypeInfoModels.Type.Name }DBService");
                     sb.AppendLine(@"    {");
-                    if (dllTypeInfoModels.Type.Name == "AspNetUser")
-                    {
-                        sb.AppendLine($@"        Task<ActionResult<bool>> Delete(string Id);");
-                    }
-                    else
-                    {
-                        sb.AppendLine($@"        Task<ActionResult<bool>> Delete(int { dllTypeInfoModels.Type.Name }ID);");
-                    }
+                    //if (dllTypeInfoModels.Type.Name == "AspNetUser")
+                    //{
+                    //    sb.AppendLine($@"        Task<ActionResult<bool>> Delete(string Id);");
+                    //}
+                    //else
+                    //{
+                    sb.AppendLine($@"        Task<ActionResult<bool>> Delete(int { dllTypeInfoModels.Type.Name }ID);");
+                    //}
                     sb.AppendLine($@"        Task<ActionResult<List<{ dllTypeInfoModels.Type.Name }>>> Get{ dllTypeInfoModels.Type.Name }List(int skip = 0, int take = 100);");
-                    if (dllTypeInfoModels.Type.Name == "AspNetUser")
-                    {
-                        sb.AppendLine($@"        Task<ActionResult<{ dllTypeInfoModels.Type.Name }>> Get{ dllTypeInfoModels.Type.Name }WithId(string Id);");
-                    }
-                    else
-                    {
-                        sb.AppendLine($@"        Task<ActionResult<{ dllTypeInfoModels.Type.Name }>> Get{ dllTypeInfoModels.Type.Name }With{ dllTypeInfoModels.Type.Name }ID(int { dllTypeInfoModels.Type.Name }ID);");
-                    }
+                    //if (dllTypeInfoModels.Type.Name == "AspNetUser")
+                    //{
+                    //    sb.AppendLine($@"        Task<ActionResult<{ dllTypeInfoModels.Type.Name }>> Get{ dllTypeInfoModels.Type.Name }WithId(string Id);");
+                    //}
+                    //else
+                    //{
+                    sb.AppendLine($@"        Task<ActionResult<{ dllTypeInfoModels.Type.Name }>> Get{ dllTypeInfoModels.Type.Name }With{ dllTypeInfoModels.Type.Name }ID(int { dllTypeInfoModels.Type.Name }ID);");
+                    //}
                     if (dllTypeInfoModels.Type.Name == "Contact")
                     {
                         sb.AppendLine($@"        Task<ActionResult<{ dllTypeInfoModels.Type.Name }>> Post({ dllTypeInfoModels.Type.Name } { dllTypeInfoModels.Type.Name.ToLower() }, AddContactTypeEnum addContactType);");
@@ -172,8 +172,7 @@ namespace GenerateCSSPDBServices
                     sb.AppendLine(@"        #endregion Properties");
                     sb.AppendLine(@"");
                     sb.AppendLine(@"        #region Constructors");
-                    if (dllTypeInfoModels.Type.Name == "AspNetUser"
-                        || dllTypeInfoModels.Type.Name == "TVItemUserAuthorization"
+                    if (/*dllTypeInfoModels.Type.Name == "AspNetUser" || */dllTypeInfoModels.Type.Name == "TVItemUserAuthorization"
                         || dllTypeInfoModels.Type.Name == "TVTypeUserAuthorization")
                     {
                         sb.AppendLine($@"        public { dllTypeInfoModels.Type.Name }DBService(ICSSPCultureService CSSPCultureService, IEnums enums,");
@@ -208,8 +207,7 @@ namespace GenerateCSSPDBServices
                     sb.AppendLine(@"            this.ScrambleService = ScrambleService;");
                     sb.AppendLine(@"            this.enums = enums;");
                     sb.AppendLine(@"            this.db = db;");
-                    if (dllTypeInfoModels.Type.Name == "AspNetUser"
-                        || dllTypeInfoModels.Type.Name == "Contact"
+                    if (/*dllTypeInfoModels.Type.Name == "AspNetUser" || */dllTypeInfoModels.Type.Name == "Contact"
                         || dllTypeInfoModels.Type.Name == "TVItemUserAuthorization"
                         || dllTypeInfoModels.Type.Name == "TVTypeUserAuthorization")
                     {

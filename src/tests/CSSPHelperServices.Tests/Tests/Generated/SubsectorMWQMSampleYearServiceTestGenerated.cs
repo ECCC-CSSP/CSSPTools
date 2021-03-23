@@ -22,28 +22,172 @@ using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
 using CSSPCultureServices.Resources;
-using LoggedInServices;
+using CSSPHelperServices.Tests;
 
-namespace CSSPDBServices.Tests
+namespace CSSPHelperServices.Tests
 {
-    public partial class SubsectorMWQMSampleYearDBServiceTest : TestHelper
+    [Collection("Sequential")]
+    public partial class SubsectorMWQMSampleYearServiceTest : TestHelper
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Configuration { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private ICSSPCultureService CSSPCultureService { get; set; }
+        private IEnums enums { get; set; }
+        private ISubsectorMWQMSampleYearService SubsectorMWQMSampleYearService { get; set; }
         #endregion Properties
 
         #region Constructors
-        public SubsectorMWQMSampleYearDBServiceTest() : base()
+        public SubsectorMWQMSampleYearServiceTest() : base()
         {
 
         }
         #endregion Constructors
 
-        #region Functions private
-        private void CheckSubsectorMWQMSampleYearFields(List<SubsectorMWQMSampleYear> subsectorMWQMSampleYearList)
+        #region Tests Generated Constructors
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task AppTaskParameter_Constructor_Test(string culture)
         {
+            Assert.True(await Setup(culture));
+            Assert.NotNull(CSSPCultureService);
+            Assert.NotNull(enums);
+        }
+        #endregion Tests Generated Constructors
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task SubsectorMWQMSampleYear_Properties_Test(string culture)
+        {
+            List<ValidationResult> ValidationResultList = new List<ValidationResult>();
+            IEnumerable<ValidationResult> validationResults;
+            Assert.True(await Setup(culture));
+
+
+
+            SubsectorMWQMSampleYear subsectorMWQMSampleYear = GetFilledRandomSubsectorMWQMSampleYear("");
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(1, -1)]
+            // subsectorMWQMSampleYear.SubsectorTVItemID   (Int32)
+            // -----------------------------------
+
+
+            subsectorMWQMSampleYear = null;
+            subsectorMWQMSampleYear = GetFilledRandomSubsectorMWQMSampleYear("");
+            subsectorMWQMSampleYear.SubsectorTVItemID = 0;
+            validationResults = SubsectorMWQMSampleYearService.Validate(new ValidationContext(subsectorMWQMSampleYear));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "SubsectorTVItemID", "1"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // subsectorMWQMSampleYear.Year   (Int32)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // subsectorMWQMSampleYear.EarliestDate   (DateTime)
+            // -----------------------------------
+
+
+            subsectorMWQMSampleYear = null;
+            subsectorMWQMSampleYear = GetFilledRandomSubsectorMWQMSampleYear("");
+            subsectorMWQMSampleYear.EarliestDate = new DateTime();
+            validationResults = SubsectorMWQMSampleYearService.Validate(new ValidationContext(subsectorMWQMSampleYear));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "EarliestDate"))).Any());
+
+            subsectorMWQMSampleYear = null;
+            subsectorMWQMSampleYear = GetFilledRandomSubsectorMWQMSampleYear("");
+            subsectorMWQMSampleYear.EarliestDate = new DateTime(1979, 1, 1);
+            validationResults = SubsectorMWQMSampleYearService.Validate(new ValidationContext(subsectorMWQMSampleYear));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "EarliestDate", "1980"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // [CSSPBigger(OtherField = EarliestDate)]
+            // subsectorMWQMSampleYear.LatestDate   (DateTime)
+            // -----------------------------------
+
+
+            subsectorMWQMSampleYear = null;
+            subsectorMWQMSampleYear = GetFilledRandomSubsectorMWQMSampleYear("");
+            subsectorMWQMSampleYear.LatestDate = new DateTime();
+            validationResults = SubsectorMWQMSampleYearService.Validate(new ValidationContext(subsectorMWQMSampleYear));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "LatestDate"))).Any());
+
+            subsectorMWQMSampleYear = null;
+            subsectorMWQMSampleYear = GetFilledRandomSubsectorMWQMSampleYear("");
+            subsectorMWQMSampleYear.LatestDate = new DateTime(1979, 1, 1);
+            validationResults = SubsectorMWQMSampleYearService.Validate(new ValidationContext(subsectorMWQMSampleYear));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LatestDate", "1980"))).Any());
+        }
+        #endregion Tests Generated Properties
+
+        #region Functions private
+        private async Task<bool> Setup(string culture)
+        {
+            Configuration = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings_CSSPDBServicestests.json")
+               .AddUserSecrets("6f27cbbe-6ffb-4154-b49b-d739597c4f60")
+               .Build();
+
+            Services = new ServiceCollection();
+
+            Services.AddSingleton<IConfiguration>(Configuration);
+
+            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ISubsectorMWQMSampleYearService, SubsectorMWQMSampleYearService>();
+
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+
+            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
+            Assert.NotNull(CSSPCultureService);
+
+            CSSPCultureService.SetCulture(culture);
+
+            enums = Provider.GetService<IEnums>();
+            Assert.NotNull(enums);
+
+            SubsectorMWQMSampleYearService = Provider.GetService<ISubsectorMWQMSampleYearService>();
+            Assert.NotNull(SubsectorMWQMSampleYearService);
+
+            return await Task.FromResult(true);
+        }
+        private SubsectorMWQMSampleYear GetFilledRandomSubsectorMWQMSampleYear(string OmitPropName)
+        {
+            SubsectorMWQMSampleYear subsectorMWQMSampleYear = new SubsectorMWQMSampleYear();
+
+            if (OmitPropName != "SubsectorTVItemID") subsectorMWQMSampleYear.SubsectorTVItemID = GetRandomInt(1, 11);
+            // should implement a Range for the property Year and type SubsectorMWQMSampleYear
+            if (OmitPropName != "EarliestDate") subsectorMWQMSampleYear.EarliestDate = new DateTime(2005, 3, 6);
+            if (OmitPropName != "LatestDate") subsectorMWQMSampleYear.LatestDate = new DateTime(2005, 3, 6);
+
+            return subsectorMWQMSampleYear;
         }
 
         #endregion Functions private

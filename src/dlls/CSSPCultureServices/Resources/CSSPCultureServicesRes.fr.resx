@@ -822,4 +822,10 @@
   <data name="_ShouldNotBeOfType_" xml:space="preserve">
     <value>{0} ne devrait pas &#x1E;être de type {1}</value>
   </data>
+  <data name="YouDoNotHaveAuthorization" xml:space="preserve">
+    <value>Vous n'avez pas l'authorisation</value>
+  </data>
+  <data name="_AlreadyExistsWithDifferent_" xml:space="preserve">
+    <value>{0} exist déjà avec un différent {1}</value>
+  </data>
 </root>

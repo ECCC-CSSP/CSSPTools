@@ -2,12 +2,8 @@
  * Manually edited
  * 
  */
-using CSSPEnums;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using CSSPCustomAttributes;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 
 namespace CSSPHelperModels
 {
@@ -22,7 +18,9 @@ namespace CSSPHelperModels
         public int StartPos { get; set; }
         [CSSPRange(0, -1)]
         public int EndPos { get; set; }
+        [CSSPMaxLength(100)]
         public string Text { get; set; }
+        [CSSPMaxLength(100)]
         public string TagText { get; set; }
         #endregion Properties not in DB
 

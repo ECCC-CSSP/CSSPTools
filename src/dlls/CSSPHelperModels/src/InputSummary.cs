@@ -2,12 +2,8 @@
  * Manually edited
  * 
  */
-using CSSPEnums;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using CSSPCustomAttributes;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 
 namespace CSSPHelperModels
 {
@@ -18,6 +14,7 @@ namespace CSSPHelperModels
         #endregion Properties in DB
 
         #region Properties not in DB
+        [CSSPMaxLength(1000000)]
         public string Summary { get; set; }
         #endregion Properties not in DB
 

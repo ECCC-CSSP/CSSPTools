@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Threading.Tasks;
 using System.Linq;
+using CSSPCustomAttributes;
 
 namespace CSSPWebModels
 {

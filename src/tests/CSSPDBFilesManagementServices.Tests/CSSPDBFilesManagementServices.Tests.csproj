@@ -14,13 +14,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="appsettings_csspdbfilesmanagementervicestests.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="appsettings_csspdbfilesmanagementervicestests.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <None Remove="appsettings_FilesManagementervicestests.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -40,13 +34,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\dlls\CSSPDBFilesManagementServices\CSSPDBFilesManagementServices.csproj" />
-    <ProjectReference Include="..\..\dlls\CSSPDBModels\CSSPDBModels.csproj" />
-    <ProjectReference Include="..\..\dlls\CSSPDBPreferenceModels\CSSPDBPreferenceModels.csproj" />
-    <ProjectReference Include="..\..\dlls\CSSPScrambleServices\CSSPScrambleServices.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="appsettings_CSSPDBFilesManagementServicestests.json">
+    <None Update="appsettings_csspdbfilesmanagementervicestests.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="appsettings_FilesManagementServicestests.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

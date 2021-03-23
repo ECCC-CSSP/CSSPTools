@@ -22,7 +22,7 @@ namespace GenerateCSSPDBServices
             sb.AppendLine(@"        {");
             sb.AppendLine(@"            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)");
             sb.AppendLine(@"            {");
-            sb.AppendLine(@"                return await Task.FromResult(Unauthorized());");
+            sb.AppendLine(@"                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));");
             sb.AppendLine(@"            }");
             sb.AppendLine(@"");
             sb.AppendLine($@"            { TypeName } { TypeNameLower } = (from c in dbLocal.{ TypeName }{ Plurial }");
@@ -60,7 +60,7 @@ namespace GenerateCSSPDBServices
             sb.AppendLine(@"        {");
             sb.AppendLine(@"            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)");
             sb.AppendLine(@"            {");
-            sb.AppendLine(@"                return await Task.FromResult(Unauthorized());");
+            sb.AppendLine(@"                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));");
             sb.AppendLine(@"            }");
             sb.AppendLine(@"");
             if (TypeName == "Contact")
@@ -95,7 +95,7 @@ namespace GenerateCSSPDBServices
             sb.AppendLine(@"        {");
             sb.AppendLine(@"            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)");
             sb.AppendLine(@"            {");
-            sb.AppendLine(@"                return await Task.FromResult(Unauthorized());");
+            sb.AppendLine(@"                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));");
             sb.AppendLine(@"            }");
             sb.AppendLine(@"");
             if (TypeName == "Contact")

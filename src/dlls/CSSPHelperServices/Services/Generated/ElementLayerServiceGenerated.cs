@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 using LoggedInServices;
 using Microsoft.Extensions.Configuration;
 
-namespace CSSPDBServices
+namespace CSSPHelperServices
 {
     public interface IElementLayerService
     {
@@ -32,15 +32,11 @@ namespace CSSPDBServices
         #endregion Variables
 
         #region Properties
-        private ICSSPCultureService CSSPCultureService { get; }
-        private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public ElementLayerService(ICSSPCultureService CSSPCultureService, IEnums enums)
+        public ElementLayerService()
         {
-            this.CSSPCultureService = CSSPCultureService;
-            this.enums = enums;
         }
         #endregion Constructors
 
@@ -51,21 +47,22 @@ namespace CSSPDBServices
 
             if (elementLayer.Layer < 1 || elementLayer.Layer > 1000)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Layer", "1", "1000"), new[] { nameof(elementLayer.Layer) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Layer", "1", "1000"), new[] { "Layer" });
             }
 
-            //ZMin has no Range Attribute
-
-            //ZMax has no Range Attribute
-
-                //CSSPError: Type not implemented [Element] of type [Element]
-
-                //CSSPError: Type not implemented [Element] of type [Element]
-            bool a = false;
-            if (a)
+            if (elementLayer.ZMin < -1 || elementLayer.ZMin > -1)
             {
-                yield return new ValidationResult("");
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "ZMin", "-1", "-1"), new[] { "ZMin" });
             }
+
+            if (elementLayer.ZMax < -1 || elementLayer.ZMax > -1)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "ZMax", "-1", "-1"), new[] { "ZMax" });
+            }
+
+                //CSSPError: Type not implemented [Element] of type [Element]
+
+                //CSSPError: Type not implemented [Element] of type [Element]
         }
         #endregion Functions public
     }

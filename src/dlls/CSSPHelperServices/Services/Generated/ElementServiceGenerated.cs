@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 using LoggedInServices;
 using Microsoft.Extensions.Configuration;
 
-namespace CSSPDBServices
+namespace CSSPHelperServices
 {
     public interface IElementService
     {
@@ -32,15 +32,11 @@ namespace CSSPDBServices
         #endregion Variables
 
         #region Properties
-        private ICSSPCultureService CSSPCultureService { get; }
-        private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public ElementService(ICSSPCultureService CSSPCultureService, IEnums enums)
+        public ElementService()
         {
-            this.CSSPCultureService = CSSPCultureService;
-            this.enums = enums;
         }
         #endregion Constructors
 
@@ -51,35 +47,42 @@ namespace CSSPDBServices
 
             if (element.ID < 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "ID", "1"), new[] { nameof(element.ID) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "ID", "1"), new[] { "ID" });
             }
 
             if (element.Type < 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "Type", "1"), new[] { nameof(element.Type) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "Type", "1"), new[] { "Type" });
             }
 
             if (element.NumbOfNodes < 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "NumbOfNodes", "1"), new[] { nameof(element.NumbOfNodes) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "NumbOfNodes", "1"), new[] { "NumbOfNodes" });
             }
 
-            //Value has no Range Attribute
+            if (element.Value < -1 || element.Value > -1)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Value", "-1", "-1"), new[] { "Value" });
+            }
 
-            //XNode0 has no Range Attribute
+            if (element.XNode0 < -1 || element.XNode0 > -1)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "XNode0", "-1", "-1"), new[] { "XNode0" });
+            }
 
-            //YNode0 has no Range Attribute
+            if (element.YNode0 < -1 || element.YNode0 > -1)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "YNode0", "-1", "-1"), new[] { "YNode0" });
+            }
 
-            //ZNode0 has no Range Attribute
+            if (element.ZNode0 < -1 || element.ZNode0 > -1)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "ZNode0", "-1", "-1"), new[] { "ZNode0" });
+            }
 
                 //CSSPError: Type not implemented [NodeList] of type [List`1]
 
                 //CSSPError: Type not implemented [NodeList] of type [Node]
-            bool a = false;
-            if (a)
-            {
-                yield return new ValidationResult("");
-            }
         }
         #endregion Functions public
     }

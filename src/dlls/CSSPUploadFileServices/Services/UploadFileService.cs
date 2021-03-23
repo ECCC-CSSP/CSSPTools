@@ -12,11 +12,11 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using CSSPDBFilesManagementServices;
 using CSSPDBFilesManagementModels;
 using System.Runtime.CompilerServices;
 using CSSPScrambleServices;
 using LoggedInServices;
+using FilesManagementServices;
 
 namespace UploadFileServices
 {
@@ -36,7 +36,7 @@ namespace UploadFileServices
         private ILoggedInService LoggedInService { get; }
         private IScrambleService ScrambleService { get; }
         private IEnums enums { get; }
-        private ICSSPDBFilesManagementService CSSPDBFilesManagementService { get; }
+        private IFilesManagementService FilesManagementService { get; }
         private string AzureStore { get; set; }
         private string AzureStoreCSSPFilesPath { get; set; }
         private string CSSPFilesPath { get; set; }
@@ -46,13 +46,13 @@ namespace UploadFileServices
 
         #region Constructors
         public UploadFileService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, 
-            IScrambleService ScrambleService, IEnums enums, ICSSPDBFilesManagementService CSSPDBFilesManagementService) : base()
+            IScrambleService ScrambleService, IEnums enums, IFilesManagementService CSSPDBFilesManagementService) : base()
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
-            this.CSSPDBFilesManagementService = CSSPDBFilesManagementService;
+            this.FilesManagementService = CSSPDBFilesManagementService;
 
             AzureStore = ScrambleService.Descramble(Configuration.GetValue<string>("AzureStore"));
             AzureStoreCSSPFilesPath = Configuration.GetValue<string>("AzureStoreCSSPFilesPath");

@@ -40,11 +40,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\dlls\CSSPHelperModels\CSSPHelperModels.csproj" />
+    <Folder Include="tests\Generated\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="tests\Generated\" />
+    <ProjectReference Include="..\..\dlls\CSSPHelperModels\CSSPHelperModels.csproj" />
   </ItemGroup>
 
 </Project>

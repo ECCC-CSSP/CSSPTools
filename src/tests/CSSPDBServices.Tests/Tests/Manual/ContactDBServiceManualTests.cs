@@ -23,6 +23,7 @@ using LoggedInServices;
 using CSSPHelperModels;
 using CSSPScrambleServices;
 using CSSPDBPreferenceModels;
+using CSSPHelperServices;
 
 namespace CSSPDBServices.Tests
 {

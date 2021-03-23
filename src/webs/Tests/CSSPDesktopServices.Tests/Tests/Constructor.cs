@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using CSSPCultureServices.Services;
-using CSSPDBFilesManagementServices;
 using CSSPDesktopServices.Models;
 using CSSPDesktopServices.Services;
 using CSSPEnums;
@@ -21,8 +20,8 @@ using CSSPDBFilesManagementModels;
 using CSSPDBPreferenceModels;
 using LoggedInServices;
 using CSSPScrambleServices;
+using FilesManagementServices;
 //using WebAppLoadedServices;
-using CSSPDBPreferenceServices;
 
 namespace CSSPDesktopServices.Tests
 {
@@ -71,9 +70,9 @@ namespace CSSPDesktopServices.Tests
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IScrambleService, ScrambleService>();
-            Services.AddSingleton<IPreferenceService, PreferenceService>();
+            //Services.AddSingleton<IPreferenceService, PreferenceService>();
             Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
-            Services.AddSingleton<ICSSPDBFilesManagementService, CSSPDBFilesManagementService>();
+            Services.AddSingleton<IFilesManagementService, FilesManagementService>();
             Services.AddSingleton<IDownloadFileService, DownloadFileService>();
             Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
             //Services.AddSingleton<IWebAppLoadedService, WebAppLoadedService>();

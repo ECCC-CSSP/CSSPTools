@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 using LoggedInServices;
 using Microsoft.Extensions.Configuration;
 
-namespace CSSPDBServices
+namespace CSSPHelperServices
 {
     public interface ISamplingPlanAndFilesLabSheetCountService
     {
@@ -32,15 +32,11 @@ namespace CSSPDBServices
         #endregion Variables
 
         #region Properties
-        private ICSSPCultureService CSSPCultureService { get; }
-        private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public SamplingPlanAndFilesLabSheetCountService(ICSSPCultureService CSSPCultureService, IEnums enums)
+        public SamplingPlanAndFilesLabSheetCountService()
         {
-            this.CSSPCultureService = CSSPCultureService;
-            this.enums = enums;
         }
         #endregion Constructors
 
@@ -51,12 +47,12 @@ namespace CSSPDBServices
 
             if (samplingPlanAndFilesLabSheetCount.LabSheetHistoryCount < 0)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "LabSheetHistoryCount", "0"), new[] { nameof(samplingPlanAndFilesLabSheetCount.LabSheetHistoryCount) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "LabSheetHistoryCount", "0"), new[] { "LabSheetHistoryCount" });
             }
 
             if (samplingPlanAndFilesLabSheetCount.LabSheetTransferredCount < 0)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "LabSheetTransferredCount", "0"), new[] { nameof(samplingPlanAndFilesLabSheetCount.LabSheetTransferredCount) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "LabSheetTransferredCount", "0"), new[] { "LabSheetTransferredCount" });
             }
 
                 //CSSPError: Type not implemented [SamplingPlan] of type [SamplingPlan]
@@ -65,11 +61,6 @@ namespace CSSPDBServices
                 //CSSPError: Type not implemented [TVFileSamplingPlanFileTXT] of type [TVFile]
 
                 //CSSPError: Type not implemented [TVFileSamplingPlanFileTXT] of type [TVFile]
-            bool a = false;
-            if (a)
-            {
-                yield return new ValidationResult("");
-            }
         }
         #endregion Functions public
     }

@@ -1,5 +1,4 @@
 ﻿using CSSPCultureServices.Services;
-using CSSPDBPreferenceServices;
 using CSSPDesktopServices.Models;
 using CSSPEnums;
 using CSSPDBModels;
@@ -22,6 +21,8 @@ using CSSPDBFilesManagementModels;
 using CSSPScrambleServices;
 using LoggedInServices;
 using Microsoft.AspNetCore.Mvc;
+using CSSPCultureServices.Resources;
+using System.Linq;
 
 namespace CSSPDesktopServices.Services
 {
@@ -29,10 +30,8 @@ namespace CSSPDesktopServices.Services
     {
         // Properties
         bool IsEnglish { get; set; }
-        //AppTextModel appTextModel { get; set; }
         bool LoginRequired { get; set; }
         bool UpdateIsNeeded { get; set; }
-        //bool HasNewTVItemsOrTVItemLanguages { get; set; }
         bool HasCSSPOtherFiles { get; set; }
         string CSSPDBFilesManagement { get; set; }
         string CSSPDBPreference { get; set; }
@@ -44,17 +43,11 @@ namespace CSSPDesktopServices.Services
         string CSSPWebAPIsLocalPath { get; set; }
         string CSSPOtherFilesPath { get; set; }
         Contact contact { get; set; }
-        //string AzureStore { get; set; }
-        //string LoginEmail { get; set; }
-        //string Password { get; set; }
-        //bool HasInternetConnection { get; set; }
-        //bool LoggedIn { get; set; }
-        //string Token { get; set; }
+        //List<Preference> PreferenceList { get; set; }
 
         // Functions
         Task<bool> CheckIfCSSPOtherFilesExist();
         Task<bool> CheckIfLoginIsRequired();
-        //Task<bool> CheckIfNewTVItemsOrTVItemLanguagesExist();
         Task<bool> CheckIfUpdateIsNeeded();
         Task<bool> CheckingInternetConnection();
         Task<bool> CreateAllRequiredDirectories();
@@ -63,11 +56,9 @@ namespace CSSPDesktopServices.Services
         Task<bool> Login(LoginModel loginModel);
         Task<bool> Logoff();
         Task<bool> ReadConfiguration();
-        //Task<bool> Register(RegisterModel registerModel);
         Task<bool> Start();
         Task<bool> Stop();
-        //Task<bool> UpdateCSSPDBSearch();
-        Task<Preference> GetPreferenceWithVariableName(string VariableName);
+        //Task<Preference> GetPreferenceWithVariableName(string VariableName);
 
         // Events
         event EventHandler<ClearEventArgs> StatusClear;
@@ -96,6 +87,7 @@ namespace CSSPDesktopServices.Services
         public  string CSSPOtherFilesPath { get; set; }
         public string AzureStore { get; set; }
         public Contact contact { get; set; }
+        //public List<Preference> PreferenceList { get; set; }
         #endregion Properties public
 
         #region Properties private
@@ -110,7 +102,7 @@ namespace CSSPDesktopServices.Services
         private ILoggedInService LoggedInService { get; }
         private IReadGzFileService ReadGzFileService { get; }
         private IScrambleService ScrambleService { get; }
-        private IPreferenceService PreferenceService { get; }
+        //private IPreferenceService PreferenceService { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         private string CSSPDesktopPath { get; set; }
         private string CSSPDatabasesPath { get; set; }
@@ -128,7 +120,7 @@ namespace CSSPDesktopServices.Services
         public CSSPDesktopService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, ILoggedInService LoggedInService,
             CSSPDBLocalContext dbLocal, CSSPDBSearchContext dbSearch, CSSPDBCommandLogContext dbCommandLog, 
             CSSPDBPreferenceContext dbPreference, CSSPDBFilesManagementContext dbFM, IReadGzFileService ReadGzFileService, 
-            IScrambleService ScrambleService, IPreferenceService PreferenceService)
+            IScrambleService ScrambleService/*, IPreferenceService PreferenceService*/)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
@@ -141,7 +133,7 @@ namespace CSSPDesktopServices.Services
             this.dbFM = dbFM;
             this.ReadGzFileService = ReadGzFileService;
             this.ScrambleService = ScrambleService;
-            this.PreferenceService = PreferenceService;
+            //this.PreferenceService = PreferenceService;
 
             contact = new Contact();
         }
@@ -162,26 +154,12 @@ namespace CSSPDesktopServices.Services
         }
         public async Task<bool> CheckIfUpdateIsNeeded()
         {
-            string LoginEmail = "";
-            var actionPreference = await PreferenceService.GetPreferenceWithVariableName("LoginEmail");
-            if (await DoStatusActionPreference(actionPreference, "LoginEmail"))
-            {
-                Preference preference = (Preference)((OkObjectResult)actionPreference.Result).Value;
-                LoginEmail = preference.VariableValue;
-            }
-
-            if (!await LoggedInService.SetLoggedInContactInfo(LoginEmail)) return await Task.FromResult(false);
+            if (!await LoggedInService.SetLoggedInLocalContactInfo()) return await Task.FromResult(false);
 
             if (!await DoCheckIfUpdateIsNeeded()) return await Task.FromResult(false);
 
             return await Task.FromResult(true);
         }
-        //public async Task<bool> CheckIfNewTVItemsOrTVItemLanguagesExist()
-        //{
-        //    if (!await DoCheckIfNewTVItemsOrTVItemLanguagesExist()) return await Task.FromResult(false);
-
-        //    return await Task.FromResult(true);
-        //}
         public async Task<bool> CheckingInternetConnection()
         {
             if(!await DoCheckingInternetConnection()) return await Task.FromResult(false);
@@ -208,15 +186,7 @@ namespace CSSPDesktopServices.Services
 
             if (!await Stop()) await Task.FromResult(false);
 
-            string LoginEmail = "";
-            var actionPreference = await PreferenceService.GetPreferenceWithVariableName("LoginEmail");
-            if (await DoStatusActionPreference(actionPreference, "LoginEmail"))
-            {
-                Preference preference = (Preference)((OkObjectResult)actionPreference.Result).Value;
-                LoginEmail = preference.VariableValue;
-            }
-
-            if (!await LoggedInService.SetLoggedInContactInfo(LoginEmail)) return await Task.FromResult(false);
+            if (!await LoggedInService.SetLoggedInLocalContactInfo()) return await Task.FromResult(false);
 
             if (!await DoInstallUpdates()) return await Task.FromResult(false);
 
@@ -226,15 +196,7 @@ namespace CSSPDesktopServices.Services
         {
             if (!await DoLogin(loginModel)) return await Task.FromResult(false);
 
-            string LoginEmail = "";
-            var actionPreference = await PreferenceService.GetPreferenceWithVariableName("LoginEmail");
-            if (await DoStatusActionPreference(actionPreference, "LoginEmail"))
-            {
-                Preference preference = (Preference)((OkObjectResult)actionPreference.Result).Value;
-                LoginEmail = preference.VariableValue;
-            }
-
-            if (!await LoggedInService.SetLoggedInContactInfo(LoginEmail)) return await Task.FromResult(false);
+            if (!await LoggedInService.SetLoggedInLocalContactInfo()) return await Task.FromResult(false);
 
             return await Task.FromResult(true);
         }
@@ -272,14 +234,37 @@ namespace CSSPDesktopServices.Services
         //{
         //    return await DoUpdateCSSPDBSearch();
         //}
-        public async Task<Preference> GetPreferenceWithVariableName(string VariableName)
-        {
-            return await DoGetPreferenceWithVariableName(VariableName);
-        }
-        public async Task<Preference> AddOrModifyPreferenceWithVariableName(string VariableName, string VariableValue)
-        {
-            return await DoAddOrModifyPreference(VariableName, VariableValue);
-        }
+        //public async Task<Preference> GetPreferenceWithVariableName(string VariableName)
+        //{
+        //    return await DoGetPreferenceWithVariableName(VariableName);
+        //}
+        //public async Task<Preference> AddOrModifyPreferenceWithVariableName(string VariableName, string VariableValue)
+        //{
+        //    return await DoAddOrModifyPreference(VariableName, VariableValue);
+        //}
         #endregion Function public
+
+        #region Functions private
+        //private async Task<bool> FillPreferenceList()
+        //{
+        //    var actionPreferenceList = await PreferenceService.GetPreferenceList();
+
+        //    if (((ObjectResult)actionPreferenceList.Result).StatusCode != 200)
+        //    {
+        //        AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotFill_, "List<Preference>")));
+        //        return await Task.FromResult(false);
+        //    }
+
+        //    if (((OkObjectResult)actionPreferenceList.Result).Value == null)
+        //    {
+        //        AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotFill_, "List<Preference>")));
+        //        return await Task.FromResult(false);
+        //    }
+
+        //    PreferenceList = (List<Preference>)((OkObjectResult)actionPreferenceList.Result).Value;
+
+        //    return await Task.FromResult(true);
+        //}
+        #endregion Functions private
     }
 }

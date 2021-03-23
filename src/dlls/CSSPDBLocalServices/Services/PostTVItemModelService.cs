@@ -101,7 +101,7 @@ namespace CSSPDBLocalServices
         //{
         //    if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
         //    {
-        //        return await Task.FromResult(Unauthorized());
+        //        return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
         //    }
 
         //    TVItem tVItem = (from c in dbLocal.TVItems
@@ -127,19 +127,12 @@ namespace CSSPDBLocalServices
         //}
         public async Task<ActionResult<bool>> AddOrModify(PostTVItemModel postTVItemModel)
         {
-            ActionDBTypeEnum actionDBType = ActionDBTypeEnum.Update;
-
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized());
+                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
             }
 
-            if (postTVItemModel.TVItemID == 0)
-            {
-                actionDBType = ActionDBTypeEnum.Create;
-            }
-
-            ValidationResults = ValidateAndAddOrModify(new ValidationContext(postTVItemModel), actionDBType);
+            ValidationResults = ValidateAndAddOrModify(new ValidationContext(postTVItemModel));
             if (ValidationResults.Count() > 0)
             {
                 return await Task.FromResult(BadRequest(ValidationResults));
@@ -150,7 +143,7 @@ namespace CSSPDBLocalServices
         #endregion Functions public
 
         #region Functions private
-        private IEnumerable<ValidationResult> ValidateAndAddOrModify(ValidationContext validationContext, ActionDBTypeEnum actionDBType)
+        private IEnumerable<ValidationResult> ValidateAndAddOrModify(ValidationContext validationContext)
         {
             string retStr = "";
             string TVItemErrorMessage = "";

@@ -26,6 +26,7 @@ using System.Security.Claims;
 using System.Text;
 using CSSPHelperModels;
 using CSSPScrambleServices;
+using CSSPHelperServices;
 
 namespace CSSPDBServices
 {
@@ -111,7 +112,7 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized());
+                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
             }
 
             Contact contact = (from c in db.Contacts
@@ -139,7 +140,7 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized());
+                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
             }
 
             ValidationResults = Validate(new ValidationContext(contact), ActionDBTypeEnum.Create, addContactType);
@@ -164,7 +165,7 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized());
+                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
             }
 
             ValidationResults = Validate(new ValidationContext(contact), ActionDBTypeEnum.Update, AddContactTypeEnum.LoggedIn);
@@ -300,14 +301,6 @@ namespace CSSPDBServices
             if (!string.IsNullOrWhiteSpace(contact.Id) && contact.Id.Length > 450)
             {
                 yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Id", "450"), new[] { nameof(contact.Id) });
-            }
-
-            AspNetUser AspNetUserId = null;
-            AspNetUserId = (from c in db.AspNetUsers.AsNoTracking() where c.Id == contact.Id select c).FirstOrDefault();
-
-            if (AspNetUserId == null)
-            {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AspNetUser", "Id", (contact.Id == null ? "" : contact.Id.ToString())), new[] { nameof(contact.Id) });
             }
 
             TVItem TVItemContactTVItemID = null;

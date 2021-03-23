@@ -14,11 +14,11 @@ using System.Text.Json;
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using CSSPDBFilesManagementServices;
 using CSSPDBFilesManagementModels;
 using CSSPDBPreferenceModels;
 using CSSPScrambleServices;
 using LoggedInServices;
+using FilesManagementServices;
 
 namespace UploadFileServices.Tests
 {
@@ -32,7 +32,7 @@ namespace UploadFileServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
-        private ICSSPDBFilesManagementService CSSPDBFilesManagementService { get; set; }
+        private IFilesManagementService FilesManagementService { get; set; }
         private IUploadFileService UploadFileService { get; set; }
         private ILoggedInService LoggedInService { get; set; }
         private CSSPDBContext db { get; set; }
@@ -124,7 +124,7 @@ namespace UploadFileServices.Tests
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
-            Services.AddSingleton<ICSSPDBFilesManagementService, CSSPDBFilesManagementService>();
+            Services.AddSingleton<IFilesManagementService, FilesManagementService>();
             Services.AddSingleton<IUploadFileService, UploadFileService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IScrambleService, ScrambleService>();
@@ -148,8 +148,8 @@ namespace UploadFileServices.Tests
             Assert.NotNull(LoggedInService.LoggedInContactInfo);
             Assert.NotNull(LoggedInService.LoggedInContactInfo.LoggedInContact);
 
-            CSSPDBFilesManagementService = Provider.GetService<ICSSPDBFilesManagementService>();
-            Assert.NotNull(CSSPDBFilesManagementService);
+            FilesManagementService = Provider.GetService<IFilesManagementService>();
+            Assert.NotNull(FilesManagementService);
 
             UploadFileService = Provider.GetService<IUploadFileService>();
             Assert.NotNull(UploadFileService);

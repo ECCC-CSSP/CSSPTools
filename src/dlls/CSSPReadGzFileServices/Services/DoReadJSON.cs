@@ -34,7 +34,7 @@ namespace ReadGzFileServices
 
             if (LoggedInService.LoggedInContactInfo == null)
             {
-                return await Task.FromResult(Unauthorized());
+                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
             }
 
             string fileName = await BaseGzFileService.GetFileName(webType, TVItemID, webTypeYear);
@@ -48,12 +48,8 @@ namespace ReadGzFileServices
 
             bool HasInternetConnection = false;
 
-            var actionPreferenceHasInternetConnection = await PreferenceService.GetPreferenceWithVariableName("HasInternetConnection");
-            if (((ObjectResult)actionPreferenceHasInternetConnection.Result).StatusCode == 200)
-            {
-                Preference preference = (Preference)((OkObjectResult)actionPreferenceHasInternetConnection.Result).Value;
-                HasInternetConnection = bool.Parse(preference.VariableValue);
-            }
+            HasInternetConnection = (from c in dbPreference.Contacts
+                                     select c.HasInternetConnection).FirstOrDefault() ?? false;
 
             if (HasInternetConnection)
             {
@@ -109,15 +105,15 @@ namespace ReadGzFileServices
 
                 if (gzExistLocaly)
                 {
-                    CSSPFile csspFile = null;
+                    FilesManagement filesManagement = null;
 
-                    var actionCSSPFile = await CSSPDBFilesManagementService.GetWithAzureStorageAndAzureFileName(AzureStoreCSSPJSONPath, fiGZ.Name);
+                    var actionCSSPFile = await FilesManagementService.GetWithAzureStorageAndAzureFileName(AzureStoreCSSPJSONPath, fiGZ.Name);
                     if (((ObjectResult)actionCSSPFile.Result).StatusCode == 200)
                     {
-                        csspFile = (CSSPFile)((OkObjectResult)actionCSSPFile.Result).Value;
+                        filesManagement = (FilesManagement)((OkObjectResult)actionCSSPFile.Result).Value;
                     }
 
-                    if (csspFile == null || blobProperties.ETag.ToString().Replace("\"", "") == csspFile.AzureETag)
+                    if (filesManagement == null || blobProperties.ETag.ToString().Replace("\"", "") == filesManagement.AzureETag)
                     {
                         gzLocalIsUpToDate = true;
                     }

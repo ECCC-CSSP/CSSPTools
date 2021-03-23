@@ -14,14 +14,13 @@ using System.Text.Json;
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using CSSPDBFilesManagementServices;
 using DownloadFileServices;
 using ReadGzFileServices;
-using CSSPDBPreferenceServices;
 using CSSPDBFilesManagementModels;
 using CSSPDBPreferenceModels;
 using CSSPScrambleServices;
 using LoggedInServices;
+using FilesManagementServices;
 //using WebAppLoadedServices;
 
 namespace DownloadFileServices.Tests
@@ -36,7 +35,7 @@ namespace DownloadFileServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
-        private ICSSPDBFilesManagementService CSSPDBFilesManagementService { get; set; }
+        private IFilesManagementService FilesManagementService { get; set; }
         private IReadGzFileService ReadGzFileService { get; set; }
         private IDownloadFileService DownloadFileService { get; set; }
         private ILoggedInService LoggedInService { get; set; }
@@ -132,12 +131,12 @@ namespace DownloadFileServices.Tests
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
-            Services.AddSingleton<ICSSPDBFilesManagementService, CSSPDBFilesManagementService>();
+            Services.AddSingleton<IFilesManagementService, FilesManagementService>();
             Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
             Services.AddSingleton<IDownloadFileService, DownloadFileService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IScrambleService, ScrambleService>();
-            Services.AddSingleton<IPreferenceService, PreferenceService>();
+            //Services.AddSingleton<IPreferenceService, PreferenceService>();
             //Services.AddSingleton<IWebAppLoadedService, WebAppLoadedService>();
 
             Provider = Services.BuildServiceProvider();
@@ -158,8 +157,8 @@ namespace DownloadFileServices.Tests
             Assert.NotNull(LoggedInService.LoggedInContactInfo);
             Assert.NotNull(LoggedInService.LoggedInContactInfo.LoggedInContact);
 
-            CSSPDBFilesManagementService = Provider.GetService<ICSSPDBFilesManagementService>();
-            Assert.NotNull(CSSPDBFilesManagementService);
+            FilesManagementService = Provider.GetService<IFilesManagementService>();
+            Assert.NotNull(FilesManagementService);
 
             DownloadFileService = Provider.GetService<IDownloadFileService>();
             Assert.NotNull(DownloadFileService);

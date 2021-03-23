@@ -14,13 +14,12 @@ using System.Text.Json;
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using CSSPDBFilesManagementServices;
 using DownloadFileServices;
-using CSSPDBPreferenceServices;
 using CSSPDBFilesManagementModels;
 using CSSPDBPreferenceModels;
 using CSSPScrambleServices;
 using LoggedInServices;
+using FilesManagementServices;
 
 namespace ReadGzFileServices.Tests
 {
@@ -34,7 +33,7 @@ namespace ReadGzFileServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
-        private ICSSPDBFilesManagementService CSSPDBFilesManagementService { get; set; }
+        private IFilesManagementService FilesManagementService { get; set; }
         private IReadGzFileService ReadGzFileService { get; set; }
         private ILoggedInService LoggedInService { get; set; }
         private CSSPDBContext db { get; set; }
@@ -79,11 +78,11 @@ namespace ReadGzFileServices.Tests
                 options.UseSqlServer(CSSPDBConnString);
             });
 
-            Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(CSSPDBConnString));
+            //Services.AddDbContext<ApplicationDbContext>(options =>
+            //    options.UseSqlServer(CSSPDBConnString));
 
-            Services.AddIdentityCore<ApplicationUser>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            //Services.AddIdentityCore<ApplicationUser>()
+            //    .AddEntityFrameworkStores<ApplicationDbContext>();
 
             string CSSPDBLocalFileName = Configuration.GetValue<string>("CSSPDBLocal");
             Assert.NotNull(CSSPDBLocalFileName);
@@ -117,12 +116,11 @@ namespace ReadGzFileServices.Tests
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
-            Services.AddSingleton<ICSSPDBFilesManagementService, CSSPDBFilesManagementService>();
+            Services.AddSingleton<IFilesManagementService, FilesManagementService>();
             Services.AddSingleton<IDownloadFileService, DownloadFileService>();
             Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IScrambleService, ScrambleService>();
-            Services.AddSingleton<IPreferenceService, PreferenceService>();
 
             Provider = Services.BuildServiceProvider();
             Assert.NotNull(Provider);
@@ -142,8 +140,8 @@ namespace ReadGzFileServices.Tests
             Assert.NotNull(LoggedInService.LoggedInContactInfo);
             Assert.NotNull(LoggedInService.LoggedInContactInfo.LoggedInContact);
 
-            CSSPDBFilesManagementService = Provider.GetService<ICSSPDBFilesManagementService>();
-            Assert.NotNull(CSSPDBFilesManagementService);
+            FilesManagementService = Provider.GetService<IFilesManagementService>();
+            Assert.NotNull(FilesManagementService);
 
             ReadGzFileService = Provider.GetService<IReadGzFileService>();
             Assert.NotNull(ReadGzFileService);

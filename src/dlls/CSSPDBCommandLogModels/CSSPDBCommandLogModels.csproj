@@ -38,7 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CSSPEnums\CSSPEnums.csproj" />
+    <ProjectReference Include="..\CSSPCustomAttributes\CSSPCustomAttributes.csproj" />
   </ItemGroup>
 
 </Project>

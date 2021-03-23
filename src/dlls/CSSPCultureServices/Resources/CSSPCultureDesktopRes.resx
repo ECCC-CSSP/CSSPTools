@@ -207,12 +207,6 @@
   <data name="CouldNotFindFile_" xml:space="preserve">
     <value>Could not find file [{0}]</value>
   </data>
-  <data name="CouldNotFind_InDBLogin" xml:space="preserve">
-    <value>Could not find {0} in dbLogin</value>
-  </data>
-  <data name="CouldNotFind_InDBLogin_" xml:space="preserve">
-    <value>Could not find {0} in CSSPDBPreference {1}</value>
-  </data>
   <data name="CouldNotGetPropertiesFromAzureStore_AndFile_" xml:space="preserve">
     <value>Could not read properties from Azure Store {0} and file {1}</value>
   </data>
@@ -449,5 +443,17 @@
   </data>
   <data name="BrowserIfOpenByCSSPDesktop" xml:space="preserve">
     <value>Browser if it was previously open by CSSP Desktop</value>
+  </data>
+  <data name="CouldNotFind_InPreferenceDB" xml:space="preserve">
+    <value>Could not find {0} in CSSPDBPreference.db</value>
+  </data>
+  <data name="CouldNotFill_" xml:space="preserve">
+    <value>Could not fill {0}</value>
+  </data>
+  <data name="User_IsNotLoggedIn" xml:space="preserve">
+    <value>User {0} is not logged in</value>
+  </data>
+  <data name="User_IsAlreadyLoggedIn" xml:space="preserve">
+    <value>User {0} is already logged in</value>
   </data>
 </root>

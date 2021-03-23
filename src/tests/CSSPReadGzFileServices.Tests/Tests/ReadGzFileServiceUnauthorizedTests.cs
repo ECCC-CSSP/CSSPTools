@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Xunit;
 using CSSPWebModels;
+using CSSPCultureServices.Resources;
 
 namespace ReadGzFileServices.Tests
 {
@@ -35,7 +36,8 @@ namespace ReadGzFileServices.Tests
 
             // Read gz
             var actionWeb = await ReadGzFileService.ReadJSON<WebArea>(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionWeb.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionWeb.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionWeb.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -52,7 +54,8 @@ namespace ReadGzFileServices.Tests
 
             // Read gz
             var actionWeb = await ReadGzFileService.ReadJSON<WebClimateDataValue>(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionWeb.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionWeb.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionWeb.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -69,7 +72,8 @@ namespace ReadGzFileServices.Tests
 
             // Read gz
             var actionWeb = await ReadGzFileService.ReadJSON<WebClimateSite>(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionWeb.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionWeb.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionWeb.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -86,7 +90,8 @@ namespace ReadGzFileServices.Tests
 
             // Read gz
             var actionWeb = await ReadGzFileService.ReadJSON<WebAllContacts>(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionWeb.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionWeb.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionWeb.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -103,7 +108,8 @@ namespace ReadGzFileServices.Tests
 
             // Read gz
             var actionWeb = await ReadGzFileService.ReadJSON<WebCountry>(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionWeb.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionWeb.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionWeb.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -120,7 +126,8 @@ namespace ReadGzFileServices.Tests
 
             // Read gz
             var actionWeb = await ReadGzFileService.ReadJSON<WebDrogueRun>(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionWeb.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionWeb.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionWeb.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -137,7 +144,8 @@ namespace ReadGzFileServices.Tests
 
             // Read gz
             var actionWeb = await ReadGzFileService.ReadJSON<WebAllHelpDocs>(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionWeb.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionWeb.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionWeb.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -154,7 +162,8 @@ namespace ReadGzFileServices.Tests
 
             // Read gz
             var actionWeb = await ReadGzFileService.ReadJSON<WebHydrometricDataValue>(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionWeb.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionWeb.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionWeb.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -171,7 +180,8 @@ namespace ReadGzFileServices.Tests
 
             // Read gz
             var actionWeb = await ReadGzFileService.ReadJSON<WebHydrometricSite>(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionWeb.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionWeb.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionWeb.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -188,7 +198,8 @@ namespace ReadGzFileServices.Tests
 
             // Read gz
             var actionWeb = await ReadGzFileService.ReadJSON<WebMikeScenario>(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionWeb.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionWeb.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionWeb.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -205,7 +216,8 @@ namespace ReadGzFileServices.Tests
 
             // Read gz
             var actionWeb = await ReadGzFileService.ReadJSON<WebMunicipalities>(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionWeb.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionWeb.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionWeb.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -222,7 +234,8 @@ namespace ReadGzFileServices.Tests
 
             // Read gz
             var actionWeb = await ReadGzFileService.ReadJSON<WebMunicipality>(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionWeb.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionWeb.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionWeb.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -239,7 +252,8 @@ namespace ReadGzFileServices.Tests
 
             // Read gz
             var actionWeb = await ReadGzFileService.ReadJSON<WebAllMWQMLookupMPNs>(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionWeb.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionWeb.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionWeb.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -256,7 +270,8 @@ namespace ReadGzFileServices.Tests
 
             // Read gz
             var actionWeb = await ReadGzFileService.ReadJSON<WebMWQMRun>(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionWeb.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionWeb.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionWeb.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -273,7 +288,8 @@ namespace ReadGzFileServices.Tests
 
             // Read gz
             var actionWeb = await ReadGzFileService.ReadJSON<WebMWQMSample>(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionWeb.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionWeb.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionWeb.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -290,7 +306,8 @@ namespace ReadGzFileServices.Tests
 
             // Read gz
             var actionWeb = await ReadGzFileService.ReadJSON<WebMWQMSample>(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionWeb.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionWeb.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionWeb.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -307,7 +324,8 @@ namespace ReadGzFileServices.Tests
 
             // Read gz
             var actionWeb = await ReadGzFileService.ReadJSON<WebMWQMSample>(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionWeb.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionWeb.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionWeb.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -324,7 +342,8 @@ namespace ReadGzFileServices.Tests
 
             // Read gz
             var actionWeb = await ReadGzFileService.ReadJSON<WebMWQMSample>(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionWeb.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionWeb.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionWeb.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -341,7 +360,8 @@ namespace ReadGzFileServices.Tests
 
             // Read gz
             var actionWeb = await ReadGzFileService.ReadJSON<WebMWQMSample>(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionWeb.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionWeb.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionWeb.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -358,7 +378,8 @@ namespace ReadGzFileServices.Tests
 
             // Read gz
             var actionWeb = await ReadGzFileService.ReadJSON<WebMWQMSample>(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionWeb.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionWeb.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionWeb.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -375,7 +396,8 @@ namespace ReadGzFileServices.Tests
 
             // Read gz
             var actionWeb = await ReadGzFileService.ReadJSON<WebMWQMSample>(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionWeb.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionWeb.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionWeb.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -392,7 +414,8 @@ namespace ReadGzFileServices.Tests
 
             // Read gz
             var actionWeb = await ReadGzFileService.ReadJSON<WebMWQMSample>(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionWeb.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionWeb.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionWeb.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -409,7 +432,8 @@ namespace ReadGzFileServices.Tests
 
             // Read gz
             var actionWeb = await ReadGzFileService.ReadJSON<WebMWQMSite>(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionWeb.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionWeb.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionWeb.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -426,7 +450,8 @@ namespace ReadGzFileServices.Tests
 
             // Read gz
             var actionWeb = await ReadGzFileService.ReadJSON<WebAllPolSourceGroupings>(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionWeb.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionWeb.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionWeb.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -443,7 +468,8 @@ namespace ReadGzFileServices.Tests
 
             // Read gz
             var actionWeb = await ReadGzFileService.ReadJSON<WebPolSourceSite>(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionWeb.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionWeb.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionWeb.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -460,7 +486,8 @@ namespace ReadGzFileServices.Tests
 
             // Read gz
             var actionWeb = await ReadGzFileService.ReadJSON<WebAllPolSourceSiteEffectTerms>(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionWeb.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionWeb.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionWeb.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -477,7 +504,8 @@ namespace ReadGzFileServices.Tests
 
             // Read gz
             var actionWeb = await ReadGzFileService.ReadJSON<WebProvince>(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionWeb.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionWeb.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionWeb.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -494,7 +522,8 @@ namespace ReadGzFileServices.Tests
 
             // Read gz
             var actionWeb = await ReadGzFileService.ReadJSON<WebAllReportTypes>(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionWeb.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionWeb.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionWeb.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -511,7 +540,8 @@ namespace ReadGzFileServices.Tests
 
             // Read gz
             var actionWeb = await ReadGzFileService.ReadJSON<WebRoot>(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionWeb.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionWeb.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionWeb.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -528,7 +558,8 @@ namespace ReadGzFileServices.Tests
 
             // Read gz
             var actionWeb = await ReadGzFileService.ReadJSON<WebSamplingPlan>(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionWeb.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionWeb.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionWeb.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -545,7 +576,8 @@ namespace ReadGzFileServices.Tests
 
             // Read gz
             var actionWeb = await ReadGzFileService.ReadJSON<WebSector>(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionWeb.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionWeb.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionWeb.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -562,7 +594,8 @@ namespace ReadGzFileServices.Tests
 
             // Read gz
             var actionWeb = await ReadGzFileService.ReadJSON<WebSubsector>(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionWeb.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionWeb.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionWeb.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -579,7 +612,8 @@ namespace ReadGzFileServices.Tests
 
             // Read gz
             var actionWeb = await ReadGzFileService.ReadJSON<WebAllTideLocations>(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionWeb.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionWeb.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionWeb.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -596,7 +630,8 @@ namespace ReadGzFileServices.Tests
 
             // Read gz
             var actionWeb = await ReadGzFileService.ReadJSON<WebAllTVItems>(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionWeb.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionWeb.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionWeb.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -613,7 +648,8 @@ namespace ReadGzFileServices.Tests
 
             // Read gz
             var actionWeb = await ReadGzFileService.ReadJSON<WebAllTVItemLanguages>(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionWeb.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionWeb.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionWeb.Result).Value);
         }
         #endregion Tests 
 

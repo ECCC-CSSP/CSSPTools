@@ -22,36 +22,166 @@ using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
 using CSSPCultureServices.Resources;
-using LoggedInServices;
+using CSSPHelperServices.Tests;
 
-namespace CSSPDBServices.Tests
+namespace CSSPHelperServices.Tests
 {
-    public partial class PolSourceObsInfoChildDBServiceTest : TestHelper
+    [Collection("Sequential")]
+    public partial class PolSourceObsInfoChildServiceTest : TestHelper
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Configuration { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private ICSSPCultureService CSSPCultureService { get; set; }
+        private IEnums enums { get; set; }
+        private IPolSourceObsInfoChildService PolSourceObsInfoChildService { get; set; }
         #endregion Properties
 
         #region Constructors
-        public PolSourceObsInfoChildDBServiceTest() : base()
+        public PolSourceObsInfoChildServiceTest() : base()
         {
 
         }
         #endregion Constructors
 
-        #region Functions private
-        private void CheckPolSourceObsInfoChildFields(List<PolSourceObsInfoChild> polSourceObsInfoChildList)
+        #region Tests Generated Constructors
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task AppTaskParameter_Constructor_Test(string culture)
         {
-            if (!string.IsNullOrWhiteSpace(polSourceObsInfoChildList[0].PolSourceObsInfoText))
-            {
-                Assert.False(string.IsNullOrWhiteSpace(polSourceObsInfoChildList[0].PolSourceObsInfoText));
-            }
-            if (!string.IsNullOrWhiteSpace(polSourceObsInfoChildList[0].PolSourceObsInfoChildStartText))
-            {
-                Assert.False(string.IsNullOrWhiteSpace(polSourceObsInfoChildList[0].PolSourceObsInfoChildStartText));
-            }
+            Assert.True(await Setup(culture));
+            Assert.NotNull(CSSPCultureService);
+            Assert.NotNull(enums);
+        }
+        #endregion Tests Generated Constructors
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task PolSourceObsInfoChild_Properties_Test(string culture)
+        {
+            List<ValidationResult> ValidationResultList = new List<ValidationResult>();
+            IEnumerable<ValidationResult> validationResults;
+            Assert.True(await Setup(culture));
+
+
+
+            PolSourceObsInfoChild polSourceObsInfoChild = GetFilledRandomPolSourceObsInfoChild("");
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // polSourceObsInfoChild.PolSourceObsInfo   (PolSourceObsInfoEnum)
+            // -----------------------------------
+
+
+            polSourceObsInfoChild = null;
+            polSourceObsInfoChild = GetFilledRandomPolSourceObsInfoChild("");
+            polSourceObsInfoChild.PolSourceObsInfo = (PolSourceObsInfoEnum)1000000;
+            validationResults = PolSourceObsInfoChildService.Validate(new ValidationContext(polSourceObsInfoChild));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "PolSourceObsInfo"))).Any());
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // polSourceObsInfoChild.PolSourceObsInfoChildStart   (PolSourceObsInfoEnum)
+            // -----------------------------------
+
+
+            polSourceObsInfoChild = null;
+            polSourceObsInfoChild = GetFilledRandomPolSourceObsInfoChild("");
+            polSourceObsInfoChild.PolSourceObsInfoChildStart = (PolSourceObsInfoEnum)1000000;
+            validationResults = PolSourceObsInfoChildService.Validate(new ValidationContext(polSourceObsInfoChild));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "PolSourceObsInfoChildStart"))).Any());
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(100)]
+            // polSourceObsInfoChild.PolSourceObsInfoText   (String)
+            // -----------------------------------
+
+
+            polSourceObsInfoChild = null;
+            polSourceObsInfoChild = GetFilledRandomPolSourceObsInfoChild("");
+            polSourceObsInfoChild.PolSourceObsInfoText = GetRandomString("", 101);
+            validationResults = PolSourceObsInfoChildService.Validate(new ValidationContext(polSourceObsInfoChild));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "PolSourceObsInfoText", "100"))).Any());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(100)]
+            // polSourceObsInfoChild.PolSourceObsInfoChildStartText   (String)
+            // -----------------------------------
+
+
+            polSourceObsInfoChild = null;
+            polSourceObsInfoChild = GetFilledRandomPolSourceObsInfoChild("");
+            polSourceObsInfoChild.PolSourceObsInfoChildStartText = GetRandomString("", 101);
+            validationResults = PolSourceObsInfoChildService.Validate(new ValidationContext(polSourceObsInfoChild));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "PolSourceObsInfoChildStartText", "100"))).Any());
+        }
+        #endregion Tests Generated Properties
+
+        #region Functions private
+        private async Task<bool> Setup(string culture)
+        {
+            Configuration = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings_CSSPDBServicestests.json")
+               .AddUserSecrets("6f27cbbe-6ffb-4154-b49b-d739597c4f60")
+               .Build();
+
+            Services = new ServiceCollection();
+
+            Services.AddSingleton<IConfiguration>(Configuration);
+
+            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<IPolSourceObsInfoChildService, PolSourceObsInfoChildService>();
+
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+
+            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
+            Assert.NotNull(CSSPCultureService);
+
+            CSSPCultureService.SetCulture(culture);
+
+            enums = Provider.GetService<IEnums>();
+            Assert.NotNull(enums);
+
+            PolSourceObsInfoChildService = Provider.GetService<IPolSourceObsInfoChildService>();
+            Assert.NotNull(PolSourceObsInfoChildService);
+
+            return await Task.FromResult(true);
+        }
+        private PolSourceObsInfoChild GetFilledRandomPolSourceObsInfoChild(string OmitPropName)
+        {
+            PolSourceObsInfoChild polSourceObsInfoChild = new PolSourceObsInfoChild();
+
+            if (OmitPropName != "PolSourceObsInfo") polSourceObsInfoChild.PolSourceObsInfo = (PolSourceObsInfoEnum)GetRandomEnumType(typeof(PolSourceObsInfoEnum));
+            if (OmitPropName != "PolSourceObsInfoChildStart") polSourceObsInfoChild.PolSourceObsInfoChildStart = (PolSourceObsInfoEnum)GetRandomEnumType(typeof(PolSourceObsInfoEnum));
+            if (OmitPropName != "PolSourceObsInfoText") polSourceObsInfoChild.PolSourceObsInfoText = GetRandomString("", 5);
+            if (OmitPropName != "PolSourceObsInfoChildStartText") polSourceObsInfoChild.PolSourceObsInfoChildStartText = GetRandomString("", 5);
+
+            return polSourceObsInfoChild;
         }
 
         #endregion Functions private

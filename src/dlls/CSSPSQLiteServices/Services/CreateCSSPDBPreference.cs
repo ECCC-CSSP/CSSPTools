@@ -34,31 +34,6 @@ namespace CSSPSQLiteServices
                 }
             }
 
-            //string CreateAspNetUsersTable = "CREATE TABLE AspNetUsers (" +
-            //    "Id TEXT NOT NULL UNIQUE, " +
-            //    "Email TEXT, " +
-            //    "EmailConfirmed INTEGER NOT NULL, " +
-            //    "PasswordHash TEXT, " +
-            //    "SecurityStamp TEXT, " +
-            //    "PhoneNumber TEXT, " +
-            //    "PhoneNumberConfirmed INTEGER NOT NULL, " +
-            //    "TwoFactorEnabled INTEGER NOT NULL, " +
-            //    "LockoutEndDateUtc TEXT, " +
-            //    "LockoutEnabled INTEGER NOT NULL, " +
-            //    "AccessFailedCount INTEGER NOT NULL, " +
-            //    "UserName TEXT NOT NULL, " +
-            //    "NormalizedUserName TEXT, " +
-            //    "NormalizedEmail TEXT, " +
-            //    "ConcurrencyStamp TEXT, " +
-            //    "LockoutEnd TEXT)";
-
-            //using (var command = dbLogin.Database.GetDbConnection().CreateCommand())
-            //{
-            //    command.CommandText = CreateAspNetUsersTable;
-            //    dbLogin.Database.OpenConnection();
-            //    command.ExecuteNonQuery();
-            //}
-
             string CreateContactsTable = "CREATE TABLE Contacts (" +
                     "ContactID INTEGER  NOT NULL  UNIQUE , " +
                     "DBCommand INTEGER  NOT NULL  , " +
@@ -79,6 +54,9 @@ namespace CSSPSQLiteServices
                     "SamplingPlanner_ProvincesTVItemID TEXT   , " +
                     "PasswordHash TEXT   , " +
                     "Token TEXT   , " +
+                    "HasInternetConnection INTEGER   , " +
+                    "IsLoggedIn INTEGER   , " +
+                    "GoogleMapKeyHash TEXT   , " +
                     "AccessFailedCount INTEGER   , " +
                     "LastUpdateDate_UTC TEXT  NOT NULL  , " +
                     "LastUpdateContactTVItemID INTEGER  NOT NULL  )";
@@ -125,17 +103,17 @@ namespace CSSPSQLiteServices
                 command.ExecuteNonQuery();
             }
 
-            string CreatePreferencesTable = "CREATE TABLE Preferences (" +
-                    "PreferenceID INTEGER NOT NULL UNIQUE, " +
-                    "VariableName TEXT NOT NULL, " +
-                    "VariableValue TEXT NOT NULL)";
+            //string CreatePreferencesTable = "CREATE TABLE Preferences (" +
+            //        "PreferenceID INTEGER NOT NULL UNIQUE, " +
+            //        "VariableName TEXT NOT NULL, " +
+            //        "VariableValue TEXT NOT NULL)";
 
-            using (var command = dbLogin.Database.GetDbConnection().CreateCommand())
-            {
-                command.CommandText = CreatePreferencesTable;
-                dbLogin.Database.OpenConnection();
-                command.ExecuteNonQuery();
-            }
+            //using (var command = dbLogin.Database.GetDbConnection().CreateCommand())
+            //{
+            //    command.CommandText = CreatePreferencesTable;
+            //    dbLogin.Database.OpenConnection();
+            //    command.ExecuteNonQuery();
+            //}
 
             return await Task.FromResult(true);
         }

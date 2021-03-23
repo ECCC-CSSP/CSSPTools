@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 using LoggedInServices;
 using Microsoft.Extensions.Configuration;
 
-namespace CSSPDBServices
+namespace CSSPHelperServices
 {
     public interface ICalDecayService
     {
@@ -32,15 +32,11 @@ namespace CSSPDBServices
         #endregion Variables
 
         #region Properties
-        private ICSSPCultureService CSSPCultureService { get; }
-        private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public CalDecayService(ICSSPCultureService CSSPCultureService, IEnums enums)
+        public CalDecayService()
         {
-            this.CSSPCultureService = CSSPCultureService;
-            this.enums = enums;
         }
         #endregion Constructors
 
@@ -51,14 +47,9 @@ namespace CSSPDBServices
 
             if (calDecay.Decay < 0)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "Decay", "0"), new[] { nameof(calDecay.Decay) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "Decay", "0"), new[] { "Decay" });
             }
 
-            bool a = false;
-            if (a)
-            {
-                yield return new ValidationResult("");
-            }
         }
         #endregion Functions public
     }

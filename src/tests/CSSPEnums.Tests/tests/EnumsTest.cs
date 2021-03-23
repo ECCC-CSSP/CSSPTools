@@ -35,11 +35,21 @@ namespace CSSPEnums.Tests
 
         // All the testing function are under the EnumsGeneratedTest.cs
 
-        #region Testing Methods private
-        #endregion Testing Methods private
+        #region Testing Methods 
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task Enums_Constructor_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+            Assert.NotNull(CSSPCultureService);
+            Assert.NotNull(enums);
+
+        }
+        #endregion Testing Methods 
 
         #region Functions private
-        private async Task<bool> SetupTest(string culture)
+        private async Task<bool> Setup(string culture)
         {
             Services = new ServiceCollection();
             Services.AddSingleton<IEnums, Enums>();

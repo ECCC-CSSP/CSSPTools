@@ -22,32 +22,133 @@ using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
 using CSSPCultureServices.Resources;
-using LoggedInServices;
+using CSSPHelperServices.Tests;
 
-namespace CSSPDBServices.Tests
+namespace CSSPHelperServices.Tests
 {
-    public partial class FilePurposeAndTextDBServiceTest : TestHelper
+    [Collection("Sequential")]
+    public partial class FilePurposeAndTextServiceTest : TestHelper
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Configuration { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private ICSSPCultureService CSSPCultureService { get; set; }
+        private IEnums enums { get; set; }
+        private IFilePurposeAndTextService FilePurposeAndTextService { get; set; }
         #endregion Properties
 
         #region Constructors
-        public FilePurposeAndTextDBServiceTest() : base()
+        public FilePurposeAndTextServiceTest() : base()
         {
 
         }
         #endregion Constructors
 
-        #region Functions private
-        private void CheckFilePurposeAndTextFields(List<FilePurposeAndText> filePurposeAndTextList)
+        #region Tests Generated Constructors
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task AppTaskParameter_Constructor_Test(string culture)
         {
-            if (!string.IsNullOrWhiteSpace(filePurposeAndTextList[0].FilePurposeText))
-            {
-                Assert.False(string.IsNullOrWhiteSpace(filePurposeAndTextList[0].FilePurposeText));
-            }
+            Assert.True(await Setup(culture));
+            Assert.NotNull(CSSPCultureService);
+            Assert.NotNull(enums);
+        }
+        #endregion Tests Generated Constructors
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task FilePurposeAndText_Properties_Test(string culture)
+        {
+            List<ValidationResult> ValidationResultList = new List<ValidationResult>();
+            IEnumerable<ValidationResult> validationResults;
+            Assert.True(await Setup(culture));
+
+
+
+            FilePurposeAndText filePurposeAndText = GetFilledRandomFilePurposeAndText("");
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // filePurposeAndText.FilePurpose   (FilePurposeEnum)
+            // -----------------------------------
+
+
+            filePurposeAndText = null;
+            filePurposeAndText = GetFilledRandomFilePurposeAndText("");
+            filePurposeAndText.FilePurpose = (FilePurposeEnum)1000000;
+            validationResults = FilePurposeAndTextService.Validate(new ValidationContext(filePurposeAndText));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "FilePurpose"))).Any());
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(100)]
+            // filePurposeAndText.FilePurposeText   (String)
+            // -----------------------------------
+
+
+            filePurposeAndText = null;
+            filePurposeAndText = GetFilledRandomFilePurposeAndText("");
+            filePurposeAndText.FilePurposeText = GetRandomString("", 101);
+            validationResults = FilePurposeAndTextService.Validate(new ValidationContext(filePurposeAndText));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "FilePurposeText", "100"))).Any());
+        }
+        #endregion Tests Generated Properties
+
+        #region Functions private
+        private async Task<bool> Setup(string culture)
+        {
+            Configuration = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings_CSSPDBServicestests.json")
+               .AddUserSecrets("6f27cbbe-6ffb-4154-b49b-d739597c4f60")
+               .Build();
+
+            Services = new ServiceCollection();
+
+            Services.AddSingleton<IConfiguration>(Configuration);
+
+            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<IFilePurposeAndTextService, FilePurposeAndTextService>();
+
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+
+            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
+            Assert.NotNull(CSSPCultureService);
+
+            CSSPCultureService.SetCulture(culture);
+
+            enums = Provider.GetService<IEnums>();
+            Assert.NotNull(enums);
+
+            FilePurposeAndTextService = Provider.GetService<IFilePurposeAndTextService>();
+            Assert.NotNull(FilePurposeAndTextService);
+
+            return await Task.FromResult(true);
+        }
+        private FilePurposeAndText GetFilledRandomFilePurposeAndText(string OmitPropName)
+        {
+            FilePurposeAndText filePurposeAndText = new FilePurposeAndText();
+
+            if (OmitPropName != "FilePurpose") filePurposeAndText.FilePurpose = (FilePurposeEnum)GetRandomEnumType(typeof(FilePurposeEnum));
+            if (OmitPropName != "FilePurposeText") filePurposeAndText.FilePurposeText = GetRandomString("", 5);
+
+            return filePurposeAndText;
         }
 
         #endregion Functions private

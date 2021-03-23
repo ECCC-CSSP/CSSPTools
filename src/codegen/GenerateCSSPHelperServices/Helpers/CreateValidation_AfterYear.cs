@@ -15,7 +15,7 @@ namespace GenerateCSSPHelperServices
                 {
                     sb.AppendLine($@"            if ({ TypeNameLower }.{ csspProp.PropName } != null && ((DateTime){ TypeNameLower }.{ csspProp.PropName }).Year < { csspProp.Year })");
                     sb.AppendLine(@"            {");
-                    sb.AppendLine($@"                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, ""{ csspProp.PropName }"", ""{ csspProp.Year }""), new[] {{ nameof({ TypeNameLower }.{ csspProp.PropName }) }});");
+                    sb.AppendLine($@"                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, ""{ csspProp.PropName }"", ""{ csspProp.Year }""), new[] {{ ""{ csspProp.PropName }"" }});");
                     sb.AppendLine(@"            }");
                     sb.AppendLine(@"");
                 }

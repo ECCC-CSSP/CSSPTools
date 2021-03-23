@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 using LoggedInServices;
 using Microsoft.Extensions.Configuration;
 
-namespace CSSPDBServices
+namespace CSSPHelperServices
 {
     public interface IPolSourceInactiveReasonEnumTextAndIDService
     {
@@ -32,15 +32,11 @@ namespace CSSPDBServices
         #endregion Variables
 
         #region Properties
-        private ICSSPCultureService CSSPCultureService { get; }
-        private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public PolSourceInactiveReasonEnumTextAndIDService(ICSSPCultureService CSSPCultureService, IEnums enums)
+        public PolSourceInactiveReasonEnumTextAndIDService()
         {
-            this.CSSPCultureService = CSSPCultureService;
-            this.enums = enums;
         }
         #endregion Constructors
 
@@ -51,21 +47,19 @@ namespace CSSPDBServices
 
             if (string.IsNullOrWhiteSpace(polSourceInactiveReasonEnumTextAndID.Text))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Text"), new[] { nameof(polSourceInactiveReasonEnumTextAndID.Text) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Text"), new[] { "Text" });
             }
 
-            //Text has no StringLength Attribute
+            if (!string.IsNullOrWhiteSpace(polSourceInactiveReasonEnumTextAndID.Text) && polSourceInactiveReasonEnumTextAndID.Text.Length > 1000)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Text", "1000"), new[] { "Text" });
+            }
 
             if (polSourceInactiveReasonEnumTextAndID.ID < 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "ID", "1"), new[] { nameof(polSourceInactiveReasonEnumTextAndID.ID) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "ID", "1"), new[] { "ID" });
             }
 
-            bool a = false;
-            if (a)
-            {
-                yield return new ValidationResult("");
-            }
         }
         #endregion Functions public
     }

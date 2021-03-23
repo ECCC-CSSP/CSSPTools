@@ -21,11 +21,10 @@ using CSSPHelperModels;
 using CSSPScrambleServices;
 using CSSPDBPreferenceModels;
 using ReadGzFileServices;
-using CSSPDBFilesManagementServices;
 using DownloadFileServices;
-using CSSPDBPreferenceServices;
 using CSSPDBFilesManagementModels;
 using CSSPDBLocalServices;
+using FilesManagementServices;
 
 namespace CreateGzFileLocalServices.Tests
 {
@@ -154,13 +153,13 @@ namespace CreateGzFileLocalServices.Tests
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
-            Services.AddSingleton<ICSSPDBFilesManagementService, CSSPDBFilesManagementService>();
+            Services.AddSingleton<IFilesManagementService, FilesManagementService>();
             Services.AddSingleton<IPostTVItemModelService, PostTVItemModelService>();
             Services.AddSingleton<IDownloadFileService, DownloadFileService>();
             Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IScrambleService, ScrambleService>();
-            Services.AddSingleton<IPreferenceService, PreferenceService>();
+            //Services.AddSingleton<IPreferenceService, PreferenceService>();
             Services.AddSingleton<ICreateGzFileLocalService, CreateGzFileLocalService>();
 
             /* ---------------------------------------------------------------------------------

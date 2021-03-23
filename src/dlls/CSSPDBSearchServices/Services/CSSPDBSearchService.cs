@@ -17,6 +17,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using CSSPDBSearchModels;
+using LoggedInServices;
 
 namespace CSSPDBSearchServices
 {
@@ -30,16 +31,14 @@ namespace CSSPDBSearchServices
         #endregion Variables
 
         #region Properties
-        private IConfiguration Configuration { get; }
-        private ICSSPCultureService CSSPCultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private CSSPDBSearchContext dbSearch { get; }
         #endregion Properties
 
         #region Constructors
-        public CSSPDBSearchService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, CSSPDBSearchContext dbSearch)
+        public CSSPDBSearchService(ILoggedInService LoggedInService, CSSPDBSearchContext dbSearch)
         {
-            this.Configuration = Configuration;
-            this.CSSPCultureService = CSSPCultureService;
+            this.LoggedInService = LoggedInService;
             this.dbSearch = dbSearch;
         }
         #endregion Constructors

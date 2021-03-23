@@ -10,29 +10,15 @@ namespace GenerateCSSPHelperServices_Tests
         {
             sb.AppendLine($@"            { TypeNameLower } = null;");
             sb.AppendLine($@"            { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
-            if (TypeName == "AspNetUser")
-            {
-                sb.AppendLine($@"            { TypeNameLower }.{ csspProp.PropName } = """";");
-            }
-            else
-            {
-                sb.AppendLine($@"            { TypeNameLower }.{ csspProp.PropName } = 0;");
-            }
+            sb.AppendLine($@"            { TypeNameLower }.{ csspProp.PropName } = 0;");
             sb.AppendLine(@"");
-            sb.AppendLine($@"            var action{ TypeName } = await { TypeName }DBService.Put({ TypeNameLower });");
+            sb.AppendLine($@"            var action{ TypeName } = await { TypeName }Service.Put({ TypeNameLower });");
             sb.AppendLine($@"            Assert.IsType<BadRequestObjectResult>(action{ TypeName }.Result);");
             sb.AppendLine(@"");
             sb.AppendLine($@"            { TypeNameLower } = null;");
             sb.AppendLine($@"            { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
-            if (TypeName == "AspNetUser")
-            {
-                sb.AppendLine($@"            { TypeNameLower }.{ csspProp.PropName } = ""silefjilsefjsliejlsjflisjefl"";");
-            }
-            else
-            {
-                sb.AppendLine($@"            { TypeNameLower }.{ csspProp.PropName } = 10000000;");
-            }
-            sb.AppendLine($@"            action{ TypeName } = await { TypeName }DBService.Put({ TypeNameLower });");
+            sb.AppendLine($@"            { TypeNameLower }.{ csspProp.PropName } = 10000000;");
+            sb.AppendLine($@"            action{ TypeName } = await { TypeName }Service.Put({ TypeNameLower });");
             sb.AppendLine($@"            Assert.IsType<BadRequestObjectResult>(action{ TypeName }.Result);");
             sb.AppendLine(@"");
 

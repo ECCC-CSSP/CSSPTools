@@ -3,6 +3,7 @@ using CSSPDBModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Xunit;
+using CSSPCultureServices.Resources;
 
 namespace DownloadFileServices.Tests
 {
@@ -34,7 +35,8 @@ namespace DownloadFileServices.Tests
 
             // Download gz
             var actionRes = await DownloadFileService.DownloadGzFile(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionRes.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionRes.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -51,7 +53,8 @@ namespace DownloadFileServices.Tests
 
             // Download gz
             var actionRes = await DownloadFileService.DownloadGzFile(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionRes.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionRes.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -68,7 +71,8 @@ namespace DownloadFileServices.Tests
 
             // Download gz
             var actionRes = await DownloadFileService.DownloadGzFile(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionRes.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionRes.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -85,7 +89,8 @@ namespace DownloadFileServices.Tests
 
             // Download gz
             var actionRes = await DownloadFileService.DownloadGzFile(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionRes.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionRes.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -102,7 +107,8 @@ namespace DownloadFileServices.Tests
 
             // Download gz
             var actionRes = await DownloadFileService.DownloadGzFile(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionRes.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionRes.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -119,7 +125,8 @@ namespace DownloadFileServices.Tests
 
             // Download gz
             var actionRes = await DownloadFileService.DownloadGzFile(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionRes.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionRes.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -136,7 +143,8 @@ namespace DownloadFileServices.Tests
 
             // Download gz
             var actionRes = await DownloadFileService.DownloadGzFile(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionRes.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionRes.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -153,7 +161,8 @@ namespace DownloadFileServices.Tests
 
             // Download gz
             var actionRes = await DownloadFileService.DownloadGzFile(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionRes.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionRes.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -170,7 +179,8 @@ namespace DownloadFileServices.Tests
 
             // Download gz
             var actionRes = await DownloadFileService.DownloadGzFile(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionRes.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionRes.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -187,7 +197,8 @@ namespace DownloadFileServices.Tests
 
             // Download gz
             var actionRes = await DownloadFileService.DownloadGzFile(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionRes.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionRes.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -204,7 +215,8 @@ namespace DownloadFileServices.Tests
 
             // Download gz
             var actionRes = await DownloadFileService.DownloadGzFile(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionRes.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionRes.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -221,7 +233,8 @@ namespace DownloadFileServices.Tests
 
             // Download gz
             var actionRes = await DownloadFileService.DownloadGzFile(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionRes.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionRes.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -238,7 +251,8 @@ namespace DownloadFileServices.Tests
 
             // Download gz
             var actionRes = await DownloadFileService.DownloadGzFile(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionRes.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionRes.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -255,7 +269,8 @@ namespace DownloadFileServices.Tests
 
             // Download gz
             var actionRes = await DownloadFileService.DownloadGzFile(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionRes.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionRes.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -272,7 +287,8 @@ namespace DownloadFileServices.Tests
 
             // Download gz
             var actionRes = await DownloadFileService.DownloadGzFile(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionRes.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionRes.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -289,7 +305,8 @@ namespace DownloadFileServices.Tests
 
             // Download gz
             var actionRes = await DownloadFileService.DownloadGzFile(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionRes.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionRes.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -306,7 +323,8 @@ namespace DownloadFileServices.Tests
 
             // Download gz
             var actionRes = await DownloadFileService.DownloadGzFile(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionRes.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionRes.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -323,7 +341,8 @@ namespace DownloadFileServices.Tests
 
             // Download gz
             var actionRes = await DownloadFileService.DownloadGzFile(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionRes.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionRes.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -340,7 +359,8 @@ namespace DownloadFileServices.Tests
 
             // Download gz
             var actionRes = await DownloadFileService.DownloadGzFile(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionRes.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionRes.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -357,7 +377,8 @@ namespace DownloadFileServices.Tests
 
             // Download gz
             var actionRes = await DownloadFileService.DownloadGzFile(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionRes.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionRes.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -374,7 +395,8 @@ namespace DownloadFileServices.Tests
 
             // Download gz
             var actionRes = await DownloadFileService.DownloadGzFile(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionRes.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionRes.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -391,7 +413,8 @@ namespace DownloadFileServices.Tests
 
             // Download gz
             var actionRes = await DownloadFileService.DownloadGzFile(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionRes.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionRes.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -408,7 +431,8 @@ namespace DownloadFileServices.Tests
 
             // Download gz
             var actionRes = await DownloadFileService.DownloadGzFile(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionRes.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionRes.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -425,7 +449,8 @@ namespace DownloadFileServices.Tests
 
             // Download gz
             var actionRes = await DownloadFileService.DownloadGzFile(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionRes.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionRes.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -442,7 +467,8 @@ namespace DownloadFileServices.Tests
 
             // Download gz
             var actionRes = await DownloadFileService.DownloadGzFile(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionRes.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionRes.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -459,7 +485,8 @@ namespace DownloadFileServices.Tests
 
             // Download gz
             var actionRes = await DownloadFileService.DownloadGzFile(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionRes.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionRes.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -476,7 +503,8 @@ namespace DownloadFileServices.Tests
 
             // Download gz
             var actionRes = await DownloadFileService.DownloadGzFile(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionRes.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionRes.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -493,7 +521,8 @@ namespace DownloadFileServices.Tests
 
             // Download gz
             var actionRes = await DownloadFileService.DownloadGzFile(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionRes.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionRes.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -510,7 +539,8 @@ namespace DownloadFileServices.Tests
 
             // Download gz
             var actionRes = await DownloadFileService.DownloadGzFile(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionRes.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionRes.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -527,7 +557,8 @@ namespace DownloadFileServices.Tests
 
             // Download gz
             var actionRes = await DownloadFileService.DownloadGzFile(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionRes.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionRes.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -544,7 +575,8 @@ namespace DownloadFileServices.Tests
 
             // Download gz
             var actionRes = await DownloadFileService.DownloadGzFile(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionRes.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionRes.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -561,7 +593,8 @@ namespace DownloadFileServices.Tests
 
             // Download gz
             var actionRes = await DownloadFileService.DownloadGzFile(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionRes.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionRes.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -578,7 +611,8 @@ namespace DownloadFileServices.Tests
 
             // Download gz
             var actionRes = await DownloadFileService.DownloadGzFile(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionRes.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionRes.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -595,7 +629,8 @@ namespace DownloadFileServices.Tests
 
             // Download gz
             var actionRes = await DownloadFileService.DownloadGzFile(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionRes.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionRes.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -612,7 +647,8 @@ namespace DownloadFileServices.Tests
 
             // Download gz
             var actionRes = await DownloadFileService.DownloadGzFile(webType, TVItemID, webTypeYear);
-            Assert.Equal(401, ((UnauthorizedResult)actionRes.Result).StatusCode);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionRes.Result).Value);
         }
         #endregion Tests 
 

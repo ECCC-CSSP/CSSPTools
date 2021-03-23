@@ -12,10 +12,11 @@ using Xunit;
 using CSSPDBPreferenceModels;
 using CSSPDBFilesManagementModels;
 using LoggedInServices;
+using System.Linq;
 
-namespace CSSPDBFilesManagementServices.Tests
+namespace FilesManagementServices.Tests
 {
-    public partial class CSSPDBFilesManagementServicesTests
+    public partial class FilesManagementServicesTests
     {
         #region Variables
         #endregion Variables
@@ -25,15 +26,16 @@ namespace CSSPDBFilesManagementServices.Tests
         private IServiceCollection Services { get; set; }
         private IServiceProvider Provider { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
-        private ICSSPDBFilesManagementService CSSPDBFilesManagementService { get; set; }
+        private IFilesManagementService FilesManagementService { get; set; }
         private ILoggedInService LoggedInService { get; set; }
-        private string CSSPDBFilesManagementFileName { get; set; }
+        private string FilesManagementFileName { get; set; }
+        private string FilesManagementFileNameTest { get; set; }
         private string CSSPDBPreferenceFileName { get; set; }
-        private string Id { get; set; }
+        private CSSPDBFilesManagementContext dbFile { get; set; }
         #endregion Properties
 
         #region Constructors
-        public CSSPDBFilesManagementServicesTests()
+        public FilesManagementServicesTests()
         {
         }
         #endregion Constructors
@@ -55,34 +57,30 @@ namespace CSSPDBFilesManagementServices.Tests
             Services.AddSingleton<IConfiguration>(Configuration);
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
-            Services.AddSingleton<ICSSPDBFilesManagementService, CSSPDBFilesManagementService>();
+            Services.AddSingleton<IFilesManagementService, FilesManagementService>();
 
-            /* ---------------------------------------------------------------------------------
-             * using TestDB
-             * ---------------------------------------------------------------------------------      
-             */
-            string TestDB = Configuration.GetValue<string>("TestDB");
-            Assert.NotNull(TestDB);
 
-            Services.AddDbContext<CSSPDBContext>(options =>
+            FilesManagementFileName = Configuration.GetValue<string>("CSSPDBFilesManagement");
+            Assert.NotNull(FilesManagementFileName);
+
+            FileInfo fiFilesManagementFileName = new FileInfo(FilesManagementFileName);
+            Assert.True(fiFilesManagementFileName.Exists);
+
+            FilesManagementFileNameTest = Configuration.GetValue<string>("CSSPDBFilesManagementTest");
+            Assert.NotNull(FilesManagementFileName);
+
+            FileInfo fiFilesManagementFileNameTest = new FileInfo(FilesManagementFileNameTest);
+            if (!fiFilesManagementFileNameTest.Exists)
             {
-                options.UseSqlServer(TestDB);
-            });
-
-            /* ---------------------------------------------------------------------------------
-             * using CSSPDBLocal
-             * ---------------------------------------------------------------------------------      
-             */
-            string CSSPDBLocal = Configuration.GetValue<string>("CSSPDBLocal");
-            Assert.NotNull(CSSPDBLocal);
-
-            FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocal);
-            Assert.True(fiCSSPDBLocal.Exists);
-
-            Services.AddDbContext<CSSPDBLocalContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
-            });
+                try
+                {
+                    File.Copy(fiFilesManagementFileName.FullName, fiFilesManagementFileNameTest.FullName);
+                }
+                catch (Exception ex)
+                {
+                    Assert.True(false, ex.Message);
+                }
+            }
 
             /* ---------------------------------------------------------------------------------
              * using CSSPDBPreference
@@ -100,18 +98,13 @@ namespace CSSPDBFilesManagementServices.Tests
             });
 
             /* ---------------------------------------------------------------------------------
-             * using CSSPDBFilesManagements
+             * using FilesManagements
              * ---------------------------------------------------------------------------------      
              */
-            CSSPDBFilesManagementFileName = Configuration.GetValue<string>("CSSPDBFilesManagement");
-            Assert.NotNull(CSSPDBFilesManagementFileName);
-
-            FileInfo fiCSSPDBFilesManagementFileName = new FileInfo(CSSPDBFilesManagementFileName);
-            Assert.True(fiCSSPDBFilesManagementFileName.Exists);
 
             Services.AddDbContext<CSSPDBFilesManagementContext>(options =>
             {
-                options.UseSqlite($"Data Source={ fiCSSPDBFilesManagementFileName.FullName }");
+                options.UseSqlite($"Data Source={ fiFilesManagementFileNameTest.FullName }");
             });
 
             Provider = Services.BuildServiceProvider();
@@ -125,14 +118,28 @@ namespace CSSPDBFilesManagementServices.Tests
             LoggedInService = Provider.GetService<ILoggedInService>();
             Assert.NotNull(LoggedInService);
 
-            string LoginEmail = Configuration.GetValue<string>("LoginEmail");
-            await LoggedInService.SetLoggedInContactInfo(LoginEmail);
+            await LoggedInService.SetLoggedInLocalContactInfo();
             Assert.NotNull(LoggedInService.LoggedInContactInfo);
             Assert.NotNull(LoggedInService.LoggedInContactInfo.LoggedInContact);
 
-            CSSPDBFilesManagementService = Provider.GetService<ICSSPDBFilesManagementService>();
-            Assert.NotNull(CSSPDBFilesManagementService);
+            FilesManagementService = Provider.GetService<IFilesManagementService>();
+            Assert.NotNull(FilesManagementService);
 
+            dbFile = Provider.GetService<CSSPDBFilesManagementContext>();
+            Assert.NotNull(dbFile);
+
+            List<FilesManagement> fmList = (from c in dbFile.FilesManagements
+                                            select c).ToList();
+
+            try
+            {
+                dbFile.FilesManagements.RemoveRange(fmList);
+                dbFile.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Assert.True(false, ex.Message);
+            }
 
             return await Task.FromResult(true);
         }

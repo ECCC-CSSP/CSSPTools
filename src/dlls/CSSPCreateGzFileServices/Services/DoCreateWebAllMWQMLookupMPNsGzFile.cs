@@ -2,6 +2,7 @@
  * Manually edited
  * 
  */
+using CSSPCultureServices.Resources;
 using CSSPDBModels;
 using CSSPEnums;
 using CSSPWebModels;
@@ -17,7 +18,7 @@ namespace CreateGzFileServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized());
+                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
             }
 
             WebAllMWQMLookupMPNs webAllMWQMLookupMPNs = new WebAllMWQMLookupMPNs();

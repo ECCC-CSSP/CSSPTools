@@ -25,8 +25,17 @@ namespace CSSPDesktopServices.Services
         {
             AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.Logoff));
 
-            var actionPreference = await PreferenceService.AddOrChange("LoggedIn", "false");
-            if (!await DoStatusActionPreference(actionPreference, "LoggedIn")) return await Task.FromResult(false);
+            contact.IsLoggedIn = false;
+
+            try
+            {
+                dbPreference.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.UnmanagedServerError_, ex.Message)));
+                return await Task.FromResult(true);
+            }
 
             AppendStatus(new AppendEventArgs(""));
 

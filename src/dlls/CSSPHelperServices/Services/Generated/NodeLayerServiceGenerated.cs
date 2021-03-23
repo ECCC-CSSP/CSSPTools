@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 using LoggedInServices;
 using Microsoft.Extensions.Configuration;
 
-namespace CSSPDBServices
+namespace CSSPHelperServices
 {
     public interface INodeLayerService
     {
@@ -32,15 +32,11 @@ namespace CSSPDBServices
         #endregion Variables
 
         #region Properties
-        private ICSSPCultureService CSSPCultureService { get; }
-        private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public NodeLayerService(ICSSPCultureService CSSPCultureService, IEnums enums)
+        public NodeLayerService()
         {
-            this.CSSPCultureService = CSSPCultureService;
-            this.enums = enums;
         }
         #endregion Constructors
 
@@ -51,19 +47,17 @@ namespace CSSPDBServices
 
             if (nodeLayer.Layer < 1 || nodeLayer.Layer > 100)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Layer", "1", "100"), new[] { nameof(nodeLayer.Layer) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Layer", "1", "100"), new[] { "Layer" });
             }
 
-            //Z has no Range Attribute
-
-                //CSSPError: Type not implemented [Node] of type [Node]
-
-                //CSSPError: Type not implemented [Node] of type [Node]
-            bool a = false;
-            if (a)
+            if (nodeLayer.Z < -10000 || nodeLayer.Z > 10000)
             {
-                yield return new ValidationResult("");
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Z", "-10000", "10000"), new[] { "Z" });
             }
+
+                //CSSPError: Type not implemented [Node] of type [Node]
+
+                //CSSPError: Type not implemented [Node] of type [Node]
         }
         #endregion Functions public
     }

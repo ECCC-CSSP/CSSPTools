@@ -22,34 +22,231 @@ using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
 using CSSPCultureServices.Resources;
-using LoggedInServices;
+using CSSPHelperServices.Tests;
 
-namespace CSSPDBServices.Tests
+namespace CSSPHelperServices.Tests
 {
-    public partial class TVItemTVAuthDBServiceTest : TestHelper
+    [Collection("Sequential")]
+    public partial class TVItemTVAuthServiceTest : TestHelper
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Configuration { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private ICSSPCultureService CSSPCultureService { get; set; }
+        private IEnums enums { get; set; }
+        private ITVItemTVAuthService TVItemTVAuthService { get; set; }
         #endregion Properties
 
         #region Constructors
-        public TVItemTVAuthDBServiceTest() : base()
+        public TVItemTVAuthServiceTest() : base()
         {
 
         }
         #endregion Constructors
 
-        #region Functions private
-        private void CheckTVItemTVAuthFields(List<TVItemTVAuth> tvItemTVAuthList)
+        #region Tests Generated Constructors
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task AppTaskParameter_Constructor_Test(string culture)
         {
-            Assert.False(string.IsNullOrWhiteSpace(tvItemTVAuthList[0].TVText));
-            Assert.False(string.IsNullOrWhiteSpace(tvItemTVAuthList[0].TVTypeStr));
-            if (!string.IsNullOrWhiteSpace(tvItemTVAuthList[0].TVAuthText))
-            {
-                Assert.False(string.IsNullOrWhiteSpace(tvItemTVAuthList[0].TVAuthText));
-            }
+            Assert.True(await Setup(culture));
+            Assert.NotNull(CSSPCultureService);
+            Assert.NotNull(enums);
+        }
+        #endregion Tests Generated Constructors
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task TVItemTVAuth_Properties_Test(string culture)
+        {
+            List<ValidationResult> ValidationResultList = new List<ValidationResult>();
+            IEnumerable<ValidationResult> validationResults;
+            Assert.True(await Setup(culture));
+
+
+
+            TVItemTVAuth tvItemTVAuth = GetFilledRandomTVItemTVAuth("");
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(1, -1)]
+            // tvItemTVAuth.TVItemUserAuthID   (Int32)
+            // -----------------------------------
+
+
+            tvItemTVAuth = null;
+            tvItemTVAuth = GetFilledRandomTVItemTVAuth("");
+            tvItemTVAuth.TVItemUserAuthID = 0;
+            validationResults = TVItemTVAuthService.Validate(new ValidationContext(tvItemTVAuth));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "TVItemUserAuthID", "1"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(255)]
+            // [CSSPMinLength(1)]
+            // tvItemTVAuth.TVText   (String)
+            // -----------------------------------
+
+
+            tvItemTVAuth = null;
+            tvItemTVAuth = GetFilledRandomTVItemTVAuth("TVText");
+            validationResults = TVItemTVAuthService.Validate(new ValidationContext(tvItemTVAuth));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "TVText"))).Any());
+
+
+            tvItemTVAuth = null;
+            tvItemTVAuth = GetFilledRandomTVItemTVAuth("");
+            tvItemTVAuth.TVText = GetRandomString("", 256);
+            validationResults = TVItemTVAuthService.Validate(new ValidationContext(tvItemTVAuth));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVText", "1", "255"))).Any());
+
+            tvItemTVAuth = null;
+            tvItemTVAuth = GetFilledRandomTVItemTVAuth("");
+            tvItemTVAuth.TVText = GetRandomString("", 256);
+            validationResults = TVItemTVAuthService.Validate(new ValidationContext(tvItemTVAuth));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVText", "1", "255"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(1, -1)]
+            // tvItemTVAuth.TVItemID1   (Int32)
+            // -----------------------------------
+
+
+            tvItemTVAuth = null;
+            tvItemTVAuth = GetFilledRandomTVItemTVAuth("");
+            tvItemTVAuth.TVItemID1 = 0;
+            validationResults = TVItemTVAuthService.Validate(new ValidationContext(tvItemTVAuth));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "TVItemID1", "1"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(255)]
+            // [CSSPMinLength(1)]
+            // tvItemTVAuth.TVTypeStr   (String)
+            // -----------------------------------
+
+
+            tvItemTVAuth = null;
+            tvItemTVAuth = GetFilledRandomTVItemTVAuth("TVTypeStr");
+            validationResults = TVItemTVAuthService.Validate(new ValidationContext(tvItemTVAuth));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "TVTypeStr"))).Any());
+
+
+            tvItemTVAuth = null;
+            tvItemTVAuth = GetFilledRandomTVItemTVAuth("");
+            tvItemTVAuth.TVTypeStr = GetRandomString("", 256);
+            validationResults = TVItemTVAuthService.Validate(new ValidationContext(tvItemTVAuth));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVTypeStr", "1", "255"))).Any());
+
+            tvItemTVAuth = null;
+            tvItemTVAuth = GetFilledRandomTVItemTVAuth("");
+            tvItemTVAuth.TVTypeStr = GetRandomString("", 256);
+            validationResults = TVItemTVAuthService.Validate(new ValidationContext(tvItemTVAuth));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVTypeStr", "1", "255"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // tvItemTVAuth.TVAuth   (TVAuthEnum)
+            // -----------------------------------
+
+
+            tvItemTVAuth = null;
+            tvItemTVAuth = GetFilledRandomTVItemTVAuth("");
+            tvItemTVAuth.TVAuth = (TVAuthEnum)1000000;
+            validationResults = TVItemTVAuthService.Validate(new ValidationContext(tvItemTVAuth));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "TVAuth"))).Any());
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(100)]
+            // tvItemTVAuth.TVAuthText   (String)
+            // -----------------------------------
+
+
+            tvItemTVAuth = null;
+            tvItemTVAuth = GetFilledRandomTVItemTVAuth("");
+            tvItemTVAuth.TVAuthText = GetRandomString("", 101);
+            validationResults = TVItemTVAuthService.Validate(new ValidationContext(tvItemTVAuth));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "TVAuthText", "100"))).Any());
+        }
+        #endregion Tests Generated Properties
+
+        #region Functions private
+        private async Task<bool> Setup(string culture)
+        {
+            Configuration = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings_CSSPDBServicestests.json")
+               .AddUserSecrets("6f27cbbe-6ffb-4154-b49b-d739597c4f60")
+               .Build();
+
+            Services = new ServiceCollection();
+
+            Services.AddSingleton<IConfiguration>(Configuration);
+
+            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ITVItemTVAuthService, TVItemTVAuthService>();
+
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+
+            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
+            Assert.NotNull(CSSPCultureService);
+
+            CSSPCultureService.SetCulture(culture);
+
+            enums = Provider.GetService<IEnums>();
+            Assert.NotNull(enums);
+
+            TVItemTVAuthService = Provider.GetService<ITVItemTVAuthService>();
+            Assert.NotNull(TVItemTVAuthService);
+
+            return await Task.FromResult(true);
+        }
+        private TVItemTVAuth GetFilledRandomTVItemTVAuth(string OmitPropName)
+        {
+            TVItemTVAuth tvItemTVAuth = new TVItemTVAuth();
+
+            if (OmitPropName != "TVItemUserAuthID") tvItemTVAuth.TVItemUserAuthID = GetRandomInt(1, 11);
+            if (OmitPropName != "TVText") tvItemTVAuth.TVText = GetRandomString("", 6);
+            if (OmitPropName != "TVItemID1") tvItemTVAuth.TVItemID1 = GetRandomInt(1, 11);
+            if (OmitPropName != "TVTypeStr") tvItemTVAuth.TVTypeStr = GetRandomString("", 6);
+            if (OmitPropName != "TVAuth") tvItemTVAuth.TVAuth = (TVAuthEnum)GetRandomEnumType(typeof(TVAuthEnum));
+            if (OmitPropName != "TVAuthText") tvItemTVAuth.TVAuthText = GetRandomString("", 5);
+
+            return tvItemTVAuth;
         }
 
         #endregion Functions private

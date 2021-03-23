@@ -73,10 +73,11 @@ namespace CSSPScrambleServices
         }
         public string Scramble(string Text)
         {
+
+            if (string.IsNullOrWhiteSpace(Text)) return "";
+
             Random r = new Random();
             int Start = r.Next(1, 9);
-
-            if (Text.Length == 0) return "";
 
             string retStr = Start.ToString();
             int i = 0;

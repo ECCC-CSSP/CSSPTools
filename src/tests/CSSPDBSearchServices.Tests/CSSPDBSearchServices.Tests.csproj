@@ -5,8 +5,6 @@
 
     <IsPackable>false</IsPackable>
 
-    <UserSecretsId>38d7fa5b-72c7-4b05-9a17-24bb2ba5f559</UserSecretsId>
-
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -44,7 +42,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\dlls\CSSPDBFilesManagementServices\CSSPDBFilesManagementServices.csproj" />
     <ProjectReference Include="..\..\dlls\CSSPDBSearchServices\CSSPDBSearchServices.csproj" />
   </ItemGroup>
 

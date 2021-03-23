@@ -828,4 +828,10 @@
   <data name="_ShouldNotBeOfType_" xml:space="preserve">
     <value>{0} should not be of type {1}</value>
   </data>
+  <data name="YouDoNotHaveAuthorization" xml:space="preserve">
+    <value>You do not have authorization</value>
+  </data>
+  <data name="_AlreadyExistsWithDifferent_" xml:space="preserve">
+    <value>{0} already exists with different {1}</value>
+  </data>
 </root>

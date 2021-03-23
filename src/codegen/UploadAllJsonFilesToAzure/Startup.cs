@@ -76,11 +76,11 @@ namespace UploadAllJsonFilesToAzure
                 options.UseSqlServer(CSSPDBConnString);
             });
 
-            Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(CSSPDBConnString));
+            //Services.AddDbContext<ApplicationDbContext>(options =>
+            //    options.UseSqlServer(CSSPDBConnString));
 
-            Services.AddIdentityCore<ApplicationUser>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            //Services.AddIdentityCore<ApplicationUser>()
+            //    .AddEntityFrameworkStores<ApplicationDbContext>();
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();

@@ -22,28 +22,183 @@ using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
 using CSSPCultureServices.Resources;
-using LoggedInServices;
+using CSSPHelperServices.Tests;
 
-namespace CSSPDBServices.Tests
+namespace CSSPHelperServices.Tests
 {
-    public partial class ElementLayerDBServiceTest : TestHelper
+    [Collection("Sequential")]
+    public partial class ElementLayerServiceTest : TestHelper
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Configuration { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private ICSSPCultureService CSSPCultureService { get; set; }
+        private IEnums enums { get; set; }
+        private IElementLayerService ElementLayerService { get; set; }
         #endregion Properties
 
         #region Constructors
-        public ElementLayerDBServiceTest() : base()
+        public ElementLayerServiceTest() : base()
         {
 
         }
         #endregion Constructors
 
-        #region Functions private
-        private void CheckElementLayerFields(List<ElementLayer> elementLayerList)
+        #region Tests Generated Constructors
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task AppTaskParameter_Constructor_Test(string culture)
         {
+            Assert.True(await Setup(culture));
+            Assert.NotNull(CSSPCultureService);
+            Assert.NotNull(enums);
+        }
+        #endregion Tests Generated Constructors
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task ElementLayer_Properties_Test(string culture)
+        {
+            List<ValidationResult> ValidationResultList = new List<ValidationResult>();
+            IEnumerable<ValidationResult> validationResults;
+            Assert.True(await Setup(culture));
+
+
+
+            ElementLayer elementLayer = GetFilledRandomElementLayer("");
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(1, 1000)]
+            // elementLayer.Layer   (Int32)
+            // -----------------------------------
+
+
+            elementLayer = null;
+            elementLayer = GetFilledRandomElementLayer("");
+            elementLayer.Layer = 0;
+            validationResults = ElementLayerService.Validate(new ValidationContext(elementLayer));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Layer", "1", "1000"))).Any());
+
+            elementLayer = null;
+            elementLayer = GetFilledRandomElementLayer("");
+            elementLayer.Layer = 1001;
+            validationResults = ElementLayerService.Validate(new ValidationContext(elementLayer));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Layer", "1", "1000"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(-1, -1)]
+            // elementLayer.ZMin   (Double)
+            // -----------------------------------
+
+
+            elementLayer = null;
+            elementLayer = GetFilledRandomElementLayer("");
+            elementLayer.ZMin = -2.0D;
+            validationResults = ElementLayerService.Validate(new ValidationContext(elementLayer));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "ZMin", "-1", "-1"))).Any());
+
+            elementLayer = null;
+            elementLayer = GetFilledRandomElementLayer("");
+            elementLayer.ZMin = 0.0D;
+            validationResults = ElementLayerService.Validate(new ValidationContext(elementLayer));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "ZMin", "-1", "-1"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(-1, -1)]
+            // elementLayer.ZMax   (Double)
+            // -----------------------------------
+
+
+            elementLayer = null;
+            elementLayer = GetFilledRandomElementLayer("");
+            elementLayer.ZMax = -2.0D;
+            validationResults = ElementLayerService.Validate(new ValidationContext(elementLayer));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "ZMax", "-1", "-1"))).Any());
+
+            elementLayer = null;
+            elementLayer = GetFilledRandomElementLayer("");
+            elementLayer.ZMax = 0.0D;
+            validationResults = ElementLayerService.Validate(new ValidationContext(elementLayer));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "ZMax", "-1", "-1"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // elementLayer.Element   (Element)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [Element]
+
+            //CSSPError: Type not implemented [Element]
+
+        }
+        #endregion Tests Generated Properties
+
+        #region Functions private
+        private async Task<bool> Setup(string culture)
+        {
+            Configuration = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings_CSSPDBServicestests.json")
+               .AddUserSecrets("6f27cbbe-6ffb-4154-b49b-d739597c4f60")
+               .Build();
+
+            Services = new ServiceCollection();
+
+            Services.AddSingleton<IConfiguration>(Configuration);
+
+            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<IElementLayerService, ElementLayerService>();
+
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+
+            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
+            Assert.NotNull(CSSPCultureService);
+
+            CSSPCultureService.SetCulture(culture);
+
+            enums = Provider.GetService<IEnums>();
+            Assert.NotNull(enums);
+
+            ElementLayerService = Provider.GetService<IElementLayerService>();
+            Assert.NotNull(ElementLayerService);
+
+            return await Task.FromResult(true);
+        }
+        private ElementLayer GetFilledRandomElementLayer(string OmitPropName)
+        {
+            ElementLayer elementLayer = new ElementLayer();
+
+            if (OmitPropName != "Layer") elementLayer.Layer = GetRandomInt(1, 1000);
+            if (OmitPropName != "ZMin") elementLayer.ZMin = GetRandomDouble(-1.0D, -1.0D);
+            if (OmitPropName != "ZMax") elementLayer.ZMax = GetRandomDouble(-1.0D, -1.0D);
+            //CSSPError: property [Element] and type [ElementLayer] is  not implemented
+
+            return elementLayer;
         }
 
         #endregion Functions private

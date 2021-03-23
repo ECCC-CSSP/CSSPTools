@@ -22,28 +22,255 @@ using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
 using CSSPCultureServices.Resources;
-using LoggedInServices;
+using CSSPHelperServices.Tests;
 
-namespace CSSPDBServices.Tests
+namespace CSSPHelperServices.Tests
 {
-    public partial class ElementDBServiceTest : TestHelper
+    [Collection("Sequential")]
+    public partial class ElementServiceTest : TestHelper
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Configuration { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private ICSSPCultureService CSSPCultureService { get; set; }
+        private IEnums enums { get; set; }
+        private IElementService ElementService { get; set; }
         #endregion Properties
 
         #region Constructors
-        public ElementDBServiceTest() : base()
+        public ElementServiceTest() : base()
         {
 
         }
         #endregion Constructors
 
-        #region Functions private
-        private void CheckElementFields(List<Element> elementList)
+        #region Tests Generated Constructors
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task AppTaskParameter_Constructor_Test(string culture)
         {
+            Assert.True(await Setup(culture));
+            Assert.NotNull(CSSPCultureService);
+            Assert.NotNull(enums);
+        }
+        #endregion Tests Generated Constructors
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task Element_Properties_Test(string culture)
+        {
+            List<ValidationResult> ValidationResultList = new List<ValidationResult>();
+            IEnumerable<ValidationResult> validationResults;
+            Assert.True(await Setup(culture));
+
+
+
+            Element element = GetFilledRandomElement("");
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(1, -1)]
+            // element.ID   (Int32)
+            // -----------------------------------
+
+
+            element = null;
+            element = GetFilledRandomElement("");
+            element.ID = 0;
+            validationResults = ElementService.Validate(new ValidationContext(element));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "ID", "1"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(1, -1)]
+            // element.Type   (Int32)
+            // -----------------------------------
+
+
+            element = null;
+            element = GetFilledRandomElement("");
+            element.Type = 0;
+            validationResults = ElementService.Validate(new ValidationContext(element));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "Type", "1"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(1, -1)]
+            // element.NumbOfNodes   (Int32)
+            // -----------------------------------
+
+
+            element = null;
+            element = GetFilledRandomElement("");
+            element.NumbOfNodes = 0;
+            validationResults = ElementService.Validate(new ValidationContext(element));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "NumbOfNodes", "1"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(-1, -1)]
+            // element.Value   (Double)
+            // -----------------------------------
+
+
+            element = null;
+            element = GetFilledRandomElement("");
+            element.Value = -2.0D;
+            validationResults = ElementService.Validate(new ValidationContext(element));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Value", "-1", "-1"))).Any());
+
+            element = null;
+            element = GetFilledRandomElement("");
+            element.Value = 0.0D;
+            validationResults = ElementService.Validate(new ValidationContext(element));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Value", "-1", "-1"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(-1, -1)]
+            // element.XNode0   (Double)
+            // -----------------------------------
+
+
+            element = null;
+            element = GetFilledRandomElement("");
+            element.XNode0 = -2.0D;
+            validationResults = ElementService.Validate(new ValidationContext(element));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "XNode0", "-1", "-1"))).Any());
+
+            element = null;
+            element = GetFilledRandomElement("");
+            element.XNode0 = 0.0D;
+            validationResults = ElementService.Validate(new ValidationContext(element));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "XNode0", "-1", "-1"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(-1, -1)]
+            // element.YNode0   (Double)
+            // -----------------------------------
+
+
+            element = null;
+            element = GetFilledRandomElement("");
+            element.YNode0 = -2.0D;
+            validationResults = ElementService.Validate(new ValidationContext(element));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "YNode0", "-1", "-1"))).Any());
+
+            element = null;
+            element = GetFilledRandomElement("");
+            element.YNode0 = 0.0D;
+            validationResults = ElementService.Validate(new ValidationContext(element));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "YNode0", "-1", "-1"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(-1, -1)]
+            // element.ZNode0   (Double)
+            // -----------------------------------
+
+
+            element = null;
+            element = GetFilledRandomElement("");
+            element.ZNode0 = -2.0D;
+            validationResults = ElementService.Validate(new ValidationContext(element));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "ZNode0", "-1", "-1"))).Any());
+
+            element = null;
+            element = GetFilledRandomElement("");
+            element.ZNode0 = 0.0D;
+            validationResults = ElementService.Validate(new ValidationContext(element));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "ZNode0", "-1", "-1"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // element.NodeList   (Node)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [NodeList]
+
+            //CSSPError: Type not implemented [NodeList]
+
+        }
+        #endregion Tests Generated Properties
+
+        #region Functions private
+        private async Task<bool> Setup(string culture)
+        {
+            Configuration = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings_CSSPDBServicestests.json")
+               .AddUserSecrets("6f27cbbe-6ffb-4154-b49b-d739597c4f60")
+               .Build();
+
+            Services = new ServiceCollection();
+
+            Services.AddSingleton<IConfiguration>(Configuration);
+
+            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<IElementService, ElementService>();
+
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+
+            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
+            Assert.NotNull(CSSPCultureService);
+
+            CSSPCultureService.SetCulture(culture);
+
+            enums = Provider.GetService<IEnums>();
+            Assert.NotNull(enums);
+
+            ElementService = Provider.GetService<IElementService>();
+            Assert.NotNull(ElementService);
+
+            return await Task.FromResult(true);
+        }
+        private Element GetFilledRandomElement(string OmitPropName)
+        {
+            Element element = new Element();
+
+            if (OmitPropName != "ID") element.ID = GetRandomInt(1, 11);
+            if (OmitPropName != "Type") element.Type = GetRandomInt(1, 11);
+            if (OmitPropName != "NumbOfNodes") element.NumbOfNodes = GetRandomInt(1, 11);
+            if (OmitPropName != "Value") element.Value = GetRandomDouble(-1.0D, -1.0D);
+            if (OmitPropName != "XNode0") element.XNode0 = GetRandomDouble(-1.0D, -1.0D);
+            if (OmitPropName != "YNode0") element.YNode0 = GetRandomDouble(-1.0D, -1.0D);
+            if (OmitPropName != "ZNode0") element.ZNode0 = GetRandomDouble(-1.0D, -1.0D);
+            //CSSPError: property [NodeList] and type [Element] is  not implemented
+
+            return element;
         }
 
         #endregion Functions private

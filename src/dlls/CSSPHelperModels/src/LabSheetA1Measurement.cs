@@ -2,12 +2,10 @@
  * Manually edited
  * 
  */
+using CSSPCustomAttributes;
 using CSSPEnums;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 
 namespace CSSPHelperModels
 {
@@ -39,6 +37,7 @@ namespace CSSPHelperModels
         [CSSPEnumType]
         [CSSPAllowNull]
         public SampleTypeEnum? SampleType { get; set; }
+        [CSSPMaxLength(100000)]
         public string SiteComment { get; set; }
         [CSSPMaxLength(100)]
         [CSSPEnumTypeText(EnumTypeName = "SampleTypeEnum", EnumType = "SampleType")]

@@ -2778,4 +2778,19 @@
   <data name="WebTypeEnumWebAllMWQMLookupMPNs" xml:space="preserve">
     <value>WebAllMWQMLookupMPNs</value>
   </data>
+  <data name="WebTypeEnumWebAllAddresses" xml:space="preserve">
+    <value>WebAllAddresses</value>
+  </data>
+  <data name="WebTypeEnumWebAllEmails" xml:space="preserve">
+    <value>WebAllEmails</value>
+  </data>
+  <data name="WebTypeEnumWebAllTels" xml:space="preserve">
+    <value>WebAllTels</value>
+  </data>
+  <data name="WebTypeEnumWebTideDataValue" xml:space="preserve">
+    <value>TideDataValue</value>
+  </data>
+  <data name="WebTypeEnumWebTideSite" xml:space="preserve">
+    <value>WebTideSite</value>
+  </data>
 </root>

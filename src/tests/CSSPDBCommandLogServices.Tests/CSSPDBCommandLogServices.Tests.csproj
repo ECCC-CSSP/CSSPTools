@@ -14,13 +14,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="appsettings_csspdbcommandlogservicestests.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="appsettings_csspdbcommandlogservicestests.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <None Remove="appsettings_CommandLogservicestests.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -40,11 +34,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\dlls\CSSPDBCommandLogServices\CSSPDBCommandLogServices.csproj" />
-    <ProjectReference Include="..\..\dlls\CSSPDBPreferenceModels\CSSPDBPreferenceModels.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="appsettings_csspdbcommandlogervicestests.json">
+    <None Update="appsettings_CommandLogervicestests.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="appsettings_csspdbcommandlogservicestests.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

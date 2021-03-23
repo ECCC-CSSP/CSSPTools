@@ -22,29 +22,156 @@ using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
 using CSSPCultureServices.Resources;
-using LoggedInServices;
+using CSSPHelperServices.Tests;
 
-namespace CSSPDBServices.Tests
+namespace CSSPHelperServices.Tests
 {
-    public partial class ContactSearchDBServiceTest : TestHelper
+    [Collection("Sequential")]
+    public partial class ContactSearchServiceTest : TestHelper
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Configuration { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private ICSSPCultureService CSSPCultureService { get; set; }
+        private IEnums enums { get; set; }
+        private IContactSearchService ContactSearchService { get; set; }
         #endregion Properties
 
         #region Constructors
-        public ContactSearchDBServiceTest() : base()
+        public ContactSearchServiceTest() : base()
         {
 
         }
         #endregion Constructors
 
-        #region Functions private
-        private void CheckContactSearchFields(List<ContactSearch> contactSearchList)
+        #region Tests Generated Constructors
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task AppTaskParameter_Constructor_Test(string culture)
         {
-            Assert.False(string.IsNullOrWhiteSpace(contactSearchList[0].FullName));
+            Assert.True(await Setup(culture));
+            Assert.NotNull(CSSPCultureService);
+            Assert.NotNull(enums);
+        }
+        #endregion Tests Generated Constructors
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task ContactSearch_Properties_Test(string culture)
+        {
+            List<ValidationResult> ValidationResultList = new List<ValidationResult>();
+            IEnumerable<ValidationResult> validationResults;
+            Assert.True(await Setup(culture));
+
+
+
+            ContactSearch contactSearch = GetFilledRandomContactSearch("");
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(1, -1)]
+            // contactSearch.ContactID   (Int32)
+            // -----------------------------------
+
+
+            contactSearch = null;
+            contactSearch = GetFilledRandomContactSearch("");
+            contactSearch.ContactID = 0;
+            validationResults = ContactSearchService.Validate(new ValidationContext(contactSearch));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContactID", "1"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(1, -1)]
+            // contactSearch.ContactTVItemID   (Int32)
+            // -----------------------------------
+
+
+            contactSearch = null;
+            contactSearch = GetFilledRandomContactSearch("");
+            contactSearch.ContactTVItemID = 0;
+            validationResults = ContactSearchService.Validate(new ValidationContext(contactSearch));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContactTVItemID", "1"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(255)]
+            // contactSearch.FullName   (String)
+            // -----------------------------------
+
+
+            contactSearch = null;
+            contactSearch = GetFilledRandomContactSearch("FullName");
+            validationResults = ContactSearchService.Validate(new ValidationContext(contactSearch));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "FullName"))).Any());
+
+
+            contactSearch = null;
+            contactSearch = GetFilledRandomContactSearch("");
+            contactSearch.FullName = GetRandomString("", 256);
+            validationResults = ContactSearchService.Validate(new ValidationContext(contactSearch));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "FullName", "255"))).Any());
+        }
+        #endregion Tests Generated Properties
+
+        #region Functions private
+        private async Task<bool> Setup(string culture)
+        {
+            Configuration = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings_CSSPDBServicestests.json")
+               .AddUserSecrets("6f27cbbe-6ffb-4154-b49b-d739597c4f60")
+               .Build();
+
+            Services = new ServiceCollection();
+
+            Services.AddSingleton<IConfiguration>(Configuration);
+
+            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<IContactSearchService, ContactSearchService>();
+
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+
+            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
+            Assert.NotNull(CSSPCultureService);
+
+            CSSPCultureService.SetCulture(culture);
+
+            enums = Provider.GetService<IEnums>();
+            Assert.NotNull(enums);
+
+            ContactSearchService = Provider.GetService<IContactSearchService>();
+            Assert.NotNull(ContactSearchService);
+
+            return await Task.FromResult(true);
+        }
+        private ContactSearch GetFilledRandomContactSearch(string OmitPropName)
+        {
+            ContactSearch contactSearch = new ContactSearch();
+
+            if (OmitPropName != "ContactID") contactSearch.ContactID = GetRandomInt(1, 11);
+            if (OmitPropName != "ContactTVItemID") contactSearch.ContactTVItemID = GetRandomInt(1, 11);
+            if (OmitPropName != "FullName") contactSearch.FullName = GetRandomString("", 5);
+
+            return contactSearch;
         }
 
         #endregion Functions private

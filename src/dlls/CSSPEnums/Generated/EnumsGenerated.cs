@@ -107,221 +107,221 @@ namespace CSSPEnums
             switch (enumName)
             {
                 case "ActionDBTypeEnum":
-                    return GetEnumText_ActionDBTypeEnum((ID == null ? null : (ActionDBTypeEnum?)ID));
+                    return GetEnumText_ActionDBTypeEnum((ActionDBTypeEnum?)ID);
                 case "AddContactTypeEnum":
-                    return GetEnumText_AddContactTypeEnum((ID == null ? null : (AddContactTypeEnum?)ID));
+                    return GetEnumText_AddContactTypeEnum((AddContactTypeEnum?)ID);
                 case "EntityQueryTypeEnum":
-                    return GetEnumText_EntityQueryTypeEnum((ID == null ? null : (EntityQueryTypeEnum?)ID));
+                    return GetEnumText_EntityQueryTypeEnum((EntityQueryTypeEnum?)ID);
                 case "PolSourceObsInfoTypeEnum":
-                    return GetEnumText_PolSourceObsInfoTypeEnum((ID == null ? null : (PolSourceObsInfoTypeEnum?)ID));
+                    return GetEnumText_PolSourceObsInfoTypeEnum((PolSourceObsInfoTypeEnum?)ID);
                 case "AddressTypeEnum":
-                    return GetEnumText_AddressTypeEnum((ID == null ? null : (AddressTypeEnum?)ID));
+                    return GetEnumText_AddressTypeEnum((AddressTypeEnum?)ID);
                 case "AreaSubComponentEnum":
-                    return GetEnumText_AreaSubComponentEnum((ID == null ? null : (AreaSubComponentEnum?)ID));
+                    return GetEnumText_AreaSubComponentEnum((AreaSubComponentEnum?)ID);
                 case "AerationTypeEnum":
-                    return GetEnumText_AerationTypeEnum((ID == null ? null : (AerationTypeEnum?)ID));
+                    return GetEnumText_AerationTypeEnum((AerationTypeEnum?)ID);
                 case "AlarmSystemTypeEnum":
-                    return GetEnumText_AlarmSystemTypeEnum((ID == null ? null : (AlarmSystemTypeEnum?)ID));
+                    return GetEnumText_AlarmSystemTypeEnum((AlarmSystemTypeEnum?)ID);
                 case "AnalysisCalculationTypeEnum":
-                    return GetEnumText_AnalysisCalculationTypeEnum((ID == null ? null : (AnalysisCalculationTypeEnum?)ID));
+                    return GetEnumText_AnalysisCalculationTypeEnum((AnalysisCalculationTypeEnum?)ID);
                 case "AnalysisReportExportCommandEnum":
-                    return GetEnumText_AnalysisReportExportCommandEnum((ID == null ? null : (AnalysisReportExportCommandEnum?)ID));
+                    return GetEnumText_AnalysisReportExportCommandEnum((AnalysisReportExportCommandEnum?)ID);
                 case "AnalyzeMethodEnum":
-                    return GetEnumText_AnalyzeMethodEnum((ID == null ? null : (AnalyzeMethodEnum?)ID));
+                    return GetEnumText_AnalyzeMethodEnum((AnalyzeMethodEnum?)ID);
                 case "AppTaskCommandEnum":
-                    return GetEnumText_AppTaskCommandEnum((ID == null ? null : (AppTaskCommandEnum?)ID));
+                    return GetEnumText_AppTaskCommandEnum((AppTaskCommandEnum?)ID);
                 case "AppTaskStatusEnum":
-                    return GetEnumText_AppTaskStatusEnum((ID == null ? null : (AppTaskStatusEnum?)ID));
+                    return GetEnumText_AppTaskStatusEnum((AppTaskStatusEnum?)ID);
                 case "AscDescEnum":
-                    return GetEnumText_AscDescEnum((ID == null ? null : (AscDescEnum?)ID));
+                    return GetEnumText_AscDescEnum((AscDescEnum?)ID);
                 case "BeaufortScaleEnum":
-                    return GetEnumText_BeaufortScaleEnum((ID == null ? null : (BeaufortScaleEnum?)ID));
+                    return GetEnumText_BeaufortScaleEnum((BeaufortScaleEnum?)ID);
                 case "BoxModelResultTypeEnum":
-                    return GetEnumText_BoxModelResultTypeEnum((ID == null ? null : (BoxModelResultTypeEnum?)ID));
+                    return GetEnumText_BoxModelResultTypeEnum((BoxModelResultTypeEnum?)ID);
                 case "CanOverflowTypeEnum":
-                    return GetEnumText_CanOverflowTypeEnum((ID == null ? null : (CanOverflowTypeEnum?)ID));
+                    return GetEnumText_CanOverflowTypeEnum((CanOverflowTypeEnum?)ID);
                 case "ClassificationTypeEnum":
-                    return GetEnumText_ClassificationTypeEnum((ID == null ? null : (ClassificationTypeEnum?)ID));
+                    return GetEnumText_ClassificationTypeEnum((ClassificationTypeEnum?)ID);
                 case "CollectionSystemTypeEnum":
-                    return GetEnumText_CollectionSystemTypeEnum((ID == null ? null : (CollectionSystemTypeEnum?)ID));
+                    return GetEnumText_CollectionSystemTypeEnum((CollectionSystemTypeEnum?)ID);
                 case "ContactTitleEnum":
-                    return GetEnumText_ContactTitleEnum((ID == null ? null : (ContactTitleEnum?)ID));
+                    return GetEnumText_ContactTitleEnum((ContactTitleEnum?)ID);
                 case "ContentSizeEnum":
-                    return GetEnumText_ContentSizeEnum((ID == null ? null : (ContentSizeEnum?)ID));
+                    return GetEnumText_ContentSizeEnum((ContentSizeEnum?)ID);
                 case "CountrySubComponentEnum":
-                    return GetEnumText_CountrySubComponentEnum((ID == null ? null : (CountrySubComponentEnum?)ID));
+                    return GetEnumText_CountrySubComponentEnum((CountrySubComponentEnum?)ID);
                 case "CSSPWQInputSheetTypeEnum":
-                    return GetEnumText_CSSPWQInputSheetTypeEnum((ID == null ? null : (CSSPWQInputSheetTypeEnum?)ID));
+                    return GetEnumText_CSSPWQInputSheetTypeEnum((CSSPWQInputSheetTypeEnum?)ID);
                 case "CSSPWQInputTypeEnum":
-                    return GetEnumText_CSSPWQInputTypeEnum((ID == null ? null : (CSSPWQInputTypeEnum?)ID));
+                    return GetEnumText_CSSPWQInputTypeEnum((CSSPWQInputTypeEnum?)ID);
                 case "DailyOrHourlyDataEnum":
-                    return GetEnumText_DailyOrHourlyDataEnum((ID == null ? null : (DailyOrHourlyDataEnum?)ID));
+                    return GetEnumText_DailyOrHourlyDataEnum((DailyOrHourlyDataEnum?)ID);
                 case "DisinfectionTypeEnum":
-                    return GetEnumText_DisinfectionTypeEnum((ID == null ? null : (DisinfectionTypeEnum?)ID));
+                    return GetEnumText_DisinfectionTypeEnum((DisinfectionTypeEnum?)ID);
                 case "DrogueTypeEnum":
-                    return GetEnumText_DrogueTypeEnum((ID == null ? null : (DrogueTypeEnum?)ID));
+                    return GetEnumText_DrogueTypeEnum((DrogueTypeEnum?)ID);
                 case "EmailTypeEnum":
-                    return GetEnumText_EmailTypeEnum((ID == null ? null : (EmailTypeEnum?)ID));
+                    return GetEnumText_EmailTypeEnum((EmailTypeEnum?)ID);
                 case "ExcelExportShowDataTypeEnum":
-                    return GetEnumText_ExcelExportShowDataTypeEnum((ID == null ? null : (ExcelExportShowDataTypeEnum?)ID));
+                    return GetEnumText_ExcelExportShowDataTypeEnum((ExcelExportShowDataTypeEnum?)ID);
                 case "FacilityTypeEnum":
-                    return GetEnumText_FacilityTypeEnum((ID == null ? null : (FacilityTypeEnum?)ID));
+                    return GetEnumText_FacilityTypeEnum((FacilityTypeEnum?)ID);
                 case "FilePurposeEnum":
-                    return GetEnumText_FilePurposeEnum((ID == null ? null : (FilePurposeEnum?)ID));
+                    return GetEnumText_FilePurposeEnum((FilePurposeEnum?)ID);
                 case "FilesSortPropEnum":
-                    return GetEnumText_FilesSortPropEnum((ID == null ? null : (FilesSortPropEnum?)ID));
+                    return GetEnumText_FilesSortPropEnum((FilesSortPropEnum?)ID);
                 case "FileStatusEnum":
-                    return GetEnumText_FileStatusEnum((ID == null ? null : (FileStatusEnum?)ID));
+                    return GetEnumText_FileStatusEnum((FileStatusEnum?)ID);
                 case "FileTypeEnum":
-                    return GetEnumText_FileTypeEnum((ID == null ? null : (FileTypeEnum?)ID));
+                    return GetEnumText_FileTypeEnum((FileTypeEnum?)ID);
                 case "InfrastructureTypeEnum":
-                    return GetEnumText_InfrastructureTypeEnum((ID == null ? null : (InfrastructureTypeEnum?)ID));
+                    return GetEnumText_InfrastructureTypeEnum((InfrastructureTypeEnum?)ID);
                 case "KMZActionEnum":
-                    return GetEnumText_KMZActionEnum((ID == null ? null : (KMZActionEnum?)ID));
+                    return GetEnumText_KMZActionEnum((KMZActionEnum?)ID);
                 case "LaboratoryEnum":
-                    return GetEnumText_LaboratoryEnum((ID == null ? null : (LaboratoryEnum?)ID));
+                    return GetEnumText_LaboratoryEnum((LaboratoryEnum?)ID);
                 case "LabSheetStatusEnum":
-                    return GetEnumText_LabSheetStatusEnum((ID == null ? null : (LabSheetStatusEnum?)ID));
+                    return GetEnumText_LabSheetStatusEnum((LabSheetStatusEnum?)ID);
                 case "LabSheetTypeEnum":
-                    return GetEnumText_LabSheetTypeEnum((ID == null ? null : (LabSheetTypeEnum?)ID));
+                    return GetEnumText_LabSheetTypeEnum((LabSheetTypeEnum?)ID);
                 case "LanguageEnum":
-                    return GetEnumText_LanguageEnum((ID == null ? null : (LanguageEnum?)ID));
+                    return GetEnumText_LanguageEnum((LanguageEnum?)ID);
                 case "DBCommandEnum":
-                    return GetEnumText_DBCommandEnum((ID == null ? null : (DBCommandEnum?)ID));
+                    return GetEnumText_DBCommandEnum((DBCommandEnum?)ID);
                 case "LogCommandEnum":
-                    return GetEnumText_LogCommandEnum((ID == null ? null : (LogCommandEnum?)ID));
+                    return GetEnumText_LogCommandEnum((LogCommandEnum?)ID);
                 case "MapInfoDrawTypeEnum":
-                    return GetEnumText_MapInfoDrawTypeEnum((ID == null ? null : (MapInfoDrawTypeEnum?)ID));
+                    return GetEnumText_MapInfoDrawTypeEnum((MapInfoDrawTypeEnum?)ID);
                 case "MapSizeEnum":
-                    return GetEnumText_MapSizeEnum((ID == null ? null : (MapSizeEnum?)ID));
+                    return GetEnumText_MapSizeEnum((MapSizeEnum?)ID);
                 case "MikeBoundaryConditionLevelOrVelocityEnum":
-                    return GetEnumText_MikeBoundaryConditionLevelOrVelocityEnum((ID == null ? null : (MikeBoundaryConditionLevelOrVelocityEnum?)ID));
+                    return GetEnumText_MikeBoundaryConditionLevelOrVelocityEnum((MikeBoundaryConditionLevelOrVelocityEnum?)ID);
                 case "MikeScenarioSpecialResultKMLTypeEnum":
-                    return GetEnumText_MikeScenarioSpecialResultKMLTypeEnum((ID == null ? null : (MikeScenarioSpecialResultKMLTypeEnum?)ID));
+                    return GetEnumText_MikeScenarioSpecialResultKMLTypeEnum((MikeScenarioSpecialResultKMLTypeEnum?)ID);
                 case "MikeScenarioSubComponentEnum":
-                    return GetEnumText_MikeScenarioSubComponentEnum((ID == null ? null : (MikeScenarioSubComponentEnum?)ID));
+                    return GetEnumText_MikeScenarioSubComponentEnum((MikeScenarioSubComponentEnum?)ID);
                 case "MWQMRunSubComponentEnum":
-                    return GetEnumText_MWQMRunSubComponentEnum((ID == null ? null : (MWQMRunSubComponentEnum?)ID));
+                    return GetEnumText_MWQMRunSubComponentEnum((MWQMRunSubComponentEnum?)ID);
                 case "MWQMSiteLatestClassificationEnum":
-                    return GetEnumText_MWQMSiteLatestClassificationEnum((ID == null ? null : (MWQMSiteLatestClassificationEnum?)ID));
+                    return GetEnumText_MWQMSiteLatestClassificationEnum((MWQMSiteLatestClassificationEnum?)ID);
                 case "MWQMSiteSubComponentEnum":
-                    return GetEnumText_MWQMSiteSubComponentEnum((ID == null ? null : (MWQMSiteSubComponentEnum?)ID));
+                    return GetEnumText_MWQMSiteSubComponentEnum((MWQMSiteSubComponentEnum?)ID);
                 case "MunicipalitySubComponentEnum":
-                    return GetEnumText_MunicipalitySubComponentEnum((ID == null ? null : (MunicipalitySubComponentEnum?)ID));
+                    return GetEnumText_MunicipalitySubComponentEnum((MunicipalitySubComponentEnum?)ID);
                 case "PolSourceInactiveReasonEnum":
-                    return GetEnumText_PolSourceInactiveReasonEnum((ID == null ? null : (PolSourceInactiveReasonEnum?)ID));
+                    return GetEnumText_PolSourceInactiveReasonEnum((PolSourceInactiveReasonEnum?)ID);
                 case "PolSourceIssueRiskEnum":
-                    return GetEnumText_PolSourceIssueRiskEnum((ID == null ? null : (PolSourceIssueRiskEnum?)ID));
+                    return GetEnumText_PolSourceIssueRiskEnum((PolSourceIssueRiskEnum?)ID);
                 case "PolSourceSiteSubComponentEnum":
-                    return GetEnumText_PolSourceSiteSubComponentEnum((ID == null ? null : (PolSourceSiteSubComponentEnum?)ID));
+                    return GetEnumText_PolSourceSiteSubComponentEnum((PolSourceSiteSubComponentEnum?)ID);
                 case "PositionEnum":
-                    return GetEnumText_PositionEnum((ID == null ? null : (PositionEnum?)ID));
+                    return GetEnumText_PositionEnum((PositionEnum?)ID);
                 case "PreliminaryTreatmentTypeEnum":
-                    return GetEnumText_PreliminaryTreatmentTypeEnum((ID == null ? null : (PreliminaryTreatmentTypeEnum?)ID));
+                    return GetEnumText_PreliminaryTreatmentTypeEnum((PreliminaryTreatmentTypeEnum?)ID);
                 case "PrimaryTreatmentTypeEnum":
-                    return GetEnumText_PrimaryTreatmentTypeEnum((ID == null ? null : (PrimaryTreatmentTypeEnum?)ID));
+                    return GetEnumText_PrimaryTreatmentTypeEnum((PrimaryTreatmentTypeEnum?)ID);
                 case "PropertyTypeEnum":
-                    return GetEnumText_PropertyTypeEnum((ID == null ? null : (PropertyTypeEnum?)ID));
+                    return GetEnumText_PropertyTypeEnum((PropertyTypeEnum?)ID);
                 case "ProvinceSubComponentEnum":
-                    return GetEnumText_ProvinceSubComponentEnum((ID == null ? null : (ProvinceSubComponentEnum?)ID));
+                    return GetEnumText_ProvinceSubComponentEnum((ProvinceSubComponentEnum?)ID);
                 case "ReportConditionEnum":
-                    return GetEnumText_ReportConditionEnum((ID == null ? null : (ReportConditionEnum?)ID));
+                    return GetEnumText_ReportConditionEnum((ReportConditionEnum?)ID);
                 case "ReportFieldTypeEnum":
-                    return GetEnumText_ReportFieldTypeEnum((ID == null ? null : (ReportFieldTypeEnum?)ID));
+                    return GetEnumText_ReportFieldTypeEnum((ReportFieldTypeEnum?)ID);
                 case "ReportFileTypeEnum":
-                    return GetEnumText_ReportFileTypeEnum((ID == null ? null : (ReportFileTypeEnum?)ID));
+                    return GetEnumText_ReportFileTypeEnum((ReportFileTypeEnum?)ID);
                 case "ReportFormatingDateEnum":
-                    return GetEnumText_ReportFormatingDateEnum((ID == null ? null : (ReportFormatingDateEnum?)ID));
+                    return GetEnumText_ReportFormatingDateEnum((ReportFormatingDateEnum?)ID);
                 case "ReportFormatingNumberEnum":
-                    return GetEnumText_ReportFormatingNumberEnum((ID == null ? null : (ReportFormatingNumberEnum?)ID));
+                    return GetEnumText_ReportFormatingNumberEnum((ReportFormatingNumberEnum?)ID);
                 case "ReportGenerateObjectsKeywordEnum":
-                    return GetEnumText_ReportGenerateObjectsKeywordEnum((ID == null ? null : (ReportGenerateObjectsKeywordEnum?)ID));
+                    return GetEnumText_ReportGenerateObjectsKeywordEnum((ReportGenerateObjectsKeywordEnum?)ID);
                 case "ReportSortingEnum":
-                    return GetEnumText_ReportSortingEnum((ID == null ? null : (ReportSortingEnum?)ID));
+                    return GetEnumText_ReportSortingEnum((ReportSortingEnum?)ID);
                 case "ReportTreeNodeSubTypeEnum":
-                    return GetEnumText_ReportTreeNodeSubTypeEnum((ID == null ? null : (ReportTreeNodeSubTypeEnum?)ID));
+                    return GetEnumText_ReportTreeNodeSubTypeEnum((ReportTreeNodeSubTypeEnum?)ID);
                 case "ReportTreeNodeTypeEnum":
-                    return GetEnumText_ReportTreeNodeTypeEnum((ID == null ? null : (ReportTreeNodeTypeEnum?)ID));
+                    return GetEnumText_ReportTreeNodeTypeEnum((ReportTreeNodeTypeEnum?)ID);
                 case "RootSubComponentEnum":
-                    return GetEnumText_RootSubComponentEnum((ID == null ? null : (RootSubComponentEnum?)ID));
+                    return GetEnumText_RootSubComponentEnum((RootSubComponentEnum?)ID);
                 case "RunningOnEnum":
-                    return GetEnumText_RunningOnEnum((ID == null ? null : (RunningOnEnum?)ID));
+                    return GetEnumText_RunningOnEnum((RunningOnEnum?)ID);
                 case "SameDayNextDayEnum":
-                    return GetEnumText_SameDayNextDayEnum((ID == null ? null : (SameDayNextDayEnum?)ID));
+                    return GetEnumText_SameDayNextDayEnum((SameDayNextDayEnum?)ID);
                 case "SampleMatrixEnum":
-                    return GetEnumText_SampleMatrixEnum((ID == null ? null : (SampleMatrixEnum?)ID));
+                    return GetEnumText_SampleMatrixEnum((SampleMatrixEnum?)ID);
                 case "SampleStatusEnum":
-                    return GetEnumText_SampleStatusEnum((ID == null ? null : (SampleStatusEnum?)ID));
+                    return GetEnumText_SampleStatusEnum((SampleStatusEnum?)ID);
                 case "SampleTypeEnum":
-                    return GetEnumText_SampleTypeEnum((ID == null ? null : (SampleTypeEnum?)ID));
+                    return GetEnumText_SampleTypeEnum((SampleTypeEnum?)ID);
                 case "SamplingPlanTypeEnum":
-                    return GetEnumText_SamplingPlanTypeEnum((ID == null ? null : (SamplingPlanTypeEnum?)ID));
+                    return GetEnumText_SamplingPlanTypeEnum((SamplingPlanTypeEnum?)ID);
                 case "ScenarioStatusEnum":
-                    return GetEnumText_ScenarioStatusEnum((ID == null ? null : (ScenarioStatusEnum?)ID));
+                    return GetEnumText_ScenarioStatusEnum((ScenarioStatusEnum?)ID);
                 case "SearchTagEnum":
-                    return GetEnumText_SearchTagEnum((ID == null ? null : (SearchTagEnum?)ID));
+                    return GetEnumText_SearchTagEnum((SearchTagEnum?)ID);
                 case "SecondaryTreatmentTypeEnum":
-                    return GetEnumText_SecondaryTreatmentTypeEnum((ID == null ? null : (SecondaryTreatmentTypeEnum?)ID));
+                    return GetEnumText_SecondaryTreatmentTypeEnum((SecondaryTreatmentTypeEnum?)ID);
                 case "SectorSubComponentEnum":
-                    return GetEnumText_SectorSubComponentEnum((ID == null ? null : (SectorSubComponentEnum?)ID));
+                    return GetEnumText_SectorSubComponentEnum((SectorSubComponentEnum?)ID);
                 case "ShellSubComponentEnum":
-                    return GetEnumText_ShellSubComponentEnum((ID == null ? null : (ShellSubComponentEnum?)ID));
+                    return GetEnumText_ShellSubComponentEnum((ShellSubComponentEnum?)ID);
                 case "SiteTypeEnum":
-                    return GetEnumText_SiteTypeEnum((ID == null ? null : (SiteTypeEnum?)ID));
+                    return GetEnumText_SiteTypeEnum((SiteTypeEnum?)ID);
                 case "SortOrderAngularEnum":
-                    return GetEnumText_SortOrderAngularEnum((ID == null ? null : (SortOrderAngularEnum?)ID));
+                    return GetEnumText_SortOrderAngularEnum((SortOrderAngularEnum?)ID);
                 case "SpecialTableTypeEnum":
-                    return GetEnumText_SpecialTableTypeEnum((ID == null ? null : (SpecialTableTypeEnum?)ID));
+                    return GetEnumText_SpecialTableTypeEnum((SpecialTableTypeEnum?)ID);
                 case "StorageDataTypeEnum":
-                    return GetEnumText_StorageDataTypeEnum((ID == null ? null : (StorageDataTypeEnum?)ID));
+                    return GetEnumText_StorageDataTypeEnum((StorageDataTypeEnum?)ID);
                 case "StreetTypeEnum":
-                    return GetEnumText_StreetTypeEnum((ID == null ? null : (StreetTypeEnum?)ID));
+                    return GetEnumText_StreetTypeEnum((StreetTypeEnum?)ID);
                 case "SubsectorSubComponentEnum":
-                    return GetEnumText_SubsectorSubComponentEnum((ID == null ? null : (SubsectorSubComponentEnum?)ID));
+                    return GetEnumText_SubsectorSubComponentEnum((SubsectorSubComponentEnum?)ID);
                 case "TelTypeEnum":
-                    return GetEnumText_TelTypeEnum((ID == null ? null : (TelTypeEnum?)ID));
+                    return GetEnumText_TelTypeEnum((TelTypeEnum?)ID);
                 case "TertiaryTreatmentTypeEnum":
-                    return GetEnumText_TertiaryTreatmentTypeEnum((ID == null ? null : (TertiaryTreatmentTypeEnum?)ID));
+                    return GetEnumText_TertiaryTreatmentTypeEnum((TertiaryTreatmentTypeEnum?)ID);
                 case "TideDataTypeEnum":
-                    return GetEnumText_TideDataTypeEnum((ID == null ? null : (TideDataTypeEnum?)ID));
+                    return GetEnumText_TideDataTypeEnum((TideDataTypeEnum?)ID);
                 case "TideTextEnum":
-                    return GetEnumText_TideTextEnum((ID == null ? null : (TideTextEnum?)ID));
+                    return GetEnumText_TideTextEnum((TideTextEnum?)ID);
                 case "TopComponentEnum":
-                    return GetEnumText_TopComponentEnum((ID == null ? null : (TopComponentEnum?)ID));
+                    return GetEnumText_TopComponentEnum((TopComponentEnum?)ID);
                 case "TranslationStatusEnum":
-                    return GetEnumText_TranslationStatusEnum((ID == null ? null : (TranslationStatusEnum?)ID));
+                    return GetEnumText_TranslationStatusEnum((TranslationStatusEnum?)ID);
                 case "TreatmentTypeEnum":
-                    return GetEnumText_TreatmentTypeEnum((ID == null ? null : (TreatmentTypeEnum?)ID));
+                    return GetEnumText_TreatmentTypeEnum((TreatmentTypeEnum?)ID);
                 case "TVAuthEnum":
-                    return GetEnumText_TVAuthEnum((ID == null ? null : (TVAuthEnum?)ID));
+                    return GetEnumText_TVAuthEnum((TVAuthEnum?)ID);
                 case "TVTypeEnum":
-                    return GetEnumText_TVTypeEnum((ID == null ? null : (TVTypeEnum?)ID));
+                    return GetEnumText_TVTypeEnum((TVTypeEnum?)ID);
                 case "ValveTypeEnum":
-                    return GetEnumText_ValveTypeEnum((ID == null ? null : (ValveTypeEnum?)ID));
+                    return GetEnumText_ValveTypeEnum((ValveTypeEnum?)ID);
                 case "WebTypeEnum":
-                    return GetEnumText_WebTypeEnum((ID == null ? null : (WebTypeEnum?)ID));
+                    return GetEnumText_WebTypeEnum((WebTypeEnum?)ID);
                 case "WebTypeYearEnum":
-                    return GetEnumText_WebTypeYearEnum((ID == null ? null : (WebTypeYearEnum?)ID));
+                    return GetEnumText_WebTypeYearEnum((WebTypeYearEnum?)ID);
                 case "WebTideDataSetEnum":
-                    return GetEnumText_WebTideDataSetEnum((ID == null ? null : (WebTideDataSetEnum?)ID));
+                    return GetEnumText_WebTideDataSetEnum((WebTideDataSetEnum?)ID);
                 case "PolSourceObsInfoEnum":
                 {
                     switch (polSourceObsInfoTypeEnum)
                     {
                         case PolSourceObsInfoTypeEnum.Description:
-                            return GetEnumText_PolSourceObsInfoDescEnum((ID == null ? null : (PolSourceObsInfoEnum?)ID));
+                            return GetEnumText_PolSourceObsInfoDescEnum((PolSourceObsInfoEnum?)ID);
                         case PolSourceObsInfoTypeEnum.Report:
-                            return GetEnumText_PolSourceObsInfoReportEnum((ID == null ? null : (PolSourceObsInfoEnum?)ID));
+                            return GetEnumText_PolSourceObsInfoReportEnum((PolSourceObsInfoEnum?)ID);
                         case PolSourceObsInfoTypeEnum.Text:
-                            return GetEnumText_PolSourceObsInfoTextEnum((ID == null ? null : (PolSourceObsInfoEnum?)ID));
+                            return GetEnumText_PolSourceObsInfoTextEnum((PolSourceObsInfoEnum?)ID);
                         case PolSourceObsInfoTypeEnum.Initial:
-                            return GetEnumText_PolSourceObsInfoInitEnum((ID == null ? null : (PolSourceObsInfoEnum?)ID));
+                            return GetEnumText_PolSourceObsInfoInitEnum((PolSourceObsInfoEnum?)ID);
                         default:
-                            return GetEnumText_PolSourceObsInfoEnum((ID == null ? null : (PolSourceObsInfoEnum?)ID));
+                            return GetEnumText_PolSourceObsInfoEnum((PolSourceObsInfoEnum?)ID);
                     }
                 }
                 default:
-                    return "";
+                    return CSSPCultureEnumsRes.Empty;
             }
         }
         #endregion Enum Function public
@@ -3158,6 +3158,16 @@ namespace CSSPEnums
                     return CSSPCultureEnumsRes.WebTypeEnumWebAllProvinces;
                 case WebTypeEnum.WebAllCountries:
                     return CSSPCultureEnumsRes.WebTypeEnumWebAllCountries;
+                case WebTypeEnum.WebAllAddresses:
+                    return CSSPCultureEnumsRes.WebTypeEnumWebAllAddresses;
+                case WebTypeEnum.WebAllEmails:
+                    return CSSPCultureEnumsRes.WebTypeEnumWebAllEmails;
+                case WebTypeEnum.WebAllTels:
+                    return CSSPCultureEnumsRes.WebTypeEnumWebAllTels;
+                case WebTypeEnum.WebTideSite:
+                    return CSSPCultureEnumsRes.WebTypeEnumWebTideSite;
+                case WebTypeEnum.WebTideDataValue:
+                    return CSSPCultureEnumsRes.WebTypeEnumWebTideDataValue;
                 default:
                     return CSSPCultureEnumsRes.Empty;
             }

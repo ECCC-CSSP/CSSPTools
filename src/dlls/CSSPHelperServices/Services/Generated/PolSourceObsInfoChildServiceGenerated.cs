@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 using LoggedInServices;
 using Microsoft.Extensions.Configuration;
 
-namespace CSSPDBServices
+namespace CSSPHelperServices
 {
     public interface IPolSourceObsInfoChildService
     {
@@ -32,14 +32,12 @@ namespace CSSPDBServices
         #endregion Variables
 
         #region Properties
-        private ICSSPCultureService CSSPCultureService { get; }
         private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public PolSourceObsInfoChildService(ICSSPCultureService CSSPCultureService, IEnums enums)
+        public PolSourceObsInfoChildService(IEnums enums)
         {
-            this.CSSPCultureService = CSSPCultureService;
             this.enums = enums;
         }
         #endregion Constructors
@@ -53,30 +51,25 @@ namespace CSSPDBServices
             retStr = enums.EnumTypeOK(typeof(PolSourceObsInfoEnum), (int?)polSourceObsInfoChild.PolSourceObsInfo);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "PolSourceObsInfo"), new[] { nameof(polSourceObsInfoChild.PolSourceObsInfo) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "PolSourceObsInfo"), new[] { "PolSourceObsInfo" });
             }
 
             retStr = enums.EnumTypeOK(typeof(PolSourceObsInfoEnum), (int?)polSourceObsInfoChild.PolSourceObsInfoChildStart);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "PolSourceObsInfoChildStart"), new[] { nameof(polSourceObsInfoChild.PolSourceObsInfoChildStart) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "PolSourceObsInfoChildStart"), new[] { "PolSourceObsInfoChildStart" });
             }
 
             if (!string.IsNullOrWhiteSpace(polSourceObsInfoChild.PolSourceObsInfoText) && polSourceObsInfoChild.PolSourceObsInfoText.Length > 100)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "PolSourceObsInfoText", "100"), new[] { nameof(polSourceObsInfoChild.PolSourceObsInfoText) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "PolSourceObsInfoText", "100"), new[] { "PolSourceObsInfoText" });
             }
 
             if (!string.IsNullOrWhiteSpace(polSourceObsInfoChild.PolSourceObsInfoChildStartText) && polSourceObsInfoChild.PolSourceObsInfoChildStartText.Length > 100)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "PolSourceObsInfoChildStartText", "100"), new[] { nameof(polSourceObsInfoChild.PolSourceObsInfoChildStartText) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "PolSourceObsInfoChildStartText", "100"), new[] { "PolSourceObsInfoChildStartText" });
             }
 
-            bool a = false;
-            if (a)
-            {
-                yield return new ValidationResult("");
-            }
         }
         #endregion Functions public
     }

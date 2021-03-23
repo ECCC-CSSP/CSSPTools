@@ -22,30 +22,148 @@ using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
 using CSSPCultureServices.Resources;
-using LoggedInServices;
+using CSSPHelperServices.Tests;
 
-namespace CSSPDBServices.Tests
+namespace CSSPHelperServices.Tests
 {
-    public partial class AppTaskParameterDBServiceTest : TestHelper
+    [Collection("Sequential")]
+    public partial class AppTaskParameterServiceTest : TestHelper
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Configuration { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private ICSSPCultureService CSSPCultureService { get; set; }
+        private IEnums enums { get; set; }
+        private IAppTaskParameterService AppTaskParameterService { get; set; }
         #endregion Properties
 
         #region Constructors
-        public AppTaskParameterDBServiceTest() : base()
+        public AppTaskParameterServiceTest() : base()
         {
 
         }
         #endregion Constructors
 
-        #region Functions private
-        private void CheckAppTaskParameterFields(List<AppTaskParameter> appTaskParameterList)
+        #region Tests Generated Constructors
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task AppTaskParameter_Constructor_Test(string culture)
         {
-            Assert.False(string.IsNullOrWhiteSpace(appTaskParameterList[0].Name));
-            Assert.False(string.IsNullOrWhiteSpace(appTaskParameterList[0].Value));
+            Assert.True(await Setup(culture));
+            Assert.NotNull(CSSPCultureService);
+            Assert.NotNull(enums);
+        }
+        #endregion Tests Generated Constructors
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task AppTaskParameter_Properties_Test(string culture)
+        {
+            List<ValidationResult> ValidationResultList = new List<ValidationResult>();
+            IEnumerable<ValidationResult> validationResults;
+            Assert.True(await Setup(culture));
+
+
+
+            AppTaskParameter appTaskParameter = GetFilledRandomAppTaskParameter("");
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(255)]
+            // appTaskParameter.Name   (String)
+            // -----------------------------------
+
+
+            appTaskParameter = null;
+            appTaskParameter = GetFilledRandomAppTaskParameter("Name");
+            validationResults = AppTaskParameterService.Validate(new ValidationContext(appTaskParameter));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Name"))).Any());
+
+
+            appTaskParameter = null;
+            appTaskParameter = GetFilledRandomAppTaskParameter("");
+            appTaskParameter.Name = GetRandomString("", 256);
+            validationResults = AppTaskParameterService.Validate(new ValidationContext(appTaskParameter));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Name", "255"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(255)]
+            // appTaskParameter.Value   (String)
+            // -----------------------------------
+
+
+            appTaskParameter = null;
+            appTaskParameter = GetFilledRandomAppTaskParameter("Value");
+            validationResults = AppTaskParameterService.Validate(new ValidationContext(appTaskParameter));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Value"))).Any());
+
+
+            appTaskParameter = null;
+            appTaskParameter = GetFilledRandomAppTaskParameter("");
+            appTaskParameter.Value = GetRandomString("", 256);
+            validationResults = AppTaskParameterService.Validate(new ValidationContext(appTaskParameter));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Value", "255"))).Any());
+        }
+        #endregion Tests Generated Properties
+
+        #region Functions private
+        private async Task<bool> Setup(string culture)
+        {
+            Configuration = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings_CSSPDBServicestests.json")
+               .AddUserSecrets("6f27cbbe-6ffb-4154-b49b-d739597c4f60")
+               .Build();
+
+            Services = new ServiceCollection();
+
+            Services.AddSingleton<IConfiguration>(Configuration);
+
+            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<IAppTaskParameterService, AppTaskParameterService>();
+
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+
+            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
+            Assert.NotNull(CSSPCultureService);
+
+            CSSPCultureService.SetCulture(culture);
+
+            enums = Provider.GetService<IEnums>();
+            Assert.NotNull(enums);
+
+            AppTaskParameterService = Provider.GetService<IAppTaskParameterService>();
+            Assert.NotNull(AppTaskParameterService);
+
+            return await Task.FromResult(true);
+        }
+        private AppTaskParameter GetFilledRandomAppTaskParameter(string OmitPropName)
+        {
+            AppTaskParameter appTaskParameter = new AppTaskParameter();
+
+            if (OmitPropName != "Name") appTaskParameter.Name = GetRandomString("", 5);
+            if (OmitPropName != "Value") appTaskParameter.Value = GetRandomString("", 5);
+
+            return appTaskParameter;
         }
 
         #endregion Functions private

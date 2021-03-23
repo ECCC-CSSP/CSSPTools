@@ -2,6 +2,7 @@
  * Manually edited
  * 
  */
+using CSSPCustomAttributes;
 using CSSPEnums;
 using System;
 using System.Collections.Generic;
@@ -18,9 +19,9 @@ namespace CSSPDBModels
         public int ContactID { get; set; }
         [CSSPEnumType]
         public DBCommandEnum DBCommand { get; set; }
-        [CSSPExist(ExistTypeName = "AspNetUser", ExistPlurial = "s", ExistFieldID = "Id")]
+        //[CSSPExist(ExistTypeName = "AspNetUser", ExistPlurial = "s", ExistFieldID = "Id")]
         [CSSPMaxLength(450)]
-        [CSSPForeignKey(TableName = "AspNetUsers", FieldName = "Id")]
+        //[CSSPForeignKey(TableName = "AspNetUsers", FieldName = "Id")]
         public string Id { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "5")]
         [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
@@ -59,6 +60,11 @@ namespace CSSPDBModels
         [CSSPMaxLength(255)]
         [CSSPAllowNull]
         public string Token { get; set; }
+        public bool? HasInternetConnection { get; set; }
+        public bool? IsLoggedIn { get; set; }
+        [CSSPMaxLength(255)]
+        [CSSPAllowNull]
+        public string GoogleMapKeyHash { get; set; }
         [CSSPRange(0, 10)]
         [CSSPAllowNull]
         public int? AccessFailedCount { get; set; }

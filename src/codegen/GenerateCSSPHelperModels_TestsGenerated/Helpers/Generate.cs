@@ -34,7 +34,7 @@ namespace GenerateCSSPHelperModels_TestsGenerated
                     continue;
                 }
 
-                //if (type.Name != "CSSPWQInputParam")
+                //if (type.Name != "NewContact")
                 //{
                 //    continue;
                 //}

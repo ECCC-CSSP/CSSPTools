@@ -31,6 +31,9 @@ namespace GenerateCSSPHelperServices_Tests
             sb.AppendLine(@"");
             sb.AppendLine(@"            CSSPCultureService.SetCulture(culture);");
             sb.AppendLine(@"");
+            sb.AppendLine(@"            enums = Provider.GetService<IEnums>();");
+            sb.AppendLine(@"            Assert.NotNull(enums);");
+            sb.AppendLine(@"");
             sb.AppendLine($@"            { TypeName }Service = Provider.GetService<I{ TypeName }Service>();");
             sb.AppendLine($@"            Assert.NotNull({ TypeName }Service);");
             sb.AppendLine(@"");

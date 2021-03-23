@@ -22,30 +22,182 @@ using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
 using CSSPCultureServices.Resources;
-using LoggedInServices;
+using CSSPHelperServices.Tests;
 
-namespace CSSPDBServices.Tests
+namespace CSSPHelperServices.Tests
 {
-    public partial class TVTypeNamesAndPathDBServiceTest : TestHelper
+    [Collection("Sequential")]
+    public partial class TVTypeNamesAndPathServiceTest : TestHelper
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Configuration { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private ICSSPCultureService CSSPCultureService { get; set; }
+        private IEnums enums { get; set; }
+        private ITVTypeNamesAndPathService TVTypeNamesAndPathService { get; set; }
         #endregion Properties
 
         #region Constructors
-        public TVTypeNamesAndPathDBServiceTest() : base()
+        public TVTypeNamesAndPathServiceTest() : base()
         {
 
         }
         #endregion Constructors
 
-        #region Functions private
-        private void CheckTVTypeNamesAndPathFields(List<TVTypeNamesAndPath> tvTypeNamesAndPathList)
+        #region Tests Generated Constructors
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task AppTaskParameter_Constructor_Test(string culture)
         {
-            Assert.False(string.IsNullOrWhiteSpace(tvTypeNamesAndPathList[0].TVTypeName));
-            Assert.False(string.IsNullOrWhiteSpace(tvTypeNamesAndPathList[0].TVPath));
+            Assert.True(await Setup(culture));
+            Assert.NotNull(CSSPCultureService);
+            Assert.NotNull(enums);
+        }
+        #endregion Tests Generated Constructors
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task TVTypeNamesAndPath_Properties_Test(string culture)
+        {
+            List<ValidationResult> ValidationResultList = new List<ValidationResult>();
+            IEnumerable<ValidationResult> validationResults;
+            Assert.True(await Setup(culture));
+
+
+
+            TVTypeNamesAndPath tvTypeNamesAndPath = GetFilledRandomTVTypeNamesAndPath("");
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(255)]
+            // [CSSPMinLength(1)]
+            // tvTypeNamesAndPath.TVTypeName   (String)
+            // -----------------------------------
+
+
+            tvTypeNamesAndPath = null;
+            tvTypeNamesAndPath = GetFilledRandomTVTypeNamesAndPath("TVTypeName");
+            validationResults = TVTypeNamesAndPathService.Validate(new ValidationContext(tvTypeNamesAndPath));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "TVTypeName"))).Any());
+
+
+            tvTypeNamesAndPath = null;
+            tvTypeNamesAndPath = GetFilledRandomTVTypeNamesAndPath("");
+            tvTypeNamesAndPath.TVTypeName = GetRandomString("", 256);
+            validationResults = TVTypeNamesAndPathService.Validate(new ValidationContext(tvTypeNamesAndPath));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVTypeName", "1", "255"))).Any());
+
+            tvTypeNamesAndPath = null;
+            tvTypeNamesAndPath = GetFilledRandomTVTypeNamesAndPath("");
+            tvTypeNamesAndPath.TVTypeName = GetRandomString("", 256);
+            validationResults = TVTypeNamesAndPathService.Validate(new ValidationContext(tvTypeNamesAndPath));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVTypeName", "1", "255"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(1, -1)]
+            // tvTypeNamesAndPath.Index   (Int32)
+            // -----------------------------------
+
+
+            tvTypeNamesAndPath = null;
+            tvTypeNamesAndPath = GetFilledRandomTVTypeNamesAndPath("");
+            tvTypeNamesAndPath.Index = 0;
+            validationResults = TVTypeNamesAndPathService.Validate(new ValidationContext(tvTypeNamesAndPath));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "Index", "1"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(255)]
+            // [CSSPMinLength(1)]
+            // tvTypeNamesAndPath.TVPath   (String)
+            // -----------------------------------
+
+
+            tvTypeNamesAndPath = null;
+            tvTypeNamesAndPath = GetFilledRandomTVTypeNamesAndPath("TVPath");
+            validationResults = TVTypeNamesAndPathService.Validate(new ValidationContext(tvTypeNamesAndPath));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "TVPath"))).Any());
+
+
+            tvTypeNamesAndPath = null;
+            tvTypeNamesAndPath = GetFilledRandomTVTypeNamesAndPath("");
+            tvTypeNamesAndPath.TVPath = GetRandomString("", 256);
+            validationResults = TVTypeNamesAndPathService.Validate(new ValidationContext(tvTypeNamesAndPath));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVPath", "1", "255"))).Any());
+
+            tvTypeNamesAndPath = null;
+            tvTypeNamesAndPath = GetFilledRandomTVTypeNamesAndPath("");
+            tvTypeNamesAndPath.TVPath = GetRandomString("", 256);
+            validationResults = TVTypeNamesAndPathService.Validate(new ValidationContext(tvTypeNamesAndPath));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVPath", "1", "255"))).Any());
+        }
+        #endregion Tests Generated Properties
+
+        #region Functions private
+        private async Task<bool> Setup(string culture)
+        {
+            Configuration = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings_CSSPDBServicestests.json")
+               .AddUserSecrets("6f27cbbe-6ffb-4154-b49b-d739597c4f60")
+               .Build();
+
+            Services = new ServiceCollection();
+
+            Services.AddSingleton<IConfiguration>(Configuration);
+
+            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ITVTypeNamesAndPathService, TVTypeNamesAndPathService>();
+
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+
+            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
+            Assert.NotNull(CSSPCultureService);
+
+            CSSPCultureService.SetCulture(culture);
+
+            enums = Provider.GetService<IEnums>();
+            Assert.NotNull(enums);
+
+            TVTypeNamesAndPathService = Provider.GetService<ITVTypeNamesAndPathService>();
+            Assert.NotNull(TVTypeNamesAndPathService);
+
+            return await Task.FromResult(true);
+        }
+        private TVTypeNamesAndPath GetFilledRandomTVTypeNamesAndPath(string OmitPropName)
+        {
+            TVTypeNamesAndPath tvTypeNamesAndPath = new TVTypeNamesAndPath();
+
+            if (OmitPropName != "TVTypeName") tvTypeNamesAndPath.TVTypeName = GetRandomString("", 6);
+            if (OmitPropName != "Index") tvTypeNamesAndPath.Index = GetRandomInt(1, 11);
+            if (OmitPropName != "TVPath") tvTypeNamesAndPath.TVPath = GetRandomString("", 6);
+
+            return tvTypeNamesAndPath;
         }
 
         #endregion Functions private

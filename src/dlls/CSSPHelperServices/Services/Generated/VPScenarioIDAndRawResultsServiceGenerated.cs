@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 using LoggedInServices;
 using Microsoft.Extensions.Configuration;
 
-namespace CSSPDBServices
+namespace CSSPHelperServices
 {
     public interface IVPScenarioIDAndRawResultsService
     {
@@ -32,15 +32,11 @@ namespace CSSPDBServices
         #endregion Variables
 
         #region Properties
-        private ICSSPCultureService CSSPCultureService { get; }
-        private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public VPScenarioIDAndRawResultsService(ICSSPCultureService CSSPCultureService, IEnums enums)
+        public VPScenarioIDAndRawResultsService()
         {
-            this.CSSPCultureService = CSSPCultureService;
-            this.enums = enums;
         }
         #endregion Constructors
 
@@ -51,21 +47,19 @@ namespace CSSPDBServices
 
             if (vpScenarioIDAndRawResults.VPScenarioID < 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "VPScenarioID", "1"), new[] { nameof(vpScenarioIDAndRawResults.VPScenarioID) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "VPScenarioID", "1"), new[] { "VPScenarioID" });
             }
 
             if (string.IsNullOrWhiteSpace(vpScenarioIDAndRawResults.RawResults))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "RawResults"), new[] { nameof(vpScenarioIDAndRawResults.RawResults) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "RawResults"), new[] { "RawResults" });
             }
 
-            //RawResults has no StringLength Attribute
-
-            bool a = false;
-            if (a)
+            if (!string.IsNullOrWhiteSpace(vpScenarioIDAndRawResults.RawResults) && vpScenarioIDAndRawResults.RawResults.Length > 1000000)
             {
-                yield return new ValidationResult("");
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "RawResults", "1000000"), new[] { "RawResults" });
             }
+
         }
         #endregion Functions public
     }

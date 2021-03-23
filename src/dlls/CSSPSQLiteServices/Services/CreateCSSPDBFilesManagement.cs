@@ -34,8 +34,8 @@ namespace CSSPSQLiteServices
                 }
             }
 
-            string CreateTable = "CREATE TABLE CSSPFiles (" +
-                "CSSPFileID INTEGER  NOT NULL UNIQUE, " +
+            string CreateTable = "CREATE TABLE FilesManagements (" +
+                "FilesManagementID INTEGER  NOT NULL UNIQUE, " +
                 "AzureStorage TEXT NOT NULL, " +
                 "AzureFileName TEXT NOT NULL, " +
                 "AzureETag TEXT NOT NULL, " +

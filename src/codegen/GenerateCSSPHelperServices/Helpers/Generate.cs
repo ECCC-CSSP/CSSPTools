@@ -30,7 +30,22 @@ namespace GenerateCSSPHelperServices
 
             foreach (DLLTypeInfo dllTypeInfoModels in DLLTypeInfoCSSPHelperModelsList)
             {
-                bool NotMappedClass = false;
+                bool needEnum = false;
+                foreach (PropertyInfo prop in dllTypeInfoModels.Type.GetProperties())
+                {
+                    CSSPProp csspProp = new CSSPProp();
+                    if (!GenerateCodeBase.FillCSSPProp(prop, csspProp, dllTypeInfoModels.Type))
+                    {
+                        return await Task.FromResult(false);
+                    }
+
+                    if (csspProp.HasCSSPEnumTypeAttribute)
+                    {
+                        needEnum = true;
+                        break;
+                    }
+                }
+
                 StringBuilder sb = new StringBuilder();
 
                 string TypeNameLower = "";
@@ -61,16 +76,7 @@ namespace GenerateCSSPHelperServices
                 //{
                 //    continue;
                 //}
-
-                if (dllTypeInfoModels.HasNotMappedAttribute)
-                {
-                    NotMappedClass = true;
-                }
-                else
-                {
-                    NotMappedClass = false;
-                }
-
+                
                 #region Top
                 sb.AppendLine(@"/*");
                 sb.AppendLine($@" * Auto generated from { AppDomain.CurrentDomain.BaseDirectory }{ AppDomain.CurrentDomain.FriendlyName}.exe");
@@ -94,185 +100,53 @@ namespace GenerateCSSPHelperServices
                 sb.AppendLine(@"using System.Threading.Tasks;");
                 sb.AppendLine(@"using LoggedInServices;");
                 sb.AppendLine(@"using Microsoft.Extensions.Configuration;");
-                if (dllTypeInfoModels.Type.Name == "Contact")
-                {
-                    sb.AppendLine(@"using Microsoft.AspNetCore.Identity;");
-                    sb.AppendLine(@"using Microsoft.IdentityModel.Tokens;");
-                    sb.AppendLine(@"using System.IdentityModel.Tokens.Jwt;");
-                    sb.AppendLine(@"using System.Security.Claims;");
-                    sb.AppendLine(@"using System.Text;");
-                }
                 sb.AppendLine(@"");
-                sb.AppendLine($@"namespace CSSPDBServices");
+                sb.AppendLine($@"namespace CSSPHelperServices");
                 sb.AppendLine(@"{");
                 #endregion Top
 
-                if (!NotMappedClass)
+                sb.AppendLine($@"    public interface I{ dllTypeInfoModels.Type.Name }Service");
+                sb.AppendLine($@"    {{");
+                sb.AppendLine($@"        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);");
+                sb.AppendLine($@"    }}");
+
+                sb.AppendLine($@"    public partial class { dllTypeInfoModels.Type.Name }Service : I{ dllTypeInfoModels.Type.Name }Service");
+                sb.AppendLine(@"    {");
+                sb.AppendLine(@"        #region Variables");
+                sb.AppendLine(@"        #endregion Variables");
+                sb.AppendLine(@"");
+                sb.AppendLine(@"        #region Properties");
+                //sb.AppendLine(@"        private ICSSPCultureService CSSPCultureService { get; }");
+                if (needEnum)
                 {
-
-                    #region Interface
-                    sb.AppendLine($@"    public partial interface I{ dllTypeInfoModels.Type.Name }DBService");
-                    sb.AppendLine(@"    {");
-                    if (dllTypeInfoModels.Type.Name == "AspNetUser")
-                    {
-                        sb.AppendLine($@"        Task<ActionResult<bool>> Delete(string Id);");
-                    }
-                    else
-                    {
-                        sb.AppendLine($@"        Task<ActionResult<bool>> Delete(int { dllTypeInfoModels.Type.Name }ID);");
-                    }
-                    sb.AppendLine($@"        Task<ActionResult<List<{ dllTypeInfoModels.Type.Name }>>> Get{ dllTypeInfoModels.Type.Name }List(int skip = 0, int take = 100);");
-                    if (dllTypeInfoModels.Type.Name == "AspNetUser")
-                    {
-                        sb.AppendLine($@"        Task<ActionResult<{ dllTypeInfoModels.Type.Name }>> Get{ dllTypeInfoModels.Type.Name }WithId(string Id);");
-                    }
-                    else
-                    {
-                        sb.AppendLine($@"        Task<ActionResult<{ dllTypeInfoModels.Type.Name }>> Get{ dllTypeInfoModels.Type.Name }With{ dllTypeInfoModels.Type.Name }ID(int { dllTypeInfoModels.Type.Name }ID);");
-                    }
-                    if (dllTypeInfoModels.Type.Name == "Contact")
-                    {
-                        sb.AppendLine($@"        Task<ActionResult<{ dllTypeInfoModels.Type.Name }>> Post({ dllTypeInfoModels.Type.Name } { dllTypeInfoModels.Type.Name.ToLower() }, AddContactTypeEnum addContactType);");
-                    }
-                    else
-                    {
-                        sb.AppendLine($@"        Task<ActionResult<{ dllTypeInfoModels.Type.Name }>> Post({ dllTypeInfoModels.Type.Name } { dllTypeInfoModels.Type.Name.ToLower() });");
-                    }
-                    sb.AppendLine($@"        Task<ActionResult<{ dllTypeInfoModels.Type.Name }>> Put({ dllTypeInfoModels.Type.Name } { dllTypeInfoModels.Type.Name.ToLower() });");
-                    if (dllTypeInfoModels.Type.Name == "Contact")
-                    {
-                        sb.AppendLine($@"        Task<ActionResult<Contact>> Login(LoginModel loginModel);");
-                        sb.AppendLine($@"        Task<ActionResult<string>> AzureStore();");
-                        sb.AppendLine($@"        Task<ActionResult<Contact>> Register(RegisterModel registerModel);");
-                    }
-                    sb.AppendLine(@"    }");
-                    #endregion Interface
-
-                    sb.AppendLine($@"    public partial class { dllTypeInfoModels.Type.Name }DBService : ControllerBase, I{ dllTypeInfoModels.Type.Name }DBService");
-                    sb.AppendLine(@"    {");
-                    sb.AppendLine(@"        #region Variables");
-                    sb.AppendLine(@"        #endregion Variables");
-                    sb.AppendLine(@"");
-                    sb.AppendLine(@"        #region Properties");
-                    sb.AppendLine(@"        private CSSPDBContext db { get; }");
-                    sb.AppendLine(@"        private IConfiguration Configuration { get; }");
-                    if (dllTypeInfoModels.Type.Name == "Contact")
-                    {
-                        sb.AppendLine(@"        private UserManager<ApplicationUser> UserManager { get; }");
-                        sb.AppendLine(@"        private ILoginModelService LoginModelService { get; }");
-                        sb.AppendLine(@"        private IRegisterModelService RegisterModelService { get; }");
-                    }
-                    sb.AppendLine(@"        private ICSSPCultureService CSSPCultureService { get; }");
-                    sb.AppendLine(@"        private ILoggedInService LoggedInService { get; }");
                     sb.AppendLine(@"        private IEnums enums { get; }");
-                    sb.AppendLine(@"        private IEnumerable<ValidationResult> ValidationResults { get; set; }");
-                    sb.AppendLine(@"        #endregion Properties");
-                    sb.AppendLine(@"");
-                    sb.AppendLine(@"        #region Constructors");
-                    if (dllTypeInfoModels.Type.Name == "AspNetUser"
-                        || dllTypeInfoModels.Type.Name == "TVItemUserAuthorization"
-                        || dllTypeInfoModels.Type.Name == "TVTypeUserAuthorization")
-                    {
-                        sb.AppendLine($@"        public { dllTypeInfoModels.Type.Name }DBService(ICSSPCultureService CSSPCultureService, IEnums enums,");
-                        sb.AppendLine($@"           ILoggedInService LoggedInService,");
-                        sb.AppendLine($@"           CSSPDBContext db)");
-                    }
-                    else if (dllTypeInfoModels.Type.Name == "Contact")
-                    {
-                        sb.AppendLine($@"        public { dllTypeInfoModels.Type.Name }DBService(IConfiguration Configuration,");
-                        sb.AppendLine($@"           ICSSPCultureService CSSPCultureService, IEnums enums,");
-                        sb.AppendLine($@"           ILoginModelService LoginModelService,");
-                        sb.AppendLine($@"           IRegisterModelService RegisterModelService,");
-                        sb.AppendLine($@"           ILoggedInService LoggedInService,");
-                        sb.AppendLine($@"           CSSPDBContext db, UserManager<ApplicationUser> UserManager)");
-                    }
-                    else
-                    {
-                        sb.AppendLine($@"        public { dllTypeInfoModels.Type.Name }DBService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums,");
-                        sb.AppendLine($@"           ILoggedInService LoggedInService,");
-                        sb.AppendLine($@"           CSSPDBContext db)");
-                    }
-                    sb.AppendLine(@"        {");
-                    if (dllTypeInfoModels.Type.Name == "Contact")
-                    {
-                        sb.AppendLine(@"            this.UserManager = UserManager;");
-                        sb.AppendLine(@"            this.LoginModelService = LoginModelService;");
-                        sb.AppendLine(@"            this.RegisterModelService = RegisterModelService;");
-                    }
-                    sb.AppendLine(@"            this.Configuration = Configuration;");
-                    sb.AppendLine(@"            this.CSSPCultureService = CSSPCultureService;");
-                    sb.AppendLine(@"            this.LoggedInService = LoggedInService;");
-                    sb.AppendLine(@"            this.enums = enums;");
-                    sb.AppendLine(@"            this.db = db;");
-                    if (dllTypeInfoModels.Type.Name == "AspNetUser"
-                        || dllTypeInfoModels.Type.Name == "Contact"
-                        || dllTypeInfoModels.Type.Name == "TVItemUserAuthorization"
-                        || dllTypeInfoModels.Type.Name == "TVTypeUserAuthorization")
-                    {
-                        //sb.AppendLine(@"            this.dbLogin = dbLogin;");
-                    }
-                    sb.AppendLine(@"        }");
-                    sb.AppendLine(@"        #endregion Constructors");
-                    sb.AppendLine(@"");
+                }
+                sb.AppendLine(@"        #endregion Properties");
+                sb.AppendLine(@"");
+                sb.AppendLine(@"        #region Constructors");
+                if (needEnum)
+                {
+                    sb.AppendLine($@"        public { dllTypeInfoModels.Type.Name }Service(IEnums enums)");
                 }
                 else
                 {
-                    sb.AppendLine($@"    public interface I{ dllTypeInfoModels.Type.Name }Service");
-                    sb.AppendLine($@"    {{");
-                    sb.AppendLine($@"        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);");
-                    sb.AppendLine($@"    }}");
-
-                    sb.AppendLine($@"    public partial class { dllTypeInfoModels.Type.Name }Service : I{ dllTypeInfoModels.Type.Name }Service");
-                    sb.AppendLine(@"    {");
-                    sb.AppendLine(@"        #region Variables");
-                    sb.AppendLine(@"        #endregion Variables");
-                    sb.AppendLine(@"");
-                    sb.AppendLine(@"        #region Properties");
-                    sb.AppendLine(@"        private ICSSPCultureService CSSPCultureService { get; }");
-                    sb.AppendLine(@"        private IEnums enums { get; }");
-                    sb.AppendLine(@"        #endregion Properties");
-                    sb.AppendLine(@"");
-                    sb.AppendLine(@"        #region Constructors");
-                    sb.AppendLine($@"        public { dllTypeInfoModels.Type.Name }Service(ICSSPCultureService CSSPCultureService, IEnums enums)");
-                    sb.AppendLine(@"        {");
-                    sb.AppendLine(@"            this.CSSPCultureService = CSSPCultureService;");
+                    sb.AppendLine($@"        public { dllTypeInfoModels.Type.Name }Service()");
+                }
+                sb.AppendLine(@"        {");
+                //sb.AppendLine(@"            this.CSSPCultureService = CSSPCultureService;");
+                if (needEnum)
+                {
                     sb.AppendLine(@"            this.enums = enums;");
-                    sb.AppendLine(@"        }");
-                    sb.AppendLine(@"        #endregion Constructors");
-                    sb.AppendLine(@"");
                 }
+                sb.AppendLine(@"        }");
+                sb.AppendLine(@"        #endregion Constructors");
+                sb.AppendLine(@"");
 
-                if (!NotMappedClass)
-                {
-                    sb.AppendLine(@"        #region Functions public ");
-                    if (!await CreateClassServiceFunctionsPublicGenerateGet(dllTypeInfoModels, DLLTypeInfoCSSPHelperModelsList, dllTypeInfoModels.Type.Name, TypeNameLower, sb)) return await Task.FromResult(false);
-                    if (!await CreateClassServiceFunctionsPublicGenerateCRUD(dllTypeInfoModels, dllTypeInfoModels.Type.Name, TypeNameLower, sb)) return await Task.FromResult(false);
-                    if (dllTypeInfoModels.Type.Name == "Contact")
-                    {
-                        if (!await CreateLogin(dllTypeInfoModels, dllTypeInfoModels.Type.Name, TypeNameLower, sb)) return await Task.FromResult(false);
-                        if (!await CreateAzureStore(dllTypeInfoModels, dllTypeInfoModels.Type.Name, TypeNameLower, sb)) return await Task.FromResult(false);
-                    }
-                    sb.AppendLine(@"        #endregion Functions public");
-                    sb.AppendLine(@"");
-
-                    sb.AppendLine(@"        #region Functions private");
-                    if (dllTypeInfoModels.Type.Name == "Contact")
-                    {
-                        if (!await CreateGetContactWithId(dllTypeInfoModels, dllTypeInfoModels.Type.Name, TypeNameLower, sb)) return await Task.FromResult(false);
-                    }
-                    if (!await CreateClassServiceFunctionsPrivateGenerateValidate(dllTypeInfoModels, dllTypeInfoModels.Type.Name, TypeNameLower, sb)) return await Task.FromResult(false);
-                    sb.AppendLine(@"        #endregion Functions private");
-                    sb.AppendLine(@"    }");
-                    sb.AppendLine(@"");
-                }
-                else
-                {
-                    sb.AppendLine(@"        #region Functions public");
-                    if (!await CreateClassServiceFunctionsPrivateGenerateValidateNotMapped(dllTypeInfoModels, dllTypeInfoModels.Type.Name, TypeNameLower, sb)) return await Task.FromResult(false);
-                    sb.AppendLine(@"        #endregion Functions public");
-                    sb.AppendLine(@"    }");
-                    sb.AppendLine(@"");
-                }
+                sb.AppendLine(@"        #region Functions public");
+                if (!await CreateClassServiceFunctionsPrivateGenerateValidateNotMapped(dllTypeInfoModels, dllTypeInfoModels.Type.Name, TypeNameLower, sb)) return await Task.FromResult(false);
+                sb.AppendLine(@"        #endregion Functions public");
+                sb.AppendLine(@"    }");
+                sb.AppendLine(@"");
 
 
                 sb.AppendLine(@"}");

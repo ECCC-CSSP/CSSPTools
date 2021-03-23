@@ -34,18 +34,14 @@ namespace GenerateCSSPHelperServices_Tests
 
                         if (csspProp.HasCSSPExistAttribute)
                         {
+                            sb.AppendLine("");
                             sb.AppendLine($@"            { TypeNameLower } = null;");
                             sb.AppendLine($@"            { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
                             sb.AppendLine($@"            { TypeNameLower }.{ csspProp.PropName } = 0;");
-                            if (TypeName == "Contact")
-                            {
-                                sb.AppendLine($@"            action{ TypeName } = await { TypeName }DBService.Post({ TypeNameLower }, AddContactTypeEnum.LoggedIn);");
-                            }
-                            else
-                            {
-                                sb.AppendLine($@"            action{ TypeName } = await { TypeName }DBService.Post({ TypeNameLower });");
-                            }
-                            sb.AppendLine($@"            Assert.IsType<BadRequestObjectResult>(action{ TypeName }.Result);");
+                            sb.AppendLine($@"            validationResults = { TypeName }Service.Validate(new ValidationContext({ TypeNameLower }));");
+                            sb.AppendLine($@"            ValidationResultList = validationResults.ToList();");
+                            sb.AppendLine($@"            Assert.True(ValidationResultList.Count() > 0);");
+                            sb.AppendLine($@"            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, ""{ csspProp.PropName }""))).Any());");
                             sb.AppendLine(@"");
 
                             if (csspProp.ExistTypeName == "TVItem")
@@ -61,18 +57,14 @@ namespace GenerateCSSPHelperServices_Tests
                                     TVItemIDNotGoodType = tvItem.TVItemID;
                                 }
 
+                                sb.AppendLine("");
                                 sb.AppendLine($@"            { TypeNameLower } = null;");
                                 sb.AppendLine($@"            { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
                                 sb.AppendLine($@"            { TypeNameLower }.{ csspProp.PropName } = { TVItemIDNotGoodType };");
-                                if (TypeName == "Contact")
-                                {
-                                    sb.AppendLine($@"            action{ TypeName } = await { TypeName }DBService.Post({ TypeNameLower }, AddContactTypeEnum.LoggedIn);");
-                                }
-                                else
-                                {
-                                    sb.AppendLine($@"            action{ TypeName } = await { TypeName }DBService.Post({ TypeNameLower });");
-                                }
-                                sb.AppendLine($@"            Assert.IsType<BadRequestObjectResult>(action{ TypeName }.Result);");
+                                sb.AppendLine($@"            validationResults = { TypeName }Service.Validate(new ValidationContext({ TypeNameLower }));");
+                                sb.AppendLine($@"            ValidationResultList = validationResults.ToList();");
+                                sb.AppendLine($@"            Assert.True(ValidationResultList.Count() > 0);");
+                                sb.AppendLine($@"            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, ""{ csspProp.PropName }""))).Any());");
                                 sb.AppendLine(@"");
                             }
                         }
@@ -83,7 +75,7 @@ namespace GenerateCSSPHelperServices_Tests
                     }
                     break;
             }
-        
+
             return await Task.FromResult(true);
         }
     }

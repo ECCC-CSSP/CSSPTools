@@ -28,7 +28,7 @@ namespace UploadFileServices
         {
             if (LoggedInService.LoggedInContactInfo == null)
             {
-                return await Task.FromResult(Unauthorized(""));
+                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
             }
 
             FileInfo fi = new FileInfo($"{CSSPFilesPath}{ParentTVItemID}\\{FileName}");

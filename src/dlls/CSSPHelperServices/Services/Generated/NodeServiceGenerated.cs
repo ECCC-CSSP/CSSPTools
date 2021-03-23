@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 using LoggedInServices;
 using Microsoft.Extensions.Configuration;
 
-namespace CSSPDBServices
+namespace CSSPHelperServices
 {
     public interface INodeService
     {
@@ -32,15 +32,11 @@ namespace CSSPDBServices
         #endregion Variables
 
         #region Properties
-        private ICSSPCultureService CSSPCultureService { get; }
-        private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public NodeService(ICSSPCultureService CSSPCultureService, IEnums enums)
+        public NodeService()
         {
-            this.CSSPCultureService = CSSPCultureService;
-            this.enums = enums;
         }
         #endregion Constructors
 
@@ -51,18 +47,33 @@ namespace CSSPDBServices
 
             if (node.ID < 1 || node.ID > 1000000)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "ID", "1", "1000000"), new[] { nameof(node.ID) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "ID", "1", "1000000"), new[] { "ID" });
             }
 
-            //X has no Range Attribute
+            if (node.X < -180 || node.X > 180)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "X", "-180", "180"), new[] { "X" });
+            }
 
-            //Y has no Range Attribute
+            if (node.Y < -90 || node.Y > 90)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Y", "-90", "90"), new[] { "Y" });
+            }
 
-            //Z has no Range Attribute
+            if (node.Z < -100000 || node.Z > 100000)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Z", "-100000", "100000"), new[] { "Z" });
+            }
 
-            //Code has no Range Attribute
+            if (node.Code < 0 || node.Code > 20)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Code", "0", "20"), new[] { "Code" });
+            }
 
-            //Value has no Range Attribute
+            if (node.Value < -1 || node.Value > -1)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Value", "-1", "-1"), new[] { "Value" });
+            }
 
                 //CSSPError: Type not implemented [ElementList] of type [List`1]
 
@@ -70,11 +81,6 @@ namespace CSSPDBServices
                 //CSSPError: Type not implemented [ConnectNodeList] of type [List`1]
 
                 //CSSPError: Type not implemented [ConnectNodeList] of type [Node]
-            bool a = false;
-            if (a)
-            {
-                yield return new ValidationResult("");
-            }
         }
         #endregion Functions public
     }

@@ -22,30 +22,166 @@ using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
 using CSSPCultureServices.Resources;
-using LoggedInServices;
+using CSSPHelperServices.Tests;
 
-namespace CSSPDBServices.Tests
+namespace CSSPHelperServices.Tests
 {
-    public partial class FileItemListDBServiceTest : TestHelper
+    [Collection("Sequential")]
+    public partial class FileItemListServiceTest : TestHelper
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Configuration { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private ICSSPCultureService CSSPCultureService { get; set; }
+        private IEnums enums { get; set; }
+        private IFileItemListService FileItemListService { get; set; }
         #endregion Properties
 
         #region Constructors
-        public FileItemListDBServiceTest() : base()
+        public FileItemListServiceTest() : base()
         {
 
         }
         #endregion Constructors
 
-        #region Functions private
-        private void CheckFileItemListFields(List<FileItemList> fileItemListList)
+        #region Tests Generated Constructors
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task AppTaskParameter_Constructor_Test(string culture)
         {
-            Assert.False(string.IsNullOrWhiteSpace(fileItemListList[0].Text));
-            Assert.False(string.IsNullOrWhiteSpace(fileItemListList[0].FileName));
+            Assert.True(await Setup(culture));
+            Assert.NotNull(CSSPCultureService);
+            Assert.NotNull(enums);
+        }
+        #endregion Tests Generated Constructors
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task FileItemList_Properties_Test(string culture)
+        {
+            List<ValidationResult> ValidationResultList = new List<ValidationResult>();
+            IEnumerable<ValidationResult> validationResults;
+            Assert.True(await Setup(culture));
+
+
+
+            FileItemList fileItemList = GetFilledRandomFileItemList("");
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(255)]
+            // [CSSPMinLength(1)]
+            // fileItemList.Text   (String)
+            // -----------------------------------
+
+
+            fileItemList = null;
+            fileItemList = GetFilledRandomFileItemList("Text");
+            validationResults = FileItemListService.Validate(new ValidationContext(fileItemList));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Text"))).Any());
+
+
+            fileItemList = null;
+            fileItemList = GetFilledRandomFileItemList("");
+            fileItemList.Text = GetRandomString("", 256);
+            validationResults = FileItemListService.Validate(new ValidationContext(fileItemList));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "Text", "1", "255"))).Any());
+
+            fileItemList = null;
+            fileItemList = GetFilledRandomFileItemList("");
+            fileItemList.Text = GetRandomString("", 256);
+            validationResults = FileItemListService.Validate(new ValidationContext(fileItemList));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "Text", "1", "255"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(255)]
+            // [CSSPMinLength(1)]
+            // fileItemList.FileName   (String)
+            // -----------------------------------
+
+
+            fileItemList = null;
+            fileItemList = GetFilledRandomFileItemList("FileName");
+            validationResults = FileItemListService.Validate(new ValidationContext(fileItemList));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "FileName"))).Any());
+
+
+            fileItemList = null;
+            fileItemList = GetFilledRandomFileItemList("");
+            fileItemList.FileName = GetRandomString("", 256);
+            validationResults = FileItemListService.Validate(new ValidationContext(fileItemList));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "FileName", "1", "255"))).Any());
+
+            fileItemList = null;
+            fileItemList = GetFilledRandomFileItemList("");
+            fileItemList.FileName = GetRandomString("", 256);
+            validationResults = FileItemListService.Validate(new ValidationContext(fileItemList));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "FileName", "1", "255"))).Any());
+        }
+        #endregion Tests Generated Properties
+
+        #region Functions private
+        private async Task<bool> Setup(string culture)
+        {
+            Configuration = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings_CSSPDBServicestests.json")
+               .AddUserSecrets("6f27cbbe-6ffb-4154-b49b-d739597c4f60")
+               .Build();
+
+            Services = new ServiceCollection();
+
+            Services.AddSingleton<IConfiguration>(Configuration);
+
+            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<IFileItemListService, FileItemListService>();
+
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+
+            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
+            Assert.NotNull(CSSPCultureService);
+
+            CSSPCultureService.SetCulture(culture);
+
+            enums = Provider.GetService<IEnums>();
+            Assert.NotNull(enums);
+
+            FileItemListService = Provider.GetService<IFileItemListService>();
+            Assert.NotNull(FileItemListService);
+
+            return await Task.FromResult(true);
+        }
+        private FileItemList GetFilledRandomFileItemList(string OmitPropName)
+        {
+            FileItemList fileItemList = new FileItemList();
+
+            if (OmitPropName != "Text") fileItemList.Text = GetRandomString("", 6);
+            if (OmitPropName != "FileName") fileItemList.FileName = GetRandomString("", 6);
+
+            return fileItemList;
         }
 
         #endregion Functions private

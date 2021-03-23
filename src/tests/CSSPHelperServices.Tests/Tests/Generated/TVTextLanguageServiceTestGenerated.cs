@@ -22,33 +22,148 @@ using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
 using CSSPCultureServices.Resources;
-using LoggedInServices;
+using CSSPHelperServices.Tests;
 
-namespace CSSPDBServices.Tests
+namespace CSSPHelperServices.Tests
 {
-    public partial class TVTextLanguageDBServiceTest : TestHelper
+    [Collection("Sequential")]
+    public partial class TVTextLanguageServiceTest : TestHelper
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Configuration { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private ICSSPCultureService CSSPCultureService { get; set; }
+        private IEnums enums { get; set; }
+        private ITVTextLanguageService TVTextLanguageService { get; set; }
         #endregion Properties
 
         #region Constructors
-        public TVTextLanguageDBServiceTest() : base()
+        public TVTextLanguageServiceTest() : base()
         {
 
         }
         #endregion Constructors
 
-        #region Functions private
-        private void CheckTVTextLanguageFields(List<TVTextLanguage> tvTextLanguageList)
+        #region Tests Generated Constructors
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task AppTaskParameter_Constructor_Test(string culture)
         {
-            Assert.False(string.IsNullOrWhiteSpace(tvTextLanguageList[0].TVText));
-            if (!string.IsNullOrWhiteSpace(tvTextLanguageList[0].LanguageText))
-            {
-                Assert.False(string.IsNullOrWhiteSpace(tvTextLanguageList[0].LanguageText));
-            }
+            Assert.True(await Setup(culture));
+            Assert.NotNull(CSSPCultureService);
+            Assert.NotNull(enums);
+        }
+        #endregion Tests Generated Constructors
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task TVTextLanguage_Properties_Test(string culture)
+        {
+            List<ValidationResult> ValidationResultList = new List<ValidationResult>();
+            IEnumerable<ValidationResult> validationResults;
+            Assert.True(await Setup(culture));
+
+
+
+            TVTextLanguage tvTextLanguage = GetFilledRandomTVTextLanguage("");
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // tvTextLanguage.TVText   (String)
+            // -----------------------------------
+
+
+            tvTextLanguage = null;
+            tvTextLanguage = GetFilledRandomTVTextLanguage("TVText");
+            validationResults = TVTextLanguageService.Validate(new ValidationContext(tvTextLanguage));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "TVText"))).Any());
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // tvTextLanguage.Language   (LanguageEnum)
+            // -----------------------------------
+
+
+            tvTextLanguage = null;
+            tvTextLanguage = GetFilledRandomTVTextLanguage("");
+            tvTextLanguage.Language = (LanguageEnum)1000000;
+            validationResults = TVTextLanguageService.Validate(new ValidationContext(tvTextLanguage));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Language"))).Any());
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(100)]
+            // tvTextLanguage.LanguageText   (String)
+            // -----------------------------------
+
+
+            tvTextLanguage = null;
+            tvTextLanguage = GetFilledRandomTVTextLanguage("");
+            tvTextLanguage.LanguageText = GetRandomString("", 101);
+            validationResults = TVTextLanguageService.Validate(new ValidationContext(tvTextLanguage));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "LanguageText", "100"))).Any());
+        }
+        #endregion Tests Generated Properties
+
+        #region Functions private
+        private async Task<bool> Setup(string culture)
+        {
+            Configuration = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings_CSSPDBServicestests.json")
+               .AddUserSecrets("6f27cbbe-6ffb-4154-b49b-d739597c4f60")
+               .Build();
+
+            Services = new ServiceCollection();
+
+            Services.AddSingleton<IConfiguration>(Configuration);
+
+            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ITVTextLanguageService, TVTextLanguageService>();
+
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+
+            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
+            Assert.NotNull(CSSPCultureService);
+
+            CSSPCultureService.SetCulture(culture);
+
+            enums = Provider.GetService<IEnums>();
+            Assert.NotNull(enums);
+
+            TVTextLanguageService = Provider.GetService<ITVTextLanguageService>();
+            Assert.NotNull(TVTextLanguageService);
+
+            return await Task.FromResult(true);
+        }
+        private TVTextLanguage GetFilledRandomTVTextLanguage(string OmitPropName)
+        {
+            TVTextLanguage tvTextLanguage = new TVTextLanguage();
+
+            if (OmitPropName != "TVText") tvTextLanguage.TVText = GetRandomString("", 20);
+            if (OmitPropName != "Language") tvTextLanguage.Language = CSSPCultureServicesRes.Culture.TwoLetterISOLanguageName == "fr" ? LanguageEnum.fr : LanguageEnum.en;
+            if (OmitPropName != "LanguageText") tvTextLanguage.LanguageText = GetRandomString("", 5);
+
+            return tvTextLanguage;
         }
 
         #endregion Functions private

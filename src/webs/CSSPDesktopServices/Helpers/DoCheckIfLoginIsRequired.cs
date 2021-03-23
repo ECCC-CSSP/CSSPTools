@@ -25,7 +25,7 @@ namespace CSSPDesktopServices.Services
 
             if (contact == null)
             {
-                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotFind_InDBLogin, "Contact")));
+                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotFind_InPreferenceDB, "Contact")));
 
                 LoginRequired = true;
                 return await Task.FromResult(true);
@@ -33,25 +33,15 @@ namespace CSSPDesktopServices.Services
 
             AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.Found_InDBLogin, "Contact")));
 
-            Preference preferenceLoggedIn = await GetPreferenceWithVariableName("LoggedIn");
-
-            if (preferenceLoggedIn == null)
+            if (contact.IsLoggedIn == null || !(bool)contact.IsLoggedIn)
             {
-                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotFind_InDBLogin_, "LoggedIn", "Preferences")));
-                return await Task.FromResult(false);
-            }
-
-            bool LoggedIn = bool.Parse(preferenceLoggedIn.VariableValue);
-
-            if (!LoggedIn)
-            {
-                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotFind_InDBLogin_, "LoggedIn", "Preferences")));
+                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.User_IsNotLoggedIn, contact.FirstName + " " + contact.LastName)));
 
                 LoginRequired = true;
                 return await Task.FromResult(true);
             }
 
-            AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.Found_InDBLogin_, "LoggedIn", "Preference")));
+            AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.User_IsAlreadyLoggedIn, contact.FirstName + " " + contact.LastName)));
 
             LoginRequired = false;
 

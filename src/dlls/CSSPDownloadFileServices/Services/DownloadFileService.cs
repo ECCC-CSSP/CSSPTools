@@ -12,10 +12,10 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using CSSPDBFilesManagementServices;
 using CSSPDBFilesManagementModels;
 using CSSPScrambleServices;
 using LoggedInServices;
+using FilesManagementServices;
 //using WebAppLoadedServices;
 
 namespace DownloadFileServices
@@ -39,7 +39,7 @@ namespace DownloadFileServices
         private ILoggedInService LoggedInService { get; }
         private IScrambleService ScrambleService { get; }
         private IEnums enums { get; }
-        private ICSSPDBFilesManagementService CSSPDBFilesManagementService { get; }
+        private IFilesManagementService FilesManagementService { get; }
         //private IWebAppLoadedService WebAppLoadedService { get;  }
         private string AzureStore { get; set; }
         private string AzureStoreCSSPFilesPath { get; set; }
@@ -51,13 +51,13 @@ namespace DownloadFileServices
 
         #region Constructors
         public DownloadFileService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, 
-            IScrambleService ScrambleService, IEnums enums, ICSSPDBFilesManagementService CSSPDBFilesManagementService/*, IWebAppLoadedService WebAppLoadedService*/) : base()
+            IScrambleService ScrambleService, IEnums enums, IFilesManagementService FilesManagementService/*, IWebAppLoadedService WebAppLoadedService*/) : base()
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
-            this.CSSPDBFilesManagementService = CSSPDBFilesManagementService;
+            this.FilesManagementService = FilesManagementService;
             //this.WebAppLoadedService = WebAppLoadedService;
 
             AzureStore = ScrambleService.Descramble(Configuration.GetValue<string>("AzureStore"));

@@ -544,19 +544,19 @@ namespace GenerateCSSPDBServices_Tests
                         {
                             switch (csspProp.ExistTypeName)
                             {
-                                case "AspNetUser":
-                                    {
-                                        AspNetUser appTask = dbTestDB.AspNetUsers.AsNoTracking().FirstOrDefault();
-                                        if (appTask == null)
-                                        {
-                                            sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
-                                        }
-                                        else
-                                        {
-                                            sb.AppendLine($@"            if (OmitPropName != ""{ prop.Name }"") { TypeNameLower }.{ prop.Name } = ""{ appTask.Id }"";");
-                                        }
-                                    }
-                                    break;
+                                //case "AspNetUser":
+                                //    {
+                                //        AspNetUser appTask = dbTestDB.AspNetUsers.AsNoTracking().FirstOrDefault();
+                                //        if (appTask == null)
+                                //        {
+                                //            sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
+                                //        }
+                                //        else
+                                //        {
+                                //            sb.AppendLine($@"            if (OmitPropName != ""{ prop.Name }"") { TypeNameLower }.{ prop.Name } = ""{ appTask.Id }"";");
+                                //        }
+                                //    }
+                                //    break;
                                 default:
                                     {
                                         sb.AppendLine($@"            // Need to implement [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
@@ -602,20 +602,20 @@ namespace GenerateCSSPDBServices_Tests
                                 {
                                     switch (csspProp.ExistTypeName)
                                     {
-                                        case "AspNetUser":
-                                            {
-                                                AspNetUser AspNetUser = dbTestDB.AspNetUsers.AsNoTracking().FirstOrDefault();
+                                        //case "AspNetUser":
+                                        //    {
+                                        //        AspNetUser AspNetUser = dbTestDB.AspNetUsers.AsNoTracking().FirstOrDefault();
 
-                                                if (AspNetUser == null)
-                                                {
-                                                    sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
-                                                }
-                                                else
-                                                {
-                                                    sb.AppendLine($@"            if (OmitPropName != ""{ prop.Name }"") { TypeNameLower }.{ prop.Name } = ""{ AspNetUser.Id }"";");
-                                                }
-                                            }
-                                            break;
+                                        //        if (AspNetUser == null)
+                                        //        {
+                                        //            sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
+                                        //        }
+                                        //        else
+                                        //        {
+                                        //            sb.AppendLine($@"            if (OmitPropName != ""{ prop.Name }"") { TypeNameLower }.{ prop.Name } = ""{ AspNetUser.Id }"";");
+                                        //        }
+                                        //    }
+                                        //    break;
                                         default:
                                             {
                                                 sb.AppendLine($@"            // Need to implement [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");

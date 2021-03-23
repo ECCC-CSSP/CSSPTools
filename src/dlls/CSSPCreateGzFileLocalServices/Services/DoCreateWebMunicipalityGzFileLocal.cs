@@ -18,7 +18,7 @@ namespace CreateGzFileLocalServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized());
+                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
             }
 
             TVItem TVItemMunicipality = await GetTVItemWithTVItemID(MunicipalityTVItemID);

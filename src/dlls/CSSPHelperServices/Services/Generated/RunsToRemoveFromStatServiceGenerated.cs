@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 using LoggedInServices;
 using Microsoft.Extensions.Configuration;
 
-namespace CSSPDBServices
+namespace CSSPHelperServices
 {
     public interface IRunsToRemoveFromStatService
     {
@@ -32,15 +32,11 @@ namespace CSSPDBServices
         #endregion Variables
 
         #region Properties
-        private ICSSPCultureService CSSPCultureService { get; }
-        private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public RunsToRemoveFromStatService(ICSSPCultureService CSSPCultureService, IEnums enums)
+        public RunsToRemoveFromStatService()
         {
-            this.CSSPCultureService = CSSPCultureService;
-            this.enums = enums;
         }
         #endregion Constructors
 
@@ -50,6 +46,7 @@ namespace CSSPDBServices
             RunsToRemoveFromStat runsToRemoveFromStat = validationContext.ObjectInstance as RunsToRemoveFromStat;
 
             //MWQMRunTVItemID has no Range Attribute
+
 
             bool a = false;
             if (a)

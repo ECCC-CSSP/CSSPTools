@@ -21,6 +21,7 @@ using CSSPHelperModels;
 using CSSPDBPreferenceModels;
 using CSSPDBSearchModels;
 using LoggedInServices;
+using CSSPCultureServices.Resources;
 
 namespace CSSPSearchServices.Tests
 {
@@ -34,6 +35,7 @@ namespace CSSPSearchServices.Tests
         private IServiceCollection Services { get; set; }
         private IServiceProvider Provider { get; set; }
         private ILoggedInService LoggedInService { get; set; }
+        private ICSSPCultureService CSSPCultureService { get; set; }
         private ICSSPDBSearchService CSSPDBSearchService { get; set; }
         #endregion Properties
 
@@ -47,17 +49,19 @@ namespace CSSPSearchServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task CSSPSearch_Constructor_Good_Test(string culture)
+        public async Task CSSPDBSearch_Constructor_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
+            Assert.NotNull(Configuration);
+            Assert.Equal(culture, CSSPCultureServicesRes.Culture.ToString());
             Assert.NotNull(LoggedInService);
             Assert.NotNull(CSSPDBSearchService);
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task CSSPSearch_Search_Good_Test(string culture)
+        public async Task CSSPDBSearch_Search_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -94,7 +98,70 @@ namespace CSSPSearchServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task CSSPSearch_Search_Under_NotFound_Good_Test(string culture)
+        public async Task CSSPDBSearch_Search_Empty_String_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            var actionRes = await CSSPDBSearchService.Search("", 0);
+            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+            List<SearchResult> searchResultList = (List<SearchResult>)((OkObjectResult)actionRes.Result).Value;
+            Assert.NotNull(searchResultList);
+            Assert.True(searchResultList.Count == 0);
+
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task CSSPDBSearch_Search_Number_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            var actionRes = await CSSPDBSearchService.Search("635", 0);
+            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+            List<SearchResult> searchResultList = (List<SearchResult>)((OkObjectResult)actionRes.Result).Value;
+            Assert.NotNull(searchResultList);
+            Assert.True(searchResultList.Count > 0);
+
+        }
+        [Theory]
+        //[InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task CSSPDBSearch_Search_FR_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            List<string> SearchTermList = new List<string>()
+            {
+                "Canada", "NB-01-010-001"
+            };
+
+            foreach (string SearchText in SearchTermList)
+            {
+                var actionRes = await CSSPDBSearchService.Search(SearchText, 0);
+                Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+                List<SearchResult> searchResultList = (List<SearchResult>)((OkObjectResult)actionRes.Result).Value;
+                Assert.NotNull(searchResultList);
+                Assert.True(searchResultList.Count > 0);
+
+                List<string> TermList = SearchText.Split(" ", StringSplitOptions.RemoveEmptyEntries).Select(c => c.Trim()).ToList();
+
+                foreach (SearchResult searchResult in searchResultList)
+                {
+                    foreach (string term in TermList)
+                    {
+                        Assert.Contains(term.ToLower(), searchResult.TVItemLanguage.TVText.ToLower());
+                    }
+                }
+            }
+
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task CSSPDBSearch_Search_Under_NotFound_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -117,7 +184,7 @@ namespace CSSPSearchServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task CSSPSearch_Search_NotFound_Good_Test(string culture)
+        public async Task CSSPDBSearch_Search_NotFound_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -137,6 +204,28 @@ namespace CSSPSearchServices.Tests
             }
 
         }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task CSSPDBSearch_Search_Unauthorized_Error_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            LoggedInService.LoggedInContactInfo.LoggedInContact = null;
+
+            List<string> SearchTermList = new List<string>()
+            {
+                "Canada"
+            };
+
+            foreach (string SearchText in SearchTermList)
+            {
+                var actionRes = await CSSPDBSearchService.Search(SearchText, 0);
+                Assert.Equal(401, ((ObjectResult)actionRes.Result).StatusCode);
+                Assert.NotNull(((UnauthorizedObjectResult)actionRes.Result).Value);
+            }
+
+        }
         #endregion Functions public
 
         #region Functions private
@@ -144,8 +233,7 @@ namespace CSSPSearchServices.Tests
         {
             Configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-               .AddJsonFile("appsettings_csspdbsearchservicestests.json")
-               .AddUserSecrets("38d7fa5b-72c7-4b05-9a17-24bb2ba5f559")
+                .AddJsonFile("appsettings_csspdbsearchservicestests.json")
                 .Build();
 
             Services = new ServiceCollection();
@@ -157,44 +245,18 @@ namespace CSSPSearchServices.Tests
             Services.AddSingleton<ICSSPDBSearchService, CSSPDBSearchService>();
 
             /* ---------------------------------------------------------------------------------
-             * using TestDB
-             * ---------------------------------------------------------------------------------      
-             */
-            string TestDB = Configuration.GetValue<string>("TestDB");
-            Assert.NotNull(TestDB);
-
-            Services.AddDbContext<CSSPDBContext>(options =>
-            {
-                options.UseSqlServer(TestDB);
-            });
-
-            /* ---------------------------------------------------------------------------------
-             * using CSSPDBLocal
-             * ---------------------------------------------------------------------------------      
-             */
-            string CSSPDBLocal = Configuration.GetValue<string>("CSSPDBLocal");
-            Assert.NotNull(CSSPDBLocal);
-
-            FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocal);
-            Assert.True(fiCSSPDBLocal.Exists);
-
-            Services.AddDbContext<CSSPDBLocalContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
-            });
-
-            /* ---------------------------------------------------------------------------------
              * using CSSPDBPreference
              * ---------------------------------------------------------------------------------      
              */
-            string CSSPDBPreference = Configuration.GetValue<string>("CSSPDBPreference");
-            Assert.NotNull(CSSPDBPreference);
+            string CSSPDBPreferenceFileName = Configuration.GetValue<string>("CSSPDBPreference");
+            Assert.NotNull(CSSPDBPreferenceFileName);
 
-            FileInfo fiCSSPDBPreference = new FileInfo(CSSPDBPreference);
+            FileInfo fiCSSPDBPreferenceFileName = new FileInfo(CSSPDBPreferenceFileName);
+            Assert.True(fiCSSPDBPreferenceFileName.Exists);
 
             Services.AddDbContext<CSSPDBPreferenceContext>(options =>
             {
-                options.UseSqlite($"Data Source={ fiCSSPDBPreference.FullName }");
+                options.UseSqlite($"Data Source={ fiCSSPDBPreferenceFileName.FullName }");
             });
 
             /* ---------------------------------------------------------------------------------
@@ -218,10 +280,14 @@ namespace CSSPSearchServices.Tests
             LoggedInService = Provider.GetService<ILoggedInService>();
             Assert.NotNull(LoggedInService);
 
-            string LoginEmail = Configuration.GetValue<string>("LoginEmail");
-            await LoggedInService.SetLoggedInContactInfo(LoginEmail);
+            await LoggedInService.SetLoggedInLocalContactInfo();
             Assert.NotNull(LoggedInService.LoggedInContactInfo);
             Assert.NotNull(LoggedInService.LoggedInContactInfo.LoggedInContact);
+
+            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
+            Assert.NotNull(CSSPCultureService);
+
+            CSSPCultureService.SetCulture(culture);
 
             CSSPDBSearchService = Provider.GetService<ICSSPDBSearchService>();
             Assert.NotNull(CSSPDBSearchService);

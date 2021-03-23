@@ -24,6 +24,7 @@ using CSSPCultureServices.Resources;
 using LoggedInServices;
 using CSSPDBPreferenceModels;
 using CSSPScrambleServices;
+using CSSPHelperServices;
 
 namespace CSSPDBServices.Tests
 {

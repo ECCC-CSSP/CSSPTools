@@ -25,7 +25,16 @@ namespace GenerateCSSPSQLiteServices
                         table.TableName = tbl.ItemArray[2].ToString();
 
                         if (table.TableName == "sysdiagrams") continue;
-                        
+                        if (table.TableName == "AspNetRoleClaims") continue;
+                        if (table.TableName == "AspNetRoles") continue;
+                        if (table.TableName == "AspNetUserClaims") continue;
+                        if (table.TableName == "AspNetUserLogins") continue;
+                        if (table.TableName == "AspNetUserRoles") continue;
+                        if (table.TableName == "AspNetUserTokens") continue;
+                        if (table.TableName == "PersistedGrants") continue;
+                        if (table.TableName == "DeviceCodes") continue;
+                        if (table.TableName == "AspNetUsers") continue;
+
                         tableList.Add(table);
 
                         foreach (DataRow dr in clmList.Rows)

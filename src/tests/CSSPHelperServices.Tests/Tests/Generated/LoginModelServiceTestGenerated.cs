@@ -22,30 +22,166 @@ using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
 using CSSPCultureServices.Resources;
-using LoggedInServices;
+using CSSPHelperServices.Tests;
 
-namespace CSSPDBServices.Tests
+namespace CSSPHelperServices.Tests
 {
-    public partial class LoginModelDBServiceTest : TestHelper
+    [Collection("Sequential")]
+    public partial class LoginModelServiceTest : TestHelper
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Configuration { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private ICSSPCultureService CSSPCultureService { get; set; }
+        private IEnums enums { get; set; }
+        private ILoginModelService LoginModelService { get; set; }
         #endregion Properties
 
         #region Constructors
-        public LoginModelDBServiceTest() : base()
+        public LoginModelServiceTest() : base()
         {
 
         }
         #endregion Constructors
 
-        #region Functions private
-        private void CheckLoginModelFields(List<LoginModel> loginModelList)
+        #region Tests Generated Constructors
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task AppTaskParameter_Constructor_Test(string culture)
         {
-            Assert.False(string.IsNullOrWhiteSpace(loginModelList[0].LoginEmail));
-            Assert.False(string.IsNullOrWhiteSpace(loginModelList[0].Password));
+            Assert.True(await Setup(culture));
+            Assert.NotNull(CSSPCultureService);
+            Assert.NotNull(enums);
+        }
+        #endregion Tests Generated Constructors
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task LoginModel_Properties_Test(string culture)
+        {
+            List<ValidationResult> ValidationResultList = new List<ValidationResult>();
+            IEnumerable<ValidationResult> validationResults;
+            Assert.True(await Setup(culture));
+
+
+
+            LoginModel loginModel = GetFilledRandomLoginModel("");
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(100)]
+            // [CSSPMinLength(5)]
+            // loginModel.LoginEmail   (String)
+            // -----------------------------------
+
+
+            loginModel = null;
+            loginModel = GetFilledRandomLoginModel("LoginEmail");
+            validationResults = LoginModelService.Validate(new ValidationContext(loginModel));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "LoginEmail"))).Any());
+
+
+            loginModel = null;
+            loginModel = GetFilledRandomLoginModel("");
+            loginModel.LoginEmail = GetRandomString("", 101);
+            validationResults = LoginModelService.Validate(new ValidationContext(loginModel));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "LoginEmail", "5", "100"))).Any());
+
+            loginModel = null;
+            loginModel = GetFilledRandomLoginModel("");
+            loginModel.LoginEmail = GetRandomString("", 101);
+            validationResults = LoginModelService.Validate(new ValidationContext(loginModel));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "LoginEmail", "5", "100"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(50)]
+            // [CSSPMinLength(5)]
+            // loginModel.Password   (String)
+            // -----------------------------------
+
+
+            loginModel = null;
+            loginModel = GetFilledRandomLoginModel("Password");
+            validationResults = LoginModelService.Validate(new ValidationContext(loginModel));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Password"))).Any());
+
+
+            loginModel = null;
+            loginModel = GetFilledRandomLoginModel("");
+            loginModel.Password = GetRandomString("", 51);
+            validationResults = LoginModelService.Validate(new ValidationContext(loginModel));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "Password", "5", "50"))).Any());
+
+            loginModel = null;
+            loginModel = GetFilledRandomLoginModel("");
+            loginModel.Password = GetRandomString("", 51);
+            validationResults = LoginModelService.Validate(new ValidationContext(loginModel));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "Password", "5", "50"))).Any());
+        }
+        #endregion Tests Generated Properties
+
+        #region Functions private
+        private async Task<bool> Setup(string culture)
+        {
+            Configuration = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings_CSSPDBServicestests.json")
+               .AddUserSecrets("6f27cbbe-6ffb-4154-b49b-d739597c4f60")
+               .Build();
+
+            Services = new ServiceCollection();
+
+            Services.AddSingleton<IConfiguration>(Configuration);
+
+            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ILoginModelService, LoginModelService>();
+
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+
+            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
+            Assert.NotNull(CSSPCultureService);
+
+            CSSPCultureService.SetCulture(culture);
+
+            enums = Provider.GetService<IEnums>();
+            Assert.NotNull(enums);
+
+            LoginModelService = Provider.GetService<ILoginModelService>();
+            Assert.NotNull(LoginModelService);
+
+            return await Task.FromResult(true);
+        }
+        private LoginModel GetFilledRandomLoginModel(string OmitPropName)
+        {
+            LoginModel loginModel = new LoginModel();
+
+            if (OmitPropName != "LoginEmail") loginModel.LoginEmail = GetRandomString("", 10);
+            if (OmitPropName != "Password") loginModel.Password = GetRandomString("", 10);
+
+            return loginModel;
         }
 
         #endregion Functions private

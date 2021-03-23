@@ -1,7 +1,5 @@
 ﻿using CSSPCultureServices.Resources;
 using CSSPCultureServices.Services;
-using CSSPDBFilesManagementServices;
-using CSSPDBPreferenceServices;
 using CSSPDesktopServices.Models;
 using CSSPDesktopServices.Services;
 using CSSPEnums;
@@ -30,6 +28,7 @@ using CSSPDBCommandLogModels;
 using CSSPDBFilesManagementModels;
 using CSSPScrambleServices;
 using LoggedInServices;
+using FilesManagementServices;
 //using WebAppLoadedServices;
 
 namespace CSSPDesktop
@@ -43,7 +42,7 @@ namespace CSSPDesktop
         private IConfiguration Configuration { get; set; }
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
-        private ICSSPDBFilesManagementService CSSPDBFilesManagementService { get; set; }
+        private IFilesManagementService FilesManagementService { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
         private ICSSPDesktopService CSSPDesktopService { get; set; }
         private ICSSPSQLiteService CSSPSQLiteService { get; set; }
@@ -238,11 +237,9 @@ namespace CSSPDesktop
         {
             if (!await CSSPDesktopService.CheckingInternetConnection()) return await Task.FromResult(false);
 
-            Preference preference = await CSSPDesktopService.GetPreferenceWithVariableName("HasInternetConnection");
-
-            if (preference != null)
+            if (CSSPDesktopService.contact != null && CSSPDesktopService.contact.HasInternetConnection != null)
             {
-                if (bool.Parse(preference.VariableValue))
+                if ((bool)CSSPDesktopService.contact.HasInternetConnection)
                 {
                     Text = CSSPCultureDesktopRes.FormTitleText + $" --- ({ CSSPCultureDesktopRes.ConnectedOnInternet })";
                 }
@@ -396,17 +393,12 @@ namespace CSSPDesktop
 
             if (!CSSPDesktopService.LoginRequired)
             {
-                Preference preferenceHasInternetConnection = await CSSPDesktopService.GetPreferenceWithVariableName("HasInternetConnection");
-
-                if (bool.Parse(preferenceHasInternetConnection.VariableValue))
+                if (CSSPDesktopService.contact != null && (bool)CSSPDesktopService.contact.HasInternetConnection)
                 {
-                    Preference preferenceLoginEmail = await CSSPDesktopService.GetPreferenceWithVariableName("LoginEmail");
-                    Preference preferencePassword = await CSSPDesktopService.GetPreferenceWithVariableName("Password");
-
                     LoginModel loginModel = new LoginModel()
                     {
-                        LoginEmail = preferenceLoginEmail.VariableValue,
-                        Password = preferencePassword.VariableValue,
+                        LoginEmail = CSSPDesktopService.contact.LoginEmail,
+                        Password = ScrambleService.Descramble(CSSPDesktopService.contact.PasswordHash),
                     };
 
                     if (!await CSSPDesktopService.Login(loginModel)) return await Task.FromResult(false);
@@ -421,9 +413,7 @@ namespace CSSPDesktop
                 lblContactLoggedIn.Text = "";
                 ShowPanels(ShowPanel.Login);
 
-                Preference preferenceHasInternetConnection = await CSSPDesktopService.GetPreferenceWithVariableName("HasInternetConnection");
-
-                if (!bool.Parse(preferenceHasInternetConnection.VariableValue))
+                if (CSSPDesktopService.contact != null && !(bool)CSSPDesktopService.contact.HasInternetConnection)
                 {
                     butLogin.Enabled = false;
                     lblInternetRequiredLogin.Visible = true;
@@ -481,11 +471,11 @@ namespace CSSPDesktop
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IScrambleService, ScrambleService>();
             Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
-            Services.AddSingleton<ICSSPDBFilesManagementService, CSSPDBFilesManagementService>();
+            Services.AddSingleton<IFilesManagementService, FilesManagementService>();
             Services.AddSingleton<IDownloadFileService, DownloadFileService>();
             Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
             Services.AddSingleton<IScrambleService, ScrambleService>();
-            Services.AddSingleton<IPreferenceService, PreferenceService>();
+            //Services.AddSingleton<IPreferenceService, PreferenceService>();
             //Services.AddSingleton<IWebAppLoadedService, WebAppLoadedService>();
 
             /* ---------------------------------------------------------------------------------
@@ -713,15 +703,13 @@ namespace CSSPDesktop
 
             try
             {
-                Preference preferenceHasInternetConnection = await CSSPDesktopService.GetPreferenceWithVariableName("HasInternetConnection");
-
-                if (preferenceHasInternetConnection == null)
+                if (CSSPDesktopService.contact != null && CSSPDesktopService.contact.HasInternetConnection == null)
                 {
                     Text = CSSPCultureDesktopRes.FormTitleText;
                 }
                 else
                 {
-                    if (bool.Parse(preferenceHasInternetConnection.VariableValue))
+                    if (CSSPDesktopService.contact != null && (bool)CSSPDesktopService.contact.HasInternetConnection)
                     {
                         Text = CSSPCultureDesktopRes.FormTitleText + $" --- ({ CSSPCultureDesktopRes.ConnectedOnInternet })";
                     }

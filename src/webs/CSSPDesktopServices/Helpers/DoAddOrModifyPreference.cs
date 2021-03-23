@@ -25,16 +25,16 @@ namespace CSSPDesktopServices.Services
 {
     public partial class CSSPDesktopService : ICSSPDesktopService
     {
-        private async Task<Preference> DoAddOrModifyPreference(string VariableName, string VariableValue)
-        {
-            var actionPreference = await PreferenceService.AddOrChange(VariableName, VariableValue);
-            if (await DoStatusActionPreference(actionPreference, VariableName))
-            {
-                Preference preference = (Preference)((OkObjectResult)actionPreference.Result).Value;
-                return await Task.FromResult(new Preference() { PreferenceID = preference.PreferenceID, VariableName = preference.VariableName, VariableValue = preference.VariableValue });
-            }
+        //private async Task<Preference> DoAddOrModifyPreference(Preference preference)
+        //{
+        //    var actionPreference = await PreferenceService.AddOrModify(preference);
+        //    if (await DoStatusActionPreference(actionPreference, preference.VariableName))
+        //    {
+        //        Preference preferenceRet = (Preference)((OkObjectResult)actionPreference.Result).Value;
+        //        return await Task.FromResult(new Preference() { PreferenceID = preferenceRet.PreferenceID, VariableName = preferenceRet.VariableName, VariableValue = preferenceRet.VariableValue });
+        //    }
 
-            return null;
-        }
+        //    return null;
+        //}
     }
 }

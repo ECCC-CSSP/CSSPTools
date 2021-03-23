@@ -13,11 +13,10 @@ namespace CSSPDBPreferenceModels
     {
 
         #region Properties
-        //public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
         public virtual DbSet<Contact> Contacts { get; set; }
         public virtual DbSet<TVItemUserAuthorization> TVItemUserAuthorizations { get; set; }
         public virtual DbSet<TVTypeUserAuthorization> TVTypeUserAuthorizations { get; set; }
-        public virtual DbSet<Preference> Preferences { get; set; }
+        //public virtual DbSet<Preference> Preferences { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -30,15 +29,5 @@ namespace CSSPDBPreferenceModels
         {
         }
         #endregion Constructors
-
-        #region Overrides
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-        }
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-        }
-        #endregion Overrides
     }
 }

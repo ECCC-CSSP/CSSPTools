@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 using LoggedInServices;
 using Microsoft.Extensions.Configuration;
 
-namespace CSSPDBServices
+namespace CSSPHelperServices
 {
     public interface IRTBStringPosService
     {
@@ -32,15 +32,11 @@ namespace CSSPDBServices
         #endregion Variables
 
         #region Properties
-        private ICSSPCultureService CSSPCultureService { get; }
-        private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public RTBStringPosService(ICSSPCultureService CSSPCultureService, IEnums enums)
+        public RTBStringPosService()
         {
-            this.CSSPCultureService = CSSPCultureService;
-            this.enums = enums;
         }
         #endregion Constructors
 
@@ -51,33 +47,34 @@ namespace CSSPDBServices
 
             if (rTBStringPos.StartPos < 0)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "StartPos", "0"), new[] { nameof(rTBStringPos.StartPos) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "StartPos", "0"), new[] { "StartPos" });
             }
 
             if (rTBStringPos.EndPos < 0)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "EndPos", "0"), new[] { nameof(rTBStringPos.EndPos) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "EndPos", "0"), new[] { "EndPos" });
             }
 
             if (string.IsNullOrWhiteSpace(rTBStringPos.Text))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Text"), new[] { nameof(rTBStringPos.Text) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Text"), new[] { "Text" });
             }
 
-            //Text has no StringLength Attribute
+            if (!string.IsNullOrWhiteSpace(rTBStringPos.Text) && rTBStringPos.Text.Length > 100)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Text", "100"), new[] { "Text" });
+            }
 
             if (string.IsNullOrWhiteSpace(rTBStringPos.TagText))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TagText"), new[] { nameof(rTBStringPos.TagText) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TagText"), new[] { "TagText" });
             }
 
-            //TagText has no StringLength Attribute
-
-            bool a = false;
-            if (a)
+            if (!string.IsNullOrWhiteSpace(rTBStringPos.TagText) && rTBStringPos.TagText.Length > 100)
             {
-                yield return new ValidationResult("");
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "TagText", "100"), new[] { "TagText" });
             }
+
         }
         #endregion Functions public
     }

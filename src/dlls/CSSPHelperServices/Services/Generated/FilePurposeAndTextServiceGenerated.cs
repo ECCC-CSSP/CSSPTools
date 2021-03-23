@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 using LoggedInServices;
 using Microsoft.Extensions.Configuration;
 
-namespace CSSPDBServices
+namespace CSSPHelperServices
 {
     public interface IFilePurposeAndTextService
     {
@@ -32,14 +32,12 @@ namespace CSSPDBServices
         #endregion Variables
 
         #region Properties
-        private ICSSPCultureService CSSPCultureService { get; }
         private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public FilePurposeAndTextService(ICSSPCultureService CSSPCultureService, IEnums enums)
+        public FilePurposeAndTextService(IEnums enums)
         {
-            this.CSSPCultureService = CSSPCultureService;
             this.enums = enums;
         }
         #endregion Constructors
@@ -53,19 +51,14 @@ namespace CSSPDBServices
             retStr = enums.EnumTypeOK(typeof(FilePurposeEnum), (int?)filePurposeAndText.FilePurpose);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "FilePurpose"), new[] { nameof(filePurposeAndText.FilePurpose) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "FilePurpose"), new[] { "FilePurpose" });
             }
 
             if (!string.IsNullOrWhiteSpace(filePurposeAndText.FilePurposeText) && filePurposeAndText.FilePurposeText.Length > 100)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "FilePurposeText", "100"), new[] { nameof(filePurposeAndText.FilePurposeText) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "FilePurposeText", "100"), new[] { "FilePurposeText" });
             }
 
-            bool a = false;
-            if (a)
-            {
-                yield return new ValidationResult("");
-            }
         }
         #endregion Functions public
     }

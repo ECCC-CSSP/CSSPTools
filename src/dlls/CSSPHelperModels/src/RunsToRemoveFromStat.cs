@@ -2,12 +2,9 @@
  * Manually edited
  * 
  */
-using CSSPEnums;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 
 namespace CSSPHelperModels
 {
@@ -19,6 +16,7 @@ namespace CSSPHelperModels
 
         #region Properties not in DB
         public bool RemoveFromStat { get; set; }
+        [Range(1, -1)]
         public int MWQMRunTVItemID { get; set; }
         #endregion Properties not in DB
 

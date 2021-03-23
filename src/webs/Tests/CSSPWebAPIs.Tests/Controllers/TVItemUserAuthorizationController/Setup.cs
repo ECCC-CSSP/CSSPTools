@@ -22,6 +22,7 @@ using System.Text;
 using LoggedInServices;
 using CreateGzFileServices;
 using CSSPHelperModels;
+using CSSPHelperServices;
 
 namespace CSSPWebAPIs.TVItemUserAuthorizationManualController.Tests
 {
@@ -79,11 +80,11 @@ namespace CSSPWebAPIs.TVItemUserAuthorizationManualController.Tests
                 options.UseSqlServer(DBConnStr);
             });
 
-            Services.AddIdentityCore<ApplicationUser>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            //Services.AddIdentityCore<ApplicationUser>()
+            //    .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(DBConnStr));
+            //Services.AddDbContext<ApplicationDbContext>(options =>
+            //    options.UseSqlServer(DBConnStr));
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();

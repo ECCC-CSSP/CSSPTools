@@ -76,65 +76,6 @@ namespace CSSPSQLiteServices
                     "LastUpdateDate_UTC TEXT  NOT NULL  , " +
                     "LastUpdateContactTVItemID INTEGER  NOT NULL  )";
                     break;
-                case "AspNetRoles":
-                    CreateTable = "CREATE TABLE AspNetRoles (" +
-                    "Id TEXT  NOT NULL  UNIQUE , " +
-                    "Name TEXT   , " +
-                    "NormalizeName TEXT   , " +
-                    "ConcurrencyStamp TEXT   )";
-                    break;
-                case "AspNetRoleClaims":
-                    CreateTable = "CREATE TABLE AspNetRoleClaims (" +
-                    "Id TEXT  NOT NULL  UNIQUE , " +
-                    "RoleId TEXT  NOT NULL  , " +
-                    "ClaimType TEXT   , " +
-                    "ClaimValue TEXT   )";
-                    break;
-                case "AspNetUsers":
-                    CreateTable = "CREATE TABLE AspNetUsers (" +
-                    "Id TEXT  NOT NULL  UNIQUE , " +
-                    "Email TEXT   , " +
-                    "EmailConfirmed INTEGER  NOT NULL  , " +
-                    "PasswordHash TEXT   , " +
-                    "SecurityStamp TEXT   , " +
-                    "PhoneNumber TEXT   , " +
-                    "PhoneNumberConfirmed INTEGER  NOT NULL  , " +
-                    "TwoFactorEnabled INTEGER  NOT NULL  , " +
-                    "LockoutEndDateUtc TEXT   , " +
-                    "LockoutEnabled INTEGER  NOT NULL  , " +
-                    "AccessFailedCount INTEGER  NOT NULL  , " +
-                    "UserName TEXT  NOT NULL  , " +
-                    "NormalizedUserName TEXT   , " +
-                    "NormalizedEmail TEXT   , " +
-                    "ConcurrencyStamp TEXT   , " +
-                    "LockoutEnd TEXT   )";
-                    break;
-                case "AspNetUserClaims":
-                    CreateTable = "CREATE TABLE AspNetUserClaims (" +
-                    "Id INTEGER  NOT NULL  UNIQUE , " +
-                    "UserId TEXT  NOT NULL  , " +
-                    "ClaimType TEXT   , " +
-                    "ClaimValue TEXT   )";
-                    break;
-                case "AspNetUserLogins":
-                    CreateTable = "CREATE TABLE AspNetUserLogins (" +
-                    "LoginProvider TEXT  NOT NULL  , " +
-                    "ProviderKey TEXT  NOT NULL  , " +
-                    "ProviderDisplayName TEXT   , " +
-                    "UserId TEXT  NOT NULL  )";
-                    break;
-                case "AspNetUserRoles":
-                    CreateTable = "CREATE TABLE AspNetUserRoles (" +
-                    "UserId TEXT  NOT NULL  , " +
-                    "RoleId TEXT  NOT NULL  )";
-                    break;
-                case "AspNetUserTokens":
-                    CreateTable = "CREATE TABLE AspNetUserTokens (" +
-                    "UserId TEXT  NOT NULL  , " +
-                    "LoginProvider TEXT  NOT NULL  , " +
-                    "Name TEXT  NOT NULL  , " +
-                    "Value TEXT   )";
-                    break;
                 case "BoxModels":
                     CreateTable = "CREATE TABLE BoxModels (" +
                     "BoxModelID INTEGER  NOT NULL  UNIQUE , " +
@@ -294,6 +235,9 @@ namespace CSSPSQLiteServices
                     "SamplingPlanner_ProvincesTVItemID TEXT   , " +
                     "PasswordHash TEXT   , " +
                     "Token TEXT   , " +
+                    "HasInternetConnection INTEGER   , " +
+                    "IsLoggedIn INTEGER   , " +
+                    "GoogleMapKeyHash TEXT   , " +
                     "AccessFailedCount INTEGER   , " +
                     "LastUpdateDate_UTC TEXT  NOT NULL  , " +
                     "LastUpdateContactTVItemID INTEGER  NOT NULL  )";
@@ -317,16 +261,6 @@ namespace CSSPSQLiteServices
                     "ShortCutAddress TEXT  NOT NULL  , " +
                     "LastUpdateDate_UTC TEXT  NOT NULL  , " +
                     "LastUpdateContactTVItemID INTEGER  NOT NULL  )";
-                    break;
-                case "DeviceCodes":
-                    CreateTable = "CREATE TABLE DeviceCodes (" +
-                    "UserCode TEXT  NOT NULL  UNIQUE , " +
-                    "DeviceCode_ TEXT  NOT NULL  , " +
-                    "SubjectId TEXT   , " +
-                    "ClientId TEXT  NOT NULL  , " +
-                    "CreationTime TEXT  NOT NULL  , " +
-                    "Expiration TEXT  NOT NULL  , " +
-                    "Data TEXT  NOT NULL  )";
                     break;
                 case "DocTemplates":
                     CreateTable = "CREATE TABLE DocTemplates (" +
@@ -964,16 +898,6 @@ namespace CSSPSQLiteServices
                     "TranslationStatusLogBook INTEGER   , " +
                     "LastUpdateDate_UTC TEXT  NOT NULL  , " +
                     "LastUpdateContactTVItemID INTEGER  NOT NULL  )";
-                    break;
-                case "PersistedGrants":
-                    CreateTable = "CREATE TABLE PersistedGrants (" +
-                    "Key TEXT  NOT NULL  UNIQUE , " +
-                    "Type TEXT  NOT NULL  , " +
-                    "SubjectId TEXT   , " +
-                    "ClientId TEXT  NOT NULL  , " +
-                    "CreationTime TEXT  NOT NULL  , " +
-                    "Expiration TEXT   , " +
-                    "Data TEXT  NOT NULL  )";
                     break;
                 case "PolSourceGroupings":
                     CreateTable = "CREATE TABLE PolSourceGroupings (" +

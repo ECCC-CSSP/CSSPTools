@@ -27,15 +27,5 @@ namespace CSSPDBSearchModels
         {
         }
         #endregion Constructors
-
-        #region Overrides
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-        }
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-        }
-        #endregion Overrides
     }
 }

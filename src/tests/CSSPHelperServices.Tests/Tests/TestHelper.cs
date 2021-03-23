@@ -3,7 +3,6 @@ using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 using CSSPHelperModels;
-using CSSPDBServices;
 using Microsoft.EntityFrameworkCore.Metadata;
 using System.Reflection;
 using System.Text;
@@ -13,7 +12,7 @@ using System.Threading;
 using System.Globalization;
 using Microsoft.EntityFrameworkCore;
 
-namespace CSSPDBServices.Tests
+namespace CSSPHelperServices.Tests
 {
     public partial class TestHelper
     {
@@ -23,12 +22,7 @@ namespace CSSPDBServices.Tests
         #endregion Variables
 
         #region Properties
-        //public CSSPDBContext dbTestDB { get; set; }
-        //public CSSPDBContext dbMemoryTestDB { get; set; }
         public LanguageEnum LanguageRequest { get; set; }
-        //public List<CultureInfo> AllowableCulture { get; set; }
-        //public int ContactID = 2;
-        //public CultureInfo culture { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -95,22 +89,22 @@ namespace CSSPDBServices.Tests
         }
         public string GetRandomString(string startString, int length)
         {
-            string retStr = startString;
+            StringBuilder retStr = new StringBuilder(startString);
 
             if (retStr.Length > length)
             {
-                retStr = retStr.Substring(0, length);
+                retStr = new StringBuilder(retStr.ToString().Substring(0, length));
             }
             else
             {
                 int Count = length - retStr.Length;
                 for (int i = 0; i < Count; i++)
                 {
-                    retStr += (char)random.Next(97, 122);
+                    retStr.Append((char)random.Next(97, 122));
                 }
             }
 
-            return retStr;
+            return retStr.ToString();
         }
         public string GetRandomTel()
         {

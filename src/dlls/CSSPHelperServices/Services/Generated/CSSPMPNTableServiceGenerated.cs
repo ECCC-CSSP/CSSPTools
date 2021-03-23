@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 using LoggedInServices;
 using Microsoft.Extensions.Configuration;
 
-namespace CSSPDBServices
+namespace CSSPHelperServices
 {
     public interface ICSSPMPNTableService
     {
@@ -32,15 +32,11 @@ namespace CSSPDBServices
         #endregion Variables
 
         #region Properties
-        private ICSSPCultureService CSSPCultureService { get; }
-        private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public CSSPMPNTableService(ICSSPCultureService CSSPCultureService, IEnums enums)
+        public CSSPMPNTableService()
         {
-            this.CSSPCultureService = CSSPCultureService;
-            this.enums = enums;
         }
         #endregion Constructors
 
@@ -51,29 +47,24 @@ namespace CSSPDBServices
 
             if (csspMPNTable.Tube10 < 0 || csspMPNTable.Tube10 > 5)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Tube10", "0", "5"), new[] { nameof(csspMPNTable.Tube10) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Tube10", "0", "5"), new[] { "Tube10" });
             }
 
             if (csspMPNTable.Tube1_0 < 0 || csspMPNTable.Tube1_0 > 5)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Tube1_0", "0", "5"), new[] { nameof(csspMPNTable.Tube1_0) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Tube1_0", "0", "5"), new[] { "Tube1_0" });
             }
 
             if (csspMPNTable.Tube0_1 < 0 || csspMPNTable.Tube0_1 > 5)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Tube0_1", "0", "5"), new[] { nameof(csspMPNTable.Tube0_1) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Tube0_1", "0", "5"), new[] { "Tube0_1" });
             }
 
             if (csspMPNTable.MPN < 0 || csspMPNTable.MPN > 100000000)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "MPN", "0", "100000000"), new[] { nameof(csspMPNTable.MPN) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "MPN", "0", "100000000"), new[] { "MPN" });
             }
 
-            bool a = false;
-            if (a)
-            {
-                yield return new ValidationResult("");
-            }
         }
         #endregion Functions public
     }

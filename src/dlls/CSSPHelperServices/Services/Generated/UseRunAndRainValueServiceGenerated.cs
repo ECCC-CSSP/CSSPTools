@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 using LoggedInServices;
 using Microsoft.Extensions.Configuration;
 
-namespace CSSPDBServices
+namespace CSSPHelperServices
 {
     public interface IUseRunAndRainValueService
     {
@@ -32,15 +32,11 @@ namespace CSSPDBServices
         #endregion Variables
 
         #region Properties
-        private ICSSPCultureService CSSPCultureService { get; }
-        private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public UseRunAndRainValueService(ICSSPCultureService CSSPCultureService, IEnums enums)
+        public UseRunAndRainValueService()
         {
-            this.CSSPCultureService = CSSPCultureService;
-            this.enums = enums;
         }
         #endregion Constructors
 
@@ -50,6 +46,7 @@ namespace CSSPDBServices
             UseRunAndRainValue useRunAndRainValue = validationContext.ObjectInstance as UseRunAndRainValue;
 
             //RainValue has no Range Attribute
+
 
             bool a = false;
             if (a)

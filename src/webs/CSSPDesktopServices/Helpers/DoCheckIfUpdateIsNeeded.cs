@@ -24,30 +24,11 @@ namespace CSSPDesktopServices.Services
 
             UpdateIsNeeded = false;
 
-            Preference preferenceHasInternetConnection = await GetPreferenceWithVariableName("HasInternetConnection");
 
-            if (preferenceHasInternetConnection == null)
-            {
-                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotFind_InDBLogin_, "HasInternetConnection", "Preferences")));
-                return await Task.FromResult(false);
-            }
-
-            bool HasInternetConnection = bool.Parse(preferenceHasInternetConnection.VariableValue);
-
-            if (!HasInternetConnection)
+            if (contact.HasInternetConnection == null || !(bool)contact.HasInternetConnection)
             {
                 return await Task.FromResult(true);
             }
-
-            //Preference preferenceAzureStore = await GetPreferenceWithVariableName("AzureStore");
-
-            //if (preferenceAzureStore == null)
-            //{
-            //    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotFind_InDBLogin_, "AzureStore", "Preferences")));
-            //    return await Task.FromResult(false);
-            //}
-
-            //string AzureStore = preferenceAzureStore.VariableValue;
 
             if (string.IsNullOrWhiteSpace(AzureStore))
             {
@@ -86,12 +67,12 @@ namespace CSSPDesktopServices.Services
                     return await Task.FromResult(false);
                 }
 
-                CSSPFile csspFile = (from c in dbFM.CSSPFiles
+                FilesManagement filesManagement = (from c in dbFM.FilesManagements
                                      where c.AzureStorage == AzureStoreCSSPWebAPIsLocalPath
                                      && c.AzureFileName == zipFileName
                                      select c).FirstOrDefault();
 
-                if (csspFile == null || blobProperties.ETag.ToString().Replace("\"", "") != csspFile.AzureETag)
+                if (filesManagement == null || blobProperties.ETag.ToString().Replace("\"", "") != filesManagement.AzureETag)
                 {
                     AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.AzureFile_Changed, zipFileName)));
                     UpdateIsNeeded = true;
@@ -165,12 +146,12 @@ namespace CSSPDesktopServices.Services
                     return await Task.FromResult(true);
                 }
 
-                CSSPFile csspFile = (from c in dbFM.CSSPFiles
+                FilesManagement filesManagement = (from c in dbFM.FilesManagements
                                      where c.AzureStorage == "csspjson"
                                      && c.AzureFileName == jsonFileName
                                      select c).FirstOrDefault();
 
-                if (csspFile == null || blobProperties.ETag.ToString().Replace("\"", "") != csspFile.AzureETag)
+                if (filesManagement == null || blobProperties.ETag.ToString().Replace("\"", "") != filesManagement.AzureETag)
                 {
                     AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.AzureFile_Changed, jsonFileName)));
                     UpdateIsNeeded = true;

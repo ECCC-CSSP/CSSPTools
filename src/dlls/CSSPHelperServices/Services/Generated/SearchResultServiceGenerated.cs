@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 using LoggedInServices;
 using Microsoft.Extensions.Configuration;
 
-namespace CSSPDBServices
+namespace CSSPHelperServices
 {
     public interface ISearchResultService
     {
@@ -32,15 +32,11 @@ namespace CSSPDBServices
         #endregion Variables
 
         #region Properties
-        private ICSSPCultureService CSSPCultureService { get; }
-        private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public SearchResultService(ICSSPCultureService CSSPCultureService, IEnums enums)
+        public SearchResultService()
         {
-            this.CSSPCultureService = CSSPCultureService;
-            this.enums = enums;
         }
         #endregion Constructors
 
@@ -55,6 +51,7 @@ namespace CSSPDBServices
                 //CSSPError: Type not implemented [TVItemLanguage] of type [TVItemLanguage]
 
                 //CSSPError: Type not implemented [TVItemLanguage] of type [TVItemLanguage]
+
             bool a = false;
             if (a)
             {

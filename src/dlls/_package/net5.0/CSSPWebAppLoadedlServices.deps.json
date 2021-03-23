@@ -1163,9 +1163,8 @@
           }
         }
       },
-      "CSSPDBCommandLogModels/1.0.0": {
+      "CSSPCustomAttributes/1.0.0": {
         "dependencies": {
-          "CSSPEnums": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.3",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.3",
           "Microsoft.EntityFrameworkCore": "5.0.3",
@@ -1177,11 +1176,12 @@
           "System.IdentityModel.Tokens.Jwt": "6.8.0"
         },
         "runtime": {
-          "CSSPDBCommandLogModels.dll": {}
+          "CSSPCustomAttributes.dll": {}
         }
       },
       "CSSPDBModels/1.0.0": {
         "dependencies": {
+          "CSSPCustomAttributes": "1.0.0",
           "CSSPEnums": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.3",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.3",
@@ -1200,7 +1200,6 @@
       "CSSPDBPreferenceModels/1.0.0": {
         "dependencies": {
           "CSSPDBModels": "1.0.0",
-          "CSSPEnums": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.3",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.3",
           "Microsoft.EntityFrameworkCore": "5.0.3",
@@ -1218,8 +1217,8 @@
       "CSSPDBPreferenceServices/1.0.0": {
         "dependencies": {
           "Azure.Storage.Blobs": "12.8.0",
-          "CSSPDBCommandLogModels": "1.0.0",
           "CSSPDBPreferenceModels": "1.0.0",
+          "CSSPLoggedInServices": "1.0.0",
           "CSSPScrambleServices": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.3",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.3",
@@ -1256,6 +1255,23 @@
         },
         "runtime": {
           "CSSPHelperModels.dll": {}
+        }
+      },
+      "CSSPLoggedInServices/1.0.0": {
+        "dependencies": {
+          "Azure.Storage.Blobs": "12.8.0",
+          "CSSPDBPreferenceModels": "1.0.0",
+          "CSSPHelperModels": "1.0.0",
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.3",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.3",
+          "Microsoft.EntityFrameworkCore": "5.0.3",
+          "Microsoft.EntityFrameworkCore.SqlServer": "5.0.3",
+          "Microsoft.EntityFrameworkCore.Sqlite": "5.0.3",
+          "Microsoft.Extensions.Configuration": "5.0.0",
+          "Microsoft.Extensions.Configuration.Json": "5.0.0"
+        },
+        "runtime": {
+          "CSSPLoggedInServices.dll": {}
         }
       },
       "CSSPScrambleServices/1.0.0": {
@@ -2121,7 +2137,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "CSSPDBCommandLogModels/1.0.0": {
+    "CSSPCustomAttributes/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -2147,6 +2163,11 @@
       "sha512": ""
     },
     "CSSPHelperModels/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "CSSPLoggedInServices/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

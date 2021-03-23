@@ -22,28 +22,116 @@ using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
 using CSSPCultureServices.Resources;
-using LoggedInServices;
+using CSSPHelperServices.Tests;
 
-namespace CSSPDBServices.Tests
+namespace CSSPHelperServices.Tests
 {
-    public partial class CalDecayDBServiceTest : TestHelper
+    [Collection("Sequential")]
+    public partial class CalDecayServiceTest : TestHelper
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Configuration { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private ICSSPCultureService CSSPCultureService { get; set; }
+        private IEnums enums { get; set; }
+        private ICalDecayService CalDecayService { get; set; }
         #endregion Properties
 
         #region Constructors
-        public CalDecayDBServiceTest() : base()
+        public CalDecayServiceTest() : base()
         {
 
         }
         #endregion Constructors
 
-        #region Functions private
-        private void CheckCalDecayFields(List<CalDecay> calDecayList)
+        #region Tests Generated Constructors
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task AppTaskParameter_Constructor_Test(string culture)
         {
+            Assert.True(await Setup(culture));
+            Assert.NotNull(CSSPCultureService);
+            Assert.NotNull(enums);
+        }
+        #endregion Tests Generated Constructors
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task CalDecay_Properties_Test(string culture)
+        {
+            List<ValidationResult> ValidationResultList = new List<ValidationResult>();
+            IEnumerable<ValidationResult> validationResults;
+            Assert.True(await Setup(culture));
+
+
+
+            CalDecay calDecay = GetFilledRandomCalDecay("");
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, -1)]
+            // calDecay.Decay   (Double)
+            // -----------------------------------
+
+
+            calDecay = null;
+            calDecay = GetFilledRandomCalDecay("");
+            calDecay.Decay = -1.0D;
+            validationResults = CalDecayService.Validate(new ValidationContext(calDecay));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "Decay", "0"))).Any());
+        }
+        #endregion Tests Generated Properties
+
+        #region Functions private
+        private async Task<bool> Setup(string culture)
+        {
+            Configuration = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings_CSSPDBServicestests.json")
+               .AddUserSecrets("6f27cbbe-6ffb-4154-b49b-d739597c4f60")
+               .Build();
+
+            Services = new ServiceCollection();
+
+            Services.AddSingleton<IConfiguration>(Configuration);
+
+            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ICalDecayService, CalDecayService>();
+
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+
+            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
+            Assert.NotNull(CSSPCultureService);
+
+            CSSPCultureService.SetCulture(culture);
+
+            enums = Provider.GetService<IEnums>();
+            Assert.NotNull(enums);
+
+            CalDecayService = Provider.GetService<ICalDecayService>();
+            Assert.NotNull(CalDecayService);
+
+            return await Task.FromResult(true);
+        }
+        private CalDecay GetFilledRandomCalDecay(string OmitPropName)
+        {
+            CalDecay calDecay = new CalDecay();
+
+            if (OmitPropName != "Decay") calDecay.Decay = GetRandomDouble(0.0D, 10.0D);
+
+            return calDecay;
         }
 
         #endregion Functions private

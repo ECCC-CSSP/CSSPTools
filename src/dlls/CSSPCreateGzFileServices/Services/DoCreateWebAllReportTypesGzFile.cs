@@ -2,6 +2,7 @@
  * Manually edited
  * 
  */
+using CSSPCultureServices.Resources;
 using CSSPEnums;
 using CSSPWebModels;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +17,7 @@ namespace CreateGzFileServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized());
+                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
             }
 
             WebAllReportTypes webAllReportTypes = new WebAllReportTypes();

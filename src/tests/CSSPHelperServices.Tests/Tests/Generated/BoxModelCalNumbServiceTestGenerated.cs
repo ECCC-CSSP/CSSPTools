@@ -22,32 +22,227 @@ using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
 using CSSPCultureServices.Resources;
-using LoggedInServices;
+using CSSPHelperServices.Tests;
 
-namespace CSSPDBServices.Tests
+namespace CSSPHelperServices.Tests
 {
-    public partial class BoxModelCalNumbDBServiceTest : TestHelper
+    [Collection("Sequential")]
+    public partial class BoxModelCalNumbServiceTest : TestHelper
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Configuration { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private ICSSPCultureService CSSPCultureService { get; set; }
+        private IEnums enums { get; set; }
+        private IBoxModelCalNumbService BoxModelCalNumbService { get; set; }
         #endregion Properties
 
         #region Constructors
-        public BoxModelCalNumbDBServiceTest() : base()
+        public BoxModelCalNumbServiceTest() : base()
         {
 
         }
         #endregion Constructors
 
-        #region Functions private
-        private void CheckBoxModelCalNumbFields(List<BoxModelCalNumb> boxModelCalNumbList)
+        #region Tests Generated Constructors
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task AppTaskParameter_Constructor_Test(string culture)
         {
-            if (!string.IsNullOrWhiteSpace(boxModelCalNumbList[0].BoxModelResultTypeText))
-            {
-                Assert.False(string.IsNullOrWhiteSpace(boxModelCalNumbList[0].BoxModelResultTypeText));
-            }
+            Assert.True(await Setup(culture));
+            Assert.NotNull(CSSPCultureService);
+            Assert.NotNull(enums);
+        }
+        #endregion Tests Generated Constructors
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task BoxModelCalNumb_Properties_Test(string culture)
+        {
+            List<ValidationResult> ValidationResultList = new List<ValidationResult>();
+            IEnumerable<ValidationResult> validationResults;
+            Assert.True(await Setup(culture));
+
+
+
+            BoxModelCalNumb boxModelCalNumb = GetFilledRandomBoxModelCalNumb("");
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // boxModelCalNumb.BoxModelResultType   (BoxModelResultTypeEnum)
+            // -----------------------------------
+
+
+            boxModelCalNumb = null;
+            boxModelCalNumb = GetFilledRandomBoxModelCalNumb("");
+            boxModelCalNumb.BoxModelResultType = (BoxModelResultTypeEnum)1000000;
+            validationResults = BoxModelCalNumbService.Validate(new ValidationContext(boxModelCalNumb));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "BoxModelResultType"))).Any());
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, -1)]
+            // boxModelCalNumb.CalLength_m   (Double)
+            // -----------------------------------
+
+
+            boxModelCalNumb = null;
+            boxModelCalNumb = GetFilledRandomBoxModelCalNumb("");
+            boxModelCalNumb.CalLength_m = -1.0D;
+            validationResults = BoxModelCalNumbService.Validate(new ValidationContext(boxModelCalNumb));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "CalLength_m", "0"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, -1)]
+            // boxModelCalNumb.CalRadius_m   (Double)
+            // -----------------------------------
+
+
+            boxModelCalNumb = null;
+            boxModelCalNumb = GetFilledRandomBoxModelCalNumb("");
+            boxModelCalNumb.CalRadius_m = -1.0D;
+            validationResults = BoxModelCalNumbService.Validate(new ValidationContext(boxModelCalNumb));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "CalRadius_m", "0"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, -1)]
+            // boxModelCalNumb.CalSurface_m2   (Double)
+            // -----------------------------------
+
+
+            boxModelCalNumb = null;
+            boxModelCalNumb = GetFilledRandomBoxModelCalNumb("");
+            boxModelCalNumb.CalSurface_m2 = -1.0D;
+            validationResults = BoxModelCalNumbService.Validate(new ValidationContext(boxModelCalNumb));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "CalSurface_m2", "0"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, -1)]
+            // boxModelCalNumb.CalVolume_m3   (Double)
+            // -----------------------------------
+
+
+            boxModelCalNumb = null;
+            boxModelCalNumb = GetFilledRandomBoxModelCalNumb("");
+            boxModelCalNumb.CalVolume_m3 = -1.0D;
+            validationResults = BoxModelCalNumbService.Validate(new ValidationContext(boxModelCalNumb));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "CalVolume_m3", "0"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, -1)]
+            // boxModelCalNumb.CalWidth_m   (Double)
+            // -----------------------------------
+
+
+            boxModelCalNumb = null;
+            boxModelCalNumb = GetFilledRandomBoxModelCalNumb("");
+            boxModelCalNumb.CalWidth_m = -1.0D;
+            validationResults = BoxModelCalNumbService.Validate(new ValidationContext(boxModelCalNumb));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "CalWidth_m", "0"))).Any());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // boxModelCalNumb.FixLength   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // boxModelCalNumb.FixWidth   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(100)]
+            // boxModelCalNumb.BoxModelResultTypeText   (String)
+            // -----------------------------------
+
+
+            boxModelCalNumb = null;
+            boxModelCalNumb = GetFilledRandomBoxModelCalNumb("");
+            boxModelCalNumb.BoxModelResultTypeText = GetRandomString("", 101);
+            validationResults = BoxModelCalNumbService.Validate(new ValidationContext(boxModelCalNumb));
+            ValidationResultList = validationResults.ToList();
+            Assert.True(ValidationResultList.Count() > 0);
+            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "BoxModelResultTypeText", "100"))).Any());
+        }
+        #endregion Tests Generated Properties
+
+        #region Functions private
+        private async Task<bool> Setup(string culture)
+        {
+            Configuration = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings_CSSPDBServicestests.json")
+               .AddUserSecrets("6f27cbbe-6ffb-4154-b49b-d739597c4f60")
+               .Build();
+
+            Services = new ServiceCollection();
+
+            Services.AddSingleton<IConfiguration>(Configuration);
+
+            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<IBoxModelCalNumbService, BoxModelCalNumbService>();
+
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+
+            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
+            Assert.NotNull(CSSPCultureService);
+
+            CSSPCultureService.SetCulture(culture);
+
+            enums = Provider.GetService<IEnums>();
+            Assert.NotNull(enums);
+
+            BoxModelCalNumbService = Provider.GetService<IBoxModelCalNumbService>();
+            Assert.NotNull(BoxModelCalNumbService);
+
+            return await Task.FromResult(true);
+        }
+        private BoxModelCalNumb GetFilledRandomBoxModelCalNumb(string OmitPropName)
+        {
+            BoxModelCalNumb boxModelCalNumb = new BoxModelCalNumb();
+
+            if (OmitPropName != "BoxModelResultType") boxModelCalNumb.BoxModelResultType = (BoxModelResultTypeEnum)GetRandomEnumType(typeof(BoxModelResultTypeEnum));
+            if (OmitPropName != "CalLength_m") boxModelCalNumb.CalLength_m = GetRandomDouble(0.0D, 10.0D);
+            if (OmitPropName != "CalRadius_m") boxModelCalNumb.CalRadius_m = GetRandomDouble(0.0D, 10.0D);
+            if (OmitPropName != "CalSurface_m2") boxModelCalNumb.CalSurface_m2 = GetRandomDouble(0.0D, 10.0D);
+            if (OmitPropName != "CalVolume_m3") boxModelCalNumb.CalVolume_m3 = GetRandomDouble(0.0D, 10.0D);
+            if (OmitPropName != "CalWidth_m") boxModelCalNumb.CalWidth_m = GetRandomDouble(0.0D, 10.0D);
+            if (OmitPropName != "FixLength") boxModelCalNumb.FixLength = true;
+            if (OmitPropName != "FixWidth") boxModelCalNumb.FixWidth = true;
+            if (OmitPropName != "BoxModelResultTypeText") boxModelCalNumb.BoxModelResultTypeText = GetRandomString("", 5);
+
+            return boxModelCalNumb;
         }
 
         #endregion Functions private

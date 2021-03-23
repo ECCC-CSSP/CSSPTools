@@ -20,6 +20,7 @@ namespace GenerateCSSPDBModels_TestsGenerated
 
             Startup startup = new Startup(Configuration);
             await startup.Generate();
+            await startup.GenerateContext();
         }
         #endregion Entry
 

@@ -255,7 +255,7 @@ namespace CSSPSQLiteServices.Tests
             retBool = await CSSPSQLiteService.CSSPDBFilesManagementIsEmpty();
             Assert.True(retBool);
 
-            CSSPFile csspFileNew = new CSSPFile()
+            FilesManagement fileManagementNew = new FilesManagement()
             {
                 AzureStorage = "csspstorage",
                 AzureFileName = "ThisFileName.json",

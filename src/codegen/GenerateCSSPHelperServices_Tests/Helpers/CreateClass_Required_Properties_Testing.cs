@@ -20,24 +20,21 @@ namespace GenerateCSSPHelperServices_Tests
                 case "Int64":
                 case "Boolean":
                 case "Single":
+                case "Double":
                     break;
                 case "DateTime":
                 case "DateTimeOffset":
                     {
                         if (!csspProp.IsNullable)
                         {
+                            sb.AppendLine("");
                             sb.AppendLine($@"            { TypeNameLower } = null;");
                             sb.AppendLine($@"            { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
                             sb.AppendLine($@"            { TypeNameLower }.{ csspProp.PropName } = new DateTime();");
-                            if (TypeName == "Contact")
-                            {
-                                sb.AppendLine($@"            action{ TypeName } = await { TypeName }DBService.Post({ TypeNameLower }, AddContactTypeEnum.LoggedIn);");
-                            }
-                            else
-                            {
-                                sb.AppendLine($@"            action{ TypeName } = await { TypeName }DBService.Post({ TypeNameLower });");
-                            }
-                            sb.AppendLine($@"            Assert.IsType<BadRequestObjectResult>(action{ TypeName }.Result);");
+                            sb.AppendLine($@"            validationResults = { TypeName }Service.Validate(new ValidationContext({ TypeNameLower }));");
+                            sb.AppendLine($@"            ValidationResultList = validationResults.ToList();");
+                            sb.AppendLine($@"            Assert.True(ValidationResultList.Count() > 0);");
+                            sb.AppendLine($@"            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, ""{ csspProp.PropName }""))).Any());");
                         }
                     }
                     break;
@@ -45,17 +42,13 @@ namespace GenerateCSSPHelperServices_Tests
                     {
                         if (!csspProp.IsNullable)
                         {
+                            sb.AppendLine("");
                             sb.AppendLine($@"            { TypeNameLower } = null;");
                             sb.AppendLine($@"            { TypeNameLower } = GetFilledRandom{ TypeName }(""{ csspProp.PropName }"");");
-                            if (TypeName == "Contact")
-                            {
-                                sb.AppendLine($@"            action{ TypeName } = await { TypeName }DBService.Post({ TypeNameLower }, AddContactTypeEnum.LoggedIn);");
-                            }
-                            else
-                            {
-                                sb.AppendLine($@"            action{ TypeName } = await { TypeName }DBService.Post({ TypeNameLower });");
-                            }
-                            sb.AppendLine($@"            Assert.IsType<BadRequestObjectResult>(action{ TypeName }.Result);");
+                            sb.AppendLine($@"            validationResults = { TypeName }Service.Validate(new ValidationContext({ TypeNameLower }));");
+                            sb.AppendLine($@"            ValidationResultList = validationResults.ToList();");
+                            sb.AppendLine($@"            Assert.True(ValidationResultList.Count() > 0);");
+                            sb.AppendLine($@"            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, ""{ csspProp.PropName }""))).Any());");
                             sb.AppendLine(@"");
                         }
                     }
@@ -72,6 +65,7 @@ namespace GenerateCSSPHelperServices_Tests
                             {
                                 string EndText = csspProp.PropName.EndsWith("Web") ? "Web" : "Report";
 
+                                sb.AppendLine("");
                                 sb.AppendLine($@"            { TypeNameLower } = null;");
                                 sb.AppendLine($@"            { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
                                 sb.AppendLine($@"            { TypeNameLower }.{ TypeName }{ EndText } = null;");

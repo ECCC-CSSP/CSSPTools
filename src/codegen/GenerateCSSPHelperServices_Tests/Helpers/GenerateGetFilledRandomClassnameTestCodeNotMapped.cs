@@ -10,7 +10,7 @@ namespace GenerateCSSPHelperServices_Tests
 {
     public partial class Startup
     {
-        private async Task<bool> GenerateGetFilledRandomClassnameTestCodeNotMapped(Type type, string TypeName, string TypeNameLower, StringBuilder sb, string DBType)
+        private async Task<bool> GenerateGetFilledRandomClassnameTestCodeNotMapped(Type type, string TypeName, string TypeNameLower, StringBuilder sb)
         {
             sb.AppendLine($@"        private { TypeName } GetFilledRandom{ TypeName }(string OmitPropName)");
             sb.AppendLine(@"        {");

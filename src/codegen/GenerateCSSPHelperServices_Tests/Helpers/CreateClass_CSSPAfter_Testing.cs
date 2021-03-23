@@ -20,6 +20,7 @@ namespace GenerateCSSPHelperServices_Tests
                 case "Int64":
                 case "Boolean":
                 case "Single":
+                case "Double":
                 case "String":
                     break;
                 case "DateTime":
@@ -27,19 +28,14 @@ namespace GenerateCSSPHelperServices_Tests
                     {
                         if (csspProp.HasCSSPAfterAttribute)
                         {
+                            sb.AppendLine("");
                             sb.AppendLine($@"            { TypeNameLower } = null;");
                             sb.AppendLine($@"            { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
-                            sb.AppendLine($@"            { TypeNameLower }.{ csspProp.PropName } = new DateTime({ ((int)csspProp.Year - 1).ToString() }, 1, 1);");
-                            if (TypeName == "Contact")
-                            {
-                                sb.AppendLine($@"            action{ TypeName } = await { TypeName }DBService.Post({ TypeNameLower }, AddContactTypeEnum.LoggedIn);");
-                            }
-                            else
-                            {
-                                sb.AppendLine($@"            action{ TypeName } = await { TypeName }DBService.Post({ TypeNameLower });");
-                            }
-                            sb.AppendLine($@"            Assert.IsType<BadRequestObjectResult>(action{ TypeName }.Result);");
-
+                            sb.AppendLine($@"            { TypeNameLower }.{ csspProp.PropName } = new DateTime({ (int)csspProp.Year - 1 }, 1, 1);");
+                            sb.AppendLine($@"            validationResults = { TypeName }Service.Validate(new ValidationContext({ TypeNameLower }));");
+                            sb.AppendLine($@"            ValidationResultList = validationResults.ToList();");
+                            sb.AppendLine($@"            Assert.True(ValidationResultList.Count() > 0);");
+                            sb.AppendLine($@"            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, ""{ csspProp.PropName }"", ""{ (int)csspProp.Year }""))).Any());");
                         }
                     }
                     break;

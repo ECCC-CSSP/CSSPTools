@@ -232,27 +232,27 @@ namespace GenerateCSSPEnums
                         sb.AppendLine(@"                    switch (polSourceObsInfoTypeEnum)");
                         sb.AppendLine(@"                    {");
                         sb.AppendLine(@"                        case PolSourceObsInfoTypeEnum.Description:");
-                        sb.AppendLine(@"                            return GetEnumText_PolSourceObsInfoDescEnum((ID == null ? null : (PolSourceObsInfoEnum?)ID));");
+                        sb.AppendLine(@"                            return GetEnumText_PolSourceObsInfoDescEnum((PolSourceObsInfoEnum?)ID);");
                         sb.AppendLine(@"                        case PolSourceObsInfoTypeEnum.Report:");
-                        sb.AppendLine(@"                            return GetEnumText_PolSourceObsInfoReportEnum((ID == null ? null : (PolSourceObsInfoEnum?)ID));");
+                        sb.AppendLine(@"                            return GetEnumText_PolSourceObsInfoReportEnum((PolSourceObsInfoEnum?)ID);");
                         sb.AppendLine(@"                        case PolSourceObsInfoTypeEnum.Text:");
-                        sb.AppendLine(@"                            return GetEnumText_PolSourceObsInfoTextEnum((ID == null ? null : (PolSourceObsInfoEnum?)ID));");
+                        sb.AppendLine(@"                            return GetEnumText_PolSourceObsInfoTextEnum((PolSourceObsInfoEnum?)ID);");
                         sb.AppendLine(@"                        case PolSourceObsInfoTypeEnum.Initial:");
-                        sb.AppendLine(@"                            return GetEnumText_PolSourceObsInfoInitEnum((ID == null ? null : (PolSourceObsInfoEnum?)ID));");
+                        sb.AppendLine(@"                            return GetEnumText_PolSourceObsInfoInitEnum((PolSourceObsInfoEnum?)ID);");
                         sb.AppendLine(@"                        default:");
-                        sb.AppendLine(@"                            return GetEnumText_PolSourceObsInfoEnum((ID == null ? null : (PolSourceObsInfoEnum?)ID));");
+                        sb.AppendLine(@"                            return GetEnumText_PolSourceObsInfoEnum((PolSourceObsInfoEnum?)ID);");
                         sb.AppendLine(@"                    }");
                         sb.AppendLine(@"                }");
                     }
                     else
                     {
                         sb.AppendLine($@"                case ""{ enumName }"":");
-                        sb.AppendLine($@"                    return GetEnumText_{ enumName }((ID == null ? null : ({ enumName }?)ID));");
+                        sb.AppendLine($@"                    return GetEnumText_{ enumName }(({ enumName }?)ID);");
                     }
                 }
             }
             sb.AppendLine(@"                default:");
-            sb.AppendLine(@"                    return """";");
+            sb.AppendLine(@"                    return CSSPCultureEnumsRes.Empty;");
             sb.AppendLine(@"            }");
             sb.AppendLine(@"        }");
             #endregion Doing Function public GetResValueForTypeAndID

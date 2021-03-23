@@ -38,6 +38,7 @@ namespace GenerateEnumsPolSourceInfoRelatedFiles
             sb.AppendLine(@" */");
             sb.AppendLine(@"using CSSPCultureServices.Resources;");
             sb.AppendLine(@"using System;");
+            sb.AppendLine(@"using System.Threading.Tasks;");
             sb.AppendLine(@"using Xunit;");
             sb.AppendLine(@"");
             sb.AppendLine(@"namespace CSSPEnums.Tests");
@@ -47,9 +48,9 @@ namespace GenerateEnumsPolSourceInfoRelatedFiles
             sb.AppendLine(@"        [Theory]");
             sb.AppendLine(@"        [InlineData(""en-CA"")]");
             sb.AppendLine(@"        [InlineData(""fr-CA"")]");
-            sb.AppendLine(@"        public void GetResValueForTypeAndID_for_PolSourceObsInfoEnum_Test(string culture)");
+            sb.AppendLine(@"        public async Task GetResValueForTypeAndID_for_PolSourceObsInfoEnum_Test(string culture)");
             sb.AppendLine(@"        {");
-            sb.AppendLine(@"            SetupTest(culture);");
+            sb.AppendLine(@"            Assert.True(await Setup(culture));");
             sb.AppendLine(@"");
             sb.AppendLine(@"            string retStr = enums.GetResValueForTypeAndID(typeof(PolSourceObsInfoEnum), null, null);");
             sb.AppendLine(@"            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);");

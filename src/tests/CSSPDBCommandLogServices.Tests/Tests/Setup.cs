@@ -10,12 +10,14 @@ using System.IO;
 using System.Threading.Tasks;
 using Xunit;
 using CSSPDBPreferenceModels;
-using CSSPDBCommandLogModels;
 using LoggedInServices;
+using CSSPDBCommandLogModels;
+using CSSPDBCommandLogServices;
+using System.Linq;
 
-namespace CSSPDBCommandLogServices.Tests
+namespace CommandLogServices.Tests
 {
-    public partial class CSSPDBCommandLogServicesTests
+    public partial class CommandLogServicesTests
     {
         #region Variables
         #endregion Variables
@@ -25,15 +27,16 @@ namespace CSSPDBCommandLogServices.Tests
         private IServiceCollection Services { get; set; }
         private IServiceProvider Provider { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
-        private ICSSPDBCommandLogService CSSPDBCommandLogService { get; set; }
+        private ICommandLogService CommandLogService { get; set; }
         private ILoggedInService LoggedInService { get; set; }
-        private string CSSPDBCommandLogFileName { get; set; }
+        private string CommandLogFileName { get; set; }
+        private string CommandLogFileNameTest { get; set; }
         private string CSSPDBPreferenceFileName { get; set; }
-        private string Id { get; set; }
+        private CSSPDBCommandLogContext dbCommandLog { get; set; }
         #endregion Properties
 
         #region Constructors
-        public CSSPDBCommandLogServicesTests()
+        public CommandLogServicesTests()
         {
         }
         #endregion Constructors
@@ -55,34 +58,29 @@ namespace CSSPDBCommandLogServices.Tests
             Services.AddSingleton<IConfiguration>(Configuration);
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
-            Services.AddSingleton<ICSSPDBCommandLogService, CSSPDBCommandLogService>();
+            Services.AddSingleton<ICommandLogService, CommandLogService>();
 
-            /* ---------------------------------------------------------------------------------
-             * using TestDB
-             * ---------------------------------------------------------------------------------      
-             */
-            string TestDB = Configuration.GetValue<string>("TestDB");
-            Assert.NotNull(TestDB);
+            CommandLogFileName = Configuration.GetValue<string>("CSSPDBCommandLog");
+            Assert.NotNull(CommandLogFileName);
 
-            Services.AddDbContext<CSSPDBContext>(options =>
+            FileInfo fiCommandLogFileName = new FileInfo(CommandLogFileName);
+            Assert.True(fiCommandLogFileName.Exists);
+
+            CommandLogFileNameTest = Configuration.GetValue<string>("CSSPDBCommandLogTest");
+            Assert.NotNull(CommandLogFileName);
+
+            FileInfo fiCommandLogFileNameTest = new FileInfo(CommandLogFileNameTest);
+            if (!fiCommandLogFileNameTest.Exists)
             {
-                options.UseSqlServer(TestDB);
-            });
-
-            /* ---------------------------------------------------------------------------------
-             * using CSSPDBLocal
-             * ---------------------------------------------------------------------------------      
-             */
-            string CSSPDBLocal = Configuration.GetValue<string>("CSSPDBLocal");
-            Assert.NotNull(CSSPDBLocal);
-
-            FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocal);
-            Assert.True(fiCSSPDBLocal.Exists);
-
-            Services.AddDbContext<CSSPDBLocalContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
-            });
+                try
+                {
+                    File.Copy(fiCommandLogFileName.FullName, fiCommandLogFileNameTest.FullName);
+                }
+                catch (Exception ex)
+                {
+                    Assert.True(false, ex.Message);
+                }
+            }
 
             /* ---------------------------------------------------------------------------------
              * using CSSPDBPreference
@@ -99,16 +97,14 @@ namespace CSSPDBCommandLogServices.Tests
                 options.UseSqlite($"Data Source={ fiCSSPDBPreference.FullName }");
             });
 
-            ///* ---------------------------------------------------------------------------------
-            CSSPDBCommandLogFileName = Configuration.GetValue<string>("CSSPDBCommandLog");
-            Assert.NotNull(CSSPDBCommandLogFileName);
-
-            FileInfo fiCSSPDBCommandLogFileName = new FileInfo(CSSPDBCommandLogFileName);
-            Assert.True(fiCSSPDBCommandLogFileName.Exists);
+            /* ---------------------------------------------------------------------------------
+             * using CommandLogs
+             * ---------------------------------------------------------------------------------      
+             */
 
             Services.AddDbContext<CSSPDBCommandLogContext>(options =>
             {
-                options.UseSqlite($"Data Source={ fiCSSPDBCommandLogFileName.FullName }");
+                options.UseSqlite($"Data Source={ fiCommandLogFileNameTest.FullName }");
             });
 
             Provider = Services.BuildServiceProvider();
@@ -126,9 +122,24 @@ namespace CSSPDBCommandLogServices.Tests
             Assert.NotNull(LoggedInService.LoggedInContactInfo);
             Assert.NotNull(LoggedInService.LoggedInContactInfo.LoggedInContact);
 
-            CSSPDBCommandLogService = Provider.GetService<ICSSPDBCommandLogService>();
-            Assert.NotNull(CSSPDBCommandLogService);
+            CommandLogService = Provider.GetService<ICommandLogService>();
+            Assert.NotNull(CommandLogService);
 
+            dbCommandLog = Provider.GetService<CSSPDBCommandLogContext>();
+            Assert.NotNull(dbCommandLog);
+
+            List<CommandLog> commandLogList = (from c in dbCommandLog.CommandLogs
+                                            select c).ToList();
+
+            try
+            {
+                dbCommandLog.CommandLogs.RemoveRange(commandLogList);
+                dbCommandLog.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Assert.True(false, ex.Message);
+            }
 
             return await Task.FromResult(true);
         }

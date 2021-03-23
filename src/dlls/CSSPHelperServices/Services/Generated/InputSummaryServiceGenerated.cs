@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 using LoggedInServices;
 using Microsoft.Extensions.Configuration;
 
-namespace CSSPDBServices
+namespace CSSPHelperServices
 {
     public interface IInputSummaryService
     {
@@ -32,15 +32,11 @@ namespace CSSPDBServices
         #endregion Variables
 
         #region Properties
-        private ICSSPCultureService CSSPCultureService { get; }
-        private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public InputSummaryService(ICSSPCultureService CSSPCultureService, IEnums enums)
+        public InputSummaryService()
         {
-            this.CSSPCultureService = CSSPCultureService;
-            this.enums = enums;
         }
         #endregion Constructors
 
@@ -51,16 +47,14 @@ namespace CSSPDBServices
 
             if (string.IsNullOrWhiteSpace(inputSummary.Summary))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Summary"), new[] { nameof(inputSummary.Summary) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Summary"), new[] { "Summary" });
             }
 
-            //Summary has no StringLength Attribute
-
-            bool a = false;
-            if (a)
+            if (!string.IsNullOrWhiteSpace(inputSummary.Summary) && inputSummary.Summary.Length > 1000000)
             {
-                yield return new ValidationResult("");
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Summary", "1000000"), new[] { "Summary" });
             }
+
         }
         #endregion Functions public
     }

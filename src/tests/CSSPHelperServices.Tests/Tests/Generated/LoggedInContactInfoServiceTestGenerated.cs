@@ -22,28 +22,133 @@ using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
 using CSSPCultureServices.Resources;
-using LoggedInServices;
+using CSSPHelperServices.Tests;
 
-namespace CSSPDBServices.Tests
+namespace CSSPHelperServices.Tests
 {
-    public partial class LoggedInContactInfoDBServiceTest : TestHelper
+    [Collection("Sequential")]
+    public partial class LoggedInContactInfoServiceTest : TestHelper
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Configuration { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private ICSSPCultureService CSSPCultureService { get; set; }
+        private IEnums enums { get; set; }
+        private ILoggedInContactInfoService LoggedInContactInfoService { get; set; }
         #endregion Properties
 
         #region Constructors
-        public LoggedInContactInfoDBServiceTest() : base()
+        public LoggedInContactInfoServiceTest() : base()
         {
 
         }
         #endregion Constructors
 
-        #region Functions private
-        private void CheckLoggedInContactInfoFields(List<LoggedInContactInfo> loggedInContactInfoList)
+        #region Tests Generated Constructors
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task AppTaskParameter_Constructor_Test(string culture)
         {
+            Assert.True(await Setup(culture));
+            Assert.NotNull(CSSPCultureService);
+            Assert.NotNull(enums);
+        }
+        #endregion Tests Generated Constructors
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task LoggedInContactInfo_Properties_Test(string culture)
+        {
+            List<ValidationResult> ValidationResultList = new List<ValidationResult>();
+            IEnumerable<ValidationResult> validationResults;
+            Assert.True(await Setup(culture));
+
+
+
+            LoggedInContactInfo loggedInContactInfo = GetFilledRandomLoggedInContactInfo("");
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // loggedInContactInfo.LoggedInContact   (Contact)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [LoggedInContact]
+
+            //CSSPError: Type not implemented [LoggedInContact]
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // loggedInContactInfo.TVTypeUserAuthorizationList   (TVTypeUserAuthorization)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [TVTypeUserAuthorizationList]
+
+            //CSSPError: Type not implemented [TVTypeUserAuthorizationList]
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // loggedInContactInfo.TVItemUserAuthorizationList   (TVItemUserAuthorization)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [TVItemUserAuthorizationList]
+
+            //CSSPError: Type not implemented [TVItemUserAuthorizationList]
+
+        }
+        #endregion Tests Generated Properties
+
+        #region Functions private
+        private async Task<bool> Setup(string culture)
+        {
+            Configuration = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings_CSSPDBServicestests.json")
+               .AddUserSecrets("6f27cbbe-6ffb-4154-b49b-d739597c4f60")
+               .Build();
+
+            Services = new ServiceCollection();
+
+            Services.AddSingleton<IConfiguration>(Configuration);
+
+            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ILoggedInContactInfoService, LoggedInContactInfoService>();
+
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+
+            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
+            Assert.NotNull(CSSPCultureService);
+
+            CSSPCultureService.SetCulture(culture);
+
+            enums = Provider.GetService<IEnums>();
+            Assert.NotNull(enums);
+
+            LoggedInContactInfoService = Provider.GetService<ILoggedInContactInfoService>();
+            Assert.NotNull(LoggedInContactInfoService);
+
+            return await Task.FromResult(true);
+        }
+        private LoggedInContactInfo GetFilledRandomLoggedInContactInfo(string OmitPropName)
+        {
+            LoggedInContactInfo loggedInContactInfo = new LoggedInContactInfo();
+
+            //CSSPError: property [LoggedInContact] and type [LoggedInContactInfo] is  not implemented
+            //CSSPError: property [TVTypeUserAuthorizationList] and type [LoggedInContactInfo] is  not implemented
+            //CSSPError: property [TVItemUserAuthorizationList] and type [LoggedInContactInfo] is  not implemented
+
+            return loggedInContactInfo;
         }
 
         #endregion Functions private

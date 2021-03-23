@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 using LoggedInServices;
 using Microsoft.Extensions.Configuration;
 
-namespace CSSPDBServices
+namespace CSSPHelperServices
 {
     public interface IVectorService
     {
@@ -32,15 +32,11 @@ namespace CSSPDBServices
         #endregion Variables
 
         #region Properties
-        private ICSSPCultureService CSSPCultureService { get; }
-        private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public VectorService(ICSSPCultureService CSSPCultureService, IEnums enums)
+        public VectorService()
         {
-            this.CSSPCultureService = CSSPCultureService;
-            this.enums = enums;
         }
         #endregion Constructors
 
@@ -55,6 +51,7 @@ namespace CSSPDBServices
                 //CSSPError: Type not implemented [EndNode] of type [Node]
 
                 //CSSPError: Type not implemented [EndNode] of type [Node]
+
             bool a = false;
             if (a)
             {

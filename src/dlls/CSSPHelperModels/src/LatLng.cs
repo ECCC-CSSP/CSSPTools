@@ -2,12 +2,8 @@
  * Manually edited
  * 
  */
-using CSSPEnums;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using CSSPCustomAttributes;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 
 namespace CSSPHelperModels
 {

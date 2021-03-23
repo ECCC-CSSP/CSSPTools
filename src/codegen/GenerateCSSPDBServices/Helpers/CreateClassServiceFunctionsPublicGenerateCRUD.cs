@@ -18,41 +18,41 @@ namespace GenerateCSSPDBServices
             }
 
             // Doing Delete
-            if (TypeName == "AspNetUser")
-            {
-                sb.AppendLine($@"        public async Task<ActionResult<bool>> Delete(string Id)");
-            }
-            else
-            {
+            //if (TypeName == "AspNetUser")
+            //{
+            //    sb.AppendLine($@"        public async Task<ActionResult<bool>> Delete(string Id)");
+            //}
+            //else
+            //{
                 sb.AppendLine($@"        public async Task<ActionResult<bool>> Delete(int { TypeName }ID)");
-            }
+            //}
             sb.AppendLine(@"        {");
             sb.AppendLine(@"            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)");
             sb.AppendLine(@"            {");
-            sb.AppendLine(@"                return await Task.FromResult(Unauthorized());");
+            sb.AppendLine(@"                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));");
             sb.AppendLine(@"            }");
             sb.AppendLine(@"");
             sb.AppendLine($@"            { TypeName } { TypeNameLower } = (from c in db.{ TypeName }{ Plurial }");
-            if (TypeName == "AspNetUser")
-            {
-                sb.AppendLine($@"                    where c.Id == Id");
-            }
-            else
-            {
+            //if (TypeName == "AspNetUser")
+            //{
+            //    sb.AppendLine($@"                    where c.Id == Id");
+            //}
+            //else
+            //{
                 sb.AppendLine($@"                    where c.{ TypeName }ID == { TypeName }ID");
-            }
+            //}
             sb.AppendLine($@"                    select c).FirstOrDefault();");
             sb.AppendLine(@"");
             sb.AppendLine($@"            if ({ TypeNameLower } == null)");
             sb.AppendLine(@"            {");
-            if (TypeName == "AspNetUser")
-            {
-                sb.AppendLine($@"                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""Id"", Id)));");
-            }
-            else
-            {
+            //if (TypeName == "AspNetUser")
+            //{
+            //    sb.AppendLine($@"                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""Id"", Id)));");
+            //}
+            //else
+            //{
                 sb.AppendLine($@"                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""{ TypeName }ID"", { TypeName }ID.ToString())));");
-            }
+            //}
             sb.AppendLine(@"            }");
             sb.AppendLine(@"");
             sb.AppendLine($@"            try");
@@ -81,7 +81,7 @@ namespace GenerateCSSPDBServices
             sb.AppendLine(@"        {");
             sb.AppendLine(@"            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)");
             sb.AppendLine(@"            {");
-            sb.AppendLine(@"                return await Task.FromResult(Unauthorized());");
+            sb.AppendLine(@"                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));");
             sb.AppendLine(@"            }");
             sb.AppendLine(@"");
             if (TypeName == "Contact")
@@ -116,7 +116,7 @@ namespace GenerateCSSPDBServices
             sb.AppendLine(@"        {");
             sb.AppendLine(@"            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)");
             sb.AppendLine(@"            {");
-            sb.AppendLine(@"                return await Task.FromResult(Unauthorized());");
+            sb.AppendLine(@"                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));");
             sb.AppendLine(@"            }");
             sb.AppendLine(@"");
             if (TypeName == "Contact")
