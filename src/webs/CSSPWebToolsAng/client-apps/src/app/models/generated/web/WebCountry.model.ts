@@ -9,14 +9,15 @@ import { EmailDistributionListContactLanguage } from 'src/app/models/generated/d
 import { EmailDistributionListContact } from 'src/app/models/generated/db/EmailDistributionListContact.model';
 import { EmailDistributionListLanguage } from 'src/app/models/generated/db/EmailDistributionListLanguage.model';
 import { EmailDistributionList } from 'src/app/models/generated/db/EmailDistributionList.model';
-import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { WebBase } from 'src/app/models/generated/web/WebBase.model';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 
 export class WebCountry {
     EmailDistributionListContactLanguageList: EmailDistributionListContactLanguage[];
     EmailDistributionListContactList: EmailDistributionListContact[];
     EmailDistributionListLanguageList: EmailDistributionListLanguage[];
     EmailDistributionListList: EmailDistributionList[];
+    TVItemFileList: WebBase[];
     TVItemModel: TVItemModel;
     TVItemParentList: WebBase[];
     TVItemProvinceList: WebBase[];

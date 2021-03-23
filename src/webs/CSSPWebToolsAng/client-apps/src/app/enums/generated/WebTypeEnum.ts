@@ -44,6 +44,8 @@ export enum WebTypeEnum {
     WebAllAddresses = 32,
     WebAllEmails = 33,
     WebAllTels = 34,
+    WebTideSite = 35,
+    WebTideDataValue = 36,
 }
 
 export function GetWebTypeEnum(): typeof WebTypeEnum
@@ -85,9 +87,11 @@ export function WebTypeEnum_GetOrderedText(appStateService: AppStateService): En
         enumTextOrderedList.push({ EnumID: 29, EnumText: 'WebAllMunicipalities' });
         enumTextOrderedList.push({ EnumID: 30, EnumText: 'WebAllProvinces' });
         enumTextOrderedList.push({ EnumID: 31, EnumText: 'WebAllCountries' });
-        enumTextOrderedList.push({ EnumID: 32, EnumText: 'Empty (fr)' });
-        enumTextOrderedList.push({ EnumID: 33, EnumText: 'Empty (fr)' });
-        enumTextOrderedList.push({ EnumID: 34, EnumText: 'Empty (fr)' });
+        enumTextOrderedList.push({ EnumID: 32, EnumText: 'WebAllAddresses' });
+        enumTextOrderedList.push({ EnumID: 33, EnumText: 'WebAllEmails' });
+        enumTextOrderedList.push({ EnumID: 34, EnumText: 'WebAllTels' });
+        enumTextOrderedList.push({ EnumID: 35, EnumText: 'WebTideSite' });
+        enumTextOrderedList.push({ EnumID: 36, EnumText: 'TideDataValue' });
     }
     else {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'WebRoot' });
@@ -121,9 +125,11 @@ export function WebTypeEnum_GetOrderedText(appStateService: AppStateService): En
         enumTextOrderedList.push({ EnumID: 29, EnumText: 'WebAllMunicipalities' });
         enumTextOrderedList.push({ EnumID: 30, EnumText: 'WebAllProvinces' });
         enumTextOrderedList.push({ EnumID: 31, EnumText: 'WebAllCountries' });
-        enumTextOrderedList.push({ EnumID: 32, EnumText: 'Empty' });
-        enumTextOrderedList.push({ EnumID: 33, EnumText: 'Empty' });
-        enumTextOrderedList.push({ EnumID: 34, EnumText: 'Empty' });
+        enumTextOrderedList.push({ EnumID: 32, EnumText: 'WebAllAddresses' });
+        enumTextOrderedList.push({ EnumID: 33, EnumText: 'WebAllEmails' });
+        enumTextOrderedList.push({ EnumID: 34, EnumText: 'WebAllTels' });
+        enumTextOrderedList.push({ EnumID: 35, EnumText: 'WebTideSite' });
+        enumTextOrderedList.push({ EnumID: 36, EnumText: 'TideDataValue' });
     }
 
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));

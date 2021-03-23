@@ -37,6 +37,7 @@ import { WebRoot } from 'src/app/models/generated/web/WebRoot.model';
 import { WebSamplingPlan } from 'src/app/models/generated/web/WebSamplingPlan.model';
 import { WebSector } from 'src/app/models/generated/web/WebSector.model';
 import { WebSubsector } from 'src/app/models/generated/web/WebSubsector.model';
+import { WebTideSite } from 'src/app/models/generated/web/WebTideSite.model';
 
 export class WebAppLoaded {
     WebAllAddresses: WebAllAddresses;
@@ -78,4 +79,5 @@ export class WebAppLoaded {
     WebSamplingPlan: WebSamplingPlan;
     WebSector: WebSector;
     WebSubsector: WebSubsector;
+    WebTideSite: WebTideSite;
 }

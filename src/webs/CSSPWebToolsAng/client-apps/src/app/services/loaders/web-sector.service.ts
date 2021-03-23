@@ -56,7 +56,7 @@ export class WebSectorService {
     this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
       WebSector: {},
       SectorSubsectorList: [],
-      SectorMIKEScenarioList: [],
+      //SectorMIKEScenarioList: [],
       BreadCrumbSectorWebBaseList: [],
       BreadCrumbWebBaseList: []
     });
@@ -100,18 +100,18 @@ export class WebSectorService {
       SectorSubsectorList = x?.TVItemSubsectorList;
     }
 
-    // doing SectorMIKEScenarioList
-    if (!this.appStateService.AppState$?.getValue()?.InactVisible) {
-      SectorMIKEScenarioList = x?.TVItemMikeScenarioList.filter((mikescenario) => { return mikescenario.TVItemModel.TVItem.IsActive == true });
-    }
-    else {
-      SectorMIKEScenarioList = x?.TVItemMikeScenarioList;
-    }
+    // // doing SectorMIKEScenarioList
+    // if (!this.appStateService.AppState$?.getValue()?.InactVisible) {
+    //   SectorMIKEScenarioList = x?.TVItemMikeScenarioList.filter((mikescenario) => { return mikescenario.TVItemModel.TVItem.IsActive == true });
+    // }
+    // else {
+    //   SectorMIKEScenarioList = x?.TVItemMikeScenarioList;
+    // }
 
     this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
       WebSector: x,
       SectorSubsectorList: this.sortTVItemListService.SortTVItemList(SectorSubsectorList, x?.TVItemParentList),
-      SectorMIKEScenarioList: this.sortTVItemListService.SortTVItemList(SectorMIKEScenarioList, x?.TVItemParentList),
+      //SectorMIKEScenarioList: this.sortTVItemListService.SortTVItemList(SectorMIKEScenarioList, x?.TVItemParentList),
       SectorFileListList: this.structureTVFileListService.StructureTVFileList(x.TVItemModel),
       BreadCrumbSectorWebBaseList: x?.TVItemParentList,
       BreadCrumbWebBaseList: x?.TVItemParentList
@@ -146,7 +146,7 @@ export class WebSectorService {
         this.mapService.DrawObjects([
           ...this.appLoadedService.AppLoaded$.getValue().SectorSubsectorList,
           ...webBaseSector,
-          ...this.appLoadedService.AppLoaded$.getValue().SectorMIKEScenarioList
+          //...this.appLoadedService.AppLoaded$.getValue().SectorMIKEScenarioList
         ]);
       }
     }

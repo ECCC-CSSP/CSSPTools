@@ -20,9 +20,12 @@ export class Contact extends LastUpdate {
     Disabled: boolean;
     EmailValidated: boolean;
     FirstName: string;
+    GoogleMapKeyHash: string;
+    HasInternetConnection?: boolean;
     Id: string;
     Initial: string;
     IsAdmin: boolean;
+    IsLoggedIn?: boolean;
     IsNew: boolean;
     LastName: string;
     LastUpdateContactTVItemID: number;

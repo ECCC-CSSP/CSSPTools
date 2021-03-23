@@ -59,7 +59,7 @@ import { WebAllTideLocations } from './generated/web/WebAllTideLocations.model';
 export interface AppLoaded {
     LoggedInContact?: Contact;
     BreadCrumbWebBaseList?: WebBase[];
-    PreferenceList?: Preference[];
+    //PreferenceList?: Preference[];
 
     WebAreaSubscription: Subscription;
     WebClimateDataValueSubscription: Subscription;
@@ -160,7 +160,7 @@ export interface AppLoaded {
     BreadCrumbSectorWebBaseList?: WebBase[];
     SectorSubsectorList?: WebBase[];
     SectorFileListList?: TVFileModel[][];
-    SectorMIKEScenarioList?: WebBase[];
+    //SectorMIKEScenarioList?: WebBase[];
 
     // Subsector TVItemID related
     WebSubsector?: WebSubsector;

@@ -8,7 +8,10 @@
 import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 
 export class PostTVItemModel {
+    GrandParentID?: number;
+    GrandParentTVType?: TVTypeEnum;
     ParentID: number;
+    ParentTVType: TVTypeEnum;
     TVItemID: number;
     TVTextEN: string;
     TVTextFR: string;

@@ -5,10 +5,11 @@
  *
  */
 
-import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { WebBase } from 'src/app/models/generated/web/WebBase.model';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 
 export class WebArea {
+    TVItemFileList: WebBase[];
     TVItemModel: TVItemModel;
     TVItemParentList: WebBase[];
     TVItemSectorList: WebBase[];

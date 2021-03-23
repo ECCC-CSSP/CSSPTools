@@ -9,6 +9,7 @@ import { BoxModelModel } from 'src/app/models/generated/web/BoxModelModel.model'
 import { Infrastructure } from 'src/app/models/generated/db/Infrastructure.model';
 import { Address } from 'src/app/models/generated/db/Address.model';
 import { InfrastructureLanguage } from 'src/app/models/generated/db/InfrastructureLanguage.model';
+import { WebBase } from 'src/app/models/generated/web/WebBase.model';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { VPScenarioModel } from 'src/app/models/generated/web/VPScenarioModel.model';
 
@@ -17,6 +18,7 @@ export class InfrastructureModel {
     Infrastructure: Infrastructure;
     InfrastructureCivicAddress: Address;
     InfrastructureLanguageList: InfrastructureLanguage[];
+    TVItemFileList: WebBase[];
     TVItemModel: TVItemModel;
     VPScenarioModelList: VPScenarioModel[];
 }

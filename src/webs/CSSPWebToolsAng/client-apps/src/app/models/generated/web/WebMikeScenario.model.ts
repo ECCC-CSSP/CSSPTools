@@ -16,6 +16,7 @@ export class WebMikeScenario {
     MikeBoundaryConditionModelWebTideList: MikeBoundaryConditionModel[];
     MikeScenario: MikeScenario;
     MikeSourceModelList: MikeSourceModel[];
+    TVItemFileList: WebBase[];
     TVItemMikeBoundaryConditionMeshList: WebBase[];
     TVItemMikeBoundaryConditionWebTideList: WebBase[];
     TVItemMikeSourceList: WebBase[];

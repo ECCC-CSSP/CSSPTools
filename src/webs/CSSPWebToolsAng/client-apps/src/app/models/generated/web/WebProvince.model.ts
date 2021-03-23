@@ -12,6 +12,7 @@ import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 export class WebProvince {
     SamplingPlanList: SamplingPlan[];
     TVItemAreaList: WebBase[];
+    TVItemFileList: WebBase[];
     TVItemModel: TVItemModel;
     TVItemParentList: WebBase[];
 }

@@ -10,6 +10,7 @@ import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 
 export class WebRoot {
     TVItemCountryList: WebBase[];
+    TVItemFileList: WebBase[];
     TVItemModel: TVItemModel;
     TVItemParentList: WebBase[];
 }

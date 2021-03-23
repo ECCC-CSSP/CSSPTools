@@ -6,7 +6,8 @@ import { AppState } from 'src/app/models/AppState.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { WebAllContactsService } from 'src/app/services/loaders/web-all-contacts.service';
-import { PreferenceService } from 'src/app/services/loaders/preferences.service';
+//import { PreferenceService } from 'src/app/services/loaders/preferences.service';
+import { LoggedInContactService } from 'src/app/services/loaders/logged-in-contact.service';
 
 @Component({
   selector: 'app-home-item',
@@ -21,10 +22,13 @@ export class HomeItemComponent implements OnInit, OnDestroy {
     public appStateService: AppStateService,
     public appLanguageService: AppLanguageService,
     public webAllContactsService: WebAllContactsService,
-    private preferenceService: PreferenceService) { }
+    public loggedInContactService: LoggedInContactService,
+    //private preferenceService: PreferenceService
+    ) { }
 
   ngOnInit(): void {
-    this.preferenceService.DoPreference();
+    this.loggedInContactService.DoLoggedInContact();
+    //this.preferenceService.DoPreference();
     this.webAllContactsService.DoWebAllContacts(false);
   }
 

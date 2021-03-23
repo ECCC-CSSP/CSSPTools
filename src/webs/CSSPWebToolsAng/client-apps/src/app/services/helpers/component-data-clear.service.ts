@@ -71,7 +71,7 @@ export class ComponentDataClearService {
     this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
       WebSector: {},
       SectorSubsectorList: [],
-      SectorMIKEScenarioList: [],
+      //SectorMIKEScenarioList: [],
       BreadCrumbSectorWebBaseList: [],
     });
 

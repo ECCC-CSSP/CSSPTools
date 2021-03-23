@@ -7,10 +7,12 @@
 
 import { MikeScenario } from 'src/app/models/generated/db/MikeScenario.model';
 import { MikeSourceModel } from 'src/app/models/generated/web/MikeSourceModel.model';
+import { WebBase } from 'src/app/models/generated/web/WebBase.model';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 
 export class MIKEScenarioModel {
     MikeScenario: MikeScenario;
     MikeSourceModelList: MikeSourceModel[];
+    TVItemFileList: WebBase[];
     TVItemModel: TVItemModel;
 }

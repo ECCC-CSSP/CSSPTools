@@ -19,6 +19,7 @@ export class WebSubsector {
     MWQMSubsector: MWQMSubsector;
     MWQMSubsectorLanguageList: MWQMSubsectorLanguage[];
     TVItemClassificationList: WebBase[];
+    TVItemFileList: WebBase[];
     TVItemModel: TVItemModel;
     TVItemMWQMRunList: WebBase[];
     TVItemMWQMSiteList: WebBase[];

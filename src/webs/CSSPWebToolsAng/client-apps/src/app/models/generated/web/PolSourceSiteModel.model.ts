@@ -9,6 +9,7 @@ import { PolSourceObservationModel } from 'src/app/models/generated/web/PolSourc
 import { PolSourceSite } from 'src/app/models/generated/db/PolSourceSite.model';
 import { Address } from 'src/app/models/generated/db/Address.model';
 import { PolSourceSiteEffect } from 'src/app/models/generated/db/PolSourceSiteEffect.model';
+import { WebBase } from 'src/app/models/generated/web/WebBase.model';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 
 export class PolSourceSiteModel {
@@ -16,5 +17,6 @@ export class PolSourceSiteModel {
     PolSourceSite: PolSourceSite;
     PolSourceSiteCivicAddress: Address;
     PolSourceSiteEffectList: PolSourceSiteEffect[];
+    TVItemFileList: WebBase[];
     TVItemModel: TVItemModel;
 }

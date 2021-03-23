@@ -23,7 +23,7 @@ import { WebMunicipalityService } from 'src/app/services/loaders/web-municipalty
 import { WebMWQMSiteService } from 'src/app/services/loaders/web-mwqm-sites.service';
 import { WebMWQMRunService } from 'src/app/services/loaders/web-mwqm-runs.service';
 import { WebPolSourceSiteService } from 'src/app/services/loaders/web-pol-source-sites.service';
-import { PreferenceService } from 'src/app/services/loaders/preferences.service';
+//import { PreferenceService } from 'src/app/services/loaders/preferences.service';
 
 @Component({
   selector: 'app-shell-item',
@@ -53,7 +53,8 @@ export class ShellItemComponent implements OnInit, OnDestroy {
     private webMWQMSiteService: WebMWQMSiteService,
     private webMWQMRunService: WebMWQMRunService,
     private webPolSourceSiteService: WebPolSourceSiteService,
-    public preferenceService: PreferenceService) { }
+    //public preferenceService: PreferenceService
+    ) { }
 
 
   ngOnInit(): void {
