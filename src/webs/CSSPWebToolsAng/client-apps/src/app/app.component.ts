@@ -23,8 +23,8 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.webAllContactsService.DoWebAllContacts(false);
     this.loggedInContactService.DoLoggedInContact();
+    this.webAllContactsService.DoWebAllContacts(false);
   }
 
   ngOnDestroy() {

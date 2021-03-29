@@ -14,6 +14,7 @@ using ReadGzFileServices;
 using System.Linq;
 using System.Threading;
 using LoggedInServices;
+using CSSPScrambleServices;
 
 namespace CSSPWebAPIsLocal.Controllers
 {
@@ -32,13 +33,15 @@ namespace CSSPWebAPIsLocal.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
+        private IScrambleService ScrambleService { get; }
         #endregion Properties
 
         #region Constructors
-        public LoggedInContactController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService)
+        public LoggedInContactController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IScrambleService ScrambleService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
+            this.ScrambleService = ScrambleService;
         }
         #endregion Constructors
 
@@ -50,6 +53,8 @@ namespace CSSPWebAPIsLocal.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInLocalContactInfo();
 
+            LoggedInService.LoggedInContactInfo.LoggedInContact.PasswordHash = "";
+            LoggedInService.LoggedInContactInfo.LoggedInContact.GoogleMapKeyHash = ScrambleService.Descramble(LoggedInService.LoggedInContactInfo.LoggedInContact.GoogleMapKeyHash);
             return await Task.FromResult(Ok(LoggedInService.LoggedInContactInfo.LoggedInContact));
         }
         #endregion Functions public

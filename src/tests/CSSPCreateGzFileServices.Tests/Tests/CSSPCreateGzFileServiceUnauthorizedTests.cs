@@ -77,7 +77,7 @@ namespace CreateGzFileServices.Tests
 
                 // Create gz
                 var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
-                Assert.Equal(401, ((UnauthorizedResult)actionRes.Result).StatusCode);
+                Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
             }
         }
         #endregion Tests 

@@ -3,103 +3,50 @@
  *  
  */
 
-using CreateGzFileLocalServices;
 using CSSPCultureServices.Resources;
-using CSSPCultureServices.Services;
-using CSSPDBFilesManagementModels;
 using CSSPDBModels;
-using CSSPDBPreferenceModels;
 using CSSPEnums;
-using CSSPScrambleServices;
 using CSSPWebModels;
-using DownloadFileServices;
-using FilesManagementServices;
-using LoggedInServices;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using ReadGzFileServices;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace CSSPDBLocalServices.Tests
 {
-    [Collection("Sequential")]
-    public partial class PostTVItemModelServiceTest
+    public partial class TVItemServiceTest
     {
-        #region Variables
-        #endregion Variables
-
-        #region Properties
-        private IConfiguration Configuration { get; set; }
-        private IServiceProvider Provider { get; set; }
-        private IServiceCollection Services { get; set; }
-        private ICSSPCultureService CSSPCultureService { get; set; }
-        private ILoggedInService LoggedInService { get; set; }
-        private IPostTVItemModelService PostTVItemModelService { get; set; }
-        private IReadGzFileService ReadGzFileService { get; set; }
-        private ICreateGzFileLocalService CreateGzFileLocalService { get; set; }
-        private CSSPDBLocalContext dbLocalTest { get; set; }
-        private string AzureStoreCSSPJSONPath { get; set; }
-        private string CSSPJSONPath { get; set; }
-        private string CSSPJSONPathLocal { get; set; }
-        private string CSSPAzureUrl { get; set; }
-        #endregion Properties
-
-        #region Constructors
-        public PostTVItemModelServiceTest()
-        {
-
-        }
-        #endregion Constructors
-
-        #region Tests Generated Constructor [DB]
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task PostTVItemModel_Constructor_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-        }
-        #endregion Tests Generated Constructor [DB]
-
-        #region Tests Generated
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task PostTVItemModel_AddOrModify_Add_Address_Good_Test(string culture)
+        public async Task TVItemService_Delete_Add_Address_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            PostTVItemModel postTVItemModel = new PostTVItemModel()
-            {
-                ParentTVType = TVTypeEnum.Root,
-                ParentID = 1,
-                TVItemID = 0, // 0 == add, > 0 == change
-                TVType = TVTypeEnum.Address,
-                TVTextEN = "New Address",
-                TVTextFR = "Nouveau Address"
-            };
-
-            ReadGzFileService.webAppLoaded.WebAllAddresses = ReadGzFileService.GetUncompressJSON<WebAllAddresses>(WebTypeEnum.WebAllAddresses, postTVItemModel.ParentID, WebTypeYearEnum.Year1980).GetAwaiter().GetResult();
+            ReadGzFileService.webAppLoaded.WebAllAddresses = ReadGzFileService.GetUncompressJSON<WebAllAddresses>(WebTypeEnum.WebAllAddresses, 0, WebTypeYearEnum.Year1980).GetAwaiter().GetResult();
             Assert.NotNull(ReadGzFileService.webAppLoaded.WebAllAddresses);
 
-            int StartCount = ReadGzFileService.webAppLoaded.WebAllAddresses.TVItemAllAddressList.Count;
-            //int StartCount2 = ReadGzFileService.webAppLoaded.WebAllAddresss.AddressList.Count;
+            Assert.True(ReadGzFileService.webAppLoaded.WebAllAddresses.TVItemAllAddressList.Count > 0);
 
-            var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModify(postTVItemModel);
-            Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
-            bool boolRet = (bool)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
+            TVItem tvItem = ReadGzFileService.webAppLoaded.WebAllAddresses.TVItemAllAddressList[0].TVItemModel.TVItem;
+
+            DeleteTVItemModel deleteTVItemModel = new DeleteTVItemModel()
+            {
+                ParentTVType = TVTypeEnum.Root,
+                ParentID = (int)tvItem.ParentID,
+                TVItemID = tvItem.TVItemID,
+                TVType = tvItem.TVType,
+            };
+
+            var actionDeleteTVItemModelRes = await PostTVItemModelService.Delete(deleteTVItemModel);
+            Assert.Equal(200, ((ObjectResult)actionDeleteTVItemModelRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionDeleteTVItemModelRes.Result).Value);
+            bool boolRet = (bool)((OkObjectResult)actionDeleteTVItemModelRes.Result).Value;
             Assert.True(boolRet);
 
-            ReadGzFileService.webAppLoaded.WebRoot = ReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, postTVItemModel.ParentID, WebTypeYearEnum.Year1980).GetAwaiter().GetResult();
+            ReadGzFileService.webAppLoaded.WebRoot = ReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0, WebTypeYearEnum.Year1980).GetAwaiter().GetResult();
             Assert.NotNull(ReadGzFileService.webAppLoaded.WebRoot);
 
             List<WebBase> tvItemParentList = ReadGzFileService.webAppLoaded.WebRoot.TVItemParentList;
@@ -107,49 +54,47 @@ namespace CSSPDBLocalServices.Tests
             Assert.True(tvItemParentList.Count == 1);
 
             CompareTVItemParentListInDB(tvItemParentList);
-            CompareTVItemAddInDB(-1, DBCommandEnum.Created, 1, "p1p-1", TVTypeEnum.Address, 1, true);
-            CompareTVItemLanguageAddInDB(-1, DBCommandEnum.Created, -1, LanguageEnum.en, "New Address", TranslationStatusEnum.Translated);
-            CompareTVItemLanguageAddInDB(-2, DBCommandEnum.Created, -1, LanguageEnum.fr, "Nouveau Address", TranslationStatusEnum.Translated);
+            CompareTVItemDeleteInDB(tvItem.TVItemID, DBCommandEnum.Deleted, 1, tvItem.TVPath, TVTypeEnum.Address, 1, true);
 
-            ReadGzFileService.webAppLoaded.WebAllAddresses = ReadGzFileService.GetUncompressJSON<WebAllAddresses>(WebTypeEnum.WebAllAddresses, postTVItemModel.ParentID, WebTypeYearEnum.Year1980).GetAwaiter().GetResult();
+            ReadGzFileService.webAppLoaded.WebAllAddresses = ReadGzFileService.GetUncompressJSON<WebAllAddresses>(WebTypeEnum.WebAllAddresses, 0, WebTypeYearEnum.Year1980).GetAwaiter().GetResult();
             Assert.NotNull(ReadGzFileService.webAppLoaded.WebAllAddresses);
 
-            int EndCount = ReadGzFileService.webAppLoaded.WebAllAddresses.TVItemAllAddressList.Count;
-            Assert.Equal(StartCount + 1, EndCount);
-            CompareWebItem(postTVItemModel, ReadGzFileService.webAppLoaded.WebAllAddresses.TVItemAllAddressList[EndCount - 1]);
+            TVItem tvItem2 = ReadGzFileService.webAppLoaded.WebAllAddresses.TVItemAllAddressList[0].TVItemModel.TVItem;
+            Assert.Equal(DBCommandEnum.Deleted, tvItem2.DBCommand);
 
-            //int EndCount2 = ReadGzFileService.webAppLoaded.WebAllAddresss.AddressList.Count;
-            //Assert.Equal(StartCount2 + 1, EndCount2);
+            TVItem tvItem3 = ReadGzFileService.webAppLoaded.WebAllAddresses.TVItemAllAddressList[1].TVItemModel.TVItem;
+            Assert.Equal(DBCommandEnum.Original, tvItem3.DBCommand);
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task PostTVItemModel_AddOrModify_Add_Area_Good_Test(string culture)
+        public async Task TVItemService_Delete_Add_Area_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            PostTVItemModel postTVItemModel = new PostTVItemModel()
-            {
-                ParentTVType = TVTypeEnum.Province,
-                ParentID = 7,
-                TVItemID = 0, // 0 == add, > 0 == change
-                TVType = TVTypeEnum.Area,
-                TVTextEN = "New Area",
-                TVTextFR = "Nouvelle Région"
-            };
-
-            ReadGzFileService.webAppLoaded.WebProvince = ReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, postTVItemModel.ParentID, WebTypeYearEnum.Year1980).GetAwaiter().GetResult();
+            int ProvinceTVItemID = 7;
+            ReadGzFileService.webAppLoaded.WebProvince = ReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, ProvinceTVItemID, WebTypeYearEnum.Year1980).GetAwaiter().GetResult();
             Assert.NotNull(ReadGzFileService.webAppLoaded.WebProvince);
 
-            int StartCount = ReadGzFileService.webAppLoaded.WebProvince.TVItemAreaList.Count;
+            Assert.True(ReadGzFileService.webAppLoaded.WebProvince.TVItemAreaList.Count > 0);
 
-            var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModify(postTVItemModel);
+            TVItem tvItem = ReadGzFileService.webAppLoaded.WebProvince.TVItemAreaList[0].TVItemModel.TVItem;
+
+            DeleteTVItemModel deleteTVItemModel = new DeleteTVItemModel()
+            {
+                ParentTVType = TVTypeEnum.Province,
+                ParentID = ProvinceTVItemID,
+                TVItemID = tvItem.TVItemID,
+                TVType = tvItem.TVType,
+            };
+
+            var actionPostTVItemModelRes = await PostTVItemModelService.Delete(deleteTVItemModel);
             Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             bool boolRet = (bool)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
             Assert.True(boolRet);
 
-            ReadGzFileService.webAppLoaded.WebProvince = ReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, postTVItemModel.ParentID, WebTypeYearEnum.Year1980).GetAwaiter().GetResult();
+            ReadGzFileService.webAppLoaded.WebProvince = ReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, ProvinceTVItemID, WebTypeYearEnum.Year1980).GetAwaiter().GetResult();
             Assert.NotNull(ReadGzFileService.webAppLoaded.WebProvince);
 
             List<WebBase> tvItemParentList = ReadGzFileService.webAppLoaded.WebProvince.TVItemParentList;
@@ -157,18 +102,25 @@ namespace CSSPDBLocalServices.Tests
             Assert.True(tvItemParentList.Count == 3);
 
             CompareTVItemParentListInDB(tvItemParentList);
-            CompareTVItemAddInDB(-1, DBCommandEnum.Created, 3, "p1p5p7p-1", TVTypeEnum.Area, 7, true);
-            CompareTVItemLanguageAddInDB(-1, DBCommandEnum.Created, -1, LanguageEnum.en, "New Area", TranslationStatusEnum.Translated);
-            CompareTVItemLanguageAddInDB(-2, DBCommandEnum.Created, -1, LanguageEnum.fr, "Nouvelle Région", TranslationStatusEnum.Translated);
+            CompareTVItemDeleteInDB(tvItem.TVItemID, DBCommandEnum.Deleted, 1, tvItem.TVPath, TVTypeEnum.Area, 1, true);
 
-            int EndCount = ReadGzFileService.webAppLoaded.WebProvince.TVItemAreaList.Count;
-            Assert.Equal(StartCount + 1, EndCount);
-            CompareWebItem(postTVItemModel, ReadGzFileService.webAppLoaded.WebProvince.TVItemAreaList[EndCount - 1]);
+            TVItem tvItem2 = ReadGzFileService.webAppLoaded.WebProvince.TVItemAreaList[0].TVItemModel.TVItem;
+            Assert.Equal(DBCommandEnum.Deleted, tvItem2.DBCommand);
+
+            TVItem tvItem3 = ReadGzFileService.webAppLoaded.WebProvince.TVItemAreaList[1].TVItemModel.TVItem;
+            Assert.Equal(DBCommandEnum.Original, tvItem3.DBCommand);
+
+            ReadGzFileService.webAppLoaded.WebArea = ReadGzFileService.GetUncompressJSON<WebArea>(WebTypeEnum.WebArea, tvItem.TVItemID, WebTypeYearEnum.Year1980).GetAwaiter().GetResult();
+            Assert.NotNull(ReadGzFileService.webAppLoaded.WebArea);
+
+            TVItem tvItem4 = ReadGzFileService.webAppLoaded.WebArea.TVItemModel.TVItem;
+            Assert.Equal(DBCommandEnum.Deleted, tvItem4.DBCommand);
+
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task PostTVItemModel_AddOrModify_Add_Classification_Good_Test(string culture)
+        public async Task TVItemService_Delete_Add_Classification_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -215,7 +167,7 @@ namespace CSSPDBLocalServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task PostTVItemModel_AddOrModify_Add_ClimateSite_Good_Test(string culture)
+        public async Task TVItemService_Delete_Add_ClimateSite_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -262,7 +214,7 @@ namespace CSSPDBLocalServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task PostTVItemModel_AddOrModify_Add_Contact_Good_Test(string culture)
+        public async Task TVItemService_Delete_Add_Contact_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -313,7 +265,7 @@ namespace CSSPDBLocalServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task PostTVItemModel_AddOrModify_Add_Country_Good_Test(string culture)
+        public async Task TVItemService_Delete_Add_Country_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -369,7 +321,7 @@ namespace CSSPDBLocalServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task PostTVItemModel_AddOrModify_Add_Email_Good_Test(string culture)
+        public async Task TVItemService_Delete_Add_Email_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -420,7 +372,7 @@ namespace CSSPDBLocalServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task PostTVItemModel_AddOrModify_Add_File_Under_Area_Good_Test(string culture)
+        public async Task TVItemService_Delete_Add_File_Under_Area_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -467,7 +419,7 @@ namespace CSSPDBLocalServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task PostTVItemModel_AddOrModify_Add_File_Under_Country_Good_Test(string culture)
+        public async Task TVItemService_Delete_Add_File_Under_Country_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -514,7 +466,7 @@ namespace CSSPDBLocalServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task PostTVItemModel_AddOrModify_Add_File_Under_Infrastructure_Good_Test(string culture)
+        public async Task TVItemService_Delete_Add_File_Under_Infrastructure_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -575,7 +527,7 @@ namespace CSSPDBLocalServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task PostTVItemModel_AddOrModify_Add_File_Under_MikeScenario_Good_Test(string culture)
+        public async Task TVItemService_Delete_Add_File_Under_MikeScenario_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -622,7 +574,7 @@ namespace CSSPDBLocalServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task PostTVItemModel_AddOrModify_Add_File_Under_Municipality_Good_Test(string culture)
+        public async Task TVItemService_Delete_Add_File_Under_Municipality_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -669,7 +621,7 @@ namespace CSSPDBLocalServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task PostTVItemModel_AddOrModify_Add_File_Under_MWQMSite_Good_Test(string culture)
+        public async Task TVItemService_Delete_Add_File_Under_MWQMSite_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -730,7 +682,7 @@ namespace CSSPDBLocalServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task PostTVItemModel_AddOrModify_Add_File_Under_PolSourceSite_Good_Test(string culture)
+        public async Task TVItemService_Delete_Add_File_Under_PolSourceSite_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -791,7 +743,7 @@ namespace CSSPDBLocalServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task PostTVItemModel_AddOrModify_Add_File_Under_Province_Good_Test(string culture)
+        public async Task TVItemService_Delete_Add_File_Under_Province_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -838,7 +790,7 @@ namespace CSSPDBLocalServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task PostTVItemModel_AddOrModify_Add_File_Under_Root_Good_Test(string culture)
+        public async Task TVItemService_Delete_Add_File_Under_Root_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -885,7 +837,7 @@ namespace CSSPDBLocalServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task PostTVItemModel_AddOrModify_Add_File_Under_Sector_Good_Test(string culture)
+        public async Task TVItemService_Delete_Add_File_Under_Sector_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -932,7 +884,7 @@ namespace CSSPDBLocalServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task PostTVItemModel_AddOrModify_Add_File_Under_Subsector_Good_Test(string culture)
+        public async Task TVItemService_Delete_Add_File_Under_Subsector_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -979,7 +931,7 @@ namespace CSSPDBLocalServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task PostTVItemModel_AddOrModify_Add_HydrometricSite_Good_Test(string culture)
+        public async Task TVItemService_Delete_Add_HydrometricSite_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -1026,7 +978,7 @@ namespace CSSPDBLocalServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task PostTVItemModel_AddOrModify_Add_Infrastructure_Good_Test(string culture)
+        public async Task TVItemService_Delete_Add_Infrastructure_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -1070,7 +1022,7 @@ namespace CSSPDBLocalServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task PostTVItemModel_AddOrModify_Add_MikeBoundaryConditionMesh_Good_Test(string culture)
+        public async Task TVItemService_Delete_Add_MikeBoundaryConditionMesh_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -1114,7 +1066,7 @@ namespace CSSPDBLocalServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task PostTVItemModel_AddOrModify_Add_MikeBoundaryConditionWebTide_Good_Test(string culture)
+        public async Task TVItemService_Delete_Add_MikeBoundaryConditionWebTide_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -1158,7 +1110,7 @@ namespace CSSPDBLocalServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task PostTVItemModel_AddOrModify_Add_MikeScenario_Good_Test(string culture)
+        public async Task TVItemService_Delete_Add_MikeScenario_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -1202,7 +1154,7 @@ namespace CSSPDBLocalServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task PostTVItemModel_AddOrModify_Add_MikeSource_Good_Test(string culture)
+        public async Task TVItemService_Delete_Add_MikeSource_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -1246,7 +1198,7 @@ namespace CSSPDBLocalServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task PostTVItemModel_AddOrModify_Add_Municipality_Good_Test(string culture)
+        public async Task TVItemService_Delete_Add_Municipality_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -1305,7 +1257,7 @@ namespace CSSPDBLocalServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task PostTVItemModel_AddOrModify_Add_MWQMRun_Good_Test(string culture)
+        public async Task TVItemService_Delete_Add_MWQMRun_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -1352,7 +1304,7 @@ namespace CSSPDBLocalServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task PostTVItemModel_AddOrModify_Add_MWQMSite_Good_Test(string culture)
+        public async Task TVItemService_Delete_Add_MWQMSite_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -1399,7 +1351,7 @@ namespace CSSPDBLocalServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task PostTVItemModel_AddOrModify_Add_PolSourceSite_Good_Test(string culture)
+        public async Task TVItemService_Delete_Add_PolSourceSite_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -1446,7 +1398,7 @@ namespace CSSPDBLocalServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task PostTVItemModel_AddOrModify_Add_Province_Good_Test(string culture)
+        public async Task TVItemService_Delete_Add_Province_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -1502,7 +1454,7 @@ namespace CSSPDBLocalServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task PostTVItemModel_AddOrModify_Add_RainExceedance_Good_Test(string culture)
+        public async Task TVItemService_Delete_Add_RainExceedance_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -1546,7 +1498,7 @@ namespace CSSPDBLocalServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task PostTVItemModel_AddOrModify_Add_Sector_Good_Test(string culture)
+        public async Task TVItemService_Delete_Add_Sector_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -1590,7 +1542,7 @@ namespace CSSPDBLocalServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task PostTVItemModel_AddOrModify_Add_Subsector_Good_Test(string culture)
+        public async Task TVItemService_Delete_Add_Subsector_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -1634,7 +1586,7 @@ namespace CSSPDBLocalServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task PostTVItemModel_AddOrModify_Add_Tel_Good_Test(string culture)
+        public async Task TVItemService_Delete_Add_Tel_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -1682,13 +1634,10 @@ namespace CSSPDBLocalServices.Tests
             //int EndCount2 = ReadGzFileService.webAppLoaded.WebAllTels.TelList.Count;
             //Assert.Equal(StartCount2 + 1, EndCount2);
         }
-
-
-
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task PostTVItemModel_AddOrModify_Add_Country_Than_Change_Good_Test(string culture)
+        public async Task TVItemService_Delete_Add_Country_Than_Change_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -1771,7 +1720,7 @@ namespace CSSPDBLocalServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task PostTVItemModel_AddOrModify_Modify_Good_Test(string culture)
+        public async Task TVItemService_Delete_Modify_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -1852,7 +1801,7 @@ namespace CSSPDBLocalServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task PostTVItemModel_AddOrModify_Missing_ParentID_Error_Test(string culture)
+        public async Task TVItemService_Delete_Missing_ParentID_Error_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -1873,7 +1822,7 @@ namespace CSSPDBLocalServices.Tests
             List<ValidationResult> vrList = ((IEnumerable<ValidationResult>)validationResultList).ToList();
             Assert.True(vrList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "ParentID"))).Any());
 
-            List<TVItem> tvItemList = (from c in dbLocalTest.TVItems
+            List<TVItem> tvItemList = (from c in dbLocal.TVItems
                                        orderby c.TVItemID
                                        select c).ToList();
 
@@ -1882,7 +1831,7 @@ namespace CSSPDBLocalServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task PostTVItemModel_AddOrModify_Missing_Variables_Error_Test(string culture)
+        public async Task TVItemService_Delete_Missing_Variables_Error_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -1906,306 +1855,11 @@ namespace CSSPDBLocalServices.Tests
             Assert.True(vrList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "TVTextEN"))).Any());
             Assert.True(vrList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "TVTextFR"))).Any());
 
-            List<TVItem> tvItemList = (from c in dbLocalTest.TVItems
+            List<TVItem> tvItemList = (from c in dbLocal.TVItems
                                        orderby c.TVItemID
                                        select c).ToList();
 
             Assert.True(tvItemList.Count == 0);
         }
-        #endregion Tests Generated
-
-        #region Functions private
-        private void CompareTVItemAddInDB(int TVItemID, DBCommandEnum DBCommand, int TVLevel, string TVPath, TVTypeEnum TVType, int ParentID, bool IsActive)
-        {
-            TVItem tvItem = (from c in dbLocalTest.TVItems
-                             where c.TVItemID == TVItemID
-                             select c).FirstOrDefault();
-
-            Assert.Equal(TVItemID, tvItem.TVItemID);
-            Assert.Equal(DBCommand, tvItem.DBCommand);
-            Assert.Equal(TVLevel, tvItem.TVLevel);
-            Assert.Equal(TVPath, tvItem.TVPath);
-            Assert.Equal(TVType, tvItem.TVType);
-            Assert.Equal(ParentID, tvItem.ParentID);
-            Assert.Equal(IsActive, tvItem.IsActive);
-            Assert.True(tvItem.LastUpdateDate_UTC.Year > 1979);
-            Assert.True(tvItem.LastUpdateContactTVItemID > 0);
-
-        }
-        private void CompareTVItemLanguageAddInDB(int TVItemLanguageID, DBCommandEnum DBCommand, int TVItemID, LanguageEnum Language, string TVText, TranslationStatusEnum TranslationStatus)
-        {
-            TVItemLanguage tvItemLanguage = new TVItemLanguage();
-
-            tvItemLanguage = (from c in dbLocalTest.TVItemLanguages
-                              where c.TVItemLanguageID == TVItemLanguageID
-                              select c).FirstOrDefault();
-
-            Assert.NotNull(tvItemLanguage);
-            Assert.Equal(TVItemLanguageID, tvItemLanguage.TVItemLanguageID);
-            Assert.Equal(DBCommand, tvItemLanguage.DBCommand);
-            Assert.Equal(TVItemID, tvItemLanguage.TVItemID);
-            Assert.Equal(Language, tvItemLanguage.Language);
-            Assert.Equal(TVText, tvItemLanguage.TVText);
-            Assert.Equal(TranslationStatus, tvItemLanguage.TranslationStatus);
-            Assert.True(tvItemLanguage.LastUpdateDate_UTC.Year > 1979);
-            Assert.True(tvItemLanguage.LastUpdateContactTVItemID > 0);
-        }
-        private void CompareTVItemParentListInDB(List<WebBase> tvItemParentList)
-        {
-            TVItem tvItem = new TVItem();
-            TVItemLanguage tvItemLanguage = new TVItemLanguage();
-
-            List<TVItem> tvItemList = (from c in dbLocalTest.TVItems
-                                       orderby c.TVItemID
-                                       select c).ToList();
-
-            Assert.Equal(tvItemParentList.Count + 1, tvItemList.Count);
-
-            foreach (WebBase webBase in tvItemParentList)
-            {
-                tvItem = (from c in dbLocalTest.TVItems
-                          where c.TVItemID == webBase.TVItemModel.TVItem.TVItemID
-                          select c).FirstOrDefault();
-
-                Assert.NotNull(tvItem);
-                Assert.Equal(webBase.TVItemModel.TVItem.TVItemID, tvItem.TVItemID);
-                Assert.Equal(webBase.TVItemModel.TVItem.DBCommand, tvItem.DBCommand);
-                Assert.Equal(webBase.TVItemModel.TVItem.TVLevel, tvItem.TVLevel);
-                Assert.Equal(webBase.TVItemModel.TVItem.TVPath, tvItem.TVPath);
-                Assert.Equal(webBase.TVItemModel.TVItem.TVType, tvItem.TVType);
-                Assert.Equal(webBase.TVItemModel.TVItem.ParentID, tvItem.ParentID);
-                Assert.Equal(webBase.TVItemModel.TVItem.IsActive, tvItem.IsActive);
-                Assert.True(tvItem.LastUpdateDate_UTC.Year > 1979);
-                Assert.True(tvItem.LastUpdateContactTVItemID > 0);
-
-
-                foreach (LanguageEnum lang in new List<LanguageEnum>() { LanguageEnum.en, LanguageEnum.fr })
-                {
-                    tvItemLanguage = (from c in dbLocalTest.TVItemLanguages
-                                      where c.TVItemID == webBase.TVItemModel.TVItem.TVItemID
-                                      && c.Language == lang
-                                      select c).FirstOrDefault();
-
-                    Assert.NotNull(tvItemLanguage);
-                    Assert.Equal(webBase.TVItemModel.TVItemLanguageList[(int)lang].TVItemLanguageID, tvItemLanguage.TVItemLanguageID);
-                    Assert.Equal(webBase.TVItemModel.TVItemLanguageList[(int)lang].DBCommand, tvItemLanguage.DBCommand);
-                    Assert.Equal(webBase.TVItemModel.TVItemLanguageList[(int)lang].TVItemID, tvItemLanguage.TVItemID);
-                    Assert.Equal(webBase.TVItemModel.TVItemLanguageList[(int)lang].Language, tvItemLanguage.Language);
-                    Assert.Equal(webBase.TVItemModel.TVItemLanguageList[(int)lang].TVText, tvItemLanguage.TVText);
-                    Assert.Equal(webBase.TVItemModel.TVItemLanguageList[(int)lang].TranslationStatus, tvItemLanguage.TranslationStatus);
-                    Assert.True(tvItemLanguage.LastUpdateDate_UTC.Year > 1979);
-                    Assert.True(tvItemLanguage.LastUpdateContactTVItemID > 0);
-                }
-            }
-        }
-        private void CompareWebItem(PostTVItemModel postTVItemModel, WebBase webBase)
-        {
-            Assert.Equal(postTVItemModel.ParentID, webBase.TVItemModel.TVItem.ParentID);
-            Assert.Equal(postTVItemModel.TVType, webBase.TVItemModel.TVItem.TVType);
-            Assert.Equal(postTVItemModel.TVTextEN, webBase.TVItemModel.TVItemLanguageList[(int)LanguageEnum.en].TVText);
-            Assert.Equal(postTVItemModel.TVTextFR, webBase.TVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].TVText);
-        }
-        private async Task<bool> Setup(string culture)
-        {
-            Configuration = new ConfigurationBuilder()
-               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-               .AddJsonFile("appsettings_csspdblocalservicestests.json")
-               .AddUserSecrets("86d17aa8-ffaa-4834-b06c-95bdec59d59b")
-               .Build();
-
-            Services = new ServiceCollection();
-
-            Services.AddSingleton<IConfiguration>(Configuration);
-
-            AzureStoreCSSPJSONPath = Configuration.GetValue<string>("AzureStoreCSSPJSONPath");
-            Assert.NotNull(AzureStoreCSSPJSONPath);
-
-            CSSPJSONPath = Configuration.GetValue<string>("CSSPJSONPath");
-            Assert.NotNull(CSSPJSONPath);
-
-            CSSPJSONPathLocal = Configuration.GetValue<string>("CSSPJSONPathLocal");
-            Assert.NotNull(CSSPJSONPathLocal);
-
-            DirectoryInfo di = new DirectoryInfo($"{ CSSPJSONPathLocal }");
-            if (di.Exists)
-            {
-                try
-                {
-                    di.Delete(true);
-                    di.Create(); // creates "C:\\CSSPDesktop\\csspjsonlocaltest\\"
-                }
-                catch (Exception ex)
-                {
-                    Assert.True(false, ex.Message);
-                }
-            }
-            else
-            {
-                try
-                {
-                    di.Create();
-                }
-                catch (Exception ex)
-                {
-                    Assert.True(false, ex.Message);
-                }
-            }
-
-            /* ---------------------------------------------------------------------------------
-             * using Copying CSSPDBLocal To CSSPDBLocalTest
-             * ---------------------------------------------------------------------------------      
-             */
-
-            string CSSPDBLocal = Configuration.GetValue<string>("CSSPDBLocal");
-            Assert.NotNull(CSSPDBLocal);
-
-            string CSSPDBLocalTest = Configuration.GetValue<string>("CSSPDBLocalTest");
-            Assert.NotNull(CSSPDBLocalTest);
-
-            FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocal);
-            FileInfo fiCSSPDBLocalTest = new FileInfo(CSSPDBLocalTest);
-
-            if (!fiCSSPDBLocal.Exists)
-            {
-                Assert.True(false, $"File does not exist { fiCSSPDBLocal.FullName }");
-            }
-
-            if (!fiCSSPDBLocalTest.Exists)
-            {
-                try
-                {
-                    File.Copy(fiCSSPDBLocal.FullName, fiCSSPDBLocalTest.FullName);
-                }
-                catch (Exception ex)
-                {
-                    Assert.True(false, ex.Message);
-                }
-            }
-            else
-            {
-                if (fiCSSPDBLocalTest.Length < 200)
-                {
-                    try
-                    {
-                        fiCSSPDBLocalTest.Delete();
-                        File.Copy(fiCSSPDBLocal.FullName, fiCSSPDBLocalTest.FullName);
-                    }
-                    catch (Exception ex)
-                    {
-                        Assert.True(false, ex.Message);
-                    }
-                }
-            }
-
-            /* ---------------------------------------------------------------------------------
-             * using CSSPDBLocalContext
-             * ---------------------------------------------------------------------------------      
-             */
-
-            Services.AddDbContext<CSSPDBLocalContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiCSSPDBLocalTest.FullName }");
-            });
-
-            /* ---------------------------------------------------------------------------------
-             * using CSSPDBFilesManagement
-             * ---------------------------------------------------------------------------------      
-             */
-            string CSSPDBFilesManagementFileName = Configuration.GetValue<string>("CSSPDBFilesManagement");
-            Assert.NotNull(CSSPDBFilesManagementFileName);
-
-            FileInfo fiCSSPDBFilesManagementFileName = new FileInfo(CSSPDBFilesManagementFileName);
-
-            Services.AddDbContext<CSSPDBFilesManagementContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiCSSPDBFilesManagementFileName.FullName }");
-            });
-
-            /* ---------------------------------------------------------------------------------
-             * using CSSPDBPreference
-             * ---------------------------------------------------------------------------------
-             */
-            string CSSPDBPreference = Configuration.GetValue<string>("CSSPDBPreference");
-            Assert.NotNull(CSSPDBPreference);
-
-            FileInfo fiCSSPDBPreference = new FileInfo(CSSPDBPreference);
-
-            Services.AddDbContext<CSSPDBPreferenceContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiCSSPDBPreference.FullName }");
-            });
-
-            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
-            Services.AddSingleton<ILoggedInService, LoggedInService>();
-            Services.AddSingleton<IEnums, Enums>();
-            Services.AddSingleton<IScrambleService, ScrambleService>();
-            Services.AddSingleton<IFilesManagementService, FilesManagementService>();
-            //Services.AddSingleton<IPreferenceService, PreferenceService>();
-            Services.AddSingleton<IDownloadFileService, DownloadFileService>();
-            Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
-            Services.AddSingleton<ICreateGzFileLocalService, CreateGzFileLocalService>();
-            Services.AddSingleton<IPostTVItemModelService, PostTVItemModelService>();
-
-            Provider = Services.BuildServiceProvider();
-            Assert.NotNull(Provider);
-
-            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
-            Assert.NotNull(CSSPCultureService);
-
-            CSSPCultureService.SetCulture(culture);
-
-            LoggedInService = Provider.GetService<ILoggedInService>();
-            Assert.NotNull(LoggedInService);
-
-            Assert.True(await LoggedInService.SetLoggedInLocalContactInfo());
-
-            dbLocalTest = Provider.GetService<CSSPDBLocalContext>();
-            Assert.NotNull(dbLocalTest);
-
-            PostTVItemModelService = Provider.GetService<IPostTVItemModelService>();
-            Assert.NotNull(PostTVItemModelService);
-
-            ReadGzFileService = Provider.GetService<IReadGzFileService>();
-            Assert.NotNull(ReadGzFileService);
-
-            CreateGzFileLocalService = Provider.GetService<ICreateGzFileLocalService>();
-            Assert.NotNull(CreateGzFileLocalService);
-
-            List<string> ExistingTableList = new List<string>();
-
-            using (var command = dbLocalTest.Database.GetDbConnection().CreateCommand())
-            {
-                command.CommandText = "SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%'";
-                dbLocalTest.Database.OpenConnection();
-                using (var result = command.ExecuteReader())
-                {
-                    while (result.Read())
-                    {
-                        ExistingTableList.Add(result.GetString(0));
-                    }
-                }
-            }
-
-            foreach (string tableName in ExistingTableList)
-            {
-                string TableIDName = "";
-
-                if (tableName.StartsWith("AspNet") || tableName.StartsWith("DeviceCode") || tableName.StartsWith("Persisted")) continue;
-
-                if (tableName == "Addresses")
-                {
-                    TableIDName = tableName.Substring(0, tableName.Length - 2) + "ID";
-                }
-                else
-                {
-                    TableIDName = tableName.Substring(0, tableName.Length - 1) + "ID";
-                }
-
-                dbLocalTest.Database.ExecuteSqlRaw($"DELETE FROM { tableName }");
-            }
-
-            return await Task.FromResult(true);
-        }
-        #endregion Functions private
     }
 }

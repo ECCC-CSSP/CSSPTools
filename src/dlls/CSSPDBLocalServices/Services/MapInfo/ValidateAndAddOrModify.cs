@@ -1,101 +1,24 @@
-/*
+﻿/*
  * Manually edited
  *
  */
 
-using CSSPEnums;
-using CSSPDBModels;
 using CSSPCultureServices.Resources;
-using CSSPCultureServices.Services;
+using CSSPDBModels;
+using CSSPEnums;
+using CSSPWebModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using LoggedInServices;
-using Microsoft.Extensions.Configuration;
-using ReadGzFileServices;
-using CSSPWebModels;
-using System.Text.Json;
-using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
-using CreateGzFileLocalServices;
-using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
-using Humanizer;
 
 namespace CSSPDBLocalServices
 {
 
-    public partial interface IPostMapInfoModelService
+    public partial class MapInfoService : ControllerBase, IMapInfoService
     {
-        Task<ActionResult<bool>> AddOrModify(PostMapInfoModel postMapInfoModel);
-    }
-    public partial class PostMapInfoModelService : ControllerBase, IPostMapInfoModelService
-    {
-        #region Variables
-        #endregion Variables
-
-        #region Properties
-        private CSSPDBLocalContext dbLocal { get; }
-        private IConfiguration Configuration { get; }
-        private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
-        private IEnums enums { get; }
-        private IReadGzFileService ReadGzFileService { get; }
-        private ICreateGzFileLocalService CreateGzFileLocalService { get; }
-        private List<ToRecreate> ToRecreateList { get; set; }
-        private IEnumerable<ValidationResult> ValidationResults { get; set; }
-        #endregion Properties
-
-        #region Constructors
-        public PostMapInfoModelService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, ILoggedInService LoggedInService,
-           CSSPDBLocalContext dbLocal, IReadGzFileService ReadGzFileService, ICreateGzFileLocalService CreateGzFileLocalService)
-        {
-            this.Configuration = Configuration;
-            this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
-            this.enums = enums;
-            this.dbLocal = dbLocal;
-            this.ReadGzFileService = ReadGzFileService;
-            this.CreateGzFileLocalService = CreateGzFileLocalService;
-
-            ToRecreateList = new List<ToRecreate>();
-        }
-        #endregion Constructors
-
-        #region Functions public 
-        public async Task<ActionResult<bool>> AddOrModify(PostMapInfoModel postMapInfoModel)
-        {
-            ActionDBTypeEnum actionDBType = ActionDBTypeEnum.Update;
-
-            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
-            {
-                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
-            }
-
-            if (postMapInfoModel == null)
-            {
-                ValidationResults = new List<ValidationResult>() { new ValidationResult(string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "postMapInfoModel"), new[] { "" }) };
-            }
-
-            if (postMapInfoModel.MapInfo.MapInfoID == 0)
-            {
-                actionDBType = ActionDBTypeEnum.Create;
-            }
-
-            ValidationResults = ValidateAndAddOrModify(new ValidationContext(postMapInfoModel), actionDBType);
-            if (ValidationResults.Count() > 0)
-            {
-                return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            return await Task.FromResult(Ok(true));
-        }
-        #endregion Functions public
-
-        #region Functions private
         private IEnumerable<ValidationResult> ValidateAndAddOrModify(ValidationContext validationContext, ActionDBTypeEnum actionDBType)
         {
             string retStr = "";
@@ -904,184 +827,5 @@ namespace CSSPDBLocalServices
                 #endregion Writting to DBLocal
             }
         }
-
-
-        private void AppendToRecreate(List<ToRecreate> toRecreateList, TVItem tvItem, int year)
-        {
-            switch (tvItem.TVType)
-            {
-                case TVTypeEnum.Address:
-                    {
-                        ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebAllAddresses, (int)tvItem.ParentID, GetWebTypeYear(year));
-                    }
-                    break;
-                case TVTypeEnum.Area:
-                    {
-                        ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebArea, tvItem.TVItemID, GetWebTypeYear(year));
-                    }
-                    break;
-                case TVTypeEnum.Classification:
-                    {
-                        ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebSubsector, (int)tvItem.ParentID, GetWebTypeYear(year));
-                    }
-                    break;
-                case TVTypeEnum.ClimateSite:
-                    {
-                        ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebClimateSite, (int)tvItem.ParentID, GetWebTypeYear(year));
-                    }
-                    break;
-                case TVTypeEnum.Contact:
-                    {
-                        ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebAllContacts, (int)tvItem.ParentID, GetWebTypeYear(year));
-                    }
-                    break;
-                case TVTypeEnum.Country:
-                    {
-                        ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebCountry, tvItem.TVItemID, GetWebTypeYear(year));
-                        ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebAllCountries, (int)tvItem.ParentID, GetWebTypeYear(year));
-                    }
-                    break;
-                case TVTypeEnum.Email:
-                    {
-                        ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebAllEmails, (int)tvItem.ParentID, GetWebTypeYear(year));
-                    }
-                    break;
-                case TVTypeEnum.File:
-                    break;
-                case TVTypeEnum.HydrometricSite:
-                    {
-                        ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebHydrometricSite, (int)tvItem.ParentID, GetWebTypeYear(year));
-                    }
-                    break;
-                case TVTypeEnum.Infrastructure:
-                    {
-                        ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebMunicipality, (int)tvItem.ParentID, GetWebTypeYear(year));
-                    }
-                    break;
-                case TVTypeEnum.MikeBoundaryConditionWebTide:
-                    {
-                        ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebMikeScenario, (int)tvItem.ParentID, GetWebTypeYear(year));
-                    }
-                    break;
-                case TVTypeEnum.MikeBoundaryConditionMesh:
-                    {
-                        ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebMikeScenario, (int)tvItem.ParentID, GetWebTypeYear(year));
-                    }
-                    break;
-                case TVTypeEnum.MikeScenario:
-                    {
-                        ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebMunicipality, (int)tvItem.ParentID, GetWebTypeYear(year));
-                        ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebMikeScenario, tvItem.TVItemID, GetWebTypeYear(year));
-                    }
-                    break;
-                case TVTypeEnum.MikeSource:
-                    {
-                        ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebMikeScenario, (int)tvItem.ParentID, GetWebTypeYear(year));
-                    }
-                    break;
-                case TVTypeEnum.Municipality:
-                    {
-                        ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebMunicipality, tvItem.TVItemID, GetWebTypeYear(year));
-                        ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebAllMunicipalities, tvItem.TVItemID, GetWebTypeYear(year));
-                        ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebMunicipalities, (int)tvItem.ParentID, GetWebTypeYear(year));
-                    }
-                    break;
-                case TVTypeEnum.MWQMRun:
-                    {
-                        ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebSubsector, (int)tvItem.ParentID, GetWebTypeYear(year));
-                        ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebMWQMRun, tvItem.TVItemID, GetWebTypeYear(year));
-                    }
-                    break;
-                case TVTypeEnum.MWQMSite:
-                    {
-                        ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebSubsector, (int)tvItem.ParentID, GetWebTypeYear(year));
-                        ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebMWQMSite, tvItem.TVItemID, GetWebTypeYear(year));
-                    }
-                    break;
-                case TVTypeEnum.PolSourceSite:
-                    {
-                        ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebSubsector, (int)tvItem.ParentID, GetWebTypeYear(year));
-                        ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebPolSourceSite, tvItem.TVItemID, GetWebTypeYear(year));
-                    }
-                    break;
-                case TVTypeEnum.Province:
-                    {
-                        ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebProvince, tvItem.TVItemID, GetWebTypeYear(year));
-                        ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebAllProvinces, tvItem.TVItemID, GetWebTypeYear(year));
-                    }
-                    break;
-                case TVTypeEnum.RainExceedance:
-                    {
-                        ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebCountry, (int)tvItem.ParentID, GetWebTypeYear(year));
-                    }
-                    break;
-                case TVTypeEnum.Root:
-                    {
-                        ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebRoot, tvItem.TVItemID, GetWebTypeYear(year));
-                    }
-                    break;
-                case TVTypeEnum.Sector:
-                    {
-                        ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebSector, tvItem.TVItemID, GetWebTypeYear(year));
-                    }
-                    break;
-                case TVTypeEnum.Subsector:
-                    {
-                        ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebSubsector, tvItem.TVItemID, GetWebTypeYear(year));
-                    }
-                    break;
-                case TVTypeEnum.Tel:
-                    {
-                        ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebAllTels, (int)tvItem.ParentID, GetWebTypeYear(year));
-                    }
-                    break;
-                case TVTypeEnum.TideSite:
-                    break;
-                case TVTypeEnum.MWQMSiteSample:
-                    {
-                        ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebMWQMSample, tvItem.TVItemID, GetWebTypeYear(year));
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        private WebTypeYearEnum GetWebTypeYear(int year)
-        {
-            if (year > 2050)
-            {
-                return WebTypeYearEnum.Year2050;
-            }
-            else if (year > 2040)
-            {
-                return WebTypeYearEnum.Year2040;
-            }
-            else if (year > 2030)
-            {
-                return WebTypeYearEnum.Year2030;
-            }
-            else if (year > 2020)
-            {
-                return WebTypeYearEnum.Year2020;
-            }
-            else if (year > 2010)
-            {
-                return WebTypeYearEnum.Year2010;
-            }
-            else if (year > 2000)
-            {
-                return WebTypeYearEnum.Year2000;
-            }
-            else if (year > 1990)
-            {
-                return WebTypeYearEnum.Year1990;
-            }
-            else
-            {
-                return WebTypeYearEnum.Year1980;
-            }
-        }
     }
-    #endregion Functions private
 }

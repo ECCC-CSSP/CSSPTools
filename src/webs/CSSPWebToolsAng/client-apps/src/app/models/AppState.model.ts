@@ -167,8 +167,8 @@ export interface AppState {
     options?: google.maps.MapOptions;
     infoContent?: string;
 
-    HasInternetConnection?: boolean;
-    GoogleMapKey?: string;
+    //HasInternetConnection?: boolean;
+    //GoogleMapKey?: string;
     CSSLoaded?: boolean;
     IconLoaded?: boolean;
     GoogleJSLoaded?: boolean;

@@ -63,7 +63,7 @@ namespace CSSPWebAPIs.AuthController.Tests
         #endregion Functions public
 
         #region Functions private
-        protected async Task<bool> Setup(string culture)
+        private async Task<bool> Setup(string culture)
         {
             Configuration = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)

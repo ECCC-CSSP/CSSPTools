@@ -27,7 +27,7 @@
         </span>
     </span>
     <span class="right">
-        <ng-container *ngIf="!appStateService.AppState$?.getValue()?.HasInternetConnection">
+        <ng-container *ngIf="!appLoadedService.AppLoaded$?.getValue()?.LoggedInContact?.HasInternetConnection">
             <button mat-button>
                 <mat-icon
                     title="{{ appLanguageService.AppLanguage.ShellNoInternet[appStateService.AppState$?.getValue().Language] }}">
@@ -43,7 +43,7 @@
             (click)="SetLanguage(languageEnum.en)">English</button>
         <button mat-button *ngIf="(appStateService.AppState$?.getValue()?.Language == languageEnum.en)"
             (click)="SetLanguage(languageEnum.fr)">Français</button>
-        <ng-container *ngIf="appStateService.AppState$?.getValue()?.HasInternetConnection">
+        <ng-container *ngIf="appLoadedService.AppLoaded$?.getValue()?.LoggedInContact?.HasInternetConnection">
             <button mat-button (click)="togglesService.ToggleMap()"
                 title="{{ appLanguageService.AppLanguage.ShellShowMap[appStateService.AppState$?.getValue().Language] }}">
                 <mat-icon>map</mat-icon>
@@ -75,7 +75,7 @@
         mode="side">
         <app-sidenav-menu [AppState]="appStateService.AppState$?.getValue()"></app-sidenav-menu>
     </mat-sidenav>
-    <mat-sidenav *ngIf="appStateService.AppState$?.getValue()?.HasInternetConnection" [ngClass]="GetMapSizeClass()"
+    <mat-sidenav *ngIf="appLoadedService.AppLoaded$?.getValue()?.LoggedInContact?.HasInternetConnection" [ngClass]="GetMapSizeClass()"
         #rightSideNav [opened]="appStateService.AppState$?.getValue()?.MapVisible" mode="side" position="end">
         <app-map-item [AppState]="appStateService.AppState$?.getValue()"></app-map-item>
     </mat-sidenav>

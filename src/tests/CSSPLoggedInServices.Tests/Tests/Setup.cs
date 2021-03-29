@@ -10,6 +10,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Xunit;
 using CSSPDBPreferenceModels;
+using CSSPScrambleServices;
 
 namespace LoggedInServices.Tests
 {
@@ -57,6 +58,7 @@ namespace LoggedInServices.Tests
 
             Services.AddSingleton<IConfiguration>(Configuration);
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+            Services.AddSingleton<IScrambleService, ScrambleService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
 
             /* ---------------------------------------------------------------------------------

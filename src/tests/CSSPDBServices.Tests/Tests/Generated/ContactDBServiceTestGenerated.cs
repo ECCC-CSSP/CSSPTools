@@ -137,7 +137,6 @@ namespace CSSPDBServices.Tests
 
             // -----------------------------------
             // Is NOT Nullable
-            // [CSSPExist(ExistTypeName = "AspNetUser", ExistPlurial = "s", ExistFieldID = "Id", AllowableTVtypeList = )]
             // [CSSPMaxLength(450)]
             // contact.Id   (String)
             // -----------------------------------
@@ -363,6 +362,31 @@ namespace CSSPDBServices.Tests
 
             // -----------------------------------
             // Is Nullable
+            // contact.HasInternetConnection   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is Nullable
+            // contact.IsLoggedIn   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(255)]
+            // contact.GoogleMapKeyHash   (String)
+            // -----------------------------------
+
+            contact = null;
+            contact = GetFilledRandomContact("");
+            contact.GoogleMapKeyHash = GetRandomString("", 256);
+            actionContact = await ContactDBService.Post(contact, AddContactTypeEnum.First);
+            Assert.IsType<BadRequestObjectResult>(actionContact.Result);
+            //Assert.AreEqual(count, contactDBService.GetContactList().Count());
+
+            // -----------------------------------
+            // Is Nullable
             // [CSSPRange(0, 10)]
             // contact.AccessFailedCount   (Int32)
             // -----------------------------------
@@ -494,6 +518,7 @@ namespace CSSPDBServices.Tests
             });
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+            Services.AddSingleton<IScrambleService, ScrambleService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<ILoginModelService, LoginModelService>();
@@ -560,7 +585,7 @@ namespace CSSPDBServices.Tests
             Contact contact = new Contact();
 
             if (OmitPropName != "DBCommand") contact.DBCommand = (DBCommandEnum)GetRandomEnumType(typeof(DBCommandEnum));
-            if (OmitPropName != "Id") contact.Id = "023566a4-4a25-4484-88f5-584aa8e1da38";
+            if (OmitPropName != "Id") contact.Id = GetRandomString("", 5);
             if (OmitPropName != "ContactTVItemID") contact.ContactTVItemID = 2;
             if (OmitPropName != "LoginEmail") contact.LoginEmail = GetRandomEmail();
             if (OmitPropName != "FirstName") contact.FirstName = GetRandomString("", 5);
@@ -577,6 +602,9 @@ namespace CSSPDBServices.Tests
             if (OmitPropName != "SamplingPlanner_ProvincesTVItemID") contact.SamplingPlanner_ProvincesTVItemID = GetRandomString("", 5);
             if (OmitPropName != "PasswordHash") contact.PasswordHash = GetRandomString("", 5);
             if (OmitPropName != "Token") contact.Token = GetRandomString("", 5);
+            if (OmitPropName != "HasInternetConnection") contact.HasInternetConnection = true;
+            if (OmitPropName != "IsLoggedIn") contact.IsLoggedIn = true;
+            if (OmitPropName != "GoogleMapKeyHash") contact.GoogleMapKeyHash = GetRandomString("", 5);
             if (OmitPropName != "AccessFailedCount") contact.AccessFailedCount = GetRandomInt(0, 10);
             if (OmitPropName != "LastUpdateDate_UTC") contact.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") contact.LastUpdateContactTVItemID = 2;
@@ -617,6 +645,18 @@ namespace CSSPDBServices.Tests
             if (!string.IsNullOrWhiteSpace(contactList[0].Token))
             {
                 Assert.False(string.IsNullOrWhiteSpace(contactList[0].Token));
+            }
+            if (contactList[0].HasInternetConnection != null)
+            {
+                Assert.NotNull(contactList[0].HasInternetConnection);
+            }
+            if (contactList[0].IsLoggedIn != null)
+            {
+                Assert.NotNull(contactList[0].IsLoggedIn);
+            }
+            if (!string.IsNullOrWhiteSpace(contactList[0].GoogleMapKeyHash))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(contactList[0].GoogleMapKeyHash));
             }
             if (contactList[0].AccessFailedCount != null)
             {

@@ -34,6 +34,7 @@
       "CSSPWebAPIsLocal/1.0.0": {
         "dependencies": {
           "CSSPDBCommandLogModels": "1.0.0",
+          "CSSPDBLocalServices": "1.0.0",
           "CSSPDBSearchServices": "1.0.0",
           "CSSPDBServices": "1.0.0",
           "CSSPReadGzFileServices": "1.0.0",
@@ -136,7 +137,7 @@
           "Microsoft.Extensions.Configuration.Ini": "5.0.0.0",
           "Microsoft.Extensions.Configuration.Json.Reference": "5.0.0.0",
           "Microsoft.Extensions.Configuration.KeyPerFile": "5.0.0.0",
-          "Microsoft.Extensions.Configuration.UserSecrets": "5.0.0.0",
+          "Microsoft.Extensions.Configuration.UserSecrets.Reference": "5.0.0.0",
           "Microsoft.Extensions.Configuration.Xml": "5.0.0.0",
           "Microsoft.Extensions.DependencyInjection.Abstractions.Reference": "5.0.0.0",
           "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions": "5.0.0.0",
@@ -715,6 +716,20 @@
         }
       },
       "Microsoft.EntityFrameworkCore.Analyzers/5.0.3": {},
+      "Microsoft.EntityFrameworkCore.InMemory/5.0.3": {
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore": "5.0.3"
+        },
+        "runtime": {
+          "lib/netstandard2.1/Microsoft.EntityFrameworkCore.InMemory.dll": {
+            "assemblyVersion": "5.0.3.0",
+            "fileVersion": "5.0.321.6417"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.1/Microsoft.EntityFrameworkCore.InMemory.dll": {}
+        }
+      },
       "Microsoft.EntityFrameworkCore.Relational/5.0.3": {
         "dependencies": {
           "Microsoft.EntityFrameworkCore": "5.0.3",
@@ -808,6 +823,14 @@
           "Microsoft.Extensions.Configuration.Abstractions": "5.0.0",
           "Microsoft.Extensions.Configuration.FileExtensions": "5.0.0",
           "Microsoft.Extensions.FileProviders.Abstractions": "5.0.0"
+        }
+      },
+      "Microsoft.Extensions.Configuration.UserSecrets/5.0.0": {
+        "dependencies": {
+          "Microsoft.Extensions.Configuration.Abstractions": "5.0.0",
+          "Microsoft.Extensions.Configuration.Json": "5.0.0",
+          "Microsoft.Extensions.FileProviders.Abstractions": "5.0.0",
+          "Microsoft.Extensions.FileProviders.Physical": "5.0.0"
         }
       },
       "Microsoft.Extensions.DependencyInjection/5.0.1": {
@@ -1728,6 +1751,27 @@
           "System.Xml.XmlDocument": "4.3.0"
         }
       },
+      "CSSPCreateGzFileLocalServices/1.0.0": {
+        "dependencies": {
+          "Azure.Storage.Blobs": "12.8.0",
+          "CSSPDBFilesManagementModels": "1.0.0",
+          "CSSPLoggedInServices": "1.0.0",
+          "CSSPWebModels": "1.0.0",
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.3",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.3",
+          "Microsoft.EntityFrameworkCore": "5.0.3",
+          "Microsoft.EntityFrameworkCore.SqlServer": "5.0.3",
+          "Microsoft.EntityFrameworkCore.Sqlite": "5.0.3",
+          "Microsoft.Extensions.Configuration": "5.0.0",
+          "Microsoft.Extensions.Configuration.Json": "5.0.0"
+        },
+        "runtime": {
+          "CSSPCreateGzFileLocalServices.dll": {}
+        },
+        "compile": {
+          "CSSPCreateGzFileLocalServices.dll": {}
+        }
+      },
       "CSSPCultureServices/1.0.0": {
         "runtime": {
           "CSSPCultureServices.dll": {}
@@ -1820,6 +1864,34 @@
           "CSSPDBFilesManagementServices.dll": {}
         }
       },
+      "CSSPDBLocalServices/1.0.0": {
+        "dependencies": {
+          "Azure.Storage.Blobs": "12.8.0",
+          "CSSPCreateGzFileLocalServices": "1.0.0",
+          "CSSPCultureServices": "1.0.0",
+          "CSSPDBModels": "1.0.0",
+          "CSSPEnums": "1.0.0",
+          "CSSPHelperModels": "1.0.0",
+          "CSSPLoggedInServices": "1.0.0",
+          "CSSPReadGzFileServices": "1.0.0",
+          "CSSPWebAppLoadedlServices": "1.0.0",
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.3",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.3",
+          "Microsoft.EntityFrameworkCore": "5.0.3",
+          "Microsoft.EntityFrameworkCore.InMemory": "5.0.3",
+          "Microsoft.EntityFrameworkCore.SqlServer": "5.0.3",
+          "Microsoft.EntityFrameworkCore.Sqlite": "5.0.3",
+          "Microsoft.Extensions.Configuration": "5.0.0",
+          "Microsoft.Extensions.Configuration.Json": "5.0.0",
+          "Microsoft.Extensions.Configuration.UserSecrets": "5.0.0"
+        },
+        "runtime": {
+          "CSSPDBLocalServices.dll": {}
+        },
+        "compile": {
+          "CSSPDBLocalServices.dll": {}
+        }
+      },
       "CSSPDBModels/1.0.0": {
         "dependencies": {
           "CSSPCustomAttributes": "1.0.0",
@@ -1859,27 +1931,6 @@
         },
         "compile": {
           "CSSPDBPreferenceModels.dll": {}
-        }
-      },
-      "CSSPDBPreferenceServices/1.0.0": {
-        "dependencies": {
-          "Azure.Storage.Blobs": "12.8.0",
-          "CSSPDBPreferenceModels": "1.0.0",
-          "CSSPLoggedInServices": "1.0.0",
-          "CSSPScrambleServices": "1.0.0",
-          "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.3",
-          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.3",
-          "Microsoft.EntityFrameworkCore": "5.0.3",
-          "Microsoft.EntityFrameworkCore.SqlServer": "5.0.3",
-          "Microsoft.EntityFrameworkCore.Sqlite": "5.0.3",
-          "Microsoft.Extensions.Configuration": "5.0.0",
-          "Microsoft.Extensions.Configuration.Json": "5.0.0"
-        },
-        "runtime": {
-          "CSSPDBPreferenceServices.dll": {}
-        },
-        "compile": {
-          "CSSPDBPreferenceServices.dll": {}
         }
       },
       "CSSPDBSearchModels/1.0.0": {
@@ -2022,6 +2073,7 @@
           "Azure.Storage.Blobs": "12.8.0",
           "CSSPDBPreferenceModels": "1.0.0",
           "CSSPHelperModels": "1.0.0",
+          "CSSPScrambleServices": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.3",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.3",
           "Microsoft.EntityFrameworkCore": "5.0.3",
@@ -2040,7 +2092,6 @@
       "CSSPReadGzFileServices/1.0.0": {
         "dependencies": {
           "Azure.Storage.Blobs": "12.8.0",
-          "CSSPDBPreferenceServices": "1.0.0",
           "CSSPDownloadFileServices": "1.0.0",
           "CSSPWebAppLoadedlServices": "1.0.0",
           "CSSPWebModels": "1.0.0",
@@ -2070,7 +2121,6 @@
       "CSSPWebAppLoadedlServices/1.0.0": {
         "dependencies": {
           "Azure.Storage.Blobs": "12.8.0",
-          "CSSPDBPreferenceServices": "1.0.0",
           "CSSPWebModels": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.3",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.3",
@@ -2607,7 +2657,7 @@
         },
         "compileOnly": true
       },
-      "Microsoft.Extensions.Configuration.UserSecrets/5.0.0.0": {
+      "Microsoft.Extensions.Configuration.UserSecrets.Reference/5.0.0.0": {
         "compile": {
           "Microsoft.Extensions.Configuration.UserSecrets.dll": {}
         },
@@ -3924,6 +3974,13 @@
       "path": "microsoft.entityframeworkcore.analyzers/5.0.3",
       "hashPath": "microsoft.entityframeworkcore.analyzers.5.0.3.nupkg.sha512"
     },
+    "Microsoft.EntityFrameworkCore.InMemory/5.0.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-TWNs01wuxmtYS8tThmOW2YPXjZEMUiStFWYw/vCIYfru+wlgQa/OAQxQjIJyFpRgy6ORj3KSqZkXbkjjHRv7MQ==",
+      "path": "microsoft.entityframeworkcore.inmemory/5.0.3",
+      "hashPath": "microsoft.entityframeworkcore.inmemory.5.0.3.nupkg.sha512"
+    },
     "Microsoft.EntityFrameworkCore.Relational/5.0.3": {
       "type": "package",
       "serviceable": true,
@@ -3993,6 +4050,13 @@
       "sha512": "sha512-Pak8ymSUfdzPfBTLHxeOwcR32YDbuVfhnH2hkfOLnJNQd19ItlBdpMjIDY9C5O/nS2Sn9bzDMai0ZrvF7KyY/Q==",
       "path": "microsoft.extensions.configuration.json/5.0.0",
       "hashPath": "microsoft.extensions.configuration.json.5.0.0.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Configuration.UserSecrets/5.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-+tK3seG68106lN277YWQvqmfyI/89w0uTu/5Gz5VYSUu5TI4mqwsaWLlSmT9Bl1yW/i1Nr06gHJxqaqB5NU9Tw==",
+      "path": "microsoft.extensions.configuration.usersecrets/5.0.0",
+      "hashPath": "microsoft.extensions.configuration.usersecrets.5.0.0.nupkg.sha512"
     },
     "Microsoft.Extensions.DependencyInjection/5.0.1": {
       "type": "package",
@@ -4652,6 +4716,11 @@
       "path": "system.xml.xmlserializer/4.3.0",
       "hashPath": "system.xml.xmlserializer.4.3.0.nupkg.sha512"
     },
+    "CSSPCreateGzFileLocalServices/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
     "CSSPCultureServices/1.0.0": {
       "type": "project",
       "serviceable": false,
@@ -4677,17 +4746,17 @@
       "serviceable": false,
       "sha512": ""
     },
+    "CSSPDBLocalServices/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
     "CSSPDBModels/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
     "CSSPDBPreferenceModels/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "CSSPDBPreferenceServices/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -5167,7 +5236,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.Extensions.Configuration.UserSecrets/5.0.0.0": {
+    "Microsoft.Extensions.Configuration.UserSecrets.Reference/5.0.0.0": {
       "type": "referenceassembly",
       "serviceable": false,
       "sha512": ""

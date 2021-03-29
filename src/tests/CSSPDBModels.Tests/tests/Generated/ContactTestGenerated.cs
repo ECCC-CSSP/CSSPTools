@@ -38,7 +38,7 @@ namespace CSSPDBModels.Tests
         [Fact]
         public void Contact_Properties_Test()
         {
-            List<string> propNameList = new List<string>() { "ContactID", "DBCommand", "Id", "ContactTVItemID", "LoginEmail", "FirstName", "LastName", "Initial", "CellNumber", "CellNumberConfirmed", "WebName", "ContactTitle", "IsAdmin", "EmailValidated", "Disabled", "IsNew", "SamplingPlanner_ProvincesTVItemID", "PasswordHash", "Token", "AccessFailedCount", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
+            List<string> propNameList = new List<string>() { "ContactID", "DBCommand", "Id", "ContactTVItemID", "LoginEmail", "FirstName", "LastName", "Initial", "CellNumber", "CellNumberConfirmed", "WebName", "ContactTitle", "IsAdmin", "EmailValidated", "Disabled", "IsNew", "SamplingPlanner_ProvincesTVItemID", "PasswordHash", "Token", "HasInternetConnection", "IsLoggedIn", "GoogleMapKeyHash", "AccessFailedCount", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(Contact).GetProperties().OrderBy(c => c.Name))
@@ -160,15 +160,24 @@ namespace CSSPDBModels.Tests
                string val19 = "Some text";
                contact.Token = val19;
                Assert.Equal(val19, contact.Token);
-               int val20 = 45;
-               contact.AccessFailedCount = val20;
-               Assert.Equal(val20, contact.AccessFailedCount);
-               DateTime val21 = new DateTime(2010, 3, 4);
-               contact.LastUpdateDate_UTC = val21;
-               Assert.Equal(val21, contact.LastUpdateDate_UTC);
-               int val22 = 45;
-               contact.LastUpdateContactTVItemID = val22;
-               Assert.Equal(val22, contact.LastUpdateContactTVItemID);
+               bool val20 = true;
+               contact.HasInternetConnection = val20;
+               Assert.Equal(val20, contact.HasInternetConnection);
+               bool val21 = true;
+               contact.IsLoggedIn = val21;
+               Assert.Equal(val21, contact.IsLoggedIn);
+               string val22 = "Some text";
+               contact.GoogleMapKeyHash = val22;
+               Assert.Equal(val22, contact.GoogleMapKeyHash);
+               int val23 = 45;
+               contact.AccessFailedCount = val23;
+               Assert.Equal(val23, contact.AccessFailedCount);
+               DateTime val24 = new DateTime(2010, 3, 4);
+               contact.LastUpdateDate_UTC = val24;
+               Assert.Equal(val24, contact.LastUpdateDate_UTC);
+               int val25 = 45;
+               contact.LastUpdateContactTVItemID = val25;
+               Assert.Equal(val25, contact.LastUpdateContactTVItemID);
         }
         #endregion Tests Functions public
     }

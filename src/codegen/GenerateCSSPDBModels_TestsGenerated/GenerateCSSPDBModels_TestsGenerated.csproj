@@ -30,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\dlls\CSSPCustomAttributes\CSSPCustomAttributes.csproj" />
     <ProjectReference Include="..\GenerateCodeBaseHelper\GenerateCodeBaseHelper.csproj" />
   </ItemGroup>
 

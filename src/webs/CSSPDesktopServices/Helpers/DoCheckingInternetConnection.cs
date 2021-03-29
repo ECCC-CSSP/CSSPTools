@@ -43,6 +43,16 @@ namespace CSSPDesktopServices.Services
                 HasInternetConnection = false;
             }
 
+            contact = (from c in dbPreference.Contacts
+                       select c).FirstOrDefault();
+
+            if (contact == null)
+            {
+                AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.InternetConnectionNotDetected));
+
+                return await Task.FromResult(false);
+            }
+
             contact.HasInternetConnection = HasInternetConnection;
 
             try

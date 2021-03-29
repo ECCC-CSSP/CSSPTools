@@ -828,4 +828,49 @@
   <data name="_AlreadyExistsWithDifferent_" xml:space="preserve">
     <value>{0} exist déjà avec un différent {1}</value>
   </data>
+  <data name="CantRemove_BecauseThereAre_Underneath" xml:space="preserve">
+    <value>Impossible d'enlever [{0}] parce qu'il y a des {1} en dessous</value>
+  </data>
+  <data name="Sectors" xml:space="preserve">
+    <value>secteurs</value>
+  </data>
+  <data name="Files" xml:space="preserve">
+    <value>filières</value>
+  </data>
+  <data name="Provinces" xml:space="preserve">
+    <value>provinces</value>
+  </data>
+  <data name="Infrastructures" xml:space="preserve">
+    <value>infrastructures</value>
+  </data>
+  <data name="MIKEScenarios" xml:space="preserve">
+    <value>scénarios MIKE</value>
+  </data>
+  <data name="Areas" xml:space="preserve">
+    <value>areas</value>
+  </data>
+  <data name="MunicipalityContacts" xml:space="preserve">
+    <value>contacts municipal</value>
+  </data>
+  <data name="Subsectors" xml:space="preserve">
+    <value>sous-secteurs</value>
+  </data>
+  <data name="Classifications" xml:space="preserve">
+    <value>classifications</value>
+  </data>
+  <data name="LabSheets" xml:space="preserve">
+    <value>feuilles de laboratoire</value>
+  </data>
+  <data name="MWQMAnalysisReportParameters" xml:space="preserve">
+    <value>paramètres pour raport d'analyse MWQM</value>
+  </data>
+  <data name="MWQMRuns" xml:space="preserve">
+    <value>tournées MWQM</value>
+  </data>
+  <data name="MWQMSites" xml:space="preserve">
+    <value>sites MWQM</value>
+  </data>
+  <data name="PolSourceSites" xml:space="preserve">
+    <value>sites de source de pollution</value>
+  </data>
 </root>

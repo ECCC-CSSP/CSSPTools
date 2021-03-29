@@ -28,6 +28,8 @@ using CSSPDBServices;
 using CSSPScrambleServices;
 using CSSPHelperServices;
 using FilesManagementServices;
+using CSSPDBLocalServices;
+using CreateGzFileLocalServices;
 //using WebAppLoadedServices;
 
 namespace CSSPWebAPIsLocal
@@ -137,8 +139,9 @@ namespace CSSPWebAPIsLocal
             services.AddScoped<IFilesManagementService, FilesManagementService>();
             services.AddScoped<IDownloadFileService, DownloadFileService>();
             services.AddScoped<IReadGzFileService, ReadGzFileService>();
-            //services.AddScoped<IPreferenceService, PreferenceService>();
+            services.AddScoped<ICreateGzFileLocalService, CreateGzFileLocalService>();
             services.AddScoped<ICSSPDBSearchService, CSSPDBSearchService>();
+            services.AddScoped<ITVItemService, TVItemService>();
 
             //services.AddScoped<IWebAppLoadedService, WebAppLoadedService>();
 

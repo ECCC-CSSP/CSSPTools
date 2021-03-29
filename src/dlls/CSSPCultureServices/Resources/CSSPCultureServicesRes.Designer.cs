@@ -565,11 +565,29 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to areas.
+        /// </summary>
+        public static string Areas {
+            get {
+                return ResourceManager.GetString("Areas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Automated email from server..
         /// </summary>
         public static string AutoEmailFromServer {
             get {
                 return ResourceManager.GetString("AutoEmailFromServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Can&apos;t remove {0} because there are {1} underneath.
+        /// </summary>
+        public static string CantRemove_BecauseThereAre_Underneath {
+            get {
+                return ResourceManager.GetString("CantRemove_BecauseThereAre_Underneath", resourceCulture);
             }
         }
         
@@ -597,6 +615,15 @@ namespace CSSPCultureServices.Resources {
         public static string Class {
             get {
                 return ResourceManager.GetString("Class", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to classifications.
+        /// </summary>
+        public static string Classifications {
+            get {
+                return ResourceManager.GetString("Classifications", resourceCulture);
             }
         }
         
@@ -1402,6 +1429,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to files.
+        /// </summary>
+        public static string Files {
+            get {
+                return ResourceManager.GetString("Files", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Full Name.
         /// </summary>
         public static string FullName {
@@ -1510,6 +1546,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to infrastructures.
+        /// </summary>
+        public static string Infrastructures {
+            get {
+                return ResourceManager.GetString("Infrastructures", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid length of password hash. Should be 64 bytes..
         /// </summary>
         public static string InvalidLengthOfPasswordHashShouldBe64Bytes {
@@ -1600,6 +1645,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to lab sheets.
+        /// </summary>
+        public static string LabSheets {
+            get {
+                return ResourceManager.GetString("LabSheets", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Login Email [{0}] is already taken.
         /// </summary>
         public static string LoginEmail_IsAlreadyTaken {
@@ -1618,11 +1672,56 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MIKE scenarios.
+        /// </summary>
+        public static string MIKEScenarios {
+            get {
+                return ResourceManager.GetString("MIKEScenarios", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to missing end value.
         /// </summary>
         public static string MissingEndValue {
             get {
                 return ResourceManager.GetString("MissingEndValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to municipality contacts.
+        /// </summary>
+        public static string MunicipalityContacts {
+            get {
+                return ResourceManager.GetString("MunicipalityContacts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MWQM analysis report parameters.
+        /// </summary>
+        public static string MWQMAnalysisReportParameters {
+            get {
+                return ResourceManager.GetString("MWQMAnalysisReportParameters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MWQM runs.
+        /// </summary>
+        public static string MWQMRuns {
+            get {
+                return ResourceManager.GetString("MWQMRuns", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MWQM sites.
+        /// </summary>
+        public static string MWQMSites {
+            get {
+                return ResourceManager.GetString("MWQMSites", resourceCulture);
             }
         }
         
@@ -1753,6 +1852,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to pollution source sites.
+        /// </summary>
+        public static string PolSourceSites {
+            get {
+                return ResourceManager.GetString("PolSourceSites", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to potential empty row above.
         /// </summary>
         public static string PotentialEmptyRowAbove {
@@ -1767,6 +1875,15 @@ namespace CSSPCultureServices.Resources {
         public static string Property {
             get {
                 return ResourceManager.GetString("Property", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to provinces.
+        /// </summary>
+        public static string Provinces {
+            get {
+                return ResourceManager.GetString("Provinces", resourceCulture);
             }
         }
         
@@ -1839,6 +1956,15 @@ namespace CSSPCultureServices.Resources {
         public static string RunningCommand_UnderDirectory_ {
             get {
                 return ResourceManager.GetString("RunningCommand_UnderDirectory_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to sectors.
+        /// </summary>
+        public static string Sectors {
+            get {
+                return ResourceManager.GetString("Sectors", resourceCulture);
             }
         }
         
@@ -1929,6 +2055,15 @@ namespace CSSPCultureServices.Resources {
         public static string StringLengthAttributeCanOnlyBeSetForSystemDotString {
             get {
                 return ResourceManager.GetString("StringLengthAttributeCanOnlyBeSetForSystemDotString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to subsectors.
+        /// </summary>
+        public static string Subsectors {
+            get {
+                return ResourceManager.GetString("Subsectors", resourceCulture);
             }
         }
         

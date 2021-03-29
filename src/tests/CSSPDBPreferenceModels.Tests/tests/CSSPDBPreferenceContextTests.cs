@@ -65,25 +65,6 @@ namespace CSSPDBPreferenceModels.Tests
             var tvTypeUserAuthorizations = CSSPDBPreferenceContext2.TVTypeUserAuthorizations;
             Assert.NotNull(tvTypeUserAuthorizations);
         }
-        //[Theory]
-        //[InlineData("en-CA")]
-        ////[InlineData("fr-CA")]
-        //public async Task CSSPDBPreference_Properties_Good_Test(string culture)
-        //{
-        //    Assert.True(await Setup(culture));
-
-        //    Preference preferences = new Preference();
-        //    Assert.NotNull(preferences);
-
-        //    preferences.PreferenceID = 3;
-        //    Assert.Equal(3, preferences.PreferenceID);
-
-        //    preferences.VariableName = "VariableName";
-        //    Assert.Equal("VariableName", preferences.VariableName);
-
-        //    preferences.VariableValue = "VariableValue";
-        //    Assert.Equal("VariableValue", preferences.VariableValue);
-        //}
         #endregion Tests
 
         #region private

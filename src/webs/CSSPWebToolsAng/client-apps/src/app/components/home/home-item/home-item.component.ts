@@ -27,9 +27,9 @@ export class HomeItemComponent implements OnInit, OnDestroy {
     ) { }
 
   ngOnInit(): void {
-    this.loggedInContactService.DoLoggedInContact();
+    //this.loggedInContactService.DoLoggedInContact();
     //this.preferenceService.DoPreference();
-    this.webAllContactsService.DoWebAllContacts(false);
+    //this.webAllContactsService.DoWebAllContacts(false);
   }
 
   ngOnDestroy() {

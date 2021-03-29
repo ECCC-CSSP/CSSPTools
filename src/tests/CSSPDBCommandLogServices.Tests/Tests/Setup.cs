@@ -14,6 +14,7 @@ using LoggedInServices;
 using CSSPDBCommandLogModels;
 using CSSPDBCommandLogServices;
 using System.Linq;
+using CSSPScrambleServices;
 
 namespace CommandLogServices.Tests
 {
@@ -57,6 +58,7 @@ namespace CommandLogServices.Tests
 
             Services.AddSingleton<IConfiguration>(Configuration);
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+            Services.AddSingleton<IScrambleService, ScrambleService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<ICommandLogService, CommandLogService>();
 

@@ -30,6 +30,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CSSPDBPreferenceModels\CSSPDBPreferenceModels.csproj" />
     <ProjectReference Include="..\CSSPHelperModels\CSSPHelperModels.csproj" />
+    <ProjectReference Include="..\CSSPScrambleServices\CSSPScrambleServices.csproj" />
   </ItemGroup>
 
 </Project>

@@ -21,6 +21,7 @@ using System.ComponentModel.DataAnnotations;
 using CSSPCultureServices.Resources;
 using LoggedInServices;
 using CSSPDBPreferenceModels;
+using CSSPScrambleServices;
 
 namespace CSSPDBServices.Tests
 {
@@ -99,6 +100,7 @@ namespace CSSPDBServices.Tests
             });
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+            Services.AddSingleton<IScrambleService, ScrambleService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<ITVItemUserAuthorizationDBService, TVItemUserAuthorizationDBService>();

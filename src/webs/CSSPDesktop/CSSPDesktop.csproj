@@ -36,4 +36,10 @@
     <ProjectReference Include="..\CSSPDesktopServices\CSSPDesktopServices.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="index.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

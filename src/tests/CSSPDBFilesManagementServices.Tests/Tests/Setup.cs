@@ -13,6 +13,7 @@ using CSSPDBPreferenceModels;
 using CSSPDBFilesManagementModels;
 using LoggedInServices;
 using System.Linq;
+using CSSPScrambleServices;
 
 namespace FilesManagementServices.Tests
 {
@@ -56,6 +57,7 @@ namespace FilesManagementServices.Tests
 
             Services.AddSingleton<IConfiguration>(Configuration);
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+            Services.AddSingleton<IScrambleService, ScrambleService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IFilesManagementService, FilesManagementService>();
 

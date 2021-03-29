@@ -41,4 +41,8 @@
     <ProjectReference Include="..\CSSPDBModels\CSSPDBModels.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="src\" />
+  </ItemGroup>
+
 </Project>

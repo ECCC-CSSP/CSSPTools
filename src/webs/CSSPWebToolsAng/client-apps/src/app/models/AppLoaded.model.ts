@@ -13,7 +13,7 @@ import { MikeSourceModel } from 'src/app/models/generated/web/MikeSourceModel.mo
 import { MWQMAnalysisReportParameter } from 'src/app/models/generated/db/MWQMAnalysisReportParameter.model';
 import { MWQMSubsector } from 'src/app/models/generated/db/MWQMSubsector.model';
 import { MWQMSubsectorLanguage } from 'src/app/models/generated/db/MWQMSubsectorLanguage.model';
-import { Preference } from 'src/app/models/generated/helper/Preference.model';
+//import { Preference } from 'src/app/models/generated/helper/Preference.model';
 import { SamplingPlan } from 'src/app/models/generated/db/SamplingPlan.model';
 import { SearchResult } from 'src/app/models/generated/helper/SearchResult.model';
 import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model';

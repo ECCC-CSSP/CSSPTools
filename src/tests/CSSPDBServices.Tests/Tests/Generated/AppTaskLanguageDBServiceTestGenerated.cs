@@ -23,6 +23,8 @@ using System.ComponentModel.DataAnnotations;
 using CSSPCultureServices.Resources;
 using LoggedInServices;
 using CSSPDBPreferenceModels;
+using CSSPScrambleServices;
+using CSSPHelperServices;
 
 namespace CSSPDBServices.Tests
 {
@@ -311,6 +313,7 @@ namespace CSSPDBServices.Tests
             });
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+            Services.AddSingleton<IScrambleService, ScrambleService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<IAppTaskLanguageDBService, AppTaskLanguageDBService>();

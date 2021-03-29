@@ -38,12 +38,12 @@ namespace CreateGzFileLocalServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
-        private IPostTVItemModelService PostTVItemModelService { get; set; }
+        private ITVItemService PostTVItemModelService { get; set; }
         private IReadGzFileService ReadGzFileService { get; set; }
         private ICreateGzFileLocalService CreateGzFileLocalService { get; set; }
         private ILoggedInService LoggedInService { get; set; }
         private IScrambleService ScrambleService { get; set; }
-        private CSSPDBLocalContext dbLocalTest { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
         private string CSSPJSONPath { get; set; }
         private string CSSPJSONPathLocal { get; set; }
         private string AzureStoreCSSPJSONPath { get; set; }
@@ -80,96 +80,46 @@ namespace CreateGzFileLocalServices.Tests
             Assert.NotNull(CSSPJSONPathLocal);
 
             DirectoryInfo di = new DirectoryInfo($"{ CSSPJSONPathLocal }");
-            if (di.Exists)
-            {
-                try
-                {
-                    di.Delete(true);
-                    di.Create(); // creates "C:\\CSSPDesktop\\csspjsonlocaltest\\"
-                }
-                catch (Exception ex)
-                {
-                    Assert.True(false, ex.Message);
-                }
-            }
-            else
-            {
-                try
-                {
-                    di.Create();
-                }
-                catch (Exception ex)
-                {
-                    Assert.True(false, ex.Message);
-                }
-            }
+            Assert.True(di.Exists);
 
-            /* ---------------------------------------------------------------------------------
-             * using Copying CSSPDBLocal To CSSPDBLocalTest
-             * ---------------------------------------------------------------------------------      
-             */
+            try
+            {
+                di.Delete(true);
+                di.Create();
+            }
+            catch (Exception ex)
+            {
+                Assert.True(false, ex.Message);
+            }
 
             string CSSPDBLocal = Configuration.GetValue<string>("CSSPDBLocal");
             Assert.NotNull(CSSPDBLocal);
 
-            string CSSPDBLocalTest = Configuration.GetValue<string>("CSSPDBLocalTest");
-            Assert.NotNull(CSSPDBLocalTest);
-
             FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocal);
-            FileInfo fiCSSPDBLocalTest = new FileInfo(CSSPDBLocalTest);
 
             if (!fiCSSPDBLocal.Exists)
             {
                 Assert.True(false, $"File does not exist { fiCSSPDBLocal.FullName }");
             }
 
-            if (!fiCSSPDBLocalTest.Exists)
-            {
-                try
-                {
-                    File.Copy(fiCSSPDBLocal.FullName, fiCSSPDBLocalTest.FullName);
-                }
-                catch (Exception ex)
-                {
-                    Assert.True(false, ex.Message);
-                }
-            }
-            else
-            {
-                if (fiCSSPDBLocalTest.Length < 200)
-                {
-                    try
-                    {
-                        fiCSSPDBLocalTest.Delete();
-                        File.Copy(fiCSSPDBLocal.FullName, fiCSSPDBLocalTest.FullName);
-                    }
-                    catch (Exception ex)
-                    {
-                        Assert.True(false, ex.Message);
-                    }
-                }
-            }
-
-
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<IFilesManagementService, FilesManagementService>();
-            Services.AddSingleton<IPostTVItemModelService, PostTVItemModelService>();
+            Services.AddSingleton<ITVItemService, TVItemService>();
             Services.AddSingleton<IDownloadFileService, DownloadFileService>();
             Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IScrambleService, ScrambleService>();
-            //Services.AddSingleton<IPreferenceService, PreferenceService>();
             Services.AddSingleton<ICreateGzFileLocalService, CreateGzFileLocalService>();
 
             /* ---------------------------------------------------------------------------------
-             * using CSSPDBLocalTest
+             * using CSSPDBLocal
              * ---------------------------------------------------------------------------------
              */
 
             Services.AddDbContext<CSSPDBLocalContext>(options =>
             {
-                options.UseSqlite($"Data Source={ fiCSSPDBLocalTest.FullName }");
+                options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
             });
 
             /* ---------------------------------------------------------------------------------
@@ -220,7 +170,7 @@ namespace CreateGzFileLocalServices.Tests
             ReadGzFileService = Provider.GetService<IReadGzFileService>();
             Assert.NotNull(ReadGzFileService);
 
-            PostTVItemModelService = Provider.GetService<IPostTVItemModelService>();
+            PostTVItemModelService = Provider.GetService<ITVItemService>();
             Assert.NotNull(PostTVItemModelService);
 
             LoggedInService = Provider.GetService<ILoggedInService>();
@@ -234,15 +184,21 @@ namespace CreateGzFileLocalServices.Tests
             AzureStore = ScrambleService.Descramble(Configuration.GetValue<string>("AzureStore"));
             Assert.NotNull(AzureStore);
 
-            dbLocalTest = Provider.GetService<CSSPDBLocalContext>();
-            Assert.NotNull(dbLocalTest);
+            dbLocal = Provider.GetService<CSSPDBLocalContext>();
+            Assert.NotNull(dbLocal);
 
+            ClearAllTable();
+
+            return await Task.FromResult(true);
+        }
+        private void ClearAllTable()
+        {
             List<string> ExistingTableList = new List<string>();
 
-            using (var command = dbLocalTest.Database.GetDbConnection().CreateCommand())
+            using (var command = dbLocal.Database.GetDbConnection().CreateCommand())
             {
                 command.CommandText = "SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%'";
-                dbLocalTest.Database.OpenConnection();
+                dbLocal.Database.OpenConnection();
                 using (var result = command.ExecuteReader())
                 {
                     while (result.Read())
@@ -254,22 +210,8 @@ namespace CreateGzFileLocalServices.Tests
 
             foreach (string tableName in ExistingTableList)
             {
-                string TableIDName = "";
-
-                if (tableName.StartsWith("AspNet") || tableName.StartsWith("DeviceCode") || tableName.StartsWith("Persisted")) continue;
-
-                if (tableName == "Addresses")
-                {
-                    TableIDName = tableName.Substring(0, tableName.Length - 2) + "ID";
-                }
-                else
-                {
-                    TableIDName = tableName.Substring(0, tableName.Length - 1) + "ID";
-                }
-
-                dbLocalTest.Database.ExecuteSqlRaw($"DELETE FROM { tableName }");
+                dbLocal.Database.ExecuteSqlRaw($"DELETE FROM { tableName }");
             }
-            return await Task.FromResult(true);
         }
         #endregion Functions private
     }

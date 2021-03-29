@@ -405,6 +405,11 @@ namespace CSSPDBServices
                 yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Token", "255"), new[] { nameof(contact.Token) });
             }
 
+            if (!string.IsNullOrWhiteSpace(contact.GoogleMapKeyHash) && contact.GoogleMapKeyHash.Length > 255)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "GoogleMapKeyHash", "255"), new[] { nameof(contact.GoogleMapKeyHash) });
+            }
+
             if (contact.AccessFailedCount != null)
             {
                 if (contact.AccessFailedCount < 0 || contact.AccessFailedCount > 10)

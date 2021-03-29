@@ -37,6 +37,7 @@ namespace GenerateCSSPDBServices_Tests
             //sb.AppendLine(@"                .AddEntityFrameworkStores<ApplicationDbContext>();");
             //sb.AppendLine(@"");
             sb.AppendLine(@"            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();");
+            sb.AppendLine(@"            Services.AddSingleton<IScrambleService, ScrambleService>();");
             sb.AppendLine(@"            Services.AddSingleton<ILoggedInService, LoggedInService>();");
             sb.AppendLine(@"            Services.AddSingleton<IEnums, Enums>();");
             if (TypeName == "Contact")
