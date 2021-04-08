@@ -52,7 +52,7 @@ namespace GenerateCSSPHelperServices
                                         sb.AppendLine(@"            {");
                                         sb.AppendLine($@"                if ({ TypeNameLower }.{ csspProp.PropName } < { csspProp.Min.ToString() } || { TypeNameLower }.{ csspProp.PropName } > { csspProp.Max.ToString() })");
                                         sb.AppendLine(@"                {");
-                                        sb.AppendLine($@"                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, ""{ csspProp.PropName }"", ""{ csspProp.Min.ToString() }"", ""{ csspProp.Max.ToString() }""), new[] {{ ""{ csspProp.PropName }"" }});");
+                                        sb.AppendLine($@"                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, ""{ csspProp.PropName }"", ""{ csspProp.Min.ToString() }"", ""{ csspProp.Max.ToString() }""), new[] {{ ""{ csspProp.PropName }"" }}));");
                                         sb.AppendLine(@"                }");
                                         sb.AppendLine(@"            }");
                                         sb.AppendLine(@"");
@@ -61,7 +61,7 @@ namespace GenerateCSSPHelperServices
                                     {
                                         sb.AppendLine($@"            if ({ TypeNameLower }.{ csspProp.PropName } < { csspProp.Min.ToString() } || { TypeNameLower }.{ csspProp.PropName } > { csspProp.Max.ToString() })");
                                         sb.AppendLine(@"            {");
-                                        sb.AppendLine($@"                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, ""{ csspProp.PropName }"", ""{ csspProp.Min.ToString() }"", ""{ csspProp.Max.ToString() }""), new[] {{ ""{ csspProp.PropName }"" }});");
+                                        sb.AppendLine($@"                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, ""{ csspProp.PropName }"", ""{ csspProp.Min.ToString() }"", ""{ csspProp.Max.ToString() }""), new[] {{ ""{ csspProp.PropName }"" }}));");
                                         sb.AppendLine(@"            }");
                                         sb.AppendLine(@"");
                                     }
@@ -75,7 +75,7 @@ namespace GenerateCSSPHelperServices
                                     sb.AppendLine(@"            {");
                                     sb.AppendLine($@"                if ({ TypeNameLower }.{ csspProp.PropName } < { csspProp.Min.ToString() })");
                                     sb.AppendLine(@"                {");
-                                    sb.AppendLine($@"                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, ""{ csspProp.PropName }"", ""{ csspProp.Min.ToString() }""), new[] {{ ""{ csspProp.PropName }"" }});");
+                                    sb.AppendLine($@"                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, ""{ csspProp.PropName }"", ""{ csspProp.Min.ToString() }""), new[] {{ ""{ csspProp.PropName }"" }}));");
                                     sb.AppendLine(@"                }");
                                     sb.AppendLine(@"            }");
                                     sb.AppendLine(@"");
@@ -84,7 +84,7 @@ namespace GenerateCSSPHelperServices
                                 {
                                     sb.AppendLine($@"            if ({ TypeNameLower }.{ csspProp.PropName } < { csspProp.Min.ToString() })");
                                     sb.AppendLine(@"            {");
-                                    sb.AppendLine($@"                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, ""{ csspProp.PropName }"", ""{ csspProp.Min.ToString() }""), new[] {{ ""{ csspProp.PropName }"" }});");
+                                    sb.AppendLine($@"                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, ""{ csspProp.PropName }"", ""{ csspProp.Min.ToString() }""), new[] {{ ""{ csspProp.PropName }"" }}));");
                                     sb.AppendLine(@"            }");
                                     sb.AppendLine(@"");
                                 }
@@ -98,7 +98,7 @@ namespace GenerateCSSPHelperServices
                                     sb.AppendLine(@"            {");
                                     sb.AppendLine($@"                if ({ TypeNameLower }.{ csspProp.PropName } > { csspProp.Max.ToString() })");
                                     sb.AppendLine(@"                {");
-                                    sb.AppendLine($@"                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxValueIs_, ""{ csspProp.PropName }"", ""{ csspProp.Max.ToString() }""), new[] {{ ""{ csspProp.PropName }"" }});");
+                                    sb.AppendLine($@"                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxValueIs_, ""{ csspProp.PropName }"", ""{ csspProp.Max.ToString() }""), new[] {{ ""{ csspProp.PropName }"" }}));");
                                     sb.AppendLine(@"                }");
                                     sb.AppendLine(@"            }");
                                     sb.AppendLine(@"");
@@ -107,7 +107,7 @@ namespace GenerateCSSPHelperServices
                                 {
                                     sb.AppendLine($@"            if ({ TypeNameLower }.{ csspProp.PropName } > { csspProp.Max.ToString() })");
                                     sb.AppendLine(@"            {");
-                                    sb.AppendLine($@"                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxValueIs_, ""{ csspProp.PropName }"", ""{ csspProp.Max.ToString() }""), new[] {{ ""{ csspProp.PropName }"" }});");
+                                    sb.AppendLine($@"                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxValueIs_, ""{ csspProp.PropName }"", ""{ csspProp.Max.ToString() }""), new[] {{ ""{ csspProp.PropName }"" }}));");
                                     sb.AppendLine(@"            }");
                                     sb.AppendLine(@"");
                                 }
@@ -136,7 +136,7 @@ namespace GenerateCSSPHelperServices
                                 {
                                     sb.AppendLine($@"            if (!string.IsNullOrWhiteSpace({ TypeNameLower }.{ prop.Name }) && ({ TypeNameLower }.{ csspProp.PropName }.Length < { csspProp.Min } || { TypeNameLower }.{ csspProp.PropName }.Length > { csspProp.Max }))");
                                     sb.AppendLine(@"            {");
-                                    sb.AppendLine($@"                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, ""{ csspProp.PropName }"", ""{ csspProp.Min.ToString() }"", ""{ csspProp.Max.ToString() }""), new[] {{ ""{ csspProp.PropName }"" }});");
+                                    sb.AppendLine($@"                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, ""{ csspProp.PropName }"", ""{ csspProp.Min.ToString() }"", ""{ csspProp.Max.ToString() }""), new[] {{ ""{ csspProp.PropName }"" }}));");
                                     sb.AppendLine(@"            }");
                                     sb.AppendLine(@"");
                                 }
@@ -145,7 +145,7 @@ namespace GenerateCSSPHelperServices
                             {
                                 sb.AppendLine($@"            if (!string.IsNullOrWhiteSpace({ TypeNameLower }.{ prop.Name }) && { TypeNameLower }.{ csspProp.PropName }.Length < { csspProp.Min })");
                                 sb.AppendLine(@"            {");
-                                sb.AppendLine($@"                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinLengthIs_, ""{ csspProp.PropName }"", ""{ csspProp.Min }""), new[] {{ ""{ csspProp.PropName }"" }});");
+                                sb.AppendLine($@"                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MinLengthIs_, ""{ csspProp.PropName }"", ""{ csspProp.Min }""), new[] {{ ""{ csspProp.PropName }"" }}));");
                                 sb.AppendLine(@"            }");
                                 sb.AppendLine(@"");
                             }
@@ -153,7 +153,7 @@ namespace GenerateCSSPHelperServices
                             {
                                 sb.AppendLine($@"            if (!string.IsNullOrWhiteSpace({ TypeNameLower }.{ prop.Name }) && { TypeNameLower }.{ csspProp.PropName }.Length > { csspProp.Max })");
                                 sb.AppendLine(@"            {");
-                                sb.AppendLine($@"                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, ""{ csspProp.PropName }"", ""{ csspProp.Max }""), new[] {{ ""{ csspProp.PropName }"" }});");
+                                sb.AppendLine($@"                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, ""{ csspProp.PropName }"", ""{ csspProp.Max }""), new[] {{ ""{ csspProp.PropName }"" }}));");
                                 sb.AppendLine(@"            }");
                                 sb.AppendLine(@"");
                             }

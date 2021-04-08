@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>CSSPDB Model Documentation</title>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+<a href="table_fr.html">Retour à la liste de tables</a>
+<h1>Table&nbsp;---&nbsp;ClimateDataValues</h1>
+<ul>
+<li>
+ClimateDataValueID -- Int32 (key)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contient l'identifiant unique sur chaque ligne de la table ClimateDataValues</span>
+</li>
+<li>
+DBCommand -- DBCommandEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Identifie la command de base de données pour syncroniser avec la base de données local</span>
+</li>
+<li>
+ClimateSiteID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Lien au parent ClimateSite à l'item de la table ClimateSites</span>
+</li>
+<li>
+DateTime_Local -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Date et temps de l'observation. Pratiquement tous les données proviennent de site web weather office</span>
+</li>
+<li>
+Keep -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Conservez les données dans la base de données. Parfois, la base de données peut obtenir des données du site Web du bureau météorologique en tant que données temporaires pouvant être supprimées ultérieurement.</span>
+</li>
+<li>
+StorageDataType -- StorageDataTypeEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Type de données sauvegardez peut être archivés, prévisions ou observés</span>
+</li>
+<li>
+HasBeenRead -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Les données stockées ont été lues sur le site Web du bureau météorologique</span>
+</li>
+<li>
+Snow_cm -- Double (min=0) (max=10000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Neige totale (cm) --- quantité totale de neige ou totalité des précipitations gelées (solides) telles que la neige et les granules de glace, observée à un endroit donné au cours d'un intervalle de temps déterminé et exprimée en centimètres (cm).</span>
+</li>
+<li>
+Rainfall_mm -- Double (min=0) (max=10000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Pluie totale (mm) --- quantité totale de pluie ou totalité des précipitations liquides en millimètres (mm) telles que la pluie, la bruine, la pluie verglaçante et la grêle, observée à un endroit donné au cours d'un intervalle de temps déterminé.</span>
+</li>
+<li>
+RainfallEntered_mm -- Double (min=0) (max=10000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Pluie totale entré (mm) par un des biologiste --- quantité totale de pluie ou totalité des précipitations liquides en millimètres (mm) telles que la pluie, la bruine, la pluie verglaçante et la grêle, observée à un endroit donné au cours d'un intervalle de temps déterminé.</span>
+</li>
+<li>
+TotalPrecip_mm_cm -- Double (min=0) (max=10000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Précipitations totales (mm) --- somme de la pluie totale et de l'équivalent en eau de la neige totale en millimètres (mm), observée à un endroit donné au cours d'un intervalle de temps déterminé.</span>
+</li>
+<li>
+MaxTemp_C -- Double (min=-50) (max=50)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Température maximale (deg C) --- température la plus élevée, en degrés Celsius (°C), observée à un endroit donné au cours d'un intervalle de temps déterminé.</span>
+</li>
+<li>
+MinTemp_C -- Double (min=-50) (max=50)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Température minimale (deg C) --- température la plus basse, en degrés Celsius (°C), observée à un endroit donné au cours d'un intervalle de temps déterminé.</span>
+</li>
+<li>
+HeatDegDays_C -- Double (min=-1000) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;On compte un degré-jour de chauffage pour chaque degré dont la température moyenne quotidienne est inférieure à 18 °C. Si la température est égale ou supérieure à 18 °C, le nombre de degrés-jours sera zéro. Par exemple, une journée ayant une température moyenne de 15,5 °C aura 2,5 degrés-jours de chauffage; une journée ayant une température moyenne de 20,5 °C aura zéro degré-jour de chauffage. Les degrés-jours de chauffage sont utilisés principalement pour estimer les besoins de chauffage des bâtiments.</span>
+</li>
+<li>
+CoolDegDays_C -- Double (min=-1000) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;On compte un degré-jour de refroidissement pour chaque degré dont la température moyenne quotidienne est supérieure à 18 °C . Si la température est égale ou inférieure à 18 °C , le nombre de degrés-jours sera zéro. Par exemple, une journée ayant une température moyenne de 20,5 °C aura 2,5 degrés-jours de refroidissement; une journée ayant une température moyenne de 15,5 °C aura zéro degré-jour de refroidissement. Les degrés-jours de refroidissement sont utilisés principalement pour estimer les besoins de climatisation des bâtiments.</span>
+</li>
+<li>
+SnowOnGround_cm -- Double (min=0) (max=10000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Neige au sol (cm)--- épaisseur (en cm) de la neige sur le sol. On détermine, en centimètres entiers, l'épaisseur totale de neige au sol au moment de l'observation en prenant une série de mesures et en en faisant la moyenne.</span>
+</li>
+<li>
+DirMaxGust_0North -- Double (min=0) (max=360)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Direction de la rafale maximale (10's deg/dizaines de degrés) --- direction (vraie ou géographique, et non magnétique) d'où souffle le vent pendant la rafale maximale. Exprimée en dizaines de degrés, 9 signifiant 90 degrés vrais ou un vent d'est, et 36 signifiant 360 degrés vrais, ou un vent soufflant du pôle Nord géographique. Cette valeur n'est signalée que si la vitesse de la rafale maximale dépasse 29 km/h.</span>
+</li>
+<li>
+SpdMaxGust_kmh -- Double (min=0) (max=300)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Vitesse de la rafale maximale (km/h) --- vitesse en kilomètres à l'heure (km/h) de la rafale maximale pendant le jour donné. La rafale est la lecture instantanée ou simple du maximum ou de la crête de l'anémomètre (l'instrument utilisé pour observer la vitesse du vent) pendant le jour donné. La durée d'une rafale correspond typiquement à un temps écoulé de 3 à 5 secondes.</span>
+</li>
+<li>
+HourlyValues -- String
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Texte des valeurs horaire sauvegarde toutes les 24 valeurs horaires des paramètres mesurés par weather office</span>
+</li>
+<li>
+LastUpdateDate_UTC -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contient la date de la dernière mise à jour en (UTC)</span>
+</li>
+<li>
+LastUpdateContactTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contact TVItemID qui a fait le dernier changement</span>
+</li>
+</ul>
+<a href="table_fr.html">Retour à la liste de tables</a>
+</body>
+</html>

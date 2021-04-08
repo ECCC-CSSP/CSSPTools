@@ -107,7 +107,7 @@ namespace GenerateCSSPHelperServices
 
                 sb.AppendLine($@"    public interface I{ dllTypeInfoModels.Type.Name }Service");
                 sb.AppendLine($@"    {{");
-                sb.AppendLine($@"        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);");
+                sb.AppendLine($@"        bool Validate(ValidationContext validationContext);");
                 sb.AppendLine($@"    }}");
 
                 sb.AppendLine($@"    public partial class { dllTypeInfoModels.Type.Name }Service : I{ dllTypeInfoModels.Type.Name }Service");
@@ -116,7 +116,7 @@ namespace GenerateCSSPHelperServices
                 sb.AppendLine(@"        #endregion Variables");
                 sb.AppendLine(@"");
                 sb.AppendLine(@"        #region Properties");
-                //sb.AppendLine(@"        private ICSSPCultureService CSSPCultureService { get; }");
+                sb.AppendLine(@"        private List<ValidationResult> ValidationResults { get; set; }");
                 if (needEnum)
                 {
                     sb.AppendLine(@"        private IEnums enums { get; }");
@@ -133,7 +133,6 @@ namespace GenerateCSSPHelperServices
                     sb.AppendLine($@"        public { dllTypeInfoModels.Type.Name }Service()");
                 }
                 sb.AppendLine(@"        {");
-                //sb.AppendLine(@"            this.CSSPCultureService = CSSPCultureService;");
                 if (needEnum)
                 {
                     sb.AppendLine(@"            this.enums = enums;");

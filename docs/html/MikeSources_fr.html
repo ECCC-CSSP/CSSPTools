@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>CSSPDB Model Documentation</title>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+<a href="table_fr.html">Retour à la liste de tables</a>
+<h1>Table&nbsp;---&nbsp;MikeSources</h1>
+<ul>
+<li>
+MikeSourceID -- Int32 (key)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contient l'identifiant unique sur chaque ligne de la table MikeSources</span>
+</li>
+<li>
+DBCommand -- DBCommandEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Identifie la command de base de données pour syncroniser avec la base de données local</span>
+</li>
+<li>
+MikeSourceTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Lien à la table TVItems représentant une source MIKE</span>
+</li>
+<li>
+IsContinuous -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La source est continue</span>
+</li>
+<li>
+Include -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La source est incluse</span>
+</li>
+<li>
+IsRiver -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La source est une rivière</span>
+</li>
+<li>
+UseHydrometric -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La source devrait usiliser un site hydrométrique avec facteur comme débits</span>
+</li>
+<li>
+HydrometricTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Lien à la table TVItems représentant un site hydrométrique</span>
+</li>
+<li>
+DrainageArea_km2 -- Double (min=0) (max=1000000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Bassin versant en kilomètres carrés</span>
+</li>
+<li>
+Factor -- Double (min=0) (max=1000000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Facteur</span>
+</li>
+<li>
+SourceNumberString -- String (max=50)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Nombre de source</span>
+</li>
+<li>
+LastUpdateDate_UTC -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contient la date de la dernière mise à jour en (UTC)</span>
+</li>
+<li>
+LastUpdateContactTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contact TVItemID qui a fait le dernier changement</span>
+</li>
+</ul>
+<a href="table_fr.html">Retour à la liste de tables</a>
+</body>
+</html>

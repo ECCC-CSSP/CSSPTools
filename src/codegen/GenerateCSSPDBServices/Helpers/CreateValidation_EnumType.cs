@@ -18,7 +18,7 @@ namespace GenerateCSSPDBServices
                     sb.AppendLine($@"                retStr = enums.EnumTypeOK(typeof({ csspProp.PropType }), (int?){ TypeNameLower }.{ prop.Name });");
                     sb.AppendLine($@"                if ({ TypeNameLower }.{ prop.Name } == null || !string.IsNullOrWhiteSpace(retStr))");
                     sb.AppendLine(@"                {");
-                    sb.AppendLine($@"                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, ""{ prop.Name }""), new[] {{ nameof({ TypeNameLower }.{ csspProp.PropName }) }});");
+                    sb.AppendLine($@"                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, ""{ prop.Name }""), new[] {{ nameof({ TypeNameLower }.{ csspProp.PropName }) }}));");
                     sb.AppendLine(@"                }");
                     sb.AppendLine(@"            }");
                     sb.AppendLine(@"");
@@ -28,7 +28,7 @@ namespace GenerateCSSPDBServices
                     sb.AppendLine($@"            retStr = enums.EnumTypeOK(typeof({ csspProp.PropType }), (int?){ TypeNameLower }.{ prop.Name });");
                     sb.AppendLine($@"            if (!string.IsNullOrWhiteSpace(retStr))");
                     sb.AppendLine(@"            {");
-                    sb.AppendLine($@"                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, ""{ prop.Name }""), new[] {{ nameof({ TypeNameLower }.{ csspProp.PropName }) }});");
+                    sb.AppendLine($@"                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, ""{ prop.Name }""), new[] {{ nameof({ TypeNameLower }.{ csspProp.PropName }) }}));");
                     sb.AppendLine(@"            }");
                     sb.AppendLine(@"");
                 }

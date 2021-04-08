@@ -24,7 +24,7 @@ namespace CSSPHelperServices
 {
     public interface ITVLocationService
     {
-        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+        bool Validate(ValidationContext validationContext);
     }
     public partial class TVLocationService : ITVLocationService
     {
@@ -32,6 +32,7 @@ namespace CSSPHelperServices
         #endregion Variables
 
         #region Properties
+        private List<ValidationResult> ValidationResults { get; set; }
         private IEnums enums { get; }
         #endregion Properties
 
@@ -43,51 +44,52 @@ namespace CSSPHelperServices
         #endregion Constructors
 
         #region Functions public
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        public bool Validate(ValidationContext validationContext)
         {
             string retStr = "";
             TVLocation tvLocation = validationContext.ObjectInstance as TVLocation;
 
             if (tvLocation.TVItemID < 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "TVItemID", "1"), new[] { "TVItemID" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "TVItemID", "1"), new[] { "TVItemID" }));
             }
 
             if (string.IsNullOrWhiteSpace(tvLocation.TVText))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVText"), new[] { "TVText" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVText"), new[] { "TVText" }));
             }
 
             if (!string.IsNullOrWhiteSpace(tvLocation.TVText) && (tvLocation.TVText.Length < 1 || tvLocation.TVText.Length > 255))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVText", "1", "255"), new[] { "TVText" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVText", "1", "255"), new[] { "TVText" }));
             }
 
             retStr = enums.EnumTypeOK(typeof(TVTypeEnum), (int?)tvLocation.TVType);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVType"), new[] { "TVType" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVType"), new[] { "TVType" }));
             }
 
             retStr = enums.EnumTypeOK(typeof(TVTypeEnum), (int?)tvLocation.SubTVType);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SubTVType"), new[] { "SubTVType" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SubTVType"), new[] { "SubTVType" }));
             }
 
             if (!string.IsNullOrWhiteSpace(tvLocation.TVTypeText) && tvLocation.TVTypeText.Length > 100)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "TVTypeText", "100"), new[] { "TVTypeText" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "TVTypeText", "100"), new[] { "TVTypeText" }));
             }
 
             if (!string.IsNullOrWhiteSpace(tvLocation.SubTVTypeText) && tvLocation.SubTVTypeText.Length > 100)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SubTVTypeText", "100"), new[] { "SubTVTypeText" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SubTVTypeText", "100"), new[] { "SubTVTypeText" }));
             }
 
                 //CSSPError: Type not implemented [MapObjList] of type [List`1]
 
                 //CSSPError: Type not implemented [MapObjList] of type [MapObj]
+            return ValidationResults.Count == 0 ? true : false;
         }
         #endregion Functions public
     }

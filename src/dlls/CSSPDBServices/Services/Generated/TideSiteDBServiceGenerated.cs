@@ -19,7 +19,6 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using LoggedInServices;
 using Microsoft.Extensions.Configuration;
-using CSSPScrambleServices;
 
 namespace CSSPDBServices
 {
@@ -41,9 +40,8 @@ namespace CSSPDBServices
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IScrambleService ScrambleService { get; }
         private IEnums enums { get; }
-        private IEnumerable<ValidationResult> ValidationResults { get; set; }
+        private List<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -54,7 +52,6 @@ namespace CSSPDBServices
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.ScrambleService = ScrambleService;
             this.enums = enums;
             this.db = db;
         }
@@ -65,7 +62,7 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(""));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             TideSite tideSite = (from c in db.TideSites.AsNoTracking()
@@ -83,7 +80,7 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(""));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             List<TideSite> tideSiteList = (from c in db.TideSites.AsNoTracking() orderby c.TideSiteID select c).Skip(skip).Take(take).ToList();
@@ -94,7 +91,7 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             TideSite tideSite = (from c in db.TideSites
@@ -122,11 +119,10 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
-            ValidationResults = Validate(new ValidationContext(tideSite), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
+            if (!Validate(new ValidationContext(tideSite), ActionDBTypeEnum.Create))
             {
                 return await Task.FromResult(BadRequest(ValidationResults));
             }
@@ -147,11 +143,10 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
-            ValidationResults = Validate(new ValidationContext(tideSite), ActionDBTypeEnum.Update);
-            if (ValidationResults.Count() > 0)
+            if (!Validate(new ValidationContext(tideSite), ActionDBTypeEnum.Update))
             {
                 return await Task.FromResult(BadRequest(ValidationResults));
             }
@@ -171,7 +166,7 @@ namespace CSSPDBServices
         #endregion Functions public
 
         #region Functions private
-        private IEnumerable<ValidationResult> Validate(ValidationContext validationContext, ActionDBTypeEnum actionDBType)
+        private bool Validate(ValidationContext validationContext, ActionDBTypeEnum actionDBType)
         {
             string retStr = "";
             TideSite tideSite = validationContext.ObjectInstance as TideSite;
@@ -180,19 +175,19 @@ namespace CSSPDBServices
             {
                 if (tideSite.TideSiteID == 0)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TideSiteID"), new[] { nameof(tideSite.TideSiteID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TideSiteID"), new[] { nameof(tideSite.TideSiteID) }));
                 }
 
                 if (!(from c in db.TideSites.AsNoTracking() select c).Where(c => c.TideSiteID == tideSite.TideSiteID).Any())
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TideSite", "TideSiteID", tideSite.TideSiteID.ToString()), new[] { nameof(tideSite.TideSiteID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TideSite", "TideSiteID", tideSite.TideSiteID.ToString()), new[] { nameof(tideSite.TideSiteID) }));
                 }
             }
 
             retStr = enums.EnumTypeOK(typeof(DBCommandEnum), (int?)tideSite.DBCommand);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"), new[] { nameof(tideSite.DBCommand) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"), new[] { nameof(tideSite.DBCommand) }));
             }
 
             TVItem TVItemTideSiteTVItemID = null;
@@ -200,7 +195,7 @@ namespace CSSPDBServices
 
             if (TVItemTideSiteTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "TideSiteTVItemID", tideSite.TideSiteTVItemID.ToString()), new[] { nameof(tideSite.TideSiteTVItemID) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "TideSiteTVItemID", tideSite.TideSiteTVItemID.ToString()), new[] { nameof(tideSite.TideSiteTVItemID)}));
             }
             else
             {
@@ -210,49 +205,49 @@ namespace CSSPDBServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemTideSiteTVItemID.TVType))
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "TideSiteTVItemID", "TideSite"), new[] { nameof(tideSite.TideSiteTVItemID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "TideSiteTVItemID", "TideSite"), new[] { nameof(tideSite.TideSiteTVItemID) }));
                 }
             }
 
             if (string.IsNullOrWhiteSpace(tideSite.TideSiteName))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TideSiteName"), new[] { nameof(tideSite.TideSiteName) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TideSiteName"), new[] { nameof(tideSite.TideSiteName) }));
             }
 
             if (!string.IsNullOrWhiteSpace(tideSite.TideSiteName) && tideSite.TideSiteName.Length > 100)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "TideSiteName", "100"), new[] { nameof(tideSite.TideSiteName) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "TideSiteName", "100"), new[] { nameof(tideSite.TideSiteName) }));
             }
 
             if (string.IsNullOrWhiteSpace(tideSite.Province))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Province"), new[] { nameof(tideSite.Province) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Province"), new[] { nameof(tideSite.Province) }));
             }
 
             if (!string.IsNullOrWhiteSpace(tideSite.Province) && (tideSite.Province.Length < 2 || tideSite.Province.Length > 2))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "Province", "2", "2"), new[] { nameof(tideSite.Province) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "Province", "2", "2"), new[] { nameof(tideSite.Province) }));
             }
 
             if (tideSite.sid < 0 || tideSite.sid > 10000)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "sid", "0", "10000"), new[] { nameof(tideSite.sid) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "sid", "0", "10000"), new[] { nameof(tideSite.sid) }));
             }
 
             if (tideSite.Zone < 0 || tideSite.Zone > 10000)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Zone", "0", "10000"), new[] { nameof(tideSite.Zone) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Zone", "0", "10000"), new[] { nameof(tideSite.Zone) }));
             }
 
             if (tideSite.LastUpdateDate_UTC.Year == 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { nameof(tideSite.LastUpdateDate_UTC) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { nameof(tideSite.LastUpdateDate_UTC) }));
             }
             else
             {
                 if (tideSite.LastUpdateDate_UTC.Year < 1980)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { nameof(tideSite.LastUpdateDate_UTC) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { nameof(tideSite.LastUpdateDate_UTC) }));
                 }
             }
 
@@ -261,7 +256,7 @@ namespace CSSPDBServices
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", tideSite.LastUpdateContactTVItemID.ToString()), new[] { nameof(tideSite.LastUpdateContactTVItemID) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", tideSite.LastUpdateContactTVItemID.ToString()), new[] { nameof(tideSite.LastUpdateContactTVItemID)}));
             }
             else
             {
@@ -271,10 +266,11 @@ namespace CSSPDBServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(tideSite.LastUpdateContactTVItemID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(tideSite.LastUpdateContactTVItemID) }));
                 }
             }
 
+            return ValidationResults.Count == 0 ? true : false;
         }
         #endregion Functions private
     }

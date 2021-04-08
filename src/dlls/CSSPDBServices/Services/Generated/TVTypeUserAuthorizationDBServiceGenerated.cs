@@ -19,7 +19,6 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using LoggedInServices;
 using Microsoft.Extensions.Configuration;
-using CSSPScrambleServices;
 
 namespace CSSPDBServices
 {
@@ -41,9 +40,8 @@ namespace CSSPDBServices
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IScrambleService ScrambleService { get; }
         private IEnums enums { get; }
-        private IEnumerable<ValidationResult> ValidationResults { get; set; }
+        private List<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -54,7 +52,6 @@ namespace CSSPDBServices
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.ScrambleService = ScrambleService;
             this.enums = enums;
             this.db = db;
         }
@@ -65,7 +62,7 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(""));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             TVTypeUserAuthorization tvTypeUserAuthorization = (from c in db.TVTypeUserAuthorizations.AsNoTracking()
@@ -83,7 +80,7 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(""));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             List<TVTypeUserAuthorization> tvTypeUserAuthorizationList = (from c in db.TVTypeUserAuthorizations.AsNoTracking() orderby c.TVTypeUserAuthorizationID select c).Skip(skip).Take(take).ToList();
@@ -94,7 +91,7 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             TVTypeUserAuthorization tvTypeUserAuthorization = (from c in db.TVTypeUserAuthorizations
@@ -122,11 +119,10 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
-            ValidationResults = Validate(new ValidationContext(tvTypeUserAuthorization), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
+            if (!Validate(new ValidationContext(tvTypeUserAuthorization), ActionDBTypeEnum.Create))
             {
                 return await Task.FromResult(BadRequest(ValidationResults));
             }
@@ -147,11 +143,10 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
-            ValidationResults = Validate(new ValidationContext(tvTypeUserAuthorization), ActionDBTypeEnum.Update);
-            if (ValidationResults.Count() > 0)
+            if (!Validate(new ValidationContext(tvTypeUserAuthorization), ActionDBTypeEnum.Update))
             {
                 return await Task.FromResult(BadRequest(ValidationResults));
             }
@@ -171,7 +166,7 @@ namespace CSSPDBServices
         #endregion Functions public
 
         #region Functions private
-        private IEnumerable<ValidationResult> Validate(ValidationContext validationContext, ActionDBTypeEnum actionDBType)
+        private bool Validate(ValidationContext validationContext, ActionDBTypeEnum actionDBType)
         {
             string retStr = "";
             TVTypeUserAuthorization tvTypeUserAuthorization = validationContext.ObjectInstance as TVTypeUserAuthorization;
@@ -180,19 +175,19 @@ namespace CSSPDBServices
             {
                 if (tvTypeUserAuthorization.TVTypeUserAuthorizationID == 0)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVTypeUserAuthorizationID"), new[] { nameof(tvTypeUserAuthorization.TVTypeUserAuthorizationID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVTypeUserAuthorizationID"), new[] { nameof(tvTypeUserAuthorization.TVTypeUserAuthorizationID) }));
                 }
 
                 if (!(from c in db.TVTypeUserAuthorizations.AsNoTracking() select c).Where(c => c.TVTypeUserAuthorizationID == tvTypeUserAuthorization.TVTypeUserAuthorizationID).Any())
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVTypeUserAuthorization", "TVTypeUserAuthorizationID", tvTypeUserAuthorization.TVTypeUserAuthorizationID.ToString()), new[] { nameof(tvTypeUserAuthorization.TVTypeUserAuthorizationID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVTypeUserAuthorization", "TVTypeUserAuthorizationID", tvTypeUserAuthorization.TVTypeUserAuthorizationID.ToString()), new[] { nameof(tvTypeUserAuthorization.TVTypeUserAuthorizationID) }));
                 }
             }
 
             retStr = enums.EnumTypeOK(typeof(DBCommandEnum), (int?)tvTypeUserAuthorization.DBCommand);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"), new[] { nameof(tvTypeUserAuthorization.DBCommand) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"), new[] { nameof(tvTypeUserAuthorization.DBCommand) }));
             }
 
             TVItem TVItemContactTVItemID = null;
@@ -200,7 +195,7 @@ namespace CSSPDBServices
 
             if (TVItemContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "ContactTVItemID", tvTypeUserAuthorization.ContactTVItemID.ToString()), new[] { nameof(tvTypeUserAuthorization.ContactTVItemID) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "ContactTVItemID", tvTypeUserAuthorization.ContactTVItemID.ToString()), new[] { nameof(tvTypeUserAuthorization.ContactTVItemID)}));
             }
             else
             {
@@ -210,31 +205,31 @@ namespace CSSPDBServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemContactTVItemID.TVType))
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "ContactTVItemID", "Contact"), new[] { nameof(tvTypeUserAuthorization.ContactTVItemID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "ContactTVItemID", "Contact"), new[] { nameof(tvTypeUserAuthorization.ContactTVItemID) }));
                 }
             }
 
             retStr = enums.EnumTypeOK(typeof(TVTypeEnum), (int?)tvTypeUserAuthorization.TVType);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVType"), new[] { nameof(tvTypeUserAuthorization.TVType) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVType"), new[] { nameof(tvTypeUserAuthorization.TVType) }));
             }
 
             retStr = enums.EnumTypeOK(typeof(TVAuthEnum), (int?)tvTypeUserAuthorization.TVAuth);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVAuth"), new[] { nameof(tvTypeUserAuthorization.TVAuth) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVAuth"), new[] { nameof(tvTypeUserAuthorization.TVAuth) }));
             }
 
             if (tvTypeUserAuthorization.LastUpdateDate_UTC.Year == 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { nameof(tvTypeUserAuthorization.LastUpdateDate_UTC) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { nameof(tvTypeUserAuthorization.LastUpdateDate_UTC) }));
             }
             else
             {
                 if (tvTypeUserAuthorization.LastUpdateDate_UTC.Year < 1980)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { nameof(tvTypeUserAuthorization.LastUpdateDate_UTC) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { nameof(tvTypeUserAuthorization.LastUpdateDate_UTC) }));
                 }
             }
 
@@ -243,7 +238,7 @@ namespace CSSPDBServices
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", tvTypeUserAuthorization.LastUpdateContactTVItemID.ToString()), new[] { nameof(tvTypeUserAuthorization.LastUpdateContactTVItemID) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", tvTypeUserAuthorization.LastUpdateContactTVItemID.ToString()), new[] { nameof(tvTypeUserAuthorization.LastUpdateContactTVItemID)}));
             }
             else
             {
@@ -253,10 +248,11 @@ namespace CSSPDBServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(tvTypeUserAuthorization.LastUpdateContactTVItemID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(tvTypeUserAuthorization.LastUpdateContactTVItemID) }));
                 }
             }
 
+            return ValidationResults.Count == 0 ? true : false;
         }
         #endregion Functions private
     }

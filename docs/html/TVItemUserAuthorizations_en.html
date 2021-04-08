@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>CSSPDB Model Documentation</title>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+<a href="table_en.html">Return to table list</a>
+<h1>Table&nbsp;---&nbsp;TVItemUserAuthorizations</h1>
+<ul>
+<li>
+TVItemUserAuthorizationID -- Int32 (key)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contains the unique identifier on each row of the TVItemUserAuthorizations table</span>
+</li>
+<li>
+DBCommand -- DBCommandEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Identify the database command for local database sync</span>
+</li>
+<li>
+ContactTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Link to the TVItems table representing the contact</span>
+</li>
+<li>
+TVItemID1 -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Link to the TVItems table representing the item 1 of the tree view</span>
+</li>
+<li>
+TVItemID2 -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Link to the TVItems table representing the item 2 of the tree view</span>
+</li>
+<li>
+TVItemID3 -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Link to the TVItems table representing the item 3 of the tree view</span>
+</li>
+<li>
+TVItemID4 -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Link to the TVItems table representing the item 4 of the tree view</span>
+</li>
+<li>
+TVAuth -- TVAuthEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Link to the TVItems table representing the tree view authorization</span>
+</li>
+<li>
+LastUpdateDate_UTC -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contains the date of the last update in UTC</span>
+</li>
+<li>
+LastUpdateContactTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contact TVItemID who made the last changes</span>
+</li>
+</ul>
+<a href="table_en.html">Return to table list</a>
+</body>
+</html>

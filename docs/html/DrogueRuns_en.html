@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>CSSPDB Model Documentation</title>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+<a href="table_en.html">Return to table list</a>
+<h1>Table&nbsp;---&nbsp;DrogueRuns</h1>
+<ul>
+<li>
+DrogueRunID -- Int32 (key)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contains the unique identifier on each row of the DrogueRuns table</span>
+</li>
+<li>
+DBCommand -- DBCommandEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Identify the database command for local database sync</span>
+</li>
+<li>
+SubsectorTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Link to the TVItems table representing the subsector</span>
+</li>
+<li>
+DrogueNumber -- Int32 (min=0) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Drogue number</span>
+</li>
+<li>
+DrogueType -- DrogueTypeEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Drogue type</span>
+</li>
+<li>
+RunStartDateTime -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Drogue run start date and time (local)</span>
+</li>
+<li>
+IsRisingTide -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Is rising tide</span>
+</li>
+<li>
+LastUpdateDate_UTC -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contains the date of the last update in UTC</span>
+</li>
+<li>
+LastUpdateContactTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contact TVItemID who made the last changes</span>
+</li>
+</ul>
+<a href="table_en.html">Return to table list</a>
+</body>
+</html>

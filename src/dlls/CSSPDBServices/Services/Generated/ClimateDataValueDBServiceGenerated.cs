@@ -19,7 +19,6 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using LoggedInServices;
 using Microsoft.Extensions.Configuration;
-using CSSPScrambleServices;
 
 namespace CSSPDBServices
 {
@@ -41,9 +40,8 @@ namespace CSSPDBServices
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IScrambleService ScrambleService { get; }
         private IEnums enums { get; }
-        private IEnumerable<ValidationResult> ValidationResults { get; set; }
+        private List<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -54,7 +52,6 @@ namespace CSSPDBServices
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.ScrambleService = ScrambleService;
             this.enums = enums;
             this.db = db;
         }
@@ -65,7 +62,7 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(""));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             ClimateDataValue climateDataValue = (from c in db.ClimateDataValues.AsNoTracking()
@@ -83,7 +80,7 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(""));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             List<ClimateDataValue> climateDataValueList = (from c in db.ClimateDataValues.AsNoTracking() orderby c.ClimateDataValueID select c).Skip(skip).Take(take).ToList();
@@ -94,7 +91,7 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             ClimateDataValue climateDataValue = (from c in db.ClimateDataValues
@@ -122,11 +119,10 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
-            ValidationResults = Validate(new ValidationContext(climateDataValue), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
+            if (!Validate(new ValidationContext(climateDataValue), ActionDBTypeEnum.Create))
             {
                 return await Task.FromResult(BadRequest(ValidationResults));
             }
@@ -147,11 +143,10 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
-            ValidationResults = Validate(new ValidationContext(climateDataValue), ActionDBTypeEnum.Update);
-            if (ValidationResults.Count() > 0)
+            if (!Validate(new ValidationContext(climateDataValue), ActionDBTypeEnum.Update))
             {
                 return await Task.FromResult(BadRequest(ValidationResults));
             }
@@ -171,7 +166,7 @@ namespace CSSPDBServices
         #endregion Functions public
 
         #region Functions private
-        private IEnumerable<ValidationResult> Validate(ValidationContext validationContext, ActionDBTypeEnum actionDBType)
+        private bool Validate(ValidationContext validationContext, ActionDBTypeEnum actionDBType)
         {
             string retStr = "";
             ClimateDataValue climateDataValue = validationContext.ObjectInstance as ClimateDataValue;
@@ -180,19 +175,19 @@ namespace CSSPDBServices
             {
                 if (climateDataValue.ClimateDataValueID == 0)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ClimateDataValueID"), new[] { nameof(climateDataValue.ClimateDataValueID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ClimateDataValueID"), new[] { nameof(climateDataValue.ClimateDataValueID) }));
                 }
 
                 if (!(from c in db.ClimateDataValues.AsNoTracking() select c).Where(c => c.ClimateDataValueID == climateDataValue.ClimateDataValueID).Any())
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "ClimateDataValue", "ClimateDataValueID", climateDataValue.ClimateDataValueID.ToString()), new[] { nameof(climateDataValue.ClimateDataValueID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "ClimateDataValue", "ClimateDataValueID", climateDataValue.ClimateDataValueID.ToString()), new[] { nameof(climateDataValue.ClimateDataValueID) }));
                 }
             }
 
             retStr = enums.EnumTypeOK(typeof(DBCommandEnum), (int?)climateDataValue.DBCommand);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"), new[] { nameof(climateDataValue.DBCommand) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"), new[] { nameof(climateDataValue.DBCommand) }));
             }
 
             ClimateSite ClimateSiteClimateSiteID = null;
@@ -200,32 +195,32 @@ namespace CSSPDBServices
 
             if (ClimateSiteClimateSiteID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "ClimateSite", "ClimateSiteID", climateDataValue.ClimateSiteID.ToString()), new[] { nameof(climateDataValue.ClimateSiteID) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "ClimateSite", "ClimateSiteID", climateDataValue.ClimateSiteID.ToString()), new[] { nameof(climateDataValue.ClimateSiteID)}));
             }
 
             if (climateDataValue.DateTime_Local.Year == 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DateTime_Local"), new[] { nameof(climateDataValue.DateTime_Local) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DateTime_Local"), new[] { nameof(climateDataValue.DateTime_Local) }));
             }
             else
             {
                 if (climateDataValue.DateTime_Local.Year < 1980)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "DateTime_Local", "1980"), new[] { nameof(climateDataValue.DateTime_Local) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "DateTime_Local", "1980"), new[] { nameof(climateDataValue.DateTime_Local) }));
                 }
             }
 
             retStr = enums.EnumTypeOK(typeof(StorageDataTypeEnum), (int?)climateDataValue.StorageDataType);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "StorageDataType"), new[] { nameof(climateDataValue.StorageDataType) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "StorageDataType"), new[] { nameof(climateDataValue.StorageDataType) }));
             }
 
             if (climateDataValue.Snow_cm != null)
             {
                 if (climateDataValue.Snow_cm < 0 || climateDataValue.Snow_cm > 10000)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Snow_cm", "0", "10000"), new[] { nameof(climateDataValue.Snow_cm) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Snow_cm", "0", "10000"), new[] { nameof(climateDataValue.Snow_cm) }));
                 }
             }
 
@@ -233,7 +228,7 @@ namespace CSSPDBServices
             {
                 if (climateDataValue.Rainfall_mm < 0 || climateDataValue.Rainfall_mm > 10000)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Rainfall_mm", "0", "10000"), new[] { nameof(climateDataValue.Rainfall_mm) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Rainfall_mm", "0", "10000"), new[] { nameof(climateDataValue.Rainfall_mm) }));
                 }
             }
 
@@ -241,7 +236,7 @@ namespace CSSPDBServices
             {
                 if (climateDataValue.RainfallEntered_mm < 0 || climateDataValue.RainfallEntered_mm > 10000)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "RainfallEntered_mm", "0", "10000"), new[] { nameof(climateDataValue.RainfallEntered_mm) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "RainfallEntered_mm", "0", "10000"), new[] { nameof(climateDataValue.RainfallEntered_mm) }));
                 }
             }
 
@@ -249,7 +244,7 @@ namespace CSSPDBServices
             {
                 if (climateDataValue.TotalPrecip_mm_cm < 0 || climateDataValue.TotalPrecip_mm_cm > 10000)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "TotalPrecip_mm_cm", "0", "10000"), new[] { nameof(climateDataValue.TotalPrecip_mm_cm) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "TotalPrecip_mm_cm", "0", "10000"), new[] { nameof(climateDataValue.TotalPrecip_mm_cm) }));
                 }
             }
 
@@ -257,7 +252,7 @@ namespace CSSPDBServices
             {
                 if (climateDataValue.MaxTemp_C < -50 || climateDataValue.MaxTemp_C > 50)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "MaxTemp_C", "-50", "50"), new[] { nameof(climateDataValue.MaxTemp_C) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "MaxTemp_C", "-50", "50"), new[] { nameof(climateDataValue.MaxTemp_C) }));
                 }
             }
 
@@ -265,7 +260,7 @@ namespace CSSPDBServices
             {
                 if (climateDataValue.MinTemp_C < -50 || climateDataValue.MinTemp_C > 50)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "MinTemp_C", "-50", "50"), new[] { nameof(climateDataValue.MinTemp_C) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "MinTemp_C", "-50", "50"), new[] { nameof(climateDataValue.MinTemp_C) }));
                 }
             }
 
@@ -273,7 +268,7 @@ namespace CSSPDBServices
             {
                 if (climateDataValue.HeatDegDays_C < -1000 || climateDataValue.HeatDegDays_C > 100)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "HeatDegDays_C", "-1000", "100"), new[] { nameof(climateDataValue.HeatDegDays_C) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "HeatDegDays_C", "-1000", "100"), new[] { nameof(climateDataValue.HeatDegDays_C) }));
                 }
             }
 
@@ -281,7 +276,7 @@ namespace CSSPDBServices
             {
                 if (climateDataValue.CoolDegDays_C < -1000 || climateDataValue.CoolDegDays_C > 100)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "CoolDegDays_C", "-1000", "100"), new[] { nameof(climateDataValue.CoolDegDays_C) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "CoolDegDays_C", "-1000", "100"), new[] { nameof(climateDataValue.CoolDegDays_C) }));
                 }
             }
 
@@ -289,7 +284,7 @@ namespace CSSPDBServices
             {
                 if (climateDataValue.SnowOnGround_cm < 0 || climateDataValue.SnowOnGround_cm > 10000)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "SnowOnGround_cm", "0", "10000"), new[] { nameof(climateDataValue.SnowOnGround_cm) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "SnowOnGround_cm", "0", "10000"), new[] { nameof(climateDataValue.SnowOnGround_cm) }));
                 }
             }
 
@@ -297,7 +292,7 @@ namespace CSSPDBServices
             {
                 if (climateDataValue.DirMaxGust_0North < 0 || climateDataValue.DirMaxGust_0North > 360)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "DirMaxGust_0North", "0", "360"), new[] { nameof(climateDataValue.DirMaxGust_0North) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "DirMaxGust_0North", "0", "360"), new[] { nameof(climateDataValue.DirMaxGust_0North) }));
                 }
             }
 
@@ -305,7 +300,7 @@ namespace CSSPDBServices
             {
                 if (climateDataValue.SpdMaxGust_kmh < 0 || climateDataValue.SpdMaxGust_kmh > 300)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "SpdMaxGust_kmh", "0", "300"), new[] { nameof(climateDataValue.SpdMaxGust_kmh) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "SpdMaxGust_kmh", "0", "300"), new[] { nameof(climateDataValue.SpdMaxGust_kmh) }));
                 }
             }
 
@@ -313,13 +308,13 @@ namespace CSSPDBServices
 
             if (climateDataValue.LastUpdateDate_UTC.Year == 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { nameof(climateDataValue.LastUpdateDate_UTC) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { nameof(climateDataValue.LastUpdateDate_UTC) }));
             }
             else
             {
                 if (climateDataValue.LastUpdateDate_UTC.Year < 1980)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { nameof(climateDataValue.LastUpdateDate_UTC) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { nameof(climateDataValue.LastUpdateDate_UTC) }));
                 }
             }
 
@@ -328,7 +323,7 @@ namespace CSSPDBServices
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", climateDataValue.LastUpdateContactTVItemID.ToString()), new[] { nameof(climateDataValue.LastUpdateContactTVItemID) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", climateDataValue.LastUpdateContactTVItemID.ToString()), new[] { nameof(climateDataValue.LastUpdateContactTVItemID)}));
             }
             else
             {
@@ -338,10 +333,11 @@ namespace CSSPDBServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(climateDataValue.LastUpdateContactTVItemID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(climateDataValue.LastUpdateContactTVItemID) }));
                 }
             }
 
+            return ValidationResults.Count == 0 ? true : false;
         }
         #endregion Functions private
     }

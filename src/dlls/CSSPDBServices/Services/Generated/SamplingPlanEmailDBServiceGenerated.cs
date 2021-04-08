@@ -19,7 +19,6 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using LoggedInServices;
 using Microsoft.Extensions.Configuration;
-using CSSPScrambleServices;
 
 namespace CSSPDBServices
 {
@@ -41,9 +40,8 @@ namespace CSSPDBServices
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IScrambleService ScrambleService { get; }
         private IEnums enums { get; }
-        private IEnumerable<ValidationResult> ValidationResults { get; set; }
+        private List<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -54,7 +52,6 @@ namespace CSSPDBServices
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.ScrambleService = ScrambleService;
             this.enums = enums;
             this.db = db;
         }
@@ -65,7 +62,7 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(""));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             SamplingPlanEmail samplingPlanEmail = (from c in db.SamplingPlanEmails.AsNoTracking()
@@ -83,7 +80,7 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(""));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             List<SamplingPlanEmail> samplingPlanEmailList = (from c in db.SamplingPlanEmails.AsNoTracking() orderby c.SamplingPlanEmailID select c).Skip(skip).Take(take).ToList();
@@ -94,7 +91,7 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             SamplingPlanEmail samplingPlanEmail = (from c in db.SamplingPlanEmails
@@ -122,11 +119,10 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
-            ValidationResults = Validate(new ValidationContext(samplingPlanEmail), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
+            if (!Validate(new ValidationContext(samplingPlanEmail), ActionDBTypeEnum.Create))
             {
                 return await Task.FromResult(BadRequest(ValidationResults));
             }
@@ -147,11 +143,10 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
-            ValidationResults = Validate(new ValidationContext(samplingPlanEmail), ActionDBTypeEnum.Update);
-            if (ValidationResults.Count() > 0)
+            if (!Validate(new ValidationContext(samplingPlanEmail), ActionDBTypeEnum.Update))
             {
                 return await Task.FromResult(BadRequest(ValidationResults));
             }
@@ -171,7 +166,7 @@ namespace CSSPDBServices
         #endregion Functions public
 
         #region Functions private
-        private IEnumerable<ValidationResult> Validate(ValidationContext validationContext, ActionDBTypeEnum actionDBType)
+        private bool Validate(ValidationContext validationContext, ActionDBTypeEnum actionDBType)
         {
             string retStr = "";
             SamplingPlanEmail samplingPlanEmail = validationContext.ObjectInstance as SamplingPlanEmail;
@@ -180,19 +175,19 @@ namespace CSSPDBServices
             {
                 if (samplingPlanEmail.SamplingPlanEmailID == 0)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SamplingPlanEmailID"), new[] { nameof(samplingPlanEmail.SamplingPlanEmailID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SamplingPlanEmailID"), new[] { nameof(samplingPlanEmail.SamplingPlanEmailID) }));
                 }
 
                 if (!(from c in db.SamplingPlanEmails.AsNoTracking() select c).Where(c => c.SamplingPlanEmailID == samplingPlanEmail.SamplingPlanEmailID).Any())
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "SamplingPlanEmail", "SamplingPlanEmailID", samplingPlanEmail.SamplingPlanEmailID.ToString()), new[] { nameof(samplingPlanEmail.SamplingPlanEmailID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "SamplingPlanEmail", "SamplingPlanEmailID", samplingPlanEmail.SamplingPlanEmailID.ToString()), new[] { nameof(samplingPlanEmail.SamplingPlanEmailID) }));
                 }
             }
 
             retStr = enums.EnumTypeOK(typeof(DBCommandEnum), (int?)samplingPlanEmail.DBCommand);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"), new[] { nameof(samplingPlanEmail.DBCommand) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"), new[] { nameof(samplingPlanEmail.DBCommand) }));
             }
 
             SamplingPlan SamplingPlanSamplingPlanID = null;
@@ -200,17 +195,17 @@ namespace CSSPDBServices
 
             if (SamplingPlanSamplingPlanID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "SamplingPlan", "SamplingPlanID", samplingPlanEmail.SamplingPlanID.ToString()), new[] { nameof(samplingPlanEmail.SamplingPlanID) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "SamplingPlan", "SamplingPlanID", samplingPlanEmail.SamplingPlanID.ToString()), new[] { nameof(samplingPlanEmail.SamplingPlanID)}));
             }
 
             if (string.IsNullOrWhiteSpace(samplingPlanEmail.Email))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Email"), new[] { nameof(samplingPlanEmail.Email) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Email"), new[] { nameof(samplingPlanEmail.Email) }));
             }
 
             if (!string.IsNullOrWhiteSpace(samplingPlanEmail.Email) && samplingPlanEmail.Email.Length > 150)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Email", "150"), new[] { nameof(samplingPlanEmail.Email) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Email", "150"), new[] { nameof(samplingPlanEmail.Email) }));
             }
 
             if (!string.IsNullOrWhiteSpace(samplingPlanEmail.Email))
@@ -218,19 +213,19 @@ namespace CSSPDBServices
                 Regex regex = new Regex(@"^([\w\!\#$\%\&\'*\+\-\/\=\?\^`{\|\}\~]+\.)*[\w\!\#$\%\&\'‌​*\+\-\/\=\?\^`{\|\}\~]+@((((([a-zA-Z0-9]{1}[a-zA-Z0-9\-]{0,62}[a-zA-Z0-9]{1})|[‌​a-zA-Z])\.)+[a-zA-Z]{2,6})|(\d{1,3}\.){3}\d{1,3}(\:\d{1,5})?)$");
                 if (!regex.IsMatch(samplingPlanEmail.Email))
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotAValidEmail, "Email"), new[] { nameof(samplingPlanEmail.Email) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotAValidEmail, "Email"), new[] { nameof(samplingPlanEmail.Email) }));
                 }
             }
 
             if (samplingPlanEmail.LastUpdateDate_UTC.Year == 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { nameof(samplingPlanEmail.LastUpdateDate_UTC) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { nameof(samplingPlanEmail.LastUpdateDate_UTC) }));
             }
             else
             {
                 if (samplingPlanEmail.LastUpdateDate_UTC.Year < 1980)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { nameof(samplingPlanEmail.LastUpdateDate_UTC) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { nameof(samplingPlanEmail.LastUpdateDate_UTC) }));
                 }
             }
 
@@ -239,7 +234,7 @@ namespace CSSPDBServices
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", samplingPlanEmail.LastUpdateContactTVItemID.ToString()), new[] { nameof(samplingPlanEmail.LastUpdateContactTVItemID) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", samplingPlanEmail.LastUpdateContactTVItemID.ToString()), new[] { nameof(samplingPlanEmail.LastUpdateContactTVItemID)}));
             }
             else
             {
@@ -249,10 +244,11 @@ namespace CSSPDBServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(samplingPlanEmail.LastUpdateContactTVItemID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(samplingPlanEmail.LastUpdateContactTVItemID) }));
                 }
             }
 
+            return ValidationResults.Count == 0 ? true : false;
         }
         #endregion Functions private
     }

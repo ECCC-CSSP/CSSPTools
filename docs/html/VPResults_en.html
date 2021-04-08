@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>CSSPDB Model Documentation</title>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+<a href="table_en.html">Return to table list</a>
+<h1>Table&nbsp;---&nbsp;VPResults</h1>
+<ul>
+<li>
+VPResultID -- Int32 (key)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contains the unique identifier on each row of the VPResults table</span>
+</li>
+<li>
+DBCommand -- DBCommandEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Identify the database command for local database sync</span>
+</li>
+<li>
+VPScenarioID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Link to the VPScenarios table representing the visual plumes scenario</span>
+</li>
+<li>
+Ordinal -- Int32 (min=0) (max=1000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Ordinal</span>
+</li>
+<li>
+Concentration_MPN_100ml -- Int32 (min=0) (max=10000000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Concentration in most probable number per 100 milli-Litres</span>
+</li>
+<li>
+Dilution -- Double (min=0) (max=1000000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Dilution</span>
+</li>
+<li>
+FarFieldWidth_m -- Double (min=0) (max=10000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Far field width in meters</span>
+</li>
+<li>
+DispersionDistance_m -- Double (min=0) (max=100000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Dispersion distance in meters</span>
+</li>
+<li>
+TravelTime_hour -- Double (min=0) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Travel time in hours</span>
+</li>
+<li>
+LastUpdateDate_UTC -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contains the date of the last update in UTC</span>
+</li>
+<li>
+LastUpdateContactTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contact TVItemID who made the last changes</span>
+</li>
+</ul>
+<a href="table_en.html">Return to table list</a>
+</body>
+</html>

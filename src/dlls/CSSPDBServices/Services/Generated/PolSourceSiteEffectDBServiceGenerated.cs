@@ -19,7 +19,6 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using LoggedInServices;
 using Microsoft.Extensions.Configuration;
-using CSSPScrambleServices;
 
 namespace CSSPDBServices
 {
@@ -41,9 +40,8 @@ namespace CSSPDBServices
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IScrambleService ScrambleService { get; }
         private IEnums enums { get; }
-        private IEnumerable<ValidationResult> ValidationResults { get; set; }
+        private List<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -54,7 +52,6 @@ namespace CSSPDBServices
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.ScrambleService = ScrambleService;
             this.enums = enums;
             this.db = db;
         }
@@ -65,7 +62,7 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(""));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             PolSourceSiteEffect polSourceSiteEffect = (from c in db.PolSourceSiteEffects.AsNoTracking()
@@ -83,7 +80,7 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(""));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             List<PolSourceSiteEffect> polSourceSiteEffectList = (from c in db.PolSourceSiteEffects.AsNoTracking() orderby c.PolSourceSiteEffectID select c).Skip(skip).Take(take).ToList();
@@ -94,7 +91,7 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             PolSourceSiteEffect polSourceSiteEffect = (from c in db.PolSourceSiteEffects
@@ -122,11 +119,10 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
-            ValidationResults = Validate(new ValidationContext(polSourceSiteEffect), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
+            if (!Validate(new ValidationContext(polSourceSiteEffect), ActionDBTypeEnum.Create))
             {
                 return await Task.FromResult(BadRequest(ValidationResults));
             }
@@ -147,11 +143,10 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
-            ValidationResults = Validate(new ValidationContext(polSourceSiteEffect), ActionDBTypeEnum.Update);
-            if (ValidationResults.Count() > 0)
+            if (!Validate(new ValidationContext(polSourceSiteEffect), ActionDBTypeEnum.Update))
             {
                 return await Task.FromResult(BadRequest(ValidationResults));
             }
@@ -171,7 +166,7 @@ namespace CSSPDBServices
         #endregion Functions public
 
         #region Functions private
-        private IEnumerable<ValidationResult> Validate(ValidationContext validationContext, ActionDBTypeEnum actionDBType)
+        private bool Validate(ValidationContext validationContext, ActionDBTypeEnum actionDBType)
         {
             string retStr = "";
             PolSourceSiteEffect polSourceSiteEffect = validationContext.ObjectInstance as PolSourceSiteEffect;
@@ -180,19 +175,19 @@ namespace CSSPDBServices
             {
                 if (polSourceSiteEffect.PolSourceSiteEffectID == 0)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "PolSourceSiteEffectID"), new[] { nameof(polSourceSiteEffect.PolSourceSiteEffectID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "PolSourceSiteEffectID"), new[] { nameof(polSourceSiteEffect.PolSourceSiteEffectID) }));
                 }
 
                 if (!(from c in db.PolSourceSiteEffects.AsNoTracking() select c).Where(c => c.PolSourceSiteEffectID == polSourceSiteEffect.PolSourceSiteEffectID).Any())
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "PolSourceSiteEffect", "PolSourceSiteEffectID", polSourceSiteEffect.PolSourceSiteEffectID.ToString()), new[] { nameof(polSourceSiteEffect.PolSourceSiteEffectID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "PolSourceSiteEffect", "PolSourceSiteEffectID", polSourceSiteEffect.PolSourceSiteEffectID.ToString()), new[] { nameof(polSourceSiteEffect.PolSourceSiteEffectID) }));
                 }
             }
 
             retStr = enums.EnumTypeOK(typeof(DBCommandEnum), (int?)polSourceSiteEffect.DBCommand);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"), new[] { nameof(polSourceSiteEffect.DBCommand) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"), new[] { nameof(polSourceSiteEffect.DBCommand) }));
             }
 
             TVItem TVItemPolSourceSiteOrInfrastructureTVItemID = null;
@@ -200,7 +195,7 @@ namespace CSSPDBServices
 
             if (TVItemPolSourceSiteOrInfrastructureTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "PolSourceSiteOrInfrastructureTVItemID", polSourceSiteEffect.PolSourceSiteOrInfrastructureTVItemID.ToString()), new[] { nameof(polSourceSiteEffect.PolSourceSiteOrInfrastructureTVItemID) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "PolSourceSiteOrInfrastructureTVItemID", polSourceSiteEffect.PolSourceSiteOrInfrastructureTVItemID.ToString()), new[] { nameof(polSourceSiteEffect.PolSourceSiteOrInfrastructureTVItemID)}));
             }
             else
             {
@@ -211,7 +206,7 @@ namespace CSSPDBServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemPolSourceSiteOrInfrastructureTVItemID.TVType))
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "PolSourceSiteOrInfrastructureTVItemID", "Infrastructure,PolSourceSite"), new[] { nameof(polSourceSiteEffect.PolSourceSiteOrInfrastructureTVItemID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "PolSourceSiteOrInfrastructureTVItemID", "Infrastructure,PolSourceSite"), new[] { nameof(polSourceSiteEffect.PolSourceSiteOrInfrastructureTVItemID) }));
                 }
             }
 
@@ -220,7 +215,7 @@ namespace CSSPDBServices
 
             if (TVItemMWQMSiteTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "MWQMSiteTVItemID", polSourceSiteEffect.MWQMSiteTVItemID.ToString()), new[] { nameof(polSourceSiteEffect.MWQMSiteTVItemID) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "MWQMSiteTVItemID", polSourceSiteEffect.MWQMSiteTVItemID.ToString()), new[] { nameof(polSourceSiteEffect.MWQMSiteTVItemID)}));
             }
             else
             {
@@ -230,13 +225,13 @@ namespace CSSPDBServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemMWQMSiteTVItemID.TVType))
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "MWQMSiteTVItemID", "MWQMSite"), new[] { nameof(polSourceSiteEffect.MWQMSiteTVItemID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "MWQMSiteTVItemID", "MWQMSite"), new[] { nameof(polSourceSiteEffect.MWQMSiteTVItemID) }));
                 }
             }
 
             if (!string.IsNullOrWhiteSpace(polSourceSiteEffect.PolSourceSiteEffectTermIDs) && polSourceSiteEffect.PolSourceSiteEffectTermIDs.Length > 250)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "PolSourceSiteEffectTermIDs", "250"), new[] { nameof(polSourceSiteEffect.PolSourceSiteEffectTermIDs) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "PolSourceSiteEffectTermIDs", "250"), new[] { nameof(polSourceSiteEffect.PolSourceSiteEffectTermIDs) }));
             }
 
             //Comments has no StringLength Attribute
@@ -248,7 +243,7 @@ namespace CSSPDBServices
 
                 if (TVItemAnalysisDocumentTVItemID == null)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "AnalysisDocumentTVItemID", (polSourceSiteEffect.AnalysisDocumentTVItemID == null ? "" : polSourceSiteEffect.AnalysisDocumentTVItemID.ToString())), new[] { nameof(polSourceSiteEffect.AnalysisDocumentTVItemID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "AnalysisDocumentTVItemID", (polSourceSiteEffect.AnalysisDocumentTVItemID == null ? "" : polSourceSiteEffect.AnalysisDocumentTVItemID.ToString())), new[] { nameof(polSourceSiteEffect.AnalysisDocumentTVItemID) }));
                 }
                 else
                 {
@@ -258,20 +253,20 @@ namespace CSSPDBServices
                     };
                     if (!AllowableTVTypes.Contains(TVItemAnalysisDocumentTVItemID.TVType))
                     {
-                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "AnalysisDocumentTVItemID", "File"), new[] { nameof(polSourceSiteEffect.AnalysisDocumentTVItemID) });
+                        ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "AnalysisDocumentTVItemID", "File"), new[] { nameof(polSourceSiteEffect.AnalysisDocumentTVItemID) }));
                     }
                 }
             }
 
             if (polSourceSiteEffect.LastUpdateDate_UTC.Year == 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { nameof(polSourceSiteEffect.LastUpdateDate_UTC) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { nameof(polSourceSiteEffect.LastUpdateDate_UTC) }));
             }
             else
             {
                 if (polSourceSiteEffect.LastUpdateDate_UTC.Year < 1980)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { nameof(polSourceSiteEffect.LastUpdateDate_UTC) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { nameof(polSourceSiteEffect.LastUpdateDate_UTC) }));
                 }
             }
 
@@ -280,7 +275,7 @@ namespace CSSPDBServices
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", polSourceSiteEffect.LastUpdateContactTVItemID.ToString()), new[] { nameof(polSourceSiteEffect.LastUpdateContactTVItemID) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", polSourceSiteEffect.LastUpdateContactTVItemID.ToString()), new[] { nameof(polSourceSiteEffect.LastUpdateContactTVItemID)}));
             }
             else
             {
@@ -290,10 +285,11 @@ namespace CSSPDBServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(polSourceSiteEffect.LastUpdateContactTVItemID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(polSourceSiteEffect.LastUpdateContactTVItemID) }));
                 }
             }
 
+            return ValidationResults.Count == 0 ? true : false;
         }
         #endregion Functions private
     }

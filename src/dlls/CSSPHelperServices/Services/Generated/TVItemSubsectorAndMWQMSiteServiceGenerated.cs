@@ -24,7 +24,7 @@ namespace CSSPHelperServices
 {
     public interface ITVItemSubsectorAndMWQMSiteService
     {
-        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+        bool Validate(ValidationContext validationContext);
     }
     public partial class TVItemSubsectorAndMWQMSiteService : ITVItemSubsectorAndMWQMSiteService
     {
@@ -32,6 +32,7 @@ namespace CSSPHelperServices
         #endregion Variables
 
         #region Properties
+        private List<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -41,7 +42,7 @@ namespace CSSPHelperServices
         #endregion Constructors
 
         #region Functions public
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        public bool Validate(ValidationContext validationContext)
         {
             TVItemSubsectorAndMWQMSite tvItemSubsectorAndMWQMSite = validationContext.ObjectInstance as TVItemSubsectorAndMWQMSite;
 
@@ -54,12 +55,7 @@ namespace CSSPHelperServices
                 //CSSPError: Type not implemented [TVItemMWQMSiteDuplicate] of type [TVItem]
 
                 //CSSPError: Type not implemented [TVItemMWQMSiteDuplicate] of type [TVItem]
-
-            bool a = false;
-            if (a)
-            {
-                yield return new ValidationResult("");
-            }
+            return ValidationResults.Count == 0 ? true : false;
         }
         #endregion Functions public
     }

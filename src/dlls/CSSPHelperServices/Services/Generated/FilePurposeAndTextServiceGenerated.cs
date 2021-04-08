@@ -24,7 +24,7 @@ namespace CSSPHelperServices
 {
     public interface IFilePurposeAndTextService
     {
-        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+        bool Validate(ValidationContext validationContext);
     }
     public partial class FilePurposeAndTextService : IFilePurposeAndTextService
     {
@@ -32,6 +32,7 @@ namespace CSSPHelperServices
         #endregion Variables
 
         #region Properties
+        private List<ValidationResult> ValidationResults { get; set; }
         private IEnums enums { get; }
         #endregion Properties
 
@@ -43,7 +44,7 @@ namespace CSSPHelperServices
         #endregion Constructors
 
         #region Functions public
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        public bool Validate(ValidationContext validationContext)
         {
             string retStr = "";
             FilePurposeAndText filePurposeAndText = validationContext.ObjectInstance as FilePurposeAndText;
@@ -51,14 +52,15 @@ namespace CSSPHelperServices
             retStr = enums.EnumTypeOK(typeof(FilePurposeEnum), (int?)filePurposeAndText.FilePurpose);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "FilePurpose"), new[] { "FilePurpose" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "FilePurpose"), new[] { "FilePurpose" }));
             }
 
             if (!string.IsNullOrWhiteSpace(filePurposeAndText.FilePurposeText) && filePurposeAndText.FilePurposeText.Length > 100)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "FilePurposeText", "100"), new[] { "FilePurposeText" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "FilePurposeText", "100"), new[] { "FilePurposeText" }));
             }
 
+            return ValidationResults.Count == 0 ? true : false;
         }
         #endregion Functions public
     }

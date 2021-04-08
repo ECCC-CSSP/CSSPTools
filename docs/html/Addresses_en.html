@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>CSSPDB Model Documentation</title>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+<a href="table_en.html">Return to table list</a>
+<h1>Table&nbsp;---&nbsp;Addresses</h1>
+<ul>
+<li>
+AddressID -- Int32 (key)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contains the unique identifier on each row of the Addresses table</span>
+</li>
+<li>
+DBCommand -- DBCommandEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Identify the database command for local database sync</span>
+</li>
+<li>
+AddressTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Link to the TVItems table with the unique identifier</span>
+</li>
+<li>
+AddressType -- AddressTypeEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Address type</span>
+</li>
+<li>
+CountryTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Link to the TVItems table representing the country</span>
+</li>
+<li>
+ProvinceTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Link to the TVItems table representing the province</span>
+</li>
+<li>
+MunicipalityTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Link to the TVItems table representing the municipality</span>
+</li>
+<li>
+StreetName -- String (max=200)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Street name of the address</span>
+</li>
+<li>
+StreetNumber -- String (max=50)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Street number of the address</span>
+</li>
+<li>
+StreetType -- StreetTypeEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Street type of the address</span>
+</li>
+<li>
+PostalCode -- String (min=6) (max=11)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Postal code of the address</span>
+</li>
+<li>
+GoogleAddressText -- String (min=10) (max=200)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Google address provided by Google Location Service</span>
+</li>
+<li>
+LastUpdateDate_UTC -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contains the date of the last update in UTC</span>
+</li>
+<li>
+LastUpdateContactTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contact TVItemID who made the last changes</span>
+</li>
+</ul>
+<a href="table_en.html">Return to table list</a>
+</body>
+</html>

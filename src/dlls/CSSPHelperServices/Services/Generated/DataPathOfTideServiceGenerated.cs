@@ -24,7 +24,7 @@ namespace CSSPHelperServices
 {
     public interface IDataPathOfTideService
     {
-        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+        bool Validate(ValidationContext validationContext);
     }
     public partial class DataPathOfTideService : IDataPathOfTideService
     {
@@ -32,6 +32,7 @@ namespace CSSPHelperServices
         #endregion Variables
 
         #region Properties
+        private List<ValidationResult> ValidationResults { get; set; }
         private IEnums enums { get; }
         #endregion Properties
 
@@ -43,19 +44,19 @@ namespace CSSPHelperServices
         #endregion Constructors
 
         #region Functions public
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        public bool Validate(ValidationContext validationContext)
         {
             string retStr = "";
             DataPathOfTide dataPathOfTide = validationContext.ObjectInstance as DataPathOfTide;
 
             if (string.IsNullOrWhiteSpace(dataPathOfTide.Text))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Text"), new[] { "Text" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Text"), new[] { "Text" }));
             }
 
             if (!string.IsNullOrWhiteSpace(dataPathOfTide.Text) && (dataPathOfTide.Text.Length < 1 || dataPathOfTide.Text.Length > 200))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "Text", "1", "200"), new[] { "Text" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "Text", "1", "200"), new[] { "Text" }));
             }
 
             if (dataPathOfTide.WebTideDataSet != null)
@@ -63,15 +64,16 @@ namespace CSSPHelperServices
                 retStr = enums.EnumTypeOK(typeof(WebTideDataSetEnum), (int?)dataPathOfTide.WebTideDataSet);
                 if (dataPathOfTide.WebTideDataSet == null || !string.IsNullOrWhiteSpace(retStr))
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "WebTideDataSet"), new[] { "WebTideDataSet" });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "WebTideDataSet"), new[] { "WebTideDataSet" }));
                 }
             }
 
             if (!string.IsNullOrWhiteSpace(dataPathOfTide.WebTideDataSetText) && dataPathOfTide.WebTideDataSetText.Length > 100)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "WebTideDataSetText", "100"), new[] { "WebTideDataSetText" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "WebTideDataSetText", "100"), new[] { "WebTideDataSetText" }));
             }
 
+            return ValidationResults.Count == 0 ? true : false;
         }
         #endregion Functions public
     }

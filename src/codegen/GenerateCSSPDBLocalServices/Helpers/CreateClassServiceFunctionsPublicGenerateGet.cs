@@ -56,7 +56,7 @@ namespace GenerateCSSPDBServices
                     sb.AppendLine(@"        {");
                     sb.AppendLine(@"            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)");
                     sb.AppendLine(@"            {");
-                    sb.AppendLine(@"                return await Task.FromResult(Unauthorized(""""));");
+                    sb.AppendLine(@"                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));");
                     sb.AppendLine(@"            }");
                     sb.AppendLine(@"");
                     sb.AppendLine($@"            { TypeName } { TypeNameLower } = (from c in dbLocal.{ TypeName }{ Plurial }.AsNoTracking()");
@@ -74,7 +74,7 @@ namespace GenerateCSSPDBServices
                     sb.AppendLine(@"        {");
                     sb.AppendLine(@"            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)");
                     sb.AppendLine(@"            {");
-                    sb.AppendLine(@"                return await Task.FromResult(Unauthorized(""""));");
+                    sb.AppendLine(@"                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));");
                     sb.AppendLine(@"            }");
                     sb.AppendLine(@"");
                     sb.AppendLine($@"            List<{ TypeName }> { TypeNameLower }List = (from c in dbLocal.{ TypeName }{ Plurial }.AsNoTracking() orderby c.{ TypeName.Replace("Local", "") }ID select c).Skip(skip).Take(take).ToList();");

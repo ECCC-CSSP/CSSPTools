@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>CSSPDB Model Documentation</title>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+<a href="table_en.html">Return to table list</a>
+<h1>Table&nbsp;---&nbsp;MikeSourceStartEnds</h1>
+<ul>
+<li>
+MikeSourceStartEndID -- Int32 (key)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contains the unique identifier on each row of the MikeSourceStartEnds table</span>
+</li>
+<li>
+DBCommand -- DBCommandEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Identify the database command for local database sync</span>
+</li>
+<li>
+MikeSourceID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Link to the MikeSources table representing MIKE source</span>
+</li>
+<li>
+StartDateAndTime_Local -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Start date and time (local)</span>
+</li>
+<li>
+EndDateAndTime_Local -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;End date and time (local)</span>
+</li>
+<li>
+SourceFlowStart_m3_day -- Double (min=0) (max=1000000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Start of source flow in cubic meters per day</span>
+</li>
+<li>
+SourceFlowEnd_m3_day -- Double (min=0) (max=1000000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;End of source flow in cubic meters per day</span>
+</li>
+<li>
+SourcePollutionStart_MPN_100ml -- Int32 (min=0) (max=10000000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Start of source concentration in most probable number of fecal coliform colonies per 100 milli-Litres</span>
+</li>
+<li>
+SourcePollutionEnd_MPN_100ml -- Int32 (min=0) (max=10000000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;End of source concentration in most probable number of fecal coliform colonies per 100 milli-Litres</span>
+</li>
+<li>
+SourceTemperatureStart_C -- Double (min=-10) (max=40)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Start of source temperature in degree Celcius</span>
+</li>
+<li>
+SourceTemperatureEnd_C -- Double (min=-10) (max=40)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;End of source temperature in degree Celcius</span>
+</li>
+<li>
+SourceSalinityStart_PSU -- Double (min=0) (max=40)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Start of source salinity (PSU)</span>
+</li>
+<li>
+SourceSalinityEnd_PSU -- Double (min=0) (max=40)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;End of source salinity (PSU)</span>
+</li>
+<li>
+LastUpdateDate_UTC -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contains the date of the last update in UTC</span>
+</li>
+<li>
+LastUpdateContactTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contact TVItemID who made the last changes</span>
+</li>
+</ul>
+<a href="table_en.html">Return to table list</a>
+</body>
+</html>

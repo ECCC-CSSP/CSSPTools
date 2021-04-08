@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>CSSPDB Model Documentation</title>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+<a href="table_en.html">Return to table list</a>
+<h1>Table&nbsp;---&nbsp;MWQMSubsectorLanguages</h1>
+<ul>
+<li>
+MWQMSubsectorLanguageID -- Int32 (key)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contains the unique identifier on each row of the MWQMSubsectorLanguages table</span>
+</li>
+<li>
+DBCommand -- DBCommandEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Identify the database command for local database sync</span>
+</li>
+<li>
+MWQMSubsectorID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Link to the MWQMSubsectors table representing the MWQM subsector</span>
+</li>
+<li>
+Language -- LanguageEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Language of item</span>
+</li>
+<li>
+SubsectorDesc -- String (max=250)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Subsector description</span>
+</li>
+<li>
+TranslationStatusSubsectorDesc -- TranslationStatusEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Translation status of the subsector description</span>
+</li>
+<li>
+LogBook -- String
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Log book</span>
+</li>
+<li>
+TranslationStatusLogBook -- TranslationStatusEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Translation status of the log book</span>
+</li>
+<li>
+LastUpdateDate_UTC -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contains the date of the last update in UTC</span>
+</li>
+<li>
+LastUpdateContactTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contact TVItemID who made the last changes</span>
+</li>
+</ul>
+<a href="table_en.html">Return to table list</a>
+</body>
+</html>

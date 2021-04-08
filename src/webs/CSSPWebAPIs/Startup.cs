@@ -17,9 +17,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using LoggedInServices;
-using CreateGzFileServices;
 using CSSPScrambleServices;
 using CSSPHelperServices;
+using CSSPAzureAppTaskModelServices;
 
 namespace CSSPWebAPIs
 {
@@ -76,13 +76,6 @@ namespace CSSPWebAPIs
             services.AddDbContext<CSSPDBContext>(options =>
                 options.UseSqlServer(DBConnStr));
 
-
-            //services.AddDbContext<ApplicationDbContext>(options =>
-            //    options.UseSqlServer(DBConnStr));
-
-            //services.AddIdentityCore<ApplicationUser>()
-            //.AddEntityFrameworkStores<ApplicationDbContext>();
-
             services.AddScoped<ICSSPCultureService, CSSPCultureService>();
             services.AddScoped<IEnums, Enums>();
             services.AddScoped<IScrambleService, ScrambleService>();
@@ -92,6 +85,8 @@ namespace CSSPWebAPIs
             services.AddScoped<IRegisterModelService, RegisterModelService>();
 
             LoadAllDBServices(services);
+
+            services.AddScoped<IAzureAppTaskModelService, AzureAppTaskModelService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

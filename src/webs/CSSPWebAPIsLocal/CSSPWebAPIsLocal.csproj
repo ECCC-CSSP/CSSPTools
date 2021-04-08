@@ -42,7 +42,6 @@
     <ProjectReference Include="..\..\dlls\CSSPDBSearchServices\CSSPDBSearchServices.csproj" />
     <ProjectReference Include="..\..\dlls\CSSPDBServices\CSSPDBServices.csproj" />
     <ProjectReference Include="..\..\dlls\CSSPReadGzFileServices\CSSPReadGzFileServices.csproj" />
-    <ProjectReference Include="..\..\dlls\CSSPWebAppLoadedServices\CSSPWebAppLoadedlServices.csproj" />
     <ProjectReference Include="..\..\dlls\CSSPWebModels\CSSPWebModels.csproj" />
   </ItemGroup>
 

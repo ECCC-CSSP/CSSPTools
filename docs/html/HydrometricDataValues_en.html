@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>CSSPDB Model Documentation</title>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+<a href="table_en.html">Return to table list</a>
+<h1>Table&nbsp;---&nbsp;HydrometricDataValues</h1>
+<ul>
+<li>
+HydrometricDataValueID -- Int32 (key)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contains the unique identifier on each row of the HydrometricDataValues table</span>
+</li>
+<li>
+DBCommand -- DBCommandEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Identify the database command for local database sync</span>
+</li>
+<li>
+HydrometricSiteID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;HydrometricSite link to parent HydrometricSites table item</span>
+</li>
+<li>
+DateTime_Local -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Date and time of observation. Almost all data is coming from the water office web site.</span>
+</li>
+<li>
+Keep -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Keep the data within the database. Sometime the database might get some data from the water office web site as temporary data which can be removed at a later date</span>
+</li>
+<li>
+StorageDataType -- StorageDataTypeEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Storage data type can be archived, forcasted or observed</span>
+</li>
+<li>
+HasBeenRead -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The stored data has been read from the weather office web site</span>
+</li>
+<li>
+Discharge_m3_s -- Double (min=0) (max=100000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Discharges  in cubic meters per second</span>
+</li>
+<li>
+DischargeEntered_m3_s -- Double (min=0) (max=100000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Discharges entered in cubic meters per second</span>
+</li>
+<li>
+Level_m -- Double (min=0) (max=10000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Levels in meters</span>
+</li>
+<li>
+HourlyValues -- String
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;String containing hourly values</span>
+</li>
+<li>
+LastUpdateDate_UTC -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contains the date of the last update in UTC</span>
+</li>
+<li>
+LastUpdateContactTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contact TVItemID who made the last changes</span>
+</li>
+</ul>
+<a href="table_en.html">Return to table list</a>
+</body>
+</html>

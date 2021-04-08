@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>CSSPDB Model Documentation</title>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+<a href="table_en.html">Return to table list</a>
+<h1>Table&nbsp;---&nbsp;Contacts</h1>
+<ul>
+<li>
+ContactID -- Int32 (key)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contains the unique identifier on each row of the Contacts table</span>
+</li>
+<li>
+DBCommand -- DBCommandEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Identify the database command for local database sync</span>
+</li>
+<li>
+Id -- String (max=450)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contains the unique identifier on each row of the AspNetUsers table</span>
+</li>
+<li>
+ContactTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Link to the TVItems table with the unique identifier</span>
+</li>
+<li>
+LoginEmail -- String (min=6) (max=255)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Login email for connecting to web site</span>
+</li>
+<li>
+FirstName -- String (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;First name</span>
+</li>
+<li>
+LastName -- String (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Last name</span>
+</li>
+<li>
+Initial -- String (max=50)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Initial</span>
+</li>
+<li>
+CellNumber -- String (max=50)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Cell number</span>
+</li>
+<li>
+CellNumberConfirmed -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Cell number confirmed</span>
+</li>
+<li>
+WebName -- String (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Web name</span>
+</li>
+<li>
+ContactTitle -- ContactTitleEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Title</span>
+</li>
+<li>
+IsAdmin -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Administrator</span>
+</li>
+<li>
+EmailValidated -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Email validated</span>
+</li>
+<li>
+Disabled -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Disabled</span>
+</li>
+<li>
+IsNew -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Is new</span>
+</li>
+<li>
+SamplingPlanner_ProvincesTVItemID -- String (max=200)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Sampling planner for provinces</span>
+</li>
+<li>
+PasswordHash -- String (max=255)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Password hash</span>
+</li>
+<li>
+Token -- String (max=255)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Javascript Web Token</span>
+</li>
+<li>
+HasInternetConnection -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Has internet connection</span>
+</li>
+<li>
+IsLoggedIn -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Is logged in</span>
+</li>
+<li>
+GoogleMapKeyHash -- String (max=255)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Google map key hash</span>
+</li>
+<li>
+AccessFailedCount -- Int32 (min=0) (max=10)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Access failed count</span>
+</li>
+<li>
+LastUpdateDate_UTC -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contains the date of the last update in UTC</span>
+</li>
+<li>
+LastUpdateContactTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contact TVItemID who made the last changes</span>
+</li>
+</ul>
+<a href="table_en.html">Return to table list</a>
+</body>
+</html>

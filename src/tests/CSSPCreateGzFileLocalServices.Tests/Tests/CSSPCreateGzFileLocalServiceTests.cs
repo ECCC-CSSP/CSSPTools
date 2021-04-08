@@ -58,7 +58,7 @@ namespace CreateGzFileLocalServices.Tests
             //    TVTextFR = "Nouveau Secteur"
             //};
 
-            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModify(postTVItemModel);
+            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModifyLocal(postTVItemModel);
             //Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             //Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             //bool boolRet = (bool)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -103,7 +103,7 @@ namespace CreateGzFileLocalServices.Tests
             //    TVTextFR = "Nouveau Secteur"
             //};
 
-            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModify(postTVItemModel);
+            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModifyLocal(postTVItemModel);
             //Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             //Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             //bool boolRet = (bool)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -145,7 +145,7 @@ namespace CreateGzFileLocalServices.Tests
                 TVTextFR = "Nouveau Pays"
             };
 
-            var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModify(postTVItemModel);
+            var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModifyLocal(postTVItemModel);
             Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             bool boolRet = (bool)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -190,7 +190,7 @@ namespace CreateGzFileLocalServices.Tests
             //    TVTextFR = "Nouveau Courriel"
             //};
 
-            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModify(postTVItemModel);
+            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModifyLocal(postTVItemModel);
             //Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             //Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             //bool boolRet = (bool)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -235,7 +235,7 @@ namespace CreateGzFileLocalServices.Tests
             //    TVTextFR = "Nouveau Courriel"
             //};
 
-            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModify(postTVItemModel);
+            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModifyLocal(postTVItemModel);
             //Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             //Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             //bool boolRet = (bool)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -277,7 +277,7 @@ namespace CreateGzFileLocalServices.Tests
                 TVTextFR = "Nouvelle Municipalité"
             };
 
-            var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModify(postTVItemModel);
+            var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModifyLocal(postTVItemModel);
             Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             bool boolRet = (bool)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -322,7 +322,7 @@ namespace CreateGzFileLocalServices.Tests
             //    TVTextFR = "Nouveau Courriel"
             //};
 
-            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModify(postTVItemModel);
+            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModifyLocal(postTVItemModel);
             //Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             //Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             //bool boolRet = (bool)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -368,7 +368,7 @@ namespace CreateGzFileLocalServices.Tests
             //    TVTextFR = "Nouveau Courriel"
             //};
 
-            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModify(postTVItemModel);
+            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModifyLocal(postTVItemModel);
             //Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             //Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             //bool boolRet = (bool)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -413,7 +413,7 @@ namespace CreateGzFileLocalServices.Tests
             //    TVTextFR = "Nouveau Courriel"
             //};
 
-            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModify(postTVItemModel);
+            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModifyLocal(postTVItemModel);
             //Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             //Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             //bool boolRet = (bool)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -455,7 +455,7 @@ namespace CreateGzFileLocalServices.Tests
                 TVTextFR = "Nouvelle Province"
             };
 
-            var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModify(postTVItemModel);
+            var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModifyLocal(postTVItemModel);
             Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             bool boolRet = (bool)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -500,7 +500,7 @@ namespace CreateGzFileLocalServices.Tests
             //    TVTextFR = "Nouveau Courriel"
             //};
 
-            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModify(postTVItemModel);
+            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModifyLocal(postTVItemModel);
             //Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             //Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             //bool boolRet = (bool)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -545,7 +545,7 @@ namespace CreateGzFileLocalServices.Tests
             //    TVTextFR = "Nouveau Courriel"
             //};
 
-            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModify(postTVItemModel);
+            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModifyLocal(postTVItemModel);
             //Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             //Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             //bool boolRet = (bool)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -590,7 +590,7 @@ namespace CreateGzFileLocalServices.Tests
             //    TVTextFR = "Nouveau Courriel"
             //};
 
-            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModify(postTVItemModel);
+            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModifyLocal(postTVItemModel);
             //Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             //Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             //bool boolRet = (bool)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -632,7 +632,7 @@ namespace CreateGzFileLocalServices.Tests
                 TVTextFR = "Nouveau Secteur"
             };
 
-            var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModify(postTVItemModel);
+            var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModifyLocal(postTVItemModel);
             Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             bool boolRet = (bool)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -674,7 +674,7 @@ namespace CreateGzFileLocalServices.Tests
                 TVTextFR = "Nouveau Secteur"
             };
 
-            var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModify(postTVItemModel);
+            var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModifyLocal(postTVItemModel);
             Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             bool boolRet = (bool)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -716,7 +716,7 @@ namespace CreateGzFileLocalServices.Tests
                 TVTextFR = "Nouveau Secteur"
             };
 
-            var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModify(postTVItemModel);
+            var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModifyLocal(postTVItemModel);
             Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             bool boolRet = (bool)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -761,7 +761,7 @@ namespace CreateGzFileLocalServices.Tests
             //    TVTextFR = "Nouveau Courriel"
             //};
 
-            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModify(postTVItemModel);
+            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModifyLocal(postTVItemModel);
             //Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             //Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             //bool boolRet = (bool)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -803,7 +803,7 @@ namespace CreateGzFileLocalServices.Tests
                 TVTextFR = "Nouveau ClimateSite"
             };
 
-            var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModify(postTVItemModel);
+            var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModifyLocal(postTVItemModel);
             Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             bool boolRet = (bool)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -845,7 +845,7 @@ namespace CreateGzFileLocalServices.Tests
                 TVTextFR = "Nouveau Province"
             };
 
-            var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModify(postTVItemModel);
+            var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModifyLocal(postTVItemModel);
             Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             bool boolRet = (bool)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -890,7 +890,7 @@ namespace CreateGzFileLocalServices.Tests
             //    TVTextFR = "Nouveau Courriel"
             //};
 
-            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModify(postTVItemModel);
+            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModifyLocal(postTVItemModel);
             //Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             //Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             //bool boolRet = (bool)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -935,7 +935,7 @@ namespace CreateGzFileLocalServices.Tests
             //    TVTextFR = "Nouveau Courriel"
             //};
 
-            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModify(postTVItemModel);
+            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModifyLocal(postTVItemModel);
             //Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             //Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             //bool boolRet = (bool)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -977,7 +977,7 @@ namespace CreateGzFileLocalServices.Tests
                 TVTextFR = "Nouveau HydrometricSite"
             };
 
-            var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModify(postTVItemModel);
+            var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModifyLocal(postTVItemModel);
             Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             bool boolRet = (bool)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -1019,7 +1019,7 @@ namespace CreateGzFileLocalServices.Tests
                 TVTextFR = "Nouveau MikeScenario"
             };
 
-            var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModify(postTVItemModel);
+            var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModifyLocal(postTVItemModel);
             Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             bool boolRet = (bool)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -1061,7 +1061,7 @@ namespace CreateGzFileLocalServices.Tests
                 TVTextFR = "Nouveau Municipality"
             };
 
-            var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModify(postTVItemModel);
+            var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModifyLocal(postTVItemModel);
             Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             bool boolRet = (bool)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -1103,7 +1103,7 @@ namespace CreateGzFileLocalServices.Tests
                 TVTextFR = "Nouveau Infrastructure"
             };
 
-            var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModify(postTVItemModel);
+            var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModifyLocal(postTVItemModel);
             Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             bool boolRet = (bool)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -1148,7 +1148,7 @@ namespace CreateGzFileLocalServices.Tests
             //    TVTextFR = "Nouveau Infrastructure"
             //};
 
-            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModify(postTVItemModel);
+            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModifyLocal(postTVItemModel);
             //Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             //Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             //bool boolRet = (bool)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -1193,7 +1193,7 @@ namespace CreateGzFileLocalServices.Tests
             //    TVTextFR = "Nouveau Infrastructure"
             //};
 
-            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModify(postTVItemModel);
+            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModifyLocal(postTVItemModel);
             //Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             //Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             //bool boolRet = (bool)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -1238,7 +1238,7 @@ namespace CreateGzFileLocalServices.Tests
             //    TVTextFR = "Nouveau Infrastructure"
             //};
 
-            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModify(postTVItemModel);
+            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModifyLocal(postTVItemModel);
             //Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             //Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             //bool boolRet = (bool)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -1283,7 +1283,7 @@ namespace CreateGzFileLocalServices.Tests
             //    TVTextFR = "Nouveau Infrastructure"
             //};
 
-            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModify(postTVItemModel);
+            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModifyLocal(postTVItemModel);
             //Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             //Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             //bool boolRet = (bool)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -1328,7 +1328,7 @@ namespace CreateGzFileLocalServices.Tests
             //    TVTextFR = "Nouveau Infrastructure"
             //};
 
-            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModify(postTVItemModel);
+            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModifyLocal(postTVItemModel);
             //Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             //Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             //bool boolRet = (bool)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -1373,7 +1373,7 @@ namespace CreateGzFileLocalServices.Tests
             //    TVTextFR = "Nouveau Infrastructure"
             //};
 
-            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModify(postTVItemModel);
+            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModifyLocal(postTVItemModel);
             //Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             //Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             //bool boolRet = (bool)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -1418,7 +1418,7 @@ namespace CreateGzFileLocalServices.Tests
             //    TVTextFR = "Nouveau Infrastructure"
             //};
 
-            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModify(postTVItemModel);
+            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModifyLocal(postTVItemModel);
             //Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             //Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             //bool boolRet = (bool)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -1463,7 +1463,7 @@ namespace CreateGzFileLocalServices.Tests
             //    TVTextFR = "Nouveau Infrastructure"
             //};
 
-            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModify(postTVItemModel);
+            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModifyLocal(postTVItemModel);
             //Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             //Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             //bool boolRet = (bool)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -1508,7 +1508,7 @@ namespace CreateGzFileLocalServices.Tests
             //    TVTextFR = "Nouveau Infrastructure"
             //};
 
-            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModify(postTVItemModel);
+            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModifyLocal(postTVItemModel);
             //Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             //Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             //bool boolRet = (bool)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -1553,7 +1553,7 @@ namespace CreateGzFileLocalServices.Tests
             //    TVTextFR = "Nouveau Infrastructure"
             //};
 
-            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModify(postTVItemModel);
+            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModifyLocal(postTVItemModel);
             //Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             //Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             //bool boolRet = (bool)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -1598,7 +1598,7 @@ namespace CreateGzFileLocalServices.Tests
             //    TVTextFR = "Nouveau Infrastructure"
             //};
 
-            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModify(postTVItemModel);
+            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModifyLocal(postTVItemModel);
             //Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             //Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             //bool boolRet = (bool)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -1640,7 +1640,7 @@ namespace CreateGzFileLocalServices.Tests
                 TVTextFR = "Nouveau Area"
             };
 
-            var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModify(postTVItemModel);
+            var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModifyLocal(postTVItemModel);
             Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             bool boolRet = (bool)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -1682,7 +1682,7 @@ namespace CreateGzFileLocalServices.Tests
                 TVTextFR = "Nouveau Country"
             };
 
-            var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModify(postTVItemModel);
+            var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModifyLocal(postTVItemModel);
             Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             bool boolRet = (bool)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -1727,7 +1727,7 @@ namespace CreateGzFileLocalServices.Tests
             //    TVTextFR = "Nouveau Country"
             //};
 
-            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModify(postTVItemModel);
+            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModifyLocal(postTVItemModel);
             //Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             //Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             //bool boolRet = (bool)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -1769,7 +1769,7 @@ namespace CreateGzFileLocalServices.Tests
                 TVTextFR = "Nouveau Subsector"
             };
 
-            var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModify(postTVItemModel);
+            var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModifyLocal(postTVItemModel);
             Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             bool boolRet = (bool)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -1811,7 +1811,7 @@ namespace CreateGzFileLocalServices.Tests
                 TVTextFR = "Nouveau MWQMSite"
             };
 
-            var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModify(postTVItemModel);
+            var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModifyLocal(postTVItemModel);
             Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             bool boolRet = (bool)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -1856,7 +1856,7 @@ namespace CreateGzFileLocalServices.Tests
             //    TVTextFR = "Nouveau Country"
             //};
 
-            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModify(postTVItemModel);
+            //var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModifyLocal(postTVItemModel);
             //Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             //Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             //bool boolRet = (bool)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -1898,7 +1898,7 @@ namespace CreateGzFileLocalServices.Tests
                 TVTextFR = "Nouveau TideSite"
             };
 
-            var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModify(postTVItemModel);
+            var actionPostTVItemModelRes = await PostTVItemModelService.AddOrModifyLocal(postTVItemModel);
             Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             bool boolRet = (bool)((OkObjectResult)actionPostTVItemModelRes.Result).Value;

@@ -19,7 +19,6 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using LoggedInServices;
 using Microsoft.Extensions.Configuration;
-using CSSPScrambleServices;
 
 namespace CSSPDBServices
 {
@@ -41,9 +40,8 @@ namespace CSSPDBServices
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IScrambleService ScrambleService { get; }
         private IEnums enums { get; }
-        private IEnumerable<ValidationResult> ValidationResults { get; set; }
+        private List<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -54,7 +52,6 @@ namespace CSSPDBServices
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.ScrambleService = ScrambleService;
             this.enums = enums;
             this.db = db;
         }
@@ -65,7 +62,7 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(""));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             MikeSourceStartEnd mikeSourceStartEnd = (from c in db.MikeSourceStartEnds.AsNoTracking()
@@ -83,7 +80,7 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(""));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             List<MikeSourceStartEnd> mikeSourceStartEndList = (from c in db.MikeSourceStartEnds.AsNoTracking() orderby c.MikeSourceStartEndID select c).Skip(skip).Take(take).ToList();
@@ -94,7 +91,7 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             MikeSourceStartEnd mikeSourceStartEnd = (from c in db.MikeSourceStartEnds
@@ -122,11 +119,10 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
-            ValidationResults = Validate(new ValidationContext(mikeSourceStartEnd), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
+            if (!Validate(new ValidationContext(mikeSourceStartEnd), ActionDBTypeEnum.Create))
             {
                 return await Task.FromResult(BadRequest(ValidationResults));
             }
@@ -147,11 +143,10 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
-            ValidationResults = Validate(new ValidationContext(mikeSourceStartEnd), ActionDBTypeEnum.Update);
-            if (ValidationResults.Count() > 0)
+            if (!Validate(new ValidationContext(mikeSourceStartEnd), ActionDBTypeEnum.Update))
             {
                 return await Task.FromResult(BadRequest(ValidationResults));
             }
@@ -171,7 +166,7 @@ namespace CSSPDBServices
         #endregion Functions public
 
         #region Functions private
-        private IEnumerable<ValidationResult> Validate(ValidationContext validationContext, ActionDBTypeEnum actionDBType)
+        private bool Validate(ValidationContext validationContext, ActionDBTypeEnum actionDBType)
         {
             string retStr = "";
             MikeSourceStartEnd mikeSourceStartEnd = validationContext.ObjectInstance as MikeSourceStartEnd;
@@ -180,19 +175,19 @@ namespace CSSPDBServices
             {
                 if (mikeSourceStartEnd.MikeSourceStartEndID == 0)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "MikeSourceStartEndID"), new[] { nameof(mikeSourceStartEnd.MikeSourceStartEndID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "MikeSourceStartEndID"), new[] { nameof(mikeSourceStartEnd.MikeSourceStartEndID) }));
                 }
 
                 if (!(from c in db.MikeSourceStartEnds.AsNoTracking() select c).Where(c => c.MikeSourceStartEndID == mikeSourceStartEnd.MikeSourceStartEndID).Any())
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "MikeSourceStartEnd", "MikeSourceStartEndID", mikeSourceStartEnd.MikeSourceStartEndID.ToString()), new[] { nameof(mikeSourceStartEnd.MikeSourceStartEndID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "MikeSourceStartEnd", "MikeSourceStartEndID", mikeSourceStartEnd.MikeSourceStartEndID.ToString()), new[] { nameof(mikeSourceStartEnd.MikeSourceStartEndID) }));
                 }
             }
 
             retStr = enums.EnumTypeOK(typeof(DBCommandEnum), (int?)mikeSourceStartEnd.DBCommand);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"), new[] { nameof(mikeSourceStartEnd.DBCommand) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"), new[] { nameof(mikeSourceStartEnd.DBCommand) }));
             }
 
             MikeSource MikeSourceMikeSourceID = null;
@@ -200,87 +195,87 @@ namespace CSSPDBServices
 
             if (MikeSourceMikeSourceID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "MikeSource", "MikeSourceID", mikeSourceStartEnd.MikeSourceID.ToString()), new[] { nameof(mikeSourceStartEnd.MikeSourceID) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "MikeSource", "MikeSourceID", mikeSourceStartEnd.MikeSourceID.ToString()), new[] { nameof(mikeSourceStartEnd.MikeSourceID)}));
             }
 
             if (mikeSourceStartEnd.StartDateAndTime_Local.Year == 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "StartDateAndTime_Local"), new[] { nameof(mikeSourceStartEnd.StartDateAndTime_Local) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "StartDateAndTime_Local"), new[] { nameof(mikeSourceStartEnd.StartDateAndTime_Local) }));
             }
             else
             {
                 if (mikeSourceStartEnd.StartDateAndTime_Local.Year < 1980)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "StartDateAndTime_Local", "1980"), new[] { nameof(mikeSourceStartEnd.StartDateAndTime_Local) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "StartDateAndTime_Local", "1980"), new[] { nameof(mikeSourceStartEnd.StartDateAndTime_Local) }));
                 }
             }
 
             if (mikeSourceStartEnd.EndDateAndTime_Local.Year == 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "EndDateAndTime_Local"), new[] { nameof(mikeSourceStartEnd.EndDateAndTime_Local) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "EndDateAndTime_Local"), new[] { nameof(mikeSourceStartEnd.EndDateAndTime_Local) }));
             }
             else
             {
                 if (mikeSourceStartEnd.EndDateAndTime_Local.Year < 1980)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "EndDateAndTime_Local", "1980"), new[] { nameof(mikeSourceStartEnd.EndDateAndTime_Local) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "EndDateAndTime_Local", "1980"), new[] { nameof(mikeSourceStartEnd.EndDateAndTime_Local) }));
                 }
             }
 
             if (mikeSourceStartEnd.StartDateAndTime_Local > mikeSourceStartEnd.EndDateAndTime_Local)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._DateIsBiggerThan_, "EndDateAndTime_Local", "MikeSourceStartEndStartDateAndTime_Local"), new[] { nameof(mikeSourceStartEnd.EndDateAndTime_Local) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._DateIsBiggerThan_, "EndDateAndTime_Local", "MikeSourceStartEndStartDateAndTime_Local"), new[] { nameof(mikeSourceStartEnd.EndDateAndTime_Local) }));
             }
 
             if (mikeSourceStartEnd.SourceFlowStart_m3_day < 0 || mikeSourceStartEnd.SourceFlowStart_m3_day > 1000000)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "SourceFlowStart_m3_day", "0", "1000000"), new[] { nameof(mikeSourceStartEnd.SourceFlowStart_m3_day) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "SourceFlowStart_m3_day", "0", "1000000"), new[] { nameof(mikeSourceStartEnd.SourceFlowStart_m3_day) }));
             }
 
             if (mikeSourceStartEnd.SourceFlowEnd_m3_day < 0 || mikeSourceStartEnd.SourceFlowEnd_m3_day > 1000000)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "SourceFlowEnd_m3_day", "0", "1000000"), new[] { nameof(mikeSourceStartEnd.SourceFlowEnd_m3_day) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "SourceFlowEnd_m3_day", "0", "1000000"), new[] { nameof(mikeSourceStartEnd.SourceFlowEnd_m3_day) }));
             }
 
             if (mikeSourceStartEnd.SourcePollutionStart_MPN_100ml < 0 || mikeSourceStartEnd.SourcePollutionStart_MPN_100ml > 10000000)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "SourcePollutionStart_MPN_100ml", "0", "10000000"), new[] { nameof(mikeSourceStartEnd.SourcePollutionStart_MPN_100ml) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "SourcePollutionStart_MPN_100ml", "0", "10000000"), new[] { nameof(mikeSourceStartEnd.SourcePollutionStart_MPN_100ml) }));
             }
 
             if (mikeSourceStartEnd.SourcePollutionEnd_MPN_100ml < 0 || mikeSourceStartEnd.SourcePollutionEnd_MPN_100ml > 10000000)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "SourcePollutionEnd_MPN_100ml", "0", "10000000"), new[] { nameof(mikeSourceStartEnd.SourcePollutionEnd_MPN_100ml) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "SourcePollutionEnd_MPN_100ml", "0", "10000000"), new[] { nameof(mikeSourceStartEnd.SourcePollutionEnd_MPN_100ml) }));
             }
 
             if (mikeSourceStartEnd.SourceTemperatureStart_C < -10 || mikeSourceStartEnd.SourceTemperatureStart_C > 40)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "SourceTemperatureStart_C", "-10", "40"), new[] { nameof(mikeSourceStartEnd.SourceTemperatureStart_C) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "SourceTemperatureStart_C", "-10", "40"), new[] { nameof(mikeSourceStartEnd.SourceTemperatureStart_C) }));
             }
 
             if (mikeSourceStartEnd.SourceTemperatureEnd_C < -10 || mikeSourceStartEnd.SourceTemperatureEnd_C > 40)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "SourceTemperatureEnd_C", "-10", "40"), new[] { nameof(mikeSourceStartEnd.SourceTemperatureEnd_C) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "SourceTemperatureEnd_C", "-10", "40"), new[] { nameof(mikeSourceStartEnd.SourceTemperatureEnd_C) }));
             }
 
             if (mikeSourceStartEnd.SourceSalinityStart_PSU < 0 || mikeSourceStartEnd.SourceSalinityStart_PSU > 40)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "SourceSalinityStart_PSU", "0", "40"), new[] { nameof(mikeSourceStartEnd.SourceSalinityStart_PSU) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "SourceSalinityStart_PSU", "0", "40"), new[] { nameof(mikeSourceStartEnd.SourceSalinityStart_PSU) }));
             }
 
             if (mikeSourceStartEnd.SourceSalinityEnd_PSU < 0 || mikeSourceStartEnd.SourceSalinityEnd_PSU > 40)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "SourceSalinityEnd_PSU", "0", "40"), new[] { nameof(mikeSourceStartEnd.SourceSalinityEnd_PSU) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "SourceSalinityEnd_PSU", "0", "40"), new[] { nameof(mikeSourceStartEnd.SourceSalinityEnd_PSU) }));
             }
 
             if (mikeSourceStartEnd.LastUpdateDate_UTC.Year == 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { nameof(mikeSourceStartEnd.LastUpdateDate_UTC) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { nameof(mikeSourceStartEnd.LastUpdateDate_UTC) }));
             }
             else
             {
                 if (mikeSourceStartEnd.LastUpdateDate_UTC.Year < 1980)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { nameof(mikeSourceStartEnd.LastUpdateDate_UTC) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { nameof(mikeSourceStartEnd.LastUpdateDate_UTC) }));
                 }
             }
 
@@ -289,7 +284,7 @@ namespace CSSPDBServices
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", mikeSourceStartEnd.LastUpdateContactTVItemID.ToString()), new[] { nameof(mikeSourceStartEnd.LastUpdateContactTVItemID) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", mikeSourceStartEnd.LastUpdateContactTVItemID.ToString()), new[] { nameof(mikeSourceStartEnd.LastUpdateContactTVItemID)}));
             }
             else
             {
@@ -299,10 +294,11 @@ namespace CSSPDBServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(mikeSourceStartEnd.LastUpdateContactTVItemID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(mikeSourceStartEnd.LastUpdateContactTVItemID) }));
                 }
             }
 
+            return ValidationResults.Count == 0 ? true : false;
         }
         #endregion Functions private
     }

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>CSSPDB Model Documentation</title>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+<a href="table_fr.html">Retour à la liste de tables</a>
+<h1>Table&nbsp;---&nbsp;BoxModels</h1>
+<ul>
+<li>
+BoxModelID -- Int32 (key)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contient l'identifiant unique sur chaque ligne de la table BoxModels</span>
+</li>
+<li>
+DBCommand -- DBCommandEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Identifie la command de base de données pour syncroniser avec la base de données local</span>
+</li>
+<li>
+InfrastructureTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Lien à la table TVItems représentant la infrastructure</span>
+</li>
+<li>
+Discharge_m3_day -- Double (min=0) (max=10000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Débit (m3/d) déversé par l' infrastructure</span>
+</li>
+<li>
+Depth_m -- Double (min=0) (max=1000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Profondeur moyenne (m) des eaux aux environs du déversement</span>
+</li>
+<li>
+Temperature_C -- Double (min=-15) (max=40)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Température (deg C) des eaux aux environs du déversement</span>
+</li>
+<li>
+Dilution -- Int32 (min=0) (max=10000000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Niveau de dilution (NPP / 100 mL) à obtenir aux environs du déversement</span>
+</li>
+<li>
+DecayRate_per_day -- Double (min=0) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Taux de décroissance moyen (/jour) des colonies de coliform fécaux</span>
+</li>
+<li>
+FCUntreated_MPN_100ml -- Int32 (min=0) (max=10000000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Concentration de coliform fécaux des eaux usées non traité (NPP / 100 mL)</span>
+</li>
+<li>
+FCPreDisinfection_MPN_100ml -- Int32 (min=0) (max=10000000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Concentration de coliform fécaux des eaux usées pré-désinfecté (NPP / 100 mL)</span>
+</li>
+<li>
+Concentration_MPN_100ml -- Int32 (min=0) (max=10000000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Objectif de concentration de coliform fécaux apres dilution (NPP / 100 mL)</span>
+</li>
+<li>
+T90_hour -- Double (min=0)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Temps (heure) requis pour que 90% des colonies de coliformes fécaux meurent</span>
+</li>
+<li>
+DischargeDuration_hour -- Double (min=0) (max=24)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Durée de l'écoulement (heure/jour)</span>
+</li>
+<li>
+LastUpdateDate_UTC -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contient la date de la dernière mise à jour en (UTC)</span>
+</li>
+<li>
+LastUpdateContactTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contact TVItemID qui a fait le dernier changement</span>
+</li>
+</ul>
+<a href="table_fr.html">Retour à la liste de tables</a>
+</body>
+</html>

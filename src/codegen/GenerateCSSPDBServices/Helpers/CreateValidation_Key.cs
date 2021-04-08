@@ -29,7 +29,7 @@ namespace GenerateCSSPDBServices
                     sb.AppendLine($@"                if ({ TypeNameLower }.{ prop.Name } == 0)");
                 //}
                 sb.AppendLine(@"                {");
-                sb.AppendLine($@"                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, ""{ prop.Name }""), new[] {{ nameof({ TypeNameLower }.{ csspProp.PropName }) }});");
+                sb.AppendLine($@"                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, ""{ prop.Name }""), new[] {{ nameof({ TypeNameLower }.{ csspProp.PropName }) }}));");
                 sb.AppendLine(@"                }");
                 sb.AppendLine(@"");
 
@@ -44,11 +44,11 @@ namespace GenerateCSSPDBServices
                 sb.AppendLine(@"                {");
                 //if (TypeName == "AspNetUser")
                 //{
-                //    sb.AppendLine($@"                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""{ TypeName }Id"", ({ TypeNameLower }.Id == null ? """" : { TypeNameLower }.Id.ToString())), new[] {{ nameof({ TypeNameLower }.{ csspProp.PropName }) }});");
+                //    sb.AppendLine($@"                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""{ TypeName }Id"", ({ TypeNameLower }.Id == null ? """" : { TypeNameLower }.Id.ToString())), new[] {{ nameof({ TypeNameLower }.{ csspProp.PropName }) }}));");
                 //}
                 //else
                 //{
-                    sb.AppendLine($@"                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""{ TypeName }ID"", { TypeNameLower }.{ TypeName }ID.ToString()), new[] {{ nameof({ TypeNameLower }.{ csspProp.PropName }) }});");
+                sb.AppendLine($@"                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""{ TypeName }ID"", { TypeNameLower }.{ TypeName }ID.ToString()), new[] {{ nameof({ TypeNameLower }.{ csspProp.PropName }) }}));");
                 //}
                 sb.AppendLine(@"                }");
 
@@ -63,7 +63,7 @@ namespace GenerateCSSPDBServices
 
                     sb.AppendLine($@"                if ((from c in db.{ TypeName }{ plurial } select c).Count() > 0)");
                     sb.AppendLine(@"                {");
-                    sb.AppendLine(@"                    yield return new ValidationResult(CSSPCultureServicesRes.TVItemRootShouldBeTheFirstOneAdded, new[] { ""TVItemTVItemID"" });");
+                    sb.AppendLine(@"                    ValidationResults.Add(new ValidationResult(CSSPCultureServicesRes.TVItemRootShouldBeTheFirstOneAdded, new[] { ""TVItemTVItemID"" }));");
                     sb.AppendLine(@"                }");
                                                     
                     sb.AppendLine(@"            }");

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>CSSPDB Model Documentation</title>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+<a href="table_fr.html">Retour à la liste de tables</a>
+<h1>Table&nbsp;---&nbsp;MikeScenarios</h1>
+<ul>
+<li>
+MikeScenarioID -- Int32 (key)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contient l'identifiant unique sur chaque ligne de la table MikeScenarios</span>
+</li>
+<li>
+DBCommand -- DBCommandEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Identifie la command de base de données pour syncroniser avec la base de données local</span>
+</li>
+<li>
+MikeScenarioTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Lien à la table TVItems représentant le scénario MIKE</span>
+</li>
+<li>
+ParentMikeScenarioID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Lien à la table MIkeScenarios représentant le scénario MIKE</span>
+</li>
+<li>
+ScenarioStatus -- ScenarioStatusEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;État du scenario MIKE</span>
+</li>
+<li>
+ErrorInfo -- String
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Information de l'erreur du scenario MIKE</span>
+</li>
+<li>
+MikeScenarioStartDateTime_Local -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Date de départ du scenario MIKE en temps local</span>
+</li>
+<li>
+MikeScenarioEndDateTime_Local -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Date de fin du scenario MIKE en temps local</span>
+</li>
+<li>
+MikeScenarioStartExecutionDateTime_Local -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Début du temps d'exécution du scenario MIKE (local)</span>
+</li>
+<li>
+MikeScenarioExecutionTime_min -- Double (min=1) (max=100000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Temps d'exécution du scenario MIKE en minutes</span>
+</li>
+<li>
+WindSpeed_km_h -- Double (min=0) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Vitesse du vent en kilomètres par heure</span>
+</li>
+<li>
+WindDirection_deg -- Double (min=0) (max=360)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Direction du vent en degree (nord 0, est 90)</span>
+</li>
+<li>
+DecayFactor_per_day -- Double (min=0) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Taux de décroissance par jour</span>
+</li>
+<li>
+DecayIsConstant -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Taux de décroissance est constant</span>
+</li>
+<li>
+DecayFactorAmplitude -- Double (min=0) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Amplitude du taux de décroissance</span>
+</li>
+<li>
+ResultFrequency_min -- Int32 (min=0) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Fréquence des résultats en minutes</span>
+</li>
+<li>
+AmbientTemperature_C -- Double (min=-10) (max=40)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Température ambiante en dégré Celcius</span>
+</li>
+<li>
+AmbientSalinity_PSU -- Double (min=0) (max=40)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Salinité ambiante en PSU (fr)</span>
+</li>
+<li>
+GenerateDecouplingFiles -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Générer des fichiers de découplage</span>
+</li>
+<li>
+UseDecouplingFiles -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Utiliser les fichiers de découplage</span>
+</li>
+<li>
+UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Lien à la table TVItems représentant TV file</span>
+</li>
+<li>
+ForSimulatingMWQMRunTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Lien à la table TVItems représentant la trounée</span>
+</li>
+<li>
+ManningNumber -- Double (min=0) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Nombre manning</span>
+</li>
+<li>
+NumberOfElements -- Int32 (min=1) (max=1000000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Nombre d'éléments</span>
+</li>
+<li>
+NumberOfTimeSteps -- Int32 (min=1) (max=1000000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Nombre de pas de temps</span>
+</li>
+<li>
+NumberOfSigmaLayers -- Int32 (min=0) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Nombre de tranche sigma</span>
+</li>
+<li>
+NumberOfZLayers -- Int32 (min=0) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Nombre de tranche Z</span>
+</li>
+<li>
+NumberOfHydroOutputParameters -- Int32 (min=0) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Nombre de paramètres de sorti hydrodynamique</span>
+</li>
+<li>
+NumberOfTransOutputParameters -- Int32 (min=0) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Nombre de paramètres de sorti transport</span>
+</li>
+<li>
+EstimatedHydroFileSize -- Int64 (min=0) (max=100000000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Estimation de la taille du fichier hydrodynamique</span>
+</li>
+<li>
+EstimatedTransFileSize -- Int64 (min=0) (max=100000000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Estimation de la taille du fichier transport</span>
+</li>
+<li>
+LastUpdateDate_UTC -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contient la date de la dernière mise à jour en (UTC)</span>
+</li>
+<li>
+LastUpdateContactTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contact TVItemID qui a fait le dernier changement</span>
+</li>
+</ul>
+<a href="table_fr.html">Retour à la liste de tables</a>
+</body>
+</html>

@@ -24,7 +24,7 @@ namespace CSSPHelperServices
 {
     public interface ISubsectorMWQMSampleYearService
     {
-        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+        bool Validate(ValidationContext validationContext);
     }
     public partial class SubsectorMWQMSampleYearService : ISubsectorMWQMSampleYearService
     {
@@ -32,6 +32,7 @@ namespace CSSPHelperServices
         #endregion Variables
 
         #region Properties
+        private List<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -41,46 +42,47 @@ namespace CSSPHelperServices
         #endregion Constructors
 
         #region Functions public
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        public bool Validate(ValidationContext validationContext)
         {
             SubsectorMWQMSampleYear subsectorMWQMSampleYear = validationContext.ObjectInstance as SubsectorMWQMSampleYear;
 
             if (subsectorMWQMSampleYear.SubsectorTVItemID < 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "SubsectorTVItemID", "1"), new[] { "SubsectorTVItemID" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "SubsectorTVItemID", "1"), new[] { "SubsectorTVItemID" }));
             }
 
             //Year has no Range Attribute
 
             if (subsectorMWQMSampleYear.EarliestDate.Year == 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "EarliestDate"), new[] { "EarliestDate" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "EarliestDate"), new[] { "EarliestDate" }));
             }
             else
             {
                 if (subsectorMWQMSampleYear.EarliestDate.Year < 1980)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "EarliestDate", "1980"), new[] { "EarliestDate" });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "EarliestDate", "1980"), new[] { "EarliestDate" }));
                 }
             }
 
             if (subsectorMWQMSampleYear.LatestDate.Year == 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LatestDate"), new[] { "LatestDate" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LatestDate"), new[] { "LatestDate" }));
             }
             else
             {
                 if (subsectorMWQMSampleYear.LatestDate.Year < 1980)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LatestDate", "1980"), new[] { "LatestDate" });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LatestDate", "1980"), new[] { "LatestDate" }));
                 }
             }
 
             if (subsectorMWQMSampleYear.EarliestDate > subsectorMWQMSampleYear.LatestDate)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._DateIsBiggerThan_, "LatestDate", "SubsectorMWQMSampleYearEarliestDate"), new[] { "LatestDate" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._DateIsBiggerThan_, "LatestDate", "SubsectorMWQMSampleYearEarliestDate"), new[] { "LatestDate" }));
             }
 
+            return ValidationResults.Count == 0 ? true : false;
         }
         #endregion Functions public
     }

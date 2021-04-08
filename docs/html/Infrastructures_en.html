@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>CSSPDB Model Documentation</title>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+<a href="table_en.html">Return to table list</a>
+<h1>Table&nbsp;---&nbsp;Infrastructures</h1>
+<ul>
+<li>
+InfrastructureID -- Int32 (key)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contains the unique identifier on each row of the Infrastructures table</span>
+</li>
+<li>
+DBCommand -- DBCommandEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Identify the database command for local database sync</span>
+</li>
+<li>
+InfrastructureTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Link to the TVItems table with the unique identifier</span>
+</li>
+<li>
+PrismID -- Int32 (min=0) (max=100000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Link to the QC Prism DB with the unique identifier</span>
+</li>
+<li>
+TPID -- Int32 (min=0) (max=100000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Treatment plan unique ID comming from old DB</span>
+</li>
+<li>
+LSID -- Int32 (min=0) (max=100000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Lift station unique ID comming from old DB</span>
+</li>
+<li>
+SiteID -- Int32 (min=0) (max=100000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Site unique ID comming from old DB</span>
+</li>
+<li>
+Site -- Int32 (min=0) (max=100000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Site unique ID comming from old DB</span>
+</li>
+<li>
+InfrastructureCategory -- String (min=1) (max=1)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Category --- letter used previously to identify priority in waste water treatment plant assessments</span>
+</li>
+<li>
+InfrastructureType -- InfrastructureTypeEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Infrastructure type</span>
+</li>
+<li>
+FacilityType -- FacilityTypeEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Facility type --- Lagoon, Plant</span>
+</li>
+<li>
+HasBackupPower -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Has backup power</span>
+</li>
+<li>
+IsMechanicallyAerated -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Is mechanically aerated</span>
+</li>
+<li>
+NumberOfCells -- Int32 (min=0) (max=10)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Number of cells</span>
+</li>
+<li>
+NumberOfAeratedCells -- Int32 (min=0) (max=10)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Number of aerated cells</span>
+</li>
+<li>
+AerationType -- AerationTypeEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Aeration type --- Diffuser, Surface</span>
+</li>
+<li>
+PreliminaryTreatmentType -- PreliminaryTreatmentTypeEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Preliminary treatment type --- Bar screen, Grinder</span>
+</li>
+<li>
+PrimaryTreatmentType -- PrimaryTreatmentTypeEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Primary treatment type --- Sedimentation, Chemical Coagulation, Filtration</span>
+</li>
+<li>
+SecondaryTreatmentType -- SecondaryTreatmentTypeEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Secondary treatment type --- RotatingBiologicalContactor, TricklingFilters, SequencingBatchReator, OxidationDitch</span>
+</li>
+<li>
+TertiaryTreatmentType -- TertiaryTreatmentTypeEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Tertiary treatment type --- Adsorption, Flocculation, Membrane Filtration, Ion Exchange, Reverse Osmosis, Biological Nutrient Removal</span>
+</li>
+<li>
+TreatmentType -- TreatmentTypeEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Treatment type --- ActivatedSludge, Activated Sludge With Biofilter, Lagoon No Aeration1 Cell, Lagoon No Aeration 2 Cell, Lagoon No Aeration 3 Cell, Lagoon No Aeration 4 Cell, Lagoon No Aeration 5 Cell, Lagoon With Aeration 1 Cell, LagoonWith Aeration 2 Cell, LagoonWith Aeration 3 Cell, LagoonWith Aeration 4 Cell, LagoonWith Aeration 5 Cell, LagoonWith Aeration 6 Cell, Stabalizing Pond Only, Oxidation Ditch Only, Circulating Fluidized Bed, Trickling Filter, Recirculating Sand Filter, Trash Rack Rake Only, Septic Tank, Secondary, Tertiary, Volume Fermenter, Bio Film Reactor, Bio Green, Bio Disks, Chemical Primary, Chromoglass, Primary, Sequencing Batch Reactor, Peat System, Physicochimique, Rotating Biological Contactor</span>
+</li>
+<li>
+DisinfectionType -- DisinfectionTypeEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Disinfection type --- UV, Chlorination No Dechlorination, Chlorination With Dechlorination, UV Seasonal, Chlorination No Dechlorination Seasonal, Chlorination With Dechlorination Seasonal</span>
+</li>
+<li>
+CollectionSystemType -- CollectionSystemTypeEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Collection system type --- Completely Separated, Completely Combined, Combined 90 Separated 10, Combined 80 Separated 20, Combined 70 Separated 30, Combined 60 Separated 40, Combined 50 Separated 50, Combined 40 Separated 60, Combined 30 Separated 70, Combined 20 Separated 80, Combined 10 Separated 90</span>
+</li>
+<li>
+AlarmSystemType -- AlarmSystemTypeEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Alarm system type --- SCADA, None, Only Visual Light,SCADA And Light, Pager And Light</span>
+</li>
+<li>
+DesignFlow_m3_day -- Double (min=0) (max=1000000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Design flow in cubic meters per day</span>
+</li>
+<li>
+AverageFlow_m3_day -- Double (min=0) (max=1000000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Average flow in cubic meters per day</span>
+</li>
+<li>
+PeakFlow_m3_day -- Double (min=0) (max=1000000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Peak flow in cubic meters per day</span>
+</li>
+<li>
+PopServed -- Int32 (min=0) (max=1000000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Population served</span>
+</li>
+<li>
+CanOverflow -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Can overflow</span>
+</li>
+<li>
+ValveType -- ValveTypeEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Valve type --- Manually, Automatically</span>
+</li>
+<li>
+PercFlowOfTotal -- Double (min=0) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Percentage of total flow</span>
+</li>
+<li>
+TimeOffset_hour -- Double (min=-10) (max=0)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Time offset in hour (decimal)</span>
+</li>
+<li>
+TempCatchAllRemoveLater -- String
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Temporary catch all will be removed later</span>
+</li>
+<li>
+AverageDepth_m -- Double (min=0) (max=1000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Average depth in meters</span>
+</li>
+<li>
+NumberOfPorts -- Int32 (min=1) (max=1000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Number of ports</span>
+</li>
+<li>
+PortDiameter_m -- Double (min=0) (max=10)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Ports diameter in meters</span>
+</li>
+<li>
+PortSpacing_m -- Double (min=0) (max=10000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Ports spacing in meters</span>
+</li>
+<li>
+PortElevation_m -- Double (min=0) (max=1000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Ports elevation in meters</span>
+</li>
+<li>
+VerticalAngle_deg -- Double (min=-90) (max=90)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Vertical angle in degrees</span>
+</li>
+<li>
+HorizontalAngle_deg -- Double (min=-180) (max=180)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Horizontal angle in degrees</span>
+</li>
+<li>
+DecayRate_per_day -- Double (min=0) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Decay rate per day</span>
+</li>
+<li>
+NearFieldVelocity_m_s -- Double (min=0) (max=10)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Near field velocity in meters per second</span>
+</li>
+<li>
+FarFieldVelocity_m_s -- Double (min=0) (max=10)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Far field velocity in meters per second</span>
+</li>
+<li>
+ReceivingWaterSalinity_PSU -- Double (min=0) (max=40)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Receiving water salinity in PSU</span>
+</li>
+<li>
+ReceivingWaterTemperature_C -- Double (min=-10) (max=40)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Receiving water temperature in degree Celcius</span>
+</li>
+<li>
+ReceivingWater_MPN_per_100ml -- Int32 (min=0) (max=10000000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Receiving water concentration in most probable number per 100 mL</span>
+</li>
+<li>
+DistanceFromShore_m -- Double (min=0) (max=1000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Distance from shore in meters</span>
+</li>
+<li>
+SeeOtherMunicipalityTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;See other infrastructure</span>
+</li>
+<li>
+CivicAddressTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Link to the TVItems table with the unique identifier</span>
+</li>
+<li>
+LastUpdateDate_UTC -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contains the date of the last update in UTC</span>
+</li>
+<li>
+LastUpdateContactTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contact TVItemID who made the last changes</span>
+</li>
+</ul>
+<a href="table_en.html">Return to table list</a>
+</body>
+</html>

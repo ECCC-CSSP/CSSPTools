@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>CSSPDB Model Documentation</title>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+<a href="table_en.html">Return to table list</a>
+<h1>Table&nbsp;---&nbsp;LabSheetTubeMPNDetails</h1>
+<ul>
+<li>
+LabSheetTubeMPNDetailID -- Int32 (key)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contains the unique identifier on each row of the LabSheetTubeMPNDetails table</span>
+</li>
+<li>
+DBCommand -- DBCommandEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Identify the database command for local database sync</span>
+</li>
+<li>
+LabSheetDetailID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Link to the LabSheetDetails table representing the lab sheet detail</span>
+</li>
+<li>
+Ordinal -- Int32 (min=0) (max=1000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Ordinal</span>
+</li>
+<li>
+MWQMSiteTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Link to the TVItems table representing the MWQM site</span>
+</li>
+<li>
+SampleDateTime -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Sample date</span>
+</li>
+<li>
+MPN -- Int32 (min=1) (max=10000000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Most probable number of fecal coliform colonies per 100 mL</span>
+</li>
+<li>
+Tube10 -- Int32 (min=0) (max=5)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Number of positive tube for Tube 10</span>
+</li>
+<li>
+Tube1_0 -- Int32 (min=0) (max=5)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Number of positive tube for Tube 1</span>
+</li>
+<li>
+Tube0_1 -- Int32 (min=0) (max=5)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Number of positive tube for Tube .1</span>
+</li>
+<li>
+Salinity -- Double (min=0) (max=40)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Salinity in parts per thousand</span>
+</li>
+<li>
+Temperature -- Double (min=-10) (max=40)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Temperature in degree Celcius</span>
+</li>
+<li>
+ProcessedBy -- String (max=10)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Processed by</span>
+</li>
+<li>
+SampleType -- SampleTypeEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Sample type</span>
+</li>
+<li>
+SiteComment -- String (max=250)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Site comment</span>
+</li>
+<li>
+LastUpdateDate_UTC -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contains the date of the last update in UTC</span>
+</li>
+<li>
+LastUpdateContactTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contact TVItemID who made the last changes</span>
+</li>
+</ul>
+<a href="table_en.html">Return to table list</a>
+</body>
+</html>

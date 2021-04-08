@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>CSSPDB Model Documentation</title>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+<a href="table_fr.html">Retour à la liste de tables</a>
+<h1>Table&nbsp;---&nbsp;BoxModelResults</h1>
+<ul>
+<li>
+BoxModelResultID -- Int32 (key)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contient l'identifiant unique sur chaque ligne de la table BoxModelResults</span>
+</li>
+<li>
+DBCommand -- DBCommandEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Identifie la command de base de données pour syncroniser avec la base de données local</span>
+</li>
+<li>
+BoxModelID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Lien au parent BoxModel à l'item de la table BoxModels</span>
+</li>
+<li>
+BoxModelResultType -- BoxModelResultTypeEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Type de résultats</span>
+</li>
+<li>
+Volume_m3 -- Double (min=0)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Volume (m3) d'eau de l'estuaire nécessaire pour obtenir la concentration de coliform fécaux attendue</span>
+</li>
+<li>
+Surface_m2 -- Double (min=0)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Surface (m2) d'eau de l'estuaire nécessaire pour obtenir la concentration de coliform fécaux attendue</span>
+</li>
+<li>
+Radius_m -- Double (min=0) (max=100000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Rayon d'un demi cercle (m) d'eau de l'estuaire nécessaire pour obtenir la concentration de coliform fécaux attendue</span>
+</li>
+<li>
+LeftSideDiameterLineAngle_deg -- Double (min=0) (max=360)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Angle de ligne du diamètre du côté gauche (deg) utilisé pour dessiner un demi-cercle sur une carte</span>
+</li>
+<li>
+CircleCenterLatitude -- Double (min=-90) (max=90)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Latitude du centre du cercle (deg) utilisé pour dessiner un demi-cercle sur une carte</span>
+</li>
+<li>
+CircleCenterLongitude -- Double (min=-180) (max=180)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Longitude du centre du cercle (deg) utilisé pour dessiner un demi-cercle sur une carte</span>
+</li>
+<li>
+FixLength -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La longueur fixe est utilisée pour indiquer que la longueur du rectangle doit être fixée sur une certaine longueur. Seule la largeur du rectangle sera redimensionnée afin de trouver la taille du rectangle pour obtenir la concentration de coliform fécaux attendue</span>
+</li>
+<li>
+FixWidth -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La largeur fixe est utilisée pour indiquer que la largeur du rectangle doit être fixée sur une certaine largeur. Seule la longueur du rectangle sera redimensionnée afin de trouver la taille du rectangle pour obtenir la concentration de coliform fécaux attendue</span>
+</li>
+<li>
+RectLength_m -- Double (min=0) (max=100000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Longueur du rectangle (m) d'eau de l'estuaire nécessaire pour obtenir la concentration de coliform fécaux attendue</span>
+</li>
+<li>
+RectWidth_m -- Double (min=0) (max=100000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Largeur du rectangle (m) d'eau de l'estuaire nécessaire pour obtenir la concentration de coliform fécaux attendue</span>
+</li>
+<li>
+LeftSideLineAngle_deg -- Double (min=0) (max=360)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Angle de ligne du côté gauche du rectangle (deg) utilisé pour dessiner un rectangle sur une carte</span>
+</li>
+<li>
+LeftSideLineStartLatitude -- Double (min=-90) (max=90)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Latitude de départ de la ligne latérale gauche (deg) utilisé pour dessiner un demi-cercle sur une carte</span>
+</li>
+<li>
+LeftSideLineStartLongitude -- Double (min=-180) (max=180)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Longitude de départ de la ligne latérale gauche (deg) utilisé pour dessiner un demi-cercle sur une carte</span>
+</li>
+<li>
+LastUpdateDate_UTC -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contient la date de la dernière mise à jour en (UTC)</span>
+</li>
+<li>
+LastUpdateContactTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contact TVItemID qui a fait le dernier changement</span>
+</li>
+</ul>
+<a href="table_fr.html">Retour à la liste de tables</a>
+</body>
+</html>

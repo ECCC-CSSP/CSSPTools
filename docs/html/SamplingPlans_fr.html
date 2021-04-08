@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>CSSPDB Model Documentation</title>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+<a href="table_fr.html">Retour à la liste de tables</a>
+<h1>Table&nbsp;---&nbsp;SamplingPlans</h1>
+<ul>
+<li>
+SamplingPlanID -- Int32 (key)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contient l'identifiant unique sur chaque ligne de la table SamplingPlans</span>
+</li>
+<li>
+DBCommand -- DBCommandEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Identifie la command de base de données pour syncroniser avec la base de données local</span>
+</li>
+<li>
+IsActive -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Est actif</span>
+</li>
+<li>
+SamplingPlanName -- String (max=200)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Nom du plan d'échantillonnage</span>
+</li>
+<li>
+ForGroupName -- String (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Nom pour le group</span>
+</li>
+<li>
+SampleType -- SampleTypeEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Type d'échantillon</span>
+</li>
+<li>
+SamplingPlanType -- SamplingPlanTypeEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Type de plan d'échantillonnage</span>
+</li>
+<li>
+LabSheetType -- LabSheetTypeEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Type de feuille de laboratoire</span>
+</li>
+<li>
+ProvinceTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Lien à la table TVItems représentant la province</span>
+</li>
+<li>
+CreatorTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Lien à la table TVItems représentant le créateur du plan d'échantillonnage</span>
+</li>
+<li>
+Year -- Int32 (min=2000) (max=2050)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Année</span>
+</li>
+<li>
+AccessCode -- String (max=15)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Code d'accès</span>
+</li>
+<li>
+DailyDuplicatePrecisionCriteria -- Double (min=0) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Critère de précision pour le duplicata journalier</span>
+</li>
+<li>
+IntertechDuplicatePrecisionCriteria -- Double (min=0) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Critère de précision pour le duplicata intertech</span>
+</li>
+<li>
+IncludeLaboratoryQAQC -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Inclure le QA/QC de laboratoire</span>
+</li>
+<li>
+ApprovalCode -- String (max=15)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Code d'approbation</span>
+</li>
+<li>
+SamplingPlanFileTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Lien à la table TVItems représentant la filière du plan d'échantillonnage</span>
+</li>
+<li>
+AnalyzeMethodDefault -- AnalyzeMethodEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Méthode d'analyse</span>
+</li>
+<li>
+SampleMatrixDefault -- SampleMatrixEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Milieu d'échantillon</span>
+</li>
+<li>
+LaboratoryDefault -- LaboratoryEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Laboratoire</span>
+</li>
+<li>
+BackupDirectory -- String (max=250)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Répertoire de sauvegarde</span>
+</li>
+<li>
+LastUpdateDate_UTC -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contient la date de la dernière mise à jour en (UTC)</span>
+</li>
+<li>
+LastUpdateContactTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contact TVItemID qui a fait le dernier changement</span>
+</li>
+</ul>
+<a href="table_fr.html">Retour à la liste de tables</a>
+</body>
+</html>

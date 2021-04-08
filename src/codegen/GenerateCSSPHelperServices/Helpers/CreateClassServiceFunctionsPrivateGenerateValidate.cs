@@ -38,7 +38,7 @@ namespace GenerateCSSPHelperServices
                 }
             }
 
-            sb.AppendLine(@"        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)");
+            sb.AppendLine(@"        public bool Validate(ValidationContext validationContext)");
             sb.AppendLine(@"        {");
             if (EnumExist)
             {
@@ -79,16 +79,7 @@ namespace GenerateCSSPHelperServices
                 if (!await CreateValidation_EnumType(prop, csspProp, dllTypeInfoModels.Type.Name, TypeNameLower, sb)) return await Task.FromResult(false);
             }
 
-            if (!sb.ToString().Contains("yield return"))
-            {
-                sb.AppendLine(@"");
-                sb.AppendLine(@"            bool a = false;");
-                sb.AppendLine(@"            if (a)");
-                sb.AppendLine(@"            {");
-                sb.AppendLine(@"                yield return new ValidationResult("""");");
-                sb.AppendLine(@"            }");
-            }
-
+            sb.AppendLine(@"            return ValidationResults.Count == 0 ? true : false;");
             sb.AppendLine(@"        }");
 
             return await Task.FromResult(true);

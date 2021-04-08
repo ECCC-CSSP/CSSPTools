@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>CSSPDB Model Documentation</title>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+<a href="table_en.html">Return to table list</a>
+<h1>Table&nbsp;---&nbsp;ReportSections</h1>
+<ul>
+<li>
+ReportSectionID -- Int32 (key)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contains the unique identifier on each row of the ReportSections table</span>
+</li>
+<li>
+DBCommand -- DBCommandEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Identify the database command for local database sync</span>
+</li>
+<li>
+ReportTypeID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Link to the ReportTypes table representing the report type</span>
+</li>
+<li>
+TVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Link to the TVItems table representing the item</span>
+</li>
+<li>
+Language -- LanguageEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Language of item</span>
+</li>
+<li>
+Ordinal -- Int32 (min=0) (max=1000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Ordinal</span>
+</li>
+<li>
+IsStatic -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Is static --- the text will not change in time</span>
+</li>
+<li>
+ParentReportSectionID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Parent report section ID</span>
+</li>
+<li>
+Year -- Int32 (min=1979) (max=2050)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Year for which the text is applicable</span>
+</li>
+<li>
+Locked -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Locked --- not currently used</span>
+</li>
+<li>
+TemplateReportSectionID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Template report section ID --- not currently used</span>
+</li>
+<li>
+ReportSectionName -- String (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Report section name</span>
+</li>
+<li>
+ReportSectionText -- String (max=10000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Report section text</span>
+</li>
+<li>
+LastUpdateDate_UTC -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contains the date of the last update in UTC</span>
+</li>
+<li>
+LastUpdateContactTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contact TVItemID who made the last changes</span>
+</li>
+</ul>
+<a href="table_en.html">Return to table list</a>
+</body>
+</html>

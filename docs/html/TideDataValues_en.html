@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>CSSPDB Model Documentation</title>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+<a href="table_en.html">Return to table list</a>
+<h1>Table&nbsp;---&nbsp;TideDataValues</h1>
+<ul>
+<li>
+TideDataValueID -- Int32 (key)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contains the unique identifier on each row of the TideDataValues table</span>
+</li>
+<li>
+DBCommand -- DBCommandEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Identify the database command for local database sync</span>
+</li>
+<li>
+TideSiteTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Link to the TVItems table representing the tide site</span>
+</li>
+<li>
+DateTime_Local -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Date (local)</span>
+</li>
+<li>
+Keep -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Keep</span>
+</li>
+<li>
+TideDataType -- TideDataTypeEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Tide data type</span>
+</li>
+<li>
+StorageDataType -- StorageDataTypeEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Storage data type</span>
+</li>
+<li>
+Depth_m -- Double (min=0) (max=10000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Depth in meters</span>
+</li>
+<li>
+UVelocity_m_s -- Double (min=0) (max=10)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;U velocity in meters per second</span>
+</li>
+<li>
+VVelocity_m_s -- Double (min=0) (max=10)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;V velocity in meters per second</span>
+</li>
+<li>
+TideStart -- TideTextEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Tide text start</span>
+</li>
+<li>
+TideEnd -- TideTextEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Tide text end</span>
+</li>
+<li>
+LastUpdateDate_UTC -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contains the date of the last update in UTC</span>
+</li>
+<li>
+LastUpdateContactTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contact TVItemID who made the last changes</span>
+</li>
+</ul>
+<a href="table_en.html">Return to table list</a>
+</body>
+</html>

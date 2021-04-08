@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>CSSPDB Model Documentation</title>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+<a href="table_fr.html">Retour à la liste de tables</a>
+<h1>Table&nbsp;---&nbsp;SamplingPlanEmails</h1>
+<ul>
+<li>
+SamplingPlanEmailID -- Int32 (key)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contient l'identifiant unique sur chaque ligne de la table SamplingPlanEmails</span>
+</li>
+<li>
+DBCommand -- DBCommandEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Identifie la command de base de données pour syncroniser avec la base de données local</span>
+</li>
+<li>
+SamplingPlanID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Lien à la table SamplingPlans représentant le plan d'échantillonnage</span>
+</li>
+<li>
+Email -- String (max=150)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Courriel</span>
+</li>
+<li>
+IsContractor -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Est un contracteur</span>
+</li>
+<li>
+LabSheetHasValueOver500 -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La feuille de laboratoire a une valeur supérieur à 500</span>
+</li>
+<li>
+LabSheetReceived -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Feuille de laboratoire reçu</span>
+</li>
+<li>
+LabSheetAccepted -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Feuille de laboratoire approuvé</span>
+</li>
+<li>
+LabSheetRejected -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Feuille de laboratoire rejeté</span>
+</li>
+<li>
+LastUpdateDate_UTC -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contient la date de la dernière mise à jour en (UTC)</span>
+</li>
+<li>
+LastUpdateContactTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contact TVItemID qui a fait le dernier changement</span>
+</li>
+</ul>
+<a href="table_fr.html">Retour à la liste de tables</a>
+</body>
+</html>

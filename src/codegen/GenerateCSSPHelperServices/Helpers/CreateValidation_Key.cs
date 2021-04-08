@@ -22,12 +22,12 @@ namespace GenerateCSSPHelperServices
                 sb.AppendLine(@"            {");
                 sb.AppendLine($@"                if ({ TypeNameLower }.{ prop.Name } == 0)");
                 sb.AppendLine(@"                {");
-                sb.AppendLine($@"                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, ""{ prop.Name }""), new[] {{ ""{ csspProp.PropName }"" }});");
+                sb.AppendLine($@"                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, ""{ prop.Name }""), new[] {{ ""{ csspProp.PropName }"" }}));");
                 sb.AppendLine(@"                }");
                 sb.AppendLine(@"");
                 sb.AppendLine($@"                if (!(from c in db.{ TypeName }{ plurial }.AsNoTracking() select c).Where(c => c.{ TypeName }ID == { TypeNameLower }.{ TypeName }ID).Any())");
                 sb.AppendLine(@"                {");
-                sb.AppendLine($@"                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""{ TypeName }ID"", { TypeNameLower }.{ TypeName }ID.ToString()), new[] {{ ""{ csspProp.PropName }"" }});");
+                sb.AppendLine($@"                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""{ TypeName }ID"", { TypeNameLower }.{ TypeName }ID.ToString()), new[] {{ ""{ csspProp.PropName }"" }}));");
                 sb.AppendLine(@"                }");
                 sb.AppendLine(@"            }");
                 sb.AppendLine(@"");
@@ -39,7 +39,7 @@ namespace GenerateCSSPHelperServices
                     sb.AppendLine(@"");
                     sb.AppendLine($@"                if ((from c in db.{ TypeName }{ plurial } select c).Count() > 0)");
                     sb.AppendLine(@"                {");
-                    sb.AppendLine(@"                    yield return new ValidationResult(CSSPCultureServicesRes.TVItemRootShouldBeTheFirstOneAdded, new[] { ""TVItemTVItemID"" });");
+                    sb.AppendLine(@"                    ValidationResults.Add(new ValidationResult(CSSPCultureServicesRes.TVItemRootShouldBeTheFirstOneAdded, new[] { ""TVItemTVItemID"" }));");
                     sb.AppendLine(@"                }");                                                   
                     sb.AppendLine(@"            }");
                     sb.AppendLine(@"");

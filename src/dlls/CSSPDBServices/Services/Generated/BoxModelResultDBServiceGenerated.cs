@@ -19,7 +19,6 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using LoggedInServices;
 using Microsoft.Extensions.Configuration;
-using CSSPScrambleServices;
 
 namespace CSSPDBServices
 {
@@ -41,9 +40,8 @@ namespace CSSPDBServices
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IScrambleService ScrambleService { get; }
         private IEnums enums { get; }
-        private IEnumerable<ValidationResult> ValidationResults { get; set; }
+        private List<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -54,7 +52,6 @@ namespace CSSPDBServices
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.ScrambleService = ScrambleService;
             this.enums = enums;
             this.db = db;
         }
@@ -65,7 +62,7 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(""));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             BoxModelResult boxModelResult = (from c in db.BoxModelResults.AsNoTracking()
@@ -83,7 +80,7 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(""));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             List<BoxModelResult> boxModelResultList = (from c in db.BoxModelResults.AsNoTracking() orderby c.BoxModelResultID select c).Skip(skip).Take(take).ToList();
@@ -94,7 +91,7 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             BoxModelResult boxModelResult = (from c in db.BoxModelResults
@@ -122,11 +119,10 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
-            ValidationResults = Validate(new ValidationContext(boxModelResult), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
+            if (!Validate(new ValidationContext(boxModelResult), ActionDBTypeEnum.Create))
             {
                 return await Task.FromResult(BadRequest(ValidationResults));
             }
@@ -147,11 +143,10 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
-            ValidationResults = Validate(new ValidationContext(boxModelResult), ActionDBTypeEnum.Update);
-            if (ValidationResults.Count() > 0)
+            if (!Validate(new ValidationContext(boxModelResult), ActionDBTypeEnum.Update))
             {
                 return await Task.FromResult(BadRequest(ValidationResults));
             }
@@ -171,7 +166,7 @@ namespace CSSPDBServices
         #endregion Functions public
 
         #region Functions private
-        private IEnumerable<ValidationResult> Validate(ValidationContext validationContext, ActionDBTypeEnum actionDBType)
+        private bool Validate(ValidationContext validationContext, ActionDBTypeEnum actionDBType)
         {
             string retStr = "";
             BoxModelResult boxModelResult = validationContext.ObjectInstance as BoxModelResult;
@@ -180,19 +175,19 @@ namespace CSSPDBServices
             {
                 if (boxModelResult.BoxModelResultID == 0)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "BoxModelResultID"), new[] { nameof(boxModelResult.BoxModelResultID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "BoxModelResultID"), new[] { nameof(boxModelResult.BoxModelResultID) }));
                 }
 
                 if (!(from c in db.BoxModelResults.AsNoTracking() select c).Where(c => c.BoxModelResultID == boxModelResult.BoxModelResultID).Any())
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "BoxModelResult", "BoxModelResultID", boxModelResult.BoxModelResultID.ToString()), new[] { nameof(boxModelResult.BoxModelResultID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "BoxModelResult", "BoxModelResultID", boxModelResult.BoxModelResultID.ToString()), new[] { nameof(boxModelResult.BoxModelResultID) }));
                 }
             }
 
             retStr = enums.EnumTypeOK(typeof(DBCommandEnum), (int?)boxModelResult.DBCommand);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"), new[] { nameof(boxModelResult.DBCommand) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"), new[] { nameof(boxModelResult.DBCommand) }));
             }
 
             BoxModel BoxModelBoxModelID = null;
@@ -200,35 +195,35 @@ namespace CSSPDBServices
 
             if (BoxModelBoxModelID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "BoxModel", "BoxModelID", boxModelResult.BoxModelID.ToString()), new[] { nameof(boxModelResult.BoxModelID) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "BoxModel", "BoxModelID", boxModelResult.BoxModelID.ToString()), new[] { nameof(boxModelResult.BoxModelID)}));
             }
 
             retStr = enums.EnumTypeOK(typeof(BoxModelResultTypeEnum), (int?)boxModelResult.BoxModelResultType);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "BoxModelResultType"), new[] { nameof(boxModelResult.BoxModelResultType) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "BoxModelResultType"), new[] { nameof(boxModelResult.BoxModelResultType) }));
             }
 
             if (boxModelResult.Volume_m3 < 0)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "Volume_m3", "0"), new[] { nameof(boxModelResult.Volume_m3) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "Volume_m3", "0"), new[] { nameof(boxModelResult.Volume_m3) }));
             }
 
             if (boxModelResult.Surface_m2 < 0)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "Surface_m2", "0"), new[] { nameof(boxModelResult.Surface_m2) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "Surface_m2", "0"), new[] { nameof(boxModelResult.Surface_m2) }));
             }
 
             if (boxModelResult.Radius_m < 0 || boxModelResult.Radius_m > 100000)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Radius_m", "0", "100000"), new[] { nameof(boxModelResult.Radius_m) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Radius_m", "0", "100000"), new[] { nameof(boxModelResult.Radius_m) }));
             }
 
             if (boxModelResult.LeftSideDiameterLineAngle_deg != null)
             {
                 if (boxModelResult.LeftSideDiameterLineAngle_deg < 0 || boxModelResult.LeftSideDiameterLineAngle_deg > 360)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "LeftSideDiameterLineAngle_deg", "0", "360"), new[] { nameof(boxModelResult.LeftSideDiameterLineAngle_deg) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "LeftSideDiameterLineAngle_deg", "0", "360"), new[] { nameof(boxModelResult.LeftSideDiameterLineAngle_deg) }));
                 }
             }
 
@@ -236,7 +231,7 @@ namespace CSSPDBServices
             {
                 if (boxModelResult.CircleCenterLatitude < -90 || boxModelResult.CircleCenterLatitude > 90)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "CircleCenterLatitude", "-90", "90"), new[] { nameof(boxModelResult.CircleCenterLatitude) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "CircleCenterLatitude", "-90", "90"), new[] { nameof(boxModelResult.CircleCenterLatitude) }));
                 }
             }
 
@@ -244,25 +239,25 @@ namespace CSSPDBServices
             {
                 if (boxModelResult.CircleCenterLongitude < -180 || boxModelResult.CircleCenterLongitude > 180)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "CircleCenterLongitude", "-180", "180"), new[] { nameof(boxModelResult.CircleCenterLongitude) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "CircleCenterLongitude", "-180", "180"), new[] { nameof(boxModelResult.CircleCenterLongitude) }));
                 }
             }
 
             if (boxModelResult.RectLength_m < 0 || boxModelResult.RectLength_m > 100000)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "RectLength_m", "0", "100000"), new[] { nameof(boxModelResult.RectLength_m) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "RectLength_m", "0", "100000"), new[] { nameof(boxModelResult.RectLength_m) }));
             }
 
             if (boxModelResult.RectWidth_m < 0 || boxModelResult.RectWidth_m > 100000)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "RectWidth_m", "0", "100000"), new[] { nameof(boxModelResult.RectWidth_m) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "RectWidth_m", "0", "100000"), new[] { nameof(boxModelResult.RectWidth_m) }));
             }
 
             if (boxModelResult.LeftSideLineAngle_deg != null)
             {
                 if (boxModelResult.LeftSideLineAngle_deg < 0 || boxModelResult.LeftSideLineAngle_deg > 360)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "LeftSideLineAngle_deg", "0", "360"), new[] { nameof(boxModelResult.LeftSideLineAngle_deg) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "LeftSideLineAngle_deg", "0", "360"), new[] { nameof(boxModelResult.LeftSideLineAngle_deg) }));
                 }
             }
 
@@ -270,7 +265,7 @@ namespace CSSPDBServices
             {
                 if (boxModelResult.LeftSideLineStartLatitude < -90 || boxModelResult.LeftSideLineStartLatitude > 90)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "LeftSideLineStartLatitude", "-90", "90"), new[] { nameof(boxModelResult.LeftSideLineStartLatitude) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "LeftSideLineStartLatitude", "-90", "90"), new[] { nameof(boxModelResult.LeftSideLineStartLatitude) }));
                 }
             }
 
@@ -278,19 +273,19 @@ namespace CSSPDBServices
             {
                 if (boxModelResult.LeftSideLineStartLongitude < -180 || boxModelResult.LeftSideLineStartLongitude > 180)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "LeftSideLineStartLongitude", "-180", "180"), new[] { nameof(boxModelResult.LeftSideLineStartLongitude) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "LeftSideLineStartLongitude", "-180", "180"), new[] { nameof(boxModelResult.LeftSideLineStartLongitude) }));
                 }
             }
 
             if (boxModelResult.LastUpdateDate_UTC.Year == 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { nameof(boxModelResult.LastUpdateDate_UTC) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { nameof(boxModelResult.LastUpdateDate_UTC) }));
             }
             else
             {
                 if (boxModelResult.LastUpdateDate_UTC.Year < 1980)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { nameof(boxModelResult.LastUpdateDate_UTC) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { nameof(boxModelResult.LastUpdateDate_UTC) }));
                 }
             }
 
@@ -299,7 +294,7 @@ namespace CSSPDBServices
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", boxModelResult.LastUpdateContactTVItemID.ToString()), new[] { nameof(boxModelResult.LastUpdateContactTVItemID) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", boxModelResult.LastUpdateContactTVItemID.ToString()), new[] { nameof(boxModelResult.LastUpdateContactTVItemID)}));
             }
             else
             {
@@ -309,10 +304,11 @@ namespace CSSPDBServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(boxModelResult.LastUpdateContactTVItemID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(boxModelResult.LastUpdateContactTVItemID) }));
                 }
             }
 
+            return ValidationResults.Count == 0 ? true : false;
         }
         #endregion Functions private
     }

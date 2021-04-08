@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>CSSPDB Model Documentation</title>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+<a href="table_fr.html">Retour à la liste de tables</a>
+<h1>Table&nbsp;---&nbsp;RainExceedances</h1>
+<ul>
+<li>
+RainExceedanceID -- Int32 (key)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contient l'identifiant unique sur chaque ligne de la table RainExceedances</span>
+</li>
+<li>
+DBCommand -- DBCommandEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Identifie la command de base de données pour syncroniser avec la base de données local</span>
+</li>
+<li>
+RainExceedanceTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Lien à la table TVItems représentant l'item rain exceedance (fr)</span>
+</li>
+<li>
+StartMonth -- Int32 (min=1) (max=12)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Mois de départ</span>
+</li>
+<li>
+StartDay -- Int32 (min=1) (max=31)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Jour de départ</span>
+</li>
+<li>
+EndMonth -- Int32 (min=1) (max=12)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Mois de fin</span>
+</li>
+<li>
+EndDay -- Int32 (min=1) (max=31)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Jour de fin</span>
+</li>
+<li>
+RainMaximum_mm -- Double (min=0) (max=300)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Pluie maximale en millimètres</span>
+</li>
+<li>
+StakeholdersEmailDistributionListID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Liste de distribution de courriels</span>
+</li>
+<li>
+OnlyStaffEmailDistributionListID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Liste de distribution de courriels</span>
+</li>
+<li>
+IsActive -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;L'excédance de pluie est actif</span>
+</li>
+<li>
+LastUpdateDate_UTC -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contient la date de la dernière mise à jour en (UTC)</span>
+</li>
+<li>
+LastUpdateContactTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contact TVItemID qui a fait le dernier changement</span>
+</li>
+</ul>
+<a href="table_fr.html">Retour à la liste de tables</a>
+</body>
+</html>

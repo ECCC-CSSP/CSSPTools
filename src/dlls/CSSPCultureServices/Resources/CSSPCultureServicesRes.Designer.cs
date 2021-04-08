@@ -403,6 +403,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} should be equal to {1}.
+        /// </summary>
+        public static string _ShouldBeEqualTo_ {
+            get {
+                return ResourceManager.GetString("_ShouldBeEqualTo_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} should be equal to TVItemParent ParentID.
         /// </summary>
         public static string _ShouldBeEqualToTVItemParentParentID {
@@ -894,6 +903,15 @@ namespace CSSPCultureServices.Resources {
         public static string CouldNotLogin {
             get {
                 return ResourceManager.GetString("CouldNotLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not modify {0}. Error: {1}.
+        /// </summary>
+        public static string CouldNotModify_Error_ {
+            get {
+                return ResourceManager.GetString("CouldNotModify_Error_", resourceCulture);
             }
         }
         

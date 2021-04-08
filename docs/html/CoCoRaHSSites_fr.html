@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>CSSPDB Model Documentation</title>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+<a href="table_fr.html">Retour à la liste de tables</a>
+<h1>Table&nbsp;---&nbsp;CoCoRaHSSites</h1>
+<ul>
+<li>
+CoCoRaHSSiteID -- Int32 (key)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contient l'identifiant unique sur chaque ligne de la table CoCoRaHSSites</span>
+</li>
+<li>
+DBCommand -- DBCommandEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Identifie la command de base de données pour syncroniser avec la base de données local</span>
+</li>
+<li>
+StationNumber -- String (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Numéro du site CoCoRaHS</span>
+</li>
+<li>
+StationName -- String (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Nom de station CoCoRaHS</span>
+</li>
+<li>
+Latitude -- Double (min=-90) (max=90)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Latitude</span>
+</li>
+<li>
+Longitude -- Double (min=-180) (max=180)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Longitude</span>
+</li>
+<li>
+LastUpdateDate_UTC -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contient la date de la dernière mise à jour en (UTC)</span>
+</li>
+<li>
+LastUpdateContactTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contact TVItemID qui a fait le dernier changement</span>
+</li>
+</ul>
+<a href="table_fr.html">Retour à la liste de tables</a>
+</body>
+</html>

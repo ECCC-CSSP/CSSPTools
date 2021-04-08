@@ -39,11 +39,11 @@ namespace GenerateCSSPDBServices
 
             if (dllTypeInfoModels.Type.Name == "Contact")
             {
-                sb.AppendLine(@"        private IEnumerable<ValidationResult> Validate(ValidationContext validationContext, ActionDBTypeEnum actionDBType, AddContactTypeEnum addContactType)");
+                sb.AppendLine(@"        private bool Validate(ValidationContext validationContext, ActionDBTypeEnum actionDBType, AddContactTypeEnum addContactType)");
             }
             else
             {
-                sb.AppendLine(@"        private IEnumerable<ValidationResult> Validate(ValidationContext validationContext, ActionDBTypeEnum actionDBType)");
+                sb.AppendLine(@"        private bool Validate(ValidationContext validationContext, ActionDBTypeEnum actionDBType)");
             }
             sb.AppendLine(@"        {");
             if (EnumExist)
@@ -85,6 +85,7 @@ namespace GenerateCSSPDBServices
                 if (!await CreateValidation_EnumType(prop, csspProp, dllTypeInfoModels.Type.Name, TypeNameLower, sb)) return await Task.FromResult(false);
             }
 
+            sb.AppendLine(@"            return ValidationResults.Count == 0 ? true : false;");
             sb.AppendLine(@"        }");
 
             return await Task.FromResult(true);
@@ -117,7 +118,7 @@ namespace GenerateCSSPDBServices
                 }
             }
 
-            sb.AppendLine(@"        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)");
+            sb.AppendLine(@"        public bool Validate(ValidationContext validationContext)");
             sb.AppendLine(@"        {");
             if (EnumExist)
             {
@@ -158,12 +159,7 @@ namespace GenerateCSSPDBServices
                 if (!await CreateValidation_EnumType(prop, csspProp, dllTypeInfoModels.Type.Name, TypeNameLower, sb)) return await Task.FromResult(false);
             }
 
-            sb.AppendLine(@"            bool a = false;");
-            sb.AppendLine(@"            if (a)");
-            sb.AppendLine(@"            {");
-            sb.AppendLine(@"                yield return new ValidationResult("""");");
-            sb.AppendLine(@"            }");
-
+            sb.AppendLine(@"            return ValidationResults.Count == 0 ? true : false;");
             sb.AppendLine(@"        }");
 
             return await Task.FromResult(true);

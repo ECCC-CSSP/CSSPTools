@@ -34,7 +34,7 @@ namespace ReadGzFileServices
 
             if (LoggedInService.LoggedInContactInfo == null)
             {
-                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             string fileName = await BaseGzFileService.GetFileName(webType, TVItemID, webTypeYear);

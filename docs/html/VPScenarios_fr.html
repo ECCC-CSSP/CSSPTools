@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>CSSPDB Model Documentation</title>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+<a href="table_fr.html">Retour à la liste de tables</a>
+<h1>Table&nbsp;---&nbsp;VPScenarios</h1>
+<ul>
+<li>
+VPScenarioID -- Int32 (key)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contient l'identifiant unique sur chaque ligne de la table VPScenarios</span>
+</li>
+<li>
+DBCommand -- DBCommandEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Identifie la command de base de données pour syncroniser avec la base de données local</span>
+</li>
+<li>
+InfrastructureTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Lien à la table TVItems représentant l'infrastructure</span>
+</li>
+<li>
+VPScenarioStatus -- ScenarioStatusEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;État du scénario visual plumes</span>
+</li>
+<li>
+UseAsBestEstimate -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Utilise comme meilleur estimation</span>
+</li>
+<li>
+EffluentFlow_m3_s -- Double (min=0) (max=1000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Débit de l'effluent en mètres cube par second</span>
+</li>
+<li>
+EffluentConcentration_MPN_100ml -- Int32 (min=0) (max=10000000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Concentration de l'effluent en nombre le plus probable par 100 milli-Litres</span>
+</li>
+<li>
+FroudeNumber -- Double (min=0) (max=10000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Nombre de Froude</span>
+</li>
+<li>
+PortDiameter_m -- Double (min=0) (max=10)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Diamètre de l'orifice en mètres</span>
+</li>
+<li>
+PortDepth_m -- Double (min=0) (max=1000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Profondeur de l'orifice en mètres</span>
+</li>
+<li>
+PortElevation_m -- Double (min=0) (max=1000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Élévation de l'orifice en mètres</span>
+</li>
+<li>
+VerticalAngle_deg -- Double (min=-90) (max=90)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Angle vertical en dégré</span>
+</li>
+<li>
+HorizontalAngle_deg -- Double (min=-180) (max=180)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Angle horizontal en dégré</span>
+</li>
+<li>
+NumberOfPorts -- Int32 (min=1) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Nombre d'orifice</span>
+</li>
+<li>
+PortSpacing_m -- Double (min=0) (max=1000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Distance entre les orifices en mètres</span>
+</li>
+<li>
+AcuteMixZone_m -- Double (min=0) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Zone de pollution aigüe en mètres</span>
+</li>
+<li>
+ChronicMixZone_m -- Double (min=0) (max=40000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Zone de pollution chronique en mètres</span>
+</li>
+<li>
+EffluentSalinity_PSU -- Double (min=0) (max=40)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Salinité de l'effluent en PSU</span>
+</li>
+<li>
+EffluentTemperature_C -- Double (min=-10) (max=40)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Température de l'effluent en dégré Celcius</span>
+</li>
+<li>
+EffluentVelocity_m_s -- Double (min=0) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Vitesse de l'effluent en mètres par second</span>
+</li>
+<li>
+RawResults -- String
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Résultats bruts</span>
+</li>
+<li>
+LastUpdateDate_UTC -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contient la date de la dernière mise à jour en (UTC)</span>
+</li>
+<li>
+LastUpdateContactTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contact TVItemID qui a fait le dernier changement</span>
+</li>
+</ul>
+<a href="table_fr.html">Retour à la liste de tables</a>
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>CSSPDB Model Documentation</title>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+<a href="table_fr.html">Retour à la liste de tables</a>
+<h1>Table&nbsp;---&nbsp;HydrometricSites</h1>
+<ul>
+<li>
+HydrometricSiteID -- Int32 (key)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contient l'identifiant unique sur chaque ligne de la table HydrometricSites</span>
+</li>
+<li>
+DBCommand -- DBCommandEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Identifie la command de base de données pour syncroniser avec la base de données local</span>
+</li>
+<li>
+HydrometricSiteTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Lien à la table TVItems avec l'identifiant unique</span>
+</li>
+<li>
+FedSiteNumber -- String (max=7)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Numéro de site fédéral</span>
+</li>
+<li>
+QuebecSiteNumber -- String (max=7)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Numéro de site du Québec</span>
+</li>
+<li>
+HydrometricSiteName -- String (max=200)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Nom du site hydrométrique</span>
+</li>
+<li>
+Description -- String (max=200)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Description du site hydrométrique</span>
+</li>
+<li>
+Province -- String (max=4)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Province (4 charactères)</span>
+</li>
+<li>
+Elevation_m -- Double (min=0) (max=10000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Élévation du site en mètres au dessus du niveau moyen de la mer</span>
+</li>
+<li>
+StartDate_Local -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Date de début de monitoring</span>
+</li>
+<li>
+EndDate_Local -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Date de fin de monitoring</span>
+</li>
+<li>
+TimeOffset_hour -- Double (min=-10) (max=0)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Décalage horaire en heure (décimal)</span>
+</li>
+<li>
+DrainageArea_km2 -- Double (min=0) (max=1000000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Bassin versant en kilomètres carrés</span>
+</li>
+<li>
+IsNatural -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Régime naturel</span>
+</li>
+<li>
+IsActive -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Est maintenant active</span>
+</li>
+<li>
+Sediment -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Données sur les sédiments disponibles</span>
+</li>
+<li>
+RHBN -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Réseau hydrométrique de référence</span>
+</li>
+<li>
+RealTime -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Données en temps réel disponibles</span>
+</li>
+<li>
+HasDischarge -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Mesure débits</span>
+</li>
+<li>
+HasLevel -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Mesure niveaux</span>
+</li>
+<li>
+HasRatingCurve -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Courbe de tarage</span>
+</li>
+<li>
+LastUpdateDate_UTC -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contient la date de la dernière mise à jour en (UTC)</span>
+</li>
+<li>
+LastUpdateContactTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contact TVItemID qui a fait le dernier changement</span>
+</li>
+</ul>
+<a href="table_fr.html">Retour à la liste de tables</a>
+</body>
+</html>

@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>CSSPDB Model Documentation</title>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+<a href="table_fr.html">Retour à la liste de tables</a>
+<h1>Table&nbsp;---&nbsp;LabSheetDetails</h1>
+<ul>
+<li>
+LabSheetDetailID -- Int32 (key)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contient l'identifiant unique sur chaque ligne de la table LabSheetDetails</span>
+</li>
+<li>
+DBCommand -- DBCommandEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Identifie la command de base de données pour syncroniser avec la base de données local</span>
+</li>
+<li>
+LabSheetID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Lien à la table LabSheets représentant la feuille de laboratoire</span>
+</li>
+<li>
+SamplingPlanID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Lien à la table SamplingPlan représentant la plan d'échantillonnage</span>
+</li>
+<li>
+SubsectorTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Lien à la table TVItem représentant la sous-secteur</span>
+</li>
+<li>
+Version -- Int32 (min=1) (max=5)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Version du document (feuille de laboratoire)</span>
+</li>
+<li>
+RunDate -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Date de la tournée</span>
+</li>
+<li>
+Tides -- String (min=1) (max=7)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;ID des site de marées</span>
+</li>
+<li>
+SampleCrewInitials -- String (max=20)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Initiales des contacts faisant l'échantillonnage</span>
+</li>
+<li>
+WaterBathCount -- Int32 (min=1) (max=3)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Nombre de bain d'eau</span>
+</li>
+<li>
+IncubationBath1StartTime -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Temps de départ bain d'incubation 1</span>
+</li>
+<li>
+IncubationBath2StartTime -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Temps de départ bain d'incubation 2</span>
+</li>
+<li>
+IncubationBath3StartTime -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Temps de départ bain d'incubation 3</span>
+</li>
+<li>
+IncubationBath1EndTime -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Temps de fin bain d'incubation 1</span>
+</li>
+<li>
+IncubationBath2EndTime -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Temps de fin bain d'incubation 2</span>
+</li>
+<li>
+IncubationBath3EndTime -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Temps de fin bain d'incubation 3</span>
+</li>
+<li>
+IncubationBath1TimeCalculated_minutes -- Int32 (min=0) (max=10000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Temps calculé de bain d'incubation 1 en minutes</span>
+</li>
+<li>
+IncubationBath2TimeCalculated_minutes -- Int32 (min=0) (max=10000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Temps calculé de bain d'incubation 2 en minutes</span>
+</li>
+<li>
+IncubationBath3TimeCalculated_minutes -- Int32 (min=0) (max=10000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Temps calculé de bain d'incubation 3 en minutes</span>
+</li>
+<li>
+WaterBath1 -- String (max=10)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Bain d'eau 1</span>
+</li>
+<li>
+WaterBath2 -- String (max=10)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Bain d'eau 2</span>
+</li>
+<li>
+WaterBath3 -- String (max=10)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Bain d'eau 3</span>
+</li>
+<li>
+TCField1 -- Double (min=-10) (max=40)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Température de control 1</span>
+</li>
+<li>
+TCLab1 -- Double (min=-10) (max=40)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Température de control au laboratoire 1</span>
+</li>
+<li>
+TCField2 -- Double (min=-10) (max=40)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Température de control 2</span>
+</li>
+<li>
+TCLab2 -- Double (min=-10) (max=40)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Température de control au laboratoire 2</span>
+</li>
+<li>
+TCFirst -- Double (min=-10) (max=40)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Première température de control</span>
+</li>
+<li>
+TCAverage -- Double (min=-10) (max=40)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Moyenne de température de control</span>
+</li>
+<li>
+ControlLot -- String (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Lot de contrôle</span>
+</li>
+<li>
+Positive35 -- String (min=1) (max=1)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Positive 35 (°C)</span>
+</li>
+<li>
+NonTarget35 -- String (min=1) (max=1)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Non target 35 (°C)</span>
+</li>
+<li>
+Negative35 -- String (min=1) (max=1)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Negative 35 (°C)</span>
+</li>
+<li>
+Bath1Positive44_5 -- String (min=1) (max=1)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Bath 1 positive 44.5 (°C)</span>
+</li>
+<li>
+Bath2Positive44_5 -- String (min=1) (max=1)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Bath 2 positive 44.5 (°C)</span>
+</li>
+<li>
+Bath3Positive44_5 -- String (min=1) (max=1)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Bath 3 positive 44.5 (°C)</span>
+</li>
+<li>
+Bath1NonTarget44_5 -- String (min=1) (max=1)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Bath 1 non target 44.5 (°C)</span>
+</li>
+<li>
+Bath2NonTarget44_5 -- String (min=1) (max=1)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Bath 2 non target 44.5 (°C)</span>
+</li>
+<li>
+Bath3NonTarget44_5 -- String (min=1) (max=1)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Bath 3 non target 44.5 (°C)</span>
+</li>
+<li>
+Bath1Negative44_5 -- String (min=1) (max=1)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Bath 1 negative 44.5 (°C)</span>
+</li>
+<li>
+Bath2Negative44_5 -- String (min=1) (max=1)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Bath 2 negative 44.5 (°C)</span>
+</li>
+<li>
+Bath3Negative44_5 -- String (min=1) (max=1)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Bath 3 negative 44.5 (°C)</span>
+</li>
+<li>
+Blank35 -- String (min=1) (max=1)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Blank 35 (°C)</span>
+</li>
+<li>
+Bath1Blank44_5 -- String (min=1) (max=1)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Bath 1 blank 44.5 (°C)</span>
+</li>
+<li>
+Bath2Blank44_5 -- String (min=1) (max=1)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Bath 2 blank 44.5 (°C)</span>
+</li>
+<li>
+Bath3Blank44_5 -- String (min=1) (max=1)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Bath 3 blank 44.5 (°C)</span>
+</li>
+<li>
+Lot35 -- String (max=20)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Lot 35 (°C)</span>
+</li>
+<li>
+Lot44_5 -- String (max=20)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Lot 44.5 (°C)</span>
+</li>
+<li>
+Weather -- String (max=250)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Météo</span>
+</li>
+<li>
+RunComment -- String (max=250)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Commentaire de tourée</span>
+</li>
+<li>
+RunWeatherComment -- String (max=250)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Commentaire de tourée météo</span>
+</li>
+<li>
+SampleBottleLotNumber -- String (max=20)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Numéro de lot des bouteille d'échantillonnage</span>
+</li>
+<li>
+SalinitiesReadBy -- String (max=20)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Salinité lu par</span>
+</li>
+<li>
+SalinitiesReadDate -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Date de lecture de salinité</span>
+</li>
+<li>
+ResultsReadBy -- String (max=20)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Résultats lu par</span>
+</li>
+<li>
+ResultsReadDate -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Date de lecture des résultats</span>
+</li>
+<li>
+ResultsRecordedBy -- String (max=20)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Résultats enregistrés par</span>
+</li>
+<li>
+ResultsRecordedDate -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Date de d'enregistrement des résultats</span>
+</li>
+<li>
+DailyDuplicateRLog -- Double (min=0) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;R Log du duplicata du la tournée</span>
+</li>
+<li>
+DailyDuplicatePrecisionCriteria -- Double (min=0) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Critère de précision du duplicata du la tournée</span>
+</li>
+<li>
+DailyDuplicateAcceptable -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Duplicata du la tournée est acceptable</span>
+</li>
+<li>
+IntertechDuplicateRLog -- Double (min=0) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;R Log du duplicata intertech</span>
+</li>
+<li>
+IntertechDuplicatePrecisionCriteria -- Double (min=0) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Critère de précision du duplicata intertech</span>
+</li>
+<li>
+IntertechDuplicateAcceptable -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Duplicata intertech est acceptable</span>
+</li>
+<li>
+IntertechReadAcceptable -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Lecture intertech est acceptable</span>
+</li>
+<li>
+LastUpdateDate_UTC -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contient la date de la dernière mise à jour en (UTC)</span>
+</li>
+<li>
+LastUpdateContactTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contact TVItemID qui a fait le dernier changement</span>
+</li>
+</ul>
+<a href="table_fr.html">Retour à la liste de tables</a>
+</body>
+</html>

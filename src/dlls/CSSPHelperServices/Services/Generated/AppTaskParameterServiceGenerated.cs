@@ -24,7 +24,7 @@ namespace CSSPHelperServices
 {
     public interface IAppTaskParameterService
     {
-        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+        bool Validate(ValidationContext validationContext);
     }
     public partial class AppTaskParameterService : IAppTaskParameterService
     {
@@ -32,6 +32,7 @@ namespace CSSPHelperServices
         #endregion Variables
 
         #region Properties
+        private List<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -41,30 +42,31 @@ namespace CSSPHelperServices
         #endregion Constructors
 
         #region Functions public
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        public bool Validate(ValidationContext validationContext)
         {
             AppTaskParameter appTaskParameter = validationContext.ObjectInstance as AppTaskParameter;
 
             if (string.IsNullOrWhiteSpace(appTaskParameter.Name))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Name"), new[] { "Name" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Name"), new[] { "Name" }));
             }
 
             if (!string.IsNullOrWhiteSpace(appTaskParameter.Name) && appTaskParameter.Name.Length > 255)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Name", "255"), new[] { "Name" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Name", "255"), new[] { "Name" }));
             }
 
             if (string.IsNullOrWhiteSpace(appTaskParameter.Value))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Value"), new[] { "Value" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Value"), new[] { "Value" }));
             }
 
             if (!string.IsNullOrWhiteSpace(appTaskParameter.Value) && appTaskParameter.Value.Length > 255)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Value", "255"), new[] { "Value" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Value", "255"), new[] { "Value" }));
             }
 
+            return ValidationResults.Count == 0 ? true : false;
         }
         #endregion Functions public
     }

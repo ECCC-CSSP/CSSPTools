@@ -24,7 +24,7 @@ namespace CSSPHelperServices
 {
     public interface IFileItemListService
     {
-        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+        bool Validate(ValidationContext validationContext);
     }
     public partial class FileItemListService : IFileItemListService
     {
@@ -32,6 +32,7 @@ namespace CSSPHelperServices
         #endregion Variables
 
         #region Properties
+        private List<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -41,30 +42,31 @@ namespace CSSPHelperServices
         #endregion Constructors
 
         #region Functions public
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        public bool Validate(ValidationContext validationContext)
         {
             FileItemList fileItemList = validationContext.ObjectInstance as FileItemList;
 
             if (string.IsNullOrWhiteSpace(fileItemList.Text))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Text"), new[] { "Text" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Text"), new[] { "Text" }));
             }
 
             if (!string.IsNullOrWhiteSpace(fileItemList.Text) && (fileItemList.Text.Length < 1 || fileItemList.Text.Length > 255))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "Text", "1", "255"), new[] { "Text" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "Text", "1", "255"), new[] { "Text" }));
             }
 
             if (string.IsNullOrWhiteSpace(fileItemList.FileName))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "FileName"), new[] { "FileName" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "FileName"), new[] { "FileName" }));
             }
 
             if (!string.IsNullOrWhiteSpace(fileItemList.FileName) && (fileItemList.FileName.Length < 1 || fileItemList.FileName.Length > 255))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "FileName", "1", "255"), new[] { "FileName" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "FileName", "1", "255"), new[] { "FileName" }));
             }
 
+            return ValidationResults.Count == 0 ? true : false;
         }
         #endregion Functions public
     }

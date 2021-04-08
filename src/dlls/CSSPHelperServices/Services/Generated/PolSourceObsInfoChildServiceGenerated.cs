@@ -24,7 +24,7 @@ namespace CSSPHelperServices
 {
     public interface IPolSourceObsInfoChildService
     {
-        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+        bool Validate(ValidationContext validationContext);
     }
     public partial class PolSourceObsInfoChildService : IPolSourceObsInfoChildService
     {
@@ -32,6 +32,7 @@ namespace CSSPHelperServices
         #endregion Variables
 
         #region Properties
+        private List<ValidationResult> ValidationResults { get; set; }
         private IEnums enums { get; }
         #endregion Properties
 
@@ -43,7 +44,7 @@ namespace CSSPHelperServices
         #endregion Constructors
 
         #region Functions public
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        public bool Validate(ValidationContext validationContext)
         {
             string retStr = "";
             PolSourceObsInfoChild polSourceObsInfoChild = validationContext.ObjectInstance as PolSourceObsInfoChild;
@@ -51,25 +52,26 @@ namespace CSSPHelperServices
             retStr = enums.EnumTypeOK(typeof(PolSourceObsInfoEnum), (int?)polSourceObsInfoChild.PolSourceObsInfo);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "PolSourceObsInfo"), new[] { "PolSourceObsInfo" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "PolSourceObsInfo"), new[] { "PolSourceObsInfo" }));
             }
 
             retStr = enums.EnumTypeOK(typeof(PolSourceObsInfoEnum), (int?)polSourceObsInfoChild.PolSourceObsInfoChildStart);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "PolSourceObsInfoChildStart"), new[] { "PolSourceObsInfoChildStart" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "PolSourceObsInfoChildStart"), new[] { "PolSourceObsInfoChildStart" }));
             }
 
             if (!string.IsNullOrWhiteSpace(polSourceObsInfoChild.PolSourceObsInfoText) && polSourceObsInfoChild.PolSourceObsInfoText.Length > 100)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "PolSourceObsInfoText", "100"), new[] { "PolSourceObsInfoText" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "PolSourceObsInfoText", "100"), new[] { "PolSourceObsInfoText" }));
             }
 
             if (!string.IsNullOrWhiteSpace(polSourceObsInfoChild.PolSourceObsInfoChildStartText) && polSourceObsInfoChild.PolSourceObsInfoChildStartText.Length > 100)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "PolSourceObsInfoChildStartText", "100"), new[] { "PolSourceObsInfoChildStartText" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "PolSourceObsInfoChildStartText", "100"), new[] { "PolSourceObsInfoChildStartText" }));
             }
 
+            return ValidationResults.Count == 0 ? true : false;
         }
         #endregion Functions public
     }

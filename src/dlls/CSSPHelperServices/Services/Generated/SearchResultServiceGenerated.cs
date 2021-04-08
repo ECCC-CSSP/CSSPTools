@@ -24,7 +24,7 @@ namespace CSSPHelperServices
 {
     public interface ISearchResultService
     {
-        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+        bool Validate(ValidationContext validationContext);
     }
     public partial class SearchResultService : ISearchResultService
     {
@@ -32,6 +32,7 @@ namespace CSSPHelperServices
         #endregion Variables
 
         #region Properties
+        private List<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -41,7 +42,7 @@ namespace CSSPHelperServices
         #endregion Constructors
 
         #region Functions public
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        public bool Validate(ValidationContext validationContext)
         {
             SearchResult searchResult = validationContext.ObjectInstance as SearchResult;
 
@@ -51,12 +52,7 @@ namespace CSSPHelperServices
                 //CSSPError: Type not implemented [TVItemLanguage] of type [TVItemLanguage]
 
                 //CSSPError: Type not implemented [TVItemLanguage] of type [TVItemLanguage]
-
-            bool a = false;
-            if (a)
-            {
-                yield return new ValidationResult("");
-            }
+            return ValidationResults.Count == 0 ? true : false;
         }
         #endregion Functions public
     }

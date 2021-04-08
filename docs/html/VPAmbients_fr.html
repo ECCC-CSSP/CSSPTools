@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>CSSPDB Model Documentation</title>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+<a href="table_fr.html">Retour à la liste de tables</a>
+<h1>Table&nbsp;---&nbsp;VPAmbients</h1>
+<ul>
+<li>
+VPAmbientID -- Int32 (key)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contient l'identifiant unique sur chaque ligne de la table VPAmbients</span>
+</li>
+<li>
+DBCommand -- DBCommandEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Identifie la command de base de données pour syncroniser avec la base de données local</span>
+</li>
+<li>
+VPScenarioID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Lien à la table VPScenarios représentant le scénario visual plumes</span>
+</li>
+<li>
+Row -- Int32 (min=0) (max=10)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Rangé</span>
+</li>
+<li>
+MeasurementDepth_m -- Double (min=0) (max=1000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Profondeur de mesure en mètres</span>
+</li>
+<li>
+CurrentSpeed_m_s -- Double (min=0) (max=10)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Vitesse de courant en mètres par second</span>
+</li>
+<li>
+CurrentDirection_deg -- Double (min=-180) (max=180)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Direction du courant en dégré</span>
+</li>
+<li>
+AmbientSalinity_PSU -- Double (min=0) (max=40)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Salinité ambiante (PSU)</span>
+</li>
+<li>
+AmbientTemperature_C -- Double (min=-10) (max=40)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Température ambiante (°C)</span>
+</li>
+<li>
+BackgroundConcentration_MPN_100ml -- Int32 (min=0) (max=10000000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Concentration de fond en nombre le plus probable par 100 milli-Litres</span>
+</li>
+<li>
+PollutantDecayRate_per_day -- Double (min=0) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Taux de décoissance par jour)</span>
+</li>
+<li>
+FarFieldCurrentSpeed_m_s -- Double (min=0) (max=10)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Vitesse du courant de loin en mètre par second)</span>
+</li>
+<li>
+FarFieldCurrentDirection_deg -- Double (min=-180) (max=180)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Direction du courant de loin en dégré)</span>
+</li>
+<li>
+FarFieldDiffusionCoefficient -- Double (min=0) (max=1)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Coefficient de diffusion de loin</span>
+</li>
+<li>
+LastUpdateDate_UTC -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contient la date de la dernière mise à jour en (UTC)</span>
+</li>
+<li>
+LastUpdateContactTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contact TVItemID qui a fait le dernier changement</span>
+</li>
+</ul>
+<a href="table_fr.html">Retour à la liste de tables</a>
+</body>
+</html>

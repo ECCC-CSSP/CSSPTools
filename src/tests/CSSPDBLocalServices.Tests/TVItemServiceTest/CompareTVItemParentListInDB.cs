@@ -12,7 +12,7 @@ using Xunit;
 
 namespace CSSPDBLocalServices.Tests
 {
-    public partial class TVItemServiceTest
+    public partial class TVItemLocalServiceTest
     {
         private void CompareTVItemParentListInDB(List<WebBase> tvItemParentList)
         {

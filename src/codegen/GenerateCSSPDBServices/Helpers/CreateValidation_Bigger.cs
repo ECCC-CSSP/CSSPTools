@@ -13,7 +13,7 @@ namespace GenerateCSSPDBServices
             {
                 sb.AppendLine($@"            if ({ TypeNameLower }.{ csspProp.OtherField } > { TypeNameLower }.{ csspProp.PropName })");
                 sb.AppendLine(@"            {");
-                sb.AppendLine($@"                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._DateIsBiggerThan_, ""{ csspProp.PropName }"", ""{ TypeName }{ csspProp.OtherField }""), new[] {{ nameof({ TypeNameLower }.{ csspProp.PropName }) }});");
+                sb.AppendLine($@"                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._DateIsBiggerThan_, ""{ csspProp.PropName }"", ""{ TypeName }{ csspProp.OtherField }""), new[] {{ nameof({ TypeNameLower }.{ csspProp.PropName }) }}));");
                 sb.AppendLine(@"            }");
                 sb.AppendLine(@"");
             }

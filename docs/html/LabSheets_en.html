@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>CSSPDB Model Documentation</title>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+<a href="table_en.html">Return to table list</a>
+<h1>Table&nbsp;---&nbsp;LabSheets</h1>
+<ul>
+<li>
+LabSheetID -- Int32 (key)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contains the unique identifier on each row of the LabSheets table</span>
+</li>
+<li>
+DBCommand -- DBCommandEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Identify the database command for local database sync</span>
+</li>
+<li>
+OtherServerLabSheetID -- Int32 (min=1)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Other server lab sheet ID</span>
+</li>
+<li>
+SamplingPlanID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Link to the SamplingPlan table representing the sampling plan</span>
+</li>
+<li>
+SamplingPlanName -- String (min=1) (max=250)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Sampling plan name</span>
+</li>
+<li>
+Year -- Int32 (min=1980)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Year of run</span>
+</li>
+<li>
+Month -- Int32 (min=1) (max=12)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Month of run</span>
+</li>
+<li>
+Day -- Int32 (min=1) (max=31)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Day of run</span>
+</li>
+<li>
+RunNumber -- Int32 (min=1) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Run number</span>
+</li>
+<li>
+SubsectorTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Link to the TVItems table with the unique identifier</span>
+</li>
+<li>
+MWQMRunTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Link to the TVItems table with the unique identifier</span>
+</li>
+<li>
+SamplingPlanType -- SamplingPlanTypeEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Sampling plan type</span>
+</li>
+<li>
+SampleType -- SampleTypeEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Sample type</span>
+</li>
+<li>
+LabSheetType -- LabSheetTypeEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Lab sheet type</span>
+</li>
+<li>
+LabSheetStatus -- LabSheetStatusEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Lab sheet statue</span>
+</li>
+<li>
+FileName -- String (min=1) (max=250)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;File name</span>
+</li>
+<li>
+FileLastModifiedDate_Local -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;File last modified date (local)</span>
+</li>
+<li>
+FileContent -- String
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;File content</span>
+</li>
+<li>
+AcceptedOrRejectedByContactTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Accepted or rejected by Contact TVItemID</span>
+</li>
+<li>
+AcceptedOrRejectedDateTime -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Accepted or rejected date (local)</span>
+</li>
+<li>
+RejectReason -- String (max=250)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Reject reason</span>
+</li>
+<li>
+LastUpdateDate_UTC -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contains the date of the last update in UTC</span>
+</li>
+<li>
+LastUpdateContactTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contact TVItemID who made the last changes</span>
+</li>
+</ul>
+<a href="table_en.html">Return to table list</a>
+</body>
+</html>

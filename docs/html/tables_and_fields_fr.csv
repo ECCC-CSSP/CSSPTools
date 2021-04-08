@@ -1,0 +1,1219 @@
+﻿Table,Field,Type,Description
+Addresses,,,La table Addresses contient des champs pour contenir l'adresse complète. Elle est utilisée avec les infrastructures, les sites sources de pollution et les contacts des municipalités.
+Addresses,AddressID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table Adresses
+Addresses,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+Addresses,AddressTVItemID,Int32,Lien à la table TVItems avec l'identifiant unique
+Addresses,AddressType,AddressTypeEnum (int),Type d'adresse
+Addresses,CountryTVItemID,Int32,Lien à la table TVItems représentant le pays
+Addresses,ProvinceTVItemID,Int32,Lien à la table TVItems représentant la province
+Addresses,MunicipalityTVItemID,Int32,Lien à la table TVItems représentant la municipalité
+Addresses,StreetName,String (max=200),Nom de la rue de l'adresse
+Addresses,StreetNumber,String (max=50),Numéro de la rue de l'adresse
+Addresses,StreetType,StreetTypeEnum (int),Type de rue de l'adresse
+Addresses,PostalCode,String (min=6) (max=11),Code postale de l'adresse
+Addresses,GoogleAddressText,String (min=10) (max=200),Adresse Google fourni par le service Google Location
+Addresses,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+Addresses,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+AppErrLogs,,,La table AppErrLogs contient des champs pour contenir les erreurs d'application.
+AppErrLogs,AppErrLogID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table AppErrLogs
+AppErrLogs,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+AppErrLogs,Tag,String (max=100),Tag unique de l'exception
+AppErrLogs,LineNumber,Int32 (min=1),Numéro de la ligne de l'exception
+AppErrLogs,Source,String,Source de l'exception
+AppErrLogs,Message,String,Message de l'exception
+AppErrLogs,DateTime_UTC,DateTime,Date et temps de l'exception
+AppErrLogs,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+AppErrLogs,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+AppTasks,,,La table AppTasks contient des champs pour contenir les tâches d'application envoyées au serveur qui peuvent prendre un certain temps.
+AppTasks,AppTaskID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table AppTasks
+AppTasks,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+AppTasks,TVItemID,Int32,Lien à la table TVItems avec l'identifiant unique
+AppTasks,TVItemID2,Int32,Lien #2 à la table TVItems avec l'identifiant unique
+AppTasks,AppTaskCommand,AppTaskCommandEnum (int),Commande de tâche App
+AppTasks,AppTaskStatus,AppTaskStatusEnum (int),Statut de la tâche App
+AppTasks,PercentCompleted,Int32 (min=0) (max=100),Pourcentage complété de la tâche App
+AppTasks,Parameters,String,Paramètres de la tâche App
+AppTasks,Language,LanguageEnum (int),Langage de la tâche App
+AppTasks,StartDateTime_UTC,DateTime,Date et temps de départ de la tâche App
+AppTasks,EndDateTime_UTC,DateTime,Date et temps de fin de la tâche App
+AppTasks,EstimatedLength_second,Int32 (min=0) (max=1000000),Temps estimé de la tâche App (secondes)
+AppTasks,RemainingTime_second,Int32 (min=0) (max=1000000),Temps qui reste de la tâche App (secondes)
+AppTasks,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+AppTasks,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+AppTaskLanguages,,,La table AppTaskLanguages contient des champs pour contenir des textes bilingues pour la table AppTasks.
+AppTaskLanguages,AppTaskLanguageID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table AppTaskLanguages
+AppTaskLanguages,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+AppTaskLanguages,AppTaskID,Int32,Lien au parent AppTask à l'item de la table AppTasks
+AppTaskLanguages,Language,LanguageEnum (int),Langage de l'item
+AppTaskLanguages,StatusText,String (max=250),Texte décrivant le statut de AppTask
+AppTaskLanguages,ErrorText,String (max=250),Texte décrivant l'erreur de AppTask... s'il y a lieu
+AppTaskLanguages,TranslationStatus,TranslationStatusEnum (int),Le statut de la traduction du texte du statut et du texte de l'erreur
+AppTaskLanguages,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+AppTaskLanguages,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+BoxModels,,,Le table BoxModels contient des champs pour contenir les scénarios de modélisation 'Box Model'.
+BoxModels,BoxModelID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table BoxModels
+BoxModels,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+BoxModels,InfrastructureTVItemID,Int32,Lien à la table TVItems représentant la infrastructure
+BoxModels,Discharge_m3_day,Double (min=0) (max=10000),Débit (m3/d) déversé par l' infrastructure
+BoxModels,Depth_m,Double (min=0) (max=1000),Profondeur moyenne (m) des eaux aux environs du déversement
+BoxModels,Temperature_C,Double (min=-15) (max=40),Température (deg C) des eaux aux environs du déversement
+BoxModels,Dilution,Int32 (min=0) (max=10000000),Niveau de dilution (NPP / 100 mL) à obtenir aux environs du déversement
+BoxModels,DecayRate_per_day,Double (min=0) (max=100),Taux de décroissance moyen (/jour) des colonies de coliform fécaux
+BoxModels,FCUntreated_MPN_100ml,Int32 (min=0) (max=10000000),Concentration de coliform fécaux des eaux usées non traité (NPP / 100 mL)
+BoxModels,FCPreDisinfection_MPN_100ml,Int32 (min=0) (max=10000000),Concentration de coliform fécaux des eaux usées pré-désinfecté (NPP / 100 mL)
+BoxModels,Concentration_MPN_100ml,Int32 (min=0) (max=10000000),Objectif de concentration de coliform fécaux apres dilution (NPP / 100 mL)
+BoxModels,T90_hour,Double (min=0),Temps (heure) requis pour que 90% des colonies de coliformes fécaux meurent
+BoxModels,DischargeDuration_hour,Double (min=0) (max=24),Durée de l'écoulement (heure/jour)
+BoxModels,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+BoxModels,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+BoxModelLanguages,,,La table BoxModelLanguages contient des champs pour contenir des textes bilingues pour la table BoxModels.
+BoxModelLanguages,BoxModelLanguageID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table BoxModelLanguages
+BoxModelLanguages,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+BoxModelLanguages,BoxModelID,Int32,Lien au parent BoxModel à l'item de la table BoxModels
+BoxModelLanguages,Language,LanguageEnum (int),Langage de l'item
+BoxModelLanguages,ScenarioName,String (max=250),Nom du scénario de box model
+BoxModelLanguages,TranslationStatus,TranslationStatusEnum (int),Le statut de la traduction du nom du scénario
+BoxModelLanguages,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+BoxModelLanguages,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+BoxModelResults,,,Le BoxModelResults contient des champs pour contenir les résultats des scénarios de modélisation de boîtes.
+BoxModelResults,BoxModelResultID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table BoxModelResults
+BoxModelResults,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+BoxModelResults,BoxModelID,Int32,Lien au parent BoxModel à l'item de la table BoxModels
+BoxModelResults,BoxModelResultType,BoxModelResultTypeEnum (int),Type de résultats
+BoxModelResults,Volume_m3,Double (min=0),Volume (m3) d'eau de l'estuaire nécessaire pour obtenir la concentration de coliform fécaux attendue
+BoxModelResults,Surface_m2,Double (min=0),Surface (m2) d'eau de l'estuaire nécessaire pour obtenir la concentration de coliform fécaux attendue
+BoxModelResults,Radius_m,Double (min=0) (max=100000),Rayon d'un demi cercle (m) d'eau de l'estuaire nécessaire pour obtenir la concentration de coliform fécaux attendue
+BoxModelResults,LeftSideDiameterLineAngle_deg,Double (min=0) (max=360),Angle de ligne du diamètre du côté gauche (deg) utilisé pour dessiner un demi-cercle sur une carte
+BoxModelResults,CircleCenterLatitude,Double (min=-90) (max=90),Latitude du centre du cercle (deg) utilisé pour dessiner un demi-cercle sur une carte
+BoxModelResults,CircleCenterLongitude,Double (min=-180) (max=180),Longitude du centre du cercle (deg) utilisé pour dessiner un demi-cercle sur une carte
+BoxModelResults,FixLength,Boolean,La longueur fixe est utilisée pour indiquer que la longueur du rectangle doit être fixée sur une certaine longueur. Seule la largeur du rectangle sera redimensionnée afin de trouver la taille du rectangle pour obtenir la concentration de coliform fécaux attendue
+BoxModelResults,FixWidth,Boolean,La largeur fixe est utilisée pour indiquer que la largeur du rectangle doit être fixée sur une certaine largeur. Seule la longueur du rectangle sera redimensionnée afin de trouver la taille du rectangle pour obtenir la concentration de coliform fécaux attendue
+BoxModelResults,RectLength_m,Double (min=0) (max=100000),Longueur du rectangle (m) d'eau de l'estuaire nécessaire pour obtenir la concentration de coliform fécaux attendue
+BoxModelResults,RectWidth_m,Double (min=0) (max=100000),Largeur du rectangle (m) d'eau de l'estuaire nécessaire pour obtenir la concentration de coliform fécaux attendue
+BoxModelResults,LeftSideLineAngle_deg,Double (min=0) (max=360),Angle de ligne du côté gauche du rectangle (deg) utilisé pour dessiner un rectangle sur une carte
+BoxModelResults,LeftSideLineStartLatitude,Double (min=-90) (max=90),Latitude de départ de la ligne latérale gauche (deg) utilisé pour dessiner un demi-cercle sur une carte
+BoxModelResults,LeftSideLineStartLongitude,Double (min=-180) (max=180),Longitude de départ de la ligne latérale gauche (deg) utilisé pour dessiner un demi-cercle sur une carte
+BoxModelResults,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+BoxModelResults,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+Classifications,,,La table Classifications contient des champs permettant de conserver la classification pour la visualisation sur le Web. Il ne contient qu'une représentation de la classification juridique réelle détenue dans Arc GIS.
+Classifications,ClassificationID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table Classification
+Classifications,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+Classifications,ClassificationTVItemID,Int32,Lien à la table TVItems avec l'identifiant unique
+Classifications,ClassificationType,ClassificationTypeEnum (int),Type de classification
+Classifications,Ordinal,Int32 (min=0) (max=10000),Numéro indiquent l'ordre des classification
+Classifications,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+Classifications,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+ClimateDataValues,,,La table ClimateDataValues contient des champs permettant de conserver les valeurs des données climatiques pour divers sites climatiques du Service météorologique du Canada.
+ClimateDataValues,ClimateDataValueID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table ClimateDataValues
+ClimateDataValues,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+ClimateDataValues,ClimateSiteID,Int32,Lien au parent ClimateSite à l'item de la table ClimateSites
+ClimateDataValues,DateTime_Local,DateTime,Date et temps de l'observation. Pratiquement tous les données proviennent de site web weather office
+ClimateDataValues,Keep,Boolean,Conservez les données dans la base de données. Parfois, la base de données peut obtenir des données du site Web du bureau météorologique en tant que données temporaires pouvant être supprimées ultérieurement.
+ClimateDataValues,StorageDataType,StorageDataTypeEnum (int),Type de données sauvegardez peut être archivés, prévisions ou observés
+ClimateDataValues,HasBeenRead,Boolean,Les données stockées ont été lues sur le site Web du bureau météorologique
+ClimateDataValues,Snow_cm,Double (min=0) (max=10000),Neige totale (cm) --- quantité totale de neige ou totalité des précipitations gelées (solides) telles que la neige et les granules de glace, observée à un endroit donné au cours d'un intervalle de temps déterminé et exprimée en centimètres (cm).
+ClimateDataValues,Rainfall_mm,Double (min=0) (max=10000),Pluie totale (mm) --- quantité totale de pluie ou totalité des précipitations liquides en millimètres (mm) telles que la pluie, la bruine, la pluie verglaçante et la grêle, observée à un endroit donné au cours d'un intervalle de temps déterminé.
+ClimateDataValues,RainfallEntered_mm,Double (min=0) (max=10000),Pluie totale entré (mm) par un des biologiste --- quantité totale de pluie ou totalité des précipitations liquides en millimètres (mm) telles que la pluie, la bruine, la pluie verglaçante et la grêle, observée à un endroit donné au cours d'un intervalle de temps déterminé.
+ClimateDataValues,TotalPrecip_mm_cm,Double (min=0) (max=10000),Précipitations totales (mm) --- somme de la pluie totale et de l'équivalent en eau de la neige totale en millimètres (mm), observée à un endroit donné au cours d'un intervalle de temps déterminé.
+ClimateDataValues,MaxTemp_C,Double (min=-50) (max=50),Température maximale (deg C) --- température la plus élevée, en degrés Celsius (°C), observée à un endroit donné au cours d'un intervalle de temps déterminé.
+ClimateDataValues,MinTemp_C,Double (min=-50) (max=50),Température minimale (deg C) --- température la plus basse, en degrés Celsius (°C), observée à un endroit donné au cours d'un intervalle de temps déterminé.
+ClimateDataValues,HeatDegDays_C,Double (min=-1000) (max=100),On compte un degré-jour de chauffage pour chaque degré dont la température moyenne quotidienne est inférieure à 18 °C. Si la température est égale ou supérieure à 18 °C, le nombre de degrés-jours sera zéro. Par exemple, une journée ayant une température moyenne de 15,5 °C aura 2,5 degrés-jours de chauffage; une journée ayant une température moyenne de 20,5 °C aura zéro degré-jour de chauffage. Les degrés-jours de chauffage sont utilisés principalement pour estimer les besoins de chauffage des bâtiments.
+ClimateDataValues,CoolDegDays_C,Double (min=-1000) (max=100),On compte un degré-jour de refroidissement pour chaque degré dont la température moyenne quotidienne est supérieure à 18 °C . Si la température est égale ou inférieure à 18 °C , le nombre de degrés-jours sera zéro. Par exemple, une journée ayant une température moyenne de 20,5 °C aura 2,5 degrés-jours de refroidissement; une journée ayant une température moyenne de 15,5 °C aura zéro degré-jour de refroidissement. Les degrés-jours de refroidissement sont utilisés principalement pour estimer les besoins de climatisation des bâtiments.
+ClimateDataValues,SnowOnGround_cm,Double (min=0) (max=10000),Neige au sol (cm)--- épaisseur (en cm) de la neige sur le sol. On détermine, en centimètres entiers, l'épaisseur totale de neige au sol au moment de l'observation en prenant une série de mesures et en en faisant la moyenne.
+ClimateDataValues,DirMaxGust_0North,Double (min=0) (max=360),Direction de la rafale maximale (10's deg/dizaines de degrés) --- direction (vraie ou géographique, et non magnétique) d'où souffle le vent pendant la rafale maximale. Exprimée en dizaines de degrés, 9 signifiant 90 degrés vrais ou un vent d'est, et 36 signifiant 360 degrés vrais, ou un vent soufflant du pôle Nord géographique. Cette valeur n'est signalée que si la vitesse de la rafale maximale dépasse 29 km/h.
+ClimateDataValues,SpdMaxGust_kmh,Double (min=0) (max=300),Vitesse de la rafale maximale (km/h) --- vitesse en kilomètres à l'heure (km/h) de la rafale maximale pendant le jour donné. La rafale est la lecture instantanée ou simple du maximum ou de la crête de l'anémomètre (l'instrument utilisé pour observer la vitesse du vent) pendant le jour donné. La durée d'une rafale correspond typiquement à un temps écoulé de 3 à 5 secondes.
+ClimateDataValues,HourlyValues,String,Texte des valeurs horaire sauvegarde toutes les 24 valeurs horaires des paramètres mesurés par weather office
+ClimateDataValues,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+ClimateDataValues,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+ClimateSites,,,La table ClimateSites contient des champs permettant de conserver les informations relatives aux sites climatiques du Service météorologique du Canada ainsi que de certains sites climatiques provinciaux.
+ClimateSites,ClimateSiteID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table ClimateSites
+ClimateSites,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+ClimateSites,ClimateSiteTVItemID,Int32,Lien à la table TVItems avec l'identifiant unique
+ClimateSites,ECDBID,Int32 (min=1) (max=100000),ECDBID --- Site Web du bureau météorologique d'Environnement Canada identifiant le site de site climatatique
+ClimateSites,ClimateSiteName,String (max=100),Nom du site climatique est un nom unique pour le site donné par Environnement Canada
+ClimateSites,Province,String (max=4),Province identifiée par les initiales de deux lettres
+ClimateSites,Elevation_m,Double (min=0) (max=10000),Élévation (m) est l'élévation au dessus du niveau moyen de la mer
+ClimateSites,ClimateID,String (max=10),Identifiant du site climatique est unique pour le site climatique pour Environnemement Canada
+ClimateSites,WMOID,Int32 (min=1) (max=100000),WMOID est un identifiant unique pour le site climatique pour World Meteorological Office
+ClimateSites,TCID,String (max=3),TCID est l'identificateur attribué par Transports Canada pour identifier les rapports météorologiques provenant des stations localisées aux aéroports et sont transmis en temps réel dans des formats d'aviation.
+ClimateSites,IsQuebecSite,Boolean,Site climatique du Québec
+ClimateSites,IsCoCoRaHS,Boolean,Site climatique de CoCoRaHS
+ClimateSites,TimeOffset_hour,Double (min=-10) (max=0),Décalage du fuseau horaire (heure)
+ClimateSites,File_desc,String (max=50),Description de filière --- champ temporaire utilisé lors du téléchargement des données du site Web du bureau météorologique d'Environnement Canada
+ClimateSites,HourlyStartDate_Local,DateTime,Date de départ des données horaires contiendra null si le site climatique n'a pas de données horaires ou la date de départ des données horaires
+ClimateSites,HourlyEndDate_Local,DateTime,Date de fin des données horaires contiendra null si le site climatique n'a pas de données horaires ou la date de fin des données horaires
+ClimateSites,HourlyNow,Boolean,Horaire maintenant indique s'il y a des données horaires maintenant
+ClimateSites,DailyStartDate_Local,DateTime,Date de départ des données journalières contiendra null si le site climatique n'a pas de données journalières ou la date de départ des données journalières
+ClimateSites,DailyEndDate_Local,DateTime,Date de fin des données journalières contiendra null si le site climatique n'a pas de données journalières ou la date de fin des données journalières
+ClimateSites,DailyNow,Boolean,Journalier maintenant indique s'il y a des données journalières maintenant
+ClimateSites,MonthlyStartDate_Local,DateTime,Date de départ des données mensuelles contiendra null si le site climatique n'a pas de données mensuelles ou la date de départ des données mensuelles
+ClimateSites,MonthlyEndDate_Local,DateTime,Date de fin des données mensuelles contiendra null si le site climatique n'a pas de données mensuelles ou la date de fin des données mensuelles
+ClimateSites,MonthlyNow,Boolean,Mensuel maintenant indique s'il y a des données mensuelles maintenant
+ClimateSites,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+ClimateSites,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+CoCoRaHSSites,,,La table CoCoRaHSSites contient des champs permettant de conserver les sites de précipitations gérés volontairement par des particuliers.
+CoCoRaHSSites,CoCoRaHSSiteID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table CoCoRaHSSites
+CoCoRaHSSites,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+CoCoRaHSSites,StationNumber,String (max=100),Numéro du site CoCoRaHS
+CoCoRaHSSites,StationName,String (max=100),Nom de station CoCoRaHS
+CoCoRaHSSites,Latitude,Double (min=-90) (max=90),Latitude
+CoCoRaHSSites,Longitude,Double (min=-180) (max=180),Longitude
+CoCoRaHSSites,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+CoCoRaHSSites,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+CoCoRaHSValues,,,La table CoCoRaHSValues contient des champs permettant de conserver les valeurs de précipitations provenant de sites privés volontaires.
+CoCoRaHSValues,CoCoRaHSValueID,Int32 (key),Contains the unique identifier on each row of the CoCoRaHSValues table
+CoCoRaHSValues,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+CoCoRaHSValues,CoCoRaHSSiteID,Int32,Lien à la table CoCoRaHSSite représentant le site CoCoRaHS
+CoCoRaHSValues,ObservationDateAndTime,DateTime,Date et temps d'observation
+CoCoRaHSValues,TotalPrecipAmt,Double (min=0) (max=10000),Precipitation total en mm
+CoCoRaHSValues,NewSnowDepth,Double (min=0) (max=10000),Profondeur de la nouvelle neige
+CoCoRaHSValues,NewSnowSWE,Double (min=0) (max=10000),Nouvelle neige SWE in cm
+CoCoRaHSValues,TotalSnowDepth,Double (min=0) (max=10000),Profondeur total de neige in cm
+CoCoRaHSValues,TotalSnowSWE,Double (min=0) (max=10000),Neige total SWE
+CoCoRaHSValues,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+CoCoRaHSValues,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+Contacts,,,La table Contacts contient des champs pour stocker les informations des utilisateurs.
+Contacts,ContactID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table Contacts
+Contacts,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+Contacts,Id,String (max=450),Contient l'identifiant unique sur chaque ligne de la table AspNetUsers
+Contacts,ContactTVItemID,Int32,Lien à la table TVItems avec l'identifiant unique
+Contacts,LoginEmail,String (min=6) (max=255),Courriel de connexion pour le site web
+Contacts,FirstName,String (max=100),Prénom
+Contacts,LastName,String (max=100),Nom
+Contacts,Initial,String (max=50),Initiale
+Contacts,CellNumber,String (max=50),Numéro du cellulaire
+Contacts,CellNumberConfirmed,Boolean,Numéro du cellulaire confirmé
+Contacts,WebName,String (max=100),Nom Web
+Contacts,ContactTitle,ContactTitleEnum (int),Titre
+Contacts,IsAdmin,Boolean,Administrateur
+Contacts,EmailValidated,Boolean,Courriel validé
+Contacts,Disabled,Boolean,Déactivé
+Contacts,IsNew,Boolean,Est nouveau
+Contacts,SamplingPlanner_ProvincesTVItemID,String (max=200),Planificateur d'échantillonnage pour les provinces
+Contacts,PasswordHash,String (max=255),Mot de pass hash
+Contacts,Token,String (max=255),Javascript Web Token (fr)
+Contacts,HasInternetConnection,Boolean,A connection internet
+Contacts,IsLoggedIn,Boolean,Est connecté
+Contacts,GoogleMapKeyHash,String (max=255),Clef Google Map hash
+Contacts,AccessFailedCount,Int32 (min=0) (max=10),Nombre d'accès failli
+Contacts,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+Contacts,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+ContactPreferences,,,La table ContactPreferences contient des champs permettant de gérer les préférences des utilisateurs lors de l'utilisation de certaines applications.
+ContactPreferences,ContactPreferenceID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table ContactPreferences
+ContactPreferences,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+ContactPreferences,ContactID,Int32,Lien à la table Contacts avec l'identifiant unique
+ContactPreferences,TVType,TVTypeEnum (int),Type d'item pour l'arbre visuel
+ContactPreferences,MarkerSize,Int32 (min=1) (max=1000),Taille du marqueur
+ContactPreferences,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+ContactPreferences,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+ContactShortcuts,,,La table ContactShortcuts contient des champs permettant de gérer les raccourcis utilisateurs utilisés par certaines applications.
+ContactShortcuts,ContactShortcutID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table ContactShortcuts
+ContactShortcuts,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+ContactShortcuts,ContactID,Int32,Lien à la table Contacts avec l'identifiant unique
+ContactShortcuts,ShortCutText,String (max=100),Texte de raccourci
+ContactShortcuts,ShortCutAddress,String (max=200),Texte de l'address
+ContactShortcuts,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+ContactShortcuts,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+DocTemplates,,,La table DocTemplates contient des champs pour contenir des modèles prédéfinis lors de la création de nombreux types de documents, tels que .xlsx, .docx, .csv, .txt, etc. Cette option d'exportation de données vers des documents est remplacée par des exportations de type paramètre. Cette table pourrait être supprimé à l'avenir.
+DocTemplates,DocTemplateID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table DocTemplates
+DocTemplates,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+DocTemplates,Language,LanguageEnum (int),Langage du document modèle
+DocTemplates,TVType,TVTypeEnum (int),Type d'item pour l'arbre visuel
+DocTemplates,TVFileTVItemID,Int32,Lien à la table TVFiles avec l'identifiant unique
+DocTemplates,FileName,String (max=150),Nom de la filière du document modèle
+DocTemplates,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+DocTemplates,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+DrogueRuns,,,La table DrogueRuns contient des champs pour afficher le suivi des drogues sur le Web. Il contient les noms, les numéros et la date des courses de drogue.
+DrogueRuns,DrogueRunID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table DrogueRuns
+DrogueRuns,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+DrogueRuns,SubsectorTVItemID,Int32,Lien à la table TVItems représentant le sous-secteur
+DrogueRuns,DrogueNumber,Int32 (min=0) (max=100),Numéro de drogue
+DrogueRuns,DrogueType,DrogueTypeEnum (int),Type de drogue
+DrogueRuns,RunStartDateTime,DateTime,Date et temps de départ de la run drogue (local)
+DrogueRuns,IsRisingTide,Boolean,Marée montante
+DrogueRuns,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+DrogueRuns,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+DrogueRunPositions,,,La table DrogueRunPositions contient des champs pour afficher le suivi des drogues sur le Web. Il contient les coordonnées temporelles.
+DrogueRunPositions,DrogueRunPositionID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table DrogueRunPositions
+DrogueRunPositions,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+DrogueRunPositions,DrogueRunID,Int32,Lien à la table DrogueRuns représentant la drogue run (fr)
+DrogueRunPositions,Ordinal,Int32 (min=0) (max=100000),Ordinal (fr)
+DrogueRunPositions,StepLat,Double (min=-180) (max=180),Step Lat
+DrogueRunPositions,StepLng,Double (min=-90) (max=90),Step Lng
+DrogueRunPositions,StepDateTime_Local,DateTime,Step date and time (local) (fr)
+DrogueRunPositions,CalculatedSpeed_m_s,Double (min=0) (max=10),Calculated speed (m/s) (fr)
+DrogueRunPositions,CalculatedDirection_deg,Double (min=0) (max=360),Calculated direction (deg) (fr)
+DrogueRunPositions,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+DrogueRunPositions,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+Emails,,,La table Emails contient des champs pour contenir des e-mails complets. Il est utilisé avec les contacts de la municipalité et les seconds e-mails des utilisateurs.
+Emails,EmailID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table Emails
+Emails,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+Emails,EmailTVItemID,Int32,Lien à la table TVItems représentant la courriel
+Emails,EmailAddress,String (max=255),Adresse courriel
+Emails,EmailType,EmailTypeEnum (int),Type de courriel
+Emails,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+Emails,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+EmailDistributionLists,,,La table EmailDistributionLists contient des champs permettant d'identifier les listes de distribution d'e-mails.
+EmailDistributionLists,EmailDistributionListID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table EmailDistributionLists
+EmailDistributionLists,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+EmailDistributionLists,ParentTVItemID,Int32,Lien à la table TVItems représentant le TVItem du parent
+EmailDistributionLists,Ordinal,Int32 (min=0) (max=1000),Ordre
+EmailDistributionLists,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+EmailDistributionLists,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+EmailDistributionListContacts,,,La table EmailDistributionListContacts contient tous les noms de contacts pour une liste de distribution d'e-mails spécifiée.
+EmailDistributionListContacts,EmailDistributionListContactID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table EmailDistributionListContacts
+EmailDistributionListContacts,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+EmailDistributionListContacts,EmailDistributionListID,Int32,Lien à la table EmailDistributionList représentant la liste de distribution des courriels
+EmailDistributionListContacts,IsCC,Boolean,Envoy courriel comme CC
+EmailDistributionListContacts,Name,String (max=100),Nom du contact
+EmailDistributionListContacts,Email,String (max=200),Courriel du contact
+EmailDistributionListContacts,CMPRainfallSeasonal,Boolean,Pluie Saisonnière PGC
+EmailDistributionListContacts,CMPWastewater,Boolean,Eaux usées PGC
+EmailDistributionListContacts,EmergencyWeather,Boolean,Pluie Urgence
+EmailDistributionListContacts,EmergencyWastewater,Boolean,Eaux Usées Urgence
+EmailDistributionListContacts,ReopeningAllTypes,Boolean,Réouverture Tous Types
+EmailDistributionListContacts,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+EmailDistributionListContacts,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+EmailDistributionListContactLanguages,,,La table EmailDistributionListContactLanguages contient des champs pour contenir les textes bilingues de la table EmailDistributionListContacts.
+EmailDistributionListContactLanguages,EmailDistributionListContactLanguageID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table EmailDistributionListContactLanguages
+EmailDistributionListContactLanguages,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+EmailDistributionListContactLanguages,EmailDistributionListContactID,Int32,Lien à la table EmailDistributionListContact représentant la liste de distribution des courriels contact
+EmailDistributionListContactLanguages,Language,LanguageEnum (int),Langage de l'item
+EmailDistributionListContactLanguages,Agency,String (min=1) (max=100),Agence
+EmailDistributionListContactLanguages,TranslationStatus,TranslationStatusEnum (int),Le statut de la traduction du nom de l'agence
+EmailDistributionListContactLanguages,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+EmailDistributionListContactLanguages,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+EmailDistributionListLanguages,,,La table EmailDistributionListLanguages contient des champs permettant de stocker des textes bilingues d'EmailDistributionLists.
+EmailDistributionListLanguages,EmailDistributionListLanguageID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table EmailDistributionListLanguages
+EmailDistributionListLanguages,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+EmailDistributionListLanguages,EmailDistributionListID,Int32,Lien à la table EmailDistributionList représentant la liste de distribution des courriels
+EmailDistributionListLanguages,Language,LanguageEnum (int),Langage de l'item
+EmailDistributionListLanguages,EmailListName,String (min=1) (max=100),Nom de la liste de courriel
+EmailDistributionListLanguages,TranslationStatus,TranslationStatusEnum (int),Le statut de la traduction du nom de la région
+EmailDistributionListLanguages,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+EmailDistributionListLanguages,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+HelpDocs,,,La table HelpDocs contient des champs pour contenir les informations d'aide utilisées dans certaines applications. Surtout le Web.
+HelpDocs,HelpDocID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table HelpDocs
+HelpDocs,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+HelpDocs,DocKey,String (max=100),Identifiant du document aide
+HelpDocs,Language,LanguageEnum (int),Langage du document aide
+HelpDocs,DocHTMLText,String (max=100000),Texte HTML du document help
+HelpDocs,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+HelpDocs,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+HydrometricDataValues,,,La table HydrometricDataValues contient des champs permettant de conserver les valeurs de données hydrométriques pour divers sites hydrométriques du Service hydrométrique du Canada.
+HydrometricDataValues,HydrometricDataValueID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table HydrometricDataValues
+HydrometricDataValues,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+HydrometricDataValues,HydrometricSiteID,Int32,Lien au parent CydrometricSite à l'item de la table HydrometricSites
+HydrometricDataValues,DateTime_Local,DateTime,Date et temps de l'observation. Pratiquement tous les données proviennent de site web water office
+HydrometricDataValues,Keep,Boolean,Conservez les données dans la base de données. Parfois, la base de données peut obtenir des données du site Web du bureau hydrométrique en tant que données temporaires pouvant être supprimées ultérieurement.
+HydrometricDataValues,StorageDataType,StorageDataTypeEnum (int),Type de données sauvegardez peut être archivés, prévisions ou observés
+HydrometricDataValues,HasBeenRead,Boolean,Les données stockées ont été lues sur le site Web du bureau météorologique
+HydrometricDataValues,Discharge_m3_s,Double (min=0) (max=100000),Débits en mètres cube par second
+HydrometricDataValues,DischargeEntered_m3_s,Double (min=0) (max=100000),Débits entrés en mètres cube par second
+HydrometricDataValues,Level_m,Double (min=0) (max=10000),Niveaux en meters
+HydrometricDataValues,HourlyValues,String,Texte contenant les valeurs horaires
+HydrometricDataValues,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+HydrometricDataValues,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+HydrometricSites,,,La table HydrometricSites contient des champs pour contenir des informations sur les sites hydrométriques du Service hydrométrique du Canada ainsi que certains sites hydrométriques provinciaux.
+HydrometricSites,HydrometricSiteID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table HydrometricSites
+HydrometricSites,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+HydrometricSites,HydrometricSiteTVItemID,Int32,Lien à la table TVItems avec l'identifiant unique
+HydrometricSites,FedSiteNumber,String (max=7),Numéro de site fédéral
+HydrometricSites,QuebecSiteNumber,String (max=7),Numéro de site du Québec
+HydrometricSites,HydrometricSiteName,String (max=200),Nom du site hydrométrique
+HydrometricSites,Description,String (max=200),Description du site hydrométrique
+HydrometricSites,Province,String (max=4),Province (4 charactères)
+HydrometricSites,Elevation_m,Double (min=0) (max=10000),Élévation du site en mètres au dessus du niveau moyen de la mer
+HydrometricSites,StartDate_Local,DateTime,Date de début de monitoring
+HydrometricSites,EndDate_Local,DateTime,Date de fin de monitoring
+HydrometricSites,TimeOffset_hour,Double (min=-10) (max=0),Décalage horaire en heure (décimal)
+HydrometricSites,DrainageArea_km2,Double (min=0) (max=1000000),Bassin versant en kilomètres carrés
+HydrometricSites,IsNatural,Boolean,Régime naturel
+HydrometricSites,IsActive,Boolean,Est maintenant active
+HydrometricSites,Sediment,Boolean,Données sur les sédiments disponibles
+HydrometricSites,RHBN,Boolean,Réseau hydrométrique de référence
+HydrometricSites,RealTime,Boolean,Données en temps réel disponibles
+HydrometricSites,HasDischarge,Boolean,Mesure débits
+HydrometricSites,HasLevel,Boolean,Mesure niveaux
+HydrometricSites,HasRatingCurve,Boolean,Courbe de tarage
+HydrometricSites,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+HydrometricSites,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+Infrastructures,,,La table Infrastructures contient des champs pour contenir toutes les informations relatives aux infrastructures municipales. Les informations relatives à la STEP et au LS sont stockées dans la même table.
+Infrastructures,InfrastructureID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table Infrastructures
+Infrastructures,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+Infrastructures,InfrastructureTVItemID,Int32,Lien à la table TVItems avec l'identifiant unique
+Infrastructures,PrismID,Int32 (min=0) (max=100000),Lien à la BD Prism QC avec l'identifiant unique
+Infrastructures,TPID,Int32 (min=0) (max=100000),Identifiant unique de usine de traitement des eaux usées de la vieille base de données
+Infrastructures,LSID,Int32 (min=0) (max=100000),Identifiant unique de poste de pompage de la vieille base de données
+Infrastructures,SiteID,Int32 (min=0) (max=100000),Identifiant unique du site de la vieille base de données
+Infrastructures,Site,Int32 (min=0) (max=100000),Identifiant unique du site de la vieille base de données
+Infrastructures,InfrastructureCategory,String (min=1) (max=1),Catégory --- lettre utilisé précédement pour identifier la priorité des évaluations de systèmes de traitement des eaux
+Infrastructures,InfrastructureType,InfrastructureTypeEnum (int),Type d'infrastructure
+Infrastructures,FacilityType,FacilityTypeEnum (int),Type de facilité --- Lagune, Usine
+Infrastructures,HasBackupPower,Boolean,A une alimentation de secours
+Infrastructures,IsMechanicallyAerated,Boolean,Est mécaniquement aéré
+Infrastructures,NumberOfCells,Int32 (min=0) (max=10),Nombre de cellules
+Infrastructures,NumberOfAeratedCells,Int32 (min=0) (max=10),Nombre de cellules aérées
+Infrastructures,AerationType,AerationTypeEnum (int),Type d'aération --- Diffuseur, Surface
+Infrastructures,PreliminaryTreatmentType,PreliminaryTreatmentTypeEnum (int),Type de traintement préliminaire --- Bar screen, Grinder (fr)
+Infrastructures,PrimaryTreatmentType,PrimaryTreatmentTypeEnum (int),Type de traitement primaire --- Sedimentation, Chemical Coagulation, Filtration (fr)
+Infrastructures,SecondaryTreatmentType,SecondaryTreatmentTypeEnum (int),Type de traitement secondaire --- RotatingBiologicalContactor, TricklingFilters, SequencingBatchReator, OxidationDitch (fr)
+Infrastructures,TertiaryTreatmentType,TertiaryTreatmentTypeEnum (int),Type de traitement tertiaire --- Adsorption, Flocculation, Membrane Filtration, Ion Exchange, Reverse Osmosis, Biological Nutrient Removal (fr)
+Infrastructures,TreatmentType,TreatmentTypeEnum (int),Type de traitement --- ActivatedSludge, Activated Sludge With Biofilter, Lagoon No Aeration1 Cell, Lagoon No Aeration 2 Cell, Lagoon No Aeration 3 Cell, Lagoon No Aeration 4 Cell, Lagoon No Aeration 5 Cell, Lagoon With Aeration 1 Cell, LagoonWith Aeration 2 Cell, LagoonWith Aeration 3 Cell, LagoonWith Aeration 4 Cell, LagoonWith Aeration 5 Cell, LagoonWith Aeration 6 Cell, Stabalizing Pond Only, Oxidation Ditch Only, Circulating Fluidized Bed, Trickling Filter, Recirculating Sand Filter, Trash Rack Rake Only, Septic Tank, Secondary, Tertiary, Volume Fermenter, Bio Film Reactor, Bio Green, Bio Disks, Chemical Primary, Chromoglass, Primary, Sequencing Batch Reactor, Peat System, Physicochimique, Rotating Biological Contactor (fr)
+Infrastructures,DisinfectionType,DisinfectionTypeEnum (int),Type de désinfection --- UV, Chlorination No Dechlorination, Chlorination With Dechlorination, UV Seasonal, Chlorination No Dechlorination Seasonal, Chlorination With Dechlorination Seasonal (fr)
+Infrastructures,CollectionSystemType,CollectionSystemTypeEnum (int),Type de système de collection --- Completely Separated, Completely Combined, Combined 90 Separated 10, Combined 80 Separated 20, Combined 70 Separated 30, Combined 60 Separated 40, Combined 50 Separated 50, Combined 40 Separated 60, Combined 30 Separated 70, Combined 20 Separated 80, Combined 10 Separated 90 (fr)
+Infrastructures,AlarmSystemType,AlarmSystemTypeEnum (int),Type de système d'alarme --- SCADA, None, Only Visual Light,SCADA And Light, Pager And Light (fr)
+Infrastructures,DesignFlow_m3_day,Double (min=0) (max=1000000),Débit de design en mètres cube par jour
+Infrastructures,AverageFlow_m3_day,Double (min=0) (max=1000000),Débit moyen en mètres cube par jour
+Infrastructures,PeakFlow_m3_day,Double (min=0) (max=1000000),Débit maximum en mètres cube par jour
+Infrastructures,PopServed,Int32 (min=0) (max=1000000),Population déservi
+Infrastructures,CanOverflow,Boolean,Peut déverser
+Infrastructures,ValveType,ValveTypeEnum (int),Type de vanne --- Manually, Automatically (fr)
+Infrastructures,PercFlowOfTotal,Double (min=0) (max=100),Pourcentage du débit total
+Infrastructures,TimeOffset_hour,Double (min=-10) (max=0),Décalage horaire en heure (décimal)
+Infrastructures,TempCatchAllRemoveLater,String,Temporaire collection d'information a être effacé plus tard
+Infrastructures,AverageDepth_m,Double (min=0) (max=1000),Profondeur moyenne en mètres
+Infrastructures,NumberOfPorts,Int32 (min=1) (max=1000),Nombre d'embouchure
+Infrastructures,PortDiameter_m,Double (min=0) (max=10),Diamètre des embouchures en mètres
+Infrastructures,PortSpacing_m,Double (min=0) (max=10000),Distance des embouchures en mètres
+Infrastructures,PortElevation_m,Double (min=0) (max=1000),Élévation des embouchures en mètres
+Infrastructures,VerticalAngle_deg,Double (min=-90) (max=90),Angle vertical en dégrés
+Infrastructures,HorizontalAngle_deg,Double (min=-180) (max=180),Angle horizontal en dégrés
+Infrastructures,DecayRate_per_day,Double (min=0) (max=100),Taux de décroissance par jour
+Infrastructures,NearFieldVelocity_m_s,Double (min=0) (max=10),Vitesse en champ rapproché en mètres par second
+Infrastructures,FarFieldVelocity_m_s,Double (min=0) (max=10),Vitesse en champ éloigné en mètres par second
+Infrastructures,ReceivingWaterSalinity_PSU,Double (min=0) (max=40),Salinité dans le milieu récepteur en PSU
+Infrastructures,ReceivingWaterTemperature_C,Double (min=-10) (max=40),Température dans le milieu récepteur en dégrés Celcius
+Infrastructures,ReceivingWater_MPN_per_100ml,Int32 (min=0) (max=10000000),Concentration dans le milieu récepteur en nombre plus probable par 100 mL
+Infrastructures,DistanceFromShore_m,Double (min=0) (max=1000),Distance par rapport à la rive en mètres
+Infrastructures,SeeOtherMunicipalityTVItemID,Int32,Voir autre infrastructure
+Infrastructures,CivicAddressTVItemID,Int32,Lien à la table TVItems avec l'identifiant unique
+Infrastructures,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+Infrastructures,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+InfrastructureLanguages,,,La table InfrastructureLanguages contient des champs permettant de stocker des textes bilingues pour la table d'infrastructure.
+InfrastructureLanguages,InfrastructureLanguageID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table InfrastructureLanguages
+InfrastructureLanguages,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+InfrastructureLanguages,InfrastructureID,Int32,Lien à la table Infrastructure représentant l'infrastructure
+InfrastructureLanguages,Language,LanguageEnum (int),Langage de l'item
+InfrastructureLanguages,Comment,String,Commentaire
+InfrastructureLanguages,TranslationStatus,TranslationStatusEnum (int),Le statut de la traduction du commentaire
+InfrastructureLanguages,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+InfrastructureLanguages,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+LabSheets,,,La table LabSheets contient des champs pour stocker et gérer les feuilles de laboratoire.
+LabSheets,LabSheetID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table LabSheets
+LabSheets,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+LabSheets,OtherServerLabSheetID,Int32 (min=1),ID de la feuille de laboratoire de l'autre server
+LabSheets,SamplingPlanID,Int32,Lien à la table SamplingPlan représentant le plan d'échantillonnage
+LabSheets,SamplingPlanName,String (min=1) (max=250),Nom du plan d'échantillonnage
+LabSheets,Year,Int32 (min=1980),Année de la tournée
+LabSheets,Month,Int32 (min=1) (max=12),Mois de la tournée
+LabSheets,Day,Int32 (min=1) (max=31),Jour de la tournée
+LabSheets,RunNumber,Int32 (min=1) (max=100),Numéro de la tournée
+LabSheets,SubsectorTVItemID,Int32,Lien à la table TVItems avec l'identifiant unique
+LabSheets,MWQMRunTVItemID,Int32,Lien à la table TVItems avec l'identifiant unique
+LabSheets,SamplingPlanType,SamplingPlanTypeEnum (int),Type de plan d'échantillonnage
+LabSheets,SampleType,SampleTypeEnum (int),Type d'échantillonnage
+LabSheets,LabSheetType,LabSheetTypeEnum (int),Type de feuille de laboratoire
+LabSheets,LabSheetStatus,LabSheetStatusEnum (int),État de la feuille de laboratoire
+LabSheets,FileName,String (min=1) (max=250),Nom de la filière
+LabSheets,FileLastModifiedDate_Local,DateTime,Date du dernier changement de la filière (local)
+LabSheets,FileContent,String,Contenu de la filière
+LabSheets,AcceptedOrRejectedByContactTVItemID,Int32,Accepté ou rejeté par contact TVItemID
+LabSheets,AcceptedOrRejectedDateTime,DateTime,Date de l'acceptation ou rejet (local)
+LabSheets,RejectReason,String (max=250),Raison du rejet
+LabSheets,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+LabSheets,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+LabSheetDetails,,,La table LabSheetDetails contient des champs pour contenir les informations relatives aux détails de la feuille de laboratoire.
+LabSheetDetails,LabSheetDetailID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table LabSheetDetails
+LabSheetDetails,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+LabSheetDetails,LabSheetID,Int32,Lien à la table LabSheets représentant la feuille de laboratoire
+LabSheetDetails,SamplingPlanID,Int32,Lien à la table SamplingPlan représentant la plan d'échantillonnage
+LabSheetDetails,SubsectorTVItemID,Int32,Lien à la table TVItem représentant la sous-secteur
+LabSheetDetails,Version,Int32 (min=1) (max=5),Version du document (feuille de laboratoire)
+LabSheetDetails,RunDate,DateTime,Date de la tournée
+LabSheetDetails,Tides,String (min=1) (max=7),ID des site de marées
+LabSheetDetails,SampleCrewInitials,String (max=20),Initiales des contacts faisant l'échantillonnage
+LabSheetDetails,WaterBathCount,Int32 (min=1) (max=3),Nombre de bain d'eau
+LabSheetDetails,IncubationBath1StartTime,DateTime,Temps de départ bain d'incubation 1
+LabSheetDetails,IncubationBath2StartTime,DateTime,Temps de départ bain d'incubation 2
+LabSheetDetails,IncubationBath3StartTime,DateTime,Temps de départ bain d'incubation 3
+LabSheetDetails,IncubationBath1EndTime,DateTime,Temps de fin bain d'incubation 1
+LabSheetDetails,IncubationBath2EndTime,DateTime,Temps de fin bain d'incubation 2
+LabSheetDetails,IncubationBath3EndTime,DateTime,Temps de fin bain d'incubation 3
+LabSheetDetails,IncubationBath1TimeCalculated_minutes,Int32 (min=0) (max=10000),Temps calculé de bain d'incubation 1 en minutes
+LabSheetDetails,IncubationBath2TimeCalculated_minutes,Int32 (min=0) (max=10000),Temps calculé de bain d'incubation 2 en minutes
+LabSheetDetails,IncubationBath3TimeCalculated_minutes,Int32 (min=0) (max=10000),Temps calculé de bain d'incubation 3 en minutes
+LabSheetDetails,WaterBath1,String (max=10),Bain d'eau 1
+LabSheetDetails,WaterBath2,String (max=10),Bain d'eau 2
+LabSheetDetails,WaterBath3,String (max=10),Bain d'eau 3
+LabSheetDetails,TCField1,Double (min=-10) (max=40),Température de control 1
+LabSheetDetails,TCLab1,Double (min=-10) (max=40),Température de control au laboratoire 1
+LabSheetDetails,TCField2,Double (min=-10) (max=40),Température de control 2
+LabSheetDetails,TCLab2,Double (min=-10) (max=40),Température de control au laboratoire 2
+LabSheetDetails,TCFirst,Double (min=-10) (max=40),Première température de control
+LabSheetDetails,TCAverage,Double (min=-10) (max=40),Moyenne de température de control
+LabSheetDetails,ControlLot,String (max=100),Lot de contrôle
+LabSheetDetails,Positive35,String (min=1) (max=1),Positive 35 (°C)
+LabSheetDetails,NonTarget35,String (min=1) (max=1),Non target 35 (°C)
+LabSheetDetails,Negative35,String (min=1) (max=1),Negative 35 (°C)
+LabSheetDetails,Bath1Positive44_5,String (min=1) (max=1),Bath 1 positive 44.5 (°C)
+LabSheetDetails,Bath2Positive44_5,String (min=1) (max=1),Bath 2 positive 44.5 (°C)
+LabSheetDetails,Bath3Positive44_5,String (min=1) (max=1),Bath 3 positive 44.5 (°C)
+LabSheetDetails,Bath1NonTarget44_5,String (min=1) (max=1),Bath 1 non target 44.5 (°C)
+LabSheetDetails,Bath2NonTarget44_5,String (min=1) (max=1),Bath 2 non target 44.5 (°C)
+LabSheetDetails,Bath3NonTarget44_5,String (min=1) (max=1),Bath 3 non target 44.5 (°C)
+LabSheetDetails,Bath1Negative44_5,String (min=1) (max=1),Bath 1 negative 44.5 (°C)
+LabSheetDetails,Bath2Negative44_5,String (min=1) (max=1),Bath 2 negative 44.5 (°C)
+LabSheetDetails,Bath3Negative44_5,String (min=1) (max=1),Bath 3 negative 44.5 (°C)
+LabSheetDetails,Blank35,String (min=1) (max=1),Blank 35 (°C)
+LabSheetDetails,Bath1Blank44_5,String (min=1) (max=1),Bath 1 blank 44.5 (°C)
+LabSheetDetails,Bath2Blank44_5,String (min=1) (max=1),Bath 2 blank 44.5 (°C)
+LabSheetDetails,Bath3Blank44_5,String (min=1) (max=1),Bath 3 blank 44.5 (°C)
+LabSheetDetails,Lot35,String (max=20),Lot 35 (°C)
+LabSheetDetails,Lot44_5,String (max=20),Lot 44.5 (°C)
+LabSheetDetails,Weather,String (max=250),Météo
+LabSheetDetails,RunComment,String (max=250),Commentaire de tourée
+LabSheetDetails,RunWeatherComment,String (max=250),Commentaire de tourée météo
+LabSheetDetails,SampleBottleLotNumber,String (max=20),Numéro de lot des bouteille d'échantillonnage
+LabSheetDetails,SalinitiesReadBy,String (max=20),Salinité lu par
+LabSheetDetails,SalinitiesReadDate,DateTime,Date de lecture de salinité
+LabSheetDetails,ResultsReadBy,String (max=20),Résultats lu par
+LabSheetDetails,ResultsReadDate,DateTime,Date de lecture des résultats
+LabSheetDetails,ResultsRecordedBy,String (max=20),Résultats enregistrés par
+LabSheetDetails,ResultsRecordedDate,DateTime,Date de d'enregistrement des résultats
+LabSheetDetails,DailyDuplicateRLog,Double (min=0) (max=100),R Log du duplicata du la tournée
+LabSheetDetails,DailyDuplicatePrecisionCriteria,Double (min=0) (max=100),Critère de précision du duplicata du la tournée
+LabSheetDetails,DailyDuplicateAcceptable,Boolean,Duplicata du la tournée est acceptable
+LabSheetDetails,IntertechDuplicateRLog,Double (min=0) (max=100),R Log du duplicata intertech
+LabSheetDetails,IntertechDuplicatePrecisionCriteria,Double (min=0) (max=100),Critère de précision du duplicata intertech
+LabSheetDetails,IntertechDuplicateAcceptable,Boolean,Duplicata intertech est acceptable
+LabSheetDetails,IntertechReadAcceptable,Boolean,Lecture intertech est acceptable
+LabSheetDetails,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+LabSheetDetails,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+LabSheetTubeMPNDetails,,,La table LabSheetTubeMPNDetails contient des champs pour contenir les informations sur les tubes de laboratoire.
+LabSheetTubeMPNDetails,LabSheetTubeMPNDetailID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table LabSheetTubeMPNDetails
+LabSheetTubeMPNDetails,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+LabSheetTubeMPNDetails,LabSheetDetailID,Int32,Lien à la table LabSheetDetails représentant les détail de laboratoire
+LabSheetTubeMPNDetails,Ordinal,Int32 (min=0) (max=1000),Ordre
+LabSheetTubeMPNDetails,MWQMSiteTVItemID,Int32,Lien à la table TVItems représentant le site de MWQM (fr)
+LabSheetTubeMPNDetails,SampleDateTime,DateTime,Date de la tournée
+LabSheetTubeMPNDetails,MPN,Int32 (min=1) (max=10000000),Nombre le plus probable de colonies de coliform fécaux par 100 mL
+LabSheetTubeMPNDetails,Tube10,Int32 (min=0) (max=5),Nombre de tube positif pour Tube 10
+LabSheetTubeMPNDetails,Tube1_0,Int32 (min=0) (max=5),Nombre de tube positif pour Tube 1
+LabSheetTubeMPNDetails,Tube0_1,Int32 (min=0) (max=5),Nombre de tube positif pour Tube .1
+LabSheetTubeMPNDetails,Salinity,Double (min=0) (max=40),Salinité en parties par millier
+LabSheetTubeMPNDetails,Temperature,Double (min=-10) (max=40),Température en dégré Celcius
+LabSheetTubeMPNDetails,ProcessedBy,String (max=10),Traité par
+LabSheetTubeMPNDetails,SampleType,SampleTypeEnum (int),Type d'échantillon
+LabSheetTubeMPNDetails,SiteComment,String (max=250),Commentaire relié au site
+LabSheetTubeMPNDetails,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+LabSheetTubeMPNDetails,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+Logs,,,La table Logs est utilisée pour conserver un historique des commandes des utilisateurs vers la base de données.
+Logs,LogID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table Logs
+Logs,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+Logs,TableName,String (max=50),Nom de la table
+Logs,ID,Int32 (min=1),Clef de la table
+Logs,LogCommand,LogCommandEnum (int),Command log
+Logs,Information,String,Information décrivant la command log
+Logs,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+Logs,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+MapInfos,,,La table MapInfos contient des champs pour contenir les informations relatives au mappage pour tous les objets de la base de données.
+MapInfos,MapInfoID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table MapInfos
+MapInfos,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+MapInfos,TVItemID,Int32,Lien à la table TVItems représentant l'item
+MapInfos,TVType,TVTypeEnum (int),Type de l'arbre visuel
+MapInfos,LatMin,Double (min=-90) (max=90),Latitude minimum
+MapInfos,LatMax,Double (min=-90) (max=90),Latitude maximum
+MapInfos,LngMin,Double (min=-180) (max=180),Longitude minimum
+MapInfos,LngMax,Double (min=-180) (max=180),Longitude maximum
+MapInfos,MapInfoDrawType,MapInfoDrawTypeEnum (int),Type d'object pour carte
+MapInfos,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+MapInfos,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+MapInfoPoints,,,La table MapInfoPoints contient des champs pour contenir les informations relatives aux coordonnées de mappage.
+MapInfoPoints,MapInfoPointID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table MapInfoPoints
+MapInfoPoints,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+MapInfoPoints,MapInfoID,Int32,Lien à la table MapInfos représentant l'information de carte
+MapInfoPoints,Ordinal,Int32 (min=0),Ordre
+MapInfoPoints,Lat,Double (min=-90) (max=90),Latitude
+MapInfoPoints,Lng,Double (min=-180) (max=180),Longitude
+MapInfoPoints,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+MapInfoPoints,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+MikeBoundaryConditions,,,La table MikeBoundaryConditions contient des champs pour contenir les informations relatives aux conditions aux limites MIKE.
+MikeBoundaryConditions,MikeBoundaryConditionID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table MikeBoundaryConditions
+MikeBoundaryConditions,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+MikeBoundaryConditions,MikeBoundaryConditionTVItemID,Int32,Lien à la table TVItems représentant les conditions limits MIKE
+MikeBoundaryConditions,MikeBoundaryConditionCode,String (max=100),Code de conditions limits MIKE
+MikeBoundaryConditions,MikeBoundaryConditionName,String (max=100),Nom de conditions limits MIKE
+MikeBoundaryConditions,MikeBoundaryConditionLength_m,Double (min=1) (max=100000),Longueur de conditions limits MIKE en mètres
+MikeBoundaryConditions,MikeBoundaryConditionFormat,String (max=100),Format de conditions limits MIKE
+MikeBoundaryConditions,MikeBoundaryConditionLevelOrVelocity,MikeBoundaryConditionLevelOrVelocityEnum (int),Niveau ou vélocité de conditions limits MIKE
+MikeBoundaryConditions,WebTideDataSet,WebTideDataSetEnum (int),Donnée web tide
+MikeBoundaryConditions,NumberOfWebTideNodes,Int32 (min=0) (max=1000),Nombre de noeux de web tide
+MikeBoundaryConditions,WebTideDataFromStartToEndDate,String,Données web tide entre les dates
+MikeBoundaryConditions,TVType,TVTypeEnum (int),Type d'arbre visuel
+MikeBoundaryConditions,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+MikeBoundaryConditions,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+MikeScenarios,,,La table MikeScenarios contient des champs permettant de conserver et de gérer les scénarios MIKE.
+MikeScenarios,MikeScenarioID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table MikeScenarios
+MikeScenarios,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+MikeScenarios,MikeScenarioTVItemID,Int32,Lien à la table TVItems représentant le scénario MIKE
+MikeScenarios,ParentMikeScenarioID,Int32,Lien à la table MIkeScenarios représentant le scénario MIKE
+MikeScenarios,ScenarioStatus,ScenarioStatusEnum (int),État du scenario MIKE
+MikeScenarios,ErrorInfo,String,Information de l'erreur du scenario MIKE
+MikeScenarios,MikeScenarioStartDateTime_Local,DateTime,Date de départ du scenario MIKE en temps local
+MikeScenarios,MikeScenarioEndDateTime_Local,DateTime,Date de fin du scenario MIKE en temps local
+MikeScenarios,MikeScenarioStartExecutionDateTime_Local,DateTime,Début du temps d'exécution du scenario MIKE (local)
+MikeScenarios,MikeScenarioExecutionTime_min,Double (min=1) (max=100000),Temps d'exécution du scenario MIKE en minutes
+MikeScenarios,WindSpeed_km_h,Double (min=0) (max=100),Vitesse du vent en kilomètres par heure
+MikeScenarios,WindDirection_deg,Double (min=0) (max=360),Direction du vent en degree (nord 0, est 90)
+MikeScenarios,DecayFactor_per_day,Double (min=0) (max=100),Taux de décroissance par jour
+MikeScenarios,DecayIsConstant,Boolean,Taux de décroissance est constant
+MikeScenarios,DecayFactorAmplitude,Double (min=0) (max=100),Amplitude du taux de décroissance
+MikeScenarios,ResultFrequency_min,Int32 (min=0) (max=100),Fréquence des résultats en minutes
+MikeScenarios,AmbientTemperature_C,Double (min=-10) (max=40),Température ambiante en dégré Celcius
+MikeScenarios,AmbientSalinity_PSU,Double (min=0) (max=40),Salinité ambiante en PSU (fr)
+MikeScenarios,GenerateDecouplingFiles,Boolean,Générer des fichiers de découplage
+MikeScenarios,UseDecouplingFiles,Boolean,Utiliser les fichiers de découplage
+MikeScenarios,UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID,Int32,Lien à la table TVItems représentant TV file
+MikeScenarios,ForSimulatingMWQMRunTVItemID,Int32,Lien à la table TVItems représentant la trounée
+MikeScenarios,ManningNumber,Double (min=0) (max=100),Nombre manning
+MikeScenarios,NumberOfElements,Int32 (min=1) (max=1000000),Nombre d'éléments
+MikeScenarios,NumberOfTimeSteps,Int32 (min=1) (max=1000000),Nombre de pas de temps
+MikeScenarios,NumberOfSigmaLayers,Int32 (min=0) (max=100),Nombre de tranche sigma
+MikeScenarios,NumberOfZLayers,Int32 (min=0) (max=100),Nombre de tranche Z
+MikeScenarios,NumberOfHydroOutputParameters,Int32 (min=0) (max=100),Nombre de paramètres de sorti hydrodynamique
+MikeScenarios,NumberOfTransOutputParameters,Int32 (min=0) (max=100),Nombre de paramètres de sorti transport
+MikeScenarios,EstimatedHydroFileSize,Int64 (min=0) (max=100000000),Estimation de la taille du fichier hydrodynamique
+MikeScenarios,EstimatedTransFileSize,Int64 (min=0) (max=100000000),Estimation de la taille du fichier transport
+MikeScenarios,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+MikeScenarios,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+MikeScenarioResults,,,La table MikeScenarioResults contient des champs pour contenir une partie des résultats du scénario MIKE. Utilisation limitée pour le moment. Je ne sais pas si ce tableau sera conservé à l’avenir. Actuellement, tous les résultats des scénarios MIKE sont stockés dans des fichiers.
+MikeScenarioResults,MikeScenarioResultID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table MikeScenarioResults
+MikeScenarioResults,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+MikeScenarioResults,MikeScenarioTVItemID,Int32,Lien à la table TVItems représentant le scénario MIKE
+MikeScenarioResults,MikeResultsJSON,String,Résultats du scenario MIKE en format JSON
+MikeScenarioResults,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+MikeScenarioResults,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+MikeSources,,,La table MikeSources contient des champs pour conserver et gérer les sources MIKE qui peuvent être des rivières, des ruisseaux, des ruisseaux ou d'autres sources de pollution.
+MikeSources,MikeSourceID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table MikeSources
+MikeSources,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+MikeSources,MikeSourceTVItemID,Int32,Lien à la table TVItems représentant une source MIKE
+MikeSources,IsContinuous,Boolean,La source est continue
+MikeSources,Include,Boolean,La source est incluse
+MikeSources,IsRiver,Boolean,La source est une rivière
+MikeSources,UseHydrometric,Boolean,La source devrait usiliser un site hydrométrique avec facteur comme débits
+MikeSources,HydrometricTVItemID,Int32,Lien à la table TVItems représentant un site hydrométrique
+MikeSources,DrainageArea_km2,Double (min=0) (max=1000000),Bassin versant en kilomètres carrés
+MikeSources,Factor,Double (min=0) (max=1000000),Facteur
+MikeSources,SourceNumberString,String (max=50),Nombre de source
+MikeSources,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+MikeSources,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+MikeSourceStartEnds,,,La table MikeSourceStartEnds contient des champs pour les déversements non continus.
+MikeSourceStartEnds,MikeSourceStartEndID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table MikeSourceStartEnds
+MikeSourceStartEnds,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+MikeSourceStartEnds,MikeSourceID,Int32,Lien à la table MikeSources représentant une source MIKE
+MikeSourceStartEnds,StartDateAndTime_Local,DateTime,Date et temps du début (local)
+MikeSourceStartEnds,EndDateAndTime_Local,DateTime,Date et temps de fin (local)
+MikeSourceStartEnds,SourceFlowStart_m3_day,Double (min=0) (max=1000000),Début de débit de source en mètres cubes par jour
+MikeSourceStartEnds,SourceFlowEnd_m3_day,Double (min=0) (max=1000000),Fin de débit de source en mètres cubes par jour
+MikeSourceStartEnds,SourcePollutionStart_MPN_100ml,Int32 (min=0) (max=10000000),Début de concentration de source en nombre plus probable de colonie de coliform fécaux par 100 milli-Litres
+MikeSourceStartEnds,SourcePollutionEnd_MPN_100ml,Int32 (min=0) (max=10000000),Fin de concentration de source en nombre plus probable de colonie de coliform fécaux par 100 milli-Litres
+MikeSourceStartEnds,SourceTemperatureStart_C,Double (min=-10) (max=40),Début de température de source en dégré Celcius
+MikeSourceStartEnds,SourceTemperatureEnd_C,Double (min=-10) (max=40),Fin de température de source en dégré Celcius
+MikeSourceStartEnds,SourceSalinityStart_PSU,Double (min=0) (max=40),Début de salinité de source (PSU) (fr)
+MikeSourceStartEnds,SourceSalinityEnd_PSU,Double (min=0) (max=40),Fin de salinité de source (PSU) (fr)
+MikeSourceStartEnds,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+MikeSourceStartEnds,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+MWQMAnalysisReportParameters,,,La table MWQMAnalysisReportParameters contient des champs permettant de gérer les paramètres du rapport d'analyse.
+MWQMAnalysisReportParameters,MWQMAnalysisReportParameterID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table MWQMAnalysisReportParameters
+MWQMAnalysisReportParameters,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+MWQMAnalysisReportParameters,SubsectorTVItemID,Int32,Lien à la table TVItems représentant le sous-secteur
+MWQMAnalysisReportParameters,AnalysisName,String (min=5) (max=250),Nom de l'analyse
+MWQMAnalysisReportParameters,AnalysisReportYear,Int32 (min=1980) (max=2050),Année du raport d'analyse
+MWQMAnalysisReportParameters,StartDate,DateTime,Date de départ
+MWQMAnalysisReportParameters,EndDate,DateTime,Date de fin
+MWQMAnalysisReportParameters,AnalysisCalculationType,AnalysisCalculationTypeEnum (int),Type de calcul d'analyse
+MWQMAnalysisReportParameters,NumberOfRuns,Int32 (min=1) (max=1000),Nombre de tournée
+MWQMAnalysisReportParameters,FullYear,Boolean,Toute l'année
+MWQMAnalysisReportParameters,SalinityHighlightDeviationFromAverage,Double (min=1) (max=20),Écart de salinité hyghlight par rapport à la moyenne
+MWQMAnalysisReportParameters,ShortRangeNumberOfDays,Int32 (min=0) (max=5),Portée courte nombre de jours
+MWQMAnalysisReportParameters,MidRangeNumberOfDays,Int32 (min=2) (max=7),Portée moyenne nombre de jours
+MWQMAnalysisReportParameters,DryLimit24h,Int32 (min=1) (max=100),Limit sèche 24h
+MWQMAnalysisReportParameters,DryLimit48h,Int32 (min=1) (max=100),Limit sèche 48h
+MWQMAnalysisReportParameters,DryLimit72h,Int32 (min=1) (max=100),Limit sèche 72h
+MWQMAnalysisReportParameters,DryLimit96h,Int32 (min=1) (max=100),Limit sèche 96h
+MWQMAnalysisReportParameters,WetLimit24h,Int32 (min=1) (max=100),Limit pluie 24h
+MWQMAnalysisReportParameters,WetLimit48h,Int32 (min=1) (max=100),Limit pluie 48h
+MWQMAnalysisReportParameters,WetLimit72h,Int32 (min=1) (max=100),Limit pluie 72h
+MWQMAnalysisReportParameters,WetLimit96h,Int32 (min=1) (max=100),Limit pluie 96h
+MWQMAnalysisReportParameters,RunsToOmit,String (max=250),Tournée à omettre
+MWQMAnalysisReportParameters,ShowDataTypes,String (max=20),Type de donnée à montrer
+MWQMAnalysisReportParameters,ExcelTVFileTVItemID,Int32,Lien à la table TVItems représentant un document Excel
+MWQMAnalysisReportParameters,Command,AnalysisReportExportCommandEnum (int),Commande d'exportation du raport d'analyse
+MWQMAnalysisReportParameters,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+MWQMAnalysisReportParameters,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+MWQMLookupMPNs,,,La table MWQMLookupMPNs contient tous les MPN possibles
+MWQMLookupMPNs,MWQMLookupMPNID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table MWQMLookupMPNs
+MWQMLookupMPNs,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+MWQMLookupMPNs,Tubes10,Int32 (min=0) (max=5),Nombre de tube positif pour Tube 10
+MWQMLookupMPNs,Tubes1,Int32 (min=0) (max=5),Nombre de tube positif pour Tube 1
+MWQMLookupMPNs,Tubes01,Int32 (min=0) (max=5),Nombre de tube positif pour Tube .1
+MWQMLookupMPNs,MPN_100ml,Int32 (min=1) (max=10000),Nombre le plus probable de colonies de coliform fécaux par 100 mL
+MWQMLookupMPNs,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+MWQMLookupMPNs,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+MWQMRuns,,,La table MWQMRuns contient des champs permettant de conserver et de gérer une analyse de la qualité de l'eau de mer.
+MWQMRuns,MWQMRunID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table MWQMRuns
+MWQMRuns,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+MWQMRuns,SubsectorTVItemID,Int32,Lien à la table TVItems représentant le sous-secteur
+MWQMRuns,MWQMRunTVItemID,Int32,Lien à la table TVItems représentant la tournée MWQM (fr)
+MWQMRuns,RunSampleType,SampleTypeEnum (int),Type d'échantillon
+MWQMRuns,DateTime_Local,DateTime,Date (local)
+MWQMRuns,RunNumber,Int32 (min=1) (max=1000),Numéro de la tournée
+MWQMRuns,StartDateTime_Local,DateTime,Date du début
+MWQMRuns,EndDateTime_Local,DateTime,Date de fin
+MWQMRuns,LabReceivedDateTime_Local,DateTime,Date reçu au laboratoire
+MWQMRuns,TemperatureControl1_C,Double (min=-10) (max=40),Température de control 1 en dégré Celcius
+MWQMRuns,TemperatureControl2_C,Double (min=-10) (max=40),Température de control 2 en dégré Celcius
+MWQMRuns,SeaStateAtStart_BeaufortScale,BeaufortScaleEnum (int),État de la mer au début (Échelle Beaufort)
+MWQMRuns,SeaStateAtEnd_BeaufortScale,BeaufortScaleEnum (int),État de la mer à la fin (Échelle Beaufort)
+MWQMRuns,WaterLevelAtBrook_m,Double (min=0) (max=100),Niveau d'eau au ruisseau en mètres
+MWQMRuns,WaveHightAtStart_m,Double (min=0) (max=100),Hauteur des vagues au début en mètres
+MWQMRuns,WaveHightAtEnd_m,Double (min=0) (max=100),Hauteur des vagues à la fin en mètres
+MWQMRuns,SampleCrewInitials,String (max=20),Initiales de l'équipe de la tournée
+MWQMRuns,AnalyzeMethod,AnalyzeMethodEnum (int),Méthode d'analyse
+MWQMRuns,SampleMatrix,SampleMatrixEnum (int),Milieu de l'échantillon
+MWQMRuns,Laboratory,LaboratoryEnum (int),Laboratoire
+MWQMRuns,SampleStatus,SampleStatusEnum (int),État de l'échantillon
+MWQMRuns,LabSampleApprovalContactTVItemID,Int32,Échantillon reçu au laboratoire apprové par contact TVItemID
+MWQMRuns,LabAnalyzeBath1IncubationStartDateTime_Local,DateTime,Date de début du bain d'incubation 1 du laboratoire (local)
+MWQMRuns,LabAnalyzeBath2IncubationStartDateTime_Local,DateTime,Date de début du bain d'incubation 2 du laboratoire (local)
+MWQMRuns,LabAnalyzeBath3IncubationStartDateTime_Local,DateTime,Date de début du bain d'incubation 3 du laboratoire (local)
+MWQMRuns,LabRunSampleApprovalDateTime_Local,DateTime,Date d'approbation de l'échantillon de la tournée reçu au lab (local)
+MWQMRuns,Tide_Start,TideTextEnum (int),Marée de début
+MWQMRuns,Tide_End,TideTextEnum (int),Marée de find
+MWQMRuns,RainDay0_mm,Double (min=0) (max=300),Pluie jour 0 en millimètres
+MWQMRuns,RainDay1_mm,Double (min=0) (max=300),Pluie jour 1 en millimètres
+MWQMRuns,RainDay2_mm,Double (min=0) (max=300),Pluie jour 2 en millimètres
+MWQMRuns,RainDay3_mm,Double (min=0) (max=300),Pluie jour 3 en millimètres
+MWQMRuns,RainDay4_mm,Double (min=0) (max=300),Pluie jour 4 en millimètres
+MWQMRuns,RainDay5_mm,Double (min=0) (max=300),Pluie jour 5 en millimètres
+MWQMRuns,RainDay6_mm,Double (min=0) (max=300),Pluie jour 6 en millimètres
+MWQMRuns,RainDay7_mm,Double (min=0) (max=300),Pluie jour 7 en millimètres
+MWQMRuns,RainDay8_mm,Double (min=0) (max=300),Pluie jour 8 en millimètres
+MWQMRuns,RainDay9_mm,Double (min=0) (max=300),Pluie jour 9 en millimètres
+MWQMRuns,RainDay10_mm,Double (min=0) (max=300),Pluie jour 10 en millimètres
+MWQMRuns,RemoveFromStat,Boolean,Enlever des statistiques
+MWQMRuns,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+MWQMRuns,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+MWQMRunLanguages,,,The MWQMRunLanguages table contains fields for holding bilingual texts for the MWQMRuns table.
+MWQMRunLanguages,MWQMRunLanguageID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table MWQMRunLanguages
+MWQMRunLanguages,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+MWQMRunLanguages,MWQMRunID,Int32,Lien à la table MWQMRuns représentant la tournée MWQM (fr)
+MWQMRunLanguages,Language,LanguageEnum (int),Langage de l'item
+MWQMRunLanguages,RunComment,String,Commentaire de la tournée
+MWQMRunLanguages,TranslationStatusRunComment,TranslationStatusEnum (int),Le statut de la traduction du commentaire de la tournée
+MWQMRunLanguages,RunWeatherComment,String,Commentaire de la météo de la tournée
+MWQMRunLanguages,TranslationStatusRunWeatherComment,TranslationStatusEnum (int),Le statut de la traduction du commentaire de la météo de la tournée
+MWQMRunLanguages,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+MWQMRunLanguages,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+MWQMSamples,,,La table MWQMSamples contient des champs permettant de conserver les résultats des échantillons pour un site et une analyse de qualité de l'eau de mer.
+MWQMSamples,MWQMSampleID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table MWQMSamples
+MWQMSamples,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+MWQMSamples,MWQMSiteTVItemID,Int32,Lien à la table TVItems représentant le site MWQM
+MWQMSamples,MWQMRunTVItemID,Int32,Lien à la table TVItems représentant la tournée MWQM
+MWQMSamples,SampleDateTime_Local,DateTime,Date et temps de l'échantillon (local)
+MWQMSamples,TimeText,String (max=6),Texte du temps
+MWQMSamples,Depth_m,Double (min=0) (max=1000),Profondeur en mètres
+MWQMSamples,FecCol_MPN_100ml,Int32 (min=0) (max=10000000),Number plus probable de colonies de coliform fécaux par 100 milli-Litres
+MWQMSamples,Salinity_PPT,Double (min=0) (max=40),Salinité en partis par millier
+MWQMSamples,WaterTemp_C,Double (min=-10) (max=40),Température en dégré Celcius
+MWQMSamples,PH,Double (min=0) (max=14),pH
+MWQMSamples,SampleTypesText,String (max=50),Types de l'échantillon
+MWQMSamples,SampleType_old,SampleTypeEnum (int),Vieu type d'échantillon
+MWQMSamples,Tube_10,Int32 (min=0) (max=5),Nombre de tube positif pour Tube 10
+MWQMSamples,Tube_1_0,Int32 (min=0) (max=5),Nombre de tube positif pour Tube 1
+MWQMSamples,Tube_0_1,Int32 (min=0) (max=5),Nombre de tube positif pour Tube .1
+MWQMSamples,ProcessedBy,String (max=10),Traité par
+MWQMSamples,UseForOpenData,Boolean,Utilisé pour les données ouvertes
+MWQMSamples,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+MWQMSamples,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+MWQMSampleLanguages,,,La table MWQMSampleLanguages contient des champs permettant de stocker des textes bilingues pour la table MWQMSamples.
+MWQMSampleLanguages,MWQMSampleLanguageID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table MWQMSampleLanguages
+MWQMSampleLanguages,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+MWQMSampleLanguages,MWQMSampleID,Int32,Lien à la table MWQMSamples représentant l'échantillon MWQM
+MWQMSampleLanguages,Language,LanguageEnum (int),Langage de l'item
+MWQMSampleLanguages,MWQMSampleNote,String,Échantillon MWQM note
+MWQMSampleLanguages,TranslationStatus,TranslationStatusEnum (int),Le statut de la traduction du commentaire
+MWQMSampleLanguages,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+MWQMSampleLanguages,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+MWQMSites,,,La table MWQMSites contient des champs permettant de conserver et de gérer les sites de surveillance de la qualité de l'eau de mer.
+MWQMSites,MWQMSiteID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table MWQMSites
+MWQMSites,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+MWQMSites,MWQMSiteTVItemID,Int32,Lien à la table TVItems représentant le site MWQM (fr)
+MWQMSites,MWQMSiteNumber,String (max=8),Numéro du site MWQM (fr)
+MWQMSites,MWQMSiteDescription,String (max=200),Description du site MWQM (fr)
+MWQMSites,MWQMSiteLatestClassification,MWQMSiteLatestClassificationEnum (int),Dernière classification du site MWQM (fr)
+MWQMSites,Ordinal,Int32 (min=0) (max=1000),Ordre
+MWQMSites,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+MWQMSites,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+MWQMSiteStartEndDates,,,La table MWQMSiteStartEndDates contient des champs pour stocker les dates d'activité du site de surveillance de la qualité de l'eau de mer.
+MWQMSiteStartEndDates,MWQMSiteStartEndDateID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table MWQMSiteStartEndDates
+MWQMSiteStartEndDates,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+MWQMSiteStartEndDates,MWQMSiteTVItemID,Int32,Lien à la table TVItems représentant le site MWQM (fr)
+MWQMSiteStartEndDates,StartDate,DateTime,Date de début
+MWQMSiteStartEndDates,EndDate,DateTime,Date de fin
+MWQMSiteStartEndDates,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+MWQMSiteStartEndDates,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+MWQMSubsectors,,,La table MWQMSubsectors contient des champs pour décrire les sous-secteurs de surveillance de la qualité de l'eau de mer.
+MWQMSubsectors,MWQMSubsectorID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table MWQMSubsectors
+MWQMSubsectors,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+MWQMSubsectors,MWQMSubsectorTVItemID,Int32,Lien à la table TVItems représentant le sous-secteur MWQM (fr)
+MWQMSubsectors,SubsectorHistoricKey,String (max=20),Clef du sous-secteur historique
+MWQMSubsectors,TideLocationSIDText,String (max=20),Identifiants SID des site de marées
+MWQMSubsectors,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+MWQMSubsectors,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+MWQMSubsectorLanguages,,,La table MWQMSubsectorLanguages contient des champs permettant de stocker des textes bilingues pour la table MWQMSubsectors.
+MWQMSubsectorLanguages,MWQMSubsectorLanguageID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table MWQMSubsectorLanguages
+MWQMSubsectorLanguages,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+MWQMSubsectorLanguages,MWQMSubsectorID,Int32,Lien à la table MWQMSubsectors représentant le sous-secteur MWQM
+MWQMSubsectorLanguages,Language,LanguageEnum (int),Langage de l'item
+MWQMSubsectorLanguages,SubsectorDesc,String (max=250),Description du sous-secteur
+MWQMSubsectorLanguages,TranslationStatusSubsectorDesc,TranslationStatusEnum (int),Le statut de la traduction du la description du sous-secteur
+MWQMSubsectorLanguages,LogBook,String,Carnet de bord
+MWQMSubsectorLanguages,TranslationStatusLogBook,TranslationStatusEnum (int),Le statut de la traduction du carnet de bord
+MWQMSubsectorLanguages,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+MWQMSubsectorLanguages,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+PolSourceGroupings,,,La table PolSourceGroupings contient des champs pour le regroupement des sources de pollution qui est utilisé pour formuler une phrase à partir des options sélectionnées tout en décrivant les sites et les problèmes de source de pollution.
+PolSourceGroupings,PolSourceGroupingID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table PolSourceGroupings
+PolSourceGroupings,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+PolSourceGroupings,CSSPID,Int32 (min=10000) (max=100000),Identifiant unique de CSSP
+PolSourceGroupings,GroupName,String (max=500),Nom du groupe
+PolSourceGroupings,Child,String (max=500),Nom du groupe
+PolSourceGroupings,Hide,String (max=500),Nom du groupe
+PolSourceGroupings,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+PolSourceGroupings,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+PolSourceGroupingLanguages,,,La table PolSourceGroupingLanguages contient des champs pour contenir des textes bilingues pour la table PolSourceGroupings.
+PolSourceGroupingLanguages,PolSourceGroupingLanguageID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table PolSourceGroupingLanguages
+PolSourceGroupingLanguages,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+PolSourceGroupingLanguages,PolSourceGroupingID,Int32,Lien à la table PolSourceGroupins représentant le groupement de source de pollution
+PolSourceGroupingLanguages,Language,LanguageEnum (int),Langage de l'item
+PolSourceGroupingLanguages,SourceName,String (max=500),Nom de source
+PolSourceGroupingLanguages,SourceNameOrder,Int32 (min=0) (max=1000),Numéro d'ordre du nom de source
+PolSourceGroupingLanguages,TranslationStatusSourceName,TranslationStatusEnum (int),Le statut de la traduction du nom de source
+PolSourceGroupingLanguages,Init,String (max=50),Initiale
+PolSourceGroupingLanguages,TranslationStatusInit,TranslationStatusEnum (int),Le statut de la traduction de Init
+PolSourceGroupingLanguages,Description,String (max=500),Description
+PolSourceGroupingLanguages,TranslationStatusDescription,TranslationStatusEnum (int),Le statut de la traduction de Description
+PolSourceGroupingLanguages,Report,String (max=500),Report
+PolSourceGroupingLanguages,TranslationStatusReport,TranslationStatusEnum (int),Le statut de la traduction de Report
+PolSourceGroupingLanguages,Text,String (max=500),Text
+PolSourceGroupingLanguages,TranslationStatusText,TranslationStatusEnum (int),Le statut de la traduction de Text
+PolSourceGroupingLanguages,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+PolSourceGroupingLanguages,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+PolSourceObservations,,,La table PolSourceObservations contient des champs pour contenir les informations relatives à l'observation de la source de pollution.
+PolSourceObservations,PolSourceObservationID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table PolSourceObservations
+PolSourceObservations,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+PolSourceObservations,PolSourceSiteID,Int32,Lien à la table PolSourceSites représentant le site de source de pollution
+PolSourceObservations,ObservationDate_Local,DateTime,Date d'observation
+PolSourceObservations,ContactTVItemID,Int32,Lien à la table TVItems représentant le contact ayant l'observation
+PolSourceObservations,DesktopReviewed,Boolean,Révisé au bureau
+PolSourceObservations,Observation_ToBeDeleted,String,Observation qui va être effacé
+PolSourceObservations,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+PolSourceObservations,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+PolSourceObservationIssues,,,La table PolSourceObservationIssues contient des champs pour contenir la description des problèmes d'observation des sources de pollution.
+PolSourceObservationIssues,PolSourceObservationIssueID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table PolSourceObservationIssues
+PolSourceObservationIssues,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+PolSourceObservationIssues,PolSourceObservationID,Int32,Lien à la table PolSourceObservations représentant l'observation de source de pollution
+PolSourceObservationIssues,ObservationInfo,String (max=250),L'information de l'observation est une liste de chiffres représentant la ligne d'une collection de texte descriptif
+PolSourceObservationIssues,Ordinal,Int32 (min=0) (max=1000),Ordre
+PolSourceObservationIssues,ExtraComment,String,Commentaire d'extra
+PolSourceObservationIssues,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+PolSourceObservationIssues,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+PolSourceSites,,,La table PolSourceSites contient des champs permettant de conserver et de gérer les sites sources de pollution.
+PolSourceSites,PolSourceSiteID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table PolSourceSites
+PolSourceSites,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+PolSourceSites,PolSourceSiteTVItemID,Int32,Lien à la table TVItems représentant le site de source de pollution
+PolSourceSites,Temp_Locator_CanDelete,String (max=50),Localisateur temporaire qui peut être supprimé à l'avenir
+PolSourceSites,Oldsiteid,Int32 (min=0) (max=1000),Ancien identifiant du site
+PolSourceSites,Site,Int32 (min=0) (max=1000),Numéro/texte du site
+PolSourceSites,SiteID,Int32 (min=0) (max=1000),Identifiant Site (not used)
+PolSourceSites,IsPointSource,Boolean,Est une source ponctuelle
+PolSourceSites,InactiveReason,PolSourceInactiveReasonEnum (int),Raison que la source de pollution est inactive
+PolSourceSites,CivicAddressTVItemID,Int32,Lien à la table TVItems représentant l'adresse civique
+PolSourceSites,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+PolSourceSites,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+PolSourceSiteEffects,,,La table PolSourceSiteEffects contient des champs permettant d'établir les effets du site source de pollution.
+PolSourceSiteEffects,PolSourceSiteEffectID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table PolSourceSiteEffects
+PolSourceSiteEffects,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+PolSourceSiteEffects,PolSourceSiteOrInfrastructureTVItemID,Int32,Lien à la table TVItems représentant le site de source de pollution ou infrastructure
+PolSourceSiteEffects,MWQMSiteTVItemID,Int32,Lien à la table TVItems représentant le site MWQM (fr)
+PolSourceSiteEffects,PolSourceSiteEffectTermIDs,String (max=250),Liste d'identifiant des termes
+PolSourceSiteEffects,Comments,String,Commentaires
+PolSourceSiteEffects,AnalysisDocumentTVItemID,Int32,Lien à la table TVItems représentant une filière
+PolSourceSiteEffects,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+PolSourceSiteEffects,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+PolSourceSiteEffectTerms,,,La table PolSourceSiteEffectTerms contient tous les termes utilisés pour décrire les effets du site source de pollution.
+PolSourceSiteEffectTerms,PolSourceSiteEffectTermID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table PolSourceSiteEffectTerms
+PolSourceSiteEffectTerms,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+PolSourceSiteEffectTerms,IsGroup,Boolean,Est un groupe
+PolSourceSiteEffectTerms,UnderGroupID,Int32,Terme d'effect pour le site de la source de pollution ID
+PolSourceSiteEffectTerms,EffectTermEN,String (max=100),Terme d'effet en anglais
+PolSourceSiteEffectTerms,EffectTermFR,String (max=100),Terme d'effet en français
+PolSourceSiteEffectTerms,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+PolSourceSiteEffectTerms,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+RainExceedances,,,La table RainExceedances contient des champs permettant de gérer les dépassements de pluie.
+RainExceedances,RainExceedanceID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table RainExceedances
+RainExceedances,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+RainExceedances,RainExceedanceTVItemID,Int32,Lien à la table TVItems représentant l'item rain exceedance (fr)
+RainExceedances,StartMonth,Int32 (min=1) (max=12),Mois de départ
+RainExceedances,StartDay,Int32 (min=1) (max=31),Jour de départ
+RainExceedances,EndMonth,Int32 (min=1) (max=12),Mois de fin
+RainExceedances,EndDay,Int32 (min=1) (max=31),Jour de fin
+RainExceedances,RainMaximum_mm,Double (min=0) (max=300),Pluie maximale en millimètres
+RainExceedances,StakeholdersEmailDistributionListID,Int32,Liste de distribution de courriels
+RainExceedances,OnlyStaffEmailDistributionListID,Int32,Liste de distribution de courriels
+RainExceedances,IsActive,Boolean,L'excédance de pluie est actif
+RainExceedances,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+RainExceedances,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+RainExceedanceClimateSites,,,La table RainExceedanceClimateSites contient des champs pour contenir les liens entre le dépassement de la pluie et les sites climatiques.
+RainExceedanceClimateSites,RainExceedanceClimateSiteID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table RainExceedanceClimateSites
+RainExceedanceClimateSites,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+RainExceedanceClimateSites,RainExceedanceTVItemID,Int32,Lien à la table TVItems représentant l'excédance de pluie
+RainExceedanceClimateSites,ClimateSiteTVItemID,Int32,Lien à la table TVItems représentant le site climatique
+RainExceedanceClimateSites,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+RainExceedanceClimateSites,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+RatingCurves,,,La table RatingCurves contient des champs pour stocker les courbes d'évaluation pour chaque site hydrométrique.
+RatingCurves,RatingCurveID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table RatingCurves
+RatingCurves,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+RatingCurves,HydrometricSiteID,Int32,Lien à la table Hydrometrics représentant le site hydrométrique
+RatingCurves,RatingCurveNumber,String (max=50),Numéro de la courbe de tarage
+RatingCurves,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+RatingCurves,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+RatingCurveValues,,,La table RatingCurveValues contient des champs permettant de conserver les valeurs des courbes de notation pour chaque site hydrométrique.
+RatingCurveValues,RatingCurveValueID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table RatingCurveValues
+RatingCurveValues,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+RatingCurveValues,RatingCurveID,Int32,Lien à la table RatingCurves représentant la courve de tarage
+RatingCurveValues,StageValue_m,Double (min=0) (max=1000),Valeur de niveau en mètres
+RatingCurveValues,DischargeValue_m3_s,Double (min=0) (max=1000000),Valeur du débits en mètres cube par second
+RatingCurveValues,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+RatingCurveValues,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+ReportSections,,,La table ReportSections contient des champs pour contenir la section de rapport utilisée pour produire divers rapports.
+ReportSections,ReportSectionID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table ReportSections
+ReportSections,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+ReportSections,ReportTypeID,Int32,Lien à la table ReportTypes représentant le type de raport
+ReportSections,TVItemID,Int32,Lien à la table TVItems représentant l'item
+ReportSections,Language,LanguageEnum (int),Langage de l'item
+ReportSections,Ordinal,Int32 (min=0) (max=1000),Ordre
+ReportSections,IsStatic,Boolean,Est statique --- le texte ne changera pas dans le temps
+ReportSections,ParentReportSectionID,Int32,Section du raport du parent ID
+ReportSections,Year,Int32 (min=1979) (max=2050),Année dont le texte est applicable
+ReportSections,Locked,Boolean,Barré --- pas utilisé encore
+ReportSections,TemplateReportSectionID,Int32,Gabari de la section du raport ID --- pas utilisé encore
+ReportSections,ReportSectionName,String (max=100),Nom de la section du raport
+ReportSections,ReportSectionText,String (max=10000),Texte de la section du raport
+ReportSections,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+ReportSections,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+ReportTypes,,,La table ReportTypes contient des champs pour contenir les types de rapport qui peuvent être produits avec un simple clic sur un bouton.
+ReportTypes,ReportTypeID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table ReportTypes
+ReportTypes,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+ReportTypes,TVType,TVTypeEnum (int),Type de l'arbre visuel
+ReportTypes,FileType,FileTypeEnum (int),Type de filière
+ReportTypes,UniqueCode,String (max=100),Type de filière --- utilisé dans le code afin de savoir quel document et type de document à créer
+ReportTypes,Language,LanguageEnum (int),Langage de l'item
+ReportTypes,Name,String (max=100),Nom du type de raport
+ReportTypes,Description,String (max=1000),Description du type de raport
+ReportTypes,StartOfFileName,String (max=100),Début du nom de la filière
+ReportTypes,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+ReportTypes,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+ResetPasswords,,,La table ResetPasswords contient des champs de base pour aider à la réinitialisation du mot de passe des utilisateurs.
+ResetPasswords,ResetPasswordID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table ResetPasswords
+ResetPasswords,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+ResetPasswords,Email,String (max=256),Courriel
+ResetPasswords,ExpireDate_Local,DateTime,Date d'expiration
+ResetPasswords,Code,String (max=8),Date d'expiration --- est un code généré par le serveur et envoyé au courriel de l'utilisateur
+ResetPasswords,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+ResetPasswords,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+SamplingPlans,,,La table SamplingPlans contient des champs permettant d'organiser les plans d'échantillonnage. C'est également la table principale utilisée pour créer des fichiers texte de plan d'échantillonnage qui peuvent être distribués aux sous-traitants, aux provinces et aux utilisateurs internes. Ils l'utilisent avec l'application CSSPWQInputTool.
+SamplingPlans,SamplingPlanID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table SamplingPlans
+SamplingPlans,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+SamplingPlans,IsActive,Boolean,Est actif
+SamplingPlans,SamplingPlanName,String (max=200),Nom du plan d'échantillonnage
+SamplingPlans,ForGroupName,String (max=100),Nom pour le group
+SamplingPlans,SampleType,SampleTypeEnum (int),Type d'échantillon
+SamplingPlans,SamplingPlanType,SamplingPlanTypeEnum (int),Type de plan d'échantillonnage
+SamplingPlans,LabSheetType,LabSheetTypeEnum (int),Type de feuille de laboratoire
+SamplingPlans,ProvinceTVItemID,Int32,Lien à la table TVItems représentant la province
+SamplingPlans,CreatorTVItemID,Int32,Lien à la table TVItems représentant le créateur du plan d'échantillonnage
+SamplingPlans,Year,Int32 (min=2000) (max=2050),Année
+SamplingPlans,AccessCode,String (max=15),Code d'accès
+SamplingPlans,DailyDuplicatePrecisionCriteria,Double (min=0) (max=100),Critère de précision pour le duplicata journalier
+SamplingPlans,IntertechDuplicatePrecisionCriteria,Double (min=0) (max=100),Critère de précision pour le duplicata intertech
+SamplingPlans,IncludeLaboratoryQAQC,Boolean,Inclure le QA/QC de laboratoire
+SamplingPlans,ApprovalCode,String (max=15),Code d'approbation
+SamplingPlans,SamplingPlanFileTVItemID,Int32,Lien à la table TVItems représentant la filière du plan d'échantillonnage
+SamplingPlans,AnalyzeMethodDefault,AnalyzeMethodEnum (int),Méthode d'analyse
+SamplingPlans,SampleMatrixDefault,SampleMatrixEnum (int),Milieu d'échantillon
+SamplingPlans,LaboratoryDefault,LaboratoryEnum (int),Laboratoire
+SamplingPlans,BackupDirectory,String (max=250),Répertoire de sauvegarde
+SamplingPlans,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+SamplingPlans,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+SamplingPlanEmails,,,La table SamplingPlanEmails contient des champs pour contenir les e-mails à envoyer lors du remplissage des feuilles de laboratoire.
+SamplingPlanEmails,SamplingPlanEmailID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table SamplingPlanEmails
+SamplingPlanEmails,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+SamplingPlanEmails,SamplingPlanID,Int32,Lien à la table SamplingPlans représentant le plan d'échantillonnage
+SamplingPlanEmails,Email,String (max=150),Courriel
+SamplingPlanEmails,IsContractor,Boolean,Est un contracteur
+SamplingPlanEmails,LabSheetHasValueOver500,Boolean,La feuille de laboratoire a une valeur supérieur à 500
+SamplingPlanEmails,LabSheetReceived,Boolean,Feuille de laboratoire reçu
+SamplingPlanEmails,LabSheetAccepted,Boolean,Feuille de laboratoire approuvé
+SamplingPlanEmails,LabSheetRejected,Boolean,Feuille de laboratoire rejeté
+SamplingPlanEmails,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+SamplingPlanEmails,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+SamplingPlanSubsectors,,,La table SamplingPlanSubsectors contient des champs pour stocker les informations du sous-secteur du plan d'échantillonnage.
+SamplingPlanSubsectors,SamplingPlanSubsectorID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table SamplingPlanSubsectors
+SamplingPlanSubsectors,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+SamplingPlanSubsectors,SamplingPlanID,Int32,Lien à la table SamplingPlan représentant le plan d'échantillonnage
+SamplingPlanSubsectors,SubsectorTVItemID,Int32,Lien à la table TVItems représentant le sous-secteur
+SamplingPlanSubsectors,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+SamplingPlanSubsectors,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+SamplingPlanSubsectorSites,,,La table SamplingPlanSubsectorSites contient des champs pour stocker et gérer les sites de surveillance de la qualité des eaux marines du sous-secteur du plan d'échantillonnage.
+SamplingPlanSubsectorSites,SamplingPlanSubsectorSiteID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table SamplingPlanSubsectorSites
+SamplingPlanSubsectorSites,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+SamplingPlanSubsectorSites,SamplingPlanSubsectorID,Int32,Lien à la table SamplingPlanSubsectors représentant le sous-secteur du plan d'échantillonnage
+SamplingPlanSubsectorSites,MWQMSiteTVItemID,Int32,Lien à la table TVItems représentant le site MWQM (fr)
+SamplingPlanSubsectorSites,IsDuplicate,Boolean,Est en double
+SamplingPlanSubsectorSites,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+SamplingPlanSubsectorSites,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+Spills,,,Le tableau Spills contient des champs pour contenir des informations concernant les déversements provenant des infrastructures municipales ou d'autres types de déversements.
+Spills,SpillID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table Spills
+Spills,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+Spills,MunicipalityTVItemID,Int32,Lien à la table TVItems représentant la municipalité
+Spills,InfrastructureTVItemID,Int32,Lien à la table TVItems représentant l'infrastructure
+Spills,StartDateTime_Local,DateTime,Date de début (local)
+Spills,EndDateTime_Local,DateTime,Date de fin (local)
+Spills,AverageFlow_m3_day,Double (min=0) (max=1000000),Débit moyer en mètres cube par jour
+Spills,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+Spills,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+SpillLanguages,,,La table SpillLanguages contient des champs pour contenir des textes bilingues pour la table Spills.
+SpillLanguages,SpillLanguageID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table SpillLanguages
+SpillLanguages,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+SpillLanguages,SpillID,Int32,Lien à la table Spills représentant le déversement
+SpillLanguages,Language,LanguageEnum (int),Langage de l'item
+SpillLanguages,SpillComment,String,Commentaire
+SpillLanguages,TranslationStatus,TranslationStatusEnum (int),Le statut de la traduction du commentaire du déversement
+SpillLanguages,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+SpillLanguages,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+Tels,,,La table Tels contient des champs pour les numéros de téléphone. Il est utilisé avec les contacts municipaux et les informations de profil supplémentaires des utilisateurs.
+Tels,TelID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table Tels
+Tels,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+Tels,TelTVItemID,Int32,Lien à la table TVItems représentant la téléphone
+Tels,TelNumber,String (max=50),Numéro de téléphone
+Tels,TelType,TelTypeEnum (int),Type de téléphone
+Tels,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+Tels,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+TideDataValues,,,La table TideDataValues contient des champs pour conserver les valeurs des données de marée à divers endroits au Canada et aux États-Unis.
+TideDataValues,TideDataValueID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table TideDataValues
+TideDataValues,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+TideDataValues,TideSiteTVItemID,Int32,Lien à la table TVItems représentant le site de marée
+TideDataValues,DateTime_Local,DateTime,Date (local)
+TideDataValues,Keep,Boolean,Sauvegarder
+TideDataValues,TideDataType,TideDataTypeEnum (int),Type de donnée de marée
+TideDataValues,StorageDataType,StorageDataTypeEnum (int),Type de sauvegarde des données
+TideDataValues,Depth_m,Double (min=0) (max=10000),Profondeur en mètres
+TideDataValues,UVelocity_m_s,Double (min=0) (max=10),U vélocité en mètres par second
+TideDataValues,VVelocity_m_s,Double (min=0) (max=10),V vélocité en mètres par second
+TideDataValues,TideStart,TideTextEnum (int),Tide text de départ
+TideDataValues,TideEnd,TideTextEnum (int),Tide text de fin
+TideDataValues,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+TideDataValues,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+TideLocations,,,La table TideLocations contient des champs pour stocker les emplacements de marée et les noms à utiliser par certaines applications.
+TideLocations,TideLocationID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table TideLocations
+TideLocations,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+TideLocations,Zone,Int32 (min=0) (max=10000),Zone
+TideLocations,Name,String (max=100),Nom
+TideLocations,Prov,String (max=100),Province
+TideLocations,sid,Int32 (min=0) (max=100000),SID
+TideLocations,Lat,Double (min=-90) (max=90),Latitude
+TideLocations,Lng,Double (min=-180) (max=180),Longitude
+TideLocations,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+TideLocations,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+TideSites,,,La table TideSites contient des champs permettant de conserver et de gérer les informations relatives au site de marée provenant des Services hydrographiques du Canada.
+TideSites,TideSiteID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table TideSites
+TideSites,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+TideSites,TideSiteTVItemID,Int32,Lien à la table TVItems représentant le site de marée
+TideSites,TideSiteName,String (max=100),Tide site name (fr)
+TideSites,Province,String (min=2) (max=2),Province
+TideSites,sid,Int32 (min=0) (max=10000),sid
+TideSites,Zone,Int32 (min=0) (max=10000),Zone
+TideSites,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+TideSites,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+TVFiles,,,La table TVFiles contient des champs permettant de gérer des fichiers en dehors des bases de données via des liens et des noms de fichiers.
+TVFiles,TVFileID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table TVFiles
+TVFiles,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+TVFiles,TVFileTVItemID,Int32,Lien à la table TVItems représentant la filière sous l'arbre visuel
+TVFiles,TemplateTVType,TVTypeEnum (int),Type d'arbre visuel du gabari
+TVFiles,ReportTypeID,Int32,Lien à la table ReportTypes représentant le type de raport
+TVFiles,Parameters,String,Paramètres utilisé lors de la production de raport
+TVFiles,Year,Int32 (min=1980) (max=2050),Année
+TVFiles,Language,LanguageEnum (int),Langage
+TVFiles,FilePurpose,FilePurposeEnum (int),But du fichier
+TVFiles,FileType,FileTypeEnum (int),Type de filière
+TVFiles,FileSize_kb,Int32 (min=0) (max=100000000),Taille du fichier
+TVFiles,FileInfo,String,Information sur le fichier
+TVFiles,FileCreatedDate_UTC,DateTime,Date de création du fichier (UTC)
+TVFiles,FromWater,Boolean,Pris sur l'eau
+TVFiles,ClientFilePath,String (max=250),Adress du fichier au client
+TVFiles,ServerFileName,String (max=250),Nom du fichier au serveur
+TVFiles,ServerFilePath,String (max=250),Adress du fichier au serveur
+TVFiles,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+TVFiles,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+TVFileLanguages,,,La table TVFileLanguages contient des champs permettant de stocker des textes bilingues pour la table TVFiles.
+TVFileLanguages,TVFileLanguageID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table TVFileLanguages
+TVFileLanguages,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+TVFileLanguages,TVFileID,Int32,Lien à la table TVFiles représentant la filière de l'arbre visuel
+TVFileLanguages,Language,LanguageEnum (int),Langage de l'item
+TVFileLanguages,FileDescription,String,Description du fichier
+TVFileLanguages,TranslationStatus,TranslationStatusEnum (int),Le statut de la traduction de la description du fichier
+TVFileLanguages,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+TVFileLanguages,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+TVItems,,,La table TVItems contient des champs permettant de conserver et de gérer le système d'arborescence dans la base de données de conservation afin que chaque élément puisse être recherché et soit unique.
+TVItems,TVItemID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table TVItems
+TVItems,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+TVItems,TVLevel,Int32 (min=0) (max=100),Niveau de l'arbre visuel
+TVItems,TVPath,String (max=250),Chemin de l'arbre visuel
+TVItems,TVType,TVTypeEnum (int),Type d'arbre visuel
+TVItems,ParentID,Int32,Lien à la table TVItems représentant le parent de l'arbre visuel
+TVItems,IsActive,Boolean,Lien à la table TVItems représentant le parent de l'arbre visuel
+TVItems,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+TVItems,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+TVItemLanguages,,,La table TVItemLanguages contient des champs pour contenir des textes bilingues pour la table TVItems.
+TVItemLanguages,TVItemLanguageID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table TVItemLanguages
+TVItemLanguages,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+TVItemLanguages,TVItemID,Int32,Lien à la table TVItems représentant l'arbre visuel
+TVItemLanguages,Language,LanguageEnum (int),Langage de l'item
+TVItemLanguages,TVText,String (max=200),Texte de l'arbre visuel
+TVItemLanguages,TranslationStatus,TranslationStatusEnum (int),Le statut de la traduction du texte de l'arbre visuel
+TVItemLanguages,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+TVItemLanguages,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+TVItemLinks,,,La table TVItemLinks contient des champs permettant de lier différents éléments de l'arborescence (TVItems) entre eux.
+TVItemLinks,TVItemLinkID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table TVItemLinks
+TVItemLinks,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+TVItemLinks,FromTVItemID,Int32,Lien à la table TVItems représentant le départ
+TVItemLinks,ToTVItemID,Int32,Lien à la table TVItems représentant la fin
+TVItemLinks,FromTVType,TVTypeEnum (int),Type d'arbre visuel du départ
+TVItemLinks,ToTVType,TVTypeEnum (int),Type d'arbre visuel de la fin
+TVItemLinks,StartDateTime_Local,DateTime,Date de départ
+TVItemLinks,EndDateTime_Local,DateTime,Date de fin
+TVItemLinks,Ordinal,Int32 (min=0) (max=100),Ordre
+TVItemLinks,TVLevel,Int32 (min=0) (max=100),Niveau de l'arbre visuel
+TVItemLinks,TVPath,String (max=250),Chemin de l'arbre visuel
+TVItemLinks,ParentTVItemLinkID,Int32,Lien du parent de l'arbre visuel
+TVItemLinks,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+TVItemLinks,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+TVItemStats,,,La table TVItemStats contient des champs permettant de conserver les statistiques de divers éléments de l'arborescence dans la base de données. Il est utilisé par certaines applications comme indicateur du nombre de sous-éléments sous un élément particulier.
+TVItemStats,TVItemStatID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table TVItemStats
+TVItemStats,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+TVItemStats,TVItemID,Int32,Lien à la table TVItems représentant l'item de l'arbre visuel
+TVItemStats,TVType,TVTypeEnum (int),Type d'arbre visuel
+TVItemStats,ChildCount,Int32 (min=0) (max=10000000),Nombre sous items
+TVItemStats,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+TVItemStats,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+TVItemUserAuthorizations,,,La table TVItemUserAuthorizations contient des champs permettant de gérer l'autorisation d'un élément qu'un utilisateur peut afficher, modifier, créer ou supprimer.
+TVItemUserAuthorizations,TVItemUserAuthorizationID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table TVItemUserAuthorizations
+TVItemUserAuthorizations,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+TVItemUserAuthorizations,ContactTVItemID,Int32,Lien à la table TVItems représentant le contact
+TVItemUserAuthorizations,TVItemID1,Int32,Lien à la table TVItems représentant l'item 1 de l'arbre visuel
+TVItemUserAuthorizations,TVItemID2,Int32,Lien à la table TVItems représentant l'item 2 de l'arbre visuel
+TVItemUserAuthorizations,TVItemID3,Int32,Lien à la table TVItems représentant l'item 3 de l'arbre visuel
+TVItemUserAuthorizations,TVItemID4,Int32,Lien à la table TVItems représentant l'item 4 de l'arbre visuel
+TVItemUserAuthorizations,TVAuth,TVAuthEnum (int),Lien à la table TVItems représentant l'authorization pour l'arbre visuel
+TVItemUserAuthorizations,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+TVItemUserAuthorizations,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+TVTypeUserAuthorizations,,,La table TVTypeUserAuthorizations contient des champs permettant de gérer l'autorisation des types d'élément qu'un utilisateur peut afficher, modifier, créer ou supprimer.
+TVTypeUserAuthorizations,TVTypeUserAuthorizationID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table TVTypeUserAuthorizations
+TVTypeUserAuthorizations,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+TVTypeUserAuthorizations,ContactTVItemID,Int32,Lien à la table TVItems représentant le contact
+TVTypeUserAuthorizations,TVType,TVTypeEnum (int),Type de l'arbre visuel
+TVTypeUserAuthorizations,TVAuth,TVAuthEnum (int),Type d'authorization de l'arbre visuel
+TVTypeUserAuthorizations,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+TVTypeUserAuthorizations,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+UseOfSites,,,La table UseOfSites contient des champs permettant d'identifier les sites climatiques, les sites hydrométriques, les sites de marées, les municipalités et les drogues à utiliser dans un sous-secteur.
+UseOfSites,UseOfSiteID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table UseOfSites
+UseOfSites,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+UseOfSites,SiteTVItemID,Int32,Lien à la table TVItems représentant le site climatique, site hydrométrique ou le site de marée
+UseOfSites,SubsectorTVItemID,Int32,Lien à la table TVItems représentant le sous-secteur
+UseOfSites,TVType,TVTypeEnum (int),Type (climatique, hydrométrique or de marée)
+UseOfSites,Ordinal,Int32 (min=0) (max=1000),Ordre
+UseOfSites,StartYear,Int32 (min=1980) (max=2050),Année de départ
+UseOfSites,EndYear,Int32 (min=1980) (max=2050),Année de fin
+UseOfSites,UseWeight,Boolean,Utilise poids
+UseOfSites,Weight_perc,Double (min=0) (max=100),Poids (%)
+UseOfSites,UseEquation,Boolean,Utilise équation
+UseOfSites,Param1,Double (min=0) (max=100),Paramètre 1
+UseOfSites,Param2,Double (min=0) (max=100),Paramètre 2
+UseOfSites,Param3,Double (min=0) (max=100),Paramètre 3
+UseOfSites,Param4,Double (min=0) (max=100),Paramètre 4
+UseOfSites,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+UseOfSites,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+VPAmbients,,,La table VPAmbients contient des champs pour stocker les entrées ambiantes pour les scénarios Visual Plumes.
+VPAmbients,VPAmbientID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table VPAmbients
+VPAmbients,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+VPAmbients,VPScenarioID,Int32,Lien à la table VPScenarios représentant le scénario visual plumes
+VPAmbients,Row,Int32 (min=0) (max=10),Rangé
+VPAmbients,MeasurementDepth_m,Double (min=0) (max=1000),Profondeur de mesure en mètres
+VPAmbients,CurrentSpeed_m_s,Double (min=0) (max=10),Vitesse de courant en mètres par second
+VPAmbients,CurrentDirection_deg,Double (min=-180) (max=180),Direction du courant en dégré
+VPAmbients,AmbientSalinity_PSU,Double (min=0) (max=40),Salinité ambiante (PSU)
+VPAmbients,AmbientTemperature_C,Double (min=-10) (max=40),Température ambiante (°C)
+VPAmbients,BackgroundConcentration_MPN_100ml,Int32 (min=0) (max=10000000),Concentration de fond en nombre le plus probable par 100 milli-Litres
+VPAmbients,PollutantDecayRate_per_day,Double (min=0) (max=100),Taux de décoissance par jour)
+VPAmbients,FarFieldCurrentSpeed_m_s,Double (min=0) (max=10),Vitesse du courant de loin en mètre par second)
+VPAmbients,FarFieldCurrentDirection_deg,Double (min=-180) (max=180),Direction du courant de loin en dégré)
+VPAmbients,FarFieldDiffusionCoefficient,Double (min=0) (max=1),Coefficient de diffusion de loin
+VPAmbients,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+VPAmbients,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+VPResults,,,La table VPResults contient des champs permettant de stocker les résultats du scénario Visual Plumes.
+VPResults,VPResultID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table VPResults
+VPResults,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+VPResults,VPScenarioID,Int32,Lien à la table VPScenarios représentant le scénario visual plumes
+VPResults,Ordinal,Int32 (min=0) (max=1000),Ordre
+VPResults,Concentration_MPN_100ml,Int32 (min=0) (max=10000000),Concentration en nombre le plus probable par 100 milli-Litres
+VPResults,Dilution,Double (min=0) (max=1000000),Dilution
+VPResults,FarFieldWidth_m,Double (min=0) (max=10000),Largeur au loin en métres
+VPResults,DispersionDistance_m,Double (min=0) (max=100000),Distance de dispersion en métres
+VPResults,TravelTime_hour,Double (min=0) (max=100),Temps de dispersion en heures
+VPResults,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+VPResults,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+VPScenarios,,,La table VPScenarios contient des champs permettant de conserver et de gérer les scénarios Visual Plumes.
+VPScenarios,VPScenarioID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table VPScenarios
+VPScenarios,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+VPScenarios,InfrastructureTVItemID,Int32,Lien à la table TVItems représentant l'infrastructure
+VPScenarios,VPScenarioStatus,ScenarioStatusEnum (int),État du scénario visual plumes
+VPScenarios,UseAsBestEstimate,Boolean,Utilise comme meilleur estimation
+VPScenarios,EffluentFlow_m3_s,Double (min=0) (max=1000),Débit de l'effluent en mètres cube par second
+VPScenarios,EffluentConcentration_MPN_100ml,Int32 (min=0) (max=10000000),Concentration de l'effluent en nombre le plus probable par 100 milli-Litres
+VPScenarios,FroudeNumber,Double (min=0) (max=10000),Nombre de Froude
+VPScenarios,PortDiameter_m,Double (min=0) (max=10),Diamètre de l'orifice en mètres
+VPScenarios,PortDepth_m,Double (min=0) (max=1000),Profondeur de l'orifice en mètres
+VPScenarios,PortElevation_m,Double (min=0) (max=1000),Élévation de l'orifice en mètres
+VPScenarios,VerticalAngle_deg,Double (min=-90) (max=90),Angle vertical en dégré
+VPScenarios,HorizontalAngle_deg,Double (min=-180) (max=180),Angle horizontal en dégré
+VPScenarios,NumberOfPorts,Int32 (min=1) (max=100),Nombre d'orifice
+VPScenarios,PortSpacing_m,Double (min=0) (max=1000),Distance entre les orifices en mètres
+VPScenarios,AcuteMixZone_m,Double (min=0) (max=100),Zone de pollution aigüe en mètres
+VPScenarios,ChronicMixZone_m,Double (min=0) (max=40000),Zone de pollution chronique en mètres
+VPScenarios,EffluentSalinity_PSU,Double (min=0) (max=40),Salinité de l'effluent en PSU
+VPScenarios,EffluentTemperature_C,Double (min=-10) (max=40),Température de l'effluent en dégré Celcius
+VPScenarios,EffluentVelocity_m_s,Double (min=0) (max=100),Vitesse de l'effluent en mètres par second
+VPScenarios,RawResults,String,Résultats bruts
+VPScenarios,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+VPScenarios,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement
+VPScenarioLanguages,,,La table VPScenarioLanguages contient des champs pour contenir des textes bilingues pour la table VPScenarios.
+VPScenarioLanguages,VPScenarioLanguageID,Int32 (key),Contient l'identifiant unique sur chaque ligne de la table VPScenarioLanguages
+VPScenarioLanguages,DBCommand,DBCommandEnum (int),Identifie la command de base de données pour syncroniser avec la base de données local
+VPScenarioLanguages,VPScenarioID,Int32,Lien à la table VPScenarios représentant le scénario visual plumes
+VPScenarioLanguages,Language,LanguageEnum (int),Langage de l'item
+VPScenarioLanguages,VPScenarioName,String (max=100),Nom du scénario visual plumes
+VPScenarioLanguages,TranslationStatus,TranslationStatusEnum (int),Le statut de la traduction du nom du scénario visual plumes
+VPScenarioLanguages,LastUpdateDate_UTC,DateTime,Contient la date de la dernière mise à jour en (UTC)
+VPScenarioLanguages,LastUpdateContactTVItemID,Int32,Contact TVItemID qui a fait le dernier changement

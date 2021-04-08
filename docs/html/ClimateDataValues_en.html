@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>CSSPDB Model Documentation</title>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+<a href="table_en.html">Return to table list</a>
+<h1>Table&nbsp;---&nbsp;ClimateDataValues</h1>
+<ul>
+<li>
+ClimateDataValueID -- Int32 (key)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contains the unique identifier on each row of the ClimateDataValues table</span>
+</li>
+<li>
+DBCommand -- DBCommandEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Identify the database command for local database sync</span>
+</li>
+<li>
+ClimateSiteID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;ClimateSite link to parent ClimateSites table item</span>
+</li>
+<li>
+DateTime_Local -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Date and time of observation. Almost all data is coming from the weather office web site.</span>
+</li>
+<li>
+Keep -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Keep the data within the database. Sometime the database might get some data from the weather office web site as temporary data which can be removed at a later date</span>
+</li>
+<li>
+StorageDataType -- StorageDataTypeEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Storage data type can be archived, forcasted or observed</span>
+</li>
+<li>
+HasBeenRead -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The stored data has been read from the weather office web site</span>
+</li>
+<li>
+Snow_cm -- Double (min=0) (max=10000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Total snow (cm) --- the total snowfall, or amount of frozen (solid) precipitation in centimetres (cm), such as snow and ice pellets, observed at the location during a specified time interval.</span>
+</li>
+<li>
+Rainfall_mm -- Double (min=0) (max=10000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Total Rain (mm) --- the total rainfall, or amount of all liquid precipitation in millimetres (mm) such as rain, drizzle, freezing rain, and hail, observed at the location during a specified time interval.</span>
+</li>
+<li>
+RainfallEntered_mm -- Double (min=0) (max=10000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Total Rain entered (mm) by one of the biologist --- the total rainfall, or amount of all liquid precipitation in millimetres (mm) such as rain, drizzle, freezing rain, and hail, observed at the location during a specified time interval.</span>
+</li>
+<li>
+TotalPrecip_mm_cm -- Double (min=0) (max=10000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Total precipitation (mm) --- the sum of the total rainfall and the water equivalent of the total snowfall in millimetres (mm), observed at the location during a specified time interval.</span>
+</li>
+<li>
+MaxTemp_C -- Double (min=-50) (max=50)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Maximum temperature (deg C) --- the highest temperature in degrees Celsius (°C) observed at a location for a specified time interval.</span>
+</li>
+<li>
+MinTemp_C -- Double (min=-50) (max=50)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Minimum temperature (deg C) --- the lowest temperature in degrees Celsius (°C) observed at a location for a specified time interval.</span>
+</li>
+<li>
+HeatDegDays_C -- Double (min=-1000) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Heating degree-days for a given day are the number of degrees Celsius that the mean temperature is below 18 °C. If the temperature is equal to or greater than 18 °C, then the number will be zero. For example, a day with a mean temperature of 15.5 °C has 2.5 heating degree-days; a day with a mean temperature of 20.5 °C has zero heating degree-days. Heating degree-days are used primarily to estimate the heating requirements of buildings.</span>
+</li>
+<li>
+CoolDegDays_C -- Double (min=-1000) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Cooling degree-days for a given day are the number of degrees Celsius that the mean temperature is above 18 Celcius. If the temperature is equal to or less than 18 Celcius, then the number will be zero. For example, a day with a mean temperature of 20.5 Celcius has 2.5 cooling degree-days; a day with a mean temperature of 15.5 Celcius has zero cooling degree-days. Cooling degree-days are used primarily to estimate the air-conditioning requirements of buildings.</span>
+</li>
+<li>
+SnowOnGround_cm -- Double (min=0) (max=10000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Snow on the ground (cm) --- the depth of snow in centimetres (cm) on the ground. The total depth of snow on the ground at the time of the observation is determined in whole centimetres by making a series of measurements and taking the average.</span>
+</li>
+<li>
+DirMaxGust_0North -- Double (min=0) (max=360)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Direction of maximum gust (10's deg/tens of degrees) --- the direction of the maximum gust (true or geographic, not magnetic) from which the wind blows. Expressed in tens of degrees (10's deg), 9 means 90 degrees true or an east wind, and 36 means 360 degrees true or a wind blowing from the geographic north pole. This value is only reported if the maximum gust speed for the day exceeds 29 km/h.</span>
+</li>
+<li>
+SpdMaxGust_kmh -- Double (min=0) (max=300)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Speed of maximum gust (km/h) --- the speed in kilometres per hour (km/h) of the maximum wind gust during the day. The gust is the maximum or peak instantaneous or single reading from the anemometer (the instrument used to observe wind speed) during the day. The duration of a gust typically corresponds to an elapsed time of 3 to 5 seconds.</span>
+</li>
+<li>
+HourlyValues -- String
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Hourly values text stores all 24 hourly values of the parameters measured by the weather office</span>
+</li>
+<li>
+LastUpdateDate_UTC -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contains the date of the last update in UTC</span>
+</li>
+<li>
+LastUpdateContactTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contact TVItemID who made the last changes</span>
+</li>
+</ul>
+<a href="table_en.html">Return to table list</a>
+</body>
+</html>

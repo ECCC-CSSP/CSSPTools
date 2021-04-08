@@ -24,7 +24,7 @@ namespace CSSPHelperServices
 {
     public interface IPolSourceInactiveReasonEnumTextAndIDService
     {
-        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+        bool Validate(ValidationContext validationContext);
     }
     public partial class PolSourceInactiveReasonEnumTextAndIDService : IPolSourceInactiveReasonEnumTextAndIDService
     {
@@ -32,6 +32,7 @@ namespace CSSPHelperServices
         #endregion Variables
 
         #region Properties
+        private List<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -41,25 +42,26 @@ namespace CSSPHelperServices
         #endregion Constructors
 
         #region Functions public
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        public bool Validate(ValidationContext validationContext)
         {
             PolSourceInactiveReasonEnumTextAndID polSourceInactiveReasonEnumTextAndID = validationContext.ObjectInstance as PolSourceInactiveReasonEnumTextAndID;
 
             if (string.IsNullOrWhiteSpace(polSourceInactiveReasonEnumTextAndID.Text))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Text"), new[] { "Text" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Text"), new[] { "Text" }));
             }
 
             if (!string.IsNullOrWhiteSpace(polSourceInactiveReasonEnumTextAndID.Text) && polSourceInactiveReasonEnumTextAndID.Text.Length > 1000)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Text", "1000"), new[] { "Text" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Text", "1000"), new[] { "Text" }));
             }
 
             if (polSourceInactiveReasonEnumTextAndID.ID < 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "ID", "1"), new[] { "ID" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "ID", "1"), new[] { "ID" }));
             }
 
+            return ValidationResults.Count == 0 ? true : false;
         }
         #endregion Functions public
     }

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>CSSPDB Model Documentation</title>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+<a href="table_fr.html">Retour à la liste de tables</a>
+<h1>Table&nbsp;---&nbsp;TVFiles</h1>
+<ul>
+<li>
+TVFileID -- Int32 (key)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contient l'identifiant unique sur chaque ligne de la table TVFiles</span>
+</li>
+<li>
+DBCommand -- DBCommandEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Identifie la command de base de données pour syncroniser avec la base de données local</span>
+</li>
+<li>
+TVFileTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Lien à la table TVItems représentant la filière sous l'arbre visuel</span>
+</li>
+<li>
+TemplateTVType -- TVTypeEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Type d'arbre visuel du gabari</span>
+</li>
+<li>
+ReportTypeID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Lien à la table ReportTypes représentant le type de raport</span>
+</li>
+<li>
+Parameters -- String
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Paramètres utilisé lors de la production de raport</span>
+</li>
+<li>
+Year -- Int32 (min=1980) (max=2050)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Année</span>
+</li>
+<li>
+Language -- LanguageEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Langage</span>
+</li>
+<li>
+FilePurpose -- FilePurposeEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;But du fichier</span>
+</li>
+<li>
+FileType -- FileTypeEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Type de filière</span>
+</li>
+<li>
+FileSize_kb -- Int32 (min=0) (max=100000000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Taille du fichier</span>
+</li>
+<li>
+FileInfo -- String
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Information sur le fichier</span>
+</li>
+<li>
+FileCreatedDate_UTC -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Date de création du fichier (UTC)</span>
+</li>
+<li>
+FromWater -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Pris sur l'eau</span>
+</li>
+<li>
+ClientFilePath -- String (max=250)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Adress du fichier au client</span>
+</li>
+<li>
+ServerFileName -- String (max=250)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Nom du fichier au serveur</span>
+</li>
+<li>
+ServerFilePath -- String (max=250)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Adress du fichier au serveur</span>
+</li>
+<li>
+LastUpdateDate_UTC -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contient la date de la dernière mise à jour en (UTC)</span>
+</li>
+<li>
+LastUpdateContactTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contact TVItemID qui a fait le dernier changement</span>
+</li>
+</ul>
+<a href="table_fr.html">Retour à la liste de tables</a>
+</body>
+</html>

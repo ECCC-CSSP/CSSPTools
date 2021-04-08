@@ -20,7 +20,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using CSSPWebAPIs;
 using LoggedInServices;
-using CreateGzFileServices;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
@@ -87,12 +86,6 @@ namespace CSSPWebAPIs.AuthController.Tests
                 options.UseSqlServer(DBConnString);
             });
 
-            //Services.AddIdentityCore<ApplicationUser>()
-            //    .AddEntityFrameworkStores<ApplicationDbContext>();
-
-            //Services.AddDbContext<ApplicationDbContext>(options =>
-            //    options.UseSqlServer(DBConnString));
-
             /* ---------------------------------------------------------------------------------
              * using CSSPDBLocal
              * ---------------------------------------------------------------------------------      
@@ -128,7 +121,6 @@ namespace CSSPWebAPIs.AuthController.Tests
             Services.AddSingleton<ILoginModelService, LoginModelService>();
             Services.AddSingleton<IRegisterModelService, RegisterModelService>();
             Services.AddSingleton<IScrambleService, ScrambleService>();
-            Services.AddSingleton<ICreateGzFileService, CreateGzFileService>();
             Services.AddSingleton<IContactDBService, ContactDBService>();
             Services.AddSingleton<ITVItemDBService, TVItemDBService>();
 

@@ -23,9 +23,9 @@ namespace CSSPDBModels
         public string StationNumber { get; set; }
         [CSSPMaxLength(100)]
         public string StationName { get; set; }
-        [CSSPRange(0.0D, 10000.0D)]
+        [CSSPRange(-90.0D, 90.0D)]
         public double Latitude { get; set; }
-        [CSSPRange(0.0D, 10000.0D)]
+        [CSSPRange(-180.0D, 180.0D)]
         public double Longitude { get; set; }
         #endregion Properties in DB
 

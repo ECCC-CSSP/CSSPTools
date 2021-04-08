@@ -21,7 +21,7 @@ namespace CSSPWebAPIsLocal.Controllers
     public partial interface ITVItemController
     {
         Task<ActionResult<bool>> Delete(DeleteTVItemModel deleteTVItemModel);
-        Task<ActionResult<bool>> Post(PostTVItemModel postTVItemModel);
+        Task<ActionResult<bool>> Post(AppTaskModel postTVItemModel);
     }
 
     [Route("api/{culture}/[controller]")]
@@ -34,12 +34,12 @@ namespace CSSPWebAPIsLocal.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private ITVItemService TVItemService { get; }
+        private ITVItemLocalService TVItemService { get; }
         #endregion Properties
 
         #region Constructors
         public TVItemController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, 
-            ITVItemService PostTVItemModelService)
+            ITVItemLocalService PostTVItemModelService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
@@ -54,10 +54,10 @@ namespace CSSPWebAPIsLocal.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInLocalContactInfo();
 
-            return await TVItemService.Delete(deleteTVItemModel);
+            return await TVItemService.DeleteLocal(deleteTVItemModel);
         }
         [HttpPost]
-        public async Task<ActionResult<bool>> Post(PostTVItemModel postTVItemModel)
+        public async Task<ActionResult<bool>> Post(AppTaskModel postTVItemModel)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInLocalContactInfo();

@@ -10,7 +10,7 @@ using Xunit;
 
 namespace CSSPDBLocalServices.Tests
 {
-    public partial class TVItemServiceTest
+    public partial class TVItemLocalServiceTest
     {
         private void CompareTVItemLanguageAddInDB(int TVItemLanguageID, DBCommandEnum DBCommand, int TVItemID, LanguageEnum Language, string TVText, TranslationStatusEnum TranslationStatus)
         {

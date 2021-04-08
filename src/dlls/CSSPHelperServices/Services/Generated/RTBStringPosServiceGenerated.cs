@@ -24,7 +24,7 @@ namespace CSSPHelperServices
 {
     public interface IRTBStringPosService
     {
-        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+        bool Validate(ValidationContext validationContext);
     }
     public partial class RTBStringPosService : IRTBStringPosService
     {
@@ -32,6 +32,7 @@ namespace CSSPHelperServices
         #endregion Variables
 
         #region Properties
+        private List<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -41,40 +42,41 @@ namespace CSSPHelperServices
         #endregion Constructors
 
         #region Functions public
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        public bool Validate(ValidationContext validationContext)
         {
             RTBStringPos rTBStringPos = validationContext.ObjectInstance as RTBStringPos;
 
             if (rTBStringPos.StartPos < 0)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "StartPos", "0"), new[] { "StartPos" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "StartPos", "0"), new[] { "StartPos" }));
             }
 
             if (rTBStringPos.EndPos < 0)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "EndPos", "0"), new[] { "EndPos" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "EndPos", "0"), new[] { "EndPos" }));
             }
 
             if (string.IsNullOrWhiteSpace(rTBStringPos.Text))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Text"), new[] { "Text" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Text"), new[] { "Text" }));
             }
 
             if (!string.IsNullOrWhiteSpace(rTBStringPos.Text) && rTBStringPos.Text.Length > 100)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Text", "100"), new[] { "Text" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Text", "100"), new[] { "Text" }));
             }
 
             if (string.IsNullOrWhiteSpace(rTBStringPos.TagText))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TagText"), new[] { "TagText" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TagText"), new[] { "TagText" }));
             }
 
             if (!string.IsNullOrWhiteSpace(rTBStringPos.TagText) && rTBStringPos.TagText.Length > 100)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "TagText", "100"), new[] { "TagText" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "TagText", "100"), new[] { "TagText" }));
             }
 
+            return ValidationResults.Count == 0 ? true : false;
         }
         #endregion Functions public
     }

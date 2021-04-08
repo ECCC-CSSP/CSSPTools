@@ -24,7 +24,7 @@ namespace CSSPHelperServices
 {
     public interface IValRunService
     {
-        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+        bool Validate(ValidationContext validationContext);
     }
     public partial class ValRunService : IValRunService
     {
@@ -32,6 +32,7 @@ namespace CSSPHelperServices
         #endregion Variables
 
         #region Properties
+        private List<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -41,7 +42,7 @@ namespace CSSPHelperServices
         #endregion Constructors
 
         #region Functions public
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        public bool Validate(ValidationContext validationContext)
         {
             ValRun valRun = validationContext.ObjectInstance as ValRun;
 
@@ -49,12 +50,7 @@ namespace CSSPHelperServices
 
             //run has no Range Attribute
 
-
-            bool a = false;
-            if (a)
-            {
-                yield return new ValidationResult("");
-            }
+            return ValidationResults.Count == 0 ? true : false;
         }
         #endregion Functions public
     }

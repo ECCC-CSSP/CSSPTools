@@ -873,4 +873,10 @@
   <data name="PolSourceSites" xml:space="preserve">
     <value>sites de source de pollution</value>
   </data>
+  <data name="CouldNotModify_Error_" xml:space="preserve">
+    <value>Impossible de modifier {0}. Erreur: {1}</value>
+  </data>
+  <data name="_ShouldBeEqualTo_" xml:space="preserve">
+    <value>{0} devrait être égale à {1}</value>
+  </data>
 </root>

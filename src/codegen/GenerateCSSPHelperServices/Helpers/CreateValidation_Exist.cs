@@ -22,7 +22,7 @@ namespace GenerateCSSPHelperServices
                     sb.AppendLine(@"");
                     sb.AppendLine($@"                if ({ csspProp.ExistTypeName }{ csspProp.PropName } == null)");
                     sb.AppendLine(@"                {");
-                    sb.AppendLine($@"                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, ""{ csspProp.ExistTypeName }"", ""{ csspProp.PropName }"", ({ TypeNameLower }.{ csspProp.PropName } == null ? """" : { TypeNameLower }.{ csspProp.PropName }.ToString())), new[] {{ ""{ csspProp.PropName }"" }});");
+                    sb.AppendLine($@"                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, ""{ csspProp.ExistTypeName }"", ""{ csspProp.PropName }"", ({ TypeNameLower }.{ csspProp.PropName } == null ? """" : { TypeNameLower }.{ csspProp.PropName }.ToString())), new[] {{ ""{ csspProp.PropName }"" }}));");
                     sb.AppendLine(@"                }");
                     sb.AppendLine(@"            }");
                     sb.AppendLine(@"");
@@ -34,7 +34,7 @@ namespace GenerateCSSPHelperServices
                     sb.AppendLine(@"");
                     sb.AppendLine($@"            if ({ csspProp.ExistTypeName }{ csspProp.PropName } == null)");
                     sb.AppendLine(@"            {");
-                    sb.AppendLine($@"                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, ""{ csspProp.ExistTypeName }"", ""{ csspProp.PropName }"", { TypeNameLower }.{ csspProp.PropName }.ToString()), new[] {{ ""{ csspProp.PropName }"" }});");
+                    sb.AppendLine($@"                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, ""{ csspProp.ExistTypeName }"", ""{ csspProp.PropName }"", { TypeNameLower }.{ csspProp.PropName }.ToString()), new[] {{ ""{ csspProp.PropName }"" }}));");
                     sb.AppendLine(@"            }");
                     sb.AppendLine(@"");
                 }

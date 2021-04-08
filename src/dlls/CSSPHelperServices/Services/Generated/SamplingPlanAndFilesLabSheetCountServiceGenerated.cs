@@ -24,7 +24,7 @@ namespace CSSPHelperServices
 {
     public interface ISamplingPlanAndFilesLabSheetCountService
     {
-        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+        bool Validate(ValidationContext validationContext);
     }
     public partial class SamplingPlanAndFilesLabSheetCountService : ISamplingPlanAndFilesLabSheetCountService
     {
@@ -32,6 +32,7 @@ namespace CSSPHelperServices
         #endregion Variables
 
         #region Properties
+        private List<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -41,18 +42,18 @@ namespace CSSPHelperServices
         #endregion Constructors
 
         #region Functions public
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        public bool Validate(ValidationContext validationContext)
         {
             SamplingPlanAndFilesLabSheetCount samplingPlanAndFilesLabSheetCount = validationContext.ObjectInstance as SamplingPlanAndFilesLabSheetCount;
 
             if (samplingPlanAndFilesLabSheetCount.LabSheetHistoryCount < 0)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "LabSheetHistoryCount", "0"), new[] { "LabSheetHistoryCount" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "LabSheetHistoryCount", "0"), new[] { "LabSheetHistoryCount" }));
             }
 
             if (samplingPlanAndFilesLabSheetCount.LabSheetTransferredCount < 0)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "LabSheetTransferredCount", "0"), new[] { "LabSheetTransferredCount" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "LabSheetTransferredCount", "0"), new[] { "LabSheetTransferredCount" }));
             }
 
                 //CSSPError: Type not implemented [SamplingPlan] of type [SamplingPlan]
@@ -61,6 +62,7 @@ namespace CSSPHelperServices
                 //CSSPError: Type not implemented [TVFileSamplingPlanFileTXT] of type [TVFile]
 
                 //CSSPError: Type not implemented [TVFileSamplingPlanFileTXT] of type [TVFile]
+            return ValidationResults.Count == 0 ? true : false;
         }
         #endregion Functions public
     }

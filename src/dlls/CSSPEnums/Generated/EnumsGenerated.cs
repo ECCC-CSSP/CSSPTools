@@ -635,6 +635,8 @@ namespace CSSPEnums
                     return CSSPCultureEnumsRes.AppTaskCommandEnumMikeScenarioPrepareResults;
                 case AppTaskCommandEnum.ClimateSiteLoadCoCoRaHSData:
                     return CSSPCultureEnumsRes.AppTaskCommandEnumClimateSiteLoadCoCoRaHSData;
+                case AppTaskCommandEnum.SyncDBs:
+                    return CSSPCultureEnumsRes.AppTaskCommandEnumSyncDBs;
                 default:
                     return CSSPCultureEnumsRes.Empty;
             }

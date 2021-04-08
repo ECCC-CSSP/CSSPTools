@@ -54,7 +54,7 @@ namespace FilesManagementServices
         {
             if (LoggedInService.LoggedInContactInfo == null)
             {
-                return await Task.FromResult(Unauthorized(""));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             if (filesManagement == null)
@@ -74,7 +74,7 @@ namespace FilesManagementServices
         {
             if (LoggedInService.LoggedInContactInfo == null)
             {
-                return await Task.FromResult(Unauthorized(""));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             FilesManagement filesManagement = (from c in dbFM.FilesManagements
@@ -102,7 +102,7 @@ namespace FilesManagementServices
         {
             if (LoggedInService.LoggedInContactInfo == null)
             {
-                return await Task.FromResult(Unauthorized(""));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             List<FilesManagement> csspFileList = (from c in dbFM.FilesManagements.AsNoTracking()
@@ -115,7 +115,7 @@ namespace FilesManagementServices
         {
             if (LoggedInService.LoggedInContactInfo == null)
             {
-                return await Task.FromResult(Unauthorized(""));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             int? LastIndex = (from c in dbFM.FilesManagements
@@ -128,7 +128,7 @@ namespace FilesManagementServices
         {
             if (LoggedInService.LoggedInContactInfo == null)
             {
-                return await Task.FromResult(Unauthorized(""));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             FilesManagement csspFile = (from c in dbFM.FilesManagements.AsNoTracking()
@@ -146,7 +146,7 @@ namespace FilesManagementServices
         {
             if (LoggedInService.LoggedInContactInfo == null)
             {
-                return await Task.FromResult(Unauthorized(""));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             FilesManagement csspFile = (from c in dbFM.FilesManagements.AsNoTracking()

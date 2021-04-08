@@ -33,13 +33,13 @@ namespace GenerateCSSPDBServices
                         {
                             sb.AppendLine($@"            if ({ TypeNameLower }.{ prop.Name }.Year == 1)");
                             sb.AppendLine(@"            {");
-                            sb.AppendLine($@"                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, ""{ prop.Name }""), new[] {{ nameof({ TypeNameLower }.{ csspProp.PropName }) }});");
+                            sb.AppendLine($@"                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, ""{ prop.Name }""), new[] {{ nameof({ TypeNameLower }.{ csspProp.PropName }) }}));");
                             sb.AppendLine(@"            }");
                             sb.AppendLine(@"            else");
                             sb.AppendLine(@"            {");
                             sb.AppendLine($@"                if ({ TypeNameLower }.{ prop.Name }.Year < { csspProp.Year })");
                             sb.AppendLine(@"                {");
-                            sb.AppendLine($@"                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, ""{ prop.Name }"", ""{ csspProp.Year }""), new[] {{ nameof({ TypeNameLower }.{ csspProp.PropName }) }});");
+                            sb.AppendLine($@"                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, ""{ prop.Name }"", ""{ csspProp.Year }""), new[] {{ nameof({ TypeNameLower }.{ csspProp.PropName }) }}));");
                             sb.AppendLine(@"                }");
                             sb.AppendLine(@"            }");
                             sb.AppendLine(@"");
@@ -51,7 +51,7 @@ namespace GenerateCSSPDBServices
                             {
                                 sb.AppendLine($@"            if (string.IsNullOrWhiteSpace({ TypeNameLower }.{ prop.Name }))");
                                 sb.AppendLine(@"            {");
-                                sb.AppendLine($@"                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, ""{ prop.Name }""), new[] {{ nameof({ TypeNameLower }.{ csspProp.PropName }) }});");
+                                sb.AppendLine($@"                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, ""{ prop.Name }""), new[] {{ nameof({ TypeNameLower }.{ csspProp.PropName }) }}));");
                                 sb.AppendLine(@"            }");
                                 sb.AppendLine(@"");
                             }

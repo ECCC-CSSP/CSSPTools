@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>CSSPDB Model Documentation</title>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+<a href="table_en.html">Return to table list</a>
+<h1>Table&nbsp;---&nbsp;BoxModels</h1>
+<ul>
+<li>
+BoxModelID -- Int32 (key)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contains the unique identifier on each row of the BoxModels table</span>
+</li>
+<li>
+DBCommand -- DBCommandEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Identify the database command for local database sync</span>
+</li>
+<li>
+InfrastructureTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Link to the TVItems table representing the infrastructure</span>
+</li>
+<li>
+Discharge_m3_day -- Double (min=0) (max=10000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Discharge (m3/d) spilled by the infrastructure</span>
+</li>
+<li>
+Depth_m -- Double (min=0) (max=1000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Average depth (m) of water in the vicinity of the spill</span>
+</li>
+<li>
+Temperature_C -- Double (min=-15) (max=40)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Temperature (deg C) of water in the vicinity of the spill</span>
+</li>
+<li>
+Dilution -- Int32 (min=0) (max=10000000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Dilution (MPN / 100 mL) level to uptain in the vicinity of the spill</span>
+</li>
+<li>
+DecayRate_per_day -- Double (min=0) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Average decay rate (/day) of the fecal coliform colonies</span>
+</li>
+<li>
+FCUntreated_MPN_100ml -- Int32 (min=0) (max=10000000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Fecal coliform concentration of untreaded waste water (MPN / 100 mL)</span>
+</li>
+<li>
+FCPreDisinfection_MPN_100ml -- Int32 (min=0) (max=10000000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Fecal coliform concentration of pre-disinfected waste water (MPN / 100 mL)</span>
+</li>
+<li>
+Concentration_MPN_100ml -- Int32 (min=0) (max=10000000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Fecal coliform concentration objective after dilution (MPN / 100 mL)</span>
+</li>
+<li>
+T90_hour -- Double (min=0)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Time (hour) required for 90 % of the fecal coliform colonies to die off</span>
+</li>
+<li>
+DischargeDuration_hour -- Double (min=0) (max=24)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Discharge duration (hour/day)</span>
+</li>
+<li>
+LastUpdateDate_UTC -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contains the date of the last update in UTC</span>
+</li>
+<li>
+LastUpdateContactTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contact TVItemID who made the last changes</span>
+</li>
+</ul>
+<a href="table_en.html">Return to table list</a>
+</body>
+</html>

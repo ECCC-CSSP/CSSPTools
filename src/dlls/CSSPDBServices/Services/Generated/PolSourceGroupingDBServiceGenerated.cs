@@ -19,7 +19,6 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using LoggedInServices;
 using Microsoft.Extensions.Configuration;
-using CSSPScrambleServices;
 
 namespace CSSPDBServices
 {
@@ -41,9 +40,8 @@ namespace CSSPDBServices
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IScrambleService ScrambleService { get; }
         private IEnums enums { get; }
-        private IEnumerable<ValidationResult> ValidationResults { get; set; }
+        private List<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -54,7 +52,6 @@ namespace CSSPDBServices
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.ScrambleService = ScrambleService;
             this.enums = enums;
             this.db = db;
         }
@@ -65,7 +62,7 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(""));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             PolSourceGrouping polSourceGrouping = (from c in db.PolSourceGroupings.AsNoTracking()
@@ -83,7 +80,7 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(""));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             List<PolSourceGrouping> polSourceGroupingList = (from c in db.PolSourceGroupings.AsNoTracking() orderby c.PolSourceGroupingID select c).Skip(skip).Take(take).ToList();
@@ -94,7 +91,7 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             PolSourceGrouping polSourceGrouping = (from c in db.PolSourceGroupings
@@ -122,11 +119,10 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
-            ValidationResults = Validate(new ValidationContext(polSourceGrouping), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
+            if (!Validate(new ValidationContext(polSourceGrouping), ActionDBTypeEnum.Create))
             {
                 return await Task.FromResult(BadRequest(ValidationResults));
             }
@@ -147,11 +143,10 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
-            ValidationResults = Validate(new ValidationContext(polSourceGrouping), ActionDBTypeEnum.Update);
-            if (ValidationResults.Count() > 0)
+            if (!Validate(new ValidationContext(polSourceGrouping), ActionDBTypeEnum.Update))
             {
                 return await Task.FromResult(BadRequest(ValidationResults));
             }
@@ -171,7 +166,7 @@ namespace CSSPDBServices
         #endregion Functions public
 
         #region Functions private
-        private IEnumerable<ValidationResult> Validate(ValidationContext validationContext, ActionDBTypeEnum actionDBType)
+        private bool Validate(ValidationContext validationContext, ActionDBTypeEnum actionDBType)
         {
             string retStr = "";
             PolSourceGrouping polSourceGrouping = validationContext.ObjectInstance as PolSourceGrouping;
@@ -180,65 +175,65 @@ namespace CSSPDBServices
             {
                 if (polSourceGrouping.PolSourceGroupingID == 0)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "PolSourceGroupingID"), new[] { nameof(polSourceGrouping.PolSourceGroupingID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "PolSourceGroupingID"), new[] { nameof(polSourceGrouping.PolSourceGroupingID) }));
                 }
 
                 if (!(from c in db.PolSourceGroupings.AsNoTracking() select c).Where(c => c.PolSourceGroupingID == polSourceGrouping.PolSourceGroupingID).Any())
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "PolSourceGrouping", "PolSourceGroupingID", polSourceGrouping.PolSourceGroupingID.ToString()), new[] { nameof(polSourceGrouping.PolSourceGroupingID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "PolSourceGrouping", "PolSourceGroupingID", polSourceGrouping.PolSourceGroupingID.ToString()), new[] { nameof(polSourceGrouping.PolSourceGroupingID) }));
                 }
             }
 
             retStr = enums.EnumTypeOK(typeof(DBCommandEnum), (int?)polSourceGrouping.DBCommand);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"), new[] { nameof(polSourceGrouping.DBCommand) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"), new[] { nameof(polSourceGrouping.DBCommand) }));
             }
 
             if (polSourceGrouping.CSSPID < 10000 || polSourceGrouping.CSSPID > 100000)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "CSSPID", "10000", "100000"), new[] { nameof(polSourceGrouping.CSSPID) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "CSSPID", "10000", "100000"), new[] { nameof(polSourceGrouping.CSSPID) }));
             }
 
             if (string.IsNullOrWhiteSpace(polSourceGrouping.GroupName))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "GroupName"), new[] { nameof(polSourceGrouping.GroupName) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "GroupName"), new[] { nameof(polSourceGrouping.GroupName) }));
             }
 
             if (!string.IsNullOrWhiteSpace(polSourceGrouping.GroupName) && polSourceGrouping.GroupName.Length > 500)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "GroupName", "500"), new[] { nameof(polSourceGrouping.GroupName) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "GroupName", "500"), new[] { nameof(polSourceGrouping.GroupName) }));
             }
 
             if (string.IsNullOrWhiteSpace(polSourceGrouping.Child))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Child"), new[] { nameof(polSourceGrouping.Child) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Child"), new[] { nameof(polSourceGrouping.Child) }));
             }
 
             if (!string.IsNullOrWhiteSpace(polSourceGrouping.Child) && polSourceGrouping.Child.Length > 500)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Child", "500"), new[] { nameof(polSourceGrouping.Child) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Child", "500"), new[] { nameof(polSourceGrouping.Child) }));
             }
 
             if (string.IsNullOrWhiteSpace(polSourceGrouping.Hide))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Hide"), new[] { nameof(polSourceGrouping.Hide) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Hide"), new[] { nameof(polSourceGrouping.Hide) }));
             }
 
             if (!string.IsNullOrWhiteSpace(polSourceGrouping.Hide) && polSourceGrouping.Hide.Length > 500)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Hide", "500"), new[] { nameof(polSourceGrouping.Hide) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Hide", "500"), new[] { nameof(polSourceGrouping.Hide) }));
             }
 
             if (polSourceGrouping.LastUpdateDate_UTC.Year == 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { nameof(polSourceGrouping.LastUpdateDate_UTC) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { nameof(polSourceGrouping.LastUpdateDate_UTC) }));
             }
             else
             {
                 if (polSourceGrouping.LastUpdateDate_UTC.Year < 1980)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { nameof(polSourceGrouping.LastUpdateDate_UTC) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { nameof(polSourceGrouping.LastUpdateDate_UTC) }));
                 }
             }
 
@@ -247,7 +242,7 @@ namespace CSSPDBServices
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", polSourceGrouping.LastUpdateContactTVItemID.ToString()), new[] { nameof(polSourceGrouping.LastUpdateContactTVItemID) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", polSourceGrouping.LastUpdateContactTVItemID.ToString()), new[] { nameof(polSourceGrouping.LastUpdateContactTVItemID)}));
             }
             else
             {
@@ -257,10 +252,11 @@ namespace CSSPDBServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(polSourceGrouping.LastUpdateContactTVItemID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(polSourceGrouping.LastUpdateContactTVItemID) }));
                 }
             }
 
+            return ValidationResults.Count == 0 ? true : false;
         }
         #endregion Functions private
     }

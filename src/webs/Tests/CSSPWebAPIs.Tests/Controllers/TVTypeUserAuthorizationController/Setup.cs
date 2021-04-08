@@ -20,7 +20,6 @@ using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Text;
 using LoggedInServices;
-using CreateGzFileServices;
 using CSSPHelperModels;
 using CSSPHelperServices;
 
@@ -39,7 +38,6 @@ namespace CSSPWebAPIs.TVTypeUserAuthorizationManualController.Tests
         private IContactDBService ContactDBService { get; set; }
         private ILoggedInService LoggedInService { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
-        private ICreateGzFileService CreateGzFileService { get; set; }
         private Contact contact { get; set; }
         private string LoginEmail { get; set; }
         private string Password { get; set; }
@@ -79,12 +77,6 @@ namespace CSSPWebAPIs.TVTypeUserAuthorizationManualController.Tests
             {
                 options.UseSqlServer(DBConnStr);
             });
-
-            //Services.AddIdentityCore<ApplicationUser>()
-            //    .AddEntityFrameworkStores<ApplicationDbContext>();
-
-            //Services.AddDbContext<ApplicationDbContext>(options =>
-            //    options.UseSqlServer(DBConnStr));
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();

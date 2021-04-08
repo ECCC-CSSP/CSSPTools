@@ -177,6 +177,7 @@ namespace CSSPEnums
         ProvinceToolsGenerateStats = 46,
         MikeScenarioPrepareResults = 47,
         ClimateSiteLoadCoCoRaHSData = 48,
+        SyncDBs = 49,
     }
     public enum AppTaskStatusEnum
     {

@@ -38,7 +38,7 @@ namespace CreateGzFileLocalServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
-        private ITVItemService PostTVItemModelService { get; set; }
+        private ITVItemLocalService PostTVItemModelService { get; set; }
         private IReadGzFileService ReadGzFileService { get; set; }
         private ICreateGzFileLocalService CreateGzFileLocalService { get; set; }
         private ILoggedInService LoggedInService { get; set; }
@@ -105,7 +105,7 @@ namespace CreateGzFileLocalServices.Tests
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<IFilesManagementService, FilesManagementService>();
-            Services.AddSingleton<ITVItemService, TVItemService>();
+            Services.AddSingleton<ITVItemLocalService, TVItemLocalService>();
             Services.AddSingleton<IDownloadFileService, DownloadFileService>();
             Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
@@ -170,7 +170,7 @@ namespace CreateGzFileLocalServices.Tests
             ReadGzFileService = Provider.GetService<IReadGzFileService>();
             Assert.NotNull(ReadGzFileService);
 
-            PostTVItemModelService = Provider.GetService<ITVItemService>();
+            PostTVItemModelService = Provider.GetService<ITVItemLocalService>();
             Assert.NotNull(PostTVItemModelService);
 
             LoggedInService = Provider.GetService<ILoggedInService>();

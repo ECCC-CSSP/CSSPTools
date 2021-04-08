@@ -24,7 +24,7 @@ namespace CSSPHelperServices
 {
     public interface INodeLayerService
     {
-        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+        bool Validate(ValidationContext validationContext);
     }
     public partial class NodeLayerService : INodeLayerService
     {
@@ -32,6 +32,7 @@ namespace CSSPHelperServices
         #endregion Variables
 
         #region Properties
+        private List<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -41,23 +42,24 @@ namespace CSSPHelperServices
         #endregion Constructors
 
         #region Functions public
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        public bool Validate(ValidationContext validationContext)
         {
             NodeLayer nodeLayer = validationContext.ObjectInstance as NodeLayer;
 
             if (nodeLayer.Layer < 1 || nodeLayer.Layer > 100)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Layer", "1", "100"), new[] { "Layer" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Layer", "1", "100"), new[] { "Layer" }));
             }
 
             if (nodeLayer.Z < -10000 || nodeLayer.Z > 10000)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Z", "-10000", "10000"), new[] { "Z" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Z", "-10000", "10000"), new[] { "Z" }));
             }
 
                 //CSSPError: Type not implemented [Node] of type [Node]
 
                 //CSSPError: Type not implemented [Node] of type [Node]
+            return ValidationResults.Count == 0 ? true : false;
         }
         #endregion Functions public
     }

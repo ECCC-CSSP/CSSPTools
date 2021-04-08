@@ -19,7 +19,6 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using LoggedInServices;
 using Microsoft.Extensions.Configuration;
-using CSSPScrambleServices;
 
 namespace CSSPDBServices
 {
@@ -41,9 +40,8 @@ namespace CSSPDBServices
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IScrambleService ScrambleService { get; }
         private IEnums enums { get; }
-        private IEnumerable<ValidationResult> ValidationResults { get; set; }
+        private List<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -54,7 +52,6 @@ namespace CSSPDBServices
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.ScrambleService = ScrambleService;
             this.enums = enums;
             this.db = db;
         }
@@ -65,7 +62,7 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(""));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             MikeBoundaryCondition mikeBoundaryCondition = (from c in db.MikeBoundaryConditions.AsNoTracking()
@@ -83,7 +80,7 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(""));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             List<MikeBoundaryCondition> mikeBoundaryConditionList = (from c in db.MikeBoundaryConditions.AsNoTracking() orderby c.MikeBoundaryConditionID select c).Skip(skip).Take(take).ToList();
@@ -94,7 +91,7 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             MikeBoundaryCondition mikeBoundaryCondition = (from c in db.MikeBoundaryConditions
@@ -122,11 +119,10 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
-            ValidationResults = Validate(new ValidationContext(mikeBoundaryCondition), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
+            if (!Validate(new ValidationContext(mikeBoundaryCondition), ActionDBTypeEnum.Create))
             {
                 return await Task.FromResult(BadRequest(ValidationResults));
             }
@@ -147,11 +143,10 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
-            ValidationResults = Validate(new ValidationContext(mikeBoundaryCondition), ActionDBTypeEnum.Update);
-            if (ValidationResults.Count() > 0)
+            if (!Validate(new ValidationContext(mikeBoundaryCondition), ActionDBTypeEnum.Update))
             {
                 return await Task.FromResult(BadRequest(ValidationResults));
             }
@@ -171,7 +166,7 @@ namespace CSSPDBServices
         #endregion Functions public
 
         #region Functions private
-        private IEnumerable<ValidationResult> Validate(ValidationContext validationContext, ActionDBTypeEnum actionDBType)
+        private bool Validate(ValidationContext validationContext, ActionDBTypeEnum actionDBType)
         {
             string retStr = "";
             MikeBoundaryCondition mikeBoundaryCondition = validationContext.ObjectInstance as MikeBoundaryCondition;
@@ -180,19 +175,19 @@ namespace CSSPDBServices
             {
                 if (mikeBoundaryCondition.MikeBoundaryConditionID == 0)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "MikeBoundaryConditionID"), new[] { nameof(mikeBoundaryCondition.MikeBoundaryConditionID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "MikeBoundaryConditionID"), new[] { nameof(mikeBoundaryCondition.MikeBoundaryConditionID) }));
                 }
 
                 if (!(from c in db.MikeBoundaryConditions.AsNoTracking() select c).Where(c => c.MikeBoundaryConditionID == mikeBoundaryCondition.MikeBoundaryConditionID).Any())
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "MikeBoundaryCondition", "MikeBoundaryConditionID", mikeBoundaryCondition.MikeBoundaryConditionID.ToString()), new[] { nameof(mikeBoundaryCondition.MikeBoundaryConditionID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "MikeBoundaryCondition", "MikeBoundaryConditionID", mikeBoundaryCondition.MikeBoundaryConditionID.ToString()), new[] { nameof(mikeBoundaryCondition.MikeBoundaryConditionID) }));
                 }
             }
 
             retStr = enums.EnumTypeOK(typeof(DBCommandEnum), (int?)mikeBoundaryCondition.DBCommand);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"), new[] { nameof(mikeBoundaryCondition.DBCommand) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"), new[] { nameof(mikeBoundaryCondition.DBCommand) }));
             }
 
             TVItem TVItemMikeBoundaryConditionTVItemID = null;
@@ -200,7 +195,7 @@ namespace CSSPDBServices
 
             if (TVItemMikeBoundaryConditionTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "MikeBoundaryConditionTVItemID", mikeBoundaryCondition.MikeBoundaryConditionTVItemID.ToString()), new[] { nameof(mikeBoundaryCondition.MikeBoundaryConditionTVItemID) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "MikeBoundaryConditionTVItemID", mikeBoundaryCondition.MikeBoundaryConditionTVItemID.ToString()), new[] { nameof(mikeBoundaryCondition.MikeBoundaryConditionTVItemID)}));
             }
             else
             {
@@ -211,65 +206,65 @@ namespace CSSPDBServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemMikeBoundaryConditionTVItemID.TVType))
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "MikeBoundaryConditionTVItemID", "MikeBoundaryConditionMesh,MikeBoundaryConditionWebTide"), new[] { nameof(mikeBoundaryCondition.MikeBoundaryConditionTVItemID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "MikeBoundaryConditionTVItemID", "MikeBoundaryConditionMesh,MikeBoundaryConditionWebTide"), new[] { nameof(mikeBoundaryCondition.MikeBoundaryConditionTVItemID) }));
                 }
             }
 
             if (string.IsNullOrWhiteSpace(mikeBoundaryCondition.MikeBoundaryConditionCode))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "MikeBoundaryConditionCode"), new[] { nameof(mikeBoundaryCondition.MikeBoundaryConditionCode) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "MikeBoundaryConditionCode"), new[] { nameof(mikeBoundaryCondition.MikeBoundaryConditionCode) }));
             }
 
             if (!string.IsNullOrWhiteSpace(mikeBoundaryCondition.MikeBoundaryConditionCode) && mikeBoundaryCondition.MikeBoundaryConditionCode.Length > 100)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "MikeBoundaryConditionCode", "100"), new[] { nameof(mikeBoundaryCondition.MikeBoundaryConditionCode) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "MikeBoundaryConditionCode", "100"), new[] { nameof(mikeBoundaryCondition.MikeBoundaryConditionCode) }));
             }
 
             if (string.IsNullOrWhiteSpace(mikeBoundaryCondition.MikeBoundaryConditionName))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "MikeBoundaryConditionName"), new[] { nameof(mikeBoundaryCondition.MikeBoundaryConditionName) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "MikeBoundaryConditionName"), new[] { nameof(mikeBoundaryCondition.MikeBoundaryConditionName) }));
             }
 
             if (!string.IsNullOrWhiteSpace(mikeBoundaryCondition.MikeBoundaryConditionName) && mikeBoundaryCondition.MikeBoundaryConditionName.Length > 100)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "MikeBoundaryConditionName", "100"), new[] { nameof(mikeBoundaryCondition.MikeBoundaryConditionName) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "MikeBoundaryConditionName", "100"), new[] { nameof(mikeBoundaryCondition.MikeBoundaryConditionName) }));
             }
 
             if (mikeBoundaryCondition.MikeBoundaryConditionLength_m < 1 || mikeBoundaryCondition.MikeBoundaryConditionLength_m > 100000)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "MikeBoundaryConditionLength_m", "1", "100000"), new[] { nameof(mikeBoundaryCondition.MikeBoundaryConditionLength_m) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "MikeBoundaryConditionLength_m", "1", "100000"), new[] { nameof(mikeBoundaryCondition.MikeBoundaryConditionLength_m) }));
             }
 
             if (string.IsNullOrWhiteSpace(mikeBoundaryCondition.MikeBoundaryConditionFormat))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "MikeBoundaryConditionFormat"), new[] { nameof(mikeBoundaryCondition.MikeBoundaryConditionFormat) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "MikeBoundaryConditionFormat"), new[] { nameof(mikeBoundaryCondition.MikeBoundaryConditionFormat) }));
             }
 
             if (!string.IsNullOrWhiteSpace(mikeBoundaryCondition.MikeBoundaryConditionFormat) && mikeBoundaryCondition.MikeBoundaryConditionFormat.Length > 100)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "MikeBoundaryConditionFormat", "100"), new[] { nameof(mikeBoundaryCondition.MikeBoundaryConditionFormat) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "MikeBoundaryConditionFormat", "100"), new[] { nameof(mikeBoundaryCondition.MikeBoundaryConditionFormat) }));
             }
 
             retStr = enums.EnumTypeOK(typeof(MikeBoundaryConditionLevelOrVelocityEnum), (int?)mikeBoundaryCondition.MikeBoundaryConditionLevelOrVelocity);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "MikeBoundaryConditionLevelOrVelocity"), new[] { nameof(mikeBoundaryCondition.MikeBoundaryConditionLevelOrVelocity) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "MikeBoundaryConditionLevelOrVelocity"), new[] { nameof(mikeBoundaryCondition.MikeBoundaryConditionLevelOrVelocity) }));
             }
 
             retStr = enums.EnumTypeOK(typeof(WebTideDataSetEnum), (int?)mikeBoundaryCondition.WebTideDataSet);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "WebTideDataSet"), new[] { nameof(mikeBoundaryCondition.WebTideDataSet) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "WebTideDataSet"), new[] { nameof(mikeBoundaryCondition.WebTideDataSet) }));
             }
 
             if (mikeBoundaryCondition.NumberOfWebTideNodes < 0 || mikeBoundaryCondition.NumberOfWebTideNodes > 1000)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "NumberOfWebTideNodes", "0", "1000"), new[] { nameof(mikeBoundaryCondition.NumberOfWebTideNodes) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "NumberOfWebTideNodes", "0", "1000"), new[] { nameof(mikeBoundaryCondition.NumberOfWebTideNodes) }));
             }
 
             if (string.IsNullOrWhiteSpace(mikeBoundaryCondition.WebTideDataFromStartToEndDate))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "WebTideDataFromStartToEndDate"), new[] { nameof(mikeBoundaryCondition.WebTideDataFromStartToEndDate) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "WebTideDataFromStartToEndDate"), new[] { nameof(mikeBoundaryCondition.WebTideDataFromStartToEndDate) }));
             }
 
             //WebTideDataFromStartToEndDate has no StringLength Attribute
@@ -277,18 +272,18 @@ namespace CSSPDBServices
             retStr = enums.EnumTypeOK(typeof(TVTypeEnum), (int?)mikeBoundaryCondition.TVType);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVType"), new[] { nameof(mikeBoundaryCondition.TVType) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVType"), new[] { nameof(mikeBoundaryCondition.TVType) }));
             }
 
             if (mikeBoundaryCondition.LastUpdateDate_UTC.Year == 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { nameof(mikeBoundaryCondition.LastUpdateDate_UTC) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { nameof(mikeBoundaryCondition.LastUpdateDate_UTC) }));
             }
             else
             {
                 if (mikeBoundaryCondition.LastUpdateDate_UTC.Year < 1980)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { nameof(mikeBoundaryCondition.LastUpdateDate_UTC) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { nameof(mikeBoundaryCondition.LastUpdateDate_UTC) }));
                 }
             }
 
@@ -297,7 +292,7 @@ namespace CSSPDBServices
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", mikeBoundaryCondition.LastUpdateContactTVItemID.ToString()), new[] { nameof(mikeBoundaryCondition.LastUpdateContactTVItemID) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", mikeBoundaryCondition.LastUpdateContactTVItemID.ToString()), new[] { nameof(mikeBoundaryCondition.LastUpdateContactTVItemID)}));
             }
             else
             {
@@ -307,10 +302,11 @@ namespace CSSPDBServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(mikeBoundaryCondition.LastUpdateContactTVItemID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(mikeBoundaryCondition.LastUpdateContactTVItemID) }));
                 }
             }
 
+            return ValidationResults.Count == 0 ? true : false;
         }
         #endregion Functions private
     }

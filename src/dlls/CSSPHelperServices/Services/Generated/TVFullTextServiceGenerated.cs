@@ -24,7 +24,7 @@ namespace CSSPHelperServices
 {
     public interface ITVFullTextService
     {
-        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+        bool Validate(ValidationContext validationContext);
     }
     public partial class TVFullTextService : ITVFullTextService
     {
@@ -32,6 +32,7 @@ namespace CSSPHelperServices
         #endregion Variables
 
         #region Properties
+        private List<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -41,30 +42,31 @@ namespace CSSPHelperServices
         #endregion Constructors
 
         #region Functions public
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        public bool Validate(ValidationContext validationContext)
         {
             TVFullText tvFullText = validationContext.ObjectInstance as TVFullText;
 
             if (string.IsNullOrWhiteSpace(tvFullText.TVPath))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVPath"), new[] { "TVPath" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVPath"), new[] { "TVPath" }));
             }
 
             if (!string.IsNullOrWhiteSpace(tvFullText.TVPath) && (tvFullText.TVPath.Length < 1 || tvFullText.TVPath.Length > 255))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVPath", "1", "255"), new[] { "TVPath" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVPath", "1", "255"), new[] { "TVPath" }));
             }
 
             if (string.IsNullOrWhiteSpace(tvFullText.FullText))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "FullText"), new[] { "FullText" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "FullText"), new[] { "FullText" }));
             }
 
             if (!string.IsNullOrWhiteSpace(tvFullText.FullText) && (tvFullText.FullText.Length < 1 || tvFullText.FullText.Length > 255))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "FullText", "1", "255"), new[] { "FullText" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "FullText", "1", "255"), new[] { "FullText" }));
             }
 
+            return ValidationResults.Count == 0 ? true : false;
         }
         #endregion Functions public
     }

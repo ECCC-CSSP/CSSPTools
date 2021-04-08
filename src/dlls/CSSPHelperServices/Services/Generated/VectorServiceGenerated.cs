@@ -24,7 +24,7 @@ namespace CSSPHelperServices
 {
     public interface IVectorService
     {
-        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+        bool Validate(ValidationContext validationContext);
     }
     public partial class VectorService : IVectorService
     {
@@ -32,6 +32,7 @@ namespace CSSPHelperServices
         #endregion Variables
 
         #region Properties
+        private List<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -41,7 +42,7 @@ namespace CSSPHelperServices
         #endregion Constructors
 
         #region Functions public
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        public bool Validate(ValidationContext validationContext)
         {
             Vector vector = validationContext.ObjectInstance as Vector;
 
@@ -51,12 +52,7 @@ namespace CSSPHelperServices
                 //CSSPError: Type not implemented [EndNode] of type [Node]
 
                 //CSSPError: Type not implemented [EndNode] of type [Node]
-
-            bool a = false;
-            if (a)
-            {
-                yield return new ValidationResult("");
-            }
+            return ValidationResults.Count == 0 ? true : false;
         }
         #endregion Functions public
     }

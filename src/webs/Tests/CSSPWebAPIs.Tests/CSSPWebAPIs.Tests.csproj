@@ -132,7 +132,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\dlls\CSSPDBPreferenceModels\CSSPDBPreferenceModels.csproj" />
     <ProjectReference Include="..\..\CSSPWebAPIs\CSSPWebAPIs.csproj" />
   </ItemGroup>
 

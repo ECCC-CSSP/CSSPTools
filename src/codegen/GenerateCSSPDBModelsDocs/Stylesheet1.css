@@ -1,0 +1,15 @@
+﻿body
+{
+    
+}
+
+ul>li {
+    list-style: none;
+    font-weight: 600;
+    color: orange;
+}
+
+.desc {
+    font-weight: 300;
+    color: black;
+}

@@ -70,7 +70,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the Addresses table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the Addresses table.
         /// </summary>
         public static string Address_AddressID_Description {
             get {
@@ -138,6 +138,24 @@ namespace CSSPCultureServices.Resources {
         public static string Address_CountryTVItemID_Display {
             get {
                 return ResourceManager.GetString("Address_CountryTVItemID_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string Address_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("Address_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string Address_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("Address_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -304,7 +322,16 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the AppErrLogs table.
+        ///   Looks up a localized string similar to The Addresses table contains fields for holding complete address. Used with infrastructures, pollution source site and contacts from municipalities..
+        /// </summary>
+        public static string Addresses_Table_Description {
+            get {
+                return ResourceManager.GetString("Addresses_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the AppErrLogs table.
         /// </summary>
         public static string AppErrLog_AppErrLogID_Description {
             get {
@@ -336,6 +363,24 @@ namespace CSSPCultureServices.Resources {
         public static string AppErrLog_DateTime_UTC_Display {
             get {
                 return ResourceManager.GetString("AppErrLog_DateTime_UTC_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string AppErrLog_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("AppErrLog_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string AppErrLog_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("AppErrLog_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -448,6 +493,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The AppErrLogs table contains fields for holding application errors..
+        /// </summary>
+        public static string AppErrLogs_Table_Description {
+            get {
+                return ResourceManager.GetString("AppErrLogs_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to App task command.
         /// </summary>
         public static string AppTask_AppTaskCommand_Description {
@@ -466,7 +520,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the AppTasks table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the AppTasks table.
         /// </summary>
         public static string AppTask_AppTaskID_Description {
             get {
@@ -498,6 +552,24 @@ namespace CSSPCultureServices.Resources {
         public static string AppTask_AppTaskStatus_Display {
             get {
                 return ResourceManager.GetString("AppTask_AppTaskStatus_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string AppTask_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("AppTask_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string AppTask_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("AppTask_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -718,7 +790,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the AppTaskLanguages table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the AppTaskLanguages table.
         /// </summary>
         public static string AppTaskLanguage_AppTaskLanguageID_Description {
             get {
@@ -732,6 +804,24 @@ namespace CSSPCultureServices.Resources {
         public static string AppTaskLanguage_AppTaskLanguageID_Display {
             get {
                 return ResourceManager.GetString("AppTaskLanguage_AppTaskLanguageID_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string AppTaskLanguage_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("AppTaskLanguage_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string AppTaskLanguage_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("AppTaskLanguage_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -844,6 +934,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The AppTaskLanguages table contains fields for holding bilingual texts for AppTasks table..
+        /// </summary>
+        public static string AppTaskLanguages_Table_Description {
+            get {
+                return ResourceManager.GetString("AppTaskLanguages_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name of the app task parameter.
         /// </summary>
         public static string AppTaskParameter_Name_Description {
@@ -880,7 +979,16 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the BoxModels table.
+        ///   Looks up a localized string similar to The AppTasks table contains fields for holding application tasks sent to the server which can take a long time to complete..
+        /// </summary>
+        public static string AppTasks_Table_Description {
+            get {
+                return ResourceManager.GetString("AppTasks_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the BoxModels table.
         /// </summary>
         public static string BoxModel_BoxModelID_Description {
             get {
@@ -912,6 +1020,24 @@ namespace CSSPCultureServices.Resources {
         public static string BoxModel_Concentration_MPN_100ml_Display {
             get {
                 return ResourceManager.GetString("BoxModel_Concentration_MPN_100ml_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string BoxModel_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("BoxModel_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string BoxModel_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("BoxModel_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -1114,6 +1240,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The BoxModels table contains fields for holding box modelling scenarios inputs..
+        /// </summary>
+        public static string BoxModel_Table_Description {
+            get {
+                return ResourceManager.GetString("BoxModel_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Temperature (deg C) of water in the vicinity of the spill.
         /// </summary>
         public static string BoxModel_Temperature_C_Description {
@@ -1312,7 +1447,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the BoxModelLanguages table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the BoxModelLanguages table.
         /// </summary>
         public static string BoxModelLanguage_BoxModelLanguageID_Description {
             get {
@@ -1326,6 +1461,24 @@ namespace CSSPCultureServices.Resources {
         public static string BoxModelLanguage_BoxModelLanguageID_Display {
             get {
                 return ResourceManager.GetString("BoxModelLanguage_BoxModelLanguageID_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string BoxModelLanguage_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("BoxModelLanguage_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string BoxModelLanguage_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("BoxModelLanguage_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -1420,6 +1573,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The BoxModelLanguages table contains fields for holding bilingual texts for BoxModels table..
+        /// </summary>
+        public static string BoxModelLanguages_Table_Description {
+            get {
+                return ResourceManager.GetString("BoxModelLanguages_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to BoxModel link to parent BoxModels table item.
         /// </summary>
         public static string BoxModelResult_BoxModelID_Description {
@@ -1438,7 +1600,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the BoxModelResults table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the BoxModelResults table.
         /// </summary>
         public static string BoxModelResult_BoxModelResultID_Description {
             get {
@@ -1506,6 +1668,24 @@ namespace CSSPCultureServices.Resources {
         public static string BoxModelResult_CircleCenterLongitude_Display {
             get {
                 return ResourceManager.GetString("BoxModelResult_CircleCenterLongitude_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string BoxModelResult_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("BoxModelResult_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string BoxModelResult_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("BoxModelResult_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -1744,6 +1924,24 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The BoxModelResults contains fields for holding box modelling scenarios results..
+        /// </summary>
+        public static string BoxModelResults_Table_Description {
+            get {
+                return ResourceManager.GetString("BoxModelResults_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The BoxModels table contains fields for holding and managing Box Model scenarios.
+        /// </summary>
+        public static string BoxModels_Table_Description {
+            get {
+                return ResourceManager.GetString("BoxModels_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Decay rate.
         /// </summary>
         public static string CalDecay_Decay_Description {
@@ -1762,7 +1960,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the Classification table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the Classification table.
         /// </summary>
         public static string Classification_ClassificationID_Description {
             get {
@@ -1812,6 +2010,24 @@ namespace CSSPCultureServices.Resources {
         public static string Classification_ClassificationType_Display {
             get {
                 return ResourceManager.GetString("Classification_ClassificationType_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string Classification_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("Classification_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string Classification_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("Classification_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -1870,7 +2086,16 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the ClimateDataValues table.
+        ///   Looks up a localized string similar to The Classifications table contains fields for holding classification for visualization on the web. It holds only a representation of the actual legal classification held in Arc GIS..
+        /// </summary>
+        public static string Classifications_Table_Description {
+            get {
+                return ResourceManager.GetString("Classifications_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the ClimateDataValues table.
         /// </summary>
         public static string ClimateDataValue_ClimateDataValueID_Description {
             get {
@@ -1906,7 +2131,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cooling degree-days for a given day are the number of degrees Celsius that the mean temperature is above 18 °C. If the temperature is equal to or less than 18 °C, then the number will be zero. For example, a day with a mean temperature of 20.5 °C has 2.5 cooling degree-days; a day with a mean temperature of 15.5 °C has zero cooling degree-days. Cooling degree-days are used primarily to estimate the air-conditioning requirements of buildings..
+        ///   Looks up a localized string similar to Cooling degree-days for a given day are the number of degrees Celsius that the mean temperature is above 18 Celcius. If the temperature is equal to or less than 18 Celcius, then the number will be zero. For example, a day with a mean temperature of 20.5 Celcius has 2.5 cooling degree-days; a day with a mean temperature of 15.5 Celcius has zero cooling degree-days. Cooling degree-days are used primarily to estimate the air-conditioning requirements of buildings..
         /// </summary>
         public static string ClimateDataValue_CoolDegDays_C_Description {
             get {
@@ -1938,6 +2163,24 @@ namespace CSSPCultureServices.Resources {
         public static string ClimateDataValue_DateTime_Local_Display {
             get {
                 return ResourceManager.GetString("ClimateDataValue_DateTime_Local_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string ClimateDataValue_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("ClimateDataValue_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string ClimateDataValue_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("ClimateDataValue_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -2230,6 +2473,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The ClimateDataValues table contains fields for holding climate data values for various climate site from Meteorological Service of Canada..
+        /// </summary>
+        public static string ClimateDataValues_Table_Description {
+            get {
+                return ResourceManager.GetString("ClimateDataValues_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Climate site ID is a unique ID for the climate site for Environment Canada.
         /// </summary>
         public static string ClimateSite_ClimateID_Description {
@@ -2248,7 +2500,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the ClimateSites table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the ClimateSites table.
         /// </summary>
         public static string ClimateSite_ClimateSiteID_Description {
             get {
@@ -2352,6 +2604,24 @@ namespace CSSPCultureServices.Resources {
         public static string ClimateSite_DailyStartDate_Local_Display {
             get {
                 return ResourceManager.GetString("ClimateSite_DailyStartDate_Local_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string ClimateSite_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("ClimateSite_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string ClimateSite_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("ClimateSite_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -2662,7 +2932,430 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the Contacts table.
+        ///   Looks up a localized string similar to The ClimateSites table contains fields for holding climate site related information from Meteorological Service of Canada as well as some provincial climate sites..
+        /// </summary>
+        public static string ClimateSites_Table_Description {
+            get {
+                return ResourceManager.GetString("ClimateSites_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the CoCoRaHSSites table.
+        /// </summary>
+        public static string CoCoRaHSSite_CoCoRaHSSiteID_Description {
+            get {
+                return ResourceManager.GetString("CoCoRaHSSite_CoCoRaHSSiteID_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CoCoRaHSSite ID.
+        /// </summary>
+        public static string CoCoRaHSSite_CoCoRaHSSiteID_Display {
+            get {
+                return ResourceManager.GetString("CoCoRaHSSite_CoCoRaHSSiteID_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string CoCoRaHSSite_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("CoCoRaHSSite_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string CoCoRaHSSite_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("CoCoRaHSSite_DBCommand_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contact TVItemID who made the last changes.
+        /// </summary>
+        public static string CoCoRaHSSite_LastUpdateContactTVItemID_Description {
+            get {
+                return ResourceManager.GetString("CoCoRaHSSite_LastUpdateContactTVItemID_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contact TVItemID.
+        /// </summary>
+        public static string CoCoRaHSSite_LastUpdateContactTVItemID_Display {
+            get {
+                return ResourceManager.GetString("CoCoRaHSSite_LastUpdateContactTVItemID_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contains the date of the last update in UTC.
+        /// </summary>
+        public static string CoCoRaHSSite_LastUpdateDate_UTC_Description {
+            get {
+                return ResourceManager.GetString("CoCoRaHSSite_LastUpdateDate_UTC_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Update Date (UTC).
+        /// </summary>
+        public static string CoCoRaHSSite_LastUpdateDate_UTC_Display {
+            get {
+                return ResourceManager.GetString("CoCoRaHSSite_LastUpdateDate_UTC_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Latitude.
+        /// </summary>
+        public static string CoCoRaHSSite_Latitude_Description {
+            get {
+                return ResourceManager.GetString("CoCoRaHSSite_Latitude_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Latitude.
+        /// </summary>
+        public static string CoCoRaHSSite_Latitude_Display {
+            get {
+                return ResourceManager.GetString("CoCoRaHSSite_Latitude_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Longitude.
+        /// </summary>
+        public static string CoCoRaHSSite_Longitude_Description {
+            get {
+                return ResourceManager.GetString("CoCoRaHSSite_Longitude_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Longitude.
+        /// </summary>
+        public static string CoCoRaHSSite_Longitude_Display {
+            get {
+                return ResourceManager.GetString("CoCoRaHSSite_Longitude_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Station name of the CoCoRaHS Site.
+        /// </summary>
+        public static string CoCoRaHSSite_StationName_Description {
+            get {
+                return ResourceManager.GetString("CoCoRaHSSite_StationName_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Station name.
+        /// </summary>
+        public static string CoCoRaHSSite_StationName_Display {
+            get {
+                return ResourceManager.GetString("CoCoRaHSSite_StationName_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Station number of the CoCoRaHS Site.
+        /// </summary>
+        public static string CoCoRaHSSite_StationNumber_Description {
+            get {
+                return ResourceManager.GetString("CoCoRaHSSite_StationNumber_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Station number.
+        /// </summary>
+        public static string CoCoRaHSSite_StationNumber_Display {
+            get {
+                return ResourceManager.GetString("CoCoRaHSSite_StationNumber_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The CoCoRaHSSites table contains fields for holding voluntary managed precipitation sites from private individuals..
+        /// </summary>
+        public static string CoCoRaHSSites_Table_Description {
+            get {
+                return ResourceManager.GetString("CoCoRaHSSites_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Link to the CoCoRaHSSites table representing the CoCoRaHSSites.
+        /// </summary>
+        public static string CoCoRaHSValue_CoCoRaHSSiteID_Description {
+            get {
+                return ResourceManager.GetString("CoCoRaHSValue_CoCoRaHSSiteID_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CoCoRaHSSite ID.
+        /// </summary>
+        public static string CoCoRaHSValue_CoCoRaHSSiteID_Display {
+            get {
+                return ResourceManager.GetString("CoCoRaHSValue_CoCoRaHSSiteID_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the CoCoRaHSValues table.
+        /// </summary>
+        public static string CoCoRaHSValue_CoCoRaHSValueID_Description {
+            get {
+                return ResourceManager.GetString("CoCoRaHSValue_CoCoRaHSValueID_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CoCoRaHSValue ID.
+        /// </summary>
+        public static string CoCoRaHSValue_CoCoRaHSValueID_Display {
+            get {
+                return ResourceManager.GetString("CoCoRaHSValue_CoCoRaHSValueID_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string CoCoRaHSValue_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("CoCoRaHSValue_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string CoCoRaHSValue_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("CoCoRaHSValue_DBCommand_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contact TVItemID who made the last changes.
+        /// </summary>
+        public static string CoCoRaHSValue_LastUpdateContactTVItemID_Description {
+            get {
+                return ResourceManager.GetString("CoCoRaHSValue_LastUpdateContactTVItemID_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contact TVItemID.
+        /// </summary>
+        public static string CoCoRaHSValue_LastUpdateContactTVItemID_Display {
+            get {
+                return ResourceManager.GetString("CoCoRaHSValue_LastUpdateContactTVItemID_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contains the date of the last update in UTC.
+        /// </summary>
+        public static string CoCoRaHSValue_LastUpdateDate_UTC_Description {
+            get {
+                return ResourceManager.GetString("CoCoRaHSValue_LastUpdateDate_UTC_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Update Date (UTC).
+        /// </summary>
+        public static string CoCoRaHSValue_LastUpdateDate_UTC_Display {
+            get {
+                return ResourceManager.GetString("CoCoRaHSValue_LastUpdateDate_UTC_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New snow depth in cm.
+        /// </summary>
+        public static string CoCoRaHSValue_NewSnowDepth_Description {
+            get {
+                return ResourceManager.GetString("CoCoRaHSValue_NewSnowDepth_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New snow depth in cm.
+        /// </summary>
+        public static string CoCoRaHSValue_NewSnowDepth_Display {
+            get {
+                return ResourceManager.GetString("CoCoRaHSValue_NewSnowDepth_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New snow SWE in cm.
+        /// </summary>
+        public static string CoCoRaHSValue_NewSnowSWE_Description {
+            get {
+                return ResourceManager.GetString("CoCoRaHSValue_NewSnowSWE_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New snow SWE in cm.
+        /// </summary>
+        public static string CoCoRaHSValue_NewSnowSWE_Display {
+            get {
+                return ResourceManager.GetString("CoCoRaHSValue_NewSnowSWE_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Observation date and time (local time).
+        /// </summary>
+        public static string CoCoRaHSValue_ObservationDateAndTime_Description {
+            get {
+                return ResourceManager.GetString("CoCoRaHSValue_ObservationDateAndTime_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Observation date and time.
+        /// </summary>
+        public static string CoCoRaHSValue_ObservationDateAndTime_Display {
+            get {
+                return ResourceManager.GetString("CoCoRaHSValue_ObservationDateAndTime_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total precipitation amount in mm.
+        /// </summary>
+        public static string CoCoRaHSValue_TotalPrecipAmt_Description {
+            get {
+                return ResourceManager.GetString("CoCoRaHSValue_TotalPrecipAmt_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total precipitation amount in mm.
+        /// </summary>
+        public static string CoCoRaHSValue_TotalPrecipAmt_Display {
+            get {
+                return ResourceManager.GetString("CoCoRaHSValue_TotalPrecipAmt_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total snow depth in cm.
+        /// </summary>
+        public static string CoCoRaHSValue_TotalSnowDepth_Description {
+            get {
+                return ResourceManager.GetString("CoCoRaHSValue_TotalSnowDepth_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total snow depth in cm.
+        /// </summary>
+        public static string CoCoRaHSValue_TotalSnowDepth_Display {
+            get {
+                return ResourceManager.GetString("CoCoRaHSValue_TotalSnowDepth_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total snow SWE.
+        /// </summary>
+        public static string CoCoRaHSValue_TotalSnowSWE_Description {
+            get {
+                return ResourceManager.GetString("CoCoRaHSValue_TotalSnowSWE_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total snow SWE.
+        /// </summary>
+        public static string CoCoRaHSValue_TotalSnowSWE_Display {
+            get {
+                return ResourceManager.GetString("CoCoRaHSValue_TotalSnowSWE_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The CoCoRaHSValues table contains fields for holding precipitation values from voluntary private sites..
+        /// </summary>
+        public static string CoCoRaHSValues_Table_Description {
+            get {
+                return ResourceManager.GetString("CoCoRaHSValues_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Access failed count.
+        /// </summary>
+        public static string Contact_AccessFailedCount_Description {
+            get {
+                return ResourceManager.GetString("Contact_AccessFailedCount_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Access failed count.
+        /// </summary>
+        public static string Contact_AccessFailedCount_Display {
+            get {
+                return ResourceManager.GetString("Contact_AccessFailedCount_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cell number.
+        /// </summary>
+        public static string Contact_CellNumber_Description {
+            get {
+                return ResourceManager.GetString("Contact_CellNumber_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cell number.
+        /// </summary>
+        public static string Contact_CellNumber_Display {
+            get {
+                return ResourceManager.GetString("Contact_CellNumber_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cell number confirmed.
+        /// </summary>
+        public static string Contact_CellNumberConfirmed_Description {
+            get {
+                return ResourceManager.GetString("Contact_CellNumberConfirmed_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cell number confirmed.
+        /// </summary>
+        public static string Contact_CellNumberConfirmed_Display {
+            get {
+                return ResourceManager.GetString("Contact_CellNumberConfirmed_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the Contacts table.
         /// </summary>
         public static string Contact_ContactID_Description {
             get {
@@ -2712,6 +3405,24 @@ namespace CSSPCultureServices.Resources {
         public static string Contact_ContactTVItemID_Display {
             get {
                 return ResourceManager.GetString("Contact_ContactTVItemID_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string Contact_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("Contact_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string Contact_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("Contact_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -2770,7 +3481,43 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the AspNetUsers table.
+        ///   Looks up a localized string similar to Google map key hash.
+        /// </summary>
+        public static string Contact_GoogleMapKeyHash_Description {
+            get {
+                return ResourceManager.GetString("Contact_GoogleMapKeyHash_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Google map key hash.
+        /// </summary>
+        public static string Contact_GoogleMapKeyHash_Display {
+            get {
+                return ResourceManager.GetString("Contact_GoogleMapKeyHash_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Has internet connection.
+        /// </summary>
+        public static string Contact_HasInternetConnection_Description {
+            get {
+                return ResourceManager.GetString("Contact_HasInternetConnection_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Has internet connection.
+        /// </summary>
+        public static string Contact_HasInternetConnection_Display {
+            get {
+                return ResourceManager.GetString("Contact_HasInternetConnection_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the AspNetUsers table.
         /// </summary>
         public static string Contact_Id_Description {
             get {
@@ -2820,6 +3567,24 @@ namespace CSSPCultureServices.Resources {
         public static string Contact_IsAdmin_Display {
             get {
                 return ResourceManager.GetString("Contact_IsAdmin_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Is logged in.
+        /// </summary>
+        public static string Contact_IsLoggedIn_Description {
+            get {
+                return ResourceManager.GetString("Contact_IsLoggedIn_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Is logged in.
+        /// </summary>
+        public static string Contact_IsLoggedIn_Display {
+            get {
+                return ResourceManager.GetString("Contact_IsLoggedIn_Display", resourceCulture);
             }
         }
         
@@ -2910,6 +3675,24 @@ namespace CSSPCultureServices.Resources {
         public static string Contact_LoginEmail_Display {
             get {
                 return ResourceManager.GetString("Contact_LoginEmail_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password hash.
+        /// </summary>
+        public static string Contact_PasswordHash_Description {
+            get {
+                return ResourceManager.GetString("Contact_PasswordHash_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password hash.
+        /// </summary>
+        public static string Contact_PasswordHash_Display {
+            get {
+                return ResourceManager.GetString("Contact_PasswordHash_Display", resourceCulture);
             }
         }
         
@@ -3022,7 +3805,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the ContactPreferences table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the ContactPreferences table.
         /// </summary>
         public static string ContactPreference_ContactPreferenceID_Description {
             get {
@@ -3036,6 +3819,24 @@ namespace CSSPCultureServices.Resources {
         public static string ContactPreference_ContactPreferenceID_Display {
             get {
                 return ResourceManager.GetString("ContactPreference_ContactPreferenceID_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string ContactPreference_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("ContactPreference_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string ContactPreference_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("ContactPreference_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -3112,6 +3913,24 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The ContactPreferences table contains fields for maintaining users preferences while using some applications..
+        /// </summary>
+        public static string ContactPreferences_Table_Description {
+            get {
+                return ResourceManager.GetString("ContactPreferences_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Contacts table contains fields for holding users information..
+        /// </summary>
+        public static string Contacts_Table_Description {
+            get {
+                return ResourceManager.GetString("Contacts_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contact ID.
         /// </summary>
         public static string ContactSearch_ContactID_Description {
@@ -3184,7 +4003,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the ContactShortcuts table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the ContactShortcuts table.
         /// </summary>
         public static string ContactShortcut_ContactShortcutID_Description {
             get {
@@ -3198,6 +4017,24 @@ namespace CSSPCultureServices.Resources {
         public static string ContactShortcut_ContactShortcutID_Display {
             get {
                 return ResourceManager.GetString("ContactShortcut_ContactShortcutID_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string ContactShortcut_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("ContactShortcut_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string ContactShortcut_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("ContactShortcut_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -3270,6 +4107,15 @@ namespace CSSPCultureServices.Resources {
         public static string ContactShortcut_ShortCutText_Display {
             get {
                 return ResourceManager.GetString("ContactShortcut_ShortCutText_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The ContactShortcuts table contains fields for maintaining users shortcuts used by some applications..
+        /// </summary>
+        public static string ContactShortcuts_Table_Description {
+            get {
+                return ResourceManager.GetString("ContactShortcuts_Table_Description", resourceCulture);
             }
         }
         
@@ -3886,7 +4732,25 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the DocTemplates table.
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string DocTemplate_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("DocTemplate_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string DocTemplate_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("DocTemplate_DBCommand_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the DocTemplates table.
         /// </summary>
         public static string DocTemplate_DocTemplateID_Description {
             get {
@@ -4012,6 +4876,33 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The DocTemplates table contains fields for holding preset templates while creating many type of documents, like .xlsx, .docx, .csv, .txt, etc. This option of exporting data to documents is being replaced by parameter type exports. This table could be removed in the future..
+        /// </summary>
+        public static string DocTemplates_Table_Description {
+            get {
+                return ResourceManager.GetString("DocTemplates_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string DrogueRun_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("DrogueRun_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string DrogueRun_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("DrogueRun_DBCommand_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Drogue number.
         /// </summary>
         public static string DrogueRun_DrogueNumber_Description {
@@ -4030,7 +4921,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the DrogueRuns table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the DrogueRuns table.
         /// </summary>
         public static string DrogueRun_DrogueRunID_Description {
             get {
@@ -4192,6 +5083,24 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string DrogueRunPosition_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("DrogueRunPosition_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string DrogueRunPosition_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("DrogueRunPosition_DBCommand_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Link to the DrogueRuns table representing the drogue run.
         /// </summary>
         public static string DrogueRunPosition_DrogueRunID_Description {
@@ -4332,6 +5241,24 @@ namespace CSSPCultureServices.Resources {
         public static string DrogueRunPosition_StepLng_Display {
             get {
                 return ResourceManager.GetString("DrogueRunPosition_StepLng_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The DrogueRunPositions table contains fields for showing drogue tracking on the web. It contains the temporal coordinates..
+        /// </summary>
+        public static string DrogueRunPositions_Table_Description {
+            get {
+                return ResourceManager.GetString("DrogueRunPositions_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The DrogueRuns table contains fields for showing drogue tracking on the web. It holds the names, numbers and date of the drogue runs..
+        /// </summary>
+        public static string DrogueRuns_Table_Description {
+            get {
+                return ResourceManager.GetString("DrogueRuns_Table_Description", resourceCulture);
             }
         }
         
@@ -4552,6 +5479,24 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string Email_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("Email_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string Email_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("Email_DBCommand_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email address.
         /// </summary>
         public static string Email_EmailAddress_Description {
@@ -4570,7 +5515,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the Emails table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the Emails table.
         /// </summary>
         public static string Email_EmailID_Description {
             get {
@@ -4660,7 +5605,25 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the EmailDistributionLists table.
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string EmailDistributionList_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("EmailDistributionList_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string EmailDistributionList_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("EmailDistributionList_DBCommand_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the EmailDistributionLists table.
         /// </summary>
         public static string EmailDistributionList_EmailDistributionListID_Description {
             get {
@@ -4786,6 +5749,24 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string EmailDistributionListContact_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("EmailDistributionListContact_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string EmailDistributionListContact_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("EmailDistributionListContact_DBCommand_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email of the contact.
         /// </summary>
         public static string EmailDistributionListContact_Email_Description {
@@ -4804,7 +5785,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the EmailDistributionListContacts table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the EmailDistributionListContacts table.
         /// </summary>
         public static string EmailDistributionListContact_EmailDistributionListContactID_Description {
             get {
@@ -4984,6 +5965,24 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string EmailDistributionListContactLanguage_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("EmailDistributionListContactLanguage_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string EmailDistributionListContactLanguage_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("EmailDistributionListContactLanguage_DBCommand_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Link to the EmailDistributionListContact table representing the email distribution list contact.
         /// </summary>
         public static string EmailDistributionListContactLanguage_EmailDistributionListContactID_Description {
@@ -5002,7 +6001,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the EmailDistributionListContactLanguages table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the EmailDistributionListContactLanguages table.
         /// </summary>
         public static string EmailDistributionListContactLanguage_EmailDistributionListContactLanguageID_Description {
             get {
@@ -5094,6 +6093,42 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The EmailDistributionListContactLanguages table contains fields for holding bilingual texts from EmailDistributionListContacts table..
+        /// </summary>
+        public static string EmailDistributionListContactLanguages_Table_Description {
+            get {
+                return ResourceManager.GetString("EmailDistributionListContactLanguages_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The EmailDistributionListContacts table contains all contacts names for a specified email distribution list..
+        /// </summary>
+        public static string EmailDistributionListContacts_Table_Description {
+            get {
+                return ResourceManager.GetString("EmailDistributionListContacts_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string EmailDistributionListLanguage_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("EmailDistributionListLanguage_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string EmailDistributionListLanguage_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("EmailDistributionListLanguage_DBCommand_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Link to the EmailDistributionList table representing the email distribution list.
         /// </summary>
         public static string EmailDistributionListLanguage_EmailDistributionListID_Description {
@@ -5112,7 +6147,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the EmailDistributionListLanguages table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the EmailDistributionListLanguages table.
         /// </summary>
         public static string EmailDistributionListLanguage_EmailDistributionListLanguageID_Description {
             get {
@@ -5216,6 +6251,51 @@ namespace CSSPCultureServices.Resources {
         public static string EmailDistributionListLanguage_TranslationStatus_Display {
             get {
                 return ResourceManager.GetString("EmailDistributionListLanguage_TranslationStatus_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The EmailDistributionListLanguages table contains fields for holding bilingual texts from EmailDistributionLists..
+        /// </summary>
+        public static string EmailDistributionListLanguages_Table_Description {
+            get {
+                return ResourceManager.GetString("EmailDistributionListLanguages_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The EmailDistributionLists table contains fields for identifying email distribution lists..
+        /// </summary>
+        public static string EmailDistributionLists_Table_Description {
+            get {
+                return ResourceManager.GetString("EmailDistributionLists_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string Emails_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("Emails_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string Emails_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("Emails_DBCommand_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Emails table contains fields for holding complete emails. It is used with municipality contacts and second emails from users..
+        /// </summary>
+        public static string Emails_Table_Description {
+            get {
+                return ResourceManager.GetString("Emails_Table_Description", resourceCulture);
             }
         }
         
@@ -5328,6 +6408,24 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string HelpDoc_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("HelpDoc_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string HelpDoc_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("HelpDoc_DBCommand_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to HTML text of help document.
         /// </summary>
         public static string HelpDoc_DocHTMLText_Description {
@@ -5364,7 +6462,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the HelpDocs table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the HelpDocs table.
         /// </summary>
         public static string HelpDoc_HelpDocID_Description {
             get {
@@ -5436,6 +6534,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The HelpDocs table contains fields for holding help information used in some applications. Especially the web..
+        /// </summary>
+        public static string HelpDocs_Table_Description {
+            get {
+                return ResourceManager.GetString("HelpDocs_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Date and time of observation. Almost all data is coming from the water office web site..
         /// </summary>
         public static string HydrometricDataValue_DateTime_Local_Description {
@@ -5450,6 +6557,24 @@ namespace CSSPCultureServices.Resources {
         public static string HydrometricDataValue_DateTime_Local_Display {
             get {
                 return ResourceManager.GetString("HydrometricDataValue_DateTime_Local_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string HydrometricDataValue_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("HydrometricDataValue_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string HydrometricDataValue_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("HydrometricDataValue_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -5652,6 +6777,33 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The HydrometricDataValues table contains fields for holding hydrometric data values for various hydrometric site from Hydrometric Service of Canada..
+        /// </summary>
+        public static string HydrometricDataValues_Table_Description {
+            get {
+                return ResourceManager.GetString("HydrometricDataValues_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string HydrometricSite_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("HydrometricSite_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string HydrometricSite_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("HydrometricSite_DBCommand_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hydrometric site description.
         /// </summary>
         public static string HydrometricSite_Description_Description {
@@ -5796,7 +6948,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the HydrometricSites table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the HydrometricSites table.
         /// </summary>
         public static string HydrometricSite_HydrometricSiteID_Description {
             get {
@@ -6048,6 +7200,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The HydrometricSites table contains fields for holding hydrometric site related information from Hydrometric Service of Canada as well as some provincial hydrometric sites..
+        /// </summary>
+        public static string HydrometricSites_Table_Description {
+            get {
+                return ResourceManager.GetString("HydrometricSites_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Aeration type --- Diffuser, Surface.
         /// </summary>
         public static string Infrastructure_AerationType_Description {
@@ -6170,6 +7331,24 @@ namespace CSSPCultureServices.Resources {
         public static string Infrastructure_CollectionSystemType_Display {
             get {
                 return ResourceManager.GetString("Infrastructure_CollectionSystemType_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string Infrastructure_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("Infrastructure_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string Infrastructure_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("Infrastructure_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -6336,7 +7515,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the Infrastructures table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the Infrastructures table.
         /// </summary>
         public static string Infrastructure_InfrastructureID_Description {
             get {
@@ -6966,6 +8145,24 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string InfrastructureLanguage_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("InfrastructureLanguage_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string InfrastructureLanguage_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("InfrastructureLanguage_DBCommand_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Link to the Infrastructure table representing the infrastructure.
         /// </summary>
         public static string InfrastructureLanguage_InfrastructureID_Description {
@@ -6984,7 +8181,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the InfrastructureLanguages table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the InfrastructureLanguages table.
         /// </summary>
         public static string InfrastructureLanguage_InfrastructureLanguageID_Description {
             get {
@@ -7074,6 +8271,24 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The InfrastructureLanguages table contains fields for holding bilingual texts for the infrastructure table..
+        /// </summary>
+        public static string InfrastructureLanguages_Table_Description {
+            get {
+                return ResourceManager.GetString("InfrastructureLanguages_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Infrastructures table contains fields for holding all related information for municipal infrastructures. Both WWTP and LS related information are stored in the same table..
+        /// </summary>
+        public static string Infrastructures_Table_Description {
+            get {
+                return ResourceManager.GetString("Infrastructures_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Summary of the pollution sources for MIKE.
         /// </summary>
         public static string InputSummary_Summary_Description {
@@ -7146,6 +8361,24 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string LabSheet_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("LabSheet_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string LabSheet_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("LabSheet_DBCommand_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to File content.
         /// </summary>
         public static string LabSheet_FileContent_Description {
@@ -7200,7 +8433,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the LabSheets table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the LabSheets table.
         /// </summary>
         public static string LabSheet_LabSheetID_Description {
             get {
@@ -9612,6 +10845,24 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string LabSheetDetail_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("LabSheetDetail_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string LabSheetDetail_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("LabSheetDetail_DBCommand_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Incubation bath 1 end time.
         /// </summary>
         public static string LabSheetDetail_IncubationBath1EndTime_Description {
@@ -9846,7 +11097,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the LabSheetDetails table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the LabSheetDetails table.
         /// </summary>
         public static string LabSheetDetail_LabSheetDetailID_Description {
             get {
@@ -10476,6 +11727,42 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The LabSheetDetails table contains fields for holding lab sheet detail related information..
+        /// </summary>
+        public static string LabSheetDetails_Table_Description {
+            get {
+                return ResourceManager.GetString("LabSheetDetails_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The LabSheets table contains fields for storing and managing lab sheets..
+        /// </summary>
+        public static string LabSheets_Table_Description {
+            get {
+                return ResourceManager.GetString("LabSheets_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string LabSheetTubeMPNDetail_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("LabSheetTubeMPNDetail_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string LabSheetTubeMPNDetail_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("LabSheetTubeMPNDetail_DBCommand_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Link to the LabSheetDetails table representing the lab sheet detail.
         /// </summary>
         public static string LabSheetTubeMPNDetail_LabSheetDetailID_Description {
@@ -10494,7 +11781,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the LabSheetTubeMPNDetails table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the LabSheetTubeMPNDetails table.
         /// </summary>
         public static string LabSheetTubeMPNDetail_LabSheetTubeMPNDetailID_Description {
             get {
@@ -10764,6 +12051,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The LabSheetTubeMPNDetails table contains fields for holding lab tube information..
+        /// </summary>
+        public static string LabSheetTubeMPNDetails_Table_Description {
+            get {
+                return ResourceManager.GetString("LabSheetTubeMPNDetails_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Last update date (UTC).
         /// </summary>
         public static string LastUpdateAndContact_LastUpdateAndContactDate_UTC_Description {
@@ -10890,6 +12186,24 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string Log_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("Log_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string Log_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("Log_DBCommand_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Key of table.
         /// </summary>
         public static string Log_ID_Description {
@@ -10980,7 +12294,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the Logs table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the Logs table.
         /// </summary>
         public static string Log_LogID_Description {
             get {
@@ -11066,6 +12380,33 @@ namespace CSSPCultureServices.Resources {
         public static string LoggedInContactInfo_TVTypeUserAuthorizationList_Display {
             get {
                 return ResourceManager.GetString("LoggedInContactInfo_TVTypeUserAuthorizationList_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Logs table is used to hold a history of the users commands to the database..
+        /// </summary>
+        public static string Logs_Table_Description {
+            get {
+                return ResourceManager.GetString("Logs_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string MapInfo_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("MapInfo_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string MapInfo_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("MapInfo_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -11196,7 +12537,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the MapInfos table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the MapInfos table.
         /// </summary>
         public static string MapInfo_MapInfoID_Description {
             get {
@@ -11246,6 +12587,24 @@ namespace CSSPCultureServices.Resources {
         public static string MapInfo_TVType_Display {
             get {
                 return ResourceManager.GetString("MapInfo_TVType_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string MapInfoPoint_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("MapInfoPoint_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string MapInfoPoint_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("MapInfoPoint_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -11340,7 +12699,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the MapInfoPoints table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the MapInfoPoints table.
         /// </summary>
         public static string MapInfoPoint_MapInfoPointID_Description {
             get {
@@ -11372,6 +12731,24 @@ namespace CSSPCultureServices.Resources {
         public static string MapInfoPoint_Ordinal_Display {
             get {
                 return ResourceManager.GetString("MapInfoPoint_Ordinal_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The MapInfoPoints table contains fields for holding mapping coordinates related information..
+        /// </summary>
+        public static string MapInfoPoints_Table_Description {
+            get {
+                return ResourceManager.GetString("MapInfoPoints_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The MapInfos table contains fields for holding mapping related information for all objects in the database..
+        /// </summary>
+        public static string MapInfos_Table_Description {
+            get {
+                return ResourceManager.GetString("MapInfos_Table_Description", resourceCulture);
             }
         }
         
@@ -11448,6 +12825,24 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string MikeBoundaryCondition_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("MikeBoundaryCondition_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string MikeBoundaryCondition_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("MikeBoundaryCondition_DBCommand_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contact TVItemID who made the last changes.
         /// </summary>
         public static string MikeBoundaryCondition_LastUpdateContactTVItemID_Description {
@@ -11520,7 +12915,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the MikeBoundaryConditions table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the MikeBoundaryConditions table.
         /// </summary>
         public static string MikeBoundaryCondition_MikeBoundaryConditionID_Description {
             get {
@@ -11682,6 +13077,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The MikeBoundaryConditions table contains fields for holding MIKE boundary condition related information..
+        /// </summary>
+        public static string MikeBoundaryConditions_Table_Description {
+            get {
+                return ResourceManager.GetString("MikeBoundaryConditions_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ambient salinity in PSU.
         /// </summary>
         public static string MikeScenario_AmbientSalinity_PSU_Description {
@@ -11714,6 +13118,24 @@ namespace CSSPCultureServices.Resources {
         public static string MikeScenario_AmbientTemperature_C_Display {
             get {
                 return ResourceManager.GetString("MikeScenario_AmbientTemperature_C_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string MikeScenario_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("MikeScenario_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string MikeScenario_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("MikeScenario_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -11952,7 +13374,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the MikeScenarios table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the MikeScenarios table.
         /// </summary>
         public static string MikeScenario_MikeScenarioID_Description {
             get {
@@ -12259,6 +13681,24 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string MikeScenarioResult_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("MikeScenarioResult_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string MikeScenarioResult_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("MikeScenarioResult_DBCommand_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contact TVItemID who made the last changes.
         /// </summary>
         public static string MikeScenarioResult_LastUpdateContactTVItemID_Description {
@@ -12313,7 +13753,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the MikeScenarioResults table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the MikeScenarioResults table.
         /// </summary>
         public static string MikeScenarioResult_MikeScenarioResultID_Description {
             get {
@@ -12345,6 +13785,42 @@ namespace CSSPCultureServices.Resources {
         public static string MikeScenarioResult_MikeScenarioTVItemID_Display {
             get {
                 return ResourceManager.GetString("MikeScenarioResult_MikeScenarioTVItemID_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The MikeScenarioResults table contains fields for holding a portion of the MIKE scenario results. Limited use at this time. Don’t know if this table will be kept in the future. Currently all MIKE scenario results are stored in files..
+        /// </summary>
+        public static string MikeScenarioResults_Table_Description {
+            get {
+                return ResourceManager.GetString("MikeScenarioResults_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The MikeScenarios table contains fields for holding and managing MIKE scenarios..
+        /// </summary>
+        public static string MikeScenarios_Table_Description {
+            get {
+                return ResourceManager.GetString("MikeScenarios_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string MikeSource_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("MikeSource_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string MikeSource_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("MikeSource_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -12493,7 +13969,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the MikeSources table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the MikeSources table.
         /// </summary>
         public static string MikeSource_MikeSourceID_Description {
             get {
@@ -12561,6 +14037,33 @@ namespace CSSPCultureServices.Resources {
         public static string MikeSource_UseHydrometric_Display {
             get {
                 return ResourceManager.GetString("MikeSource_UseHydrometric_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The MikeSources table contains fields for holding and managing MIKE sources which could be rivers, streams, brooks or other pollution sources..
+        /// </summary>
+        public static string MikeSources_Table_Description {
+            get {
+                return ResourceManager.GetString("MikeSources_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string MikeSourceStartEnd_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("MikeSourceStartEnd_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string MikeSourceStartEnd_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("MikeSourceStartEnd_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -12637,7 +14140,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the MikeSourceStartEnds table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the MikeSourceStartEnds table.
         /// </summary>
         public static string MikeSourceStartEnd_MikeSourceStartEndID_Description {
             get {
@@ -12817,6 +14320,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The MikeSourceStartEnds table contains fields for non continuous spills..
+        /// </summary>
+        public static string MikeSourceStartEnds_Table_Description {
+            get {
+                return ResourceManager.GetString("MikeSourceStartEnds_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Analysis calculation type.
         /// </summary>
         public static string MWQMAnalysisReportParameter_AnalysisCalculationType_Description {
@@ -12885,6 +14397,24 @@ namespace CSSPCultureServices.Resources {
         public static string MWQMAnalysisReportParameter_Command_Display {
             get {
                 return ResourceManager.GetString("MWQMAnalysisReportParameter_Command_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string MWQMAnalysisReportParameter_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("MWQMAnalysisReportParameter_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string MWQMAnalysisReportParameter_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("MWQMAnalysisReportParameter_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -13069,7 +14599,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the MWQMAnalysisReportParameters table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the MWQMAnalysisReportParameters table.
         /// </summary>
         public static string MWQMAnalysisReportParameter_MWQMAnalysisReportParameterID_Description {
             get {
@@ -13285,6 +14815,33 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The MWQMAnalysisReportParameters table contains fields for managing analysis report parameters..
+        /// </summary>
+        public static string MWQMAnalysisReportParameters_Table_Description {
+            get {
+                return ResourceManager.GetString("MWQMAnalysisReportParameters_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string MWQMLookupMPN_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("MWQMLookupMPN_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string MWQMLookupMPN_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("MWQMLookupMPN_DBCommand_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contact TVItemID who made the last changes.
         /// </summary>
         public static string MWQMLookupMPN_LastUpdateContactTVItemID_Description {
@@ -13339,7 +14896,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the MWQMLookupMPNs table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the MWQMLookupMPNs table.
         /// </summary>
         public static string MWQMLookupMPN_MWQMLookupMPNID_Description {
             get {
@@ -13411,6 +14968,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The MWQMLookupMPNs table contains all possible MPNs..
+        /// </summary>
+        public static string MWQMLookupMPNs_Table_Description {
+            get {
+                return ResourceManager.GetString("MWQMLookupMPNs_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Analyze method.
         /// </summary>
         public static string MWQMRun_AnalyzeMethod_Description {
@@ -13443,6 +15009,24 @@ namespace CSSPCultureServices.Resources {
         public static string MWQMRun_DateTime_Local_Display {
             get {
                 return ResourceManager.GetString("MWQMRun_DateTime_Local_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string MWQMRun_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("MWQMRun_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string MWQMRun_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("MWQMRun_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -13627,7 +15211,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the MWQMRuns table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the MWQMRuns table.
         /// </summary>
         public static string MWQMRun_MWQMRunID_Description {
             get {
@@ -14167,6 +15751,24 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string MWQMRunLanguage_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("MWQMRunLanguage_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string MWQMRunLanguage_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("MWQMRunLanguage_DBCommand_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Language of item.
         /// </summary>
         public static string MWQMRunLanguage_Language_Description {
@@ -14239,7 +15841,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the MWQMRunLanguages table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the MWQMRunLanguages table.
         /// </summary>
         public static string MWQMRunLanguage_MWQMRunLanguageID_Description {
             get {
@@ -14325,6 +15927,42 @@ namespace CSSPCultureServices.Resources {
         public static string MWQMRunLanguage_TranslationStatusRunWeatherComment_Display {
             get {
                 return ResourceManager.GetString("MWQMRunLanguage_TranslationStatusRunWeatherComment_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The MWQMRunLanguages table contains fields for holding bilingual texts for the MWQMRuns table..
+        /// </summary>
+        public static string MWQMRunLanguages_Table_Description {
+            get {
+                return ResourceManager.GetString("MWQMRunLanguages_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The MWQMRuns table contains fields for holding and managing a marine water quality monitoring runs..
+        /// </summary>
+        public static string MWQMRuns_Table_Description {
+            get {
+                return ResourceManager.GetString("MWQMRuns_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string MWQMSample_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("MWQMSample_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string MWQMSample_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("MWQMSample_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -14419,7 +16057,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the MWQMSamples table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the MWQMSamples table.
         /// </summary>
         public static string MWQMSample_MWQMSampleID_Description {
             get {
@@ -14707,6 +16345,24 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string MWQMSampleLanguage_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("MWQMSampleLanguage_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string MWQMSampleLanguage_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("MWQMSampleLanguage_DBCommand_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Language of item.
         /// </summary>
         public static string MWQMSampleLanguage_Language_Description {
@@ -14779,7 +16435,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the MWQMSampleLanguages table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the MWQMSampleLanguages table.
         /// </summary>
         public static string MWQMSampleLanguage_MWQMSampleLanguageID_Description {
             get {
@@ -14829,6 +16485,42 @@ namespace CSSPCultureServices.Resources {
         public static string MWQMSampleLanguage_TranslationStatus_Display {
             get {
                 return ResourceManager.GetString("MWQMSampleLanguage_TranslationStatus_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The MWQMSampleLanguages table contains fields for holding bilingual texts for the MWQMSamples table..
+        /// </summary>
+        public static string MWQMSampleLanguages_Table_Description {
+            get {
+                return ResourceManager.GetString("MWQMSampleLanguages_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The MWQMSamples table contains fields for holding sample results for a marine water quality site and run..
+        /// </summary>
+        public static string MWQMSamples_Table_Description {
+            get {
+                return ResourceManager.GetString("MWQMSamples_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string MWQMSite_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("MWQMSite_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string MWQMSite_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("MWQMSite_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -14887,7 +16579,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the MWQMSites table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the MWQMSites table.
         /// </summary>
         public static string MWQMSite_MWQMSiteID_Description {
             get {
@@ -14973,6 +16665,15 @@ namespace CSSPCultureServices.Resources {
         public static string MWQMSite_Ordinal_Display {
             get {
                 return ResourceManager.GetString("MWQMSite_Ordinal_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The MWQMSites table contains fields for holding and managing marine water quality monitoring sites..
+        /// </summary>
+        public static string MWQMSites_Table_Description {
+            get {
+                return ResourceManager.GetString("MWQMSites_Table_Description", resourceCulture);
             }
         }
         
@@ -15247,6 +16948,24 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string MWQMSiteStartEndDate_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("MWQMSiteStartEndDate_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string MWQMSiteStartEndDate_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("MWQMSiteStartEndDate_DBCommand_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to End date.
         /// </summary>
         public static string MWQMSiteStartEndDate_EndDate_Description {
@@ -15301,7 +17020,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the MWQMSiteStartEndDates table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the MWQMSiteStartEndDates table.
         /// </summary>
         public static string MWQMSiteStartEndDate_MWQMSiteStartEndDateID_Description {
             get {
@@ -15355,6 +17074,33 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The MWQMSiteStartEndDates table contains fields for storing the marine water quality monitoring site activity dates..
+        /// </summary>
+        public static string MWQMSiteStartEndDates_Table_Description {
+            get {
+                return ResourceManager.GetString("MWQMSiteStartEndDates_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string MWQMSubsector_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("MWQMSubsector_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string MWQMSubsector_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("MWQMSubsector_DBCommand_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contact TVItemID who made the last changes.
         /// </summary>
         public static string MWQMSubsector_LastUpdateContactTVItemID_Description {
@@ -15391,7 +17137,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the MWQMSubsectors table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the MWQMSubsectors table.
         /// </summary>
         public static string MWQMSubsector_MWQMSubsectorID_Description {
             get {
@@ -15459,6 +17205,24 @@ namespace CSSPCultureServices.Resources {
         public static string MWQMSubsector_TideLocationSIDText_Display {
             get {
                 return ResourceManager.GetString("MWQMSubsector_TideLocationSIDText_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string MWQMSubsectorLanguage_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("MWQMSubsectorLanguage_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string MWQMSubsectorLanguage_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("MWQMSubsectorLanguage_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -15553,7 +17317,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the MWQMSubsectorLanguages table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the MWQMSubsectorLanguages table.
         /// </summary>
         public static string MWQMSubsectorLanguage_MWQMSubsectorLanguageID_Description {
             get {
@@ -15621,6 +17385,24 @@ namespace CSSPCultureServices.Resources {
         public static string MWQMSubsectorLanguage_TranslationStatusSubsectorDesc_Display {
             get {
                 return ResourceManager.GetString("MWQMSubsectorLanguage_TranslationStatusSubsectorDesc_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The MWQMSubsectorLanguages table contains fields for holding bilingual texts for the MWQMSubsectors table..
+        /// </summary>
+        public static string MWQMSubsectorLanguages_Table_Description {
+            get {
+                return ResourceManager.GetString("MWQMSubsectorLanguages_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The MWQMSubsectors table contains fields for describing the marine water quality monitoring subsectors..
+        /// </summary>
+        public static string MWQMSubsectors_Table_Description {
+            get {
+                return ResourceManager.GetString("MWQMSubsectors_Table_Description", resourceCulture);
             }
         }
         
@@ -15931,7 +17713,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the MikeScenarios table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the MikeScenarios table.
         /// </summary>
         public static string OtherFilesToUpload_MikeScenarioID_Description {
             get {
@@ -15999,6 +17781,24 @@ namespace CSSPCultureServices.Resources {
         public static string PolSourceGrouping_CSSPID_Display {
             get {
                 return ResourceManager.GetString("PolSourceGrouping_CSSPID_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string PolSourceGrouping_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("PolSourceGrouping_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string PolSourceGrouping_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("PolSourceGrouping_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -16075,7 +17875,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the PolSourceGroupings table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the PolSourceGroupings table.
         /// </summary>
         public static string PolSourceGrouping_PolSourceGroupingID_Description {
             get {
@@ -16089,6 +17889,24 @@ namespace CSSPCultureServices.Resources {
         public static string PolSourceGrouping_PolSourceGroupingID_Display {
             get {
                 return ResourceManager.GetString("PolSourceGrouping_PolSourceGroupingID_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string PolSourceGroupingLanguage_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("PolSourceGroupingLanguage_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string PolSourceGroupingLanguage_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("PolSourceGroupingLanguage_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -16201,7 +18019,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the PolSourceGroupingLanguages table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the PolSourceGroupingLanguages table.
         /// </summary>
         public static string PolSourceGroupingLanguage_PolSourceGroupingLanguageID_Description {
             get {
@@ -16381,6 +18199,24 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The PolSourceGroupingLanguages table contains fields for holding bilingual texts for the PolSourceGroupings table..
+        /// </summary>
+        public static string PolSourceGroupingLanguages_Table_Description {
+            get {
+                return ResourceManager.GetString("PolSourceGroupingLanguages_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The PolSourceGroupings table contains fields for pollution source grouping which is used to formulate sentence from selected options while describing pollution source sites and issues..
+        /// </summary>
+        public static string PolSourceGroupings_Table_Description {
+            get {
+                return ResourceManager.GetString("PolSourceGroupings_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ID.
         /// </summary>
         public static string PolSourceInactiveReasonEnumTextAndID_ID_Description {
@@ -16431,6 +18267,24 @@ namespace CSSPCultureServices.Resources {
         public static string PolSourceObservation_ContactTVItemID_Display {
             get {
                 return ResourceManager.GetString("PolSourceObservation_ContactTVItemID_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string PolSourceObservation_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("PolSourceObservation_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string PolSourceObservation_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("PolSourceObservation_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -16525,7 +18379,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the PolSourceObservations table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the PolSourceObservations table.
         /// </summary>
         public static string PolSourceObservation_PolSourceObservationID_Description {
             get {
@@ -16557,6 +18411,24 @@ namespace CSSPCultureServices.Resources {
         public static string PolSourceObservation_PolSourceSiteID_Display {
             get {
                 return ResourceManager.GetString("PolSourceObservation_PolSourceSiteID_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string PolSourceObservationIssue_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("PolSourceObservationIssue_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string PolSourceObservationIssue_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("PolSourceObservationIssue_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -16669,7 +18541,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the PolSourceObservationIssues table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the PolSourceObservationIssues table.
         /// </summary>
         public static string PolSourceObservationIssue_PolSourceObservationIssueID_Description {
             get {
@@ -16683,6 +18555,24 @@ namespace CSSPCultureServices.Resources {
         public static string PolSourceObservationIssue_PolSourceObservationIssueID_Display {
             get {
                 return ResourceManager.GetString("PolSourceObservationIssue_PolSourceObservationIssueID_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The PolSourceObservationIssues table contains fields for holding the description of the pollution source observation issues..
+        /// </summary>
+        public static string PolSourceObservationIssues_Table_Description {
+            get {
+                return ResourceManager.GetString("PolSourceObservationIssues_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The PolSourceObservations table contains fields for holding the pollution source observation related information..
+        /// </summary>
+        public static string PolSourceObservations_Table_Description {
+            get {
+                return ResourceManager.GetString("PolSourceObservations_Table_Description", resourceCulture);
             }
         }
         
@@ -16813,6 +18703,24 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string PolSourceSite_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("PolSourceSite_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string PolSourceSite_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("PolSourceSite_DBCommand_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pollution source inactive reason.
         /// </summary>
         public static string PolSourceSite_InactiveReason_Description {
@@ -16903,7 +18811,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the PolSourceSites table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the PolSourceSites table.
         /// </summary>
         public static string PolSourceSite_PolSourceSiteID_Description {
             get {
@@ -17029,6 +18937,24 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string PolSourceSiteEffect_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("PolSourceSiteEffect_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string PolSourceSiteEffect_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("PolSourceSiteEffect_DBCommand_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contact TVItemID who made the last changes.
         /// </summary>
         public static string PolSourceSiteEffect_LastUpdateContactTVItemID_Description {
@@ -17083,7 +19009,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the PolSourceSiteEffects table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the PolSourceSiteEffects table.
         /// </summary>
         public static string PolSourceSiteEffect_PolSourceSiteEffectID_Description {
             get {
@@ -17133,6 +19059,33 @@ namespace CSSPCultureServices.Resources {
         public static string PolSourceSiteEffect_PolSourceSiteOrInfrastructureTVItemID_Display {
             get {
                 return ResourceManager.GetString("PolSourceSiteEffect_PolSourceSiteOrInfrastructureTVItemID_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The PolSourceSiteEffects table contains fields for establishing the effects of pollution source site..
+        /// </summary>
+        public static string PolSourceSiteEffects_Table_Description {
+            get {
+                return ResourceManager.GetString("PolSourceSiteEffects_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string PolSourceSiteEffectTerm_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("PolSourceSiteEffectTerm_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string PolSourceSiteEffectTerm_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("PolSourceSiteEffectTerm_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -17227,7 +19180,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the PolSourceSiteEffectTerms table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the PolSourceSiteEffectTerms table.
         /// </summary>
         public static string PolSourceSiteEffectTerm_PolSourceSiteEffectTermID_Description {
             get {
@@ -17259,6 +19212,24 @@ namespace CSSPCultureServices.Resources {
         public static string PolSourceSiteEffectTerm_UnderGroupID_Display {
             get {
                 return ResourceManager.GetString("PolSourceSiteEffectTerm_UnderGroupID_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The PolSourceSiteEffectTerms table contains all the terms used to describe the effects of pollution source site..
+        /// </summary>
+        public static string PolSourceSiteEffectTerms_Table_Description {
+            get {
+                return ResourceManager.GetString("PolSourceSiteEffectTerms_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The PolSourceSites table contains fields for holding and managing pollution source sites..
+        /// </summary>
+        public static string PolSourceSites_Table_Description {
+            get {
+                return ResourceManager.GetString("PolSourceSites_Table_Description", resourceCulture);
             }
         }
         
@@ -17313,6 +19284,24 @@ namespace CSSPCultureServices.Resources {
         public static string PolyPoint_Z_Display {
             get {
                 return ResourceManager.GetString("PolyPoint_Z_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string RainExceedance_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("RainExceedance_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string RainExceedance_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("RainExceedance_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -17425,7 +19414,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the RainExceedances table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the RainExceedances table.
         /// </summary>
         public static string RainExceedance_RainExceedanceID_Description {
             get {
@@ -17551,6 +19540,24 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string RainExceedanceClimateSite_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("RainExceedanceClimateSite_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string RainExceedanceClimateSite_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("RainExceedanceClimateSite_DBCommand_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contact TVItemID who made the last changes.
         /// </summary>
         public static string RainExceedanceClimateSite_LastUpdateContactTVItemID_Description {
@@ -17587,7 +19594,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the RainExceedanceClimateSites table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the RainExceedanceClimateSites table.
         /// </summary>
         public static string RainExceedanceClimateSite_RainExceedanceClimateSiteID_Description {
             get {
@@ -17619,6 +19626,42 @@ namespace CSSPCultureServices.Resources {
         public static string RainExceedanceClimateSite_RainExceedanceTVItemID_Display {
             get {
                 return ResourceManager.GetString("RainExceedanceClimateSite_RainExceedanceTVItemID_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The RainExceedanceClimateSites table contains fields for holding the links between rain exceedance and climate sites..
+        /// </summary>
+        public static string RainExceedanceClimateSites_Table_Description {
+            get {
+                return ResourceManager.GetString("RainExceedanceClimateSites_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The RainExceedances table contains fields for managing rain exceedances..
+        /// </summary>
+        public static string RainExceedances_Table_Description {
+            get {
+                return ResourceManager.GetString("RainExceedances_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string RatingCurve_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("RatingCurve_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string RatingCurve_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("RatingCurve_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -17677,7 +19720,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the RatingCurves table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the RatingCurves table.
         /// </summary>
         public static string RatingCurve_RatingCurveID_Description {
             get {
@@ -17709,6 +19752,33 @@ namespace CSSPCultureServices.Resources {
         public static string RatingCurve_RatingCurveNumber_Display {
             get {
                 return ResourceManager.GetString("RatingCurve_RatingCurveNumber_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The RatingCurves table contains fields for storing rating curves for each hydrometric sites..
+        /// </summary>
+        public static string RatingCurves_Table_Description {
+            get {
+                return ResourceManager.GetString("RatingCurves_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string RatingCurveValue_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("RatingCurveValue_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string RatingCurveValue_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("RatingCurveValue_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -17785,7 +19855,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the RatingCurveValues table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the RatingCurveValues table.
         /// </summary>
         public static string RatingCurveValue_RatingCurveValueID_Description {
             get {
@@ -17817,6 +19887,15 @@ namespace CSSPCultureServices.Resources {
         public static string RatingCurveValue_StageValue_m_Display {
             get {
                 return ResourceManager.GetString("RatingCurveValue_StageValue_m_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The RatingCurveValues table contains fields for holding rating curve values for each hydrometric sites..
+        /// </summary>
+        public static string RatingCurveValues_Table_Description {
+            get {
+                return ResourceManager.GetString("RatingCurveValues_Table_Description", resourceCulture);
             }
         }
         
@@ -17947,6 +20026,24 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string ReportSection_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("ReportSection_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string ReportSection_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("ReportSection_DBCommand_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Is static --- the text will not change in time.
         /// </summary>
         public static string ReportSection_IsStatic_Description {
@@ -18073,7 +20170,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the ReportSections table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the ReportSections table.
         /// </summary>
         public static string ReportSection_ReportSectionID_Description {
             get {
@@ -18199,6 +20296,33 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The ReportSections table contains fields for holding report section used to produce various reports..
+        /// </summary>
+        public static string ReportSections_Table_Description {
+            get {
+                return ResourceManager.GetString("ReportSections_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string ReportType_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("ReportType_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string ReportType_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("ReportType_DBCommand_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Description of the report type.
         /// </summary>
         public static string ReportType_Description_Description {
@@ -18307,7 +20431,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the ReportTypes table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the ReportTypes table.
         /// </summary>
         public static string ReportType_ReportTypeID_Description {
             get {
@@ -18379,6 +20503,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The ReportTypes table contains fields for holding the report types that can be produce with just a click of a button..
+        /// </summary>
+        public static string ReportTypes_Table_Description {
+            get {
+                return ResourceManager.GetString("ReportTypes_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Code --- is a unique code generated on the server and sent to the user email.
         /// </summary>
         public static string ResetPassword_Code_Description {
@@ -18393,6 +20526,24 @@ namespace CSSPCultureServices.Resources {
         public static string ResetPassword_Code_Display {
             get {
                 return ResourceManager.GetString("ResetPassword_Code_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string ResetPassword_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("ResetPassword_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string ResetPassword_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("ResetPassword_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -18469,7 +20620,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the ResetPasswords table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the ResetPasswords table.
         /// </summary>
         public static string ResetPassword_ResetPasswordID_Description {
             get {
@@ -18483,6 +20634,15 @@ namespace CSSPCultureServices.Resources {
         public static string ResetPassword_ResetPasswordID_Display {
             get {
                 return ResourceManager.GetString("ResetPassword_ResetPasswordID_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The ResetPasswords table contains basic fields to help with the reset of users password..
+        /// </summary>
+        public static string ResetPasswords_Table_Description {
+            get {
+                return ResourceManager.GetString("ResetPasswords_Table_Description", resourceCulture);
             }
         }
         
@@ -18663,6 +20823,24 @@ namespace CSSPCultureServices.Resources {
         public static string SamplingPlan_DailyDuplicatePrecisionCriteria_Display {
             get {
                 return ResourceManager.GetString("SamplingPlan_DailyDuplicatePrecisionCriteria_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string SamplingPlan_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("SamplingPlan_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string SamplingPlan_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("SamplingPlan_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -18883,7 +21061,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the SamplingPlans table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the SamplingPlans table.
         /// </summary>
         public static string SamplingPlan_SamplingPlanID_Description {
             get {
@@ -19023,6 +21201,24 @@ namespace CSSPCultureServices.Resources {
         public static string SamplingPlanAndFilesLabSheetCount_TVFileSamplingPlanFileTXT_Display {
             get {
                 return ResourceManager.GetString("SamplingPlanAndFilesLabSheetCount_TVFileSamplingPlanFileTXT_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string SamplingPlanEmail_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("SamplingPlanEmail_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string SamplingPlanEmail_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("SamplingPlanEmail_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -19171,7 +21367,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the SamplingPlanEmails table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the SamplingPlanEmails table.
         /// </summary>
         public static string SamplingPlanEmail_SamplingPlanEmailID_Description {
             get {
@@ -19203,6 +21399,42 @@ namespace CSSPCultureServices.Resources {
         public static string SamplingPlanEmail_SamplingPlanID_Display {
             get {
                 return ResourceManager.GetString("SamplingPlanEmail_SamplingPlanID_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The SamplingPlanEmails table contains fields for holding emails needed to be sent while filling lab sheets..
+        /// </summary>
+        public static string SamplingPlanEmails_Table_Description {
+            get {
+                return ResourceManager.GetString("SamplingPlanEmails_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The SamplingPlans table contains fields for organizing sampling plans. It’s also the primary table use to create sampling plan text files that can be distributed to contractors, provinces and internal users. They use it with the application CSSPWQInputTool..
+        /// </summary>
+        public static string SamplingPlans_Table_Description {
+            get {
+                return ResourceManager.GetString("SamplingPlans_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string SamplingPlanSubsector_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("SamplingPlanSubsector_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string SamplingPlanSubsector_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("SamplingPlanSubsector_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -19261,7 +21493,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the SamplingPlanSubsectors table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the SamplingPlanSubsectors table.
         /// </summary>
         public static string SamplingPlanSubsector_SamplingPlanSubsectorID_Description {
             get {
@@ -19293,6 +21525,33 @@ namespace CSSPCultureServices.Resources {
         public static string SamplingPlanSubsector_SubsectorTVItemID_Display {
             get {
                 return ResourceManager.GetString("SamplingPlanSubsector_SubsectorTVItemID_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The SamplingPlanSubsectors table contains fields for storing sampling plan subsector information..
+        /// </summary>
+        public static string SamplingPlanSubsectors_Table_Description {
+            get {
+                return ResourceManager.GetString("SamplingPlanSubsectors_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string SamplingPlanSubsectorSite_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("SamplingPlanSubsectorSite_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string SamplingPlanSubsectorSite_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("SamplingPlanSubsectorSite_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -19387,7 +21646,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the SamplingPlanSubsectorSites table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the SamplingPlanSubsectorSites table.
         /// </summary>
         public static string SamplingPlanSubsectorSite_SamplingPlanSubsectorSiteID_Description {
             get {
@@ -19401,6 +21660,15 @@ namespace CSSPCultureServices.Resources {
         public static string SamplingPlanSubsectorSite_SamplingPlanSubsectorSiteID_Display {
             get {
                 return ResourceManager.GetString("SamplingPlanSubsectorSite_SamplingPlanSubsectorSiteID_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The SamplingPlanSubsectorSites table contains fields for storing and managing sampling plan subsector marine water quality monitoring sites..
+        /// </summary>
+        public static string SamplingPlanSubsectorSites_Table_Description {
+            get {
+                return ResourceManager.GetString("SamplingPlanSubsectorSites_Table_Description", resourceCulture);
             }
         }
         
@@ -19513,6 +21781,24 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string Spill_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("Spill_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string Spill_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("Spill_DBCommand_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to End date (local).
         /// </summary>
         public static string Spill_EndDateTime_Local_Description {
@@ -19603,7 +21889,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the Spills table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the Spills table.
         /// </summary>
         public static string Spill_SpillID_Description {
             get {
@@ -19635,6 +21921,24 @@ namespace CSSPCultureServices.Resources {
         public static string Spill_StartDateTime_Local_Display {
             get {
                 return ResourceManager.GetString("Spill_StartDateTime_Local_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string SpillLanguage_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("SpillLanguage_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string SpillLanguage_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("SpillLanguage_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -19729,7 +22033,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the SpillLanguages table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the SpillLanguages table.
         /// </summary>
         public static string SpillLanguage_SpillLanguageID_Description {
             get {
@@ -19761,6 +22065,24 @@ namespace CSSPCultureServices.Resources {
         public static string SpillLanguage_TranslationStatus_Display {
             get {
                 return ResourceManager.GetString("SpillLanguage_TranslationStatus_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The SpillLanguages table contains fields for holding bilingual texts for the Spills table..
+        /// </summary>
+        public static string SpillLanguages_Table_Description {
+            get {
+                return ResourceManager.GetString("SpillLanguages_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Spills table contains fields for holding information regarding spills from municipal infrastructure or other types of spills..
+        /// </summary>
+        public static string Spills_Table_Description {
+            get {
+                return ResourceManager.GetString("Spills_Table_Description", resourceCulture);
             }
         }
         
@@ -19837,6 +22159,24 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string Tel_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("Tel_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string Tel_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("Tel_DBCommand_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contact TVItemID who made the last changes.
         /// </summary>
         public static string Tel_LastUpdateContactTVItemID_Description {
@@ -19873,7 +22213,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the Tels table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the Tels table.
         /// </summary>
         public static string Tel_TelID_Description {
             get {
@@ -19945,6 +22285,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The Tels table contains fields for holding telephone numbers. It is used with municipal contacts and users extra profile information..
+        /// </summary>
+        public static string Tels_Table_Description {
+            get {
+                return ResourceManager.GetString("Tels_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Date (local).
         /// </summary>
         public static string TideDataValue_DateTime_Local_Description {
@@ -19959,6 +22308,24 @@ namespace CSSPCultureServices.Resources {
         public static string TideDataValue_DateTime_Local_Display {
             get {
                 return ResourceManager.GetString("TideDataValue_DateTime_Local_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string TideDataValue_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("TideDataValue_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string TideDataValue_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("TideDataValue_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -20071,7 +22438,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the TideDataValues table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the TideDataValues table.
         /// </summary>
         public static string TideDataValue_TideDataValueID_Description {
             get {
@@ -20175,6 +22542,33 @@ namespace CSSPCultureServices.Resources {
         public static string TideDataValue_VVelocity_m_s_Display {
             get {
                 return ResourceManager.GetString("TideDataValue_VVelocity_m_s_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The TideDataValues table contains fields for holding values of tide data at various places in Canada and US..
+        /// </summary>
+        public static string TideDataValues_Table_Description {
+            get {
+                return ResourceManager.GetString("TideDataValues_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string TideLocation_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("TideLocation_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string TideLocation_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("TideLocation_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -20305,7 +22699,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the TideLocations table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the TideLocations table.
         /// </summary>
         public static string TideLocation_TideLocationID_Description {
             get {
@@ -20337,6 +22731,33 @@ namespace CSSPCultureServices.Resources {
         public static string TideLocation_Zone_Display {
             get {
                 return ResourceManager.GetString("TideLocation_Zone_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The TideLocations table contains fields for storing the tide locations and names to be used by some applications..
+        /// </summary>
+        public static string TideLocations_Table_Description {
+            get {
+                return ResourceManager.GetString("TideLocations_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string TideSite_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("TideSite_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string TideSite_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("TideSite_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -20413,7 +22834,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the TideSites table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the TideSites table.
         /// </summary>
         public static string TideSite_TideSiteID_Description {
             get {
@@ -20485,6 +22906,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The TideSites table contains fields for holding and managing tide site related information from Canadian Hydrographic Services..
+        /// </summary>
+        public static string TideSites_Table_Description {
+            get {
+                return ResourceManager.GetString("TideSites_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Client file path.
         /// </summary>
         public static string TVFile_ClientFilePath_Description {
@@ -20499,6 +22929,24 @@ namespace CSSPCultureServices.Resources {
         public static string TVFile_ClientFilePath_Display {
             get {
                 return ResourceManager.GetString("TVFile_ClientFilePath_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string TVFile_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("TVFile_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string TVFile_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("TVFile_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -20755,7 +23203,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the TVFiles table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the TVFiles table.
         /// </summary>
         public static string TVFile_TVFileID_Description {
             get {
@@ -20805,6 +23253,24 @@ namespace CSSPCultureServices.Resources {
         public static string TVFile_Year_Display {
             get {
                 return ResourceManager.GetString("TVFile_Year_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string TVFileLanguage_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("TVFileLanguage_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string TVFileLanguage_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("TVFileLanguage_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -20917,7 +23383,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the TVFileLanguages table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the TVFileLanguages table.
         /// </summary>
         public static string TVFileLanguage_TVFileLanguageID_Description {
             get {
@@ -20931,6 +23397,24 @@ namespace CSSPCultureServices.Resources {
         public static string TVFileLanguage_TVFileLanguageID_Display {
             get {
                 return ResourceManager.GetString("TVFileLanguage_TVFileLanguageID_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The TVFileLanguages table contains fields for holding bilingual texts for the TVFiles table..
+        /// </summary>
+        public static string TVFileLanguages_Table_Description {
+            get {
+                return ResourceManager.GetString("TVFileLanguages_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The TVFiles table contains fields for managing files outside of the databases via links and file names..
+        /// </summary>
+        public static string TVFiles_Table_Description {
+            get {
+                return ResourceManager.GetString("TVFiles_Table_Description", resourceCulture);
             }
         }
         
@@ -20967,6 +23451,24 @@ namespace CSSPCultureServices.Resources {
         public static string TVFullText_TVPath_Display {
             get {
                 return ResourceManager.GetString("TVFullText_TVPath_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string TVItem_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("TVItem_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string TVItem_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("TVItem_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -21043,7 +23545,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the TVItems table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the TVItems table.
         /// </summary>
         public static string TVItem_TVItemID_Description {
             get {
@@ -21223,6 +23725,24 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string TVItemLanguage_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("TVItemLanguage_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string TVItemLanguage_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("TVItemLanguage_DBCommand_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Language of item.
         /// </summary>
         public static string TVItemLanguage_Language_Description {
@@ -21313,7 +23833,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the TVItemLanguages table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the TVItemLanguages table.
         /// </summary>
         public static string TVItemLanguage_TVItemLanguageID_Description {
             get {
@@ -21345,6 +23865,33 @@ namespace CSSPCultureServices.Resources {
         public static string TVItemLanguage_TVText_Display {
             get {
                 return ResourceManager.GetString("TVItemLanguage_TVText_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The TVItemLanguages table contains fields for holding bilingual texts for the TVItems table..
+        /// </summary>
+        public static string TVItemLanguages_Table_Description {
+            get {
+                return ResourceManager.GetString("TVItemLanguages_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string TVItemLink_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("TVItemLink_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string TVItemLink_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("TVItemLink_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -21529,7 +24076,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the TVItemLinks table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the TVItemLinks table.
         /// </summary>
         public static string TVItemLink_TVItemLinkID_Description {
             get {
@@ -21583,6 +24130,24 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The TVItemLinks table contains fields for linking different tree view items (TVItems) between them..
+        /// </summary>
+        public static string TVItemLinks_Table_Description {
+            get {
+                return ResourceManager.GetString("TVItemLinks_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The TVItems table contains fields for holding and managing the tree view system within the whole database so each item can be search and is unique..
+        /// </summary>
+        public static string TVItems_Table_Description {
+            get {
+                return ResourceManager.GetString("TVItems_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Child items number.
         /// </summary>
         public static string TVItemStat_ChildCount_Description {
@@ -21597,6 +24162,24 @@ namespace CSSPCultureServices.Resources {
         public static string TVItemStat_ChildCount_Display {
             get {
                 return ResourceManager.GetString("TVItemStat_ChildCount_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string TVItemStat_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("TVItemStat_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string TVItemStat_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("TVItemStat_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -21655,7 +24238,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the TVItemStats table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the TVItemStats table.
         /// </summary>
         public static string TVItemStat_TVItemStatID_Description {
             get {
@@ -21687,6 +24270,15 @@ namespace CSSPCultureServices.Resources {
         public static string TVItemStat_TVType_Display {
             get {
                 return ResourceManager.GetString("TVItemStat_TVType_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The TVItemStats table contains fields for holding statistics of various tree view items within the database. It is use by some applications as an indicator of how many sub items exist underneath a particular item..
+        /// </summary>
+        public static string TVItemStats_Table_Description {
+            get {
+                return ResourceManager.GetString("TVItemStats_Table_Description", resourceCulture);
             }
         }
         
@@ -21871,6 +24463,24 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string TVItemUserAuthorization_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("TVItemUserAuthorization_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string TVItemUserAuthorization_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("TVItemUserAuthorization_DBCommand_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contact TVItemID who made the last changes.
         /// </summary>
         public static string TVItemUserAuthorization_LastUpdateContactTVItemID_Description {
@@ -21997,7 +24607,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the TVItemUserAuthorizations table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the TVItemUserAuthorizations table.
         /// </summary>
         public static string TVItemUserAuthorization_TVItemUserAuthorizationID_Description {
             get {
@@ -22011,6 +24621,15 @@ namespace CSSPCultureServices.Resources {
         public static string TVItemUserAuthorization_TVItemUserAuthorizationID_Display {
             get {
                 return ResourceManager.GetString("TVItemUserAuthorization_TVItemUserAuthorizationID_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The TVItemUserAuthorizations table contains fields for managing the authorization of item a user can view, edit, create or delete..
+        /// </summary>
+        public static string TVItemUserAuthorizations_Table_Description {
+            get {
+                return ResourceManager.GetString("TVItemUserAuthorizations_Table_Description", resourceCulture);
             }
         }
         
@@ -22267,6 +24886,24 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string TVTypeUserAuthorization_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("TVTypeUserAuthorization_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string TVTypeUserAuthorization_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("TVTypeUserAuthorization_DBCommand_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contact TVItemID who made the last changes.
         /// </summary>
         public static string TVTypeUserAuthorization_LastUpdateContactTVItemID_Description {
@@ -22339,7 +24976,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the TVTypeUserAuthorizations table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the TVTypeUserAuthorizations table.
         /// </summary>
         public static string TVTypeUserAuthorization_TVTypeUserAuthorizationID_Description {
             get {
@@ -22353,6 +24990,15 @@ namespace CSSPCultureServices.Resources {
         public static string TVTypeUserAuthorization_TVTypeUserAuthorizationID_Display {
             get {
                 return ResourceManager.GetString("TVTypeUserAuthorization_TVTypeUserAuthorizationID_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The TVTypeUserAuthorizations table contains fields for managing the authorization of item types a user can view, edit, create or delete..
+        /// </summary>
+        public static string TVTypeUserAuthorizations_Table_Description {
+            get {
+                return ResourceManager.GetString("TVTypeUserAuthorizations_Table_Description", resourceCulture);
             }
         }
         
@@ -22389,6 +25035,24 @@ namespace CSSPCultureServices.Resources {
         public static string URLNumberOfSamples_url_Display {
             get {
                 return ResourceManager.GetString("URLNumberOfSamples_url_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string UseOfSite_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("UseOfSite_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string UseOfSite_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("UseOfSite_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -22627,7 +25291,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the UseOfSites table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the UseOfSites table.
         /// </summary>
         public static string UseOfSite_UseOfSiteID_Description {
             get {
@@ -22677,6 +25341,15 @@ namespace CSSPCultureServices.Resources {
         public static string UseOfSite_Weight_perc_Display {
             get {
                 return ResourceManager.GetString("UseOfSite_Weight_perc_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The UseOfSites table contains fields for identifying climate sites, hydrometric sites, tide sites, municipalities and drogues to be used under a subsector..
+        /// </summary>
+        public static string UseOfSites_Table_Description {
+            get {
+                return ResourceManager.GetString("UseOfSites_Table_Description", resourceCulture);
             }
         }
         
@@ -22735,7 +25408,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ambient temperature (°C).
+        ///   Looks up a localized string similar to Ambient temperature (Celcius).
         /// </summary>
         public static string VPAmbient_AmbientTemperature_C_Description {
             get {
@@ -22744,7 +25417,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ambient temperature (°C).
+        ///   Looks up a localized string similar to Ambient temperature (Celcius).
         /// </summary>
         public static string VPAmbient_AmbientTemperature_C_Display {
             get {
@@ -22803,6 +25476,24 @@ namespace CSSPCultureServices.Resources {
         public static string VPAmbient_CurrentSpeed_m_s_Display {
             get {
                 return ResourceManager.GetString("VPAmbient_CurrentSpeed_m_s_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string VPAmbient_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("VPAmbient_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string VPAmbient_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("VPAmbient_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -22951,7 +25642,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the VPAmbients table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the VPAmbients table.
         /// </summary>
         public static string VPAmbient_VPAmbientID_Description {
             get {
@@ -22983,6 +25674,15 @@ namespace CSSPCultureServices.Resources {
         public static string VPAmbient_VPScenarioID_Display {
             get {
                 return ResourceManager.GetString("VPAmbient_VPScenarioID_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The VPAmbients table contains fields for storing ambient inputs for Visual Plumes scenarios..
+        /// </summary>
+        public static string VPAmbients_Table_Description {
+            get {
+                return ResourceManager.GetString("VPAmbients_Table_Description", resourceCulture);
             }
         }
         
@@ -23055,6 +25755,24 @@ namespace CSSPCultureServices.Resources {
         public static string VPResult_Concentration_MPN_100ml_Display {
             get {
                 return ResourceManager.GetString("VPResult_Concentration_MPN_100ml_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string VPResult_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("VPResult_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string VPResult_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("VPResult_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -23185,7 +25903,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the VPResults table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the VPResults table.
         /// </summary>
         public static string VPResult_VPResultID_Description {
             get {
@@ -23217,6 +25935,15 @@ namespace CSSPCultureServices.Resources {
         public static string VPResult_VPScenarioID_Display {
             get {
                 return ResourceManager.GetString("VPResult_VPScenarioID_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The VPResults table contains fields for holding Visual Plumes scenario results..
+        /// </summary>
+        public static string VPResults_Table_Description {
+            get {
+                return ResourceManager.GetString("VPResults_Table_Description", resourceCulture);
             }
         }
         
@@ -23361,6 +26088,24 @@ namespace CSSPCultureServices.Resources {
         public static string VPScenario_ChronicMixZone_m_Display {
             get {
                 return ResourceManager.GetString("VPScenario_ChronicMixZone_m_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string VPScenario_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("VPScenario_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string VPScenario_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("VPScenario_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -23689,7 +26434,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the VPScenarios table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the VPScenarios table.
         /// </summary>
         public static string VPScenario_VPScenarioID_Description {
             get {
@@ -23757,6 +26502,24 @@ namespace CSSPCultureServices.Resources {
         public static string VPScenarioIDAndRawResults_VPScenarioID_Display {
             get {
                 return ResourceManager.GetString("VPScenarioIDAndRawResults_VPScenarioID_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify the database command for local database sync.
+        /// </summary>
+        public static string VPScenarioLanguage_DBCommand_Description {
+            get {
+                return ResourceManager.GetString("VPScenarioLanguage_DBCommand_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database Command.
+        /// </summary>
+        public static string VPScenarioLanguage_DBCommand_Display {
+            get {
+                return ResourceManager.GetString("VPScenarioLanguage_DBCommand_Display", resourceCulture);
             }
         }
         
@@ -23851,7 +26614,7 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contains the unique &quot;identifier on each row of the VPScenarioLanguages table.
+        ///   Looks up a localized string similar to Contains the unique identifier on each row of the VPScenarioLanguages table.
         /// </summary>
         public static string VPScenarioLanguage_VPScenarioLanguageID_Description {
             get {
@@ -23883,6 +26646,24 @@ namespace CSSPCultureServices.Resources {
         public static string VPScenarioLanguage_VPScenarioName_Display {
             get {
                 return ResourceManager.GetString("VPScenarioLanguage_VPScenarioName_Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The VPScenarioLanguages table contains fields for holding bilingual texts for the VPScenarios table..
+        /// </summary>
+        public static string VPScenarioLanguages_Table_Description {
+            get {
+                return ResourceManager.GetString("VPScenarioLanguages_Table_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The VPScenarios table contains fields for holding and managing Visual Plumes scenarios..
+        /// </summary>
+        public static string VPScenarios_Table_Description {
+            get {
+                return ResourceManager.GetString("VPScenarios_Table_Description", resourceCulture);
             }
         }
     }

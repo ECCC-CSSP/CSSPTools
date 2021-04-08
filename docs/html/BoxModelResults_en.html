@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>CSSPDB Model Documentation</title>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+<a href="table_en.html">Return to table list</a>
+<h1>Table&nbsp;---&nbsp;BoxModelResults</h1>
+<ul>
+<li>
+BoxModelResultID -- Int32 (key)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contains the unique identifier on each row of the BoxModelResults table</span>
+</li>
+<li>
+DBCommand -- DBCommandEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Identify the database command for local database sync</span>
+</li>
+<li>
+BoxModelID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;BoxModel link to parent BoxModels table item</span>
+</li>
+<li>
+BoxModelResultType -- BoxModelResultTypeEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Result type</span>
+</li>
+<li>
+Volume_m3 -- Double (min=0)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Volume (m3) of estuary water required to uptain the expected fecal coliform concentration</span>
+</li>
+<li>
+Surface_m2 -- Double (min=0)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Surface (m2) of estuary water required to uptain the expected fecal coliform concentration</span>
+</li>
+<li>
+Radius_m -- Double (min=0) (max=100000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Half circle radius (m) of estuary water required to uptain the expected fecal coliform concentration</span>
+</li>
+<li>
+LeftSideDiameterLineAngle_deg -- Double (min=0) (max=360)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Left side diameter line angle (deg) used to draw helf circle on a map</span>
+</li>
+<li>
+CircleCenterLatitude -- Double (min=-90) (max=90)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Circle center latitude (deg) used to draw half circle on a map</span>
+</li>
+<li>
+CircleCenterLongitude -- Double (min=-180) (max=180)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Circle center longitude (deg) used to draw half circle on a map</span>
+</li>
+<li>
+FixLength -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Fix length is used to indicate we want the rectangle length to be fix a certain length. Only the width of the rectangle will redimensioned in order to find the rectangle size  to uptain the expected fecal coliform concentration</span>
+</li>
+<li>
+FixWidth -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Fix width is used to indicate we want the rectangle width to be fix a certain width. Only the length of the rectangle will redimensioned in order to find the rectangle size  to uptain the expected fecal coliform concentration</span>
+</li>
+<li>
+RectLength_m -- Double (min=0) (max=100000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Rectangle length (m) of estuary water required to uptain the expected fecal coliform concentration</span>
+</li>
+<li>
+RectWidth_m -- Double (min=0) (max=100000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Rectangle width (m) of estuary water required to uptain the expected fecal coliform concentration</span>
+</li>
+<li>
+LeftSideLineAngle_deg -- Double (min=0) (max=360)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Left side rectangle line angle (deg) used to draw rectangle on a map</span>
+</li>
+<li>
+LeftSideLineStartLatitude -- Double (min=-90) (max=90)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Left side line start latitude (deg) used to draw half circle on a map</span>
+</li>
+<li>
+LeftSideLineStartLongitude -- Double (min=-180) (max=180)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Left side line start longitude (deg) used to draw half circle on a map</span>
+</li>
+<li>
+LastUpdateDate_UTC -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contains the date of the last update in UTC</span>
+</li>
+<li>
+LastUpdateContactTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contact TVItemID who made the last changes</span>
+</li>
+</ul>
+<a href="table_en.html">Return to table list</a>
+</body>
+</html>

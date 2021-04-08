@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>CSSPDB Model Documentation</title>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+<a href="table_en.html">Return to table list</a>
+<h1>Table&nbsp;---&nbsp;TVFiles</h1>
+<ul>
+<li>
+TVFileID -- Int32 (key)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contains the unique identifier on each row of the TVFiles table</span>
+</li>
+<li>
+DBCommand -- DBCommandEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Identify the database command for local database sync</span>
+</li>
+<li>
+TVFileTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Link to the TVItems table representing the file under the tree view</span>
+</li>
+<li>
+TemplateTVType -- TVTypeEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Template tree view type</span>
+</li>
+<li>
+ReportTypeID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Link to the ReportTypes table representing the report type</span>
+</li>
+<li>
+Parameters -- String
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Parameters used when producing the report</span>
+</li>
+<li>
+Year -- Int32 (min=1980) (max=2050)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Year</span>
+</li>
+<li>
+Language -- LanguageEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Language</span>
+</li>
+<li>
+FilePurpose -- FilePurposeEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;File purpose</span>
+</li>
+<li>
+FileType -- FileTypeEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;File type</span>
+</li>
+<li>
+FileSize_kb -- Int32 (min=0) (max=100000000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;File site (KB)</span>
+</li>
+<li>
+FileInfo -- String
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;File information</span>
+</li>
+<li>
+FileCreatedDate_UTC -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;File created date (UTC)</span>
+</li>
+<li>
+FromWater -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Taken from water</span>
+</li>
+<li>
+ClientFilePath -- String (max=250)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Client file path</span>
+</li>
+<li>
+ServerFileName -- String (max=250)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Server file name</span>
+</li>
+<li>
+ServerFilePath -- String (max=250)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Server file path</span>
+</li>
+<li>
+LastUpdateDate_UTC -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contains the date of the last update in UTC</span>
+</li>
+<li>
+LastUpdateContactTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contact TVItemID who made the last changes</span>
+</li>
+</ul>
+<a href="table_en.html">Return to table list</a>
+</body>
+</html>

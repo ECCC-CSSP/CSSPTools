@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>CSSPDB Model Documentation</title>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+<a href="table_fr.html">Retour à la liste de tables</a>
+<h1>Table&nbsp;---&nbsp;MikeBoundaryConditions</h1>
+<ul>
+<li>
+MikeBoundaryConditionID -- Int32 (key)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contient l'identifiant unique sur chaque ligne de la table MikeBoundaryConditions</span>
+</li>
+<li>
+DBCommand -- DBCommandEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Identifie la command de base de données pour syncroniser avec la base de données local</span>
+</li>
+<li>
+MikeBoundaryConditionTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Lien à la table TVItems représentant les conditions limits MIKE</span>
+</li>
+<li>
+MikeBoundaryConditionCode -- String (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Code de conditions limits MIKE</span>
+</li>
+<li>
+MikeBoundaryConditionName -- String (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Nom de conditions limits MIKE</span>
+</li>
+<li>
+MikeBoundaryConditionLength_m -- Double (min=1) (max=100000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Longueur de conditions limits MIKE en mètres</span>
+</li>
+<li>
+MikeBoundaryConditionFormat -- String (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Format de conditions limits MIKE</span>
+</li>
+<li>
+MikeBoundaryConditionLevelOrVelocity -- MikeBoundaryConditionLevelOrVelocityEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Niveau ou vélocité de conditions limits MIKE</span>
+</li>
+<li>
+WebTideDataSet -- WebTideDataSetEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Donnée web tide</span>
+</li>
+<li>
+NumberOfWebTideNodes -- Int32 (min=0) (max=1000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Nombre de noeux de web tide</span>
+</li>
+<li>
+WebTideDataFromStartToEndDate -- String
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Données web tide entre les dates</span>
+</li>
+<li>
+TVType -- TVTypeEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Type d'arbre visuel</span>
+</li>
+<li>
+LastUpdateDate_UTC -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contient la date de la dernière mise à jour en (UTC)</span>
+</li>
+<li>
+LastUpdateContactTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contact TVItemID qui a fait le dernier changement</span>
+</li>
+</ul>
+<a href="table_fr.html">Retour à la liste de tables</a>
+</body>
+</html>

@@ -102,8 +102,9 @@ namespace GenerateCSSPDBServices
                     sb.AppendLine(@"using System.Security.Claims;");
                     sb.AppendLine(@"using System.Text;");
                     sb.AppendLine(@"using CSSPHelperModels;");
+                    sb.AppendLine(@"using CSSPHelperServices;");
+                    sb.AppendLine(@"using CSSPScrambleServices;");
                 }
-                sb.AppendLine(@"using CSSPScrambleServices;");
                 sb.AppendLine(@"");
                 sb.AppendLine($@"namespace CSSPDBServices");
                 sb.AppendLine(@"{");
@@ -163,12 +164,12 @@ namespace GenerateCSSPDBServices
                     {
                         sb.AppendLine(@"        private ILoginModelService LoginModelService { get; }");
                         sb.AppendLine(@"        private IRegisterModelService RegisterModelService { get; }");
+                        sb.AppendLine(@"        private IScrambleService ScrambleService { get; }");
                     }
                     sb.AppendLine(@"        private ICSSPCultureService CSSPCultureService { get; }");
                     sb.AppendLine(@"        private ILoggedInService LoggedInService { get; }");
-                    sb.AppendLine(@"        private IScrambleService ScrambleService { get; }");
                     sb.AppendLine(@"        private IEnums enums { get; }");
-                    sb.AppendLine(@"        private IEnumerable<ValidationResult> ValidationResults { get; set; }");
+                    sb.AppendLine(@"        private List<ValidationResult> ValidationResults { get; set; }");
                     sb.AppendLine(@"        #endregion Properties");
                     sb.AppendLine(@"");
                     sb.AppendLine(@"        #region Constructors");
@@ -200,11 +201,11 @@ namespace GenerateCSSPDBServices
                     {
                         sb.AppendLine(@"            this.LoginModelService = LoginModelService;");
                         sb.AppendLine(@"            this.RegisterModelService = RegisterModelService;");
+                        sb.AppendLine(@"            this.ScrambleService = ScrambleService;");
                     }
                     sb.AppendLine(@"            this.Configuration = Configuration;");
                     sb.AppendLine(@"            this.CSSPCultureService = CSSPCultureService;");
                     sb.AppendLine(@"            this.LoggedInService = LoggedInService;");
-                    sb.AppendLine(@"            this.ScrambleService = ScrambleService;");
                     sb.AppendLine(@"            this.enums = enums;");
                     sb.AppendLine(@"            this.db = db;");
                     if (/*dllTypeInfoModels.Type.Name == "AspNetUser" || */dllTypeInfoModels.Type.Name == "Contact"
@@ -221,7 +222,7 @@ namespace GenerateCSSPDBServices
                 {
                     sb.AppendLine($@"    public interface I{ dllTypeInfoModels.Type.Name }Service");
                     sb.AppendLine($@"    {{");
-                    sb.AppendLine($@"        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);");
+                    sb.AppendLine($@"        bool Validate(ValidationContext validationContext);");
                     sb.AppendLine($@"    }}");
 
                     sb.AppendLine($@"    public partial class { dllTypeInfoModels.Type.Name }Service : I{ dllTypeInfoModels.Type.Name }Service");
@@ -276,7 +277,6 @@ namespace GenerateCSSPDBServices
                     sb.AppendLine(@"    }");
                     sb.AppendLine(@"");
                 }
-
 
                 sb.AppendLine(@"}");
 

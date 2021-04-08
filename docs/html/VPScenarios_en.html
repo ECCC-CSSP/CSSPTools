@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>CSSPDB Model Documentation</title>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+<a href="table_en.html">Return to table list</a>
+<h1>Table&nbsp;---&nbsp;VPScenarios</h1>
+<ul>
+<li>
+VPScenarioID -- Int32 (key)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contains the unique identifier on each row of the VPScenarios table</span>
+</li>
+<li>
+DBCommand -- DBCommandEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Identify the database command for local database sync</span>
+</li>
+<li>
+InfrastructureTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Link to the TVItems table representing the infrastructure</span>
+</li>
+<li>
+VPScenarioStatus -- ScenarioStatusEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Visual plumes scenario status</span>
+</li>
+<li>
+UseAsBestEstimate -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Use as best estimate</span>
+</li>
+<li>
+EffluentFlow_m3_s -- Double (min=0) (max=1000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Effluent flow in cubic meters per second</span>
+</li>
+<li>
+EffluentConcentration_MPN_100ml -- Int32 (min=0) (max=10000000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Effluent concentration in most probable number per 100 milli-Litres</span>
+</li>
+<li>
+FroudeNumber -- Double (min=0) (max=10000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Froude number</span>
+</li>
+<li>
+PortDiameter_m -- Double (min=0) (max=10)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Port diameter in meters</span>
+</li>
+<li>
+PortDepth_m -- Double (min=0) (max=1000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Port depth in meters</span>
+</li>
+<li>
+PortElevation_m -- Double (min=0) (max=1000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Port elevation in meters</span>
+</li>
+<li>
+VerticalAngle_deg -- Double (min=-90) (max=90)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Vertical angle in degree</span>
+</li>
+<li>
+HorizontalAngle_deg -- Double (min=-180) (max=180)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Horizontal angle in degree</span>
+</li>
+<li>
+NumberOfPorts -- Int32 (min=1) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Number of ports</span>
+</li>
+<li>
+PortSpacing_m -- Double (min=0) (max=1000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Port spacing in meters</span>
+</li>
+<li>
+AcuteMixZone_m -- Double (min=0) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Acute mix zone in meters</span>
+</li>
+<li>
+ChronicMixZone_m -- Double (min=0) (max=40000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Chronic mix zone in meters</span>
+</li>
+<li>
+EffluentSalinity_PSU -- Double (min=0) (max=40)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Effluent salinity in PSU</span>
+</li>
+<li>
+EffluentTemperature_C -- Double (min=-10) (max=40)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Effluent temperature in degree Celcius</span>
+</li>
+<li>
+EffluentVelocity_m_s -- Double (min=0) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Effluent velocity in meters per second</span>
+</li>
+<li>
+RawResults -- String
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Raw results</span>
+</li>
+<li>
+LastUpdateDate_UTC -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contains the date of the last update in UTC</span>
+</li>
+<li>
+LastUpdateContactTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contact TVItemID who made the last changes</span>
+</li>
+</ul>
+<a href="table_en.html">Return to table list</a>
+</body>
+</html>

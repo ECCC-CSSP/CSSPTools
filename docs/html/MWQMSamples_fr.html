@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>CSSPDB Model Documentation</title>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+<a href="table_fr.html">Retour à la liste de tables</a>
+<h1>Table&nbsp;---&nbsp;MWQMSamples</h1>
+<ul>
+<li>
+MWQMSampleID -- Int32 (key)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contient l'identifiant unique sur chaque ligne de la table MWQMSamples</span>
+</li>
+<li>
+DBCommand -- DBCommandEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Identifie la command de base de données pour syncroniser avec la base de données local</span>
+</li>
+<li>
+MWQMSiteTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Lien à la table TVItems représentant le site MWQM</span>
+</li>
+<li>
+MWQMRunTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Lien à la table TVItems représentant la tournée MWQM</span>
+</li>
+<li>
+SampleDateTime_Local -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Date et temps de l'échantillon (local)</span>
+</li>
+<li>
+TimeText -- String (max=6)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Texte du temps</span>
+</li>
+<li>
+Depth_m -- Double (min=0) (max=1000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Profondeur en mètres</span>
+</li>
+<li>
+FecCol_MPN_100ml -- Int32 (min=0) (max=10000000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Number plus probable de colonies de coliform fécaux par 100 milli-Litres</span>
+</li>
+<li>
+Salinity_PPT -- Double (min=0) (max=40)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Salinité en partis par millier</span>
+</li>
+<li>
+WaterTemp_C -- Double (min=-10) (max=40)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Température en dégré Celcius</span>
+</li>
+<li>
+PH -- Double (min=0) (max=14)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;pH</span>
+</li>
+<li>
+SampleTypesText -- String (max=50)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Types de l'échantillon</span>
+</li>
+<li>
+SampleType_old -- SampleTypeEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Vieu type d'échantillon</span>
+</li>
+<li>
+Tube_10 -- Int32 (min=0) (max=5)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Nombre de tube positif pour Tube 10</span>
+</li>
+<li>
+Tube_1_0 -- Int32 (min=0) (max=5)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Nombre de tube positif pour Tube 1</span>
+</li>
+<li>
+Tube_0_1 -- Int32 (min=0) (max=5)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Nombre de tube positif pour Tube .1</span>
+</li>
+<li>
+ProcessedBy -- String (max=10)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Traité par</span>
+</li>
+<li>
+UseForOpenData -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Utilisé pour les données ouvertes</span>
+</li>
+<li>
+LastUpdateDate_UTC -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contient la date de la dernière mise à jour en (UTC)</span>
+</li>
+<li>
+LastUpdateContactTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contact TVItemID qui a fait le dernier changement</span>
+</li>
+</ul>
+<a href="table_fr.html">Retour à la liste de tables</a>
+</body>
+</html>

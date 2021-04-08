@@ -19,7 +19,6 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using LoggedInServices;
 using Microsoft.Extensions.Configuration;
-using CSSPScrambleServices;
 
 namespace CSSPDBServices
 {
@@ -41,9 +40,8 @@ namespace CSSPDBServices
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IScrambleService ScrambleService { get; }
         private IEnums enums { get; }
-        private IEnumerable<ValidationResult> ValidationResults { get; set; }
+        private List<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -54,7 +52,6 @@ namespace CSSPDBServices
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.ScrambleService = ScrambleService;
             this.enums = enums;
             this.db = db;
         }
@@ -65,7 +62,7 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(""));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             SamplingPlan samplingPlan = (from c in db.SamplingPlans.AsNoTracking()
@@ -83,7 +80,7 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(""));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             List<SamplingPlan> samplingPlanList = (from c in db.SamplingPlans.AsNoTracking() orderby c.SamplingPlanID select c).Skip(skip).Take(take).ToList();
@@ -94,7 +91,7 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             SamplingPlan samplingPlan = (from c in db.SamplingPlans
@@ -122,11 +119,10 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
-            ValidationResults = Validate(new ValidationContext(samplingPlan), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
+            if (!Validate(new ValidationContext(samplingPlan), ActionDBTypeEnum.Create))
             {
                 return await Task.FromResult(BadRequest(ValidationResults));
             }
@@ -147,11 +143,10 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
-            ValidationResults = Validate(new ValidationContext(samplingPlan), ActionDBTypeEnum.Update);
-            if (ValidationResults.Count() > 0)
+            if (!Validate(new ValidationContext(samplingPlan), ActionDBTypeEnum.Update))
             {
                 return await Task.FromResult(BadRequest(ValidationResults));
             }
@@ -171,7 +166,7 @@ namespace CSSPDBServices
         #endregion Functions public
 
         #region Functions private
-        private IEnumerable<ValidationResult> Validate(ValidationContext validationContext, ActionDBTypeEnum actionDBType)
+        private bool Validate(ValidationContext validationContext, ActionDBTypeEnum actionDBType)
         {
             string retStr = "";
             SamplingPlan samplingPlan = validationContext.ObjectInstance as SamplingPlan;
@@ -180,57 +175,57 @@ namespace CSSPDBServices
             {
                 if (samplingPlan.SamplingPlanID == 0)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SamplingPlanID"), new[] { nameof(samplingPlan.SamplingPlanID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SamplingPlanID"), new[] { nameof(samplingPlan.SamplingPlanID) }));
                 }
 
                 if (!(from c in db.SamplingPlans.AsNoTracking() select c).Where(c => c.SamplingPlanID == samplingPlan.SamplingPlanID).Any())
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "SamplingPlan", "SamplingPlanID", samplingPlan.SamplingPlanID.ToString()), new[] { nameof(samplingPlan.SamplingPlanID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "SamplingPlan", "SamplingPlanID", samplingPlan.SamplingPlanID.ToString()), new[] { nameof(samplingPlan.SamplingPlanID) }));
                 }
             }
 
             retStr = enums.EnumTypeOK(typeof(DBCommandEnum), (int?)samplingPlan.DBCommand);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"), new[] { nameof(samplingPlan.DBCommand) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"), new[] { nameof(samplingPlan.DBCommand) }));
             }
 
             if (string.IsNullOrWhiteSpace(samplingPlan.SamplingPlanName))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SamplingPlanName"), new[] { nameof(samplingPlan.SamplingPlanName) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SamplingPlanName"), new[] { nameof(samplingPlan.SamplingPlanName) }));
             }
 
             if (!string.IsNullOrWhiteSpace(samplingPlan.SamplingPlanName) && samplingPlan.SamplingPlanName.Length > 200)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SamplingPlanName", "200"), new[] { nameof(samplingPlan.SamplingPlanName) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SamplingPlanName", "200"), new[] { nameof(samplingPlan.SamplingPlanName) }));
             }
 
             if (string.IsNullOrWhiteSpace(samplingPlan.ForGroupName))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ForGroupName"), new[] { nameof(samplingPlan.ForGroupName) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ForGroupName"), new[] { nameof(samplingPlan.ForGroupName) }));
             }
 
             if (!string.IsNullOrWhiteSpace(samplingPlan.ForGroupName) && samplingPlan.ForGroupName.Length > 100)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ForGroupName", "100"), new[] { nameof(samplingPlan.ForGroupName) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ForGroupName", "100"), new[] { nameof(samplingPlan.ForGroupName) }));
             }
 
             retStr = enums.EnumTypeOK(typeof(SampleTypeEnum), (int?)samplingPlan.SampleType);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SampleType"), new[] { nameof(samplingPlan.SampleType) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SampleType"), new[] { nameof(samplingPlan.SampleType) }));
             }
 
             retStr = enums.EnumTypeOK(typeof(SamplingPlanTypeEnum), (int?)samplingPlan.SamplingPlanType);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SamplingPlanType"), new[] { nameof(samplingPlan.SamplingPlanType) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SamplingPlanType"), new[] { nameof(samplingPlan.SamplingPlanType) }));
             }
 
             retStr = enums.EnumTypeOK(typeof(LabSheetTypeEnum), (int?)samplingPlan.LabSheetType);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LabSheetType"), new[] { nameof(samplingPlan.LabSheetType) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LabSheetType"), new[] { nameof(samplingPlan.LabSheetType) }));
             }
 
             TVItem TVItemProvinceTVItemID = null;
@@ -238,7 +233,7 @@ namespace CSSPDBServices
 
             if (TVItemProvinceTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "ProvinceTVItemID", samplingPlan.ProvinceTVItemID.ToString()), new[] { nameof(samplingPlan.ProvinceTVItemID) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "ProvinceTVItemID", samplingPlan.ProvinceTVItemID.ToString()), new[] { nameof(samplingPlan.ProvinceTVItemID)}));
             }
             else
             {
@@ -248,7 +243,7 @@ namespace CSSPDBServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemProvinceTVItemID.TVType))
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "ProvinceTVItemID", "Province"), new[] { nameof(samplingPlan.ProvinceTVItemID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "ProvinceTVItemID", "Province"), new[] { nameof(samplingPlan.ProvinceTVItemID) }));
                 }
             }
 
@@ -257,7 +252,7 @@ namespace CSSPDBServices
 
             if (TVItemCreatorTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "CreatorTVItemID", samplingPlan.CreatorTVItemID.ToString()), new[] { nameof(samplingPlan.CreatorTVItemID) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "CreatorTVItemID", samplingPlan.CreatorTVItemID.ToString()), new[] { nameof(samplingPlan.CreatorTVItemID)}));
             }
             else
             {
@@ -267,43 +262,43 @@ namespace CSSPDBServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemCreatorTVItemID.TVType))
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "CreatorTVItemID", "Contact"), new[] { nameof(samplingPlan.CreatorTVItemID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "CreatorTVItemID", "Contact"), new[] { nameof(samplingPlan.CreatorTVItemID) }));
                 }
             }
 
             if (samplingPlan.Year < 2000 || samplingPlan.Year > 2050)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Year", "2000", "2050"), new[] { nameof(samplingPlan.Year) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Year", "2000", "2050"), new[] { nameof(samplingPlan.Year) }));
             }
 
             if (string.IsNullOrWhiteSpace(samplingPlan.AccessCode))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "AccessCode"), new[] { nameof(samplingPlan.AccessCode) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "AccessCode"), new[] { nameof(samplingPlan.AccessCode) }));
             }
 
             if (!string.IsNullOrWhiteSpace(samplingPlan.AccessCode) && samplingPlan.AccessCode.Length > 15)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "AccessCode", "15"), new[] { nameof(samplingPlan.AccessCode) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "AccessCode", "15"), new[] { nameof(samplingPlan.AccessCode) }));
             }
 
             if (samplingPlan.DailyDuplicatePrecisionCriteria < 0 || samplingPlan.DailyDuplicatePrecisionCriteria > 100)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "DailyDuplicatePrecisionCriteria", "0", "100"), new[] { nameof(samplingPlan.DailyDuplicatePrecisionCriteria) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "DailyDuplicatePrecisionCriteria", "0", "100"), new[] { nameof(samplingPlan.DailyDuplicatePrecisionCriteria) }));
             }
 
             if (samplingPlan.IntertechDuplicatePrecisionCriteria < 0 || samplingPlan.IntertechDuplicatePrecisionCriteria > 100)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "IntertechDuplicatePrecisionCriteria", "0", "100"), new[] { nameof(samplingPlan.IntertechDuplicatePrecisionCriteria) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "IntertechDuplicatePrecisionCriteria", "0", "100"), new[] { nameof(samplingPlan.IntertechDuplicatePrecisionCriteria) }));
             }
 
             if (string.IsNullOrWhiteSpace(samplingPlan.ApprovalCode))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ApprovalCode"), new[] { nameof(samplingPlan.ApprovalCode) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ApprovalCode"), new[] { nameof(samplingPlan.ApprovalCode) }));
             }
 
             if (!string.IsNullOrWhiteSpace(samplingPlan.ApprovalCode) && samplingPlan.ApprovalCode.Length > 15)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ApprovalCode", "15"), new[] { nameof(samplingPlan.ApprovalCode) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ApprovalCode", "15"), new[] { nameof(samplingPlan.ApprovalCode) }));
             }
 
             if (samplingPlan.SamplingPlanFileTVItemID != null)
@@ -313,7 +308,7 @@ namespace CSSPDBServices
 
                 if (TVItemSamplingPlanFileTVItemID == null)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "SamplingPlanFileTVItemID", (samplingPlan.SamplingPlanFileTVItemID == null ? "" : samplingPlan.SamplingPlanFileTVItemID.ToString())), new[] { nameof(samplingPlan.SamplingPlanFileTVItemID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "SamplingPlanFileTVItemID", (samplingPlan.SamplingPlanFileTVItemID == null ? "" : samplingPlan.SamplingPlanFileTVItemID.ToString())), new[] { nameof(samplingPlan.SamplingPlanFileTVItemID) }));
                 }
                 else
                 {
@@ -323,7 +318,7 @@ namespace CSSPDBServices
                     };
                     if (!AllowableTVTypes.Contains(TVItemSamplingPlanFileTVItemID.TVType))
                     {
-                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "SamplingPlanFileTVItemID", "File"), new[] { nameof(samplingPlan.SamplingPlanFileTVItemID) });
+                        ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "SamplingPlanFileTVItemID", "File"), new[] { nameof(samplingPlan.SamplingPlanFileTVItemID) }));
                     }
                 }
             }
@@ -333,7 +328,7 @@ namespace CSSPDBServices
                 retStr = enums.EnumTypeOK(typeof(AnalyzeMethodEnum), (int?)samplingPlan.AnalyzeMethodDefault);
                 if (samplingPlan.AnalyzeMethodDefault == null || !string.IsNullOrWhiteSpace(retStr))
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "AnalyzeMethodDefault"), new[] { nameof(samplingPlan.AnalyzeMethodDefault) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "AnalyzeMethodDefault"), new[] { nameof(samplingPlan.AnalyzeMethodDefault) }));
                 }
             }
 
@@ -342,7 +337,7 @@ namespace CSSPDBServices
                 retStr = enums.EnumTypeOK(typeof(SampleMatrixEnum), (int?)samplingPlan.SampleMatrixDefault);
                 if (samplingPlan.SampleMatrixDefault == null || !string.IsNullOrWhiteSpace(retStr))
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SampleMatrixDefault"), new[] { nameof(samplingPlan.SampleMatrixDefault) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SampleMatrixDefault"), new[] { nameof(samplingPlan.SampleMatrixDefault) }));
                 }
             }
 
@@ -351,29 +346,29 @@ namespace CSSPDBServices
                 retStr = enums.EnumTypeOK(typeof(LaboratoryEnum), (int?)samplingPlan.LaboratoryDefault);
                 if (samplingPlan.LaboratoryDefault == null || !string.IsNullOrWhiteSpace(retStr))
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LaboratoryDefault"), new[] { nameof(samplingPlan.LaboratoryDefault) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LaboratoryDefault"), new[] { nameof(samplingPlan.LaboratoryDefault) }));
                 }
             }
 
             if (string.IsNullOrWhiteSpace(samplingPlan.BackupDirectory))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "BackupDirectory"), new[] { nameof(samplingPlan.BackupDirectory) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "BackupDirectory"), new[] { nameof(samplingPlan.BackupDirectory) }));
             }
 
             if (!string.IsNullOrWhiteSpace(samplingPlan.BackupDirectory) && samplingPlan.BackupDirectory.Length > 250)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "BackupDirectory", "250"), new[] { nameof(samplingPlan.BackupDirectory) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "BackupDirectory", "250"), new[] { nameof(samplingPlan.BackupDirectory) }));
             }
 
             if (samplingPlan.LastUpdateDate_UTC.Year == 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { nameof(samplingPlan.LastUpdateDate_UTC) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { nameof(samplingPlan.LastUpdateDate_UTC) }));
             }
             else
             {
                 if (samplingPlan.LastUpdateDate_UTC.Year < 1980)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { nameof(samplingPlan.LastUpdateDate_UTC) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { nameof(samplingPlan.LastUpdateDate_UTC) }));
                 }
             }
 
@@ -382,7 +377,7 @@ namespace CSSPDBServices
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", samplingPlan.LastUpdateContactTVItemID.ToString()), new[] { nameof(samplingPlan.LastUpdateContactTVItemID) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", samplingPlan.LastUpdateContactTVItemID.ToString()), new[] { nameof(samplingPlan.LastUpdateContactTVItemID)}));
             }
             else
             {
@@ -392,10 +387,11 @@ namespace CSSPDBServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(samplingPlan.LastUpdateContactTVItemID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(samplingPlan.LastUpdateContactTVItemID) }));
                 }
             }
 
+            return ValidationResults.Count == 0 ? true : false;
         }
         #endregion Functions private
     }

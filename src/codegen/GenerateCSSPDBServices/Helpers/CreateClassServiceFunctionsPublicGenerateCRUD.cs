@@ -29,7 +29,7 @@ namespace GenerateCSSPDBServices
             sb.AppendLine(@"        {");
             sb.AppendLine(@"            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)");
             sb.AppendLine(@"            {");
-            sb.AppendLine(@"                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));");
+            sb.AppendLine(@"                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));");
             sb.AppendLine(@"            }");
             sb.AppendLine(@"");
             sb.AppendLine($@"            { TypeName } { TypeNameLower } = (from c in db.{ TypeName }{ Plurial }");
@@ -81,18 +81,17 @@ namespace GenerateCSSPDBServices
             sb.AppendLine(@"        {");
             sb.AppendLine(@"            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)");
             sb.AppendLine(@"            {");
-            sb.AppendLine(@"                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));");
+            sb.AppendLine(@"                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));");
             sb.AppendLine(@"            }");
             sb.AppendLine(@"");
             if (TypeName == "Contact")
             {
-                sb.AppendLine($@"            ValidationResults = Validate(new ValidationContext({ TypeNameLower }), ActionDBTypeEnum.Create, addContactType);");
+                sb.AppendLine($@"            if (!Validate(new ValidationContext({ TypeNameLower }), ActionDBTypeEnum.Create, addContactType))");
             }
             else
             {
-                sb.AppendLine($@"            ValidationResults = Validate(new ValidationContext({ TypeNameLower }), ActionDBTypeEnum.Create);");
+                sb.AppendLine($@"            if (!Validate(new ValidationContext({ TypeNameLower }), ActionDBTypeEnum.Create))");
             }
-            sb.AppendLine($@"            if (ValidationResults.Count() > 0)");
             sb.AppendLine(@"            {");
             sb.AppendLine($@"                return await Task.FromResult(BadRequest(ValidationResults));");
             sb.AppendLine(@"            }");
@@ -116,18 +115,17 @@ namespace GenerateCSSPDBServices
             sb.AppendLine(@"        {");
             sb.AppendLine(@"            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)");
             sb.AppendLine(@"            {");
-            sb.AppendLine(@"                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));");
+            sb.AppendLine(@"                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));");
             sb.AppendLine(@"            }");
             sb.AppendLine(@"");
             if (TypeName == "Contact")
             {
-                sb.AppendLine($@"            ValidationResults = Validate(new ValidationContext({ TypeNameLower }), ActionDBTypeEnum.Update, AddContactTypeEnum.LoggedIn);");
+                sb.AppendLine($@"            if (!Validate(new ValidationContext({ TypeNameLower }), ActionDBTypeEnum.Update, AddContactTypeEnum.LoggedIn))");
             }
             else
             {
-                sb.AppendLine($@"            ValidationResults = Validate(new ValidationContext({ TypeNameLower }), ActionDBTypeEnum.Update);");
+                sb.AppendLine($@"            if (!Validate(new ValidationContext({ TypeNameLower }), ActionDBTypeEnum.Update))");
             }
-            sb.AppendLine($@"            if (ValidationResults.Count() > 0)");
             sb.AppendLine(@"            {");
             sb.AppendLine($@"                return await Task.FromResult(BadRequest(ValidationResults));");
             sb.AppendLine(@"            }");

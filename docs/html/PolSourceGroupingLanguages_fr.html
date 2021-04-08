@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>CSSPDB Model Documentation</title>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+<a href="table_fr.html">Retour à la liste de tables</a>
+<h1>Table&nbsp;---&nbsp;PolSourceGroupingLanguages</h1>
+<ul>
+<li>
+PolSourceGroupingLanguageID -- Int32 (key)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contient l'identifiant unique sur chaque ligne de la table PolSourceGroupingLanguages</span>
+</li>
+<li>
+DBCommand -- DBCommandEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Identifie la command de base de données pour syncroniser avec la base de données local</span>
+</li>
+<li>
+PolSourceGroupingID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Lien à la table PolSourceGroupins représentant le groupement de source de pollution</span>
+</li>
+<li>
+Language -- LanguageEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Langage de l'item</span>
+</li>
+<li>
+SourceName -- String (max=500)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Nom de source</span>
+</li>
+<li>
+SourceNameOrder -- Int32 (min=0) (max=1000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Numéro d'ordre du nom de source</span>
+</li>
+<li>
+TranslationStatusSourceName -- TranslationStatusEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Le statut de la traduction du nom de source</span>
+</li>
+<li>
+Init -- String (max=50)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Initiale</span>
+</li>
+<li>
+TranslationStatusInit -- TranslationStatusEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Le statut de la traduction de Init</span>
+</li>
+<li>
+Description -- String (max=500)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Description</span>
+</li>
+<li>
+TranslationStatusDescription -- TranslationStatusEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Le statut de la traduction de Description</span>
+</li>
+<li>
+Report -- String (max=500)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Report</span>
+</li>
+<li>
+TranslationStatusReport -- TranslationStatusEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Le statut de la traduction de Report</span>
+</li>
+<li>
+Text -- String (max=500)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Text</span>
+</li>
+<li>
+TranslationStatusText -- TranslationStatusEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Le statut de la traduction de Text</span>
+</li>
+<li>
+LastUpdateDate_UTC -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contient la date de la dernière mise à jour en (UTC)</span>
+</li>
+<li>
+LastUpdateContactTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contact TVItemID qui a fait le dernier changement</span>
+</li>
+</ul>
+<a href="table_fr.html">Retour à la liste de tables</a>
+</body>
+</html>

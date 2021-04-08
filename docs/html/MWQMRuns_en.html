@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>CSSPDB Model Documentation</title>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+<a href="table_en.html">Return to table list</a>
+<h1>Table&nbsp;---&nbsp;MWQMRuns</h1>
+<ul>
+<li>
+MWQMRunID -- Int32 (key)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contains the unique identifier on each row of the MWQMRuns table</span>
+</li>
+<li>
+DBCommand -- DBCommandEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Identify the database command for local database sync</span>
+</li>
+<li>
+SubsectorTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Link to the TVItems table representing subsector</span>
+</li>
+<li>
+MWQMRunTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Link to the TVItems table representing MWQM run</span>
+</li>
+<li>
+RunSampleType -- SampleTypeEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Sample type</span>
+</li>
+<li>
+DateTime_Local -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Date (local)</span>
+</li>
+<li>
+RunNumber -- Int32 (min=1) (max=1000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Run number</span>
+</li>
+<li>
+StartDateTime_Local -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Start date</span>
+</li>
+<li>
+EndDateTime_Local -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;End date</span>
+</li>
+<li>
+LabReceivedDateTime_Local -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Lab received date</span>
+</li>
+<li>
+TemperatureControl1_C -- Double (min=-10) (max=40)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Temperature control 1 in degree Celcius</span>
+</li>
+<li>
+TemperatureControl2_C -- Double (min=-10) (max=40)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Temperature control 2 in degree Celcius</span>
+</li>
+<li>
+SeaStateAtStart_BeaufortScale -- BeaufortScaleEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Sea state at start (Beaufort scale)</span>
+</li>
+<li>
+SeaStateAtEnd_BeaufortScale -- BeaufortScaleEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Sea state at end (Beaufort scale)</span>
+</li>
+<li>
+WaterLevelAtBrook_m -- Double (min=0) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Water level at brook in meters</span>
+</li>
+<li>
+WaveHightAtStart_m -- Double (min=0) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Water height at start in meters</span>
+</li>
+<li>
+WaveHightAtEnd_m -- Double (min=0) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Water height at end in meters</span>
+</li>
+<li>
+SampleCrewInitials -- String (max=20)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Sample crew initials</span>
+</li>
+<li>
+AnalyzeMethod -- AnalyzeMethodEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Analyze method</span>
+</li>
+<li>
+SampleMatrix -- SampleMatrixEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Sample matrix</span>
+</li>
+<li>
+Laboratory -- LaboratoryEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Laboratory</span>
+</li>
+<li>
+SampleStatus -- SampleStatusEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Sample status</span>
+</li>
+<li>
+LabSampleApprovalContactTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Laboratory sample approval contact TVItemID</span>
+</li>
+<li>
+LabAnalyzeBath1IncubationStartDateTime_Local -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Laboratory analyze bath 1 incubation start date (local)</span>
+</li>
+<li>
+LabAnalyzeBath2IncubationStartDateTime_Local -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Laboratory analyze bath 2 incubation start date (local)</span>
+</li>
+<li>
+LabAnalyzeBath3IncubationStartDateTime_Local -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Laboratory analyze bath 3 incubation start date (local)</span>
+</li>
+<li>
+LabRunSampleApprovalDateTime_Local -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Lab run sample approval date (local)</span>
+</li>
+<li>
+Tide_Start -- TideTextEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Tide start</span>
+</li>
+<li>
+Tide_End -- TideTextEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Tide end</span>
+</li>
+<li>
+RainDay0_mm -- Double (min=0) (max=300)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Rain day 0 in millimeters</span>
+</li>
+<li>
+RainDay1_mm -- Double (min=0) (max=300)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Rain day 1 in millimeters</span>
+</li>
+<li>
+RainDay2_mm -- Double (min=0) (max=300)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Rain day 2 in millimeters</span>
+</li>
+<li>
+RainDay3_mm -- Double (min=0) (max=300)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Rain day 3 in millimeters</span>
+</li>
+<li>
+RainDay4_mm -- Double (min=0) (max=300)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Rain day 4 in millimeters</span>
+</li>
+<li>
+RainDay5_mm -- Double (min=0) (max=300)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Rain day 5 in millimeters</span>
+</li>
+<li>
+RainDay6_mm -- Double (min=0) (max=300)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Rain day 6 in millimeters</span>
+</li>
+<li>
+RainDay7_mm -- Double (min=0) (max=300)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Rain day 7 in millimeters</span>
+</li>
+<li>
+RainDay8_mm -- Double (min=0) (max=300)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Rain day 8 in millimeters</span>
+</li>
+<li>
+RainDay9_mm -- Double (min=0) (max=300)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Rain day 9 in millimeters</span>
+</li>
+<li>
+RainDay10_mm -- Double (min=0) (max=300)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Rain day 10 in millimeters</span>
+</li>
+<li>
+RemoveFromStat -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Remove from statistics</span>
+</li>
+<li>
+LastUpdateDate_UTC -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contains the date of the last update in UTC</span>
+</li>
+<li>
+LastUpdateContactTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contact TVItemID who made the last changes</span>
+</li>
+</ul>
+<a href="table_en.html">Return to table list</a>
+</body>
+</html>

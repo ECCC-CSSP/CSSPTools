@@ -55,7 +55,7 @@ namespace CSSPWebAPIsLocal.TVItemController.Tests
         {
             Assert.True(await Setup(culture));
 
-            PostTVItemModel postTVItemModel = new PostTVItemModel()
+            AppTaskModel postTVItemModel = new PostTVItemModel()
             {
                 GrandParentTVType = null,
                 GrandParentID = 0,
@@ -104,7 +104,7 @@ namespace CSSPWebAPIsLocal.TVItemController.Tests
         {
             Assert.True(await Setup(culture));
 
-            PostTVItemModel postTVItemModel = new PostTVItemModel()
+            AppTaskModel postTVItemModel = new PostTVItemModel()
             {
                 GrandParentTVType = null,
                 GrandParentID = 0,
@@ -153,7 +153,7 @@ namespace CSSPWebAPIsLocal.TVItemController.Tests
         {
             Assert.True(await Setup(culture));
 
-            PostTVItemModel postTVItemModel = new PostTVItemModel()
+            AppTaskModel postTVItemModel = new PostTVItemModel()
             {
                 GrandParentTVType = null,
                 GrandParentID = 0,

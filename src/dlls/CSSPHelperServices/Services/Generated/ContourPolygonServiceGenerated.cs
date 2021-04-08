@@ -24,7 +24,7 @@ namespace CSSPHelperServices
 {
     public interface IContourPolygonService
     {
-        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+        bool Validate(ValidationContext validationContext);
     }
     public partial class ContourPolygonService : IContourPolygonService
     {
@@ -32,6 +32,7 @@ namespace CSSPHelperServices
         #endregion Variables
 
         #region Properties
+        private List<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -41,28 +42,29 @@ namespace CSSPHelperServices
         #endregion Constructors
 
         #region Functions public
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        public bool Validate(ValidationContext validationContext)
         {
             ContourPolygon contourPolygon = validationContext.ObjectInstance as ContourPolygon;
 
             if (contourPolygon.ContourValue < 0)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContourValue", "0"), new[] { "ContourValue" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContourValue", "0"), new[] { "ContourValue" }));
             }
 
             if (contourPolygon.Layer < 1 || contourPolygon.Layer > 100)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Layer", "1", "100"), new[] { "Layer" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Layer", "1", "100"), new[] { "Layer" }));
             }
 
             if (contourPolygon.Depth_m < 1 || contourPolygon.Depth_m > 10000)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Depth_m", "1", "10000"), new[] { "Depth_m" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Depth_m", "1", "10000"), new[] { "Depth_m" }));
             }
 
                 //CSSPError: Type not implemented [ContourNodeList] of type [List`1]
 
                 //CSSPError: Type not implemented [ContourNodeList] of type [Node]
+            return ValidationResults.Count == 0 ? true : false;
         }
         #endregion Functions public
     }

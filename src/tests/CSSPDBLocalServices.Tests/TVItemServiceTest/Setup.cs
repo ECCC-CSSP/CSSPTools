@@ -26,7 +26,7 @@ using Xunit;
 
 namespace CSSPDBLocalServices.Tests
 {
-    public partial class TVItemServiceTest
+    public partial class TVItemLocalServiceTest
     {
         #region Properties
         private IConfiguration Configuration { get; set; }
@@ -34,7 +34,7 @@ namespace CSSPDBLocalServices.Tests
         private IServiceCollection Services { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
         private ILoggedInService LoggedInService { get; set; }
-        private ITVItemService PostTVItemModelService { get; set; }
+        private ITVItemLocalService PostTVItemModelService { get; set; }
         private IReadGzFileService ReadGzFileService { get; set; }
         private ICreateGzFileLocalService CreateGzFileLocalService { get; set; }
         private CSSPDBLocalContext dbLocal { get; set; }
@@ -45,7 +45,7 @@ namespace CSSPDBLocalServices.Tests
         #endregion Properties
 
         #region Constructors
-        public TVItemServiceTest()
+        public TVItemLocalServiceTest()
         {
 
         }
@@ -136,7 +136,7 @@ namespace CSSPDBLocalServices.Tests
             Services.AddSingleton<IDownloadFileService, DownloadFileService>();
             Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
             Services.AddSingleton<ICreateGzFileLocalService, CreateGzFileLocalService>();
-            Services.AddSingleton<ITVItemService, TVItemService>();
+            Services.AddSingleton<ITVItemLocalService, TVItemLocalService>();
 
             Provider = Services.BuildServiceProvider();
             Assert.NotNull(Provider);
@@ -154,7 +154,7 @@ namespace CSSPDBLocalServices.Tests
             dbLocal = Provider.GetService<CSSPDBLocalContext>();
             Assert.NotNull(dbLocal);
 
-            PostTVItemModelService = Provider.GetService<ITVItemService>();
+            PostTVItemModelService = Provider.GetService<ITVItemLocalService>();
             Assert.NotNull(PostTVItemModelService);
 
             ReadGzFileService = Provider.GetService<IReadGzFileService>();

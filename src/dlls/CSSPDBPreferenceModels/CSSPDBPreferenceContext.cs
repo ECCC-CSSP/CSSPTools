@@ -13,6 +13,8 @@ namespace CSSPDBPreferenceModels
     {
 
         #region Properties
+        public virtual DbSet<AppTask> AppTasks { get; set; }
+        public virtual DbSet<AppTaskLanguage> AppTaskLanguages { get; set; }
         public virtual DbSet<Contact> Contacts { get; set; }
         public virtual DbSet<TVItemUserAuthorization> TVItemUserAuthorizations { get; set; }
         public virtual DbSet<TVTypeUserAuthorization> TVTypeUserAuthorizations { get; set; }

@@ -24,7 +24,7 @@ namespace CSSPHelperServices
 {
     public interface ITVItemInfrastructureTypeTVItemLinkService
     {
-        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+        bool Validate(ValidationContext validationContext);
     }
     public partial class TVItemInfrastructureTypeTVItemLinkService : ITVItemInfrastructureTypeTVItemLinkService
     {
@@ -32,6 +32,7 @@ namespace CSSPHelperServices
         #endregion Variables
 
         #region Properties
+        private List<ValidationResult> ValidationResults { get; set; }
         private IEnums enums { get; }
         #endregion Properties
 
@@ -43,7 +44,7 @@ namespace CSSPHelperServices
         #endregion Constructors
 
         #region Functions public
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        public bool Validate(ValidationContext validationContext)
         {
             string retStr = "";
             TVItemInfrastructureTypeTVItemLink tvItemInfrastructureTypeTVItemLink = validationContext.ObjectInstance as TVItemInfrastructureTypeTVItemLink;
@@ -51,14 +52,14 @@ namespace CSSPHelperServices
             retStr = enums.EnumTypeOK(typeof(InfrastructureTypeEnum), (int?)tvItemInfrastructureTypeTVItemLink.InfrastructureType);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "InfrastructureType"), new[] { "InfrastructureType" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "InfrastructureType"), new[] { "InfrastructureType" }));
             }
 
             //SeeOtherMunicipalityTVItemID has no Range Attribute
 
             if (!string.IsNullOrWhiteSpace(tvItemInfrastructureTypeTVItemLink.InfrastructureTypeText) && tvItemInfrastructureTypeTVItemLink.InfrastructureTypeText.Length > 100)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "InfrastructureTypeText", "100"), new[] { "InfrastructureTypeText" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "InfrastructureTypeText", "100"), new[] { "InfrastructureTypeText" }));
             }
 
                 //CSSPError: Type not implemented [TVItem] of type [TVItem]
@@ -70,6 +71,7 @@ namespace CSSPHelperServices
                 //CSSPError: Type not implemented [FlowTo] of type [TVItemInfrastructureTypeTVItemLink]
 
                 //CSSPError: Type not implemented [FlowTo] of type [TVItemInfrastructureTypeTVItemLink]
+            return ValidationResults.Count == 0 ? true : false;
         }
         #endregion Functions public
     }

@@ -24,7 +24,7 @@ namespace CSSPHelperServices
 {
     public interface IDBTableService
     {
-        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+        bool Validate(ValidationContext validationContext);
     }
     public partial class DBTableService : IDBTableService
     {
@@ -32,6 +32,7 @@ namespace CSSPHelperServices
         #endregion Variables
 
         #region Properties
+        private List<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -41,30 +42,31 @@ namespace CSSPHelperServices
         #endregion Constructors
 
         #region Functions public
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        public bool Validate(ValidationContext validationContext)
         {
             DBTable dBTable = validationContext.ObjectInstance as DBTable;
 
             if (string.IsNullOrWhiteSpace(dBTable.TableName))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TableName"), new[] { "TableName" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TableName"), new[] { "TableName" }));
             }
 
             if (!string.IsNullOrWhiteSpace(dBTable.TableName) && (dBTable.TableName.Length < 1 || dBTable.TableName.Length > 200))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TableName", "1", "200"), new[] { "TableName" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TableName", "1", "200"), new[] { "TableName" }));
             }
 
             if (string.IsNullOrWhiteSpace(dBTable.Plurial))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Plurial"), new[] { "Plurial" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Plurial"), new[] { "Plurial" }));
             }
 
             if (!string.IsNullOrWhiteSpace(dBTable.Plurial) && (dBTable.Plurial.Length < 1 || dBTable.Plurial.Length > 3))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "Plurial", "1", "3"), new[] { "Plurial" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "Plurial", "1", "3"), new[] { "Plurial" }));
             }
 
+            return ValidationResults.Count == 0 ? true : false;
         }
         #endregion Functions public
     }

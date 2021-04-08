@@ -24,7 +24,7 @@ namespace CSSPHelperServices
 {
     public interface IBoxModelCalNumbService
     {
-        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+        bool Validate(ValidationContext validationContext);
     }
     public partial class BoxModelCalNumbService : IBoxModelCalNumbService
     {
@@ -32,6 +32,7 @@ namespace CSSPHelperServices
         #endregion Variables
 
         #region Properties
+        private List<ValidationResult> ValidationResults { get; set; }
         private IEnums enums { get; }
         #endregion Properties
 
@@ -43,7 +44,7 @@ namespace CSSPHelperServices
         #endregion Constructors
 
         #region Functions public
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        public bool Validate(ValidationContext validationContext)
         {
             string retStr = "";
             BoxModelCalNumb boxModelCalNumb = validationContext.ObjectInstance as BoxModelCalNumb;
@@ -51,39 +52,40 @@ namespace CSSPHelperServices
             retStr = enums.EnumTypeOK(typeof(BoxModelResultTypeEnum), (int?)boxModelCalNumb.BoxModelResultType);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "BoxModelResultType"), new[] { "BoxModelResultType" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "BoxModelResultType"), new[] { "BoxModelResultType" }));
             }
 
             if (boxModelCalNumb.CalLength_m < 0)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "CalLength_m", "0"), new[] { "CalLength_m" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "CalLength_m", "0"), new[] { "CalLength_m" }));
             }
 
             if (boxModelCalNumb.CalRadius_m < 0)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "CalRadius_m", "0"), new[] { "CalRadius_m" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "CalRadius_m", "0"), new[] { "CalRadius_m" }));
             }
 
             if (boxModelCalNumb.CalSurface_m2 < 0)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "CalSurface_m2", "0"), new[] { "CalSurface_m2" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "CalSurface_m2", "0"), new[] { "CalSurface_m2" }));
             }
 
             if (boxModelCalNumb.CalVolume_m3 < 0)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "CalVolume_m3", "0"), new[] { "CalVolume_m3" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "CalVolume_m3", "0"), new[] { "CalVolume_m3" }));
             }
 
             if (boxModelCalNumb.CalWidth_m < 0)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "CalWidth_m", "0"), new[] { "CalWidth_m" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "CalWidth_m", "0"), new[] { "CalWidth_m" }));
             }
 
             if (!string.IsNullOrWhiteSpace(boxModelCalNumb.BoxModelResultTypeText) && boxModelCalNumb.BoxModelResultTypeText.Length > 100)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "BoxModelResultTypeText", "100"), new[] { "BoxModelResultTypeText" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "BoxModelResultTypeText", "100"), new[] { "BoxModelResultTypeText" }));
             }
 
+            return ValidationResults.Count == 0 ? true : false;
         }
         #endregion Functions public
     }

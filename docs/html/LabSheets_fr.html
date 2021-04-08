@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>CSSPDB Model Documentation</title>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+<a href="table_fr.html">Retour à la liste de tables</a>
+<h1>Table&nbsp;---&nbsp;LabSheets</h1>
+<ul>
+<li>
+LabSheetID -- Int32 (key)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contient l'identifiant unique sur chaque ligne de la table LabSheets</span>
+</li>
+<li>
+DBCommand -- DBCommandEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Identifie la command de base de données pour syncroniser avec la base de données local</span>
+</li>
+<li>
+OtherServerLabSheetID -- Int32 (min=1)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;ID de la feuille de laboratoire de l'autre server</span>
+</li>
+<li>
+SamplingPlanID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Lien à la table SamplingPlan représentant le plan d'échantillonnage</span>
+</li>
+<li>
+SamplingPlanName -- String (min=1) (max=250)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Nom du plan d'échantillonnage</span>
+</li>
+<li>
+Year -- Int32 (min=1980)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Année de la tournée</span>
+</li>
+<li>
+Month -- Int32 (min=1) (max=12)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Mois de la tournée</span>
+</li>
+<li>
+Day -- Int32 (min=1) (max=31)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Jour de la tournée</span>
+</li>
+<li>
+RunNumber -- Int32 (min=1) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Numéro de la tournée</span>
+</li>
+<li>
+SubsectorTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Lien à la table TVItems avec l'identifiant unique</span>
+</li>
+<li>
+MWQMRunTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Lien à la table TVItems avec l'identifiant unique</span>
+</li>
+<li>
+SamplingPlanType -- SamplingPlanTypeEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Type de plan d'échantillonnage</span>
+</li>
+<li>
+SampleType -- SampleTypeEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Type d'échantillonnage</span>
+</li>
+<li>
+LabSheetType -- LabSheetTypeEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Type de feuille de laboratoire</span>
+</li>
+<li>
+LabSheetStatus -- LabSheetStatusEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;État de la feuille de laboratoire</span>
+</li>
+<li>
+FileName -- String (min=1) (max=250)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Nom de la filière</span>
+</li>
+<li>
+FileLastModifiedDate_Local -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Date du dernier changement de la filière (local)</span>
+</li>
+<li>
+FileContent -- String
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contenu de la filière</span>
+</li>
+<li>
+AcceptedOrRejectedByContactTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Accepté ou rejeté par contact TVItemID</span>
+</li>
+<li>
+AcceptedOrRejectedDateTime -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Date de l'acceptation ou rejet (local)</span>
+</li>
+<li>
+RejectReason -- String (max=250)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Raison du rejet</span>
+</li>
+<li>
+LastUpdateDate_UTC -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contient la date de la dernière mise à jour en (UTC)</span>
+</li>
+<li>
+LastUpdateContactTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contact TVItemID qui a fait le dernier changement</span>
+</li>
+</ul>
+<a href="table_fr.html">Retour à la liste de tables</a>
+</body>
+</html>

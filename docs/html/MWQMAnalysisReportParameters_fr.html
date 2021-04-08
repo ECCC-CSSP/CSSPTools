@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>CSSPDB Model Documentation</title>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+<a href="table_fr.html">Retour à la liste de tables</a>
+<h1>Table&nbsp;---&nbsp;MWQMAnalysisReportParameters</h1>
+<ul>
+<li>
+MWQMAnalysisReportParameterID -- Int32 (key)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contient l'identifiant unique sur chaque ligne de la table MWQMAnalysisReportParameters</span>
+</li>
+<li>
+DBCommand -- DBCommandEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Identifie la command de base de données pour syncroniser avec la base de données local</span>
+</li>
+<li>
+SubsectorTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Lien à la table TVItems représentant le sous-secteur</span>
+</li>
+<li>
+AnalysisName -- String (min=5) (max=250)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Nom de l'analyse</span>
+</li>
+<li>
+AnalysisReportYear -- Int32 (min=1980) (max=2050)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Année du raport d'analyse</span>
+</li>
+<li>
+StartDate -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Date de départ</span>
+</li>
+<li>
+EndDate -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Date de fin</span>
+</li>
+<li>
+AnalysisCalculationType -- AnalysisCalculationTypeEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Type de calcul d'analyse</span>
+</li>
+<li>
+NumberOfRuns -- Int32 (min=1) (max=1000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Nombre de tournée</span>
+</li>
+<li>
+FullYear -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Toute l'année</span>
+</li>
+<li>
+SalinityHighlightDeviationFromAverage -- Double (min=1) (max=20)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Écart de salinité hyghlight par rapport à la moyenne</span>
+</li>
+<li>
+ShortRangeNumberOfDays -- Int32 (min=0) (max=5)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Portée courte nombre de jours</span>
+</li>
+<li>
+MidRangeNumberOfDays -- Int32 (min=2) (max=7)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Portée moyenne nombre de jours</span>
+</li>
+<li>
+DryLimit24h -- Int32 (min=1) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Limit sèche 24h</span>
+</li>
+<li>
+DryLimit48h -- Int32 (min=1) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Limit sèche 48h</span>
+</li>
+<li>
+DryLimit72h -- Int32 (min=1) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Limit sèche 72h</span>
+</li>
+<li>
+DryLimit96h -- Int32 (min=1) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Limit sèche 96h</span>
+</li>
+<li>
+WetLimit24h -- Int32 (min=1) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Limit pluie 24h</span>
+</li>
+<li>
+WetLimit48h -- Int32 (min=1) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Limit pluie 48h</span>
+</li>
+<li>
+WetLimit72h -- Int32 (min=1) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Limit pluie 72h</span>
+</li>
+<li>
+WetLimit96h -- Int32 (min=1) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Limit pluie 96h</span>
+</li>
+<li>
+RunsToOmit -- String (max=250)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Tournée à omettre</span>
+</li>
+<li>
+ShowDataTypes -- String (max=20)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Type de donnée à montrer</span>
+</li>
+<li>
+ExcelTVFileTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Lien à la table TVItems représentant un document Excel</span>
+</li>
+<li>
+Command -- AnalysisReportExportCommandEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Commande d'exportation du raport d'analyse</span>
+</li>
+<li>
+LastUpdateDate_UTC -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contient la date de la dernière mise à jour en (UTC)</span>
+</li>
+<li>
+LastUpdateContactTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contact TVItemID qui a fait le dernier changement</span>
+</li>
+</ul>
+<a href="table_fr.html">Retour à la liste de tables</a>
+</body>
+</html>

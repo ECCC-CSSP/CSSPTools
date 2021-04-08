@@ -19,7 +19,6 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using LoggedInServices;
 using Microsoft.Extensions.Configuration;
-using CSSPScrambleServices;
 
 namespace CSSPDBServices
 {
@@ -41,9 +40,8 @@ namespace CSSPDBServices
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IScrambleService ScrambleService { get; }
         private IEnums enums { get; }
-        private IEnumerable<ValidationResult> ValidationResults { get; set; }
+        private List<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -54,7 +52,6 @@ namespace CSSPDBServices
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.ScrambleService = ScrambleService;
             this.enums = enums;
             this.db = db;
         }
@@ -65,7 +62,7 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(""));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             MWQMRun mwqmRun = (from c in db.MWQMRuns.AsNoTracking()
@@ -83,7 +80,7 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(""));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             List<MWQMRun> mwqmRunList = (from c in db.MWQMRuns.AsNoTracking() orderby c.MWQMRunID select c).Skip(skip).Take(take).ToList();
@@ -94,7 +91,7 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             MWQMRun mwqmRun = (from c in db.MWQMRuns
@@ -122,11 +119,10 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
-            ValidationResults = Validate(new ValidationContext(mwqmRun), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
+            if (!Validate(new ValidationContext(mwqmRun), ActionDBTypeEnum.Create))
             {
                 return await Task.FromResult(BadRequest(ValidationResults));
             }
@@ -147,11 +143,10 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
-            ValidationResults = Validate(new ValidationContext(mwqmRun), ActionDBTypeEnum.Update);
-            if (ValidationResults.Count() > 0)
+            if (!Validate(new ValidationContext(mwqmRun), ActionDBTypeEnum.Update))
             {
                 return await Task.FromResult(BadRequest(ValidationResults));
             }
@@ -171,7 +166,7 @@ namespace CSSPDBServices
         #endregion Functions public
 
         #region Functions private
-        private IEnumerable<ValidationResult> Validate(ValidationContext validationContext, ActionDBTypeEnum actionDBType)
+        private bool Validate(ValidationContext validationContext, ActionDBTypeEnum actionDBType)
         {
             string retStr = "";
             MWQMRun mwqmRun = validationContext.ObjectInstance as MWQMRun;
@@ -180,19 +175,19 @@ namespace CSSPDBServices
             {
                 if (mwqmRun.MWQMRunID == 0)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "MWQMRunID"), new[] { nameof(mwqmRun.MWQMRunID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "MWQMRunID"), new[] { nameof(mwqmRun.MWQMRunID) }));
                 }
 
                 if (!(from c in db.MWQMRuns.AsNoTracking() select c).Where(c => c.MWQMRunID == mwqmRun.MWQMRunID).Any())
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "MWQMRun", "MWQMRunID", mwqmRun.MWQMRunID.ToString()), new[] { nameof(mwqmRun.MWQMRunID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "MWQMRun", "MWQMRunID", mwqmRun.MWQMRunID.ToString()), new[] { nameof(mwqmRun.MWQMRunID) }));
                 }
             }
 
             retStr = enums.EnumTypeOK(typeof(DBCommandEnum), (int?)mwqmRun.DBCommand);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"), new[] { nameof(mwqmRun.DBCommand) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"), new[] { nameof(mwqmRun.DBCommand) }));
             }
 
             TVItem TVItemSubsectorTVItemID = null;
@@ -200,7 +195,7 @@ namespace CSSPDBServices
 
             if (TVItemSubsectorTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "SubsectorTVItemID", mwqmRun.SubsectorTVItemID.ToString()), new[] { nameof(mwqmRun.SubsectorTVItemID) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "SubsectorTVItemID", mwqmRun.SubsectorTVItemID.ToString()), new[] { nameof(mwqmRun.SubsectorTVItemID)}));
             }
             else
             {
@@ -210,7 +205,7 @@ namespace CSSPDBServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemSubsectorTVItemID.TVType))
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "SubsectorTVItemID", "Subsector"), new[] { nameof(mwqmRun.SubsectorTVItemID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "SubsectorTVItemID", "Subsector"), new[] { nameof(mwqmRun.SubsectorTVItemID) }));
                 }
             }
 
@@ -219,7 +214,7 @@ namespace CSSPDBServices
 
             if (TVItemMWQMRunTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "MWQMRunTVItemID", mwqmRun.MWQMRunTVItemID.ToString()), new[] { nameof(mwqmRun.MWQMRunTVItemID) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "MWQMRunTVItemID", mwqmRun.MWQMRunTVItemID.ToString()), new[] { nameof(mwqmRun.MWQMRunTVItemID)}));
             }
             else
             {
@@ -229,58 +224,58 @@ namespace CSSPDBServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemMWQMRunTVItemID.TVType))
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "MWQMRunTVItemID", "MWQMRun"), new[] { nameof(mwqmRun.MWQMRunTVItemID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "MWQMRunTVItemID", "MWQMRun"), new[] { nameof(mwqmRun.MWQMRunTVItemID) }));
                 }
             }
 
             retStr = enums.EnumTypeOK(typeof(SampleTypeEnum), (int?)mwqmRun.RunSampleType);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "RunSampleType"), new[] { nameof(mwqmRun.RunSampleType) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "RunSampleType"), new[] { nameof(mwqmRun.RunSampleType) }));
             }
 
             if (mwqmRun.DateTime_Local.Year == 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DateTime_Local"), new[] { nameof(mwqmRun.DateTime_Local) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DateTime_Local"), new[] { nameof(mwqmRun.DateTime_Local) }));
             }
             else
             {
                 if (mwqmRun.DateTime_Local.Year < 1980)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "DateTime_Local", "1980"), new[] { nameof(mwqmRun.DateTime_Local) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "DateTime_Local", "1980"), new[] { nameof(mwqmRun.DateTime_Local) }));
                 }
             }
 
             if (mwqmRun.RunNumber < 1 || mwqmRun.RunNumber > 1000)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "RunNumber", "1", "1000"), new[] { nameof(mwqmRun.RunNumber) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "RunNumber", "1", "1000"), new[] { nameof(mwqmRun.RunNumber) }));
             }
 
             if (mwqmRun.StartDateTime_Local != null && ((DateTime)mwqmRun.StartDateTime_Local).Year < 1980)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "StartDateTime_Local", "1980"), new[] { nameof(mwqmRun.StartDateTime_Local) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "StartDateTime_Local", "1980"), new[] { nameof(mwqmRun.StartDateTime_Local) }));
             }
 
             if (mwqmRun.EndDateTime_Local != null && ((DateTime)mwqmRun.EndDateTime_Local).Year < 1980)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "EndDateTime_Local", "1980"), new[] { nameof(mwqmRun.EndDateTime_Local) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "EndDateTime_Local", "1980"), new[] { nameof(mwqmRun.EndDateTime_Local) }));
             }
 
             if (mwqmRun.StartDateTime_Local > mwqmRun.EndDateTime_Local)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._DateIsBiggerThan_, "EndDateTime_Local", "MWQMRunStartDateTime_Local"), new[] { nameof(mwqmRun.EndDateTime_Local) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._DateIsBiggerThan_, "EndDateTime_Local", "MWQMRunStartDateTime_Local"), new[] { nameof(mwqmRun.EndDateTime_Local) }));
             }
 
             if (mwqmRun.LabReceivedDateTime_Local != null && ((DateTime)mwqmRun.LabReceivedDateTime_Local).Year < 1980)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LabReceivedDateTime_Local", "1980"), new[] { nameof(mwqmRun.LabReceivedDateTime_Local) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LabReceivedDateTime_Local", "1980"), new[] { nameof(mwqmRun.LabReceivedDateTime_Local) }));
             }
 
             if (mwqmRun.TemperatureControl1_C != null)
             {
                 if (mwqmRun.TemperatureControl1_C < -10 || mwqmRun.TemperatureControl1_C > 40)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "TemperatureControl1_C", "-10", "40"), new[] { nameof(mwqmRun.TemperatureControl1_C) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "TemperatureControl1_C", "-10", "40"), new[] { nameof(mwqmRun.TemperatureControl1_C) }));
                 }
             }
 
@@ -288,7 +283,7 @@ namespace CSSPDBServices
             {
                 if (mwqmRun.TemperatureControl2_C < -10 || mwqmRun.TemperatureControl2_C > 40)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "TemperatureControl2_C", "-10", "40"), new[] { nameof(mwqmRun.TemperatureControl2_C) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "TemperatureControl2_C", "-10", "40"), new[] { nameof(mwqmRun.TemperatureControl2_C) }));
                 }
             }
 
@@ -297,7 +292,7 @@ namespace CSSPDBServices
                 retStr = enums.EnumTypeOK(typeof(BeaufortScaleEnum), (int?)mwqmRun.SeaStateAtStart_BeaufortScale);
                 if (mwqmRun.SeaStateAtStart_BeaufortScale == null || !string.IsNullOrWhiteSpace(retStr))
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SeaStateAtStart_BeaufortScale"), new[] { nameof(mwqmRun.SeaStateAtStart_BeaufortScale) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SeaStateAtStart_BeaufortScale"), new[] { nameof(mwqmRun.SeaStateAtStart_BeaufortScale) }));
                 }
             }
 
@@ -306,7 +301,7 @@ namespace CSSPDBServices
                 retStr = enums.EnumTypeOK(typeof(BeaufortScaleEnum), (int?)mwqmRun.SeaStateAtEnd_BeaufortScale);
                 if (mwqmRun.SeaStateAtEnd_BeaufortScale == null || !string.IsNullOrWhiteSpace(retStr))
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SeaStateAtEnd_BeaufortScale"), new[] { nameof(mwqmRun.SeaStateAtEnd_BeaufortScale) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SeaStateAtEnd_BeaufortScale"), new[] { nameof(mwqmRun.SeaStateAtEnd_BeaufortScale) }));
                 }
             }
 
@@ -314,7 +309,7 @@ namespace CSSPDBServices
             {
                 if (mwqmRun.WaterLevelAtBrook_m < 0 || mwqmRun.WaterLevelAtBrook_m > 100)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "WaterLevelAtBrook_m", "0", "100"), new[] { nameof(mwqmRun.WaterLevelAtBrook_m) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "WaterLevelAtBrook_m", "0", "100"), new[] { nameof(mwqmRun.WaterLevelAtBrook_m) }));
                 }
             }
 
@@ -322,7 +317,7 @@ namespace CSSPDBServices
             {
                 if (mwqmRun.WaveHightAtStart_m < 0 || mwqmRun.WaveHightAtStart_m > 100)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "WaveHightAtStart_m", "0", "100"), new[] { nameof(mwqmRun.WaveHightAtStart_m) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "WaveHightAtStart_m", "0", "100"), new[] { nameof(mwqmRun.WaveHightAtStart_m) }));
                 }
             }
 
@@ -330,13 +325,13 @@ namespace CSSPDBServices
             {
                 if (mwqmRun.WaveHightAtEnd_m < 0 || mwqmRun.WaveHightAtEnd_m > 100)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "WaveHightAtEnd_m", "0", "100"), new[] { nameof(mwqmRun.WaveHightAtEnd_m) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "WaveHightAtEnd_m", "0", "100"), new[] { nameof(mwqmRun.WaveHightAtEnd_m) }));
                 }
             }
 
             if (!string.IsNullOrWhiteSpace(mwqmRun.SampleCrewInitials) && mwqmRun.SampleCrewInitials.Length > 20)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SampleCrewInitials", "20"), new[] { nameof(mwqmRun.SampleCrewInitials) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SampleCrewInitials", "20"), new[] { nameof(mwqmRun.SampleCrewInitials) }));
             }
 
             if (mwqmRun.AnalyzeMethod != null)
@@ -344,7 +339,7 @@ namespace CSSPDBServices
                 retStr = enums.EnumTypeOK(typeof(AnalyzeMethodEnum), (int?)mwqmRun.AnalyzeMethod);
                 if (mwqmRun.AnalyzeMethod == null || !string.IsNullOrWhiteSpace(retStr))
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "AnalyzeMethod"), new[] { nameof(mwqmRun.AnalyzeMethod) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "AnalyzeMethod"), new[] { nameof(mwqmRun.AnalyzeMethod) }));
                 }
             }
 
@@ -353,7 +348,7 @@ namespace CSSPDBServices
                 retStr = enums.EnumTypeOK(typeof(SampleMatrixEnum), (int?)mwqmRun.SampleMatrix);
                 if (mwqmRun.SampleMatrix == null || !string.IsNullOrWhiteSpace(retStr))
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SampleMatrix"), new[] { nameof(mwqmRun.SampleMatrix) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SampleMatrix"), new[] { nameof(mwqmRun.SampleMatrix) }));
                 }
             }
 
@@ -362,7 +357,7 @@ namespace CSSPDBServices
                 retStr = enums.EnumTypeOK(typeof(LaboratoryEnum), (int?)mwqmRun.Laboratory);
                 if (mwqmRun.Laboratory == null || !string.IsNullOrWhiteSpace(retStr))
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Laboratory"), new[] { nameof(mwqmRun.Laboratory) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Laboratory"), new[] { nameof(mwqmRun.Laboratory) }));
                 }
             }
 
@@ -371,7 +366,7 @@ namespace CSSPDBServices
                 retStr = enums.EnumTypeOK(typeof(SampleStatusEnum), (int?)mwqmRun.SampleStatus);
                 if (mwqmRun.SampleStatus == null || !string.IsNullOrWhiteSpace(retStr))
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SampleStatus"), new[] { nameof(mwqmRun.SampleStatus) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SampleStatus"), new[] { nameof(mwqmRun.SampleStatus) }));
                 }
             }
 
@@ -382,7 +377,7 @@ namespace CSSPDBServices
 
                 if (TVItemLabSampleApprovalContactTVItemID == null)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LabSampleApprovalContactTVItemID", (mwqmRun.LabSampleApprovalContactTVItemID == null ? "" : mwqmRun.LabSampleApprovalContactTVItemID.ToString())), new[] { nameof(mwqmRun.LabSampleApprovalContactTVItemID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LabSampleApprovalContactTVItemID", (mwqmRun.LabSampleApprovalContactTVItemID == null ? "" : mwqmRun.LabSampleApprovalContactTVItemID.ToString())), new[] { nameof(mwqmRun.LabSampleApprovalContactTVItemID) }));
                 }
                 else
                 {
@@ -392,29 +387,29 @@ namespace CSSPDBServices
                     };
                     if (!AllowableTVTypes.Contains(TVItemLabSampleApprovalContactTVItemID.TVType))
                     {
-                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LabSampleApprovalContactTVItemID", "Contact"), new[] { nameof(mwqmRun.LabSampleApprovalContactTVItemID) });
+                        ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LabSampleApprovalContactTVItemID", "Contact"), new[] { nameof(mwqmRun.LabSampleApprovalContactTVItemID) }));
                     }
                 }
             }
 
             if (mwqmRun.LabAnalyzeBath1IncubationStartDateTime_Local != null && ((DateTime)mwqmRun.LabAnalyzeBath1IncubationStartDateTime_Local).Year < 1980)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LabAnalyzeBath1IncubationStartDateTime_Local", "1980"), new[] { nameof(mwqmRun.LabAnalyzeBath1IncubationStartDateTime_Local) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LabAnalyzeBath1IncubationStartDateTime_Local", "1980"), new[] { nameof(mwqmRun.LabAnalyzeBath1IncubationStartDateTime_Local) }));
             }
 
             if (mwqmRun.LabAnalyzeBath2IncubationStartDateTime_Local != null && ((DateTime)mwqmRun.LabAnalyzeBath2IncubationStartDateTime_Local).Year < 1980)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LabAnalyzeBath2IncubationStartDateTime_Local", "1980"), new[] { nameof(mwqmRun.LabAnalyzeBath2IncubationStartDateTime_Local) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LabAnalyzeBath2IncubationStartDateTime_Local", "1980"), new[] { nameof(mwqmRun.LabAnalyzeBath2IncubationStartDateTime_Local) }));
             }
 
             if (mwqmRun.LabAnalyzeBath3IncubationStartDateTime_Local != null && ((DateTime)mwqmRun.LabAnalyzeBath3IncubationStartDateTime_Local).Year < 1980)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LabAnalyzeBath3IncubationStartDateTime_Local", "1980"), new[] { nameof(mwqmRun.LabAnalyzeBath3IncubationStartDateTime_Local) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LabAnalyzeBath3IncubationStartDateTime_Local", "1980"), new[] { nameof(mwqmRun.LabAnalyzeBath3IncubationStartDateTime_Local) }));
             }
 
             if (mwqmRun.LabRunSampleApprovalDateTime_Local != null && ((DateTime)mwqmRun.LabRunSampleApprovalDateTime_Local).Year < 1980)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LabRunSampleApprovalDateTime_Local", "1980"), new[] { nameof(mwqmRun.LabRunSampleApprovalDateTime_Local) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LabRunSampleApprovalDateTime_Local", "1980"), new[] { nameof(mwqmRun.LabRunSampleApprovalDateTime_Local) }));
             }
 
             if (mwqmRun.Tide_Start != null)
@@ -422,7 +417,7 @@ namespace CSSPDBServices
                 retStr = enums.EnumTypeOK(typeof(TideTextEnum), (int?)mwqmRun.Tide_Start);
                 if (mwqmRun.Tide_Start == null || !string.IsNullOrWhiteSpace(retStr))
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Tide_Start"), new[] { nameof(mwqmRun.Tide_Start) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Tide_Start"), new[] { nameof(mwqmRun.Tide_Start) }));
                 }
             }
 
@@ -431,7 +426,7 @@ namespace CSSPDBServices
                 retStr = enums.EnumTypeOK(typeof(TideTextEnum), (int?)mwqmRun.Tide_End);
                 if (mwqmRun.Tide_End == null || !string.IsNullOrWhiteSpace(retStr))
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Tide_End"), new[] { nameof(mwqmRun.Tide_End) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Tide_End"), new[] { nameof(mwqmRun.Tide_End) }));
                 }
             }
 
@@ -439,7 +434,7 @@ namespace CSSPDBServices
             {
                 if (mwqmRun.RainDay0_mm < 0 || mwqmRun.RainDay0_mm > 300)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "RainDay0_mm", "0", "300"), new[] { nameof(mwqmRun.RainDay0_mm) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "RainDay0_mm", "0", "300"), new[] { nameof(mwqmRun.RainDay0_mm) }));
                 }
             }
 
@@ -447,7 +442,7 @@ namespace CSSPDBServices
             {
                 if (mwqmRun.RainDay1_mm < 0 || mwqmRun.RainDay1_mm > 300)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "RainDay1_mm", "0", "300"), new[] { nameof(mwqmRun.RainDay1_mm) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "RainDay1_mm", "0", "300"), new[] { nameof(mwqmRun.RainDay1_mm) }));
                 }
             }
 
@@ -455,7 +450,7 @@ namespace CSSPDBServices
             {
                 if (mwqmRun.RainDay2_mm < 0 || mwqmRun.RainDay2_mm > 300)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "RainDay2_mm", "0", "300"), new[] { nameof(mwqmRun.RainDay2_mm) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "RainDay2_mm", "0", "300"), new[] { nameof(mwqmRun.RainDay2_mm) }));
                 }
             }
 
@@ -463,7 +458,7 @@ namespace CSSPDBServices
             {
                 if (mwqmRun.RainDay3_mm < 0 || mwqmRun.RainDay3_mm > 300)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "RainDay3_mm", "0", "300"), new[] { nameof(mwqmRun.RainDay3_mm) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "RainDay3_mm", "0", "300"), new[] { nameof(mwqmRun.RainDay3_mm) }));
                 }
             }
 
@@ -471,7 +466,7 @@ namespace CSSPDBServices
             {
                 if (mwqmRun.RainDay4_mm < 0 || mwqmRun.RainDay4_mm > 300)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "RainDay4_mm", "0", "300"), new[] { nameof(mwqmRun.RainDay4_mm) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "RainDay4_mm", "0", "300"), new[] { nameof(mwqmRun.RainDay4_mm) }));
                 }
             }
 
@@ -479,7 +474,7 @@ namespace CSSPDBServices
             {
                 if (mwqmRun.RainDay5_mm < 0 || mwqmRun.RainDay5_mm > 300)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "RainDay5_mm", "0", "300"), new[] { nameof(mwqmRun.RainDay5_mm) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "RainDay5_mm", "0", "300"), new[] { nameof(mwqmRun.RainDay5_mm) }));
                 }
             }
 
@@ -487,7 +482,7 @@ namespace CSSPDBServices
             {
                 if (mwqmRun.RainDay6_mm < 0 || mwqmRun.RainDay6_mm > 300)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "RainDay6_mm", "0", "300"), new[] { nameof(mwqmRun.RainDay6_mm) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "RainDay6_mm", "0", "300"), new[] { nameof(mwqmRun.RainDay6_mm) }));
                 }
             }
 
@@ -495,7 +490,7 @@ namespace CSSPDBServices
             {
                 if (mwqmRun.RainDay7_mm < 0 || mwqmRun.RainDay7_mm > 300)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "RainDay7_mm", "0", "300"), new[] { nameof(mwqmRun.RainDay7_mm) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "RainDay7_mm", "0", "300"), new[] { nameof(mwqmRun.RainDay7_mm) }));
                 }
             }
 
@@ -503,7 +498,7 @@ namespace CSSPDBServices
             {
                 if (mwqmRun.RainDay8_mm < 0 || mwqmRun.RainDay8_mm > 300)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "RainDay8_mm", "0", "300"), new[] { nameof(mwqmRun.RainDay8_mm) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "RainDay8_mm", "0", "300"), new[] { nameof(mwqmRun.RainDay8_mm) }));
                 }
             }
 
@@ -511,7 +506,7 @@ namespace CSSPDBServices
             {
                 if (mwqmRun.RainDay9_mm < 0 || mwqmRun.RainDay9_mm > 300)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "RainDay9_mm", "0", "300"), new[] { nameof(mwqmRun.RainDay9_mm) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "RainDay9_mm", "0", "300"), new[] { nameof(mwqmRun.RainDay9_mm) }));
                 }
             }
 
@@ -519,19 +514,19 @@ namespace CSSPDBServices
             {
                 if (mwqmRun.RainDay10_mm < 0 || mwqmRun.RainDay10_mm > 300)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "RainDay10_mm", "0", "300"), new[] { nameof(mwqmRun.RainDay10_mm) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "RainDay10_mm", "0", "300"), new[] { nameof(mwqmRun.RainDay10_mm) }));
                 }
             }
 
             if (mwqmRun.LastUpdateDate_UTC.Year == 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { nameof(mwqmRun.LastUpdateDate_UTC) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { nameof(mwqmRun.LastUpdateDate_UTC) }));
             }
             else
             {
                 if (mwqmRun.LastUpdateDate_UTC.Year < 1980)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { nameof(mwqmRun.LastUpdateDate_UTC) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { nameof(mwqmRun.LastUpdateDate_UTC) }));
                 }
             }
 
@@ -540,7 +535,7 @@ namespace CSSPDBServices
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", mwqmRun.LastUpdateContactTVItemID.ToString()), new[] { nameof(mwqmRun.LastUpdateContactTVItemID) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", mwqmRun.LastUpdateContactTVItemID.ToString()), new[] { nameof(mwqmRun.LastUpdateContactTVItemID)}));
             }
             else
             {
@@ -550,10 +545,11 @@ namespace CSSPDBServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(mwqmRun.LastUpdateContactTVItemID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(mwqmRun.LastUpdateContactTVItemID) }));
                 }
             }
 
+            return ValidationResults.Count == 0 ? true : false;
         }
         #endregion Functions private
     }

@@ -24,7 +24,7 @@ namespace CSSPHelperServices
 {
     public interface IElementLayerService
     {
-        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+        bool Validate(ValidationContext validationContext);
     }
     public partial class ElementLayerService : IElementLayerService
     {
@@ -32,6 +32,7 @@ namespace CSSPHelperServices
         #endregion Variables
 
         #region Properties
+        private List<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -41,28 +42,29 @@ namespace CSSPHelperServices
         #endregion Constructors
 
         #region Functions public
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        public bool Validate(ValidationContext validationContext)
         {
             ElementLayer elementLayer = validationContext.ObjectInstance as ElementLayer;
 
             if (elementLayer.Layer < 1 || elementLayer.Layer > 1000)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Layer", "1", "1000"), new[] { "Layer" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Layer", "1", "1000"), new[] { "Layer" }));
             }
 
             if (elementLayer.ZMin < -1 || elementLayer.ZMin > -1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "ZMin", "-1", "-1"), new[] { "ZMin" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "ZMin", "-1", "-1"), new[] { "ZMin" }));
             }
 
             if (elementLayer.ZMax < -1 || elementLayer.ZMax > -1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "ZMax", "-1", "-1"), new[] { "ZMax" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "ZMax", "-1", "-1"), new[] { "ZMax" }));
             }
 
                 //CSSPError: Type not implemented [Element] of type [Element]
 
                 //CSSPError: Type not implemented [Element] of type [Element]
+            return ValidationResults.Count == 0 ? true : false;
         }
         #endregion Functions public
     }

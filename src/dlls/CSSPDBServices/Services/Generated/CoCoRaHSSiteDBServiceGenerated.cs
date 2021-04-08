@@ -19,7 +19,6 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using LoggedInServices;
 using Microsoft.Extensions.Configuration;
-using CSSPScrambleServices;
 
 namespace CSSPDBServices
 {
@@ -41,9 +40,8 @@ namespace CSSPDBServices
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IScrambleService ScrambleService { get; }
         private IEnums enums { get; }
-        private IEnumerable<ValidationResult> ValidationResults { get; set; }
+        private List<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -54,7 +52,6 @@ namespace CSSPDBServices
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.ScrambleService = ScrambleService;
             this.enums = enums;
             this.db = db;
         }
@@ -65,7 +62,7 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(""));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             CoCoRaHSSite coCoRaHSSite = (from c in db.CoCoRaHSSites.AsNoTracking()
@@ -83,7 +80,7 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(""));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             List<CoCoRaHSSite> coCoRaHSSiteList = (from c in db.CoCoRaHSSites.AsNoTracking() orderby c.CoCoRaHSSiteID select c).Skip(skip).Take(take).ToList();
@@ -94,7 +91,7 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             CoCoRaHSSite coCoRaHSSite = (from c in db.CoCoRaHSSites
@@ -122,11 +119,10 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
-            ValidationResults = Validate(new ValidationContext(coCoRaHSSite), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
+            if (!Validate(new ValidationContext(coCoRaHSSite), ActionDBTypeEnum.Create))
             {
                 return await Task.FromResult(BadRequest(ValidationResults));
             }
@@ -147,11 +143,10 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
-            ValidationResults = Validate(new ValidationContext(coCoRaHSSite), ActionDBTypeEnum.Update);
-            if (ValidationResults.Count() > 0)
+            if (!Validate(new ValidationContext(coCoRaHSSite), ActionDBTypeEnum.Update))
             {
                 return await Task.FromResult(BadRequest(ValidationResults));
             }
@@ -171,7 +166,7 @@ namespace CSSPDBServices
         #endregion Functions public
 
         #region Functions private
-        private IEnumerable<ValidationResult> Validate(ValidationContext validationContext, ActionDBTypeEnum actionDBType)
+        private bool Validate(ValidationContext validationContext, ActionDBTypeEnum actionDBType)
         {
             string retStr = "";
             CoCoRaHSSite coCoRaHSSite = validationContext.ObjectInstance as CoCoRaHSSite;
@@ -180,60 +175,60 @@ namespace CSSPDBServices
             {
                 if (coCoRaHSSite.CoCoRaHSSiteID == 0)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "CoCoRaHSSiteID"), new[] { nameof(coCoRaHSSite.CoCoRaHSSiteID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "CoCoRaHSSiteID"), new[] { nameof(coCoRaHSSite.CoCoRaHSSiteID) }));
                 }
 
                 if (!(from c in db.CoCoRaHSSites.AsNoTracking() select c).Where(c => c.CoCoRaHSSiteID == coCoRaHSSite.CoCoRaHSSiteID).Any())
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "CoCoRaHSSite", "CoCoRaHSSiteID", coCoRaHSSite.CoCoRaHSSiteID.ToString()), new[] { nameof(coCoRaHSSite.CoCoRaHSSiteID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "CoCoRaHSSite", "CoCoRaHSSiteID", coCoRaHSSite.CoCoRaHSSiteID.ToString()), new[] { nameof(coCoRaHSSite.CoCoRaHSSiteID) }));
                 }
             }
 
             retStr = enums.EnumTypeOK(typeof(DBCommandEnum), (int?)coCoRaHSSite.DBCommand);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"), new[] { nameof(coCoRaHSSite.DBCommand) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"), new[] { nameof(coCoRaHSSite.DBCommand) }));
             }
 
             if (string.IsNullOrWhiteSpace(coCoRaHSSite.StationNumber))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "StationNumber"), new[] { nameof(coCoRaHSSite.StationNumber) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "StationNumber"), new[] { nameof(coCoRaHSSite.StationNumber) }));
             }
 
             if (!string.IsNullOrWhiteSpace(coCoRaHSSite.StationNumber) && coCoRaHSSite.StationNumber.Length > 100)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "StationNumber", "100"), new[] { nameof(coCoRaHSSite.StationNumber) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "StationNumber", "100"), new[] { nameof(coCoRaHSSite.StationNumber) }));
             }
 
             if (string.IsNullOrWhiteSpace(coCoRaHSSite.StationName))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "StationName"), new[] { nameof(coCoRaHSSite.StationName) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "StationName"), new[] { nameof(coCoRaHSSite.StationName) }));
             }
 
             if (!string.IsNullOrWhiteSpace(coCoRaHSSite.StationName) && coCoRaHSSite.StationName.Length > 100)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "StationName", "100"), new[] { nameof(coCoRaHSSite.StationName) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "StationName", "100"), new[] { nameof(coCoRaHSSite.StationName) }));
             }
 
-            if (coCoRaHSSite.Latitude < 0 || coCoRaHSSite.Latitude > 10000)
+            if (coCoRaHSSite.Latitude < -90 || coCoRaHSSite.Latitude > 90)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Latitude", "0", "10000"), new[] { nameof(coCoRaHSSite.Latitude) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Latitude", "-90", "90"), new[] { nameof(coCoRaHSSite.Latitude) }));
             }
 
-            if (coCoRaHSSite.Longitude < 0 || coCoRaHSSite.Longitude > 10000)
+            if (coCoRaHSSite.Longitude < -180 || coCoRaHSSite.Longitude > 180)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Longitude", "0", "10000"), new[] { nameof(coCoRaHSSite.Longitude) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Longitude", "-180", "180"), new[] { nameof(coCoRaHSSite.Longitude) }));
             }
 
             if (coCoRaHSSite.LastUpdateDate_UTC.Year == 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { nameof(coCoRaHSSite.LastUpdateDate_UTC) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { nameof(coCoRaHSSite.LastUpdateDate_UTC) }));
             }
             else
             {
                 if (coCoRaHSSite.LastUpdateDate_UTC.Year < 1980)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { nameof(coCoRaHSSite.LastUpdateDate_UTC) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { nameof(coCoRaHSSite.LastUpdateDate_UTC) }));
                 }
             }
 
@@ -242,7 +237,7 @@ namespace CSSPDBServices
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", coCoRaHSSite.LastUpdateContactTVItemID.ToString()), new[] { nameof(coCoRaHSSite.LastUpdateContactTVItemID) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", coCoRaHSSite.LastUpdateContactTVItemID.ToString()), new[] { nameof(coCoRaHSSite.LastUpdateContactTVItemID)}));
             }
             else
             {
@@ -252,10 +247,11 @@ namespace CSSPDBServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(coCoRaHSSite.LastUpdateContactTVItemID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(coCoRaHSSite.LastUpdateContactTVItemID) }));
                 }
             }
 
+            return ValidationResults.Count == 0 ? true : false;
         }
         #endregion Functions private
     }

@@ -141,7 +141,7 @@ namespace CSSPWebAPIsLocal
             services.AddScoped<IReadGzFileService, ReadGzFileService>();
             services.AddScoped<ICreateGzFileLocalService, CreateGzFileLocalService>();
             services.AddScoped<ICSSPDBSearchService, CSSPDBSearchService>();
-            services.AddScoped<ITVItemService, TVItemService>();
+            services.AddScoped<ITVItemLocalService, TVItemLocalService>();
 
             //services.AddScoped<IWebAppLoadedService, WebAppLoadedService>();
 

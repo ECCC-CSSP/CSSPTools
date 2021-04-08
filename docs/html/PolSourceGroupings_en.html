@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>CSSPDB Model Documentation</title>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+<a href="table_en.html">Return to table list</a>
+<h1>Table&nbsp;---&nbsp;PolSourceGroupings</h1>
+<ul>
+<li>
+PolSourceGroupingID -- Int32 (key)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contains the unique identifier on each row of the PolSourceGroupings table</span>
+</li>
+<li>
+DBCommand -- DBCommandEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Identify the database command for local database sync</span>
+</li>
+<li>
+CSSPID -- Int32 (min=10000) (max=100000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;CSSP unique ID</span>
+</li>
+<li>
+GroupName -- String (max=500)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Groupe name</span>
+</li>
+<li>
+Child -- String (max=500)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Groupe name</span>
+</li>
+<li>
+Hide -- String (max=500)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Groupe name</span>
+</li>
+<li>
+LastUpdateDate_UTC -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contains the date of the last update in UTC</span>
+</li>
+<li>
+LastUpdateContactTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contact TVItemID who made the last changes</span>
+</li>
+</ul>
+<a href="table_en.html">Return to table list</a>
+</body>
+</html>

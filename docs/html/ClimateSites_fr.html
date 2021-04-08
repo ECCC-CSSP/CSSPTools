@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>CSSPDB Model Documentation</title>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+<a href="table_fr.html">Retour à la liste de tables</a>
+<h1>Table&nbsp;---&nbsp;ClimateSites</h1>
+<ul>
+<li>
+ClimateSiteID -- Int32 (key)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contient l'identifiant unique sur chaque ligne de la table ClimateSites</span>
+</li>
+<li>
+DBCommand -- DBCommandEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Identifie la command de base de données pour syncroniser avec la base de données local</span>
+</li>
+<li>
+ClimateSiteTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Lien à la table TVItems avec l'identifiant unique</span>
+</li>
+<li>
+ECDBID -- Int32 (min=1) (max=100000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;ECDBID --- Site Web du bureau météorologique d'Environnement Canada identifiant le site de site climatatique</span>
+</li>
+<li>
+ClimateSiteName -- String (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Nom du site climatique est un nom unique pour le site donné par Environnement Canada</span>
+</li>
+<li>
+Province -- String (max=4)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Province identifiée par les initiales de deux lettres</span>
+</li>
+<li>
+Elevation_m -- Double (min=0) (max=10000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Élévation (m) est l'élévation au dessus du niveau moyen de la mer</span>
+</li>
+<li>
+ClimateID -- String (max=10)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Identifiant du site climatique est unique pour le site climatique pour Environnemement Canada</span>
+</li>
+<li>
+WMOID -- Int32 (min=1) (max=100000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;WMOID est un identifiant unique pour le site climatique pour World Meteorological Office</span>
+</li>
+<li>
+TCID -- String (max=3)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;TCID est l'identificateur attribué par Transports Canada pour identifier les rapports météorologiques provenant des stations localisées aux aéroports et sont transmis en temps réel dans des formats d'aviation.</span>
+</li>
+<li>
+IsQuebecSite -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Site climatique du Québec</span>
+</li>
+<li>
+IsCoCoRaHS -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Site climatique de CoCoRaHS</span>
+</li>
+<li>
+TimeOffset_hour -- Double (min=-10) (max=0)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Décalage du fuseau horaire (heure)</span>
+</li>
+<li>
+File_desc -- String (max=50)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Description de filière --- champ temporaire utilisé lors du téléchargement des données du site Web du bureau météorologique d'Environnement Canada</span>
+</li>
+<li>
+HourlyStartDate_Local -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Date de départ des données horaires contiendra null si le site climatique n'a pas de données horaires ou la date de départ des données horaires</span>
+</li>
+<li>
+HourlyEndDate_Local -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Date de fin des données horaires contiendra null si le site climatique n'a pas de données horaires ou la date de fin des données horaires</span>
+</li>
+<li>
+HourlyNow -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Horaire maintenant indique s'il y a des données horaires maintenant</span>
+</li>
+<li>
+DailyStartDate_Local -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Date de départ des données journalières contiendra null si le site climatique n'a pas de données journalières ou la date de départ des données journalières</span>
+</li>
+<li>
+DailyEndDate_Local -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Date de fin des données journalières contiendra null si le site climatique n'a pas de données journalières ou la date de fin des données journalières</span>
+</li>
+<li>
+DailyNow -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Journalier maintenant indique s'il y a des données journalières maintenant</span>
+</li>
+<li>
+MonthlyStartDate_Local -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Date de départ des données mensuelles contiendra null si le site climatique n'a pas de données mensuelles ou la date de départ des données mensuelles</span>
+</li>
+<li>
+MonthlyEndDate_Local -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Date de fin des données mensuelles contiendra null si le site climatique n'a pas de données mensuelles ou la date de fin des données mensuelles</span>
+</li>
+<li>
+MonthlyNow -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Mensuel maintenant indique s'il y a des données mensuelles maintenant</span>
+</li>
+<li>
+LastUpdateDate_UTC -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contient la date de la dernière mise à jour en (UTC)</span>
+</li>
+<li>
+LastUpdateContactTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contact TVItemID qui a fait le dernier changement</span>
+</li>
+</ul>
+<a href="table_fr.html">Retour à la liste de tables</a>
+</body>
+</html>

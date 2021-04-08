@@ -24,7 +24,7 @@ namespace CSSPHelperServices
 {
     public interface IOtherFilesToUploadService
     {
-        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+        bool Validate(ValidationContext validationContext);
     }
     public partial class OtherFilesToUploadService : IOtherFilesToUploadService
     {
@@ -32,6 +32,7 @@ namespace CSSPHelperServices
         #endregion Variables
 
         #region Properties
+        private List<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -41,18 +42,19 @@ namespace CSSPHelperServices
         #endregion Constructors
 
         #region Functions public
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        public bool Validate(ValidationContext validationContext)
         {
             OtherFilesToUpload otherFilesToUpload = validationContext.ObjectInstance as OtherFilesToUpload;
 
             if (otherFilesToUpload.MikeScenarioID < 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "MikeScenarioID", "1"), new[] { "MikeScenarioID" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "MikeScenarioID", "1"), new[] { "MikeScenarioID" }));
             }
 
                 //CSSPError: Type not implemented [TVFileList] of type [List`1]
 
                 //CSSPError: Type not implemented [TVFileList] of type [TVFile]
+            return ValidationResults.Count == 0 ? true : false;
         }
         #endregion Functions public
     }

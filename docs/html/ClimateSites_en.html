@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>CSSPDB Model Documentation</title>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+<a href="table_en.html">Return to table list</a>
+<h1>Table&nbsp;---&nbsp;ClimateSites</h1>
+<ul>
+<li>
+ClimateSiteID -- Int32 (key)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contains the unique identifier on each row of the ClimateSites table</span>
+</li>
+<li>
+DBCommand -- DBCommandEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Identify the database command for local database sync</span>
+</li>
+<li>
+ClimateSiteTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Link to the TVItems table with the unique identifier</span>
+</li>
+<li>
+ECDBID -- Int32 (min=1) (max=100000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;ECDBID --- Environment Canada weather office web site unique id for the weather climate site</span>
+</li>
+<li>
+ClimateSiteName -- String (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Climate site name is a unique name for the site given by Environment Canada</span>
+</li>
+<li>
+Province -- String (max=4)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Province identified by two letters initiales</span>
+</li>
+<li>
+Elevation_m -- Double (min=0) (max=10000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Elevation (m) is the elevation above mean sea level</span>
+</li>
+<li>
+ClimateID -- String (max=10)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Climate site ID is a unique ID for the climate site for Environment Canada</span>
+</li>
+<li>
+WMOID -- Int32 (min=1) (max=100000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;WMOID is a unique ID for the climate site for World Meteorological Office</span>
+</li>
+<li>
+TCID -- String (max=3)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;TCID is the identifier assigned by Transport Canada to identify meteorological reports from airport observing sites transmitted in real time in aviation formats.</span>
+</li>
+<li>
+IsQuebecSite -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Quebec Climate Site</span>
+</li>
+<li>
+IsCoCoRaHS -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;CoCoRaHS Climate Site</span>
+</li>
+<li>
+TimeOffset_hour -- Double (min=-10) (max=0)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Time zone offset (hour)</span>
+</li>
+<li>
+File_desc -- String (max=50)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;File description --- temporary field used while uploading data from Environment Canda weather office web site</span>
+</li>
+<li>
+HourlyStartDate_Local -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Hourly start date will contain null is the climate site does not have hourly data or the starting date of hourly data</span>
+</li>
+<li>
+HourlyEndDate_Local -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Hourly end date will contain null is the climate site does not have hourly data or the end date of hourly data</span>
+</li>
+<li>
+HourlyNow -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Hourly now indicates if there are hourly data at this date</span>
+</li>
+<li>
+DailyStartDate_Local -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Daily start date will contain null is the climate site does not have daily data or the start date of hourly data</span>
+</li>
+<li>
+DailyEndDate_Local -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Daily end date will contain null is the climate site does not have daily data or the end date of hourly data</span>
+</li>
+<li>
+DailyNow -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Daily now indicates if there are daily data at this date</span>
+</li>
+<li>
+MonthlyStartDate_Local -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Monthly start date will contain null is the climate site does not have monthly data or the start date of monthly data</span>
+</li>
+<li>
+MonthlyEndDate_Local -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Monthly end date will contain null is the climate site does not have monthly data or the end date of monthly data</span>
+</li>
+<li>
+MonthlyNow -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Monthly now indicates if there are monthly data at this date</span>
+</li>
+<li>
+LastUpdateDate_UTC -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contains the date of the last update in UTC</span>
+</li>
+<li>
+LastUpdateContactTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contact TVItemID who made the last changes</span>
+</li>
+</ul>
+<a href="table_en.html">Return to table list</a>
+</body>
+</html>

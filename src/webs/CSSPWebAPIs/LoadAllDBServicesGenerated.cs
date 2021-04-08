@@ -15,8 +15,8 @@ namespace CSSPWebAPIs
         {
             //services.AddScoped<IAddressDBService, AddressDBService>();
             //services.AddScoped<IAppErrLogDBService, AppErrLogDBService>();
-            //services.AddScoped<IAppTaskDBService, AppTaskDBService>();
-            //services.AddScoped<IAppTaskLanguageDBService, AppTaskLanguageDBService>();
+            services.AddScoped<IAppTaskDBService, AppTaskDBService>();
+            services.AddScoped<IAppTaskLanguageDBService, AppTaskLanguageDBService>();
             //services.AddScoped<IBoxModelDBService, BoxModelDBService>();
             //services.AddScoped<IBoxModelLanguageDBService, BoxModelLanguageDBService>();
             //services.AddScoped<IBoxModelResultDBService, BoxModelResultDBService>();

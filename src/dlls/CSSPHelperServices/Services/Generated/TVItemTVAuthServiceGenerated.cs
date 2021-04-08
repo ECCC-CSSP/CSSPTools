@@ -24,7 +24,7 @@ namespace CSSPHelperServices
 {
     public interface ITVItemTVAuthService
     {
-        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+        bool Validate(ValidationContext validationContext);
     }
     public partial class TVItemTVAuthService : ITVItemTVAuthService
     {
@@ -32,6 +32,7 @@ namespace CSSPHelperServices
         #endregion Variables
 
         #region Properties
+        private List<ValidationResult> ValidationResults { get; set; }
         private IEnums enums { get; }
         #endregion Properties
 
@@ -43,52 +44,53 @@ namespace CSSPHelperServices
         #endregion Constructors
 
         #region Functions public
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        public bool Validate(ValidationContext validationContext)
         {
             string retStr = "";
             TVItemTVAuth tvItemTVAuth = validationContext.ObjectInstance as TVItemTVAuth;
 
             if (tvItemTVAuth.TVItemUserAuthID < 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "TVItemUserAuthID", "1"), new[] { "TVItemUserAuthID" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "TVItemUserAuthID", "1"), new[] { "TVItemUserAuthID" }));
             }
 
             if (string.IsNullOrWhiteSpace(tvItemTVAuth.TVText))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVText"), new[] { "TVText" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVText"), new[] { "TVText" }));
             }
 
             if (!string.IsNullOrWhiteSpace(tvItemTVAuth.TVText) && (tvItemTVAuth.TVText.Length < 1 || tvItemTVAuth.TVText.Length > 255))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVText", "1", "255"), new[] { "TVText" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVText", "1", "255"), new[] { "TVText" }));
             }
 
             if (tvItemTVAuth.TVItemID1 < 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "TVItemID1", "1"), new[] { "TVItemID1" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "TVItemID1", "1"), new[] { "TVItemID1" }));
             }
 
             if (string.IsNullOrWhiteSpace(tvItemTVAuth.TVTypeStr))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVTypeStr"), new[] { "TVTypeStr" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVTypeStr"), new[] { "TVTypeStr" }));
             }
 
             if (!string.IsNullOrWhiteSpace(tvItemTVAuth.TVTypeStr) && (tvItemTVAuth.TVTypeStr.Length < 1 || tvItemTVAuth.TVTypeStr.Length > 255))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVTypeStr", "1", "255"), new[] { "TVTypeStr" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVTypeStr", "1", "255"), new[] { "TVTypeStr" }));
             }
 
             retStr = enums.EnumTypeOK(typeof(TVAuthEnum), (int?)tvItemTVAuth.TVAuth);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVAuth"), new[] { "TVAuth" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVAuth"), new[] { "TVAuth" }));
             }
 
             if (!string.IsNullOrWhiteSpace(tvItemTVAuth.TVAuthText) && tvItemTVAuth.TVAuthText.Length > 100)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "TVAuthText", "100"), new[] { "TVAuthText" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "TVAuthText", "100"), new[] { "TVAuthText" }));
             }
 
+            return ValidationResults.Count == 0 ? true : false;
         }
         #endregion Functions public
     }

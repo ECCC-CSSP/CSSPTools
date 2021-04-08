@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <Platforms>AnyCPU;x64;x86</Platforms>
+    <UserSecretsId>266f9d3e-c893-4a31-a13b-1555543fa7b3</UserSecretsId>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -46,7 +47,6 @@
     <ProjectReference Include="..\CSSPHelperModels\CSSPHelperModels.csproj" />
     <ProjectReference Include="..\CSSPLoggedInServices\CSSPLoggedInServices.csproj" />
     <ProjectReference Include="..\CSSPReadGzFileServices\CSSPReadGzFileServices.csproj" />
-    <ProjectReference Include="..\CSSPWebAppLoadedServices\CSSPWebAppLoadedlServices.csproj" />
   </ItemGroup>
 
   <ItemGroup>

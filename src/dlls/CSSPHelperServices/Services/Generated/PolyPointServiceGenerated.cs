@@ -24,7 +24,7 @@ namespace CSSPHelperServices
 {
     public interface IPolyPointService
     {
-        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+        bool Validate(ValidationContext validationContext);
     }
     public partial class PolyPointService : IPolyPointService
     {
@@ -32,6 +32,7 @@ namespace CSSPHelperServices
         #endregion Variables
 
         #region Properties
+        private List<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -41,25 +42,26 @@ namespace CSSPHelperServices
         #endregion Constructors
 
         #region Functions public
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        public bool Validate(ValidationContext validationContext)
         {
             PolyPoint polyPoint = validationContext.ObjectInstance as PolyPoint;
 
             if (polyPoint.XCoord < -180 || polyPoint.XCoord > 180)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "XCoord", "-180", "180"), new[] { "XCoord" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "XCoord", "-180", "180"), new[] { "XCoord" }));
             }
 
             if (polyPoint.YCoord < -90 || polyPoint.YCoord > 90)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "YCoord", "-90", "90"), new[] { "YCoord" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "YCoord", "-90", "90"), new[] { "YCoord" }));
             }
 
             if (polyPoint.Z < -10000 || polyPoint.Z > 10000)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Z", "-10000", "10000"), new[] { "Z" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Z", "-10000", "10000"), new[] { "Z" }));
             }
 
+            return ValidationResults.Count == 0 ? true : false;
         }
         #endregion Functions public
     }

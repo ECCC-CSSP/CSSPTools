@@ -24,7 +24,7 @@ namespace CSSPHelperServices
 {
     public interface ILabSheetA1SheetService
     {
-        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+        bool Validate(ValidationContext validationContext);
     }
     public partial class LabSheetA1SheetService : ILabSheetA1SheetService
     {
@@ -32,6 +32,7 @@ namespace CSSPHelperServices
         #endregion Variables
 
         #region Properties
+        private List<ValidationResult> ValidationResults { get; set; }
         private IEnums enums { get; }
         #endregion Properties
 
@@ -43,807 +44,808 @@ namespace CSSPHelperServices
         #endregion Constructors
 
         #region Functions public
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        public bool Validate(ValidationContext validationContext)
         {
             string retStr = "";
             LabSheetA1Sheet labSheetA1Sheet = validationContext.ObjectInstance as LabSheetA1Sheet;
 
             if (labSheetA1Sheet.Version < 1 || labSheetA1Sheet.Version > 100)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Version", "1", "100"), new[] { "Version" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Version", "1", "100"), new[] { "Version" }));
             }
 
             retStr = enums.EnumTypeOK(typeof(SamplingPlanTypeEnum), (int?)labSheetA1Sheet.SamplingPlanType);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SamplingPlanType"), new[] { "SamplingPlanType" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SamplingPlanType"), new[] { "SamplingPlanType" }));
             }
 
             retStr = enums.EnumTypeOK(typeof(SampleTypeEnum), (int?)labSheetA1Sheet.SampleType);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SampleType"), new[] { "SampleType" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SampleType"), new[] { "SampleType" }));
             }
 
             retStr = enums.EnumTypeOK(typeof(LabSheetTypeEnum), (int?)labSheetA1Sheet.LabSheetType);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LabSheetType"), new[] { "LabSheetType" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LabSheetType"), new[] { "LabSheetType" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.SubsectorName))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SubsectorName"), new[] { "SubsectorName" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SubsectorName"), new[] { "SubsectorName" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.SubsectorName) && labSheetA1Sheet.SubsectorName.Length > 1000)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SubsectorName", "1000"), new[] { "SubsectorName" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SubsectorName", "1000"), new[] { "SubsectorName" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.SubsectorLocation))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SubsectorLocation"), new[] { "SubsectorLocation" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SubsectorLocation"), new[] { "SubsectorLocation" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.SubsectorLocation) && labSheetA1Sheet.SubsectorLocation.Length > 1000)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SubsectorLocation", "1000"), new[] { "SubsectorLocation" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SubsectorLocation", "1000"), new[] { "SubsectorLocation" }));
             }
 
             if (labSheetA1Sheet.SubsectorTVItemID < 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "SubsectorTVItemID", "1"), new[] { "SubsectorTVItemID" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "SubsectorTVItemID", "1"), new[] { "SubsectorTVItemID" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.RunYear))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "RunYear"), new[] { "RunYear" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "RunYear"), new[] { "RunYear" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.RunYear) && labSheetA1Sheet.RunYear.Length > 4)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "RunYear", "4"), new[] { "RunYear" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "RunYear", "4"), new[] { "RunYear" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.RunMonth))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "RunMonth"), new[] { "RunMonth" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "RunMonth"), new[] { "RunMonth" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.RunMonth) && labSheetA1Sheet.RunMonth.Length > 2)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "RunMonth", "2"), new[] { "RunMonth" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "RunMonth", "2"), new[] { "RunMonth" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.RunDay))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "RunDay"), new[] { "RunDay" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "RunDay"), new[] { "RunDay" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.RunDay) && labSheetA1Sheet.RunDay.Length > 2)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "RunDay", "2"), new[] { "RunDay" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "RunDay", "2"), new[] { "RunDay" }));
             }
 
             if (labSheetA1Sheet.RunNumber < 1 || labSheetA1Sheet.RunNumber > 100)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "RunNumber", "1", "100"), new[] { "RunNumber" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "RunNumber", "1", "100"), new[] { "RunNumber" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.Tides))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Tides"), new[] { "Tides" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Tides"), new[] { "Tides" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.Tides) && labSheetA1Sheet.Tides.Length > 10)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Tides", "10"), new[] { "Tides" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Tides", "10"), new[] { "Tides" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.SampleCrewInitials))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SampleCrewInitials"), new[] { "SampleCrewInitials" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SampleCrewInitials"), new[] { "SampleCrewInitials" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.SampleCrewInitials) && labSheetA1Sheet.SampleCrewInitials.Length > 50)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SampleCrewInitials", "50"), new[] { "SampleCrewInitials" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SampleCrewInitials", "50"), new[] { "SampleCrewInitials" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.IncubationStartSameDay))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "IncubationStartSameDay"), new[] { "IncubationStartSameDay" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "IncubationStartSameDay"), new[] { "IncubationStartSameDay" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.IncubationStartSameDay) && labSheetA1Sheet.IncubationStartSameDay.Length > 8)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "IncubationStartSameDay", "8"), new[] { "IncubationStartSameDay" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "IncubationStartSameDay", "8"), new[] { "IncubationStartSameDay" }));
             }
 
             if (labSheetA1Sheet.WaterBathCount < 1 || labSheetA1Sheet.WaterBathCount > 5)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "WaterBathCount", "1", "5"), new[] { "WaterBathCount" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "WaterBathCount", "1", "5"), new[] { "WaterBathCount" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.IncubationBath1StartTime))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "IncubationBath1StartTime"), new[] { "IncubationBath1StartTime" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "IncubationBath1StartTime"), new[] { "IncubationBath1StartTime" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.IncubationBath1StartTime) && labSheetA1Sheet.IncubationBath1StartTime.Length > 8)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "IncubationBath1StartTime", "8"), new[] { "IncubationBath1StartTime" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "IncubationBath1StartTime", "8"), new[] { "IncubationBath1StartTime" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.IncubationBath2StartTime))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "IncubationBath2StartTime"), new[] { "IncubationBath2StartTime" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "IncubationBath2StartTime"), new[] { "IncubationBath2StartTime" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.IncubationBath2StartTime) && labSheetA1Sheet.IncubationBath2StartTime.Length > 8)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "IncubationBath2StartTime", "8"), new[] { "IncubationBath2StartTime" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "IncubationBath2StartTime", "8"), new[] { "IncubationBath2StartTime" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.IncubationBath3StartTime))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "IncubationBath3StartTime"), new[] { "IncubationBath3StartTime" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "IncubationBath3StartTime"), new[] { "IncubationBath3StartTime" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.IncubationBath3StartTime) && labSheetA1Sheet.IncubationBath3StartTime.Length > 8)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "IncubationBath3StartTime", "8"), new[] { "IncubationBath3StartTime" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "IncubationBath3StartTime", "8"), new[] { "IncubationBath3StartTime" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.IncubationBath1EndTime))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "IncubationBath1EndTime"), new[] { "IncubationBath1EndTime" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "IncubationBath1EndTime"), new[] { "IncubationBath1EndTime" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.IncubationBath1EndTime) && labSheetA1Sheet.IncubationBath1EndTime.Length > 8)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "IncubationBath1EndTime", "8"), new[] { "IncubationBath1EndTime" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "IncubationBath1EndTime", "8"), new[] { "IncubationBath1EndTime" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.IncubationBath2EndTime))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "IncubationBath2EndTime"), new[] { "IncubationBath2EndTime" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "IncubationBath2EndTime"), new[] { "IncubationBath2EndTime" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.IncubationBath2EndTime) && labSheetA1Sheet.IncubationBath2EndTime.Length > 8)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "IncubationBath2EndTime", "8"), new[] { "IncubationBath2EndTime" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "IncubationBath2EndTime", "8"), new[] { "IncubationBath2EndTime" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.IncubationBath3EndTime))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "IncubationBath3EndTime"), new[] { "IncubationBath3EndTime" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "IncubationBath3EndTime"), new[] { "IncubationBath3EndTime" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.IncubationBath3EndTime) && labSheetA1Sheet.IncubationBath3EndTime.Length > 8)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "IncubationBath3EndTime", "8"), new[] { "IncubationBath3EndTime" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "IncubationBath3EndTime", "8"), new[] { "IncubationBath3EndTime" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.IncubationBath1TimeCalculated))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "IncubationBath1TimeCalculated"), new[] { "IncubationBath1TimeCalculated" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "IncubationBath1TimeCalculated"), new[] { "IncubationBath1TimeCalculated" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.IncubationBath1TimeCalculated) && labSheetA1Sheet.IncubationBath1TimeCalculated.Length > 8)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "IncubationBath1TimeCalculated", "8"), new[] { "IncubationBath1TimeCalculated" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "IncubationBath1TimeCalculated", "8"), new[] { "IncubationBath1TimeCalculated" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.IncubationBath2TimeCalculated))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "IncubationBath2TimeCalculated"), new[] { "IncubationBath2TimeCalculated" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "IncubationBath2TimeCalculated"), new[] { "IncubationBath2TimeCalculated" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.IncubationBath2TimeCalculated) && labSheetA1Sheet.IncubationBath2TimeCalculated.Length > 8)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "IncubationBath2TimeCalculated", "8"), new[] { "IncubationBath2TimeCalculated" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "IncubationBath2TimeCalculated", "8"), new[] { "IncubationBath2TimeCalculated" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.IncubationBath3TimeCalculated))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "IncubationBath3TimeCalculated"), new[] { "IncubationBath3TimeCalculated" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "IncubationBath3TimeCalculated"), new[] { "IncubationBath3TimeCalculated" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.IncubationBath3TimeCalculated) && labSheetA1Sheet.IncubationBath3TimeCalculated.Length > 8)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "IncubationBath3TimeCalculated", "8"), new[] { "IncubationBath3TimeCalculated" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "IncubationBath3TimeCalculated", "8"), new[] { "IncubationBath3TimeCalculated" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.WaterBath1))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "WaterBath1"), new[] { "WaterBath1" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "WaterBath1"), new[] { "WaterBath1" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.WaterBath1) && labSheetA1Sheet.WaterBath1.Length > 5)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "WaterBath1", "5"), new[] { "WaterBath1" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "WaterBath1", "5"), new[] { "WaterBath1" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.WaterBath2))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "WaterBath2"), new[] { "WaterBath2" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "WaterBath2"), new[] { "WaterBath2" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.WaterBath2) && labSheetA1Sheet.WaterBath2.Length > 5)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "WaterBath2", "5"), new[] { "WaterBath2" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "WaterBath2", "5"), new[] { "WaterBath2" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.WaterBath3))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "WaterBath3"), new[] { "WaterBath3" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "WaterBath3"), new[] { "WaterBath3" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.WaterBath3) && labSheetA1Sheet.WaterBath3.Length > 5)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "WaterBath3", "5"), new[] { "WaterBath3" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "WaterBath3", "5"), new[] { "WaterBath3" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.TCField1))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TCField1"), new[] { "TCField1" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TCField1"), new[] { "TCField1" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.TCField1) && labSheetA1Sheet.TCField1.Length > 5)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "TCField1", "5"), new[] { "TCField1" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "TCField1", "5"), new[] { "TCField1" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.TCLab1))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TCLab1"), new[] { "TCLab1" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TCLab1"), new[] { "TCLab1" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.TCLab1) && labSheetA1Sheet.TCLab1.Length > 5)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "TCLab1", "5"), new[] { "TCLab1" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "TCLab1", "5"), new[] { "TCLab1" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.TCHas2Coolers))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TCHas2Coolers"), new[] { "TCHas2Coolers" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TCHas2Coolers"), new[] { "TCHas2Coolers" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.TCHas2Coolers) && labSheetA1Sheet.TCHas2Coolers.Length > 5)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "TCHas2Coolers", "5"), new[] { "TCHas2Coolers" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "TCHas2Coolers", "5"), new[] { "TCHas2Coolers" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.TCField2))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TCField2"), new[] { "TCField2" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TCField2"), new[] { "TCField2" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.TCField2) && labSheetA1Sheet.TCField2.Length > 5)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "TCField2", "5"), new[] { "TCField2" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "TCField2", "5"), new[] { "TCField2" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.TCLab2))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TCLab2"), new[] { "TCLab2" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TCLab2"), new[] { "TCLab2" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.TCLab2) && labSheetA1Sheet.TCLab2.Length > 5)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "TCLab2", "5"), new[] { "TCLab2" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "TCLab2", "5"), new[] { "TCLab2" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.TCFirst))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TCFirst"), new[] { "TCFirst" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TCFirst"), new[] { "TCFirst" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.TCFirst) && labSheetA1Sheet.TCFirst.Length > 5)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "TCFirst", "5"), new[] { "TCFirst" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "TCFirst", "5"), new[] { "TCFirst" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.TCAverage))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TCAverage"), new[] { "TCAverage" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TCAverage"), new[] { "TCAverage" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.TCAverage) && labSheetA1Sheet.TCAverage.Length > 5)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "TCAverage", "5"), new[] { "TCAverage" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "TCAverage", "5"), new[] { "TCAverage" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.ControlLot))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ControlLot"), new[] { "ControlLot" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ControlLot"), new[] { "ControlLot" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.ControlLot) && labSheetA1Sheet.ControlLot.Length > 100)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ControlLot", "100"), new[] { "ControlLot" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ControlLot", "100"), new[] { "ControlLot" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.Positive35))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Positive35"), new[] { "Positive35" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Positive35"), new[] { "Positive35" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.Positive35) && labSheetA1Sheet.Positive35.Length > 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Positive35", "1"), new[] { "Positive35" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Positive35", "1"), new[] { "Positive35" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.NonTarget35))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "NonTarget35"), new[] { "NonTarget35" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "NonTarget35"), new[] { "NonTarget35" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.NonTarget35) && labSheetA1Sheet.NonTarget35.Length > 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "NonTarget35", "1"), new[] { "NonTarget35" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "NonTarget35", "1"), new[] { "NonTarget35" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.Negative35))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Negative35"), new[] { "Negative35" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Negative35"), new[] { "Negative35" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.Negative35) && labSheetA1Sheet.Negative35.Length > 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Negative35", "1"), new[] { "Negative35" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Negative35", "1"), new[] { "Negative35" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.Bath1Positive44_5))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Bath1Positive44_5"), new[] { "Bath1Positive44_5" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Bath1Positive44_5"), new[] { "Bath1Positive44_5" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.Bath1Positive44_5) && labSheetA1Sheet.Bath1Positive44_5.Length > 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Bath1Positive44_5", "1"), new[] { "Bath1Positive44_5" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Bath1Positive44_5", "1"), new[] { "Bath1Positive44_5" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.Bath2Positive44_5))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Bath2Positive44_5"), new[] { "Bath2Positive44_5" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Bath2Positive44_5"), new[] { "Bath2Positive44_5" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.Bath2Positive44_5) && labSheetA1Sheet.Bath2Positive44_5.Length > 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Bath2Positive44_5", "1"), new[] { "Bath2Positive44_5" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Bath2Positive44_5", "1"), new[] { "Bath2Positive44_5" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.Bath3Positive44_5))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Bath3Positive44_5"), new[] { "Bath3Positive44_5" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Bath3Positive44_5"), new[] { "Bath3Positive44_5" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.Bath3Positive44_5) && labSheetA1Sheet.Bath3Positive44_5.Length > 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Bath3Positive44_5", "1"), new[] { "Bath3Positive44_5" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Bath3Positive44_5", "1"), new[] { "Bath3Positive44_5" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.Bath1NonTarget44_5))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Bath1NonTarget44_5"), new[] { "Bath1NonTarget44_5" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Bath1NonTarget44_5"), new[] { "Bath1NonTarget44_5" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.Bath1NonTarget44_5) && labSheetA1Sheet.Bath1NonTarget44_5.Length > 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Bath1NonTarget44_5", "1"), new[] { "Bath1NonTarget44_5" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Bath1NonTarget44_5", "1"), new[] { "Bath1NonTarget44_5" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.Bath2NonTarget44_5))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Bath2NonTarget44_5"), new[] { "Bath2NonTarget44_5" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Bath2NonTarget44_5"), new[] { "Bath2NonTarget44_5" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.Bath2NonTarget44_5) && labSheetA1Sheet.Bath2NonTarget44_5.Length > 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Bath2NonTarget44_5", "1"), new[] { "Bath2NonTarget44_5" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Bath2NonTarget44_5", "1"), new[] { "Bath2NonTarget44_5" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.Bath3NonTarget44_5))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Bath3NonTarget44_5"), new[] { "Bath3NonTarget44_5" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Bath3NonTarget44_5"), new[] { "Bath3NonTarget44_5" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.Bath3NonTarget44_5) && labSheetA1Sheet.Bath3NonTarget44_5.Length > 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Bath3NonTarget44_5", "1"), new[] { "Bath3NonTarget44_5" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Bath3NonTarget44_5", "1"), new[] { "Bath3NonTarget44_5" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.Bath1Negative44_5))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Bath1Negative44_5"), new[] { "Bath1Negative44_5" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Bath1Negative44_5"), new[] { "Bath1Negative44_5" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.Bath1Negative44_5) && labSheetA1Sheet.Bath1Negative44_5.Length > 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Bath1Negative44_5", "1"), new[] { "Bath1Negative44_5" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Bath1Negative44_5", "1"), new[] { "Bath1Negative44_5" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.Bath2Negative44_5))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Bath2Negative44_5"), new[] { "Bath2Negative44_5" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Bath2Negative44_5"), new[] { "Bath2Negative44_5" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.Bath2Negative44_5) && labSheetA1Sheet.Bath2Negative44_5.Length > 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Bath2Negative44_5", "1"), new[] { "Bath2Negative44_5" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Bath2Negative44_5", "1"), new[] { "Bath2Negative44_5" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.Bath3Negative44_5))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Bath3Negative44_5"), new[] { "Bath3Negative44_5" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Bath3Negative44_5"), new[] { "Bath3Negative44_5" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.Bath3Negative44_5) && labSheetA1Sheet.Bath3Negative44_5.Length > 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Bath3Negative44_5", "1"), new[] { "Bath3Negative44_5" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Bath3Negative44_5", "1"), new[] { "Bath3Negative44_5" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.Blank35))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Blank35"), new[] { "Blank35" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Blank35"), new[] { "Blank35" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.Blank35) && labSheetA1Sheet.Blank35.Length > 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Blank35", "1"), new[] { "Blank35" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Blank35", "1"), new[] { "Blank35" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.Bath1Blank44_5))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Bath1Blank44_5"), new[] { "Bath1Blank44_5" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Bath1Blank44_5"), new[] { "Bath1Blank44_5" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.Bath1Blank44_5) && labSheetA1Sheet.Bath1Blank44_5.Length > 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Bath1Blank44_5", "1"), new[] { "Bath1Blank44_5" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Bath1Blank44_5", "1"), new[] { "Bath1Blank44_5" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.Bath2Blank44_5))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Bath2Blank44_5"), new[] { "Bath2Blank44_5" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Bath2Blank44_5"), new[] { "Bath2Blank44_5" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.Bath2Blank44_5) && labSheetA1Sheet.Bath2Blank44_5.Length > 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Bath2Blank44_5", "1"), new[] { "Bath2Blank44_5" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Bath2Blank44_5", "1"), new[] { "Bath2Blank44_5" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.Bath3Blank44_5))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Bath3Blank44_5"), new[] { "Bath3Blank44_5" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Bath3Blank44_5"), new[] { "Bath3Blank44_5" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.Bath3Blank44_5) && labSheetA1Sheet.Bath3Blank44_5.Length > 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Bath3Blank44_5", "1"), new[] { "Bath3Blank44_5" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Bath3Blank44_5", "1"), new[] { "Bath3Blank44_5" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.Lot35))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Lot35"), new[] { "Lot35" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Lot35"), new[] { "Lot35" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.Lot35) && labSheetA1Sheet.Lot35.Length > 5)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Lot35", "5"), new[] { "Lot35" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Lot35", "5"), new[] { "Lot35" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.Lot44_5))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Lot44_5"), new[] { "Lot44_5" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Lot44_5"), new[] { "Lot44_5" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.Lot44_5) && labSheetA1Sheet.Lot44_5.Length > 5)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Lot44_5", "5"), new[] { "Lot44_5" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Lot44_5", "5"), new[] { "Lot44_5" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.RunComment))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "RunComment"), new[] { "RunComment" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "RunComment"), new[] { "RunComment" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.RunComment) && labSheetA1Sheet.RunComment.Length > 10000)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "RunComment", "10000"), new[] { "RunComment" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "RunComment", "10000"), new[] { "RunComment" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.RunWeatherComment))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "RunWeatherComment"), new[] { "RunWeatherComment" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "RunWeatherComment"), new[] { "RunWeatherComment" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.RunWeatherComment) && labSheetA1Sheet.RunWeatherComment.Length > 10000)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "RunWeatherComment", "10000"), new[] { "RunWeatherComment" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "RunWeatherComment", "10000"), new[] { "RunWeatherComment" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.SampleBottleLotNumber))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SampleBottleLotNumber"), new[] { "SampleBottleLotNumber" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SampleBottleLotNumber"), new[] { "SampleBottleLotNumber" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.SampleBottleLotNumber) && labSheetA1Sheet.SampleBottleLotNumber.Length > 10)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SampleBottleLotNumber", "10"), new[] { "SampleBottleLotNumber" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SampleBottleLotNumber", "10"), new[] { "SampleBottleLotNumber" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.SalinitiesReadBy))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SalinitiesReadBy"), new[] { "SalinitiesReadBy" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SalinitiesReadBy"), new[] { "SalinitiesReadBy" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.SalinitiesReadBy) && labSheetA1Sheet.SalinitiesReadBy.Length > 100)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SalinitiesReadBy", "100"), new[] { "SalinitiesReadBy" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SalinitiesReadBy", "100"), new[] { "SalinitiesReadBy" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.SalinitiesReadYear))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SalinitiesReadYear"), new[] { "SalinitiesReadYear" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SalinitiesReadYear"), new[] { "SalinitiesReadYear" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.SalinitiesReadYear) && labSheetA1Sheet.SalinitiesReadYear.Length > 4)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SalinitiesReadYear", "4"), new[] { "SalinitiesReadYear" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SalinitiesReadYear", "4"), new[] { "SalinitiesReadYear" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.SalinitiesReadMonth))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SalinitiesReadMonth"), new[] { "SalinitiesReadMonth" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SalinitiesReadMonth"), new[] { "SalinitiesReadMonth" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.SalinitiesReadMonth) && labSheetA1Sheet.SalinitiesReadMonth.Length > 2)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SalinitiesReadMonth", "2"), new[] { "SalinitiesReadMonth" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SalinitiesReadMonth", "2"), new[] { "SalinitiesReadMonth" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.SalinitiesReadDay))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SalinitiesReadDay"), new[] { "SalinitiesReadDay" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SalinitiesReadDay"), new[] { "SalinitiesReadDay" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.SalinitiesReadDay) && labSheetA1Sheet.SalinitiesReadDay.Length > 2)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SalinitiesReadDay", "2"), new[] { "SalinitiesReadDay" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SalinitiesReadDay", "2"), new[] { "SalinitiesReadDay" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.ResultsReadBy))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ResultsReadBy"), new[] { "ResultsReadBy" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ResultsReadBy"), new[] { "ResultsReadBy" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.ResultsReadBy) && labSheetA1Sheet.ResultsReadBy.Length > 100)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ResultsReadBy", "100"), new[] { "ResultsReadBy" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ResultsReadBy", "100"), new[] { "ResultsReadBy" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.ResultsReadYear))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ResultsReadYear"), new[] { "ResultsReadYear" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ResultsReadYear"), new[] { "ResultsReadYear" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.ResultsReadYear) && labSheetA1Sheet.ResultsReadYear.Length > 4)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ResultsReadYear", "4"), new[] { "ResultsReadYear" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ResultsReadYear", "4"), new[] { "ResultsReadYear" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.ResultsReadMonth))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ResultsReadMonth"), new[] { "ResultsReadMonth" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ResultsReadMonth"), new[] { "ResultsReadMonth" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.ResultsReadMonth) && labSheetA1Sheet.ResultsReadMonth.Length > 2)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ResultsReadMonth", "2"), new[] { "ResultsReadMonth" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ResultsReadMonth", "2"), new[] { "ResultsReadMonth" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.ResultsReadDay))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ResultsReadDay"), new[] { "ResultsReadDay" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ResultsReadDay"), new[] { "ResultsReadDay" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.ResultsReadDay) && labSheetA1Sheet.ResultsReadDay.Length > 2)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ResultsReadDay", "2"), new[] { "ResultsReadDay" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ResultsReadDay", "2"), new[] { "ResultsReadDay" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.ResultsRecordedBy))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ResultsRecordedBy"), new[] { "ResultsRecordedBy" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ResultsRecordedBy"), new[] { "ResultsRecordedBy" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.ResultsRecordedBy) && labSheetA1Sheet.ResultsRecordedBy.Length > 100)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ResultsRecordedBy", "100"), new[] { "ResultsRecordedBy" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ResultsRecordedBy", "100"), new[] { "ResultsRecordedBy" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.ResultsRecordedYear))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ResultsRecordedYear"), new[] { "ResultsRecordedYear" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ResultsRecordedYear"), new[] { "ResultsRecordedYear" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.ResultsRecordedYear) && labSheetA1Sheet.ResultsRecordedYear.Length > 4)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ResultsRecordedYear", "4"), new[] { "ResultsRecordedYear" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ResultsRecordedYear", "4"), new[] { "ResultsRecordedYear" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.ResultsRecordedMonth))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ResultsRecordedMonth"), new[] { "ResultsRecordedMonth" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ResultsRecordedMonth"), new[] { "ResultsRecordedMonth" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.ResultsRecordedMonth) && labSheetA1Sheet.ResultsRecordedMonth.Length > 2)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ResultsRecordedMonth", "2"), new[] { "ResultsRecordedMonth" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ResultsRecordedMonth", "2"), new[] { "ResultsRecordedMonth" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.ResultsRecordedDay))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ResultsRecordedDay"), new[] { "ResultsRecordedDay" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ResultsRecordedDay"), new[] { "ResultsRecordedDay" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.ResultsRecordedDay) && labSheetA1Sheet.ResultsRecordedDay.Length > 2)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ResultsRecordedDay", "2"), new[] { "ResultsRecordedDay" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ResultsRecordedDay", "2"), new[] { "ResultsRecordedDay" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.DailyDuplicateRLog))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DailyDuplicateRLog"), new[] { "DailyDuplicateRLog" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DailyDuplicateRLog"), new[] { "DailyDuplicateRLog" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.DailyDuplicateRLog) && labSheetA1Sheet.DailyDuplicateRLog.Length > 10)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "DailyDuplicateRLog", "10"), new[] { "DailyDuplicateRLog" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "DailyDuplicateRLog", "10"), new[] { "DailyDuplicateRLog" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.DailyDuplicatePrecisionCriteria))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DailyDuplicatePrecisionCriteria"), new[] { "DailyDuplicatePrecisionCriteria" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DailyDuplicatePrecisionCriteria"), new[] { "DailyDuplicatePrecisionCriteria" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.DailyDuplicatePrecisionCriteria) && labSheetA1Sheet.DailyDuplicatePrecisionCriteria.Length > 10)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "DailyDuplicatePrecisionCriteria", "10"), new[] { "DailyDuplicatePrecisionCriteria" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "DailyDuplicatePrecisionCriteria", "10"), new[] { "DailyDuplicatePrecisionCriteria" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.DailyDuplicateAcceptableOrUnacceptable))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DailyDuplicateAcceptableOrUnacceptable"), new[] { "DailyDuplicateAcceptableOrUnacceptable" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DailyDuplicateAcceptableOrUnacceptable"), new[] { "DailyDuplicateAcceptableOrUnacceptable" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.DailyDuplicateAcceptableOrUnacceptable) && labSheetA1Sheet.DailyDuplicateAcceptableOrUnacceptable.Length > 20)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "DailyDuplicateAcceptableOrUnacceptable", "20"), new[] { "DailyDuplicateAcceptableOrUnacceptable" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "DailyDuplicateAcceptableOrUnacceptable", "20"), new[] { "DailyDuplicateAcceptableOrUnacceptable" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.IntertechDuplicateRLog))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "IntertechDuplicateRLog"), new[] { "IntertechDuplicateRLog" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "IntertechDuplicateRLog"), new[] { "IntertechDuplicateRLog" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.IntertechDuplicateRLog) && labSheetA1Sheet.IntertechDuplicateRLog.Length > 10)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "IntertechDuplicateRLog", "10"), new[] { "IntertechDuplicateRLog" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "IntertechDuplicateRLog", "10"), new[] { "IntertechDuplicateRLog" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.IntertechDuplicatePrecisionCriteria))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "IntertechDuplicatePrecisionCriteria"), new[] { "IntertechDuplicatePrecisionCriteria" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "IntertechDuplicatePrecisionCriteria"), new[] { "IntertechDuplicatePrecisionCriteria" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.IntertechDuplicatePrecisionCriteria) && labSheetA1Sheet.IntertechDuplicatePrecisionCriteria.Length > 10)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "IntertechDuplicatePrecisionCriteria", "10"), new[] { "IntertechDuplicatePrecisionCriteria" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "IntertechDuplicatePrecisionCriteria", "10"), new[] { "IntertechDuplicatePrecisionCriteria" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.IntertechDuplicateAcceptableOrUnacceptable))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "IntertechDuplicateAcceptableOrUnacceptable"), new[] { "IntertechDuplicateAcceptableOrUnacceptable" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "IntertechDuplicateAcceptableOrUnacceptable"), new[] { "IntertechDuplicateAcceptableOrUnacceptable" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.IntertechDuplicateAcceptableOrUnacceptable) && labSheetA1Sheet.IntertechDuplicateAcceptableOrUnacceptable.Length > 20)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "IntertechDuplicateAcceptableOrUnacceptable", "20"), new[] { "IntertechDuplicateAcceptableOrUnacceptable" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "IntertechDuplicateAcceptableOrUnacceptable", "20"), new[] { "IntertechDuplicateAcceptableOrUnacceptable" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.IntertechReadAcceptableOrUnacceptable))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "IntertechReadAcceptableOrUnacceptable"), new[] { "IntertechReadAcceptableOrUnacceptable" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "IntertechReadAcceptableOrUnacceptable"), new[] { "IntertechReadAcceptableOrUnacceptable" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.IntertechReadAcceptableOrUnacceptable) && labSheetA1Sheet.IntertechReadAcceptableOrUnacceptable.Length > 20)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "IntertechReadAcceptableOrUnacceptable", "20"), new[] { "IntertechReadAcceptableOrUnacceptable" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "IntertechReadAcceptableOrUnacceptable", "20"), new[] { "IntertechReadAcceptableOrUnacceptable" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.ApprovalYear))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ApprovalYear"), new[] { "ApprovalYear" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ApprovalYear"), new[] { "ApprovalYear" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.ApprovalYear) && labSheetA1Sheet.ApprovalYear.Length > 4)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ApprovalYear", "4"), new[] { "ApprovalYear" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ApprovalYear", "4"), new[] { "ApprovalYear" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.ApprovalMonth))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ApprovalMonth"), new[] { "ApprovalMonth" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ApprovalMonth"), new[] { "ApprovalMonth" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.ApprovalMonth) && labSheetA1Sheet.ApprovalMonth.Length > 2)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ApprovalMonth", "2"), new[] { "ApprovalMonth" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ApprovalMonth", "2"), new[] { "ApprovalMonth" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.ApprovalDay))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ApprovalDay"), new[] { "ApprovalDay" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ApprovalDay"), new[] { "ApprovalDay" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.ApprovalDay) && labSheetA1Sheet.ApprovalDay.Length > 2)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ApprovalDay", "2"), new[] { "ApprovalDay" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ApprovalDay", "2"), new[] { "ApprovalDay" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.ApprovedBySupervisorInitials))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ApprovedBySupervisorInitials"), new[] { "ApprovedBySupervisorInitials" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ApprovedBySupervisorInitials"), new[] { "ApprovedBySupervisorInitials" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.ApprovedBySupervisorInitials) && labSheetA1Sheet.ApprovedBySupervisorInitials.Length > 10)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ApprovedBySupervisorInitials", "10"), new[] { "ApprovedBySupervisorInitials" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ApprovedBySupervisorInitials", "10"), new[] { "ApprovedBySupervisorInitials" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.BackupDirectory))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "BackupDirectory"), new[] { "BackupDirectory" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "BackupDirectory"), new[] { "BackupDirectory" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.BackupDirectory) && labSheetA1Sheet.BackupDirectory.Length > 250)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "BackupDirectory", "250"), new[] { "BackupDirectory" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "BackupDirectory", "250"), new[] { "BackupDirectory" }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Sheet.Log))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Log"), new[] { "Log" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Log"), new[] { "Log" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.Log) && labSheetA1Sheet.Log.Length > 1000000)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Log", "1000000"), new[] { "Log" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Log", "1000000"), new[] { "Log" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.SamplingPlanTypeText) && labSheetA1Sheet.SamplingPlanTypeText.Length > 100)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SamplingPlanTypeText", "100"), new[] { "SamplingPlanTypeText" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SamplingPlanTypeText", "100"), new[] { "SamplingPlanTypeText" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.SampleTypeText) && labSheetA1Sheet.SampleTypeText.Length > 100)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SampleTypeText", "100"), new[] { "SampleTypeText" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SampleTypeText", "100"), new[] { "SampleTypeText" }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Sheet.LabSheetTypeText) && labSheetA1Sheet.LabSheetTypeText.Length > 100)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "LabSheetTypeText", "100"), new[] { "LabSheetTypeText" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "LabSheetTypeText", "100"), new[] { "LabSheetTypeText" }));
             }
 
                 //CSSPError: Type not implemented [LabSheetA1MeasurementList] of type [List`1]
 
                 //CSSPError: Type not implemented [LabSheetA1MeasurementList] of type [LabSheetA1Measurement]
+            return ValidationResults.Count == 0 ? true : false;
         }
         #endregion Functions public
     }

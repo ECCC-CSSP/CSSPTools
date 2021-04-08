@@ -24,7 +24,7 @@ namespace CSSPHelperServices
 {
     public interface IContactSearchService
     {
-        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+        bool Validate(ValidationContext validationContext);
     }
     public partial class ContactSearchService : IContactSearchService
     {
@@ -32,6 +32,7 @@ namespace CSSPHelperServices
         #endregion Variables
 
         #region Properties
+        private List<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -41,30 +42,31 @@ namespace CSSPHelperServices
         #endregion Constructors
 
         #region Functions public
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        public bool Validate(ValidationContext validationContext)
         {
             ContactSearch contactSearch = validationContext.ObjectInstance as ContactSearch;
 
             if (contactSearch.ContactID < 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContactID", "1"), new[] { "ContactID" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContactID", "1"), new[] { "ContactID" }));
             }
 
             if (contactSearch.ContactTVItemID < 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContactTVItemID", "1"), new[] { "ContactTVItemID" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContactTVItemID", "1"), new[] { "ContactTVItemID" }));
             }
 
             if (string.IsNullOrWhiteSpace(contactSearch.FullName))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "FullName"), new[] { "FullName" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "FullName"), new[] { "FullName" }));
             }
 
             if (!string.IsNullOrWhiteSpace(contactSearch.FullName) && contactSearch.FullName.Length > 255)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "FullName", "255"), new[] { "FullName" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "FullName", "255"), new[] { "FullName" }));
             }
 
+            return ValidationResults.Count == 0 ? true : false;
         }
         #endregion Functions public
     }

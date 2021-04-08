@@ -891,6 +891,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sync databases.
+        /// </summary>
+        public static string AppTaskCommandEnumSyncDBs {
+            get {
+                return ResourceManager.GetString("AppTaskCommandEnumSyncDBs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Update Climate Site Daily And Hourly For Subsector From Start Date To End Date.
         /// </summary>
         public static string AppTaskCommandEnumUpdateClimateSiteDailyAndHourlyForSubsectorFromStartDateToEndDate {

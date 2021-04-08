@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>CSSPDB Model Documentation</title>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+<h2><a href="index.html">Change Language</a></h2>
+<h2>&nbsp;</h2>
+<a href="tables_and_fields_fr.csv">Télécharger CSV</a>
+<h2>&nbsp;</h2>
+<h2>Liste des tables</h2>
+<ul>
+<li>
+<a href="Addresses_fr.html">Addresses</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table Addresses contient des champs pour contenir l'adresse complète. Elle est utilisée avec les infrastructures, les sites sources de pollution et les contacts des municipalités. </span>
+</li>
+<li>
+<a href="AppErrLogs_fr.html">AppErrLogs</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table AppErrLogs contient des champs pour contenir les erreurs d'application. </span>
+</li>
+<li>
+<a href="AppTasks_fr.html">AppTasks</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table AppTasks contient des champs pour contenir les tâches d'application envoyées au serveur qui peuvent prendre un certain temps. </span>
+</li>
+<li>
+<a href="AppTaskLanguages_fr.html">AppTaskLanguages</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table AppTaskLanguages contient des champs pour contenir des textes bilingues pour la table AppTasks. </span>
+</li>
+<li>
+<a href="BoxModels_fr.html">BoxModels</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Le table BoxModels contient des champs pour contenir les scénarios de modélisation 'Box Model'. </span>
+</li>
+<li>
+<a href="BoxModelLanguages_fr.html">BoxModelLanguages</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table BoxModelLanguages contient des champs pour contenir des textes bilingues pour la table BoxModels. </span>
+</li>
+<li>
+<a href="BoxModelResults_fr.html">BoxModelResults</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Le BoxModelResults contient des champs pour contenir les résultats des scénarios de modélisation de boîtes. </span>
+</li>
+<li>
+<a href="Classifications_fr.html">Classifications</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table Classifications contient des champs permettant de conserver la classification pour la visualisation sur le Web. Il ne contient qu'une représentation de la classification juridique réelle détenue dans Arc GIS. </span>
+</li>
+<li>
+<a href="ClimateDataValues_fr.html">ClimateDataValues</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table ClimateDataValues contient des champs permettant de conserver les valeurs des données climatiques pour divers sites climatiques du Service météorologique du Canada. </span>
+</li>
+<li>
+<a href="ClimateSites_fr.html">ClimateSites</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table ClimateSites contient des champs permettant de conserver les informations relatives aux sites climatiques du Service météorologique du Canada ainsi que de certains sites climatiques provinciaux. </span>
+</li>
+<li>
+<a href="CoCoRaHSSites_fr.html">CoCoRaHSSites</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table CoCoRaHSSites contient des champs permettant de conserver les sites de précipitations gérés volontairement par des particuliers. </span>
+</li>
+<li>
+<a href="CoCoRaHSValues_fr.html">CoCoRaHSValues</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table CoCoRaHSValues contient des champs permettant de conserver les valeurs de précipitations provenant de sites privés volontaires. </span>
+</li>
+<li>
+<a href="Contacts_fr.html">Contacts</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table Contacts contient des champs pour stocker les informations des utilisateurs. </span>
+</li>
+<li>
+<a href="ContactPreferences_fr.html">ContactPreferences</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table ContactPreferences contient des champs permettant de gérer les préférences des utilisateurs lors de l'utilisation de certaines applications. </span>
+</li>
+<li>
+<a href="ContactShortcuts_fr.html">ContactShortcuts</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table ContactShortcuts contient des champs permettant de gérer les raccourcis utilisateurs utilisés par certaines applications. </span>
+</li>
+<li>
+<a href="DocTemplates_fr.html">DocTemplates</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table DocTemplates contient des champs pour contenir des modèles prédéfinis lors de la création de nombreux types de documents, tels que .xlsx, .docx, .csv, .txt, etc. Cette option d'exportation de données vers des documents est remplacée par des exportations de type paramètre. Cette table pourrait être supprimé à l'avenir. </span>
+</li>
+<li>
+<a href="DrogueRuns_fr.html">DrogueRuns</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table DrogueRuns contient des champs pour afficher le suivi des drogues sur le Web. Il contient les noms, les numéros et la date des courses de drogue. </span>
+</li>
+<li>
+<a href="DrogueRunPositions_fr.html">DrogueRunPositions</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table DrogueRunPositions contient des champs pour afficher le suivi des drogues sur le Web. Il contient les coordonnées temporelles. </span>
+</li>
+<li>
+<a href="Emails_fr.html">Emails</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table Emails contient des champs pour contenir des e-mails complets. Il est utilisé avec les contacts de la municipalité et les seconds e-mails des utilisateurs. </span>
+</li>
+<li>
+<a href="EmailDistributionLists_fr.html">EmailDistributionLists</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table EmailDistributionLists contient des champs permettant d'identifier les listes de distribution d'e-mails. </span>
+</li>
+<li>
+<a href="EmailDistributionListContacts_fr.html">EmailDistributionListContacts</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table EmailDistributionListContacts contient tous les noms de contacts pour une liste de distribution d'e-mails spécifiée. </span>
+</li>
+<li>
+<a href="EmailDistributionListContactLanguages_fr.html">EmailDistributionListContactLanguages</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table EmailDistributionListContactLanguages contient des champs pour contenir les textes bilingues de la table EmailDistributionListContacts. </span>
+</li>
+<li>
+<a href="EmailDistributionListLanguages_fr.html">EmailDistributionListLanguages</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table EmailDistributionListLanguages contient des champs permettant de stocker des textes bilingues d'EmailDistributionLists. </span>
+</li>
+<li>
+<a href="HelpDocs_fr.html">HelpDocs</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table HelpDocs contient des champs pour contenir les informations d'aide utilisées dans certaines applications. Surtout le Web. </span>
+</li>
+<li>
+<a href="HydrometricDataValues_fr.html">HydrometricDataValues</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table HydrometricDataValues contient des champs permettant de conserver les valeurs de données hydrométriques pour divers sites hydrométriques du Service hydrométrique du Canada. </span>
+</li>
+<li>
+<a href="HydrometricSites_fr.html">HydrometricSites</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table HydrometricSites contient des champs pour contenir des informations sur les sites hydrométriques du Service hydrométrique du Canada ainsi que certains sites hydrométriques provinciaux. </span>
+</li>
+<li>
+<a href="Infrastructures_fr.html">Infrastructures</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table Infrastructures contient des champs pour contenir toutes les informations relatives aux infrastructures municipales. Les informations relatives à la STEP et au LS sont stockées dans la même table. </span>
+</li>
+<li>
+<a href="InfrastructureLanguages_fr.html">InfrastructureLanguages</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table InfrastructureLanguages contient des champs permettant de stocker des textes bilingues pour la table d'infrastructure. </span>
+</li>
+<li>
+<a href="LabSheets_fr.html">LabSheets</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table LabSheets contient des champs pour stocker et gérer les feuilles de laboratoire. </span>
+</li>
+<li>
+<a href="LabSheetDetails_fr.html">LabSheetDetails</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table LabSheetDetails contient des champs pour contenir les informations relatives aux détails de la feuille de laboratoire. </span>
+</li>
+<li>
+<a href="LabSheetTubeMPNDetails_fr.html">LabSheetTubeMPNDetails</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table LabSheetTubeMPNDetails contient des champs pour contenir les informations sur les tubes de laboratoire. </span>
+</li>
+<li>
+<a href="Logs_fr.html">Logs</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table Logs est utilisée pour conserver un historique des commandes des utilisateurs vers la base de données. </span>
+</li>
+<li>
+<a href="MapInfos_fr.html">MapInfos</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table MapInfos contient des champs pour contenir les informations relatives au mappage pour tous les objets de la base de données. </span>
+</li>
+<li>
+<a href="MapInfoPoints_fr.html">MapInfoPoints</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table MapInfoPoints contient des champs pour contenir les informations relatives aux coordonnées de mappage. </span>
+</li>
+<li>
+<a href="MikeBoundaryConditions_fr.html">MikeBoundaryConditions</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table MikeBoundaryConditions contient des champs pour contenir les informations relatives aux conditions aux limites MIKE. </span>
+</li>
+<li>
+<a href="MikeScenarios_fr.html">MikeScenarios</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table MikeScenarios contient des champs permettant de conserver et de gérer les scénarios MIKE. </span>
+</li>
+<li>
+<a href="MikeScenarioResults_fr.html">MikeScenarioResults</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table MikeScenarioResults contient des champs pour contenir une partie des résultats du scénario MIKE. Utilisation limitée pour le moment. Je ne sais pas si ce tableau sera conservé à l’avenir. Actuellement, tous les résultats des scénarios MIKE sont stockés dans des fichiers. </span>
+</li>
+<li>
+<a href="MikeSources_fr.html">MikeSources</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table MikeSources contient des champs pour conserver et gérer les sources MIKE qui peuvent être des rivières, des ruisseaux, des ruisseaux ou d'autres sources de pollution. </span>
+</li>
+<li>
+<a href="MikeSourceStartEnds_fr.html">MikeSourceStartEnds</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table MikeSourceStartEnds contient des champs pour les déversements non continus. </span>
+</li>
+<li>
+<a href="MWQMAnalysisReportParameters_fr.html">MWQMAnalysisReportParameters</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table MWQMAnalysisReportParameters contient des champs permettant de gérer les paramètres du rapport d'analyse. </span>
+</li>
+<li>
+<a href="MWQMLookupMPNs_fr.html">MWQMLookupMPNs</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table MWQMLookupMPNs contient tous les MPN possibles </span>
+</li>
+<li>
+<a href="MWQMRuns_fr.html">MWQMRuns</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table MWQMRuns contient des champs permettant de conserver et de gérer une analyse de la qualité de l'eau de mer. </span>
+</li>
+<li>
+<a href="MWQMRunLanguages_fr.html">MWQMRunLanguages</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The MWQMRunLanguages table contains fields for holding bilingual texts for the MWQMRuns table. </span>
+</li>
+<li>
+<a href="MWQMSamples_fr.html">MWQMSamples</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table MWQMSamples contient des champs permettant de conserver les résultats des échantillons pour un site et une analyse de qualité de l'eau de mer. </span>
+</li>
+<li>
+<a href="MWQMSampleLanguages_fr.html">MWQMSampleLanguages</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table MWQMSampleLanguages contient des champs permettant de stocker des textes bilingues pour la table MWQMSamples. </span>
+</li>
+<li>
+<a href="MWQMSites_fr.html">MWQMSites</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table MWQMSites contient des champs permettant de conserver et de gérer les sites de surveillance de la qualité de l'eau de mer. </span>
+</li>
+<li>
+<a href="MWQMSiteStartEndDates_fr.html">MWQMSiteStartEndDates</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table MWQMSiteStartEndDates contient des champs pour stocker les dates d'activité du site de surveillance de la qualité de l'eau de mer. </span>
+</li>
+<li>
+<a href="MWQMSubsectors_fr.html">MWQMSubsectors</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table MWQMSubsectors contient des champs pour décrire les sous-secteurs de surveillance de la qualité de l'eau de mer. </span>
+</li>
+<li>
+<a href="MWQMSubsectorLanguages_fr.html">MWQMSubsectorLanguages</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table MWQMSubsectorLanguages contient des champs permettant de stocker des textes bilingues pour la table MWQMSubsectors. </span>
+</li>
+<li>
+<a href="PolSourceGroupings_fr.html">PolSourceGroupings</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table PolSourceGroupings contient des champs pour le regroupement des sources de pollution qui est utilisé pour formuler une phrase à partir des options sélectionnées tout en décrivant les sites et les problèmes de source de pollution. </span>
+</li>
+<li>
+<a href="PolSourceGroupingLanguages_fr.html">PolSourceGroupingLanguages</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table PolSourceGroupingLanguages contient des champs pour contenir des textes bilingues pour la table PolSourceGroupings. </span>
+</li>
+<li>
+<a href="PolSourceObservations_fr.html">PolSourceObservations</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table PolSourceObservations contient des champs pour contenir les informations relatives à l'observation de la source de pollution. </span>
+</li>
+<li>
+<a href="PolSourceObservationIssues_fr.html">PolSourceObservationIssues</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table PolSourceObservationIssues contient des champs pour contenir la description des problèmes d'observation des sources de pollution. </span>
+</li>
+<li>
+<a href="PolSourceSites_fr.html">PolSourceSites</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table PolSourceSites contient des champs permettant de conserver et de gérer les sites sources de pollution. </span>
+</li>
+<li>
+<a href="PolSourceSiteEffects_fr.html">PolSourceSiteEffects</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table PolSourceSiteEffects contient des champs permettant d'établir les effets du site source de pollution. </span>
+</li>
+<li>
+<a href="PolSourceSiteEffectTerms_fr.html">PolSourceSiteEffectTerms</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table PolSourceSiteEffectTerms contient tous les termes utilisés pour décrire les effets du site source de pollution. </span>
+</li>
+<li>
+<a href="RainExceedances_fr.html">RainExceedances</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table RainExceedances contient des champs permettant de gérer les dépassements de pluie. </span>
+</li>
+<li>
+<a href="RainExceedanceClimateSites_fr.html">RainExceedanceClimateSites</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table RainExceedanceClimateSites contient des champs pour contenir les liens entre le dépassement de la pluie et les sites climatiques. </span>
+</li>
+<li>
+<a href="RatingCurves_fr.html">RatingCurves</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table RatingCurves contient des champs pour stocker les courbes d'évaluation pour chaque site hydrométrique. </span>
+</li>
+<li>
+<a href="RatingCurveValues_fr.html">RatingCurveValues</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table RatingCurveValues contient des champs permettant de conserver les valeurs des courbes de notation pour chaque site hydrométrique. </span>
+</li>
+<li>
+<a href="ReportSections_fr.html">ReportSections</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table ReportSections contient des champs pour contenir la section de rapport utilisée pour produire divers rapports. </span>
+</li>
+<li>
+<a href="ReportTypes_fr.html">ReportTypes</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table ReportTypes contient des champs pour contenir les types de rapport qui peuvent être produits avec un simple clic sur un bouton. </span>
+</li>
+<li>
+<a href="ResetPasswords_fr.html">ResetPasswords</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table ResetPasswords contient des champs de base pour aider à la réinitialisation du mot de passe des utilisateurs. </span>
+</li>
+<li>
+<a href="SamplingPlans_fr.html">SamplingPlans</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table SamplingPlans contient des champs permettant d'organiser les plans d'échantillonnage. C'est également la table principale utilisée pour créer des fichiers texte de plan d'échantillonnage qui peuvent être distribués aux sous-traitants, aux provinces et aux utilisateurs internes. Ils l'utilisent avec l'application CSSPWQInputTool. </span>
+</li>
+<li>
+<a href="SamplingPlanEmails_fr.html">SamplingPlanEmails</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table SamplingPlanEmails contient des champs pour contenir les e-mails à envoyer lors du remplissage des feuilles de laboratoire. </span>
+</li>
+<li>
+<a href="SamplingPlanSubsectors_fr.html">SamplingPlanSubsectors</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table SamplingPlanSubsectors contient des champs pour stocker les informations du sous-secteur du plan d'échantillonnage. </span>
+</li>
+<li>
+<a href="SamplingPlanSubsectorSites_fr.html">SamplingPlanSubsectorSites</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table SamplingPlanSubsectorSites contient des champs pour stocker et gérer les sites de surveillance de la qualité des eaux marines du sous-secteur du plan d'échantillonnage. </span>
+</li>
+<li>
+<a href="Spills_fr.html">Spills</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Le tableau Spills contient des champs pour contenir des informations concernant les déversements provenant des infrastructures municipales ou d'autres types de déversements. </span>
+</li>
+<li>
+<a href="SpillLanguages_fr.html">SpillLanguages</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table SpillLanguages contient des champs pour contenir des textes bilingues pour la table Spills. </span>
+</li>
+<li>
+<a href="Tels_fr.html">Tels</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table Tels contient des champs pour les numéros de téléphone. Il est utilisé avec les contacts municipaux et les informations de profil supplémentaires des utilisateurs. </span>
+</li>
+<li>
+<a href="TideDataValues_fr.html">TideDataValues</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table TideDataValues contient des champs pour conserver les valeurs des données de marée à divers endroits au Canada et aux États-Unis. </span>
+</li>
+<li>
+<a href="TideLocations_fr.html">TideLocations</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table TideLocations contient des champs pour stocker les emplacements de marée et les noms à utiliser par certaines applications. </span>
+</li>
+<li>
+<a href="TideSites_fr.html">TideSites</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table TideSites contient des champs permettant de conserver et de gérer les informations relatives au site de marée provenant des Services hydrographiques du Canada. </span>
+</li>
+<li>
+<a href="TVFiles_fr.html">TVFiles</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table TVFiles contient des champs permettant de gérer des fichiers en dehors des bases de données via des liens et des noms de fichiers. </span>
+</li>
+<li>
+<a href="TVFileLanguages_fr.html">TVFileLanguages</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table TVFileLanguages contient des champs permettant de stocker des textes bilingues pour la table TVFiles. </span>
+</li>
+<li>
+<a href="TVItems_fr.html">TVItems</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table TVItems contient des champs permettant de conserver et de gérer le système d'arborescence dans la base de données de conservation afin que chaque élément puisse être recherché et soit unique. </span>
+</li>
+<li>
+<a href="TVItemLanguages_fr.html">TVItemLanguages</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table TVItemLanguages contient des champs pour contenir des textes bilingues pour la table TVItems. </span>
+</li>
+<li>
+<a href="TVItemLinks_fr.html">TVItemLinks</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table TVItemLinks contient des champs permettant de lier différents éléments de l'arborescence (TVItems) entre eux. </span>
+</li>
+<li>
+<a href="TVItemStats_fr.html">TVItemStats</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table TVItemStats contient des champs permettant de conserver les statistiques de divers éléments de l'arborescence dans la base de données. Il est utilisé par certaines applications comme indicateur du nombre de sous-éléments sous un élément particulier. </span>
+</li>
+<li>
+<a href="TVItemUserAuthorizations_fr.html">TVItemUserAuthorizations</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table TVItemUserAuthorizations contient des champs permettant de gérer l'autorisation d'un élément qu'un utilisateur peut afficher, modifier, créer ou supprimer. </span>
+</li>
+<li>
+<a href="TVTypeUserAuthorizations_fr.html">TVTypeUserAuthorizations</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table TVTypeUserAuthorizations contient des champs permettant de gérer l'autorisation des types d'élément qu'un utilisateur peut afficher, modifier, créer ou supprimer. </span>
+</li>
+<li>
+<a href="UseOfSites_fr.html">UseOfSites</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table UseOfSites contient des champs permettant d'identifier les sites climatiques, les sites hydrométriques, les sites de marées, les municipalités et les drogues à utiliser dans un sous-secteur. </span>
+</li>
+<li>
+<a href="VPAmbients_fr.html">VPAmbients</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table VPAmbients contient des champs pour stocker les entrées ambiantes pour les scénarios Visual Plumes. </span>
+</li>
+<li>
+<a href="VPResults_fr.html">VPResults</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table VPResults contient des champs permettant de stocker les résultats du scénario Visual Plumes. </span>
+</li>
+<li>
+<a href="VPScenarios_fr.html">VPScenarios</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table VPScenarios contient des champs permettant de conserver et de gérer les scénarios Visual Plumes. </span>
+</li>
+<li>
+<a href="VPScenarioLanguages_fr.html">VPScenarioLanguages</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;La table VPScenarioLanguages contient des champs pour contenir des textes bilingues pour la table VPScenarios. </span>
+</li>
+</ul>
+</body>
+</html>

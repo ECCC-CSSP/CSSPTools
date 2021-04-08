@@ -41,7 +41,6 @@
     <ProjectReference Include="..\CSSPDBFilesManagementServices\CSSPDBFilesManagementServices.csproj" />
     <ProjectReference Include="..\CSSPDBModels\CSSPDBModels.csproj" />
     <ProjectReference Include="..\CSSPScrambleServices\CSSPScrambleServices.csproj" />
-    <ProjectReference Include="..\CSSPWebAppLoadedServices\CSSPWebAppLoadedlServices.csproj" />
   </ItemGroup>
 
 </Project>

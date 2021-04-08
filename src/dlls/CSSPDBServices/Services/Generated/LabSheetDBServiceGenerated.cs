@@ -19,7 +19,6 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using LoggedInServices;
 using Microsoft.Extensions.Configuration;
-using CSSPScrambleServices;
 
 namespace CSSPDBServices
 {
@@ -41,9 +40,8 @@ namespace CSSPDBServices
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IScrambleService ScrambleService { get; }
         private IEnums enums { get; }
-        private IEnumerable<ValidationResult> ValidationResults { get; set; }
+        private List<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -54,7 +52,6 @@ namespace CSSPDBServices
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.ScrambleService = ScrambleService;
             this.enums = enums;
             this.db = db;
         }
@@ -65,7 +62,7 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(""));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             LabSheet labSheet = (from c in db.LabSheets.AsNoTracking()
@@ -83,7 +80,7 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(""));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             List<LabSheet> labSheetList = (from c in db.LabSheets.AsNoTracking() orderby c.LabSheetID select c).Skip(skip).Take(take).ToList();
@@ -94,7 +91,7 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             LabSheet labSheet = (from c in db.LabSheets
@@ -122,11 +119,10 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
-            ValidationResults = Validate(new ValidationContext(labSheet), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
+            if (!Validate(new ValidationContext(labSheet), ActionDBTypeEnum.Create))
             {
                 return await Task.FromResult(BadRequest(ValidationResults));
             }
@@ -147,11 +143,10 @@ namespace CSSPDBServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
-            ValidationResults = Validate(new ValidationContext(labSheet), ActionDBTypeEnum.Update);
-            if (ValidationResults.Count() > 0)
+            if (!Validate(new ValidationContext(labSheet), ActionDBTypeEnum.Update))
             {
                 return await Task.FromResult(BadRequest(ValidationResults));
             }
@@ -171,7 +166,7 @@ namespace CSSPDBServices
         #endregion Functions public
 
         #region Functions private
-        private IEnumerable<ValidationResult> Validate(ValidationContext validationContext, ActionDBTypeEnum actionDBType)
+        private bool Validate(ValidationContext validationContext, ActionDBTypeEnum actionDBType)
         {
             string retStr = "";
             LabSheet labSheet = validationContext.ObjectInstance as LabSheet;
@@ -180,24 +175,24 @@ namespace CSSPDBServices
             {
                 if (labSheet.LabSheetID == 0)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LabSheetID"), new[] { nameof(labSheet.LabSheetID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LabSheetID"), new[] { nameof(labSheet.LabSheetID) }));
                 }
 
                 if (!(from c in db.LabSheets.AsNoTracking() select c).Where(c => c.LabSheetID == labSheet.LabSheetID).Any())
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "LabSheet", "LabSheetID", labSheet.LabSheetID.ToString()), new[] { nameof(labSheet.LabSheetID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "LabSheet", "LabSheetID", labSheet.LabSheetID.ToString()), new[] { nameof(labSheet.LabSheetID) }));
                 }
             }
 
             retStr = enums.EnumTypeOK(typeof(DBCommandEnum), (int?)labSheet.DBCommand);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"), new[] { nameof(labSheet.DBCommand) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"), new[] { nameof(labSheet.DBCommand) }));
             }
 
             if (labSheet.OtherServerLabSheetID < 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "OtherServerLabSheetID", "1"), new[] { nameof(labSheet.OtherServerLabSheetID) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "OtherServerLabSheetID", "1"), new[] { nameof(labSheet.OtherServerLabSheetID) }));
             }
 
             SamplingPlan SamplingPlanSamplingPlanID = null;
@@ -205,37 +200,37 @@ namespace CSSPDBServices
 
             if (SamplingPlanSamplingPlanID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "SamplingPlan", "SamplingPlanID", labSheet.SamplingPlanID.ToString()), new[] { nameof(labSheet.SamplingPlanID) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "SamplingPlan", "SamplingPlanID", labSheet.SamplingPlanID.ToString()), new[] { nameof(labSheet.SamplingPlanID)}));
             }
 
             if (string.IsNullOrWhiteSpace(labSheet.SamplingPlanName))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SamplingPlanName"), new[] { nameof(labSheet.SamplingPlanName) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SamplingPlanName"), new[] { nameof(labSheet.SamplingPlanName) }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheet.SamplingPlanName) && (labSheet.SamplingPlanName.Length < 1 || labSheet.SamplingPlanName.Length > 250))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "SamplingPlanName", "1", "250"), new[] { nameof(labSheet.SamplingPlanName) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "SamplingPlanName", "1", "250"), new[] { nameof(labSheet.SamplingPlanName) }));
             }
 
             if (labSheet.Year < 1980)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "Year", "1980"), new[] { nameof(labSheet.Year) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "Year", "1980"), new[] { nameof(labSheet.Year) }));
             }
 
             if (labSheet.Month < 1 || labSheet.Month > 12)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Month", "1", "12"), new[] { nameof(labSheet.Month) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Month", "1", "12"), new[] { nameof(labSheet.Month) }));
             }
 
             if (labSheet.Day < 1 || labSheet.Day > 31)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Day", "1", "31"), new[] { nameof(labSheet.Day) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Day", "1", "31"), new[] { nameof(labSheet.Day) }));
             }
 
             if (labSheet.RunNumber < 1 || labSheet.RunNumber > 100)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "RunNumber", "1", "100"), new[] { nameof(labSheet.RunNumber) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "RunNumber", "1", "100"), new[] { nameof(labSheet.RunNumber) }));
             }
 
             TVItem TVItemSubsectorTVItemID = null;
@@ -243,7 +238,7 @@ namespace CSSPDBServices
 
             if (TVItemSubsectorTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "SubsectorTVItemID", labSheet.SubsectorTVItemID.ToString()), new[] { nameof(labSheet.SubsectorTVItemID) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "SubsectorTVItemID", labSheet.SubsectorTVItemID.ToString()), new[] { nameof(labSheet.SubsectorTVItemID)}));
             }
             else
             {
@@ -253,7 +248,7 @@ namespace CSSPDBServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemSubsectorTVItemID.TVType))
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "SubsectorTVItemID", "Subsector"), new[] { nameof(labSheet.SubsectorTVItemID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "SubsectorTVItemID", "Subsector"), new[] { nameof(labSheet.SubsectorTVItemID) }));
                 }
             }
 
@@ -264,7 +259,7 @@ namespace CSSPDBServices
 
                 if (TVItemMWQMRunTVItemID == null)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "MWQMRunTVItemID", (labSheet.MWQMRunTVItemID == null ? "" : labSheet.MWQMRunTVItemID.ToString())), new[] { nameof(labSheet.MWQMRunTVItemID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "MWQMRunTVItemID", (labSheet.MWQMRunTVItemID == null ? "" : labSheet.MWQMRunTVItemID.ToString())), new[] { nameof(labSheet.MWQMRunTVItemID) }));
                 }
                 else
                 {
@@ -274,7 +269,7 @@ namespace CSSPDBServices
                     };
                     if (!AllowableTVTypes.Contains(TVItemMWQMRunTVItemID.TVType))
                     {
-                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "MWQMRunTVItemID", "MWQMRun"), new[] { nameof(labSheet.MWQMRunTVItemID) });
+                        ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "MWQMRunTVItemID", "MWQMRun"), new[] { nameof(labSheet.MWQMRunTVItemID) }));
                     }
                 }
             }
@@ -282,52 +277,52 @@ namespace CSSPDBServices
             retStr = enums.EnumTypeOK(typeof(SamplingPlanTypeEnum), (int?)labSheet.SamplingPlanType);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SamplingPlanType"), new[] { nameof(labSheet.SamplingPlanType) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SamplingPlanType"), new[] { nameof(labSheet.SamplingPlanType) }));
             }
 
             retStr = enums.EnumTypeOK(typeof(SampleTypeEnum), (int?)labSheet.SampleType);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SampleType"), new[] { nameof(labSheet.SampleType) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SampleType"), new[] { nameof(labSheet.SampleType) }));
             }
 
             retStr = enums.EnumTypeOK(typeof(LabSheetTypeEnum), (int?)labSheet.LabSheetType);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LabSheetType"), new[] { nameof(labSheet.LabSheetType) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LabSheetType"), new[] { nameof(labSheet.LabSheetType) }));
             }
 
             retStr = enums.EnumTypeOK(typeof(LabSheetStatusEnum), (int?)labSheet.LabSheetStatus);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LabSheetStatus"), new[] { nameof(labSheet.LabSheetStatus) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LabSheetStatus"), new[] { nameof(labSheet.LabSheetStatus) }));
             }
 
             if (string.IsNullOrWhiteSpace(labSheet.FileName))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "FileName"), new[] { nameof(labSheet.FileName) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "FileName"), new[] { nameof(labSheet.FileName) }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheet.FileName) && (labSheet.FileName.Length < 1 || labSheet.FileName.Length > 250))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "FileName", "1", "250"), new[] { nameof(labSheet.FileName) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "FileName", "1", "250"), new[] { nameof(labSheet.FileName) }));
             }
 
             if (labSheet.FileLastModifiedDate_Local.Year == 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "FileLastModifiedDate_Local"), new[] { nameof(labSheet.FileLastModifiedDate_Local) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "FileLastModifiedDate_Local"), new[] { nameof(labSheet.FileLastModifiedDate_Local) }));
             }
             else
             {
                 if (labSheet.FileLastModifiedDate_Local.Year < 1980)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "FileLastModifiedDate_Local", "1980"), new[] { nameof(labSheet.FileLastModifiedDate_Local) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "FileLastModifiedDate_Local", "1980"), new[] { nameof(labSheet.FileLastModifiedDate_Local) }));
                 }
             }
 
             if (string.IsNullOrWhiteSpace(labSheet.FileContent))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "FileContent"), new[] { nameof(labSheet.FileContent) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "FileContent"), new[] { nameof(labSheet.FileContent) }));
             }
 
             //FileContent has no StringLength Attribute
@@ -339,7 +334,7 @@ namespace CSSPDBServices
 
                 if (TVItemAcceptedOrRejectedByContactTVItemID == null)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "AcceptedOrRejectedByContactTVItemID", (labSheet.AcceptedOrRejectedByContactTVItemID == null ? "" : labSheet.AcceptedOrRejectedByContactTVItemID.ToString())), new[] { nameof(labSheet.AcceptedOrRejectedByContactTVItemID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "AcceptedOrRejectedByContactTVItemID", (labSheet.AcceptedOrRejectedByContactTVItemID == null ? "" : labSheet.AcceptedOrRejectedByContactTVItemID.ToString())), new[] { nameof(labSheet.AcceptedOrRejectedByContactTVItemID) }));
                 }
                 else
                 {
@@ -349,30 +344,30 @@ namespace CSSPDBServices
                     };
                     if (!AllowableTVTypes.Contains(TVItemAcceptedOrRejectedByContactTVItemID.TVType))
                     {
-                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "AcceptedOrRejectedByContactTVItemID", "Contact"), new[] { nameof(labSheet.AcceptedOrRejectedByContactTVItemID) });
+                        ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "AcceptedOrRejectedByContactTVItemID", "Contact"), new[] { nameof(labSheet.AcceptedOrRejectedByContactTVItemID) }));
                     }
                 }
             }
 
             if (labSheet.AcceptedOrRejectedDateTime != null && ((DateTime)labSheet.AcceptedOrRejectedDateTime).Year < 1980)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "AcceptedOrRejectedDateTime", "1980"), new[] { nameof(labSheet.AcceptedOrRejectedDateTime) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "AcceptedOrRejectedDateTime", "1980"), new[] { nameof(labSheet.AcceptedOrRejectedDateTime) }));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheet.RejectReason) && labSheet.RejectReason.Length > 250)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "RejectReason", "250"), new[] { nameof(labSheet.RejectReason) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "RejectReason", "250"), new[] { nameof(labSheet.RejectReason) }));
             }
 
             if (labSheet.LastUpdateDate_UTC.Year == 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { nameof(labSheet.LastUpdateDate_UTC) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { nameof(labSheet.LastUpdateDate_UTC) }));
             }
             else
             {
                 if (labSheet.LastUpdateDate_UTC.Year < 1980)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { nameof(labSheet.LastUpdateDate_UTC) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { nameof(labSheet.LastUpdateDate_UTC) }));
                 }
             }
 
@@ -381,7 +376,7 @@ namespace CSSPDBServices
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", labSheet.LastUpdateContactTVItemID.ToString()), new[] { nameof(labSheet.LastUpdateContactTVItemID) });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", labSheet.LastUpdateContactTVItemID.ToString()), new[] { nameof(labSheet.LastUpdateContactTVItemID)}));
             }
             else
             {
@@ -391,10 +386,11 @@ namespace CSSPDBServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(labSheet.LastUpdateContactTVItemID) });
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(labSheet.LastUpdateContactTVItemID) }));
                 }
             }
 
+            return ValidationResults.Count == 0 ? true : false;
         }
         #endregion Functions private
     }

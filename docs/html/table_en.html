@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>CSSPDB Model Documentation</title>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+<h2><a href="index.html">Changer de langage</a></h2>
+<h2>&nbsp;</h2>
+<a href="tables_and_fields_en.csv">Download CSV</a>
+<h2>&nbsp;</h2>
+<h2>Table List</h2>
+<ul>
+<li>
+<a href="Addresses_en.html">Addresses</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The Addresses table contains fields for holding complete address. Used with infrastructures, pollution source site and contacts from municipalities. </span>
+</li>
+<li>
+<a href="AppErrLogs_en.html">AppErrLogs</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The AppErrLogs table contains fields for holding application errors. </span>
+</li>
+<li>
+<a href="AppTasks_en.html">AppTasks</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The AppTasks table contains fields for holding application tasks sent to the server which can take a long time to complete. </span>
+</li>
+<li>
+<a href="AppTaskLanguages_en.html">AppTaskLanguages</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The AppTaskLanguages table contains fields for holding bilingual texts for AppTasks table. </span>
+</li>
+<li>
+<a href="BoxModels_en.html">BoxModels</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The BoxModels table contains fields for holding and managing Box Model scenarios </span>
+</li>
+<li>
+<a href="BoxModelLanguages_en.html">BoxModelLanguages</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The BoxModelLanguages table contains fields for holding bilingual texts for BoxModels table. </span>
+</li>
+<li>
+<a href="BoxModelResults_en.html">BoxModelResults</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The BoxModelResults contains fields for holding box modelling scenarios results. </span>
+</li>
+<li>
+<a href="Classifications_en.html">Classifications</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The Classifications table contains fields for holding classification for visualization on the web. It holds only a representation of the actual legal classification held in Arc GIS. </span>
+</li>
+<li>
+<a href="ClimateDataValues_en.html">ClimateDataValues</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The ClimateDataValues table contains fields for holding climate data values for various climate site from Meteorological Service of Canada. </span>
+</li>
+<li>
+<a href="ClimateSites_en.html">ClimateSites</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The ClimateSites table contains fields for holding climate site related information from Meteorological Service of Canada as well as some provincial climate sites. </span>
+</li>
+<li>
+<a href="CoCoRaHSSites_en.html">CoCoRaHSSites</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The CoCoRaHSSites table contains fields for holding voluntary managed precipitation sites from private individuals. </span>
+</li>
+<li>
+<a href="CoCoRaHSValues_en.html">CoCoRaHSValues</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The CoCoRaHSValues table contains fields for holding precipitation values from voluntary private sites. </span>
+</li>
+<li>
+<a href="Contacts_en.html">Contacts</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The Contacts table contains fields for holding users information. </span>
+</li>
+<li>
+<a href="ContactPreferences_en.html">ContactPreferences</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The ContactPreferences table contains fields for maintaining users preferences while using some applications. </span>
+</li>
+<li>
+<a href="ContactShortcuts_en.html">ContactShortcuts</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The ContactShortcuts table contains fields for maintaining users shortcuts used by some applications. </span>
+</li>
+<li>
+<a href="DocTemplates_en.html">DocTemplates</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The DocTemplates table contains fields for holding preset templates while creating many type of documents, like .xlsx, .docx, .csv, .txt, etc. This option of exporting data to documents is being replaced by parameter type exports. This table could be removed in the future. </span>
+</li>
+<li>
+<a href="DrogueRuns_en.html">DrogueRuns</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The DrogueRuns table contains fields for showing drogue tracking on the web. It holds the names, numbers and date of the drogue runs. </span>
+</li>
+<li>
+<a href="DrogueRunPositions_en.html">DrogueRunPositions</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The DrogueRunPositions table contains fields for showing drogue tracking on the web. It contains the temporal coordinates. </span>
+</li>
+<li>
+<a href="Emails_en.html">Emails</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The Emails table contains fields for holding complete emails. It is used with municipality contacts and second emails from users. </span>
+</li>
+<li>
+<a href="EmailDistributionLists_en.html">EmailDistributionLists</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The EmailDistributionLists table contains fields for identifying email distribution lists. </span>
+</li>
+<li>
+<a href="EmailDistributionListContacts_en.html">EmailDistributionListContacts</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The EmailDistributionListContacts table contains all contacts names for a specified email distribution list. </span>
+</li>
+<li>
+<a href="EmailDistributionListContactLanguages_en.html">EmailDistributionListContactLanguages</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The EmailDistributionListContactLanguages table contains fields for holding bilingual texts from EmailDistributionListContacts table. </span>
+</li>
+<li>
+<a href="EmailDistributionListLanguages_en.html">EmailDistributionListLanguages</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The EmailDistributionListLanguages table contains fields for holding bilingual texts from EmailDistributionLists. </span>
+</li>
+<li>
+<a href="HelpDocs_en.html">HelpDocs</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The HelpDocs table contains fields for holding help information used in some applications. Especially the web. </span>
+</li>
+<li>
+<a href="HydrometricDataValues_en.html">HydrometricDataValues</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The HydrometricDataValues table contains fields for holding hydrometric data values for various hydrometric site from Hydrometric Service of Canada. </span>
+</li>
+<li>
+<a href="HydrometricSites_en.html">HydrometricSites</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The HydrometricSites table contains fields for holding hydrometric site related information from Hydrometric Service of Canada as well as some provincial hydrometric sites. </span>
+</li>
+<li>
+<a href="Infrastructures_en.html">Infrastructures</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The Infrastructures table contains fields for holding all related information for municipal infrastructures. Both WWTP and LS related information are stored in the same table. </span>
+</li>
+<li>
+<a href="InfrastructureLanguages_en.html">InfrastructureLanguages</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The InfrastructureLanguages table contains fields for holding bilingual texts for the infrastructure table. </span>
+</li>
+<li>
+<a href="LabSheets_en.html">LabSheets</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The LabSheets table contains fields for storing and managing lab sheets. </span>
+</li>
+<li>
+<a href="LabSheetDetails_en.html">LabSheetDetails</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The LabSheetDetails table contains fields for holding lab sheet detail related information. </span>
+</li>
+<li>
+<a href="LabSheetTubeMPNDetails_en.html">LabSheetTubeMPNDetails</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The LabSheetTubeMPNDetails table contains fields for holding lab tube information. </span>
+</li>
+<li>
+<a href="Logs_en.html">Logs</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The Logs table is used to hold a history of the users commands to the database. </span>
+</li>
+<li>
+<a href="MapInfos_en.html">MapInfos</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The MapInfos table contains fields for holding mapping related information for all objects in the database. </span>
+</li>
+<li>
+<a href="MapInfoPoints_en.html">MapInfoPoints</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The MapInfoPoints table contains fields for holding mapping coordinates related information. </span>
+</li>
+<li>
+<a href="MikeBoundaryConditions_en.html">MikeBoundaryConditions</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The MikeBoundaryConditions table contains fields for holding MIKE boundary condition related information. </span>
+</li>
+<li>
+<a href="MikeScenarios_en.html">MikeScenarios</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The MikeScenarios table contains fields for holding and managing MIKE scenarios. </span>
+</li>
+<li>
+<a href="MikeScenarioResults_en.html">MikeScenarioResults</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The MikeScenarioResults table contains fields for holding a portion of the MIKE scenario results. Limited use at this time. Don’t know if this table will be kept in the future. Currently all MIKE scenario results are stored in files. </span>
+</li>
+<li>
+<a href="MikeSources_en.html">MikeSources</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The MikeSources table contains fields for holding and managing MIKE sources which could be rivers, streams, brooks or other pollution sources. </span>
+</li>
+<li>
+<a href="MikeSourceStartEnds_en.html">MikeSourceStartEnds</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The MikeSourceStartEnds table contains fields for non continuous spills. </span>
+</li>
+<li>
+<a href="MWQMAnalysisReportParameters_en.html">MWQMAnalysisReportParameters</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The MWQMAnalysisReportParameters table contains fields for managing analysis report parameters. </span>
+</li>
+<li>
+<a href="MWQMLookupMPNs_en.html">MWQMLookupMPNs</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The MWQMLookupMPNs table contains all possible MPNs. </span>
+</li>
+<li>
+<a href="MWQMRuns_en.html">MWQMRuns</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The MWQMRuns table contains fields for holding and managing a marine water quality monitoring runs. </span>
+</li>
+<li>
+<a href="MWQMRunLanguages_en.html">MWQMRunLanguages</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The MWQMRunLanguages table contains fields for holding bilingual texts for the MWQMRuns table. </span>
+</li>
+<li>
+<a href="MWQMSamples_en.html">MWQMSamples</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The MWQMSamples table contains fields for holding sample results for a marine water quality site and run. </span>
+</li>
+<li>
+<a href="MWQMSampleLanguages_en.html">MWQMSampleLanguages</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The MWQMSampleLanguages table contains fields for holding bilingual texts for the MWQMSamples table. </span>
+</li>
+<li>
+<a href="MWQMSites_en.html">MWQMSites</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The MWQMSites table contains fields for holding and managing marine water quality monitoring sites. </span>
+</li>
+<li>
+<a href="MWQMSiteStartEndDates_en.html">MWQMSiteStartEndDates</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The MWQMSiteStartEndDates table contains fields for storing the marine water quality monitoring site activity dates. </span>
+</li>
+<li>
+<a href="MWQMSubsectors_en.html">MWQMSubsectors</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The MWQMSubsectors table contains fields for describing the marine water quality monitoring subsectors. </span>
+</li>
+<li>
+<a href="MWQMSubsectorLanguages_en.html">MWQMSubsectorLanguages</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The MWQMSubsectorLanguages table contains fields for holding bilingual texts for the MWQMSubsectors table. </span>
+</li>
+<li>
+<a href="PolSourceGroupings_en.html">PolSourceGroupings</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The PolSourceGroupings table contains fields for pollution source grouping which is used to formulate sentence from selected options while describing pollution source sites and issues. </span>
+</li>
+<li>
+<a href="PolSourceGroupingLanguages_en.html">PolSourceGroupingLanguages</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The PolSourceGroupingLanguages table contains fields for holding bilingual texts for the PolSourceGroupings table. </span>
+</li>
+<li>
+<a href="PolSourceObservations_en.html">PolSourceObservations</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The PolSourceObservations table contains fields for holding the pollution source observation related information. </span>
+</li>
+<li>
+<a href="PolSourceObservationIssues_en.html">PolSourceObservationIssues</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The PolSourceObservationIssues table contains fields for holding the description of the pollution source observation issues. </span>
+</li>
+<li>
+<a href="PolSourceSites_en.html">PolSourceSites</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The PolSourceSites table contains fields for holding and managing pollution source sites. </span>
+</li>
+<li>
+<a href="PolSourceSiteEffects_en.html">PolSourceSiteEffects</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The PolSourceSiteEffects table contains fields for establishing the effects of pollution source site. </span>
+</li>
+<li>
+<a href="PolSourceSiteEffectTerms_en.html">PolSourceSiteEffectTerms</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The PolSourceSiteEffectTerms table contains all the terms used to describe the effects of pollution source site. </span>
+</li>
+<li>
+<a href="RainExceedances_en.html">RainExceedances</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The RainExceedances table contains fields for managing rain exceedances. </span>
+</li>
+<li>
+<a href="RainExceedanceClimateSites_en.html">RainExceedanceClimateSites</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The RainExceedanceClimateSites table contains fields for holding the links between rain exceedance and climate sites. </span>
+</li>
+<li>
+<a href="RatingCurves_en.html">RatingCurves</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The RatingCurves table contains fields for storing rating curves for each hydrometric sites. </span>
+</li>
+<li>
+<a href="RatingCurveValues_en.html">RatingCurveValues</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The RatingCurveValues table contains fields for holding rating curve values for each hydrometric sites. </span>
+</li>
+<li>
+<a href="ReportSections_en.html">ReportSections</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The ReportSections table contains fields for holding report section used to produce various reports. </span>
+</li>
+<li>
+<a href="ReportTypes_en.html">ReportTypes</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The ReportTypes table contains fields for holding the report types that can be produce with just a click of a button. </span>
+</li>
+<li>
+<a href="ResetPasswords_en.html">ResetPasswords</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The ResetPasswords table contains basic fields to help with the reset of users password. </span>
+</li>
+<li>
+<a href="SamplingPlans_en.html">SamplingPlans</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The SamplingPlans table contains fields for organizing sampling plans. It’s also the primary table use to create sampling plan text files that can be distributed to contractors, provinces and internal users. They use it with the application CSSPWQInputTool. </span>
+</li>
+<li>
+<a href="SamplingPlanEmails_en.html">SamplingPlanEmails</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The SamplingPlanEmails table contains fields for holding emails needed to be sent while filling lab sheets. </span>
+</li>
+<li>
+<a href="SamplingPlanSubsectors_en.html">SamplingPlanSubsectors</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The SamplingPlanSubsectors table contains fields for storing sampling plan subsector information. </span>
+</li>
+<li>
+<a href="SamplingPlanSubsectorSites_en.html">SamplingPlanSubsectorSites</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The SamplingPlanSubsectorSites table contains fields for storing and managing sampling plan subsector marine water quality monitoring sites. </span>
+</li>
+<li>
+<a href="Spills_en.html">Spills</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The Spills table contains fields for holding information regarding spills from municipal infrastructure or other types of spills. </span>
+</li>
+<li>
+<a href="SpillLanguages_en.html">SpillLanguages</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The SpillLanguages table contains fields for holding bilingual texts for the Spills table. </span>
+</li>
+<li>
+<a href="Tels_en.html">Tels</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The Tels table contains fields for holding telephone numbers. It is used with municipal contacts and users extra profile information. </span>
+</li>
+<li>
+<a href="TideDataValues_en.html">TideDataValues</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The TideDataValues table contains fields for holding values of tide data at various places in Canada and US. </span>
+</li>
+<li>
+<a href="TideLocations_en.html">TideLocations</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The TideLocations table contains fields for storing the tide locations and names to be used by some applications. </span>
+</li>
+<li>
+<a href="TideSites_en.html">TideSites</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The TideSites table contains fields for holding and managing tide site related information from Canadian Hydrographic Services. </span>
+</li>
+<li>
+<a href="TVFiles_en.html">TVFiles</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The TVFiles table contains fields for managing files outside of the databases via links and file names. </span>
+</li>
+<li>
+<a href="TVFileLanguages_en.html">TVFileLanguages</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The TVFileLanguages table contains fields for holding bilingual texts for the TVFiles table. </span>
+</li>
+<li>
+<a href="TVItems_en.html">TVItems</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The TVItems table contains fields for holding and managing the tree view system within the whole database so each item can be search and is unique. </span>
+</li>
+<li>
+<a href="TVItemLanguages_en.html">TVItemLanguages</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The TVItemLanguages table contains fields for holding bilingual texts for the TVItems table. </span>
+</li>
+<li>
+<a href="TVItemLinks_en.html">TVItemLinks</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The TVItemLinks table contains fields for linking different tree view items (TVItems) between them. </span>
+</li>
+<li>
+<a href="TVItemStats_en.html">TVItemStats</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The TVItemStats table contains fields for holding statistics of various tree view items within the database. It is use by some applications as an indicator of how many sub items exist underneath a particular item. </span>
+</li>
+<li>
+<a href="TVItemUserAuthorizations_en.html">TVItemUserAuthorizations</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The TVItemUserAuthorizations table contains fields for managing the authorization of item a user can view, edit, create or delete. </span>
+</li>
+<li>
+<a href="TVTypeUserAuthorizations_en.html">TVTypeUserAuthorizations</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The TVTypeUserAuthorizations table contains fields for managing the authorization of item types a user can view, edit, create or delete. </span>
+</li>
+<li>
+<a href="UseOfSites_en.html">UseOfSites</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The UseOfSites table contains fields for identifying climate sites, hydrometric sites, tide sites, municipalities and drogues to be used under a subsector. </span>
+</li>
+<li>
+<a href="VPAmbients_en.html">VPAmbients</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The VPAmbients table contains fields for storing ambient inputs for Visual Plumes scenarios. </span>
+</li>
+<li>
+<a href="VPResults_en.html">VPResults</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The VPResults table contains fields for holding Visual Plumes scenario results. </span>
+</li>
+<li>
+<a href="VPScenarios_en.html">VPScenarios</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The VPScenarios table contains fields for holding and managing Visual Plumes scenarios. </span>
+</li>
+<li>
+<a href="VPScenarioLanguages_en.html">VPScenarioLanguages</a>
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;The VPScenarioLanguages table contains fields for holding bilingual texts for the VPScenarios table. </span>
+</li>
+</ul>
+</body>
+</html>

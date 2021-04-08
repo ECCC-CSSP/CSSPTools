@@ -24,7 +24,7 @@ namespace CSSPHelperServices
 {
     public interface IVPResValuesService
     {
-        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+        bool Validate(ValidationContext validationContext);
     }
     public partial class VPResValuesService : IVPResValuesService
     {
@@ -32,6 +32,7 @@ namespace CSSPHelperServices
         #endregion Variables
 
         #region Properties
+        private List<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -41,40 +42,41 @@ namespace CSSPHelperServices
         #endregion Constructors
 
         #region Functions public
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        public bool Validate(ValidationContext validationContext)
         {
             VPResValues vpResValues = validationContext.ObjectInstance as VPResValues;
 
             if (vpResValues.Conc < 0)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "Conc", "0"), new[] { "Conc" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "Conc", "0"), new[] { "Conc" }));
             }
 
             if (vpResValues.Dilu < 0 || vpResValues.Dilu > 10000)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Dilu", "0", "10000"), new[] { "Dilu" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Dilu", "0", "10000"), new[] { "Dilu" }));
             }
 
             if (vpResValues.FarfieldWidth < 0 || vpResValues.FarfieldWidth > 10000)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "FarfieldWidth", "0", "10000"), new[] { "FarfieldWidth" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "FarfieldWidth", "0", "10000"), new[] { "FarfieldWidth" }));
             }
 
             if (vpResValues.Distance < 0 || vpResValues.Distance > 100000)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Distance", "0", "100000"), new[] { "Distance" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Distance", "0", "100000"), new[] { "Distance" }));
             }
 
             if (vpResValues.TheTime < 0 || vpResValues.TheTime > 100000)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "TheTime", "0", "100000"), new[] { "TheTime" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "TheTime", "0", "100000"), new[] { "TheTime" }));
             }
 
             if (vpResValues.Decay < 0 || vpResValues.Decay > 1000)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Decay", "0", "1000"), new[] { "Decay" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Decay", "0", "1000"), new[] { "Decay" }));
             }
 
+            return ValidationResults.Count == 0 ? true : false;
         }
         #endregion Functions public
     }

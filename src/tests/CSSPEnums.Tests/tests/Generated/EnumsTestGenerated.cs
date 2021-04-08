@@ -620,6 +620,9 @@ namespace CSSPEnums.Tests
                     case AppTaskCommandEnum.ClimateSiteLoadCoCoRaHSData:
                         Assert.Equal(CSSPCultureEnumsRes.AppTaskCommandEnumClimateSiteLoadCoCoRaHSData, retStr);
                         break;
+                    case AppTaskCommandEnum.SyncDBs:
+                        Assert.Equal(CSSPCultureEnumsRes.AppTaskCommandEnumSyncDBs, retStr);
+                        break;
                 }
             }
         }
@@ -5980,6 +5983,7 @@ namespace CSSPEnums.Tests
                      case AppTaskCommandEnum.ProvinceToolsGenerateStats:
                      case AppTaskCommandEnum.MikeScenarioPrepareResults:
                      case AppTaskCommandEnum.ClimateSiteLoadCoCoRaHSData:
+                     case AppTaskCommandEnum.SyncDBs:
                         Assert.Equal("", retStr);
                         break;
                     default:

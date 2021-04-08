@@ -121,7 +121,7 @@
     <value>{0} is required</value>
   </data>
   <data name="Address_AddressID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the Addresses table</value>
+    <value>Contains the unique identifier on each row of the Addresses table</value>
   </data>
   <data name="Address_AddressID_Display" xml:space="preserve">
     <value>Address ID</value>
@@ -199,7 +199,7 @@
     <value>Street type</value>
   </data>
   <data name="AppErrLog_AppErrLogID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the AppErrLogs table</value>
+    <value>Contains the unique identifier on each row of the AppErrLogs table</value>
   </data>
   <data name="AppErrLog_AppErrLogID_Display" xml:space="preserve">
     <value>AppErrLog ID</value>
@@ -253,7 +253,7 @@
     <value>AppTask link</value>
   </data>
   <data name="AppTaskLanguage_AppTaskLanguageID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the AppTaskLanguages table</value>
+    <value>Contains the unique identifier on each row of the AppTaskLanguages table</value>
   </data>
   <data name="AppTaskLanguage_AppTaskLanguageID_Display" xml:space="preserve">
     <value>AppTaskLanguage ID</value>
@@ -313,7 +313,7 @@
     <value>Command</value>
   </data>
   <data name="AppTask_AppTaskID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the AppTasks table</value>
+    <value>Contains the unique identifier on each row of the AppTasks table</value>
   </data>
   <data name="AppTask_AppTaskID_Display" xml:space="preserve">
     <value>AppTask ID</value>
@@ -451,7 +451,7 @@
     <value>BoxModel link</value>
   </data>
   <data name="BoxModelLanguage_BoxModelLanguageID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the BoxModelLanguages table</value>
+    <value>Contains the unique identifier on each row of the BoxModelLanguages table</value>
   </data>
   <data name="BoxModelLanguage_BoxModelLanguageID_Display" xml:space="preserve">
     <value>BoxModelLanguage ID</value>
@@ -493,7 +493,7 @@
     <value>BoxModel link</value>
   </data>
   <data name="BoxModelResult_BoxModelResultID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the BoxModelResults table</value>
+    <value>Contains the unique identifier on each row of the BoxModelResults table</value>
   </data>
   <data name="BoxModelResult_BoxModelResultID_Display" xml:space="preserve">
     <value>BoxModelResult ID</value>
@@ -595,7 +595,7 @@
     <value>Volume (m3)</value>
   </data>
   <data name="BoxModel_BoxModelID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the BoxModels table</value>
+    <value>Contains the unique identifier on each row of the BoxModels table</value>
   </data>
   <data name="BoxModel_BoxModelID_Display" xml:space="preserve">
     <value>BoxModel ID</value>
@@ -685,7 +685,7 @@
     <value>Decay rate</value>
   </data>
   <data name="Classification_ClassificationID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the Classification table</value>
+    <value>Contains the unique identifier on each row of the Classification table</value>
   </data>
   <data name="Classification_ClassificationID_Display" xml:space="preserve">
     <value>Classification ID</value>
@@ -721,7 +721,7 @@
     <value>Ordinal</value>
   </data>
   <data name="ClimateDataValue_ClimateDataValueID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the ClimateDataValues table</value>
+    <value>Contains the unique identifier on each row of the ClimateDataValues table</value>
   </data>
   <data name="ClimateDataValue_ClimateDataValueID_Display" xml:space="preserve">
     <value>ClimateDataValue ID</value>
@@ -733,7 +733,7 @@
     <value>ClimateSite link</value>
   </data>
   <data name="ClimateDataValue_CoolDegDays_C_Description" xml:space="preserve">
-    <value>Cooling degree-days for a given day are the number of degrees Celsius that the mean temperature is above 18 °C. If the temperature is equal to or less than 18 °C, then the number will be zero. For example, a day with a mean temperature of 20.5 °C has 2.5 cooling degree-days; a day with a mean temperature of 15.5 °C has zero cooling degree-days. Cooling degree-days are used primarily to estimate the air-conditioning requirements of buildings.</value>
+    <value>Cooling degree-days for a given day are the number of degrees Celsius that the mean temperature is above 18 Celcius. If the temperature is equal to or less than 18 Celcius, then the number will be zero. For example, a day with a mean temperature of 20.5 Celcius has 2.5 cooling degree-days; a day with a mean temperature of 15.5 Celcius has zero cooling degree-days. Cooling degree-days are used primarily to estimate the air-conditioning requirements of buildings.</value>
   </data>
   <data name="ClimateDataValue_CoolDegDays_C_Display" xml:space="preserve">
     <value>Cooling degree-days</value>
@@ -847,7 +847,7 @@
     <value>Climate site ID</value>
   </data>
   <data name="ClimateSite_ClimateSiteID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the ClimateSites table</value>
+    <value>Contains the unique identifier on each row of the ClimateSites table</value>
   </data>
   <data name="ClimateSite_ClimateSiteID_Display" xml:space="preserve">
     <value>ClimateSite ID</value>
@@ -1003,7 +1003,7 @@
     <value>Contact ID</value>
   </data>
   <data name="ContactPreference_ContactPreferenceID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the ContactPreferences table</value>
+    <value>Contains the unique identifier on each row of the ContactPreferences table</value>
   </data>
   <data name="ContactPreference_ContactPreferenceID_Display" xml:space="preserve">
     <value>ContactPreference ID</value>
@@ -1057,7 +1057,7 @@
     <value>Contact ID</value>
   </data>
   <data name="ContactShortcut_ContactShortcutID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the ContactShortcuts table</value>
+    <value>Contains the unique identifier on each row of the ContactShortcuts table</value>
   </data>
   <data name="ContactShortcut_ContactShortcutID_Display" xml:space="preserve">
     <value>ContactShortcut ID</value>
@@ -1087,7 +1087,7 @@
     <value>Shortcut text</value>
   </data>
   <data name="Contact_ContactID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the Contacts table</value>
+    <value>Contains the unique identifier on each row of the Contacts table</value>
   </data>
   <data name="Contact_ContactID_Display" xml:space="preserve">
     <value>Contact ID</value>
@@ -1123,7 +1123,7 @@
     <value>First name</value>
   </data>
   <data name="Contact_Id_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the AspNetUsers table</value>
+    <value>Contains the unique identifier on each row of the AspNetUsers table</value>
   </data>
   <data name="Contact_Id_Display" xml:space="preserve">
     <value>Id</value>
@@ -1393,7 +1393,7 @@
     <value>Table name</value>
   </data>
   <data name="DocTemplate_DocTemplateID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the DocTemplates table</value>
+    <value>Contains the unique identifier on each row of the DocTemplates table</value>
   </data>
   <data name="DocTemplate_DocTemplateID_Display" xml:space="preserve">
     <value>DocTemplate ID</value>
@@ -1501,7 +1501,7 @@
     <value>Drogue number</value>
   </data>
   <data name="DrogueRun_DrogueRunID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the DrogueRuns table</value>
+    <value>Contains the unique identifier on each row of the DrogueRuns table</value>
   </data>
   <data name="DrogueRun_DrogueRunID_Display" xml:space="preserve">
     <value>Drogue run ID</value>
@@ -1627,7 +1627,7 @@
     <value>Email distribution list contact</value>
   </data>
   <data name="EmailDistributionListContactLanguage_EmailDistributionListContactLanguageID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the EmailDistributionListContactLanguages table</value>
+    <value>Contains the unique identifier on each row of the EmailDistributionListContactLanguages table</value>
   </data>
   <data name="EmailDistributionListContactLanguage_EmailDistributionListContactLanguageID_Display" xml:space="preserve">
     <value>EmailDistributionListContactLanguage ID</value>
@@ -1669,7 +1669,7 @@
     <value>CMP Wastewater</value>
   </data>
   <data name="EmailDistributionListContact_EmailDistributionListContactID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the EmailDistributionListContacts table</value>
+    <value>Contains the unique identifier on each row of the EmailDistributionListContacts table</value>
   </data>
   <data name="EmailDistributionListContact_EmailDistributionListContactID_Display" xml:space="preserve">
     <value>EmailDistributionListContact ID</value>
@@ -1735,7 +1735,7 @@
     <value>Email distribution list</value>
   </data>
   <data name="EmailDistributionListLanguage_EmailDistributionListLanguageID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the EmailDistributionListLanguages table</value>
+    <value>Contains the unique identifier on each row of the EmailDistributionListLanguages table</value>
   </data>
   <data name="EmailDistributionListLanguage_EmailDistributionListLanguageID_Display" xml:space="preserve">
     <value>EmailDistributionListLanguage ID</value>
@@ -1771,7 +1771,7 @@
     <value>Translation status</value>
   </data>
   <data name="EmailDistributionList_EmailDistributionListID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the EmailDistributionLists table</value>
+    <value>Contains the unique identifier on each row of the EmailDistributionLists table</value>
   </data>
   <data name="EmailDistributionList_EmailDistributionListID_Display" xml:space="preserve">
     <value>EmailDistributionList ID</value>
@@ -1807,7 +1807,7 @@
     <value>Email address</value>
   </data>
   <data name="Email_EmailID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the Emails table</value>
+    <value>Contains the unique identifier on each row of the Emails table</value>
   </data>
   <data name="Email_EmailID_Display" xml:space="preserve">
     <value>Email ID</value>
@@ -1885,7 +1885,7 @@
     <value>Help document key</value>
   </data>
   <data name="HelpDoc_HelpDocID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the HelpDocs table</value>
+    <value>Contains the unique identifier on each row of the HelpDocs table</value>
   </data>
   <data name="HelpDoc_HelpDocID_Display" xml:space="preserve">
     <value>Help document ID</value>
@@ -2029,7 +2029,7 @@
     <value>Rating curve</value>
   </data>
   <data name="HydrometricSite_HydrometricSiteID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the HydrometricSites table</value>
+    <value>Contains the unique identifier on each row of the HydrometricSites table</value>
   </data>
   <data name="HydrometricSite_HydrometricSiteID_Display" xml:space="preserve">
     <value>HydrometricSite ID</value>
@@ -2125,7 +2125,7 @@
     <value>Infrastructure</value>
   </data>
   <data name="InfrastructureLanguage_InfrastructureLanguageID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the InfrastructureLanguages table</value>
+    <value>Contains the unique identifier on each row of the InfrastructureLanguages table</value>
   </data>
   <data name="InfrastructureLanguage_InfrastructureLanguageID_Display" xml:space="preserve">
     <value>InfrastructureLanguage ID</value>
@@ -2251,7 +2251,7 @@
     <value>Category</value>
   </data>
   <data name="Infrastructure_InfrastructureID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the Infrastructures table</value>
+    <value>Contains the unique identifier on each row of the Infrastructures table</value>
   </data>
   <data name="Infrastructure_InfrastructureID_Display" xml:space="preserve">
     <value>Infrastructure ID</value>
@@ -3247,7 +3247,7 @@
     <value>Intertech read is acceptable</value>
   </data>
   <data name="LabSheetDetail_LabSheetDetailID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the LabSheetDetails table</value>
+    <value>Contains the unique identifier on each row of the LabSheetDetails table</value>
   </data>
   <data name="LabSheetDetail_LabSheetDetailID_Display" xml:space="preserve">
     <value>LabSheetDetail ID</value>
@@ -3463,7 +3463,7 @@
     <value>Lab sheet details</value>
   </data>
   <data name="LabSheetTubeMPNDetail_LabSheetTubeMPNDetailID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the LabSheetTubeMPNDetails table</value>
+    <value>Contains the unique identifier on each row of the LabSheetTubeMPNDetails table</value>
   </data>
   <data name="LabSheetTubeMPNDetail_LabSheetTubeMPNDetailID_Display" xml:space="preserve">
     <value>LabSheetTubeMPNDetail ID</value>
@@ -3589,7 +3589,7 @@
     <value>File name</value>
   </data>
   <data name="LabSheet_LabSheetID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the LabSheets table</value>
+    <value>Contains the unique identifier on each row of the LabSheets table</value>
   </data>
   <data name="LabSheet_LabSheetID_Display" xml:space="preserve">
     <value>LabSheet ID</value>
@@ -3775,7 +3775,7 @@
     <value>Log command</value>
   </data>
   <data name="Log_LogID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the Logs table</value>
+    <value>Contains the unique identifier on each row of the Logs table</value>
   </data>
   <data name="Log_LogID_Display" xml:space="preserve">
     <value>Log ID</value>
@@ -3817,7 +3817,7 @@
     <value>Map info</value>
   </data>
   <data name="MapInfoPoint_MapInfoPointID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the MapInfoPoints table</value>
+    <value>Contains the unique identifier on each row of the MapInfoPoints table</value>
   </data>
   <data name="MapInfoPoint_MapInfoPointID_Display" xml:space="preserve">
     <value>MapInfoPoint ID</value>
@@ -3871,7 +3871,7 @@
     <value>Map object draw type</value>
   </data>
   <data name="MapInfo_MapInfoID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the MapInfos table</value>
+    <value>Contains the unique identifier on each row of the MapInfos table</value>
   </data>
   <data name="MapInfo_MapInfoID_Display" xml:space="preserve">
     <value>MapInfo ID</value>
@@ -3937,7 +3937,7 @@
     <value>MIKE boundary contidition format</value>
   </data>
   <data name="MikeBoundaryCondition_MikeBoundaryConditionID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the MikeBoundaryConditions table</value>
+    <value>Contains the unique identifier on each row of the MikeBoundaryConditions table</value>
   </data>
   <data name="MikeBoundaryCondition_MikeBoundaryConditionID_Display" xml:space="preserve">
     <value>MikeBoundaryCondition ID</value>
@@ -4009,7 +4009,7 @@
     <value>MIKE scenario results in JSON format</value>
   </data>
   <data name="MikeScenarioResult_MikeScenarioResultID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the MikeScenarioResults table</value>
+    <value>Contains the unique identifier on each row of the MikeScenarioResults table</value>
   </data>
   <data name="MikeScenarioResult_MikeScenarioResultID_Display" xml:space="preserve">
     <value>MikeScenarioResult ID</value>
@@ -4111,7 +4111,7 @@
     <value>MIKE scenario excecution time (min)</value>
   </data>
   <data name="MikeScenario_MikeScenarioID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the MikeScenarios table</value>
+    <value>Contains the unique identifier on each row of the MikeScenarios table</value>
   </data>
   <data name="MikeScenario_MikeScenarioID_Display" xml:space="preserve">
     <value>MikeScenario ID</value>
@@ -4237,7 +4237,7 @@
     <value>MIKE source ID</value>
   </data>
   <data name="MikeSourceStartEnd_MikeSourceStartEndID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the MikeSourceStartEnds table</value>
+    <value>Contains the unique identifier on each row of the MikeSourceStartEnds table</value>
   </data>
   <data name="MikeSourceStartEnd_MikeSourceStartEndID_Display" xml:space="preserve">
     <value>MikeSourceStartEnd ID</value>
@@ -4345,7 +4345,7 @@
     <value>Last Update Date (UTC)</value>
   </data>
   <data name="MikeSource_MikeSourceID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the MikeSources table</value>
+    <value>Contains the unique identifier on each row of the MikeSources table</value>
   </data>
   <data name="MikeSource_MikeSourceID_Display" xml:space="preserve">
     <value>MikeSource ID</value>
@@ -4453,7 +4453,7 @@
     <value>Mid range number of days</value>
   </data>
   <data name="MWQMAnalysisReportParameter_MWQMAnalysisReportParameterID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the MWQMAnalysisReportParameters table</value>
+    <value>Contains the unique identifier on each row of the MWQMAnalysisReportParameters table</value>
   </data>
   <data name="MWQMAnalysisReportParameter_MWQMAnalysisReportParameterID_Display" xml:space="preserve">
     <value>MWQMAnalysisReportParameter ID</value>
@@ -4543,7 +4543,7 @@
     <value>MPN (/100 mL)</value>
   </data>
   <data name="MWQMLookupMPN_MWQMLookupMPNID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the MWQMLookupMPNs table</value>
+    <value>Contains the unique identifier on each row of the MWQMLookupMPNs table</value>
   </data>
   <data name="MWQMLookupMPN_MWQMLookupMPNID_Display" xml:space="preserve">
     <value>MWQMLookupMPN ID</value>
@@ -4591,7 +4591,7 @@
     <value>MWQM run</value>
   </data>
   <data name="MWQMRunLanguage_MWQMRunLanguageID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the MWQMRunLanguages table</value>
+    <value>Contains the unique identifier on each row of the MWQMRunLanguages table</value>
   </data>
   <data name="MWQMRunLanguage_MWQMRunLanguageID_Display" xml:space="preserve">
     <value>MWQMRunLanguage ID</value>
@@ -4693,7 +4693,7 @@
     <value>Last Update Date (UTC)</value>
   </data>
   <data name="MWQMRun_MWQMRunID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the MWQMRuns table</value>
+    <value>Contains the unique identifier on each row of the MWQMRuns table</value>
   </data>
   <data name="MWQMRun_MWQMRunID_Display" xml:space="preserve">
     <value>MWQMRun ID</value>
@@ -4909,7 +4909,7 @@
     <value>MWQM sample ID</value>
   </data>
   <data name="MWQMSampleLanguage_MWQMSampleLanguageID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the MWQMSampleLanguages table</value>
+    <value>Contains the unique identifier on each row of the MWQMSampleLanguages table</value>
   </data>
   <data name="MWQMSampleLanguage_MWQMSampleLanguageID_Display" xml:space="preserve">
     <value>MWQMSampleLanguage ID</value>
@@ -4957,7 +4957,7 @@
     <value>MWQM run TVItemID</value>
   </data>
   <data name="MWQMSample_MWQMSampleID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the MWQMSamples table</value>
+    <value>Contains the unique identifier on each row of the MWQMSamples table</value>
   </data>
   <data name="MWQMSample_MWQMSampleID_Display" xml:space="preserve">
     <value>MWQMSample ID</value>
@@ -5149,7 +5149,7 @@
     <value>Last Update Date (UTC)</value>
   </data>
   <data name="MWQMSiteStartEndDate_MWQMSiteStartEndDateID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the MWQMSiteStartEndDates table</value>
+    <value>Contains the unique identifier on each row of the MWQMSiteStartEndDates table</value>
   </data>
   <data name="MWQMSiteStartEndDate_MWQMSiteStartEndDateID_Display" xml:space="preserve">
     <value>MWQMSiteStartEndDate ID</value>
@@ -5185,7 +5185,7 @@
     <value>MWQM site description</value>
   </data>
   <data name="MWQMSite_MWQMSiteID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the MWQMSites table</value>
+    <value>Contains the unique identifier on each row of the MWQMSites table</value>
   </data>
   <data name="MWQMSite_MWQMSiteID_Display" xml:space="preserve">
     <value>MWQMSite ID</value>
@@ -5245,7 +5245,7 @@
     <value>MWQM subsector ID</value>
   </data>
   <data name="MWQMSubsectorLanguage_MWQMSubsectorLanguageID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the MWQMSubsectorLanguages table</value>
+    <value>Contains the unique identifier on each row of the MWQMSubsectorLanguages table</value>
   </data>
   <data name="MWQMSubsectorLanguage_MWQMSubsectorLanguageID_Display" xml:space="preserve">
     <value>MWQMSubsectorLanguage ID</value>
@@ -5281,7 +5281,7 @@
     <value>Last Update Date (UTC)</value>
   </data>
   <data name="MWQMSubsector_MWQMSubsectorID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the MWQMSubsectors table</value>
+    <value>Contains the unique identifier on each row of the MWQMSubsectors table</value>
   </data>
   <data name="MWQMSubsector_MWQMSubsectorID_Display" xml:space="preserve">
     <value>MWQMSubsector ID</value>
@@ -5407,7 +5407,7 @@
     <value>Z</value>
   </data>
   <data name="OtherFilesToUpload_MikeScenarioID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the MikeScenarios table</value>
+    <value>Contains the unique identifier on each row of the MikeScenarios table</value>
   </data>
   <data name="OtherFilesToUpload_MikeScenarioID_Display" xml:space="preserve">
     <value>MikeScenario ID</value>
@@ -5455,7 +5455,7 @@
     <value>Pol Source Grouping ID</value>
   </data>
   <data name="PolSourceGroupingLanguage_PolSourceGroupingLanguageID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the PolSourceGroupingLanguages table</value>
+    <value>Contains the unique identifier on each row of the PolSourceGroupingLanguages table</value>
   </data>
   <data name="PolSourceGroupingLanguage_PolSourceGroupingLanguageID_Display" xml:space="preserve">
     <value>PolSourceGroupingLanguage ID</value>
@@ -5551,7 +5551,7 @@
     <value>Last Update Date (UTC)</value>
   </data>
   <data name="PolSourceGrouping_PolSourceGroupingID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the PolSourceGroupings table</value>
+    <value>Contains the unique identifier on each row of the PolSourceGroupings table</value>
   </data>
   <data name="PolSourceGrouping_PolSourceGroupingID_Display" xml:space="preserve">
     <value>PolSourceGroupingD ID</value>
@@ -5605,7 +5605,7 @@
     <value>Pollution source observation ID</value>
   </data>
   <data name="PolSourceObservationIssue_PolSourceObservationIssueID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the PolSourceObservationIssues table</value>
+    <value>Contains the unique identifier on each row of the PolSourceObservationIssues table</value>
   </data>
   <data name="PolSourceObservationIssue_PolSourceObservationIssueID_Display" xml:space="preserve">
     <value>PolSourceObservationIssue ID</value>
@@ -5647,7 +5647,7 @@
     <value>Observation to be deleted</value>
   </data>
   <data name="PolSourceObservation_PolSourceObservationID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the PolSourceObservations table</value>
+    <value>Contains the unique identifier on each row of the PolSourceObservations table</value>
   </data>
   <data name="PolSourceObservation_PolSourceObservationID_Display" xml:space="preserve">
     <value>PolSourceObservation ID</value>
@@ -5725,7 +5725,7 @@
     <value>Last Update Date (UTC)</value>
   </data>
   <data name="PolSourceSiteEffectTerm_PolSourceSiteEffectTermID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the PolSourceSiteEffectTerms table</value>
+    <value>Contains the unique identifier on each row of the PolSourceSiteEffectTerms table</value>
   </data>
   <data name="PolSourceSiteEffectTerm_PolSourceSiteEffectTermID_Display" xml:space="preserve">
     <value>PolSourceSiteEffectTerm ID</value>
@@ -5767,7 +5767,7 @@
     <value>MWQM site TVItemID</value>
   </data>
   <data name="PolSourceSiteEffect_PolSourceSiteEffectID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the PolSourceSiteEffects table</value>
+    <value>Contains the unique identifier on each row of the PolSourceSiteEffects table</value>
   </data>
   <data name="PolSourceSiteEffect_PolSourceSiteEffectID_Display" xml:space="preserve">
     <value>PolSourceSiteEffect ID</value>
@@ -5821,7 +5821,7 @@
     <value>Old site ID</value>
   </data>
   <data name="PolSourceSite_PolSourceSiteID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the PolSourceSites table</value>
+    <value>Contains the unique identifier on each row of the PolSourceSites table</value>
   </data>
   <data name="PolSourceSite_PolSourceSiteID_Display" xml:space="preserve">
     <value>PolSourceSite ID</value>
@@ -5887,7 +5887,7 @@
     <value>Last Update Date (UTC)</value>
   </data>
   <data name="RainExceedanceClimateSite_RainExceedanceClimateSiteID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the RainExceedanceClimateSites table</value>
+    <value>Contains the unique identifier on each row of the RainExceedanceClimateSites table</value>
   </data>
   <data name="RainExceedanceClimateSite_RainExceedanceClimateSiteID_Display" xml:space="preserve">
     <value>RainExceedanceClimateSite ID</value>
@@ -5935,7 +5935,7 @@
     <value>Email distribution list</value>
   </data>
   <data name="RainExceedance_RainExceedanceID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the RainExceedances table</value>
+    <value>Contains the unique identifier on each row of the RainExceedances table</value>
   </data>
   <data name="RainExceedance_RainExceedanceID_Display" xml:space="preserve">
     <value>RainExceedance ID</value>
@@ -5995,7 +5995,7 @@
     <value>Rating curve ID</value>
   </data>
   <data name="RatingCurveValue_RatingCurveValueID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the RatingCurveValues table</value>
+    <value>Contains the unique identifier on each row of the RatingCurveValues table</value>
   </data>
   <data name="RatingCurveValue_RatingCurveValueID_Display" xml:space="preserve">
     <value>RatingCurveValue ID</value>
@@ -6025,7 +6025,7 @@
     <value>Last Update Date (UTC)</value>
   </data>
   <data name="RatingCurve_RatingCurveID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the RatingCurves table</value>
+    <value>Contains the unique identifier on each row of the RatingCurves table</value>
   </data>
   <data name="RatingCurve_RatingCurveID_Display" xml:space="preserve">
     <value>RatingCurve ID</value>
@@ -6121,7 +6121,7 @@
     <value>Parent report section ID</value>
   </data>
   <data name="ReportSection_ReportSectionID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the ReportSections table</value>
+    <value>Contains the unique identifier on each row of the ReportSections table</value>
   </data>
   <data name="ReportSection_ReportSectionID_Display" xml:space="preserve">
     <value>ReportSection ID</value>
@@ -6199,7 +6199,7 @@
     <value>Name</value>
   </data>
   <data name="ReportType_ReportTypeID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the ReportTypes table</value>
+    <value>Contains the unique identifier on each row of the ReportTypes table</value>
   </data>
   <data name="ReportType_ReportTypeID_Display" xml:space="preserve">
     <value>ReportType ID</value>
@@ -6253,7 +6253,7 @@
     <value>Last Update Date (UTC)</value>
   </data>
   <data name="ResetPassword_ResetPasswordID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the ResetPasswords table</value>
+    <value>Contains the unique identifier on each row of the ResetPasswords table</value>
   </data>
   <data name="ResetPassword_ResetPasswordID_Display" xml:space="preserve">
     <value>ResetPassword ID</value>
@@ -6355,7 +6355,7 @@
     <value>Last Update Date (UTC)</value>
   </data>
   <data name="SamplingPlanEmail_SamplingPlanEmailID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the SamplingPlanEmails table</value>
+    <value>Contains the unique identifier on each row of the SamplingPlanEmails table</value>
   </data>
   <data name="SamplingPlanEmail_SamplingPlanEmailID_Display" xml:space="preserve">
     <value>SamplingPlanEmail ID</value>
@@ -6397,7 +6397,7 @@
     <value>Sampling plan subsector ID</value>
   </data>
   <data name="SamplingPlanSubsectorSite_SamplingPlanSubsectorSiteID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the SamplingPlanSubsectorSites table</value>
+    <value>Contains the unique identifier on each row of the SamplingPlanSubsectorSites table</value>
   </data>
   <data name="SamplingPlanSubsectorSite_SamplingPlanSubsectorSiteID_Display" xml:space="preserve">
     <value>SamplingPlanSubsectorSite ID</value>
@@ -6421,7 +6421,7 @@
     <value>Sampling plan ID</value>
   </data>
   <data name="SamplingPlanSubsector_SamplingPlanSubsectorID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the SamplingPlanSubsectors table</value>
+    <value>Contains the unique identifier on each row of the SamplingPlanSubsectors table</value>
   </data>
   <data name="SamplingPlanSubsector_SamplingPlanSubsectorID_Display" xml:space="preserve">
     <value>SamplingPlanSubsector ID</value>
@@ -6541,7 +6541,7 @@
     <value>Sampling plan file TVItemID</value>
   </data>
   <data name="SamplingPlan_SamplingPlanID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the SamplingPlans table</value>
+    <value>Contains the unique identifier on each row of the SamplingPlans table</value>
   </data>
   <data name="SamplingPlan_SamplingPlanID_Display" xml:space="preserve">
     <value>SamplingPlan ID</value>
@@ -6625,7 +6625,7 @@
     <value>Spill ID</value>
   </data>
   <data name="SpillLanguage_SpillLanguageID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the SpillLanguages table</value>
+    <value>Contains the unique identifier on each row of the SpillLanguages table</value>
   </data>
   <data name="SpillLanguage_SpillLanguageID_Display" xml:space="preserve">
     <value>SpillLanguage ID</value>
@@ -6673,7 +6673,7 @@
     <value>Municipality TVItemID</value>
   </data>
   <data name="Spill_SpillID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the Spills table</value>
+    <value>Contains the unique identifier on each row of the Spills table</value>
   </data>
   <data name="Spill_SpillID_Display" xml:space="preserve">
     <value>Spill ID</value>
@@ -6721,7 +6721,7 @@
     <value>Last Update Date (UTC)</value>
   </data>
   <data name="Tel_TelID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the Tels table</value>
+    <value>Contains the unique identifier on each row of the Tels table</value>
   </data>
   <data name="Tel_TelID_Display" xml:space="preserve">
     <value>Tel ID</value>
@@ -6787,7 +6787,7 @@
     <value>Tide data type</value>
   </data>
   <data name="TideDataValue_TideDataValueID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the TideDataValues table</value>
+    <value>Contains the unique identifier on each row of the TideDataValues table</value>
   </data>
   <data name="TideDataValue_TideDataValueID_Display" xml:space="preserve">
     <value>TideDataValue ID</value>
@@ -6865,7 +6865,7 @@
     <value>SID</value>
   </data>
   <data name="TideLocation_TideLocationID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the TideLocations table</value>
+    <value>Contains the unique identifier on each row of the TideLocations table</value>
   </data>
   <data name="TideLocation_TideLocationID_Display" xml:space="preserve">
     <value>TideLocation ID</value>
@@ -6901,7 +6901,7 @@
     <value>sid</value>
   </data>
   <data name="TideSite_TideSiteID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the TideSites table</value>
+    <value>Contains the unique identifier on each row of the TideSites table</value>
   </data>
   <data name="TideSite_TideSiteID_Display" xml:space="preserve">
     <value>TideSite ID</value>
@@ -6961,7 +6961,7 @@
     <value>TV file ID</value>
   </data>
   <data name="TVFileLanguage_TVFileLanguageID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the TVFileLanguages table</value>
+    <value>Contains the unique identifier on each row of the TVFileLanguages table</value>
   </data>
   <data name="TVFileLanguage_TVFileLanguageID_Display" xml:space="preserve">
     <value>TVFileLanguage ID</value>
@@ -7057,7 +7057,7 @@
     <value>Template TV type</value>
   </data>
   <data name="TVFile_TVFileID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the TVFiles table</value>
+    <value>Contains the unique identifier on each row of the TVFiles table</value>
   </data>
   <data name="TVFile_TVFileID_Display" xml:space="preserve">
     <value>TVFile ID</value>
@@ -7153,7 +7153,7 @@
     <value>TV Item ID</value>
   </data>
   <data name="TVItemLanguage_TVItemLanguageID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the TVItemLanguages table</value>
+    <value>Contains the unique identifier on each row of the TVItemLanguages table</value>
   </data>
   <data name="TVItemLanguage_TVItemLanguageID_Display" xml:space="preserve">
     <value>TVItemLanguage ID</value>
@@ -7225,7 +7225,7 @@
     <value>To tv type</value>
   </data>
   <data name="TVItemLink_TVItemLinkID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the TVItemLinks table</value>
+    <value>Contains the unique identifier on each row of the TVItemLinks table</value>
   </data>
   <data name="TVItemLink_TVItemLinkID_Display" xml:space="preserve">
     <value>TVItemLink ID</value>
@@ -7267,7 +7267,7 @@
     <value>TVItemID</value>
   </data>
   <data name="TVItemStat_TVItemStatID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the TVItemStats table</value>
+    <value>Contains the unique identifier on each row of the TVItemStats table</value>
   </data>
   <data name="TVItemStat_TVItemStatID_Display" xml:space="preserve">
     <value>TVItemStat ID</value>
@@ -7381,7 +7381,7 @@
     <value>TVItemID 4</value>
   </data>
   <data name="TVItemUserAuthorization_TVItemUserAuthorizationID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the TVItemUserAuthorizations table</value>
+    <value>Contains the unique identifier on each row of the TVItemUserAuthorizations table</value>
   </data>
   <data name="TVItemUserAuthorization_TVItemUserAuthorizationID_Display" xml:space="preserve">
     <value>TVItemUserAuthorization ID</value>
@@ -7411,7 +7411,7 @@
     <value>Parent TV ID</value>
   </data>
   <data name="TVItem_TVItemID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the TVItems table</value>
+    <value>Contains the unique identifier on each row of the TVItems table</value>
   </data>
   <data name="TVItem_TVItemID_Display" xml:space="preserve">
     <value>TVItem ID</value>
@@ -7537,7 +7537,7 @@
     <value>TV authorization</value>
   </data>
   <data name="TVTypeUserAuthorization_TVTypeUserAuthorizationID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the TVTypeUserAuthorizations table</value>
+    <value>Contains the unique identifier on each row of the TVTypeUserAuthorizations table</value>
   </data>
   <data name="TVTypeUserAuthorization_TVTypeUserAuthorizationID_Display" xml:space="preserve">
     <value>TVTypeUserAuthorization ID</value>
@@ -7639,7 +7639,7 @@
     <value>Use equation</value>
   </data>
   <data name="UseOfSite_UseOfSiteID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the UseOfSites table</value>
+    <value>Contains the unique identifier on each row of the UseOfSites table</value>
   </data>
   <data name="UseOfSite_UseOfSiteID_Display" xml:space="preserve">
     <value>UseOfSite ID</value>
@@ -7675,10 +7675,10 @@
     <value>Ambient salinity (PSU)</value>
   </data>
   <data name="VPAmbient_AmbientTemperature_C_Description" xml:space="preserve">
-    <value>Ambient temperature (°C)</value>
+    <value>Ambient temperature (Celcius)</value>
   </data>
   <data name="VPAmbient_AmbientTemperature_C_Display" xml:space="preserve">
-    <value>Ambient temperature (°C)</value>
+    <value>Ambient temperature (Celcius)</value>
   </data>
   <data name="VPAmbient_BackgroundConcentration_MPN_100ml_Description" xml:space="preserve">
     <value>Background concentration in most probable number per 100 milli-Litres</value>
@@ -7747,7 +7747,7 @@
     <value>Row</value>
   </data>
   <data name="VPAmbient_VPAmbientID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the VPAmbients table</value>
+    <value>Contains the unique identifier on each row of the VPAmbients table</value>
   </data>
   <data name="VPAmbient_VPAmbientID_Display" xml:space="preserve">
     <value>VPAmbient ID</value>
@@ -7825,7 +7825,7 @@
     <value>Travel time (h)</value>
   </data>
   <data name="VPResult_VPResultID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the VPResults table</value>
+    <value>Contains the unique identifier on each row of the VPResults table</value>
   </data>
   <data name="VPResult_VPResultID_Display" xml:space="preserve">
     <value>VPResult ID</value>
@@ -7915,7 +7915,7 @@
     <value>VP scenario ID</value>
   </data>
   <data name="VPScenarioLanguage_VPScenarioLanguageID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the VPScenarioLanguages table</value>
+    <value>Contains the unique identifier on each row of the VPScenarioLanguages table</value>
   </data>
   <data name="VPScenarioLanguage_VPScenarioLanguageID_Display" xml:space="preserve">
     <value>VPScenarioLanguage ID</value>
@@ -8047,7 +8047,7 @@
     <value>Vertical angle (deg)</value>
   </data>
   <data name="VPScenario_VPScenarioID_Description" xml:space="preserve">
-    <value>Contains the unique "identifier on each row of the VPScenarios table</value>
+    <value>Contains the unique identifier on each row of the VPScenarios table</value>
   </data>
   <data name="VPScenario_VPScenarioID_Display" xml:space="preserve">
     <value>VPScenario ID</value>
@@ -8057,5 +8057,932 @@
   </data>
   <data name="VPScenario_VPScenarioStatus_Display" xml:space="preserve">
     <value>VP scenario status</value>
+  </data>
+  <data name="Address_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="Address_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="AppErrLog_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="AppErrLog_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="AppTaskLanguage_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="AppTaskLanguage_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="AppTask_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="AppTask_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="BoxModelLanguage_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="BoxModelLanguage_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="BoxModelResult_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="BoxModelResult_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="BoxModel_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="BoxModel_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="Classification_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="Classification_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="ClimateDataValue_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="ClimateDataValue_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="ClimateSite_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="ClimateSite_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="CoCoRaHSSite_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="CoCoRaHSSite_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="CoCoRaHSValue_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="CoCoRaHSValue_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="ContactPreference_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="ContactPreference_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="ContactShortcut_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="ContactShortcut_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="Contact_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="Contact_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="DocTemplate_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="DocTemplate_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="DrogueRunPosition_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="DrogueRunPosition_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="DrogueRun_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="DrogueRun_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="EmailDistributionListContactLanguage_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="EmailDistributionListContactLanguage_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="EmailDistributionListContact_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="EmailDistributionListContact_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="EmailDistributionListLanguage_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="EmailDistributionListLanguage_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="EmailDistributionList_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="EmailDistributionList_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="Emails_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="Emails_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="HelpDoc_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="HelpDoc_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="HydrometricDataValue_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="HydrometricDataValue_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="HydrometricSite_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="HydrometricSite_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="InfrastructureLanguage_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="InfrastructureLanguage_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="Infrastructure_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="Infrastructure_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="LabSheetDetail_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="LabSheetDetail_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="LabSheetTubeMPNDetail_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="LabSheetTubeMPNDetail_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="LabSheet_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="LabSheet_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="Log_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="Log_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="MapInfoPoint_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="MapInfoPoint_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="MapInfo_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="MapInfo_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="MikeBoundaryCondition_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="MikeBoundaryCondition_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="MikeScenarioResult_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="MikeScenarioResult_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="MikeScenario_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="MikeScenario_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="MikeSourceStartEnd_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="MikeSourceStartEnd_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="MikeSource_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="MikeSource_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="MWQMAnalysisReportParameter_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="MWQMAnalysisReportParameter_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="MWQMLookupMPN_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="MWQMLookupMPN_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="MWQMRunLanguage_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="MWQMRunLanguage_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="MWQMRun_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="MWQMRun_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="MWQMSampleLanguage_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="MWQMSampleLanguage_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="MWQMSample_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="MWQMSample_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="MWQMSiteStartEndDate_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="MWQMSiteStartEndDate_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="MWQMSite_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="MWQMSite_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="MWQMSubsectorLanguage_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="MWQMSubsectorLanguage_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="MWQMSubsector_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="MWQMSubsector_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="PolSourceGroupingLanguage_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="PolSourceGroupingLanguage_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="PolSourceGrouping_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="PolSourceGrouping_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="PolSourceObservationIssue_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="PolSourceObservationIssue_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="PolSourceObservation_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="PolSourceObservation_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="PolSourceSiteEffectTerm_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="PolSourceSiteEffectTerm_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="PolSourceSiteEffect_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="PolSourceSiteEffect_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="PolSourceSite_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="PolSourceSite_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="RainExceedanceClimateSite_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="RainExceedanceClimateSite_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="RainExceedance_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="RainExceedance_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="RatingCurveValue_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="RatingCurveValue_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="RatingCurve_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="RatingCurve_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="ReportSection_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="ReportSection_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="ReportType_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="ReportType_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="ResetPassword_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="ResetPassword_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="SamplingPlanEmail_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="SamplingPlanEmail_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="SamplingPlanSubsectorSite_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="SamplingPlanSubsectorSite_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="SamplingPlanSubsector_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="SamplingPlanSubsector_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="SamplingPlan_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="SamplingPlan_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="SpillLanguage_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="SpillLanguage_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="Spill_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="Spill_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="Tel_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="Tel_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="TideDataValue_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="TideDataValue_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="TideLocation_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="TideLocation_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="TideSite_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="TideSite_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="TVFileLanguage_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="TVFileLanguage_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="TVFile_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="TVFile_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="TVItemLanguage_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="TVItemLanguage_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="TVItemLink_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="TVItemLink_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="TVItemStat_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="TVItemStat_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="TVItemUserAuthorization_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="TVItemUserAuthorization_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="TVItem_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="TVItem_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="TVTypeUserAuthorization_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="TVTypeUserAuthorization_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="UseOfSite_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="UseOfSite_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="VPAmbient_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="VPAmbient_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="VPResult_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="VPResult_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="VPScenarioLanguage_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="VPScenarioLanguage_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="VPScenario_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="VPScenario_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
+  </data>
+  <data name="Addresses_Table_Description" xml:space="preserve">
+    <value>The Addresses table contains fields for holding complete address. Used with infrastructures, pollution source site and contacts from municipalities.</value>
+  </data>
+  <data name="AppErrLogs_Table_Description" xml:space="preserve">
+    <value>The AppErrLogs table contains fields for holding application errors.</value>
+  </data>
+  <data name="AppTaskLanguages_Table_Description" xml:space="preserve">
+    <value>The AppTaskLanguages table contains fields for holding bilingual texts for AppTasks table.</value>
+  </data>
+  <data name="AppTasks_Table_Description" xml:space="preserve">
+    <value>The AppTasks table contains fields for holding application tasks sent to the server which can take a long time to complete.</value>
+  </data>
+  <data name="BoxModelLanguages_Table_Description" xml:space="preserve">
+    <value>The BoxModelLanguages table contains fields for holding bilingual texts for BoxModels table.</value>
+  </data>
+  <data name="BoxModelResults_Table_Description" xml:space="preserve">
+    <value>The BoxModelResults contains fields for holding box modelling scenarios results.</value>
+  </data>
+  <data name="BoxModel_Table_Description" xml:space="preserve">
+    <value>The BoxModels table contains fields for holding box modelling scenarios inputs.</value>
+  </data>
+  <data name="Classifications_Table_Description" xml:space="preserve">
+    <value>The Classifications table contains fields for holding classification for visualization on the web. It holds only a representation of the actual legal classification held in Arc GIS.</value>
+  </data>
+  <data name="ClimateDataValues_Table_Description" xml:space="preserve">
+    <value>The ClimateDataValues table contains fields for holding climate data values for various climate site from Meteorological Service of Canada.</value>
+  </data>
+  <data name="ClimateSites_Table_Description" xml:space="preserve">
+    <value>The ClimateSites table contains fields for holding climate site related information from Meteorological Service of Canada as well as some provincial climate sites.</value>
+  </data>
+  <data name="CoCoRaHSSites_Table_Description" xml:space="preserve">
+    <value>The CoCoRaHSSites table contains fields for holding voluntary managed precipitation sites from private individuals.</value>
+  </data>
+  <data name="CoCoRaHSValues_Table_Description" xml:space="preserve">
+    <value>The CoCoRaHSValues table contains fields for holding precipitation values from voluntary private sites.</value>
+  </data>
+  <data name="ContactPreferences_Table_Description" xml:space="preserve">
+    <value>The ContactPreferences table contains fields for maintaining users preferences while using some applications.</value>
+  </data>
+  <data name="ContactShortcuts_Table_Description" xml:space="preserve">
+    <value>The ContactShortcuts table contains fields for maintaining users shortcuts used by some applications.</value>
+  </data>
+  <data name="Contacts_Table_Description" xml:space="preserve">
+    <value>The Contacts table contains fields for holding users information.</value>
+  </data>
+  <data name="DocTemplates_Table_Description" xml:space="preserve">
+    <value>The DocTemplates table contains fields for holding preset templates while creating many type of documents, like .xlsx, .docx, .csv, .txt, etc. This option of exporting data to documents is being replaced by parameter type exports. This table could be removed in the future.</value>
+  </data>
+  <data name="DrogueRunPositions_Table_Description" xml:space="preserve">
+    <value>The DrogueRunPositions table contains fields for showing drogue tracking on the web. It contains the temporal coordinates.</value>
+  </data>
+  <data name="DrogueRuns_Table_Description" xml:space="preserve">
+    <value>The DrogueRuns table contains fields for showing drogue tracking on the web. It holds the names, numbers and date of the drogue runs.</value>
+  </data>
+  <data name="EmailDistributionListContactLanguages_Table_Description" xml:space="preserve">
+    <value>The EmailDistributionListContactLanguages table contains fields for holding bilingual texts from EmailDistributionListContacts table.</value>
+  </data>
+  <data name="EmailDistributionListContacts_Table_Description" xml:space="preserve">
+    <value>The EmailDistributionListContacts table contains all contacts names for a specified email distribution list.</value>
+  </data>
+  <data name="EmailDistributionListLanguages_Table_Description" xml:space="preserve">
+    <value>The EmailDistributionListLanguages table contains fields for holding bilingual texts from EmailDistributionLists.</value>
+  </data>
+  <data name="EmailDistributionLists_Table_Description" xml:space="preserve">
+    <value>The EmailDistributionLists table contains fields for identifying email distribution lists.</value>
+  </data>
+  <data name="Emails_Table_Description" xml:space="preserve">
+    <value>The Emails table contains fields for holding complete emails. It is used with municipality contacts and second emails from users.</value>
+  </data>
+  <data name="HelpDocs_Table_Description" xml:space="preserve">
+    <value>The HelpDocs table contains fields for holding help information used in some applications. Especially the web.</value>
+  </data>
+  <data name="HydrometricDataValues_Table_Description" xml:space="preserve">
+    <value>The HydrometricDataValues table contains fields for holding hydrometric data values for various hydrometric site from Hydrometric Service of Canada.</value>
+  </data>
+  <data name="HydrometricSites_Table_Description" xml:space="preserve">
+    <value>The HydrometricSites table contains fields for holding hydrometric site related information from Hydrometric Service of Canada as well as some provincial hydrometric sites.</value>
+  </data>
+  <data name="InfrastructureLanguages_Table_Description" xml:space="preserve">
+    <value>The InfrastructureLanguages table contains fields for holding bilingual texts for the infrastructure table.</value>
+  </data>
+  <data name="Infrastructures_Table_Description" xml:space="preserve">
+    <value>The Infrastructures table contains fields for holding all related information for municipal infrastructures. Both WWTP and LS related information are stored in the same table.</value>
+  </data>
+  <data name="LabSheetDetails_Table_Description" xml:space="preserve">
+    <value>The LabSheetDetails table contains fields for holding lab sheet detail related information.</value>
+  </data>
+  <data name="LabSheets_Table_Description" xml:space="preserve">
+    <value>The LabSheets table contains fields for storing and managing lab sheets.</value>
+  </data>
+  <data name="LabSheetTubeMPNDetails_Table_Description" xml:space="preserve">
+    <value>The LabSheetTubeMPNDetails table contains fields for holding lab tube information.</value>
+  </data>
+  <data name="Logs_Table_Description" xml:space="preserve">
+    <value>The Logs table is used to hold a history of the users commands to the database.</value>
+  </data>
+  <data name="MapInfoPoints_Table_Description" xml:space="preserve">
+    <value>The MapInfoPoints table contains fields for holding mapping coordinates related information.</value>
+  </data>
+  <data name="MapInfos_Table_Description" xml:space="preserve">
+    <value>The MapInfos table contains fields for holding mapping related information for all objects in the database.</value>
+  </data>
+  <data name="MikeBoundaryConditions_Table_Description" xml:space="preserve">
+    <value>The MikeBoundaryConditions table contains fields for holding MIKE boundary condition related information.</value>
+  </data>
+  <data name="MikeScenarioResults_Table_Description" xml:space="preserve">
+    <value>The MikeScenarioResults table contains fields for holding a portion of the MIKE scenario results. Limited use at this time. Don’t know if this table will be kept in the future. Currently all MIKE scenario results are stored in files.</value>
+  </data>
+  <data name="MikeScenarios_Table_Description" xml:space="preserve">
+    <value>The MikeScenarios table contains fields for holding and managing MIKE scenarios.</value>
+  </data>
+  <data name="MikeSourceStartEnds_Table_Description" xml:space="preserve">
+    <value>The MikeSourceStartEnds table contains fields for non continuous spills.</value>
+  </data>
+  <data name="MikeSources_Table_Description" xml:space="preserve">
+    <value>The MikeSources table contains fields for holding and managing MIKE sources which could be rivers, streams, brooks or other pollution sources.</value>
+  </data>
+  <data name="MWQMAnalysisReportParameters_Table_Description" xml:space="preserve">
+    <value>The MWQMAnalysisReportParameters table contains fields for managing analysis report parameters.</value>
+  </data>
+  <data name="MWQMLookupMPNs_Table_Description" xml:space="preserve">
+    <value>The MWQMLookupMPNs table contains all possible MPNs.</value>
+  </data>
+  <data name="MWQMRunLanguages_Table_Description" xml:space="preserve">
+    <value>The MWQMRunLanguages table contains fields for holding bilingual texts for the MWQMRuns table.</value>
+  </data>
+  <data name="MWQMRuns_Table_Description" xml:space="preserve">
+    <value>The MWQMRuns table contains fields for holding and managing a marine water quality monitoring runs.</value>
+  </data>
+  <data name="MWQMSampleLanguages_Table_Description" xml:space="preserve">
+    <value>The MWQMSampleLanguages table contains fields for holding bilingual texts for the MWQMSamples table.</value>
+  </data>
+  <data name="MWQMSamples_Table_Description" xml:space="preserve">
+    <value>The MWQMSamples table contains fields for holding sample results for a marine water quality site and run.</value>
+  </data>
+  <data name="MWQMSiteStartEndDates_Table_Description" xml:space="preserve">
+    <value>The MWQMSiteStartEndDates table contains fields for storing the marine water quality monitoring site activity dates.</value>
+  </data>
+  <data name="MWQMSites_Table_Description" xml:space="preserve">
+    <value>The MWQMSites table contains fields for holding and managing marine water quality monitoring sites.</value>
+  </data>
+  <data name="MWQMSubsectorLanguages_Table_Description" xml:space="preserve">
+    <value>The MWQMSubsectorLanguages table contains fields for holding bilingual texts for the MWQMSubsectors table.</value>
+  </data>
+  <data name="MWQMSubsectors_Table_Description" xml:space="preserve">
+    <value>The MWQMSubsectors table contains fields for describing the marine water quality monitoring subsectors.</value>
+  </data>
+  <data name="PolSourceGroupingLanguages_Table_Description" xml:space="preserve">
+    <value>The PolSourceGroupingLanguages table contains fields for holding bilingual texts for the PolSourceGroupings table.</value>
+  </data>
+  <data name="PolSourceGroupings_Table_Description" xml:space="preserve">
+    <value>The PolSourceGroupings table contains fields for pollution source grouping which is used to formulate sentence from selected options while describing pollution source sites and issues.</value>
+  </data>
+  <data name="PolSourceObservationIssues_Table_Description" xml:space="preserve">
+    <value>The PolSourceObservationIssues table contains fields for holding the description of the pollution source observation issues.</value>
+  </data>
+  <data name="PolSourceObservations_Table_Description" xml:space="preserve">
+    <value>The PolSourceObservations table contains fields for holding the pollution source observation related information.</value>
+  </data>
+  <data name="PolSourceSiteEffects_Table_Description" xml:space="preserve">
+    <value>The PolSourceSiteEffects table contains fields for establishing the effects of pollution source site.</value>
+  </data>
+  <data name="PolSourceSiteEffectTerms_Table_Description" xml:space="preserve">
+    <value>The PolSourceSiteEffectTerms table contains all the terms used to describe the effects of pollution source site.</value>
+  </data>
+  <data name="PolSourceSites_Table_Description" xml:space="preserve">
+    <value>The PolSourceSites table contains fields for holding and managing pollution source sites.</value>
+  </data>
+  <data name="RainExceedanceClimateSites_Table_Description" xml:space="preserve">
+    <value>The RainExceedanceClimateSites table contains fields for holding the links between rain exceedance and climate sites.</value>
+  </data>
+  <data name="RainExceedances_Table_Description" xml:space="preserve">
+    <value>The RainExceedances table contains fields for managing rain exceedances.</value>
+  </data>
+  <data name="RatingCurves_Table_Description" xml:space="preserve">
+    <value>The RatingCurves table contains fields for storing rating curves for each hydrometric sites.</value>
+  </data>
+  <data name="RatingCurveValues_Table_Description" xml:space="preserve">
+    <value>The RatingCurveValues table contains fields for holding rating curve values for each hydrometric sites.</value>
+  </data>
+  <data name="ReportSections_Table_Description" xml:space="preserve">
+    <value>The ReportSections table contains fields for holding report section used to produce various reports.</value>
+  </data>
+  <data name="ReportTypes_Table_Description" xml:space="preserve">
+    <value>The ReportTypes table contains fields for holding the report types that can be produce with just a click of a button.</value>
+  </data>
+  <data name="ResetPasswords_Table_Description" xml:space="preserve">
+    <value>The ResetPasswords table contains basic fields to help with the reset of users password.</value>
+  </data>
+  <data name="SamplingPlanEmails_Table_Description" xml:space="preserve">
+    <value>The SamplingPlanEmails table contains fields for holding emails needed to be sent while filling lab sheets.</value>
+  </data>
+  <data name="SamplingPlanSubsectorSites_Table_Description" xml:space="preserve">
+    <value>The SamplingPlanSubsectorSites table contains fields for storing and managing sampling plan subsector marine water quality monitoring sites.</value>
+  </data>
+  <data name="SamplingPlanSubsectors_Table_Description" xml:space="preserve">
+    <value>The SamplingPlanSubsectors table contains fields for storing sampling plan subsector information.</value>
+  </data>
+  <data name="SamplingPlans_Table_Description" xml:space="preserve">
+    <value>The SamplingPlans table contains fields for organizing sampling plans. It’s also the primary table use to create sampling plan text files that can be distributed to contractors, provinces and internal users. They use it with the application CSSPWQInputTool.</value>
+  </data>
+  <data name="SpillLanguages_Table_Description" xml:space="preserve">
+    <value>The SpillLanguages table contains fields for holding bilingual texts for the Spills table.</value>
+  </data>
+  <data name="Spills_Table_Description" xml:space="preserve">
+    <value>The Spills table contains fields for holding information regarding spills from municipal infrastructure or other types of spills.</value>
+  </data>
+  <data name="Tels_Table_Description" xml:space="preserve">
+    <value>The Tels table contains fields for holding telephone numbers. It is used with municipal contacts and users extra profile information.</value>
+  </data>
+  <data name="TideDataValues_Table_Description" xml:space="preserve">
+    <value>The TideDataValues table contains fields for holding values of tide data at various places in Canada and US.</value>
+  </data>
+  <data name="TideLocations_Table_Description" xml:space="preserve">
+    <value>The TideLocations table contains fields for storing the tide locations and names to be used by some applications.</value>
+  </data>
+  <data name="TideSites_Table_Description" xml:space="preserve">
+    <value>The TideSites table contains fields for holding and managing tide site related information from Canadian Hydrographic Services.</value>
+  </data>
+  <data name="TVFileLanguages_Table_Description" xml:space="preserve">
+    <value>The TVFileLanguages table contains fields for holding bilingual texts for the TVFiles table.</value>
+  </data>
+  <data name="TVFiles_Table_Description" xml:space="preserve">
+    <value>The TVFiles table contains fields for managing files outside of the databases via links and file names.</value>
+  </data>
+  <data name="TVItemLanguages_Table_Description" xml:space="preserve">
+    <value>The TVItemLanguages table contains fields for holding bilingual texts for the TVItems table.</value>
+  </data>
+  <data name="TVItemLinks_Table_Description" xml:space="preserve">
+    <value>The TVItemLinks table contains fields for linking different tree view items (TVItems) between them.</value>
+  </data>
+  <data name="TVItemStats_Table_Description" xml:space="preserve">
+    <value>The TVItemStats table contains fields for holding statistics of various tree view items within the database. It is use by some applications as an indicator of how many sub items exist underneath a particular item.</value>
+  </data>
+  <data name="TVItems_Table_Description" xml:space="preserve">
+    <value>The TVItems table contains fields for holding and managing the tree view system within the whole database so each item can be search and is unique.</value>
+  </data>
+  <data name="TVItemUserAuthorizations_Table_Description" xml:space="preserve">
+    <value>The TVItemUserAuthorizations table contains fields for managing the authorization of item a user can view, edit, create or delete.</value>
+  </data>
+  <data name="TVTypeUserAuthorizations_Table_Description" xml:space="preserve">
+    <value>The TVTypeUserAuthorizations table contains fields for managing the authorization of item types a user can view, edit, create or delete.</value>
+  </data>
+  <data name="UseOfSites_Table_Description" xml:space="preserve">
+    <value>The UseOfSites table contains fields for identifying climate sites, hydrometric sites, tide sites, municipalities and drogues to be used under a subsector.</value>
+  </data>
+  <data name="VPAmbients_Table_Description" xml:space="preserve">
+    <value>The VPAmbients table contains fields for storing ambient inputs for Visual Plumes scenarios.</value>
+  </data>
+  <data name="VPResults_Table_Description" xml:space="preserve">
+    <value>The VPResults table contains fields for holding Visual Plumes scenario results.</value>
+  </data>
+  <data name="VPScenarioLanguages_Table_Description" xml:space="preserve">
+    <value>The VPScenarioLanguages table contains fields for holding bilingual texts for the VPScenarios table.</value>
+  </data>
+  <data name="VPScenarios_Table_Description" xml:space="preserve">
+    <value>The VPScenarios table contains fields for holding and managing Visual Plumes scenarios.</value>
+  </data>
+  <data name="BoxModels_Table_Description" xml:space="preserve">
+    <value>The BoxModels table contains fields for holding and managing Box Model scenarios</value>
+  </data>
+  <data name="CoCoRaHSSite_CoCoRaHSSiteID_Description" xml:space="preserve">
+    <value>Contains the unique identifier on each row of the CoCoRaHSSites table</value>
+  </data>
+  <data name="CoCoRaHSSite_CoCoRaHSSiteID_Display" xml:space="preserve">
+    <value>CoCoRaHSSite ID</value>
+  </data>
+  <data name="CoCoRaHSSite_LastUpdateContactTVItemID_Description" xml:space="preserve">
+    <value>Contact TVItemID who made the last changes</value>
+  </data>
+  <data name="CoCoRaHSSite_LastUpdateContactTVItemID_Display" xml:space="preserve">
+    <value>Contact TVItemID</value>
+  </data>
+  <data name="CoCoRaHSSite_LastUpdateDate_UTC_Description" xml:space="preserve">
+    <value>Contains the date of the last update in UTC</value>
+  </data>
+  <data name="CoCoRaHSSite_LastUpdateDate_UTC_Display" xml:space="preserve">
+    <value>Last Update Date (UTC)</value>
+  </data>
+  <data name="CoCoRaHSSite_Latitude_Description" xml:space="preserve">
+    <value>Latitude</value>
+  </data>
+  <data name="CoCoRaHSSite_Latitude_Display" xml:space="preserve">
+    <value>Latitude</value>
+  </data>
+  <data name="CoCoRaHSSite_Longitude_Description" xml:space="preserve">
+    <value>Longitude</value>
+  </data>
+  <data name="CoCoRaHSSite_Longitude_Display" xml:space="preserve">
+    <value>Longitude</value>
+  </data>
+  <data name="CoCoRaHSSite_StationName_Description" xml:space="preserve">
+    <value>Station name of the CoCoRaHS Site</value>
+  </data>
+  <data name="CoCoRaHSSite_StationName_Display" xml:space="preserve">
+    <value>Station name</value>
+  </data>
+  <data name="CoCoRaHSSite_StationNumber_Description" xml:space="preserve">
+    <value>Station number of the CoCoRaHS Site</value>
+  </data>
+  <data name="CoCoRaHSSite_StationNumber_Display" xml:space="preserve">
+    <value>Station number</value>
+  </data>
+  <data name="CoCoRaHSValue_CoCoRaHSSiteID_Description" xml:space="preserve">
+    <value>Link to the CoCoRaHSSites table representing the CoCoRaHSSites</value>
+  </data>
+  <data name="CoCoRaHSValue_CoCoRaHSSiteID_Display" xml:space="preserve">
+    <value>CoCoRaHSSite ID</value>
+  </data>
+  <data name="CoCoRaHSValue_CoCoRaHSValueID_Description" xml:space="preserve">
+    <value>Contains the unique identifier on each row of the CoCoRaHSValues table</value>
+  </data>
+  <data name="CoCoRaHSValue_CoCoRaHSValueID_Display" xml:space="preserve">
+    <value>CoCoRaHSValue ID</value>
+  </data>
+  <data name="CoCoRaHSValue_LastUpdateContactTVItemID_Description" xml:space="preserve">
+    <value>Contact TVItemID who made the last changes</value>
+  </data>
+  <data name="CoCoRaHSValue_LastUpdateContactTVItemID_Display" xml:space="preserve">
+    <value>Contact TVItemID</value>
+  </data>
+  <data name="CoCoRaHSValue_LastUpdateDate_UTC_Description" xml:space="preserve">
+    <value>Contains the date of the last update in UTC</value>
+  </data>
+  <data name="CoCoRaHSValue_LastUpdateDate_UTC_Display" xml:space="preserve">
+    <value>Last Update Date (UTC)</value>
+  </data>
+  <data name="CoCoRaHSValue_NewSnowDepth_Description" xml:space="preserve">
+    <value>New snow depth in cm</value>
+  </data>
+  <data name="CoCoRaHSValue_NewSnowDepth_Display" xml:space="preserve">
+    <value>New snow depth in cm</value>
+  </data>
+  <data name="CoCoRaHSValue_NewSnowSWE_Description" xml:space="preserve">
+    <value>New snow SWE in cm</value>
+  </data>
+  <data name="CoCoRaHSValue_NewSnowSWE_Display" xml:space="preserve">
+    <value>New snow SWE in cm</value>
+  </data>
+  <data name="CoCoRaHSValue_ObservationDateAndTime_Description" xml:space="preserve">
+    <value>Observation date and time (local time)</value>
+  </data>
+  <data name="CoCoRaHSValue_ObservationDateAndTime_Display" xml:space="preserve">
+    <value>Observation date and time</value>
+  </data>
+  <data name="CoCoRaHSValue_TotalPrecipAmt_Description" xml:space="preserve">
+    <value>Total precipitation amount in mm</value>
+  </data>
+  <data name="CoCoRaHSValue_TotalPrecipAmt_Display" xml:space="preserve">
+    <value>Total precipitation amount in mm</value>
+  </data>
+  <data name="CoCoRaHSValue_TotalSnowDepth_Description" xml:space="preserve">
+    <value>Total snow depth in cm</value>
+  </data>
+  <data name="CoCoRaHSValue_TotalSnowDepth_Display" xml:space="preserve">
+    <value>Total snow depth in cm</value>
+  </data>
+  <data name="CoCoRaHSValue_TotalSnowSWE_Description" xml:space="preserve">
+    <value>Total snow SWE</value>
+  </data>
+  <data name="CoCoRaHSValue_TotalSnowSWE_Display" xml:space="preserve">
+    <value>Total snow SWE</value>
+  </data>
+  <data name="Contact_AccessFailedCount_Description" xml:space="preserve">
+    <value>Access failed count</value>
+  </data>
+  <data name="Contact_AccessFailedCount_Display" xml:space="preserve">
+    <value>Access failed count</value>
+  </data>
+  <data name="Contact_CellNumberConfirmed_Description" xml:space="preserve">
+    <value>Cell number confirmed</value>
+  </data>
+  <data name="Contact_CellNumberConfirmed_Display" xml:space="preserve">
+    <value>Cell number confirmed</value>
+  </data>
+  <data name="Contact_CellNumber_Description" xml:space="preserve">
+    <value>Cell number</value>
+  </data>
+  <data name="Contact_CellNumber_Display" xml:space="preserve">
+    <value>Cell number</value>
+  </data>
+  <data name="Contact_GoogleMapKeyHash_Description" xml:space="preserve">
+    <value>Google map key hash</value>
+  </data>
+  <data name="Contact_GoogleMapKeyHash_Display" xml:space="preserve">
+    <value>Google map key hash</value>
+  </data>
+  <data name="Contact_HasInternetConnection_Description" xml:space="preserve">
+    <value>Has internet connection</value>
+  </data>
+  <data name="Contact_HasInternetConnection_Display" xml:space="preserve">
+    <value>Has internet connection</value>
+  </data>
+  <data name="Contact_IsLoggedIn_Description" xml:space="preserve">
+    <value>Is logged in</value>
+  </data>
+  <data name="Contact_IsLoggedIn_Display" xml:space="preserve">
+    <value>Is logged in</value>
+  </data>
+  <data name="Contact_PasswordHash_Description" xml:space="preserve">
+    <value>Password hash</value>
+  </data>
+  <data name="Contact_PasswordHash_Display" xml:space="preserve">
+    <value>Password hash</value>
+  </data>
+  <data name="Email_DBCommand_Description" xml:space="preserve">
+    <value>Identify the database command for local database sync</value>
+  </data>
+  <data name="Email_DBCommand_Display" xml:space="preserve">
+    <value>Database Command</value>
   </data>
 </root>

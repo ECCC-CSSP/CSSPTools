@@ -2793,4 +2793,7 @@
   <data name="WebTypeEnumWebTideSite" xml:space="preserve">
     <value>WebTideSite</value>
   </data>
+  <data name="AppTaskCommandEnumSyncDBs" xml:space="preserve">
+    <value>Sync des bases de données</value>
+  </data>
 </root>

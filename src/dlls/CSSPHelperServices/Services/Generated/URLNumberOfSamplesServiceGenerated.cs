@@ -24,7 +24,7 @@ namespace CSSPHelperServices
 {
     public interface IURLNumberOfSamplesService
     {
-        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+        bool Validate(ValidationContext validationContext);
     }
     public partial class URLNumberOfSamplesService : IURLNumberOfSamplesService
     {
@@ -32,6 +32,7 @@ namespace CSSPHelperServices
         #endregion Variables
 
         #region Properties
+        private List<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -41,22 +42,23 @@ namespace CSSPHelperServices
         #endregion Constructors
 
         #region Functions public
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        public bool Validate(ValidationContext validationContext)
         {
             URLNumberOfSamples uRLNumberOfSamples = validationContext.ObjectInstance as URLNumberOfSamples;
 
             if (string.IsNullOrWhiteSpace(uRLNumberOfSamples.url))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "url"), new[] { "url" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "url"), new[] { "url" }));
             }
 
             if (!string.IsNullOrWhiteSpace(uRLNumberOfSamples.url) && (uRLNumberOfSamples.url.Length < 1 || uRLNumberOfSamples.url.Length > 255))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "url", "1", "255"), new[] { "url" });
+                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "url", "1", "255"), new[] { "url" }));
             }
 
             //NumberOfSamples has no Range Attribute
 
+            return ValidationResults.Count == 0 ? true : false;
         }
         #endregion Functions public
     }

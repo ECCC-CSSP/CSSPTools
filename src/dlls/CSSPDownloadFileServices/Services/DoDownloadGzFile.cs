@@ -29,7 +29,7 @@ namespace DownloadFileServices
 
             if (LoggedInService.LoggedInContactInfo == null)
             {
-                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             try
@@ -60,7 +60,7 @@ namespace DownloadFileServices
                         }
                         else if (((ObjectResult)actionCSSPFileAdded.Result).StatusCode == 401)
                         {
-                            return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
+                            return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
                         }
                         else
                         {
@@ -83,7 +83,7 @@ namespace DownloadFileServices
                             }
                             else if (((ObjectResult)actionCSSPFilePut.Result).StatusCode == 401)
                             {
-                                return await Task.FromResult(Unauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization)));
+                                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
                             }
                             else
                             {

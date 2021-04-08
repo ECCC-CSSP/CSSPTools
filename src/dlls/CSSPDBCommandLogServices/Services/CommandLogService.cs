@@ -55,7 +55,7 @@ namespace CSSPDBCommandLogServices
         {
             if (LoggedInService.LoggedInContactInfo == null)
             {
-                return await Task.FromResult(Unauthorized(""));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             if (CommandLog == null)
@@ -75,7 +75,7 @@ namespace CSSPDBCommandLogServices
         {
             if (LoggedInService.LoggedInContactInfo == null)
             {
-                return await Task.FromResult(Unauthorized(""));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             CommandLog CommandLog = (from c in dbCommandLog.CommandLogs
@@ -103,7 +103,7 @@ namespace CSSPDBCommandLogServices
         {
             if (LoggedInService.LoggedInContactInfo == null)
             {
-                return await Task.FromResult(Unauthorized(""));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             CommandLog CommandLog = (from c in dbCommandLog.CommandLogs.AsNoTracking()
@@ -121,7 +121,7 @@ namespace CSSPDBCommandLogServices
         {
             if (LoggedInService.LoggedInContactInfo == null)
             {
-                return await Task.FromResult(Unauthorized(""));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             DateTime StartDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0);
@@ -133,7 +133,7 @@ namespace CSSPDBCommandLogServices
         {
             if (LoggedInService.LoggedInContactInfo == null)
             {
-                return await Task.FromResult(Unauthorized(""));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             DateTime StartDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day - 7, 0, 0, 0);
@@ -145,7 +145,7 @@ namespace CSSPDBCommandLogServices
         {
             if (LoggedInService.LoggedInContactInfo == null)
             {
-                return await Task.FromResult(Unauthorized(""));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             DateTime StartDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month - 1, DateTime.Now.Day - 7, 0, 0, 0);
@@ -157,7 +157,7 @@ namespace CSSPDBCommandLogServices
         {
             if (LoggedInService.LoggedInContactInfo == null)
             {
-                return await Task.FromResult(Unauthorized(""));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
             List<CommandLog> CommandLogList = (from c in dbCommandLog.CommandLogs.AsNoTracking()

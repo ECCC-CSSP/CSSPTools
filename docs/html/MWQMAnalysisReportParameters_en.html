@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>CSSPDB Model Documentation</title>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+<a href="table_en.html">Return to table list</a>
+<h1>Table&nbsp;---&nbsp;MWQMAnalysisReportParameters</h1>
+<ul>
+<li>
+MWQMAnalysisReportParameterID -- Int32 (key)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contains the unique identifier on each row of the MWQMAnalysisReportParameters table</span>
+</li>
+<li>
+DBCommand -- DBCommandEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Identify the database command for local database sync</span>
+</li>
+<li>
+SubsectorTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Link to the TVItems table representing subsector</span>
+</li>
+<li>
+AnalysisName -- String (min=5) (max=250)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Analysis name</span>
+</li>
+<li>
+AnalysisReportYear -- Int32 (min=1980) (max=2050)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Analysis report year</span>
+</li>
+<li>
+StartDate -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Start date</span>
+</li>
+<li>
+EndDate -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;End date</span>
+</li>
+<li>
+AnalysisCalculationType -- AnalysisCalculationTypeEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Analysis calculation type</span>
+</li>
+<li>
+NumberOfRuns -- Int32 (min=1) (max=1000)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Number of run</span>
+</li>
+<li>
+FullYear -- Boolean
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Full year</span>
+</li>
+<li>
+SalinityHighlightDeviationFromAverage -- Double (min=1) (max=20)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Salinity hyghlight deviation from average</span>
+</li>
+<li>
+ShortRangeNumberOfDays -- Int32 (min=0) (max=5)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Short range number of days</span>
+</li>
+<li>
+MidRangeNumberOfDays -- Int32 (min=2) (max=7)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Mid range number of days</span>
+</li>
+<li>
+DryLimit24h -- Int32 (min=1) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Dry limit 24h</span>
+</li>
+<li>
+DryLimit48h -- Int32 (min=1) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Dry limit 48h</span>
+</li>
+<li>
+DryLimit72h -- Int32 (min=1) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Dry limit 72h</span>
+</li>
+<li>
+DryLimit96h -- Int32 (min=1) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Dry limit 96h</span>
+</li>
+<li>
+WetLimit24h -- Int32 (min=1) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Wet limit 24h</span>
+</li>
+<li>
+WetLimit48h -- Int32 (min=1) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Wet limit 48h</span>
+</li>
+<li>
+WetLimit72h -- Int32 (min=1) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Wet limit 72h</span>
+</li>
+<li>
+WetLimit96h -- Int32 (min=1) (max=100)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Wet limit 96h</span>
+</li>
+<li>
+RunsToOmit -- String (max=250)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Runs to omit</span>
+</li>
+<li>
+ShowDataTypes -- String (max=20)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Show data type</span>
+</li>
+<li>
+ExcelTVFileTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Link to the TVItems table representing Excel file</span>
+</li>
+<li>
+Command -- AnalysisReportExportCommandEnum (int)
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Analysis report export command</span>
+</li>
+<li>
+LastUpdateDate_UTC -- DateTime
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contains the date of the last update in UTC</span>
+</li>
+<li>
+LastUpdateContactTVItemID -- Int32
+<br />
+<span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;Contact TVItemID who made the last changes</span>
+</li>
+</ul>
+<a href="table_en.html">Return to table list</a>
+</body>
+</html>
