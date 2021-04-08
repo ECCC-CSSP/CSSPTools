@@ -45,6 +45,8 @@ namespace CSSPHelperServices
         #region Functions public
         public bool Validate(ValidationContext validationContext)
         {
+            ValidationResults = new List<ValidationResult>();
+
             VPResValues vpResValues = validationContext.ObjectInstance as VPResValues;
 
             if (vpResValues.Conc < 0)

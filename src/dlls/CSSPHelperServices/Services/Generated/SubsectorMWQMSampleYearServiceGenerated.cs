@@ -45,6 +45,8 @@ namespace CSSPHelperServices
         #region Functions public
         public bool Validate(ValidationContext validationContext)
         {
+            ValidationResults = new List<ValidationResult>();
+
             SubsectorMWQMSampleYear subsectorMWQMSampleYear = validationContext.ObjectInstance as SubsectorMWQMSampleYear;
 
             if (subsectorMWQMSampleYear.SubsectorTVItemID < 1)

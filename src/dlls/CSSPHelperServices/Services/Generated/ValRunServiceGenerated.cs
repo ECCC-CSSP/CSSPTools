@@ -45,6 +45,8 @@ namespace CSSPHelperServices
         #region Functions public
         public bool Validate(ValidationContext validationContext)
         {
+            ValidationResults = new List<ValidationResult>();
+
             ValRun valRun = validationContext.ObjectInstance as ValRun;
 
             //val has no Range Attribute

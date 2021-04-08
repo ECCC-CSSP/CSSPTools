@@ -45,6 +45,8 @@ namespace CSSPHelperServices
         #region Functions public
         public bool Validate(ValidationContext validationContext)
         {
+            ValidationResults = new List<ValidationResult>();
+
             LabSheetAndA1Sheet labSheetAndA1Sheet = validationContext.ObjectInstance as LabSheetAndA1Sheet;
 
                 //CSSPError: Type not implemented [LabSheet] of type [LabSheet]

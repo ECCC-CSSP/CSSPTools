@@ -45,6 +45,8 @@ namespace CSSPHelperServices
         #region Functions public
         public bool Validate(ValidationContext validationContext)
         {
+            ValidationResults = new List<ValidationResult>();
+
             OtherFilesToUpload otherFilesToUpload = validationContext.ObjectInstance as OtherFilesToUpload;
 
             if (otherFilesToUpload.MikeScenarioID < 1)

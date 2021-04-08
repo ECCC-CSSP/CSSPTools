@@ -47,6 +47,8 @@ namespace CSSPHelperServices
         #region Functions public
         public bool Validate(ValidationContext validationContext)
         {
+            ValidationResults = new List<ValidationResult>();
+
             string retStr = "";
             RegisterModel registerModel = validationContext.ObjectInstance as RegisterModel;
 

@@ -45,6 +45,8 @@ namespace CSSPHelperServices
         #region Functions public
         public bool Validate(ValidationContext validationContext)
         {
+            ValidationResults = new List<ValidationResult>();
+
             Node node = validationContext.ObjectInstance as Node;
 
             if (node.ID < 1 || node.ID > 1000000)

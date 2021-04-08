@@ -45,6 +45,8 @@ namespace CSSPHelperServices
         #region Functions public
         public bool Validate(ValidationContext validationContext)
         {
+            ValidationResults = new List<ValidationResult>();
+
             FileItem fileItem = validationContext.ObjectInstance as FileItem;
 
             if (string.IsNullOrWhiteSpace(fileItem.Name))

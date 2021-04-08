@@ -45,6 +45,8 @@ namespace CSSPHelperServices
         #region Functions public
         public bool Validate(ValidationContext validationContext)
         {
+            ValidationResults = new List<ValidationResult>();
+
             RunsToRemoveFromStat runsToRemoveFromStat = validationContext.ObjectInstance as RunsToRemoveFromStat;
 
             //MWQMRunTVItemID has no Range Attribute

@@ -45,6 +45,8 @@ namespace CSSPHelperServices
         #region Functions public
         public bool Validate(ValidationContext validationContext)
         {
+            ValidationResults = new List<ValidationResult>();
+
             UseRunAndRainValue useRunAndRainValue = validationContext.ObjectInstance as UseRunAndRainValue;
 
             //RainValue has no Range Attribute

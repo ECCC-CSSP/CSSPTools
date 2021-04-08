@@ -45,6 +45,8 @@ namespace CSSPHelperServices
         #region Functions public
         public bool Validate(ValidationContext validationContext)
         {
+            ValidationResults = new List<ValidationResult>();
+
             CSSPMPNTable csspMPNTable = validationContext.ObjectInstance as CSSPMPNTable;
 
             if (csspMPNTable.Tube10 < 0 || csspMPNTable.Tube10 > 5)

@@ -45,6 +45,8 @@ namespace CSSPHelperServices
         #region Functions public
         public bool Validate(ValidationContext validationContext)
         {
+            ValidationResults = new List<ValidationResult>();
+
             Vector vector = validationContext.ObjectInstance as Vector;
 
                 //CSSPError: Type not implemented [StartNode] of type [Node]

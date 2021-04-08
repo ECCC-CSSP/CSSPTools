@@ -45,6 +45,8 @@ namespace CSSPHelperServices
         #region Functions public
         public bool Validate(ValidationContext validationContext)
         {
+            ValidationResults = new List<ValidationResult>();
+
             TVFullText tvFullText = validationContext.ObjectInstance as TVFullText;
 
             if (string.IsNullOrWhiteSpace(tvFullText.TVPath))

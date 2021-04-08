@@ -45,6 +45,8 @@ namespace CSSPHelperServices
         #region Functions public
         public bool Validate(ValidationContext validationContext)
         {
+            ValidationResults = new List<ValidationResult>();
+
             AppTaskParameter appTaskParameter = validationContext.ObjectInstance as AppTaskParameter;
 
             if (string.IsNullOrWhiteSpace(appTaskParameter.Name))

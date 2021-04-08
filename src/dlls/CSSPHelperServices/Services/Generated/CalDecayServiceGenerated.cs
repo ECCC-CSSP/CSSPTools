@@ -45,6 +45,8 @@ namespace CSSPHelperServices
         #region Functions public
         public bool Validate(ValidationContext validationContext)
         {
+            ValidationResults = new List<ValidationResult>();
+
             CalDecay calDecay = validationContext.ObjectInstance as CalDecay;
 
             if (calDecay.Decay < 0)

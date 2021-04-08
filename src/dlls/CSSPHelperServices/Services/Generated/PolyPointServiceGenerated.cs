@@ -45,6 +45,8 @@ namespace CSSPHelperServices
         #region Functions public
         public bool Validate(ValidationContext validationContext)
         {
+            ValidationResults = new List<ValidationResult>();
+
             PolyPoint polyPoint = validationContext.ObjectInstance as PolyPoint;
 
             if (polyPoint.XCoord < -180 || polyPoint.XCoord > 180)

@@ -58,6 +58,7 @@ export enum AppTaskCommandEnum {
     ProvinceToolsGenerateStats = 46,
     MikeScenarioPrepareResults = 47,
     ClimateSiteLoadCoCoRaHSData = 48,
+    SyncDBs = 49,
 }
 
 export function GetAppTaskCommandEnum(): typeof AppTaskCommandEnum
@@ -116,6 +117,7 @@ export function AppTaskCommandEnum_GetOrderedText(appStateService: AppStateServi
         enumTextOrderedList.push({ EnumID: 46, EnumText: 'Province Tools Generate Stats (fr)' });
         enumTextOrderedList.push({ EnumID: 47, EnumText: 'MIKE Scenario Prepare Results (fr)' });
         enumTextOrderedList.push({ EnumID: 48, EnumText: 'Climate Site Load CoCoRaHS Data (fr)' });
+        enumTextOrderedList.push({ EnumID: 49, EnumText: 'Sync des bases de données' });
     }
     else {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'Generate Web Tide' });
@@ -166,6 +168,7 @@ export function AppTaskCommandEnum_GetOrderedText(appStateService: AppStateServi
         enumTextOrderedList.push({ EnumID: 46, EnumText: 'Province Tools Generate Stats' });
         enumTextOrderedList.push({ EnumID: 47, EnumText: 'MIKE Scenario Prepare Results' });
         enumTextOrderedList.push({ EnumID: 48, EnumText: 'Climate Site Load CoCoRaHS Data' });
+        enumTextOrderedList.push({ EnumID: 49, EnumText: 'Sync databases' });
     }
 
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));

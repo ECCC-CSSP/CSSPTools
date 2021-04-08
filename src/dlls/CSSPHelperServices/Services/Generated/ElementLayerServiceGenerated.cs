@@ -45,6 +45,8 @@ namespace CSSPHelperServices
         #region Functions public
         public bool Validate(ValidationContext validationContext)
         {
+            ValidationResults = new List<ValidationResult>();
+
             ElementLayer elementLayer = validationContext.ObjectInstance as ElementLayer;
 
             if (elementLayer.Layer < 1 || elementLayer.Layer > 1000)

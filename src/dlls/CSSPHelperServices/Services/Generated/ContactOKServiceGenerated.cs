@@ -45,6 +45,8 @@ namespace CSSPHelperServices
         #region Functions public
         public bool Validate(ValidationContext validationContext)
         {
+            ValidationResults = new List<ValidationResult>();
+
             ContactOK contactOK = validationContext.ObjectInstance as ContactOK;
 
             if (contactOK.ContactID < 1)

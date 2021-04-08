@@ -45,6 +45,8 @@ namespace CSSPHelperServices
         #region Functions public
         public bool Validate(ValidationContext validationContext)
         {
+            ValidationResults = new List<ValidationResult>();
+
             ContourPolygon contourPolygon = validationContext.ObjectInstance as ContourPolygon;
 
             if (contourPolygon.ContourValue < 0)

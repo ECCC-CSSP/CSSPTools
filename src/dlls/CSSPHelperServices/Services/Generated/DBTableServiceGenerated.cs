@@ -45,6 +45,8 @@ namespace CSSPHelperServices
         #region Functions public
         public bool Validate(ValidationContext validationContext)
         {
+            ValidationResults = new List<ValidationResult>();
+
             DBTable dBTable = validationContext.ObjectInstance as DBTable;
 
             if (string.IsNullOrWhiteSpace(dBTable.TableName))

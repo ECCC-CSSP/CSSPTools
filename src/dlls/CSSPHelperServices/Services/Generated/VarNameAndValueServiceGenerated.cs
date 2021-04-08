@@ -45,6 +45,8 @@ namespace CSSPHelperServices
         #region Functions public
         public bool Validate(ValidationContext validationContext)
         {
+            ValidationResults = new List<ValidationResult>();
+
             VarNameAndValue varNameAndValue = validationContext.ObjectInstance as VarNameAndValue;
 
             if (string.IsNullOrWhiteSpace(varNameAndValue.VariableName))

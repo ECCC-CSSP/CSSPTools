@@ -45,6 +45,8 @@ namespace CSSPHelperServices
         #region Functions public
         public bool Validate(ValidationContext validationContext)
         {
+            ValidationResults = new List<ValidationResult>();
+
             SearchResult searchResult = validationContext.ObjectInstance as SearchResult;
 
                 //CSSPError: Type not implemented [TVItem] of type [TVItem]

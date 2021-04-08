@@ -40,6 +40,8 @@ namespace GenerateCSSPHelperServices
 
             sb.AppendLine(@"        public bool Validate(ValidationContext validationContext)");
             sb.AppendLine(@"        {");
+            sb.AppendLine($@"            ValidationResults = new List<ValidationResult>();");
+            sb.AppendLine(@"");
             if (EnumExist)
             {
                 sb.AppendLine(@"            string retStr = """";");

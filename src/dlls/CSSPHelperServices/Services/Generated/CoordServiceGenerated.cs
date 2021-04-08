@@ -45,6 +45,8 @@ namespace CSSPHelperServices
         #region Functions public
         public bool Validate(ValidationContext validationContext)
         {
+            ValidationResults = new List<ValidationResult>();
+
             Coord coord = validationContext.ObjectInstance as Coord;
 
             if (coord.Lat < -180 || coord.Lat > 180)

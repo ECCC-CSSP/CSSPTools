@@ -45,6 +45,8 @@ namespace CSSPHelperServices
         #region Functions public
         public bool Validate(ValidationContext validationContext)
         {
+            ValidationResults = new List<ValidationResult>();
+
             VPFull vpFull = validationContext.ObjectInstance as VPFull;
 
                 //CSSPError: Type not implemented [VPScenario] of type [VPScenario]
