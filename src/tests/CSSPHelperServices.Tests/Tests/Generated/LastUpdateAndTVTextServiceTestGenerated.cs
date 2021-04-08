@@ -66,11 +66,7 @@ namespace CSSPHelperServices.Tests
         //[InlineData("fr-CA")]
         public async Task LastUpdateAndTVText_Properties_Test(string culture)
         {
-            List<ValidationResult> ValidationResultList = new List<ValidationResult>();
-            IEnumerable<ValidationResult> validationResults;
             Assert.True(await Setup(culture));
-
-
 
             LastUpdateAndTVText lastUpdateAndTVText = GetFilledRandomLastUpdateAndTVText("");
 
@@ -85,18 +81,16 @@ namespace CSSPHelperServices.Tests
             lastUpdateAndTVText = null;
             lastUpdateAndTVText = GetFilledRandomLastUpdateAndTVText("");
             lastUpdateAndTVText.LastUpdateAndTVTextDate_UTC = new DateTime();
-            validationResults = LastUpdateAndTVTextService.Validate(new ValidationContext(lastUpdateAndTVText));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateAndTVTextDate_UTC"))).Any());
+            LastUpdateAndTVTextService.Validate(new ValidationContext(lastUpdateAndTVText));
+            Assert.True(LastUpdateAndTVTextService.ValidationResults.Count() > 0);
+            Assert.True(LastUpdateAndTVTextService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateAndTVTextDate_UTC"))).Any());
 
             lastUpdateAndTVText = null;
             lastUpdateAndTVText = GetFilledRandomLastUpdateAndTVText("");
             lastUpdateAndTVText.LastUpdateAndTVTextDate_UTC = new DateTime(1979, 1, 1);
-            validationResults = LastUpdateAndTVTextService.Validate(new ValidationContext(lastUpdateAndTVText));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateAndTVTextDate_UTC", "1980"))).Any());
+            LastUpdateAndTVTextService.Validate(new ValidationContext(lastUpdateAndTVText));
+            Assert.True(LastUpdateAndTVTextService.ValidationResults.Count() > 0);
+            Assert.True(LastUpdateAndTVTextService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateAndTVTextDate_UTC", "1980"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -108,18 +102,16 @@ namespace CSSPHelperServices.Tests
             lastUpdateAndTVText = null;
             lastUpdateAndTVText = GetFilledRandomLastUpdateAndTVText("");
             lastUpdateAndTVText.LastUpdateDate_Local = new DateTime();
-            validationResults = LastUpdateAndTVTextService.Validate(new ValidationContext(lastUpdateAndTVText));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateDate_Local"))).Any());
+            LastUpdateAndTVTextService.Validate(new ValidationContext(lastUpdateAndTVText));
+            Assert.True(LastUpdateAndTVTextService.ValidationResults.Count() > 0);
+            Assert.True(LastUpdateAndTVTextService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateDate_Local"))).Any());
 
             lastUpdateAndTVText = null;
             lastUpdateAndTVText = GetFilledRandomLastUpdateAndTVText("");
             lastUpdateAndTVText.LastUpdateDate_Local = new DateTime(1979, 1, 1);
-            validationResults = LastUpdateAndTVTextService.Validate(new ValidationContext(lastUpdateAndTVText));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_Local", "1980"))).Any());
+            LastUpdateAndTVTextService.Validate(new ValidationContext(lastUpdateAndTVText));
+            Assert.True(LastUpdateAndTVTextService.ValidationResults.Count() > 0);
+            Assert.True(LastUpdateAndTVTextService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_Local", "1980"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -131,27 +123,24 @@ namespace CSSPHelperServices.Tests
 
             lastUpdateAndTVText = null;
             lastUpdateAndTVText = GetFilledRandomLastUpdateAndTVText("TVText");
-            validationResults = LastUpdateAndTVTextService.Validate(new ValidationContext(lastUpdateAndTVText));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "TVText"))).Any());
+            LastUpdateAndTVTextService.Validate(new ValidationContext(lastUpdateAndTVText));
+            Assert.True(LastUpdateAndTVTextService.ValidationResults.Count() > 0);
+            Assert.True(LastUpdateAndTVTextService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "TVText"))).Any());
 
 
             lastUpdateAndTVText = null;
             lastUpdateAndTVText = GetFilledRandomLastUpdateAndTVText("");
             lastUpdateAndTVText.TVText = GetRandomString("", 201);
-            validationResults = LastUpdateAndTVTextService.Validate(new ValidationContext(lastUpdateAndTVText));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVText", "1", "200"))).Any());
+            LastUpdateAndTVTextService.Validate(new ValidationContext(lastUpdateAndTVText));
+            Assert.True(LastUpdateAndTVTextService.ValidationResults.Count() > 0);
+            Assert.True(LastUpdateAndTVTextService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVText", "1", "200"))).Any());
 
             lastUpdateAndTVText = null;
             lastUpdateAndTVText = GetFilledRandomLastUpdateAndTVText("");
             lastUpdateAndTVText.TVText = GetRandomString("", 201);
-            validationResults = LastUpdateAndTVTextService.Validate(new ValidationContext(lastUpdateAndTVText));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVText", "1", "200"))).Any());
+            LastUpdateAndTVTextService.Validate(new ValidationContext(lastUpdateAndTVText));
+            Assert.True(LastUpdateAndTVTextService.ValidationResults.Count() > 0);
+            Assert.True(LastUpdateAndTVTextService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVText", "1", "200"))).Any());
         }
         #endregion Tests Generated Properties
 

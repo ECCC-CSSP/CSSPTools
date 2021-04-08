@@ -66,11 +66,7 @@ namespace CSSPHelperServices.Tests
         //[InlineData("fr-CA")]
         public async Task TVLocation_Properties_Test(string culture)
         {
-            List<ValidationResult> ValidationResultList = new List<ValidationResult>();
-            IEnumerable<ValidationResult> validationResults;
             Assert.True(await Setup(culture));
-
-
 
             TVLocation tvLocation = GetFilledRandomTVLocation("");
 
@@ -85,10 +81,9 @@ namespace CSSPHelperServices.Tests
             tvLocation = null;
             tvLocation = GetFilledRandomTVLocation("");
             tvLocation.TVItemID = 0;
-            validationResults = TVLocationService.Validate(new ValidationContext(tvLocation));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "TVItemID", "1"))).Any());
+            TVLocationService.Validate(new ValidationContext(tvLocation));
+            Assert.True(TVLocationService.ValidationResults.Count() > 0);
+            Assert.True(TVLocationService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "TVItemID", "1"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -100,27 +95,24 @@ namespace CSSPHelperServices.Tests
 
             tvLocation = null;
             tvLocation = GetFilledRandomTVLocation("TVText");
-            validationResults = TVLocationService.Validate(new ValidationContext(tvLocation));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "TVText"))).Any());
+            TVLocationService.Validate(new ValidationContext(tvLocation));
+            Assert.True(TVLocationService.ValidationResults.Count() > 0);
+            Assert.True(TVLocationService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "TVText"))).Any());
 
 
             tvLocation = null;
             tvLocation = GetFilledRandomTVLocation("");
             tvLocation.TVText = GetRandomString("", 256);
-            validationResults = TVLocationService.Validate(new ValidationContext(tvLocation));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVText", "1", "255"))).Any());
+            TVLocationService.Validate(new ValidationContext(tvLocation));
+            Assert.True(TVLocationService.ValidationResults.Count() > 0);
+            Assert.True(TVLocationService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVText", "1", "255"))).Any());
 
             tvLocation = null;
             tvLocation = GetFilledRandomTVLocation("");
             tvLocation.TVText = GetRandomString("", 256);
-            validationResults = TVLocationService.Validate(new ValidationContext(tvLocation));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVText", "1", "255"))).Any());
+            TVLocationService.Validate(new ValidationContext(tvLocation));
+            Assert.True(TVLocationService.ValidationResults.Count() > 0);
+            Assert.True(TVLocationService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVText", "1", "255"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -132,10 +124,9 @@ namespace CSSPHelperServices.Tests
             tvLocation = null;
             tvLocation = GetFilledRandomTVLocation("");
             tvLocation.TVType = (TVTypeEnum)1000000;
-            validationResults = TVLocationService.Validate(new ValidationContext(tvLocation));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "TVType"))).Any());
+            TVLocationService.Validate(new ValidationContext(tvLocation));
+            Assert.True(TVLocationService.ValidationResults.Count() > 0);
+            Assert.True(TVLocationService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "TVType"))).Any());
 
 
             // -----------------------------------
@@ -148,10 +139,9 @@ namespace CSSPHelperServices.Tests
             tvLocation = null;
             tvLocation = GetFilledRandomTVLocation("");
             tvLocation.SubTVType = (TVTypeEnum)1000000;
-            validationResults = TVLocationService.Validate(new ValidationContext(tvLocation));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "SubTVType"))).Any());
+            TVLocationService.Validate(new ValidationContext(tvLocation));
+            Assert.True(TVLocationService.ValidationResults.Count() > 0);
+            Assert.True(TVLocationService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "SubTVType"))).Any());
 
 
             // -----------------------------------
@@ -164,10 +154,9 @@ namespace CSSPHelperServices.Tests
             tvLocation = null;
             tvLocation = GetFilledRandomTVLocation("");
             tvLocation.TVTypeText = GetRandomString("", 101);
-            validationResults = TVLocationService.Validate(new ValidationContext(tvLocation));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "TVTypeText", "100"))).Any());
+            TVLocationService.Validate(new ValidationContext(tvLocation));
+            Assert.True(TVLocationService.ValidationResults.Count() > 0);
+            Assert.True(TVLocationService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "TVTypeText", "100"))).Any());
 
             // -----------------------------------
             // Is Nullable
@@ -179,10 +168,9 @@ namespace CSSPHelperServices.Tests
             tvLocation = null;
             tvLocation = GetFilledRandomTVLocation("");
             tvLocation.SubTVTypeText = GetRandomString("", 101);
-            validationResults = TVLocationService.Validate(new ValidationContext(tvLocation));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SubTVTypeText", "100"))).Any());
+            TVLocationService.Validate(new ValidationContext(tvLocation));
+            Assert.True(TVLocationService.ValidationResults.Count() > 0);
+            Assert.True(TVLocationService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SubTVTypeText", "100"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable

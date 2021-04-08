@@ -18,16 +18,9 @@ namespace GenerateCSSPHelperServices_Tests
             sb.AppendLine(@"        //[InlineData(""fr-CA"")]");
             sb.AppendLine($@"        public async Task { TypeName }_Properties_Test(string culture)");
             sb.AppendLine(@"        {");
-            sb.AppendLine(@"            List<ValidationResult> ValidationResultList = new List<ValidationResult>();");
-            sb.AppendLine(@"            IEnumerable<ValidationResult> validationResults;");
+            //sb.AppendLine(@"            List<ValidationResult> ValidationResultList = new List<ValidationResult>();");
+            //sb.AppendLine(@"            IEnumerable<ValidationResult> validationResults;");
             sb.AppendLine(@"            Assert.True(await Setup(culture));");
-            sb.AppendLine(@"");
-            //sb.AppendLine(@"            int count = 0;");
-            //sb.AppendLine(@"            if (count == 1)");
-            //sb.AppendLine(@"            {");
-            //sb.AppendLine(@"                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]");
-            //sb.AppendLine(@"            }");
-            sb.AppendLine(@"");
             sb.AppendLine(@"");
             sb.AppendLine($@"            { TypeName } { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
             sb.AppendLine(@"");

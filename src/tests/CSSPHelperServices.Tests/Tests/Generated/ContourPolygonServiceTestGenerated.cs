@@ -66,11 +66,7 @@ namespace CSSPHelperServices.Tests
         //[InlineData("fr-CA")]
         public async Task ContourPolygon_Properties_Test(string culture)
         {
-            List<ValidationResult> ValidationResultList = new List<ValidationResult>();
-            IEnumerable<ValidationResult> validationResults;
             Assert.True(await Setup(culture));
-
-
 
             ContourPolygon contourPolygon = GetFilledRandomContourPolygon("");
 
@@ -85,10 +81,9 @@ namespace CSSPHelperServices.Tests
             contourPolygon = null;
             contourPolygon = GetFilledRandomContourPolygon("");
             contourPolygon.ContourValue = -1.0D;
-            validationResults = ContourPolygonService.Validate(new ValidationContext(contourPolygon));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContourValue", "0"))).Any());
+            ContourPolygonService.Validate(new ValidationContext(contourPolygon));
+            Assert.True(ContourPolygonService.ValidationResults.Count() > 0);
+            Assert.True(ContourPolygonService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContourValue", "0"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -100,18 +95,16 @@ namespace CSSPHelperServices.Tests
             contourPolygon = null;
             contourPolygon = GetFilledRandomContourPolygon("");
             contourPolygon.Layer = 0;
-            validationResults = ContourPolygonService.Validate(new ValidationContext(contourPolygon));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Layer", "1", "100"))).Any());
+            ContourPolygonService.Validate(new ValidationContext(contourPolygon));
+            Assert.True(ContourPolygonService.ValidationResults.Count() > 0);
+            Assert.True(ContourPolygonService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Layer", "1", "100"))).Any());
 
             contourPolygon = null;
             contourPolygon = GetFilledRandomContourPolygon("");
             contourPolygon.Layer = 101;
-            validationResults = ContourPolygonService.Validate(new ValidationContext(contourPolygon));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Layer", "1", "100"))).Any());
+            ContourPolygonService.Validate(new ValidationContext(contourPolygon));
+            Assert.True(ContourPolygonService.ValidationResults.Count() > 0);
+            Assert.True(ContourPolygonService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Layer", "1", "100"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -123,18 +116,16 @@ namespace CSSPHelperServices.Tests
             contourPolygon = null;
             contourPolygon = GetFilledRandomContourPolygon("");
             contourPolygon.Depth_m = 0.0D;
-            validationResults = ContourPolygonService.Validate(new ValidationContext(contourPolygon));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Depth_m", "1", "10000"))).Any());
+            ContourPolygonService.Validate(new ValidationContext(contourPolygon));
+            Assert.True(ContourPolygonService.ValidationResults.Count() > 0);
+            Assert.True(ContourPolygonService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Depth_m", "1", "10000"))).Any());
 
             contourPolygon = null;
             contourPolygon = GetFilledRandomContourPolygon("");
             contourPolygon.Depth_m = 10001.0D;
-            validationResults = ContourPolygonService.Validate(new ValidationContext(contourPolygon));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Depth_m", "1", "10000"))).Any());
+            ContourPolygonService.Validate(new ValidationContext(contourPolygon));
+            Assert.True(ContourPolygonService.ValidationResults.Count() > 0);
+            Assert.True(ContourPolygonService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Depth_m", "1", "10000"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable

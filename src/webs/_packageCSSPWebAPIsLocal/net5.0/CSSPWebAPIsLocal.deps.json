@@ -38,7 +38,6 @@
           "CSSPDBSearchServices": "1.0.0",
           "CSSPDBServices": "1.0.0",
           "CSSPReadGzFileServices": "1.0.0",
-          "CSSPWebAppLoadedlServices": "1.0.0",
           "CSSPWebModels": "1.0.0",
           "Microsoft.AspNetCore.Authentication.Certificate": "5.0.3",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.3",
@@ -1874,7 +1873,6 @@
           "CSSPHelperModels": "1.0.0",
           "CSSPLoggedInServices": "1.0.0",
           "CSSPReadGzFileServices": "1.0.0",
-          "CSSPWebAppLoadedlServices": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.3",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.3",
           "Microsoft.EntityFrameworkCore": "5.0.3",
@@ -2002,7 +2000,7 @@
           "CSSPDBFilesManagementServices": "1.0.0",
           "CSSPDBModels": "1.0.0",
           "CSSPScrambleServices": "1.0.0",
-          "CSSPWebAppLoadedlServices": "1.0.0",
+          "CSSPWebModels": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.3",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.3",
           "Microsoft.EntityFrameworkCore": "5.0.3",
@@ -2093,7 +2091,6 @@
         "dependencies": {
           "Azure.Storage.Blobs": "12.8.0",
           "CSSPDownloadFileServices": "1.0.0",
-          "CSSPWebAppLoadedlServices": "1.0.0",
           "CSSPWebModels": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.3",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.3",
@@ -2116,25 +2113,6 @@
         },
         "compile": {
           "CSSPScrambleServices.dll": {}
-        }
-      },
-      "CSSPWebAppLoadedlServices/1.0.0": {
-        "dependencies": {
-          "Azure.Storage.Blobs": "12.8.0",
-          "CSSPWebModels": "1.0.0",
-          "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.3",
-          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.3",
-          "Microsoft.EntityFrameworkCore": "5.0.3",
-          "Microsoft.EntityFrameworkCore.SqlServer": "5.0.3",
-          "Microsoft.EntityFrameworkCore.Sqlite": "5.0.3",
-          "Microsoft.Extensions.Configuration": "5.0.0",
-          "Microsoft.Extensions.Configuration.Json": "5.0.0"
-        },
-        "runtime": {
-          "CSSPWebAppLoadedlServices.dll": {}
-        },
-        "compile": {
-          "CSSPWebAppLoadedlServices.dll": {}
         }
       },
       "CSSPWebModels/1.0.0": {
@@ -4807,11 +4785,6 @@
       "sha512": ""
     },
     "CSSPScrambleServices/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "CSSPWebAppLoadedlServices/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

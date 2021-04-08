@@ -66,11 +66,7 @@ namespace CSSPHelperServices.Tests
         //[InlineData("fr-CA")]
         public async Task TVTextLanguage_Properties_Test(string culture)
         {
-            List<ValidationResult> ValidationResultList = new List<ValidationResult>();
-            IEnumerable<ValidationResult> validationResults;
             Assert.True(await Setup(culture));
-
-
 
             TVTextLanguage tvTextLanguage = GetFilledRandomTVTextLanguage("");
 
@@ -83,10 +79,9 @@ namespace CSSPHelperServices.Tests
 
             tvTextLanguage = null;
             tvTextLanguage = GetFilledRandomTVTextLanguage("TVText");
-            validationResults = TVTextLanguageService.Validate(new ValidationContext(tvTextLanguage));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "TVText"))).Any());
+            TVTextLanguageService.Validate(new ValidationContext(tvTextLanguage));
+            Assert.True(TVTextLanguageService.ValidationResults.Count() > 0);
+            Assert.True(TVTextLanguageService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "TVText"))).Any());
 
 
             // -----------------------------------
@@ -99,10 +94,9 @@ namespace CSSPHelperServices.Tests
             tvTextLanguage = null;
             tvTextLanguage = GetFilledRandomTVTextLanguage("");
             tvTextLanguage.Language = (LanguageEnum)1000000;
-            validationResults = TVTextLanguageService.Validate(new ValidationContext(tvTextLanguage));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Language"))).Any());
+            TVTextLanguageService.Validate(new ValidationContext(tvTextLanguage));
+            Assert.True(TVTextLanguageService.ValidationResults.Count() > 0);
+            Assert.True(TVTextLanguageService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Language"))).Any());
 
 
             // -----------------------------------
@@ -115,10 +109,9 @@ namespace CSSPHelperServices.Tests
             tvTextLanguage = null;
             tvTextLanguage = GetFilledRandomTVTextLanguage("");
             tvTextLanguage.LanguageText = GetRandomString("", 101);
-            validationResults = TVTextLanguageService.Validate(new ValidationContext(tvTextLanguage));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "LanguageText", "100"))).Any());
+            TVTextLanguageService.Validate(new ValidationContext(tvTextLanguage));
+            Assert.True(TVTextLanguageService.ValidationResults.Count() > 0);
+            Assert.True(TVTextLanguageService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "LanguageText", "100"))).Any());
         }
         #endregion Tests Generated Properties
 

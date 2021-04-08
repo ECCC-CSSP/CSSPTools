@@ -25,6 +25,7 @@ namespace CSSPHelperServices
     public interface IPolSourceObsInfoEnumTextAndIDService
     {
         bool Validate(ValidationContext validationContext);
+        List<ValidationResult> ValidationResults { get; set; }
     }
     public partial class PolSourceObsInfoEnumTextAndIDService : IPolSourceObsInfoEnumTextAndIDService
     {
@@ -32,7 +33,7 @@ namespace CSSPHelperServices
         #endregion Variables
 
         #region Properties
-        private List<ValidationResult> ValidationResults { get; set; }
+        public List<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors

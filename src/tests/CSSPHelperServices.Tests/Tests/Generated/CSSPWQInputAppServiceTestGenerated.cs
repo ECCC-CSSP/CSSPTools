@@ -66,11 +66,7 @@ namespace CSSPHelperServices.Tests
         //[InlineData("fr-CA")]
         public async Task CSSPWQInputApp_Properties_Test(string culture)
         {
-            List<ValidationResult> ValidationResultList = new List<ValidationResult>();
-            IEnumerable<ValidationResult> validationResults;
             Assert.True(await Setup(culture));
-
-
 
             CSSPWQInputApp csspWQInputApp = GetFilledRandomCSSPWQInputApp("");
 
@@ -85,27 +81,24 @@ namespace CSSPHelperServices.Tests
 
             csspWQInputApp = null;
             csspWQInputApp = GetFilledRandomCSSPWQInputApp("AccessCode");
-            validationResults = CSSPWQInputAppService.Validate(new ValidationContext(csspWQInputApp));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "AccessCode"))).Any());
+            CSSPWQInputAppService.Validate(new ValidationContext(csspWQInputApp));
+            Assert.True(CSSPWQInputAppService.ValidationResults.Count() > 0);
+            Assert.True(CSSPWQInputAppService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "AccessCode"))).Any());
 
 
             csspWQInputApp = null;
             csspWQInputApp = GetFilledRandomCSSPWQInputApp("");
             csspWQInputApp.AccessCode = GetRandomString("", 101);
-            validationResults = CSSPWQInputAppService.Validate(new ValidationContext(csspWQInputApp));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "AccessCode", "1", "100"))).Any());
+            CSSPWQInputAppService.Validate(new ValidationContext(csspWQInputApp));
+            Assert.True(CSSPWQInputAppService.ValidationResults.Count() > 0);
+            Assert.True(CSSPWQInputAppService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "AccessCode", "1", "100"))).Any());
 
             csspWQInputApp = null;
             csspWQInputApp = GetFilledRandomCSSPWQInputApp("");
             csspWQInputApp.AccessCode = GetRandomString("", 101);
-            validationResults = CSSPWQInputAppService.Validate(new ValidationContext(csspWQInputApp));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "AccessCode", "1", "100"))).Any());
+            CSSPWQInputAppService.Validate(new ValidationContext(csspWQInputApp));
+            Assert.True(CSSPWQInputAppService.ValidationResults.Count() > 0);
+            Assert.True(CSSPWQInputAppService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "AccessCode", "1", "100"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -117,27 +110,24 @@ namespace CSSPHelperServices.Tests
 
             csspWQInputApp = null;
             csspWQInputApp = GetFilledRandomCSSPWQInputApp("ActiveYear");
-            validationResults = CSSPWQInputAppService.Validate(new ValidationContext(csspWQInputApp));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "ActiveYear"))).Any());
+            CSSPWQInputAppService.Validate(new ValidationContext(csspWQInputApp));
+            Assert.True(CSSPWQInputAppService.ValidationResults.Count() > 0);
+            Assert.True(CSSPWQInputAppService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "ActiveYear"))).Any());
 
 
             csspWQInputApp = null;
             csspWQInputApp = GetFilledRandomCSSPWQInputApp("");
             csspWQInputApp.ActiveYear = GetRandomString("", 5);
-            validationResults = CSSPWQInputAppService.Validate(new ValidationContext(csspWQInputApp));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "ActiveYear", "4", "4"))).Any());
+            CSSPWQInputAppService.Validate(new ValidationContext(csspWQInputApp));
+            Assert.True(CSSPWQInputAppService.ValidationResults.Count() > 0);
+            Assert.True(CSSPWQInputAppService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "ActiveYear", "4", "4"))).Any());
 
             csspWQInputApp = null;
             csspWQInputApp = GetFilledRandomCSSPWQInputApp("");
             csspWQInputApp.ActiveYear = GetRandomString("", 5);
-            validationResults = CSSPWQInputAppService.Validate(new ValidationContext(csspWQInputApp));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "ActiveYear", "4", "4"))).Any());
+            CSSPWQInputAppService.Validate(new ValidationContext(csspWQInputApp));
+            Assert.True(CSSPWQInputAppService.ValidationResults.Count() > 0);
+            Assert.True(CSSPWQInputAppService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "ActiveYear", "4", "4"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -149,18 +139,16 @@ namespace CSSPHelperServices.Tests
             csspWQInputApp = null;
             csspWQInputApp = GetFilledRandomCSSPWQInputApp("");
             csspWQInputApp.DailyDuplicatePrecisionCriteria = -1.0D;
-            validationResults = CSSPWQInputAppService.Validate(new ValidationContext(csspWQInputApp));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "DailyDuplicatePrecisionCriteria", "0", "100"))).Any());
+            CSSPWQInputAppService.Validate(new ValidationContext(csspWQInputApp));
+            Assert.True(CSSPWQInputAppService.ValidationResults.Count() > 0);
+            Assert.True(CSSPWQInputAppService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "DailyDuplicatePrecisionCriteria", "0", "100"))).Any());
 
             csspWQInputApp = null;
             csspWQInputApp = GetFilledRandomCSSPWQInputApp("");
             csspWQInputApp.DailyDuplicatePrecisionCriteria = 101.0D;
-            validationResults = CSSPWQInputAppService.Validate(new ValidationContext(csspWQInputApp));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "DailyDuplicatePrecisionCriteria", "0", "100"))).Any());
+            CSSPWQInputAppService.Validate(new ValidationContext(csspWQInputApp));
+            Assert.True(CSSPWQInputAppService.ValidationResults.Count() > 0);
+            Assert.True(CSSPWQInputAppService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "DailyDuplicatePrecisionCriteria", "0", "100"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -172,18 +160,16 @@ namespace CSSPHelperServices.Tests
             csspWQInputApp = null;
             csspWQInputApp = GetFilledRandomCSSPWQInputApp("");
             csspWQInputApp.IntertechDuplicatePrecisionCriteria = -1.0D;
-            validationResults = CSSPWQInputAppService.Validate(new ValidationContext(csspWQInputApp));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "IntertechDuplicatePrecisionCriteria", "0", "100"))).Any());
+            CSSPWQInputAppService.Validate(new ValidationContext(csspWQInputApp));
+            Assert.True(CSSPWQInputAppService.ValidationResults.Count() > 0);
+            Assert.True(CSSPWQInputAppService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "IntertechDuplicatePrecisionCriteria", "0", "100"))).Any());
 
             csspWQInputApp = null;
             csspWQInputApp = GetFilledRandomCSSPWQInputApp("");
             csspWQInputApp.IntertechDuplicatePrecisionCriteria = 101.0D;
-            validationResults = CSSPWQInputAppService.Validate(new ValidationContext(csspWQInputApp));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "IntertechDuplicatePrecisionCriteria", "0", "100"))).Any());
+            CSSPWQInputAppService.Validate(new ValidationContext(csspWQInputApp));
+            Assert.True(CSSPWQInputAppService.ValidationResults.Count() > 0);
+            Assert.True(CSSPWQInputAppService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "IntertechDuplicatePrecisionCriteria", "0", "100"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -201,27 +187,24 @@ namespace CSSPHelperServices.Tests
 
             csspWQInputApp = null;
             csspWQInputApp = GetFilledRandomCSSPWQInputApp("ApprovalCode");
-            validationResults = CSSPWQInputAppService.Validate(new ValidationContext(csspWQInputApp));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "ApprovalCode"))).Any());
+            CSSPWQInputAppService.Validate(new ValidationContext(csspWQInputApp));
+            Assert.True(CSSPWQInputAppService.ValidationResults.Count() > 0);
+            Assert.True(CSSPWQInputAppService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "ApprovalCode"))).Any());
 
 
             csspWQInputApp = null;
             csspWQInputApp = GetFilledRandomCSSPWQInputApp("");
             csspWQInputApp.ApprovalCode = GetRandomString("", 101);
-            validationResults = CSSPWQInputAppService.Validate(new ValidationContext(csspWQInputApp));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "ApprovalCode", "1", "100"))).Any());
+            CSSPWQInputAppService.Validate(new ValidationContext(csspWQInputApp));
+            Assert.True(CSSPWQInputAppService.ValidationResults.Count() > 0);
+            Assert.True(CSSPWQInputAppService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "ApprovalCode", "1", "100"))).Any());
 
             csspWQInputApp = null;
             csspWQInputApp = GetFilledRandomCSSPWQInputApp("");
             csspWQInputApp.ApprovalCode = GetRandomString("", 101);
-            validationResults = CSSPWQInputAppService.Validate(new ValidationContext(csspWQInputApp));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "ApprovalCode", "1", "100"))).Any());
+            CSSPWQInputAppService.Validate(new ValidationContext(csspWQInputApp));
+            Assert.True(CSSPWQInputAppService.ValidationResults.Count() > 0);
+            Assert.True(CSSPWQInputAppService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "ApprovalCode", "1", "100"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -233,18 +216,16 @@ namespace CSSPHelperServices.Tests
             csspWQInputApp = null;
             csspWQInputApp = GetFilledRandomCSSPWQInputApp("");
             csspWQInputApp.ApprovalDate = new DateTime();
-            validationResults = CSSPWQInputAppService.Validate(new ValidationContext(csspWQInputApp));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "ApprovalDate"))).Any());
+            CSSPWQInputAppService.Validate(new ValidationContext(csspWQInputApp));
+            Assert.True(CSSPWQInputAppService.ValidationResults.Count() > 0);
+            Assert.True(CSSPWQInputAppService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "ApprovalDate"))).Any());
 
             csspWQInputApp = null;
             csspWQInputApp = GetFilledRandomCSSPWQInputApp("");
             csspWQInputApp.ApprovalDate = new DateTime(1979, 1, 1);
-            validationResults = CSSPWQInputAppService.Validate(new ValidationContext(csspWQInputApp));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "ApprovalDate", "1980"))).Any());
+            CSSPWQInputAppService.Validate(new ValidationContext(csspWQInputApp));
+            Assert.True(CSSPWQInputAppService.ValidationResults.Count() > 0);
+            Assert.True(CSSPWQInputAppService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "ApprovalDate", "1980"))).Any());
         }
         #endregion Tests Generated Properties
 

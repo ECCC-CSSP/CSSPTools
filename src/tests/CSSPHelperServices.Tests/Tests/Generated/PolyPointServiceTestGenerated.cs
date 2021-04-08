@@ -66,11 +66,7 @@ namespace CSSPHelperServices.Tests
         //[InlineData("fr-CA")]
         public async Task PolyPoint_Properties_Test(string culture)
         {
-            List<ValidationResult> ValidationResultList = new List<ValidationResult>();
-            IEnumerable<ValidationResult> validationResults;
             Assert.True(await Setup(culture));
-
-
 
             PolyPoint polyPoint = GetFilledRandomPolyPoint("");
 
@@ -85,18 +81,16 @@ namespace CSSPHelperServices.Tests
             polyPoint = null;
             polyPoint = GetFilledRandomPolyPoint("");
             polyPoint.XCoord = -181.0D;
-            validationResults = PolyPointService.Validate(new ValidationContext(polyPoint));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "XCoord", "-180", "180"))).Any());
+            PolyPointService.Validate(new ValidationContext(polyPoint));
+            Assert.True(PolyPointService.ValidationResults.Count() > 0);
+            Assert.True(PolyPointService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "XCoord", "-180", "180"))).Any());
 
             polyPoint = null;
             polyPoint = GetFilledRandomPolyPoint("");
             polyPoint.XCoord = 181.0D;
-            validationResults = PolyPointService.Validate(new ValidationContext(polyPoint));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "XCoord", "-180", "180"))).Any());
+            PolyPointService.Validate(new ValidationContext(polyPoint));
+            Assert.True(PolyPointService.ValidationResults.Count() > 0);
+            Assert.True(PolyPointService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "XCoord", "-180", "180"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -108,18 +102,16 @@ namespace CSSPHelperServices.Tests
             polyPoint = null;
             polyPoint = GetFilledRandomPolyPoint("");
             polyPoint.YCoord = -91.0D;
-            validationResults = PolyPointService.Validate(new ValidationContext(polyPoint));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "YCoord", "-90", "90"))).Any());
+            PolyPointService.Validate(new ValidationContext(polyPoint));
+            Assert.True(PolyPointService.ValidationResults.Count() > 0);
+            Assert.True(PolyPointService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "YCoord", "-90", "90"))).Any());
 
             polyPoint = null;
             polyPoint = GetFilledRandomPolyPoint("");
             polyPoint.YCoord = 91.0D;
-            validationResults = PolyPointService.Validate(new ValidationContext(polyPoint));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "YCoord", "-90", "90"))).Any());
+            PolyPointService.Validate(new ValidationContext(polyPoint));
+            Assert.True(PolyPointService.ValidationResults.Count() > 0);
+            Assert.True(PolyPointService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "YCoord", "-90", "90"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -131,18 +123,16 @@ namespace CSSPHelperServices.Tests
             polyPoint = null;
             polyPoint = GetFilledRandomPolyPoint("");
             polyPoint.Z = -10001.0D;
-            validationResults = PolyPointService.Validate(new ValidationContext(polyPoint));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Z", "-10000", "10000"))).Any());
+            PolyPointService.Validate(new ValidationContext(polyPoint));
+            Assert.True(PolyPointService.ValidationResults.Count() > 0);
+            Assert.True(PolyPointService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Z", "-10000", "10000"))).Any());
 
             polyPoint = null;
             polyPoint = GetFilledRandomPolyPoint("");
             polyPoint.Z = 10001.0D;
-            validationResults = PolyPointService.Validate(new ValidationContext(polyPoint));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Z", "-10000", "10000"))).Any());
+            PolyPointService.Validate(new ValidationContext(polyPoint));
+            Assert.True(PolyPointService.ValidationResults.Count() > 0);
+            Assert.True(PolyPointService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Z", "-10000", "10000"))).Any());
         }
         #endregion Tests Generated Properties
 

@@ -66,11 +66,7 @@ namespace CSSPHelperServices.Tests
         //[InlineData("fr-CA")]
         public async Task LabSheetAndA1Sheet_Properties_Test(string culture)
         {
-            List<ValidationResult> ValidationResultList = new List<ValidationResult>();
-            IEnumerable<ValidationResult> validationResults;
             Assert.True(await Setup(culture));
-
-
 
             LabSheetAndA1Sheet labSheetAndA1Sheet = GetFilledRandomLabSheetAndA1Sheet("");
 

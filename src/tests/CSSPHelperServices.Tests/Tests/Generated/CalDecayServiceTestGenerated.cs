@@ -66,11 +66,7 @@ namespace CSSPHelperServices.Tests
         //[InlineData("fr-CA")]
         public async Task CalDecay_Properties_Test(string culture)
         {
-            List<ValidationResult> ValidationResultList = new List<ValidationResult>();
-            IEnumerable<ValidationResult> validationResults;
             Assert.True(await Setup(culture));
-
-
 
             CalDecay calDecay = GetFilledRandomCalDecay("");
 
@@ -85,10 +81,9 @@ namespace CSSPHelperServices.Tests
             calDecay = null;
             calDecay = GetFilledRandomCalDecay("");
             calDecay.Decay = -1.0D;
-            validationResults = CalDecayService.Validate(new ValidationContext(calDecay));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "Decay", "0"))).Any());
+            CalDecayService.Validate(new ValidationContext(calDecay));
+            Assert.True(CalDecayService.ValidationResults.Count() > 0);
+            Assert.True(CalDecayService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "Decay", "0"))).Any());
         }
         #endregion Tests Generated Properties
 

@@ -66,11 +66,7 @@ namespace CSSPHelperServices.Tests
         //[InlineData("fr-CA")]
         public async Task LoginModel_Properties_Test(string culture)
         {
-            List<ValidationResult> ValidationResultList = new List<ValidationResult>();
-            IEnumerable<ValidationResult> validationResults;
             Assert.True(await Setup(culture));
-
-
 
             LoginModel loginModel = GetFilledRandomLoginModel("");
 
@@ -85,27 +81,24 @@ namespace CSSPHelperServices.Tests
 
             loginModel = null;
             loginModel = GetFilledRandomLoginModel("LoginEmail");
-            validationResults = LoginModelService.Validate(new ValidationContext(loginModel));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "LoginEmail"))).Any());
+            LoginModelService.Validate(new ValidationContext(loginModel));
+            Assert.True(LoginModelService.ValidationResults.Count() > 0);
+            Assert.True(LoginModelService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "LoginEmail"))).Any());
 
 
             loginModel = null;
             loginModel = GetFilledRandomLoginModel("");
             loginModel.LoginEmail = GetRandomString("", 101);
-            validationResults = LoginModelService.Validate(new ValidationContext(loginModel));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "LoginEmail", "5", "100"))).Any());
+            LoginModelService.Validate(new ValidationContext(loginModel));
+            Assert.True(LoginModelService.ValidationResults.Count() > 0);
+            Assert.True(LoginModelService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "LoginEmail", "5", "100"))).Any());
 
             loginModel = null;
             loginModel = GetFilledRandomLoginModel("");
             loginModel.LoginEmail = GetRandomString("", 101);
-            validationResults = LoginModelService.Validate(new ValidationContext(loginModel));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "LoginEmail", "5", "100"))).Any());
+            LoginModelService.Validate(new ValidationContext(loginModel));
+            Assert.True(LoginModelService.ValidationResults.Count() > 0);
+            Assert.True(LoginModelService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "LoginEmail", "5", "100"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -117,27 +110,24 @@ namespace CSSPHelperServices.Tests
 
             loginModel = null;
             loginModel = GetFilledRandomLoginModel("Password");
-            validationResults = LoginModelService.Validate(new ValidationContext(loginModel));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Password"))).Any());
+            LoginModelService.Validate(new ValidationContext(loginModel));
+            Assert.True(LoginModelService.ValidationResults.Count() > 0);
+            Assert.True(LoginModelService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Password"))).Any());
 
 
             loginModel = null;
             loginModel = GetFilledRandomLoginModel("");
             loginModel.Password = GetRandomString("", 51);
-            validationResults = LoginModelService.Validate(new ValidationContext(loginModel));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "Password", "5", "50"))).Any());
+            LoginModelService.Validate(new ValidationContext(loginModel));
+            Assert.True(LoginModelService.ValidationResults.Count() > 0);
+            Assert.True(LoginModelService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "Password", "5", "50"))).Any());
 
             loginModel = null;
             loginModel = GetFilledRandomLoginModel("");
             loginModel.Password = GetRandomString("", 51);
-            validationResults = LoginModelService.Validate(new ValidationContext(loginModel));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "Password", "5", "50"))).Any());
+            LoginModelService.Validate(new ValidationContext(loginModel));
+            Assert.True(LoginModelService.ValidationResults.Count() > 0);
+            Assert.True(LoginModelService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "Password", "5", "50"))).Any());
         }
         #endregion Tests Generated Properties
 

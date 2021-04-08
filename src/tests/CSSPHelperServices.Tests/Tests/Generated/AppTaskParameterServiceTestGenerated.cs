@@ -66,11 +66,7 @@ namespace CSSPHelperServices.Tests
         //[InlineData("fr-CA")]
         public async Task AppTaskParameter_Properties_Test(string culture)
         {
-            List<ValidationResult> ValidationResultList = new List<ValidationResult>();
-            IEnumerable<ValidationResult> validationResults;
             Assert.True(await Setup(culture));
-
-
 
             AppTaskParameter appTaskParameter = GetFilledRandomAppTaskParameter("");
 
@@ -84,19 +80,17 @@ namespace CSSPHelperServices.Tests
 
             appTaskParameter = null;
             appTaskParameter = GetFilledRandomAppTaskParameter("Name");
-            validationResults = AppTaskParameterService.Validate(new ValidationContext(appTaskParameter));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Name"))).Any());
+            AppTaskParameterService.Validate(new ValidationContext(appTaskParameter));
+            Assert.True(AppTaskParameterService.ValidationResults.Count() > 0);
+            Assert.True(AppTaskParameterService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Name"))).Any());
 
 
             appTaskParameter = null;
             appTaskParameter = GetFilledRandomAppTaskParameter("");
             appTaskParameter.Name = GetRandomString("", 256);
-            validationResults = AppTaskParameterService.Validate(new ValidationContext(appTaskParameter));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Name", "255"))).Any());
+            AppTaskParameterService.Validate(new ValidationContext(appTaskParameter));
+            Assert.True(AppTaskParameterService.ValidationResults.Count() > 0);
+            Assert.True(AppTaskParameterService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Name", "255"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -107,19 +101,17 @@ namespace CSSPHelperServices.Tests
 
             appTaskParameter = null;
             appTaskParameter = GetFilledRandomAppTaskParameter("Value");
-            validationResults = AppTaskParameterService.Validate(new ValidationContext(appTaskParameter));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Value"))).Any());
+            AppTaskParameterService.Validate(new ValidationContext(appTaskParameter));
+            Assert.True(AppTaskParameterService.ValidationResults.Count() > 0);
+            Assert.True(AppTaskParameterService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Value"))).Any());
 
 
             appTaskParameter = null;
             appTaskParameter = GetFilledRandomAppTaskParameter("");
             appTaskParameter.Value = GetRandomString("", 256);
-            validationResults = AppTaskParameterService.Validate(new ValidationContext(appTaskParameter));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Value", "255"))).Any());
+            AppTaskParameterService.Validate(new ValidationContext(appTaskParameter));
+            Assert.True(AppTaskParameterService.ValidationResults.Count() > 0);
+            Assert.True(AppTaskParameterService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Value", "255"))).Any());
         }
         #endregion Tests Generated Properties
 

@@ -66,11 +66,7 @@ namespace CSSPHelperServices.Tests
         //[InlineData("fr-CA")]
         public async Task TVItemTVAuth_Properties_Test(string culture)
         {
-            List<ValidationResult> ValidationResultList = new List<ValidationResult>();
-            IEnumerable<ValidationResult> validationResults;
             Assert.True(await Setup(culture));
-
-
 
             TVItemTVAuth tvItemTVAuth = GetFilledRandomTVItemTVAuth("");
 
@@ -85,10 +81,9 @@ namespace CSSPHelperServices.Tests
             tvItemTVAuth = null;
             tvItemTVAuth = GetFilledRandomTVItemTVAuth("");
             tvItemTVAuth.TVItemUserAuthID = 0;
-            validationResults = TVItemTVAuthService.Validate(new ValidationContext(tvItemTVAuth));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "TVItemUserAuthID", "1"))).Any());
+            TVItemTVAuthService.Validate(new ValidationContext(tvItemTVAuth));
+            Assert.True(TVItemTVAuthService.ValidationResults.Count() > 0);
+            Assert.True(TVItemTVAuthService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "TVItemUserAuthID", "1"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -100,27 +95,24 @@ namespace CSSPHelperServices.Tests
 
             tvItemTVAuth = null;
             tvItemTVAuth = GetFilledRandomTVItemTVAuth("TVText");
-            validationResults = TVItemTVAuthService.Validate(new ValidationContext(tvItemTVAuth));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "TVText"))).Any());
+            TVItemTVAuthService.Validate(new ValidationContext(tvItemTVAuth));
+            Assert.True(TVItemTVAuthService.ValidationResults.Count() > 0);
+            Assert.True(TVItemTVAuthService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "TVText"))).Any());
 
 
             tvItemTVAuth = null;
             tvItemTVAuth = GetFilledRandomTVItemTVAuth("");
             tvItemTVAuth.TVText = GetRandomString("", 256);
-            validationResults = TVItemTVAuthService.Validate(new ValidationContext(tvItemTVAuth));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVText", "1", "255"))).Any());
+            TVItemTVAuthService.Validate(new ValidationContext(tvItemTVAuth));
+            Assert.True(TVItemTVAuthService.ValidationResults.Count() > 0);
+            Assert.True(TVItemTVAuthService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVText", "1", "255"))).Any());
 
             tvItemTVAuth = null;
             tvItemTVAuth = GetFilledRandomTVItemTVAuth("");
             tvItemTVAuth.TVText = GetRandomString("", 256);
-            validationResults = TVItemTVAuthService.Validate(new ValidationContext(tvItemTVAuth));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVText", "1", "255"))).Any());
+            TVItemTVAuthService.Validate(new ValidationContext(tvItemTVAuth));
+            Assert.True(TVItemTVAuthService.ValidationResults.Count() > 0);
+            Assert.True(TVItemTVAuthService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVText", "1", "255"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -132,10 +124,9 @@ namespace CSSPHelperServices.Tests
             tvItemTVAuth = null;
             tvItemTVAuth = GetFilledRandomTVItemTVAuth("");
             tvItemTVAuth.TVItemID1 = 0;
-            validationResults = TVItemTVAuthService.Validate(new ValidationContext(tvItemTVAuth));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "TVItemID1", "1"))).Any());
+            TVItemTVAuthService.Validate(new ValidationContext(tvItemTVAuth));
+            Assert.True(TVItemTVAuthService.ValidationResults.Count() > 0);
+            Assert.True(TVItemTVAuthService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "TVItemID1", "1"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -147,27 +138,24 @@ namespace CSSPHelperServices.Tests
 
             tvItemTVAuth = null;
             tvItemTVAuth = GetFilledRandomTVItemTVAuth("TVTypeStr");
-            validationResults = TVItemTVAuthService.Validate(new ValidationContext(tvItemTVAuth));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "TVTypeStr"))).Any());
+            TVItemTVAuthService.Validate(new ValidationContext(tvItemTVAuth));
+            Assert.True(TVItemTVAuthService.ValidationResults.Count() > 0);
+            Assert.True(TVItemTVAuthService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "TVTypeStr"))).Any());
 
 
             tvItemTVAuth = null;
             tvItemTVAuth = GetFilledRandomTVItemTVAuth("");
             tvItemTVAuth.TVTypeStr = GetRandomString("", 256);
-            validationResults = TVItemTVAuthService.Validate(new ValidationContext(tvItemTVAuth));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVTypeStr", "1", "255"))).Any());
+            TVItemTVAuthService.Validate(new ValidationContext(tvItemTVAuth));
+            Assert.True(TVItemTVAuthService.ValidationResults.Count() > 0);
+            Assert.True(TVItemTVAuthService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVTypeStr", "1", "255"))).Any());
 
             tvItemTVAuth = null;
             tvItemTVAuth = GetFilledRandomTVItemTVAuth("");
             tvItemTVAuth.TVTypeStr = GetRandomString("", 256);
-            validationResults = TVItemTVAuthService.Validate(new ValidationContext(tvItemTVAuth));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVTypeStr", "1", "255"))).Any());
+            TVItemTVAuthService.Validate(new ValidationContext(tvItemTVAuth));
+            Assert.True(TVItemTVAuthService.ValidationResults.Count() > 0);
+            Assert.True(TVItemTVAuthService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVTypeStr", "1", "255"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -179,10 +167,9 @@ namespace CSSPHelperServices.Tests
             tvItemTVAuth = null;
             tvItemTVAuth = GetFilledRandomTVItemTVAuth("");
             tvItemTVAuth.TVAuth = (TVAuthEnum)1000000;
-            validationResults = TVItemTVAuthService.Validate(new ValidationContext(tvItemTVAuth));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "TVAuth"))).Any());
+            TVItemTVAuthService.Validate(new ValidationContext(tvItemTVAuth));
+            Assert.True(TVItemTVAuthService.ValidationResults.Count() > 0);
+            Assert.True(TVItemTVAuthService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "TVAuth"))).Any());
 
 
             // -----------------------------------
@@ -195,10 +182,9 @@ namespace CSSPHelperServices.Tests
             tvItemTVAuth = null;
             tvItemTVAuth = GetFilledRandomTVItemTVAuth("");
             tvItemTVAuth.TVAuthText = GetRandomString("", 101);
-            validationResults = TVItemTVAuthService.Validate(new ValidationContext(tvItemTVAuth));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "TVAuthText", "100"))).Any());
+            TVItemTVAuthService.Validate(new ValidationContext(tvItemTVAuth));
+            Assert.True(TVItemTVAuthService.ValidationResults.Count() > 0);
+            Assert.True(TVItemTVAuthService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "TVAuthText", "100"))).Any());
         }
         #endregion Tests Generated Properties
 

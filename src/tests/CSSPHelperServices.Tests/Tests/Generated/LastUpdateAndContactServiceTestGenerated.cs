@@ -66,11 +66,7 @@ namespace CSSPHelperServices.Tests
         //[InlineData("fr-CA")]
         public async Task LastUpdateAndContact_Properties_Test(string culture)
         {
-            List<ValidationResult> ValidationResultList = new List<ValidationResult>();
-            IEnumerable<ValidationResult> validationResults;
             Assert.True(await Setup(culture));
-
-
 
             LastUpdateAndContact lastUpdateAndContact = GetFilledRandomLastUpdateAndContact("");
 
@@ -85,18 +81,16 @@ namespace CSSPHelperServices.Tests
             lastUpdateAndContact = null;
             lastUpdateAndContact = GetFilledRandomLastUpdateAndContact("");
             lastUpdateAndContact.LastUpdateAndContactDate_UTC = new DateTime();
-            validationResults = LastUpdateAndContactService.Validate(new ValidationContext(lastUpdateAndContact));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateAndContactDate_UTC"))).Any());
+            LastUpdateAndContactService.Validate(new ValidationContext(lastUpdateAndContact));
+            Assert.True(LastUpdateAndContactService.ValidationResults.Count() > 0);
+            Assert.True(LastUpdateAndContactService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateAndContactDate_UTC"))).Any());
 
             lastUpdateAndContact = null;
             lastUpdateAndContact = GetFilledRandomLastUpdateAndContact("");
             lastUpdateAndContact.LastUpdateAndContactDate_UTC = new DateTime(1979, 1, 1);
-            validationResults = LastUpdateAndContactService.Validate(new ValidationContext(lastUpdateAndContact));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateAndContactDate_UTC", "1980"))).Any());
+            LastUpdateAndContactService.Validate(new ValidationContext(lastUpdateAndContact));
+            Assert.True(LastUpdateAndContactService.ValidationResults.Count() > 0);
+            Assert.True(LastUpdateAndContactService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateAndContactDate_UTC", "1980"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -108,10 +102,9 @@ namespace CSSPHelperServices.Tests
             lastUpdateAndContact = null;
             lastUpdateAndContact = GetFilledRandomLastUpdateAndContact("");
             lastUpdateAndContact.LastUpdateAndContactTVItemID = 0;
-            validationResults = LastUpdateAndContactService.Validate(new ValidationContext(lastUpdateAndContact));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "LastUpdateAndContactTVItemID", "1"))).Any());
+            LastUpdateAndContactService.Validate(new ValidationContext(lastUpdateAndContact));
+            Assert.True(LastUpdateAndContactService.ValidationResults.Count() > 0);
+            Assert.True(LastUpdateAndContactService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "LastUpdateAndContactTVItemID", "1"))).Any());
         }
         #endregion Tests Generated Properties
 

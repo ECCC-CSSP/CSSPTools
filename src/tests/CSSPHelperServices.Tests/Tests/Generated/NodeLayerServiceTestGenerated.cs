@@ -66,11 +66,7 @@ namespace CSSPHelperServices.Tests
         //[InlineData("fr-CA")]
         public async Task NodeLayer_Properties_Test(string culture)
         {
-            List<ValidationResult> ValidationResultList = new List<ValidationResult>();
-            IEnumerable<ValidationResult> validationResults;
             Assert.True(await Setup(culture));
-
-
 
             NodeLayer nodeLayer = GetFilledRandomNodeLayer("");
 
@@ -85,18 +81,16 @@ namespace CSSPHelperServices.Tests
             nodeLayer = null;
             nodeLayer = GetFilledRandomNodeLayer("");
             nodeLayer.Layer = 0;
-            validationResults = NodeLayerService.Validate(new ValidationContext(nodeLayer));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Layer", "1", "100"))).Any());
+            NodeLayerService.Validate(new ValidationContext(nodeLayer));
+            Assert.True(NodeLayerService.ValidationResults.Count() > 0);
+            Assert.True(NodeLayerService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Layer", "1", "100"))).Any());
 
             nodeLayer = null;
             nodeLayer = GetFilledRandomNodeLayer("");
             nodeLayer.Layer = 101;
-            validationResults = NodeLayerService.Validate(new ValidationContext(nodeLayer));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Layer", "1", "100"))).Any());
+            NodeLayerService.Validate(new ValidationContext(nodeLayer));
+            Assert.True(NodeLayerService.ValidationResults.Count() > 0);
+            Assert.True(NodeLayerService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Layer", "1", "100"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -108,18 +102,16 @@ namespace CSSPHelperServices.Tests
             nodeLayer = null;
             nodeLayer = GetFilledRandomNodeLayer("");
             nodeLayer.Z = -10001.0D;
-            validationResults = NodeLayerService.Validate(new ValidationContext(nodeLayer));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Z", "-10000", "10000"))).Any());
+            NodeLayerService.Validate(new ValidationContext(nodeLayer));
+            Assert.True(NodeLayerService.ValidationResults.Count() > 0);
+            Assert.True(NodeLayerService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Z", "-10000", "10000"))).Any());
 
             nodeLayer = null;
             nodeLayer = GetFilledRandomNodeLayer("");
             nodeLayer.Z = 10001.0D;
-            validationResults = NodeLayerService.Validate(new ValidationContext(nodeLayer));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Z", "-10000", "10000"))).Any());
+            NodeLayerService.Validate(new ValidationContext(nodeLayer));
+            Assert.True(NodeLayerService.ValidationResults.Count() > 0);
+            Assert.True(NodeLayerService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Z", "-10000", "10000"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable

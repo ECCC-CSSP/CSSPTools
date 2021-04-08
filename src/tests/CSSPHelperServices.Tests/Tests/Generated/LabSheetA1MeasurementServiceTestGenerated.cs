@@ -66,11 +66,7 @@ namespace CSSPHelperServices.Tests
         //[InlineData("fr-CA")]
         public async Task LabSheetA1Measurement_Properties_Test(string culture)
         {
-            List<ValidationResult> ValidationResultList = new List<ValidationResult>();
-            IEnumerable<ValidationResult> validationResults;
             Assert.True(await Setup(culture));
-
-
 
             LabSheetA1Measurement labSheetA1Measurement = GetFilledRandomLabSheetA1Measurement("");
 
@@ -83,10 +79,9 @@ namespace CSSPHelperServices.Tests
 
             labSheetA1Measurement = null;
             labSheetA1Measurement = GetFilledRandomLabSheetA1Measurement("Site");
-            validationResults = LabSheetA1MeasurementService.Validate(new ValidationContext(labSheetA1Measurement));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Site"))).Any());
+            LabSheetA1MeasurementService.Validate(new ValidationContext(labSheetA1Measurement));
+            Assert.True(LabSheetA1MeasurementService.ValidationResults.Count() > 0);
+            Assert.True(LabSheetA1MeasurementService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Site"))).Any());
 
 
             // -----------------------------------
@@ -99,10 +94,9 @@ namespace CSSPHelperServices.Tests
             labSheetA1Measurement = null;
             labSheetA1Measurement = GetFilledRandomLabSheetA1Measurement("");
             labSheetA1Measurement.TVItemID = 0;
-            validationResults = LabSheetA1MeasurementService.Validate(new ValidationContext(labSheetA1Measurement));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "TVItemID", "1"))).Any());
+            LabSheetA1MeasurementService.Validate(new ValidationContext(labSheetA1Measurement));
+            Assert.True(LabSheetA1MeasurementService.ValidationResults.Count() > 0);
+            Assert.True(LabSheetA1MeasurementService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "TVItemID", "1"))).Any());
 
             // -----------------------------------
             // Is Nullable
@@ -162,10 +156,9 @@ namespace CSSPHelperServices.Tests
             labSheetA1Measurement = null;
             labSheetA1Measurement = GetFilledRandomLabSheetA1Measurement("");
             labSheetA1Measurement.SampleType = (SampleTypeEnum)1000000;
-            validationResults = LabSheetA1MeasurementService.Validate(new ValidationContext(labSheetA1Measurement));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "SampleType"))).Any());
+            LabSheetA1MeasurementService.Validate(new ValidationContext(labSheetA1Measurement));
+            Assert.True(LabSheetA1MeasurementService.ValidationResults.Count() > 0);
+            Assert.True(LabSheetA1MeasurementService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "SampleType"))).Any());
 
 
             // -----------------------------------
@@ -177,19 +170,17 @@ namespace CSSPHelperServices.Tests
 
             labSheetA1Measurement = null;
             labSheetA1Measurement = GetFilledRandomLabSheetA1Measurement("SiteComment");
-            validationResults = LabSheetA1MeasurementService.Validate(new ValidationContext(labSheetA1Measurement));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "SiteComment"))).Any());
+            LabSheetA1MeasurementService.Validate(new ValidationContext(labSheetA1Measurement));
+            Assert.True(LabSheetA1MeasurementService.ValidationResults.Count() > 0);
+            Assert.True(LabSheetA1MeasurementService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "SiteComment"))).Any());
 
 
             labSheetA1Measurement = null;
             labSheetA1Measurement = GetFilledRandomLabSheetA1Measurement("");
             labSheetA1Measurement.SiteComment = GetRandomString("", 100001);
-            validationResults = LabSheetA1MeasurementService.Validate(new ValidationContext(labSheetA1Measurement));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SiteComment", "100000"))).Any());
+            LabSheetA1MeasurementService.Validate(new ValidationContext(labSheetA1Measurement));
+            Assert.True(LabSheetA1MeasurementService.ValidationResults.Count() > 0);
+            Assert.True(LabSheetA1MeasurementService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SiteComment", "100000"))).Any());
 
             // -----------------------------------
             // Is Nullable
@@ -201,10 +192,9 @@ namespace CSSPHelperServices.Tests
             labSheetA1Measurement = null;
             labSheetA1Measurement = GetFilledRandomLabSheetA1Measurement("");
             labSheetA1Measurement.SampleTypeText = GetRandomString("", 101);
-            validationResults = LabSheetA1MeasurementService.Validate(new ValidationContext(labSheetA1Measurement));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SampleTypeText", "100"))).Any());
+            LabSheetA1MeasurementService.Validate(new ValidationContext(labSheetA1Measurement));
+            Assert.True(LabSheetA1MeasurementService.ValidationResults.Count() > 0);
+            Assert.True(LabSheetA1MeasurementService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SampleTypeText", "100"))).Any());
         }
         #endregion Tests Generated Properties
 

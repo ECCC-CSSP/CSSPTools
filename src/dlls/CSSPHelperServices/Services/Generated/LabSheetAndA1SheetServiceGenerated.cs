@@ -25,6 +25,7 @@ namespace CSSPHelperServices
     public interface ILabSheetAndA1SheetService
     {
         bool Validate(ValidationContext validationContext);
+        List<ValidationResult> ValidationResults { get; set; }
     }
     public partial class LabSheetAndA1SheetService : ILabSheetAndA1SheetService
     {
@@ -32,7 +33,7 @@ namespace CSSPHelperServices
         #endregion Variables
 
         #region Properties
-        private List<ValidationResult> ValidationResults { get; set; }
+        public List<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors

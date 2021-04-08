@@ -66,11 +66,7 @@ namespace CSSPHelperServices.Tests
         //[InlineData("fr-CA")]
         public async Task TVFullText_Properties_Test(string culture)
         {
-            List<ValidationResult> ValidationResultList = new List<ValidationResult>();
-            IEnumerable<ValidationResult> validationResults;
             Assert.True(await Setup(culture));
-
-
 
             TVFullText tvFullText = GetFilledRandomTVFullText("");
 
@@ -85,27 +81,24 @@ namespace CSSPHelperServices.Tests
 
             tvFullText = null;
             tvFullText = GetFilledRandomTVFullText("TVPath");
-            validationResults = TVFullTextService.Validate(new ValidationContext(tvFullText));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "TVPath"))).Any());
+            TVFullTextService.Validate(new ValidationContext(tvFullText));
+            Assert.True(TVFullTextService.ValidationResults.Count() > 0);
+            Assert.True(TVFullTextService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "TVPath"))).Any());
 
 
             tvFullText = null;
             tvFullText = GetFilledRandomTVFullText("");
             tvFullText.TVPath = GetRandomString("", 256);
-            validationResults = TVFullTextService.Validate(new ValidationContext(tvFullText));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVPath", "1", "255"))).Any());
+            TVFullTextService.Validate(new ValidationContext(tvFullText));
+            Assert.True(TVFullTextService.ValidationResults.Count() > 0);
+            Assert.True(TVFullTextService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVPath", "1", "255"))).Any());
 
             tvFullText = null;
             tvFullText = GetFilledRandomTVFullText("");
             tvFullText.TVPath = GetRandomString("", 256);
-            validationResults = TVFullTextService.Validate(new ValidationContext(tvFullText));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVPath", "1", "255"))).Any());
+            TVFullTextService.Validate(new ValidationContext(tvFullText));
+            Assert.True(TVFullTextService.ValidationResults.Count() > 0);
+            Assert.True(TVFullTextService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVPath", "1", "255"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -117,27 +110,24 @@ namespace CSSPHelperServices.Tests
 
             tvFullText = null;
             tvFullText = GetFilledRandomTVFullText("FullText");
-            validationResults = TVFullTextService.Validate(new ValidationContext(tvFullText));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "FullText"))).Any());
+            TVFullTextService.Validate(new ValidationContext(tvFullText));
+            Assert.True(TVFullTextService.ValidationResults.Count() > 0);
+            Assert.True(TVFullTextService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "FullText"))).Any());
 
 
             tvFullText = null;
             tvFullText = GetFilledRandomTVFullText("");
             tvFullText.FullText = GetRandomString("", 256);
-            validationResults = TVFullTextService.Validate(new ValidationContext(tvFullText));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "FullText", "1", "255"))).Any());
+            TVFullTextService.Validate(new ValidationContext(tvFullText));
+            Assert.True(TVFullTextService.ValidationResults.Count() > 0);
+            Assert.True(TVFullTextService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "FullText", "1", "255"))).Any());
 
             tvFullText = null;
             tvFullText = GetFilledRandomTVFullText("");
             tvFullText.FullText = GetRandomString("", 256);
-            validationResults = TVFullTextService.Validate(new ValidationContext(tvFullText));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "FullText", "1", "255"))).Any());
+            TVFullTextService.Validate(new ValidationContext(tvFullText));
+            Assert.True(TVFullTextService.ValidationResults.Count() > 0);
+            Assert.True(TVFullTextService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "FullText", "1", "255"))).Any());
         }
         #endregion Tests Generated Properties
 

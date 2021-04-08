@@ -66,11 +66,7 @@ namespace CSSPHelperServices.Tests
         //[InlineData("fr-CA")]
         public async Task SamplingPlanAndFilesLabSheetCount_Properties_Test(string culture)
         {
-            List<ValidationResult> ValidationResultList = new List<ValidationResult>();
-            IEnumerable<ValidationResult> validationResults;
             Assert.True(await Setup(culture));
-
-
 
             SamplingPlanAndFilesLabSheetCount samplingPlanAndFilesLabSheetCount = GetFilledRandomSamplingPlanAndFilesLabSheetCount("");
 
@@ -85,10 +81,9 @@ namespace CSSPHelperServices.Tests
             samplingPlanAndFilesLabSheetCount = null;
             samplingPlanAndFilesLabSheetCount = GetFilledRandomSamplingPlanAndFilesLabSheetCount("");
             samplingPlanAndFilesLabSheetCount.LabSheetHistoryCount = -1;
-            validationResults = SamplingPlanAndFilesLabSheetCountService.Validate(new ValidationContext(samplingPlanAndFilesLabSheetCount));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "LabSheetHistoryCount", "0"))).Any());
+            SamplingPlanAndFilesLabSheetCountService.Validate(new ValidationContext(samplingPlanAndFilesLabSheetCount));
+            Assert.True(SamplingPlanAndFilesLabSheetCountService.ValidationResults.Count() > 0);
+            Assert.True(SamplingPlanAndFilesLabSheetCountService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "LabSheetHistoryCount", "0"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -100,10 +95,9 @@ namespace CSSPHelperServices.Tests
             samplingPlanAndFilesLabSheetCount = null;
             samplingPlanAndFilesLabSheetCount = GetFilledRandomSamplingPlanAndFilesLabSheetCount("");
             samplingPlanAndFilesLabSheetCount.LabSheetTransferredCount = -1;
-            validationResults = SamplingPlanAndFilesLabSheetCountService.Validate(new ValidationContext(samplingPlanAndFilesLabSheetCount));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "LabSheetTransferredCount", "0"))).Any());
+            SamplingPlanAndFilesLabSheetCountService.Validate(new ValidationContext(samplingPlanAndFilesLabSheetCount));
+            Assert.True(SamplingPlanAndFilesLabSheetCountService.ValidationResults.Count() > 0);
+            Assert.True(SamplingPlanAndFilesLabSheetCountService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "LabSheetTransferredCount", "0"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable

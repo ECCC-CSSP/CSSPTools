@@ -66,11 +66,7 @@ namespace CSSPHelperServices.Tests
         //[InlineData("fr-CA")]
         public async Task DBTable_Properties_Test(string culture)
         {
-            List<ValidationResult> ValidationResultList = new List<ValidationResult>();
-            IEnumerable<ValidationResult> validationResults;
             Assert.True(await Setup(culture));
-
-
 
             DBTable dBTable = GetFilledRandomDBTable("");
 
@@ -85,27 +81,24 @@ namespace CSSPHelperServices.Tests
 
             dBTable = null;
             dBTable = GetFilledRandomDBTable("TableName");
-            validationResults = DBTableService.Validate(new ValidationContext(dBTable));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "TableName"))).Any());
+            DBTableService.Validate(new ValidationContext(dBTable));
+            Assert.True(DBTableService.ValidationResults.Count() > 0);
+            Assert.True(DBTableService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "TableName"))).Any());
 
 
             dBTable = null;
             dBTable = GetFilledRandomDBTable("");
             dBTable.TableName = GetRandomString("", 201);
-            validationResults = DBTableService.Validate(new ValidationContext(dBTable));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TableName", "1", "200"))).Any());
+            DBTableService.Validate(new ValidationContext(dBTable));
+            Assert.True(DBTableService.ValidationResults.Count() > 0);
+            Assert.True(DBTableService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TableName", "1", "200"))).Any());
 
             dBTable = null;
             dBTable = GetFilledRandomDBTable("");
             dBTable.TableName = GetRandomString("", 201);
-            validationResults = DBTableService.Validate(new ValidationContext(dBTable));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TableName", "1", "200"))).Any());
+            DBTableService.Validate(new ValidationContext(dBTable));
+            Assert.True(DBTableService.ValidationResults.Count() > 0);
+            Assert.True(DBTableService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TableName", "1", "200"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -117,27 +110,24 @@ namespace CSSPHelperServices.Tests
 
             dBTable = null;
             dBTable = GetFilledRandomDBTable("Plurial");
-            validationResults = DBTableService.Validate(new ValidationContext(dBTable));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Plurial"))).Any());
+            DBTableService.Validate(new ValidationContext(dBTable));
+            Assert.True(DBTableService.ValidationResults.Count() > 0);
+            Assert.True(DBTableService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Plurial"))).Any());
 
 
             dBTable = null;
             dBTable = GetFilledRandomDBTable("");
             dBTable.Plurial = GetRandomString("", 4);
-            validationResults = DBTableService.Validate(new ValidationContext(dBTable));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "Plurial", "1", "3"))).Any());
+            DBTableService.Validate(new ValidationContext(dBTable));
+            Assert.True(DBTableService.ValidationResults.Count() > 0);
+            Assert.True(DBTableService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "Plurial", "1", "3"))).Any());
 
             dBTable = null;
             dBTable = GetFilledRandomDBTable("");
             dBTable.Plurial = GetRandomString("", 4);
-            validationResults = DBTableService.Validate(new ValidationContext(dBTable));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "Plurial", "1", "3"))).Any());
+            DBTableService.Validate(new ValidationContext(dBTable));
+            Assert.True(DBTableService.ValidationResults.Count() > 0);
+            Assert.True(DBTableService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "Plurial", "1", "3"))).Any());
         }
         #endregion Tests Generated Properties
 

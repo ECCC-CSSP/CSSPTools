@@ -66,11 +66,7 @@ namespace CSSPHelperServices.Tests
         //[InlineData("fr-CA")]
         public async Task ContactOK_Properties_Test(string culture)
         {
-            List<ValidationResult> ValidationResultList = new List<ValidationResult>();
-            IEnumerable<ValidationResult> validationResults;
             Assert.True(await Setup(culture));
-
-
 
             ContactOK contactOK = GetFilledRandomContactOK("");
 
@@ -85,10 +81,9 @@ namespace CSSPHelperServices.Tests
             contactOK = null;
             contactOK = GetFilledRandomContactOK("");
             contactOK.ContactID = 0;
-            validationResults = ContactOKService.Validate(new ValidationContext(contactOK));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContactID", "1"))).Any());
+            ContactOKService.Validate(new ValidationContext(contactOK));
+            Assert.True(ContactOKService.ValidationResults.Count() > 0);
+            Assert.True(ContactOKService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContactID", "1"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -100,10 +95,9 @@ namespace CSSPHelperServices.Tests
             contactOK = null;
             contactOK = GetFilledRandomContactOK("");
             contactOK.ContactTVItemID = 0;
-            validationResults = ContactOKService.Validate(new ValidationContext(contactOK));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContactTVItemID", "1"))).Any());
+            ContactOKService.Validate(new ValidationContext(contactOK));
+            Assert.True(ContactOKService.ValidationResults.Count() > 0);
+            Assert.True(ContactOKService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContactTVItemID", "1"))).Any());
         }
         #endregion Tests Generated Properties
 

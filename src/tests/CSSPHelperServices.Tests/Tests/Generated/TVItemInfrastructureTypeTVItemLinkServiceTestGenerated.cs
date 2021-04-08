@@ -66,11 +66,7 @@ namespace CSSPHelperServices.Tests
         //[InlineData("fr-CA")]
         public async Task TVItemInfrastructureTypeTVItemLink_Properties_Test(string culture)
         {
-            List<ValidationResult> ValidationResultList = new List<ValidationResult>();
-            IEnumerable<ValidationResult> validationResults;
             Assert.True(await Setup(culture));
-
-
 
             TVItemInfrastructureTypeTVItemLink tvItemInfrastructureTypeTVItemLink = GetFilledRandomTVItemInfrastructureTypeTVItemLink("");
 
@@ -85,10 +81,9 @@ namespace CSSPHelperServices.Tests
             tvItemInfrastructureTypeTVItemLink = null;
             tvItemInfrastructureTypeTVItemLink = GetFilledRandomTVItemInfrastructureTypeTVItemLink("");
             tvItemInfrastructureTypeTVItemLink.InfrastructureType = (InfrastructureTypeEnum)1000000;
-            validationResults = TVItemInfrastructureTypeTVItemLinkService.Validate(new ValidationContext(tvItemInfrastructureTypeTVItemLink));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "InfrastructureType"))).Any());
+            TVItemInfrastructureTypeTVItemLinkService.Validate(new ValidationContext(tvItemInfrastructureTypeTVItemLink));
+            Assert.True(TVItemInfrastructureTypeTVItemLinkService.ValidationResults.Count() > 0);
+            Assert.True(TVItemInfrastructureTypeTVItemLinkService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "InfrastructureType"))).Any());
 
 
             // -----------------------------------
@@ -107,10 +102,9 @@ namespace CSSPHelperServices.Tests
             tvItemInfrastructureTypeTVItemLink = null;
             tvItemInfrastructureTypeTVItemLink = GetFilledRandomTVItemInfrastructureTypeTVItemLink("");
             tvItemInfrastructureTypeTVItemLink.InfrastructureTypeText = GetRandomString("", 101);
-            validationResults = TVItemInfrastructureTypeTVItemLinkService.Validate(new ValidationContext(tvItemInfrastructureTypeTVItemLink));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "InfrastructureTypeText", "100"))).Any());
+            TVItemInfrastructureTypeTVItemLinkService.Validate(new ValidationContext(tvItemInfrastructureTypeTVItemLink));
+            Assert.True(TVItemInfrastructureTypeTVItemLinkService.ValidationResults.Count() > 0);
+            Assert.True(TVItemInfrastructureTypeTVItemLinkService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "InfrastructureTypeText", "100"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable

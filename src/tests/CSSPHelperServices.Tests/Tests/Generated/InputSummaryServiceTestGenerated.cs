@@ -66,11 +66,7 @@ namespace CSSPHelperServices.Tests
         //[InlineData("fr-CA")]
         public async Task InputSummary_Properties_Test(string culture)
         {
-            List<ValidationResult> ValidationResultList = new List<ValidationResult>();
-            IEnumerable<ValidationResult> validationResults;
             Assert.True(await Setup(culture));
-
-
 
             InputSummary inputSummary = GetFilledRandomInputSummary("");
 
@@ -84,19 +80,17 @@ namespace CSSPHelperServices.Tests
 
             inputSummary = null;
             inputSummary = GetFilledRandomInputSummary("Summary");
-            validationResults = InputSummaryService.Validate(new ValidationContext(inputSummary));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Summary"))).Any());
+            InputSummaryService.Validate(new ValidationContext(inputSummary));
+            Assert.True(InputSummaryService.ValidationResults.Count() > 0);
+            Assert.True(InputSummaryService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Summary"))).Any());
 
 
             inputSummary = null;
             inputSummary = GetFilledRandomInputSummary("");
             inputSummary.Summary = GetRandomString("", 1000001);
-            validationResults = InputSummaryService.Validate(new ValidationContext(inputSummary));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Summary", "1000000"))).Any());
+            InputSummaryService.Validate(new ValidationContext(inputSummary));
+            Assert.True(InputSummaryService.ValidationResults.Count() > 0);
+            Assert.True(InputSummaryService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Summary", "1000000"))).Any());
         }
         #endregion Tests Generated Properties
 

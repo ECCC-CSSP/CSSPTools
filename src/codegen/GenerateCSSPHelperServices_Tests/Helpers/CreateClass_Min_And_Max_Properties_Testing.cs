@@ -45,19 +45,17 @@ namespace GenerateCSSPHelperServices_Tests
                             sb.AppendLine($@"            { TypeNameLower } = null;");
                             sb.AppendLine($@"            { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
                             sb.AppendLine($@"            { TypeNameLower }.{ csspProp.PropName } = { csspProp.Min - 1 }{ numbExt };");
-                            sb.AppendLine($@"            validationResults = { TypeName }Service.Validate(new ValidationContext({ TypeNameLower }));");
-                            sb.AppendLine($@"            ValidationResultList = validationResults.ToList();");
-                            sb.AppendLine($@"            Assert.True(ValidationResultList.Count() > 0);");
-                            sb.AppendLine($@"            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, ""{ csspProp.PropName }"", ""{ csspProp.Min }"", ""{ csspProp.Max }""))).Any());");
+                            sb.AppendLine($@"            { TypeName }Service.Validate(new ValidationContext({ TypeNameLower }));");
+                            sb.AppendLine($@"            Assert.True({ TypeName }Service.ValidationResults.Count() > 0);");
+                            sb.AppendLine($@"            Assert.True({ TypeName }Service.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, ""{ csspProp.PropName }"", ""{ csspProp.Min }"", ""{ csspProp.Max }""))).Any());");
 
                             sb.AppendLine("");
                             sb.AppendLine($@"            { TypeNameLower } = null;");
                             sb.AppendLine($@"            { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
                             sb.AppendLine($@"            { TypeNameLower }.{ csspProp.PropName } = { csspProp.Max + 1 }{ numbExt };");
-                            sb.AppendLine($@"            validationResults = { TypeName }Service.Validate(new ValidationContext({ TypeNameLower }));");
-                            sb.AppendLine($@"            ValidationResultList = validationResults.ToList();");
-                            sb.AppendLine($@"            Assert.True(ValidationResultList.Count() > 0);");
-                            sb.AppendLine($@"            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, ""{ csspProp.PropName }"", ""{ csspProp.Min }"", ""{ csspProp.Max }""))).Any());");
+                            sb.AppendLine($@"            { TypeName }Service.Validate(new ValidationContext({ TypeNameLower }));");
+                            sb.AppendLine($@"            Assert.True({ TypeName }Service.ValidationResults.Count() > 0);");
+                            sb.AppendLine($@"            Assert.True({ TypeName }Service.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, ""{ csspProp.PropName }"", ""{ csspProp.Min }"", ""{ csspProp.Max }""))).Any());");
                         }
                         else if (csspProp.Min != null)
                         {
@@ -65,10 +63,9 @@ namespace GenerateCSSPHelperServices_Tests
                             sb.AppendLine($@"            { TypeNameLower } = null;");
                             sb.AppendLine($@"            { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
                             sb.AppendLine($@"            { TypeNameLower }.{ csspProp.PropName } = { csspProp.Min - 1 }{ numbExt };");
-                            sb.AppendLine($@"            validationResults = { TypeName }Service.Validate(new ValidationContext({ TypeNameLower }));");
-                            sb.AppendLine($@"            ValidationResultList = validationResults.ToList();");
-                            sb.AppendLine($@"            Assert.True(ValidationResultList.Count() > 0);");
-                            sb.AppendLine($@"            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, ""{ csspProp.PropName }"", ""{ csspProp.Min }""))).Any());");
+                            sb.AppendLine($@"            { TypeName }Service.Validate(new ValidationContext({ TypeNameLower }));");
+                            sb.AppendLine($@"            Assert.True({ TypeName }Service.ValidationResults.Count() > 0);");
+                            sb.AppendLine($@"            Assert.True({ TypeName }Service.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, ""{ csspProp.PropName }"", ""{ csspProp.Min }""))).Any());");
                         }
                         else if (csspProp.Max != null)
                         {
@@ -77,10 +74,9 @@ namespace GenerateCSSPHelperServices_Tests
                             sb.AppendLine($@"            { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
 
                             sb.AppendLine($@"            { TypeNameLower }.{ csspProp.PropName } = { csspProp.Max + 1 }{ numbExt };");
-                            sb.AppendLine($@"            validationResults = { TypeName }Service.Validate(new ValidationContext({ TypeNameLower }));");
-                            sb.AppendLine($@"            ValidationResultList = validationResults.ToList();");
-                            sb.AppendLine($@"            Assert.True(ValidationResultList.Count() > 0);");
-                            sb.AppendLine($@"            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxValueIs_, ""{ csspProp.PropName }"", ""{ csspProp.Max }""))).Any());");
+                            sb.AppendLine($@"            { TypeName }Service.Validate(new ValidationContext({ TypeNameLower }));");
+                            sb.AppendLine($@"            Assert.True({ TypeName }Service.ValidationResults.Count() > 0);");
+                            sb.AppendLine($@"            Assert.True({ TypeName }Service.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxValueIs_, ""{ csspProp.PropName }"", ""{ csspProp.Max }""))).Any());");
                         }
                         else
                         {
@@ -112,19 +108,17 @@ namespace GenerateCSSPHelperServices_Tests
                             sb.AppendLine($@"            { TypeNameLower } = null;");
                             sb.AppendLine($@"            { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
                             sb.AppendLine($@"            { TypeNameLower }.{ csspProp.PropName } = GetRandomString("""", { csspProp.Max + 1 });");
-                            sb.AppendLine($@"            validationResults = { TypeName }Service.Validate(new ValidationContext({ TypeNameLower }));");
-                            sb.AppendLine($@"            ValidationResultList = validationResults.ToList();");
-                            sb.AppendLine($@"            Assert.True(ValidationResultList.Count() > 0);");
-                            sb.AppendLine($@"            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, ""{ csspProp.PropName }"", ""{ csspProp.Min }"", ""{ csspProp.Max }""))).Any());");
+                            sb.AppendLine($@"            { TypeName }Service.Validate(new ValidationContext({ TypeNameLower }));");
+                            sb.AppendLine($@"            Assert.True({ TypeName }Service.ValidationResults.Count() > 0);");
+                            sb.AppendLine($@"            Assert.True({ TypeName }Service.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, ""{ csspProp.PropName }"", ""{ csspProp.Min }"", ""{ csspProp.Max }""))).Any());");
 
                             sb.AppendLine("");
                             sb.AppendLine($@"            { TypeNameLower } = null;");
                             sb.AppendLine($@"            { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
                             sb.AppendLine($@"            { TypeNameLower }.{ csspProp.PropName } = GetRandomString("""", { csspProp.Max + 1 });");
-                            sb.AppendLine($@"            validationResults = { TypeName }Service.Validate(new ValidationContext({ TypeNameLower }));");
-                            sb.AppendLine($@"            ValidationResultList = validationResults.ToList();");
-                            sb.AppendLine($@"            Assert.True(ValidationResultList.Count() > 0);");
-                            sb.AppendLine($@"            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, ""{ csspProp.PropName }"", ""{ csspProp.Min }"", ""{ csspProp.Max }""))).Any());");
+                            sb.AppendLine($@"            { TypeName }Service.Validate(new ValidationContext({ TypeNameLower }));");
+                            sb.AppendLine($@"            Assert.True({ TypeName }Service.ValidationResults.Count() > 0);");
+                            sb.AppendLine($@"            Assert.True({ TypeName }Service.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, ""{ csspProp.PropName }"", ""{ csspProp.Min }"", ""{ csspProp.Max }""))).Any());");
                         }
                         else if (csspProp.Min != null)
                         {
@@ -135,10 +129,9 @@ namespace GenerateCSSPHelperServices_Tests
                             if (csspProp.Min - 1 > 0)
                             {
                                 sb.AppendLine($@"            { TypeNameLower }.{ csspProp.PropName } = GetRandomString("""", { csspProp.Min - 1 });");
-                                sb.AppendLine($@"            validationResults = { TypeName }Service.Validate(new ValidationContext({ TypeNameLower }));");
-                                sb.AppendLine($@"            ValidationResultList = validationResults.ToList();");
-                                sb.AppendLine($@"            Assert.True(ValidationResultList.Count() > 0);");
-                                sb.AppendLine($@"            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinLengthIs_, ""{ csspProp.PropName }"", ""{ csspProp.Min }""))).Any());");
+                                sb.AppendLine($@"            { TypeName }Service.Validate(new ValidationContext({ TypeNameLower }));");
+                                sb.AppendLine($@"            Assert.True({ TypeName }Service.ValidationResults.Count() > 0);");
+                                sb.AppendLine($@"            Assert.True({ TypeName }Service.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinLengthIs_, ""{ csspProp.PropName }"", ""{ csspProp.Min }""))).Any());");
                             }
                         }
                         else if (csspProp.Max > 0)
@@ -147,10 +140,9 @@ namespace GenerateCSSPHelperServices_Tests
                             sb.AppendLine($@"            { TypeNameLower } = null;");
                             sb.AppendLine($@"            { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
                             sb.AppendLine($@"            { TypeNameLower }.{ csspProp.PropName } = GetRandomString("""", { csspProp.Max + 1 });");
-                            sb.AppendLine($@"            validationResults = { TypeName }Service.Validate(new ValidationContext({ TypeNameLower }));");
-                            sb.AppendLine($@"            ValidationResultList = validationResults.ToList();");
-                            sb.AppendLine($@"            Assert.True(ValidationResultList.Count() > 0);");
-                            sb.AppendLine($@"            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, ""{ csspProp.PropName }"", ""{ csspProp.Max }""))).Any());");
+                            sb.AppendLine($@"            { TypeName }Service.Validate(new ValidationContext({ TypeNameLower }));");
+                            sb.AppendLine($@"            Assert.True({ TypeName }Service.ValidationResults.Count() > 0);");
+                            sb.AppendLine($@"            Assert.True({ TypeName }Service.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, ""{ csspProp.PropName }"", ""{ csspProp.Max }""))).Any());");
                         }
                         else
                         {

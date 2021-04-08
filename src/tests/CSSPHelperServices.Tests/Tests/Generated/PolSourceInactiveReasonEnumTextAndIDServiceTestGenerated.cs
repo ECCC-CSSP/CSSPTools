@@ -66,11 +66,7 @@ namespace CSSPHelperServices.Tests
         //[InlineData("fr-CA")]
         public async Task PolSourceInactiveReasonEnumTextAndID_Properties_Test(string culture)
         {
-            List<ValidationResult> ValidationResultList = new List<ValidationResult>();
-            IEnumerable<ValidationResult> validationResults;
             Assert.True(await Setup(culture));
-
-
 
             PolSourceInactiveReasonEnumTextAndID polSourceInactiveReasonEnumTextAndID = GetFilledRandomPolSourceInactiveReasonEnumTextAndID("");
 
@@ -84,19 +80,17 @@ namespace CSSPHelperServices.Tests
 
             polSourceInactiveReasonEnumTextAndID = null;
             polSourceInactiveReasonEnumTextAndID = GetFilledRandomPolSourceInactiveReasonEnumTextAndID("Text");
-            validationResults = PolSourceInactiveReasonEnumTextAndIDService.Validate(new ValidationContext(polSourceInactiveReasonEnumTextAndID));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Text"))).Any());
+            PolSourceInactiveReasonEnumTextAndIDService.Validate(new ValidationContext(polSourceInactiveReasonEnumTextAndID));
+            Assert.True(PolSourceInactiveReasonEnumTextAndIDService.ValidationResults.Count() > 0);
+            Assert.True(PolSourceInactiveReasonEnumTextAndIDService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Text"))).Any());
 
 
             polSourceInactiveReasonEnumTextAndID = null;
             polSourceInactiveReasonEnumTextAndID = GetFilledRandomPolSourceInactiveReasonEnumTextAndID("");
             polSourceInactiveReasonEnumTextAndID.Text = GetRandomString("", 1001);
-            validationResults = PolSourceInactiveReasonEnumTextAndIDService.Validate(new ValidationContext(polSourceInactiveReasonEnumTextAndID));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Text", "1000"))).Any());
+            PolSourceInactiveReasonEnumTextAndIDService.Validate(new ValidationContext(polSourceInactiveReasonEnumTextAndID));
+            Assert.True(PolSourceInactiveReasonEnumTextAndIDService.ValidationResults.Count() > 0);
+            Assert.True(PolSourceInactiveReasonEnumTextAndIDService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Text", "1000"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -108,10 +102,9 @@ namespace CSSPHelperServices.Tests
             polSourceInactiveReasonEnumTextAndID = null;
             polSourceInactiveReasonEnumTextAndID = GetFilledRandomPolSourceInactiveReasonEnumTextAndID("");
             polSourceInactiveReasonEnumTextAndID.ID = 0;
-            validationResults = PolSourceInactiveReasonEnumTextAndIDService.Validate(new ValidationContext(polSourceInactiveReasonEnumTextAndID));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "ID", "1"))).Any());
+            PolSourceInactiveReasonEnumTextAndIDService.Validate(new ValidationContext(polSourceInactiveReasonEnumTextAndID));
+            Assert.True(PolSourceInactiveReasonEnumTextAndIDService.ValidationResults.Count() > 0);
+            Assert.True(PolSourceInactiveReasonEnumTextAndIDService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "ID", "1"))).Any());
         }
         #endregion Tests Generated Properties
 

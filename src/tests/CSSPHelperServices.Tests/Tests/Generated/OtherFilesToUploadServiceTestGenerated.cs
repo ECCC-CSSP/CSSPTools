@@ -66,11 +66,7 @@ namespace CSSPHelperServices.Tests
         //[InlineData("fr-CA")]
         public async Task OtherFilesToUpload_Properties_Test(string culture)
         {
-            List<ValidationResult> ValidationResultList = new List<ValidationResult>();
-            IEnumerable<ValidationResult> validationResults;
             Assert.True(await Setup(culture));
-
-
 
             OtherFilesToUpload otherFilesToUpload = GetFilledRandomOtherFilesToUpload("");
 
@@ -85,10 +81,9 @@ namespace CSSPHelperServices.Tests
             otherFilesToUpload = null;
             otherFilesToUpload = GetFilledRandomOtherFilesToUpload("");
             otherFilesToUpload.MikeScenarioID = 0;
-            validationResults = OtherFilesToUploadService.Validate(new ValidationContext(otherFilesToUpload));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "MikeScenarioID", "1"))).Any());
+            OtherFilesToUploadService.Validate(new ValidationContext(otherFilesToUpload));
+            Assert.True(OtherFilesToUploadService.ValidationResults.Count() > 0);
+            Assert.True(OtherFilesToUploadService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "MikeScenarioID", "1"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable

@@ -66,11 +66,7 @@ namespace CSSPHelperServices.Tests
         //[InlineData("fr-CA")]
         public async Task VPResValues_Properties_Test(string culture)
         {
-            List<ValidationResult> ValidationResultList = new List<ValidationResult>();
-            IEnumerable<ValidationResult> validationResults;
             Assert.True(await Setup(culture));
-
-
 
             VPResValues vpResValues = GetFilledRandomVPResValues("");
 
@@ -85,10 +81,9 @@ namespace CSSPHelperServices.Tests
             vpResValues = null;
             vpResValues = GetFilledRandomVPResValues("");
             vpResValues.Conc = -1;
-            validationResults = VPResValuesService.Validate(new ValidationContext(vpResValues));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "Conc", "0"))).Any());
+            VPResValuesService.Validate(new ValidationContext(vpResValues));
+            Assert.True(VPResValuesService.ValidationResults.Count() > 0);
+            Assert.True(VPResValuesService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "Conc", "0"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -100,18 +95,16 @@ namespace CSSPHelperServices.Tests
             vpResValues = null;
             vpResValues = GetFilledRandomVPResValues("");
             vpResValues.Dilu = -1.0D;
-            validationResults = VPResValuesService.Validate(new ValidationContext(vpResValues));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Dilu", "0", "10000"))).Any());
+            VPResValuesService.Validate(new ValidationContext(vpResValues));
+            Assert.True(VPResValuesService.ValidationResults.Count() > 0);
+            Assert.True(VPResValuesService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Dilu", "0", "10000"))).Any());
 
             vpResValues = null;
             vpResValues = GetFilledRandomVPResValues("");
             vpResValues.Dilu = 10001.0D;
-            validationResults = VPResValuesService.Validate(new ValidationContext(vpResValues));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Dilu", "0", "10000"))).Any());
+            VPResValuesService.Validate(new ValidationContext(vpResValues));
+            Assert.True(VPResValuesService.ValidationResults.Count() > 0);
+            Assert.True(VPResValuesService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Dilu", "0", "10000"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -123,18 +116,16 @@ namespace CSSPHelperServices.Tests
             vpResValues = null;
             vpResValues = GetFilledRandomVPResValues("");
             vpResValues.FarfieldWidth = -1.0D;
-            validationResults = VPResValuesService.Validate(new ValidationContext(vpResValues));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "FarfieldWidth", "0", "10000"))).Any());
+            VPResValuesService.Validate(new ValidationContext(vpResValues));
+            Assert.True(VPResValuesService.ValidationResults.Count() > 0);
+            Assert.True(VPResValuesService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "FarfieldWidth", "0", "10000"))).Any());
 
             vpResValues = null;
             vpResValues = GetFilledRandomVPResValues("");
             vpResValues.FarfieldWidth = 10001.0D;
-            validationResults = VPResValuesService.Validate(new ValidationContext(vpResValues));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "FarfieldWidth", "0", "10000"))).Any());
+            VPResValuesService.Validate(new ValidationContext(vpResValues));
+            Assert.True(VPResValuesService.ValidationResults.Count() > 0);
+            Assert.True(VPResValuesService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "FarfieldWidth", "0", "10000"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -146,18 +137,16 @@ namespace CSSPHelperServices.Tests
             vpResValues = null;
             vpResValues = GetFilledRandomVPResValues("");
             vpResValues.Distance = -1.0D;
-            validationResults = VPResValuesService.Validate(new ValidationContext(vpResValues));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Distance", "0", "100000"))).Any());
+            VPResValuesService.Validate(new ValidationContext(vpResValues));
+            Assert.True(VPResValuesService.ValidationResults.Count() > 0);
+            Assert.True(VPResValuesService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Distance", "0", "100000"))).Any());
 
             vpResValues = null;
             vpResValues = GetFilledRandomVPResValues("");
             vpResValues.Distance = 100001.0D;
-            validationResults = VPResValuesService.Validate(new ValidationContext(vpResValues));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Distance", "0", "100000"))).Any());
+            VPResValuesService.Validate(new ValidationContext(vpResValues));
+            Assert.True(VPResValuesService.ValidationResults.Count() > 0);
+            Assert.True(VPResValuesService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Distance", "0", "100000"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -169,18 +158,16 @@ namespace CSSPHelperServices.Tests
             vpResValues = null;
             vpResValues = GetFilledRandomVPResValues("");
             vpResValues.TheTime = -1.0D;
-            validationResults = VPResValuesService.Validate(new ValidationContext(vpResValues));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "TheTime", "0", "100000"))).Any());
+            VPResValuesService.Validate(new ValidationContext(vpResValues));
+            Assert.True(VPResValuesService.ValidationResults.Count() > 0);
+            Assert.True(VPResValuesService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "TheTime", "0", "100000"))).Any());
 
             vpResValues = null;
             vpResValues = GetFilledRandomVPResValues("");
             vpResValues.TheTime = 100001.0D;
-            validationResults = VPResValuesService.Validate(new ValidationContext(vpResValues));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "TheTime", "0", "100000"))).Any());
+            VPResValuesService.Validate(new ValidationContext(vpResValues));
+            Assert.True(VPResValuesService.ValidationResults.Count() > 0);
+            Assert.True(VPResValuesService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "TheTime", "0", "100000"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -192,18 +179,16 @@ namespace CSSPHelperServices.Tests
             vpResValues = null;
             vpResValues = GetFilledRandomVPResValues("");
             vpResValues.Decay = -1.0D;
-            validationResults = VPResValuesService.Validate(new ValidationContext(vpResValues));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Decay", "0", "1000"))).Any());
+            VPResValuesService.Validate(new ValidationContext(vpResValues));
+            Assert.True(VPResValuesService.ValidationResults.Count() > 0);
+            Assert.True(VPResValuesService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Decay", "0", "1000"))).Any());
 
             vpResValues = null;
             vpResValues = GetFilledRandomVPResValues("");
             vpResValues.Decay = 1001.0D;
-            validationResults = VPResValuesService.Validate(new ValidationContext(vpResValues));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Decay", "0", "1000"))).Any());
+            VPResValuesService.Validate(new ValidationContext(vpResValues));
+            Assert.True(VPResValuesService.ValidationResults.Count() > 0);
+            Assert.True(VPResValuesService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Decay", "0", "1000"))).Any());
         }
         #endregion Tests Generated Properties
 

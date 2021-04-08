@@ -66,11 +66,7 @@ namespace CSSPHelperServices.Tests
         //[InlineData("fr-CA")]
         public async Task VarNameAndValue_Properties_Test(string culture)
         {
-            List<ValidationResult> ValidationResultList = new List<ValidationResult>();
-            IEnumerable<ValidationResult> validationResults;
             Assert.True(await Setup(culture));
-
-
 
             VarNameAndValue varNameAndValue = GetFilledRandomVarNameAndValue("");
 
@@ -84,19 +80,17 @@ namespace CSSPHelperServices.Tests
 
             varNameAndValue = null;
             varNameAndValue = GetFilledRandomVarNameAndValue("VariableName");
-            validationResults = VarNameAndValueService.Validate(new ValidationContext(varNameAndValue));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "VariableName"))).Any());
+            VarNameAndValueService.Validate(new ValidationContext(varNameAndValue));
+            Assert.True(VarNameAndValueService.ValidationResults.Count() > 0);
+            Assert.True(VarNameAndValueService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "VariableName"))).Any());
 
 
             varNameAndValue = null;
             varNameAndValue = GetFilledRandomVarNameAndValue("");
             varNameAndValue.VariableName = GetRandomString("", 201);
-            validationResults = VarNameAndValueService.Validate(new ValidationContext(varNameAndValue));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "VariableName", "200"))).Any());
+            VarNameAndValueService.Validate(new ValidationContext(varNameAndValue));
+            Assert.True(VarNameAndValueService.ValidationResults.Count() > 0);
+            Assert.True(VarNameAndValueService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "VariableName", "200"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -107,19 +101,17 @@ namespace CSSPHelperServices.Tests
 
             varNameAndValue = null;
             varNameAndValue = GetFilledRandomVarNameAndValue("VariableValue");
-            validationResults = VarNameAndValueService.Validate(new ValidationContext(varNameAndValue));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "VariableValue"))).Any());
+            VarNameAndValueService.Validate(new ValidationContext(varNameAndValue));
+            Assert.True(VarNameAndValueService.ValidationResults.Count() > 0);
+            Assert.True(VarNameAndValueService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "VariableValue"))).Any());
 
 
             varNameAndValue = null;
             varNameAndValue = GetFilledRandomVarNameAndValue("");
             varNameAndValue.VariableValue = GetRandomString("", 301);
-            validationResults = VarNameAndValueService.Validate(new ValidationContext(varNameAndValue));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "VariableValue", "300"))).Any());
+            VarNameAndValueService.Validate(new ValidationContext(varNameAndValue));
+            Assert.True(VarNameAndValueService.ValidationResults.Count() > 0);
+            Assert.True(VarNameAndValueService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "VariableValue", "300"))).Any());
         }
         #endregion Tests Generated Properties
 

@@ -66,11 +66,7 @@ namespace CSSPHelperServices.Tests
         //[InlineData("fr-CA")]
         public async Task ContactSearch_Properties_Test(string culture)
         {
-            List<ValidationResult> ValidationResultList = new List<ValidationResult>();
-            IEnumerable<ValidationResult> validationResults;
             Assert.True(await Setup(culture));
-
-
 
             ContactSearch contactSearch = GetFilledRandomContactSearch("");
 
@@ -85,10 +81,9 @@ namespace CSSPHelperServices.Tests
             contactSearch = null;
             contactSearch = GetFilledRandomContactSearch("");
             contactSearch.ContactID = 0;
-            validationResults = ContactSearchService.Validate(new ValidationContext(contactSearch));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContactID", "1"))).Any());
+            ContactSearchService.Validate(new ValidationContext(contactSearch));
+            Assert.True(ContactSearchService.ValidationResults.Count() > 0);
+            Assert.True(ContactSearchService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContactID", "1"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -100,10 +95,9 @@ namespace CSSPHelperServices.Tests
             contactSearch = null;
             contactSearch = GetFilledRandomContactSearch("");
             contactSearch.ContactTVItemID = 0;
-            validationResults = ContactSearchService.Validate(new ValidationContext(contactSearch));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContactTVItemID", "1"))).Any());
+            ContactSearchService.Validate(new ValidationContext(contactSearch));
+            Assert.True(ContactSearchService.ValidationResults.Count() > 0);
+            Assert.True(ContactSearchService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContactTVItemID", "1"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -114,19 +108,17 @@ namespace CSSPHelperServices.Tests
 
             contactSearch = null;
             contactSearch = GetFilledRandomContactSearch("FullName");
-            validationResults = ContactSearchService.Validate(new ValidationContext(contactSearch));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "FullName"))).Any());
+            ContactSearchService.Validate(new ValidationContext(contactSearch));
+            Assert.True(ContactSearchService.ValidationResults.Count() > 0);
+            Assert.True(ContactSearchService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "FullName"))).Any());
 
 
             contactSearch = null;
             contactSearch = GetFilledRandomContactSearch("");
             contactSearch.FullName = GetRandomString("", 256);
-            validationResults = ContactSearchService.Validate(new ValidationContext(contactSearch));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "FullName", "255"))).Any());
+            ContactSearchService.Validate(new ValidationContext(contactSearch));
+            Assert.True(ContactSearchService.ValidationResults.Count() > 0);
+            Assert.True(ContactSearchService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "FullName", "255"))).Any());
         }
         #endregion Tests Generated Properties
 

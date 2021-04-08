@@ -66,11 +66,7 @@ namespace CSSPHelperServices.Tests
         //[InlineData("fr-CA")]
         public async Task Node_Properties_Test(string culture)
         {
-            List<ValidationResult> ValidationResultList = new List<ValidationResult>();
-            IEnumerable<ValidationResult> validationResults;
             Assert.True(await Setup(culture));
-
-
 
             Node node = GetFilledRandomNode("");
 
@@ -85,18 +81,16 @@ namespace CSSPHelperServices.Tests
             node = null;
             node = GetFilledRandomNode("");
             node.ID = 0;
-            validationResults = NodeService.Validate(new ValidationContext(node));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "ID", "1", "1000000"))).Any());
+            NodeService.Validate(new ValidationContext(node));
+            Assert.True(NodeService.ValidationResults.Count() > 0);
+            Assert.True(NodeService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "ID", "1", "1000000"))).Any());
 
             node = null;
             node = GetFilledRandomNode("");
             node.ID = 1000001;
-            validationResults = NodeService.Validate(new ValidationContext(node));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "ID", "1", "1000000"))).Any());
+            NodeService.Validate(new ValidationContext(node));
+            Assert.True(NodeService.ValidationResults.Count() > 0);
+            Assert.True(NodeService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "ID", "1", "1000000"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -108,18 +102,16 @@ namespace CSSPHelperServices.Tests
             node = null;
             node = GetFilledRandomNode("");
             node.X = -181.0D;
-            validationResults = NodeService.Validate(new ValidationContext(node));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "X", "-180", "180"))).Any());
+            NodeService.Validate(new ValidationContext(node));
+            Assert.True(NodeService.ValidationResults.Count() > 0);
+            Assert.True(NodeService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "X", "-180", "180"))).Any());
 
             node = null;
             node = GetFilledRandomNode("");
             node.X = 181.0D;
-            validationResults = NodeService.Validate(new ValidationContext(node));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "X", "-180", "180"))).Any());
+            NodeService.Validate(new ValidationContext(node));
+            Assert.True(NodeService.ValidationResults.Count() > 0);
+            Assert.True(NodeService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "X", "-180", "180"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -131,18 +123,16 @@ namespace CSSPHelperServices.Tests
             node = null;
             node = GetFilledRandomNode("");
             node.Y = -91.0D;
-            validationResults = NodeService.Validate(new ValidationContext(node));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Y", "-90", "90"))).Any());
+            NodeService.Validate(new ValidationContext(node));
+            Assert.True(NodeService.ValidationResults.Count() > 0);
+            Assert.True(NodeService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Y", "-90", "90"))).Any());
 
             node = null;
             node = GetFilledRandomNode("");
             node.Y = 91.0D;
-            validationResults = NodeService.Validate(new ValidationContext(node));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Y", "-90", "90"))).Any());
+            NodeService.Validate(new ValidationContext(node));
+            Assert.True(NodeService.ValidationResults.Count() > 0);
+            Assert.True(NodeService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Y", "-90", "90"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -154,18 +144,16 @@ namespace CSSPHelperServices.Tests
             node = null;
             node = GetFilledRandomNode("");
             node.Z = -100001.0D;
-            validationResults = NodeService.Validate(new ValidationContext(node));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Z", "-100000", "100000"))).Any());
+            NodeService.Validate(new ValidationContext(node));
+            Assert.True(NodeService.ValidationResults.Count() > 0);
+            Assert.True(NodeService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Z", "-100000", "100000"))).Any());
 
             node = null;
             node = GetFilledRandomNode("");
             node.Z = 100001.0D;
-            validationResults = NodeService.Validate(new ValidationContext(node));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Z", "-100000", "100000"))).Any());
+            NodeService.Validate(new ValidationContext(node));
+            Assert.True(NodeService.ValidationResults.Count() > 0);
+            Assert.True(NodeService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Z", "-100000", "100000"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -177,18 +165,16 @@ namespace CSSPHelperServices.Tests
             node = null;
             node = GetFilledRandomNode("");
             node.Code = -1;
-            validationResults = NodeService.Validate(new ValidationContext(node));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Code", "0", "20"))).Any());
+            NodeService.Validate(new ValidationContext(node));
+            Assert.True(NodeService.ValidationResults.Count() > 0);
+            Assert.True(NodeService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Code", "0", "20"))).Any());
 
             node = null;
             node = GetFilledRandomNode("");
             node.Code = 21;
-            validationResults = NodeService.Validate(new ValidationContext(node));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Code", "0", "20"))).Any());
+            NodeService.Validate(new ValidationContext(node));
+            Assert.True(NodeService.ValidationResults.Count() > 0);
+            Assert.True(NodeService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Code", "0", "20"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -200,18 +186,16 @@ namespace CSSPHelperServices.Tests
             node = null;
             node = GetFilledRandomNode("");
             node.Value = -2.0D;
-            validationResults = NodeService.Validate(new ValidationContext(node));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Value", "-1", "-1"))).Any());
+            NodeService.Validate(new ValidationContext(node));
+            Assert.True(NodeService.ValidationResults.Count() > 0);
+            Assert.True(NodeService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Value", "-1", "-1"))).Any());
 
             node = null;
             node = GetFilledRandomNode("");
             node.Value = 0.0D;
-            validationResults = NodeService.Validate(new ValidationContext(node));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Value", "-1", "-1"))).Any());
+            NodeService.Validate(new ValidationContext(node));
+            Assert.True(NodeService.ValidationResults.Count() > 0);
+            Assert.True(NodeService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Value", "-1", "-1"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable

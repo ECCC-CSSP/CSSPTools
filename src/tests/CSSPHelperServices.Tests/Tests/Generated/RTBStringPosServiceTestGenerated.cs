@@ -66,11 +66,7 @@ namespace CSSPHelperServices.Tests
         //[InlineData("fr-CA")]
         public async Task RTBStringPos_Properties_Test(string culture)
         {
-            List<ValidationResult> ValidationResultList = new List<ValidationResult>();
-            IEnumerable<ValidationResult> validationResults;
             Assert.True(await Setup(culture));
-
-
 
             RTBStringPos rTBStringPos = GetFilledRandomRTBStringPos("");
 
@@ -85,10 +81,9 @@ namespace CSSPHelperServices.Tests
             rTBStringPos = null;
             rTBStringPos = GetFilledRandomRTBStringPos("");
             rTBStringPos.StartPos = -1;
-            validationResults = RTBStringPosService.Validate(new ValidationContext(rTBStringPos));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "StartPos", "0"))).Any());
+            RTBStringPosService.Validate(new ValidationContext(rTBStringPos));
+            Assert.True(RTBStringPosService.ValidationResults.Count() > 0);
+            Assert.True(RTBStringPosService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "StartPos", "0"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -100,10 +95,9 @@ namespace CSSPHelperServices.Tests
             rTBStringPos = null;
             rTBStringPos = GetFilledRandomRTBStringPos("");
             rTBStringPos.EndPos = -1;
-            validationResults = RTBStringPosService.Validate(new ValidationContext(rTBStringPos));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "EndPos", "0"))).Any());
+            RTBStringPosService.Validate(new ValidationContext(rTBStringPos));
+            Assert.True(RTBStringPosService.ValidationResults.Count() > 0);
+            Assert.True(RTBStringPosService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "EndPos", "0"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -114,19 +108,17 @@ namespace CSSPHelperServices.Tests
 
             rTBStringPos = null;
             rTBStringPos = GetFilledRandomRTBStringPos("Text");
-            validationResults = RTBStringPosService.Validate(new ValidationContext(rTBStringPos));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Text"))).Any());
+            RTBStringPosService.Validate(new ValidationContext(rTBStringPos));
+            Assert.True(RTBStringPosService.ValidationResults.Count() > 0);
+            Assert.True(RTBStringPosService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Text"))).Any());
 
 
             rTBStringPos = null;
             rTBStringPos = GetFilledRandomRTBStringPos("");
             rTBStringPos.Text = GetRandomString("", 101);
-            validationResults = RTBStringPosService.Validate(new ValidationContext(rTBStringPos));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Text", "100"))).Any());
+            RTBStringPosService.Validate(new ValidationContext(rTBStringPos));
+            Assert.True(RTBStringPosService.ValidationResults.Count() > 0);
+            Assert.True(RTBStringPosService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Text", "100"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -137,19 +129,17 @@ namespace CSSPHelperServices.Tests
 
             rTBStringPos = null;
             rTBStringPos = GetFilledRandomRTBStringPos("TagText");
-            validationResults = RTBStringPosService.Validate(new ValidationContext(rTBStringPos));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "TagText"))).Any());
+            RTBStringPosService.Validate(new ValidationContext(rTBStringPos));
+            Assert.True(RTBStringPosService.ValidationResults.Count() > 0);
+            Assert.True(RTBStringPosService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "TagText"))).Any());
 
 
             rTBStringPos = null;
             rTBStringPos = GetFilledRandomRTBStringPos("");
             rTBStringPos.TagText = GetRandomString("", 101);
-            validationResults = RTBStringPosService.Validate(new ValidationContext(rTBStringPos));
-            ValidationResultList = validationResults.ToList();
-            Assert.True(ValidationResultList.Count() > 0);
-            Assert.True(ValidationResultList.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "TagText", "100"))).Any());
+            RTBStringPosService.Validate(new ValidationContext(rTBStringPos));
+            Assert.True(RTBStringPosService.ValidationResults.Count() > 0);
+            Assert.True(RTBStringPosService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "TagText", "100"))).Any());
         }
         #endregion Tests Generated Properties
 
