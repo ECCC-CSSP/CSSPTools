@@ -5,10 +5,8 @@
  *
  */
 
-import { Email } from 'src/app/models/generated/db/Email.model';
-import { WebBase } from 'src/app/models/generated/web/WebBase.model';
+import { EmailModel } from 'src/app/models/generated/web/EmailModel.model';
 
 export class WebAllEmails {
-    EmailList: Email[];
-    TVItemAllEmailList: WebBase[];
+    EmailModelList: EmailModel[];
 }

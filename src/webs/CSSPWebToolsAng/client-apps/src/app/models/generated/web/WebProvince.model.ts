@@ -5,14 +5,16 @@
  *
  */
 
-import { SamplingPlan } from 'src/app/models/generated/db/SamplingPlan.model';
-import { WebBase } from 'src/app/models/generated/web/WebBase.model';
-import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
+import { SamplingPlanModel } from 'src/app/models/generated/web/SamplingPlanModel.model';
+import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model';
+import { TVItemStatMapModel } from 'src/app/models/generated/web/TVItemStatMapModel.model';
+import { TVItemStatModel } from 'src/app/models/generated/web/TVItemStatModel.model';
 
 export class WebProvince {
-    SamplingPlanList: SamplingPlan[];
-    TVItemAreaList: WebBase[];
-    TVItemFileList: WebBase[];
-    TVItemModel: TVItemModel;
-    TVItemParentList: WebBase[];
+    SamplingPlanModelList: SamplingPlanModel[];
+    TVFileModelList: TVFileModel[];
+    TVItemStatMapAreaList: TVItemStatMapModel[];
+    TVItemStatMapModel: TVItemStatMapModel;
+    TVItemStatMapMunicipalityList: TVItemStatMapModel[];
+    TVItemStatModelParentList: TVItemStatModel[];
 }

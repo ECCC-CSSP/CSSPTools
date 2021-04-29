@@ -5,13 +5,12 @@
  *
  */
 
-import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model';
+import { MWQMSiteModel } from 'src/app/models/generated/web/MWQMSiteModel.model';
 import { TVItemStatMapModel } from 'src/app/models/generated/web/TVItemStatMapModel.model';
 import { TVItemStatModel } from 'src/app/models/generated/web/TVItemStatModel.model';
 
-export class WebSector {
-    TVFileModelList: TVFileModel[];
+export class WebMWQMSites {
+    MWQMSiteModelList: MWQMSiteModel[];
     TVItemStatMapModel: TVItemStatMapModel;
-    TVItemStatMapModelSubsectorList: TVItemStatMapModel[];
     TVItemStatModelParentList: TVItemStatModel[];
 }

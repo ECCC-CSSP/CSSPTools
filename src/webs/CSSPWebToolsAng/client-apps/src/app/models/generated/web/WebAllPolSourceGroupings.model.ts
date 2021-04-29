@@ -5,10 +5,8 @@
  *
  */
 
-import { PolSourceGroupingLanguage } from 'src/app/models/generated/db/PolSourceGroupingLanguage.model';
-import { PolSourceGrouping } from 'src/app/models/generated/db/PolSourceGrouping.model';
+import { PolSourceGroupingModel } from 'src/app/models/generated/web/PolSourceGroupingModel.model';
 
 export class WebAllPolSourceGroupings {
-    PolSourceGroupingLanguageList: PolSourceGroupingLanguage[];
-    PolSourceGroupingList: PolSourceGrouping[];
+    PolSourceGroupingModelList: PolSourceGroupingModel[];
 }

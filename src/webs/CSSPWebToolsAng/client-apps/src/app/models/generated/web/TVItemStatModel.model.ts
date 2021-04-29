@@ -5,12 +5,12 @@
  *
  */
 
-import { Email } from 'src/app/models/generated/db/Email.model';
 import { TVItem } from 'src/app/models/generated/db/TVItem.model';
 import { TVItemLanguage } from 'src/app/models/generated/db/TVItemLanguage.model';
+import { TVItemStat } from 'src/app/models/generated/db/TVItemStat.model';
 
-export class EmailModel {
-    Email: Email;
+export class TVItemStatModel {
     TVItem: TVItem;
     TVItemLanguageList: TVItemLanguage[];
+    TVItemStatList: TVItemStat[];
 }

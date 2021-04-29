@@ -5,8 +5,8 @@
  *
  */
 
-import { WebBase } from 'src/app/models/generated/web/WebBase.model';
+import { AllMunicipalityModel } from 'src/app/models/generated/web/AllMunicipalityModel.model';
 
 export class WebAllMunicipalities {
-    TVItemAllMunicipalityList: WebBase[];
+    AllMunicipalityModelList: AllMunicipalityModel[];
 }

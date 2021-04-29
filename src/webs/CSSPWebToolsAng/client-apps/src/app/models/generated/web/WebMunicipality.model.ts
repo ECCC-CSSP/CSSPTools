@@ -6,20 +6,17 @@
  */
 
 import { InfrastructureModel } from 'src/app/models/generated/web/InfrastructureModel.model';
-import { MIKEScenarioModel } from 'src/app/models/generated/web/MIKEScenarioModel.model';
 import { ContactModel } from 'src/app/models/generated/web/ContactModel.model';
 import { TVItemLink } from 'src/app/models/generated/db/TVItemLink.model';
-import { WebBase } from 'src/app/models/generated/web/WebBase.model';
-import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
+import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model';
+import { TVItemStatMapModel } from 'src/app/models/generated/web/TVItemStatMapModel.model';
+import { TVItemStatModel } from 'src/app/models/generated/web/TVItemStatModel.model';
 
 export class WebMunicipality {
     InfrastructureModelList: InfrastructureModel[];
-    MIKEScenarioModelList: MIKEScenarioModel[];
     MunicipalityContactModelList: ContactModel[];
     MunicipalityTVItemLinkList: TVItemLink[];
-    TVItemFileList: WebBase[];
-    TVItemInfrastructureList: WebBase[];
-    TVItemMikeScenarioList: WebBase[];
-    TVItemModel: TVItemModel;
-    TVItemParentList: WebBase[];
+    TVFileModelList: TVFileModel[];
+    TVItemStatMapModel: TVItemStatMapModel;
+    TVItemStatModelParentList: TVItemStatModel[];
 }

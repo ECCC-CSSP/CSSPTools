@@ -5,12 +5,12 @@
  *
  */
 
-import { Email } from 'src/app/models/generated/db/Email.model';
+import { MapInfoModel } from 'src/app/models/generated/web/MapInfoModel.model';
 import { TVItem } from 'src/app/models/generated/db/TVItem.model';
 import { TVItemLanguage } from 'src/app/models/generated/db/TVItemLanguage.model';
 
-export class EmailModel {
-    Email: Email;
+export class TVItemMapModel {
+    MapInfoModelList: MapInfoModel[];
     TVItem: TVItem;
     TVItemLanguageList: TVItemLanguage[];
 }

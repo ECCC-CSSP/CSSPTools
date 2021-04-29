@@ -6,9 +6,11 @@
  */
 
 import { Tel } from 'src/app/models/generated/db/Tel.model';
-import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
+import { TVItem } from 'src/app/models/generated/db/TVItem.model';
+import { TVItemLanguage } from 'src/app/models/generated/db/TVItemLanguage.model';
 
 export class TelModel {
     Tel: Tel;
-    TVItemModel: TVItemModel;
+    TVItem: TVItem;
+    TVItemLanguageList: TVItemLanguage[];
 }

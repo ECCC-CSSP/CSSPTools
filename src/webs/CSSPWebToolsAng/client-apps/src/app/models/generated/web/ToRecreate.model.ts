@@ -6,10 +6,8 @@
  */
 
 import { WebTypeEnum } from 'src/app/enums/generated/WebTypeEnum';
-import { WebTypeYearEnum } from 'src/app/enums/generated/WebTypeYearEnum';
 
 export class ToRecreate {
     TVItemID: number;
     WebType: WebTypeEnum;
-    WebTypeYear: WebTypeYearEnum;
 }

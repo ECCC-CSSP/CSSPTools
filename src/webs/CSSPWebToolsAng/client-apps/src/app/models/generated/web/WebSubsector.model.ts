@@ -5,25 +5,21 @@
  *
  */
 
-import { LabSheetModel } from 'src/app/models/generated/web/LabSheetModel.model';
 import { MWQMAnalysisReportParameter } from 'src/app/models/generated/db/MWQMAnalysisReportParameter.model';
 import { MWQMSubsector } from 'src/app/models/generated/db/MWQMSubsector.model';
 import { MWQMSubsectorLanguage } from 'src/app/models/generated/db/MWQMSubsectorLanguage.model';
-import { WebBase } from 'src/app/models/generated/web/WebBase.model';
-import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
+import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model';
+import { TVItemStatMapModel } from 'src/app/models/generated/web/TVItemStatMapModel.model';
+import { TVItemStatModel } from 'src/app/models/generated/web/TVItemStatModel.model';
 import { UseOfSite } from 'src/app/models/generated/db/UseOfSite.model';
 
 export class WebSubsector {
-    LabSheetModelList: LabSheetModel[];
     MWQMAnalysisReportParameterList: MWQMAnalysisReportParameter[];
     MWQMSubsector: MWQMSubsector;
     MWQMSubsectorLanguageList: MWQMSubsectorLanguage[];
-    TVItemClassificationList: WebBase[];
-    TVItemFileList: WebBase[];
-    TVItemModel: TVItemModel;
-    TVItemMWQMRunList: WebBase[];
-    TVItemMWQMSiteList: WebBase[];
-    TVItemParentList: WebBase[];
-    TVItemPolSourceSiteList: WebBase[];
+    TVFileModelList: TVFileModel[];
+    TVItemStatMapModel: TVItemStatMapModel;
+    TVItemStatMapModelClassificationList: TVItemStatMapModel[];
+    TVItemStatModelParentList: TVItemStatModel[];
     UseOfSiteList: UseOfSite[];
 }

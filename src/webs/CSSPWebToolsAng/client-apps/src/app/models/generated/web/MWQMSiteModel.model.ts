@@ -7,12 +7,12 @@
 
 import { MWQMSite } from 'src/app/models/generated/db/MWQMSite.model';
 import { MWQMSiteStartEndDate } from 'src/app/models/generated/db/MWQMSiteStartEndDate.model';
-import { WebBase } from 'src/app/models/generated/web/WebBase.model';
-import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
+import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model';
+import { TVItemStatMapModel } from 'src/app/models/generated/web/TVItemStatMapModel.model';
 
 export class MWQMSiteModel {
     MWQMSite: MWQMSite;
     MWQMSiteStartEndDateList: MWQMSiteStartEndDate[];
-    TVItemFileList: WebBase[];
-    TVItemModel: TVItemModel;
+    TVFileModelList: TVFileModel[];
+    TVItemStatMapModel: TVItemStatMapModel;
 }

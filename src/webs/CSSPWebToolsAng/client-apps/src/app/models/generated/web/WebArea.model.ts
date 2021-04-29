@@ -5,12 +5,13 @@
  *
  */
 
-import { WebBase } from 'src/app/models/generated/web/WebBase.model';
-import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
+import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model';
+import { TVItemStatMapModel } from 'src/app/models/generated/web/TVItemStatMapModel.model';
+import { TVItemStatModel } from 'src/app/models/generated/web/TVItemStatModel.model';
 
 export class WebArea {
-    TVItemFileList: WebBase[];
-    TVItemModel: TVItemModel;
-    TVItemParentList: WebBase[];
-    TVItemSectorList: WebBase[];
+    TVFileModelList: TVFileModel[];
+    TVItemStatMapModel: TVItemStatMapModel;
+    TVItemStatMapModelSectorList: TVItemStatMapModel[];
+    TVItemStatModelParentList: TVItemStatModel[];
 }

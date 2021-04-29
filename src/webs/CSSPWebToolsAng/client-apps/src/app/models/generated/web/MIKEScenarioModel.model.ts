@@ -5,14 +5,18 @@
  *
  */
 
+import { MikeBoundaryConditionModel } from 'src/app/models/generated/web/MikeBoundaryConditionModel.model';
 import { MikeScenario } from 'src/app/models/generated/db/MikeScenario.model';
 import { MikeSourceModel } from 'src/app/models/generated/web/MikeSourceModel.model';
-import { WebBase } from 'src/app/models/generated/web/WebBase.model';
-import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
+import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model';
+import { TVItemStatMapModel } from 'src/app/models/generated/web/TVItemStatMapModel.model';
+import { TVItemStatModel } from 'src/app/models/generated/web/TVItemStatModel.model';
 
-export class MIKEScenarioModel {
+export class MikeScenarioModel {
+    MikeBoundaryConditionModelList: MikeBoundaryConditionModel[];
     MikeScenario: MikeScenario;
     MikeSourceModelList: MikeSourceModel[];
-    TVItemFileList: WebBase[];
-    TVItemModel: TVItemModel;
+    TVFileModelList: TVFileModel[];
+    TVItemStatMapModel: TVItemStatMapModel;
+    TVItemStatModelParentList: TVItemStatModel[];
 }

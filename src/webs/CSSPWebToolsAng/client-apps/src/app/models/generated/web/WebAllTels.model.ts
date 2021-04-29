@@ -5,10 +5,8 @@
  *
  */
 
-import { Tel } from 'src/app/models/generated/db/Tel.model';
-import { WebBase } from 'src/app/models/generated/web/WebBase.model';
+import { TelModel } from 'src/app/models/generated/web/TelModel.model';
 
 export class WebAllTels {
-    TelList: Tel[];
-    TVItemAllTelList: WebBase[];
+    TelModelList: TelModel[];
 }

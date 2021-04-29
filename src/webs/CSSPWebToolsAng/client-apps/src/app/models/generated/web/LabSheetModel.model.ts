@@ -6,9 +6,11 @@
  */
 
 import { LabSheet } from 'src/app/models/generated/db/LabSheet.model';
-import { LabSheetDetailModel } from 'src/app/models/generated/web/LabSheetDetailModel.model';
+import { LabSheetDetail } from 'src/app/models/generated/db/LabSheetDetail.model';
+import { LabSheetTubeMPNDetail } from 'src/app/models/generated/db/LabSheetTubeMPNDetail.model';
 
 export class LabSheetModel {
     LabSheet: LabSheet;
-    LabSheetDetailModelList: LabSheetDetailModel[];
+    LabSheetDetail: LabSheetDetail;
+    LabSheetTubeMPNDetailList: LabSheetTubeMPNDetail[];
 }

@@ -5,10 +5,8 @@
  *
  */
 
-import { Address } from 'src/app/models/generated/db/Address.model';
-import { WebBase } from 'src/app/models/generated/web/WebBase.model';
+import { AddressModel } from 'src/app/models/generated/web/AddressModel.model';
 
 export class WebAllAddresses {
-    AddressList: Address[];
-    TVItemAllAddressList: WebBase[];
+    AddressModelList: AddressModel[];
 }

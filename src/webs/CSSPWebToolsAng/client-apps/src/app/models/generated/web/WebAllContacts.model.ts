@@ -5,10 +5,8 @@
  *
  */
 
-import { Contact } from 'src/app/models/generated/db/Contact.model';
-import { WebBase } from 'src/app/models/generated/web/WebBase.model';
+import { ContactModel } from 'src/app/models/generated/web/ContactModel.model';
 
 export class WebAllContacts {
-    ContactList: Contact[];
-    TVItemAllContactList: WebBase[];
+    ContactModelList: ContactModel[];
 }

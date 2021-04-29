@@ -5,8 +5,8 @@
  *
  */
 
-import { WebBase } from 'src/app/models/generated/web/WebBase.model';
+import { CountryModel } from 'src/app/models/generated/web/CountryModel.model';
 
 export class WebAllCountries {
-    TVItemAllCountryList: WebBase[];
+    CountryModelList: CountryModel[];
 }

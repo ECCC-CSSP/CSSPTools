@@ -5,21 +5,17 @@
  *
  */
 
-import { EmailDistributionListContactLanguage } from 'src/app/models/generated/db/EmailDistributionListContactLanguage.model';
-import { EmailDistributionListContact } from 'src/app/models/generated/db/EmailDistributionListContact.model';
-import { EmailDistributionListLanguage } from 'src/app/models/generated/db/EmailDistributionListLanguage.model';
-import { EmailDistributionList } from 'src/app/models/generated/db/EmailDistributionList.model';
-import { WebBase } from 'src/app/models/generated/web/WebBase.model';
-import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
+import { EmailDistributionListModel } from 'src/app/models/generated/web/EmailDistributionListModel.model';
+import { RainExceedanceModel } from 'src/app/models/generated/web/RainExceedanceModel.model';
+import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model';
+import { TVItemStatMapModel } from 'src/app/models/generated/web/TVItemStatMapModel.model';
+import { TVItemStatModel } from 'src/app/models/generated/web/TVItemStatModel.model';
 
 export class WebCountry {
-    EmailDistributionListContactLanguageList: EmailDistributionListContactLanguage[];
-    EmailDistributionListContactList: EmailDistributionListContact[];
-    EmailDistributionListLanguageList: EmailDistributionListLanguage[];
-    EmailDistributionListList: EmailDistributionList[];
-    TVItemFileList: WebBase[];
-    TVItemModel: TVItemModel;
-    TVItemParentList: WebBase[];
-    TVItemProvinceList: WebBase[];
-    TVItemRainExceedanceList: WebBase[];
+    EmailDistributionListModelList: EmailDistributionListModel[];
+    RainExceedanceModelList: RainExceedanceModel[];
+    TVFileModelList: TVFileModel[];
+    TVItemStatMapModel: TVItemStatMapModel;
+    TVItemStatMapModelProvinceList: TVItemStatMapModel[];
+    TVItemStatModelParentList: TVItemStatModel[];
 }

@@ -7,9 +7,12 @@
 
 import { TVFile } from 'src/app/models/generated/db/TVFile.model';
 import { TVFileLanguage } from 'src/app/models/generated/db/TVFileLanguage.model';
+import { TVItem } from 'src/app/models/generated/db/TVItem.model';
+import { TVItemLanguage } from 'src/app/models/generated/db/TVItemLanguage.model';
 
 export class TVFileModel {
-    ParentTVItemID: number;
     TVFile: TVFile;
     TVFileLanguageList: TVFileLanguage[];
+    TVItem: TVItem;
+    TVItemLanguageList: TVItemLanguage[];
 }

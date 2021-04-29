@@ -5,13 +5,12 @@
  *
  */
 
-import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model';
+import { ClimateSiteModel } from 'src/app/models/generated/web/ClimateSiteModel.model';
 import { TVItemStatMapModel } from 'src/app/models/generated/web/TVItemStatMapModel.model';
 import { TVItemStatModel } from 'src/app/models/generated/web/TVItemStatModel.model';
 
-export class WebSector {
-    TVFileModelList: TVFileModel[];
+export class WebClimateSites {
+    ClimateSiteModelList: ClimateSiteModel[];
     TVItemStatMapModel: TVItemStatMapModel;
-    TVItemStatMapModelSubsectorList: TVItemStatMapModel[];
     TVItemStatModelParentList: TVItemStatModel[];
 }

@@ -5,10 +5,12 @@
  *
  */
 
-import { MikeBoundaryCondition } from 'src/app/models/generated/db/MikeBoundaryCondition.model';
+import { TideDataValue } from 'src/app/models/generated/db/TideDataValue.model';
+import { TideSite } from 'src/app/models/generated/db/TideSite.model';
 import { TVItemMapModel } from 'src/app/models/generated/web/TVItemMapModel.model';
 
-export class MikeBoundaryConditionModel {
-    MikeBoundaryCondition: MikeBoundaryCondition;
+export class TideSiteModel {
+    TideDataValueList: TideDataValue[];
+    TideSite: TideSite;
     TVItemMapModel: TVItemMapModel;
 }

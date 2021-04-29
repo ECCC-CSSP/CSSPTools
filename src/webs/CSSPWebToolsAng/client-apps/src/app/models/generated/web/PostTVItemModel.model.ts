@@ -5,15 +5,11 @@
  *
  */
 
-import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
+import { TVItem } from 'src/app/models/generated/db/TVItem.model';
+import { TVItemLanguage } from 'src/app/models/generated/db/TVItemLanguage.model';
 
 export class PostTVItemModel {
-    GrandParentID?: number;
-    GrandParentTVType?: TVTypeEnum;
-    ParentID: number;
-    ParentTVType: TVTypeEnum;
-    TVItemID: number;
-    TVTextEN: string;
-    TVTextFR: string;
-    TVType: TVTypeEnum;
+    TVItem: TVItem;
+    TVItemLanguageList: TVItemLanguage[];
+    TVItemParent: TVItem;
 }

@@ -5,13 +5,12 @@
  *
  */
 
-import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model';
+import { MikeScenarioModel } from 'src/app/models/generated/web/MikeScenarioModel.model';
 import { TVItemStatMapModel } from 'src/app/models/generated/web/TVItemStatMapModel.model';
 import { TVItemStatModel } from 'src/app/models/generated/web/TVItemStatModel.model';
 
-export class WebSector {
-    TVFileModelList: TVFileModel[];
+export class WebMikeScenarios {
+    MikeScenarioModelList: MikeScenarioModel[];
     TVItemStatMapModel: TVItemStatMapModel;
-    TVItemStatMapModelSubsectorList: TVItemStatMapModel[];
     TVItemStatModelParentList: TVItemStatModel[];
 }

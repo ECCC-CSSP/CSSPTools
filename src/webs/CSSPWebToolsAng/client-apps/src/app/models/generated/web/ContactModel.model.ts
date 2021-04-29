@@ -9,12 +9,14 @@ import { Contact } from 'src/app/models/generated/db/Contact.model';
 import { AddressModel } from 'src/app/models/generated/web/AddressModel.model';
 import { EmailModel } from 'src/app/models/generated/web/EmailModel.model';
 import { TelModel } from 'src/app/models/generated/web/TelModel.model';
-import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
+import { TVItem } from 'src/app/models/generated/db/TVItem.model';
+import { TVItemLanguage } from 'src/app/models/generated/db/TVItemLanguage.model';
 
 export class ContactModel {
     Contact: Contact;
     ContactAddressModelList: AddressModel[];
     ContactEmailModelList: EmailModel[];
     ContactTelModelList: TelModel[];
-    TVItemModel: TVItemModel;
+    TVItem: TVItem;
+    TVItemLanguageList: TVItemLanguage[];
 }
