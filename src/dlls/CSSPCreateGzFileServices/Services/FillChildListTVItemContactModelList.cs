@@ -25,71 +25,29 @@ namespace CreateGzFileServices
 
             foreach (Contact Contact in MunicipalityContactList)
             {
-                TVItem TVItemContact = await GetTVItemWithTVItemID(Contact.ContactTVItemID);
-                List<TVItemLanguage> TVItemLanguageList = await GetTVItemLanguageListWithTVItemID(TVItem.TVItemID);
-
                 ContactModel ContactModel = new ContactModel();
-                ContactModel.TVItemModel.TVItem = TVItemContact;
-                ContactModel.TVItemModel.TVItemLanguageList = new List<TVItemLanguage>()
-                {
-                    TVItemLanguageList.Where(c => c.Language == LanguageEnum.en).FirstOrDefault(),
-                    TVItemLanguageList.Where(c => c.Language == LanguageEnum.en).FirstOrDefault(),
-                    TVItemLanguageList.Where(c => c.Language == LanguageEnum.fr).FirstOrDefault()
-                };
-
-                List<EmailModel> EmailModelList = new List<EmailModel>();
+                ContactModel.Contact = Contact;
 
                 foreach (Email Email in MunicipalityContactEmailList)
                 {
-                    TVItem TVItemEmail = await GetTVItemWithTVItemID(Email.EmailTVItemID);
-                    List<TVItemLanguage> TVItemLanguageEmailList = await GetTVItemLanguageListWithTVItemID(TVItemEmail.TVItemID);
-
                     EmailModel EmailModel = new EmailModel();
-                    EmailModel.TVItemModel.TVItem = TVItemEmail;
-                    EmailModel.TVItemModel.TVItemLanguageList = new List<TVItemLanguage>()
-                    {
-                        TVItemLanguageEmailList.Where(c => c.Language == LanguageEnum.en).FirstOrDefault(),
-                        TVItemLanguageEmailList.Where(c => c.Language == LanguageEnum.en).FirstOrDefault(),
-                        TVItemLanguageEmailList.Where(c => c.Language == LanguageEnum.fr).FirstOrDefault()
-                    };
+                    EmailModel.Email = Email;
 
                     ContactModel.ContactEmailModelList.Add(EmailModel);
                 }
 
-                List<TelModel> TelModelList = new List<TelModel>();
-
                 foreach (Tel Tel in MunicipalityContactTelList)
                 {
-                    TVItem TVItemTel = await GetTVItemWithTVItemID(Tel.TelTVItemID);
-                    List<TVItemLanguage> TVItemLanguageTelList = await GetTVItemLanguageListWithTVItemID(TVItemTel.TVItemID);
-
                     TelModel TelModel = new TelModel();
-                    TelModel.TVItemModel.TVItem = TVItemTel;
-                    TelModel.TVItemModel.TVItemLanguageList = new List<TVItemLanguage>()
-                    {
-                        TVItemLanguageTelList.Where(c => c.Language == LanguageEnum.en).FirstOrDefault(),
-                        TVItemLanguageTelList.Where(c => c.Language == LanguageEnum.en).FirstOrDefault(),
-                        TVItemLanguageTelList.Where(c => c.Language == LanguageEnum.fr).FirstOrDefault()
-                    };
+                    TelModel.Tel = Tel;
 
                     ContactModel.ContactTelModelList.Add(TelModel);
                 }
 
-                List<AddressModel> AddressModelList = new List<AddressModel>();
-
                 foreach (Address Address in MunicipalityContactAddressList)
                 {
-                    TVItem TVItemAddress = await GetTVItemWithTVItemID(Address.AddressTVItemID);
-                    List<TVItemLanguage> TVItemLanguageAddressList = await GetTVItemLanguageListWithTVItemID(TVItemAddress.TVItemID);
-
                     AddressModel AddressModel = new AddressModel();
-                    AddressModel.TVItemModel.TVItem = TVItemAddress;
-                    AddressModel.TVItemModel.TVItemLanguageList = new List<TVItemLanguage>()
-                    {
-                        TVItemLanguageAddressList.Where(c => c.Language == LanguageEnum.en).FirstOrDefault(),
-                        TVItemLanguageAddressList.Where(c => c.Language == LanguageEnum.en).FirstOrDefault(),
-                        TVItemLanguageAddressList.Where(c => c.Language == LanguageEnum.fr).FirstOrDefault()
-                    };
+                    AddressModel.Address = Address;
 
                     ContactModel.ContactAddressModelList.Add(AddressModel);
                 }

@@ -41,7 +41,7 @@ namespace CSSPDBServices
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
-        private List<ValidationResult> ValidationResults { get; set; }
+        private List<ValidationResult> ValidationResultList { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -54,6 +54,8 @@ namespace CSSPDBServices
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+
+            ValidationResultList = new List<ValidationResult>();
         }
         #endregion Constructors
 
@@ -124,7 +126,7 @@ namespace CSSPDBServices
 
             if (!Validate(new ValidationContext(appTask), ActionDBTypeEnum.Create))
             {
-                return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(ValidationResultList));
             }
 
             try
@@ -148,7 +150,7 @@ namespace CSSPDBServices
 
             if (!Validate(new ValidationContext(appTask), ActionDBTypeEnum.Update))
             {
-                return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(ValidationResultList));
             }
 
             try
@@ -175,19 +177,19 @@ namespace CSSPDBServices
             {
                 if (appTask.AppTaskID == 0)
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "AppTaskID"), new[] { nameof(appTask.AppTaskID) }));
+                    ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "AppTaskID"), new[] { nameof(appTask.AppTaskID) }));
                 }
 
                 if (!(from c in db.AppTasks.AsNoTracking() select c).Where(c => c.AppTaskID == appTask.AppTaskID).Any())
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AppTask", "AppTaskID", appTask.AppTaskID.ToString()), new[] { nameof(appTask.AppTaskID) }));
+                    ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AppTask", "AppTaskID", appTask.AppTaskID.ToString()), new[] { nameof(appTask.AppTaskID) }));
                 }
             }
 
             retStr = enums.EnumTypeOK(typeof(DBCommandEnum), (int?)appTask.DBCommand);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"), new[] { nameof(appTask.DBCommand) }));
+                ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"), new[] { nameof(appTask.DBCommand) }));
             }
 
             TVItem TVItemTVItemID = null;
@@ -195,7 +197,7 @@ namespace CSSPDBServices
 
             if (TVItemTVItemID == null)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "TVItemID", appTask.TVItemID.ToString()), new[] { nameof(appTask.TVItemID)}));
+                ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "TVItemID", appTask.TVItemID.ToString()), new[] { nameof(appTask.TVItemID)}));
             }
             else
             {
@@ -228,7 +230,7 @@ namespace CSSPDBServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemTVItemID.TVType))
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "TVItemID", "Root,Address,Area,ClimateSite,Country,File,HydrometricSite,MikeBoundaryConditionWebTide,MikeBoundaryConditionMesh,MikeSource,Municipality,MWQMSite,PolSourceSite,Province,Sector,Subsector,TideSite,WasteWaterTreatmentPlant,LiftStation,Spill,Outfall,OtherInfrastructure,SeeOtherMunicipality,LineOverflow"), new[] { nameof(appTask.TVItemID) }));
+                    ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "TVItemID", "Root,Address,Area,ClimateSite,Country,File,HydrometricSite,MikeBoundaryConditionWebTide,MikeBoundaryConditionMesh,MikeSource,Municipality,MWQMSite,PolSourceSite,Province,Sector,Subsector,TideSite,WasteWaterTreatmentPlant,LiftStation,Spill,Outfall,OtherInfrastructure,SeeOtherMunicipality,LineOverflow"), new[] { nameof(appTask.TVItemID) }));
                 }
             }
 
@@ -237,7 +239,7 @@ namespace CSSPDBServices
 
             if (TVItemTVItemID2 == null)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "TVItemID2", appTask.TVItemID2.ToString()), new[] { nameof(appTask.TVItemID2)}));
+                ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "TVItemID2", appTask.TVItemID2.ToString()), new[] { nameof(appTask.TVItemID2)}));
             }
             else
             {
@@ -270,30 +272,30 @@ namespace CSSPDBServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemTVItemID2.TVType))
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "TVItemID2", "Root,Address,Area,ClimateSite,Country,File,HydrometricSite,MikeBoundaryConditionWebTide,MikeBoundaryConditionMesh,MikeSource,Municipality,MWQMSite,PolSourceSite,Province,Sector,Subsector,TideSite,WasteWaterTreatmentPlant,LiftStation,Spill,Outfall,OtherInfrastructure,SeeOtherMunicipality,LineOverflow"), new[] { nameof(appTask.TVItemID2) }));
+                    ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "TVItemID2", "Root,Address,Area,ClimateSite,Country,File,HydrometricSite,MikeBoundaryConditionWebTide,MikeBoundaryConditionMesh,MikeSource,Municipality,MWQMSite,PolSourceSite,Province,Sector,Subsector,TideSite,WasteWaterTreatmentPlant,LiftStation,Spill,Outfall,OtherInfrastructure,SeeOtherMunicipality,LineOverflow"), new[] { nameof(appTask.TVItemID2) }));
                 }
             }
 
             retStr = enums.EnumTypeOK(typeof(AppTaskCommandEnum), (int?)appTask.AppTaskCommand);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "AppTaskCommand"), new[] { nameof(appTask.AppTaskCommand) }));
+                ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "AppTaskCommand"), new[] { nameof(appTask.AppTaskCommand) }));
             }
 
             retStr = enums.EnumTypeOK(typeof(AppTaskStatusEnum), (int?)appTask.AppTaskStatus);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "AppTaskStatus"), new[] { nameof(appTask.AppTaskStatus) }));
+                ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "AppTaskStatus"), new[] { nameof(appTask.AppTaskStatus) }));
             }
 
             if (appTask.PercentCompleted < 0 || appTask.PercentCompleted > 100)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "PercentCompleted", "0", "100"), new[] { nameof(appTask.PercentCompleted) }));
+                ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "PercentCompleted", "0", "100"), new[] { nameof(appTask.PercentCompleted) }));
             }
 
             if (string.IsNullOrWhiteSpace(appTask.Parameters))
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Parameters"), new[] { nameof(appTask.Parameters) }));
+                ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Parameters"), new[] { nameof(appTask.Parameters) }));
             }
 
             //Parameters has no StringLength Attribute
@@ -301,36 +303,36 @@ namespace CSSPDBServices
             retStr = enums.EnumTypeOK(typeof(LanguageEnum), (int?)appTask.Language);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Language"), new[] { nameof(appTask.Language) }));
+                ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Language"), new[] { nameof(appTask.Language) }));
             }
 
             if (appTask.StartDateTime_UTC.Year == 1)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "StartDateTime_UTC"), new[] { nameof(appTask.StartDateTime_UTC) }));
+                ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "StartDateTime_UTC"), new[] { nameof(appTask.StartDateTime_UTC) }));
             }
             else
             {
                 if (appTask.StartDateTime_UTC.Year < 1980)
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "StartDateTime_UTC", "1980"), new[] { nameof(appTask.StartDateTime_UTC) }));
+                    ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "StartDateTime_UTC", "1980"), new[] { nameof(appTask.StartDateTime_UTC) }));
                 }
             }
 
             if (appTask.EndDateTime_UTC != null && ((DateTime)appTask.EndDateTime_UTC).Year < 1980)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "EndDateTime_UTC", "1980"), new[] { nameof(appTask.EndDateTime_UTC) }));
+                ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "EndDateTime_UTC", "1980"), new[] { nameof(appTask.EndDateTime_UTC) }));
             }
 
             if (appTask.StartDateTime_UTC > appTask.EndDateTime_UTC)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._DateIsBiggerThan_, "EndDateTime_UTC", "AppTaskStartDateTime_UTC"), new[] { nameof(appTask.EndDateTime_UTC) }));
+                ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._DateIsBiggerThan_, "EndDateTime_UTC", "AppTaskStartDateTime_UTC"), new[] { nameof(appTask.EndDateTime_UTC) }));
             }
 
             if (appTask.EstimatedLength_second != null)
             {
                 if (appTask.EstimatedLength_second < 0 || appTask.EstimatedLength_second > 1000000)
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "EstimatedLength_second", "0", "1000000"), new[] { nameof(appTask.EstimatedLength_second) }));
+                    ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "EstimatedLength_second", "0", "1000000"), new[] { nameof(appTask.EstimatedLength_second) }));
                 }
             }
 
@@ -338,19 +340,19 @@ namespace CSSPDBServices
             {
                 if (appTask.RemainingTime_second < 0 || appTask.RemainingTime_second > 1000000)
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "RemainingTime_second", "0", "1000000"), new[] { nameof(appTask.RemainingTime_second) }));
+                    ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "RemainingTime_second", "0", "1000000"), new[] { nameof(appTask.RemainingTime_second) }));
                 }
             }
 
             if (appTask.LastUpdateDate_UTC.Year == 1)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { nameof(appTask.LastUpdateDate_UTC) }));
+                ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { nameof(appTask.LastUpdateDate_UTC) }));
             }
             else
             {
                 if (appTask.LastUpdateDate_UTC.Year < 1980)
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { nameof(appTask.LastUpdateDate_UTC) }));
+                    ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { nameof(appTask.LastUpdateDate_UTC) }));
                 }
             }
 
@@ -359,7 +361,7 @@ namespace CSSPDBServices
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", appTask.LastUpdateContactTVItemID.ToString()), new[] { nameof(appTask.LastUpdateContactTVItemID)}));
+                ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", appTask.LastUpdateContactTVItemID.ToString()), new[] { nameof(appTask.LastUpdateContactTVItemID)}));
             }
             else
             {
@@ -369,11 +371,11 @@ namespace CSSPDBServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(appTask.LastUpdateContactTVItemID) }));
+                    ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(appTask.LastUpdateContactTVItemID) }));
                 }
             }
 
-            return ValidationResults.Count == 0 ? true : false;
+            return ValidationResultList.Count == 0 ? true : false;
         }
         #endregion Functions private
     }

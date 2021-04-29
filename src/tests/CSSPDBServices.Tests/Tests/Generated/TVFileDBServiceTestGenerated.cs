@@ -517,7 +517,7 @@ namespace CSSPDBServices.Tests
             if (OmitPropName != "DBCommand") tvFile.DBCommand = (DBCommandEnum)GetRandomEnumType(typeof(DBCommandEnum));
             if (OmitPropName != "TVFileTVItemID") tvFile.TVFileTVItemID = 42;
             if (OmitPropName != "TemplateTVType") tvFile.TemplateTVType = (TVTypeEnum)GetRandomEnumType(typeof(TVTypeEnum));
-            if (OmitPropName != "ReportTypeID") tvFile.ReportTypeID = 1;
+            if (OmitPropName != "ReportTypeID") tvFile.ReportTypeID = 0;
             if (OmitPropName != "Parameters") tvFile.Parameters = GetRandomString("", 20);
             if (OmitPropName != "Year") tvFile.Year = GetRandomInt(1980, 2050);
             if (OmitPropName != "Language") tvFile.Language = CSSPCultureServicesRes.Culture.TwoLetterISOLanguageName == "fr" ? LanguageEnum.fr : LanguageEnum.en;

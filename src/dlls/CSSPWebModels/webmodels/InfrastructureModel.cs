@@ -9,12 +9,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CSSPWebModels
 {
     [NotMapped]
-    public partial class InfrastructureModel : WebBase
+    public partial class InfrastructureModel
     {
         #region Properties
+        public TVItemMapModel TVItemMapModel { get; set; }
         public Infrastructure Infrastructure { get; set; }
-        public List<WebBase> TVItemFileList { get; set; }
         public List<InfrastructureLanguage> InfrastructureLanguageList { get; set; }
+        public List<TVFileModel> TVFileModelList { get; set; }
         public Address InfrastructureCivicAddress { get; set; }
         public List<BoxModelModel> BoxModelModelList { get; set; }
         public List<VPScenarioModel> VPScenarioModelList { get; set; }
@@ -23,9 +24,10 @@ namespace CSSPWebModels
         #region Constructors
         public InfrastructureModel()
         {
+            TVItemMapModel = new TVItemMapModel();
             Infrastructure = new Infrastructure();
-            TVItemFileList = new List<WebBase>();
             InfrastructureLanguageList = new List<InfrastructureLanguage>();
+            TVFileModelList = new List<TVFileModel>();
             InfrastructureCivicAddress = new Address();
             BoxModelModelList = new List<BoxModelModel>();
             VPScenarioModelList = new List<VPScenarioModel>();

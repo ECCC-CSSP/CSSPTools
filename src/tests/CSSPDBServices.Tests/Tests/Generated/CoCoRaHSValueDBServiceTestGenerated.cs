@@ -454,7 +454,7 @@ namespace CSSPDBServices.Tests
             CoCoRaHSValue coCoRaHSValue = new CoCoRaHSValue();
 
             if (OmitPropName != "DBCommand") coCoRaHSValue.DBCommand = (DBCommandEnum)GetRandomEnumType(typeof(DBCommandEnum));
-            if (OmitPropName != "CoCoRaHSSiteID") coCoRaHSValue.CoCoRaHSSiteID = 1;
+            if (OmitPropName != "CoCoRaHSSiteID") coCoRaHSValue.CoCoRaHSSiteID = 0;
             if (OmitPropName != "ObservationDateAndTime") coCoRaHSValue.ObservationDateAndTime = new DateTime(2005, 3, 6);
             if (OmitPropName != "TotalPrecipAmt") coCoRaHSValue.TotalPrecipAmt = GetRandomDouble(0.0D, 10000.0D);
             if (OmitPropName != "NewSnowDepth") coCoRaHSValue.NewSnowDepth = GetRandomDouble(0.0D, 10000.0D);

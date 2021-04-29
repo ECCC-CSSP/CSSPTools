@@ -41,7 +41,7 @@ namespace CSSPDBServices
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
-        private List<ValidationResult> ValidationResults { get; set; }
+        private List<ValidationResult> ValidationResultList { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -54,6 +54,8 @@ namespace CSSPDBServices
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+
+            ValidationResultList = new List<ValidationResult>();
         }
         #endregion Constructors
 
@@ -124,7 +126,7 @@ namespace CSSPDBServices
 
             if (!Validate(new ValidationContext(emailDistributionListContact), ActionDBTypeEnum.Create))
             {
-                return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(ValidationResultList));
             }
 
             try
@@ -148,7 +150,7 @@ namespace CSSPDBServices
 
             if (!Validate(new ValidationContext(emailDistributionListContact), ActionDBTypeEnum.Update))
             {
-                return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(ValidationResultList));
             }
 
             try
@@ -175,19 +177,19 @@ namespace CSSPDBServices
             {
                 if (emailDistributionListContact.EmailDistributionListContactID == 0)
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "EmailDistributionListContactID"), new[] { nameof(emailDistributionListContact.EmailDistributionListContactID) }));
+                    ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "EmailDistributionListContactID"), new[] { nameof(emailDistributionListContact.EmailDistributionListContactID) }));
                 }
 
                 if (!(from c in db.EmailDistributionListContacts.AsNoTracking() select c).Where(c => c.EmailDistributionListContactID == emailDistributionListContact.EmailDistributionListContactID).Any())
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "EmailDistributionListContact", "EmailDistributionListContactID", emailDistributionListContact.EmailDistributionListContactID.ToString()), new[] { nameof(emailDistributionListContact.EmailDistributionListContactID) }));
+                    ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "EmailDistributionListContact", "EmailDistributionListContactID", emailDistributionListContact.EmailDistributionListContactID.ToString()), new[] { nameof(emailDistributionListContact.EmailDistributionListContactID) }));
                 }
             }
 
             retStr = enums.EnumTypeOK(typeof(DBCommandEnum), (int?)emailDistributionListContact.DBCommand);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"), new[] { nameof(emailDistributionListContact.DBCommand) }));
+                ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"), new[] { nameof(emailDistributionListContact.DBCommand) }));
             }
 
             EmailDistributionList EmailDistributionListEmailDistributionListID = null;
@@ -195,27 +197,27 @@ namespace CSSPDBServices
 
             if (EmailDistributionListEmailDistributionListID == null)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "EmailDistributionList", "EmailDistributionListID", emailDistributionListContact.EmailDistributionListID.ToString()), new[] { nameof(emailDistributionListContact.EmailDistributionListID)}));
+                ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "EmailDistributionList", "EmailDistributionListID", emailDistributionListContact.EmailDistributionListID.ToString()), new[] { nameof(emailDistributionListContact.EmailDistributionListID)}));
             }
 
             if (string.IsNullOrWhiteSpace(emailDistributionListContact.Name))
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Name"), new[] { nameof(emailDistributionListContact.Name) }));
+                ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Name"), new[] { nameof(emailDistributionListContact.Name) }));
             }
 
             if (!string.IsNullOrWhiteSpace(emailDistributionListContact.Name) && emailDistributionListContact.Name.Length > 100)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Name", "100"), new[] { nameof(emailDistributionListContact.Name) }));
+                ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Name", "100"), new[] { nameof(emailDistributionListContact.Name) }));
             }
 
             if (string.IsNullOrWhiteSpace(emailDistributionListContact.Email))
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Email"), new[] { nameof(emailDistributionListContact.Email) }));
+                ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Email"), new[] { nameof(emailDistributionListContact.Email) }));
             }
 
             if (!string.IsNullOrWhiteSpace(emailDistributionListContact.Email) && emailDistributionListContact.Email.Length > 200)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Email", "200"), new[] { nameof(emailDistributionListContact.Email) }));
+                ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Email", "200"), new[] { nameof(emailDistributionListContact.Email) }));
             }
 
             if (!string.IsNullOrWhiteSpace(emailDistributionListContact.Email))
@@ -223,19 +225,19 @@ namespace CSSPDBServices
                 Regex regex = new Regex(@"^([\w\!\#$\%\&\'*\+\-\/\=\?\^`{\|\}\~]+\.)*[\w\!\#$\%\&\'‌​*\+\-\/\=\?\^`{\|\}\~]+@((((([a-zA-Z0-9]{1}[a-zA-Z0-9\-]{0,62}[a-zA-Z0-9]{1})|[‌​a-zA-Z])\.)+[a-zA-Z]{2,6})|(\d{1,3}\.){3}\d{1,3}(\:\d{1,5})?)$");
                 if (!regex.IsMatch(emailDistributionListContact.Email))
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotAValidEmail, "Email"), new[] { nameof(emailDistributionListContact.Email) }));
+                    ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotAValidEmail, "Email"), new[] { nameof(emailDistributionListContact.Email) }));
                 }
             }
 
             if (emailDistributionListContact.LastUpdateDate_UTC.Year == 1)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { nameof(emailDistributionListContact.LastUpdateDate_UTC) }));
+                ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { nameof(emailDistributionListContact.LastUpdateDate_UTC) }));
             }
             else
             {
                 if (emailDistributionListContact.LastUpdateDate_UTC.Year < 1980)
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { nameof(emailDistributionListContact.LastUpdateDate_UTC) }));
+                    ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { nameof(emailDistributionListContact.LastUpdateDate_UTC) }));
                 }
             }
 
@@ -244,7 +246,7 @@ namespace CSSPDBServices
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", emailDistributionListContact.LastUpdateContactTVItemID.ToString()), new[] { nameof(emailDistributionListContact.LastUpdateContactTVItemID)}));
+                ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", emailDistributionListContact.LastUpdateContactTVItemID.ToString()), new[] { nameof(emailDistributionListContact.LastUpdateContactTVItemID)}));
             }
             else
             {
@@ -254,11 +256,11 @@ namespace CSSPDBServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(emailDistributionListContact.LastUpdateContactTVItemID) }));
+                    ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(emailDistributionListContact.LastUpdateContactTVItemID) }));
                 }
             }
 
-            return ValidationResults.Count == 0 ? true : false;
+            return ValidationResultList.Count == 0 ? true : false;
         }
         #endregion Functions private
     }

@@ -33,11 +33,16 @@ namespace CreateGzFileServices
 
             try
             {
-                webAllEmails.EmailList = await GetAllEmail();
+                await FillEmailModelList(webAllEmails.EmailModelList, TVItemRoot);
 
-                await FillChildListTVItemModelList(webAllEmails.TVItemAllEmailList, TVItemRoot, TVTypeEnum.Email);
-
-                await DoStore<WebAllEmails>(webAllEmails, $"{ WebTypeEnum.WebAllEmails }.gz");
+                if (dbLocal != null)
+                {
+                    await DoStoreLocal<WebAllEmails>(webAllEmails, $"{ WebTypeEnum.WebAllEmails }.gz");
+                }
+                else
+                {
+                    await DoStore<WebAllEmails>(webAllEmails, $"{ WebTypeEnum.WebAllEmails }.gz");
+                }
             }
             catch (Exception ex)
             {

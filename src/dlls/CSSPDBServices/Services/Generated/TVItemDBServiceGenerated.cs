@@ -41,7 +41,7 @@ namespace CSSPDBServices
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
-        private List<ValidationResult> ValidationResults { get; set; }
+        private List<ValidationResult> ValidationResultList { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -54,6 +54,8 @@ namespace CSSPDBServices
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+
+            ValidationResultList = new List<ValidationResult>();
         }
         #endregion Constructors
 
@@ -124,7 +126,7 @@ namespace CSSPDBServices
 
             if (!Validate(new ValidationContext(tvItem), ActionDBTypeEnum.Create))
             {
-                return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(ValidationResultList));
             }
 
             try
@@ -148,7 +150,7 @@ namespace CSSPDBServices
 
             if (!Validate(new ValidationContext(tvItem), ActionDBTypeEnum.Update))
             {
-                return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(ValidationResultList));
             }
 
             try
@@ -175,12 +177,12 @@ namespace CSSPDBServices
             {
                 if (tvItem.TVItemID == 0)
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVItemID"), new[] { nameof(tvItem.TVItemID) }));
+                    ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVItemID"), new[] { nameof(tvItem.TVItemID) }));
                 }
 
                 if (!(from c in db.TVItems.AsNoTracking() select c).Where(c => c.TVItemID == tvItem.TVItemID).Any())
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "TVItemID", tvItem.TVItemID.ToString()), new[] { nameof(tvItem.TVItemID) }));
+                    ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "TVItemID", tvItem.TVItemID.ToString()), new[] { nameof(tvItem.TVItemID) }));
                 }
             }
 
@@ -189,35 +191,35 @@ namespace CSSPDBServices
 
                 if ((from c in db.TVItems select c).Count() > 0)
                 {
-                    ValidationResults.Add(new ValidationResult(CSSPCultureServicesRes.TVItemRootShouldBeTheFirstOneAdded, new[] { "TVItemTVItemID" }));
+                    ValidationResultList.Add(new ValidationResult(CSSPCultureServicesRes.TVItemRootShouldBeTheFirstOneAdded, new[] { "TVItemTVItemID" }));
                 }
             }
 
             retStr = enums.EnumTypeOK(typeof(DBCommandEnum), (int?)tvItem.DBCommand);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"), new[] { nameof(tvItem.DBCommand) }));
+                ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"), new[] { nameof(tvItem.DBCommand) }));
             }
 
             if (tvItem.TVLevel < 0 || tvItem.TVLevel > 100)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "TVLevel", "0", "100"), new[] { nameof(tvItem.TVLevel) }));
+                ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "TVLevel", "0", "100"), new[] { nameof(tvItem.TVLevel) }));
             }
 
             if (string.IsNullOrWhiteSpace(tvItem.TVPath))
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVPath"), new[] { nameof(tvItem.TVPath) }));
+                ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVPath"), new[] { nameof(tvItem.TVPath) }));
             }
 
             if (!string.IsNullOrWhiteSpace(tvItem.TVPath) && tvItem.TVPath.Length > 250)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "TVPath", "250"), new[] { nameof(tvItem.TVPath) }));
+                ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "TVPath", "250"), new[] { nameof(tvItem.TVPath) }));
             }
 
             retStr = enums.EnumTypeOK(typeof(TVTypeEnum), (int?)tvItem.TVType);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVType"), new[] { nameof(tvItem.TVType) }));
+                ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVType"), new[] { nameof(tvItem.TVType) }));
             }
 
             if (tvItem.TVType != TVTypeEnum.Root)
@@ -227,7 +229,7 @@ namespace CSSPDBServices
 
                 if (TVItemParentID == null)
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "ParentID", tvItem.ParentID.ToString()), new[] { nameof(tvItem.ParentID) }));
+                    ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "ParentID", tvItem.ParentID.ToString()), new[] { nameof(tvItem.ParentID) }));
                 }
                 else
                 {
@@ -259,20 +261,20 @@ namespace CSSPDBServices
                     };
                     if (!AllowableTVTypes.Contains(TVItemParentID.TVType))
                     {
-                        ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "ParentID", "Root,Address,Area,ClimateSite,Contact,Country,Email,HydrometricSite,Infrastructure,MikeBoundaryConditionWebTide,MikeBoundaryConditionMesh,MikeScenario,MikeSource,Municipality,MWQMSite,PolSourceSite,Province,Sector,Subsector,Tel,MWQMRun,RainExceedance,Classification"), new[] { nameof(tvItem.ParentID) }));
+                        ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "ParentID", "Root,Address,Area,ClimateSite,Contact,Country,Email,HydrometricSite,Infrastructure,MikeBoundaryConditionWebTide,MikeBoundaryConditionMesh,MikeScenario,MikeSource,Municipality,MWQMSite,PolSourceSite,Province,Sector,Subsector,Tel,MWQMRun,RainExceedance,Classification"), new[] { nameof(tvItem.ParentID) }));
                     }
                 }
             }
 
             if (tvItem.LastUpdateDate_UTC.Year == 1)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { nameof(tvItem.LastUpdateDate_UTC) }));
+                ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { nameof(tvItem.LastUpdateDate_UTC) }));
             }
             else
             {
                 if (tvItem.LastUpdateDate_UTC.Year < 1980)
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { nameof(tvItem.LastUpdateDate_UTC) }));
+                    ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { nameof(tvItem.LastUpdateDate_UTC) }));
                 }
             }
 
@@ -283,7 +285,7 @@ namespace CSSPDBServices
 
                 if (TVItemLastUpdateContactTVItemID == null)
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", tvItem.LastUpdateContactTVItemID.ToString()), new[] { nameof(tvItem.LastUpdateContactTVItemID) }));
+                    ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", tvItem.LastUpdateContactTVItemID.ToString()), new[] { nameof(tvItem.LastUpdateContactTVItemID) }));
                 }
                 else
                 {
@@ -293,12 +295,12 @@ namespace CSSPDBServices
                     };
                     if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
                     {
-                        ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(tvItem.LastUpdateContactTVItemID) }));
+                        ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(tvItem.LastUpdateContactTVItemID) }));
                     }
                 }
             }
 
-            return ValidationResults.Count == 0 ? true : false;
+            return ValidationResultList.Count == 0 ? true : false;
         }
         #endregion Functions private
     }

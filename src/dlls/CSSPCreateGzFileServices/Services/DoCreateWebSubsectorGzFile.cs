@@ -33,29 +33,25 @@ namespace CreateGzFileServices
 
             try
             {
-                await FillTVItemModel(webSubsector.TVItemModel, TVItemSubsector);
+                await FillTVItemModelAndParentTVItemModelList(webSubsector.TVItemStatMapModel, webSubsector.TVItemStatModelParentList, TVItemSubsector);
 
-                await FillParentListTVItemModelList(webSubsector.TVItemParentList, TVItemSubsector);
+                await FillChildListTVItemModelList(webSubsector.TVItemStatMapModelClassificationList, TVItemSubsector, TVTypeEnum.Classification);
 
-                await FillChildListTVItemModelList(webSubsector.TVItemMWQMSiteList, TVItemSubsector, TVTypeEnum.MWQMSite);
-
-                await FillChildListTVItemModelList(webSubsector.TVItemMWQMRunList, TVItemSubsector, TVTypeEnum.MWQMRun);
-
-                await FillChildListTVItemModelList(webSubsector.TVItemPolSourceSiteList, TVItemSubsector, TVTypeEnum.PolSourceSite);
-
-                await FillChildListTVItemModelList(webSubsector.TVItemClassificationList, TVItemSubsector, TVTypeEnum.Classification);
-
-                await FillChildListTVItemModelList(webSubsector.TVItemFileList, TVItemSubsector, TVTypeEnum.File);
+                await FillFileModelList(webSubsector.TVFileModelList, TVItemSubsector);
 
                 webSubsector.MWQMAnalysisReportParameterList = await GetMWQMAnalysisReportParameterListUnderSubsector(SubsectorTVItemID);
-
-                await FillLabSheetModelList(webSubsector.LabSheetModelList, TVItemSubsector);
-
                 webSubsector.MWQMSubsector = await GetMWQMSubsector(SubsectorTVItemID);
                 webSubsector.MWQMSubsectorLanguageList = await GetMWQMSubsectorLanguageList(SubsectorTVItemID);
                 webSubsector.UseOfSiteList = await GetUseOfSiteList(SubsectorTVItemID);
 
-                await DoStore<WebSubsector>(webSubsector, $"{ WebTypeEnum.WebSubsector }_{ SubsectorTVItemID }.gz");
+                if (dbLocal != null)
+                {
+                    await DoStoreLocal<WebSubsector>(webSubsector, $"{ WebTypeEnum.WebSubsector }_{ SubsectorTVItemID }.gz");
+                }
+                else
+                {
+                    await DoStore<WebSubsector>(webSubsector, $"{ WebTypeEnum.WebSubsector }_{ SubsectorTVItemID }.gz");
+                }
             }
             catch (Exception ex)
             {

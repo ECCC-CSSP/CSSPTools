@@ -23,7 +23,7 @@ namespace DownloadFileServices
     {
         Task<ActionResult> DownloadOtherFile(string FileName);
         Task<ActionResult> DownloadFile(int ParentTVItemID, string FileName);
-        Task<ActionResult<bool>> DownloadGzFile(WebTypeEnum webType, int TVItemID, WebTypeYearEnum webTypeYearEnum);
+        Task<ActionResult<bool>> DownloadGzFile(WebTypeEnum webType, int TVItemID = 0);
         Task<ActionResult<bool>> LocalizeAzureFile(int ParentTVItemID, string FileName);
     }
     public partial class DownloadFileService : ControllerBase, IDownloadFileService
@@ -77,9 +77,9 @@ namespace DownloadFileServices
         {
             return await DoDownloadFile(ParentTVItemID, FileName);
         }
-        public async Task<ActionResult<bool>> DownloadGzFile(WebTypeEnum webType, int TVItemID, WebTypeYearEnum webTypeYear)
+        public async Task<ActionResult<bool>> DownloadGzFile(WebTypeEnum webType, int TVItemID)
         {
-            return await DoDownloadGzFile(webType, TVItemID, webTypeYear);
+            return await DoDownloadGzFile(webType, TVItemID);
         }
         public async Task<ActionResult<bool>> LocalizeAzureFile(int ParentTVItemID, string FileName)
         {

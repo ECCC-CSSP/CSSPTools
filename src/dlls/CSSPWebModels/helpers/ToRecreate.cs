@@ -19,8 +19,6 @@ namespace CSSPWebModels
         [CSSPEnumType]
         public WebTypeEnum WebType { get; set; }
         public int TVItemID { get; set; }
-        [CSSPEnumType]
-        public WebTypeYearEnum WebTypeYear { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -28,15 +26,14 @@ namespace CSSPWebModels
         {
         }
 
-        public static void AppendToRecreateList(List<ToRecreate> ToRecreateList, WebTypeEnum webType, int TVItemID, WebTypeYearEnum webTypeYear)
+        public static void AppendToRecreateList(List<ToRecreate> ToRecreateList, WebTypeEnum webType, int TVItemID)
         {
             if (!(from c in ToRecreateList
                   where c.WebType == webType
                   && c.TVItemID == TVItemID
-                  && c.WebTypeYear == webTypeYear
                   select c).Any())
             {
-                ToRecreateList.Add(new ToRecreate() { WebType = webType, TVItemID = TVItemID, WebTypeYear = webTypeYear });
+                ToRecreateList.Add(new ToRecreate() { WebType = webType, TVItemID = TVItemID });
             }
         }
         #endregion Constructors

@@ -26,14 +26,10 @@ namespace CreateGzFileServices
             {
                 LabSheetModel LabSheetModel = new LabSheetModel();
                 LabSheetModel.LabSheet = LabSheet;
-
-                foreach(LabSheetDetail LabSheetDetail in LabSheetDetailList)
+                LabSheetModel.LabSheetDetail = LabSheetDetailList.Where(c => c.LabSheetID == LabSheet.LabSheetID).FirstOrDefault();
+                if (LabSheetModel.LabSheetDetail != null)
                 {
-                    LabSheetDetailModel LabSheetDetailModel = new LabSheetDetailModel();
-                    LabSheetDetailModel.LabSheetDetail = LabSheetDetail;
-                    LabSheetDetailModel.LabSheetTubeMPNDetailList = LabSheetTubeMPNDetailList.Where(c => c.LabSheetDetailID == LabSheetDetail.LabSheetDetailID).ToList();
-
-                    LabSheetModel.LabSheetDetailModelList.Add(LabSheetDetailModel);
+                    LabSheetModel.LabSheetTubeMPNDetailList = LabSheetTubeMPNDetailList.Where(c => c.LabSheetDetailID == LabSheetModel.LabSheetDetail.LabSheetDetailID).ToList();
                 }
 
                 LabSheetModelList.Add(LabSheetModel);

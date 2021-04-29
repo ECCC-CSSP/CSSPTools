@@ -41,7 +41,7 @@ namespace CSSPDBServices
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
-        private List<ValidationResult> ValidationResults { get; set; }
+        private List<ValidationResult> ValidationResultList { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -54,6 +54,8 @@ namespace CSSPDBServices
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+
+            ValidationResultList = new List<ValidationResult>();
         }
         #endregion Constructors
 
@@ -124,7 +126,7 @@ namespace CSSPDBServices
 
             if (!Validate(new ValidationContext(coCoRaHSValue), ActionDBTypeEnum.Create))
             {
-                return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(ValidationResultList));
             }
 
             try
@@ -148,7 +150,7 @@ namespace CSSPDBServices
 
             if (!Validate(new ValidationContext(coCoRaHSValue), ActionDBTypeEnum.Update))
             {
-                return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(ValidationResultList));
             }
 
             try
@@ -175,19 +177,19 @@ namespace CSSPDBServices
             {
                 if (coCoRaHSValue.CoCoRaHSValueID == 0)
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "CoCoRaHSValueID"), new[] { nameof(coCoRaHSValue.CoCoRaHSValueID) }));
+                    ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "CoCoRaHSValueID"), new[] { nameof(coCoRaHSValue.CoCoRaHSValueID) }));
                 }
 
                 if (!(from c in db.CoCoRaHSValues.AsNoTracking() select c).Where(c => c.CoCoRaHSValueID == coCoRaHSValue.CoCoRaHSValueID).Any())
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "CoCoRaHSValue", "CoCoRaHSValueID", coCoRaHSValue.CoCoRaHSValueID.ToString()), new[] { nameof(coCoRaHSValue.CoCoRaHSValueID) }));
+                    ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "CoCoRaHSValue", "CoCoRaHSValueID", coCoRaHSValue.CoCoRaHSValueID.ToString()), new[] { nameof(coCoRaHSValue.CoCoRaHSValueID) }));
                 }
             }
 
             retStr = enums.EnumTypeOK(typeof(DBCommandEnum), (int?)coCoRaHSValue.DBCommand);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"), new[] { nameof(coCoRaHSValue.DBCommand) }));
+                ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"), new[] { nameof(coCoRaHSValue.DBCommand) }));
             }
 
             CoCoRaHSSite CoCoRaHSSiteCoCoRaHSSiteID = null;
@@ -195,18 +197,18 @@ namespace CSSPDBServices
 
             if (CoCoRaHSSiteCoCoRaHSSiteID == null)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "CoCoRaHSSite", "CoCoRaHSSiteID", coCoRaHSValue.CoCoRaHSSiteID.ToString()), new[] { nameof(coCoRaHSValue.CoCoRaHSSiteID)}));
+                ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "CoCoRaHSSite", "CoCoRaHSSiteID", coCoRaHSValue.CoCoRaHSSiteID.ToString()), new[] { nameof(coCoRaHSValue.CoCoRaHSSiteID)}));
             }
 
             if (coCoRaHSValue.ObservationDateAndTime.Year == 1)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ObservationDateAndTime"), new[] { nameof(coCoRaHSValue.ObservationDateAndTime) }));
+                ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ObservationDateAndTime"), new[] { nameof(coCoRaHSValue.ObservationDateAndTime) }));
             }
             else
             {
                 if (coCoRaHSValue.ObservationDateAndTime.Year < 1980)
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "ObservationDateAndTime", "1980"), new[] { nameof(coCoRaHSValue.ObservationDateAndTime) }));
+                    ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "ObservationDateAndTime", "1980"), new[] { nameof(coCoRaHSValue.ObservationDateAndTime) }));
                 }
             }
 
@@ -214,7 +216,7 @@ namespace CSSPDBServices
             {
                 if (coCoRaHSValue.TotalPrecipAmt < 0 || coCoRaHSValue.TotalPrecipAmt > 10000)
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "TotalPrecipAmt", "0", "10000"), new[] { nameof(coCoRaHSValue.TotalPrecipAmt) }));
+                    ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "TotalPrecipAmt", "0", "10000"), new[] { nameof(coCoRaHSValue.TotalPrecipAmt) }));
                 }
             }
 
@@ -222,7 +224,7 @@ namespace CSSPDBServices
             {
                 if (coCoRaHSValue.NewSnowDepth < 0 || coCoRaHSValue.NewSnowDepth > 10000)
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "NewSnowDepth", "0", "10000"), new[] { nameof(coCoRaHSValue.NewSnowDepth) }));
+                    ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "NewSnowDepth", "0", "10000"), new[] { nameof(coCoRaHSValue.NewSnowDepth) }));
                 }
             }
 
@@ -230,7 +232,7 @@ namespace CSSPDBServices
             {
                 if (coCoRaHSValue.NewSnowSWE < 0 || coCoRaHSValue.NewSnowSWE > 10000)
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "NewSnowSWE", "0", "10000"), new[] { nameof(coCoRaHSValue.NewSnowSWE) }));
+                    ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "NewSnowSWE", "0", "10000"), new[] { nameof(coCoRaHSValue.NewSnowSWE) }));
                 }
             }
 
@@ -238,7 +240,7 @@ namespace CSSPDBServices
             {
                 if (coCoRaHSValue.TotalSnowDepth < 0 || coCoRaHSValue.TotalSnowDepth > 10000)
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "TotalSnowDepth", "0", "10000"), new[] { nameof(coCoRaHSValue.TotalSnowDepth) }));
+                    ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "TotalSnowDepth", "0", "10000"), new[] { nameof(coCoRaHSValue.TotalSnowDepth) }));
                 }
             }
 
@@ -246,19 +248,19 @@ namespace CSSPDBServices
             {
                 if (coCoRaHSValue.TotalSnowSWE < 0 || coCoRaHSValue.TotalSnowSWE > 10000)
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "TotalSnowSWE", "0", "10000"), new[] { nameof(coCoRaHSValue.TotalSnowSWE) }));
+                    ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "TotalSnowSWE", "0", "10000"), new[] { nameof(coCoRaHSValue.TotalSnowSWE) }));
                 }
             }
 
             if (coCoRaHSValue.LastUpdateDate_UTC.Year == 1)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { nameof(coCoRaHSValue.LastUpdateDate_UTC) }));
+                ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { nameof(coCoRaHSValue.LastUpdateDate_UTC) }));
             }
             else
             {
                 if (coCoRaHSValue.LastUpdateDate_UTC.Year < 1980)
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { nameof(coCoRaHSValue.LastUpdateDate_UTC) }));
+                    ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { nameof(coCoRaHSValue.LastUpdateDate_UTC) }));
                 }
             }
 
@@ -267,7 +269,7 @@ namespace CSSPDBServices
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", coCoRaHSValue.LastUpdateContactTVItemID.ToString()), new[] { nameof(coCoRaHSValue.LastUpdateContactTVItemID)}));
+                ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", coCoRaHSValue.LastUpdateContactTVItemID.ToString()), new[] { nameof(coCoRaHSValue.LastUpdateContactTVItemID)}));
             }
             else
             {
@@ -277,11 +279,11 @@ namespace CSSPDBServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(coCoRaHSValue.LastUpdateContactTVItemID) }));
+                    ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(coCoRaHSValue.LastUpdateContactTVItemID) }));
                 }
             }
 
-            return ValidationResults.Count == 0 ? true : false;
+            return ValidationResultList.Count == 0 ? true : false;
         }
         #endregion Functions private
     }

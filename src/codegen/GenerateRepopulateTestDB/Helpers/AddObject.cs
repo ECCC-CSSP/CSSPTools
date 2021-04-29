@@ -38,11 +38,11 @@ namespace GenerateRepopulateTestDB
                         dbTestDB.AppTaskLanguages.Add((AppTaskLanguage)objTarget);
                     }
                     break;
-                //case "AspNetUser":
-                //    {
-                //        dbTestDB.AspNetUsers.Add((AspNetUser)objTarget);
-                //    }
-                //    break;
+                case "AspNetUser":
+                    {
+                        dbTestDB.AspNetUsers.Add((AspNetUser)objTarget);
+                    }
+                    break;
                 case "BoxModel":
                     {
                         ((BoxModel)objTarget).BoxModelID = 0;

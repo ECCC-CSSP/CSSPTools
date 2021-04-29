@@ -885,4 +885,10 @@
   <data name="_ShouldBeEqualTo_" xml:space="preserve">
     <value>{0} should be equal to {1}</value>
   </data>
+  <data name="Adding_TVItemIsNotAllowed" xml:space="preserve">
+    <value>Adding {0} TVItem is not allowed</value>
+  </data>
+  <data name="Adding_TVItemUnder_TVItemIsNotAllowed" xml:space="preserve">
+    <value>Adding {0} TVItem under {1} TVItem is not allowed</value>
+  </data>
 </root>

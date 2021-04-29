@@ -29,34 +29,22 @@ namespace ReadGzFileServices
     {
         private void DoMergeJsonWebAllTVItemLanguages(WebAllTVItemLanguages WebAllTVItemLanguages, WebAllTVItemLanguages WebAllTVItemLanguagesLocal)
         {
-            // -----------------------------------------------------------
-            // doing TVItemLanguageList
-            // -----------------------------------------------------------
-            
-            int count = WebAllTVItemLanguages.TVItemLanguageList.Count;
-            for (int i = 0; i < count; i++)
-            {
-                TVItemLanguage TVItemLanguageLocal = (from c in WebAllTVItemLanguagesLocal.TVItemLanguageList
-                                        where c.TVItemLanguageID == WebAllTVItemLanguages.TVItemLanguageList[i].TVItemLanguageID
-                                        && c.DBCommand != DBCommandEnum.Original
-                                        select c).FirstOrDefault();
+            List<TVItemLanguage> tvItemLanguageLocalList = (from c in WebAllTVItemLanguagesLocal.TVItemLanguageList
+                                                    where c.DBCommand != DBCommandEnum.Original
+                                                    select c).ToList();
 
-                if (TVItemLanguageLocal != null)
+            foreach (TVItemLanguage tvItemLanguageLocal in tvItemLanguageLocalList)
+            {
+                TVItemLanguage tvItemLanguageOriginal = WebAllTVItemLanguages.TVItemLanguageList.Where(c => c.TVItemLanguageID == tvItemLanguageLocal.TVItemLanguageID).FirstOrDefault();
+                if (tvItemLanguageOriginal == null)
                 {
-                    WebAllTVItemLanguages.TVItemLanguageList[i] = TVItemLanguageLocal;
+                    WebAllTVItemLanguages.TVItemLanguageList.Add(tvItemLanguageLocal);
+                }
+                else
+                {
+                    tvItemLanguageOriginal = tvItemLanguageLocal;
                 }
             }
-
-            List<TVItemLanguage> TVItemLanguageLocalNewList = (from c in WebAllTVItemLanguagesLocal.TVItemLanguageList
-                                                 where c.DBCommand == DBCommandEnum.Created
-                                                 select c).ToList();
-
-            foreach(TVItemLanguage TVItemLanguageNew in TVItemLanguageLocalNewList)
-            {
-                WebAllTVItemLanguages.TVItemLanguageList.Add(TVItemLanguageNew);
-            }
-
-            return;
         }
     }
 }

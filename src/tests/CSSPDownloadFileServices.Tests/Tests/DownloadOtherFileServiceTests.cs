@@ -39,7 +39,6 @@ namespace DownloadFileServices.Tests
 
             foreach(string fileName in otherFileList)
             {
-                // Download file
                 var actionRes2 = await DownloadFileService.DownloadOtherFile(fileName);
                 Assert.NotNull(((FileStreamResult)actionRes2).FileStream);
             }

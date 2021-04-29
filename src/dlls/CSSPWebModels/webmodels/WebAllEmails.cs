@@ -12,16 +12,13 @@ namespace CSSPWebModels
     public partial class WebAllEmails
     {
         #region Properties
-        public List<WebBase> TVItemAllEmailList { get; set; }
-
-        public List<Email> EmailList { get; set; }
+        public List<EmailModel> EmailModelList { get; set; }
         #endregion Properties
 
         #region Constructors
         public WebAllEmails()
         {
-            TVItemAllEmailList = new List<WebBase>();
-            EmailList = new List<Email>();
+            EmailModelList = new List<EmailModel>();
         }
         #endregion Constructors
     }

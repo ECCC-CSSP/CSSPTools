@@ -37,7 +37,7 @@ namespace CSSPDesktopServices.Services
                 try
                 {
                     #region doing WebAllTVItems
-                    var actionWebAllTVItems = await ReadGzFileService.ReadJSON<WebAllTVItems>(WebTypeEnum.WebAllTVItems, 0, WebTypeYearEnum.Year1980);
+                    var actionWebAllTVItems = await ReadGzFileService.ReadJSON<WebAllTVItems>(WebTypeEnum.WebAllTVItems1980_2020, 0);
                     if (((ObjectResult)actionWebAllTVItems.Result).StatusCode == 200)
                     {
                         webAllTVItems = (WebAllTVItems)((OkObjectResult)actionWebAllTVItems.Result).Value;
@@ -91,7 +91,7 @@ namespace CSSPDesktopServices.Services
                     #endregion Doing WebAllTVItemLanguages
 
                     #region doing WebAllTVItemLanguage
-                    var actionWebAllTVItemLanguages = await ReadGzFileService.ReadJSON<WebAllTVItemLanguages>(WebTypeEnum.WebAllTVItemLanguages, 0, WebTypeYearEnum.Year1980);
+                    var actionWebAllTVItemLanguages = await ReadGzFileService.ReadJSON<WebAllTVItemLanguages>(WebTypeEnum.WebAllTVItemLanguages1980_2020, 0);
                     if (((ObjectResult)actionWebAllTVItemLanguages.Result).StatusCode == 200)
                     {
                         webAllTVItemLanguages = (WebAllTVItemLanguages)((OkObjectResult)actionWebAllTVItemLanguages.Result).Value;

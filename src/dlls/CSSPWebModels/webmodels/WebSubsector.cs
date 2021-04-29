@@ -9,18 +9,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CSSPWebModels
 {
     [NotMapped]
-    public partial class WebSubsector : WebBase
+    public partial class WebSubsector
     {
         #region Properties
-        public List<WebBase> TVItemParentList { get; set; }
-        public List<WebBase> TVItemFileList { get; set; }
-
-        public List<WebBase> TVItemClassificationList { get; set; }
-        public List<WebBase> TVItemMWQMSiteList { get; set; }
-        public List<WebBase> TVItemMWQMRunList { get; set; }
-        public List<WebBase> TVItemPolSourceSiteList { get; set; }
+        public TVItemStatMapModel TVItemStatMapModel { get; set; }
+        public List<TVItemStatModel> TVItemStatModelParentList { get; set; }
+        public List<TVFileModel> TVFileModelList { get; set; }
+        public List<TVItemStatMapModel> TVItemStatMapModelClassificationList { get; set; }
         public List<MWQMAnalysisReportParameter> MWQMAnalysisReportParameterList { get; set; }
-        public List<LabSheetModel> LabSheetModelList { get; set; }
         public MWQMSubsector MWQMSubsector { get; set; }
         public List<MWQMSubsectorLanguage> MWQMSubsectorLanguageList { get; set; }
         public List<UseOfSite> UseOfSiteList { get; set; }
@@ -29,14 +25,11 @@ namespace CSSPWebModels
         #region Constructors
         public WebSubsector()
         {
-            TVItemParentList = new List<WebBase>();
-            TVItemFileList = new List<WebBase>();
-            TVItemClassificationList = new List<WebBase>();
-            TVItemMWQMSiteList = new List<WebBase>();
-            TVItemMWQMRunList = new List<WebBase>();
-            TVItemPolSourceSiteList = new List<WebBase>();
+            TVItemStatMapModel = new TVItemStatMapModel();
+            TVItemStatModelParentList = new List<TVItemStatModel>();
+            TVFileModelList = new List<TVFileModel>();
+            TVItemStatMapModelClassificationList = new List<TVItemStatMapModel>();
             MWQMAnalysisReportParameterList = new List<MWQMAnalysisReportParameter>();
-            LabSheetModelList = new List<LabSheetModel>();
             MWQMSubsector = new MWQMSubsector();
             MWQMSubsectorLanguageList = new List<MWQMSubsectorLanguage>();
             UseOfSiteList = new List<UseOfSite>();

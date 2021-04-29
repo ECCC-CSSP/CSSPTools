@@ -29,38 +29,63 @@ namespace CSSPDBLocalServices
                 return false;
             }
 
-            // already exist TVTextEN
-            if ((from c in gzObjectList.tvItemSiblingList
-                 where c.TVItemModel.TVItem.TVItemID != postTVItemModel.TVItemID
-                 && c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.en].TVText == postTVItemModel.TVTextEN
-                 select c).Any())
+            if (postTVItemModel.TVItem.TVType == TVTypeEnum.File)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._AlreadyExists, postTVItemModel.TVTextEN), new[] { "TVTextEN" }));
-                return false;
-            }
+                // already exist TVTextEN
+                if ((from c in gzObjectList.tvItemFileSiblingList
+                     where c.TVItem.TVItemID != postTVItemModel.TVItem.TVItemID
+                     && c.TVItemLanguageList[(int)LanguageEnum.en].TVText == postTVItemModel.TVItemLanguageList[(int)LanguageEnum.en].TVText
+                     select c).Any())
+                {
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._AlreadyExists, postTVItemModel.TVItemLanguageList[(int)LanguageEnum.en].TVText), new[] { "TVText" }));
+                    return false;
+                }
 
-            // already exist TVTextFR
-            if ((from c in gzObjectList.tvItemSiblingList
-                 where c.TVItemModel.TVItem.TVItemID != postTVItemModel.TVItemID
-                 && c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].TVText == postTVItemModel.TVTextFR
-                 select c).Any())
+                // already exist TVTextFR
+                if ((from c in gzObjectList.tvItemFileSiblingList
+                     where c.TVItem.TVItemID != postTVItemModel.TVItem.TVItemID
+                     && c.TVItemLanguageList[(int)LanguageEnum.fr].TVText == postTVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].TVText
+                     select c).Any())
+                {
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._AlreadyExists, postTVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].TVText), new[] { "TVText" }));
+                    return false;
+                }
+            }
+            else
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._AlreadyExists, postTVItemModel.TVTextFR), new[] { "TVTextFR" }));
-                return false;
+                // already exist TVTextEN
+                if ((from c in gzObjectList.tvItemSiblingList
+                     where c.TVItem.TVItemID != postTVItemModel.TVItem.TVItemID
+                     && c.TVItemLanguageList[(int)LanguageEnum.en].TVText == postTVItemModel.TVItemLanguageList[(int)LanguageEnum.en].TVText
+                     select c).Any())
+                {
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._AlreadyExists, postTVItemModel.TVItemLanguageList[(int)LanguageEnum.en].TVText), new[] { "TVText" }));
+                    return false;
+                }
+
+                // already exist TVTextFR
+                if ((from c in gzObjectList.tvItemSiblingList
+                     where c.TVItem.TVItemID != postTVItemModel.TVItem.TVItemID
+                     && c.TVItemLanguageList[(int)LanguageEnum.fr].TVText == postTVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].TVText
+                     select c).Any())
+                {
+                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._AlreadyExists, postTVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].TVText), new[] { "TVText" }));
+                    return false;
+                }
             }
 
             // filling all parent TVItem in the DBLocal
-            foreach (WebBase webBaseToAdd in gzObjectList.tvItemParentList.OrderBy(c => c.TVItemModel.TVItem.TVLevel))
+            foreach (TVItemModel tvItemModel in gzObjectList.tvItemParentList.OrderBy(c => c.TVItem.TVLevel))
             {
                 if (!(from c in dbLocal.TVItems
-                      where c.TVItemID == webBaseToAdd.TVItemModel.TVItem.TVItemID
+                      where c.TVItemID == tvItemModel.TVItem.TVItemID
                       select c).Any())
                 {
                     try
                     {
-                        dbLocal.TVItems.Add(webBaseToAdd.TVItemModel.TVItem);
+                        dbLocal.TVItems.Add(tvItemModel.TVItem);
                         dbLocal.SaveChanges();
-                        AppendToRecreate(webBaseToAdd.TVItemModel.TVItem, 1982, postTVItemModel.ParentTVType, (int)postTVItemModel.GrandParentID);
+                        AppendToRecreate(tvItemModel.TVItem, postTVItemModel.TVItemParent.TVType);
                     }
                     catch (Exception ex)
                     {
@@ -71,14 +96,14 @@ namespace CSSPDBLocalServices
                     foreach (LanguageEnum lang in new List<LanguageEnum>() { LanguageEnum.en, LanguageEnum.fr })
                     {
                         if (!(from c in dbLocal.TVItemLanguages
-                              where c.TVItemID == webBaseToAdd.TVItemModel.TVItem.TVItemID
+                              where c.TVItemID == tvItemModel.TVItem.TVItemID
                               && c.Language == lang
                               select c).Any())
                         {
 
                             try
                             {
-                                dbLocal.TVItemLanguages.Add(webBaseToAdd.TVItemModel.TVItemLanguageList[(int)lang]);
+                                dbLocal.TVItemLanguages.Add(tvItemModel.TVItemLanguageList[(int)lang]);
                                 dbLocal.SaveChanges();
                             }
                             catch (Exception ex)
@@ -96,17 +121,17 @@ namespace CSSPDBLocalServices
                                orderby c.TVItemID descending
                                select c.TVItemID).FirstOrDefault() - 1;
 
-            if (postTVItemModel.TVItemID == 0)
+            if (postTVItemModel.TVItem.TVItemID == 0)
             {
                 TVItem tvItemNew = new TVItem()
                 {
                     DBCommand = DBCommandEnum.Created,
                     IsActive = true,
-                    ParentID = postTVItemModel.ParentID,
+                    ParentID = postTVItemModel.TVItem.ParentID,
                     TVItemID = TVItemIDNew,
                     TVLevel = gzObjectList.ParentTVItem.TVLevel + 1,
                     TVPath = $"{ gzObjectList.ParentTVItem.TVPath }p{TVItemIDNew}",
-                    TVType = postTVItemModel.TVType,
+                    TVType = postTVItemModel.TVItem.TVType,
                     LastUpdateDate_UTC = DateTime.UtcNow,
                     LastUpdateContactTVItemID = LoggedInService.LoggedInContactInfo.LoggedInContact.LastUpdateContactTVItemID,
                 };
@@ -115,7 +140,22 @@ namespace CSSPDBLocalServices
                 {
                     dbLocal.TVItems.Add(tvItemNew);
                     dbLocal.SaveChanges();
-                    AppendToRecreate(tvItemNew, 1982, postTVItemModel.ParentTVType, (int)postTVItemModel.GrandParentID);
+                    if (tvItemNew.TVType == TVTypeEnum.MWQMRun)
+                    {
+                        AppendToRecreate(tvItemNew, TVTypeEnum.MWQMRun);
+                    }
+                    else if (tvItemNew.TVType == TVTypeEnum.MWQMSite)
+                    {
+                        AppendToRecreate(tvItemNew, TVTypeEnum.MWQMSite);
+                    }
+                    else if (tvItemNew.TVType == TVTypeEnum.PolSourceSite)
+                    {
+                        AppendToRecreate(tvItemNew, TVTypeEnum.PolSourceSite);
+                    }
+                    else
+                    {
+                        AppendToRecreate(tvItemNew, postTVItemModel.TVItemParent.TVType);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -137,7 +177,7 @@ namespace CSSPDBLocalServices
                         TVItemID = TVItemIDNew,
                         Language = lang,
                         TranslationStatus = TranslationStatusEnum.Translated,
-                        TVText = lang == LanguageEnum.fr ? postTVItemModel.TVTextFR : postTVItemModel.TVTextEN,
+                        TVText = lang == LanguageEnum.fr ? postTVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].TVText : postTVItemModel.TVItemLanguageList[(int)LanguageEnum.en].TVText,
                         LastUpdateDate_UTC = DateTime.UtcNow,
                         LastUpdateContactTVItemID = LoggedInService.LoggedInContactInfo.LoggedInContact.LastUpdateContactTVItemID,
                     };
@@ -156,31 +196,60 @@ namespace CSSPDBLocalServices
             }
             else
             {
-                WebBase WebBaseToChange = new WebBase();
-                foreach (WebBase webBase in gzObjectList.tvItemSiblingList)
+                TVItemModel tvItemModelToChange = new TVItemModel();
+                if (postTVItemModel.TVItem.TVType == TVTypeEnum.File)
                 {
-                    if (webBase.TVItemModel.TVItem.TVItemID == postTVItemModel.TVItemID)
+                    foreach (TVItemModel tvItemModel in gzObjectList.tvItemFileSiblingList)
                     {
-                        WebBaseToChange = webBase;
-                        break;
+                        if (tvItemModel.TVItem.TVItemID == postTVItemModel.TVItem.TVItemID)
+                        {
+                            tvItemModelToChange = tvItemModel;
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (TVItemModel tvItemModel in gzObjectList.tvItemSiblingList)
+                    {
+                        if (tvItemModel.TVItem.TVItemID == postTVItemModel.TVItem.TVItemID)
+                        {
+                            tvItemModelToChange = tvItemModel;
+                            break;
+                        }
                     }
                 }
 
                 TVItem tvItem = (from c in dbLocal.TVItems
-                                 where c.TVItemID == WebBaseToChange.TVItemModel.TVItem.TVItemID
+                                 where c.TVItemID == tvItemModelToChange.TVItem.TVItemID
                                  select c).FirstOrDefault();
 
                 if (tvItem == null)
                 {
-                    TVItem tvItemNew = WebBaseToChange.TVItemModel.TVItem;
+                    TVItem tvItemNew = tvItemModelToChange.TVItem;
 
                     dbLocal.TVItems.Add(tvItemNew);
-                    AppendToRecreate(tvItemNew, 1982, postTVItemModel.ParentTVType, (int)postTVItemModel.GrandParentID);
                     tvItem = tvItemNew;
+                    if (tvItemNew.TVType == TVTypeEnum.MWQMRun)
+                    {
+                        AppendToRecreate(tvItemNew, TVTypeEnum.MWQMRun);
+                    }
+                    else if (tvItemNew.TVType == TVTypeEnum.MWQMSite)
+                    {
+                        AppendToRecreate(tvItemNew, TVTypeEnum.MWQMSite);
+                    }
+                    else if (tvItemNew.TVType == TVTypeEnum.PolSourceSite)
+                    {
+                        AppendToRecreate(tvItemNew, TVTypeEnum.PolSourceSite);
+                    }
+                    else
+                    {
+                        AppendToRecreate(tvItemNew, postTVItemModel.TVItemParent.TVType);
+                    }
                 }
                 else
                 {
-                    tvItem.IsActive = WebBaseToChange.TVItemModel.TVItem.IsActive;
+                    tvItem.IsActive = tvItemModelToChange.TVItem.IsActive;
                 }
 
                 try
@@ -196,14 +265,14 @@ namespace CSSPDBLocalServices
                 foreach (LanguageEnum lang in new List<LanguageEnum>() { LanguageEnum.en, LanguageEnum.fr })
                 {
                     TVItemLanguage tvItemLanguage = (from c in dbLocal.TVItemLanguages
-                                                     where c.TVItemLanguageID == WebBaseToChange.TVItemModel.TVItemLanguageList[(int)lang].TVItemLanguageID
+                                                     where c.TVItemLanguageID == tvItemModelToChange.TVItemLanguageList[(int)lang].TVItemLanguageID
                                                      select c).FirstOrDefault();
 
-                    string tvText = lang == LanguageEnum.fr ? postTVItemModel.TVTextFR : postTVItemModel.TVTextEN;
+                    string tvText = lang == LanguageEnum.fr ? postTVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].TVText : postTVItemModel.TVItemLanguageList[(int)LanguageEnum.en].TVText;
                     if (tvItemLanguage == null)
                     {
-                        TVItemLanguage tvItemLanguageNew = WebBaseToChange.TVItemModel.TVItemLanguageList[(int)lang];
-                        if (WebBaseToChange.TVItemModel.TVItemLanguageList[(int)lang].TVText == tvText)
+                        TVItemLanguage tvItemLanguageNew = tvItemModelToChange.TVItemLanguageList[(int)lang];
+                        if (tvItemModelToChange.TVItemLanguageList[(int)lang].TVText == tvText)
                         {
                             tvItemLanguageNew.DBCommand = DBCommandEnum.Original;
                         }
@@ -216,7 +285,23 @@ namespace CSSPDBLocalServices
                         }
 
                         dbLocal.TVItemLanguages.Add(tvItemLanguageNew);
-                        AppendToRecreate(tvItem, 1982, postTVItemModel.ParentTVType, (int)postTVItemModel.GrandParentID);
+
+                        if (tvItem.TVType == TVTypeEnum.MWQMRun)
+                        {
+                            AppendToRecreate(tvItem, TVTypeEnum.MWQMRun);
+                        }
+                        else if (tvItem.TVType == TVTypeEnum.MWQMSite)
+                        {
+                            AppendToRecreate(tvItem, TVTypeEnum.MWQMSite);
+                        }
+                        else if (tvItem.TVType == TVTypeEnum.PolSourceSite)
+                        {
+                            AppendToRecreate(tvItem, TVTypeEnum.PolSourceSite);
+                        }
+                        else
+                        {
+                            AppendToRecreate(tvItem, postTVItemModel.TVItemParent.TVType);
+                        }
                     }
                     else
                     {
@@ -232,7 +317,7 @@ namespace CSSPDBLocalServices
                     try
                     {
                         dbLocal.SaveChanges();
-                        AppendToRecreate(tvItem, 1982, postTVItemModel.ParentTVType, (int)postTVItemModel.GrandParentID);
+                        AppendToRecreate(tvItem, postTVItemModel.TVItemParent.TVType);
                     }
                     catch (Exception ex)
                     {
@@ -245,7 +330,7 @@ namespace CSSPDBLocalServices
 
             foreach (ToRecreate toRecreate in ToRecreateList)
             {
-                CreateGzFileLocalService.CreateGzFileLocal(toRecreate.WebType, toRecreate.TVItemID, toRecreate.WebTypeYear);
+                CreateGzFileLocalService.CreateGzFileLocal(toRecreate.WebType, toRecreate.TVItemID);
             }
 
             return ValidationResults.Count == 0 ? true : false;

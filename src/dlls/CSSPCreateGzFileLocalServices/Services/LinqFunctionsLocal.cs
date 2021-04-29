@@ -526,10 +526,10 @@ namespace CreateGzFileLocalServices
                           && c.SamplingPlanID == samplingPlanID
                           select cs).AsNoTracking().ToListAsync();
         }
-        private async Task<List<MWQMSample>> GetWQMSampleListFromSubsector10Years(TVItem TVItemSubsector, int Year)
+        private async Task<List<MWQMSample>> GetWQMSampleListFromSubsector1980_2020(TVItem TVItemSubsector)
         {
-            DateTime StartDate = new DateTime(Year, 1, 1);
-            DateTime EndDate = new DateTime(Year + 9, 12, 31);
+            DateTime StartDate = new DateTime(1980, 1, 1);
+            DateTime EndDate = new DateTime(2020, 12, 31);
 
             return await (from c in dbLocal.TVItems
                           from sa in dbLocal.MWQMSamples
@@ -540,10 +540,42 @@ namespace CreateGzFileLocalServices
                           && sa.SampleDateTime_Local <= EndDate
                           select sa).AsNoTracking().ToListAsync();
         }
-        private async Task<List<MWQMSampleLanguage>> GetWQMSampleLanguageListFromSubsector10Years(TVItem TVItemSubsector, int Year)
+        private async Task<List<MWQMSample>> GetWQMSampleListFromSubsector2021_2060(TVItem TVItemSubsector)
         {
-            DateTime StartDate = new DateTime(Year, 1, 1);
-            DateTime EndDate = new DateTime(Year + 9, 12, 31);
+            DateTime StartDate = new DateTime(2021, 1, 1);
+            DateTime EndDate = new DateTime(2060, 12, 31);
+
+            return await (from c in dbLocal.TVItems
+                          from sa in dbLocal.MWQMSamples
+                          where c.TVItemID == sa.MWQMSiteTVItemID
+                          && c.TVPath.Contains(TVItemSubsector.TVPath + "p")
+                          && c.TVType == TVTypeEnum.MWQMSite
+                          && sa.SampleDateTime_Local >= StartDate
+                          && sa.SampleDateTime_Local <= EndDate
+                          select sa).AsNoTracking().ToListAsync();
+        }
+        private async Task<List<MWQMSampleLanguage>> GetWQMSampleLanguageListFromSubsector1980_2020(TVItem TVItemSubsector)
+        {
+            DateTime StartDate = new DateTime(1980, 1, 1);
+            DateTime EndDate = new DateTime(2020, 12, 31);
+
+            List<int> MWQMSampleIDList = await (from c in dbLocal.TVItems
+                                                from sa in dbLocal.MWQMSamples
+                                                where c.TVItemID == sa.MWQMSiteTVItemID
+                                                && c.TVPath.Contains(TVItemSubsector.TVPath + "p")
+                                                && c.TVType == TVTypeEnum.MWQMSite
+                                                && sa.SampleDateTime_Local >= StartDate
+                                                && sa.SampleDateTime_Local <= EndDate
+                                                select sa.MWQMSampleID).ToListAsync();
+
+            return await (from sal in dbLocal.MWQMSampleLanguages
+                          where MWQMSampleIDList.Contains(sal.MWQMSampleID)
+                          select sal).AsNoTracking().ToListAsync();
+        }
+        private async Task<List<MWQMSampleLanguage>> GetWQMSampleLanguageListFromSubsector2021_2060(TVItem TVItemSubsector)
+        {
+            DateTime StartDate = new DateTime(2021, 1, 1);
+            DateTime EndDate = new DateTime(2060, 12, 31);
 
             List<int> MWQMSampleIDList = await (from c in dbLocal.TVItems
                                                 from sa in dbLocal.MWQMSamples
@@ -658,6 +690,7 @@ namespace CreateGzFileLocalServices
                           where c.TVItemID == cs.ClimateSiteTVItemID
                           && c.TVPath.Contains(TVItemProvince.TVPath + "p")
                           && c.TVType == TVTypeEnum.ClimateSite
+                          orderby cs.ClimateSiteName
                           select cs).AsNoTracking().ToListAsync();
         }
         private async Task<List<TideSite>> GetTideSiteListUnderProvince(TVItem TVItemProvince)
@@ -667,6 +700,7 @@ namespace CreateGzFileLocalServices
                           where c.TVItemID == cs.TideSiteTVItemID
                           && c.TVPath.Contains(TVItemProvince.TVPath + "p")
                           && c.TVType == TVTypeEnum.TideSite
+                          orderby cs.TideSiteName
                           select cs).AsNoTracking().ToListAsync();
         }
         private async Task<List<HydrometricSite>> GetHydrometricSiteListUnderProvince(TVItem TVItemProvince)
@@ -676,6 +710,7 @@ namespace CreateGzFileLocalServices
                           where c.TVItemID == hs.HydrometricSiteTVItemID
                           && c.TVPath.Contains(TVItemProvince.TVPath + "p")
                           && c.TVType == TVTypeEnum.HydrometricSite
+                          orderby hs.HydrometricSiteName
                           select hs).AsNoTracking().ToListAsync();
         }
         private async Task<List<RatingCurve>> GetRatingCurveListUnderProvince(TVItem TVItemProvince)
@@ -687,6 +722,7 @@ namespace CreateGzFileLocalServices
                           && hs.HydrometricSiteID == rc.HydrometricSiteID
                           && c.TVPath.Contains(TVItemProvince.TVPath + "p")
                           && c.TVType == TVTypeEnum.HydrometricSite
+                          orderby hs.HydrometricSiteName
                           select rc).AsNoTracking().ToListAsync();
         }
         private async Task<List<RatingCurveValue>> GetRatingCurveValueListUnderProvince(TVItem TVItemProvince)
@@ -700,6 +736,7 @@ namespace CreateGzFileLocalServices
                           && rc.RatingCurveID == rcv.RatingCurveID
                           && c.TVPath.Contains(TVItemProvince.TVPath + "p")
                           && c.TVType == TVTypeEnum.HydrometricSite
+                          orderby hs.HydrometricSiteName
                           select rcv).AsNoTracking().ToListAsync();
         }
         private async Task<List<DrogueRun>> GetDrogueRunListUnderProvince(int subsectorTVItemID)
@@ -800,6 +837,7 @@ namespace CreateGzFileLocalServices
                           from cv in dbLocal.ClimateDataValues
                           where c.ClimateSiteID == cv.ClimateSiteID
                           && c.ClimateSiteTVItemID == TVItemID
+                          orderby cv.DateTime_Local
                           select cv).AsNoTracking().ToListAsync();
         }
         private async Task<List<TideDataValue>> GetTideDataValueListForTideSite(int TVItemID)
@@ -816,6 +854,7 @@ namespace CreateGzFileLocalServices
                           from hv in dbLocal.HydrometricDataValues
                           where c.HydrometricSiteID == hv.HydrometricSiteID
                           && c.HydrometricSiteTVItemID == TVItemID
+                          orderby hv.DateTime_Local
                           select hv).AsNoTracking().ToListAsync();
         }
         private async Task<List<HelpDoc>> GetHelpDoc()

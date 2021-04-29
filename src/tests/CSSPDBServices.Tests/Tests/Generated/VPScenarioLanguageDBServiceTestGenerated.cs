@@ -366,7 +366,7 @@ namespace CSSPDBServices.Tests
             VPScenarioLanguage vpScenarioLanguage = new VPScenarioLanguage();
 
             if (OmitPropName != "DBCommand") vpScenarioLanguage.DBCommand = (DBCommandEnum)GetRandomEnumType(typeof(DBCommandEnum));
-            if (OmitPropName != "VPScenarioID") vpScenarioLanguage.VPScenarioID = 1;
+            if (OmitPropName != "VPScenarioID") vpScenarioLanguage.VPScenarioID = 0;
             if (OmitPropName != "Language") vpScenarioLanguage.Language = CSSPCultureServicesRes.Culture.TwoLetterISOLanguageName == "fr" ? LanguageEnum.fr : LanguageEnum.en;
             if (OmitPropName != "VPScenarioName") vpScenarioLanguage.VPScenarioName = GetRandomString("", 5);
             if (OmitPropName != "TranslationStatus") vpScenarioLanguage.TranslationStatus = (TranslationStatusEnum)GetRandomEnumType(typeof(TranslationStatusEnum));

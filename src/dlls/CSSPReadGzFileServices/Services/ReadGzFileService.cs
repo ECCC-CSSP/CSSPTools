@@ -26,8 +26,8 @@ namespace ReadGzFileServices
     public interface IReadGzFileService
     {
         WebAppLoaded webAppLoaded { get; set; }
-        Task<ActionResult<T>> ReadJSON<T>(WebTypeEnum webType, int TVItemID, WebTypeYearEnum webTypeYear);
-        Task<T> GetUncompressJSON<T>(WebTypeEnum webType, int TVItemID, WebTypeYearEnum webTypeYear);
+        Task<ActionResult<T>> ReadJSON<T>(WebTypeEnum webType, int TVItemID = 0);
+        Task<T> GetUncompressJSON<T>(WebTypeEnum webType, int TVItemID = 0);
     }
     public partial class ReadGzFileService : ControllerBase, IReadGzFileService
     {
@@ -78,13 +78,13 @@ namespace ReadGzFileServices
         #endregion Constructors
 
         #region Functions public
-        public async Task<ActionResult<T>> ReadJSON<T>(WebTypeEnum webType, int TVItemID, WebTypeYearEnum webTypeYear)
+        public async Task<ActionResult<T>> ReadJSON<T>(WebTypeEnum webType, int TVItemID = 0)
         {
-            return await DoReadJSON<T>(webType, TVItemID, webTypeYear);
+            return await DoReadJSON<T>(webType, TVItemID);
         }
-        public async Task<T> GetUncompressJSON<T>(WebTypeEnum webType, int TVItemID, WebTypeYearEnum webTypeYear)
+        public async Task<T> GetUncompressJSON<T>(WebTypeEnum webType, int TVItemID = 0)
         {
-            var actionRes = await ReadJSON<T>(webType, TVItemID, webTypeYear);
+            var actionRes = await ReadJSON<T>(webType, TVItemID);
             return (T)((OkObjectResult)actionRes.Result).Value;
         }
 

@@ -172,7 +172,7 @@ namespace CSSPDBServices.Tests
 
             // -----------------------------------
             // Is NOT Nullable
-            // [CSSPRange(0, 10000)]
+            // [CSSPRange(-90, 90)]
             // coCoRaHSSite.Latitude   (Double)
             // -----------------------------------
 
@@ -182,20 +182,20 @@ namespace CSSPDBServices.Tests
 
             coCoRaHSSite = null;
             coCoRaHSSite = GetFilledRandomCoCoRaHSSite("");
-            coCoRaHSSite.Latitude = -1.0D;
+            coCoRaHSSite.Latitude = -91.0D;
             actionCoCoRaHSSite = await CoCoRaHSSiteDBService.Post(coCoRaHSSite);
             Assert.IsType<BadRequestObjectResult>(actionCoCoRaHSSite.Result);
             //Assert.AreEqual(count, coCoRaHSSiteService.GetCoCoRaHSSiteList().Count());
             coCoRaHSSite = null;
             coCoRaHSSite = GetFilledRandomCoCoRaHSSite("");
-            coCoRaHSSite.Latitude = 10001.0D;
+            coCoRaHSSite.Latitude = 91.0D;
             actionCoCoRaHSSite = await CoCoRaHSSiteDBService.Post(coCoRaHSSite);
             Assert.IsType<BadRequestObjectResult>(actionCoCoRaHSSite.Result);
             //Assert.AreEqual(count, coCoRaHSSiteDBService.GetCoCoRaHSSiteList().Count());
 
             // -----------------------------------
             // Is NOT Nullable
-            // [CSSPRange(0, 10000)]
+            // [CSSPRange(-180, 180)]
             // coCoRaHSSite.Longitude   (Double)
             // -----------------------------------
 
@@ -205,13 +205,13 @@ namespace CSSPDBServices.Tests
 
             coCoRaHSSite = null;
             coCoRaHSSite = GetFilledRandomCoCoRaHSSite("");
-            coCoRaHSSite.Longitude = -1.0D;
+            coCoRaHSSite.Longitude = -181.0D;
             actionCoCoRaHSSite = await CoCoRaHSSiteDBService.Post(coCoRaHSSite);
             Assert.IsType<BadRequestObjectResult>(actionCoCoRaHSSite.Result);
             //Assert.AreEqual(count, coCoRaHSSiteService.GetCoCoRaHSSiteList().Count());
             coCoRaHSSite = null;
             coCoRaHSSite = GetFilledRandomCoCoRaHSSite("");
-            coCoRaHSSite.Longitude = 10001.0D;
+            coCoRaHSSite.Longitude = 181.0D;
             actionCoCoRaHSSite = await CoCoRaHSSiteDBService.Post(coCoRaHSSite);
             Assert.IsType<BadRequestObjectResult>(actionCoCoRaHSSite.Result);
             //Assert.AreEqual(count, coCoRaHSSiteDBService.GetCoCoRaHSSiteList().Count());
@@ -393,8 +393,8 @@ namespace CSSPDBServices.Tests
             if (OmitPropName != "DBCommand") coCoRaHSSite.DBCommand = (DBCommandEnum)GetRandomEnumType(typeof(DBCommandEnum));
             if (OmitPropName != "StationNumber") coCoRaHSSite.StationNumber = GetRandomString("", 5);
             if (OmitPropName != "StationName") coCoRaHSSite.StationName = GetRandomString("", 5);
-            if (OmitPropName != "Latitude") coCoRaHSSite.Latitude = GetRandomDouble(0.0D, 10000.0D);
-            if (OmitPropName != "Longitude") coCoRaHSSite.Longitude = GetRandomDouble(0.0D, 10000.0D);
+            if (OmitPropName != "Latitude") coCoRaHSSite.Latitude = GetRandomDouble(-90.0D, 90.0D);
+            if (OmitPropName != "Longitude") coCoRaHSSite.Longitude = GetRandomDouble(-180.0D, 180.0D);
             if (OmitPropName != "LastUpdateDate_UTC") coCoRaHSSite.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") coCoRaHSSite.LastUpdateContactTVItemID = 2;
 

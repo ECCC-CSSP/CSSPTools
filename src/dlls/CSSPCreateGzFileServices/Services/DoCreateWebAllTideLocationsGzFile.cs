@@ -27,7 +27,14 @@ namespace CreateGzFileServices
             {
                 webAllTideLocations.TideLocationList = await GetTideLocation();
 
-                await DoStore<WebAllTideLocations>(webAllTideLocations, $"{ WebTypeEnum.WebAllTideLocations }.gz");
+                if (dbLocal != null)
+                {
+                    await DoStoreLocal<WebAllTideLocations>(webAllTideLocations, $"{ WebTypeEnum.WebAllTideLocations }.gz");
+                }
+                else
+                {
+                    await DoStore<WebAllTideLocations>(webAllTideLocations, $"{ WebTypeEnum.WebAllTideLocations }.gz");
+                }
             }
             catch (Exception ex)
             {

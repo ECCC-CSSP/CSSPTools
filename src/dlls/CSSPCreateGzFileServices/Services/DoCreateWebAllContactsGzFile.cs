@@ -33,11 +33,16 @@ namespace CreateGzFileServices
 
             try
             {
-                webAllContacts.ContactList = await GetAllContact();
+                await FillContactModelList(webAllContacts.ContactModelList, TVItemRoot);
 
-                await FillChildListTVItemModelList(webAllContacts.TVItemAllContactList, TVItemRoot, TVTypeEnum.Contact);
-
-                await DoStore<WebAllContacts>(webAllContacts, $"{ WebTypeEnum.WebAllContacts }.gz");
+                if (dbLocal != null)
+                {
+                    await DoStoreLocal<WebAllContacts>(webAllContacts, $"{ WebTypeEnum.WebAllContacts }.gz");
+                }
+                else
+                {
+                    await DoStore<WebAllContacts>(webAllContacts, $"{ WebTypeEnum.WebAllContacts }.gz");
+                }
             }
             catch (Exception ex)
             {

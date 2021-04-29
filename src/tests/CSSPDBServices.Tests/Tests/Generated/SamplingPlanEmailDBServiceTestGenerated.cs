@@ -371,7 +371,7 @@ namespace CSSPDBServices.Tests
             SamplingPlanEmail samplingPlanEmail = new SamplingPlanEmail();
 
             if (OmitPropName != "DBCommand") samplingPlanEmail.DBCommand = (DBCommandEnum)GetRandomEnumType(typeof(DBCommandEnum));
-            if (OmitPropName != "SamplingPlanID") samplingPlanEmail.SamplingPlanID = 1;
+            if (OmitPropName != "SamplingPlanID") samplingPlanEmail.SamplingPlanID = 0;
             if (OmitPropName != "Email") samplingPlanEmail.Email = GetRandomEmail();
             if (OmitPropName != "IsContractor") samplingPlanEmail.IsContractor = true;
             if (OmitPropName != "LabSheetHasValueOver500") samplingPlanEmail.LabSheetHasValueOver500 = true;

@@ -16,7 +16,7 @@ namespace CreateGzFileLocalServices
 {
     public partial class CreateGzFileLocalService : ControllerBase, ICreateGzFileLocalService
     {
-        private async Task FillChildListTVItemModelListLocal(List<WebBase> TVItemChildList, TVItem TVItem, TVTypeEnum TVType)
+        private async Task FillChildListTVItemModelListLocal(List<TVItemModel> TVItemChildList, TVItem TVItem, TVTypeEnum TVType)
         {
             List<TVItem> TVItemList = await GetTVItemChildrenListWithTVItemID(TVItem, TVType);
             List<TVItemLanguage> TVItemLanguageList = await GetTVItemLanguageChildrenListWithTVItemID(TVItem, TVType);
@@ -26,7 +26,7 @@ namespace CreateGzFileLocalServices
 
             foreach (TVItem tvItem in TVItemList)
             {
-                WebBase webBase = new WebBase();
+                TVItemModel webBase = new TVItemModel();
                 webBase.TVItemModel.TVItem = tvItem;
                 webBase.TVItemModel.TVItemLanguageList = new List<TVItemLanguage>()
                 {

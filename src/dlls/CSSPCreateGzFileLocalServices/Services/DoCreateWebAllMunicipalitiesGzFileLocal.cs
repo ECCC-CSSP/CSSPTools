@@ -33,6 +33,8 @@ namespace CreateGzFileLocalServices
 
             try
             {
+                await FillParentListTVItemModelListLocal(webAllMunicipalities.TVItemParentList, TVItemRoot);
+
                 await FillChildListTVItemModelListLocal(webAllMunicipalities.TVItemAllMunicipalityList, TVItemRoot, TVTypeEnum.Municipality);
 
                 DoStoreLocal<WebAllMunicipalities>(webAllMunicipalities, $"{ WebTypeEnum.WebAllMunicipalities }.gz");

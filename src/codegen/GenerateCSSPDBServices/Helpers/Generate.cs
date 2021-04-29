@@ -169,7 +169,7 @@ namespace GenerateCSSPDBServices
                     sb.AppendLine(@"        private ICSSPCultureService CSSPCultureService { get; }");
                     sb.AppendLine(@"        private ILoggedInService LoggedInService { get; }");
                     sb.AppendLine(@"        private IEnums enums { get; }");
-                    sb.AppendLine(@"        private List<ValidationResult> ValidationResults { get; set; }");
+                    sb.AppendLine(@"        private List<ValidationResult> ValidationResultList { get; set; }");
                     sb.AppendLine(@"        #endregion Properties");
                     sb.AppendLine(@"");
                     sb.AppendLine(@"        #region Constructors");
@@ -208,6 +208,8 @@ namespace GenerateCSSPDBServices
                     sb.AppendLine(@"            this.LoggedInService = LoggedInService;");
                     sb.AppendLine(@"            this.enums = enums;");
                     sb.AppendLine(@"            this.db = db;");
+                    sb.AppendLine(@"");
+                    sb.AppendLine(@"            ValidationResultList = new List<ValidationResult>();");
                     if (/*dllTypeInfoModels.Type.Name == "AspNetUser" || */dllTypeInfoModels.Type.Name == "Contact"
                         || dllTypeInfoModels.Type.Name == "TVItemUserAuthorization"
                         || dllTypeInfoModels.Type.Name == "TVTypeUserAuthorization")

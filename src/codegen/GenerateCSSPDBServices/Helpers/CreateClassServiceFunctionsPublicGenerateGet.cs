@@ -25,7 +25,7 @@ namespace GenerateCSSPDBServices
                     continue;
                 }
 
-                if (dllPropertyInfo.PropertyInfo.Name == "ValidationResults")
+                if (dllPropertyInfo.PropertyInfo.Name == "ValidationResultList")
                 {
                     continue;
                 }

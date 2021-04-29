@@ -9,11 +9,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CSSPWebModels
 {
     [NotMapped]
-    public partial class PolSourceSiteModel : WebBase
+    public partial class PolSourceSiteModel
     {
         #region Properties
+        public TVItemStatMapModel TVItemStatMapModel { get; set; }
         public PolSourceSite PolSourceSite { get; set; }
-        public List<WebBase> TVItemFileList { get; set; }
+        public List<TVFileModel> TVFileModelList { get; set; }
         public Address PolSourceSiteCivicAddress { get; set; }
         public List<PolSourceObservationModel> PolSourceObservationModelList { get; set; }
         public List<PolSourceSiteEffect> PolSourceSiteEffectList { get; set; }
@@ -22,8 +23,9 @@ namespace CSSPWebModels
         #region Constructors
         public PolSourceSiteModel()
         {
+            TVItemStatMapModel = new TVItemStatMapModel();
             PolSourceSite = new PolSourceSite();
-            TVItemFileList = new List<WebBase>();
+            TVFileModelList = new List<TVFileModel>();
             PolSourceSiteCivicAddress = new Address();
             PolSourceObservationModelList = new List<PolSourceObservationModel>();
             PolSourceSiteEffectList = new List<PolSourceSiteEffect>();

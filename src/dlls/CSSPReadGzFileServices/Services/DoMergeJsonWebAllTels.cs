@@ -29,62 +29,24 @@ namespace ReadGzFileServices
     {
         private void DoMergeJsonWebAllTels(WebAllTels WebAllTels, WebAllTels WebAllTelsLocal)
         {
-            // -----------------------------------------------------------
-            // doing TVItemAllTelsList
-            // -----------------------------------------------------------
-            int count = WebAllTels.TVItemAllTelList.Count;
-            for (int i = 0; i < count; i++)
-            {
-                WebBase webBaseLocal = (from c in WebAllTelsLocal.TVItemAllTelList
-                                        where c.TVItemModel.TVItem.TVItemID == WebAllTels.TVItemAllTelList[i].TVItemModel.TVItem.TVItemID
-                                        && (c.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
-                                        || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.en].DBCommand != DBCommandEnum.Original
-                                        || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].DBCommand != DBCommandEnum.Original)
-                                        select c).FirstOrDefault();
+            List<TelModel> telModelLocalList = (from c in WebAllTelsLocal.TelModelList
+                                                    where c.TVItem.DBCommand != DBCommandEnum.Original
+                                                    || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
+                                                    || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original
+                                                    select c).ToList();
 
-                if (webBaseLocal != null)
+            foreach (TelModel telModelLocal in telModelLocalList)
+            {
+                TelModel telModelOriginal = WebAllTels.TelModelList.Where(c => c.TVItem.TVItemID == telModelLocal.TVItem.TVItemID).FirstOrDefault();
+                if (telModelOriginal == null)
                 {
-                    WebAllTels.TVItemAllTelList[i] = webBaseLocal;
+                    WebAllTels.TelModelList.Add(telModelLocal);
+                }
+                else
+                {
+                    telModelOriginal = telModelLocal;
                 }
             }
-
-            List<WebBase> webBaseLocalNewList = (from c in WebAllTelsLocal.TVItemAllTelList
-                                                 where c.TVItemModel.TVItem.DBCommand == DBCommandEnum.Created
-                                                 select c).ToList();
-
-            foreach (WebBase webBaseNew in webBaseLocalNewList)
-            {
-                WebAllTels.TVItemAllTelList.Add(webBaseNew);
-            }
-
-            // -----------------------------------------------------------
-            // doing TelList
-            // -----------------------------------------------------------
-            
-            count = WebAllTels.TelList.Count;
-            for (int i = 0; i < count; i++)
-            {
-                Tel TelLocal = (from c in WebAllTelsLocal.TelList
-                                        where c.TelID == WebAllTels.TelList[i].TelID
-                                        && c.DBCommand != DBCommandEnum.Original
-                                        select c).FirstOrDefault();
-
-                if (TelLocal != null)
-                {
-                    WebAllTels.TelList[i] = TelLocal;
-                }
-            }
-
-            List<Tel> TelLocalNewList = (from c in WebAllTelsLocal.TelList
-                                                 where c.DBCommand == DBCommandEnum.Created
-                                                 select c).ToList();
-
-            foreach(Tel TelNew in TelLocalNewList)
-            {
-                WebAllTels.TelList.Add(TelNew);
-            }
-
-            return;
         }
     }
 }

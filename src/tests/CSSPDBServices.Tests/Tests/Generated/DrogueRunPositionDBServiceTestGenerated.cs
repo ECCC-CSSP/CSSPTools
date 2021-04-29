@@ -450,7 +450,7 @@ namespace CSSPDBServices.Tests
             DrogueRunPosition drogueRunPosition = new DrogueRunPosition();
 
             if (OmitPropName != "DBCommand") drogueRunPosition.DBCommand = (DBCommandEnum)GetRandomEnumType(typeof(DBCommandEnum));
-            if (OmitPropName != "DrogueRunID") drogueRunPosition.DrogueRunID = 1;
+            if (OmitPropName != "DrogueRunID") drogueRunPosition.DrogueRunID = 0;
             if (OmitPropName != "Ordinal") drogueRunPosition.Ordinal = GetRandomInt(0, 100000);
             if (OmitPropName != "StepLat") drogueRunPosition.StepLat = GetRandomDouble(-180.0D, 180.0D);
             if (OmitPropName != "StepLng") drogueRunPosition.StepLng = GetRandomDouble(-90.0D, 90.0D);

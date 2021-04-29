@@ -22,7 +22,7 @@ namespace GenerateCSSPDBServices
                     sb.AppendLine(@"");
                     sb.AppendLine($@"                if ({ csspProp.ExistTypeName }{ csspProp.PropName } == null)");
                     sb.AppendLine(@"                {");
-                    sb.AppendLine($@"                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, ""{ csspProp.ExistTypeName }"", ""{ csspProp.PropName }"", { TypeNameLower }.{ csspProp.PropName }.ToString()), new[] {{ nameof({ TypeNameLower }.{ csspProp.PropName }) }}));");
+                    sb.AppendLine($@"                    ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, ""{ csspProp.ExistTypeName }"", ""{ csspProp.PropName }"", { TypeNameLower }.{ csspProp.PropName }.ToString()), new[] {{ nameof({ TypeNameLower }.{ csspProp.PropName }) }}));");
                     sb.AppendLine(@"                }");
                     if (csspProp.ExistTypeName == "TVItem")
                     {
@@ -37,7 +37,7 @@ namespace GenerateCSSPDBServices
                         sb.AppendLine(@"                    };");
                         sb.AppendLine($@"                    if (!AllowableTVTypes.Contains({ csspProp.ExistTypeName }{ csspProp.PropName }.TVType))");
                         sb.AppendLine(@"                    {");
-                        sb.AppendLine($@"                        ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, ""{ csspProp.PropName }"", ""{ String.Join(",", csspProp.AllowableTVTypeList) }""), new[] {{ nameof({ TypeNameLower }.{ csspProp.PropName }) }}));");
+                        sb.AppendLine($@"                        ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, ""{ csspProp.PropName }"", ""{ String.Join(",", csspProp.AllowableTVTypeList) }""), new[] {{ nameof({ TypeNameLower }.{ csspProp.PropName }) }}));");
                         sb.AppendLine(@"                    }");
                         sb.AppendLine(@"                }");
                     }
@@ -55,7 +55,7 @@ namespace GenerateCSSPDBServices
                         sb.AppendLine(@"");
                         sb.AppendLine($@"                if ({ csspProp.ExistTypeName }{ csspProp.PropName } == null)");
                         sb.AppendLine(@"                {");
-                        sb.AppendLine($@"                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, ""{ csspProp.ExistTypeName }"", ""{ csspProp.PropName }"", ({ TypeNameLower }.{ csspProp.PropName } == null ? """" : { TypeNameLower }.{ csspProp.PropName }.ToString())), new[] {{ nameof({ TypeNameLower }.{ csspProp.PropName }) }}));");
+                        sb.AppendLine($@"                    ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, ""{ csspProp.ExistTypeName }"", ""{ csspProp.PropName }"", ({ TypeNameLower }.{ csspProp.PropName } == null ? """" : { TypeNameLower }.{ csspProp.PropName }.ToString())), new[] {{ nameof({ TypeNameLower }.{ csspProp.PropName }) }}));");
                         sb.AppendLine(@"                }");
                         if (csspProp.ExistTypeName == "TVItem")
                         {
@@ -70,7 +70,7 @@ namespace GenerateCSSPDBServices
                             sb.AppendLine(@"                    };");
                             sb.AppendLine($@"                    if (!AllowableTVTypes.Contains({ csspProp.ExistTypeName }{ csspProp.PropName }.TVType))");
                             sb.AppendLine(@"                    {");
-                            sb.AppendLine($@"                        ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, ""{ csspProp.PropName }"", ""{ String.Join(",", csspProp.AllowableTVTypeList) }""), new[] {{ nameof({ TypeNameLower }.{ csspProp.PropName }) }}));");
+                            sb.AppendLine($@"                        ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, ""{ csspProp.PropName }"", ""{ String.Join(",", csspProp.AllowableTVTypeList) }""), new[] {{ nameof({ TypeNameLower }.{ csspProp.PropName }) }}));");
                             sb.AppendLine(@"                    }");
                             sb.AppendLine(@"                }");
                         }
@@ -86,11 +86,11 @@ namespace GenerateCSSPDBServices
                         sb.AppendLine(@"            {");
                         if (TypeName == "Contact" && csspProp.PropName == "Id")
                         {
-                            sb.AppendLine($@"                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, ""{ csspProp.ExistTypeName }"", ""{ csspProp.PropName }"", ({ TypeNameLower }.{ csspProp.PropName } == null ? """" : { TypeNameLower }.{ csspProp.PropName }.ToString())), new[] {{ nameof({ TypeNameLower }.{ csspProp.PropName }) }}));");
+                            sb.AppendLine($@"                ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, ""{ csspProp.ExistTypeName }"", ""{ csspProp.PropName }"", ({ TypeNameLower }.{ csspProp.PropName } == null ? """" : { TypeNameLower }.{ csspProp.PropName }.ToString())), new[] {{ nameof({ TypeNameLower }.{ csspProp.PropName }) }}));");
                         }
                         else
                         {
-                            sb.AppendLine($@"                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, ""{ csspProp.ExistTypeName }"", ""{ csspProp.PropName }"", { TypeNameLower }.{ csspProp.PropName }.ToString()), new[] {{ nameof({ TypeNameLower }.{ csspProp.PropName })}}));");
+                            sb.AppendLine($@"                ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, ""{ csspProp.ExistTypeName }"", ""{ csspProp.PropName }"", { TypeNameLower }.{ csspProp.PropName }.ToString()), new[] {{ nameof({ TypeNameLower }.{ csspProp.PropName })}}));");
                         }
                         sb.AppendLine(@"            }");
                         if (csspProp.ExistTypeName == "TVItem")
@@ -106,7 +106,7 @@ namespace GenerateCSSPDBServices
                             sb.AppendLine(@"                };");
                             sb.AppendLine($@"                if (!AllowableTVTypes.Contains({ csspProp.ExistTypeName }{ csspProp.PropName }.TVType))");
                             sb.AppendLine(@"                {");
-                            sb.AppendLine($@"                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, ""{ csspProp.PropName }"", ""{ String.Join(",", csspProp.AllowableTVTypeList) }""), new[] {{ nameof({ TypeNameLower }.{ csspProp.PropName }) }}));");
+                            sb.AppendLine($@"                    ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, ""{ csspProp.PropName }"", ""{ String.Join(",", csspProp.AllowableTVTypeList) }""), new[] {{ nameof({ TypeNameLower }.{ csspProp.PropName }) }}));");
                             sb.AppendLine(@"                }");
                             sb.AppendLine(@"            }");
                         }

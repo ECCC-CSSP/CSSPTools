@@ -29,35 +29,24 @@ namespace ReadGzFileServices
     {
         private void DoMergeJsonWebAllCountries(WebAllCountries WebAllCountries, WebAllCountries WebAllCountriesLocal)
         {
-            // -----------------------------------------------------------
-            // doing TVItemAllCountryList
-            // -----------------------------------------------------------
-            int count = WebAllCountries.TVItemAllCountryList.Count;
-            for (int i = 0; i < count; i++)
-            {
-                WebBase webBaseLocal = (from c in WebAllCountriesLocal.TVItemAllCountryList
-                                        where c.TVItemModel.TVItem.TVItemID == WebAllCountries.TVItemAllCountryList[i].TVItemModel.TVItem.TVItemID
-                                        && (c.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
-                                        || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.en].DBCommand != DBCommandEnum.Original
-                                        || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].DBCommand != DBCommandEnum.Original)
-                                        select c).FirstOrDefault();
+            List<CountryModel> countryModelLocalList = (from c in WebAllCountriesLocal.CountryModelList
+                                                        where c.TVItem.DBCommand != DBCommandEnum.Original
+                                                        || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
+                                                        || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original
+                                                        select c).ToList();
 
-                if (webBaseLocal != null)
+            foreach (CountryModel countryModelLocal in countryModelLocalList)
+            {
+                CountryModel countryModelOriginal = WebAllCountries.CountryModelList.Where(c => c.TVItem.TVItemID == countryModelLocal.TVItem.TVItemID).FirstOrDefault();
+                if (countryModelOriginal == null)
                 {
-                    WebAllCountries.TVItemAllCountryList[i] = webBaseLocal;
+                    WebAllCountries.CountryModelList.Add(countryModelLocal);
+                }
+                else
+                {
+                    countryModelOriginal = countryModelLocal;
                 }
             }
-
-            List<WebBase> webBaseLocalNewList = (from c in WebAllCountriesLocal.TVItemAllCountryList
-                                                 where c.TVItemModel.TVItem.DBCommand == DBCommandEnum.Created
-                                                 select c).ToList();
-
-            foreach(WebBase webBaseNew in webBaseLocalNewList)
-            {
-                WebAllCountries.TVItemAllCountryList.Add(webBaseNew);
-            }
-
-            return;
         }
     }
 }

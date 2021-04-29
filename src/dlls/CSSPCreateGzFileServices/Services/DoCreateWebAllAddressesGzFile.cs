@@ -33,11 +33,16 @@ namespace CreateGzFileServices
 
             try
             {
-                webAllAddresses.AddressList = await GetAllAddress();
+                await FillAddressModelList(webAllAddresses.AddressModelList, TVItemRoot);
 
-                await FillChildListTVItemModelList(webAllAddresses.TVItemAllAddressList, TVItemRoot, TVTypeEnum.Address);
-
-                await DoStore<WebAllAddresses>(webAllAddresses, $"{ WebTypeEnum.WebAllAddresses }.gz");
+                if (dbLocal != null)
+                {
+                    await DoStoreLocal<WebAllAddresses>(webAllAddresses, $"{ WebTypeEnum.WebAllAddresses }.gz");
+                }
+                else
+                {
+                    await DoStore<WebAllAddresses>(webAllAddresses, $"{ WebTypeEnum.WebAllAddresses }.gz");
+                }
             }
             catch (Exception ex)
             {

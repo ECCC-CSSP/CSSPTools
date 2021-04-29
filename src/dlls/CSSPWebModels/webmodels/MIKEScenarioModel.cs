@@ -9,19 +9,25 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CSSPWebModels
 {
     [NotMapped]
-    public partial class MIKEScenarioModel : WebBase
+    public partial class MikeScenarioModel
     {
         #region Properties
         public MikeScenario MikeScenario { get; set; }
-        public List<WebBase> TVItemFileList { get; set; }
+        public TVItemStatMapModel TVItemStatMapModel { get; set; }
+        public List<TVItemStatModel> TVItemStatModelParentList { get; set; }
+        public List<TVFileModel> TVFileModelList { get; set; }
+        public List<MikeBoundaryConditionModel> MikeBoundaryConditionModelList { get; set; }
         public List<MikeSourceModel> MikeSourceModelList { get; set; }
         #endregion Properties
 
         #region Constructors
-        public MIKEScenarioModel()
+        public MikeScenarioModel()
         {
             MikeScenario = new MikeScenario();
-            TVItemFileList = new List<WebBase>();
+            TVItemStatMapModel = new TVItemStatMapModel();
+            TVItemStatModelParentList = new List<TVItemStatModel>();
+            TVFileModelList = new List<TVFileModel>();
+            MikeBoundaryConditionModelList = new List<MikeBoundaryConditionModel>();
             MikeSourceModelList = new List<MikeSourceModel>();
         }
         #endregion Constructors

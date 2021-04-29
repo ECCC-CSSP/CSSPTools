@@ -68,8 +68,6 @@ namespace CreateGzFileLocalServices
                 PolSourceSiteModel.PolSourceSiteEffectList = PolSourceSiteEffectList.Where(c => c.PolSourceSiteOrInfrastructureTVItemID == tvItem.TVItemID).ToList();
                 PolSourceSiteModel.PolSourceSiteCivicAddress = PolSourceSiteCivicAddressList.Where(c => c.AddressTVItemID == tvItem.TVItemID).FirstOrDefault();
 
-                await FillChildListTVItemModelListLocal(PolSourceSiteModel.TVItemFileList, tvItem, TVTypeEnum.File);
-
                 PolSourceSiteModelList.Add(PolSourceSiteModel);
             }
         }

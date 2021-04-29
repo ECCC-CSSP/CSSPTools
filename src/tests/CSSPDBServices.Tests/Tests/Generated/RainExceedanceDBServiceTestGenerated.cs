@@ -465,8 +465,8 @@ namespace CSSPDBServices.Tests
             if (OmitPropName != "EndMonth") rainExceedance.EndMonth = GetRandomInt(1, 12);
             if (OmitPropName != "EndDay") rainExceedance.EndDay = GetRandomInt(1, 31);
             if (OmitPropName != "RainMaximum_mm") rainExceedance.RainMaximum_mm = GetRandomDouble(0.0D, 300.0D);
-            if (OmitPropName != "StakeholdersEmailDistributionListID") rainExceedance.StakeholdersEmailDistributionListID = 1;
-            if (OmitPropName != "OnlyStaffEmailDistributionListID") rainExceedance.OnlyStaffEmailDistributionListID = 1;
+            if (OmitPropName != "StakeholdersEmailDistributionListID") rainExceedance.StakeholdersEmailDistributionListID = 0;
+            if (OmitPropName != "OnlyStaffEmailDistributionListID") rainExceedance.OnlyStaffEmailDistributionListID = 0;
             if (OmitPropName != "IsActive") rainExceedance.IsActive = true;
             if (OmitPropName != "LastUpdateDate_UTC") rainExceedance.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") rainExceedance.LastUpdateContactTVItemID = 2;

@@ -18,11 +18,11 @@ namespace CSSPDBLocalServices
 
     public partial class TVItemLocalService : ControllerBase, ITVItemLocalService
     {
-        private bool DoDeleteTVItemLocal(DeleteTVItemModel deleteTVItemModel)
+        private bool DoDeleteTVItemLocal(PostTVItemModel postTVItemModel)
         {
             ValidationResults = new List<ValidationResult>();
 
-            GzObjectList gzObjectList = FillDeleteLists(deleteTVItemModel);
+            GzObjectList gzObjectList = FillDeleteLists(postTVItemModel);
 
             if (ValidationResults.Count() > 0)
             {
@@ -30,17 +30,17 @@ namespace CSSPDBLocalServices
             }
 
             // filling all parent TVItem in the DBLocal
-            foreach (WebBase webBaseToAdd in gzObjectList.tvItemParentList.OrderBy(c => c.TVItemModel.TVItem.TVLevel))
+            foreach (TVItemModel tvItemModel in gzObjectList.tvItemParentList.OrderBy(c => c.TVItem.TVLevel))
             {
                 if (!(from c in dbLocal.TVItems
-                      where c.TVItemID == webBaseToAdd.TVItemModel.TVItem.TVItemID
+                      where c.TVItemID == tvItemModel.TVItem.TVItemID
                       select c).Any())
                 {
                     try
                     {
-                        dbLocal.TVItems.Add(webBaseToAdd.TVItemModel.TVItem);
+                        dbLocal.TVItems.Add(tvItemModel.TVItem);
                         dbLocal.SaveChanges();
-                        AppendToRecreate(webBaseToAdd.TVItemModel.TVItem, 1982, deleteTVItemModel.ParentTVType, (int)deleteTVItemModel.GrandParentID);
+                        AppendToRecreate(tvItemModel.TVItem, postTVItemModel.TVItemParent.TVType);
                     }
                     catch (Exception ex)
                     {
@@ -51,14 +51,14 @@ namespace CSSPDBLocalServices
                     foreach (LanguageEnum lang in new List<LanguageEnum>() { LanguageEnum.en, LanguageEnum.fr })
                     {
                         if (!(from c in dbLocal.TVItemLanguages
-                              where c.TVItemID == webBaseToAdd.TVItemModel.TVItem.TVItemID
+                              where c.TVItemID == tvItemModel.TVItem.TVItemID
                               && c.Language == lang
                               select c).Any())
                         {
 
                             try
                             {
-                                dbLocal.TVItemLanguages.Add(webBaseToAdd.TVItemModel.TVItemLanguageList[(int)lang]);
+                                dbLocal.TVItemLanguages.Add(tvItemModel.TVItemLanguageList[(int)lang]);
                                 dbLocal.SaveChanges();
                             }
                             catch (Exception ex)
@@ -72,7 +72,7 @@ namespace CSSPDBLocalServices
             }
 
             TVItem tvItemToMarkDeleted = (from c in dbLocal.TVItems
-                                          where c.TVItemID == deleteTVItemModel.TVItemID
+                                          where c.TVItemID == postTVItemModel.TVItem.TVItemID
                                           select c).FirstOrDefault();
 
             if (tvItemToMarkDeleted != null)
@@ -84,7 +84,7 @@ namespace CSSPDBLocalServices
                 try
                 {
                     dbLocal.SaveChanges();
-                    AppendToRecreate(tvItemToMarkDeleted, 1982, deleteTVItemModel.ParentTVType, (int)deleteTVItemModel.GrandParentID);
+                    AppendToRecreate(tvItemToMarkDeleted, postTVItemModel.TVItemParent.TVType);
                 }
                 catch (Exception ex)
                 {
@@ -94,7 +94,7 @@ namespace CSSPDBLocalServices
                 foreach (LanguageEnum lang in new List<LanguageEnum>() { LanguageEnum.en, LanguageEnum.fr })
                 {
                     List<TVItemLanguage> TVItemLanguageToDeleteList = (from c in dbLocal.TVItemLanguages
-                                                                       where c.TVItemID == deleteTVItemModel.TVItemID
+                                                                       where c.TVItemID == postTVItemModel.TVItem.TVItemID
                                                                        select c).ToList();
 
                     foreach (TVItemLanguage tvItemLanguage in TVItemLanguageToDeleteList)
@@ -117,31 +117,31 @@ namespace CSSPDBLocalServices
             }
             else
             {
-                WebBase WebBaseToChange = new WebBase();
-                foreach (WebBase webBase in gzObjectList.tvItemList)
+                TVItemModel WebBaseToChange = new TVItemModel();
+                foreach (TVItemModel tvItemModel in gzObjectList.tvItemList)
                 {
-                    if (webBase.TVItemModel.TVItem.TVItemID == deleteTVItemModel.TVItemID)
+                    if (tvItemModel.TVItem.TVItemID == postTVItemModel.TVItem.TVItemID)
                     {
-                        WebBaseToChange = webBase;
+                        WebBaseToChange = tvItemModel;
                         break;
                     }
                 }
 
                 TVItem tvItem = (from c in dbLocal.TVItems
-                                 where c.TVItemID == WebBaseToChange.TVItemModel.TVItem.TVItemID
+                                 where c.TVItemID == WebBaseToChange.TVItem.TVItemID
                                  select c).FirstOrDefault();
 
                 if (tvItem == null)
                 {
-                    tvItem = WebBaseToChange.TVItemModel.TVItem;
+                    tvItem = WebBaseToChange.TVItem;
                     tvItem.DBCommand = DBCommandEnum.Deleted;
 
                     dbLocal.TVItems.Add(tvItem);
-                    AppendToRecreate(tvItem, 1982, deleteTVItemModel.ParentTVType, (int)deleteTVItemModel.GrandParentID);
+                    AppendToRecreate(tvItem, postTVItemModel.TVItemParent.TVType);
                 }
                 else
                 {
-                    tvItem.IsActive = WebBaseToChange.TVItemModel.TVItem.IsActive;
+                    tvItem.IsActive = WebBaseToChange.TVItem.IsActive;
                     tvItem.DBCommand = DBCommandEnum.Deleted;
                 }
 
@@ -158,31 +158,31 @@ namespace CSSPDBLocalServices
                 foreach (LanguageEnum lang in new List<LanguageEnum>() { LanguageEnum.en, LanguageEnum.fr })
                 {
                     TVItemLanguage tvItemLanguage = (from c in dbLocal.TVItemLanguages
-                                                     where c.TVItemLanguageID == WebBaseToChange.TVItemModel.TVItemLanguageList[(int)lang].TVItemLanguageID
+                                                     where c.TVItemLanguageID == WebBaseToChange.TVItemLanguageList[(int)lang].TVItemLanguageID
                                                      select c).FirstOrDefault();
 
                     if (tvItemLanguage == null)
                     {
-                        tvItemLanguage = WebBaseToChange.TVItemModel.TVItemLanguageList[(int)lang];
+                        tvItemLanguage = WebBaseToChange.TVItemLanguageList[(int)lang];
                         tvItemLanguage.DBCommand = DBCommandEnum.Deleted;
                         tvItemLanguage.LastUpdateDate_UTC = DateTime.UtcNow;
                         tvItemLanguage.LastUpdateContactTVItemID = LoggedInService.LoggedInContactInfo.LoggedInContact.LastUpdateContactTVItemID;
 
                         dbLocal.TVItemLanguages.Add(tvItemLanguage);
-                        AppendToRecreate(tvItem, 1982, deleteTVItemModel.ParentTVType, (int)deleteTVItemModel.GrandParentID);
+                        AppendToRecreate(tvItem, postTVItemModel.TVItemParent.TVType);
                     }
                     else
                     {
                         tvItemLanguage.DBCommand = DBCommandEnum.Deleted;
                         tvItemLanguage.LastUpdateDate_UTC = DateTime.UtcNow;
                         tvItemLanguage.LastUpdateContactTVItemID = LoggedInService.LoggedInContactInfo.LoggedInContact.LastUpdateContactTVItemID;
-                        AppendToRecreate(tvItem, 1982, deleteTVItemModel.ParentTVType, (int)deleteTVItemModel.GrandParentID);
+                        AppendToRecreate(tvItem, postTVItemModel.TVItemParent.TVType);
                     }
 
                     try
                     {
                         dbLocal.SaveChanges();
-                        AppendToRecreate(tvItem, 1982, deleteTVItemModel.ParentTVType, (int)deleteTVItemModel.GrandParentID);
+                        AppendToRecreate(tvItem, postTVItemModel.TVItemParent.TVType);
                     }
                     catch (Exception ex)
                     {
@@ -194,7 +194,7 @@ namespace CSSPDBLocalServices
 
             foreach (ToRecreate toRecreate in ToRecreateList)
             {
-                CreateGzFileLocalService.CreateGzFileLocal(toRecreate.WebType, toRecreate.TVItemID, toRecreate.WebTypeYear);
+                CreateGzFileLocalService.CreateGzFileLocal(toRecreate.WebType, toRecreate.TVItemID);
             }
 
             return ValidationResults.Count == 0 ? true : false;

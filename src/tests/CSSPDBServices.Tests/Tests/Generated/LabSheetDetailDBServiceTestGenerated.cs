@@ -1281,8 +1281,8 @@ namespace CSSPDBServices.Tests
             LabSheetDetail labSheetDetail = new LabSheetDetail();
 
             if (OmitPropName != "DBCommand") labSheetDetail.DBCommand = (DBCommandEnum)GetRandomEnumType(typeof(DBCommandEnum));
-            if (OmitPropName != "LabSheetID") labSheetDetail.LabSheetID = 1;
-            if (OmitPropName != "SamplingPlanID") labSheetDetail.SamplingPlanID = 1;
+            if (OmitPropName != "LabSheetID") labSheetDetail.LabSheetID = 0;
+            if (OmitPropName != "SamplingPlanID") labSheetDetail.SamplingPlanID = 0;
             if (OmitPropName != "SubsectorTVItemID") labSheetDetail.SubsectorTVItemID = 11;
             if (OmitPropName != "Version") labSheetDetail.Version = GetRandomInt(1, 5);
             if (OmitPropName != "RunDate") labSheetDetail.RunDate = new DateTime(2005, 3, 6);

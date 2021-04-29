@@ -33,7 +33,7 @@
     ".NETCoreApp,Version=v5.0": {
       "CSSPWebAPIs/1.0.0": {
         "dependencies": {
-          "CSSPAzureAppTaskModelServices": "1.0.0",
+          "CSSPAzureAppTaskServices": "1.0.0",
           "CSSPDBServices": "1.0.0",
           "CSSPWebModels": "1.0.0",
           "Microsoft.AspNetCore.Authentication.Certificate": "5.0.3",
@@ -1709,17 +1709,17 @@
           "System.Xml.XmlDocument": "4.3.0"
         }
       },
-      "CSSPAzureAppTaskModelServices/1.0.0": {
+      "CSSPAzureAppTaskServices/1.0.0": {
         "dependencies": {
           "CSSPDBPreferenceModels": "1.0.0",
           "CSSPLoggedInServices": "1.0.0",
           "CSSPWebModels": "1.0.0"
         },
         "runtime": {
-          "CSSPAzureAppTaskModelServices.dll": {}
+          "CSSPAzureAppTaskServices.dll": {}
         },
         "compile": {
-          "CSSPAzureAppTaskModelServices.dll": {}
+          "CSSPAzureAppTaskServices.dll": {}
         }
       },
       "CSSPCultureServices/1.0.0": {
@@ -4452,7 +4452,7 @@
       "path": "system.xml.xmlserializer/4.3.0",
       "hashPath": "system.xml.xmlserializer.4.3.0.nupkg.sha512"
     },
-    "CSSPAzureAppTaskModelServices/1.0.0": {
+    "CSSPAzureAppTaskServices/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

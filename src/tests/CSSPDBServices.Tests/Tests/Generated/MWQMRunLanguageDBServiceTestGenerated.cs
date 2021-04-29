@@ -383,7 +383,7 @@ namespace CSSPDBServices.Tests
             MWQMRunLanguage mwqmRunLanguage = new MWQMRunLanguage();
 
             if (OmitPropName != "DBCommand") mwqmRunLanguage.DBCommand = (DBCommandEnum)GetRandomEnumType(typeof(DBCommandEnum));
-            if (OmitPropName != "MWQMRunID") mwqmRunLanguage.MWQMRunID = 1;
+            if (OmitPropName != "MWQMRunID") mwqmRunLanguage.MWQMRunID = 0;
             if (OmitPropName != "Language") mwqmRunLanguage.Language = CSSPCultureServicesRes.Culture.TwoLetterISOLanguageName == "fr" ? LanguageEnum.fr : LanguageEnum.en;
             if (OmitPropName != "RunComment") mwqmRunLanguage.RunComment = GetRandomString("", 20);
             if (OmitPropName != "TranslationStatusRunComment") mwqmRunLanguage.TranslationStatusRunComment = (TranslationStatusEnum)GetRandomEnumType(typeof(TranslationStatusEnum));

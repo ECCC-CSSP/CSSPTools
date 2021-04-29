@@ -35,6 +35,8 @@ namespace CreateGzFileLocalServices
             {
                 webAllAddresses.AddressList = await GetAllAddress();
 
+                await FillParentListTVItemModelListLocal(webAllAddresses.TVItemParentList, TVItemRoot);
+
                 await FillChildListTVItemModelListLocal(webAllAddresses.TVItemAllAddressList, TVItemRoot, TVTypeEnum.Address);
 
                 DoStoreLocal<WebAllAddresses>(webAllAddresses, $"{ WebTypeEnum.WebAllAddresses }.gz");

@@ -9,22 +9,26 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CSSPWebModels
 {
     [NotMapped]
-    public partial class WebProvince : WebBase
+    public partial class WebProvince
     {
         #region Properties
-        public List<WebBase> TVItemParentList { get; set; }
-        public List<WebBase> TVItemAreaList { get; set; }
-        public List<WebBase> TVItemFileList { get; set; }
-        public List<SamplingPlan> SamplingPlanList { get; set; }
+        public TVItemStatMapModel TVItemStatMapModel { get; set; }
+        public List<TVItemStatModel> TVItemStatModelParentList { get; set; }
+        public List<TVItemStatMapModel> TVItemStatMapAreaList { get; set; }
+        public List<TVItemStatMapModel> TVItemStatMapMunicipalityList { get; set; }
+        public List<TVFileModel> TVFileModelList { get; set; }
+        public List<SamplingPlanModel> SamplingPlanModelList { get; set; }
         #endregion Properties
 
         #region Constructors
         public WebProvince()
         {
-            TVItemParentList = new List<WebBase>();
-            TVItemAreaList = new List<WebBase>();
-            TVItemFileList = new List<WebBase>();
-            SamplingPlanList = new List<SamplingPlan>();
+            TVItemStatMapModel = new TVItemStatMapModel();
+            TVItemStatModelParentList = new List<TVItemStatModel>();
+            TVItemStatMapAreaList = new List<TVItemStatMapModel>();
+            TVItemStatMapMunicipalityList = new List<TVItemStatMapModel>();
+            TVFileModelList = new List<TVFileModel>();
+            SamplingPlanModelList = new List<SamplingPlanModel>();
         }
         #endregion Constructors
     }

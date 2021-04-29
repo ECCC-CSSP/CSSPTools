@@ -33,9 +33,16 @@ namespace CreateGzFileServices
 
             try
             {
-                await FillChildListTVItemModelList(webAllProvinces.TVItemAllProvinceList, TVItemRoot, TVTypeEnum.Province);
+                await FillProvinceModelList(webAllProvinces.ProvinceModelList, TVItemRoot);
 
-                await DoStore<WebAllProvinces>(webAllProvinces, $"{ WebTypeEnum.WebAllProvinces }.gz");
+                if (dbLocal != null)
+                {
+                    await DoStoreLocal<WebAllProvinces>(webAllProvinces, $"{ WebTypeEnum.WebAllProvinces }.gz");
+                }
+                else
+                {
+                    await DoStore<WebAllProvinces>(webAllProvinces, $"{ WebTypeEnum.WebAllProvinces }.gz");
+                }
             }
             catch (Exception ex)
             {

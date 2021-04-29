@@ -9336,20 +9336,38 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to WebAllTVItemLanguages.
+        ///   Looks up a localized string similar to WebAllTVItemLanguages1980_2020.
         /// </summary>
-        public static string WebTypeEnumWebAllTVItemLanguages {
+        public static string WebTypeEnumWebAllTVItemLanguages1980_2020 {
             get {
-                return ResourceManager.GetString("WebTypeEnumWebAllTVItemLanguages", resourceCulture);
+                return ResourceManager.GetString("WebTypeEnumWebAllTVItemLanguages1980_2020", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to WebAllTVItems.
+        ///   Looks up a localized string similar to WebAllTVItemLanguages2021_2060.
         /// </summary>
-        public static string WebTypeEnumWebAllTVItems {
+        public static string WebTypeEnumWebAllTVItemLanguages2021_2060 {
             get {
-                return ResourceManager.GetString("WebTypeEnumWebAllTVItems", resourceCulture);
+                return ResourceManager.GetString("WebTypeEnumWebAllTVItemLanguages2021_2060", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebAllTVItems1980_2020.
+        /// </summary>
+        public static string WebTypeEnumWebAllTVItems1980_2020 {
+            get {
+                return ResourceManager.GetString("WebTypeEnumWebAllTVItems1980_2020", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebAllTVItems2021_2060.
+        /// </summary>
+        public static string WebTypeEnumWebAllTVItems2021_2060 {
+            get {
+                return ResourceManager.GetString("WebTypeEnumWebAllTVItems2021_2060", resourceCulture);
             }
         }
         
@@ -9363,20 +9381,11 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to WebClimateDataValue.
+        ///   Looks up a localized string similar to WebClimateSites.
         /// </summary>
-        public static string WebTypeEnumWebClimateDataValue {
+        public static string WebTypeEnumWebClimateSites {
             get {
-                return ResourceManager.GetString("WebTypeEnumWebClimateDataValue", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to WebClimateSite.
-        /// </summary>
-        public static string WebTypeEnumWebClimateSite {
-            get {
-                return ResourceManager.GetString("WebTypeEnumWebClimateSite", resourceCulture);
+                return ResourceManager.GetString("WebTypeEnumWebClimateSites", resourceCulture);
             }
         }
         
@@ -9390,38 +9399,38 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to WebDrogueRun.
+        ///   Looks up a localized string similar to WebDrogueRuns.
         /// </summary>
-        public static string WebTypeEnumWebDrogueRun {
+        public static string WebTypeEnumWebDrogueRuns {
             get {
-                return ResourceManager.GetString("WebTypeEnumWebDrogueRun", resourceCulture);
+                return ResourceManager.GetString("WebTypeEnumWebDrogueRuns", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to WebHydrometricDataValue.
+        ///   Looks up a localized string similar to WebHydrometricSites.
         /// </summary>
-        public static string WebTypeEnumWebHydrometricDataValue {
+        public static string WebTypeEnumWebHydrometricSites {
             get {
-                return ResourceManager.GetString("WebTypeEnumWebHydrometricDataValue", resourceCulture);
+                return ResourceManager.GetString("WebTypeEnumWebHydrometricSites", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to WebHydrometricSite.
+        ///   Looks up a localized string similar to WebLabSheets.
         /// </summary>
-        public static string WebTypeEnumWebHydrometricSite {
+        public static string WebTypeEnumWebLabSheets {
             get {
-                return ResourceManager.GetString("WebTypeEnumWebHydrometricSite", resourceCulture);
+                return ResourceManager.GetString("WebTypeEnumWebLabSheets", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to WebMikeScenario.
+        ///   Looks up a localized string similar to WebMikeScenarios.
         /// </summary>
-        public static string WebTypeEnumWebMikeScenario {
+        public static string WebTypeEnumWebMikeScenarios {
             get {
-                return ResourceManager.GetString("WebTypeEnumWebMikeScenario", resourceCulture);
+                return ResourceManager.GetString("WebTypeEnumWebMikeScenarios", resourceCulture);
             }
         }
         
@@ -9444,38 +9453,47 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to WebMWQMRun.
+        ///   Looks up a localized string similar to WebMWQMRuns.
         /// </summary>
-        public static string WebTypeEnumWebMWQMRun {
+        public static string WebTypeEnumWebMWQMRuns {
             get {
-                return ResourceManager.GetString("WebTypeEnumWebMWQMRun", resourceCulture);
+                return ResourceManager.GetString("WebTypeEnumWebMWQMRuns", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to WebMWQMSample.
+        ///   Looks up a localized string similar to WebMWQMSamples1980_2020.
         /// </summary>
-        public static string WebTypeEnumWebMWQMSample {
+        public static string WebTypeEnumWebMWQMSamples1980_2020 {
             get {
-                return ResourceManager.GetString("WebTypeEnumWebMWQMSample", resourceCulture);
+                return ResourceManager.GetString("WebTypeEnumWebMWQMSamples1980_2020", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to WebMWQMSite.
+        ///   Looks up a localized string similar to WebMWQMSamples2021_2060.
         /// </summary>
-        public static string WebTypeEnumWebMWQMSite {
+        public static string WebTypeEnumWebMWQMSamples2021_2060 {
             get {
-                return ResourceManager.GetString("WebTypeEnumWebMWQMSite", resourceCulture);
+                return ResourceManager.GetString("WebTypeEnumWebMWQMSamples2021_2060", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to WebPolSourceSite.
+        ///   Looks up a localized string similar to WebMWQMSites.
         /// </summary>
-        public static string WebTypeEnumWebPolSourceSite {
+        public static string WebTypeEnumWebMWQMSites {
             get {
-                return ResourceManager.GetString("WebTypeEnumWebPolSourceSite", resourceCulture);
+                return ResourceManager.GetString("WebTypeEnumWebMWQMSites", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebPolSourceSites.
+        /// </summary>
+        public static string WebTypeEnumWebPolSourceSites {
+            get {
+                return ResourceManager.GetString("WebTypeEnumWebPolSourceSites", resourceCulture);
             }
         }
         
@@ -9498,15 +9516,6 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to WebSamplingPlan.
-        /// </summary>
-        public static string WebTypeEnumWebSamplingPlan {
-            get {
-                return ResourceManager.GetString("WebTypeEnumWebSamplingPlan", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to WebSector.
         /// </summary>
         public static string WebTypeEnumWebSector {
@@ -9525,92 +9534,11 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to TideDataValue.
+        ///   Looks up a localized string similar to WebTideSites.
         /// </summary>
-        public static string WebTypeEnumWebTideDataValue {
+        public static string WebTypeEnumWebTideSites {
             get {
-                return ResourceManager.GetString("WebTypeEnumWebTideDataValue", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to WebTideSite.
-        /// </summary>
-        public static string WebTypeEnumWebTideSite {
-            get {
-                return ResourceManager.GetString("WebTypeEnumWebTideSite", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to WebTypeYear1980.
-        /// </summary>
-        public static string WebTypeYearEnumYear1980 {
-            get {
-                return ResourceManager.GetString("WebTypeYearEnumYear1980", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to WebTypeYear1990.
-        /// </summary>
-        public static string WebTypeYearEnumYear1990 {
-            get {
-                return ResourceManager.GetString("WebTypeYearEnumYear1990", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to WebTypeYear2000.
-        /// </summary>
-        public static string WebTypeYearEnumYear2000 {
-            get {
-                return ResourceManager.GetString("WebTypeYearEnumYear2000", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to WebTypeYear2010.
-        /// </summary>
-        public static string WebTypeYearEnumYear2010 {
-            get {
-                return ResourceManager.GetString("WebTypeYearEnumYear2010", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to WebTypeYear2020.
-        /// </summary>
-        public static string WebTypeYearEnumYear2020 {
-            get {
-                return ResourceManager.GetString("WebTypeYearEnumYear2020", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to WebTypeYear2030.
-        /// </summary>
-        public static string WebTypeYearEnumYear2030 {
-            get {
-                return ResourceManager.GetString("WebTypeYearEnumYear2030", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to WebTypeYear2040.
-        /// </summary>
-        public static string WebTypeYearEnumYear2040 {
-            get {
-                return ResourceManager.GetString("WebTypeYearEnumYear2040", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to WebTypeYear2050.
-        /// </summary>
-        public static string WebTypeYearEnumYear2050 {
-            get {
-                return ResourceManager.GetString("WebTypeYearEnumYear2050", resourceCulture);
+                return ResourceManager.GetString("WebTypeEnumWebTideSites", resourceCulture);
             }
         }
     }

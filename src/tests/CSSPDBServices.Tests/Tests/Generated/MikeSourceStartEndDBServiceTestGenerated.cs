@@ -533,7 +533,7 @@ namespace CSSPDBServices.Tests
             MikeSourceStartEnd mikeSourceStartEnd = new MikeSourceStartEnd();
 
             if (OmitPropName != "DBCommand") mikeSourceStartEnd.DBCommand = (DBCommandEnum)GetRandomEnumType(typeof(DBCommandEnum));
-            if (OmitPropName != "MikeSourceID") mikeSourceStartEnd.MikeSourceID = 1;
+            if (OmitPropName != "MikeSourceID") mikeSourceStartEnd.MikeSourceID = 0;
             if (OmitPropName != "StartDateAndTime_Local") mikeSourceStartEnd.StartDateAndTime_Local = new DateTime(2005, 3, 6);
             if (OmitPropName != "EndDateAndTime_Local") mikeSourceStartEnd.EndDateAndTime_Local = new DateTime(2005, 3, 7);
             if (OmitPropName != "SourceFlowStart_m3_day") mikeSourceStartEnd.SourceFlowStart_m3_day = GetRandomDouble(0.0D, 1000000.0D);

@@ -20,14 +20,14 @@ namespace CreateGzFileLocalServices.Tests
         #endregion Constructors
 
         #region Tests 
-        [Theory]
+        [Theory(Skip = "not yet implemented")]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
         public async Task CreateGzFileService_CreateWebNNNNNNNNN_Unauthorized__Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
+            LoggedInService.LoggedInContactInfo.LoggedInContact = null;
 
             List<WebTypeEnum> webTypeList = new List<WebTypeEnum>()
             {
@@ -48,35 +48,36 @@ namespace CreateGzFileLocalServices.Tests
                 WebTypeEnum.WebAllTVItems,
                 WebTypeEnum.WebArea,
                 WebTypeEnum.WebClimateDataValue,
-                WebTypeEnum.WebClimateSite,
+                WebTypeEnum.WebClimateSites,
                 WebTypeEnum.WebCountry,
-                WebTypeEnum.WebDrogueRun,
+                WebTypeEnum.WebDrogueRuns,
                 WebTypeEnum.WebHydrometricDataValue,
-                WebTypeEnum.WebHydrometricSite,
+                WebTypeEnum.WebHydrometricSites,
+                WebTypeEnum.WebInfrastructures,
+                WebTypeEnum.WebLabSheets,
                 WebTypeEnum.WebMikeScenario,
+                WebTypeEnum.WebMikeScenarios,
                 WebTypeEnum.WebMunicipalities,
                 WebTypeEnum.WebMunicipality,
-                WebTypeEnum.WebMWQMRun,
-                WebTypeEnum.WebMWQMSample,
-                WebTypeEnum.WebMWQMSite,
-                WebTypeEnum.WebPolSourceSite,
+                WebTypeEnum.WebMWQMRuns,
+                //WebTypeEnum.WebMWQMSamples,
+                WebTypeEnum.WebMWQMSites,
+                WebTypeEnum.WebPolSourceSites,
                 WebTypeEnum.WebProvince,
                 WebTypeEnum.WebRoot,
                 WebTypeEnum.WebSamplingPlan,
                 WebTypeEnum.WebSector,
                 WebTypeEnum.WebSubsector,
                 WebTypeEnum.WebTideDataValue,
-                WebTypeEnum.WebTideSite,
+                WebTypeEnum.WebTideSites,
             };
 
             foreach (WebTypeEnum webTypeToTry in webTypeList)
             {
                 WebTypeEnum webType = webTypeToTry;
                 int TVItemID = 1; // not important for this test
-                WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980; // not important for this test
-
-                // Create gz
-                var actionRes = await CreateGzFileLocalService.CreateGzFileLocal(webType, TVItemID, webTypeYear);
+               
+                var actionRes = await CreateGzFileLocalService.CreateGzFileLocal(webType, TVItemID);
                 Assert.Equal(401, ((UnauthorizedResult)actionRes.Result).StatusCode);
             }
         }

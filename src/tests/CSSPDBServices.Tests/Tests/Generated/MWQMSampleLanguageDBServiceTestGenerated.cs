@@ -359,7 +359,7 @@ namespace CSSPDBServices.Tests
             MWQMSampleLanguage mwqmSampleLanguage = new MWQMSampleLanguage();
 
             if (OmitPropName != "DBCommand") mwqmSampleLanguage.DBCommand = (DBCommandEnum)GetRandomEnumType(typeof(DBCommandEnum));
-            if (OmitPropName != "MWQMSampleID") mwqmSampleLanguage.MWQMSampleID = 1;
+            if (OmitPropName != "MWQMSampleID") mwqmSampleLanguage.MWQMSampleID = 0;
             if (OmitPropName != "Language") mwqmSampleLanguage.Language = CSSPCultureServicesRes.Culture.TwoLetterISOLanguageName == "fr" ? LanguageEnum.fr : LanguageEnum.en;
             if (OmitPropName != "MWQMSampleNote") mwqmSampleLanguage.MWQMSampleNote = GetRandomString("", 20);
             if (OmitPropName != "TranslationStatus") mwqmSampleLanguage.TranslationStatus = (TranslationStatusEnum)GetRandomEnumType(typeof(TranslationStatusEnum));

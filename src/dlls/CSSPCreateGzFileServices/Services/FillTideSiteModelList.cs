@@ -1,0 +1,54 @@
+﻿/*
+ * Manually edited
+ * 
+ */
+using CSSPCultureServices.Resources;
+using CSSPEnums;
+using CSSPDBModels;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using CSSPWebModels;
+
+namespace CreateGzFileServices
+{
+    public partial class CreateGzFileService : ControllerBase, ICreateGzFileService
+    {
+        private async Task FillTideSiteModelList(List<TideSiteModel> TideSiteModelList, TVItem TVItem)
+        {
+            List<TVItem> TVItemList = await GetTVItemChildrenListWithTVItemID(TVItem, TVTypeEnum.TideSite);
+            List<TVItemLanguage> TVItemLanguageList = await GetTVItemLanguageChildrenListWithTVItemID(TVItem, TVTypeEnum.TideSite);
+            List<MapInfo> MapInfoList = await GetMapInfoChildrenListWithTVItemID(TVItem, TVTypeEnum.TideSite);
+            List<MapInfoPoint> MapInfoPointList = await GetMapInfoPointChildrenListWithTVItemID(TVItem, TVTypeEnum.TideSite);
+
+            List<TideSite> TideSiteList = await GetTideSiteListUnderProvince(TVItem);
+            List<TideDataValue> TideDataValueList = await GetTideDataValueListUnderProvince(TVItem);
+
+            foreach (TVItem tvItem in TVItemList)
+            {
+                TideSiteModel tideSiteModel = new TideSiteModel();
+
+                TVItemMapModel tvItemMapModel = new TVItemMapModel();
+                tvItemMapModel.TVItem = tvItem;
+                tvItemMapModel.TVItemLanguageList = TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
+
+                foreach (MapInfo MapInfo in MapInfoList.Where(c => c.TVItemID == tvItem.TVItemID))
+                {
+                    MapInfoModel MapInfoModel = new MapInfoModel();
+                    MapInfoModel.MapInfo = MapInfo;
+                    MapInfoModel.MapInfoPointList = MapInfoPointList.Where(c => c.MapInfoID == MapInfo.MapInfoID).Select(c => c).ToList();
+
+                    tvItemMapModel.MapInfoModelList.Add(MapInfoModel);
+                }
+
+                tideSiteModel.TVItemMapModel = tvItemMapModel;
+                tideSiteModel.TideSite = TideSiteList.Where(c => c.TideSiteTVItemID == tvItem.TVItemID).FirstOrDefault();
+                tideSiteModel.TideDataValueList = TideDataValueList.Where(c => c.TideSiteTVItemID == tideSiteModel.TideSite.TideSiteTVItemID).ToList();
+
+                TideSiteModelList.Add(tideSiteModel);
+            }
+        }
+    }
+}

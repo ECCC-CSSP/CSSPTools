@@ -475,6 +475,24 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Adding {0} TVItem is not allowed.
+        /// </summary>
+        public static string Adding_TVItemIsNotAllowed {
+            get {
+                return ResourceManager.GetString("Adding_TVItemIsNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adding {0} TVItem under {1} TVItem is not allowed.
+        /// </summary>
+        public static string Adding_TVItemUnder_TVItemIsNotAllowed {
+            get {
+                return ResourceManager.GetString("Adding_TVItemUnder_TVItemIsNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All Child do exist on Column Group.
         /// </summary>
         public static string AllChildDoExistOnColumnGroup {

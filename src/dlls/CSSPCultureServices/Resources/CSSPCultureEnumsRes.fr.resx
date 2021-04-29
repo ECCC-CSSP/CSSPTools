@@ -2439,30 +2439,6 @@
   <data name="RunningOnEnumLocal" xml:space="preserve">
     <value>Local (fr)</value>
   </data>
-  <data name="WebTypeYearEnumYear1980" xml:space="preserve">
-    <value>WebTypeYear1980 (fr)</value>
-  </data>
-  <data name="WebTypeYearEnumYear1990" xml:space="preserve">
-    <value>WebTypeYear1990 (fr)</value>
-  </data>
-  <data name="WebTypeYearEnumYear2000" xml:space="preserve">
-    <value>WebTypeYear2000 (fr)</value>
-  </data>
-  <data name="WebTypeYearEnumYear2010" xml:space="preserve">
-    <value>WebTypeYear2010 (fr)</value>
-  </data>
-  <data name="WebTypeYearEnumYear2020" xml:space="preserve">
-    <value>WebTypeYear2020 (fr)</value>
-  </data>
-  <data name="WebTypeYearEnumYear2030" xml:space="preserve">
-    <value>WebTypeYear2030 (fr)</value>
-  </data>
-  <data name="WebTypeYearEnumYear2040" xml:space="preserve">
-    <value>WebTypeYear2040 (fr)</value>
-  </data>
-  <data name="WebTypeYearEnumYear2050" xml:space="preserve">
-    <value>WebTypeYear2050 (fr)</value>
-  </data>
   <data name="CountrySubComponentEnumEmailDistributionList" xml:space="preserve">
     <value>Email Distribution List (fr)</value>
   </data>
@@ -2712,35 +2688,20 @@
   <data name="WebTypeEnumWebAllTideLocations" xml:space="preserve">
     <value>WebAllTideLocations</value>
   </data>
-  <data name="WebTypeEnumWebAllTVItems" xml:space="preserve">
-    <value>WebAllTVItems</value>
-  </data>
-  <data name="WebTypeEnumWebAllTVItemLanguages" xml:space="preserve">
-    <value>WebAllTVItemLanguages</value>
-  </data>
   <data name="WebTypeEnumWebArea" xml:space="preserve">
     <value>WebArea</value>
   </data>
-  <data name="WebTypeEnumWebClimateDataValue" xml:space="preserve">
-    <value>WebClimateDataValue</value>
-  </data>
-  <data name="WebTypeEnumWebClimateSite" xml:space="preserve">
-    <value>WebClimateSite</value>
+  <data name="WebTypeEnumWebClimateSites" xml:space="preserve">
+    <value>WebClimateSites</value>
   </data>
   <data name="WebTypeEnumWebCountry" xml:space="preserve">
     <value>WebCountry</value>
   </data>
-  <data name="WebTypeEnumWebDrogueRun" xml:space="preserve">
-    <value>WebDrogueRun</value>
+  <data name="WebTypeEnumWebDrogueRuns" xml:space="preserve">
+    <value>WebDrogueRuns</value>
   </data>
-  <data name="WebTypeEnumWebHydrometricDataValue" xml:space="preserve">
-    <value>WebHydrometricDataValue</value>
-  </data>
-  <data name="WebTypeEnumWebHydrometricSite" xml:space="preserve">
-    <value>WebHydrometricSite</value>
-  </data>
-  <data name="WebTypeEnumWebMikeScenario" xml:space="preserve">
-    <value>WebMikeScenario</value>
+  <data name="WebTypeEnumWebHydrometricSites" xml:space="preserve">
+    <value>WebHydrometricSites</value>
   </data>
   <data name="WebTypeEnumWebMunicipalities" xml:space="preserve">
     <value>WebMunicipalities</value>
@@ -2748,26 +2709,20 @@
   <data name="WebTypeEnumWebMunicipality" xml:space="preserve">
     <value>WebMunicipality</value>
   </data>
-  <data name="WebTypeEnumWebMWQMRun" xml:space="preserve">
-    <value>WebMWQMRun</value>
+  <data name="WebTypeEnumWebMWQMRuns" xml:space="preserve">
+    <value>WebMWQMRuns</value>
   </data>
-  <data name="WebTypeEnumWebMWQMSample" xml:space="preserve">
-    <value>WebMWQMSample</value>
+  <data name="WebTypeEnumWebMWQMSites" xml:space="preserve">
+    <value>WebMWQMSites</value>
   </data>
-  <data name="WebTypeEnumWebMWQMSite" xml:space="preserve">
-    <value>WebMWQMSite</value>
-  </data>
-  <data name="WebTypeEnumWebPolSourceSite" xml:space="preserve">
-    <value>WebPolSourceSite</value>
+  <data name="WebTypeEnumWebPolSourceSites" xml:space="preserve">
+    <value>WebPolSourceSites</value>
   </data>
   <data name="WebTypeEnumWebProvince" xml:space="preserve">
     <value>WebProvince</value>
   </data>
   <data name="WebTypeEnumWebRoot" xml:space="preserve">
     <value>WebRoot</value>
-  </data>
-  <data name="WebTypeEnumWebSamplingPlan" xml:space="preserve">
-    <value>WebSamplingPlan</value>
   </data>
   <data name="WebTypeEnumWebSector" xml:space="preserve">
     <value>WebSector</value>
@@ -2787,13 +2742,34 @@
   <data name="WebTypeEnumWebAllTels" xml:space="preserve">
     <value>WebAllTels</value>
   </data>
-  <data name="WebTypeEnumWebTideDataValue" xml:space="preserve">
-    <value>TideDataValue</value>
-  </data>
-  <data name="WebTypeEnumWebTideSite" xml:space="preserve">
-    <value>WebTideSite</value>
+  <data name="WebTypeEnumWebTideSites" xml:space="preserve">
+    <value>WebTideSites</value>
   </data>
   <data name="AppTaskCommandEnumSyncDBs" xml:space="preserve">
     <value>Sync des bases de données</value>
+  </data>
+  <data name="WebTypeEnumWebLabSheets" xml:space="preserve">
+    <value>WebLabSheets</value>
+  </data>
+  <data name="WebTypeEnumWebMikeScenarios" xml:space="preserve">
+    <value>WebMikeScenarios</value>
+  </data>
+  <data name="WebTypeEnumWebMWQMSamples1980_2020" xml:space="preserve">
+    <value>WebMWQMSamples1980_2020</value>
+  </data>
+  <data name="WebTypeEnumWebMWQMSamples2021_2060" xml:space="preserve">
+    <value>WebMWQMSamples2021_2060</value>
+  </data>
+  <data name="WebTypeEnumWebAllTVItemLanguages1980_2020" xml:space="preserve">
+    <value>WebAllTVItemLanguages1980_2020</value>
+  </data>
+  <data name="WebTypeEnumWebAllTVItemLanguages2021_2060" xml:space="preserve">
+    <value>WebAllTVItemLanguages2021_2060</value>
+  </data>
+  <data name="WebTypeEnumWebAllTVItems1980_2020" xml:space="preserve">
+    <value>WebAllTVItems1980_2020</value>
+  </data>
+  <data name="WebTypeEnumWebAllTVItems2021_2060" xml:space="preserve">
+    <value>WebAllTVItems2021_2060</value>
   </data>
 </root>

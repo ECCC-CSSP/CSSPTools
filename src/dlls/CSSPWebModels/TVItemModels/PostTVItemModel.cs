@@ -14,18 +14,9 @@ namespace CSSPWebModels
     [NotMapped]
     public partial class PostTVItemModel
     {
-
-        public int ParentID { get; set; }
-        [CSSPEnumType]
-        public TVTypeEnum ParentTVType { get; set; }
-        public int TVItemID { get; set; }
-        [CSSPEnumType]
-        public TVTypeEnum TVType { get; set; }
-        public string TVTextEN { get; set; }
-        public string TVTextFR { get; set; }
-        public int? GrandParentID { get; set; }
-        [CSSPEnumType]
-        public TVTypeEnum? GrandParentTVType { get; set; }
+        public TVItem TVItem { get; set; }
+        public List<TVItemLanguage> TVItemLanguageList { get; set; }
+        public TVItem TVItemParent { get; set; }
 
         public PostTVItemModel()
         {

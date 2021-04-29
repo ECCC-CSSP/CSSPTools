@@ -13,14 +13,17 @@ namespace CSSPWebModels
     {
         #region Properties
         public LabSheet LabSheet { get; set; }
-        public List<LabSheetDetailModel> LabSheetDetailModelList { get; set; }
+        public LabSheetDetail LabSheetDetail { get; set; }
+        public List<LabSheetTubeMPNDetail> LabSheetTubeMPNDetailList { get; set; }
+
         #endregion Properties
 
         #region Constructors
         public LabSheetModel()
         {
             LabSheet = new LabSheet();
-            LabSheetDetailModelList = new List<LabSheetDetailModel>();
+            LabSheetDetail = new LabSheetDetail();
+            LabSheetTubeMPNDetailList = new List<LabSheetTubeMPNDetail>();
         }
         #endregion Constructors
     }

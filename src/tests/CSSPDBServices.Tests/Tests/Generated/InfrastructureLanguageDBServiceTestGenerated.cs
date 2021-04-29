@@ -359,7 +359,7 @@ namespace CSSPDBServices.Tests
             InfrastructureLanguage infrastructureLanguage = new InfrastructureLanguage();
 
             if (OmitPropName != "DBCommand") infrastructureLanguage.DBCommand = (DBCommandEnum)GetRandomEnumType(typeof(DBCommandEnum));
-            if (OmitPropName != "InfrastructureID") infrastructureLanguage.InfrastructureID = 1;
+            if (OmitPropName != "InfrastructureID") infrastructureLanguage.InfrastructureID = 0;
             if (OmitPropName != "Language") infrastructureLanguage.Language = CSSPCultureServicesRes.Culture.TwoLetterISOLanguageName == "fr" ? LanguageEnum.fr : LanguageEnum.en;
             if (OmitPropName != "Comment") infrastructureLanguage.Comment = GetRandomString("", 20);
             if (OmitPropName != "TranslationStatus") infrastructureLanguage.TranslationStatus = (TranslationStatusEnum)GetRandomEnumType(typeof(TranslationStatusEnum));

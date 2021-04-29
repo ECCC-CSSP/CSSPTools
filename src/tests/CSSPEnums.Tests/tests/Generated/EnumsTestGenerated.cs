@@ -5292,20 +5292,101 @@ namespace CSSPEnums.Tests
 
                 switch ((WebTypeEnum)i)
                 {
-                    case WebTypeEnum.WebRoot:
-                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebRoot, retStr);
+                    case WebTypeEnum.WebAllAddresses:
+                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebAllAddresses, retStr);
                         break;
-                    case WebTypeEnum.WebCountry:
-                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebCountry, retStr);
+                    case WebTypeEnum.WebAllContacts:
+                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebAllContacts, retStr);
                         break;
-                    case WebTypeEnum.WebProvince:
-                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebProvince, retStr);
+                    case WebTypeEnum.WebAllCountries:
+                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebAllCountries, retStr);
+                        break;
+                    case WebTypeEnum.WebAllEmails:
+                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebAllEmails, retStr);
+                        break;
+                    case WebTypeEnum.WebAllHelpDocs:
+                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebAllHelpDocs, retStr);
+                        break;
+                    case WebTypeEnum.WebAllMunicipalities:
+                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebAllMunicipalities, retStr);
+                        break;
+                    case WebTypeEnum.WebAllMWQMLookupMPNs:
+                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebAllMWQMLookupMPNs, retStr);
+                        break;
+                    case WebTypeEnum.WebAllPolSourceGroupings:
+                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebAllPolSourceGroupings, retStr);
+                        break;
+                    case WebTypeEnum.WebAllPolSourceSiteEffectTerms:
+                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebAllPolSourceSiteEffectTerms, retStr);
+                        break;
+                    case WebTypeEnum.WebAllProvinces:
+                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebAllProvinces, retStr);
+                        break;
+                    case WebTypeEnum.WebAllReportTypes:
+                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebAllReportTypes, retStr);
+                        break;
+                    case WebTypeEnum.WebAllTels:
+                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebAllTels, retStr);
+                        break;
+                    case WebTypeEnum.WebAllTideLocations:
+                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebAllTideLocations, retStr);
+                        break;
+                    case WebTypeEnum.WebAllTVItemLanguages1980_2020:
+                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebAllTVItemLanguages1980_2020, retStr);
+                        break;
+                    case WebTypeEnum.WebAllTVItemLanguages2021_2060:
+                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebAllTVItemLanguages2021_2060, retStr);
+                        break;
+                    case WebTypeEnum.WebAllTVItems1980_2020:
+                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebAllTVItems1980_2020, retStr);
+                        break;
+                    case WebTypeEnum.WebAllTVItems2021_2060:
+                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebAllTVItems2021_2060, retStr);
                         break;
                     case WebTypeEnum.WebArea:
                         Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebArea, retStr);
                         break;
-                    case WebTypeEnum.WebMunicipalities:
-                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebMunicipalities, retStr);
+                    case WebTypeEnum.WebClimateSites:
+                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebClimateSites, retStr);
+                        break;
+                    case WebTypeEnum.WebCountry:
+                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebCountry, retStr);
+                        break;
+                    case WebTypeEnum.WebDrogueRuns:
+                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebDrogueRuns, retStr);
+                        break;
+                    case WebTypeEnum.WebHydrometricSites:
+                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebHydrometricSites, retStr);
+                        break;
+                    case WebTypeEnum.WebLabSheets:
+                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebLabSheets, retStr);
+                        break;
+                    case WebTypeEnum.WebMikeScenarios:
+                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebMikeScenarios, retStr);
+                        break;
+                    case WebTypeEnum.WebMunicipality:
+                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebMunicipality, retStr);
+                        break;
+                    case WebTypeEnum.WebMWQMRuns:
+                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebMWQMRuns, retStr);
+                        break;
+                    case WebTypeEnum.WebMWQMSamples1980_2020:
+                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebMWQMSamples1980_2020, retStr);
+                        break;
+                    case WebTypeEnum.WebMWQMSamples2021_2060:
+                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebMWQMSamples2021_2060, retStr);
+                        break;
+                    case WebTypeEnum.WebMWQMSites:
+                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebMWQMSites, retStr);
+                        break;
+                    case WebTypeEnum.WebPolSourceSites:
+                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebPolSourceSites, retStr);
+                        break;
+                    case WebTypeEnum.WebProvince:
+                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebProvince, retStr);
+                        break;
+                    case WebTypeEnum.WebRoot:
+                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebRoot, retStr);
                         break;
                     case WebTypeEnum.WebSector:
                         Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebSector, retStr);
@@ -5313,144 +5394,8 @@ namespace CSSPEnums.Tests
                     case WebTypeEnum.WebSubsector:
                         Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebSubsector, retStr);
                         break;
-                    case WebTypeEnum.WebMunicipality:
-                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebMunicipality, retStr);
-                        break;
-                    case WebTypeEnum.WebMWQMSample:
-                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebMWQMSample, retStr);
-                        break;
-                    case WebTypeEnum.WebSamplingPlan:
-                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebSamplingPlan, retStr);
-                        break;
-                    case WebTypeEnum.WebMWQMRun:
-                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebMWQMRun, retStr);
-                        break;
-                    case WebTypeEnum.WebMWQMSite:
-                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebMWQMSite, retStr);
-                        break;
-                    case WebTypeEnum.WebAllContacts:
-                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebAllContacts, retStr);
-                        break;
-                    case WebTypeEnum.WebClimateSite:
-                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebClimateSite, retStr);
-                        break;
-                    case WebTypeEnum.WebHydrometricSite:
-                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebHydrometricSite, retStr);
-                        break;
-                    case WebTypeEnum.WebDrogueRun:
-                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebDrogueRun, retStr);
-                        break;
-                    case WebTypeEnum.WebAllMWQMLookupMPNs:
-                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebAllMWQMLookupMPNs, retStr);
-                        break;
-                    case WebTypeEnum.WebMikeScenario:
-                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebMikeScenario, retStr);
-                        break;
-                    case WebTypeEnum.WebClimateDataValue:
-                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebClimateDataValue, retStr);
-                        break;
-                    case WebTypeEnum.WebHydrometricDataValue:
-                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebHydrometricDataValue, retStr);
-                        break;
-                    case WebTypeEnum.WebAllHelpDocs:
-                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebAllHelpDocs, retStr);
-                        break;
-                    case WebTypeEnum.WebAllTideLocations:
-                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebAllTideLocations, retStr);
-                        break;
-                    case WebTypeEnum.WebPolSourceSite:
-                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebPolSourceSite, retStr);
-                        break;
-                    case WebTypeEnum.WebAllPolSourceGroupings:
-                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebAllPolSourceGroupings, retStr);
-                        break;
-                    case WebTypeEnum.WebAllReportTypes:
-                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebAllReportTypes, retStr);
-                        break;
-                    case WebTypeEnum.WebAllTVItems:
-                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebAllTVItems, retStr);
-                        break;
-                    case WebTypeEnum.WebAllPolSourceSiteEffectTerms:
-                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebAllPolSourceSiteEffectTerms, retStr);
-                        break;
-                    case WebTypeEnum.WebAllTVItemLanguages:
-                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebAllTVItemLanguages, retStr);
-                        break;
-                    case WebTypeEnum.WebAllMunicipalities:
-                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebAllMunicipalities, retStr);
-                        break;
-                    case WebTypeEnum.WebAllProvinces:
-                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebAllProvinces, retStr);
-                        break;
-                    case WebTypeEnum.WebAllCountries:
-                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebAllCountries, retStr);
-                        break;
-                    case WebTypeEnum.WebAllAddresses:
-                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebAllAddresses, retStr);
-                        break;
-                    case WebTypeEnum.WebAllEmails:
-                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebAllEmails, retStr);
-                        break;
-                    case WebTypeEnum.WebAllTels:
-                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebAllTels, retStr);
-                        break;
-                    case WebTypeEnum.WebTideSite:
-                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebTideSite, retStr);
-                        break;
-                    case WebTypeEnum.WebTideDataValue:
-                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebTideDataValue, retStr);
-                        break;
-                }
-            }
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task GetResValueForTypeAndID_ForEnum_WebTypeYearEnum_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            string retStr = enums.GetResValueForTypeAndID(typeof(WebTypeYearEnum), -100);
-            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
-
-            retStr = enums.GetResValueForTypeAndID(typeof(WebTypeYearEnum), 10000000);
-            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
-
-            retStr = enums.GetResValueForTypeAndID(typeof(WebTypeYearEnum), null);
-            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
-
-            retStr = enums.GetResValueForTypeAndID(typeof(string), null);
-            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
-
-            foreach (int i in Enum.GetValues(typeof(WebTypeYearEnum)))
-            {
-                retStr = enums.GetResValueForTypeAndID(typeof(WebTypeYearEnum), i);
-
-                switch ((WebTypeYearEnum)i)
-                {
-                    case WebTypeYearEnum.Year1980:
-                        Assert.Equal(CSSPCultureEnumsRes.WebTypeYearEnumYear1980, retStr);
-                        break;
-                    case WebTypeYearEnum.Year1990:
-                        Assert.Equal(CSSPCultureEnumsRes.WebTypeYearEnumYear1990, retStr);
-                        break;
-                    case WebTypeYearEnum.Year2000:
-                        Assert.Equal(CSSPCultureEnumsRes.WebTypeYearEnumYear2000, retStr);
-                        break;
-                    case WebTypeYearEnum.Year2010:
-                        Assert.Equal(CSSPCultureEnumsRes.WebTypeYearEnumYear2010, retStr);
-                        break;
-                    case WebTypeYearEnum.Year2020:
-                        Assert.Equal(CSSPCultureEnumsRes.WebTypeYearEnumYear2020, retStr);
-                        break;
-                    case WebTypeYearEnum.Year2030:
-                        Assert.Equal(CSSPCultureEnumsRes.WebTypeYearEnumYear2030, retStr);
-                        break;
-                    case WebTypeYearEnum.Year2040:
-                        Assert.Equal(CSSPCultureEnumsRes.WebTypeYearEnumYear2040, retStr);
-                        break;
-                    case WebTypeYearEnum.Year2050:
-                        Assert.Equal(CSSPCultureEnumsRes.WebTypeYearEnumYear2050, retStr);
+                    case WebTypeEnum.WebTideSites:
+                        Assert.Equal(CSSPCultureEnumsRes.WebTypeEnumWebTideSites, retStr);
                         break;
                 }
             }
@@ -9297,84 +9242,45 @@ namespace CSSPEnums.Tests
 
                 switch ((WebTypeEnum)i)
                 {
-                     case WebTypeEnum.WebRoot:
-                     case WebTypeEnum.WebCountry:
-                     case WebTypeEnum.WebProvince:
+                     case WebTypeEnum.WebAllAddresses:
+                     case WebTypeEnum.WebAllContacts:
+                     case WebTypeEnum.WebAllCountries:
+                     case WebTypeEnum.WebAllEmails:
+                     case WebTypeEnum.WebAllHelpDocs:
+                     case WebTypeEnum.WebAllMunicipalities:
+                     case WebTypeEnum.WebAllMWQMLookupMPNs:
+                     case WebTypeEnum.WebAllPolSourceGroupings:
+                     case WebTypeEnum.WebAllPolSourceSiteEffectTerms:
+                     case WebTypeEnum.WebAllProvinces:
+                     case WebTypeEnum.WebAllReportTypes:
+                     case WebTypeEnum.WebAllTels:
+                     case WebTypeEnum.WebAllTideLocations:
+                     case WebTypeEnum.WebAllTVItemLanguages1980_2020:
+                     case WebTypeEnum.WebAllTVItemLanguages2021_2060:
+                     case WebTypeEnum.WebAllTVItems1980_2020:
+                     case WebTypeEnum.WebAllTVItems2021_2060:
                      case WebTypeEnum.WebArea:
-                     case WebTypeEnum.WebMunicipalities:
+                     case WebTypeEnum.WebClimateSites:
+                     case WebTypeEnum.WebCountry:
+                     case WebTypeEnum.WebDrogueRuns:
+                     case WebTypeEnum.WebHydrometricSites:
+                     case WebTypeEnum.WebLabSheets:
+                     case WebTypeEnum.WebMikeScenarios:
+                     case WebTypeEnum.WebMunicipality:
+                     case WebTypeEnum.WebMWQMRuns:
+                     case WebTypeEnum.WebMWQMSamples1980_2020:
+                     case WebTypeEnum.WebMWQMSamples2021_2060:
+                     case WebTypeEnum.WebMWQMSites:
+                     case WebTypeEnum.WebPolSourceSites:
+                     case WebTypeEnum.WebProvince:
+                     case WebTypeEnum.WebRoot:
                      case WebTypeEnum.WebSector:
                      case WebTypeEnum.WebSubsector:
-                     case WebTypeEnum.WebMunicipality:
-                     case WebTypeEnum.WebMWQMSample:
-                     case WebTypeEnum.WebSamplingPlan:
-                     case WebTypeEnum.WebMWQMRun:
-                     case WebTypeEnum.WebMWQMSite:
-                     case WebTypeEnum.WebAllContacts:
-                     case WebTypeEnum.WebClimateSite:
-                     case WebTypeEnum.WebHydrometricSite:
-                     case WebTypeEnum.WebDrogueRun:
-                     case WebTypeEnum.WebAllMWQMLookupMPNs:
-                     case WebTypeEnum.WebMikeScenario:
-                     case WebTypeEnum.WebClimateDataValue:
-                     case WebTypeEnum.WebHydrometricDataValue:
-                     case WebTypeEnum.WebAllHelpDocs:
-                     case WebTypeEnum.WebAllTideLocations:
-                     case WebTypeEnum.WebPolSourceSite:
-                     case WebTypeEnum.WebAllPolSourceGroupings:
-                     case WebTypeEnum.WebAllReportTypes:
-                     case WebTypeEnum.WebAllTVItems:
-                     case WebTypeEnum.WebAllPolSourceSiteEffectTerms:
-                     case WebTypeEnum.WebAllTVItemLanguages:
-                     case WebTypeEnum.WebAllMunicipalities:
-                     case WebTypeEnum.WebAllProvinces:
-                     case WebTypeEnum.WebAllCountries:
-                     case WebTypeEnum.WebAllAddresses:
-                     case WebTypeEnum.WebAllEmails:
-                     case WebTypeEnum.WebAllTels:
-                     case WebTypeEnum.WebTideSite:
-                     case WebTypeEnum.WebTideDataValue:
+                     case WebTypeEnum.WebTideSites:
                         Assert.Equal("", retStr);
                         break;
                     default:
                         Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "WebTypeEnum"), retStr);
-                        break;
-                }
-            }
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task Enums_WebTypeYearOK_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            string retStr = enums.EnumTypeOK(typeof(WebTypeYearEnum), null);
-            Assert.Equal("", retStr);
-
-            retStr = enums.EnumTypeOK(typeof(WebTypeYearEnum), -100);
-            Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "WebTypeYearEnum"), retStr);
-
-            retStr = enums.EnumTypeOK(typeof(WebTypeYearEnum), 10000000);
-            Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "WebTypeYearEnum"), retStr);
-
-            foreach (int i in Enum.GetValues(typeof(WebTypeYearEnum)))
-            {
-                retStr = enums.EnumTypeOK(typeof(WebTypeYearEnum), i);
-
-                switch ((WebTypeYearEnum)i)
-                {
-                     case WebTypeYearEnum.Year1980:
-                     case WebTypeYearEnum.Year1990:
-                     case WebTypeYearEnum.Year2000:
-                     case WebTypeYearEnum.Year2010:
-                     case WebTypeYearEnum.Year2020:
-                     case WebTypeYearEnum.Year2030:
-                     case WebTypeYearEnum.Year2040:
-                     case WebTypeYearEnum.Year2050:
-                        Assert.Equal("", retStr);
-                        break;
-                    default:
-                        Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "WebTypeYearEnum"), retStr);
                         break;
                 }
             }
@@ -13564,32 +13470,6 @@ namespace CSSPEnums.Tests
             enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
             List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(WebTypeEnum));
-            Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
-
-            EnumIDAndText enumTextOrdered = new EnumIDAndText();
-            Assert.NotNull(enumTextOrdered);
-
-            for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
-            {
-                Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
-            }
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task Enums_WebTypeYearEnumTextOrdered_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
-            foreach (int i in Enum.GetValues(typeof(WebTypeYearEnum)))
-            {
-                enumTextOrderedList.Add(new EnumIDAndText() { EnumID = i, EnumText = enums.GetResValueForTypeAndID(typeof(WebTypeYearEnum), i) });
-            }
-            enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
-
-            List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(WebTypeYearEnum));
             Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
             EnumIDAndText enumTextOrdered = new EnumIDAndText();

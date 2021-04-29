@@ -29,33 +29,22 @@ namespace ReadGzFileServices
     {
         private void DoMergeJsonWebAllPolSourceSiteEffectTerms(WebAllPolSourceSiteEffectTerms WebAllPolSourceSiteEffectTerms, WebAllPolSourceSiteEffectTerms WebAllPolSourceSiteEffectTermsLocal)
         {
-            // -----------------------------------------------------------
-            // doing PolSourceSiteEffectTermList
-            // -----------------------------------------------------------
-            int count = WebAllPolSourceSiteEffectTerms.PolSourceSiteEffectTermList.Count;
-            for (int i = 0; i < count; i++)
-            {
-                PolSourceSiteEffectTerm PolSourceSiteEffectTermLocal = (from c in WebAllPolSourceSiteEffectTermsLocal.PolSourceSiteEffectTermList
-                                        where c.PolSourceSiteEffectTermID == WebAllPolSourceSiteEffectTerms.PolSourceSiteEffectTermList[i].PolSourceSiteEffectTermID
-                                        && c.DBCommand != DBCommandEnum.Original
-                                        select c).FirstOrDefault();
+            List<PolSourceSiteEffectTerm> polSourceSiteEffectTermLocalList = (from c in WebAllPolSourceSiteEffectTermsLocal.PolSourceSiteEffectTermList
+                                              where c.DBCommand != DBCommandEnum.Original
+                                              select c).ToList();
 
-                if (PolSourceSiteEffectTermLocal != null)
+            foreach (PolSourceSiteEffectTerm polSourceSiteEffectTermLocal in polSourceSiteEffectTermLocalList)
+            {
+                PolSourceSiteEffectTerm polSourceSiteEffectTermOriginal = WebAllPolSourceSiteEffectTerms.PolSourceSiteEffectTermList.Where(c => c.PolSourceSiteEffectTermID == polSourceSiteEffectTermLocal.PolSourceSiteEffectTermID).FirstOrDefault();
+                if (polSourceSiteEffectTermOriginal == null)
                 {
-                    WebAllPolSourceSiteEffectTerms.PolSourceSiteEffectTermList[i] = PolSourceSiteEffectTermLocal;
+                    WebAllPolSourceSiteEffectTerms.PolSourceSiteEffectTermList.Add(polSourceSiteEffectTermLocal);
+                }
+                else
+                {
+                    polSourceSiteEffectTermOriginal = polSourceSiteEffectTermLocal;
                 }
             }
-
-            List<PolSourceSiteEffectTerm> PolSourceSiteEffectTermLocalNewList = (from c in WebAllPolSourceSiteEffectTermsLocal.PolSourceSiteEffectTermList
-                                                 where c.DBCommand == DBCommandEnum.Created
-                                                 select c).ToList();
-
-            foreach (PolSourceSiteEffectTerm PolSourceSiteEffectTermNew in PolSourceSiteEffectTermLocalNewList)
-            {
-                WebAllPolSourceSiteEffectTerms.PolSourceSiteEffectTermList.Add(PolSourceSiteEffectTermNew);
-            }
-
-            return;
         }
     }
 }

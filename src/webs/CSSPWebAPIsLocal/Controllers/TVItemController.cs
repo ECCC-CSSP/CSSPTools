@@ -20,7 +20,7 @@ namespace CSSPWebAPIsLocal.Controllers
 {
     public partial interface ITVItemController
     {
-        Task<ActionResult<bool>> Delete(DeleteTVItemModel deleteTVItemModel);
+        Task<ActionResult<bool>> Delete(PostTVItemModel postTVItemModel);
         Task<ActionResult<bool>> Post(PostTVItemModel postTVItemModel);
     }
 
@@ -49,12 +49,12 @@ namespace CSSPWebAPIsLocal.Controllers
 
         #region Functions public
         [HttpDelete]
-        public async Task<ActionResult<bool>> Delete(DeleteTVItemModel deleteTVItemModel)
+        public async Task<ActionResult<bool>> Delete(PostTVItemModel postTVItemModel)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInLocalContactInfo();
 
-            return await TVItemService.DeleteLocal(deleteTVItemModel);
+            return await TVItemService.DeleteLocal(postTVItemModel);
         }
         [HttpPost]
         public async Task<ActionResult<bool>> Post(PostTVItemModel postTVItemModel)

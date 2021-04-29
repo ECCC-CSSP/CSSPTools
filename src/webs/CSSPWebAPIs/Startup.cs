@@ -19,7 +19,7 @@ using System.Text;
 using LoggedInServices;
 using CSSPScrambleServices;
 using CSSPHelperServices;
-using CSSPAzureAppTaskModelServices;
+using CSSPAzureAppTaskServices;
 
 namespace CSSPWebAPIs
 {
@@ -86,7 +86,7 @@ namespace CSSPWebAPIs
 
             LoadAllDBServices(services);
 
-            services.AddScoped<IAzureAppTaskModelService, AzureAppTaskModelService>();
+            services.AddScoped<IAzureAppTaskService, AzureAppTaskService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

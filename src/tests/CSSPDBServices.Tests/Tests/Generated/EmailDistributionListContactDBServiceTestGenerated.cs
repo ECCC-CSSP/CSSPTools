@@ -395,7 +395,7 @@ namespace CSSPDBServices.Tests
             EmailDistributionListContact emailDistributionListContact = new EmailDistributionListContact();
 
             if (OmitPropName != "DBCommand") emailDistributionListContact.DBCommand = (DBCommandEnum)GetRandomEnumType(typeof(DBCommandEnum));
-            if (OmitPropName != "EmailDistributionListID") emailDistributionListContact.EmailDistributionListID = 1;
+            if (OmitPropName != "EmailDistributionListID") emailDistributionListContact.EmailDistributionListID = 0;
             if (OmitPropName != "IsCC") emailDistributionListContact.IsCC = true;
             if (OmitPropName != "Name") emailDistributionListContact.Name = GetRandomString("", 5);
             if (OmitPropName != "Email") emailDistributionListContact.Email = GetRandomEmail();

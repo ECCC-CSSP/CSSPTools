@@ -30,7 +30,7 @@ namespace CreateGzFileServices.Tests
             await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
 
             List<WebTypeEnum> webTypeList = new List<WebTypeEnum>()
-            { 
+            {
                 WebTypeEnum.WebAllAddresses,
                 WebTypeEnum.WebAllContacts,
                 WebTypeEnum.WebAllCountries,
@@ -44,39 +44,37 @@ namespace CreateGzFileServices.Tests
                 WebTypeEnum.WebAllReportTypes,
                 WebTypeEnum.WebAllTels,
                 WebTypeEnum.WebAllTideLocations,
-                WebTypeEnum.WebAllTVItemLanguages,
-                WebTypeEnum.WebAllTVItems,
+                WebTypeEnum.WebAllTVItemLanguages1980_2020,
+                WebTypeEnum.WebAllTVItemLanguages2021_2060,
+                WebTypeEnum.WebAllTVItems1980_2020,
+                WebTypeEnum.WebAllTVItems2021_2060,
                 WebTypeEnum.WebArea,
-                WebTypeEnum.WebClimateDataValue,
-                WebTypeEnum.WebClimateSite,
+                WebTypeEnum.WebClimateSites,
                 WebTypeEnum.WebCountry,
-                WebTypeEnum.WebDrogueRun,
-                WebTypeEnum.WebHydrometricDataValue,
-                WebTypeEnum.WebHydrometricSite,
-                WebTypeEnum.WebMikeScenario,
-                WebTypeEnum.WebMunicipalities,
+                WebTypeEnum.WebDrogueRuns,
+                WebTypeEnum.WebHydrometricSites,
+                WebTypeEnum.WebLabSheets,
+                WebTypeEnum.WebMikeScenarios,
                 WebTypeEnum.WebMunicipality,
-                WebTypeEnum.WebMWQMRun,
-                WebTypeEnum.WebMWQMSample,
-                WebTypeEnum.WebMWQMSite,
-                WebTypeEnum.WebPolSourceSite,
+                WebTypeEnum.WebMWQMRuns,
+                WebTypeEnum.WebMWQMSamples1980_2020,
+                WebTypeEnum.WebMWQMSamples2021_2060,
+                WebTypeEnum.WebMWQMSites,
+                WebTypeEnum.WebPolSourceSites,
                 WebTypeEnum.WebProvince,
                 WebTypeEnum.WebRoot,
-                WebTypeEnum.WebSamplingPlan,
                 WebTypeEnum.WebSector,
                 WebTypeEnum.WebSubsector,
-                WebTypeEnum.WebTideDataValue,
-                WebTypeEnum.WebTideSite,
+                WebTypeEnum.WebTideSites,
             };
 
             foreach (WebTypeEnum webTypeToTry in webTypeList)
             {
                 WebTypeEnum webType = webTypeToTry;
                 int TVItemID = 1; // not important for this test
-                WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980; // not important for this test
 
                 // Create gz
-                var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
+                var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID);
                 Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
             }
         }

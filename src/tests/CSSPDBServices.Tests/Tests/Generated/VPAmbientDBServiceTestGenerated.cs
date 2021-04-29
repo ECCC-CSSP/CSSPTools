@@ -567,7 +567,7 @@ namespace CSSPDBServices.Tests
             VPAmbient vpAmbient = new VPAmbient();
 
             if (OmitPropName != "DBCommand") vpAmbient.DBCommand = (DBCommandEnum)GetRandomEnumType(typeof(DBCommandEnum));
-            if (OmitPropName != "VPScenarioID") vpAmbient.VPScenarioID = 1;
+            if (OmitPropName != "VPScenarioID") vpAmbient.VPScenarioID = 0;
             if (OmitPropName != "Row") vpAmbient.Row = GetRandomInt(0, 10);
             if (OmitPropName != "MeasurementDepth_m") vpAmbient.MeasurementDepth_m = GetRandomDouble(0.0D, 1000.0D);
             if (OmitPropName != "CurrentSpeed_m_s") vpAmbient.CurrentSpeed_m_s = GetRandomDouble(0.0D, 10.0D);

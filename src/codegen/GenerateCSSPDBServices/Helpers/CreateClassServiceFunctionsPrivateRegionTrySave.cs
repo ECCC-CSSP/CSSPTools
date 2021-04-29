@@ -17,7 +17,7 @@ namespace GenerateCSSPDBServices
             sb.AppendLine(@"            }");
             sb.AppendLine(@"            catch (Exception ex)");
             sb.AppendLine(@"            {");
-            sb.AppendLine($@"                { TypeNameLower }.ValidationResults = new List<ValidationResult>() {{ new ValidationResult(ex.Message + (ex.InnerException != null ? "" Inner: "" + ex.InnerException.Message : """")) }}.AsEnumerable();");
+            sb.AppendLine($@"                { TypeNameLower }.ValidationResultList = new List<ValidationResult>() {{ new ValidationResult(ex.Message + (ex.InnerException != null ? "" Inner: "" + ex.InnerException.Message : """")) }}.AsEnumerable();");
             sb.AppendLine(@"                return false;");
             sb.AppendLine(@"            }");
             sb.AppendLine(@"");

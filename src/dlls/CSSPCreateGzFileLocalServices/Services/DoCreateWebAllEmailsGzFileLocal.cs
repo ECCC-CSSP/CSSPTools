@@ -35,6 +35,8 @@ namespace CreateGzFileLocalServices
             {
                 webAllEmails.EmailList = await GetAllEmail();
 
+                await FillParentListTVItemModelListLocal(webAllEmails.TVItemParentList, TVItemRoot);
+
                 await FillChildListTVItemModelListLocal(webAllEmails.TVItemAllEmailList, TVItemRoot, TVTypeEnum.Email);
 
                 DoStoreLocal<WebAllEmails>(webAllEmails, $"{ WebTypeEnum.WebAllEmails }.gz");

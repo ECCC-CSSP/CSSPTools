@@ -381,7 +381,7 @@ namespace CSSPDBServices.Tests
             MapInfoPoint mapInfoPoint = new MapInfoPoint();
 
             if (OmitPropName != "DBCommand") mapInfoPoint.DBCommand = (DBCommandEnum)GetRandomEnumType(typeof(DBCommandEnum));
-            if (OmitPropName != "MapInfoID") mapInfoPoint.MapInfoID = 1;
+            if (OmitPropName != "MapInfoID") mapInfoPoint.MapInfoID = 0;
             if (OmitPropName != "Ordinal") mapInfoPoint.Ordinal = GetRandomInt(0, 10);
             if (OmitPropName != "Lat") mapInfoPoint.Lat = GetRandomDouble(-90.0D, 90.0D);
             if (OmitPropName != "Lng") mapInfoPoint.Lng = GetRandomDouble(-180.0D, 180.0D);

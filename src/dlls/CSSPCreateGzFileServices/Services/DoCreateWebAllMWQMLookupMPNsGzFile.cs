@@ -27,7 +27,14 @@ namespace CreateGzFileServices
             {
                 webAllMWQMLookupMPNs.MWQMLookupMPNList = await GetMWQMLookupMPN();
 
-                await DoStore<WebAllMWQMLookupMPNs>(webAllMWQMLookupMPNs, $"{ WebTypeEnum.WebAllMWQMLookupMPNs }.gz");
+                if (dbLocal != null)
+                {
+                    await DoStoreLocal<WebAllMWQMLookupMPNs>(webAllMWQMLookupMPNs, $"{ WebTypeEnum.WebAllMWQMLookupMPNs }.gz");
+                }
+                else
+                {
+                    await DoStore<WebAllMWQMLookupMPNs>(webAllMWQMLookupMPNs, $"{ WebTypeEnum.WebAllMWQMLookupMPNs }.gz");
+                }
             }
             catch (Exception ex)
             {

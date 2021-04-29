@@ -374,7 +374,7 @@ namespace CSSPDBServices.Tests
             AppTaskLanguage appTaskLanguage = new AppTaskLanguage();
 
             if (OmitPropName != "DBCommand") appTaskLanguage.DBCommand = (DBCommandEnum)GetRandomEnumType(typeof(DBCommandEnum));
-            if (OmitPropName != "AppTaskID") appTaskLanguage.AppTaskID = 1;
+            if (OmitPropName != "AppTaskID") appTaskLanguage.AppTaskID = 0;
             if (OmitPropName != "Language") appTaskLanguage.Language = CSSPCultureServicesRes.Culture.TwoLetterISOLanguageName == "fr" ? LanguageEnum.fr : LanguageEnum.en;
             if (OmitPropName != "StatusText") appTaskLanguage.StatusText = GetRandomString("", 5);
             if (OmitPropName != "ErrorText") appTaskLanguage.ErrorText = GetRandomString("", 5);

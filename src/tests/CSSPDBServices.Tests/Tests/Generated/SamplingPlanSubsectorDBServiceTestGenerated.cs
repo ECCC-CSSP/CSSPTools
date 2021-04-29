@@ -341,7 +341,7 @@ namespace CSSPDBServices.Tests
             SamplingPlanSubsector samplingPlanSubsector = new SamplingPlanSubsector();
 
             if (OmitPropName != "DBCommand") samplingPlanSubsector.DBCommand = (DBCommandEnum)GetRandomEnumType(typeof(DBCommandEnum));
-            if (OmitPropName != "SamplingPlanID") samplingPlanSubsector.SamplingPlanID = 1;
+            if (OmitPropName != "SamplingPlanID") samplingPlanSubsector.SamplingPlanID = 0;
             if (OmitPropName != "SubsectorTVItemID") samplingPlanSubsector.SubsectorTVItemID = 11;
             if (OmitPropName != "LastUpdateDate_UTC") samplingPlanSubsector.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") samplingPlanSubsector.LastUpdateContactTVItemID = 2;

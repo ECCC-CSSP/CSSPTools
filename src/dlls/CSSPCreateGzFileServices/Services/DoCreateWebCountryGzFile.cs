@@ -33,22 +33,24 @@ namespace CreateGzFileServices
 
             try
             {
-                await FillTVItemModel(webCountry.TVItemModel, TVItemCountry);
+                await FillTVItemModelAndParentTVItemModelList(webCountry.TVItemStatMapModel, webCountry.TVItemStatModelParentList, TVItemCountry);
 
-                await FillParentListTVItemModelList(webCountry.TVItemParentList, TVItemCountry);
+                await FillChildListTVItemModelList(webCountry.TVItemStatMapModelProvinceList, TVItemCountry, TVTypeEnum.Province);
 
-                await FillChildListTVItemModelList(webCountry.TVItemProvinceList, TVItemCountry, TVTypeEnum.Province);
+                await FillFileModelList(webCountry.TVFileModelList, TVItemCountry);
 
-                await FillChildListTVItemModelList(webCountry.TVItemFileList, TVItemCountry, TVTypeEnum.File);
+                await FillRainExceedanceModelList(webCountry.RainExceedanceModelList, TVItemCountry);
 
-                await FillChildListTVItemModelList(webCountry.TVItemRainExceedanceList, TVItemCountry, TVTypeEnum.RainExceedance);
+                await FillEmailDistributionListModelList(webCountry.EmailDistributionListModelList, TVItemCountry);
 
-                webCountry.EmailDistributionListList = await GetEmailDistributionListListUnderCountry(TVItemCountry.TVItemID);
-                webCountry.EmailDistributionListLanguageList = await GetEmailDistributionListLanguageListUnderCountry(TVItemCountry.TVItemID);
-                webCountry.EmailDistributionListContactList = await GetEmailDistributionListContactListUnderCountry(TVItemCountry.TVItemID);
-                webCountry.EmailDistributionListContactLanguageList = await GetEmailDistributionListContactLanguageListUnderCountry(TVItemCountry.TVItemID);
-
-                await DoStore<WebCountry>(webCountry, $"{ WebTypeEnum.WebCountry }_{ CountryTVItemID }.gz");
+                if (dbLocal != null)
+                {
+                    await DoStoreLocal<WebCountry>(webCountry, $"{ WebTypeEnum.WebCountry }_{ CountryTVItemID }.gz");
+                }
+                else
+                {
+                    await DoStore<WebCountry>(webCountry, $"{ WebTypeEnum.WebCountry }_{ CountryTVItemID }.gz");
+                }
             }
             catch (Exception ex)
             {

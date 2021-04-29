@@ -28,7 +28,7 @@ namespace CSSPDBLocalServices
 
     public partial interface ITVItemLocalService
     {
-        Task<ActionResult<bool>> DeleteLocal(DeleteTVItemModel deleteTVItemModel);
+        Task<ActionResult<bool>> DeleteLocal(PostTVItemModel postTVItemModel);
         Task<ActionResult<bool>> AddOrModifyLocal(PostTVItemModel postTVItemModel);
     }
     public partial class TVItemLocalService : ControllerBase, ITVItemLocalService
@@ -72,7 +72,9 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
-            if (!ValidateAddOrModifyTVItemLocal(postTVItemModel))
+            bool ForAdd = postTVItemModel.TVItem.TVItemID == 0 ? true : false;
+
+            if (!ValidatePostTVItemModel(postTVItemModel, ForAdd))
             {
                 return await Task.FromResult(BadRequest(ValidationResults));
             }
@@ -84,19 +86,19 @@ namespace CSSPDBLocalServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<bool>> DeleteLocal(DeleteTVItemModel deleteTVItemModel)
+        public async Task<ActionResult<bool>> DeleteLocal(PostTVItemModel postTVItemModel)
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
 
-            if (!ValidateDeleteTVItemLocal(deleteTVItemModel))
+            if (!ValidatePostTVItemModel(postTVItemModel, false))
             {
                 return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (!DoDeleteTVItemLocal(deleteTVItemModel))
+            if (!DoDeleteTVItemLocal(postTVItemModel))
             {
                 return await Task.FromResult(BadRequest(ValidationResults));
             }

@@ -65,7 +65,6 @@ namespace DownloadFileServices.Tests
                 }
             }
 
-            // Download file
             var actionRes2 = await DownloadFileService.DownloadFile(ParentTVItemID, FileName);
             Assert.NotNull(((FileStreamResult)actionRes2).FileStream);
         }

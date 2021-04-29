@@ -13,7 +13,7 @@ namespace GenerateCSSPDBServices
             sb.AppendLine(@"        {");
             sb.AppendLine(@"            if (!LoginModelService.Validate(new ValidationContext(loginModel)))");
             sb.AppendLine(@"            {");
-            sb.AppendLine(@"                return await Task.FromResult(BadRequest(ValidationResults));");
+            sb.AppendLine(@"                return await Task.FromResult(BadRequest(ValidationResultList));");
             sb.AppendLine(@"            }");
             sb.AppendLine(@"");
             sb.AppendLine(@"            try");

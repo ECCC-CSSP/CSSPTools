@@ -29,33 +29,22 @@ namespace ReadGzFileServices
     {
         private void DoMergeJsonWebAllTideLocations(WebAllTideLocations WebAllTideLocations, WebAllTideLocations WebAllTideLocationsLocal)
         {
-            // -----------------------------------------------------------
-            // doing TideLocationList
-            // -----------------------------------------------------------
-            int count = WebAllTideLocations.TideLocationList.Count;
-            for (int i = 0; i < count; i++)
-            {
-                TideLocation TideLocationLocal = (from c in WebAllTideLocationsLocal.TideLocationList
-                                        where c.TideLocationID == WebAllTideLocations.TideLocationList[i].TideLocationID
-                                        && c.DBCommand != DBCommandEnum.Original
-                                        select c).FirstOrDefault();
+            List<TideLocation> tideLocationLocalList = (from c in WebAllTideLocationsLocal.TideLocationList
+                                              where c.DBCommand != DBCommandEnum.Original
+                                              select c).ToList();
 
-                if (TideLocationLocal != null)
+            foreach (TideLocation tideLocationLocal in tideLocationLocalList)
+            {
+                TideLocation tideLocationOriginal = WebAllTideLocations.TideLocationList.Where(c => c.TideLocationID == tideLocationLocal.TideLocationID).FirstOrDefault();
+                if (tideLocationOriginal == null)
                 {
-                    WebAllTideLocations.TideLocationList[i] = TideLocationLocal;
+                    WebAllTideLocations.TideLocationList.Add(tideLocationLocal);
+                }
+                else
+                {
+                    tideLocationOriginal = tideLocationLocal;
                 }
             }
-
-            List<TideLocation> TideLocationLocalNewList = (from c in WebAllTideLocationsLocal.TideLocationList
-                                                 where c.DBCommand == DBCommandEnum.Created
-                                                 select c).ToList();
-
-            foreach (TideLocation TideLocationNew in TideLocationLocalNewList)
-            {
-                WebAllTideLocations.TideLocationList.Add(TideLocationNew);
-            }
-
-            return;
         }
     }
 }

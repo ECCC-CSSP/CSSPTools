@@ -456,7 +456,7 @@ namespace CSSPDBServices.Tests
             ReportSection reportSection = new ReportSection();
 
             if (OmitPropName != "DBCommand") reportSection.DBCommand = (DBCommandEnum)GetRandomEnumType(typeof(DBCommandEnum));
-            if (OmitPropName != "ReportTypeID") reportSection.ReportTypeID = 1;
+            if (OmitPropName != "ReportTypeID") reportSection.ReportTypeID = 0;
             // Need to implement (no items found, would need to add at least one in the TestDB) [ReportSection TVItemID TVItem TVItemID]
             if (OmitPropName != "Language") reportSection.Language = CSSPCultureServicesRes.Culture.TwoLetterISOLanguageName == "fr" ? LanguageEnum.fr : LanguageEnum.en;
             if (OmitPropName != "Ordinal") reportSection.Ordinal = GetRandomInt(0, 1000);

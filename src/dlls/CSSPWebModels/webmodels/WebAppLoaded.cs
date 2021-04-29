@@ -12,45 +12,40 @@ namespace CSSPWebModels
     {
         #region Properties
         public WebAllAddresses WebAllAddresses { get; set; }
-        public WebAllEmails WebAllEmails { get; set; }
-        public WebAllTels WebAllTels { get; set; }
         public WebAllContacts WebAllContacts { get; set; }
         public WebAllCountries WebAllCountries { get; set; }
-        public WebAllHelpDocs WebHelpDocs { get; set; }
+        public WebAllEmails WebAllEmails { get; set; }
+        public WebAllHelpDocs WebAllHelpDocs { get; set; }
         public WebAllMunicipalities WebAllMunicipalities { get; set; }
         public WebAllMWQMLookupMPNs WebAllMWQMLookupMPNs { get; set; }
         public WebAllPolSourceGroupings WebAllPolSourceGroupings { get; set; }
         public WebAllPolSourceSiteEffectTerms WebAllPolSourceSiteEffectTerms { get; set; }
         public WebAllProvinces WebAllProvinces { get; set; }
         public WebAllReportTypes WebAllReportTypes { get; set; }
+        public WebAllTels WebAllTels { get; set; }
         public WebAllTideLocations WebAllTideLocations { get; set; }
+        public WebAllTVItemLanguages WebAllTVItemLanguages1980_2020 { get; set; }
+        public WebAllTVItemLanguages WebAllTVItemLanguages2021_2060 { get; set; }
+        public WebAllTVItems WebAllTVItems1980_2020 { get; set; }
+        public WebAllTVItems WebAllTVItems2021_2060 { get; set; }
         public WebArea WebArea { get; set; }
-        public WebClimateDataValue WebClimateDataValue { get; set; }
-        public WebClimateSite WebClimateSite { get; set; }
+        public WebClimateSites WebClimateSites { get; set; }
         public WebCountry WebCountry { get; set; }
-        public WebDrogueRun WebDrogueRun { get; set; }
-        public WebHydrometricDataValue WebHydrometricDataValue { get; set; }
-        public WebHydrometricSite WebHydrometricSite { get; set; }
-        public WebMikeScenario WebMikeScenario { get; set; }
-        public WebMunicipalities WebMunicipalities { get; set; }
+        public WebDrogueRuns WebDrogueRuns { get; set; }
+        public WebHydrometricSites WebHydrometricSites { get; set; }
+        public WebLabSheets WebLabSheets { get; set; }
+        public WebMikeScenarios WebMikeScenarios { get; set; }
         public WebMunicipality WebMunicipality { get; set; }
-        public WebMWQMRun WebMWQMRun { get; set; }
-        public WebMWQMSample WebMWQMSample1980_1989 { get; set; }
-        public WebMWQMSample WebMWQMSample1990_1999 { get; set; }
-        public WebMWQMSample WebMWQMSample2000_2009 { get; set; }
-        public WebMWQMSample WebMWQMSample2010_2019 { get; set; }
-        public WebMWQMSample WebMWQMSample2020_2029 { get; set; }
-        public WebMWQMSample WebMWQMSample2030_2039 { get; set; }
-        public WebMWQMSample WebMWQMSample2040_2049 { get; set; }
-        public WebMWQMSample WebMWQMSample2050_2059 { get; set; }
-        public WebMWQMSite WebMWQMSite { get; set; }
-        public WebPolSourceSite WebPolSourceSite { get; set; }
+        public WebMWQMRuns WebMWQMRuns { get; set; }
+        public WebMWQMSamples WebMWQMSamples1980_2020 { get; set; }
+        public WebMWQMSamples WebMWQMSamples2021_2060 { get; set; }
+        public WebMWQMSites WebMWQMSites { get; set; }
+        public WebPolSourceSites WebPolSourceSites { get; set; }
         public WebProvince WebProvince { get; set; }
         public WebRoot WebRoot { get; set; }
-        public WebSamplingPlan WebSamplingPlan { get; set; }
         public WebSector WebSector { get; set; }
         public WebSubsector WebSubsector { get; set; }
-        public WebTideSite WebTideSite { get; set; }
+        public WebTideSites WebTideSites { get; set; }
 
         #endregion Properties
 

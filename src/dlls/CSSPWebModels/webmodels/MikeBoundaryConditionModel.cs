@@ -9,18 +9,19 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CSSPWebModels
 {
     [NotMapped]
-    public partial class MikeBoundaryConditionModel : WebBase
+    public partial class MikeBoundaryConditionModel
     {
         #region Properties
-        public List<MikeBoundaryCondition> MikeBoundaryConditionList { get; set; }
+        public TVItemMapModel TVItemMapModel { get; set; }
+        public MikeBoundaryCondition MikeBoundaryCondition { get; set; }
         #endregion Properties
 
         #region Constructors
         public MikeBoundaryConditionModel()
         {
-            MikeBoundaryConditionList = new List<MikeBoundaryCondition>();
+            TVItemMapModel = new TVItemMapModel();
+            MikeBoundaryCondition = new MikeBoundaryCondition();
         }
         #endregion Constructors
-
     }
 }

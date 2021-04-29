@@ -9,30 +9,26 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CSSPWebModels
 {
     [NotMapped]
-    public partial class WebMunicipality : WebBase
+    public partial class WebMunicipality
     {
         #region Properties
-        public List<WebBase> TVItemParentList { get; set; }
-        public List<WebBase> TVItemMikeScenarioList { get; set; }
-        public List<WebBase> TVItemInfrastructureList { get; set; }
-        public List<WebBase> TVItemFileList { get; set; }
-        public List<InfrastructureModel> InfrastructureModelList { get; set; }
-        public List<MIKEScenarioModel> MIKEScenarioModelList { get; set; }
+        public TVItemStatMapModel TVItemStatMapModel { get; set; }
+        public List<TVItemStatModel> TVItemStatModelParentList { get; set; }
+        public List<TVFileModel> TVFileModelList { get; set; }
         public List<ContactModel> MunicipalityContactModelList { get; set; }
         public List<TVItemLink> MunicipalityTVItemLinkList { get; set; }
+        public List<InfrastructureModel> InfrastructureModelList { get; set; }
         #endregion Properties
 
         #region Constructors
         public WebMunicipality()
         {
-            TVItemParentList = new List<WebBase>();
-            TVItemMikeScenarioList = new List<WebBase>();
-            TVItemInfrastructureList = new List<WebBase>();
-            TVItemFileList = new List<WebBase>();
-            InfrastructureModelList = new List<InfrastructureModel>();
-            MIKEScenarioModelList = new List<MIKEScenarioModel>();
+            TVItemStatMapModel = new TVItemStatMapModel();
+            TVItemStatModelParentList = new List<TVItemStatModel>();
+            TVFileModelList = new List<TVFileModel>();
             MunicipalityContactModelList = new List<ContactModel>();
             MunicipalityTVItemLinkList = new List<TVItemLink>();
+            InfrastructureModelList = new List<InfrastructureModel>();
         }
         #endregion Constructors
     }

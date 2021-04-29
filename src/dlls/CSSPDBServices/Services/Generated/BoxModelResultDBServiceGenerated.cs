@@ -41,7 +41,7 @@ namespace CSSPDBServices
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
-        private List<ValidationResult> ValidationResults { get; set; }
+        private List<ValidationResult> ValidationResultList { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -54,6 +54,8 @@ namespace CSSPDBServices
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+
+            ValidationResultList = new List<ValidationResult>();
         }
         #endregion Constructors
 
@@ -124,7 +126,7 @@ namespace CSSPDBServices
 
             if (!Validate(new ValidationContext(boxModelResult), ActionDBTypeEnum.Create))
             {
-                return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(ValidationResultList));
             }
 
             try
@@ -148,7 +150,7 @@ namespace CSSPDBServices
 
             if (!Validate(new ValidationContext(boxModelResult), ActionDBTypeEnum.Update))
             {
-                return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(ValidationResultList));
             }
 
             try
@@ -175,19 +177,19 @@ namespace CSSPDBServices
             {
                 if (boxModelResult.BoxModelResultID == 0)
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "BoxModelResultID"), new[] { nameof(boxModelResult.BoxModelResultID) }));
+                    ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "BoxModelResultID"), new[] { nameof(boxModelResult.BoxModelResultID) }));
                 }
 
                 if (!(from c in db.BoxModelResults.AsNoTracking() select c).Where(c => c.BoxModelResultID == boxModelResult.BoxModelResultID).Any())
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "BoxModelResult", "BoxModelResultID", boxModelResult.BoxModelResultID.ToString()), new[] { nameof(boxModelResult.BoxModelResultID) }));
+                    ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "BoxModelResult", "BoxModelResultID", boxModelResult.BoxModelResultID.ToString()), new[] { nameof(boxModelResult.BoxModelResultID) }));
                 }
             }
 
             retStr = enums.EnumTypeOK(typeof(DBCommandEnum), (int?)boxModelResult.DBCommand);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"), new[] { nameof(boxModelResult.DBCommand) }));
+                ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"), new[] { nameof(boxModelResult.DBCommand) }));
             }
 
             BoxModel BoxModelBoxModelID = null;
@@ -195,35 +197,35 @@ namespace CSSPDBServices
 
             if (BoxModelBoxModelID == null)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "BoxModel", "BoxModelID", boxModelResult.BoxModelID.ToString()), new[] { nameof(boxModelResult.BoxModelID)}));
+                ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "BoxModel", "BoxModelID", boxModelResult.BoxModelID.ToString()), new[] { nameof(boxModelResult.BoxModelID)}));
             }
 
             retStr = enums.EnumTypeOK(typeof(BoxModelResultTypeEnum), (int?)boxModelResult.BoxModelResultType);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "BoxModelResultType"), new[] { nameof(boxModelResult.BoxModelResultType) }));
+                ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "BoxModelResultType"), new[] { nameof(boxModelResult.BoxModelResultType) }));
             }
 
             if (boxModelResult.Volume_m3 < 0)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "Volume_m3", "0"), new[] { nameof(boxModelResult.Volume_m3) }));
+                ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "Volume_m3", "0"), new[] { nameof(boxModelResult.Volume_m3) }));
             }
 
             if (boxModelResult.Surface_m2 < 0)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "Surface_m2", "0"), new[] { nameof(boxModelResult.Surface_m2) }));
+                ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "Surface_m2", "0"), new[] { nameof(boxModelResult.Surface_m2) }));
             }
 
             if (boxModelResult.Radius_m < 0 || boxModelResult.Radius_m > 100000)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Radius_m", "0", "100000"), new[] { nameof(boxModelResult.Radius_m) }));
+                ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Radius_m", "0", "100000"), new[] { nameof(boxModelResult.Radius_m) }));
             }
 
             if (boxModelResult.LeftSideDiameterLineAngle_deg != null)
             {
                 if (boxModelResult.LeftSideDiameterLineAngle_deg < 0 || boxModelResult.LeftSideDiameterLineAngle_deg > 360)
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "LeftSideDiameterLineAngle_deg", "0", "360"), new[] { nameof(boxModelResult.LeftSideDiameterLineAngle_deg) }));
+                    ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "LeftSideDiameterLineAngle_deg", "0", "360"), new[] { nameof(boxModelResult.LeftSideDiameterLineAngle_deg) }));
                 }
             }
 
@@ -231,7 +233,7 @@ namespace CSSPDBServices
             {
                 if (boxModelResult.CircleCenterLatitude < -90 || boxModelResult.CircleCenterLatitude > 90)
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "CircleCenterLatitude", "-90", "90"), new[] { nameof(boxModelResult.CircleCenterLatitude) }));
+                    ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "CircleCenterLatitude", "-90", "90"), new[] { nameof(boxModelResult.CircleCenterLatitude) }));
                 }
             }
 
@@ -239,25 +241,25 @@ namespace CSSPDBServices
             {
                 if (boxModelResult.CircleCenterLongitude < -180 || boxModelResult.CircleCenterLongitude > 180)
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "CircleCenterLongitude", "-180", "180"), new[] { nameof(boxModelResult.CircleCenterLongitude) }));
+                    ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "CircleCenterLongitude", "-180", "180"), new[] { nameof(boxModelResult.CircleCenterLongitude) }));
                 }
             }
 
             if (boxModelResult.RectLength_m < 0 || boxModelResult.RectLength_m > 100000)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "RectLength_m", "0", "100000"), new[] { nameof(boxModelResult.RectLength_m) }));
+                ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "RectLength_m", "0", "100000"), new[] { nameof(boxModelResult.RectLength_m) }));
             }
 
             if (boxModelResult.RectWidth_m < 0 || boxModelResult.RectWidth_m > 100000)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "RectWidth_m", "0", "100000"), new[] { nameof(boxModelResult.RectWidth_m) }));
+                ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "RectWidth_m", "0", "100000"), new[] { nameof(boxModelResult.RectWidth_m) }));
             }
 
             if (boxModelResult.LeftSideLineAngle_deg != null)
             {
                 if (boxModelResult.LeftSideLineAngle_deg < 0 || boxModelResult.LeftSideLineAngle_deg > 360)
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "LeftSideLineAngle_deg", "0", "360"), new[] { nameof(boxModelResult.LeftSideLineAngle_deg) }));
+                    ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "LeftSideLineAngle_deg", "0", "360"), new[] { nameof(boxModelResult.LeftSideLineAngle_deg) }));
                 }
             }
 
@@ -265,7 +267,7 @@ namespace CSSPDBServices
             {
                 if (boxModelResult.LeftSideLineStartLatitude < -90 || boxModelResult.LeftSideLineStartLatitude > 90)
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "LeftSideLineStartLatitude", "-90", "90"), new[] { nameof(boxModelResult.LeftSideLineStartLatitude) }));
+                    ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "LeftSideLineStartLatitude", "-90", "90"), new[] { nameof(boxModelResult.LeftSideLineStartLatitude) }));
                 }
             }
 
@@ -273,19 +275,19 @@ namespace CSSPDBServices
             {
                 if (boxModelResult.LeftSideLineStartLongitude < -180 || boxModelResult.LeftSideLineStartLongitude > 180)
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "LeftSideLineStartLongitude", "-180", "180"), new[] { nameof(boxModelResult.LeftSideLineStartLongitude) }));
+                    ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "LeftSideLineStartLongitude", "-180", "180"), new[] { nameof(boxModelResult.LeftSideLineStartLongitude) }));
                 }
             }
 
             if (boxModelResult.LastUpdateDate_UTC.Year == 1)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { nameof(boxModelResult.LastUpdateDate_UTC) }));
+                ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { nameof(boxModelResult.LastUpdateDate_UTC) }));
             }
             else
             {
                 if (boxModelResult.LastUpdateDate_UTC.Year < 1980)
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { nameof(boxModelResult.LastUpdateDate_UTC) }));
+                    ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { nameof(boxModelResult.LastUpdateDate_UTC) }));
                 }
             }
 
@@ -294,7 +296,7 @@ namespace CSSPDBServices
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", boxModelResult.LastUpdateContactTVItemID.ToString()), new[] { nameof(boxModelResult.LastUpdateContactTVItemID)}));
+                ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", boxModelResult.LastUpdateContactTVItemID.ToString()), new[] { nameof(boxModelResult.LastUpdateContactTVItemID)}));
             }
             else
             {
@@ -304,11 +306,11 @@ namespace CSSPDBServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(boxModelResult.LastUpdateContactTVItemID) }));
+                    ValidationResultList.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(boxModelResult.LastUpdateContactTVItemID) }));
                 }
             }
 
-            return ValidationResults.Count == 0 ? true : false;
+            return ValidationResultList.Count == 0 ? true : false;
         }
         #endregion Functions private
     }

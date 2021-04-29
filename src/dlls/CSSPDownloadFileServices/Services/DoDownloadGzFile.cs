@@ -23,9 +23,9 @@ namespace DownloadFileServices
 {
     public partial class DownloadFileService : ControllerBase, IDownloadFileService
     {
-        private async Task<ActionResult<bool>> DoDownloadGzFile(WebTypeEnum webType, int TVItemID, WebTypeYearEnum webTypeYear)
+        private async Task<ActionResult<bool>> DoDownloadGzFile(WebTypeEnum webType, int TVItemID)
         {
-            string FileName = await BaseGzFileService.GetFileName(webType, TVItemID, webTypeYear);
+            string FileName = await BaseGzFileService.GetFileName(webType, TVItemID);
 
             if (LoggedInService.LoggedInContactInfo == null)
             {

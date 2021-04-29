@@ -93,7 +93,7 @@ namespace GenerateCSSPDBServices
                 sb.AppendLine($@"            if (!Validate(new ValidationContext({ TypeNameLower }), ActionDBTypeEnum.Create))");
             }
             sb.AppendLine(@"            {");
-            sb.AppendLine($@"                return await Task.FromResult(BadRequest(ValidationResults));");
+            sb.AppendLine($@"                return await Task.FromResult(BadRequest(ValidationResultList));");
             sb.AppendLine(@"            }");
             sb.AppendLine(@"");
             sb.AppendLine($@"            try");
@@ -127,7 +127,7 @@ namespace GenerateCSSPDBServices
                 sb.AppendLine($@"            if (!Validate(new ValidationContext({ TypeNameLower }), ActionDBTypeEnum.Update))");
             }
             sb.AppendLine(@"            {");
-            sb.AppendLine($@"                return await Task.FromResult(BadRequest(ValidationResults));");
+            sb.AppendLine($@"                return await Task.FromResult(BadRequest(ValidationResultList));");
             sb.AppendLine(@"            }");
             sb.AppendLine(@"");
             sb.AppendLine($@"            try");

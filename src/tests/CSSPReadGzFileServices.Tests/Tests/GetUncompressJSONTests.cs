@@ -34,525 +34,439 @@ namespace ReadGzFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task GetUncompressJSON_ReadWebAreaGzFile_Good_Test(string culture)
+        public async Task GetUncompressJSON_WebAllAddresses_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebAllAddresses;
+
+            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebArea>(webType);
+            Assert.NotNull(JSONRes);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task GetUncompressJSON_WebAllContacts_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebAllContacts;
+
+            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebArea>(webType);
+            Assert.NotNull(JSONRes);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task GetUncompressJSON_WebAllCountries_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebAllCountries;
+
+            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebArea>(webType);
+            Assert.NotNull(JSONRes);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task GetUncompressJSON_WebAllEmails_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebAllEmails;
+
+            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebArea>(webType);
+            Assert.NotNull(JSONRes);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task GetUncompressJSON_WebAllHelpDocs_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebAllHelpDocs;
+
+            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebArea>(webType);
+            Assert.NotNull(JSONRes);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task GetUncompressJSON_WebAllMunicipalities_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebAllMunicipalities;
+
+            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebArea>(webType);
+            Assert.NotNull(JSONRes);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task GetUncompressJSON_WebAllMWQMLookupMPNs_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebAllMWQMLookupMPNs;
+
+            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebArea>(webType);
+            Assert.NotNull(JSONRes);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task GetUncompressJSON_WebAllPolSourceGroupings_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebAllPolSourceGroupings;
+
+            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebArea>(webType);
+            Assert.NotNull(JSONRes);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task GetUncompressJSON_WebAllPolSourceSiteEffectTerms_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebAllPolSourceSiteEffectTerms;
+
+            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebArea>(webType);
+            Assert.NotNull(JSONRes);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task GetUncompressJSON_WebAllProvinces_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebAllProvinces;
+
+            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebArea>(webType);
+            Assert.NotNull(JSONRes);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task GetUncompressJSON_WebAllReportTypes_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebAllReportTypes;
+
+            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebArea>(webType);
+            Assert.NotNull(JSONRes);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task GetUncompressJSON_WebAllTels_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebAllTels;
+
+            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebArea>(webType);
+            Assert.NotNull(JSONRes);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task GetUncompressJSON_WebAllTideLocations_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebAllTideLocations;
+
+            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebArea>(webType);
+            Assert.NotNull(JSONRes);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task GetUncompressJSON_WebAllTVItemLanguages1980_2020_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebAllTVItemLanguages1980_2020;
+
+            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebArea>(webType);
+            Assert.NotNull(JSONRes);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task GetUncompressJSON_WebAllTVItemLanguages2021_2060_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebAllTVItemLanguages2021_2060;
+
+            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebArea>(webType);
+            Assert.NotNull(JSONRes);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task GetUncompressJSON_WebAllTVItems1980_2020_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebAllTVItems1980_2020;
+
+            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebArea>(webType);
+            Assert.NotNull(JSONRes);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task GetUncompressJSON_WebAllTVItems2021_2060_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebAllTVItems2021_2060;
+
+            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebArea>(webType);
+            Assert.NotNull(JSONRes);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task GetUncompressJSON_WebArea_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
             WebTypeEnum webType = WebTypeEnum.WebArea;
             int TVItemID = 629;
-            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
-            // Read uncompress JSON
-            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebArea>(webType, TVItemID, webTypeYear);
+            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebArea>(webType, TVItemID);
             Assert.NotNull(JSONRes);
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task GetUncompressJSON_ReadWebClimateDataValue_Good_Test(string culture)
+        public async Task GetUncompressJSON_WebClimateSite_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebClimateDataValue;
-            int TVItemID = 229465;
-            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
-
-            // Read uncompress JSON
-            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebClimateDataValue>(webType, TVItemID, webTypeYear);
-            Assert.NotNull(JSONRes);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task GetUncompressJSON_ReadWebClimateSite_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            WebTypeEnum webType = WebTypeEnum.WebClimateSite;
+            WebTypeEnum webType = WebTypeEnum.WebClimateSites;
             int TVItemID = 7;
-            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
-            // Read uncompress JSON
-            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebClimateSite>(webType, TVItemID, webTypeYear);
+            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebClimateSites>(webType, TVItemID);
             Assert.NotNull(JSONRes);
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task GetUncompressJSON_ReadWebAllContacts_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            WebTypeEnum webType = WebTypeEnum.WebAllContacts;
-            int TVItemID = 0;
-            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
-
-            // Read uncompress JSON
-            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebAllContacts>(webType, TVItemID, webTypeYear);
-            Assert.NotNull(JSONRes);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task GetUncompressJSON_ReadWebCountry_Good_Test(string culture)
+        public async Task GetUncompressJSON_WebCountry_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
             WebTypeEnum webType = WebTypeEnum.WebCountry;
             int TVItemID = 5;
-            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
-            // Read uncompress JSON
-            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebCountry>(webType, TVItemID, webTypeYear);
+            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebCountry>(webType, TVItemID);
             Assert.NotNull(JSONRes);
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task GetUncompressJSON_ReadWebDrogueRun_Good_Test(string culture)
+        public async Task GetUncompressJSON_WebDrogueRun_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebDrogueRun;
+            WebTypeEnum webType = WebTypeEnum.WebDrogueRuns;
             int TVItemID = 556;
-            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
-            // Read uncompress JSON
-            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebDrogueRun>(webType, TVItemID, webTypeYear);
+            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebDrogueRuns>(webType, TVItemID);
             Assert.NotNull(JSONRes);
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task GetUncompressJSON_ReadWebAllHelpDocs_Good_Test(string culture)
+        public async Task GetUncompressJSON_WebHydrometricSite_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebAllHelpDocs;
-            int TVItemID = 0;
-            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
-
-            // Read uncompress JSON
-            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebAllHelpDocs>(webType, TVItemID, webTypeYear);
-            Assert.NotNull(JSONRes);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task GetUncompressJSON_ReadWebHydrometricDataValue_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            WebTypeEnum webType = WebTypeEnum.WebHydrometricDataValue;
-            int TVItemID = 51705;
-            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
-
-            // Read uncompress JSON
-            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebHydrometricDataValue>(webType, TVItemID, webTypeYear);
-            Assert.NotNull(JSONRes);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task GetUncompressJSON_ReadWebHydrometricSite_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            WebTypeEnum webType = WebTypeEnum.WebHydrometricSite;
+            WebTypeEnum webType = WebTypeEnum.WebHydrometricSites;
             int TVItemID = 7;
-            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
-            // Read uncompress JSON
-            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebHydrometricSite>(webType, TVItemID, webTypeYear);
+            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebHydrometricSites>(webType, TVItemID);
             Assert.NotNull(JSONRes);
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task GetUncompressJSON_ReadWebMikeScenario_Good_Test(string culture)
+        public async Task GetUncompressJSON_WebLabSheet_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebMikeScenario;
-            int TVItemID = 12281;
-            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
+            WebTypeEnum webType = WebTypeEnum.WebLabSheets;
+            int TVItemID = 635;
 
-            // Read uncompress JSON
-            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebMikeScenario>(webType, TVItemID, webTypeYear);
+            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebLabSheets>(webType, TVItemID);
             Assert.NotNull(JSONRes);
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task GetUncompressJSON_ReadWebMunicipalities_Good_Test(string culture)
+        public async Task GetUncompressJSON_WebMikeScenarios_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebMunicipalities;
-            int TVItemID = 7;
-            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
+            WebTypeEnum webType = WebTypeEnum.WebMikeScenarios;
+            int TVItemID = 27764;
 
-            // Read uncompress JSON
-            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebMunicipalities>(webType, TVItemID, webTypeYear);
+            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebMikeScenarios>(webType, TVItemID);
             Assert.NotNull(JSONRes);
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task GetUncompressJSON_ReadWebMunicipality_Good_Test(string culture)
+        public async Task GetUncompressJSON_WebMunicipality_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
             WebTypeEnum webType = WebTypeEnum.WebMunicipality;
-            int TVItemID = 12110;
-            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
+            int TVItemID = 27764;
 
-            // Read uncompress JSON
-            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebMunicipality>(webType, TVItemID, webTypeYear);
+            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebMunicipality>(webType, TVItemID);
             Assert.NotNull(JSONRes);
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task GetUncompressJSON_ReadWebAllMWQMLookupMPNs_Good_Test(string culture)
+        public async Task GetUncompressJSON_WebMWQMRun_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebAllMWQMLookupMPNs;
-            int TVItemID = 0;
-            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
-
-            // Read uncompress JSON
-            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebAllMWQMLookupMPNs>(webType, TVItemID, webTypeYear);
-            Assert.NotNull(JSONRes);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task GetUncompressJSON_ReadWebMWQMRun_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            WebTypeEnum webType = WebTypeEnum.WebMWQMRun;
+            WebTypeEnum webType = WebTypeEnum.WebMWQMRuns;
             int TVItemID = 635;
-            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
-            // Read uncompress JSON
-            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebMWQMRun>(webType, TVItemID, webTypeYear);
+            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebMWQMRuns>(webType, TVItemID);
             Assert.NotNull(JSONRes);
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task GetUncompressJSON_ReadWeb10YearOfSample1980_1989FromSubsector_Good_Test(string culture)
+        public async Task GetUncompressJSON_WebMWQMSamples1980_2020(string culture)
         {
             Assert.True(await Setup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebMWQMSample;
+            WebTypeEnum webType = WebTypeEnum.WebMWQMSamples1980_2020;
             int TVItemID = 635;
-            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
 
-            // Read uncompress JSON
-            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebMWQMSample>(webType, TVItemID, webTypeYear);
+            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebMWQMSamples>(webType, TVItemID);
             Assert.NotNull(JSONRes);
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task GetUncompressJSON_ReadWeb10YearOfSample1990_1999FromSubsector(string culture)
+        public async Task GetUncompressJSON_WebMWQMSamples2021_2060(string culture)
         {
             Assert.True(await Setup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebMWQMSample;
+            WebTypeEnum webType = WebTypeEnum.WebMWQMSamples2021_2060;
             int TVItemID = 635;
-            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1990;
 
-            // Read uncompress JSON
-            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebMWQMSample>(webType, TVItemID, webTypeYear);
+            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebMWQMSamples>(webType, TVItemID);
             Assert.NotNull(JSONRes);
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task GetUncompressJSON_ReadWeb10YearOfSample2000_2009FromSubsector(string culture)
+        public async Task GetUncompressJSON_WebMWQMSite_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebMWQMSample;
+            WebTypeEnum webType = WebTypeEnum.WebMWQMSites;
             int TVItemID = 635;
-            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2000;
 
-            // Read uncompress JSON
-            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebMWQMSample>(webType, TVItemID, webTypeYear);
+            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebMWQMSites>(webType, TVItemID);
             Assert.NotNull(JSONRes);
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task GetUncompressJSON_ReadWeb10YearOfSample2010_2019FromSubsector(string culture)
+        public async Task GetUncompressJSON_WebPolSourceSite_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebMWQMSample;
+            WebTypeEnum webType = WebTypeEnum.WebPolSourceSites;
             int TVItemID = 635;
-            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
 
-            // Read uncompress JSON
-            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebMWQMSample>(webType, TVItemID, webTypeYear);
+            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebPolSourceSites>(webType, TVItemID);
             Assert.NotNull(JSONRes);
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task GetUncompressJSON_ReadWeb10YearOfSample2020_2029FromSubsector(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            WebTypeEnum webType = WebTypeEnum.WebMWQMSample;
-            int TVItemID = 635;
-            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2020;
-
-            // Read uncompress JSON
-            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebMWQMSample>(webType, TVItemID, webTypeYear);
-            Assert.NotNull(JSONRes);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task GetUncompressJSON_ReadWeb10YearOfSample2030_2039FromSubsector(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            WebTypeEnum webType = WebTypeEnum.WebMWQMSample;
-            int TVItemID = 635;
-            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2030;
-
-            // Read uncompress JSON
-            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebMWQMSample>(webType, TVItemID, webTypeYear);
-            Assert.NotNull(JSONRes);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task GetUncompressJSON_ReadWeb10YearOfSample2040_2049FromSubsector(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            WebTypeEnum webType = WebTypeEnum.WebMWQMSample;
-            int TVItemID = 635;
-            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2040;
-
-            // Read uncompress JSON
-            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebMWQMSample>(webType, TVItemID, webTypeYear);
-            Assert.NotNull(JSONRes);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task GetUncompressJSON_ReadWeb10YearOfSample2050_2059FromSubsector(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            WebTypeEnum webType = WebTypeEnum.WebMWQMSample;
-            int TVItemID = 635;
-            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2050;
-
-            // Read uncompress JSON
-            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebMWQMSample>(webType, TVItemID, webTypeYear);
-            Assert.NotNull(JSONRes);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task GetUncompressJSON_ReadWebMWQMSite_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            WebTypeEnum webType = WebTypeEnum.WebMWQMSite;
-            int TVItemID = 635;
-            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
-
-            // Read uncompress JSON
-            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebMWQMSite>(webType, TVItemID, webTypeYear);
-            Assert.NotNull(JSONRes);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task GetUncompressJSON_ReadWebAllPolSourceGroupings_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            WebTypeEnum webType = WebTypeEnum.WebAllPolSourceGroupings;
-            int TVItemID = 0;
-            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
-
-            // Read uncompress JSON
-            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebAllPolSourceGroupings>(webType, TVItemID, webTypeYear);
-            Assert.NotNull(JSONRes);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task GetUncompressJSON_ReadWebPolSourceSite_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            WebTypeEnum webType = WebTypeEnum.WebPolSourceSite;
-            int TVItemID = 635;
-            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
-
-            // Read uncompress JSON
-            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebPolSourceSite>(webType, TVItemID, webTypeYear);
-            Assert.NotNull(JSONRes);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task GetUncompressJSON_ReadWebAllPolSourceSiteEffectTerms_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            WebTypeEnum webType = WebTypeEnum.WebAllPolSourceSiteEffectTerms;
-            int TVItemID = 0;
-            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
-
-            // Read uncompress JSON
-            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebAllPolSourceSiteEffectTerms>(webType, TVItemID, webTypeYear);
-            Assert.NotNull(JSONRes);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task GetUncompressJSON_ReadWebProvince_Good_Test(string culture)
+        public async Task GetUncompressJSON_WebProvince_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
             WebTypeEnum webType = WebTypeEnum.WebProvince;
             int TVItemID = 7;
-            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
 
-            // Read uncompress JSON
-            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebProvince>(webType, TVItemID, webTypeYear);
+            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebProvince>(webType, TVItemID);
             Assert.NotNull(JSONRes);
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task GetUncompressJSON_ReadWebAllReportTypes_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            WebTypeEnum webType = WebTypeEnum.WebAllReportTypes;
-            int TVItemID = 0;
-            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
-
-            // Read uncompress JSON
-            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebAllReportTypes>(webType, TVItemID, webTypeYear);
-            Assert.NotNull(JSONRes);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task GetUncompressJSON_ReadWebRoot_Good_Test(string culture)
+        public async Task GetUncompressJSON_WebRoot_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
             WebTypeEnum webType = WebTypeEnum.WebRoot;
             int TVItemID = 0;
-            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
 
-            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebRoot>(webType, TVItemID, webTypeYear);
+            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebRoot>(webType, TVItemID);
             Assert.NotNull(JSONRes);
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task GetUncompressJSON_ReadWebSamplingPlan_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            WebTypeEnum webType = WebTypeEnum.WebSamplingPlan;
-            int TVItemID = 8; // TVItemID is SamplingPlanID in this case
-            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
-
-            // Read uncompress JSON
-            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebSamplingPlan>(webType, TVItemID, webTypeYear);
-            Assert.NotNull(JSONRes);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task GetUncompressJSON_ReadWebSector_Good_Test(string culture)
+        public async Task GetUncompressJSON_WebSector_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
             WebTypeEnum webType = WebTypeEnum.WebSector;
             int TVItemID = 633;
-            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
 
-            // Read uncompress JSON
-            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebSector>(webType, TVItemID, webTypeYear);
+            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebSector>(webType, TVItemID);
             Assert.NotNull(JSONRes);
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task GetUncompressJSON_ReadWebSubsector_Good_Test(string culture)
+        public async Task GetUncompressJSON_WebSubsector_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
             WebTypeEnum webType = WebTypeEnum.WebSubsector;
             int TVItemID = 635;
-            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
 
-            // Read uncompress JSON
-            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebSubsector>(webType, TVItemID, webTypeYear);
+            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebSubsector>(webType, TVItemID);
             Assert.NotNull(JSONRes);
         }
-        [Theory]
+        [Theory(Skip = "WebTideSite does not yet have items")]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task GetUncompressJSON_ReadWebAllTideLocations_Good_Test(string culture)
+        public async Task GetUncompressJSON_WebTideSite_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebAllTideLocations;
-            int TVItemID = 0;
-            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
+            WebTypeEnum webType = WebTypeEnum.WebTideSites;
+            int TVItemID = 635;
 
-            // Read uncompress JSON
-            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebAllTideLocations>(webType, TVItemID, webTypeYear);
-            Assert.NotNull(JSONRes);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task GetUncompressJSON_ReadWebAllTVItems_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            WebTypeEnum webType = WebTypeEnum.WebAllTVItems;
-            int TVItemID = 0;
-            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
-
-            // Read uncompress JSON
-            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebAllTVItems>(webType, TVItemID, webTypeYear);
-            Assert.NotNull(JSONRes);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task GetUncompressJSON_ReadWebAllTVItemLanguages_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            WebTypeEnum webType = WebTypeEnum.WebAllTVItemLanguages;
-            int TVItemID = 0;
-            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
-
-            // Read uncompress JSON
-            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebAllTVItemLanguages>(webType, TVItemID, webTypeYear);
+            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebSubsector>(webType, TVItemID);
             Assert.NotNull(JSONRes);
         }
         #endregion Tests 

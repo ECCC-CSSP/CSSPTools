@@ -365,7 +365,7 @@ namespace CSSPDBServices.Tests
             PolSourceObservationIssue polSourceObservationIssue = new PolSourceObservationIssue();
 
             if (OmitPropName != "DBCommand") polSourceObservationIssue.DBCommand = (DBCommandEnum)GetRandomEnumType(typeof(DBCommandEnum));
-            if (OmitPropName != "PolSourceObservationID") polSourceObservationIssue.PolSourceObservationID = 1;
+            if (OmitPropName != "PolSourceObservationID") polSourceObservationIssue.PolSourceObservationID = 0;
             if (OmitPropName != "ObservationInfo") polSourceObservationIssue.ObservationInfo = GetRandomString("", 5);
             if (OmitPropName != "Ordinal") polSourceObservationIssue.Ordinal = GetRandomInt(0, 1000);
             if (OmitPropName != "ExtraComment") polSourceObservationIssue.ExtraComment = GetRandomString("", 20);

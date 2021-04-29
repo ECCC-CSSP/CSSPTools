@@ -26,7 +26,14 @@ namespace CreateGzFileServices
             {
                 webAllPolSourceSiteEffectTerms.PolSourceSiteEffectTermList = await GetPolSourceSiteEffectTermList();
 
-                await DoStore<WebAllPolSourceSiteEffectTerms>(webAllPolSourceSiteEffectTerms, $"{ WebTypeEnum.WebAllPolSourceSiteEffectTerms }.gz");
+                if (dbLocal != null)
+                {
+                    await DoStoreLocal<WebAllPolSourceSiteEffectTerms>(webAllPolSourceSiteEffectTerms, $"{ WebTypeEnum.WebAllPolSourceSiteEffectTerms }.gz");
+                }
+                else
+                {
+                    await DoStore<WebAllPolSourceSiteEffectTerms>(webAllPolSourceSiteEffectTerms, $"{ WebTypeEnum.WebAllPolSourceSiteEffectTerms }.gz");
+                }
             }
             catch (Exception ex)
             {

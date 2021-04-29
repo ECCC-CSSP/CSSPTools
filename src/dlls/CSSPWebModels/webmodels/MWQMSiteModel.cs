@@ -9,19 +9,21 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CSSPWebModels
 {
     [NotMapped]
-    public partial class MWQMSiteModel : WebBase
+    public partial class MWQMSiteModel
     {
         #region Properties
+        public TVItemStatMapModel TVItemStatMapModel { get; set; }
         public MWQMSite MWQMSite { get; set; }
-        public List<WebBase> TVItemFileList { get; set; }
+        public List<TVFileModel> TVFileModelList { get; set; }
         public List<MWQMSiteStartEndDate> MWQMSiteStartEndDateList { get; set; }
         #endregion Properties
 
         #region Constructors
         public MWQMSiteModel()
         {
+            TVItemStatMapModel = new TVItemStatMapModel();
             MWQMSite = new MWQMSite();
-            TVItemFileList = new List<WebBase>();
+            TVFileModelList = new List<TVFileModel>();
             MWQMSiteStartEndDateList = new List<MWQMSiteStartEndDate>();
         }
         #endregion Constructors

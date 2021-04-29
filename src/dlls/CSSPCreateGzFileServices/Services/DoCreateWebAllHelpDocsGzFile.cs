@@ -27,7 +27,14 @@ namespace CreateGzFileServices
             {
                 webAllHelpDocs.HelpDocList = await GetHelpDoc();
 
-                await DoStore<WebAllHelpDocs>(webAllHelpDocs, $"{ WebTypeEnum.WebAllHelpDocs }.gz");
+                if (dbLocal != null)
+                {
+                    await DoStoreLocal<WebAllHelpDocs>(webAllHelpDocs, $"{ WebTypeEnum.WebAllHelpDocs }.gz");
+                }
+                else
+                {
+                    await DoStore<WebAllHelpDocs>(webAllHelpDocs, $"{ WebTypeEnum.WebAllHelpDocs }.gz");
+                }
             }
             catch (Exception ex)
             {

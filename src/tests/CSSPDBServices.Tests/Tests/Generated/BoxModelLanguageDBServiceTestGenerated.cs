@@ -366,7 +366,7 @@ namespace CSSPDBServices.Tests
             BoxModelLanguage boxModelLanguage = new BoxModelLanguage();
 
             if (OmitPropName != "DBCommand") boxModelLanguage.DBCommand = (DBCommandEnum)GetRandomEnumType(typeof(DBCommandEnum));
-            if (OmitPropName != "BoxModelID") boxModelLanguage.BoxModelID = 1;
+            if (OmitPropName != "BoxModelID") boxModelLanguage.BoxModelID = 0;
             if (OmitPropName != "Language") boxModelLanguage.Language = CSSPCultureServicesRes.Culture.TwoLetterISOLanguageName == "fr" ? LanguageEnum.fr : LanguageEnum.en;
             if (OmitPropName != "ScenarioName") boxModelLanguage.ScenarioName = GetRandomString("", 5);
             if (OmitPropName != "TranslationStatus") boxModelLanguage.TranslationStatus = (TranslationStatusEnum)GetRandomEnumType(typeof(TranslationStatusEnum));

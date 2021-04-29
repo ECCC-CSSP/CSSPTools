@@ -29,35 +29,24 @@ namespace ReadGzFileServices
     {
         private void DoMergeJsonWebAllProvinces(WebAllProvinces WebAllProvinces, WebAllProvinces WebAllProvincesLocal)
         {
-            // -----------------------------------------------------------
-            // doing TVItemAllProvinceList
-            // -----------------------------------------------------------
-            int count = WebAllProvinces.TVItemAllProvinceList.Count;
-            for (int i = 0; i < count; i++)
-            {
-                WebBase webBaseLocal = (from c in WebAllProvincesLocal.TVItemAllProvinceList
-                                        where c.TVItemModel.TVItem.TVItemID == WebAllProvinces.TVItemAllProvinceList[i].TVItemModel.TVItem.TVItemID
-                                        && (c.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
-                                        || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.en].DBCommand != DBCommandEnum.Original
-                                        || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].DBCommand != DBCommandEnum.Original)
-                                        select c).FirstOrDefault();
+            List<ProvinceModel> provinceModelLocalList = (from c in WebAllProvincesLocal.ProvinceModelList
+                                                    where c.TVItem.DBCommand != DBCommandEnum.Original
+                                                    || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
+                                                    || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original
+                                                    select c).ToList();
 
-                if (webBaseLocal != null)
+            foreach (ProvinceModel provinceModelLocal in provinceModelLocalList)
+            {
+                ProvinceModel provinceModelOriginal = WebAllProvinces.ProvinceModelList.Where(c => c.TVItem.TVItemID == provinceModelLocal.TVItem.TVItemID).FirstOrDefault();
+                if (provinceModelOriginal == null)
                 {
-                    WebAllProvinces.TVItemAllProvinceList[i] = webBaseLocal;
+                    WebAllProvinces.ProvinceModelList.Add(provinceModelLocal);
+                }
+                else
+                {
+                    provinceModelOriginal = provinceModelLocal;
                 }
             }
-
-            List<WebBase> webBaseLocalNewList = (from c in WebAllProvincesLocal.TVItemAllProvinceList
-                                                 where c.TVItemModel.TVItem.DBCommand == DBCommandEnum.Created
-                                                 select c).ToList();
-
-            foreach(WebBase webBaseNew in webBaseLocalNewList)
-            {
-                WebAllProvinces.TVItemAllProvinceList.Add(webBaseNew);
-            }
-
-            return;
         }
     }
 }

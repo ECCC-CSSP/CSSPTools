@@ -58,8 +58,8 @@ namespace GenerateRepopulateTestDB
 
                 // Contact Charles G. LeBlanc
                 Contact contactCharles = dbCSSPDB.Contacts.AsNoTracking().Where(c => c.ContactTVItemID == 2).FirstOrDefault();
-                //AspNetUser aspNetUserCharles = dbCSSPDB.AspNetUsers.AsNoTracking().Where(c => c.Id == contactCharles.Id).FirstOrDefault();
-                //if (!await AddObject("AspNetUser", aspNetUserCharles)) return await Task.FromResult(false);
+                AspNetUser aspNetUserCharles = dbCSSPDB.AspNetUsers.AsNoTracking().Where(c => c.Id == contactCharles.Id).FirstOrDefault();
+                if (!await AddObject("AspNetUser", aspNetUserCharles)) return await Task.FromResult(false);
                 if (!await AddObject("Contact", contactCharles)) return await Task.FromResult(false);
                 #endregion Contact Charles with TVItem
                 #region Contact Test User 1 with TVItem
@@ -82,8 +82,8 @@ namespace GenerateRepopulateTestDB
 
                 // Contact Test User 1
                 Contact contactTestUser1 = dbCSSPDB.Contacts.AsNoTracking().Where(c => c.ContactTVItemID == 3).FirstOrDefault();
-                //AspNetUser aspNetUserTestUser1 = dbCSSPDB.AspNetUsers.AsNoTracking().Where(c => c.Id == contactTestUser1.Id).FirstOrDefault();
-                //if (!await AddObject("AspNetUser", aspNetUserTestUser1)) return await Task.FromResult(false);
+                AspNetUser aspNetUserTestUser1 = dbCSSPDB.AspNetUsers.AsNoTracking().Where(c => c.Id == contactTestUser1.Id).FirstOrDefault();
+                if (!await AddObject("AspNetUser", aspNetUserTestUser1)) return await Task.FromResult(false);
                 if (!await AddObject("Contact", contactTestUser1)) return await Task.FromResult(false);
                 #endregion Contact Test User 1 with TVItem
                 #region Contact Test User 2 with TVItem
@@ -107,8 +107,8 @@ namespace GenerateRepopulateTestDB
 
                 // Contact Test User 2
                 Contact contactTestUser2 = dbCSSPDB.Contacts.AsNoTracking().Where(c => c.ContactTVItemID == 4).FirstOrDefault();
-                //AspNetUser aspNetUserTestUser2 = dbCSSPDB.AspNetUsers.AsNoTracking().Where(c => c.Id == contactTestUser2.Id).FirstOrDefault();
-                //if (!await AddObject("AspNetUser", aspNetUserTestUser2)) return await Task.FromResult(false);
+                AspNetUser aspNetUserTestUser2 = dbCSSPDB.AspNetUsers.AsNoTracking().Where(c => c.Id == contactTestUser2.Id).FirstOrDefault();
+                if (!await AddObject("AspNetUser", aspNetUserTestUser2)) return await Task.FromResult(false);
                 if (!await AddObject("Contact", contactTestUser2)) return await Task.FromResult(false);
                 #endregion Contact Test User 2 with TVItem
                 #region TVItem Country Canada

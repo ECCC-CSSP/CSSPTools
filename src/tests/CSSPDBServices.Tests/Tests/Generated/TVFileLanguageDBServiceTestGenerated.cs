@@ -354,7 +354,7 @@ namespace CSSPDBServices.Tests
             TVFileLanguage tvFileLanguage = new TVFileLanguage();
 
             if (OmitPropName != "DBCommand") tvFileLanguage.DBCommand = (DBCommandEnum)GetRandomEnumType(typeof(DBCommandEnum));
-            if (OmitPropName != "TVFileID") tvFileLanguage.TVFileID = 1;
+            if (OmitPropName != "TVFileID") tvFileLanguage.TVFileID = 0;
             if (OmitPropName != "Language") tvFileLanguage.Language = CSSPCultureServicesRes.Culture.TwoLetterISOLanguageName == "fr" ? LanguageEnum.fr : LanguageEnum.en;
             if (OmitPropName != "FileDescription") tvFileLanguage.FileDescription = GetRandomString("", 20);
             if (OmitPropName != "TranslationStatus") tvFileLanguage.TranslationStatus = (TranslationStatusEnum)GetRandomEnumType(typeof(TranslationStatusEnum));

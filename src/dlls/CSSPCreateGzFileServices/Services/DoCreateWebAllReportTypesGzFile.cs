@@ -26,7 +26,14 @@ namespace CreateGzFileServices
             {
                 await FillReportTypeModelList(webAllReportTypes.ReportTypeModelList);
 
-                await DoStore<WebAllReportTypes>(webAllReportTypes, $"{ WebTypeEnum.WebAllReportTypes }.gz");
+                if (dbLocal != null)
+                {
+                    await DoStoreLocal<WebAllReportTypes>(webAllReportTypes, $"{ WebTypeEnum.WebAllReportTypes }.gz");
+                }
+                else
+                {
+                    await DoStore<WebAllReportTypes>(webAllReportTypes, $"{ WebTypeEnum.WebAllReportTypes }.gz");
+                }
             }
             catch (Exception ex)
             {

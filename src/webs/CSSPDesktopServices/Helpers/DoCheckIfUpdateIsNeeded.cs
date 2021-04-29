@@ -100,8 +100,10 @@ namespace CSSPDesktopServices.Services
                 $"{ WebTypeEnum.WebRoot }.gz",
                 $"{ WebTypeEnum.WebAllTels }.gz",
                 $"{ WebTypeEnum.WebAllTideLocations }.gz",
-                $"{ WebTypeEnum.WebAllTVItems }.gz",
-                $"{ WebTypeEnum.WebAllTVItemLanguages }.gz"
+                $"{ WebTypeEnum.WebAllTVItems1980_2020 }.gz",
+                $"{ WebTypeEnum.WebAllTVItems2021_2060 }.gz",
+                $"{ WebTypeEnum.WebAllTVItemLanguages1980_2020 }.gz",
+                $"{ WebTypeEnum.WebAllTVItemLanguages2021_2060 }.gz",
             };
 
             foreach (string jsonFileName in jsonFileNameList)

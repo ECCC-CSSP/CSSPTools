@@ -29,34 +29,22 @@ namespace ReadGzFileServices
     {
         private void DoMergeJsonWebAllTVItems(WebAllTVItems WebAllTVItems, WebAllTVItems WebAllTVItemsLocal)
         {
-            // -----------------------------------------------------------
-            // doing TVItemList
-            // -----------------------------------------------------------
-            
-            int count = WebAllTVItems.TVItemList.Count;
-            for (int i = 0; i < count; i++)
-            {
-                TVItem TVItemLocal = (from c in WebAllTVItemsLocal.TVItemList
-                                        where c.TVItemID == WebAllTVItems.TVItemList[i].TVItemID
-                                        && c.DBCommand != DBCommandEnum.Original
-                                        select c).FirstOrDefault();
+            List<TVItem> tvItemLocalList = (from c in WebAllTVItemsLocal.TVItemList
+                                              where c.DBCommand != DBCommandEnum.Original
+                                              select c).ToList();
 
-                if (TVItemLocal != null)
+            foreach (TVItem tvItemLocal in tvItemLocalList)
+            {
+                TVItem tvItemOriginal = WebAllTVItems.TVItemList.Where(c => c.TVItemID == tvItemLocal.TVItemID).FirstOrDefault();
+                if (tvItemOriginal == null)
                 {
-                    WebAllTVItems.TVItemList[i] = TVItemLocal;
+                    WebAllTVItems.TVItemList.Add(tvItemLocal);
+                }
+                else
+                {
+                    tvItemOriginal = tvItemLocal;
                 }
             }
-
-            List<TVItem> TVItemLocalNewList = (from c in WebAllTVItemsLocal.TVItemList
-                                                 where c.DBCommand == DBCommandEnum.Created
-                                                 select c).ToList();
-
-            foreach(TVItem TVItemNew in TVItemLocalNewList)
-            {
-                WebAllTVItems.TVItemList.Add(TVItemNew);
-            }
-
-            return;
         }
     }
 }

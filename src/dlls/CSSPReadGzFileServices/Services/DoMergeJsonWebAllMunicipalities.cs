@@ -29,35 +29,24 @@ namespace ReadGzFileServices
     {
         private void DoMergeJsonWebAllMunicipalities(WebAllMunicipalities WebAllMunicipalities, WebAllMunicipalities WebAllMunicipalitiesLocal)
         {
-            // -----------------------------------------------------------
-            // doing TVItemAllMunicipalityList
-            // -----------------------------------------------------------
-            int count = WebAllMunicipalities.TVItemAllMunicipalityList.Count;
-            for (int i = 0; i < count; i++)
-            {
-                WebBase webBaseLocal = (from c in WebAllMunicipalitiesLocal.TVItemAllMunicipalityList
-                                        where c.TVItemModel.TVItem.TVItemID == WebAllMunicipalities.TVItemAllMunicipalityList[i].TVItemModel.TVItem.TVItemID
-                                        && (c.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
-                                        || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.en].DBCommand != DBCommandEnum.Original
-                                        || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].DBCommand != DBCommandEnum.Original)
-                                        select c).FirstOrDefault();
+            List<AllMunicipalityModel> allMunicipalityModelLocalList = (from c in WebAllMunicipalitiesLocal.AllMunicipalityModelList
+                                                                        where c.TVItem.DBCommand != DBCommandEnum.Original
+                                                                        || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
+                                                                        || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original
+                                                                        select c).ToList();
 
-                if (webBaseLocal != null)
+            foreach (AllMunicipalityModel allMunicipalityModelLocal in allMunicipalityModelLocalList)
+            {
+                AllMunicipalityModel allMunicipalityModelOriginal = WebAllMunicipalities.AllMunicipalityModelList.Where(c => c.TVItem.TVItemID == allMunicipalityModelLocal.TVItem.TVItemID).FirstOrDefault();
+                if (allMunicipalityModelOriginal == null)
                 {
-                    WebAllMunicipalities.TVItemAllMunicipalityList[i] = webBaseLocal;
+                    WebAllMunicipalities.AllMunicipalityModelList.Add(allMunicipalityModelLocal);
+                }
+                else
+                {
+                    allMunicipalityModelOriginal = allMunicipalityModelLocal;
                 }
             }
-
-            List<WebBase> webBaseLocalNewList = (from c in WebAllMunicipalitiesLocal.TVItemAllMunicipalityList
-                                                 where c.TVItemModel.TVItem.DBCommand == DBCommandEnum.Created
-                                                 select c).ToList();
-
-            foreach(WebBase webBaseNew in webBaseLocalNewList)
-            {
-                WebAllMunicipalities.TVItemAllMunicipalityList.Add(webBaseNew);
-            }
-
-            return;
         }
     }
 }

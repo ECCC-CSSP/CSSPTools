@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CSSPWebModels;
 
 namespace CreateGzFileServices
 {
@@ -21,45 +22,43 @@ namespace CreateGzFileServices
                 return await Task.FromResult(false);
             }
 
-            Console.WriteLine("CreateAllWebAddresses doing...");
-            await CreateGzFile(WebTypeEnum.WebAllAddresses, 0, 0);
-            Console.WriteLine("CreateAllWebEmails doing...");
-            await CreateGzFile(WebTypeEnum.WebAllEmails, 0, 0);
-            Console.WriteLine("CreateAllWebTels doing...");
-            await CreateGzFile(WebTypeEnum.WebAllTels, 0, 0);
-            Console.WriteLine("CreateAllWebContacts doing...");
-            await CreateGzFile(WebTypeEnum.WebAllContacts, 0, 0);
-            Console.WriteLine("GetAllHelpDocs doing...");
-            await CreateGzFile(WebTypeEnum.WebAllHelpDocs, 0, 0);
-            Console.WriteLine("GetAllMWQMLookupMPNs doing...");
-            await CreateGzFile(WebTypeEnum.WebAllMWQMLookupMPNs, 0, 0);
-            Console.WriteLine("CreateWebAllPolSourceGroupings doing...");
-            await CreateGzFile(WebTypeEnum.WebAllPolSourceGroupings, 0, 0);
-            Console.WriteLine("CreateWebAllReportTypes doing...");
-            await CreateGzFile(WebTypeEnum.WebAllReportTypes, 0, 0);
-            Console.WriteLine("CreateWebRoot doing...");
-            await CreateGzFile(WebTypeEnum.WebRoot, 0, 0);
-            Console.WriteLine("CreateWebAllTideLocations doing...");
-            await CreateGzFile(WebTypeEnum.WebAllTideLocations, 0, 0);
-            Console.WriteLine("CreateAllMunicipalities doing...");
-            await CreateGzFile(WebTypeEnum.WebAllMunicipalities, 0, 0);
-            Console.WriteLine("CreateAllProvinces doing...");
-            await CreateGzFile(WebTypeEnum.WebAllProvinces, 0, 0);
+            Console.WriteLine("Create WebAllAddresses doing...");
+            await CreateGzFile(WebTypeEnum.WebAllAddresses, 0);
+            Console.WriteLine("Create WebAllContacts doing...");
+            await CreateGzFile(WebTypeEnum.WebAllContacts, 0);
             Console.WriteLine("CreateAllCountries doing...");
-            await CreateGzFile(WebTypeEnum.WebAllCountries, 0, 0);
-            Console.WriteLine("CreateWebAllTVItems doing...");
-            await CreateGzFile(WebTypeEnum.WebAllTVItems, 0, 0);
-            Console.WriteLine("CreateWebAllTVItemLanguages doing...");
-            await CreateGzFile(WebTypeEnum.WebAllTVItemLanguages, 0, 0);
+            await CreateGzFile(WebTypeEnum.WebAllCountries, 0);
+            Console.WriteLine("Create WebAllEmails doing...");
+            await CreateGzFile(WebTypeEnum.WebAllEmails, 0);
+            Console.WriteLine("Create WebAllHelpDocs doing...");
+            await CreateGzFile(WebTypeEnum.WebAllHelpDocs, 0);
+            Console.WriteLine("Create WebAllMunicipalities doing...");
+            await CreateGzFile(WebTypeEnum.WebAllMunicipalities, 0);
+            Console.WriteLine("Create WebAllMWQMLookupMPNs doing...");
+            await CreateGzFile(WebTypeEnum.WebAllMWQMLookupMPNs, 0);
+            Console.WriteLine("Create WebAllPolSourceGroupings doing...");
+            await CreateGzFile(WebTypeEnum.WebAllPolSourceGroupings, 0);
+            Console.WriteLine("Create WebAllPolSourceSiteEffectTerms doing...");
+            await CreateGzFile(WebTypeEnum.WebAllPolSourceSiteEffectTerms, 0);
+            Console.WriteLine("Create WebAllProvinces doing...");
+            await CreateGzFile(WebTypeEnum.WebAllProvinces, 0);
+            Console.WriteLine("Create WebAllReportTypes doing...");
+            await CreateGzFile(WebTypeEnum.WebAllReportTypes, 0);
+            Console.WriteLine("Create WebAllTels doing...");
+            await CreateGzFile(WebTypeEnum.WebAllTels, 0);
+            Console.WriteLine("Create WebAllTideLocations doing...");
+            await CreateGzFile(WebTypeEnum.WebAllTideLocations, 0);
+            Console.WriteLine("Create WebAllTVItemLanguages1980_2020 doing...");
+            await CreateGzFile(WebTypeEnum.WebAllTVItemLanguages1980_2020, 0);
+            Console.WriteLine("Create WebAllTVItemLanguages2021_2060 doing...");
+            await CreateGzFile(WebTypeEnum.WebAllTVItemLanguages2021_2060, 0);
+            Console.WriteLine("Create WebAllTVItems1980_2020 doing...");
+            await CreateGzFile(WebTypeEnum.WebAllTVItems1980_2020, 0);
+            Console.WriteLine("Create WebAllTVItems2021_2060 doing...");
+            await CreateGzFile(WebTypeEnum.WebAllTVItems2021_2060, 0);
 
-            List<SamplingPlan> samplingPlanList = (from c in db.SamplingPlans
-                                                   select c).ToList();
-
-            foreach (SamplingPlan samplingPlan in samplingPlanList)
-            {
-                Console.WriteLine($"CreateWebSamplingPlan [{samplingPlan.SamplingPlanID}] doing...");
-                await CreateGzFile(WebTypeEnum.WebSamplingPlan, samplingPlan.SamplingPlanID, 0);
-            }
+            Console.WriteLine("Create WebRoot doing...");
+            await CreateGzFile(WebTypeEnum.WebRoot, 0);
 
             List < TVTypeEnum > tvTypeEnumList = new List<TVTypeEnum>()
             {
@@ -68,9 +67,6 @@ namespace CreateGzFileServices
                 TVTypeEnum.Area,
                 TVTypeEnum.Sector,
                 TVTypeEnum.Subsector,
-                TVTypeEnum.ClimateSite,
-                TVTypeEnum.HydrometricSite,
-                TVTypeEnum.MikeScenario,
                 TVTypeEnum.Municipality,
             };
 
@@ -86,86 +82,58 @@ namespace CreateGzFileServices
                     {
                         case TVTypeEnum.Area:
                             {
-                                Console.WriteLine($"CreateWebArea [{tvItem.TVItemID}] doing...");
-                                await CreateGzFile(WebTypeEnum.WebArea, tvItem.TVItemID, 0);
-                            }
-                            break;
-                        case TVTypeEnum.ClimateSite:
-                            {
-                                Console.WriteLine($"CreateWebClimateDataValue [{tvItem.TVItemID}] doing...");
-                                await CreateGzFile(WebTypeEnum.WebClimateDataValue, tvItem.TVItemID, 0);
+                                Console.WriteLine($"Create WebArea [{tvItem.TVItemID}] doing...");
+                                await CreateGzFile(WebTypeEnum.WebArea, tvItem.TVItemID);
                             }
                             break;
                         case TVTypeEnum.Country:
                             {
-                                Console.WriteLine($"CreateWebCountry [{tvItem.TVItemID}] doing...");
-                                await CreateGzFile(WebTypeEnum.WebCountry, tvItem.TVItemID, 0);
-                            }
-                            break;
-                        case TVTypeEnum.HydrometricSite:
-                            {
-                                Console.WriteLine($"CreateWebHydrometricDataValue [{tvItem.TVItemID}] doing...");
-                                await CreateGzFile(WebTypeEnum.WebHydrometricDataValue, tvItem.TVItemID, 0);
-                            }
-                            break;
-                        case TVTypeEnum.MikeScenario:
-                            {
-                                Console.WriteLine($"CreateWebMikeScenario [{tvItem.TVItemID}] doing...");
-                                await CreateGzFile(WebTypeEnum.WebMikeScenario, tvItem.TVItemID, 0);
+                                Console.WriteLine($"Create WebCountry [{tvItem.TVItemID}] doing...");
+                                await CreateGzFile(WebTypeEnum.WebCountry, tvItem.TVItemID);
                             }
                             break;
                         case TVTypeEnum.Municipality:
                             {
-                                Console.WriteLine($"CreateWebMunicipality [{tvItem.TVItemID}] doing...");
-                                await CreateGzFile(WebTypeEnum.WebMunicipality, tvItem.TVItemID, 0);
+                                Console.WriteLine($"Create WebMunicipality [{tvItem.TVItemID}] doing...");
+                                await CreateGzFile(WebTypeEnum.WebMunicipality, tvItem.TVItemID);
+                                Console.WriteLine($"Create WebMikeScenarios [{tvItem.TVItemID}] doing...");
+                                await CreateGzFile(WebTypeEnum.WebMikeScenarios, tvItem.TVItemID);
                             }
                             break;
                         case TVTypeEnum.Province:
                             {
-                                Console.WriteLine($"CreateWebProvince [{tvItem.TVItemID}] doing...");
-                                await CreateGzFile(WebTypeEnum.WebProvince, tvItem.TVItemID, 0);
-                                Console.WriteLine($"CreateWebClimateSite [{tvItem.TVItemID}] doing...");
-                                await CreateGzFile(WebTypeEnum.WebClimateSite, tvItem.TVItemID, 0);
-                                Console.WriteLine($"CreateWebHydrometricSite [{tvItem.TVItemID}] doing...");
-                                await CreateGzFile(WebTypeEnum.WebHydrometricSite, tvItem.TVItemID, 0);
-                                Console.WriteLine($"CreateWebMunicipalities [{tvItem.TVItemID}] doing...");
-                                await CreateGzFile(WebTypeEnum.WebMunicipalities, tvItem.TVItemID, 0);
+                                Console.WriteLine($"Create WebProvince [{tvItem.TVItemID}] doing...");
+                                await CreateGzFile(WebTypeEnum.WebProvince, tvItem.TVItemID);
+                                Console.WriteLine($"Create WebClimateSites [{tvItem.TVItemID}] doing...");
+                                await CreateGzFile(WebTypeEnum.WebClimateSites, tvItem.TVItemID);
+                                Console.WriteLine($"Create WebHydrometricSites [{tvItem.TVItemID}] doing...");
+                                await CreateGzFile(WebTypeEnum.WebHydrometricSites, tvItem.TVItemID);
+                                Console.WriteLine($"Create WebDrogueRuns [{tvItem.TVItemID}] doing...");
+                                await CreateGzFile(WebTypeEnum.WebDrogueRuns, tvItem.TVItemID);
                             }
                             break;
                         case TVTypeEnum.Sector:
                             {
-                                Console.WriteLine($"CreateWebSector [{tvItem.TVItemID}] doing...");
-                                await CreateGzFile(WebTypeEnum.WebSector, tvItem.TVItemID, 0);
+                                Console.WriteLine($"Create WebSector [{tvItem.TVItemID}] doing...");
+                                await CreateGzFile(WebTypeEnum.WebSector, tvItem.TVItemID);
                             }
                             break;
                         case TVTypeEnum.Subsector:
                             {
-                                Console.WriteLine($"CreateWebSubsector [{tvItem.TVItemID}] doing...");
-                                await CreateGzFile(WebTypeEnum.WebSubsector, tvItem.TVItemID, 0);
-                                Console.WriteLine($"CreateWebDrogueRun [{tvItem.TVItemID}] doing...");
-                                await CreateGzFile(WebTypeEnum.WebDrogueRun, tvItem.TVItemID, 0);
-                                Console.WriteLine($"CreateWebMWQMRun [{tvItem.TVItemID}] doing...");
-                                await CreateGzFile(WebTypeEnum.WebMWQMRun, tvItem.TVItemID, 0);
-                                Console.WriteLine($"CreateWebMWQMSite [{tvItem.TVItemID}] doing...");
-                                await CreateGzFile(WebTypeEnum.WebMWQMSite, tvItem.TVItemID, 0);
-                                Console.WriteLine($"CreateWebPolSourceSite [{tvItem.TVItemID}] doing...");
-                                await CreateGzFile(WebTypeEnum.WebPolSourceSite, tvItem.TVItemID, 0);
-                                Console.WriteLine($"CreateWeb10YearOfSample1980_1989FromSubsector [{tvItem.TVItemID}] doing...");
-                                await CreateGzFile(WebTypeEnum.WebMWQMSample, tvItem.TVItemID, WebTypeYearEnum.Year1980);
-                                Console.WriteLine($"CreateWeb10YearOfSample1990_1999FromSubsector [{tvItem.TVItemID}] doing...");
-                                await CreateGzFile(WebTypeEnum.WebMWQMSample, tvItem.TVItemID, WebTypeYearEnum.Year1990);
-                                Console.WriteLine($"CreateWeb10YearOfSample2000_2009FromSubsector [{tvItem.TVItemID}] doing...");
-                                await CreateGzFile(WebTypeEnum.WebMWQMSample, tvItem.TVItemID, WebTypeYearEnum.Year2000);
-                                Console.WriteLine($"CreateWeb10YearOfSample2010_2019FromSubsector [{tvItem.TVItemID}] doing...");
-                                await CreateGzFile(WebTypeEnum.WebMWQMSample, tvItem.TVItemID, WebTypeYearEnum.Year2010);
-                                Console.WriteLine($"CreateWeb10YearOfSample2020_2029FromSubsector [{tvItem.TVItemID}] doing...");
-                                await CreateGzFile(WebTypeEnum.WebMWQMSample, tvItem.TVItemID, WebTypeYearEnum.Year2020);
-                                Console.WriteLine($"CreateWeb10YearOfSample2030_2039FromSubsector [{tvItem.TVItemID}] doing...");
-                                await CreateGzFile(WebTypeEnum.WebMWQMSample, tvItem.TVItemID, WebTypeYearEnum.Year2030);
-                                Console.WriteLine($"CreateWeb10YearOfSample2040_2049FromSubsector [{tvItem.TVItemID}] doing...");
-                                await CreateGzFile(WebTypeEnum.WebMWQMSample, tvItem.TVItemID, WebTypeYearEnum.Year2040);
-                                Console.WriteLine($"CreateWeb10YearOfSample2050_2059FromSubsector [{tvItem.TVItemID}] doing...");
-                                await CreateGzFile(WebTypeEnum.WebMWQMSample, tvItem.TVItemID, WebTypeYearEnum.Year2050);
+                                Console.WriteLine($"Create WebSubsector [{tvItem.TVItemID}] doing...");
+                                await CreateGzFile(WebTypeEnum.WebSubsector, tvItem.TVItemID);
+                                Console.WriteLine($"Create WebMWQMRuns [{tvItem.TVItemID}] doing...");
+                                await CreateGzFile(WebTypeEnum.WebMWQMRuns, tvItem.TVItemID);
+                                Console.WriteLine($"Create WebMWQMSites [{tvItem.TVItemID}] doing...");
+                                await CreateGzFile(WebTypeEnum.WebMWQMSites, tvItem.TVItemID);
+                                Console.WriteLine($"Create WebPolSourceSites [{tvItem.TVItemID}] doing...");
+                                await CreateGzFile(WebTypeEnum.WebPolSourceSites, tvItem.TVItemID);
+                                Console.WriteLine($"Create WebLabSheets [{tvItem.TVItemID}] doing...");
+                                await CreateGzFile(WebTypeEnum.WebLabSheets, tvItem.TVItemID);
+                                Console.WriteLine($"Create WebMWQMSamples1980_2020 [{tvItem.TVItemID}] doing...");
+                                await CreateGzFile(WebTypeEnum.WebMWQMSamples1980_2020, tvItem.TVItemID);
+                                Console.WriteLine($"Create WebMWQMSamples2021_2060 [{tvItem.TVItemID}] doing...");
+                                await CreateGzFile(WebTypeEnum.WebMWQMSamples2021_2060, tvItem.TVItemID);
                             }
                             break;
                         default:

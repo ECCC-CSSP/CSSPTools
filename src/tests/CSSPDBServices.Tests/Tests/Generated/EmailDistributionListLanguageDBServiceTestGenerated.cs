@@ -369,7 +369,7 @@ namespace CSSPDBServices.Tests
             EmailDistributionListLanguage emailDistributionListLanguage = new EmailDistributionListLanguage();
 
             if (OmitPropName != "DBCommand") emailDistributionListLanguage.DBCommand = (DBCommandEnum)GetRandomEnumType(typeof(DBCommandEnum));
-            if (OmitPropName != "EmailDistributionListID") emailDistributionListLanguage.EmailDistributionListID = 1;
+            if (OmitPropName != "EmailDistributionListID") emailDistributionListLanguage.EmailDistributionListID = 0;
             if (OmitPropName != "Language") emailDistributionListLanguage.Language = CSSPCultureServicesRes.Culture.TwoLetterISOLanguageName == "fr" ? LanguageEnum.fr : LanguageEnum.en;
             if (OmitPropName != "EmailListName") emailDistributionListLanguage.EmailListName = GetRandomString("", 6);
             if (OmitPropName != "TranslationStatus") emailDistributionListLanguage.TranslationStatus = (TranslationStatusEnum)GetRandomEnumType(typeof(TranslationStatusEnum));

@@ -26,7 +26,7 @@ namespace CSSPWebModels
         public int? StartYear { get; set; }
         public int? EndYear { get; set; }
         public bool? UseInStat { get; set; }
-        public ColorAndLetter? ColorAndLetter { get; set; }
+        public ColorAndLetter ColorAndLetter { get; set; }
         public bool IsActive { get; set; }
         public DateTime SampleDate { get; set; }
         public int? FC { get; set; }

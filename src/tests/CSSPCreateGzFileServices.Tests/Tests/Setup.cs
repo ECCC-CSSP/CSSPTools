@@ -69,12 +69,10 @@ namespace CreateGzFileServices.Tests
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<ILoginModelService, LoginModelService>();
             Services.AddSingleton<IRegisterModelService, RegisterModelService>();
-            Services.AddSingleton<IContactDBService, ContactDBService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IScrambleService, ScrambleService>();
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<ICreateGzFileService, CreateGzFileService>();
-            Services.AddSingleton<ITVItemDBService, TVItemDBService>();
 
             /* ---------------------------------------------------------------------------------
              * using CSSPDB
@@ -109,9 +107,6 @@ namespace CreateGzFileServices.Tests
             Assert.NotNull(CSSPCultureService);
 
             CSSPCultureService.SetCulture(culture);
-
-            ContactDBService = Provider.GetService<IContactDBService>();
-            Assert.NotNull(ContactDBService);
 
             CSSPAzureUrl = Configuration.GetValue<string>("CSSPAzureUrl");
             Assert.NotNull(CSSPAzureUrl);
@@ -158,9 +153,6 @@ namespace CreateGzFileServices.Tests
 
             CreateGzFileService = Provider.GetService<ICreateGzFileService>();
             Assert.NotNull(CreateGzFileService);
-
-            TVItemDBService = Provider.GetService<ITVItemDBService>();
-            Assert.NotNull(TVItemDBService);
 
             return await Task.FromResult(true);
         }

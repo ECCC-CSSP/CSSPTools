@@ -33,17 +33,24 @@ namespace CreateGzFileServices
 
             try
             {
-                await FillTVItemModel(webProvince.TVItemModel, TVItemProvince);
+                await FillTVItemModelAndParentTVItemModelList(webProvince.TVItemStatMapModel, webProvince.TVItemStatModelParentList, TVItemProvince);
 
-                await FillParentListTVItemModelList(webProvince.TVItemParentList, TVItemProvince);
+                await FillChildListTVItemModelList(webProvince.TVItemStatMapAreaList, TVItemProvince, TVTypeEnum.Area);
 
-                await FillChildListTVItemModelList(webProvince.TVItemAreaList, TVItemProvince, TVTypeEnum.Area);
+                await FillChildListTVItemModelList(webProvince.TVItemStatMapMunicipalityList, TVItemProvince, TVTypeEnum.Municipality);
 
-                await FillChildListTVItemModelList(webProvince.TVItemFileList, TVItemProvince, TVTypeEnum.File);
+                await FillFileModelList(webProvince.TVFileModelList, TVItemProvince);
 
-                webProvince.SamplingPlanList = await GetSamplingPlanListWithProvinceTVItemID(TVItemProvince.TVItemID);
+                await FillSamplingPlanModelList(webProvince.SamplingPlanModelList, TVItemProvince);
 
-                await DoStore<WebProvince>(webProvince, $"{ WebTypeEnum.WebProvince }_{ ProvinceTVItemID }.gz");
+                if (dbLocal != null)
+                {
+                    await DoStoreLocal<WebProvince>(webProvince, $"{ WebTypeEnum.WebProvince }_{ ProvinceTVItemID }.gz");
+                }
+                else
+                {
+                    await DoStore<WebProvince>(webProvince, $"{ WebTypeEnum.WebProvince }_{ ProvinceTVItemID }.gz");
+                }
             }
             catch (Exception ex)
             {

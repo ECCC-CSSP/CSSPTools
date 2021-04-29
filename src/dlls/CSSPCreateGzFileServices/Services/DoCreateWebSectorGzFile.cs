@@ -35,15 +35,20 @@ namespace CreateGzFileServices
 
             try
             {
-                await FillTVItemModel(webSector.TVItemModel, TVItemSector);
+                await FillTVItemModelAndParentTVItemModelList(webSector.TVItemStatMapModel, webSector.TVItemStatModelParentList, TVItemSector);
 
-                await FillParentListTVItemModelList(webSector.TVItemParentList, TVItemSector);
+                await FillChildListTVItemModelList(webSector.TVItemStatMapModelSubsectorList, TVItemSector, TVTypeEnum.Subsector);
 
-                await FillChildListTVItemModelList(webSector.TVItemSubsectorList, TVItemSector, TVTypeEnum.Subsector);
+                await FillFileModelList(webSector.TVFileModelList, TVItemSector);
 
-                await FillChildListTVItemModelList(webSector.TVItemFileList, TVItemSector, TVTypeEnum.File);
-
-                await DoStore<WebSector>(webSector, $"{ WebTypeEnum.WebSector }_{ SectorTVItemID }.gz");
+                if (dbLocal != null)
+                {
+                    await DoStoreLocal<WebSector>(webSector, $"{ WebTypeEnum.WebSector }_{ SectorTVItemID }.gz");
+                }
+                else
+                {
+                    await DoStore<WebSector>(webSector, $"{ WebTypeEnum.WebSector }_{ SectorTVItemID }.gz");
+                }
             }
             catch (Exception ex)
             {

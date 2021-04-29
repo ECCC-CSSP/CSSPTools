@@ -16,9 +16,9 @@ namespace CreateGzFileLocalServices
 {
     public partial class CreateGzFileLocalService : ControllerBase, ICreateGzFileLocalService
     {
-        private async Task<bool> DoDeleteGzFileLocal(WebTypeEnum webType, int TVItemID, WebTypeYearEnum webTypeYear)
+        private async Task<bool> DoDeleteGzFileLocal(WebTypeEnum webType, int TVItemID)
         {
-            string FileName = await BaseGzFileService.GetFileName(webType, TVItemID, webTypeYear);
+            string FileName = await BaseGzFileService.GetFileName(webType, TVItemID);
 
             if (LoggedInService.LoggedInContactInfo == null || LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {

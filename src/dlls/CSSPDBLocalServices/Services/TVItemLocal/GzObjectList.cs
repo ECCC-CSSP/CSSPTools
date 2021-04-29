@@ -19,17 +19,17 @@ namespace CSSPDBLocalServices
     {
         public GzObjectList()
         {
-            tvItemParentList = new List<WebBase>();
-            tvItemSiblingList = new List<WebBase>();
-            tvItemFileSiblingList = new List<WebBase>();
-            tvItemList = new List<WebBase>();
+            tvItemParentList = new List<TVItemStatModel>();
+            tvItemSiblingList = new List<TVItemModel>();
+            tvItemFileSiblingList = new List<TVFileModel>();
+            tvItemList = new List<TVItemModel>();
         }
 
         public TVItem ParentTVItem { get; set; }
-        public List<WebBase> tvItemParentList { get; set; }
-        public List<WebBase> tvItemSiblingList { get; set; }
-        public List<WebBase> tvItemFileSiblingList { get; set; }
-        public List<WebBase> tvItemList { get; set; }
+        public List<TVItemStatModel> tvItemParentList { get; set; }
+        public List<TVItemModel> tvItemSiblingList { get; set; }
+        public List<TVFileModel> tvItemFileSiblingList { get; set; }
+        public List<TVItemModel> tvItemList { get; set; }
     }
 
 }

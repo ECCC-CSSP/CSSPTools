@@ -452,7 +452,7 @@ namespace CSSPDBServices.Tests
             VPResult vpResult = new VPResult();
 
             if (OmitPropName != "DBCommand") vpResult.DBCommand = (DBCommandEnum)GetRandomEnumType(typeof(DBCommandEnum));
-            if (OmitPropName != "VPScenarioID") vpResult.VPScenarioID = 1;
+            if (OmitPropName != "VPScenarioID") vpResult.VPScenarioID = 0;
             if (OmitPropName != "Ordinal") vpResult.Ordinal = GetRandomInt(0, 1000);
             if (OmitPropName != "Concentration_MPN_100ml") vpResult.Concentration_MPN_100ml = GetRandomInt(0, 10000000);
             if (OmitPropName != "Dilution") vpResult.Dilution = GetRandomDouble(0.0D, 1000000.0D);

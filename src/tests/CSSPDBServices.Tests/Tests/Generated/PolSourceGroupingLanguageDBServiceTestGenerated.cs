@@ -509,7 +509,7 @@ namespace CSSPDBServices.Tests
             PolSourceGroupingLanguage polSourceGroupingLanguage = new PolSourceGroupingLanguage();
 
             if (OmitPropName != "DBCommand") polSourceGroupingLanguage.DBCommand = (DBCommandEnum)GetRandomEnumType(typeof(DBCommandEnum));
-            if (OmitPropName != "PolSourceGroupingID") polSourceGroupingLanguage.PolSourceGroupingID = 1;
+            if (OmitPropName != "PolSourceGroupingID") polSourceGroupingLanguage.PolSourceGroupingID = 0;
             if (OmitPropName != "Language") polSourceGroupingLanguage.Language = CSSPCultureServicesRes.Culture.TwoLetterISOLanguageName == "fr" ? LanguageEnum.fr : LanguageEnum.en;
             if (OmitPropName != "SourceName") polSourceGroupingLanguage.SourceName = GetRandomString("", 5);
             if (OmitPropName != "SourceNameOrder") polSourceGroupingLanguage.SourceNameOrder = GetRandomInt(0, 1000);

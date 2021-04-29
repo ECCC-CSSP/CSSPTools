@@ -29,33 +29,24 @@ namespace ReadGzFileServices
     {
         private void DoMergeJsonWebAllPolSourceGroupings(WebAllPolSourceGroupings WebAllPolSourceGroupings, WebAllPolSourceGroupings WebAllPolSourceGroupingsLocal)
         {
-            // -----------------------------------------------------------
-            // doing PolSourceGroupingList
-            // -----------------------------------------------------------
-            int count = WebAllPolSourceGroupings.PolSourceGroupingList.Count;
-            for (int i = 0; i < count; i++)
-            {
-                PolSourceGrouping PolSourceGroupingLocal = (from c in WebAllPolSourceGroupingsLocal.PolSourceGroupingList
-                                        where c.PolSourceGroupingID == WebAllPolSourceGroupings.PolSourceGroupingList[i].PolSourceGroupingID
-                                        && c.DBCommand != DBCommandEnum.Original
-                                        select c).FirstOrDefault();
+            List<PolSourceGroupingModel> polSourceGroupingModelLocalList = (from c in WebAllPolSourceGroupingsLocal.PolSourceGroupingModelList
+                                                                            where c.PolSourceGrouping.DBCommand != DBCommandEnum.Original
+                                                                            || c.PolSourceGroupingLanguageList[0].DBCommand != DBCommandEnum.Original
+                                                                            || c.PolSourceGroupingLanguageList[1].DBCommand != DBCommandEnum.Original
+                                                                            select c).ToList();
 
-                if (PolSourceGroupingLocal != null)
+            foreach (PolSourceGroupingModel polSourceGroupingModelLocal in polSourceGroupingModelLocalList)
+            {
+                PolSourceGroupingModel polSourceGroupingModelOriginal = WebAllPolSourceGroupings.PolSourceGroupingModelList.Where(c => c.PolSourceGrouping.PolSourceGroupingID == polSourceGroupingModelLocal.PolSourceGrouping.PolSourceGroupingID).FirstOrDefault();
+                if (polSourceGroupingModelOriginal == null)
                 {
-                    WebAllPolSourceGroupings.PolSourceGroupingList[i] = PolSourceGroupingLocal;
+                    WebAllPolSourceGroupings.PolSourceGroupingModelList.Add(polSourceGroupingModelLocal);
+                }
+                else
+                {
+                    polSourceGroupingModelOriginal = polSourceGroupingModelLocal;
                 }
             }
-
-            List<PolSourceGrouping> PolSourceGroupingLocalNewList = (from c in WebAllPolSourceGroupingsLocal.PolSourceGroupingList
-                                                 where c.DBCommand == DBCommandEnum.Created
-                                                 select c).ToList();
-
-            foreach (PolSourceGrouping PolSourceGroupingNew in PolSourceGroupingLocalNewList)
-            {
-                WebAllPolSourceGroupings.PolSourceGroupingList.Add(PolSourceGroupingNew);
-            }
-
-            return;
         }
     }
 }

@@ -29,59 +29,25 @@ namespace ReadGzFileServices
     {
         private void DoMergeJsonWebAllReportTypes(WebAllReportTypes WebAllReportTypes, WebAllReportTypes WebAllReportTypesLocal)
         {
-            // -----------------------------------------------------------
-            // doing ReportTypeModelList
-            // -----------------------------------------------------------
-            int count = WebAllReportTypes.ReportTypeModelList.Count;
-            for (int i = 0; i < count; i++)
-            {
-                ReportTypeModel ReportTypeModelLocal = (from c in WebAllReportTypesLocal.ReportTypeModelList
-                                                        where c.ReportType.ReportTypeID == WebAllReportTypes.ReportTypeModelList[i].ReportType.ReportTypeID
-                                                        && c.ReportType.DBCommand != DBCommandEnum.Original
-                                                        select c).FirstOrDefault();
+            List<ReportTypeModel> reportTypeModelLocalList = (from c in WebAllReportTypesLocal.ReportTypeModelList
+                                                              where c.ReportType.DBCommand != DBCommandEnum.Original
+                                                              || (from r in c.ReportSectionList
+                                                                  where r.DBCommand != DBCommandEnum.Original
+                                                                  select r).Any()
+                                                              select c).ToList();
 
-                if (ReportTypeModelLocal != null)
+            foreach (ReportTypeModel reportTypeModelLocal in reportTypeModelLocalList)
+            {
+                ReportTypeModel reportTypeModelOriginal = WebAllReportTypes.ReportTypeModelList.Where(c => c.ReportType.ReportTypeID == reportTypeModelLocal.ReportType.ReportTypeID).FirstOrDefault();
+                if (reportTypeModelOriginal == null)
                 {
-                    WebAllReportTypes.ReportTypeModelList[i] = ReportTypeModelLocal;
+                    WebAllReportTypes.ReportTypeModelList.Add(reportTypeModelLocal);
+                }
+                else
+                {
+                    reportTypeModelOriginal = reportTypeModelLocal;
                 }
             }
-
-            List<ReportTypeModel> ReportTypeModelLocalNewList = (from c in WebAllReportTypesLocal.ReportTypeModelList
-                                                                 where c.ReportType.DBCommand == DBCommandEnum.Created
-                                                                 select c).ToList();
-
-            foreach (ReportTypeModel ReportTypeModelNew in ReportTypeModelLocalNewList)
-            {
-                // -----------------------------------------------------------
-                // doing ReportTypeList
-                // -----------------------------------------------------------
-                int count2 = ReportTypeModelNew.ReportSectionList.Count;
-                for (int j = 0; j < count2; j++)
-                {
-                    ReportSection ReportSectionLocal = (from c in ReportTypeModelNew.ReportSectionList
-                                                        where c.ReportSectionID == ReportTypeModelNew.ReportSectionList[j].ReportSectionID
-                                                        && c.DBCommand != DBCommandEnum.Original
-                                                        select c).FirstOrDefault();
-
-                    if (ReportSectionLocal != null)
-                    {
-                        ReportTypeModelNew.ReportSectionList[j] = ReportSectionLocal;
-                    }
-                }
-
-                List<ReportSection> ReportSectionLocalNewList = (from c in ReportTypeModelNew.ReportSectionList
-                                                                 where c.DBCommand == DBCommandEnum.Created
-                                                                 select c).ToList();
-
-                foreach (ReportSection ReportSectionNew in ReportSectionLocalNewList)
-                {
-                    ReportTypeModelNew.ReportSectionList.Add(ReportSectionNew);
-                }
-
-                WebAllReportTypes.ReportTypeModelList.Add(ReportTypeModelNew);
-            }
-
-            return;
         }
     }
 }

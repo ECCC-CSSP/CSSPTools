@@ -33,25 +33,24 @@ namespace CreateGzFileServices
 
             try
             {
-                await FillTVItemModel(webMunicipality.TVItemModel, TVItemMunicipality);
+                await FillTVItemModelAndParentTVItemModelList(webMunicipality.TVItemStatMapModel, webMunicipality.TVItemStatModelParentList, TVItemMunicipality);
 
-                await FillParentListTVItemModelList(webMunicipality.TVItemParentList, TVItemMunicipality);
-
-                await FillChildListTVItemModelList(webMunicipality.TVItemMikeScenarioList, TVItemMunicipality, TVTypeEnum.MikeScenario);
-
-                await FillChildListTVItemModelList(webMunicipality.TVItemInfrastructureList, TVItemMunicipality, TVTypeEnum.Infrastructure);
-
-                await FillChildListTVItemModelList(webMunicipality.TVItemFileList, TVItemMunicipality, TVTypeEnum.File);
-
-                await FillChildListTVItemInfrastructureModelList(webMunicipality.InfrastructureModelList, TVItemMunicipality, TVTypeEnum.Infrastructure);
-
-                await FillChildListTVItemMIKEScenarioModelList(webMunicipality.MIKEScenarioModelList, TVItemMunicipality, TVTypeEnum.MikeScenario);
+                await FillFileModelList(webMunicipality.TVFileModelList, TVItemMunicipality);
 
                 await FillChildListTVItemContactModelList(webMunicipality.MunicipalityContactModelList, TVItemMunicipality);
 
+                await FillInfrastructureModelList(webMunicipality.InfrastructureModelList, TVItemMunicipality);
+
                 webMunicipality.MunicipalityTVItemLinkList = await GetInfrastructureTVItemLinkListUnderMunicipality(TVItemMunicipality);
 
-                await DoStore<WebMunicipality>(webMunicipality, $"{ WebTypeEnum.WebMunicipality }_{ MunicipalityTVItemID }.gz");
+                if (dbLocal != null)
+                {
+                    await DoStoreLocal<WebMunicipality>(webMunicipality, $"{ WebTypeEnum.WebMunicipality }_{ MunicipalityTVItemID }.gz");
+                }
+                else
+                {
+                    await DoStore<WebMunicipality>(webMunicipality, $"{ WebTypeEnum.WebMunicipality }_{ MunicipalityTVItemID }.gz");
+                }
             }
             catch (Exception ex)
             {

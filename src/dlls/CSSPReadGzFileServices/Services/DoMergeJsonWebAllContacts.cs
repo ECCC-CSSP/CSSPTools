@@ -29,62 +29,34 @@ namespace ReadGzFileServices
     {
         private void DoMergeJsonWebAllContacts(WebAllContacts WebAllContacts, WebAllContacts WebAllContactsLocal)
         {
-            // -----------------------------------------------------------
-            // doing TVItemAllContactsList
-            // -----------------------------------------------------------
-            int count = WebAllContacts.TVItemAllContactList.Count;
-            for (int i = 0; i < count; i++)
-            {
-                WebBase webBaseLocal = (from c in WebAllContactsLocal.TVItemAllContactList
-                                        where c.TVItemModel.TVItem.TVItemID == WebAllContacts.TVItemAllContactList[i].TVItemModel.TVItem.TVItemID
-                                        && (c.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
-                                        || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.en].DBCommand != DBCommandEnum.Original
-                                        || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].DBCommand != DBCommandEnum.Original)
-                                        select c).FirstOrDefault();
+            List<ContactModel> contactModelLocalList = (from c in WebAllContactsLocal.ContactModelList
+                                                        where c.TVItem.DBCommand != DBCommandEnum.Original
+                                                        || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
+                                                        || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original
+                                                        || c.Contact.DBCommand != DBCommandEnum.Original
+                                                        || (from e in c.ContactEmailModelList
+                                                            where e.TVItem.DBCommand != DBCommandEnum.Original
+                                                            select e).Any()
+                                                        || (from t in c.ContactTelModelList
+                                                            where t.TVItem.DBCommand != DBCommandEnum.Original
+                                                            select t).Any()
+                                                        || (from a in c.ContactAddressModelList
+                                                            where a.TVItem.DBCommand != DBCommandEnum.Original
+                                                            select a).Any()
+                                                        select c).ToList();
 
-                if (webBaseLocal != null)
+            foreach (ContactModel contactModelLocal in contactModelLocalList)
+            {
+                ContactModel contactModelOriginal = WebAllContacts.ContactModelList.Where(c => c.TVItem.TVItemID == contactModelLocal.TVItem.TVItemID).FirstOrDefault();
+                if (contactModelOriginal == null)
                 {
-                    WebAllContacts.TVItemAllContactList[i] = webBaseLocal;
+                    WebAllContacts.ContactModelList.Add(contactModelLocal);
+                }
+                else
+                {
+                    contactModelOriginal = contactModelLocal;
                 }
             }
-
-            List<WebBase> webBaseLocalNewList = (from c in WebAllContactsLocal.TVItemAllContactList
-                                                 where c.TVItemModel.TVItem.DBCommand == DBCommandEnum.Created
-                                                 select c).ToList();
-
-            foreach (WebBase webBaseNew in webBaseLocalNewList)
-            {
-                WebAllContacts.TVItemAllContactList.Add(webBaseNew);
-            }
-
-            // -----------------------------------------------------------
-            // doing ContactList
-            // -----------------------------------------------------------
-            
-            count = WebAllContacts.ContactList.Count;
-            for (int i = 0; i < count; i++)
-            {
-                Contact ContactLocal = (from c in WebAllContactsLocal.ContactList
-                                        where c.ContactID == WebAllContacts.ContactList[i].ContactID
-                                        && c.DBCommand != DBCommandEnum.Original
-                                        select c).FirstOrDefault();
-
-                if (ContactLocal != null)
-                {
-                    WebAllContacts.ContactList[i] = ContactLocal;
-                }
-            }
-
-            List<Contact> ContactLocalNewList = (from c in WebAllContactsLocal.ContactList
-                                                 where c.DBCommand == DBCommandEnum.Created
-                                                 select c).ToList();
-
-            foreach(Contact ContactNew in ContactLocalNewList)
-            {
-                WebAllContacts.ContactList.Add(ContactNew);
-            }
-
-            return;
         }
     }
 }

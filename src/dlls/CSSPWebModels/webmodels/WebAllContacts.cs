@@ -12,16 +12,13 @@ namespace CSSPWebModels
     public partial class WebAllContacts
     {
         #region Properties
-        public List<WebBase> TVItemAllContactList { get; set; }
-
-        public List<Contact> ContactList { get; set; }
+        public List<ContactModel> ContactModelList { get; set; }
         #endregion Properties
 
         #region Constructors
         public WebAllContacts()
         {
-            TVItemAllContactList = new List<WebBase>();
-            ContactList = new List<Contact>();
+            ContactModelList = new List<ContactModel>();
         }
         #endregion Constructors
     }

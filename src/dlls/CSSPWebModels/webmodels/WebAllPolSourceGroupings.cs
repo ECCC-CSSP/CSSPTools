@@ -12,15 +12,13 @@ namespace CSSPWebModels
     public partial class WebAllPolSourceGroupings
     {
         #region Properties
-        public List<PolSourceGrouping> PolSourceGroupingList { get; set; }
-        public List<PolSourceGroupingLanguage> PolSourceGroupingLanguageList { get; set; }
+        public List<PolSourceGroupingModel> PolSourceGroupingModelList { get; set; }
         #endregion Properties
 
         #region Constructors
         public WebAllPolSourceGroupings()
         {
-            PolSourceGroupingList = new List<PolSourceGrouping>();
-            PolSourceGroupingLanguageList = new List<PolSourceGroupingLanguage>();
+            PolSourceGroupingModelList = new List<PolSourceGroupingModel>();
         }
         #endregion Constructors
     }

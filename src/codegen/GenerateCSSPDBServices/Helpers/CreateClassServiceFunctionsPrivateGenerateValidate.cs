@@ -19,7 +19,7 @@ namespace GenerateCSSPDBServices
                     continue;
                 }
 
-                if (prop.Name == "ValidationResults")
+                if (prop.Name == "ValidationResultList")
                 {
                     continue;
                 }
@@ -60,7 +60,7 @@ namespace GenerateCSSPDBServices
                     continue;
                 }
 
-                if (prop.Name == "ValidationResults")
+                if (prop.Name == "ValidationResultList")
                 {
                     continue;
                 }
@@ -85,7 +85,7 @@ namespace GenerateCSSPDBServices
                 if (!await CreateValidation_EnumType(prop, csspProp, dllTypeInfoModels.Type.Name, TypeNameLower, sb)) return await Task.FromResult(false);
             }
 
-            sb.AppendLine(@"            return ValidationResults.Count == 0 ? true : false;");
+            sb.AppendLine(@"            return ValidationResultList.Count == 0 ? true : false;");
             sb.AppendLine(@"        }");
 
             return await Task.FromResult(true);
@@ -100,7 +100,7 @@ namespace GenerateCSSPDBServices
                     continue;
                 }
 
-                if (prop.Name == "ValidationResults")
+                if (prop.Name == "ValidationResultList")
                 {
                     continue;
                 }
@@ -134,7 +134,7 @@ namespace GenerateCSSPDBServices
                     continue;
                 }
 
-                if (prop.Name == "ValidationResults")
+                if (prop.Name == "ValidationResultList")
                 {
                     continue;
                 }
@@ -159,7 +159,7 @@ namespace GenerateCSSPDBServices
                 if (!await CreateValidation_EnumType(prop, csspProp, dllTypeInfoModels.Type.Name, TypeNameLower, sb)) return await Task.FromResult(false);
             }
 
-            sb.AppendLine(@"            return ValidationResults.Count == 0 ? true : false;");
+            sb.AppendLine(@"            return ValidationResultList.Count == 0 ? true : false;");
             sb.AppendLine(@"        }");
 
             return await Task.FromResult(true);

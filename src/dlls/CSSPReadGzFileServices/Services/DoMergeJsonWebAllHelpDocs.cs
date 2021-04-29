@@ -29,33 +29,22 @@ namespace ReadGzFileServices
     {
         private void DoMergeJsonWebAllHelpDocs(WebAllHelpDocs WebAllHelpDocs, WebAllHelpDocs WebAllHelpDocsLocal)
         {
-            // -----------------------------------------------------------
-            // doing HelpDocList
-            // -----------------------------------------------------------
-            int count = WebAllHelpDocs.HelpDocList.Count;
-            for (int i = 0; i < count; i++)
-            {
-                HelpDoc helpDocLocal = (from c in WebAllHelpDocsLocal.HelpDocList
-                                        where c.HelpDocID == WebAllHelpDocs.HelpDocList[i].HelpDocID
-                                        && c.DBCommand != DBCommandEnum.Original
-                                        select c).FirstOrDefault();
+            List<HelpDoc> helpDocLocalList = (from c in WebAllHelpDocsLocal.HelpDocList
+                                                    where c.DBCommand != DBCommandEnum.Original
+                                                    select c).ToList();
 
-                if (helpDocLocal != null)
+            foreach (HelpDoc helpDocLocal in helpDocLocalList)
+            {
+                HelpDoc helpDocOriginal = WebAllHelpDocs.HelpDocList.Where(c => c.HelpDocID == helpDocLocal.HelpDocID).FirstOrDefault();
+                if (helpDocOriginal == null)
                 {
-                    WebAllHelpDocs.HelpDocList[i] = helpDocLocal;
+                    WebAllHelpDocs.HelpDocList.Add(helpDocLocal);
+                }
+                else
+                {
+                    helpDocOriginal = helpDocLocal;
                 }
             }
-
-            List<HelpDoc> helpDocLocalNewList = (from c in WebAllHelpDocsLocal.HelpDocList
-                                                 where c.DBCommand == DBCommandEnum.Created
-                                                 select c).ToList();
-
-            foreach (HelpDoc helpDocNew in helpDocLocalNewList)
-            {
-                WebAllHelpDocs.HelpDocList.Add(helpDocNew);
-            }
-
-            return;
         }
     }
 }

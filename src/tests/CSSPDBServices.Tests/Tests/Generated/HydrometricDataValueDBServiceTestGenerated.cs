@@ -439,7 +439,7 @@ namespace CSSPDBServices.Tests
             HydrometricDataValue hydrometricDataValue = new HydrometricDataValue();
 
             if (OmitPropName != "DBCommand") hydrometricDataValue.DBCommand = (DBCommandEnum)GetRandomEnumType(typeof(DBCommandEnum));
-            if (OmitPropName != "HydrometricSiteID") hydrometricDataValue.HydrometricSiteID = 1;
+            if (OmitPropName != "HydrometricSiteID") hydrometricDataValue.HydrometricSiteID = 0;
             if (OmitPropName != "DateTime_Local") hydrometricDataValue.DateTime_Local = new DateTime(2005, 3, 6);
             if (OmitPropName != "Keep") hydrometricDataValue.Keep = true;
             if (OmitPropName != "StorageDataType") hydrometricDataValue.StorageDataType = (StorageDataTypeEnum)GetRandomEnumType(typeof(StorageDataTypeEnum));

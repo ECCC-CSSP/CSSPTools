@@ -23,8 +23,8 @@ namespace CSSPDBLocalServices
         {
             string retStr = "";
             TVItem ParentTVItem = new TVItem();
-            List<WebBase> tvItemParentList = new List<WebBase>();
-            List<WebBase> tvItemSiblingList = new List<WebBase>();
+            List<TVItemModel> tvItemParentList = new List<TVItemModel>();
+            List<TVItemModel> tvItemSiblingList = new List<TVItemModel>();
 
             List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
             {

@@ -33,9 +33,9 @@ namespace CreateGzFileLocalServices
 
             try
             {
-                await FillTVItemModelLocal(webCountry.TVItemModel, TVItemCountry);
+                await FillTVItemModelLocal(webCountry.TVItemStatMapModel, TVItemCountry);
 
-                await FillParentListTVItemModelListLocal(webCountry.TVItemParentList, TVItemCountry);
+                await FillParentListTVItemModelListLocal(webCountry.TVItemStatParentList, TVItemCountry);
 
                 await FillChildListTVItemModelListLocal(webCountry.TVItemProvinceList, TVItemCountry, TVTypeEnum.Province);
 

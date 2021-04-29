@@ -35,11 +35,11 @@ namespace CreateGzFileLocalServices
 
             try
             {
-                await FillTVItemModelLocal(webArea.TVItemModel, TVItemArea);
+                await FillTVItemModelLocal(webArea.TVItemStatMapModel, TVItemArea);
 
-                await FillParentListTVItemModelListLocal(webArea.TVItemParentList, TVItemArea);
+                await FillParentListTVItemModelListLocal(webArea.TVItemStatModelParentList, TVItemArea);
 
-                await FillChildListTVItemModelListLocal(webArea.TVItemSectorList, TVItemArea, TVTypeEnum.Sector);
+                await FillChildListTVItemModelListLocal(webArea.TVItemStatMapModelSectorList, TVItemArea, TVTypeEnum.Sector);
 
                 await FillChildListTVItemModelListLocal(webArea.TVItemFileList, TVItemArea, TVTypeEnum.File);
 

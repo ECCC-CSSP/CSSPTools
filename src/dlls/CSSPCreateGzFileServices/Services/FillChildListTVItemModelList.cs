@@ -16,7 +16,7 @@ namespace CreateGzFileServices
 {
     public partial class CreateGzFileService : ControllerBase, ICreateGzFileService
     {
-        private async Task FillChildListTVItemModelList(List<WebBase> TVItemChildList, TVItem TVItem, TVTypeEnum TVType)
+        private async Task FillChildListTVItemModelList(List<TVItemStatMapModel> TVItemStatMapChildList, TVItem TVItem, TVTypeEnum TVType)
         {
             List<TVItem> TVItemList = await GetTVItemChildrenListWithTVItemID(TVItem, TVType);
             List<TVItemLanguage> TVItemLanguageList = await GetTVItemLanguageChildrenListWithTVItemID(TVItem, TVType);
@@ -26,16 +26,11 @@ namespace CreateGzFileServices
 
             foreach (TVItem tvItem in TVItemList)
             {
-                WebBase webBase = new WebBase();
-                webBase.TVItemModel.TVItem = tvItem;
-                webBase.TVItemModel.TVItemLanguageList = new List<TVItemLanguage>()
-                {
-                    TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID && c.Language == LanguageEnum.en).FirstOrDefault(),
-                    TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID && c.Language == LanguageEnum.en).FirstOrDefault(),
-                    TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID && c.Language == LanguageEnum.fr).FirstOrDefault()
-                };
+                TVItemStatMapModel tvItemStatMapModel = new TVItemStatMapModel();
+                tvItemStatMapModel.TVItem = tvItem;
+                tvItemStatMapModel.TVItemLanguageList = TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
 
-                webBase.TVItemModel.TVItemStatList = TVItemStatList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
+                tvItemStatMapModel.TVItemStatList = TVItemStatList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
 
                 foreach (MapInfo MapInfo in MapInfoList)
                 {
@@ -44,11 +39,12 @@ namespace CreateGzFileServices
                         MapInfoModel MapInfoModel = new MapInfoModel();
                         MapInfoModel.MapInfo = MapInfo;
                         MapInfoModel.MapInfoPointList = MapInfoPointList.Where(c => c.MapInfoID == MapInfo.MapInfoID).Select(c => c).ToList();
-                        webBase.TVItemModel.MapInfoModelList.Add(MapInfoModel);
+                        
+                        tvItemStatMapModel.MapInfoModelList.Add(MapInfoModel);
                     }
                 }
 
-                TVItemChildList.Add(webBase);
+                TVItemStatMapChildList.Add(tvItemStatMapModel);
             }
         }
     }

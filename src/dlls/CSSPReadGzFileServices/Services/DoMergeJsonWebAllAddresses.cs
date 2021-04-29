@@ -29,62 +29,25 @@ namespace ReadGzFileServices
     {
         private void DoMergeJsonWebAllAddresses(WebAllAddresses WebAllAddresses, WebAllAddresses WebAllAddressesLocal)
         {
-            // -----------------------------------------------------------
-            // doing TVItemAllAddressesList
-            // -----------------------------------------------------------
-            int count = WebAllAddresses.TVItemAllAddressList.Count;
-            for (int i = 0; i < count; i++)
-            {
-                WebBase webBaseLocal = (from c in WebAllAddressesLocal.TVItemAllAddressList
-                                        where c.TVItemModel.TVItem.TVItemID == WebAllAddresses.TVItemAllAddressList[i].TVItemModel.TVItem.TVItemID
-                                        && (c.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
-                                        || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.en].DBCommand != DBCommandEnum.Original
-                                        || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].DBCommand != DBCommandEnum.Original)
-                                        select c).FirstOrDefault();
+            List<AddressModel> addressModelLocalList = (from c in WebAllAddressesLocal.AddressModelList
+                                                        where c.TVItem.DBCommand != DBCommandEnum.Original
+                                                        || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
+                                                        || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original
+                                                        || c.Address.DBCommand != DBCommandEnum.Original
+                                                        select c).ToList();
 
-                if (webBaseLocal != null)
+            foreach (AddressModel addressModelLocal in addressModelLocalList)
+            {
+                AddressModel addressModelOriginal = WebAllAddresses.AddressModelList.Where(c => c.TVItem.TVItemID == addressModelLocal.TVItem.TVItemID).FirstOrDefault();
+                if (addressModelOriginal == null)
                 {
-                    WebAllAddresses.TVItemAllAddressList[i] = webBaseLocal;
+                    WebAllAddresses.AddressModelList.Add(addressModelLocal);
+                }
+                else
+                {
+                    addressModelOriginal = addressModelLocal;
                 }
             }
-
-            List<WebBase> webBaseLocalNewList = (from c in WebAllAddressesLocal.TVItemAllAddressList
-                                                 where c.TVItemModel.TVItem.DBCommand == DBCommandEnum.Created
-                                                 select c).ToList();
-
-            foreach (WebBase webBaseNew in webBaseLocalNewList)
-            {
-                WebAllAddresses.TVItemAllAddressList.Add(webBaseNew);
-            }
-
-            // -----------------------------------------------------------
-            // doing AddressList
-            // -----------------------------------------------------------
-            
-            count = WebAllAddresses.AddressList.Count;
-            for (int i = 0; i < count; i++)
-            {
-                Address AddressLocal = (from c in WebAllAddressesLocal.AddressList
-                                        where c.AddressID == WebAllAddresses.AddressList[i].AddressID
-                                        && c.DBCommand != DBCommandEnum.Original
-                                        select c).FirstOrDefault();
-
-                if (AddressLocal != null)
-                {
-                    WebAllAddresses.AddressList[i] = AddressLocal;
-                }
-            }
-
-            List<Address> AddressLocalNewList = (from c in WebAllAddressesLocal.AddressList
-                                                 where c.DBCommand == DBCommandEnum.Created
-                                                 select c).ToList();
-
-            foreach(Address AddressNew in AddressLocalNewList)
-            {
-                WebAllAddresses.AddressList.Add(AddressNew);
-            }
-
-            return;
         }
     }
 }

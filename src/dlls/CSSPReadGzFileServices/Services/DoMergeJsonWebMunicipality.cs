@@ -27,163 +27,61 @@ namespace ReadGzFileServices
 {
     public partial class ReadGzFileService : ControllerBase, IReadGzFileService
     {
-        private void DoMergeJsonWebMunicipality(WebMunicipality webMunicipality, WebMunicipality webMunicipalityLocal)
+        private void DoMergeJsonWebMunicipality(WebMunicipality WebMunicipality, WebMunicipality WebMunicipalityLocal)
         {
-            // -----------------------------------------------------------
-            // doing TVItemInfrastructureList
-            // -----------------------------------------------------------
-            int count = webMunicipality.TVItemInfrastructureList.Count;
-            for (int i = 0; i < count; i++)
+            if (WebMunicipalityLocal.TVItemStatMapModel.TVItem.DBCommand != DBCommandEnum.Original
+              || WebMunicipalityLocal.TVItemStatMapModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
+              || WebMunicipalityLocal.TVItemStatMapModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
             {
-                WebBase webBaseLocal = (from c in webMunicipalityLocal.TVItemInfrastructureList
-                                        where c.TVItemModel.TVItem.TVItemID == webMunicipality.TVItemInfrastructureList[i].TVItemModel.TVItem.TVItemID
-                                        && (c.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
-                                        || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.en].DBCommand != DBCommandEnum.Original
-                                        || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].DBCommand != DBCommandEnum.Original)
-                                        select c).FirstOrDefault();
+                WebMunicipality.TVItemStatMapModel = WebMunicipalityLocal.TVItemStatMapModel;
+            }
 
-                if (webBaseLocal != null)
+            if ((from c in WebMunicipalityLocal.TVItemStatModelParentList
+                 where c.TVItem.DBCommand != DBCommandEnum.Original
+                 || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
+                 || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original
+                 select c).Any())
+            {
+                WebMunicipality.TVItemStatModelParentList = WebMunicipalityLocal.TVItemStatModelParentList;
+            }
+
+            List<ContactModel> ContactModelList = (from c in WebMunicipalityLocal.MunicipalityContactModelList
+                                                   where c.TVItem.DBCommand != DBCommandEnum.Original
+                                                   || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
+                                                   || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original
+                                                   select c).ToList();
+
+            foreach (ContactModel contactModel in ContactModelList)
+            {
+                ContactModel contactModelOriginal = WebMunicipality.MunicipalityContactModelList.Where(c => c.TVItem.TVItemID == contactModel.TVItem.TVItemID).FirstOrDefault();
+                if (contactModelOriginal == null)
                 {
-                    webMunicipality.TVItemInfrastructureList[i] = webBaseLocal;
+                    WebMunicipality.MunicipalityContactModelList.Add(contactModelOriginal);
+                }
+                else
+                {
+                    contactModelOriginal = contactModel;
                 }
             }
 
-            List<WebBase> webBaseLocalNewList = (from c in webMunicipalityLocal.TVItemInfrastructureList
-                                                 where c.TVItemModel.TVItem.DBCommand == DBCommandEnum.Created
+            List<TVFileModel> TVFileModelList = (from c in WebMunicipalityLocal.TVFileModelList
+                                                 where c.TVItem.DBCommand != DBCommandEnum.Original
+                                                 || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
+                                                 || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original
                                                  select c).ToList();
 
-            foreach (WebBase WebBaseLocalNew in webBaseLocalNewList)
+            foreach (TVFileModel tvFileModel in TVFileModelList)
             {
-                webMunicipality.TVItemInfrastructureList.Add(WebBaseLocalNew);
-            }
-
-            // -----------------------------------------------------------
-            // doing TVItemMikeScenarioList
-            // -----------------------------------------------------------
-            count = webMunicipality.TVItemMikeScenarioList.Count;
-            for (int i = 0; i < count; i++)
-            {
-                WebBase webBaseLocal = (from c in webMunicipalityLocal.TVItemMikeScenarioList
-                                        where c.TVItemModel.TVItem.TVItemID == webMunicipality.TVItemMikeScenarioList[i].TVItemModel.TVItem.TVItemID
-                                        && (c.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
-                                        || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.en].DBCommand != DBCommandEnum.Original
-                                        || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].DBCommand != DBCommandEnum.Original)
-                                        select c).FirstOrDefault();
-
-                if (webBaseLocal != null)
+                TVFileModel tvFileModelOriginal = WebMunicipality.TVFileModelList.Where(c => c.TVItem.TVItemID == tvFileModel.TVItem.TVItemID).FirstOrDefault();
+                if (tvFileModelOriginal == null)
                 {
-                    webMunicipality.TVItemMikeScenarioList[i] = webBaseLocal;
+                    WebMunicipality.TVFileModelList.Add(tvFileModel);
+                }
+                else
+                {
+                    tvFileModelOriginal = tvFileModel;
                 }
             }
-
-            webBaseLocalNewList = (from c in webMunicipalityLocal.TVItemMikeScenarioList
-                                   where c.TVItemModel.TVItem.DBCommand == DBCommandEnum.Created
-                                   select c).ToList();
-
-            foreach (WebBase WebBaseLocalNew in webBaseLocalNewList)
-            {
-                webMunicipality.TVItemMikeScenarioList.Add(WebBaseLocalNew);
-            }
-
-            // -----------------------------------------------------------
-            // doing TVItemFileList
-            // -----------------------------------------------------------
-            count = webMunicipality.TVItemFileList.Count;
-            for (int i = 0; i < count; i++)
-            {
-                WebBase webBaseLocal = (from c in webMunicipalityLocal.TVItemFileList
-                                        where c.TVItemModel.TVItem.TVItemID == webMunicipality.TVItemFileList[i].TVItemModel.TVItem.TVItemID
-                                        && (c.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
-                                        || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.en].DBCommand != DBCommandEnum.Original
-                                        || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].DBCommand != DBCommandEnum.Original)
-                                        select c).FirstOrDefault();
-
-                if (webBaseLocal != null)
-                {
-                    webMunicipality.TVItemFileList[i] = webBaseLocal;
-                }
-            }
-
-            webBaseLocalNewList = (from c in webMunicipalityLocal.TVItemFileList
-                                   where c.TVItemModel.TVItem.DBCommand == DBCommandEnum.Created
-                                   select c).ToList();
-
-            foreach (WebBase webBaseNew in webBaseLocalNewList)
-            {
-                webMunicipality.TVItemFileList.Add(webBaseNew);
-            }
-
-            // -----------------------------------------------------------
-            // doing InfrastructureModelList
-            // -----------------------------------------------------------
-
-            List<InfrastructureModel> infrastructureModelLocalNewList = (from c in webMunicipalityLocal.InfrastructureModelList
-                                                                         where (c.TVItemModel.TVItem.DBCommand == DBCommandEnum.Created
-                                                                         || (c.Infrastructure != null
-                                                                         && c.Infrastructure.DBCommand == DBCommandEnum.Created))
-                                                                         select c).ToList();
-
-            foreach (InfrastructureModel infrastructureModelLocalNew in infrastructureModelLocalNewList)
-            {
-                webMunicipality.InfrastructureModelList.Add(infrastructureModelLocalNew);
-            }
-
-            // -----------------------------------------------------------
-            // doing InfrastructureModelList.TVItemModel
-            // -----------------------------------------------------------
-            count = webMunicipality.InfrastructureModelList.Count;
-            for (int i = 0; i < count; i++)
-            {
-                InfrastructureModel infrastructureModelLocal = (from c in webMunicipalityLocal.InfrastructureModelList
-                                                                where c.TVItemModel.TVItem.TVItemID == webMunicipality.InfrastructureModelList[i].TVItemModel.TVItem.TVItemID
-                                                                select c).FirstOrDefault();
-
-                if (infrastructureModelLocal != null)
-                {
-                    if (infrastructureModelLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
-                        || infrastructureModelLocal.TVItemModel.TVItemLanguageList[(int)LanguageEnum.en].DBCommand != DBCommandEnum.Original
-                        || infrastructureModelLocal.TVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].DBCommand != DBCommandEnum.Original)
-                    {
-                        webMunicipality.InfrastructureModelList[i].TVItemModel.TVItem = infrastructureModelLocal.TVItemModel.TVItem;
-                        webMunicipality.InfrastructureModelList[i].TVItemModel.TVItemLanguageList[0] = infrastructureModelLocal.TVItemModel.TVItemLanguageList[0];
-                        webMunicipality.InfrastructureModelList[i].TVItemModel.TVItemLanguageList[1] = infrastructureModelLocal.TVItemModel.TVItemLanguageList[1];
-                        webMunicipality.InfrastructureModelList[i].TVItemModel.TVItemLanguageList[2] = infrastructureModelLocal.TVItemModel.TVItemLanguageList[2];
-                    }
-
-                    int count2 = webMunicipality.InfrastructureModelList[i].TVItemFileList.Count;
-                    for (int j = 0; j < count2; j++)
-                    {
-                        WebBase webBaseTVItemFileLocal = (from c in infrastructureModelLocal.TVItemFileList
-                                                          where c.TVItemModel.TVItem.TVItemID == webMunicipality.InfrastructureModelList[i].TVItemFileList[j].TVItemModel.TVItem.TVItemID
-                                                          select c).FirstOrDefault();
-
-                        if (webBaseTVItemFileLocal != null)
-                        {
-                            if (webBaseTVItemFileLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
-                                || webBaseTVItemFileLocal.TVItemModel.TVItemLanguageList[(int)LanguageEnum.en].DBCommand != DBCommandEnum.Original
-                                || webBaseTVItemFileLocal.TVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].DBCommand != DBCommandEnum.Original)
-                            {
-                                webMunicipality.InfrastructureModelList[i].TVItemFileList[j] = webBaseTVItemFileLocal;
-                            }
-                        }
-                    }
-
-                    List<WebBase> webBaseInfTVItemFileLocalNewList = (from c in infrastructureModelLocal.TVItemFileList
-                                                                      where (c.TVItemModel.TVItem.DBCommand == DBCommandEnum.Created
-                                                                      || (c.TVItemModel.TVItem != null
-                                                                      && c.TVItemModel.TVItem.DBCommand == DBCommandEnum.Created))
-                                                                      select c).ToList();
-
-                    foreach (WebBase webBaseInfTVItemFileLocalNew in webBaseInfTVItemFileLocalNewList)
-                    {
-                        webMunicipality.InfrastructureModelList[i].TVItemFileList.Add(webBaseInfTVItemFileLocalNew);
-                    }
-                }
-
-
-            }
-
-            return;
         }
     }
 }

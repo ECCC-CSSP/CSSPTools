@@ -8,20 +8,22 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CSSPWebModels
 {
     [NotMapped]
-    public partial class WebRoot : WebBase
+    public partial class WebRoot
     {
         #region Properties
-        public List<WebBase> TVItemParentList { get; set; }
-        public List<WebBase> TVItemCountryList { get; set; }
-        public List<WebBase> TVItemFileList { get; set; }
+        public TVItemStatMapModel TVItemStatMapModel { get; set; }
+        public List<TVItemStatModel> TVItemStatModelParentList { get; set; }
+        public List<TVItemStatMapModel> TVItemStatMapModelCountryList { get; set; }
+        public List<TVFileModel> TVFileModelList { get; set; }
         #endregion Properties
 
         #region Constructors
         public WebRoot() : base()
         {
-            TVItemParentList = new List<WebBase>();
-            TVItemCountryList = new List<WebBase>();
-            TVItemFileList = new List<WebBase>();
+            TVItemStatMapModel = new TVItemStatMapModel();
+            TVItemStatModelParentList = new List<TVItemStatModel>();
+            TVItemStatMapModelCountryList = new List<TVItemStatMapModel>();
+            TVFileModelList = new List<TVFileModel>();
         }
         #endregion Constructors
     }

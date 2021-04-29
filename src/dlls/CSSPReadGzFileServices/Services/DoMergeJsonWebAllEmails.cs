@@ -29,62 +29,24 @@ namespace ReadGzFileServices
     {
         private void DoMergeJsonWebAllEmails(WebAllEmails WebAllEmails, WebAllEmails WebAllEmailsLocal)
         {
-            // -----------------------------------------------------------
-            // doing TVItemAllEmailsList
-            // -----------------------------------------------------------
-            int count = WebAllEmails.TVItemAllEmailList.Count;
-            for (int i = 0; i < count; i++)
-            {
-                WebBase webBaseLocal = (from c in WebAllEmailsLocal.TVItemAllEmailList
-                                        where c.TVItemModel.TVItem.TVItemID == WebAllEmails.TVItemAllEmailList[i].TVItemModel.TVItem.TVItemID
-                                        && (c.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
-                                        || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.en].DBCommand != DBCommandEnum.Original
-                                        || c.TVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].DBCommand != DBCommandEnum.Original)
-                                        select c).FirstOrDefault();
+            List<EmailModel> emailModelLocalList = (from c in WebAllEmailsLocal.EmailModelList
+                                                        where c.TVItem.DBCommand != DBCommandEnum.Original
+                                                        || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
+                                                        || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original
+                                                        select c).ToList();
 
-                if (webBaseLocal != null)
+            foreach (EmailModel emailModelLocal in emailModelLocalList)
+            {
+                EmailModel emailModelOriginal = WebAllEmails.EmailModelList.Where(c => c.TVItem.TVItemID == emailModelLocal.TVItem.TVItemID).FirstOrDefault();
+                if (emailModelOriginal == null)
                 {
-                    WebAllEmails.TVItemAllEmailList[i] = webBaseLocal;
+                    WebAllEmails.EmailModelList.Add(emailModelLocal);
+                }
+                else
+                {
+                    emailModelOriginal = emailModelLocal;
                 }
             }
-
-            List<WebBase> webBaseLocalNewList = (from c in WebAllEmailsLocal.TVItemAllEmailList
-                                                 where c.TVItemModel.TVItem.DBCommand == DBCommandEnum.Created
-                                                 select c).ToList();
-
-            foreach (WebBase webBaseNew in webBaseLocalNewList)
-            {
-                WebAllEmails.TVItemAllEmailList.Add(webBaseNew);
-            }
-
-            // -----------------------------------------------------------
-            // doing EmailList
-            // -----------------------------------------------------------
-            
-            count = WebAllEmails.EmailList.Count;
-            for (int i = 0; i < count; i++)
-            {
-                Email EmailLocal = (from c in WebAllEmailsLocal.EmailList
-                                        where c.EmailID == WebAllEmails.EmailList[i].EmailID
-                                        && c.DBCommand != DBCommandEnum.Original
-                                        select c).FirstOrDefault();
-
-                if (EmailLocal != null)
-                {
-                    WebAllEmails.EmailList[i] = EmailLocal;
-                }
-            }
-
-            List<Email> EmailLocalNewList = (from c in WebAllEmailsLocal.EmailList
-                                                 where c.DBCommand == DBCommandEnum.Created
-                                                 select c).ToList();
-
-            foreach(Email EmailNew in EmailLocalNewList)
-            {
-                WebAllEmails.EmailList.Add(EmailNew);
-            }
-
-            return;
         }
     }
 }

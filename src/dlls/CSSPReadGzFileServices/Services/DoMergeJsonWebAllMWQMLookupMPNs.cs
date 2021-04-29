@@ -29,33 +29,22 @@ namespace ReadGzFileServices
     {
         private void DoMergeJsonWebAllMWQMLookupMPNs(WebAllMWQMLookupMPNs WebAllMWQMLookupMPNs, WebAllMWQMLookupMPNs WebAllMWQMLookupMPNsLocal)
         {
-            // -----------------------------------------------------------
-            // doing MWQMLookupMPNList
-            // -----------------------------------------------------------
-            int count = WebAllMWQMLookupMPNs.MWQMLookupMPNList.Count;
-            for (int i = 0; i < count; i++)
-            {
-                MWQMLookupMPN MWQMLookupMPNLocal = (from c in WebAllMWQMLookupMPNsLocal.MWQMLookupMPNList
-                                        where c.MWQMLookupMPNID == WebAllMWQMLookupMPNs.MWQMLookupMPNList[i].MWQMLookupMPNID
-                                        && c.DBCommand != DBCommandEnum.Original
-                                        select c).FirstOrDefault();
+            List<MWQMLookupMPN> mwqmLookupMPNLocalList = (from c in WebAllMWQMLookupMPNsLocal.MWQMLookupMPNList
+                                              where c.DBCommand != DBCommandEnum.Original
+                                              select c).ToList();
 
-                if (MWQMLookupMPNLocal != null)
+            foreach (MWQMLookupMPN mwqmLookupMPNLocal in mwqmLookupMPNLocalList)
+            {
+                MWQMLookupMPN mwqmLookupMPNOriginal = WebAllMWQMLookupMPNs.MWQMLookupMPNList.Where(c => c.MWQMLookupMPNID == mwqmLookupMPNLocal.MWQMLookupMPNID).FirstOrDefault();
+                if (mwqmLookupMPNOriginal == null)
                 {
-                    WebAllMWQMLookupMPNs.MWQMLookupMPNList[i] = MWQMLookupMPNLocal;
+                    WebAllMWQMLookupMPNs.MWQMLookupMPNList.Add(mwqmLookupMPNLocal);
+                }
+                else
+                {
+                    mwqmLookupMPNOriginal = mwqmLookupMPNLocal;
                 }
             }
-
-            List<MWQMLookupMPN> MWQMLookupMPNLocalNewList = (from c in WebAllMWQMLookupMPNsLocal.MWQMLookupMPNList
-                                                 where c.DBCommand == DBCommandEnum.Created
-                                                 select c).ToList();
-
-            foreach (MWQMLookupMPN MWQMLookupMPNNew in MWQMLookupMPNLocalNewList)
-            {
-                WebAllMWQMLookupMPNs.MWQMLookupMPNList.Add(MWQMLookupMPNNew);
-            }
-
-            return;
         }
     }
 }

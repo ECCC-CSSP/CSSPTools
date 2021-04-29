@@ -24,10 +24,16 @@ namespace CreateGzFileServices
 
             try
             {
-                webAllPolSourceGroupings.PolSourceGroupingList = await GetPolSourceGroupingList();
-                webAllPolSourceGroupings.PolSourceGroupingLanguageList = await GetPolSourceGroupingLanguageList();
+                await FillPolSourceGroupingModelList(webAllPolSourceGroupings.PolSourceGroupingModelList);
 
-                await DoStore<WebAllPolSourceGroupings>(webAllPolSourceGroupings, $"{ WebTypeEnum.WebAllPolSourceGroupings }.gz");
+                if (dbLocal != null)
+                {
+                    await DoStoreLocal<WebAllPolSourceGroupings>(webAllPolSourceGroupings, $"{ WebTypeEnum.WebAllPolSourceGroupings }.gz");
+                }
+                else
+                {
+                    await DoStore<WebAllPolSourceGroupings>(webAllPolSourceGroupings, $"{ WebTypeEnum.WebAllPolSourceGroupings }.gz");
+                }
             }
             catch (Exception ex)
             {
