@@ -4,18 +4,18 @@ import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
 import { WebArea } from 'src/app/models/generated/web/WebArea.model';
-import { WebBase } from 'src/app/models/generated/web/WebBase.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { StructureTVFileListService } from 'src/app/services/helpers/structure-tvfile-list.service';
 import { SortTVItemListService } from 'src/app/services/helpers/sort-tvitem-list.service';
 import { MapService } from 'src/app/services/map/map.service';
 import { AreaSubComponentEnum } from 'src/app/enums/generated/AreaSubComponentEnum';
-import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
-import { ComponentDataLoadedService } from '../helpers/component-data-loaded.service';
+import { GetLanguageEnum, LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
+import { ComponentDataLoadedService } from 'src/app/services/helpers/component-data-loaded.service';
 import { AppState } from 'src/app/models/AppState.model';
-import { AppLanguageService } from '../app-language.service';
-import { HistoryService } from '../helpers/history.service';
+import { AppLanguageService } from 'src/app/services/app-language.service';
+import { HistoryService } from 'src/app/services/helpers/history.service';
+import { WebAllTels } from 'src/app/models/generated/web/WebAllTels.model';
 
 
 @Injectable({
@@ -25,6 +25,7 @@ export class WebAreaService {
   private TVItemID: number;
   private DoOther: boolean;
   private sub: Subscription;
+  LangID: number = this.appStateService.AppState$?.getValue()?.Language == LanguageEnum.fr ? 1 : 0;
 
   constructor(private httpClient: HttpClient,
     private appStateService: AppStateService,
@@ -43,7 +44,7 @@ export class WebAreaService {
 
     this.sub ? this.sub.unsubscribe() : null;
 
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebArea?.TVItemModel?.TVItem?.TVItemID == TVItemID) {
+    if (this.appLoadedService.AppLoaded$.getValue()?.WebArea) {
       this.KeepWebArea();
     }
     else {
@@ -55,12 +56,9 @@ export class WebAreaService {
     let languageEnum = GetLanguageEnum();
     this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
       WebArea: {},
-      AreaSectorList: [],
-      BreadCrumbAreaWebBaseList: [],
-      BreadCrumbWebBaseList: []
     });
     this.appStateService.UpdateAppState(<AppState>{
-      Status: this.appLanguageService.AppLanguage.LoadingArea[this.appStateService.AppState$?.getValue()?.Language],
+      Status: `${ this.appLanguageService.AppLanguage.Loading[this.LangID]} - ${ WebAllTels }`,
       Working: true
     });
     let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebArea/${this.TVItemID}/1`;
@@ -88,27 +86,27 @@ export class WebAreaService {
   }
 
   private UpdateWebArea(x: WebArea) {
-    let AreaSectorList: WebBase[] = [];
+    // let AreaSectorList: WebBase[] = [];
 
-    if (!this.appStateService.AppState$?.getValue()?.InactVisible) {
-      AreaSectorList = x?.TVItemSectorList.filter((sector) => { return sector.TVItemModel.TVItem.IsActive == true });
-    }
-    else {
-      AreaSectorList = x?.TVItemSectorList;
-    }
+    // if (!this.appStateService.AppState$?.getValue()?.InactVisible) {
+    //   AreaSectorList = x?.TVItemSectorList.filter((sector) => { return sector.TVItemModel.TVItem.IsActive == true });
+    // }
+    // else {
+    //   AreaSectorList = x?.TVItemSectorList;
+    // }
 
     this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
       WebArea: x,
-      AreaSectorList: this.sortTVItemListService.SortTVItemList(AreaSectorList, x?.TVItemParentList),
-      AreaFileListList: this.structureTVFileListService.StructureTVFileList(x.TVItemModel),
-      BreadCrumbAreaWebBaseList: x?.TVItemParentList,
-      BreadCrumbWebBaseList: x?.TVItemParentList
+      // AreaSectorList: this.sortTVItemListService.SortTVItemList(AreaSectorList, x?.TVItemParentList),
+      // AreaFileListList: this.structureTVFileListService.StructureTVFileList(x.TVItemModel),
+      // BreadCrumbAreaWebBaseList: x?.TVItemParentList,
+      // BreadCrumbWebBaseList: x?.TVItemParentList
     });
 
-    this.historyService.AddHistory(this.appLoadedService.AppLoaded$.getValue()?.WebArea?.TVItemModel);
+    this.historyService.AddHistory(this.appLoadedService.AppLoaded$.getValue()?.WebArea?.TVItemStatMapModel);
 
     if (this.DoOther) {
-      if (this.componentDataLoadedService.DataLoadedArea()) {
+      if (this.componentDataLoadedService.DataLoadedWebArea()) {
         this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
       }
     }
@@ -116,24 +114,24 @@ export class WebAreaService {
       this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
     }
 
-    let webBaseArea: WebBase[] = <WebBase[]>[
-      <WebBase>{ TVItemModel: this.appLoadedService.AppLoaded$.getValue().WebArea.TVItemModel },
-    ];
+    // let webBaseArea: WebBase[] = <WebBase[]>[
+    //   <WebBase>{ TVItemModel: this.appLoadedService.AppLoaded$.getValue().WebArea.TVItemModel },
+    // ];
 
     if (this.appStateService.AppState$.getValue().GoogleJSLoaded) {
       if (this.appStateService.AppState$.getValue().AreaSubComponent == AreaSubComponentEnum.Sectors) {
         this.mapService.ClearMap();
         this.mapService.DrawObjects([
-          ...this.appLoadedService.AppLoaded$.getValue().AreaSectorList,
-          ...webBaseArea
+          ...this.appLoadedService.AppLoaded$.getValue().WebArea.TVItemStatMapModelSectorList,
+          ...[this.appLoadedService.AppLoaded$.getValue().WebArea.TVItemStatMapModel]
         ]);
       }
 
       if (this.appStateService.AppState$.getValue().AreaSubComponent == AreaSubComponentEnum.Files) {
         this.mapService.ClearMap();
         this.mapService.DrawObjects([
-          ...this.appLoadedService.AppLoaded$.getValue().AreaSectorList,
-          ...webBaseArea
+          ...this.appLoadedService.AppLoaded$.getValue().WebArea.TVItemStatMapModelSectorList,
+          ...[this.appLoadedService.AppLoaded$.getValue().WebArea.TVItemStatMapModel]
         ]);
       }
     }

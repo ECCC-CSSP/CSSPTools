@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
-import { WebBase } from 'src/app/models/generated/web/WebBase.model';
 import { WebCountry } from 'src/app/models/generated/web/WebCountry.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
@@ -11,11 +10,11 @@ import { StructureTVFileListService } from 'src/app/services/helpers/structure-t
 import { SortTVItemListService } from 'src/app/services/helpers/sort-tvitem-list.service';
 import { MapService } from 'src/app/services/map/map.service';
 import { CountrySubComponentEnum } from 'src/app/enums/generated/CountrySubComponentEnum';
-import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
-import { ComponentDataLoadedService } from '../helpers/component-data-loaded.service';
+import { GetLanguageEnum, LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
+import { ComponentDataLoadedService } from 'src/app/services/helpers/component-data-loaded.service';
 import { AppState } from 'src/app/models/AppState.model';
-import { AppLanguageService } from '../app-language.service';
-import { HistoryService } from '../helpers/history.service';
+import { AppLanguageService } from 'src/app/services/app-language.service';
+import { HistoryService } from 'src/app/services/helpers/history.service';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +23,7 @@ export class WebCountryService {
   private TVItemID: number;
   private DoOther: boolean;
   private sub: Subscription;
+  LangID: number = this.appStateService.AppState$?.getValue()?.Language == LanguageEnum.fr ? 1 : 0;
 
   constructor(private httpClient: HttpClient,
     private appStateService: AppStateService,
@@ -42,7 +42,7 @@ export class WebCountryService {
 
     this.sub ? this.sub.unsubscribe() : null;
 
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebCountry?.TVItemModel?.TVItem?.TVItemID == TVItemID) {
+    if (this.appLoadedService.AppLoaded$.getValue()?.WebCountry) {
       this.KeepWebCountry();
     }
     else {
@@ -54,15 +54,15 @@ export class WebCountryService {
     let languageEnum = GetLanguageEnum();
     this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
       WebCountry: {},
-      CountryProvinceList: [],
-      BreadCrumbCountryWebBaseList: [],
-      BreadCrumbWebBaseList: []
+      // CountryProvinceList: [],
+      // BreadCrumbCountryWebBaseList: [],
+      // BreadCrumbWebBaseList: []
     });
     this.appStateService.UpdateAppState(<AppState>{
-      Status: this.appLanguageService.AppLanguage.LoadingCountry[this.appStateService.AppState$?.getValue()?.Language],
+      Status: `${ this.appLanguageService.AppLanguage.Loading[this.LangID]} - ${ WebCountry }`,
       Working: true
     });
-    let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebCountry/${this.TVItemID}/1`;
+    let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebCountry/${this.TVItemID}`;
     return this.httpClient.get<WebCountry>(url).pipe(
       map((x: any) => {
         this.UpdateWebCountry(x);
@@ -87,32 +87,32 @@ export class WebCountryService {
   }
 
   private UpdateWebCountry(x: WebCountry) {
-    let CountryProvinceList: WebBase[] = [];
+    // let CountryProvinceList: WebBase[] = [];
 
-    // doing CountryProvinceList
-    if (!this.appStateService.AppState$?.getValue()?.InactVisible) {
-      CountryProvinceList = x?.TVItemProvinceList.filter((province) => { return province.TVItemModel.TVItem.IsActive == true });
-    }
-    else {
-      CountryProvinceList = x?.TVItemProvinceList;
-    }
+    // // doing CountryProvinceList
+    // if (!this.appStateService.AppState$?.getValue()?.InactVisible) {
+    //   CountryProvinceList = x?.TVItemProvinceList.filter((province) => { return province.TVItemModel.TVItem.IsActive == true });
+    // }
+    // else {
+    //   CountryProvinceList = x?.TVItemProvinceList;
+    // }
 
     this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
       WebCountry: x,
-      CountryProvinceList: this.sortTVItemListService.SortTVItemList(CountryProvinceList, x?.TVItemParentList),
-      CountryFileListList: this.structureTVFileListService.StructureTVFileList(x.TVItemModel),
-      EmailDistributionListContactLanguageList: x?.EmailDistributionListContactLanguageList,
-      EmailDistributionListContactList: x?.EmailDistributionListContactList,
-      EmailDistributionListLanguageList: x?.EmailDistributionListLanguageList,
-      EmailDistributionListList: x?.EmailDistributionListList,
-      BreadCrumbCountryWebBaseList: x?.TVItemParentList,
-      BreadCrumbWebBaseList: x?.TVItemParentList
+      // CountryProvinceList: this.sortTVItemListService.SortTVItemList(CountryProvinceList, x?.TVItemParentList),
+      // CountryFileListList: this.structureTVFileListService.StructureTVFileList(x.TVItemModel),
+      // EmailDistributionListContactLanguageList: x?.EmailDistributionListContactLanguageList,
+      // EmailDistributionListContactList: x?.EmailDistributionListContactList,
+      // EmailDistributionListLanguageList: x?.EmailDistributionListLanguageList,
+      // EmailDistributionListList: x?.EmailDistributionListList,
+      // BreadCrumbCountryWebBaseList: x?.TVItemParentList,
+      // BreadCrumbWebBaseList: x?.TVItemParentList
     });
 
-    this.historyService.AddHistory(this.appLoadedService.AppLoaded$.getValue()?.WebCountry?.TVItemModel);
+    this.historyService.AddHistory(this.appLoadedService.AppLoaded$.getValue()?.WebCountry?.TVItemStatMapModel);
 
     if (this.DoOther) {
-      if (this.componentDataLoadedService.DataLoadedCountry()) {
+      if (this.componentDataLoadedService.DataLoadedWebCountry()) {
         this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
       }
     }
@@ -120,48 +120,48 @@ export class WebCountryService {
       this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
     }
 
-    let webBaseCountry: WebBase[] = <WebBase[]>[
-      <WebBase>{ TVItemModel: this.appLoadedService.AppLoaded$.getValue().WebCountry.TVItemModel },
-    ];
+    // let webBaseCountry: WebBase[] = <WebBase[]>[
+    //   <WebBase>{ TVItemModel: this.appLoadedService.AppLoaded$.getValue().WebCountry.TVItemModel },
+    // ];
 
     if (this.appStateService.AppState$.getValue().GoogleJSLoaded) {
       if (this.appStateService.AppState$.getValue().CountrySubComponent == CountrySubComponentEnum.Provinces) {
         this.mapService.ClearMap();
         this.mapService.DrawObjects([
-          ...this.appLoadedService.AppLoaded$.getValue().CountryProvinceList,
-          ...webBaseCountry
+          ...this.appLoadedService.AppLoaded$.getValue().WebCountry.TVItemStatMapModelProvinceList,
+          ...[this.appLoadedService.AppLoaded$.getValue().WebCountry.TVItemStatMapModel]
         ]);
       }
 
       if (this.appStateService.AppState$.getValue().CountrySubComponent == CountrySubComponentEnum.Files) {
         this.mapService.ClearMap();
         this.mapService.DrawObjects([
-          ...this.appLoadedService.AppLoaded$.getValue().CountryProvinceList,
-          ...webBaseCountry
+          ...this.appLoadedService.AppLoaded$.getValue().WebCountry.TVItemStatMapModelProvinceList,
+          ...[this.appLoadedService.AppLoaded$.getValue().WebCountry.TVItemStatMapModel]
         ]);
       }
 
       if (this.appStateService.AppState$.getValue().CountrySubComponent == CountrySubComponentEnum.OpenDataNational) {
         this.mapService.ClearMap();
         this.mapService.DrawObjects([
-          ...this.appLoadedService.AppLoaded$.getValue().CountryProvinceList,
-          ...webBaseCountry
+          ...this.appLoadedService.AppLoaded$.getValue().WebCountry.TVItemStatMapModelProvinceList,
+          ...[this.appLoadedService.AppLoaded$.getValue().WebCountry.TVItemStatMapModel]
         ]);
       }
 
       if (this.appStateService.AppState$.getValue().CountrySubComponent == CountrySubComponentEnum.EmailDistributionList) {
         this.mapService.ClearMap();
         this.mapService.DrawObjects([
-          ...this.appLoadedService.AppLoaded$.getValue().CountryProvinceList,
-          ...webBaseCountry
+          ...this.appLoadedService.AppLoaded$.getValue().WebCountry.TVItemStatMapModelProvinceList,
+          ...[this.appLoadedService.AppLoaded$.getValue().WebCountry.TVItemStatMapModel]
         ]);
       }
 
       if (this.appStateService.AppState$.getValue().CountrySubComponent == CountrySubComponentEnum.RainExceedance) {
         this.mapService.ClearMap();
         this.mapService.DrawObjects([
-          ...this.appLoadedService.AppLoaded$.getValue().CountryProvinceList,
-          ...webBaseCountry
+          ...this.appLoadedService.AppLoaded$.getValue().WebCountry.TVItemStatMapModelProvinceList,
+          ...[this.appLoadedService.AppLoaded$.getValue().WebCountry.TVItemStatMapModel]
         ]);
       }
     }

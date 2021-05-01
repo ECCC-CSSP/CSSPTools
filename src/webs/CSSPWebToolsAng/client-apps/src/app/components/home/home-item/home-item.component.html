@@ -42,8 +42,8 @@
             </p>
             <p>&nbsp;</p>
             <p>
-                <span *ngFor="let admin of appLoadedService.AppLoaded$?.getValue()?.AdminContactList">
-                    &nbsp;&nbsp;&nbsp;&nbsp;<a href="mailto:{{ admin.LoginEmail }}">{{ admin.LoginEmail }}</a>
+                <span *ngFor="let admin of AdminContactList">
+                    &nbsp;&nbsp;&nbsp;&nbsp;<a href="mailto:{{ admin?.Contact?.LoginEmail }}">{{ admin?.Contact?.LoginEmail }}</a>
                 </span>
             </p>
             <p>&nbsp;</p>
@@ -82,8 +82,8 @@
             </p>
             <p>&nbsp;</p>
             <p>
-                <span *ngFor="let admin of appLoadedService.AppLoaded$?.getValue()?.AdminContactList">
-                    &nbsp;&nbsp;&nbsp;&nbsp;<a href="mailto:{{ admin.LoginEmail }}">{{ admin.LoginEmail }}</a>
+                <span *ngFor="let admin of AdminContactList">
+                    &nbsp;&nbsp;&nbsp;&nbsp;<a href="mailto:{{ admin?.Contact?.LoginEmail }}">{{ admin?.Contact?.LoginEmail }}</a>
                 </span>
             </p>
             <p>&nbsp;</p>

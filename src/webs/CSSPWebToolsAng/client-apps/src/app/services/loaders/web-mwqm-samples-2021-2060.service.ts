@@ -2,61 +2,59 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
+import { GetLanguageEnum, LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
 import { AppState } from 'src/app/models/AppState.model';
-import { WebDrogueRun } from 'src/app/models/generated/web/WebDrogueRun.model';
+import { WebMWQMSamples } from 'src/app/models/generated/web/WebMWQMSamples.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { ComponentDataLoadedService } from 'src/app/services/helpers/component-data-loaded.service';
-import { WebMWQMSampleService } from './web-mwqm-samples.service';
-import { WebTypeYearEnum } from 'src/app/enums/generated/WebTypeYearEnum';
 
 @Injectable({
     providedIn: 'root'
 })
-export class WebDrogueRunService {
+export class WebMWQMSamples2021_2060Service {
     private TVItemID: number;
     private DoOther: boolean;
     private sub: Subscription;
+    LangID: number = this.appStateService.AppState$?.getValue()?.Language == LanguageEnum.fr ? 1 : 0;
 
     constructor(private httpClient: HttpClient,
         private appStateService: AppStateService,
         private appLoadedService: AppLoadedService,
         private appLanguageService: AppLanguageService,
-        private webMWQMSampleService: WebMWQMSampleService,
         private componentDataLoadedService: ComponentDataLoadedService) {
     }
 
-    DoWebDrogueRun(TVItemID: number, DoOther: boolean) {
+    DoWebMWQMSamples2021_2060(TVItemID: number, DoOther: boolean) {
         this.TVItemID = TVItemID;
         this.DoOther = DoOther;
 
         this.sub ? this.sub.unsubscribe() : null;
 
-        if (this.appLoadedService.AppLoaded$.getValue()?.WebDrogueRun?.TVItemModel?.TVItem?.TVItemID == TVItemID) {
-            this.KeepWebDrogueRun();
+        if (this.appLoadedService.AppLoaded$.getValue()?.WebMWQMSamples2021_2060) {
+            this.KeepWebMWQMSamples2021_2060();
         }
         else {
-            this.sub = this.GetWebDrogueRun().subscribe();
+            this.sub = this.GetWebMWQMSamples2021_2060().subscribe();
         }
     }
 
-    private GetWebDrogueRun() {
+    private GetWebMWQMSamples2021_2060() {
         let languageEnum = GetLanguageEnum();
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebDrogueRun: {}, BreadCrumbWebBaseList: [] });
+        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebMWQMSamples2021_2060: {} });
         this.appStateService.UpdateAppState(<AppState>{
-            Status: this.appLanguageService.AppLanguage.LoadingSubsectorDrogueRun[this.appStateService.AppState$?.getValue()?.Language],
+            Status: `${ this.appLanguageService.AppLanguage.Loading[this.LangID]} - ${ WebMWQMSamples }`,
             Working: true
         });
-        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebDrogueRun/${this.TVItemID}/1`;
-        return this.httpClient.get<WebDrogueRun>(url).pipe(
+        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebMWQMSamples2021_2060/${this.TVItemID}`;
+        return this.httpClient.get<WebMWQMSamples>(url).pipe(
             map((x: any) => {
-                this.UpdateWebDrogueRun(x);
+                this.UpdateWebMWQMSamples2021_2060(x);
                 console.debug(x);
                 if (this.DoOther) {
-                    this.DoWebMWQMSample(WebTypeYearEnum.Year1980);
+                    //this.DoWebMWQMSamples2021_2060();
                 }
             }),
             catchError(e => of(e).pipe(map(e => {
@@ -66,28 +64,28 @@ export class WebDrogueRunService {
         );
     }
 
-    private DoWebMWQMSample(WebTypeYear: WebTypeYearEnum) {
-        this.webMWQMSampleService.DoWebMWQMSample(this.TVItemID, WebTypeYear, this.DoOther);
-    }
+    // private DoWebMWQMSamples2021_2060() {
+    //     this.webMWQMSamples2021_2060Service.DoWebMWQMSamples2021_2060(this.TVItemID);
+    // }
 
-    private KeepWebDrogueRun() {
-        this.UpdateWebDrogueRun(this.appLoadedService.AppLoaded$?.getValue()?.WebDrogueRun);
-        console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebDrogueRun);
+    private KeepWebMWQMSamples2021_2060() {
+        this.UpdateWebMWQMSamples2021_2060(this.appLoadedService.AppLoaded$?.getValue()?.WebMWQMSamples2021_2060);
+        console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebMWQMSamples2021_2060);
         if (this.DoOther) {
-            this.DoWebMWQMSample(WebTypeYearEnum.Year1980);
+            //this.DoWebMWQMSamples2021_2060();
         }
     }
 
-    private UpdateWebDrogueRun(x: WebDrogueRun) {
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebDrogueRun: x, BreadCrumbWebBaseList: x?.TVItemParentList, });
+    private UpdateWebMWQMSamples2021_2060(x: WebMWQMSamples) {
+        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebMWQMSamples2021_2060: x });
 
         if (this.DoOther) {
-            if (this.componentDataLoadedService.DataLoadedSubsector()) {
+            if (this.componentDataLoadedService.DataLoadedWebSubsector()) {
                 this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
             }
         }
         else {
-            if (this.componentDataLoadedService.DataLoadedDrogueRun()) {
+            if (this.componentDataLoadedService.DataLoadedWebMWQMSamples2021_2060()) {
                 this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
             }
         }

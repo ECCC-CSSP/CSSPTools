@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { MapInfoDrawTypeEnum } from 'src/app/enums/generated/MapInfoDrawTypeEnum';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
-import { WebBase } from 'src/app/models/generated/web/WebBase.model';
+import { TVItemStatMapModel } from 'src/app/models/generated/web/TVItemStatMapModel.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
-import { MapHelperService } from './map-helper.service';
+import { MapHelperService } from 'src/app/services/map/map-helper.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,11 +16,11 @@ export class MapPolygonsService {
     private mapHelperService: MapHelperService) {
   }
 
-  DrawPolygons(webBaseList: WebBase[]) {
+  DrawPolygons(tvItemStatMapModelList: TVItemStatMapModel[]) {
     let polygonList: google.maps.Polygon[] = [];
 
-    for (let webBase of webBaseList) {
-      for (let mapInfoModel of webBase.TVItemModel.MapInfoModelList) {
+    for (let tvItemStatMapModel of tvItemStatMapModelList) {
+      for (let mapInfoModel of tvItemStatMapModel.MapInfoModelList) {
         if (mapInfoModel.MapInfo?.MapInfoDrawType == MapInfoDrawTypeEnum.Polygon) {
 
           let polyPoints = new google.maps.MVCArray<google.maps.LatLng>();

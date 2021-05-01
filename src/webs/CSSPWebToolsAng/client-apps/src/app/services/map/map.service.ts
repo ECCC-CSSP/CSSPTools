@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { MapInfoDrawTypeEnum } from 'src/app/enums/generated/MapInfoDrawTypeEnum';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
 import { AppState } from 'src/app/models/AppState.model';
-import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
-import { WebBase } from 'src/app/models/generated/web/WebBase.model';
+import { TVItemStatMapModel } from 'src/app/models/generated/web/TVItemStatMapModel.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { MapMarkersService } from 'src/app/services/map/map-markers.service';
@@ -68,10 +67,10 @@ export class MapService {
     });
   }
 
-  DrawObjects(webBaseList: WebBase[]) {
-    this.mapMarkersService.DrawMarkers(webBaseList);
-    this.mapPolygonsService.DrawPolygons(webBaseList);
-    this.mapPolylinesService.DrawPolylines(webBaseList);
+  DrawObjects(tvItemStatMapModelList: TVItemStatMapModel[]) {
+    this.mapMarkersService.DrawMarkers(tvItemStatMapModelList);
+    this.mapPolygonsService.DrawPolygons(tvItemStatMapModelList);
+    this.mapPolylinesService.DrawPolylines(tvItemStatMapModelList);
     this.mapHelperService.FitBounds();
   }
 
@@ -110,7 +109,7 @@ export class MapService {
 
   }
 
-  ShowItem(tvItemModel: TVItemModel, event: Event) {
+  ShowItem(tvItemStatMapModel: TVItemStatMapModel, event: Event) {
     let length: number = this.appLoadedService.AppLoaded$.getValue().GoogleCrossPolylineListMVC.getLength();
     for (let i = 0; i < length; i++) {
       this.appLoadedService.AppLoaded$.getValue().GoogleCrossPolylineListMVC.getAt(i).setMap(null);
@@ -118,10 +117,10 @@ export class MapService {
 
     let CurrentPoint: google.maps.LatLng;
 
-    length = tvItemModel.MapInfoModelList.length;
+    length = tvItemStatMapModel.MapInfoModelList.length;
     for (let i = 0; i < length; i++) {
-      if (tvItemModel.MapInfoModelList[i].MapInfo.MapInfoDrawType == MapInfoDrawTypeEnum.Point) {
-        CurrentPoint = new google.maps.LatLng(tvItemModel.MapInfoModelList[i].MapInfoPointList[0].Lat, tvItemModel.MapInfoModelList[i].MapInfoPointList[0].Lng);
+      if (tvItemStatMapModel.MapInfoModelList[i].MapInfo.MapInfoDrawType == MapInfoDrawTypeEnum.Point) {
+        CurrentPoint = new google.maps.LatLng(tvItemStatMapModel.MapInfoModelList[i].MapInfoPointList[0].Lat, tvItemStatMapModel.MapInfoModelList[i].MapInfoPointList[0].Lng);
         break;
       }
     }

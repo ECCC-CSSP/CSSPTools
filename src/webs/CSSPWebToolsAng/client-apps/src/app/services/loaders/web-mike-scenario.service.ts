@@ -2,22 +2,23 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
+import { GetLanguageEnum, LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
 import { AppState } from 'src/app/models/AppState.model';
-import { WebMikeScenario } from 'src/app/models/generated/web/WebMikeScenario.model';
+import { WebMikeScenarios } from 'src/app/models/generated/web/WebMikeScenarios.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
-import { AppLanguageService } from '../app-language.service';
-import { ComponentDataLoadedService } from '../helpers/component-data-loaded.service';
+import { AppLanguageService } from 'src/app/services/app-language.service';
+import { ComponentDataLoadedService } from 'src/app/services/helpers/component-data-loaded.service';
 
 @Injectable({
     providedIn: 'root'
 })
-export class WebMikeScenarioService {
+export class WebMikeScenariosService {
     private TVItemID: number;
     private DoOther: boolean;
     private sub: Subscription;
+    LangID: number = this.appStateService.AppState$?.getValue()?.Language == LanguageEnum.fr ? 1 : 0;
 
     constructor(private httpClient: HttpClient,
         private appStateService: AppStateService,
@@ -26,39 +27,39 @@ export class WebMikeScenarioService {
         private componentDataLoadedService: ComponentDataLoadedService) {
     }
 
-    DoWebMikeScenario(TVItemID: number, DoOther: boolean) {
+    DoWebMikeScenarios(TVItemID: number, DoOther: boolean) {
         this.TVItemID = TVItemID;
         this.DoOther = DoOther;
     
         this.sub ? this.sub.unsubscribe() : null;
     
-        if (this.appLoadedService.AppLoaded$.getValue()?.WebMikeScenario?.TVItemModel?.TVItem?.TVItemID == TVItemID) {
-          this.KeepWebMikeScenario();
+        if (this.appLoadedService.AppLoaded$.getValue()?.WebMikeScenarios) {
+          this.KeepWebMikeScenarios();
         }
         else {
-          this.sub = this.GetWebMikeScenario().subscribe();
+          this.sub = this.GetWebMikeScenarios().subscribe();
         }
       }
     
-    private GetWebMikeScenario() {
+    private GetWebMikeScenarios() {
         let languageEnum = GetLanguageEnum();
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
             WebMikeScenario: {},
-            MikeBoundaryConditionModelMeshList: [],
-            MikeBoundaryConditionModelWebTideList: [],
-            MikeScenario: {},
-            MikeSourceModelList: [],
-            BreadCrumbMikeScenarioWebBaseList: [],
-            BreadCrumbWebBaseList: []
+            // MikeBoundaryConditionModelMeshList: [],
+            // MikeBoundaryConditionModelWebTideList: [],
+            // MikeScenario: {},
+            // MikeSourceModelList: [],
+            // BreadCrumbMikeScenarioWebBaseList: [],
+            // BreadCrumbWebBaseList: []
         });
         this.appStateService.UpdateAppState(<AppState>{
-            Status: this.appLanguageService.AppLanguage.LoadingMIKEScenario[this.appStateService.AppState$?.getValue()?.Language],
+            Status: `${ this.appLanguageService.AppLanguage.Loading[this.LangID]} - ${ WebMikeScenarios }`,
             Working: true
         });
-        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebMikeScenario/${this.TVItemID}/1`;
-        return this.httpClient.get<WebMikeScenario>(url).pipe(
+        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebMikeScenarios/${this.TVItemID}`;
+        return this.httpClient.get<WebMikeScenarios>(url).pipe(
             map((x: any) => {
-                this.UpdateWebMikeScenario(x);
+                this.UpdateWebMikeScenarios(x);
                 console.debug(x);
                 if (this.DoOther) {
                     // nothing else to add in the chain
@@ -71,27 +72,27 @@ export class WebMikeScenarioService {
         );
     }
 
-    private KeepWebMikeScenario() {
-        this.UpdateWebMikeScenario(this.appLoadedService.AppLoaded$?.getValue()?.WebMikeScenario);
-        console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebMikeScenario);
+    private KeepWebMikeScenarios() {
+        this.UpdateWebMikeScenarios(this.appLoadedService.AppLoaded$?.getValue()?.WebMikeScenarios);
+        console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebMikeScenarios);
         if (this.DoOther) {
             // nothing else to add in the chain
         }
     }
 
-    private UpdateWebMikeScenario(x: WebMikeScenario) {
+    private UpdateWebMikeScenarios(x: WebMikeScenarios) {
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
             WebMikeScenario: x,
-            MikeBoundaryConditionModelMeshList: x?.MikeBoundaryConditionModelMeshList,
-            MikeBoundaryConditionModelWebTideList: x?.MikeBoundaryConditionModelWebTideList,
-            MikeScenario: x?.MikeScenario,
-            MikeSourceModelList: x?.MikeSourceModelList,
-            BreadCrumbMikeScenarioWebBaseList: x?.TVItemParentList,
-            BreadCrumbWebBaseList: x?.TVItemParentList
+            // MikeBoundaryConditionModelMeshList: x?.MikeBoundaryConditionModelMeshList,
+            // MikeBoundaryConditionModelWebTideList: x?.MikeBoundaryConditionModelWebTideList,
+            // MikeScenario: x?.MikeScenario,
+            // MikeSourceModelList: x?.MikeSourceModelList,
+            // BreadCrumbMikeScenarioWebBaseList: x?.TVItemParentList,
+            // BreadCrumbWebBaseList: x?.TVItemParentList
         });
 
         if (this.DoOther) {
-            if (this.componentDataLoadedService.DataLoadedMIKEScenario()) {
+            if (this.componentDataLoadedService.DataLoadedWebMikeScenarios()) {
                 this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
             }
         }

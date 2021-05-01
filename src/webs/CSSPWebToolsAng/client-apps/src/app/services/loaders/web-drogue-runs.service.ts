@@ -5,62 +5,58 @@ import { catchError, map } from 'rxjs/operators';
 import { GetLanguageEnum, LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
 import { AppState } from 'src/app/models/AppState.model';
-import { WebPolSourceSites } from 'src/app/models/generated/web/WebPolSourceSites.model';
+import { WebDrogueRuns} from 'src/app/models/generated/web/WebDrogueRuns.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { ComponentDataLoadedService } from 'src/app/services/helpers/component-data-loaded.service';
-import { HistoryService } from 'src/app/services/helpers/history.service';
-import { WebDrogueRunsService } from 'src/app/services/loaders/web-drogue-runs.service';
+import { WebMWQMSamples1980_2020Service } from 'src/app/services/loaders/web-mwqm-samples-1980-2020.service';
 
 @Injectable({
     providedIn: 'root'
 })
-export class WebPolSourceSitesService {
+export class WebDrogueRunsService {
     private TVItemID: number;
     private DoOther: boolean;
     private sub: Subscription;
     LangID: number = this.appStateService.AppState$?.getValue()?.Language == LanguageEnum.fr ? 1 : 0;
-  
+
     constructor(private httpClient: HttpClient,
         private appStateService: AppStateService,
         private appLoadedService: AppLoadedService,
         private appLanguageService: AppLanguageService,
-        private webDrogueRunsService: WebDrogueRunsService,
-        private componentDataLoadedService: ComponentDataLoadedService,
-        private historyService: HistoryService) {
+        private webMWQMSamples1980_2020Service: WebMWQMSamples1980_2020Service,
+        private componentDataLoadedService: ComponentDataLoadedService) {
     }
 
-    DoWebPolSourceSites(TVItemID: number, DoOther: boolean) {
+    DoWebDrogueRuns(TVItemID: number, DoOther: boolean) {
         this.TVItemID = TVItemID;
         this.DoOther = DoOther;
-    
+
         this.sub ? this.sub.unsubscribe() : null;
-    
-        if (this.appLoadedService.AppLoaded$.getValue()?.WebPolSourceSites) {
-          this.KeepWebPolSourceSites();
+
+        if (this.appLoadedService.AppLoaded$.getValue()?.WebDrogueRuns) {
+            this.KeepWebDrogueRuns();
         }
         else {
-          this.sub = this.GetWebPolSourceSites().subscribe();
+            this.sub = this.GetWebDrogueRuns().subscribe();
         }
-      }
-    
-    private GetWebPolSourceSites() {
+    }
+
+    private GetWebDrogueRuns() {
         let languageEnum = GetLanguageEnum();
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
-            WebPolSourceSites: {},
-        });
+        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebDrogueRuns: {} });
         this.appStateService.UpdateAppState(<AppState>{
-            Status: `${ this.appLanguageService.AppLanguage.Loading[this.LangID]} - ${ WebPolSourceSites }`,
+            Status: `${ this.appLanguageService.AppLanguage.Loading[this.LangID]} - ${ WebDrogueRuns }`,
             Working: true
         });
-        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebPolSourceSites/${this.TVItemID}`;
-        return this.httpClient.get<WebPolSourceSites>(url).pipe(
+        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebDrogueRuns/${this.TVItemID}`;
+        return this.httpClient.get<WebDrogueRuns>(url).pipe(
             map((x: any) => {
-                this.UpdateWebPolSourceSites(x);
+                this.UpdateWebDrogueRuns(x);
                 console.debug(x);
                 if (this.DoOther) {
-                    this.DoWebDrogueRuns();
+                    this.DoWebMWQMSamples1980_2020();
                 }
             }),
             catchError(e => of(e).pipe(map(e => {
@@ -70,24 +66,20 @@ export class WebPolSourceSitesService {
         );
     }
 
-    private DoWebDrogueRuns() {
-        this.webDrogueRunsService.DoWebDrogueRuns(this.TVItemID, this.DoOther);
+    private DoWebMWQMSamples1980_2020() {
+        this.webMWQMSamples1980_2020Service.DoWebMWQMSamples1980_2020(this.TVItemID, true);
     }
 
-    private KeepWebPolSourceSites() {
-        this.UpdateWebPolSourceSites(this.appLoadedService.AppLoaded$?.getValue()?.WebPolSourceSites);
-        console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebPolSourceSites);
+    private KeepWebDrogueRuns() {
+        this.UpdateWebDrogueRuns(this.appLoadedService.AppLoaded$?.getValue()?.WebDrogueRuns);
+        console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebDrogueRuns);
         if (this.DoOther) {
-            this.DoWebDrogueRuns();
+            this.DoWebMWQMSamples1980_2020();
         }
     }
 
-    private UpdateWebPolSourceSites(x: WebPolSourceSites) {
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
-            WebPolSourceSites: x,
-        });
-
-        this.historyService.AddHistory(this.appLoadedService.AppLoaded$.getValue()?.WebPolSourceSites?.TVItemStatMapModel);
+    private UpdateWebDrogueRuns(x: WebDrogueRuns) {
+        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebDrogueRuns: x });
 
         if (this.DoOther) {
             if (this.componentDataLoadedService.DataLoadedWebSubsector()) {
@@ -95,7 +87,7 @@ export class WebPolSourceSitesService {
             }
         }
         else {
-            if (this.componentDataLoadedService.DataLoadedWebPolSourceSites()) {
+            if (this.componentDataLoadedService.DataLoadedWebDrogueRuns()) {
                 this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
             }
         }

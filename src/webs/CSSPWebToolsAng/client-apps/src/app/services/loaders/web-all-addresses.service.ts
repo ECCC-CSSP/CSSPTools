@@ -5,56 +5,57 @@ import { catchError, map } from 'rxjs/operators';
 import { GetLanguageEnum, LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
 import { AppState } from 'src/app/models/AppState.model';
-import { WebAllHelpDocs } from 'src/app/models/generated/web/WebAllHelpDocs.model';
+import { WebAllAddresses } from 'src/app/models/generated/web/WebAllAddresses.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { ComponentDataLoadedService } from 'src/app/services/helpers/component-data-loaded.service';
-import { WebAllMunicipalitiesService } from 'src/app/services/loaders/web-all-municipalities.service';
+import { WebAllContactsService } from 'src/app/services/loaders/web-all-contacts.service';
+
 
 @Injectable({
     providedIn: 'root'
 })
-export class WebAllHelpDocsService {
+export class WebAllAddressesService {
     private DoOther: boolean;
     private sub: Subscription;
     LangID: number = this.appStateService.AppState$?.getValue()?.Language == LanguageEnum.fr ? 1 : 0;
-
+  
     constructor(private httpClient: HttpClient,
         private appStateService: AppStateService,
         private appLoadedService: AppLoadedService,
         private appLanguageService: AppLanguageService,
-        private webAllMunicipalitiesServices: WebAllMunicipalitiesService,
+        private webAllContactsService: WebAllContactsService,
         private componentDataLoadedService: ComponentDataLoadedService) {
     }
 
-    DoWebAllHelpDocs(DoOther: boolean) {
+    DoWebAllAddresses(DoOther: boolean) {
         this.DoOther = DoOther;
     
         this.sub ? this.sub.unsubscribe() : null;
-    
-        if (this.appLoadedService.AppLoaded$.getValue()?.WebAllHelpDocs?.HelpDocList?.length > 0) {
-          this.KeepWebAllHelpDocs();
+
+        if (this.appLoadedService.AppLoaded$.getValue()?.WebAllAddresses) {
+          this.KeepWebAllAddresses();
         }
         else {
-          this.sub = this.GetWebAllHelpDocs().subscribe();
+          this.sub = this.GetWebAllAddresses().subscribe();
         }
       }
     
-    private GetWebAllHelpDocs() {
+    private GetWebAllAddresses() {
         let languageEnum = GetLanguageEnum();
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebAllHelpDocs: {} });
+        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebAllAddresses: {} });
         this.appStateService.UpdateAppState(<AppState>{
-            Status: `${ this.appLanguageService.AppLanguage.Loading[this.LangID]} - ${ WebAllHelpDocs }`,
+            Status: `${ this.appLanguageService.AppLanguage.Loading[this.LangID]} - ${ WebAllAddresses }`,
             Working: true
         });
-        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebAllHelpDocs/0/1`;
-        return this.httpClient.get<WebAllHelpDocs>(url).pipe(
-            map((x: any) => {
-                this.UpdateWebAllHelpDocs(x);
+        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebAllAddresses`;
+        return this.httpClient.get<WebAllAddresses>(url).pipe(
+            map((x: WebAllAddresses) => {
+                this.UpdateWebAllAddresses(x);
                 console.debug(x);
                 if (this.DoOther) {
-                    this.DoWebAllMunicipalities();
+                    this.DoWebAllContacts();
                 }
             }),
             catchError(e => of(e).pipe(map(e => {
@@ -64,20 +65,20 @@ export class WebAllHelpDocsService {
         );
     }
 
-    private DoWebAllMunicipalities() {
-        this.webAllMunicipalitiesServices.DoWebAllMunicipalities(this.DoOther);
+    private DoWebAllContacts() {
+        this.webAllContactsService.DoWebAllContacts(this.DoOther);
     }
-    
-    private KeepWebAllHelpDocs() {
-        this.UpdateWebAllHelpDocs(this.appLoadedService.AppLoaded$?.getValue()?.WebAllHelpDocs);
-        console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebAllHelpDocs);
+
+    private KeepWebAllAddresses() {
+        this.UpdateWebAllAddresses(this.appLoadedService.AppLoaded$?.getValue()?.WebAllAddresses);
+        console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebAllAddresses);
         if (this.DoOther) {
-            this.DoWebAllMunicipalities();
+            this.DoWebAllContacts();
         }
     }
 
-    private UpdateWebAllHelpDocs(x: WebAllHelpDocs) {
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebAllHelpDocs: x, });
+    private UpdateWebAllAddresses(x: WebAllAddresses) {
+        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebAllAddresses: x });
 
         if (this.DoOther) {
             if (this.componentDataLoadedService.DataLoadedWebRoot()) {
@@ -85,9 +86,10 @@ export class WebAllHelpDocsService {
             }
         }
         else {
-            if (this.componentDataLoadedService.DataLoadedWebAllHelpDocs()) {
+            if (this.componentDataLoadedService.DataLoadedWebAllAddresses()) {
                 this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
             }
+
         }
     }
 }

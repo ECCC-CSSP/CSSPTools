@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
-import { WebBase } from 'src/app/models/generated/web/WebBase.model';
 import { WebSubsector } from 'src/app/models/generated/web/WebSubsector.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
@@ -11,13 +10,12 @@ import { StructureTVFileListService } from 'src/app/services/helpers/structure-t
 import { SortTVItemListService } from 'src/app/services/helpers/sort-tvitem-list.service';
 import { MapService } from 'src/app/services/map/map.service';
 import { SubsectorSubComponentEnum } from 'src/app/enums/generated/SubsectorSubComponentEnum';
-import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
-import { ComponentDataLoadedService } from '../helpers/component-data-loaded.service';
-import { WebTypeYearEnum } from 'src/app/enums/generated/WebTypeYearEnum';
+import { GetLanguageEnum, LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
+import { ComponentDataLoadedService } from 'src/app/services/helpers/component-data-loaded.service';
 import { AppState } from 'src/app/models/AppState.model';
-import { AppLanguageService } from '../app-language.service';
-import { WebMWQMSiteService } from './web-mwqm-sites.service';
-import { HistoryService } from '../helpers/history.service';
+import { AppLanguageService } from 'src/app/services/app-language.service';
+import { HistoryService } from 'src/app/services/helpers/history.service';
+import { WebMWQMSitesService } from 'src/app/services/loaders/web-mwqm-sites.service';
 
 @Injectable({
     providedIn: 'root'
@@ -26,6 +24,7 @@ export class WebSubsectorService {
     private TVItemID: number;
     private DoOther: boolean;
     private sub: Subscription;
+    LangID: number = this.appStateService.AppState$?.getValue()?.Language == LanguageEnum.fr ? 1 : 0;
 
     constructor(private httpClient: HttpClient,
         private appStateService: AppStateService,
@@ -35,7 +34,7 @@ export class WebSubsectorService {
         private structureTVFileListService: StructureTVFileListService,
         private mapService: MapService,
         private componentDataLoadedService: ComponentDataLoadedService,
-        private webMWQMSiteService: WebMWQMSiteService,
+        private webMWQMSitesService: WebMWQMSitesService,
         private historyService: HistoryService) {
     }
 
@@ -45,7 +44,7 @@ export class WebSubsectorService {
 
         this.sub ? this.sub.unsubscribe() : null;
 
-        if (this.appLoadedService.AppLoaded$.getValue()?.WebSubsector?.TVItemModel?.TVItem?.TVItemID == TVItemID) {
+        if (this.appLoadedService.AppLoaded$.getValue()?.WebSubsector) {
             this.KeepWebSubsector();
         }
         else {
@@ -57,28 +56,18 @@ export class WebSubsectorService {
         let languageEnum = GetLanguageEnum();
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
             WebSubsector: {},
-            SubsectorMWQMSiteList: [],
-            SubsectorMWQMRunList: [],
-            SubsectorPolSourceSiteList: [],
-            LabSheetModelList: [],
-            MWQMAnalysisReportParameterList: [],
-            MWQMSubsector: {},
-            MWQMSubsectorLanguageList: [],
-            UseOfSiteList: [],
-            BreadCrumbSubsectorWebBaseList: [],
-            BreadCrumbWebBaseList: []
         });
         this.appStateService.UpdateAppState(<AppState>{
-            Status: this.appLanguageService.AppLanguage.LoadingSubsector[this.appStateService.AppState$?.getValue()?.Language],
+            Status: `${this.appLanguageService.AppLanguage.Loading[this.LangID]} - ${ WebSubsector }`,
             Working: true
         });
-        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebSubsector/${this.TVItemID}/1`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebSubsector/${this.TVItemID}`;
         return this.httpClient.get<WebSubsector>(url).pipe(
             map((x: any) => {
                 this.UpdateWebSubsector(x);
                 console.debug(x);
                 if (this.DoOther) {
-                    this.DoWebMWQMSite();
+                    this.DoWebMWQMSites();
                 }
             }),
             catchError(e => of(e).pipe(map(e => {
@@ -88,66 +77,66 @@ export class WebSubsectorService {
         );
     }
 
-    private DoWebMWQMSite() {
-        this.webMWQMSiteService.DoWebMWQMSite(this.TVItemID, this.DoOther);
+    private DoWebMWQMSites() {
+        this.webMWQMSitesService.DoWebMWQMSites(this.TVItemID, this.DoOther);
     }
 
     private KeepWebSubsector() {
         this.UpdateWebSubsector(this.appLoadedService.AppLoaded$?.getValue()?.WebSubsector);
         console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebSubsector);
         if (this.DoOther) {
-            this.DoWebMWQMSite();
+            this.DoWebMWQMSites();
         }
     }
 
     private UpdateWebSubsector(x: WebSubsector) {
-        let SubsectorMWQMSiteList: WebBase[] = [];
-        let SubsectorMWQMRunList: WebBase[] = [];
-        let SubsectorPolSourceSiteList: WebBase[] = [];
+        // let SubsectorMWQMSiteList: WebBase[] = [];
+        // let SubsectorMWQMRunList: WebBase[] = [];
+        // let SubsectorPolSourceSiteList: WebBase[] = [];
 
-        // doing MWQMSiteList
-        if (!this.appStateService.AppState$?.getValue()?.InactVisible) {
-            SubsectorMWQMSiteList = x?.TVItemMWQMSiteList.filter((mwqmsite) => { return mwqmsite.TVItemModel.TVItem.IsActive == true });
-        }
-        else {
-            SubsectorMWQMSiteList = x?.TVItemMWQMSiteList;
-        }
+        // // doing MWQMSiteList
+        // if (!this.appStateService.AppState$?.getValue()?.InactVisible) {
+        //     SubsectorMWQMSiteList = x?.TVItemMWQMSiteList.filter((mwqmsite) => { return mwqmsite.TVItemModel.TVItem.IsActive == true });
+        // }
+        // else {
+        //     SubsectorMWQMSiteList = x?.TVItemMWQMSiteList;
+        // }
 
-        // doing MWQMRunList
-        if (!this.appStateService.AppState$?.getValue()?.InactVisible) {
-            SubsectorMWQMRunList = x?.TVItemMWQMRunList.filter((mwqmrun) => { return mwqmrun.TVItemModel.TVItem.IsActive == true });
-        }
-        else {
-            SubsectorMWQMRunList = x?.TVItemMWQMRunList;
-        }
+        // // doing MWQMRunList
+        // if (!this.appStateService.AppState$?.getValue()?.InactVisible) {
+        //     SubsectorMWQMRunList = x?.TVItemMWQMRunList.filter((mwqmrun) => { return mwqmrun.TVItemModel.TVItem.IsActive == true });
+        // }
+        // else {
+        //     SubsectorMWQMRunList = x?.TVItemMWQMRunList;
+        // }
 
-        // doing PollutionSourceSiteList
-        if (!this.appStateService.AppState$?.getValue()?.InactVisible) {
-            SubsectorPolSourceSiteList = x?.TVItemPolSourceSiteList.filter((polsourcesite) => { return polsourcesite.TVItemModel.TVItem.IsActive == true });
-        }
-        else {
-            SubsectorPolSourceSiteList = x?.TVItemPolSourceSiteList;
-        }
+        // // doing PollutionSourceSiteList
+        // if (!this.appStateService.AppState$?.getValue()?.InactVisible) {
+        //     SubsectorPolSourceSiteList = x?.TVItemPolSourceSiteList.filter((polsourcesite) => { return polsourcesite.TVItemModel.TVItem.IsActive == true });
+        // }
+        // else {
+        //     SubsectorPolSourceSiteList = x?.TVItemPolSourceSiteList;
+        // }
 
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
             WebSubsector: x,
-            SubsectorMWQMSiteList: this.sortTVItemListService.SortTVItemList(SubsectorMWQMSiteList, x?.TVItemParentList),
-            SubsectorMWQMRunList: this.sortTVItemListService.SortTVItemList(SubsectorMWQMRunList, x?.TVItemParentList),
-            SubsectorPolSourceSiteList: this.sortTVItemListService.SortTVItemList(SubsectorPolSourceSiteList, x?.TVItemParentList),
-            SubsectorFileListList: this.structureTVFileListService.StructureTVFileList(x.TVItemModel),
-            LabSheetModelList: x?.LabSheetModelList,
-            MWQMAnalysisReportParameterList: x?.MWQMAnalysisReportParameterList,
-            MWQMSubsector: x?.MWQMSubsector,
-            MWQMSubsectorLanguageList: x?.MWQMSubsectorLanguageList,
-            UseOfSiteList: x?.UseOfSiteList,
-            BreadCrumbSubsectorWebBaseList: x?.TVItemParentList,
-            BreadCrumbWebBaseList: x?.TVItemParentList
+            // SubsectorMWQMSiteList: this.sortTVItemListService.SortTVItemList(SubsectorMWQMSiteList, x?.TVItemParentList),
+            // SubsectorMWQMRunList: this.sortTVItemListService.SortTVItemList(SubsectorMWQMRunList, x?.TVItemParentList),
+            // SubsectorPolSourceSiteList: this.sortTVItemListService.SortTVItemList(SubsectorPolSourceSiteList, x?.TVItemParentList),
+            // SubsectorFileListList: this.structureTVFileListService.StructureTVFileList(x.TVItemModel),
+            // LabSheetModelList: x?.LabSheetModelList,
+            // MWQMAnalysisReportParameterList: x?.MWQMAnalysisReportParameterList,
+            // MWQMSubsector: x?.MWQMSubsector,
+            // MWQMSubsectorLanguageList: x?.MWQMSubsectorLanguageList,
+            // UseOfSiteList: x?.UseOfSiteList,
+            // BreadCrumbSubsectorWebBaseList: x?.TVItemParentList,
+            // BreadCrumbWebBaseList: x?.TVItemParentList
         });
 
-        this.historyService.AddHistory(this.appLoadedService.AppLoaded$.getValue()?.WebSubsector?.TVItemModel);
+        this.historyService.AddHistory(this.appLoadedService.AppLoaded$.getValue()?.WebSubsector?.TVItemStatMapModel);
 
         if (this.DoOther) {
-            if (this.componentDataLoadedService.DataLoadedSubsector()) {
+            if (this.componentDataLoadedService.DataLoadedWebSubsector()) {
                 this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
             }
         }
@@ -155,61 +144,64 @@ export class WebSubsectorService {
             this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
         }
 
-        let webBaseSubsector: WebBase[] = <WebBase[]>[
-            <WebBase>{ TVItemModel: this.appLoadedService.AppLoaded$.getValue().WebSubsector.TVItemModel },
-        ];
+        // let webBaseSubsector: WebBase[] = <WebBase[]>[
+        //     <WebBase>{ TVItemModel: this.appLoadedService.AppLoaded$.getValue().WebSubsector.TVItemModel },
+        // ];
 
         if (this.appStateService.AppState$.getValue().GoogleJSLoaded) {
             if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.MWQMSites) {
                 this.mapService.ClearMap();
                 this.mapService.DrawObjects([
-                    ...this.appLoadedService.AppLoaded$.getValue().SubsectorMWQMSiteList,
-                    ...webBaseSubsector,
+                    //...this.appLoadedService.AppLoaded$.getValue().WebMWQMSites.MWQMSiteModelList,
+                    ...[this.appLoadedService.AppLoaded$.getValue().WebSubsector.TVItemStatMapModel],
                 ]);
             }
 
             if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.Analysis) {
                 this.mapService.ClearMap();
                 this.mapService.DrawObjects([
-                    ...this.appLoadedService.AppLoaded$.getValue().SubsectorMWQMSiteList,
-                    ...webBaseSubsector
+                    //...this.appLoadedService.AppLoaded$.getValue().WebMWQMSites.MWQMSiteModelList,
+                    ...[this.appLoadedService.AppLoaded$.getValue().WebSubsector.TVItemStatMapModel],
                 ]);
             }
 
             if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.MWQMRuns) {
                 this.mapService.ClearMap();
                 this.mapService.DrawObjects([
-                    ...this.appLoadedService.AppLoaded$.getValue().SubsectorMWQMRunList,
-                    ...webBaseSubsector
+                    //...this.appLoadedService.AppLoaded$.getValue().WebMWQMRuns.MWQMRunModelList,
+                    ...[this.appLoadedService.AppLoaded$.getValue().WebSubsector.TVItemStatMapModel],
                 ]);
             }
 
             if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.PollutionSourceSites) {
                 this.mapService.ClearMap();
                 this.mapService.DrawObjects([
-                    ...this.appLoadedService.AppLoaded$.getValue().SubsectorPolSourceSiteList,
-                    ...webBaseSubsector
+                    //...this.appLoadedService.AppLoaded$.getValue().WebPolSourceSites.PolSourceSiteModelList,
+                    ...[this.appLoadedService.AppLoaded$.getValue().WebSubsector.TVItemStatMapModel],
                 ]);
             }
 
             if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.Files) {
                 this.mapService.ClearMap();
                 this.mapService.DrawObjects([
-                    ...webBaseSubsector
+                    //...this.appLoadedService.AppLoaded$.getValue().WebMWQMSites.MWQMSiteModelList,
+                    ...[this.appLoadedService.AppLoaded$.getValue().WebSubsector.TVItemStatMapModel],
                 ]);
             }
 
             if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.SubsectorTools) {
                 this.mapService.ClearMap();
                 this.mapService.DrawObjects([
-                    ...webBaseSubsector
+                    //...this.appLoadedService.AppLoaded$.getValue().WebMWQMSites.MWQMSiteModelList,
+                    ...[this.appLoadedService.AppLoaded$.getValue().WebSubsector.TVItemStatMapModel],
                 ]);
             }
 
             if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.LogBook) {
                 this.mapService.ClearMap();
                 this.mapService.DrawObjects([
-                    ...webBaseSubsector
+                    //...this.appLoadedService.AppLoaded$.getValue().WebMWQMSites.MWQMSiteModelList,
+                    ...[this.appLoadedService.AppLoaded$.getValue().WebSubsector.TVItemStatMapModel],
                 ]);
             }
         }

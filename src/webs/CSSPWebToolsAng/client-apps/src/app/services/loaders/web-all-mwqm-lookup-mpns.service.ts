@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
 import { AppState } from 'src/app/models/AppState.model';
 import { WebAllMWQMLookupMPNs } from 'src/app/models/generated/web/WebAllMWQMLookupMPNs.model';
@@ -17,6 +18,7 @@ import { WebAllPolSourceGroupingsService } from './web-all-pol-source-groupings.
 export class WebAllMWQMLookupMPNsService {
     private DoOther: boolean;
     private sub: Subscription;
+    LangID: number = this.appStateService.AppState$?.getValue()?.Language == LanguageEnum.fr ? 1 : 0;
  
     constructor(private httpClient: HttpClient,
         private appStateService: AppStateService,
@@ -31,7 +33,7 @@ export class WebAllMWQMLookupMPNsService {
     
         this.sub ? this.sub.unsubscribe() : null;
     
-        if (this.appLoadedService.AppLoaded$.getValue()?.WebAllMWQMLookupMPNs?.MWQMLookupMPNList?.length > 0) {
+        if (this.appLoadedService.AppLoaded$.getValue()?.WebAllMWQMLookupMPNs) {
           this.KeepWebAllMWQMLookupMPNs();
         }
         else {
@@ -42,10 +44,10 @@ export class WebAllMWQMLookupMPNsService {
     private GetWebAllMWQMLookupMPNs() {
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebAllMWQMLookupMPNs: {} });
         this.appStateService.UpdateAppState(<AppState>{
-            Status: this.appLanguageService.AppLanguage.LoadingMWQMLookupMPN[this.appStateService.AppState$?.getValue()?.Language],
+            Status: `${ this.appLanguageService.AppLanguage.Loading[this.LangID]} - ${ WebAllMWQMLookupMPNs }`,
             Working: true
         });
-        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appStateService.AppState$.getValue().Language}-CA/Read/WebAllMWQMLookupMPNs/0/1`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appStateService.AppState$.getValue().Language}-CA/Read/WebAllMWQMLookupMPNs`;
         return this.httpClient.get<WebAllMWQMLookupMPNs>(url).pipe(
             map((x: any) => {
                 this.UpdateWebAllMWQMLookupMPNs(x);
@@ -77,12 +79,12 @@ export class WebAllMWQMLookupMPNsService {
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebAllMWQMLookupMPNs: x });
 
         if (this.DoOther) {
-            if (this.componentDataLoadedService.DataLoadedRoot()) {
+            if (this.componentDataLoadedService.DataLoadedWebRoot()) {
                 this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
             }
         }
         else {
-            if (this.componentDataLoadedService.DataLoadedMWQMLookupMPN()) {
+            if (this.componentDataLoadedService.DataLoadedWebAllMWQMLookupMPNs()) {
                 this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
             }
         }

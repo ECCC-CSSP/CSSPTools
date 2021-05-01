@@ -28,11 +28,11 @@ namespace CreateGzFileServices
 
                 if (dbLocal != null)
                 {
-                    await DoStoreLocal<WebAllTVItemLanguages>(webAllTVItemLanguages, $"{ WebTypeEnum.WebAllTVItemLanguages1980_2020 }.gz");
+                    await DoStoreLocal<WebAllTVItemLanguages>(webAllTVItemLanguages, $"{ WebTypeEnum.WebAllTVItemLanguages2021_2060 }.gz");
                 }
                 else
                 {
-                    await DoStore<WebAllTVItemLanguages>(webAllTVItemLanguages, $"{ WebTypeEnum.WebAllTVItemLanguages1980_2020 }.gz");
+                    await DoStore<WebAllTVItemLanguages>(webAllTVItemLanguages, $"{ WebTypeEnum.WebAllTVItemLanguages2021_2060 }.gz");
                 }
             }
             catch (Exception ex)

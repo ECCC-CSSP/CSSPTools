@@ -9,7 +9,29 @@ export class ComponentDataLoadedService {
   constructor(private appLoadedService: AppLoadedService) {
   }
 
-  DataLoadedAllCountries(): boolean {
+  DataLoadedWebAllAddresses(): boolean {
+    let AllTrue: boolean = true;
+    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllAddresses === undefined
+      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllAddresses).length === 0
+        && this.appLoadedService.AppLoaded$.getValue()?.WebAllAddresses.constructor === Object)) {
+      AllTrue = false;
+    }
+
+    return AllTrue;
+  }
+
+  DataLoadedWebAllContacts(): boolean {
+    let AllTrue: boolean = true;
+    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllContacts === undefined
+      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllContacts).length === 0
+        && this.appLoadedService.AppLoaded$.getValue()?.WebAllContacts.constructor === Object)) {
+      AllTrue = false;
+    }
+
+    return AllTrue;
+  }
+
+  DataLoadedWebAllCountries(): boolean {
     let AllTrue: boolean = true;
     if (this.appLoadedService.AppLoaded$.getValue()?.WebAllCountries === undefined
       || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllCountries).length === 0
@@ -20,7 +42,29 @@ export class ComponentDataLoadedService {
     return AllTrue;
   }
 
-  DataLoadedAllMunicipalities(): boolean {
+  DataLoadedWebAllEmails(): boolean {
+    let AllTrue: boolean = true;
+    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllEmails === undefined
+      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllEmails).length === 0
+        && this.appLoadedService.AppLoaded$.getValue()?.WebAllEmails.constructor === Object)) {
+      AllTrue = false;
+    }
+
+    return AllTrue;
+  }
+
+  DataLoadedWebAllHelpDocs(): boolean {
+    let AllTrue: boolean = true;
+    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllHelpDocs === undefined
+      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllHelpDocs).length === 0
+        && this.appLoadedService.AppLoaded$.getValue()?.WebAllHelpDocs.constructor === Object)) {
+      AllTrue = false;
+    }
+
+    return AllTrue;
+  }
+
+  DataLoadedWebAllMunicipalities(): boolean {
     let AllTrue: boolean = true;
     if (this.appLoadedService.AppLoaded$.getValue()?.WebAllMunicipalities === undefined
       || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllMunicipalities).length === 0
@@ -31,7 +75,40 @@ export class ComponentDataLoadedService {
     return AllTrue;
   }
 
-  DataLoadedAllProvinces(): boolean {
+  DataLoadedWebAllMWQMLookupMPNs(): boolean {
+    let AllTrue: boolean = true;
+    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllMWQMLookupMPNs === undefined
+      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllMWQMLookupMPNs).length === 0
+        && this.appLoadedService.AppLoaded$.getValue()?.WebAllMWQMLookupMPNs.constructor === Object)) {
+      AllTrue = false;
+    }
+
+    return AllTrue;
+  }
+
+  DataLoadedWebPolSourceGroupings(): boolean {
+    let AllTrue: boolean = true;
+    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceGroupings === undefined
+      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceGroupings).length === 0
+        && this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceGroupings.constructor === Object)) {
+      AllTrue = false;
+    }
+
+    return AllTrue;
+  }
+
+  DataLoadedWebPolSourceSiteEffectTerms(): boolean {
+    let AllTrue: boolean = true;
+    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceSiteEffectTerms === undefined
+      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceSiteEffectTerms).length === 0
+        && this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceSiteEffectTerms.constructor === Object)) {
+      AllTrue = false;
+    }
+
+    return AllTrue;
+  }
+
+  DataLoadedWebAllProvinces(): boolean {
     let AllTrue: boolean = true;
     if (this.appLoadedService.AppLoaded$.getValue()?.WebAllProvinces === undefined
       || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllProvinces).length === 0
@@ -42,7 +119,40 @@ export class ComponentDataLoadedService {
     return AllTrue;
   }
 
-  DataLoadedArea(): boolean {
+  DataLoadedWebAllReportTypes(): boolean {
+    let AllTrue: boolean = true;
+    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllReportTypes === undefined
+      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllReportTypes).length === 0
+        && this.appLoadedService.AppLoaded$.getValue()?.WebAllReportTypes.constructor === Object)) {
+      AllTrue = false;
+    }
+
+    return AllTrue;
+  }
+
+  DataLoadedWebAllTels(): boolean {
+    let AllTrue: boolean = true;
+    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllTels === undefined
+      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllTels).length === 0
+        && this.appLoadedService.AppLoaded$.getValue()?.WebAllTels.constructor === Object)) {
+      AllTrue = false;
+    }
+
+    return AllTrue;
+  }
+
+  DataLoadedWebAllTideLocations(): boolean {
+    let AllTrue: boolean = true;
+    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllTideLocations === undefined
+      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllTideLocations).length === 0
+        && this.appLoadedService.AppLoaded$.getValue()?.WebAllTideLocations.constructor === Object)) {
+      AllTrue = false;
+    }
+
+    return AllTrue;
+  }
+
+  DataLoadedWebArea(): boolean {
     let AllTrue: boolean = true;
     if (this.appLoadedService.AppLoaded$.getValue()?.WebArea === undefined
       || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebArea).length === 0
@@ -53,40 +163,18 @@ export class ComponentDataLoadedService {
     return AllTrue;
   }
 
-  DataLoadedClimateData(): boolean {
+  DataLoadedWebClimateSites(): boolean {
     let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebClimateDataValue === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebClimateDataValue).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebClimateDataValue.constructor === Object)) {
+    if (this.appLoadedService.AppLoaded$.getValue()?.WebClimateSites === undefined
+      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebClimateSites).length === 0
+        && this.appLoadedService.AppLoaded$.getValue()?.WebClimateSites.constructor === Object)) {
       AllTrue = false;
     }
 
     return AllTrue;
   }
 
-  DataLoadedClimateSite(): boolean {
-    let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebClimateSite === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebClimateSite).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebClimateSite.constructor === Object)) {
-      AllTrue = false;
-    }
-
-    return AllTrue;
-  }
-
-  DataLoadedContact(): boolean {
-    let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllContacts === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllContacts).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebAllContacts.constructor === Object)) {
-      AllTrue = false;
-    }
-
-    return AllTrue;
-  }
-
-  DataLoadedCountry(): boolean {
+  DataLoadedWebCountry(): boolean {
     let AllTrue: boolean = true;
     if (this.appLoadedService.AppLoaded$.getValue()?.WebCountry === undefined
       || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebCountry).length === 0
@@ -97,18 +185,18 @@ export class ComponentDataLoadedService {
     return AllTrue;
   }
 
-  DataLoadedDrogueRun(): boolean {
+  DataLoadedWebDrogueRuns(): boolean {
     let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebDrogueRun === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebDrogueRun).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebDrogueRun.constructor === Object)) {
+    if (this.appLoadedService.AppLoaded$.getValue()?.WebDrogueRuns === undefined
+      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebDrogueRuns).length === 0
+        && this.appLoadedService.AppLoaded$.getValue()?.WebDrogueRuns.constructor === Object)) {
       AllTrue = false;
     }
 
     return AllTrue;
   }
 
-  DataLoadedHelpDoc(): boolean {
+  DataLoadedWebHelpDocs(): boolean {
     let AllTrue: boolean = true;
     if (this.appLoadedService.AppLoaded$.getValue()?.WebAllHelpDocs === undefined
       || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllHelpDocs).length === 0
@@ -119,51 +207,40 @@ export class ComponentDataLoadedService {
     return AllTrue;
   }
 
-  DataLoadedHydrometricData(): boolean {
+  DataLoadedWebHydrometricSites(): boolean {
     let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebHydrometricDataValue === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebHydrometricDataValue).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebHydrometricDataValue.constructor === Object)) {
+    if (this.appLoadedService.AppLoaded$.getValue()?.WebHydrometricSites === undefined
+      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebHydrometricSites).length === 0
+        && this.appLoadedService.AppLoaded$.getValue()?.WebHydrometricSites.constructor === Object)) {
       AllTrue = false;
     }
 
     return AllTrue;
   }
 
-  DataLoadedHydrometricSite(): boolean {
+  DataLoadedWebLabSheets(): boolean {
     let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebHydrometricSite === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebHydrometricSite).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebHydrometricSite.constructor === Object)) {
+    if (this.appLoadedService.AppLoaded$.getValue()?.WebLabSheets === undefined
+      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebLabSheets).length === 0
+        && this.appLoadedService.AppLoaded$.getValue()?.WebLabSheets.constructor === Object)) {
       AllTrue = false;
     }
 
     return AllTrue;
   }
 
-  DataLoadedMIKEScenario(): boolean {
+  DataLoadedWebMikeScenarios(): boolean {
     let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebMikeScenario === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebMikeScenario).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebMikeScenario.constructor === Object)) {
+    if (this.appLoadedService.AppLoaded$.getValue()?.WebMikeScenarios === undefined
+      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebMikeScenarios).length === 0
+        && this.appLoadedService.AppLoaded$.getValue()?.WebMikeScenarios.constructor === Object)) {
       AllTrue = false;
     }
 
     return AllTrue;
   }
 
-  DataLoadedMunicipalities(): boolean {
-    let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebMunicipalities === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebMunicipalities).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebMunicipalities.constructor === Object)) {
-      AllTrue = false;
-    }
-
-    return AllTrue;
-  }
-
-  DataLoadedMunicipality(): boolean {
+  DataLoadedWebMunicipality(): boolean {
     let AllTrue: boolean = true;
     if (this.appLoadedService.AppLoaded$.getValue()?.WebMunicipality === undefined
       || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebMunicipality).length === 0
@@ -174,316 +251,135 @@ export class ComponentDataLoadedService {
     return AllTrue;
   }
 
-  DataLoadedMWQMLookupMPN(): boolean {
+  DataLoadedWebMWQMRuns(): boolean {
     let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllMWQMLookupMPNs === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllMWQMLookupMPNs).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebAllMWQMLookupMPNs.constructor === Object)) {
+    if (this.appLoadedService.AppLoaded$.getValue()?.WebMWQMRuns === undefined
+      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebMWQMRuns).length === 0
+        && this.appLoadedService.AppLoaded$.getValue()?.WebMWQMRuns.constructor === Object)) {
       AllTrue = false;
     }
 
     return AllTrue;
   }
 
-  DataLoadedMWQMSample(): boolean {
+  DataLoadedWebMWQMSamples1980_2020(): boolean {
     let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue().WebMWQMSample1980 === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue().WebMWQMSample1980).length === 0
-        && this.appLoadedService.AppLoaded$.getValue().WebMWQMSample1980.constructor === Object)) {
-      AllTrue = false;
-    }
-    if (this.appLoadedService.AppLoaded$.getValue().WebMWQMSample1990 === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue().WebMWQMSample1990).length === 0
-        && this.appLoadedService.AppLoaded$.getValue().WebMWQMSample1990.constructor === Object)) {
-      AllTrue = false;
-    }
-    if (this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2000 === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2000).length === 0
-        && this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2000.constructor === Object)) {
-      AllTrue = false;
-    }
-    if (this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2010 === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2010).length === 0
-        && this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2010.constructor === Object)) {
-      AllTrue = false;
-    }
-    if (this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2020 === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2020).length === 0
-        && this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2020.constructor === Object)) {
-      AllTrue = false;
-    }
-    if (this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2030 === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2030).length === 0
-        && this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2030.constructor === Object)) {
-      AllTrue = false;
-    }
-    if (this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2040 === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2040).length === 0
-        && this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2040.constructor === Object)) {
-      AllTrue = false;
-    }
-    if (this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2050 === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2050).length === 0
-        && this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2050.constructor === Object)) {
+    if (this.appLoadedService.AppLoaded$.getValue().WebMWQMSamples1980_2020 === undefined
+      || (Object.keys(this.appLoadedService.AppLoaded$.getValue().WebMWQMSamples1980_2020).length === 0
+        && this.appLoadedService.AppLoaded$.getValue().WebMWQMSamples1980_2020.constructor === Object)) {
       AllTrue = false;
     }
 
     return AllTrue
   }
 
-  DataLoadedMWQMSample1980To1990(): boolean {
+  DataLoadedWebMWQMSamples2021_2060(): boolean {
     let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue().WebMWQMSample1980 === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue().WebMWQMSample1980).length === 0
-        && this.appLoadedService.AppLoaded$.getValue().WebMWQMSample1980.constructor === Object)) {
+    if (this.appLoadedService.AppLoaded$.getValue().WebMWQMSamples2021_2060 === undefined
+      || (Object.keys(this.appLoadedService.AppLoaded$.getValue().WebMWQMSamples2021_2060).length === 0
+        && this.appLoadedService.AppLoaded$.getValue().WebMWQMSamples2021_2060.constructor === Object)) {
+      AllTrue = false;
+    }
+
+    return AllTrue
+  }
+
+  DataLoadedWebMWQMSites(): boolean {
+    let AllTrue: boolean = true;
+    if (this.appLoadedService.AppLoaded$.getValue()?.WebMWQMSites === undefined
+      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebMWQMSites).length === 0
+        && this.appLoadedService.AppLoaded$.getValue()?.WebMWQMSites.constructor === Object)) {
       AllTrue = false;
     }
 
     return AllTrue;
   }
 
-  DataLoadedMWQMSample1990To2000(): boolean {
+  DataLoadedWebPolSourceSites(): boolean {
     let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue().WebMWQMSample1990 === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue().WebMWQMSample1990).length === 0
-        && this.appLoadedService.AppLoaded$.getValue().WebMWQMSample1990.constructor === Object)) {
+    if (this.appLoadedService.AppLoaded$.getValue()?.WebPolSourceSites === undefined
+      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebPolSourceSites).length === 0
+        && this.appLoadedService.AppLoaded$.getValue()?.WebPolSourceSites.constructor === Object)) {
       AllTrue = false;
     }
 
     return AllTrue;
   }
 
-  DataLoadedMWQMSample2000To2010(): boolean {
-    let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2000 === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2000).length === 0
-        && this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2000.constructor === Object)) {
-      AllTrue = false;
-    }
 
-    return AllTrue;
-  }
-
-  DataLoadedMWQMSample2010To2020(): boolean {
-    let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2010 === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2010).length === 0
-        && this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2010.constructor === Object)) {
-      AllTrue = false;
-    }
-
-    return AllTrue;
-  }
-
-  DataLoadedMWQMSample2020To2030(): boolean {
-    let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2020 === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2020).length === 0
-        && this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2020.constructor === Object)) {
-      AllTrue = false;
-    }
-
-    return AllTrue;
-  }
-
-  DataLoadedMWQMSample2030To2040(): boolean {
-    let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2030 === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2030).length === 0
-        && this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2030.constructor === Object)) {
-      AllTrue = false;
-    }
-
-    return AllTrue;
-  }
-
-  DataLoadedMWQMSample2040To2050(): boolean {
-    let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2040 === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2040).length === 0
-        && this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2040.constructor === Object)) {
-      AllTrue = false;
-    }
-
-    return AllTrue;
-  }
-
-  DataLoadedMWQMSample2050To2060(): boolean {
-    let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2050 === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2050).length === 0
-        && this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2050.constructor === Object)) {
-      AllTrue = false;
-    }
-
-    return AllTrue;
-  }
-
-  DataLoadedMWQMRun(): boolean {
-    let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebMWQMRun === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebMWQMRun).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebMWQMRun.constructor === Object)) {
-      AllTrue = false;
-    }
-
-    return AllTrue;
-  }
-
-  DataLoadedMWQMSite(): boolean {
-    let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebMWQMSite === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebMWQMSite).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebMWQMSite.constructor === Object)) {
-      AllTrue = false;
-    }
-
-    return AllTrue;
-  }
-
-  DataLoadedPolSourceSite(): boolean {
-    let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebPolSourceSite === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebPolSourceSite).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebPolSourceSite.constructor === Object)) {
-      AllTrue = false;
-    }
-
-    return AllTrue;
-  }
-
-  DataLoadedPolSourceGrouping(): boolean {
-    let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceGroupings === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceGroupings).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceGroupings.constructor === Object)) {
-      AllTrue = false;
-    }
-
-    return AllTrue;
-  }
-
-  DataLoadedPolSourceSiteEffectTerm(): boolean {
-    let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceSiteEffectTerms === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceSiteEffectTerms).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceSiteEffectTerms.constructor === Object)) {
-      AllTrue = false;
-    }
-
-    return AllTrue;
-  }
-
-  DataLoadedProvince(): boolean {
+  DataLoadedWebProvince(): boolean {
     let AllTrue: boolean = true;
     if (this.appLoadedService.AppLoaded$.getValue()?.WebProvince === undefined
       || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebProvince).length === 0
         && this.appLoadedService.AppLoaded$.getValue()?.WebProvince.constructor === Object)) {
       AllTrue = false;
     }
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebMunicipalities === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebMunicipalities).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebMunicipalities.constructor === Object)) {
-      AllTrue = false;
-    }
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebClimateSite === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebClimateSite).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebClimateSite.constructor === Object)) {
-      AllTrue = false;
-    }
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebHydrometricSite === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebHydrometricSite).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebHydrometricSite.constructor === Object)) {
-      AllTrue = false;
-    }
 
     return AllTrue;
   }
 
-  DataLoadedReportType(): boolean {
-    let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllReportTypes === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllReportTypes).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebAllReportTypes.constructor === Object)) {
-      AllTrue = false;
-    }
-
-    return AllTrue;
-  }
-
-  DataLoadedRoot(): boolean {
+  DataLoadedWebRoot(): boolean {
     let AllTrue: boolean = true;
     if (this.appLoadedService.AppLoaded$.getValue()?.WebRoot === undefined
       || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebRoot).length === 0
         && this.appLoadedService.AppLoaded$.getValue()?.WebRoot.constructor === Object)) {
       AllTrue = false;
     }
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllContacts === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllContacts).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebAllContacts.constructor === Object)) {
-      AllTrue = false;
-    }
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllCountries === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllCountries).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebAllCountries.constructor === Object)) {
-      AllTrue = false;
-    }
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllProvinces === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllProvinces).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebAllProvinces.constructor === Object)) {
-      AllTrue = false;
-    }
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllMunicipalities === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllMunicipalities).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebAllMunicipalities.constructor === Object)) {
-      AllTrue = false;
-    }
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllHelpDocs === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllHelpDocs).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebAllHelpDocs.constructor === Object)) {
-      AllTrue = false;
-    }
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllMWQMLookupMPNs === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllMWQMLookupMPNs).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebAllMWQMLookupMPNs.constructor === Object)) {
-      AllTrue = false;
-    }
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceGroupings === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceGroupings).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceGroupings.constructor === Object)) {
-      AllTrue = false;
-    }
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceSiteEffectTerms === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceSiteEffectTerms).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceSiteEffectTerms.constructor === Object)) {
-      AllTrue == false;
-    }
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllReportTypes === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllReportTypes).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebAllReportTypes.constructor === Object)) {
-      AllTrue = false;
-    }
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllTideLocations === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllTideLocations).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebAllTideLocations.constructor === Object)) {
-      AllTrue == false;
-    }
+    // if (this.appLoadedService.AppLoaded$.getValue()?.WebAllContacts === undefined
+    //   || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllContacts).length === 0
+    //     && this.appLoadedService.AppLoaded$.getValue()?.WebAllContacts.constructor === Object)) {
+    //   AllTrue = false;
+    // }
+    // if (this.appLoadedService.AppLoaded$.getValue()?.WebAllCountries === undefined
+    //   || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllCountries).length === 0
+    //     && this.appLoadedService.AppLoaded$.getValue()?.WebAllCountries.constructor === Object)) {
+    //   AllTrue = false;
+    // }
+    // if (this.appLoadedService.AppLoaded$.getValue()?.WebAllProvinces === undefined
+    //   || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllProvinces).length === 0
+    //     && this.appLoadedService.AppLoaded$.getValue()?.WebAllProvinces.constructor === Object)) {
+    //   AllTrue = false;
+    // }
+    // if (this.appLoadedService.AppLoaded$.getValue()?.WebAllMunicipalities === undefined
+    //   || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllMunicipalities).length === 0
+    //     && this.appLoadedService.AppLoaded$.getValue()?.WebAllMunicipalities.constructor === Object)) {
+    //   AllTrue = false;
+    // }
+    // if (this.appLoadedService.AppLoaded$.getValue()?.WebAllHelpDocs === undefined
+    //   || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllHelpDocs).length === 0
+    //     && this.appLoadedService.AppLoaded$.getValue()?.WebAllHelpDocs.constructor === Object)) {
+    //   AllTrue = false;
+    // }
+    // if (this.appLoadedService.AppLoaded$.getValue()?.WebAllMWQMLookupMPNs === undefined
+    //   || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllMWQMLookupMPNs).length === 0
+    //     && this.appLoadedService.AppLoaded$.getValue()?.WebAllMWQMLookupMPNs.constructor === Object)) {
+    //   AllTrue = false;
+    // }
+    // if (this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceGroupings === undefined
+    //   || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceGroupings).length === 0
+    //     && this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceGroupings.constructor === Object)) {
+    //   AllTrue = false;
+    // }
+    // if (this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceSiteEffectTerms === undefined
+    //   || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceSiteEffectTerms).length === 0
+    //     && this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceSiteEffectTerms.constructor === Object)) {
+    //   AllTrue == false;
+    // }
+    // if (this.appLoadedService.AppLoaded$.getValue()?.WebAllReportTypes === undefined
+    //   || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllReportTypes).length === 0
+    //     && this.appLoadedService.AppLoaded$.getValue()?.WebAllReportTypes.constructor === Object)) {
+    //   AllTrue = false;
+    // }
+    // if (this.appLoadedService.AppLoaded$.getValue()?.WebAllTideLocations === undefined
+    //   || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllTideLocations).length === 0
+    //     && this.appLoadedService.AppLoaded$.getValue()?.WebAllTideLocations.constructor === Object)) {
+    //   AllTrue == false;
+    // }
 
     return AllTrue;
   }
 
-  DataLoadedSamplingPlan(): boolean {
-    let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebSamplingPlan === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebSamplingPlan).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebSamplingPlan.constructor === Object)) {
-      AllTrue = false;
-    }
-
-    return AllTrue;
-  }
-
-  DataLoadedSector(): boolean {
+  DataLoadedWebSector(): boolean {
     let AllTrue: boolean = true;
     if (this.appLoadedService.AppLoaded$.getValue()?.WebSector === undefined
       || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebSector).length === 0
@@ -494,82 +390,42 @@ export class ComponentDataLoadedService {
     return AllTrue;
   }
 
-  DataLoadedSubsector(): boolean {
+  DataLoadedWebSubsector(): boolean {
     let AllTrue: boolean = true;
     if (this.appLoadedService.AppLoaded$.getValue()?.WebSubsector === undefined
       || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebSubsector).length === 0
         && this.appLoadedService.AppLoaded$.getValue()?.WebSubsector.constructor === Object)) {
       AllTrue = false;
     }
-    if (this.appLoadedService.AppLoaded$.getValue().WebMWQMSite === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue().WebMWQMSite).length === 0
-        && this.appLoadedService.AppLoaded$.getValue().WebMWQMSite.constructor === Object)) {
-      AllTrue = false;
-    }
-    if (this.appLoadedService.AppLoaded$.getValue().WebMWQMRun === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue().WebMWQMRun).length === 0
-        && this.appLoadedService.AppLoaded$.getValue().WebMWQMRun.constructor === Object)) {
-      AllTrue = false;
-    }
-    if (this.appLoadedService.AppLoaded$.getValue().WebPolSourceSite === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue().WebPolSourceSite).length === 0
-        && this.appLoadedService.AppLoaded$.getValue().WebPolSourceSite.constructor === Object)) {
-      AllTrue = false;
-    }
-    if (this.appLoadedService.AppLoaded$.getValue().WebDrogueRun === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue().WebDrogueRun).length === 0
-        && this.appLoadedService.AppLoaded$.getValue().WebDrogueRun.constructor === Object)) {
-      AllTrue == false;
-    }
-    if (this.appLoadedService.AppLoaded$.getValue().WebMWQMSample1980 === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue().WebMWQMSample1980).length === 0
-        && this.appLoadedService.AppLoaded$.getValue().WebMWQMSample1980.constructor === Object)) {
-      AllTrue = false;
-    }
-    if (this.appLoadedService.AppLoaded$.getValue().WebMWQMSample1990 === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue().WebMWQMSample1990).length === 0
-        && this.appLoadedService.AppLoaded$.getValue().WebMWQMSample1990.constructor === Object)) {
-      AllTrue = false;
-    }
-    if (this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2000 === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2000).length === 0
-        && this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2000.constructor === Object)) {
-      AllTrue = false;
-    }
-    if (this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2010 === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2010).length === 0
-        && this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2010.constructor === Object)) {
-      AllTrue = false;
-    }
-    if (this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2020 === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2020).length === 0
-        && this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2020.constructor === Object)) {
-      AllTrue = false;
-    }
-    if (this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2030 === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2030).length === 0
-        && this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2030.constructor === Object)) {
-      AllTrue = false;
-    }
-    if (this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2040 === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2040).length === 0
-        && this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2040.constructor === Object)) {
-      AllTrue = false;
-    }
-    if (this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2050 === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2050).length === 0
-        && this.appLoadedService.AppLoaded$.getValue().WebMWQMSample2050.constructor === Object)) {
-      AllTrue = false;
-    }
+    // if (this.appLoadedService.AppLoaded$.getValue().WebMWQMSite === undefined
+    //   || (Object.keys(this.appLoadedService.AppLoaded$.getValue().WebMWQMSite).length === 0
+    //     && this.appLoadedService.AppLoaded$.getValue().WebMWQMSite.constructor === Object)) {
+    //   AllTrue = false;
+    // }
+    // if (this.appLoadedService.AppLoaded$.getValue().WebMWQMRun === undefined
+    //   || (Object.keys(this.appLoadedService.AppLoaded$.getValue().WebMWQMRun).length === 0
+    //     && this.appLoadedService.AppLoaded$.getValue().WebMWQMRun.constructor === Object)) {
+    //   AllTrue = false;
+    // }
+    // if (this.appLoadedService.AppLoaded$.getValue().WebPolSourceSite === undefined
+    //   || (Object.keys(this.appLoadedService.AppLoaded$.getValue().WebPolSourceSite).length === 0
+    //     && this.appLoadedService.AppLoaded$.getValue().WebPolSourceSite.constructor === Object)) {
+    //   AllTrue = false;
+    // }
+    // if (this.appLoadedService.AppLoaded$.getValue().WebDrogueRun === undefined
+    //   || (Object.keys(this.appLoadedService.AppLoaded$.getValue().WebDrogueRun).length === 0
+    //     && this.appLoadedService.AppLoaded$.getValue().WebDrogueRun.constructor === Object)) {
+    //   AllTrue == false;
+    // }
 
     return AllTrue;
   }
 
-  DataLoadedTideLocation(): boolean {
+  DataLoadedWebTideSites(): boolean {
     let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllTideLocations === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllTideLocations).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebAllTideLocations.constructor === Object)) {
+    if (this.appLoadedService.AppLoaded$.getValue()?.WebTideSites === undefined
+      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebTideSites).length === 0
+        && this.appLoadedService.AppLoaded$.getValue()?.WebTideSites.constructor === Object)) {
       AllTrue = false;
     }
 

@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
-import { WebBase } from 'src/app/models/generated/web/WebBase.model';
 import { WebSector } from 'src/app/models/generated/web/WebSector.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
@@ -11,11 +10,11 @@ import { StructureTVFileListService } from 'src/app/services/helpers/structure-t
 import { SortTVItemListService } from 'src/app/services/helpers/sort-tvitem-list.service';
 import { MapService } from 'src/app/services/map/map.service';
 import { SectorSubComponentEnum } from 'src/app/enums/generated/SectorSubComponentEnum';
-import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
-import { ComponentDataLoadedService } from '../helpers/component-data-loaded.service';
+import { GetLanguageEnum, LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
+import { ComponentDataLoadedService } from 'src/app/services/helpers/component-data-loaded.service';
 import { AppState } from 'src/app/models/AppState.model';
-import { AppLanguageService } from '../app-language.service';
-import { HistoryService } from '../helpers/history.service';
+import { AppLanguageService } from 'src/app/services/app-language.service';
+import { HistoryService } from 'src/app/services/helpers/history.service';
 
 
 @Injectable({
@@ -25,6 +24,7 @@ export class WebSectorService {
   private TVItemID: number;
   private DoOther: boolean;
   private sub: Subscription;
+  LangID: number = this.appStateService.AppState$?.getValue()?.Language == LanguageEnum.fr ? 1 : 0;
 
   constructor(private httpClient: HttpClient,
     private appStateService: AppStateService,
@@ -43,7 +43,7 @@ export class WebSectorService {
 
     this.sub ? this.sub.unsubscribe() : null;
 
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebSector?.TVItemModel?.TVItem?.TVItemID == TVItemID) {
+    if (this.appLoadedService.AppLoaded$.getValue()?.WebSector) {
       this.KeepWebSector();
     }
     else {
@@ -55,13 +55,9 @@ export class WebSectorService {
     let languageEnum = GetLanguageEnum();
     this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
       WebSector: {},
-      SectorSubsectorList: [],
-      //SectorMIKEScenarioList: [],
-      BreadCrumbSectorWebBaseList: [],
-      BreadCrumbWebBaseList: []
     });
     this.appStateService.UpdateAppState(<AppState>{
-      Status: this.appLanguageService.AppLanguage.LoadingSector[this.appStateService.AppState$?.getValue()?.Language],
+      Status: `${this.appLanguageService.AppLanguage.Loading[this.LangID]} - ${ WebSector }`,
       Working: true
     });
     let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebSector/${this.TVItemID}/1`;
@@ -89,16 +85,16 @@ export class WebSectorService {
   }
 
   private UpdateWebSector(x: WebSector) {
-    let SectorSubsectorList: WebBase[] = [];
-    let SectorMIKEScenarioList: WebBase[] = [];
+    // let SectorSubsectorList: WebBase[] = [];
+    // let SectorMIKEScenarioList: WebBase[] = [];
 
-    // doing SectorSubsectorList
-    if (!this.appStateService.AppState$?.getValue()?.InactVisible) {
-      SectorSubsectorList = x?.TVItemSubsectorList.filter((subsector) => { return subsector.TVItemModel.TVItem.IsActive == true });
-    }
-    else {
-      SectorSubsectorList = x?.TVItemSubsectorList;
-    }
+    // // doing SectorSubsectorList
+    // if (!this.appStateService.AppState$?.getValue()?.InactVisible) {
+    //   SectorSubsectorList = x?.TVItemSubsectorList.filter((subsector) => { return subsector.TVItemModel.TVItem.IsActive == true });
+    // }
+    // else {
+    //   SectorSubsectorList = x?.TVItemSubsectorList;
+    // }
 
     // // doing SectorMIKEScenarioList
     // if (!this.appStateService.AppState$?.getValue()?.InactVisible) {
@@ -110,17 +106,17 @@ export class WebSectorService {
 
     this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
       WebSector: x,
-      SectorSubsectorList: this.sortTVItemListService.SortTVItemList(SectorSubsectorList, x?.TVItemParentList),
-      //SectorMIKEScenarioList: this.sortTVItemListService.SortTVItemList(SectorMIKEScenarioList, x?.TVItemParentList),
-      SectorFileListList: this.structureTVFileListService.StructureTVFileList(x.TVItemModel),
-      BreadCrumbSectorWebBaseList: x?.TVItemParentList,
-      BreadCrumbWebBaseList: x?.TVItemParentList
+      // SectorSubsectorList: this.sortTVItemListService.SortTVItemList(SectorSubsectorList, x?.TVItemParentList),
+      // //SectorMIKEScenarioList: this.sortTVItemListService.SortTVItemList(SectorMIKEScenarioList, x?.TVItemParentList),
+      // SectorFileListList: this.structureTVFileListService.StructureTVFileList(x.TVItemModel),
+      // BreadCrumbSectorWebBaseList: x?.TVItemParentList,
+      // BreadCrumbWebBaseList: x?.TVItemParentList
     });
 
-    this.historyService.AddHistory(this.appLoadedService.AppLoaded$.getValue()?.WebSector?.TVItemModel);
+    this.historyService.AddHistory(this.appLoadedService.AppLoaded$.getValue()?.WebSector?.TVItemStatMapModel);
 
     if (this.DoOther) {
-      if (this.componentDataLoadedService.DataLoadedSector()) {
+      if (this.componentDataLoadedService.DataLoadedWebSector()) {
         this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
       }
     }
@@ -128,25 +124,24 @@ export class WebSectorService {
       this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
     }
 
-    let webBaseSector: WebBase[] = <WebBase[]>[
-      <WebBase>{ TVItemModel: this.appLoadedService.AppLoaded$.getValue().WebSector.TVItemModel },
-    ];
+    // let webBaseSector: WebBase[] = <WebBase[]>[
+    //   <WebBase>{ TVItemModel: this.appLoadedService.AppLoaded$.getValue().WebSector.TVItemModel },
+    // ];
 
     if (this.appStateService.AppState$.getValue().GoogleJSLoaded) {
       if (this.appStateService.AppState$.getValue().SectorSubComponent == SectorSubComponentEnum.Subsectors) {
         this.mapService.ClearMap();
         this.mapService.DrawObjects([
-          ...this.appLoadedService.AppLoaded$.getValue().SectorSubsectorList,
-          ...webBaseSector
+          ...this.appLoadedService.AppLoaded$.getValue().WebSector.TVItemStatMapModelSubsectorList,
+          ...[this.appLoadedService.AppLoaded$.getValue().WebSector.TVItemStatMapModel]
         ]);
       }
 
       if (this.appStateService.AppState$.getValue().SectorSubComponent == SectorSubComponentEnum.MIKEScenarios) {
         this.mapService.ClearMap();
         this.mapService.DrawObjects([
-          ...this.appLoadedService.AppLoaded$.getValue().SectorSubsectorList,
-          ...webBaseSector,
-          //...this.appLoadedService.AppLoaded$.getValue().SectorMIKEScenarioList
+          ...this.appLoadedService.AppLoaded$.getValue().WebSector.TVItemStatMapModelSubsectorList,
+          ...[this.appLoadedService.AppLoaded$.getValue().WebSector.TVItemStatMapModel]
         ]);
       }
     }

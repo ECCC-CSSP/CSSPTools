@@ -5,33 +5,33 @@ import { AppLoaded } from 'src/app/models/AppLoaded.model';
 import { AppState } from 'src/app/models/AppState.model';
 import { MapInfoModel } from 'src/app/models/generated/web/MapInfoModel.model';
 import { StatMWQMSite } from 'src/app/models/generated/web/StatMWQMSite.model';
-import { WebBase } from 'src/app/models/generated/web/WebBase.model';
+import { TVItemStatMapModel } from 'src/app/models/generated/web/TVItemStatMapModel.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
-import { MapHelperService } from './map-helper.service';
+import { MapHelperService } from 'src/app/services/map/map-helper.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MapMarkersService {
 
-  webBaseList: WebBase[];
+  tvItemStatMapModelList: TVItemStatMapModel[];
 
   constructor(private appStateService: AppStateService,
     private appLoadedService: AppLoadedService,
     private mapHelperService: MapHelperService) {
   }
 
-  DrawMarkers(webBaseList: WebBase[]) {
-    this.webBaseList = webBaseList;
+  DrawMarkers(tvItemStatMapModelList: TVItemStatMapModel[]) {
+    this.tvItemStatMapModelList = tvItemStatMapModelList;
 
     let map: google.maps.Map = this.appLoadedService.AppLoaded$.getValue().Map;
 
     let markerList: google.maps.Marker[] = [];
 
     let count: number = 0;
-    for (let webBase of webBaseList) {
-      for (let mapInfoModel of webBase.TVItemModel.MapInfoModelList) {
+    for (let tvItemStatMapModel of tvItemStatMapModelList) {
+      for (let mapInfoModel of tvItemStatMapModel.MapInfoModelList) {
         if (mapInfoModel.MapInfo?.MapInfoDrawType == MapInfoDrawTypeEnum.Point) {
           let mark: google.maps.Marker = new google.maps.Marker();
 
@@ -39,8 +39,8 @@ export class MapMarkersService {
 
           let position: google.maps.LatLngLiteral = { lat: mapInfoModel.MapInfoPointList[0].Lat, lng: mapInfoModel.MapInfoPointList[0].Lng };
           let label: google.maps.MarkerLabel = { color: '00ff00', fontWeight: 'bold', text: count.toString() };
-          let title = webBase.TVItemModel.TVItemLanguageList[this.appStateService.AppState$.getValue().Language].TVText;
-          let info = webBase.TVItemModel.TVItemLanguageList[this.appStateService.AppState$.getValue().Language].TVText;
+          let title = tvItemStatMapModel.TVItemLanguageList[this.appStateService.AppState$.getValue().Language].TVText;
+          let info = tvItemStatMapModel.TVItemLanguageList[this.appStateService.AppState$.getValue().Language].TVText;
           let path: string = this.appStateService.AppState$.getValue().MapMarkerPathCharacters[3]; // 3 characters
           let strokeColor: string = this.mapHelperService.GetMapMarkerColor(mapInfoModel.MapInfo.TVType);
           let fillColor: string = this.mapHelperService.GetMapMarkerColor(mapInfoModel.MapInfo.TVType);
@@ -51,15 +51,15 @@ export class MapMarkersService {
             }
           }
 
-          if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.MWQMSites) {
-            let statMWQMSiteList: StatMWQMSite[] = this.appLoadedService.AppLoaded$.getValue()?.StatMWQMSiteList?.filter(c => c.TVItemModel.TVItem.TVItemID == webBase.TVItemModel.TVItem.TVItemID);
+          // if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.MWQMSites) {
+          //   let statMWQMSiteList: StatMWQMSite[] = this.appLoadedService.AppLoaded$.getValue()?.StatMWQMSiteList?.filter(c => c.TVItemStatMapModel.TVItem.TVItemID == tvItemStatMapModel.TVItem.TVItemID);
 
-            if (statMWQMSiteList && statMWQMSiteList.length > 0) {
-              strokeColor = statMWQMSiteList[0]?.StatMWQMSiteSampleList[0]?.ColorAndLetter?.hexColor;
-              fillColor = statMWQMSiteList[0]?.StatMWQMSiteSampleList[0]?.ColorAndLetter?.hexColor;
-              label.text = `${label.text} ${statMWQMSiteList[0]?.StatMWQMSiteSampleList[0]?.ColorAndLetter?.letter}`;
-            }
-          }
+          //   if (statMWQMSiteList && statMWQMSiteList.length > 0) {
+          //     strokeColor = statMWQMSiteList[0]?.StatMWQMSiteSampleList[0]?.ColorAndLetter?.hexColor;
+          //     fillColor = statMWQMSiteList[0]?.StatMWQMSiteSampleList[0]?.ColorAndLetter?.hexColor;
+          //     label.text = `${label.text} ${statMWQMSiteList[0]?.StatMWQMSiteSampleList[0]?.ColorAndLetter?.letter}`;
+          //   }
+          // }
 
           let options: google.maps.MarkerOptions = {
             position: position,

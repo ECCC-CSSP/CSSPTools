@@ -6,8 +6,8 @@ import { AppState } from 'src/app/models/AppState.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { WebAllContactsService } from 'src/app/services/loaders/web-all-contacts.service';
-//import { PreferenceService } from 'src/app/services/loaders/preferences.service';
 import { LoggedInContactService } from 'src/app/services/loaders/logged-in-contact.service';
+import { ContactModel } from 'src/app/models/generated/web/ContactModel.model';
 
 @Component({
   selector: 'app-home-item',
@@ -17,19 +17,18 @@ import { LoggedInContactService } from 'src/app/services/loaders/logged-in-conta
 })
 export class HomeItemComponent implements OnInit, OnDestroy {
   languageEnum = GetLanguageEnum();
-  
+
+  AdminContactList: ContactModel[] = [];
+
   constructor(public appLoadedService: AppLoadedService,
     public appStateService: AppStateService,
     public appLanguageService: AppLanguageService,
     public webAllContactsService: WebAllContactsService,
     public loggedInContactService: LoggedInContactService,
-    //private preferenceService: PreferenceService
     ) { }
 
   ngOnInit(): void {
-    //this.loggedInContactService.DoLoggedInContact();
-    //this.preferenceService.DoPreference();
-    //this.webAllContactsService.DoWebAllContacts(false);
+    this.AdminContactList = this.appLoadedService.AppLoaded$?.getValue()?.WebAllContacts.ContactModelList.filter(c => c.Contact.IsAdmin);
   }
 
   ngOnDestroy() {

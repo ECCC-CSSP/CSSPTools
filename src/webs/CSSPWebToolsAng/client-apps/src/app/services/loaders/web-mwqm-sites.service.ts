@@ -2,67 +2,65 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
+import { GetLanguageEnum, LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
 import { AppState } from 'src/app/models/AppState.model';
-import { MWQMSite } from 'src/app/models/generated/db/MWQMSite.model';
-import { WebMWQMSite } from 'src/app/models/generated/web/WebMWQMSite.model';
+import { WebMWQMSites } from 'src/app/models/generated/web/WebMWQMSites.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
-import { AppLanguageService } from '../app-language.service';
-import { ComponentDataLoadedService } from '../helpers/component-data-loaded.service';
-import { HistoryService } from '../helpers/history.service';
-import { WebMWQMRunService } from './web-mwqm-runs.service';
+import { AppLanguageService } from 'src/app/services/app-language.service';
+import { ComponentDataLoadedService } from 'src/app/services/helpers/component-data-loaded.service';
+import { HistoryService } from 'src/app/services/helpers/history.service';
+import { WebMWQMRunsService } from 'src/app/services/loaders/web-mwqm-runs.service';
 
 @Injectable({
     providedIn: 'root'
 })
-export class WebMWQMSiteService {
+export class WebMWQMSitesService {
     private TVItemID: number;
     private DoOther: boolean;
     private sub: Subscription;
+    LangID: number = this.appStateService.AppState$?.getValue()?.Language == LanguageEnum.fr ? 1 : 0;
 
     constructor(private httpClient: HttpClient,
         private appStateService: AppStateService,
         private appLoadedService: AppLoadedService,
         private appLanguageService: AppLanguageService,
-        private webMWQMRunService: WebMWQMRunService,
+        private webMWQMRunsService: WebMWQMRunsService,
         private componentDataLoadedService: ComponentDataLoadedService,
         private historyService: HistoryService) {
     }
 
-    DoWebMWQMSite(TVItemID: number, DoOther: boolean) {
+    DoWebMWQMSites(TVItemID: number, DoOther: boolean) {
         this.TVItemID = TVItemID;
         this.DoOther = DoOther;
 
         this.sub ? this.sub.unsubscribe() : null;
 
-        if (this.appLoadedService.AppLoaded$.getValue()?.WebMWQMSite?.TVItemModel?.TVItem?.TVItemID == TVItemID) {
-            this.KeepWebMWQMSite();
+        if (this.appLoadedService.AppLoaded$.getValue()?.WebMWQMSites) {
+            this.KeepWebMWQMSites();
         }
         else {
-            this.sub = this.GetWebMWQMSite().subscribe();
+            this.sub = this.GetWebMWQMSites().subscribe();
         }
     }
 
-    private GetWebMWQMSite() {
+    private GetWebMWQMSites() {
         let languageEnum = GetLanguageEnum();
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
-            WebMWQMSite: {},
-            BreadCrumbMWQMSiteWebBaseList: [],
-            BreadCrumbWebBaseList: []
+            WebMWQMSites: {},
         });
         this.appStateService.UpdateAppState(<AppState>{
-            Status: this.appLanguageService.AppLanguage.LoadingMWQMSite[this.appStateService.AppState$?.getValue()?.Language],
+            Status: `${ this.appLanguageService.AppLanguage.Loading[this.LangID]} - ${ WebMWQMSites }`,
             Working: true
         });
-        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebMWQMSite/${this.TVItemID}/1`;
-        return this.httpClient.get<WebMWQMSite>(url).pipe(
+        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebMWQMSites/${this.TVItemID}`;
+        return this.httpClient.get<WebMWQMSites>(url).pipe(
             map((x: any) => {
-                this.UpdateWebMWQMSite(x);
+                this.UpdateWebMWQMSites(x);
                 console.debug(x);
                 if (this.DoOther) {
-                    this.DoWebMWQMRun();
+                    this.DoWebMWQMRuns();
                 }
             }),
             catchError(e => of(e).pipe(map(e => {
@@ -72,41 +70,41 @@ export class WebMWQMSiteService {
         );
     }
 
-    private DoWebMWQMRun() {
-        this.webMWQMRunService.DoWebMWQMRun(this.TVItemID, this.DoOther);
+    private DoWebMWQMRuns() {
+        this.webMWQMRunsService.DoWebMWQMRuns(this.TVItemID, this.DoOther);
     }
 
-    private KeepWebMWQMSite() {
-        this.UpdateWebMWQMSite(this.appLoadedService.AppLoaded$?.getValue()?.WebMWQMSite);
-        console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebMWQMSite);
+    private KeepWebMWQMSites() {
+        this.UpdateWebMWQMSites(this.appLoadedService.AppLoaded$?.getValue()?.WebMWQMSites);
+        console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebMWQMSites);
         if (this.DoOther) {
-            this.DoWebMWQMRun();
+            this.DoWebMWQMRuns();
         }
     }
 
-    private UpdateWebMWQMSite(x: WebMWQMSite) {
-        let mwqmSiteList: MWQMSite[] = [];
-        let count: number = x.MWQMSiteModelList.length;
-        for (let i = 0; i < count; i++) {
-                mwqmSiteList.push(x.MWQMSiteModelList[i].MWQMSite);
-        }
+    private UpdateWebMWQMSites(x: WebMWQMSites) {
+        // let mwqmSiteList: MWQMSite[] = [];
+        // let count: number = x.MWQMSiteModelList.length;
+        // for (let i = 0; i < count; i++) {
+        //         mwqmSiteList.push(x.MWQMSiteModelList[i].MWQMSite);
+        // }
 
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
-            WebMWQMSite: x,
-            MWQMSiteList: mwqmSiteList,
-            BreadCrumbMWQMSiteWebBaseList: x?.TVItemParentList,
-            BreadCrumbWebBaseList: x?.TVItemParentList
+            WebMWQMSites: x,
+            // MWQMSiteList: mwqmSiteList,
+            // BreadCrumbMWQMSiteWebBaseList: x?.TVItemParentList,
+            // BreadCrumbWebBaseList: x?.TVItemParentList
         });
 
-        this.historyService.AddHistory(this.appLoadedService.AppLoaded$.getValue()?.WebMWQMSite?.TVItemModel);
+        this.historyService.AddHistory(this.appLoadedService.AppLoaded$.getValue()?.WebMWQMSites?.TVItemStatMapModel);
 
         if (this.DoOther) {
-            if (this.componentDataLoadedService.DataLoadedSubsector()) {
+            if (this.componentDataLoadedService.DataLoadedWebSubsector()) {
                 this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
             }
         }
         else {
-            if (this.componentDataLoadedService.DataLoadedMWQMSite()) {
+            if (this.componentDataLoadedService.DataLoadedWebMWQMSites()) {
                 this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
             }
         }
