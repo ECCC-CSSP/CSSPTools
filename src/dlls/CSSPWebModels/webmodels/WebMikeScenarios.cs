@@ -12,16 +12,16 @@ namespace CSSPWebModels
     public partial class WebMikeScenarios
     {
         #region Properties
-        public TVItemStatMapModel TVItemStatMapModel { get; set; }
-        public List<TVItemStatModel> TVItemStatModelParentList { get; set; }
+        public TVItemModel TVItemModel { get; set; }
+        public List<TVItemModel> TVItemModelParentList { get; set; }
         public List<MikeScenarioModel> MikeScenarioModelList { get; set; }
         #endregion Properties
 
         #region Constructors
         public WebMikeScenarios()
         {
-            TVItemStatMapModel = new TVItemStatMapModel();
-            TVItemStatModelParentList = new List<TVItemStatModel>();
+            TVItemModel = new TVItemModel();
+            TVItemModelParentList = new List<TVItemModel>();
             MikeScenarioModelList = new List<MikeScenarioModel>();
         }
         #endregion Constructors

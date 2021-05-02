@@ -12,9 +12,9 @@ namespace CSSPWebModels
     public partial class WebCountry
     {
         #region Properties
-        public TVItemStatMapModel TVItemStatMapModel { get; set; }
-        public List<TVItemStatModel> TVItemStatModelParentList { get; set; }
-        public List<TVItemStatMapModel> TVItemStatMapModelProvinceList { get; set; }
+        public TVItemModel TVItemModel { get; set; }
+        public List<TVItemModel> TVItemModelParentList { get; set; }
+        public List<TVItemModel> TVItemModelProvinceList { get; set; }
         public List<TVFileModel> TVFileModelList { get; set; }
         public List<RainExceedanceModel> RainExceedanceModelList { get; set; }
         public List<EmailDistributionListModel> EmailDistributionListModelList { get; set; }
@@ -23,9 +23,9 @@ namespace CSSPWebModels
         #region Constructors
         public WebCountry()
         {
-            TVItemStatMapModel = new TVItemStatMapModel();
-            TVItemStatModelParentList = new List<TVItemStatModel>();
-            TVItemStatMapModelProvinceList = new List<TVItemStatMapModel>();
+            TVItemModel = new TVItemModel();
+            TVItemModelParentList = new List<TVItemModel>();
+            TVItemModelProvinceList = new List<TVItemModel>();
             TVFileModelList = new List<TVFileModel>();
             RainExceedanceModelList = new List<RainExceedanceModel>();
             EmailDistributionListModelList = new List<EmailDistributionListModel>();

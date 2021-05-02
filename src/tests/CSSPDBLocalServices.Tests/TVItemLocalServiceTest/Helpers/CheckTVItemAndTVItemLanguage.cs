@@ -35,7 +35,7 @@ namespace CSSPDBLocalServices.Tests
         {
             await LoadWebType(TVItemID, webType);
 
-            List<TVItemStatModel> tvItemParentList = await GetWebBaseParentList(webType);
+            List<TVItemModel> tvItemParentList = await GetWebBaseParentList(webType);
             Assert.NotNull(tvItemParentList);
 
             TVItem tvItem = tvItemParentList[tvItemParentList.Count - 1].TVItem;

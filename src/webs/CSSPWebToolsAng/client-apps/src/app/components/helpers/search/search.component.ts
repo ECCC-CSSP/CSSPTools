@@ -13,11 +13,10 @@ import { WebProvinceService } from 'src/app/services/loaders/web-province.servic
 import { WebAreaService } from 'src/app/services/loaders/web-area.service';
 import { WebSectorService } from 'src/app/services/loaders/web-sector.service';
 import { WebSubsectorService } from 'src/app/services/loaders/web-subsector.service';
-import { WebMWQMSiteService } from 'src/app/services/loaders/web-mwqm-sites.service';
-import { WebMWQMRunService } from 'src/app/services/loaders/web-mwqm-runs.service';
-import { WebPolSourceSiteService } from 'src/app/services/loaders/web-pol-source-sites.service';
+import { WebMWQMSitesService } from 'src/app/services/loaders/web-mwqm-sites.service';
+import { WebMWQMRunsService } from 'src/app/services/loaders/web-mwqm-runs.service';
+import { WebPolSourceSitesService } from 'src/app/services/loaders/web-pol-source-sites.service';
 import { WebMunicipalityService } from 'src/app/services/loaders/web-municipalty.service';
-import { WebMunicipalitiesService } from 'src/app/services/loaders/web-municipalities.service';
 import { AppState } from 'src/app/models/AppState.model';
 import { ShellSubComponentEnum } from 'src/app/enums/generated/ShellSubComponentEnum';
 
@@ -52,14 +51,13 @@ export class SearchComponent implements OnInit, OnDestroy {
     private webRootService: WebRootService,
     private webCountryService: WebCountryService,
     private webProvinceService: WebProvinceService,
-    private webMunicipalitiesService: WebMunicipalitiesService,
     private webAreaService: WebAreaService,
     private webSectorService: WebSectorService,
     private webSubsectorService: WebSubsectorService,
     private webMunicipalityService: WebMunicipalityService,
-    private webMWQMSiteService: WebMWQMSiteService,
-    private webMWQMRunService: WebMWQMRunService,
-    private webPolSourceSiteService: WebPolSourceSiteService) {
+    private webMWQMSitesService: WebMWQMSitesService,
+    private webMWQMRunsService: WebMWQMRunsService,
+    private webPolSourceSitesService: WebPolSourceSitesService) {
   }
 
   ngOnInit() {
@@ -89,15 +87,15 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.appStateService.UpdateAppState(<AppState>{ ShellSubComponent: ShellSubComponentEnum.Municipality, CurrentTVItemID: sr.TVItem.TVItemID });
     }
     else if (sr.TVItem.TVType == TVTypeEnum.MWQMRun) {
-      this.webMWQMRunService.DoWebMWQMRun(sr.TVItem.TVItemID, true);
+      this.webMWQMRunsService.DoWebMWQMRuns(sr.TVItem.TVItemID, true);
       this.appStateService.UpdateAppState(<AppState>{ ShellSubComponent: ShellSubComponentEnum.MWQMRun, CurrentTVItemID: sr.TVItem.TVItemID });
     }
     else if (sr.TVItem.TVType == TVTypeEnum.MWQMSite) {
-      this.webMWQMSiteService.DoWebMWQMSite(sr.TVItem.TVItemID, true);
+      this.webMWQMSitesService.DoWebMWQMSites(sr.TVItem.TVItemID, true);
       this.appStateService.UpdateAppState(<AppState>{ ShellSubComponent: ShellSubComponentEnum.MWQMSite, CurrentTVItemID: sr.TVItem.TVItemID });
     }
     else if (sr.TVItem.TVType == TVTypeEnum.PolSourceSite) {
-      this.webPolSourceSiteService.DoWebPolSourceSite(sr.TVItem.TVItemID, true);
+      this.webPolSourceSitesService.DoWebPolSourceSites(sr.TVItem.TVItemID, true);
       this.appStateService.UpdateAppState(<AppState>{ ShellSubComponent: ShellSubComponentEnum.PolSourceSite, CurrentTVItemID: sr.TVItem.TVItemID });
     }
     else if (sr.TVItem.TVType == TVTypeEnum.Province) {

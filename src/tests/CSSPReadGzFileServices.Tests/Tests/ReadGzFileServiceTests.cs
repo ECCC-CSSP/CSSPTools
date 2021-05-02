@@ -303,7 +303,7 @@ namespace ReadGzFileServices.Tests
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             WebArea webArea = (WebArea)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webArea);
-            Assert.NotNull(webArea.TVItemStatMapModel);
+            Assert.NotNull(webArea.TVItemModel);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -337,7 +337,7 @@ namespace ReadGzFileServices.Tests
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             WebCountry webCountry = (WebCountry)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webCountry);
-            Assert.NotNull(webCountry.TVItemStatMapModel);
+            Assert.NotNull(webCountry.TVItemModel);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -490,7 +490,7 @@ namespace ReadGzFileServices.Tests
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             WebProvince webProvince = (WebProvince)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webProvince);
-            Assert.NotNull(webProvince.TVItemStatMapAreaList);
+            Assert.NotNull(webProvince.TVItemModelAreaList);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -506,7 +506,7 @@ namespace ReadGzFileServices.Tests
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             WebRoot webRoot = (WebRoot)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webRoot);
-            Assert.NotNull(webRoot.TVItemStatMapModelCountryList);
+            Assert.NotNull(webRoot.TVItemModelCountryList);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -523,7 +523,7 @@ namespace ReadGzFileServices.Tests
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             WebSector webSector = (WebSector)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webSector);
-            Assert.NotNull(webSector.TVItemStatMapModelSubsectorList);
+            Assert.NotNull(webSector.TVItemModelSubsectorList);
         }
         [Theory]
         [InlineData("en-CA")]

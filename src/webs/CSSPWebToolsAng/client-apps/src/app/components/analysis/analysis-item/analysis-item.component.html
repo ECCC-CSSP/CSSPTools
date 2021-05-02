@@ -3,7 +3,7 @@
 </span>
 
 <app-analysis-options [AppState]="appStateService.AppState$?.getValue()"
-    [TVItemList]="appLoadedService.AppLoaded$?.getValue()?.SubsectorMWQMSiteList"
+    [TVItemModelList]="appLoadedService.AppLoaded$?.getValue()?.WebSubsector.TVItemModel"
     [StatMWQMSiteList]="appLoadedService.AppLoaded$?.getValue()?.StatMWQMSiteList"
     [StatMWQMRunList]="appLoadedService.AppLoaded$?.getValue()?.StatMWQMRunList"></app-analysis-options>
 
@@ -63,9 +63,9 @@
                     </span>
                     <span>
                         {{ StatMWQMSite?.TVItemModel?.TVItemLanguageList[language]?.TVText }}
-                        ({{ analysisService.GetClassificationAcronym(StatMWQMSite?.MWQMSite?.MWQMSiteLatestClassification) }})
+                        ({{ analysisService.GetClassificationAcronym(StatMWQMSite?.MWQMSiteModel?.MWQMSite?.MWQMSiteLatestClassification) }})
                         <span
-                            class="{{ analysisService.GetClassificationColor(StatMWQMSite?.MWQMSite?.MWQMSiteLatestClassification) }}">&nbsp;&nbsp;</span>
+                            class="{{ analysisService.GetClassificationColor(StatMWQMSite?.MWQMSiteModel.MWQMSite?.MWQMSiteLatestClassification) }}">&nbsp;&nbsp;</span>
                     </span>
                 </td>
                 <td class="borderBottom">{{ StatMWQMSite?.StatMWQMSiteSampleList[0]?.SampCount }}</td>
@@ -292,9 +292,9 @@
                         (click)="mapService.ShowItem(StatMWQMSite?.TVItemModel, $event)">place</mat-icon>
 
                     {{ StatMWQMSite?.TVItemModel?.TVItemLanguageList[language]?.TVText }}
-                    ({{ analysisService.GetClassificationAcronym(StatMWQMSite?.MWQMSite?.MWQMSiteLatestClassification) }})
+                    ({{ analysisService.GetClassificationAcronym(StatMWQMSite?.MWQMSiteModel.MWQMSite?.MWQMSiteLatestClassification) }})
                     <span
-                        class="{{ analysisService.GetClassificationColor(StatMWQMSite?.MWQMSite?.MWQMSiteLatestClassification) }}">&nbsp;&nbsp;</span>
+                        class="{{ analysisService.GetClassificationColor(StatMWQMSite?.MWQMSiteModel.MWQMSite?.MWQMSiteLatestClassification) }}">&nbsp;&nbsp;</span>
                 </td>
                 <td class="borderBottom">{{ StatMWQMSite?.StatMWQMSiteSampleList[0]?.SampCount }}</td>
                 <td class="borderBottom">

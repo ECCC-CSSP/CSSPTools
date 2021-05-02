@@ -30,11 +30,11 @@ export class AnalysisItemMenuComponent implements OnInit, OnDestroy {
   {
   }
 
-  ShowEdit(tvItemModel: TVItemModel) {
+  ShowEdit(tvItemStatMapModel: TVItemModel) {
     alert("This is ShowEdit");
   }
 
-  ShowData(tvItemModel: TVItemModel) {
+  ShowData(tvItemStatMapModel: TVItemModel) {
     alert("This is ShowData");
   }
 

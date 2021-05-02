@@ -31,7 +31,7 @@ namespace CSSPDBLocalServices.Tests
 {
     public partial class TVItemLocalServiceTest
     {
-        private void CheckLocalFilesExist(List<TVItemStatModel> webBaseList)
+        private void CheckLocalFilesExist(List<TVItemModel> webBaseList)
         {
             int index = 0;
             foreach (TVItemModel webBase in webBaseList)

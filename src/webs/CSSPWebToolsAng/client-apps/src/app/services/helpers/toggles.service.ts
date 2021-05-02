@@ -5,15 +5,14 @@ import { ShellSubComponentEnum } from 'src/app/enums/generated/ShellSubComponent
 import { WebAreaService } from 'src/app/services/loaders/web-area.service';
 import { WebCountryService } from 'src/app/services/loaders/web-country.service';
 import { WebMunicipalityService } from 'src/app/services/loaders/web-municipalty.service';
-import { WebMWQMRunService } from 'src/app/services/loaders/web-mwqm-runs.service';
-import { WebMWQMSiteService } from 'src/app/services/loaders/web-mwqm-sites.service';
-import { WebPolSourceSiteService } from 'src/app/services/loaders/web-pol-source-sites.service';
+import { WebMWQMRunsService } from 'src/app/services/loaders/web-mwqm-runs.service';
+import { WebMWQMSitesService } from 'src/app/services/loaders/web-mwqm-sites.service';
+import { WebPolSourceSitesService } from 'src/app/services/loaders/web-pol-source-sites.service';
 import { WebProvinceService } from 'src/app/services/loaders/web-province.service';
 import { WebRootService } from 'src/app/services/loaders/web-root.service';
 import { WebSectorService } from 'src/app/services/loaders/web-sector.service';
 import { WebSubsectorService } from 'src/app/services/loaders/web-subsector.service';
 import { AppLoadedService } from '../app-loaded.service';
-import { WebMikeScenarioService } from '../loaders/web-mike-scenario.service';
 
 @Injectable({
     providedIn: 'root'
@@ -23,11 +22,10 @@ export class TogglesService {
         private appLoadedService: AppLoadedService,
         private webAreaService: WebAreaService,
         private webCountryService: WebCountryService,
-        private webMikeScenarioService: WebMikeScenarioService,
         private webMunicipalityService: WebMunicipalityService,
-        private webMWQMSiteService: WebMWQMSiteService,
-        private webMWQMRunService: WebMWQMRunService,
-        private webPolSourceSiteService: WebPolSourceSiteService,
+        private webMWQMSitesService: WebMWQMSitesService,
+        private webMWQMRunsService: WebMWQMRunsService,
+        private webPolSourceSitesService: WebPolSourceSitesService,
         private webProvinceService: WebProvinceService,
         private webRootService: WebRootService,
         private webSectorService: WebSectorService,
@@ -83,11 +81,6 @@ export class TogglesService {
                     this.webCountryService.DoWebCountry(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
                 }
                 break;
-            case ShellSubComponentEnum.MikeScenario:
-                {
-                    this.webMikeScenarioService.DoWebMikeScenario(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
-                }
-                break;
             case ShellSubComponentEnum.Municipality:
                 {
                     this.webMunicipalityService.DoWebMunicipality(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
@@ -95,17 +88,17 @@ export class TogglesService {
                 break;
             case ShellSubComponentEnum.MWQMRun:
                 {
-                    this.webMWQMRunService.DoWebMWQMRun(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
+                    this.webMWQMRunsService.DoWebMWQMRuns(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
                 }
                 break;
             case ShellSubComponentEnum.MWQMSite:
                 {
-                    this.webMWQMSiteService.DoWebMWQMSite(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
+                    this.webMWQMSitesService.DoWebMWQMSites(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
                 }
                 break;
             case ShellSubComponentEnum.PolSourceSite:
                 {
-                    this.webPolSourceSiteService.DoWebPolSourceSite(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
+                    this.webPolSourceSitesService.DoWebPolSourceSites(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
                 }
                 break;
             case ShellSubComponentEnum.Province:

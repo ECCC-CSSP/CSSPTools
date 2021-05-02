@@ -19,7 +19,7 @@ export class DownloadService {
   }
 
   download(tvFileModel: TVFileModel): Observable<Download> {
-    let url: string = `${this.appLoadedService.BaseApiUrl}${this.appStateService.AppState$.getValue().Language}-CA/download/${tvFileModel.ParentTVItemID}/${tvFileModel.TVFile.ServerFileName}`;
+    let url: string = `${this.appLoadedService.BaseApiUrl}${this.appStateService.AppState$.getValue().Language}-CA/download/${tvFileModel.TVItem.ParentID}/${tvFileModel.TVFile.ServerFileName}`;
 
     return this.http.get(url, {
       reportProgress: true,

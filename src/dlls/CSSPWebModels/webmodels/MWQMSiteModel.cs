@@ -12,7 +12,7 @@ namespace CSSPWebModels
     public partial class MWQMSiteModel
     {
         #region Properties
-        public TVItemStatMapModel TVItemStatMapModel { get; set; }
+        public TVItemModel TVItemModel { get; set; }
         public MWQMSite MWQMSite { get; set; }
         public List<TVFileModel> TVFileModelList { get; set; }
         public List<MWQMSiteStartEndDate> MWQMSiteStartEndDateList { get; set; }
@@ -21,7 +21,7 @@ namespace CSSPWebModels
         #region Constructors
         public MWQMSiteModel()
         {
-            TVItemStatMapModel = new TVItemStatMapModel();
+            TVItemModel = new TVItemModel();
             MWQMSite = new MWQMSite();
             TVFileModelList = new List<TVFileModel>();
             MWQMSiteStartEndDateList = new List<MWQMSiteStartEndDate>();

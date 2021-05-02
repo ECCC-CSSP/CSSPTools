@@ -9,14 +9,13 @@ import { InfrastructureModel } from 'src/app/models/generated/web/Infrastructure
 import { ContactModel } from 'src/app/models/generated/web/ContactModel.model';
 import { TVItemLink } from 'src/app/models/generated/db/TVItemLink.model';
 import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model';
-import { TVItemStatMapModel } from 'src/app/models/generated/web/TVItemStatMapModel.model';
-import { TVItemStatModel } from 'src/app/models/generated/web/TVItemStatModel.model';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 
 export class WebMunicipality {
     InfrastructureModelList: InfrastructureModel[];
     MunicipalityContactModelList: ContactModel[];
     MunicipalityTVItemLinkList: TVItemLink[];
     TVFileModelList: TVFileModel[];
-    TVItemStatMapModel: TVItemStatMapModel;
-    TVItemStatModelParentList: TVItemStatModel[];
+    TVItemModel: TVItemModel;
+    TVItemModelParentList: TVItemModel[];
 }

@@ -29,20 +29,20 @@ namespace ReadGzFileServices
     {
         private void DoMergeJsonWebDrogueRuns(WebDrogueRuns WebDrogueRuns, WebDrogueRuns WebDrogueRunsLocal)
         {
-            if (WebDrogueRunsLocal.TVItemStatMapModel.TVItem.DBCommand != DBCommandEnum.Original
-               || WebDrogueRunsLocal.TVItemStatMapModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-               || WebDrogueRunsLocal.TVItemStatMapModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
+            if (WebDrogueRunsLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
+               || WebDrogueRunsLocal.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
+               || WebDrogueRunsLocal.TVItemModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
             {
-                WebDrogueRuns.TVItemStatMapModel = WebDrogueRunsLocal.TVItemStatMapModel;
+                WebDrogueRuns.TVItemModel = WebDrogueRunsLocal.TVItemModel;
             }
 
-            if ((from c in WebDrogueRunsLocal.TVItemStatModelParentList
+            if ((from c in WebDrogueRunsLocal.TVItemModelParentList
                  where c.TVItem.DBCommand != DBCommandEnum.Original
                  || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
                  || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original
                  select c).Any())
             {
-                WebDrogueRuns.TVItemStatModelParentList = WebDrogueRunsLocal.TVItemStatModelParentList;
+                WebDrogueRuns.TVItemModelParentList = WebDrogueRunsLocal.TVItemModelParentList;
             }
 
             List<DrogueRunModel> DrogueRunModelList = (from c in WebDrogueRunsLocal.DrogueRunModelList

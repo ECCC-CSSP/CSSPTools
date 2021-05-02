@@ -11,18 +11,18 @@ namespace CSSPWebModels
     public partial class WebSector
     {
         #region Properties
-        public TVItemStatMapModel TVItemStatMapModel { get; set; }
-        public List<TVItemStatModel> TVItemStatModelParentList { get; set; }
-        public List<TVItemStatMapModel> TVItemStatMapModelSubsectorList { get; set; }
+        public TVItemModel TVItemModel { get; set; }
+        public List<TVItemModel> TVItemModelParentList { get; set; }
+        public List<TVItemModel> TVItemModelSubsectorList { get; set; }
         public List<TVFileModel> TVFileModelList { get; set; }
         #endregion Properties
 
         #region Constructors
         public WebSector()
         {
-            TVItemStatMapModel = new TVItemStatMapModel();
-            TVItemStatModelParentList = new List<TVItemStatModel>();
-            TVItemStatMapModelSubsectorList = new List<TVItemStatMapModel>();
+            TVItemModel = new TVItemModel();
+            TVItemModelParentList = new List<TVItemModel>();
+            TVItemModelSubsectorList = new List<TVItemModel>();
             TVFileModelList = new List<TVFileModel>();
         }
         #endregion Constructors

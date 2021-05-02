@@ -7,14 +7,13 @@
 
 import { SamplingPlanModel } from 'src/app/models/generated/web/SamplingPlanModel.model';
 import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model';
-import { TVItemStatMapModel } from 'src/app/models/generated/web/TVItemStatMapModel.model';
-import { TVItemStatModel } from 'src/app/models/generated/web/TVItemStatModel.model';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 
 export class WebProvince {
     SamplingPlanModelList: SamplingPlanModel[];
     TVFileModelList: TVFileModel[];
-    TVItemStatMapAreaList: TVItemStatMapModel[];
-    TVItemStatMapModel: TVItemStatMapModel;
-    TVItemStatMapMunicipalityList: TVItemStatMapModel[];
-    TVItemStatModelParentList: TVItemStatModel[];
+    TVItemModel: TVItemModel;
+    TVItemModelAreaList: TVItemModel[];
+    TVItemModelMunicipalityList: TVItemModel[];
+    TVItemModelParentList: TVItemModel[];
 }

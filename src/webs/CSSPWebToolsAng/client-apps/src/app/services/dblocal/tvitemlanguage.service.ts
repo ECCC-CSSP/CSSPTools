@@ -9,6 +9,7 @@ import { AppState } from 'src/app/models/AppState.model';
 import { AppLanguageService } from '../app-language.service';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { TVItemLanguage } from 'src/app/models/generated/db/TVItemLanguage.model';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 
 
 @Injectable({

@@ -3,7 +3,7 @@ import { AppState } from 'src/app/models/AppState.model';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { AppStateService } from 'src/app/services/app-state.service';
-import { WebMWQMRunService } from 'src/app/services/loaders/web-mwqm-runs.service';
+import { WebMWQMRunsService } from 'src/app/services/loaders/web-mwqm-runs.service';
 
 @Component({
   selector: 'app-mwqm-run-item-edit',
@@ -17,10 +17,10 @@ export class MWQMRunItemEditComponent implements OnInit, OnDestroy {
   
   constructor(public appStateService: AppStateService,
     public appLanguageService: AppLanguageService,
-    private webMWQMRunService: WebMWQMRunService) { }
+    private webMWQMRunsService: WebMWQMRunsService) { }
 
   ngOnInit(): void {
-    this.webMWQMRunService.DoWebMWQMRun(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
+    this.webMWQMRunsService.DoWebMWQMRuns(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
   }
 
   ngOnDestroy(): void {

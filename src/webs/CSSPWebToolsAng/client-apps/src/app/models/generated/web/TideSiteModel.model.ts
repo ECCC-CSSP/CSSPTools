@@ -7,10 +7,10 @@
 
 import { TideDataValue } from 'src/app/models/generated/db/TideDataValue.model';
 import { TideSite } from 'src/app/models/generated/db/TideSite.model';
-import { TVItemMapModel } from 'src/app/models/generated/web/TVItemMapModel.model';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 
 export class TideSiteModel {
     TideDataValueList: TideDataValue[];
     TideSite: TideSite;
-    TVItemMapModel: TVItemMapModel;
+    TVItemModel: TVItemModel;
 }

@@ -16,7 +16,7 @@
     {{ TVItemModel?.TVItemLanguageList[this.appStateService.AppState$.getValue().Language]?.TVText }}
 </span>
 <span>
-    ({{ GetMWQMSiteLatestClassificationEnum_GetIDText(StatMWQMSite?.MWQMSite?.MWQMSiteLatestClassification) }})
+    ({{ GetMWQMSiteLatestClassificationEnum_GetIDText(StatMWQMSite?.MWQMSiteModel.MWQMSite?.MWQMSiteLatestClassification) }})
 </span>
 <app-stat-count *ngIf="appStateService.AppState$.getValue().StatCountVisible" [TVType]="tvTypeEnum.MWQMSiteSample"
     [TVItemModel]="TVItemModel"></app-stat-count>

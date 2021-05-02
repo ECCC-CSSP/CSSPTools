@@ -54,9 +54,6 @@ export class WebCountryService {
     let languageEnum = GetLanguageEnum();
     this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
       WebCountry: {},
-      // CountryProvinceList: [],
-      // BreadCrumbCountryWebBaseList: [],
-      // BreadCrumbWebBaseList: []
     });
     this.appStateService.UpdateAppState(<AppState>{
       Status: `${ this.appLanguageService.AppLanguage.Loading[this.LangID]} - ${ WebCountry }`,
@@ -87,29 +84,12 @@ export class WebCountryService {
   }
 
   private UpdateWebCountry(x: WebCountry) {
-    // let CountryProvinceList: WebBase[] = [];
-
-    // // doing CountryProvinceList
-    // if (!this.appStateService.AppState$?.getValue()?.InactVisible) {
-    //   CountryProvinceList = x?.TVItemProvinceList.filter((province) => { return province.TVItemModel.TVItem.IsActive == true });
-    // }
-    // else {
-    //   CountryProvinceList = x?.TVItemProvinceList;
-    // }
 
     this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
       WebCountry: x,
-      // CountryProvinceList: this.sortTVItemListService.SortTVItemList(CountryProvinceList, x?.TVItemParentList),
-      // CountryFileListList: this.structureTVFileListService.StructureTVFileList(x.TVItemModel),
-      // EmailDistributionListContactLanguageList: x?.EmailDistributionListContactLanguageList,
-      // EmailDistributionListContactList: x?.EmailDistributionListContactList,
-      // EmailDistributionListLanguageList: x?.EmailDistributionListLanguageList,
-      // EmailDistributionListList: x?.EmailDistributionListList,
-      // BreadCrumbCountryWebBaseList: x?.TVItemParentList,
-      // BreadCrumbWebBaseList: x?.TVItemParentList
     });
 
-    this.historyService.AddHistory(this.appLoadedService.AppLoaded$.getValue()?.WebCountry?.TVItemStatMapModel);
+    this.historyService.AddHistory(this.appLoadedService.AppLoaded$.getValue()?.WebCountry?.TVItemModel);
 
     if (this.DoOther) {
       if (this.componentDataLoadedService.DataLoadedWebCountry()) {
@@ -120,48 +100,44 @@ export class WebCountryService {
       this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
     }
 
-    // let webBaseCountry: WebBase[] = <WebBase[]>[
-    //   <WebBase>{ TVItemModel: this.appLoadedService.AppLoaded$.getValue().WebCountry.TVItemModel },
-    // ];
-
     if (this.appStateService.AppState$.getValue().GoogleJSLoaded) {
       if (this.appStateService.AppState$.getValue().CountrySubComponent == CountrySubComponentEnum.Provinces) {
         this.mapService.ClearMap();
         this.mapService.DrawObjects([
-          ...this.appLoadedService.AppLoaded$.getValue().WebCountry.TVItemStatMapModelProvinceList,
-          ...[this.appLoadedService.AppLoaded$.getValue().WebCountry.TVItemStatMapModel]
+          ...this.appLoadedService.AppLoaded$.getValue().WebCountry.TVItemModelProvinceList,
+          ...[this.appLoadedService.AppLoaded$.getValue().WebCountry.TVItemModel]
         ]);
       }
 
       if (this.appStateService.AppState$.getValue().CountrySubComponent == CountrySubComponentEnum.Files) {
         this.mapService.ClearMap();
         this.mapService.DrawObjects([
-          ...this.appLoadedService.AppLoaded$.getValue().WebCountry.TVItemStatMapModelProvinceList,
-          ...[this.appLoadedService.AppLoaded$.getValue().WebCountry.TVItemStatMapModel]
+          ...this.appLoadedService.AppLoaded$.getValue().WebCountry.TVItemModelProvinceList,
+          ...[this.appLoadedService.AppLoaded$.getValue().WebCountry.TVItemModel]
         ]);
       }
 
       if (this.appStateService.AppState$.getValue().CountrySubComponent == CountrySubComponentEnum.OpenDataNational) {
         this.mapService.ClearMap();
         this.mapService.DrawObjects([
-          ...this.appLoadedService.AppLoaded$.getValue().WebCountry.TVItemStatMapModelProvinceList,
-          ...[this.appLoadedService.AppLoaded$.getValue().WebCountry.TVItemStatMapModel]
+          ...this.appLoadedService.AppLoaded$.getValue().WebCountry.TVItemModelProvinceList,
+          ...[this.appLoadedService.AppLoaded$.getValue().WebCountry.TVItemModel]
         ]);
       }
 
       if (this.appStateService.AppState$.getValue().CountrySubComponent == CountrySubComponentEnum.EmailDistributionList) {
         this.mapService.ClearMap();
         this.mapService.DrawObjects([
-          ...this.appLoadedService.AppLoaded$.getValue().WebCountry.TVItemStatMapModelProvinceList,
-          ...[this.appLoadedService.AppLoaded$.getValue().WebCountry.TVItemStatMapModel]
+          ...this.appLoadedService.AppLoaded$.getValue().WebCountry.TVItemModelProvinceList,
+          ...[this.appLoadedService.AppLoaded$.getValue().WebCountry.TVItemModel]
         ]);
       }
 
       if (this.appStateService.AppState$.getValue().CountrySubComponent == CountrySubComponentEnum.RainExceedance) {
         this.mapService.ClearMap();
         this.mapService.DrawObjects([
-          ...this.appLoadedService.AppLoaded$.getValue().WebCountry.TVItemStatMapModelProvinceList,
-          ...[this.appLoadedService.AppLoaded$.getValue().WebCountry.TVItemStatMapModel]
+          ...this.appLoadedService.AppLoaded$.getValue().WebCountry.TVItemModelProvinceList,
+          ...[this.appLoadedService.AppLoaded$.getValue().WebCountry.TVItemModel]
         ]);
       }
     }

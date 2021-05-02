@@ -33,7 +33,7 @@ namespace CreateGzFileServices
 
             try
             {
-                await FillTVItemModelAndParentTVItemModelList(webLabSheets.TVItemStatMapModel, webLabSheets.TVItemStatModelParentList, TVItemSubsector);
+                await FillTVItemModelAndParentTVItemModelList(webLabSheets.TVItemModel, webLabSheets.TVItemModelParentList, TVItemSubsector);
 
                 await FillLabSheetModelList(webLabSheets.LabSheetModelList, TVItemSubsector);
 

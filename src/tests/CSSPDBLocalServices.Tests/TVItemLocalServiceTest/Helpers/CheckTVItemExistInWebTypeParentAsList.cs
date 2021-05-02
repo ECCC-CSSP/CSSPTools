@@ -39,7 +39,7 @@ namespace CSSPDBLocalServices.Tests
 
             await LoadWebType(ParentTVItemID, webTypeParent);
 
-            List<TVItemStatModel> webBaseList = await GetWebBaseList(webTypeParent, tvType, ParentTVItemID);
+            List<TVItemModel> webBaseList = await GetWebBaseList(webTypeParent, tvType, ParentTVItemID);
 
             CompareTVItems(webBase.TVItem, webBaseList[webBaseList.Count - 1].TVItem);
 

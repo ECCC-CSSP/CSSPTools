@@ -12,16 +12,16 @@ namespace CSSPWebModels
     public partial class WebTideSites
     {
         #region Properties
-        public TVItemStatMapModel TVItemStatMapModel { get; set; }
-        public List<TVItemStatModel> TVItemStatModelParentList { get; set; }
+        public TVItemModel TVItemModel { get; set; }
+        public List<TVItemModel> TVItemModelParentList { get; set; }
         public List<TideSiteModel> TideSiteModelList { get; set; }
         #endregion Properties
 
         #region Constructors
         public WebTideSites()
         {
-            TVItemStatMapModel = new TVItemStatMapModel();
-            TVItemStatModelParentList = new List<TVItemStatModel>();
+            TVItemModel = new TVItemModel();
+            TVItemModelParentList = new List<TVItemModel>();
             TideSiteModelList = new List<TideSiteModel>();
         }
         #endregion Constructors

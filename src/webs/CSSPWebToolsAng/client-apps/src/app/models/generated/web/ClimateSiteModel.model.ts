@@ -7,10 +7,10 @@
 
 import { ClimateDataValue } from 'src/app/models/generated/db/ClimateDataValue.model';
 import { ClimateSite } from 'src/app/models/generated/db/ClimateSite.model';
-import { TVItemMapModel } from 'src/app/models/generated/web/TVItemMapModel.model';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 
 export class ClimateSiteModel {
     ClimateDataValueList: ClimateDataValue[];
     ClimateSite: ClimateSite;
-    TVItemMapModel: TVItemMapModel;
+    TVItemModel: TVItemModel;
 }

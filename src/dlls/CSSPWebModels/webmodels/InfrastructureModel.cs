@@ -12,7 +12,7 @@ namespace CSSPWebModels
     public partial class InfrastructureModel
     {
         #region Properties
-        public TVItemMapModel TVItemMapModel { get; set; }
+        public TVItemModel TVItemModel { get; set; }
         public Infrastructure Infrastructure { get; set; }
         public List<InfrastructureLanguage> InfrastructureLanguageList { get; set; }
         public List<TVFileModel> TVFileModelList { get; set; }
@@ -24,7 +24,7 @@ namespace CSSPWebModels
         #region Constructors
         public InfrastructureModel()
         {
-            TVItemMapModel = new TVItemMapModel();
+            TVItemModel = new TVItemModel();
             Infrastructure = new Infrastructure();
             InfrastructureLanguageList = new List<InfrastructureLanguage>();
             TVFileModelList = new List<TVFileModel>();

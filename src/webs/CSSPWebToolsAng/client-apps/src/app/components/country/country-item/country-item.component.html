@@ -54,12 +54,12 @@
 
 <app-province-tvitem-list-item *ngIf="appStateService.AppState$?.getValue()?.CountrySubComponent == countrySubComponentEnum.Provinces"
     [AppState]="appStateService.AppState$?.getValue()"
-    [TVItemList]="appLoadedService.AppLoaded$?.getValue()?.CountryProvinceList">
+    [TVItemModelList]="appLoadedService.AppLoaded$?.getValue()?.WebCountry?.TVItemModelProvinceList">
 </app-province-tvitem-list-item>
 
 <app-file-list *ngIf="appStateService.AppState$?.getValue()?.CountrySubComponent == countrySubComponentEnum.Files"
     [AppState]="appStateService.AppState$?.getValue()"
-    [TVFileModelListList]="appLoadedService.AppLoaded$?.getValue()?.CountryFileListList">
+    [TVFileModelListList]="appLoadedService.AppLoaded$?.getValue()?.WebCountry?.TVFileModelList">
 </app-file-list>
 
 <div *ngIf="appStateService.AppState$?.getValue()?.CountrySubComponent == countrySubComponentEnum.OpenDataNational">

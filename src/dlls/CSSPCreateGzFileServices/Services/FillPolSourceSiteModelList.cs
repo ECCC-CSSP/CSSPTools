@@ -41,10 +41,10 @@ namespace CreateGzFileServices
             {
                 PolSourceSiteModel polSourceSiteModel = new PolSourceSiteModel();
 
-                TVItemStatMapModel tvItemStatMapModel = new TVItemStatMapModel();
-                tvItemStatMapModel.TVItem = tvItem;
-                tvItemStatMapModel.TVItemLanguageList = TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
-                tvItemStatMapModel.TVItemStatList = TVItemStatList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
+                TVItemModel TVItemModel = new TVItemModel();
+                TVItemModel.TVItem = tvItem;
+                TVItemModel.TVItemLanguageList = TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
+                TVItemModel.TVItemStatList = TVItemStatList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
 
                 foreach (MapInfo MapInfo in MapInfoList.Where(c => c.TVItemID == tvItem.TVItemID))
                 {
@@ -52,10 +52,10 @@ namespace CreateGzFileServices
                     MapInfoModel.MapInfo = MapInfo;
                     MapInfoModel.MapInfoPointList = MapInfoPointList.Where(c => c.MapInfoID == MapInfo.MapInfoID).Select(c => c).ToList();
 
-                    tvItemStatMapModel.MapInfoModelList.Add(MapInfoModel);
+                    TVItemModel.MapInfoModelList.Add(MapInfoModel);
                 }
 
-                polSourceSiteModel.TVItemStatMapModel = tvItemStatMapModel;
+                polSourceSiteModel.TVItemModel = TVItemModel;
 
                 // doing PolSourceSiteModel.TVItemFileList
                 foreach (TVItem tvItemFile in TVItemFileListAll.Where(c => c.ParentID == tvItem.TVItemID))

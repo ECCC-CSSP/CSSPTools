@@ -33,9 +33,9 @@ namespace CreateGzFileServices
 
             try
             {
-                await FillTVItemModelAndParentTVItemModelList(webSubsector.TVItemStatMapModel, webSubsector.TVItemStatModelParentList, TVItemSubsector);
+                await FillTVItemModelAndParentTVItemModelList(webSubsector.TVItemModel, webSubsector.TVItemModelParentList, TVItemSubsector);
 
-                await FillChildListTVItemModelList(webSubsector.TVItemStatMapModelClassificationList, TVItemSubsector, TVTypeEnum.Classification);
+                await FillChildListTVItemModelList(webSubsector.TVItemModelClassificationList, TVItemSubsector, TVTypeEnum.Classification);
 
                 await FillFileModelList(webSubsector.TVFileModelList, TVItemSubsector);
 

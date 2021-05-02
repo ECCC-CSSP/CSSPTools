@@ -37,10 +37,10 @@ namespace CSSPDBLocalServices.Tests
             {
                 await LoadWebType(ParentTVItemID, webTypeParent);
 
-                List<TVItemStatModel> tvItemParentList = await GetWebBaseParentList(webType);
+                List<TVItemModel> tvItemParentList = await GetWebBaseParentList(webType);
                 Assert.NotNull(tvItemParentList);
 
-                List<TVItemStatModel> webBaseList = await GetWebBaseList(webTypeParent, tvType, ParentTVItemID);
+                List<TVItemModel> webBaseList = await GetWebBaseList(webTypeParent, tvType, ParentTVItemID);
 
                 tvItemParentList.Add(webBaseList[webBaseList.Count - 1]);
 
@@ -52,7 +52,7 @@ namespace CSSPDBLocalServices.Tests
             {
                 await LoadWebType(TVItemID, webType);
 
-                List<TVItemStatModel> tvItemParentList = await GetWebBaseParentList(webType);
+                List<TVItemModel> tvItemParentList = await GetWebBaseParentList(webType);
                 Assert.NotNull(tvItemParentList);
 
                 PostTVItemModel postTVItemModel = FillPostTVItemModelForDelete(tvItemParentList);

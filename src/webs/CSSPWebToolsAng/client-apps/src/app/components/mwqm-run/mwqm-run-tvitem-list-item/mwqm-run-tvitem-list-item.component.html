@@ -1,33 +1,33 @@
-<mat-list *ngFor="let webBase of TVItemList; let i = index">
-    <app-tvitem-menu [TVItemModel]="webBase?.TVItemModel" [AppState]="AppState">
+<mat-list *ngFor="let tvItemStatMapModel of TVItemModelList; let i = index">
+    <app-tvitem-menu [TVItemModel]="tvItemStatMapModel" [AppState]="AppState">
     </app-tvitem-menu>
 
-    <button mat-button (click)="subPageService.SetSubPage(webBase?.TVItemModel)">
-        <span [ngClass]="webBase?.TVItemModel?.TVItem?.IsActive ? '' : 'inactive'">
+    <button mat-button (click)="subPageService.SetSubPage(tvItemStatMapModel)">
+        <span [ngClass]="tvItemStatMapModel?.TVItem?.IsActive ? '' : 'inactive'">
             <span *ngIf="AppState.MapVisible">
                 {{ i + 1 }}&nbsp;-&nbsp;
             </span>
             <span *ngIf="AppState.DetailVisible">
-                [{{ webBase?.TVItemModel.TVItem.TVItemID }}]
+                [{{ tvItemStatMapModel?.TVItem?.TVItemID }}]
             </span>
-            {{ webBase?.TVItemModel?.TVItemLanguageList[AppState.Language]?.TVText }}
+            {{ tvItemStatMapModel?.TVItemLanguageList[AppState.Language]?.TVText }}
         </span>
         <app-stat-count *ngIf="AppState.StatCountVisible" [TVType]="null"
-            [TVItemModel]="webBase?.TVItemModel"></app-stat-count>
+            [TVItemModel]="tvItemStatMapModel"></app-stat-count>
         <app-last-udpate-tv-item-model *ngIf="AppState.LastUpdateVisible"
-            [TVItemModel]="webBase?.TVItemModel"></app-last-udpate-tv-item-model>
+            [TVItemModel]="tvItemStatMapModel"></app-last-udpate-tv-item-model>
     </button>
 
-    <app-mwqm-run-item-view *ngIf="showTVItemService.TVItemVisible(webBase?.TVItemModel)"
-        [TVItemModel]="webBase?.TVItemModel" [AppState]="AppState">
+    <app-mwqm-run-item-view *ngIf="showTVItemService.TVItemVisible(tvItemStatMapModel)"
+        [TVItemModel]="tvItemStatMapModel" [AppState]="AppState">
     </app-mwqm-run-item-view>
 
     <app-mwqm-run-item-edit *ngIf="AppState.EditVisible"
-        [TVItemModel]="webBase?.TVItemModel" [AppState]="AppState">
+        [TVItemModel]="tvItemStatMapModel" [AppState]="AppState">
     </app-mwqm-run-item-edit>
 
     <app-mwqm-run-tvitem-list-detail [AppState]="AppState" *ngIf="AppState?.DetailVisible"
-        [TVItemModel]="webBase?.TVItemModel"
-        [MWQMRunModelSiteAndSample]="webMWQMSamplesService.GetMWQMRunModelSiteAndSampleDetail(webBase?.TVItemModel)">
+        [TVItemModel]="tvItemStatMapModel"
+        [MWQMRunModelSiteAndSampleModel]="webMWQMSamplesService.GetMWQMRunModelSiteAndSampleDetail(tvItemStatMapModel)">
     </app-mwqm-run-tvitem-list-detail>
 </mat-list>

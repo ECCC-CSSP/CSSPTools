@@ -3,7 +3,6 @@ import { ElementRef, ViewChild } from '@angular/core';
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Input } from '@angular/core';
 import { of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { AppLoaded } from 'src/app/models/AppLoaded.model';
 import { AppState } from 'src/app/models/AppState.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';

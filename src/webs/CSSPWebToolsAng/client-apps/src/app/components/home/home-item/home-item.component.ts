@@ -28,7 +28,7 @@ export class HomeItemComponent implements OnInit, OnDestroy {
     ) { }
 
   ngOnInit(): void {
-    this.AdminContactList = this.appLoadedService.AppLoaded$?.getValue()?.WebAllContacts.ContactModelList.filter(c => c.Contact.IsAdmin);
+    this.AdminContactList = this.appLoadedService.AppLoaded$?.getValue()?.WebAllContacts.ContactModelList.filter((c) => { return c.Contact.IsAdmin == true });
   }
 
   ngOnDestroy() {

@@ -35,35 +35,35 @@ namespace CSSPDBLocalServices.Tests
         {
             await LoadWebType(GrandParentTVItemID, webTypeGrandParent);
 
-            List<TVItemStatModel> tvItemParentList = await GetWebBaseParentList(webTypeGrandParent);
+            List<TVItemModel> tvItemParentList = await GetWebBaseParentList(webTypeGrandParent);
             Assert.NotNull(tvItemParentList);
 
             if (tvTypeParent == TVTypeEnum.Infrastructure)
             {
-                List<TVItemStatModel> webBaseInfrastructureList = await GetWebBaseList(webTypeGrandParent, tvTypeParent, ParentTVItemID);
+                List<TVItemModel> webBaseInfrastructureList = await GetWebBaseList(webTypeGrandParent, tvTypeParent, ParentTVItemID);
                 Assert.NotNull(webBaseInfrastructureList);
 
-                TVItemStatModel webBase = webBaseInfrastructureList.Where(c => c.TVItem.TVItemID == ParentTVItemID).FirstOrDefault();
+                TVItemModel webBase = webBaseInfrastructureList.Where(c => c.TVItem.TVItemID == ParentTVItemID).FirstOrDefault();
                 Assert.NotNull(webBase);
 
                 tvItemParentList.Add(webBase);
             }
             else if (tvTypeParent == TVTypeEnum.MWQMSite)
             {
-                List<TVItemStatModel> webBaseMWQMSiteList = await GetWebBaseList(webTypeGrandParent, tvTypeParent, ParentTVItemID);
+                List<TVItemModel> webBaseMWQMSiteList = await GetWebBaseList(webTypeGrandParent, tvTypeParent, ParentTVItemID);
                 Assert.NotNull(webBaseMWQMSiteList);
 
-                TVItemStatModel webBase = webBaseMWQMSiteList.Where(c => c.TVItem.TVItemID == ParentTVItemID).FirstOrDefault();
+                TVItemModel webBase = webBaseMWQMSiteList.Where(c => c.TVItem.TVItemID == ParentTVItemID).FirstOrDefault();
                 Assert.NotNull(webBase);
 
                 tvItemParentList.Add(webBase);
             }
             else if (tvTypeParent == TVTypeEnum.PolSourceSite)
             {
-                List<TVItemStatModel> webBasePolSourceSiteList = await GetWebBaseList(webTypeGrandParent, tvTypeParent, ParentTVItemID);
+                List<TVItemModel> webBasePolSourceSiteList = await GetWebBaseList(webTypeGrandParent, tvTypeParent, ParentTVItemID);
                 Assert.NotNull(webBasePolSourceSiteList);
 
-                TVItemStatModel webBase = webBasePolSourceSiteList.Where(c => c.TVItem.TVItemID == ParentTVItemID).FirstOrDefault();
+                TVItemModel webBase = webBasePolSourceSiteList.Where(c => c.TVItem.TVItemID == ParentTVItemID).FirstOrDefault();
                 Assert.NotNull(webBase);
 
                 tvItemParentList.Add(webBase);

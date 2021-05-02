@@ -5,7 +5,7 @@ import { AppLoaded } from 'src/app/models/AppLoaded.model';
 import { AppState } from 'src/app/models/AppState.model';
 import { MapInfoModel } from 'src/app/models/generated/web/MapInfoModel.model';
 import { StatMWQMSite } from 'src/app/models/generated/web/StatMWQMSite.model';
-import { TVItemStatMapModel } from 'src/app/models/generated/web/TVItemStatMapModel.model';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { MapHelperService } from 'src/app/services/map/map-helper.service';
@@ -15,14 +15,14 @@ import { MapHelperService } from 'src/app/services/map/map-helper.service';
 })
 export class MapMarkersService {
 
-  tvItemStatMapModelList: TVItemStatMapModel[];
+  tvItemStatMapModelList: TVItemModel[];
 
   constructor(private appStateService: AppStateService,
     private appLoadedService: AppLoadedService,
     private mapHelperService: MapHelperService) {
   }
 
-  DrawMarkers(tvItemStatMapModelList: TVItemStatMapModel[]) {
+  DrawMarkers(tvItemStatMapModelList: TVItemModel[]) {
     this.tvItemStatMapModelList = tvItemStatMapModelList;
 
     let map: google.maps.Map = this.appLoadedService.AppLoaded$.getValue().Map;
@@ -52,7 +52,7 @@ export class MapMarkersService {
           }
 
           // if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.MWQMSites) {
-          //   let statMWQMSiteList: StatMWQMSite[] = this.appLoadedService.AppLoaded$.getValue()?.StatMWQMSiteList?.filter(c => c.TVItemStatMapModel.TVItem.TVItemID == tvItemStatMapModel.TVItem.TVItemID);
+          //   let statMWQMSiteList: StatMWQMSite[] = this.appLoadedService.AppLoaded$.getValue()?.StatMWQMSiteList?.filter(c => c.TVItemModel.TVItem.TVItemID == tvItemStatMapModel.TVItem.TVItemID);
 
           //   if (statMWQMSiteList && statMWQMSiteList.length > 0) {
           //     strokeColor = statMWQMSiteList[0]?.StatMWQMSiteSampleList[0]?.ColorAndLetter?.hexColor;

@@ -6,11 +6,10 @@
  */
 
 import { MWQMSiteModel } from 'src/app/models/generated/web/MWQMSiteModel.model';
-import { TVItemStatMapModel } from 'src/app/models/generated/web/TVItemStatMapModel.model';
-import { TVItemStatModel } from 'src/app/models/generated/web/TVItemStatModel.model';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 
 export class WebMWQMSites {
     MWQMSiteModelList: MWQMSiteModel[];
-    TVItemStatMapModel: TVItemStatMapModel;
-    TVItemStatModelParentList: TVItemStatModel[];
+    TVItemModel: TVItemModel;
+    TVItemModelParentList: TVItemModel[];
 }

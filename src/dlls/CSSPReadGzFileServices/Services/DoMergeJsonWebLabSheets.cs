@@ -29,20 +29,20 @@ namespace ReadGzFileServices
     {
         private static void DoMergeJsonWebLabSheets(WebLabSheets WebLabSheets, WebLabSheets WebLabSheetsLocal)
         {
-            if (WebLabSheetsLocal.TVItemStatMapModel.TVItem.DBCommand != DBCommandEnum.Original
-               || WebLabSheetsLocal.TVItemStatMapModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-               || WebLabSheetsLocal.TVItemStatMapModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
+            if (WebLabSheetsLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
+               || WebLabSheetsLocal.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
+               || WebLabSheetsLocal.TVItemModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
             {
-                WebLabSheets.TVItemStatMapModel = WebLabSheetsLocal.TVItemStatMapModel;
+                WebLabSheets.TVItemModel = WebLabSheetsLocal.TVItemModel;
             }
 
-            if ((from c in WebLabSheetsLocal.TVItemStatModelParentList
+            if ((from c in WebLabSheetsLocal.TVItemModelParentList
                  where c.TVItem.DBCommand != DBCommandEnum.Original
                  || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
                  || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original
                  select c).Any())
             {
-                WebLabSheets.TVItemStatModelParentList = WebLabSheetsLocal.TVItemStatModelParentList;
+                WebLabSheets.TVItemModelParentList = WebLabSheetsLocal.TVItemModelParentList;
             }
 
             List<LabSheetModel> LabSheetModelList = (from c in WebLabSheetsLocal.LabSheetModelList

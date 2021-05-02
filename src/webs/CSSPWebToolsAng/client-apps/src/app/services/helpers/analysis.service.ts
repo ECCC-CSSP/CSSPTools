@@ -8,7 +8,7 @@ import { EnumIDAndText } from 'src/app/models/generated/helper/EnumIDAndText.mod
 import { StatMWQMRun } from 'src/app/models/generated/web/StatMWQMRun.model';
 import { StatMWQMSite } from 'src/app/models/generated/web/StatMWQMSite.model';
 import { AppStateService } from 'src/app/services/app-state.service';
-import { WebMWQMSampleService } from '../loaders/web-mwqm-samples.service';
+import { WebMWQMSamplesService } from 'src/app/services/loaders/web-mwqm-samples.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +16,8 @@ import { WebMWQMSampleService } from '../loaders/web-mwqm-samples.service';
 export class AnalysisService {
 
   constructor(private appStateService: AppStateService,
-    private webMWQMSampleService: WebMWQMSampleService) {
-  }
+    private webMWQMSamplesService: WebMWQMSamplesService)
+    {}
 
 
   GetRainHighlight(statMWQMRun: StatMWQMRun): string {
@@ -108,7 +108,7 @@ export class AnalysisService {
 
   ToggleRemoveFromStat(statEndMWQMRun: StatMWQMRun) {
     statEndMWQMRun.RemoveFromStat = !statEndMWQMRun.RemoveFromStat;
-    this.webMWQMSampleService.FillStatMWQMSiteList();
+    this.webMWQMSamplesService.FillStatMWQMSiteList();
   }
 
   ToggleAnalysisFullYear(): void {
@@ -183,27 +183,27 @@ export class AnalysisService {
 
   SetStartRun(statStartMWQMRun: StatMWQMRun) {
     this.appStateService.UpdateAppState(<AppState>{ AnalysisStartRun: statStartMWQMRun });
-    this.webMWQMSampleService.FillStatMWQMSiteList();
+    this.webMWQMSamplesService.FillStatMWQMSiteList();
   }
 
   SetEndRun(statEndMWQMRun: StatMWQMRun) {
     this.appStateService.UpdateAppState(<AppState>{ AnalysisEndRun: statEndMWQMRun });
-    this.webMWQMSampleService.FillStatMWQMSiteList();
+    this.webMWQMSamplesService.FillStatMWQMSiteList();
   }
 
   SetRuns(runs: number) {
     this.appStateService.UpdateAppState(<AppState>{ AnalysisRuns: runs });
-    this.webMWQMSampleService.FillStatMWQMSiteList();
+    this.webMWQMSamplesService.FillStatMWQMSiteList();
   }
 
   SetCalculationType(statCalculationType: AnalysisCalculationTypeEnum) {
     this.appStateService.UpdateAppState(<AppState>{ AnalysisCalculationType: statCalculationType });
-    this.webMWQMSampleService.FillStatMWQMSiteList();
+    this.webMWQMSamplesService.FillStatMWQMSiteList();
   }
 
   SetHighlightSalFromAverage(sal: number) {
     this.appStateService.UpdateAppState(<AppState>{ AnalysisHighlightSalFromAverage: sal });
-    this.webMWQMSampleService.FillStatMWQMSiteList();
+    this.webMWQMSamplesService.FillStatMWQMSiteList();
   }
 
   // SetShortRange(shortRange: number) {
@@ -216,42 +216,42 @@ export class AnalysisService {
 
   SetDry24h(dry24h: number) {
     this.appStateService.UpdateAppState(<AppState>{ AnalysisDry24h: dry24h });
-    this.webMWQMSampleService.FillStatMWQMSiteList();
+    this.webMWQMSamplesService.FillStatMWQMSiteList();
   }
 
   SetDry48h(dry48h: number) {
-    this.webMWQMSampleService.FillStatMWQMSiteList();
+    this.webMWQMSamplesService.FillStatMWQMSiteList();
     this.appStateService.UpdateAppState(<AppState>{ AnalysisDry48h: dry48h });
   }
 
   SetDry72h(dry72h: number) {
-    this.webMWQMSampleService.FillStatMWQMSiteList();
+    this.webMWQMSamplesService.FillStatMWQMSiteList();
     this.appStateService.UpdateAppState(<AppState>{ AnalysisDry72h: dry72h });
   }
 
   SetDry96h(dry96h: number) {
-    this.webMWQMSampleService.FillStatMWQMSiteList();
+    this.webMWQMSamplesService.FillStatMWQMSiteList();
     this.appStateService.UpdateAppState(<AppState>{ AnalysisDry96h: dry96h });
   }
 
   SetWet24h(wet24h: number) {
     this.appStateService.UpdateAppState(<AppState>{ AnalysisWet24h: wet24h });
-    this.webMWQMSampleService.FillStatMWQMSiteList();
+    this.webMWQMSamplesService.FillStatMWQMSiteList();
   }
 
   SetWet48h(wet48h: number) {
     this.appStateService.UpdateAppState(<AppState>{ AnalysisWet48h: wet48h });
-    this.webMWQMSampleService.FillStatMWQMSiteList();
+    this.webMWQMSamplesService.FillStatMWQMSiteList();
   }
 
   SetWet72h(wet72h: number) {
     this.appStateService.UpdateAppState(<AppState>{ AnalysisWet72h: wet72h });
-    this.webMWQMSampleService.FillStatMWQMSiteList();
+    this.webMWQMSamplesService.FillStatMWQMSiteList();
   }
 
   SetWet96h(wet96h: number) {
     this.appStateService.UpdateAppState(<AppState>{ AnalysisWet96h: wet96h });
-    this.webMWQMSampleService.FillStatMWQMSiteList();
+    this.webMWQMSamplesService.FillStatMWQMSiteList();
   }
 
 }

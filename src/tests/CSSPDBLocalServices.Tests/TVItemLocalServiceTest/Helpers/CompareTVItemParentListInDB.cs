@@ -14,7 +14,7 @@ namespace CSSPDBLocalServices.Tests
 {
     public partial class TVItemLocalServiceTest
     {
-        private void CompareTVItemParentListInDB(List<TVItemStatModel> tvItemParentList)
+        private void CompareTVItemParentListInDB(List<TVItemModel> tvItemParentList)
         {
             TVItem tvItem = new TVItem();
             TVItemLanguage tvItemLanguage = new TVItemLanguage();

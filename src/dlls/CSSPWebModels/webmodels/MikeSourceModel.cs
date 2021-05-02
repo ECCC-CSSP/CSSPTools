@@ -12,7 +12,7 @@ namespace CSSPWebModels
     public partial class MikeSourceModel
     {
         #region Properties
-        public TVItemMapModel TVItemMapModel { get; set; }
+        public TVItemModel TVItemModel { get; set; }
         public MikeSource MikeSource { get; set; }
         public List<MikeSourceStartEnd> MikeSourceStartEndList { get; set; }
         #endregion Properties
@@ -20,7 +20,7 @@ namespace CSSPWebModels
         #region Constructors
         public MikeSourceModel()
         {
-            TVItemMapModel = new TVItemMapModel();
+            TVItemModel = new TVItemModel();
             MikeSource = new MikeSource();
             MikeSourceStartEndList = new List<MikeSourceStartEnd>();
         }

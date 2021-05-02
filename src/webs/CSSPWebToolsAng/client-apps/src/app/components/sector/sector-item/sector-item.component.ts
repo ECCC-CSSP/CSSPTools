@@ -7,7 +7,6 @@ import { AppLanguageService } from 'src/app/services/app-language.service';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { ComponentButtonSelectionService } from 'src/app/services/helpers/component-button-selection.service';
-import { ComponentDataClearService } from 'src/app/services/helpers/component-data-clear.service';
 import { ComponentShowService } from 'src/app/services/helpers/component-show.service';
 import { StatCountService } from 'src/app/services/helpers/stat-count.service';
 import { TVItemSortOrderService } from 'src/app/services/helpers/tvitem-sort-order.service';
@@ -32,8 +31,7 @@ export class SectorItemComponent implements OnInit, OnDestroy {
     public tvItemSortOrderService: TVItemSortOrderService,
     public statCountService: StatCountService,
     public componentButtonSelectionService: ComponentButtonSelectionService,
-    public componentShowService: ComponentShowService,
-    private componentDataClearService: ComponentDataClearService) { }
+    public componentShowService: ComponentShowService) { }
 
   ngOnInit(): void {
     this.webSectorService.DoWebSector(this.appStateService.AppState$.getValue().CurrentTVItemID, true);

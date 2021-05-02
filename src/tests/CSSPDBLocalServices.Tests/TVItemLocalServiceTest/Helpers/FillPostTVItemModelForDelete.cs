@@ -18,7 +18,7 @@ namespace CSSPDBLocalServices.Tests
 {
     public partial class TVItemLocalServiceTest
     {
-        private PostTVItemModel FillPostTVItemModelForDelete(List<TVItemStatModel> tvItemCurrentParentList)
+        private PostTVItemModel FillPostTVItemModelForDelete(List<TVItemModel> tvItemCurrentParentList)
         {
             TVItem tvItemParent = null;
             //TVItem tvItemGrandParent = null;

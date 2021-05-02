@@ -6,12 +6,11 @@
  */
 
 import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model';
-import { TVItemStatMapModel } from 'src/app/models/generated/web/TVItemStatMapModel.model';
-import { TVItemStatModel } from 'src/app/models/generated/web/TVItemStatModel.model';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 
 export class WebRoot {
     TVFileModelList: TVFileModel[];
-    TVItemStatMapModel: TVItemStatMapModel;
-    TVItemStatMapModelCountryList: TVItemStatMapModel[];
-    TVItemStatModelParentList: TVItemStatModel[];
+    TVItemModel: TVItemModel;
+    TVItemModelCountryList: TVItemModel[];
+    TVItemModelParentList: TVItemModel[];
 }

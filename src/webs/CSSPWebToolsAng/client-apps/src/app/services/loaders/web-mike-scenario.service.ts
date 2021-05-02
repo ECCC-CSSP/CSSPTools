@@ -45,12 +45,6 @@ export class WebMikeScenariosService {
         let languageEnum = GetLanguageEnum();
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
             WebMikeScenario: {},
-            // MikeBoundaryConditionModelMeshList: [],
-            // MikeBoundaryConditionModelWebTideList: [],
-            // MikeScenario: {},
-            // MikeSourceModelList: [],
-            // BreadCrumbMikeScenarioWebBaseList: [],
-            // BreadCrumbWebBaseList: []
         });
         this.appStateService.UpdateAppState(<AppState>{
             Status: `${ this.appLanguageService.AppLanguage.Loading[this.LangID]} - ${ WebMikeScenarios }`,
@@ -83,12 +77,6 @@ export class WebMikeScenariosService {
     private UpdateWebMikeScenarios(x: WebMikeScenarios) {
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
             WebMikeScenario: x,
-            // MikeBoundaryConditionModelMeshList: x?.MikeBoundaryConditionModelMeshList,
-            // MikeBoundaryConditionModelWebTideList: x?.MikeBoundaryConditionModelWebTideList,
-            // MikeScenario: x?.MikeScenario,
-            // MikeSourceModelList: x?.MikeSourceModelList,
-            // BreadCrumbMikeScenarioWebBaseList: x?.TVItemParentList,
-            // BreadCrumbWebBaseList: x?.TVItemParentList
         });
 
         if (this.DoOther) {

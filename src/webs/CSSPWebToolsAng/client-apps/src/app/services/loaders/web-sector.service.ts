@@ -85,35 +85,11 @@ export class WebSectorService {
   }
 
   private UpdateWebSector(x: WebSector) {
-    // let SectorSubsectorList: WebBase[] = [];
-    // let SectorMIKEScenarioList: WebBase[] = [];
-
-    // // doing SectorSubsectorList
-    // if (!this.appStateService.AppState$?.getValue()?.InactVisible) {
-    //   SectorSubsectorList = x?.TVItemSubsectorList.filter((subsector) => { return subsector.TVItemModel.TVItem.IsActive == true });
-    // }
-    // else {
-    //   SectorSubsectorList = x?.TVItemSubsectorList;
-    // }
-
-    // // doing SectorMIKEScenarioList
-    // if (!this.appStateService.AppState$?.getValue()?.InactVisible) {
-    //   SectorMIKEScenarioList = x?.TVItemMikeScenarioList.filter((mikescenario) => { return mikescenario.TVItemModel.TVItem.IsActive == true });
-    // }
-    // else {
-    //   SectorMIKEScenarioList = x?.TVItemMikeScenarioList;
-    // }
-
     this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
       WebSector: x,
-      // SectorSubsectorList: this.sortTVItemListService.SortTVItemList(SectorSubsectorList, x?.TVItemParentList),
-      // //SectorMIKEScenarioList: this.sortTVItemListService.SortTVItemList(SectorMIKEScenarioList, x?.TVItemParentList),
-      // SectorFileListList: this.structureTVFileListService.StructureTVFileList(x.TVItemModel),
-      // BreadCrumbSectorWebBaseList: x?.TVItemParentList,
-      // BreadCrumbWebBaseList: x?.TVItemParentList
     });
 
-    this.historyService.AddHistory(this.appLoadedService.AppLoaded$.getValue()?.WebSector?.TVItemStatMapModel);
+    this.historyService.AddHistory(this.appLoadedService.AppLoaded$.getValue()?.WebSector?.TVItemModel);
 
     if (this.DoOther) {
       if (this.componentDataLoadedService.DataLoadedWebSector()) {
@@ -124,24 +100,20 @@ export class WebSectorService {
       this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
     }
 
-    // let webBaseSector: WebBase[] = <WebBase[]>[
-    //   <WebBase>{ TVItemModel: this.appLoadedService.AppLoaded$.getValue().WebSector.TVItemModel },
-    // ];
-
     if (this.appStateService.AppState$.getValue().GoogleJSLoaded) {
       if (this.appStateService.AppState$.getValue().SectorSubComponent == SectorSubComponentEnum.Subsectors) {
         this.mapService.ClearMap();
         this.mapService.DrawObjects([
-          ...this.appLoadedService.AppLoaded$.getValue().WebSector.TVItemStatMapModelSubsectorList,
-          ...[this.appLoadedService.AppLoaded$.getValue().WebSector.TVItemStatMapModel]
+          ...this.appLoadedService.AppLoaded$.getValue().WebSector.TVItemModelSubsectorList,
+          ...[this.appLoadedService.AppLoaded$.getValue().WebSector.TVItemModel]
         ]);
       }
 
       if (this.appStateService.AppState$.getValue().SectorSubComponent == SectorSubComponentEnum.MIKEScenarios) {
         this.mapService.ClearMap();
         this.mapService.DrawObjects([
-          ...this.appLoadedService.AppLoaded$.getValue().WebSector.TVItemStatMapModelSubsectorList,
-          ...[this.appLoadedService.AppLoaded$.getValue().WebSector.TVItemStatMapModel]
+          ...this.appLoadedService.AppLoaded$.getValue().WebSector.TVItemModelSubsectorList,
+          ...[this.appLoadedService.AppLoaded$.getValue().WebSector.TVItemModel]
         ]);
       }
     }

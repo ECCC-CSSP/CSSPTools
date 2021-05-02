@@ -90,50 +90,12 @@ export class WebSubsectorService {
     }
 
     private UpdateWebSubsector(x: WebSubsector) {
-        // let SubsectorMWQMSiteList: WebBase[] = [];
-        // let SubsectorMWQMRunList: WebBase[] = [];
-        // let SubsectorPolSourceSiteList: WebBase[] = [];
-
-        // // doing MWQMSiteList
-        // if (!this.appStateService.AppState$?.getValue()?.InactVisible) {
-        //     SubsectorMWQMSiteList = x?.TVItemMWQMSiteList.filter((mwqmsite) => { return mwqmsite.TVItemModel.TVItem.IsActive == true });
-        // }
-        // else {
-        //     SubsectorMWQMSiteList = x?.TVItemMWQMSiteList;
-        // }
-
-        // // doing MWQMRunList
-        // if (!this.appStateService.AppState$?.getValue()?.InactVisible) {
-        //     SubsectorMWQMRunList = x?.TVItemMWQMRunList.filter((mwqmrun) => { return mwqmrun.TVItemModel.TVItem.IsActive == true });
-        // }
-        // else {
-        //     SubsectorMWQMRunList = x?.TVItemMWQMRunList;
-        // }
-
-        // // doing PollutionSourceSiteList
-        // if (!this.appStateService.AppState$?.getValue()?.InactVisible) {
-        //     SubsectorPolSourceSiteList = x?.TVItemPolSourceSiteList.filter((polsourcesite) => { return polsourcesite.TVItemModel.TVItem.IsActive == true });
-        // }
-        // else {
-        //     SubsectorPolSourceSiteList = x?.TVItemPolSourceSiteList;
-        // }
 
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
             WebSubsector: x,
-            // SubsectorMWQMSiteList: this.sortTVItemListService.SortTVItemList(SubsectorMWQMSiteList, x?.TVItemParentList),
-            // SubsectorMWQMRunList: this.sortTVItemListService.SortTVItemList(SubsectorMWQMRunList, x?.TVItemParentList),
-            // SubsectorPolSourceSiteList: this.sortTVItemListService.SortTVItemList(SubsectorPolSourceSiteList, x?.TVItemParentList),
-            // SubsectorFileListList: this.structureTVFileListService.StructureTVFileList(x.TVItemModel),
-            // LabSheetModelList: x?.LabSheetModelList,
-            // MWQMAnalysisReportParameterList: x?.MWQMAnalysisReportParameterList,
-            // MWQMSubsector: x?.MWQMSubsector,
-            // MWQMSubsectorLanguageList: x?.MWQMSubsectorLanguageList,
-            // UseOfSiteList: x?.UseOfSiteList,
-            // BreadCrumbSubsectorWebBaseList: x?.TVItemParentList,
-            // BreadCrumbWebBaseList: x?.TVItemParentList
         });
 
-        this.historyService.AddHistory(this.appLoadedService.AppLoaded$.getValue()?.WebSubsector?.TVItemStatMapModel);
+        this.historyService.AddHistory(this.appLoadedService.AppLoaded$.getValue()?.WebSubsector?.TVItemModel);
 
         if (this.DoOther) {
             if (this.componentDataLoadedService.DataLoadedWebSubsector()) {
@@ -144,16 +106,12 @@ export class WebSubsectorService {
             this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
         }
 
-        // let webBaseSubsector: WebBase[] = <WebBase[]>[
-        //     <WebBase>{ TVItemModel: this.appLoadedService.AppLoaded$.getValue().WebSubsector.TVItemModel },
-        // ];
-
         if (this.appStateService.AppState$.getValue().GoogleJSLoaded) {
             if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.MWQMSites) {
                 this.mapService.ClearMap();
                 this.mapService.DrawObjects([
                     //...this.appLoadedService.AppLoaded$.getValue().WebMWQMSites.MWQMSiteModelList,
-                    ...[this.appLoadedService.AppLoaded$.getValue().WebSubsector.TVItemStatMapModel],
+                    ...[this.appLoadedService.AppLoaded$.getValue().WebSubsector.TVItemModel],
                 ]);
             }
 
@@ -161,7 +119,7 @@ export class WebSubsectorService {
                 this.mapService.ClearMap();
                 this.mapService.DrawObjects([
                     //...this.appLoadedService.AppLoaded$.getValue().WebMWQMSites.MWQMSiteModelList,
-                    ...[this.appLoadedService.AppLoaded$.getValue().WebSubsector.TVItemStatMapModel],
+                    ...[this.appLoadedService.AppLoaded$.getValue().WebSubsector.TVItemModel],
                 ]);
             }
 
@@ -169,7 +127,7 @@ export class WebSubsectorService {
                 this.mapService.ClearMap();
                 this.mapService.DrawObjects([
                     //...this.appLoadedService.AppLoaded$.getValue().WebMWQMRuns.MWQMRunModelList,
-                    ...[this.appLoadedService.AppLoaded$.getValue().WebSubsector.TVItemStatMapModel],
+                    ...[this.appLoadedService.AppLoaded$.getValue().WebSubsector.TVItemModel],
                 ]);
             }
 
@@ -177,7 +135,7 @@ export class WebSubsectorService {
                 this.mapService.ClearMap();
                 this.mapService.DrawObjects([
                     //...this.appLoadedService.AppLoaded$.getValue().WebPolSourceSites.PolSourceSiteModelList,
-                    ...[this.appLoadedService.AppLoaded$.getValue().WebSubsector.TVItemStatMapModel],
+                    ...[this.appLoadedService.AppLoaded$.getValue().WebSubsector.TVItemModel],
                 ]);
             }
 
@@ -185,7 +143,7 @@ export class WebSubsectorService {
                 this.mapService.ClearMap();
                 this.mapService.DrawObjects([
                     //...this.appLoadedService.AppLoaded$.getValue().WebMWQMSites.MWQMSiteModelList,
-                    ...[this.appLoadedService.AppLoaded$.getValue().WebSubsector.TVItemStatMapModel],
+                    ...[this.appLoadedService.AppLoaded$.getValue().WebSubsector.TVItemModel],
                 ]);
             }
 
@@ -193,7 +151,7 @@ export class WebSubsectorService {
                 this.mapService.ClearMap();
                 this.mapService.DrawObjects([
                     //...this.appLoadedService.AppLoaded$.getValue().WebMWQMSites.MWQMSiteModelList,
-                    ...[this.appLoadedService.AppLoaded$.getValue().WebSubsector.TVItemStatMapModel],
+                    ...[this.appLoadedService.AppLoaded$.getValue().WebSubsector.TVItemModel],
                 ]);
             }
 
@@ -201,7 +159,7 @@ export class WebSubsectorService {
                 this.mapService.ClearMap();
                 this.mapService.DrawObjects([
                     //...this.appLoadedService.AppLoaded$.getValue().WebMWQMSites.MWQMSiteModelList,
-                    ...[this.appLoadedService.AppLoaded$.getValue().WebSubsector.TVItemStatMapModel],
+                    ...[this.appLoadedService.AppLoaded$.getValue().WebSubsector.TVItemModel],
                 ]);
             }
         }

@@ -6,9 +6,9 @@
  */
 
 import { MikeBoundaryCondition } from 'src/app/models/generated/db/MikeBoundaryCondition.model';
-import { TVItemMapModel } from 'src/app/models/generated/web/TVItemMapModel.model';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 
 export class MikeBoundaryConditionModel {
     MikeBoundaryCondition: MikeBoundaryCondition;
-    TVItemMapModel: TVItemMapModel;
+    TVItemModel: TVItemModel;
 }

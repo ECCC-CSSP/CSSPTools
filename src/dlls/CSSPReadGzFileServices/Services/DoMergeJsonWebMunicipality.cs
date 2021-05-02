@@ -29,20 +29,20 @@ namespace ReadGzFileServices
     {
         private void DoMergeJsonWebMunicipality(WebMunicipality WebMunicipality, WebMunicipality WebMunicipalityLocal)
         {
-            if (WebMunicipalityLocal.TVItemStatMapModel.TVItem.DBCommand != DBCommandEnum.Original
-              || WebMunicipalityLocal.TVItemStatMapModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-              || WebMunicipalityLocal.TVItemStatMapModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
+            if (WebMunicipalityLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
+              || WebMunicipalityLocal.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
+              || WebMunicipalityLocal.TVItemModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
             {
-                WebMunicipality.TVItemStatMapModel = WebMunicipalityLocal.TVItemStatMapModel;
+                WebMunicipality.TVItemModel = WebMunicipalityLocal.TVItemModel;
             }
 
-            if ((from c in WebMunicipalityLocal.TVItemStatModelParentList
+            if ((from c in WebMunicipalityLocal.TVItemModelParentList
                  where c.TVItem.DBCommand != DBCommandEnum.Original
                  || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
                  || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original
                  select c).Any())
             {
-                WebMunicipality.TVItemStatModelParentList = WebMunicipalityLocal.TVItemStatModelParentList;
+                WebMunicipality.TVItemModelParentList = WebMunicipalityLocal.TVItemModelParentList;
             }
 
             List<ContactModel> ContactModelList = (from c in WebMunicipalityLocal.MunicipalityContactModelList

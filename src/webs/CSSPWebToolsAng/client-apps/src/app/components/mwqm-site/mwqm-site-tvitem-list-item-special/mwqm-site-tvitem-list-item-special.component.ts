@@ -10,7 +10,7 @@ import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { DateFormatService } from 'src/app/services/helpers/date-format.service';
 import { SubPageService } from 'src/app/services/helpers/sub-page.service';
-import { WebMWQMSampleService } from 'src/app/services/loaders/web-mwqm-samples.service';
+import { WebMWQMSamplesService } from 'src/app/services/loaders/web-mwqm-samples.service';
 import { MapService } from 'src/app/services/map/map.service';
 
 @Component({
@@ -37,7 +37,7 @@ export class MWQMSiteTVItemListItemSpecialComponent implements OnInit, OnDestroy
     public subPageService: SubPageService,
     public mapService: MapService,
     public dateFormatService: DateFormatService,
-    public webMWQMSamplesService: WebMWQMSampleService) {
+    public webMWQMSamplesService: WebMWQMSamplesService) {
   }
 
   ngOnInit() {

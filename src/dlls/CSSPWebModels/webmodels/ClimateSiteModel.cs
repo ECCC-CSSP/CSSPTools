@@ -12,7 +12,7 @@ namespace CSSPWebModels
     public partial class ClimateSiteModel
     {
         #region Properties
-        public TVItemMapModel TVItemMapModel { get; set; }
+        public TVItemModel TVItemModel { get; set; }
         public ClimateSite ClimateSite { get; set; }
         public List<ClimateDataValue> ClimateDataValueList { get; set; }
         #endregion Properties
@@ -20,7 +20,7 @@ namespace CSSPWebModels
         #region Constructors
         public ClimateSiteModel()
         {
-            TVItemMapModel = new TVItemMapModel();
+            TVItemModel = new TVItemModel();
             ClimateSite = new ClimateSite();
             ClimateDataValueList = new List<ClimateDataValue>();
         }

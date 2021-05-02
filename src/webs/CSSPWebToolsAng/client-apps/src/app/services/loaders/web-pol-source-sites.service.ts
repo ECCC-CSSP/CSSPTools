@@ -87,7 +87,7 @@ export class WebPolSourceSitesService {
             WebPolSourceSites: x,
         });
 
-        this.historyService.AddHistory(this.appLoadedService.AppLoaded$.getValue()?.WebPolSourceSites?.TVItemStatMapModel);
+        this.historyService.AddHistory(this.appLoadedService.AppLoaded$.getValue()?.WebPolSourceSites?.TVItemModel);
 
         if (this.DoOther) {
             if (this.componentDataLoadedService.DataLoadedWebSubsector()) {

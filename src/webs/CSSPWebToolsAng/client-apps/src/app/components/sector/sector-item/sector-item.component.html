@@ -59,16 +59,10 @@
 
 <app-subsector-tvitem-list-item *ngIf="appStateService.AppState$?.getValue()?.SectorSubComponent == sectorSubComponentEnum.Subsectors"
     [AppState]="appStateService.AppState$?.getValue()"
-    [TVItemList]="appLoadedService.AppLoaded$?.getValue()?.SectorSubsectorList">
+    [TVItemModelList]="appLoadedService.AppLoaded$?.getValue()?.WebSector.TVItemModelSubsectorList">
 </app-subsector-tvitem-list-item>
 
 <app-file-list *ngIf="appStateService.AppState$?.getValue()?.SectorSubComponent == sectorSubComponentEnum.Files"
     [AppState]="appStateService.AppState$?.getValue()"
-    [TVFileModelListList]="appLoadedService.AppLoaded$?.getValue()?.SectorFileListList">
+    [TVFileModelListList]="appLoadedService.AppLoaded$?.getValue()?.WebSector.TVFileModelList">
 </app-file-list>
-
-<app-mike-scenario-tvitem-list-item
-    *ngIf="appStateService.AppState$?.getValue()?.SectorSubComponent == sectorSubComponentEnum.MIKEScenarios"
-    [AppState]="appStateService.AppState$?.getValue()"
-    [TVItemList]="appLoadedService.AppLoaded$?.getValue()?.SectorMIKEScenarioList">
-</app-mike-scenario-tvitem-list-item>

@@ -86,24 +86,11 @@ export class WebRootService {
     }
 
     private UpdateWebRoot(x: WebRoot) {
-        // let RootCountryList: WebBase[] = [];
-
-        // if (!this.appStateService.AppState$?.getValue()?.InactVisible) {
-        //     RootCountryList = x?.TVItemCountryList.filter((country) => { return country.TVItemModel.TVItem.IsActive == true });
-        // }
-        // else {
-        //     RootCountryList = x?.TVItemCountryList;
-        // }
-
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
             WebRoot: x,
-            // RootCountryList: this.sortTVItemListService.SortTVItemList(RootCountryList, x?.TVItemParentList),
-            // RootFileListList: this.structureTVFileListService.StructureTVFileList(x.TVItemModel),
-            // BreadCrumbRootWebBaseList: x?.TVItemParentList,
-            // BreadCrumbWebBaseList: x?.TVItemParentList
         });
 
-        this.historyService.AddHistory(this.appLoadedService.AppLoaded$.getValue()?.WebRoot?.TVItemStatMapModel);
+        this.historyService.AddHistory(this.appLoadedService.AppLoaded$.getValue()?.WebRoot?.TVItemModel);
 
         if (this.DoOther) {
             if (this.componentDataLoadedService.DataLoadedWebRoot()) {
@@ -114,32 +101,28 @@ export class WebRootService {
             this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
         }
 
-        // let webBaseRoot: TVItemStatMapModel[] = <TVItemStatMapModel[]>[
-        //     <TVItemStatMapModel>{ TVItemModel: this.appLoadedService.AppLoaded$.getValue().WebRoot..TVItemStatMapModel },
-        // ];
-
         if (this.appStateService.AppState$.getValue().GoogleJSLoaded) {
             if (this.appStateService.AppState$.getValue().RootSubComponent == RootSubComponentEnum.Countries) {
                 this.mapService.ClearMap();
                 this.mapService.DrawObjects([
-                    ...this.appLoadedService.AppLoaded$.getValue().WebRoot.TVItemStatMapModelCountryList,
-                    ...[this.appLoadedService.AppLoaded$.getValue().WebRoot.TVItemStatMapModel]
+                    ...this.appLoadedService.AppLoaded$.getValue().WebRoot.TVItemModelCountryList,
+                    ...[this.appLoadedService.AppLoaded$.getValue().WebRoot.TVItemModel]
                 ]);
             }
 
             if (this.appStateService.AppState$.getValue().RootSubComponent == RootSubComponentEnum.Files) {
                 this.mapService.ClearMap();
                 this.mapService.DrawObjects([
-                    ...this.appLoadedService.AppLoaded$.getValue().WebRoot.TVItemStatMapModelCountryList,
-                    ...[this.appLoadedService.AppLoaded$.getValue().WebRoot.TVItemStatMapModel]
+                    ...this.appLoadedService.AppLoaded$.getValue().WebRoot.TVItemModelCountryList,
+                    ...[this.appLoadedService.AppLoaded$.getValue().WebRoot.TVItemModel]
                 ]);
             }
 
             if (this.appStateService.AppState$.getValue().RootSubComponent == RootSubComponentEnum.ExportArcGIS) {
                 this.mapService.ClearMap();
                 this.mapService.DrawObjects([
-                    ...this.appLoadedService.AppLoaded$.getValue().WebRoot.TVItemStatMapModelCountryList,
-                    ...[this.appLoadedService.AppLoaded$.getValue().WebRoot.TVItemStatMapModel]
+                    ...this.appLoadedService.AppLoaded$.getValue().WebRoot.TVItemModelCountryList,
+                    ...[this.appLoadedService.AppLoaded$.getValue().WebRoot.TVItemModel]
                 ]);
             }
         }

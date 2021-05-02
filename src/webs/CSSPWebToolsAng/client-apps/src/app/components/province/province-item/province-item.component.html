@@ -74,18 +74,18 @@
 
 <app-area-tvitem-list-item *ngIf="appStateService.AppState$?.getValue()?.ProvinceSubComponent == provinceSubComponentEnum.Areas"
     [AppState]="appStateService.AppState$?.getValue()"
-    [TVItemList]="appLoadedService.AppLoaded$?.getValue()?.ProvinceAreaList">
+    [TVItemModelList]="appLoadedService.AppLoaded$?.getValue()?.WebProvince.TVItemModelAreaList">
 </app-area-tvitem-list-item>
 
 <app-municipality-tvitem-list-item
     *ngIf="appStateService.AppState$?.getValue()?.ProvinceSubComponent == provinceSubComponentEnum.Municipalities"
     [AppState]="appStateService.AppState$?.getValue()"
-    [TVItemList]="appLoadedService.AppLoaded$?.getValue()?.ProvinceMunicipalityList">
+    [TVItemModelList]="appLoadedService.AppLoaded$?.getValue()?.WebProvince.TVItemModelMunicipalityList">
 </app-municipality-tvitem-list-item>
 
 <app-file-list *ngIf="appStateService.AppState$?.getValue()?.ProvinceSubComponent == provinceSubComponentEnum.Files"
     [AppState]="appStateService.AppState$?.getValue()"
-    [TVFileModelListList]="appLoadedService.AppLoaded$?.getValue()?.ProvinceFileListList">
+    [TVFileModelListList]="appLoadedService.AppLoaded$?.getValue()?.WebProvince.TVFileModelList">
 </app-file-list>
 
 <div *ngIf="appStateService.AppState$?.getValue()?.ProvinceSubComponent == provinceSubComponentEnum.OpenData">

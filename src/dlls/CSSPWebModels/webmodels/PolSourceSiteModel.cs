@@ -12,7 +12,7 @@ namespace CSSPWebModels
     public partial class PolSourceSiteModel
     {
         #region Properties
-        public TVItemStatMapModel TVItemStatMapModel { get; set; }
+        public TVItemModel TVItemModel { get; set; }
         public PolSourceSite PolSourceSite { get; set; }
         public List<TVFileModel> TVFileModelList { get; set; }
         public Address PolSourceSiteCivicAddress { get; set; }
@@ -23,7 +23,7 @@ namespace CSSPWebModels
         #region Constructors
         public PolSourceSiteModel()
         {
-            TVItemStatMapModel = new TVItemStatMapModel();
+            TVItemModel = new TVItemModel();
             PolSourceSite = new PolSourceSite();
             TVFileModelList = new List<TVFileModel>();
             PolSourceSiteCivicAddress = new Address();

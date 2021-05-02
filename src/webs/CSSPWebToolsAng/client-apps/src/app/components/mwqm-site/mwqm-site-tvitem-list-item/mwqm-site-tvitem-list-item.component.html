@@ -36,24 +36,24 @@
     <br />
 </mat-list>
 
-<mat-list *ngFor="let webBase of TVItemList; let i = index">
-    <app-tvitem-menu [TVItemModel]="webBase?.TVItemModel" [AppState]="AppState">
+<mat-list *ngFor="let tvItemModel of TVItemModelList; let i = index">
+    <app-tvitem-menu [TVItemModel]="tvItemModel" [AppState]="AppState">
     </app-tvitem-menu>
 
-    <app-mwqm-site-tvitem-list-item-special [TVItemModel]="webBase?.TVItemModel" [Index]="i + 1" [AppState]="AppState"
-        [StatMWQMSite]="webMWQMSamplesService.GetMWQMSiteDetail(webBase?.TVItemModel)">
+    <app-mwqm-site-tvitem-list-item-special [TVItemModel]="tvItemModel" [Index]="i + 1" [AppState]="AppState"
+        [StatMWQMSite]="webMWQMSamplesService.GetMWQMSiteDetail(tvItemModel)">
     </app-mwqm-site-tvitem-list-item-special>
 
-    <app-mwqm-site-item-view *ngIf="showTVItemService.TVItemVisible(webBase?.TVItemModel)"
-        [TVItemModel]="webBase?.TVItemModel" [AppState]="AppState">
+    <app-mwqm-site-item-view *ngIf="showTVItemService.TVItemVisible(tvItemModel)"
+        [TVItemModel]="tvItemModel" [AppState]="AppState">
     </app-mwqm-site-item-view>
 
     <app-mwqm-site-item-edit *ngIf="AppState.EditVisible"
-        [TVItemModel]="webBase?.TVItemModel" [AppState]="AppState">
+        [TVItemModel]="tvItemModel" [AppState]="AppState">
     </app-mwqm-site-item-edit>
 
     <app-mwqm-site-tvitem-list-detail *ngIf="appStateService.AppState$?.getValue()?.DetailVisible"
-        [TVItemModel]="webBase?.TVItemModel" [AppState]="AppState"
-        [StatMWQMSite]="webMWQMSamplesService.GetMWQMSiteDetail(webBase?.TVItemModel)">
+        [TVItemModel]="tvItemModel" [AppState]="AppState"
+        [StatMWQMSite]="webMWQMSamplesService.GetMWQMSiteDetail(tvItemModel)">
     </app-mwqm-site-tvitem-list-detail>
 </mat-list>

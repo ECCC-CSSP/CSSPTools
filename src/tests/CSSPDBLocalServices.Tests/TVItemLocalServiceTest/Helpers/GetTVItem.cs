@@ -37,19 +37,19 @@ namespace CSSPDBLocalServices.Tests
             {
                 case WebTypeEnum.WebRoot:
                     {
-                        return await Task.FromResult(ReadGzFileService.webAppLoaded.WebRoot.TVItemStatMapModel);
+                        return await Task.FromResult(ReadGzFileService.webAppLoaded.WebRoot.TVItemModel);
                     }
                 case WebTypeEnum.WebCountry:
                     {
-                        return await Task.FromResult(ReadGzFileService.webAppLoaded.WebCountry.TVItemStatMapModel);
+                        return await Task.FromResult(ReadGzFileService.webAppLoaded.WebCountry.TVItemModel);
                     }
                 case WebTypeEnum.WebProvince:
                     {
-                        return await Task.FromResult(ReadGzFileService.webAppLoaded.WebProvince.TVItemStatMapModel);
+                        return await Task.FromResult(ReadGzFileService.webAppLoaded.WebProvince.TVItemModel);
                     }
                 case WebTypeEnum.WebArea:
                     {
-                        return await Task.FromResult(ReadGzFileService.webAppLoaded.WebArea.TVItemStatMapModel);
+                        return await Task.FromResult(ReadGzFileService.webAppLoaded.WebArea.TVItemModel);
                     }
                 //case WebTypeEnum.WebMunicipalities:
                 //    {
@@ -57,15 +57,15 @@ namespace CSSPDBLocalServices.Tests
                 //    }
                 case WebTypeEnum.WebSector:
                     {
-                        return await Task.FromResult(ReadGzFileService.webAppLoaded.WebSector.TVItemStatMapModel);
+                        return await Task.FromResult(ReadGzFileService.webAppLoaded.WebSector.TVItemModel);
                     }
                 case WebTypeEnum.WebSubsector:
                     {
-                        return await Task.FromResult(ReadGzFileService.webAppLoaded.WebSubsector.TVItemStatMapModel);
+                        return await Task.FromResult(ReadGzFileService.webAppLoaded.WebSubsector.TVItemModel);
                     }
                 case WebTypeEnum.WebMunicipality:
                     {
-                        return await Task.FromResult(ReadGzFileService.webAppLoaded.WebMunicipality.TVItemStatMapModel);
+                        return await Task.FromResult(ReadGzFileService.webAppLoaded.WebMunicipality.TVItemModel);
                     }
                 //case WebTypeEnum.WebMWQMSamples1980_2020:
                 //    {

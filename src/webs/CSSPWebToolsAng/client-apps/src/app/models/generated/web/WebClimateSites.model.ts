@@ -6,11 +6,10 @@
  */
 
 import { ClimateSiteModel } from 'src/app/models/generated/web/ClimateSiteModel.model';
-import { TVItemStatMapModel } from 'src/app/models/generated/web/TVItemStatMapModel.model';
-import { TVItemStatModel } from 'src/app/models/generated/web/TVItemStatModel.model';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 
 export class WebClimateSites {
     ClimateSiteModelList: ClimateSiteModel[];
-    TVItemStatMapModel: TVItemStatMapModel;
-    TVItemStatModelParentList: TVItemStatModel[];
+    TVItemModel: TVItemModel;
+    TVItemModelParentList: TVItemModel[];
 }

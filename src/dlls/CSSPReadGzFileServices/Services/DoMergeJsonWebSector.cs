@@ -29,38 +29,38 @@ namespace ReadGzFileServices
     {
         private void DoMergeJsonWebSector(WebSector WebSector, WebSector WebSectorLocal)
         {
-            if (WebSectorLocal.TVItemStatMapModel.TVItem.DBCommand != DBCommandEnum.Original
-               || WebSectorLocal.TVItemStatMapModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-               || WebSectorLocal.TVItemStatMapModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
+            if (WebSectorLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
+               || WebSectorLocal.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
+               || WebSectorLocal.TVItemModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
             {
-                WebSector.TVItemStatMapModel = WebSectorLocal.TVItemStatMapModel;
+                WebSector.TVItemModel = WebSectorLocal.TVItemModel;
             }
 
-            if ((from c in WebSectorLocal.TVItemStatModelParentList
+            if ((from c in WebSectorLocal.TVItemModelParentList
                  where c.TVItem.DBCommand != DBCommandEnum.Original
                  || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
                  || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original
                  select c).Any())
             {
-                WebSector.TVItemStatModelParentList = WebSectorLocal.TVItemStatModelParentList;
+                WebSector.TVItemModelParentList = WebSectorLocal.TVItemModelParentList;
             }
 
-            List<TVItemStatMapModel> TVItemStatMapModelList = (from c in WebSectorLocal.TVItemStatMapModelSubsectorList
+            List<TVItemModel> TVItemModelList = (from c in WebSectorLocal.TVItemModelSubsectorList
                                                                where c.TVItem.DBCommand != DBCommandEnum.Original
                                                                || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
                                                                || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original
                                                                select c).ToList();
 
-            foreach (TVItemStatMapModel tvItemStatMapModel in TVItemStatMapModelList)
+            foreach (TVItemModel TVItemModel in TVItemModelList)
             {
-                TVItemStatMapModel tvItemStatMapModelOriginal = WebSector.TVItemStatMapModelSubsectorList.Where(c => c.TVItem.TVItemID == tvItemStatMapModel.TVItem.TVItemID).FirstOrDefault();
-                if (tvItemStatMapModelOriginal == null)
+                TVItemModel TVItemModelOriginal = WebSector.TVItemModelSubsectorList.Where(c => c.TVItem.TVItemID == TVItemModel.TVItem.TVItemID).FirstOrDefault();
+                if (TVItemModelOriginal == null)
                 {
-                    WebSector.TVItemStatMapModelSubsectorList.Add(tvItemStatMapModelOriginal);
+                    WebSector.TVItemModelSubsectorList.Add(TVItemModelOriginal);
                 }
                 else
                 {
-                    tvItemStatMapModelOriginal = tvItemStatMapModel;
+                    TVItemModelOriginal = TVItemModel;
                 }
             }
 

@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { AppLoaded } from 'src/app/models/AppLoaded.model';
 import { AppStateService } from 'src/app/services/app-state.service';
+import { AppLoaded } from '../models/AppLoaded.model';
 
 @Injectable({
   providedIn: 'root'

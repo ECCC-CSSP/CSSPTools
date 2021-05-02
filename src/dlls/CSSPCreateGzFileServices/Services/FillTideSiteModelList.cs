@@ -30,9 +30,9 @@ namespace CreateGzFileServices
             {
                 TideSiteModel tideSiteModel = new TideSiteModel();
 
-                TVItemMapModel tvItemMapModel = new TVItemMapModel();
-                tvItemMapModel.TVItem = tvItem;
-                tvItemMapModel.TVItemLanguageList = TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
+                TVItemModel TVItemModel = new TVItemModel();
+                TVItemModel.TVItem = tvItem;
+                TVItemModel.TVItemLanguageList = TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
 
                 foreach (MapInfo MapInfo in MapInfoList.Where(c => c.TVItemID == tvItem.TVItemID))
                 {
@@ -40,10 +40,10 @@ namespace CreateGzFileServices
                     MapInfoModel.MapInfo = MapInfo;
                     MapInfoModel.MapInfoPointList = MapInfoPointList.Where(c => c.MapInfoID == MapInfo.MapInfoID).Select(c => c).ToList();
 
-                    tvItemMapModel.MapInfoModelList.Add(MapInfoModel);
+                    TVItemModel.MapInfoModelList.Add(MapInfoModel);
                 }
 
-                tideSiteModel.TVItemMapModel = tvItemMapModel;
+                tideSiteModel.TVItemModel = TVItemModel;
                 tideSiteModel.TideSite = TideSiteList.Where(c => c.TideSiteTVItemID == tvItem.TVItemID).FirstOrDefault();
                 tideSiteModel.TideDataValueList = TideDataValueList.Where(c => c.TideSiteTVItemID == tideSiteModel.TideSite.TideSiteTVItemID).ToList();
 

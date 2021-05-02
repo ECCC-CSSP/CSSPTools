@@ -10,7 +10,7 @@ import { Infrastructure } from 'src/app/models/generated/db/Infrastructure.model
 import { Address } from 'src/app/models/generated/db/Address.model';
 import { InfrastructureLanguage } from 'src/app/models/generated/db/InfrastructureLanguage.model';
 import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model';
-import { TVItemMapModel } from 'src/app/models/generated/web/TVItemMapModel.model';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { VPScenarioModel } from 'src/app/models/generated/web/VPScenarioModel.model';
 
 export class InfrastructureModel {
@@ -19,6 +19,6 @@ export class InfrastructureModel {
     InfrastructureCivicAddress: Address;
     InfrastructureLanguageList: InfrastructureLanguage[];
     TVFileModelList: TVFileModel[];
-    TVItemMapModel: TVItemMapModel;
+    TVItemModel: TVItemModel;
     VPScenarioModelList: VPScenarioModel[];
 }

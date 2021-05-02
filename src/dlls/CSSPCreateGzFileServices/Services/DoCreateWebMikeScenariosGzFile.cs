@@ -33,9 +33,9 @@ namespace CreateGzFileServices
 
             try
             {
-                await FillTVItemModelAndParentTVItemModelList(webMikeScenarios.TVItemStatMapModel, webMikeScenarios.TVItemStatModelParentList, TVItemMunicipality);
+                await FillTVItemModelAndParentTVItemModelList(webMikeScenarios.TVItemModel, webMikeScenarios.TVItemModelParentList, TVItemMunicipality);
 
-                await FillMikeScenarioModelList(webMikeScenarios.TVItemStatMapModel, webMikeScenarios.TVItemStatModelParentList, webMikeScenarios.MikeScenarioModelList, TVItemMunicipality);
+                await FillMikeScenarioModelList(webMikeScenarios.TVItemModel, webMikeScenarios.TVItemModelParentList, webMikeScenarios.MikeScenarioModelList, TVItemMunicipality);
 
                 if (dbLocal != null)
                 {

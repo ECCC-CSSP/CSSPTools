@@ -62,20 +62,20 @@ namespace CSSPDesktopServices.Services
                 $"{ WebTypeEnum.WebAllContacts }.gz",
                 $"{ WebTypeEnum.WebAllCountries }.gz",
                 $"{ WebTypeEnum.WebAllEmails }.gz",
-                $"{ WebTypeEnum.WebAllMunicipalities }.gz",
                 $"{ WebTypeEnum.WebAllHelpDocs }.gz",
+                $"{ WebTypeEnum.WebAllMunicipalities }.gz",
                 $"{ WebTypeEnum.WebAllMWQMLookupMPNs }.gz",
                 $"{ WebTypeEnum.WebAllPolSourceGroupings }.gz",
                 $"{ WebTypeEnum.WebAllPolSourceSiteEffectTerms }.gz",
                 $"{ WebTypeEnum.WebAllProvinces }.gz",
                 $"{ WebTypeEnum.WebAllReportTypes }.gz",
-                $"{ WebTypeEnum.WebRoot }.gz",
                 $"{ WebTypeEnum.WebAllTels }.gz",
                 $"{ WebTypeEnum.WebAllTideLocations }.gz",
-                $"{ WebTypeEnum.WebAllTVItems1980_2020 }.gz",
-                $"{ WebTypeEnum.WebAllTVItems2021_2060 }.gz",
                 $"{ WebTypeEnum.WebAllTVItemLanguages1980_2020 }.gz",
                 $"{ WebTypeEnum.WebAllTVItemLanguages2021_2060 }.gz",
+                $"{ WebTypeEnum.WebAllTVItems1980_2020 }.gz",
+                $"{ WebTypeEnum.WebAllTVItems2021_2060 }.gz",
+                $"{ WebTypeEnum.WebRoot }.gz",
             };
 
             int jsonCount = 0;
@@ -208,7 +208,7 @@ namespace CSSPDesktopServices.Services
                     return await Task.FromResult(false);
                 }
 
-                if (jsonFileName == "WebAllTVItemLanguages.gz")
+                if (jsonFileName == "WebRoot.gz")
                 {
                     AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.FillingCSSPDBSearchDatabaseWith_Info, jsonFileName.Replace("Language", "") + " & " + jsonFileName)));
 

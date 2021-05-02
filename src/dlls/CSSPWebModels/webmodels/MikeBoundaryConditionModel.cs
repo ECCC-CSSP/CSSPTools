@@ -12,14 +12,14 @@ namespace CSSPWebModels
     public partial class MikeBoundaryConditionModel
     {
         #region Properties
-        public TVItemMapModel TVItemMapModel { get; set; }
+        public TVItemModel TVItemModel { get; set; }
         public MikeBoundaryCondition MikeBoundaryCondition { get; set; }
         #endregion Properties
 
         #region Constructors
         public MikeBoundaryConditionModel()
         {
-            TVItemMapModel = new TVItemMapModel();
+            TVItemModel = new TVItemModel();
             MikeBoundaryCondition = new MikeBoundaryCondition();
         }
         #endregion Constructors

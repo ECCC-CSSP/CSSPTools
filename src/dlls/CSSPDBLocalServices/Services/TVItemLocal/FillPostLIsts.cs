@@ -33,8 +33,8 @@ namespace CSSPDBLocalServices
                             ReadGzFileService.webAppLoaded.WebAllAddresses = ReadGzFileService.GetUncompressJSON<WebAllAddresses>(WebTypeEnum.WebAllAddresses, (int)postTVItemModel.TVItem.ParentID).GetAwaiter().GetResult();
                         }
 
-                        gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebRoot.TVItemStatMapModel.TVItem;
-                        gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebRoot.TVItemStatModelParentList;
+                        gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebRoot.TVItemModel.TVItem;
+                        gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebRoot.TVItemModelParentList;
                         gzObjectList.tvItemSiblingList = (from c in ReadGzFileService.webAppLoaded.WebAllAddresses.AddressModelList
                                                           select new TVItemModel
                                                           {
@@ -50,9 +50,9 @@ namespace CSSPDBLocalServices
                             ReadGzFileService.webAppLoaded.WebProvince = ReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, (int)postTVItemModel.TVItem.ParentID).GetAwaiter().GetResult();
                         }
 
-                        gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebProvince.TVItemStatMapModel.TVItem;
-                        gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebProvince.TVItemStatModelParentList;
-                        gzObjectList.tvItemSiblingList = (from c in ReadGzFileService.webAppLoaded.WebProvince.TVItemStatMapAreaList
+                        gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebProvince.TVItemModel.TVItem;
+                        gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebProvince.TVItemModelParentList;
+                        gzObjectList.tvItemSiblingList = (from c in ReadGzFileService.webAppLoaded.WebProvince.TVItemModelAreaList
                                                           select new TVItemModel
                                                           {
                                                               TVItem = c.TVItem,
@@ -67,9 +67,9 @@ namespace CSSPDBLocalServices
                             ReadGzFileService.webAppLoaded.WebSubsector = ReadGzFileService.GetUncompressJSON<WebSubsector>(WebTypeEnum.WebSubsector, (int)postTVItemModel.TVItem.ParentID).GetAwaiter().GetResult();
                         }
 
-                        gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebSubsector.TVItemStatMapModel.TVItem;
-                        gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebSubsector.TVItemStatModelParentList;
-                        gzObjectList.tvItemSiblingList = (from c in ReadGzFileService.webAppLoaded.WebSubsector.TVItemStatMapModelClassificationList
+                        gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebSubsector.TVItemModel.TVItem;
+                        gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebSubsector.TVItemModelParentList;
+                        gzObjectList.tvItemSiblingList = (from c in ReadGzFileService.webAppLoaded.WebSubsector.TVItemModelClassificationList
                                                           select new TVItemModel
                                                           {
                                                               TVItem = c.TVItem,
@@ -84,13 +84,13 @@ namespace CSSPDBLocalServices
                             ReadGzFileService.webAppLoaded.WebClimateSites = ReadGzFileService.GetUncompressJSON<WebClimateSites>(WebTypeEnum.WebClimateSites, (int)postTVItemModel.TVItem.ParentID).GetAwaiter().GetResult();
                         }
 
-                        gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebClimateSites.TVItemStatMapModel.TVItem;
-                        gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebClimateSites.TVItemStatModelParentList;
+                        gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebClimateSites.TVItemModel.TVItem;
+                        gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebClimateSites.TVItemModelParentList;
                         gzObjectList.tvItemSiblingList = (from c in ReadGzFileService.webAppLoaded.WebClimateSites.ClimateSiteModelList
                                                           select new TVItemModel
                                                           {
-                                                              TVItem = c.TVItemMapModel.TVItem,
-                                                              TVItemLanguageList = c.TVItemMapModel.TVItemLanguageList,
+                                                              TVItem = c.TVItemModel.TVItem,
+                                                              TVItemLanguageList = c.TVItemModel.TVItemLanguageList,
                                                           }).ToList();
                     }
                     break;
@@ -106,8 +106,8 @@ namespace CSSPDBLocalServices
                             ReadGzFileService.webAppLoaded.WebAllContacts = ReadGzFileService.GetUncompressJSON<WebAllContacts>(WebTypeEnum.WebAllContacts, (int)postTVItemModel.TVItem.ParentID).GetAwaiter().GetResult();
                         }
 
-                        gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebRoot.TVItemStatMapModel.TVItem;
-                        gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebRoot.TVItemStatModelParentList;
+                        gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebRoot.TVItemModel.TVItem;
+                        gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebRoot.TVItemModelParentList;
                         gzObjectList.tvItemSiblingList = (from c in ReadGzFileService.webAppLoaded.WebAllContacts.ContactModelList
                                                           select new TVItemModel
                                                           {
@@ -123,9 +123,9 @@ namespace CSSPDBLocalServices
                             ReadGzFileService.webAppLoaded.WebRoot = ReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, (int)postTVItemModel.TVItem.ParentID).GetAwaiter().GetResult();
                         }
 
-                        gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebRoot.TVItemStatMapModel.TVItem;
-                        gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebRoot.TVItemStatModelParentList;
-                        gzObjectList.tvItemSiblingList = (from c in ReadGzFileService.webAppLoaded.WebRoot.TVItemStatMapModelCountryList
+                        gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebRoot.TVItemModel.TVItem;
+                        gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebRoot.TVItemModelParentList;
+                        gzObjectList.tvItemSiblingList = (from c in ReadGzFileService.webAppLoaded.WebRoot.TVItemModelCountryList
                                                           select new TVItemModel
                                                           {
                                                               TVItem = c.TVItem,
@@ -144,8 +144,8 @@ namespace CSSPDBLocalServices
                                         ReadGzFileService.webAppLoaded.WebArea = ReadGzFileService.GetUncompressJSON<WebArea>(WebTypeEnum.WebArea, (int)postTVItemModel.TVItem.ParentID).GetAwaiter().GetResult();
                                     }
 
-                                    gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebArea.TVItemStatMapModel.TVItem;
-                                    gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebArea.TVItemStatModelParentList;
+                                    gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebArea.TVItemModel.TVItem;
+                                    gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebArea.TVItemModelParentList;
                                     gzObjectList.tvItemFileSiblingList = ReadGzFileService.webAppLoaded.WebArea.TVFileModelList;
                                 }
                                 break;
@@ -156,8 +156,8 @@ namespace CSSPDBLocalServices
                                         ReadGzFileService.webAppLoaded.WebCountry = ReadGzFileService.GetUncompressJSON<WebCountry>(WebTypeEnum.WebCountry, (int)postTVItemModel.TVItem.ParentID).GetAwaiter().GetResult();
                                     }
 
-                                    gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebCountry.TVItemStatMapModel.TVItem;
-                                    gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebCountry.TVItemStatModelParentList;
+                                    gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebCountry.TVItemModel.TVItem;
+                                    gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebCountry.TVItemModelParentList;
                                     gzObjectList.tvItemFileSiblingList = ReadGzFileService.webAppLoaded.WebCountry.TVFileModelList;
                                 }
                                 break;
@@ -168,11 +168,11 @@ namespace CSSPDBLocalServices
                                         ReadGzFileService.webAppLoaded.WebMunicipality = ReadGzFileService.GetUncompressJSON<WebMunicipality>(WebTypeEnum.WebMunicipality, (int)postTVItemModel.TVItem.ParentID).GetAwaiter().GetResult();
                                     }
 
-                                    gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebMunicipality.TVItemStatMapModel.TVItem;
-                                    gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebMunicipality.TVItemStatModelParentList;
+                                    gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebMunicipality.TVItemModel.TVItem;
+                                    gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebMunicipality.TVItemModelParentList;
 
                                     InfrastructureModel infrastructureModel = (from c in ReadGzFileService.webAppLoaded.WebMunicipality.InfrastructureModelList
-                                                                               where c.TVItemMapModel.TVItem.TVItemID == postTVItemModel.TVItem.TVItemID
+                                                                               where c.TVItemModel.TVItem.TVItemID == postTVItemModel.TVItem.TVItemID
                                                                                select c).FirstOrDefault();
 
                                     gzObjectList.tvItemFileSiblingList = infrastructureModel.TVFileModelList;
@@ -186,11 +186,11 @@ namespace CSSPDBLocalServices
                                         ReadGzFileService.webAppLoaded.WebMikeScenarios = ReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, (int)postTVItemModel.TVItem.ParentID).GetAwaiter().GetResult();
                                     }
 
-                                    gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebMikeScenarios.TVItemStatMapModel.TVItem;
-                                    gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebMikeScenarios.TVItemStatModelParentList;
+                                    gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebMikeScenarios.TVItemModel.TVItem;
+                                    gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebMikeScenarios.TVItemModelParentList;
 
                                     MikeScenarioModel mikeScenarioModel = (from c in ReadGzFileService.webAppLoaded.WebMikeScenarios.MikeScenarioModelList
-                                                                           where c.TVItemStatMapModel.TVItem.TVItemID == postTVItemModel.TVItem.TVItemID
+                                                                           where c.TVItemModel.TVItem.TVItemID == postTVItemModel.TVItem.TVItemID
                                                                            select c).FirstOrDefault();
 
                                     gzObjectList.tvItemFileSiblingList = mikeScenarioModel.TVFileModelList;
@@ -203,8 +203,8 @@ namespace CSSPDBLocalServices
                                         ReadGzFileService.webAppLoaded.WebMunicipality = ReadGzFileService.GetUncompressJSON<WebMunicipality>(WebTypeEnum.WebMunicipality, (int)postTVItemModel.TVItem.ParentID).GetAwaiter().GetResult();
                                     }
 
-                                    gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebMunicipality.TVItemStatMapModel.TVItem;
-                                    gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebMunicipality.TVItemStatModelParentList;
+                                    gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebMunicipality.TVItemModel.TVItem;
+                                    gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebMunicipality.TVItemModelParentList;
                                     gzObjectList.tvItemFileSiblingList = ReadGzFileService.webAppLoaded.WebMunicipality.TVFileModelList;
                                 }
                                 break;
@@ -220,11 +220,11 @@ namespace CSSPDBLocalServices
                                         ReadGzFileService.webAppLoaded.WebMWQMSites = ReadGzFileService.GetUncompressJSON<WebMWQMSites>(WebTypeEnum.WebMWQMSites, (int)postTVItemModel.TVItem.ParentID).GetAwaiter().GetResult();
                                     }
 
-                                    gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebSubsector.TVItemStatMapModel.TVItem;
-                                    gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebSubsector.TVItemStatModelParentList;
+                                    gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebSubsector.TVItemModel.TVItem;
+                                    gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebSubsector.TVItemModelParentList;
 
                                     MWQMSiteModel mwqmSiteModel = (from c in ReadGzFileService.webAppLoaded.WebMWQMSites.MWQMSiteModelList
-                                                                   where c.TVItemStatMapModel.TVItem.TVItemID == postTVItemModel.TVItem.TVItemID
+                                                                   where c.TVItemModel.TVItem.TVItemID == postTVItemModel.TVItem.TVItemID
                                                                    select c).FirstOrDefault();
 
                                     gzObjectList.tvItemFileSiblingList = mwqmSiteModel.TVFileModelList;
@@ -242,11 +242,11 @@ namespace CSSPDBLocalServices
                                         ReadGzFileService.webAppLoaded.WebPolSourceSites = ReadGzFileService.GetUncompressJSON<WebPolSourceSites>(WebTypeEnum.WebPolSourceSites, (int)postTVItemModel.TVItem.ParentID).GetAwaiter().GetResult();
                                     }
 
-                                    gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebSubsector.TVItemStatMapModel.TVItem;
-                                    gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebSubsector.TVItemStatModelParentList;
+                                    gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebSubsector.TVItemModel.TVItem;
+                                    gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebSubsector.TVItemModelParentList;
 
                                     PolSourceSiteModel polSourceSiteModel = (from c in ReadGzFileService.webAppLoaded.WebPolSourceSites.PolSourceSiteModelList
-                                                                             where c.TVItemStatMapModel.TVItem.TVItemID == postTVItemModel.TVItem.TVItemID
+                                                                             where c.TVItemModel.TVItem.TVItemID == postTVItemModel.TVItem.TVItemID
                                                                              select c).FirstOrDefault();
 
                                     gzObjectList.tvItemFileSiblingList = polSourceSiteModel.TVFileModelList;
@@ -259,8 +259,8 @@ namespace CSSPDBLocalServices
                                         ReadGzFileService.webAppLoaded.WebProvince = ReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, (int)postTVItemModel.TVItem.ParentID).GetAwaiter().GetResult();
                                     }
 
-                                    gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebProvince.TVItemStatMapModel.TVItem;
-                                    gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebProvince.TVItemStatModelParentList;
+                                    gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebProvince.TVItemModel.TVItem;
+                                    gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebProvince.TVItemModelParentList;
                                     gzObjectList.tvItemFileSiblingList = ReadGzFileService.webAppLoaded.WebProvince.TVFileModelList;
                                 }
                                 break;
@@ -271,8 +271,8 @@ namespace CSSPDBLocalServices
                                         ReadGzFileService.webAppLoaded.WebRoot = ReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, (int)postTVItemModel.TVItem.ParentID).GetAwaiter().GetResult();
                                     }
 
-                                    gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebRoot.TVItemStatMapModel.TVItem;
-                                    gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebRoot.TVItemStatModelParentList;
+                                    gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebRoot.TVItemModel.TVItem;
+                                    gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebRoot.TVItemModelParentList;
                                     gzObjectList.tvItemFileSiblingList = ReadGzFileService.webAppLoaded.WebRoot.TVFileModelList;
                                 }
                                 break;
@@ -283,8 +283,8 @@ namespace CSSPDBLocalServices
                                         ReadGzFileService.webAppLoaded.WebSector = ReadGzFileService.GetUncompressJSON<WebSector>(WebTypeEnum.WebSector, (int)postTVItemModel.TVItem.ParentID).GetAwaiter().GetResult();
                                     }
 
-                                    gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebSector.TVItemStatMapModel.TVItem;
-                                    gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebSector.TVItemStatModelParentList;
+                                    gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebSector.TVItemModel.TVItem;
+                                    gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebSector.TVItemModelParentList;
                                     gzObjectList.tvItemFileSiblingList = ReadGzFileService.webAppLoaded.WebSector.TVFileModelList;
                                 }
                                 break;
@@ -295,8 +295,8 @@ namespace CSSPDBLocalServices
                                         ReadGzFileService.webAppLoaded.WebSubsector = ReadGzFileService.GetUncompressJSON<WebSubsector>(WebTypeEnum.WebSubsector, (int)postTVItemModel.TVItem.ParentID).GetAwaiter().GetResult();
                                     }
 
-                                    gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebSubsector.TVItemStatMapModel.TVItem;
-                                    gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebSubsector.TVItemStatModelParentList;
+                                    gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebSubsector.TVItemModel.TVItem;
+                                    gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebSubsector.TVItemModelParentList;
                                     gzObjectList.tvItemFileSiblingList = ReadGzFileService.webAppLoaded.WebSubsector.TVFileModelList;
                                 }
                                 break;
@@ -317,8 +317,8 @@ namespace CSSPDBLocalServices
                             ReadGzFileService.webAppLoaded.WebAllEmails = ReadGzFileService.GetUncompressJSON<WebAllEmails>(WebTypeEnum.WebAllEmails, (int)postTVItemModel.TVItem.ParentID).GetAwaiter().GetResult();
                         }
 
-                        gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebRoot.TVItemStatMapModel.TVItem;
-                        gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebRoot.TVItemStatModelParentList;
+                        gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebRoot.TVItemModel.TVItem;
+                        gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebRoot.TVItemModelParentList;
                         gzObjectList.tvItemSiblingList = (from c in ReadGzFileService.webAppLoaded.WebAllEmails.EmailModelList
                                                           select new TVItemModel
                                                           {
@@ -339,13 +339,13 @@ namespace CSSPDBLocalServices
                             ReadGzFileService.webAppLoaded.WebHydrometricSites = ReadGzFileService.GetUncompressJSON<WebHydrometricSites>(WebTypeEnum.WebHydrometricSites, (int)postTVItemModel.TVItem.ParentID).GetAwaiter().GetResult();
                         }
 
-                        gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebProvince.TVItemStatMapModel.TVItem;
-                        gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebProvince.TVItemStatModelParentList;
+                        gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebProvince.TVItemModel.TVItem;
+                        gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebProvince.TVItemModelParentList;
                         gzObjectList.tvItemSiblingList = (from c in ReadGzFileService.webAppLoaded.WebHydrometricSites.HydrometricSiteModelList
                                                           select new TVItemModel
                                                           {
-                                                              TVItem = c.TVItemMapModel.TVItem,
-                                                              TVItemLanguageList = c.TVItemMapModel.TVItemLanguageList,
+                                                              TVItem = c.TVItemModel.TVItem,
+                                                              TVItemLanguageList = c.TVItemModel.TVItemLanguageList,
                                                           }).ToList();
                     }
                     break;
@@ -356,13 +356,13 @@ namespace CSSPDBLocalServices
                             ReadGzFileService.webAppLoaded.WebMunicipality = ReadGzFileService.GetUncompressJSON<WebMunicipality>(WebTypeEnum.WebMunicipality, (int)postTVItemModel.TVItem.ParentID).GetAwaiter().GetResult();
                         }
 
-                        gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebMunicipality.TVItemStatMapModel.TVItem;
-                        gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebMunicipality.TVItemStatModelParentList;
+                        gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebMunicipality.TVItemModel.TVItem;
+                        gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebMunicipality.TVItemModelParentList;
                         gzObjectList.tvItemSiblingList = (from c in ReadGzFileService.webAppLoaded.WebMunicipality.InfrastructureModelList
                                                           select new TVItemModel
                                                           {
-                                                              TVItem = c.TVItemMapModel.TVItem,
-                                                              TVItemLanguageList = c.TVItemMapModel.TVItemLanguageList,
+                                                              TVItem = c.TVItemModel.TVItem,
+                                                              TVItemLanguageList = c.TVItemModel.TVItemLanguageList,
                                                           }).ToList();
                     }
                     break;
@@ -373,19 +373,19 @@ namespace CSSPDBLocalServices
                             ReadGzFileService.webAppLoaded.WebMikeScenarios = ReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, (int)postTVItemModel.TVItem.ParentID).GetAwaiter().GetResult();
                         }
 
-                        gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebMikeScenarios.TVItemStatMapModel.TVItem;
-                        gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebMikeScenarios.TVItemStatModelParentList;
+                        gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebMikeScenarios.TVItemModel.TVItem;
+                        gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebMikeScenarios.TVItemModelParentList;
 
                         MikeScenarioModel mikeScenarioModel = (from c in ReadGzFileService.webAppLoaded.WebMikeScenarios.MikeScenarioModelList
                                                                where c.MikeScenario.MikeScenarioTVItemID == postTVItemModel.TVItem.ParentID
                                                                select c).FirstOrDefault();
 
                         gzObjectList.tvItemSiblingList = (from c in mikeScenarioModel.MikeBoundaryConditionModelList
-                                                          where c.TVItemMapModel.TVItem.TVType == TVTypeEnum.MikeBoundaryConditionMesh
+                                                          where c.TVItemModel.TVItem.TVType == TVTypeEnum.MikeBoundaryConditionMesh
                                                           select new TVItemModel
                                                           {
-                                                              TVItem = c.TVItemMapModel.TVItem,
-                                                              TVItemLanguageList = c.TVItemMapModel.TVItemLanguageList,
+                                                              TVItem = c.TVItemModel.TVItem,
+                                                              TVItemLanguageList = c.TVItemModel.TVItemLanguageList,
                                                           }).ToList();
                     }
                     break;
@@ -396,19 +396,19 @@ namespace CSSPDBLocalServices
                             ReadGzFileService.webAppLoaded.WebMikeScenarios = ReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, (int)postTVItemModel.TVItem.ParentID).GetAwaiter().GetResult();
                         }
 
-                        gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebMikeScenarios.TVItemStatMapModel.TVItem;
-                        gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebMikeScenarios.TVItemStatModelParentList;
+                        gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebMikeScenarios.TVItemModel.TVItem;
+                        gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebMikeScenarios.TVItemModelParentList;
 
                         MikeScenarioModel mikeScenarioModel = (from c in ReadGzFileService.webAppLoaded.WebMikeScenarios.MikeScenarioModelList
                                                                where c.MikeScenario.MikeScenarioTVItemID == postTVItemModel.TVItem.ParentID
                                                                select c).FirstOrDefault();
 
                         gzObjectList.tvItemSiblingList = (from c in mikeScenarioModel.MikeBoundaryConditionModelList
-                                                          where c.TVItemMapModel.TVItem.TVType == TVTypeEnum.MikeBoundaryConditionWebTide
+                                                          where c.TVItemModel.TVItem.TVType == TVTypeEnum.MikeBoundaryConditionWebTide
                                                           select new TVItemModel
                                                           {
-                                                              TVItem = c.TVItemMapModel.TVItem,
-                                                              TVItemLanguageList = c.TVItemMapModel.TVItemLanguageList,
+                                                              TVItem = c.TVItemModel.TVItem,
+                                                              TVItemLanguageList = c.TVItemModel.TVItemLanguageList,
                                                           }).ToList();
                     }
                     break;
@@ -419,13 +419,13 @@ namespace CSSPDBLocalServices
                             ReadGzFileService.webAppLoaded.WebMikeScenarios = ReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, (int)postTVItemModel.TVItem.ParentID).GetAwaiter().GetResult();
                         }
 
-                        gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebMikeScenarios.TVItemStatMapModel.TVItem;
-                        gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebMikeScenarios.TVItemStatModelParentList;
+                        gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebMikeScenarios.TVItemModel.TVItem;
+                        gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebMikeScenarios.TVItemModelParentList;
                         gzObjectList.tvItemSiblingList = (from c in ReadGzFileService.webAppLoaded.WebMikeScenarios.MikeScenarioModelList
                                                           select new TVItemModel
                                                           {
-                                                              TVItem = c.TVItemStatMapModel.TVItem,
-                                                              TVItemLanguageList = c.TVItemStatMapModel.TVItemLanguageList,
+                                                              TVItem = c.TVItemModel.TVItem,
+                                                              TVItemLanguageList = c.TVItemModel.TVItemLanguageList,
                                                           }).ToList();
                     }
                     break;
@@ -436,8 +436,8 @@ namespace CSSPDBLocalServices
                             ReadGzFileService.webAppLoaded.WebMikeScenarios = ReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, (int)postTVItemModel.TVItem.ParentID).GetAwaiter().GetResult();
                         }
 
-                        gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebMikeScenarios.TVItemStatMapModel.TVItem;
-                        gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebMikeScenarios.TVItemStatModelParentList;
+                        gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebMikeScenarios.TVItemModel.TVItem;
+                        gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebMikeScenarios.TVItemModelParentList;
 
                         MikeScenarioModel mikeScenarioModel = (from c in ReadGzFileService.webAppLoaded.WebMikeScenarios.MikeScenarioModelList
                                                                where c.MikeScenario.MikeScenarioTVItemID == postTVItemModel.TVItem.ParentID
@@ -446,8 +446,8 @@ namespace CSSPDBLocalServices
                         gzObjectList.tvItemSiblingList = (from c in mikeScenarioModel.MikeSourceModelList
                                                           select new TVItemModel
                                                           {
-                                                              TVItem = c.TVItemMapModel.TVItem,
-                                                              TVItemLanguageList = c.TVItemMapModel.TVItemLanguageList,
+                                                              TVItem = c.TVItemModel.TVItem,
+                                                              TVItemLanguageList = c.TVItemModel.TVItemLanguageList,
                                                           }).ToList();
                     }
                     break;
@@ -458,9 +458,9 @@ namespace CSSPDBLocalServices
                             ReadGzFileService.webAppLoaded.WebProvince = ReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, (int)postTVItemModel.TVItem.ParentID).GetAwaiter().GetResult();
                         }
 
-                        gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebProvince.TVItemStatMapModel.TVItem;
-                        gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebProvince.TVItemStatModelParentList;
-                        gzObjectList.tvItemSiblingList = (from c in ReadGzFileService.webAppLoaded.WebProvince.TVItemStatMapMunicipalityList
+                        gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebProvince.TVItemModel.TVItem;
+                        gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebProvince.TVItemModelParentList;
+                        gzObjectList.tvItemSiblingList = (from c in ReadGzFileService.webAppLoaded.WebProvince.TVItemModelMunicipalityList
                                                           select new TVItemModel
                                                           {
                                                               TVItem = c.TVItem,
@@ -480,13 +480,13 @@ namespace CSSPDBLocalServices
                             ReadGzFileService.webAppLoaded.WebSubsector = ReadGzFileService.GetUncompressJSON<WebSubsector>(WebTypeEnum.WebSubsector, (int)postTVItemModel.TVItem.ParentID).GetAwaiter().GetResult();
                         }
 
-                        gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebSubsector.TVItemStatMapModel.TVItem;
-                        gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebSubsector.TVItemStatModelParentList;
+                        gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebSubsector.TVItemModel.TVItem;
+                        gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebSubsector.TVItemModelParentList;
                         gzObjectList.tvItemSiblingList = (from c in ReadGzFileService.webAppLoaded.WebMWQMRuns.MWQMRunModelList
                                                           select new TVItemModel
                                                           {
-                                                              TVItem = c.TVItemStatModel.TVItem,
-                                                              TVItemLanguageList = c.TVItemStatModel.TVItemLanguageList,
+                                                              TVItem = c.TVItemModel.TVItem,
+                                                              TVItemLanguageList = c.TVItemModel.TVItemLanguageList,
                                                           }).ToList();
                     }
                     break;
@@ -502,13 +502,13 @@ namespace CSSPDBLocalServices
                             ReadGzFileService.webAppLoaded.WebSubsector = ReadGzFileService.GetUncompressJSON<WebSubsector>(WebTypeEnum.WebSubsector, (int)postTVItemModel.TVItem.ParentID).GetAwaiter().GetResult();
                         }
 
-                        gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebSubsector.TVItemStatMapModel.TVItem;
-                        gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebSubsector.TVItemStatModelParentList;
+                        gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebSubsector.TVItemModel.TVItem;
+                        gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebSubsector.TVItemModelParentList;
                         gzObjectList.tvItemSiblingList = (from c in ReadGzFileService.webAppLoaded.WebMWQMSites.MWQMSiteModelList
                                                           select new TVItemModel
                                                           {
-                                                              TVItem = c.TVItemStatMapModel.TVItem,
-                                                              TVItemLanguageList = c.TVItemStatMapModel.TVItemLanguageList,
+                                                              TVItem = c.TVItemModel.TVItem,
+                                                              TVItemLanguageList = c.TVItemModel.TVItemLanguageList,
                                                           }).ToList();
                     }
                     break;
@@ -524,13 +524,13 @@ namespace CSSPDBLocalServices
                             ReadGzFileService.webAppLoaded.WebSubsector = ReadGzFileService.GetUncompressJSON<WebSubsector>(WebTypeEnum.WebSubsector, (int)postTVItemModel.TVItem.ParentID).GetAwaiter().GetResult();
                         }
 
-                        gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebSubsector.TVItemStatMapModel.TVItem;
-                        gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebSubsector.TVItemStatModelParentList;
+                        gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebSubsector.TVItemModel.TVItem;
+                        gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebSubsector.TVItemModelParentList;
                         gzObjectList.tvItemSiblingList = (from c in ReadGzFileService.webAppLoaded.WebPolSourceSites.PolSourceSiteModelList
                                                           select new TVItemModel
                                                           {
-                                                              TVItem = c.TVItemStatMapModel.TVItem,
-                                                              TVItemLanguageList = c.TVItemStatMapModel.TVItemLanguageList,
+                                                              TVItem = c.TVItemModel.TVItem,
+                                                              TVItemLanguageList = c.TVItemModel.TVItemLanguageList,
                                                           }).ToList();
                     }
                     break;
@@ -541,9 +541,9 @@ namespace CSSPDBLocalServices
                             ReadGzFileService.webAppLoaded.WebCountry = ReadGzFileService.GetUncompressJSON<WebCountry>(WebTypeEnum.WebCountry, (int)postTVItemModel.TVItem.ParentID).GetAwaiter().GetResult();
                         }
 
-                        gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebCountry.TVItemStatMapModel.TVItem;
-                        gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebCountry.TVItemStatModelParentList;
-                        gzObjectList.tvItemSiblingList = (from c in ReadGzFileService.webAppLoaded.WebCountry.TVItemStatMapModelProvinceList
+                        gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebCountry.TVItemModel.TVItem;
+                        gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebCountry.TVItemModelParentList;
+                        gzObjectList.tvItemSiblingList = (from c in ReadGzFileService.webAppLoaded.WebCountry.TVItemModelProvinceList
                                                           select new TVItemModel
                                                           {
                                                               TVItem = c.TVItem,
@@ -558,8 +558,8 @@ namespace CSSPDBLocalServices
                             ReadGzFileService.webAppLoaded.WebCountry = ReadGzFileService.GetUncompressJSON<WebCountry>(WebTypeEnum.WebCountry, (int)postTVItemModel.TVItem.ParentID).GetAwaiter().GetResult();
                         }
 
-                        gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebCountry.TVItemStatMapModel.TVItem;
-                        gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebCountry.TVItemStatModelParentList;
+                        gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebCountry.TVItemModel.TVItem;
+                        gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebCountry.TVItemModelParentList;
                         gzObjectList.tvItemSiblingList = (from c in ReadGzFileService.webAppLoaded.WebCountry.RainExceedanceModelList
                                                           select new TVItemModel
                                                           {
@@ -580,9 +580,9 @@ namespace CSSPDBLocalServices
                             ReadGzFileService.webAppLoaded.WebArea = ReadGzFileService.GetUncompressJSON<WebArea>(WebTypeEnum.WebArea, (int)postTVItemModel.TVItem.ParentID).GetAwaiter().GetResult();
                         }
 
-                        gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebArea.TVItemStatMapModel.TVItem;
-                        gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebArea.TVItemStatModelParentList;
-                        gzObjectList.tvItemSiblingList = (from c in ReadGzFileService.webAppLoaded.WebArea.TVItemStatMapModelSectorList
+                        gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebArea.TVItemModel.TVItem;
+                        gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebArea.TVItemModelParentList;
+                        gzObjectList.tvItemSiblingList = (from c in ReadGzFileService.webAppLoaded.WebArea.TVItemModelSectorList
                                                           select new TVItemModel
                                                           {
                                                               TVItem = c.TVItem,
@@ -597,9 +597,9 @@ namespace CSSPDBLocalServices
                             ReadGzFileService.webAppLoaded.WebSector = ReadGzFileService.GetUncompressJSON<WebSector>(WebTypeEnum.WebSector, (int)postTVItemModel.TVItem.ParentID).GetAwaiter().GetResult();
                         }
 
-                        gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebSector.TVItemStatMapModel.TVItem;
-                        gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebSector.TVItemStatModelParentList;
-                        gzObjectList.tvItemSiblingList = (from c in ReadGzFileService.webAppLoaded.WebSector.TVItemStatMapModelSubsectorList
+                        gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebSector.TVItemModel.TVItem;
+                        gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebSector.TVItemModelParentList;
+                        gzObjectList.tvItemSiblingList = (from c in ReadGzFileService.webAppLoaded.WebSector.TVItemModelSubsectorList
                                                           select new TVItemModel
                                                           {
                                                               TVItem = c.TVItem,
@@ -619,8 +619,8 @@ namespace CSSPDBLocalServices
                             ReadGzFileService.webAppLoaded.WebAllTels = ReadGzFileService.GetUncompressJSON<WebAllTels>(WebTypeEnum.WebAllTels, (int)postTVItemModel.TVItem.ParentID).GetAwaiter().GetResult();
                         }
 
-                        gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebRoot.TVItemStatMapModel.TVItem;
-                        gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebRoot.TVItemStatModelParentList;
+                        gzObjectList.ParentTVItem = ReadGzFileService.webAppLoaded.WebRoot.TVItemModel.TVItem;
+                        gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebRoot.TVItemModelParentList;
                         gzObjectList.tvItemSiblingList = (from c in ReadGzFileService.webAppLoaded.WebAllTels.TelModelList
                                                           select new TVItemModel
                                                           {

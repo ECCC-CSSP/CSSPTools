@@ -30,9 +30,9 @@ namespace CreateGzFileServices
             {
                 ClimateSiteModel climateSiteModel = new ClimateSiteModel();
 
-                TVItemMapModel tvItemMapModel = new TVItemMapModel();
-                tvItemMapModel.TVItem = tvItem;
-                tvItemMapModel.TVItemLanguageList = TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
+                TVItemModel TVItemModel = new TVItemModel();
+                TVItemModel.TVItem = tvItem;
+                TVItemModel.TVItemLanguageList = TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
 
                 foreach (MapInfo MapInfo in MapInfoList.Where(c => c.TVItemID == tvItem.TVItemID))
                 {
@@ -40,10 +40,10 @@ namespace CreateGzFileServices
                     MapInfoModel.MapInfo = MapInfo;
                     MapInfoModel.MapInfoPointList = MapInfoPointList.Where(c => c.MapInfoID == MapInfo.MapInfoID).Select(c => c).ToList();
 
-                    tvItemMapModel.MapInfoModelList.Add(MapInfoModel);
+                    TVItemModel.MapInfoModelList.Add(MapInfoModel);
                 }
 
-                climateSiteModel.TVItemMapModel = tvItemMapModel;
+                climateSiteModel.TVItemModel = TVItemModel;
                 climateSiteModel.ClimateSite = ClimateSiteList.Where(c => c.ClimateSiteTVItemID == tvItem.TVItemID).FirstOrDefault();
                 climateSiteModel.ClimateDataValueList = ClimateDataValueList.Where(c => c.ClimateSiteID == climateSiteModel.ClimateSite.ClimateSiteID).ToList();
 

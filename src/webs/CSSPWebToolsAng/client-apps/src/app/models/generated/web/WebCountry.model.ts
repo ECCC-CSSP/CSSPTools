@@ -8,14 +8,13 @@
 import { EmailDistributionListModel } from 'src/app/models/generated/web/EmailDistributionListModel.model';
 import { RainExceedanceModel } from 'src/app/models/generated/web/RainExceedanceModel.model';
 import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model';
-import { TVItemStatMapModel } from 'src/app/models/generated/web/TVItemStatMapModel.model';
-import { TVItemStatModel } from 'src/app/models/generated/web/TVItemStatModel.model';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 
 export class WebCountry {
     EmailDistributionListModelList: EmailDistributionListModel[];
     RainExceedanceModelList: RainExceedanceModel[];
     TVFileModelList: TVFileModel[];
-    TVItemStatMapModel: TVItemStatMapModel;
-    TVItemStatMapModelProvinceList: TVItemStatMapModel[];
-    TVItemStatModelParentList: TVItemStatModel[];
+    TVItemModel: TVItemModel;
+    TVItemModelParentList: TVItemModel[];
+    TVItemModelProvinceList: TVItemModel[];
 }

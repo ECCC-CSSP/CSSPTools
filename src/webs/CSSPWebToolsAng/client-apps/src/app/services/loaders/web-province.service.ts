@@ -75,10 +75,6 @@ export class WebProvinceService {
     );
   }
 
-  // private DoWebMunicipalities() {
-  //   this.webMunicipalitiesService.DoWebMunicipalities(this.TVItemID, this.DoOther);
-  // }
-
   private KeepWebProvince() {
     this.UpdateWebProvince(this.appLoadedService.AppLoaded$?.getValue()?.WebProvince);
     console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebProvince);
@@ -88,31 +84,11 @@ export class WebProvinceService {
   }
 
   private UpdateWebProvince(x: WebProvince) {
-    // let ProvinceAreaList: WebBase[] = [];
-    // let ProvinceSamplingPlanList: SamplingPlan[] = [];
-
-    // // doing ProvinceAreaList
-    // if (!this.appStateService.AppState$?.getValue()?.InactVisible) {
-    //   ProvinceAreaList = x?.TVItemAreaList.filter((province) => { return province.TVItemModel?.TVItem.IsActive == true });
-    // }
-    // else {
-    //   ProvinceAreaList = x?.TVItemAreaList;
-    // }
-
-    // doing ProvinceSamplingPlanList
-    // might need filtering in the future
-    // ProvinceSamplingPlanList = x?.SamplingPlanList;
-
     this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
       WebProvince: x,
-      // ProvinceAreaList: this.sortTVItemListService.SortTVItemList(ProvinceAreaList, x?.TVItemParentList),
-      // ProvinceFileListList: this.structureTVFileListService.StructureTVFileList(x.TVItemModel),
-      // ProvinceSamplingPlanList: ProvinceSamplingPlanList,
-      // BreadCrumbProvinceWebBaseList: x?.TVItemParentList,
-      // BreadCrumbWebBaseList: x?.TVItemParentList
     });
 
-    this.historyService.AddHistory(this.appLoadedService.AppLoaded$.getValue()?.WebProvince?.TVItemStatMapModel);
+    this.historyService.AddHistory(this.appLoadedService.AppLoaded$.getValue()?.WebProvince?.TVItemModel);
 
     if (this.DoOther) {
       if (this.componentDataLoadedService.DataLoadedWebProvince()) {
@@ -123,56 +99,52 @@ export class WebProvinceService {
       this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
     }
 
-    // let webBaseProvince: WebBase[] = <WebBase[]>[
-    //   <WebBase>{ TVItemModel: this.appLoadedService.AppLoaded$.getValue().WebProvince.TVItemModel },
-    // ];
-
     if (this.appStateService.AppState$.getValue().GoogleJSLoaded) {
       if (this.appStateService.AppState$.getValue().ProvinceSubComponent == ProvinceSubComponentEnum.Areas) {
         this.mapService.ClearMap();
         this.mapService.DrawObjects([
-          ...this.appLoadedService.AppLoaded$.getValue().WebProvince.TVItemStatMapAreaList,
-          ...[this.appLoadedService.AppLoaded$.getValue().WebProvince.TVItemStatMapModel]
+          ...this.appLoadedService.AppLoaded$.getValue().WebProvince.TVItemModelAreaList,
+          ...[this.appLoadedService.AppLoaded$.getValue().WebProvince.TVItemModel]
         ]);
       }
 
       if (this.appStateService.AppState$.getValue().ProvinceSubComponent == ProvinceSubComponentEnum.Municipalities) {
         this.mapService.ClearMap();
         this.mapService.DrawObjects([
-          ...this.appLoadedService.AppLoaded$.getValue().WebProvince.TVItemStatMapMunicipalityList,
-          ...[this.appLoadedService.AppLoaded$.getValue().WebProvince.TVItemStatMapModel]
+          ...this.appLoadedService.AppLoaded$.getValue().WebProvince.TVItemModelMunicipalityList,
+          ...[this.appLoadedService.AppLoaded$.getValue().WebProvince.TVItemModel]
         ]);
       }
 
       if (this.appStateService.AppState$.getValue().ProvinceSubComponent == ProvinceSubComponentEnum.Files) {
         this.mapService.ClearMap();
         this.mapService.DrawObjects([
-          ...this.appLoadedService.AppLoaded$.getValue().WebProvince.TVItemStatMapAreaList,
-          ...[this.appLoadedService.AppLoaded$.getValue().WebProvince.TVItemStatMapModel]
+          ...this.appLoadedService.AppLoaded$.getValue().WebProvince.TVItemModelAreaList,
+          ...[this.appLoadedService.AppLoaded$.getValue().WebProvince.TVItemModel]
         ]);
       }
 
       if (this.appStateService.AppState$.getValue().ProvinceSubComponent == ProvinceSubComponentEnum.OpenData) {
         this.mapService.ClearMap();
         this.mapService.DrawObjects([
-          ...this.appLoadedService.AppLoaded$.getValue().WebProvince.TVItemStatMapAreaList,
-          ...[this.appLoadedService.AppLoaded$.getValue().WebProvince.TVItemStatMapModel]
+          ...this.appLoadedService.AppLoaded$.getValue().WebProvince.TVItemModelAreaList,
+          ...[this.appLoadedService.AppLoaded$.getValue().WebProvince.TVItemModel]
         ]);
       }
 
       if (this.appStateService.AppState$.getValue().ProvinceSubComponent == ProvinceSubComponentEnum.SamplingPlan) {
         this.mapService.ClearMap();
         this.mapService.DrawObjects([
-          ...this.appLoadedService.AppLoaded$.getValue().WebProvince.TVItemStatMapAreaList,
-          ...[this.appLoadedService.AppLoaded$.getValue().WebProvince.TVItemStatMapModel]
+          ...this.appLoadedService.AppLoaded$.getValue().WebProvince.TVItemModelAreaList,
+          ...[this.appLoadedService.AppLoaded$.getValue().WebProvince.TVItemModel]
         ]);
       }
 
       if (this.appStateService.AppState$.getValue().ProvinceSubComponent == ProvinceSubComponentEnum.ProvinceTools) {
         this.mapService.ClearMap();
         this.mapService.DrawObjects([
-          ...this.appLoadedService.AppLoaded$.getValue().WebProvince.TVItemStatMapAreaList,
-          ...[this.appLoadedService.AppLoaded$.getValue().WebProvince.TVItemStatMapModel]
+          ...this.appLoadedService.AppLoaded$.getValue().WebProvince.TVItemModelAreaList,
+          ...[this.appLoadedService.AppLoaded$.getValue().WebProvince.TVItemModel]
         ]);
       }
     }

@@ -3,7 +3,6 @@ import { AppStateService } from 'src/app/services/app-state.service';
 import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model';
 import { PredicateAscByService } from 'src/app/services/helpers/predicate-asc-by.service';
 import { TVFileID_ServerFileName_Sort } from 'src/app/models/TVFileID_ServerFileName_Sort.model';
-import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { FilePurposeEnum_GetOrderedText } from 'src/app/enums/generated/FilePurposeEnum';
 import { EnumIDAndText } from 'src/app/models/generated/helper/EnumIDAndText.model';
 
@@ -15,9 +14,8 @@ export class StructureTVFileListService {
     private predicateAscByService: PredicateAscByService) {
   }
 
-  StructureTVFileList(tvItemModel: TVItemModel): TVFileModel[][] {
-    if (!tvItemModel) return [[]];
-    if (!tvItemModel.TVFileModelList) return [[]];
+  StructureTVFileList(TVFileModelList: TVFileModel[]): TVFileModel[][] {
+    if (!TVFileModelList) return [[]];
 
     let tvFileModelListList: TVFileModel[][] = [[]];
 
@@ -29,9 +27,9 @@ export class StructureTVFileListService {
     for (let i = 0; i < enumIDAndTextList.length; i++) {
       let tvFileModelList: TVFileModel[] = [];
       let tvFileModelSortedList: TVFileModel[] = [];
-      for (let j = 0; j < tvItemModel.TVFileModelList.length; j++) {
-        if (enumIDAndTextList[i].EnumID == tvItemModel.TVFileModelList[j].TVFile.FilePurpose) {
-          tvFileModelList.push(tvItemModel.TVFileModelList[j]);
+      for (let j = 0; j < TVFileModelList.length; j++) {
+        if (enumIDAndTextList[i].EnumID == TVFileModelList[j].TVFile.FilePurpose) {
+          tvFileModelList.push(TVFileModelList[j]);
         }
       }
       if (tvFileModelList.length > 0) {

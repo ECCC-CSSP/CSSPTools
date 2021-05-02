@@ -29,20 +29,20 @@ namespace ReadGzFileServices
     {
         private void DoMergeJsonWebClimateSites(WebClimateSites WebClimateSites, WebClimateSites WebClimateSitesLocal)
         {
-            if (WebClimateSitesLocal.TVItemStatMapModel.TVItem.DBCommand != DBCommandEnum.Original
-                || WebClimateSitesLocal.TVItemStatMapModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-                || WebClimateSitesLocal.TVItemStatMapModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
+            if (WebClimateSitesLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
+                || WebClimateSitesLocal.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
+                || WebClimateSitesLocal.TVItemModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
             {
-                WebClimateSites.TVItemStatMapModel = WebClimateSitesLocal.TVItemStatMapModel;
+                WebClimateSites.TVItemModel = WebClimateSitesLocal.TVItemModel;
             }
 
-            if ((from c in WebClimateSitesLocal.TVItemStatModelParentList
+            if ((from c in WebClimateSitesLocal.TVItemModelParentList
                  where c.TVItem.DBCommand != DBCommandEnum.Original
                  || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
                  || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original
                  select c).Any())
             {
-                WebClimateSites.TVItemStatModelParentList = WebClimateSitesLocal.TVItemStatModelParentList;
+                WebClimateSites.TVItemModelParentList = WebClimateSitesLocal.TVItemModelParentList;
             }
 
             List<ClimateSiteModel> ClimateSiteModelList = (from c in WebClimateSitesLocal.ClimateSiteModelList

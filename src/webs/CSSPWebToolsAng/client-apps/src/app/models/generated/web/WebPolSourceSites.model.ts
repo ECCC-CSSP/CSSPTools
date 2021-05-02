@@ -6,11 +6,10 @@
  */
 
 import { PolSourceSiteModel } from 'src/app/models/generated/web/PolSourceSiteModel.model';
-import { TVItemStatMapModel } from 'src/app/models/generated/web/TVItemStatMapModel.model';
-import { TVItemStatModel } from 'src/app/models/generated/web/TVItemStatModel.model';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 
 export class WebPolSourceSites {
     PolSourceSiteModelList: PolSourceSiteModel[];
-    TVItemStatMapModel: TVItemStatMapModel;
-    TVItemStatModelParentList: TVItemStatModel[];
+    TVItemModel: TVItemModel;
+    TVItemModelParentList: TVItemModel[];
 }

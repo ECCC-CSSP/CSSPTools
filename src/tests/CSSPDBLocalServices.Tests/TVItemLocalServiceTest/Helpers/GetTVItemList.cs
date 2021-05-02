@@ -31,7 +31,7 @@ namespace CSSPDBLocalServices.Tests
 {
     public partial class TVItemLocalServiceTest
     {
-        private async Task<List<TVItemStatModel>> GetWebBaseList(WebTypeEnum webType, TVTypeEnum tvTypeList, int ParentTVItemID)
+        private async Task<List<TVItemModel>> GetWebBaseList(WebTypeEnum webType, TVTypeEnum tvTypeList, int ParentTVItemID)
         {
             switch (webType)
             {
@@ -41,8 +41,8 @@ namespace CSSPDBLocalServices.Tests
                         {
                             case TVTypeEnum.Country:
                                 {
-                                    return await Task.FromResult((from c in ReadGzFileService.webAppLoaded.WebRoot.TVItemStatMapModelCountryList
-                                                                  select new TVItemStatModel
+                                    return await Task.FromResult((from c in ReadGzFileService.webAppLoaded.WebRoot.TVItemModelCountryList
+                                                                  select new TVItemModel
                                                                   {
                                                                       TVItem = c.TVItem,
                                                                       TVItemLanguageList = c.TVItemLanguageList,
@@ -51,14 +51,14 @@ namespace CSSPDBLocalServices.Tests
                             case TVTypeEnum.File:
                                 {
                                     return await Task.FromResult((from c in ReadGzFileService.webAppLoaded.WebRoot.TVFileModelList
-                                                                  select new TVItemStatModel
+                                                                  select new TVItemModel
                                                                   {
                                                                       TVItem = c.TVItem,
                                                                       TVItemLanguageList = c.TVItemLanguageList,
                                                                   }).ToList());
                                 }
                             default:
-                                return await Task.FromResult(new List<TVItemStatModel>());
+                                return await Task.FromResult(new List<TVItemModel>());
                         }
                     }
                 case WebTypeEnum.WebCountry:
@@ -67,8 +67,8 @@ namespace CSSPDBLocalServices.Tests
                         {
                             case TVTypeEnum.Province:
                                 {
-                                    return await Task.FromResult((from c in ReadGzFileService.webAppLoaded.WebCountry.TVItemStatMapModelProvinceList
-                                                                  select new TVItemStatModel
+                                    return await Task.FromResult((from c in ReadGzFileService.webAppLoaded.WebCountry.TVItemModelProvinceList
+                                                                  select new TVItemModel
                                                                   {
                                                                       TVItem = c.TVItem,
                                                                       TVItemLanguageList = c.TVItemLanguageList,
@@ -77,7 +77,7 @@ namespace CSSPDBLocalServices.Tests
                             case TVTypeEnum.RainExceedance:
                                 {
                                     return await Task.FromResult((from c in ReadGzFileService.webAppLoaded.WebCountry.RainExceedanceModelList
-                                                                  select new TVItemStatModel
+                                                                  select new TVItemModel
                                                                   {
                                                                       TVItem = c.TVItem,
                                                                       TVItemLanguageList = c.TVItemLanguageList,
@@ -86,14 +86,14 @@ namespace CSSPDBLocalServices.Tests
                             case TVTypeEnum.File:
                                 {
                                     return await Task.FromResult((from c in ReadGzFileService.webAppLoaded.WebCountry.TVFileModelList
-                                                                  select new TVItemStatModel
+                                                                  select new TVItemModel
                                                                   {
                                                                       TVItem = c.TVItem,
                                                                       TVItemLanguageList = c.TVItemLanguageList,
                                                                   }).ToList());
                                 }
                             default:
-                                return await Task.FromResult(new List<TVItemStatModel>());
+                                return await Task.FromResult(new List<TVItemModel>());
                         }
                     }
                 case WebTypeEnum.WebProvince:
@@ -102,8 +102,8 @@ namespace CSSPDBLocalServices.Tests
                         {
                             case TVTypeEnum.Area:
                                 {
-                                    return await Task.FromResult((from c in ReadGzFileService.webAppLoaded.WebProvince.TVItemStatMapAreaList
-                                                                  select new TVItemStatModel
+                                    return await Task.FromResult((from c in ReadGzFileService.webAppLoaded.WebProvince.TVItemModelAreaList
+                                                                  select new TVItemModel
                                                                   {
                                                                       TVItem = c.TVItem,
                                                                       TVItemLanguageList = c.TVItemLanguageList,
@@ -112,14 +112,14 @@ namespace CSSPDBLocalServices.Tests
                             case TVTypeEnum.File:
                                 {
                                     return await Task.FromResult((from c in ReadGzFileService.webAppLoaded.WebProvince.TVFileModelList
-                                                                  select new TVItemStatModel
+                                                                  select new TVItemModel
                                                                   {
                                                                       TVItem = c.TVItem,
                                                                       TVItemLanguageList = c.TVItemLanguageList,
                                                                   }).ToList());
                                 }
                             default:
-                                return await Task.FromResult(new List<TVItemStatModel>());
+                                return await Task.FromResult(new List<TVItemModel>());
                         }
                     }
                 case WebTypeEnum.WebArea:
@@ -128,8 +128,8 @@ namespace CSSPDBLocalServices.Tests
                         {
                             case TVTypeEnum.Sector:
                                 {
-                                    return await Task.FromResult((from c in ReadGzFileService.webAppLoaded.WebArea.TVItemStatMapModelSectorList
-                                                                  select new TVItemStatModel
+                                    return await Task.FromResult((from c in ReadGzFileService.webAppLoaded.WebArea.TVItemModelSectorList
+                                                                  select new TVItemModel
                                                                   {
                                                                       TVItem = c.TVItem,
                                                                       TVItemLanguageList = c.TVItemLanguageList,
@@ -138,14 +138,14 @@ namespace CSSPDBLocalServices.Tests
                             case TVTypeEnum.File:
                                 {
                                     return await Task.FromResult((from c in ReadGzFileService.webAppLoaded.WebArea.TVFileModelList
-                                                                  select new TVItemStatModel
+                                                                  select new TVItemModel
                                                                   {
                                                                       TVItem = c.TVItem,
                                                                       TVItemLanguageList = c.TVItemLanguageList,
                                                                   }).ToList());
                                 }
                             default:
-                                return await Task.FromResult(new List<TVItemStatModel>());
+                                return await Task.FromResult(new List<TVItemModel>());
                         }
                     }
                 case WebTypeEnum.WebSector:
@@ -154,8 +154,8 @@ namespace CSSPDBLocalServices.Tests
                         {
                             case TVTypeEnum.Subsector:
                                 {
-                                    return await Task.FromResult((from c in ReadGzFileService.webAppLoaded.WebSector.TVItemStatMapModelSubsectorList
-                                                                  select new TVItemStatModel
+                                    return await Task.FromResult((from c in ReadGzFileService.webAppLoaded.WebSector.TVItemModelSubsectorList
+                                                                  select new TVItemModel
                                                                   {
                                                                       TVItem = c.TVItem,
                                                                       TVItemLanguageList = c.TVItemLanguageList,
@@ -164,14 +164,14 @@ namespace CSSPDBLocalServices.Tests
                             case TVTypeEnum.File:
                                 {
                                     return await Task.FromResult((from c in ReadGzFileService.webAppLoaded.WebSector.TVFileModelList
-                                                                  select new TVItemStatModel
+                                                                  select new TVItemModel
                                                                   {
                                                                       TVItem = c.TVItem,
                                                                       TVItemLanguageList = c.TVItemLanguageList,
                                                                   }).ToList());
                                 }
                             default:
-                                return await Task.FromResult(new List<TVItemStatModel>());
+                                return await Task.FromResult(new List<TVItemModel>());
                         }
                     }
                 case WebTypeEnum.WebSubsector:
@@ -180,8 +180,8 @@ namespace CSSPDBLocalServices.Tests
                         {
                             case TVTypeEnum.Classification:
                                 {
-                                    return await Task.FromResult((from c in ReadGzFileService.webAppLoaded.WebSubsector.TVItemStatMapModelClassificationList
-                                                                  select new TVItemStatModel
+                                    return await Task.FromResult((from c in ReadGzFileService.webAppLoaded.WebSubsector.TVItemModelClassificationList
+                                                                  select new TVItemModel
                                                                   {
                                                                       TVItem = c.TVItem,
                                                                       TVItemLanguageList = c.TVItemLanguageList,
@@ -190,14 +190,14 @@ namespace CSSPDBLocalServices.Tests
                             case TVTypeEnum.File:
                                 {
                                     return await Task.FromResult((from c in ReadGzFileService.webAppLoaded.WebSubsector.TVFileModelList
-                                                                  select new TVItemStatModel
+                                                                  select new TVItemModel
                                                                   {
                                                                       TVItem = c.TVItem,
                                                                       TVItemLanguageList = c.TVItemLanguageList,
                                                                   }).ToList());
                                 }
                             default:
-                                return await Task.FromResult(new List<TVItemStatModel>());
+                                return await Task.FromResult(new List<TVItemModel>());
                         }
                     }
                 case WebTypeEnum.WebMunicipality:
@@ -207,41 +207,41 @@ namespace CSSPDBLocalServices.Tests
                             case TVTypeEnum.Infrastructure:
                                 {
                                     return await Task.FromResult((from c in ReadGzFileService.webAppLoaded.WebMunicipality.InfrastructureModelList
-                                                                  select new TVItemStatModel
+                                                                  select new TVItemModel
                                                                   {
-                                                                      TVItem = c.TVItemMapModel.TVItem,
-                                                                      TVItemLanguageList = c.TVItemMapModel.TVItemLanguageList,
+                                                                      TVItem = c.TVItemModel.TVItem,
+                                                                      TVItemLanguageList = c.TVItemModel.TVItemLanguageList,
                                                                   }).ToList());
                                 }
                             case TVTypeEnum.MikeScenario:
                                 {
                                     return await Task.FromResult((from c in ReadGzFileService.webAppLoaded.WebMikeScenarios.MikeScenarioModelList
-                                                                  select new TVItemStatModel
+                                                                  select new TVItemModel
                                                                   {
-                                                                      TVItem = c.TVItemStatMapModel.TVItem,
-                                                                      TVItemLanguageList = c.TVItemStatMapModel.TVItemLanguageList,
+                                                                      TVItem = c.TVItemModel.TVItem,
+                                                                      TVItemLanguageList = c.TVItemModel.TVItemLanguageList,
                                                                   }).ToList());
                                 }
                             case TVTypeEnum.File:
                                 {
                                     return await Task.FromResult((from c in ReadGzFileService.webAppLoaded.WebMunicipality.TVFileModelList
-                                                                  select new TVItemStatModel
+                                                                  select new TVItemModel
                                                                   {
                                                                       TVItem = c.TVItem,
                                                                       TVItemLanguageList = c.TVItemLanguageList,
                                                                   }).ToList());
                                 }
                             default:
-                                return await Task.FromResult(new List<TVItemStatModel>());
+                                return await Task.FromResult(new List<TVItemModel>());
                         }
                     }
                 case WebTypeEnum.WebMWQMSamples1980_2020:
                     {
-                        return await Task.FromResult(new List<TVItemStatModel>());
+                        return await Task.FromResult(new List<TVItemModel>());
                     }
                 case WebTypeEnum.WebMWQMSamples2021_2060:
                     {
-                        return await Task.FromResult(new List<TVItemStatModel>());
+                        return await Task.FromResult(new List<TVItemModel>());
                     }
                 case WebTypeEnum.WebMWQMRuns:
                     {
@@ -250,14 +250,14 @@ namespace CSSPDBLocalServices.Tests
                             case TVTypeEnum.MWQMRun:
                                 {
                                     return await Task.FromResult((from c in ReadGzFileService.webAppLoaded.WebMWQMRuns.MWQMRunModelList
-                                                                  select new TVItemStatModel
+                                                                  select new TVItemModel
                                                                   {
-                                                                      TVItem = c.TVItemStatModel.TVItem,
-                                                                      TVItemLanguageList = c.TVItemStatModel.TVItemLanguageList,
+                                                                      TVItem = c.TVItemModel.TVItem,
+                                                                      TVItemLanguageList = c.TVItemModel.TVItemLanguageList,
                                                                   }).ToList());
                                 }
                             default:
-                                return await Task.FromResult(new List<TVItemStatModel>());
+                                return await Task.FromResult(new List<TVItemModel>());
                         }
                     }
                 case WebTypeEnum.WebMWQMSites:
@@ -267,10 +267,10 @@ namespace CSSPDBLocalServices.Tests
                             case TVTypeEnum.MWQMSite:
                                 {
                                     return await Task.FromResult((from c in ReadGzFileService.webAppLoaded.WebMWQMSites.MWQMSiteModelList
-                                                                  select new TVItemStatModel
+                                                                  select new TVItemModel
                                                                   {
-                                                                      TVItem = c.TVItemStatMapModel.TVItem,
-                                                                      TVItemLanguageList = c.TVItemStatMapModel.TVItemLanguageList,
+                                                                      TVItem = c.TVItemModel.TVItem,
+                                                                      TVItemLanguageList = c.TVItemModel.TVItemLanguageList,
                                                                   }).ToList());
                                 }
                             case TVTypeEnum.File:
@@ -280,14 +280,14 @@ namespace CSSPDBLocalServices.Tests
                                                                    select c).FirstOrDefault();
 
                                     return await Task.FromResult((from c in mwqmSiteModel.TVFileModelList
-                                                                  select new TVItemStatModel
+                                                                  select new TVItemModel
                                                                   {
                                                                       TVItem = c.TVItem,
                                                                       TVItemLanguageList = c.TVItemLanguageList,
                                                                   }).ToList());
                                 }
                             default:
-                                return await Task.FromResult(new List<TVItemStatModel>());
+                                return await Task.FromResult(new List<TVItemModel>());
                         }
                     }
                 case WebTypeEnum.WebAllContacts:
@@ -297,14 +297,14 @@ namespace CSSPDBLocalServices.Tests
                             case TVTypeEnum.Contact:
                                 {
                                     return await Task.FromResult((from c in ReadGzFileService.webAppLoaded.WebAllContacts.ContactModelList
-                                                                  select new TVItemStatModel
+                                                                  select new TVItemModel
                                                                   {
                                                                       TVItem = c.TVItem,
                                                                       TVItemLanguageList = c.TVItemLanguageList,
                                                                   }).ToList());
                                 }
                             default:
-                                return await Task.FromResult(new List<TVItemStatModel>());
+                                return await Task.FromResult(new List<TVItemModel>());
                         }
                     }
                 case WebTypeEnum.WebClimateSites:
@@ -314,14 +314,14 @@ namespace CSSPDBLocalServices.Tests
                             case TVTypeEnum.ClimateSite:
                                 {
                                     return await Task.FromResult((from c in ReadGzFileService.webAppLoaded.WebClimateSites.ClimateSiteModelList
-                                                                  select new TVItemStatModel
+                                                                  select new TVItemModel
                                                                   {
-                                                                      TVItem = c.TVItemMapModel.TVItem,
-                                                                      TVItemLanguageList = c.TVItemMapModel.TVItemLanguageList,
+                                                                      TVItem = c.TVItemModel.TVItem,
+                                                                      TVItemLanguageList = c.TVItemModel.TVItemLanguageList,
                                                                   }).ToList());
                                 }
                             default:
-                                return await Task.FromResult(new List<TVItemStatModel>());
+                                return await Task.FromResult(new List<TVItemModel>());
                         }
                     }
                 case WebTypeEnum.WebHydrometricSites:
@@ -331,23 +331,23 @@ namespace CSSPDBLocalServices.Tests
                             case TVTypeEnum.HydrometricSite:
                                 {
                                     return await Task.FromResult((from c in ReadGzFileService.webAppLoaded.WebHydrometricSites.HydrometricSiteModelList
-                                                                  select new TVItemStatModel
+                                                                  select new TVItemModel
                                                                   {
-                                                                      TVItem = c.TVItemMapModel.TVItem,
-                                                                      TVItemLanguageList = c.TVItemMapModel.TVItemLanguageList,
+                                                                      TVItem = c.TVItemModel.TVItem,
+                                                                      TVItemLanguageList = c.TVItemModel.TVItemLanguageList,
                                                                   }).ToList());
                                 }
                             default:
-                                return await Task.FromResult(new List<TVItemStatModel>());
+                                return await Task.FromResult(new List<TVItemModel>());
                         }
                     }
                 case WebTypeEnum.WebDrogueRuns:
                     {
-                        return await Task.FromResult(new List<TVItemStatModel>());
+                        return await Task.FromResult(new List<TVItemModel>());
                     }
                 case WebTypeEnum.WebAllMWQMLookupMPNs:
                     {
-                        return await Task.FromResult(new List<TVItemStatModel>());
+                        return await Task.FromResult(new List<TVItemModel>());
                     }
                 case WebTypeEnum.WebMikeScenarios:
                     {
@@ -360,10 +360,10 @@ namespace CSSPDBLocalServices.Tests
                                                                            select c).FirstOrDefault();
 
                                     return await Task.FromResult((from c in mikeScenarioModel.MikeBoundaryConditionModelList.Where(c => c.MikeBoundaryCondition.TVType == TVTypeEnum.MikeBoundaryConditionMesh)
-                                                                  select new TVItemStatModel
+                                                                  select new TVItemModel
                                                                   {
-                                                                      TVItem = c.TVItemMapModel.TVItem,
-                                                                      TVItemLanguageList = c.TVItemMapModel.TVItemLanguageList,
+                                                                      TVItem = c.TVItemModel.TVItem,
+                                                                      TVItemLanguageList = c.TVItemModel.TVItemLanguageList,
                                                                   }).ToList());
                                 }
                             case TVTypeEnum.MikeBoundaryConditionWebTide:
@@ -373,10 +373,10 @@ namespace CSSPDBLocalServices.Tests
                                                                            select c).FirstOrDefault();
 
                                     return await Task.FromResult((from c in mikeScenarioModel.MikeBoundaryConditionModelList.Where(c => c.MikeBoundaryCondition.TVType == TVTypeEnum.MikeBoundaryConditionWebTide)
-                                                                  select new TVItemStatModel
+                                                                  select new TVItemModel
                                                                   {
-                                                                      TVItem = c.TVItemMapModel.TVItem,
-                                                                      TVItemLanguageList = c.TVItemMapModel.TVItemLanguageList,
+                                                                      TVItem = c.TVItemModel.TVItem,
+                                                                      TVItemLanguageList = c.TVItemModel.TVItemLanguageList,
                                                                   }).ToList());
                                 }
                             case TVTypeEnum.MikeSource:
@@ -386,10 +386,10 @@ namespace CSSPDBLocalServices.Tests
                                                                            select c).FirstOrDefault();
 
                                     return await Task.FromResult((from c in mikeScenarioModel.MikeSourceModelList
-                                                                  select new TVItemStatModel
+                                                                  select new TVItemModel
                                                                   {
-                                                                      TVItem = c.TVItemMapModel.TVItem,
-                                                                      TVItemLanguageList = c.TVItemMapModel.TVItemLanguageList,
+                                                                      TVItem = c.TVItemModel.TVItem,
+                                                                      TVItemLanguageList = c.TVItemModel.TVItemLanguageList,
                                                                   }).ToList());
                                 }
                             case TVTypeEnum.File:
@@ -399,23 +399,23 @@ namespace CSSPDBLocalServices.Tests
                                                                            select c).FirstOrDefault();
 
                                     return await Task.FromResult((from c in mikeScenarioModel.TVFileModelList
-                                                                  select new TVItemStatModel
+                                                                  select new TVItemModel
                                                                   {
                                                                       TVItem = c.TVItem,
                                                                       TVItemLanguageList = c.TVItemLanguageList,
                                                                   }).ToList());
                                 }
                             default:
-                                return await Task.FromResult(new List<TVItemStatModel>());
+                                return await Task.FromResult(new List<TVItemModel>());
                         }
                     }
                 case WebTypeEnum.WebAllHelpDocs:
                     {
-                        return await Task.FromResult(new List<TVItemStatModel>());
+                        return await Task.FromResult(new List<TVItemModel>());
                     }
                 case WebTypeEnum.WebAllTideLocations:
                     {
-                        return await Task.FromResult(new List<TVItemStatModel>());
+                        return await Task.FromResult(new List<TVItemModel>());
                     }
                 case WebTypeEnum.WebPolSourceSites:
                     {
@@ -424,10 +424,10 @@ namespace CSSPDBLocalServices.Tests
                             case TVTypeEnum.PolSourceSite:
                                 {
                                     return await Task.FromResult((from c in ReadGzFileService.webAppLoaded.WebPolSourceSites.PolSourceSiteModelList
-                                                                  select new TVItemStatModel
+                                                                  select new TVItemModel
                                                                   {
-                                                                      TVItem = c.TVItemStatMapModel.TVItem,
-                                                                      TVItemLanguageList = c.TVItemStatMapModel.TVItemLanguageList,
+                                                                      TVItem = c.TVItemModel.TVItem,
+                                                                      TVItemLanguageList = c.TVItemModel.TVItemLanguageList,
                                                                   }).ToList());
                                 }
                             case TVTypeEnum.File:
@@ -437,67 +437,67 @@ namespace CSSPDBLocalServices.Tests
                                                                              select c).FirstOrDefault();
 
                                     return await Task.FromResult((from c in polSourceSiteModel.TVFileModelList
-                                                                  select new TVItemStatModel
+                                                                  select new TVItemModel
                                                                   {
                                                                       TVItem = c.TVItem,
                                                                       TVItemLanguageList = c.TVItemLanguageList,
                                                                   }).ToList());
                                 }
                             default:
-                                return await Task.FromResult(new List<TVItemStatModel>());
+                                return await Task.FromResult(new List<TVItemModel>());
                         }
                     }
                 case WebTypeEnum.WebAllPolSourceGroupings:
                     {
-                        return await Task.FromResult(new List<TVItemStatModel>());
+                        return await Task.FromResult(new List<TVItemModel>());
                     }
                 case WebTypeEnum.WebAllReportTypes:
                     {
-                        return await Task.FromResult(new List<TVItemStatModel>());
+                        return await Task.FromResult(new List<TVItemModel>());
                     }
                 case WebTypeEnum.WebAllTVItems1980_2020:
                     {
-                        return await Task.FromResult(new List<TVItemStatModel>());
+                        return await Task.FromResult(new List<TVItemModel>());
                     }
                 case WebTypeEnum.WebAllTVItems2021_2060:
                     {
-                        return await Task.FromResult(new List<TVItemStatModel>());
+                        return await Task.FromResult(new List<TVItemModel>());
                     }
                 case WebTypeEnum.WebAllPolSourceSiteEffectTerms:
                     {
-                        return await Task.FromResult(new List<TVItemStatModel>());
+                        return await Task.FromResult(new List<TVItemModel>());
                     }
                 case WebTypeEnum.WebAllTVItemLanguages1980_2020:
                     {
-                        return await Task.FromResult(new List<TVItemStatModel>());
+                        return await Task.FromResult(new List<TVItemModel>());
                     }
                 case WebTypeEnum.WebAllTVItemLanguages2021_2060:
                     {
-                        return await Task.FromResult(new List<TVItemStatModel>());
+                        return await Task.FromResult(new List<TVItemModel>());
                     }
                 case WebTypeEnum.WebAllMunicipalities:
                     {
-                        return await Task.FromResult(new List<TVItemStatModel>());
+                        return await Task.FromResult(new List<TVItemModel>());
                     }
                 case WebTypeEnum.WebAllProvinces:
                     {
-                        return await Task.FromResult(new List<TVItemStatModel>());
+                        return await Task.FromResult(new List<TVItemModel>());
                     }
                 case WebTypeEnum.WebAllCountries:
                     {
-                        return await Task.FromResult(new List<TVItemStatModel>());
+                        return await Task.FromResult(new List<TVItemModel>());
                     }
                 case WebTypeEnum.WebAllAddresses:
                     {
-                        return await Task.FromResult(new List<TVItemStatModel>());
+                        return await Task.FromResult(new List<TVItemModel>());
                     }
                 case WebTypeEnum.WebAllEmails:
                     {
-                        return await Task.FromResult(new List<TVItemStatModel>());
+                        return await Task.FromResult(new List<TVItemModel>());
                     }
                 case WebTypeEnum.WebAllTels:
                     {
-                        return await Task.FromResult(new List<TVItemStatModel>());
+                        return await Task.FromResult(new List<TVItemModel>());
                     }
                 case WebTypeEnum.WebTideSites:
                     {
@@ -506,19 +506,19 @@ namespace CSSPDBLocalServices.Tests
                             case TVTypeEnum.TideSite:
                                 {
                                     return await Task.FromResult((from c in ReadGzFileService.webAppLoaded.WebTideSites.TideSiteModelList
-                                                                  select new TVItemStatModel
+                                                                  select new TVItemModel
                                                                   {
-                                                                      TVItem = c.TVItemMapModel.TVItem,
-                                                                      TVItemLanguageList = c.TVItemMapModel.TVItemLanguageList,
+                                                                      TVItem = c.TVItemModel.TVItem,
+                                                                      TVItemLanguageList = c.TVItemModel.TVItemLanguageList,
                                                                   }).ToList());
                                 }
                             default:
-                                return await Task.FromResult(new List<TVItemStatModel>());
+                                return await Task.FromResult(new List<TVItemModel>());
                         }
                     }
                 default:
                     {
-                        return await Task.FromResult(new List<TVItemStatModel>());
+                        return await Task.FromResult(new List<TVItemModel>());
                     }
             }
         }

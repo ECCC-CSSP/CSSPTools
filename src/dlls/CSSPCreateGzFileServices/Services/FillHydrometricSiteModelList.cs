@@ -33,9 +33,9 @@ namespace CreateGzFileServices
             {
                 HydrometricSiteModel hydrometricModel = new HydrometricSiteModel();
 
-                TVItemMapModel tvItemMapModel = new TVItemMapModel();
-                tvItemMapModel.TVItem = tvItem;
-                tvItemMapModel.TVItemLanguageList = TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
+                TVItemModel TVItemModel = new TVItemModel();
+                TVItemModel.TVItem = tvItem;
+                TVItemModel.TVItemLanguageList = TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
 
                 foreach (MapInfo MapInfo in MapInfoList.Where(c => c.TVItemID == tvItem.TVItemID))
                 {
@@ -43,10 +43,10 @@ namespace CreateGzFileServices
                     MapInfoModel.MapInfo = MapInfo;
                     MapInfoModel.MapInfoPointList = MapInfoPointList.Where(c => c.MapInfoID == MapInfo.MapInfoID).Select(c => c).ToList();
 
-                    tvItemMapModel.MapInfoModelList.Add(MapInfoModel);
+                    TVItemModel.MapInfoModelList.Add(MapInfoModel);
                 }
 
-                hydrometricModel.TVItemMapModel = tvItemMapModel;
+                hydrometricModel.TVItemModel = TVItemModel;
                 hydrometricModel.HydrometricSite = HydrometricSiteList.Where(c => c.HydrometricSiteTVItemID == tvItem.TVItemID).FirstOrDefault();
                 hydrometricModel.HydrometricDataValueList = HydrometricDataValueList.Where(c => c.HydrometricSiteID == hydrometricModel.HydrometricSite.HydrometricSiteID).ToList();
 

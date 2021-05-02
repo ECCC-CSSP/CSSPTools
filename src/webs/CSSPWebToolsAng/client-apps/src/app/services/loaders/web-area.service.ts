@@ -86,24 +86,12 @@ export class WebAreaService {
   }
 
   private UpdateWebArea(x: WebArea) {
-    // let AreaSectorList: WebBase[] = [];
-
-    // if (!this.appStateService.AppState$?.getValue()?.InactVisible) {
-    //   AreaSectorList = x?.TVItemSectorList.filter((sector) => { return sector.TVItemModel.TVItem.IsActive == true });
-    // }
-    // else {
-    //   AreaSectorList = x?.TVItemSectorList;
-    // }
 
     this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
       WebArea: x,
-      // AreaSectorList: this.sortTVItemListService.SortTVItemList(AreaSectorList, x?.TVItemParentList),
-      // AreaFileListList: this.structureTVFileListService.StructureTVFileList(x.TVItemModel),
-      // BreadCrumbAreaWebBaseList: x?.TVItemParentList,
-      // BreadCrumbWebBaseList: x?.TVItemParentList
     });
 
-    this.historyService.AddHistory(this.appLoadedService.AppLoaded$.getValue()?.WebArea?.TVItemStatMapModel);
+    this.historyService.AddHistory(this.appLoadedService.AppLoaded$.getValue()?.WebArea?.TVItemModel);
 
     if (this.DoOther) {
       if (this.componentDataLoadedService.DataLoadedWebArea()) {
@@ -114,24 +102,20 @@ export class WebAreaService {
       this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
     }
 
-    // let webBaseArea: WebBase[] = <WebBase[]>[
-    //   <WebBase>{ TVItemModel: this.appLoadedService.AppLoaded$.getValue().WebArea.TVItemModel },
-    // ];
-
     if (this.appStateService.AppState$.getValue().GoogleJSLoaded) {
       if (this.appStateService.AppState$.getValue().AreaSubComponent == AreaSubComponentEnum.Sectors) {
         this.mapService.ClearMap();
         this.mapService.DrawObjects([
-          ...this.appLoadedService.AppLoaded$.getValue().WebArea.TVItemStatMapModelSectorList,
-          ...[this.appLoadedService.AppLoaded$.getValue().WebArea.TVItemStatMapModel]
+          ...this.appLoadedService.AppLoaded$.getValue().WebArea.TVItemModelSectorList,
+          ...[this.appLoadedService.AppLoaded$.getValue().WebArea.TVItemModel]
         ]);
       }
 
       if (this.appStateService.AppState$.getValue().AreaSubComponent == AreaSubComponentEnum.Files) {
         this.mapService.ClearMap();
         this.mapService.DrawObjects([
-          ...this.appLoadedService.AppLoaded$.getValue().WebArea.TVItemStatMapModelSectorList,
-          ...[this.appLoadedService.AppLoaded$.getValue().WebArea.TVItemStatMapModel]
+          ...this.appLoadedService.AppLoaded$.getValue().WebArea.TVItemModelSectorList,
+          ...[this.appLoadedService.AppLoaded$.getValue().WebArea.TVItemModel]
         ]);
       }
     }

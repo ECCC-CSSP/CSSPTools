@@ -3,10 +3,8 @@ import { Injectable } from '@angular/core';
 import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { GetLanguageEnum, LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
-import { SampleTypeEnum } from 'src/app/enums/generated/SampleTypeEnum';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
 import { AppState } from 'src/app/models/AppState.model';
-import { MWQMRun } from 'src/app/models/generated/db/MWQMRun.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { AppLanguageService } from 'src/app/services/app-language.service';
@@ -87,19 +85,11 @@ export class WebMWQMRunsService {
     }
 
     private UpdateWebMWQMRuns(x: WebMWQMRuns) {
-        // let mwqmRunList: MWQMRun[] = [];
-        // let count: number = x.MWQMRunModelList.length;
-        // for (let i = 0; i < count; i++) {
-        //     if (x.MWQMRunModelList[i].MWQMRun.RunSampleType == SampleTypeEnum.Routine) {
-        //         mwqmRunList.push(x.MWQMRunModelList[i].MWQMRun);
-        //     }
-        // }
-
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
             WebMWQMRuns: x,
         });
 
-        this.historyService.AddHistory(this.appLoadedService.AppLoaded$.getValue()?.WebMWQMRuns?.TVItemStatMapModel);
+        this.historyService.AddHistory(this.appLoadedService.AppLoaded$.getValue()?.WebMWQMRuns?.TVItemModel);
 
         if (this.DoOther) {
             if (this.componentDataLoadedService.DataLoadedWebSubsector()) {

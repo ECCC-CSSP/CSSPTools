@@ -29,20 +29,20 @@ namespace ReadGzFileServices
     {
         private void DoMergeJsonWebMikeScenarios(WebMikeScenarios WebMikeScenarios, WebMikeScenarios WebMikeScenariosLocal)
         {
-            if (WebMikeScenariosLocal.TVItemStatMapModel.TVItem.DBCommand != DBCommandEnum.Original
-              || WebMikeScenariosLocal.TVItemStatMapModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-              || WebMikeScenariosLocal.TVItemStatMapModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
+            if (WebMikeScenariosLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
+              || WebMikeScenariosLocal.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
+              || WebMikeScenariosLocal.TVItemModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
             {
-                WebMikeScenarios.TVItemStatMapModel = WebMikeScenariosLocal.TVItemStatMapModel;
+                WebMikeScenarios.TVItemModel = WebMikeScenariosLocal.TVItemModel;
             }
 
-            if ((from c in WebMikeScenariosLocal.TVItemStatModelParentList
+            if ((from c in WebMikeScenariosLocal.TVItemModelParentList
                  where c.TVItem.DBCommand != DBCommandEnum.Original
                  || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
                  || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original
                  select c).Any())
             {
-                WebMikeScenarios.TVItemStatModelParentList = WebMikeScenariosLocal.TVItemStatModelParentList;
+                WebMikeScenarios.TVItemModelParentList = WebMikeScenariosLocal.TVItemModelParentList;
             }
 
             List<MikeScenarioModel> MikeScenarioModelList = (from c in WebMikeScenariosLocal.MikeScenarioModelList

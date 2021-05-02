@@ -29,38 +29,38 @@ namespace ReadGzFileServices
     {
         private static void DoMergeJsonWebSubsector(WebSubsector WebSubsector, WebSubsector WebSubsectorLocal)
         {
-            if (WebSubsectorLocal.TVItemStatMapModel.TVItem.DBCommand != DBCommandEnum.Original
-               || WebSubsectorLocal.TVItemStatMapModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-               || WebSubsectorLocal.TVItemStatMapModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
+            if (WebSubsectorLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
+               || WebSubsectorLocal.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
+               || WebSubsectorLocal.TVItemModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
             {
-                WebSubsector.TVItemStatMapModel = WebSubsectorLocal.TVItemStatMapModel;
+                WebSubsector.TVItemModel = WebSubsectorLocal.TVItemModel;
             }
 
-            if ((from c in WebSubsectorLocal.TVItemStatModelParentList
+            if ((from c in WebSubsectorLocal.TVItemModelParentList
                  where c.TVItem.DBCommand != DBCommandEnum.Original
                  || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
                  || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original
                  select c).Any())
             {
-                WebSubsector.TVItemStatModelParentList = WebSubsectorLocal.TVItemStatModelParentList;
+                WebSubsector.TVItemModelParentList = WebSubsectorLocal.TVItemModelParentList;
             }
 
-            //List<TVItemStatMapModel> TVItemStatMapModelList = (from c in WebSubsectorLocal.TVItemStatMapProvinceList
+            //List<TVItemModel> TVItemModelList = (from c in WebSubsectorLocal.TVItemStatMapProvinceList
             //                                                   where c.TVItem.DBCommand != DBCommandEnum.Original
             //                                                   || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
             //                                                   || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original
             //                                                   select c).ToList();
 
-            //foreach (TVItemStatMapModel tvItemStatMapModel in TVItemStatMapModelList)
+            //foreach (TVItemModel TVItemModel in TVItemModelList)
             //{
-            //    TVItemStatMapModel tvItemStatMapModelOriginal = WebSubsector.TVItemStatMapProvinceList.Where(c => c.TVItem.TVItemID == tvItemStatMapModel.TVItem.TVItemID).FirstOrDefault();
-            //    if (tvItemStatMapModelOriginal == null)
+            //    TVItemModel TVItemModelOriginal = WebSubsector.TVItemStatMapProvinceList.Where(c => c.TVItem.TVItemID == TVItemModel.TVItem.TVItemID).FirstOrDefault();
+            //    if (TVItemModelOriginal == null)
             //    {
-            //        WebSubsector.TVItemStatMapProvinceList.Add(tvItemStatMapModelOriginal);
+            //        WebSubsector.TVItemStatMapProvinceList.Add(TVItemModelOriginal);
             //    }
             //    else
             //    {
-            //        tvItemStatMapModelOriginal = tvItemStatMapModel;
+            //        TVItemModelOriginal = TVItemModel;
             //    }
             //}
 

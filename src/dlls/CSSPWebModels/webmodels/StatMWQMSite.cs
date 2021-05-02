@@ -20,7 +20,7 @@ namespace CSSPWebModels
 
         #region Properties not in DB
         public TVItemModel TVItemModel { get; set; }
-        public MWQMSite MWQMSite { get; set; }
+        public MWQMSiteModel MWQMSiteModel { get; set; }
         public List<StatMWQMSiteSample> StatMWQMSiteSampleList { get; set; }
         public double SalinityAverage { get; set; }
         #endregion Properties not in DB

@@ -12,7 +12,7 @@ namespace CSSPWebModels
     public partial class MWQMRunModel
     {
         #region Properties
-        public TVItemStatModel TVItemStatModel { get; set; }
+        public TVItemModel TVItemModel { get; set; }
         public MWQMRun MWQMRun { get; set; }
         public List<MWQMRunLanguage> MWQMRunLanguageList { get; set; }
         #endregion Properties
@@ -20,7 +20,7 @@ namespace CSSPWebModels
         #region Constructors
         public MWQMRunModel()
         {
-            TVItemStatModel = new TVItemStatModel();
+            TVItemModel = new TVItemModel();
             MWQMRun = new MWQMRun();
             MWQMRunLanguageList = new List<MWQMRunLanguage>();
         }

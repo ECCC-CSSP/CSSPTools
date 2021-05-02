@@ -3,9 +3,8 @@ import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { AppState } from 'src/app/models/AppState.model';
-import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
-import { ShowTVItemService } from 'src/app/services/helpers/show-tvitem.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 
 @Component({
   selector: 'app-country-item-modify',

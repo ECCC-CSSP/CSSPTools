@@ -10,7 +10,7 @@ import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { ComponentDataLoadedService } from 'src/app/services/helpers/component-data-loaded.service';
-import { WebMWQMSamples1980_2020Service } from 'src/app/services/loaders/web-mwqm-samples-1980-2020.service';
+import { WebMWQMSamplesService } from './web-mwqm-samples.service';
 
 @Injectable({
     providedIn: 'root'
@@ -25,7 +25,7 @@ export class WebDrogueRunsService {
         private appStateService: AppStateService,
         private appLoadedService: AppLoadedService,
         private appLanguageService: AppLanguageService,
-        private webMWQMSamples1980_2020Service: WebMWQMSamples1980_2020Service,
+        private webMWQMSamplesService: WebMWQMSamplesService,
         private componentDataLoadedService: ComponentDataLoadedService) {
     }
 
@@ -56,7 +56,7 @@ export class WebDrogueRunsService {
                 this.UpdateWebDrogueRuns(x);
                 console.debug(x);
                 if (this.DoOther) {
-                    this.DoWebMWQMSamples1980_2020();
+                    this.DoWebMWQMSamples();
                 }
             }),
             catchError(e => of(e).pipe(map(e => {
@@ -66,15 +66,15 @@ export class WebDrogueRunsService {
         );
     }
 
-    private DoWebMWQMSamples1980_2020() {
-        this.webMWQMSamples1980_2020Service.DoWebMWQMSamples1980_2020(this.TVItemID, true);
+    private DoWebMWQMSamples() {
+        this.webMWQMSamplesService.DoWebMWQMSamples(this.TVItemID, true);
     }
 
     private KeepWebDrogueRuns() {
         this.UpdateWebDrogueRuns(this.appLoadedService.AppLoaded$?.getValue()?.WebDrogueRuns);
         console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebDrogueRuns);
         if (this.DoOther) {
-            this.DoWebMWQMSamples1980_2020();
+            this.DoWebMWQMSamples();
         }
     }
 

@@ -7,10 +7,10 @@
 
 import { MikeSource } from 'src/app/models/generated/db/MikeSource.model';
 import { MikeSourceStartEnd } from 'src/app/models/generated/db/MikeSourceStartEnd.model';
-import { TVItemMapModel } from 'src/app/models/generated/web/TVItemMapModel.model';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 
 export class MikeSourceModel {
     MikeSource: MikeSource;
     MikeSourceStartEndList: MikeSourceStartEnd[];
-    TVItemMapModel: TVItemMapModel;
+    TVItemModel: TVItemModel;
 }

@@ -25,7 +25,6 @@ import { WebAllMWQMLookupMPNs } from './generated/web/WebAllMWQMLookupMPNs.model
 import { WebAllPolSourceGroupings } from './generated/web/WebAllPolSourceGroupings.model';
 import { WebAllPolSourceSiteEffectTerms } from './generated/web/WebAllPolSourceSiteEffectTerms.model';
 import { WebAllTideLocations } from './generated/web/WebAllTideLocations.model';
-import { TVItemStatModel } from './generated/web/TVItemStatModel.model';
 import { WebAllAddresses } from './generated/web/WebAllAddresses.model';
 import { WebAllEmails } from './generated/web/WebAllEmails.model';
 import { WebAllTels } from './generated/web/WebAllTels.model';
@@ -34,44 +33,14 @@ import { WebAllTVItems } from './generated/web/WebAllTVItems.model';
 import { WebLabSheets } from './generated/web/WebLabSheets.model';
 import { WebMWQMSamples } from './generated/web/WebMWQMSamples.model';
 import { WebTideSites } from './generated/web/WebTideSites.model';
+import { StatMWQMRun } from './generated/web/StatMWQMRun.model';
+import { MWQMSiteModel } from './generated/web/MWQMSiteModel.model';
+import { StatMWQMSite } from './generated/web/StatMWQMSite.model';
+import { TVItemModel } from './generated/web/TVItemModel.model';
 
 export interface AppLoaded {
     LoggedInContact?: Contact;
-    BreadCrumbWebBaseList?: TVItemStatModel[];
-
-    // WebAllAddressesSubscription?: Subscription;
-    // WebAllContactsSubscription?: Subscription;
-    // WebAllCountriesSubscription?: Subscription;
-    // WebAllEmailsSubscription?: Subscription;
-    // WebAllHelpDocsSubscription?: Subscription;
-    // WebAllMunicipalitiesSubscription?: Subscription;
-    // WebAllMWQMLookupMPNsSubscription?: Subscription;
-    // WebAllPolSourceGroupingsSubscription?: Subscription;
-    // WebAllPolSourceSiteEffectTermsSubscription?: Subscription;
-    // WebAllProvincesSubscription?: Subscription;
-    // WebAllReportTypesSubscription?: Subscription;
-    // WebAllTelsSubscription?: Subscription;
-    // WebAllTideLocationsSubscription?: Subscription;
-    // WebAllTVItemLanguagesSubscription?: Subscription;
-    // WebAllTVItemsSubscription?: Subscription;
-    // WebAreaSubscription?: Subscription;
-    // WebClimateSitesSubscription?: Subscription;
-    // WebCountrySubscription?: Subscription;
-    // WebDrogueRunsSubscription?: Subscription;
-    // WebHydrometricSitesSubscription?: Subscription;
-    // WebLabSheetsSubscription?: Subscription;
-    // WebMikeScenariosSubscription?: Subscription;
-    // WebMunicipalitySubscription?: Subscription;
-    // WebMWQMRunsSubscription?: Subscription;
-    // WebMWQMSamples1980_2020Subscription?: Subscription;
-    // WebMWQMSamples2021_2060Subscription?: Subscription;
-    // WebMWQMSitesSubscription?: Subscription;
-    // WebPolSourceSitesSubscription?: Subscription;
-    // WebProvincesSubscription?: Subscription;
-    // WebRootSubscription?: Subscription;
-    // WebSectorSubscription?: Subscription;
-    // WebSubsectorSubscription?: Subscription;
-    // WebTideSitesSubscription?: Subscription;
+    BreadCrumbTVItemModelList?: TVItemModel[];
 
     // Map related items
     Map?: google.maps.Map;
@@ -112,8 +81,7 @@ export interface AppLoaded {
     WebMikeScenarios?: WebMikeScenarios;
     WebMunicipality?: WebMunicipality;
     WebMWQMRuns?: WebMWQMRuns;
-    WebMWQMSamples1980_2020?: WebMWQMSamples;
-    WebMWQMSamples2021_2060?: WebMWQMSamples;
+    WebMWQMSamples?: WebMWQMSamples;
     WebMWQMSites?: WebMWQMSites;
     WebPolSourceSites?: WebPolSourceSites;
     WebProvince?: WebProvince;
@@ -122,107 +90,11 @@ export interface AppLoaded {
     WebSubsector?: WebSubsector;
     WebTideSites?: WebTideSites;
 
-    // MapInfoModelList?: MapInfoModel[];
-    //AdminContactList?: Contact[];
-
     SearchResult?: SearchResult[];
 
-    // // Root TVItemID related
-    // WebRoot?: WebRoot;
-    // BreadCrumbRootWebBaseList?: TVItemStatModel[];
-    // RootCountryList?: TVItemStatMapModel[];
-    // RootFileListList?: TVFileModel[][];
-
-    // // Country TVItemID related
-    // WebCountry?: WebCountry;
-    // BreadCrumbCountryWebBaseList?: TVItemStatModel[];
-    // CountryProvinceList?: TVItemStatMapModel[];
-    // CountryFileListList?: TVFileModel[][];
-    // EmailDistributionListContactLanguageList?: EmailDistributionListContactLanguage[];
-    // EmailDistributionListContactList?: EmailDistributionListContact[];
-    // EmailDistributionListLanguageList?: EmailDistributionListLanguage[];
-    // EmailDistributionListList?: EmailDistributionList[];
-
-    // // Province TVItemID related
-    // WebProvince?: WebProvince;
-    // BreadCrumbProvinceWebBaseList?: TVItemStatModel[];
-    // ProvinceAreaList?: TVItemStatMapModel[];
-    // ProvinceMunicipalityList?: TVItemStatMapModel[];
-    // ProvinceFileListList?: TVFileModel[][];
-    // ProvinceSamplingPlanList?: SamplingPlan[];
-    // // separate load
-    // WebClimateSites?: WebClimateSites;
-    // WebHydrometricSites?: WebHydrometricSites;
-
-    // // Area TVItemID related
-    // WebArea?: WebArea;
-    // BreadCrumbAreaWebBaseList?: TVItemStatModel[];
-    // AreaSectorList?: TVItemStatMapModel[];
-    // AreaFileListList?: TVFileModel[][];
-
-    // // Sector TVItemID related
-    // WebSector?: WebSector;
-    // BreadCrumbSectorWebBaseList?: TVItemStatModel[];
-    // SectorSubsectorList?: TVItemStatMapModel[];
-    // SectorFileListList?: TVFileModel[][];
-    // //SectorMIKEScenarioList?: WebBase[];
-
-    // // Subsector TVItemID related
-    // WebSubsector?: WebSubsector;
-    // BreadCrumbSubsectorWebBaseList?: TVItemStatModel[];
-    // SubsectorMWQMSiteList?: TVItemStatMapModel[];
-    // SubsectorMWQMRunList?: TVItemStatMapModel[];
-    // SubsectorPolSourceSiteList?: TVItemStatMapModel[];
-    // SubsectorFileListList?: TVFileModel[][];
-    // LabSheetModelList?: LabSheetModel[];
-    // MWQMAnalysisReportParameterList?: MWQMAnalysisReportParameter[];
-    // MWQMSubsector?: MWQMSubsector;
-    // MWQMSubsectorLanguageList?: MWQMSubsectorLanguage[];
-    // UseOfSiteList?: UseOfSite[];
-    // // separate load
-    // WebMWQMSites?: WebMWQMSites;
-    // WebMWQMRuns?: WebMWQMRuns;
-    // WebPolSourceSites?: WebPolSourceSites;
-    // WebDrogueRuns?: WebDrogueRuns;
-
     // MWQMRunRoutingList?: MWQMRun[];
-    // MWQMSiteList?: MWQMSite[];
-    // StatMWQMRunList?: StatMWQMRun[];
-    // StatMWQMSiteList?: StatMWQMSite[];
+    MWQMSiteList?: MWQMSiteModel[];
+    StatMWQMRunList?: StatMWQMRun[];
+    StatMWQMSiteList?: StatMWQMSite[];
 
-    // // Municipality TVItemID related -- this object is under province
-    // WebMunicipality?: WebMunicipality;
-    // BreadCrumbMunicipalityWebBaseList?: TVItemStatModel[];
-    // InfrastructureModelList?: InfrastructureModel[];
-    // MunicipalityFileListList?: TVFileModel[][];
-    // MunicipalityContactModelList?: ContactModel[];
-    // MunicipalityTVItemLinkList?: TVItemLink[];
-    // TVItemMikeScenarioList?: TVItemStatMapModel[];
-
-    // // Mike Scenario TVItemID related -- this object is under province
-    // WebMikeScenarios?: WebMikeScenarios;
-    // BreadCrumbMikeScenarioWebBaseList?: TVItemStatModel[];
-    // MikeScenarioFileListList?: TVFileModel[][];
-    // MikeBoundaryConditionModelMeshList: MikeBoundaryConditionModel[];
-    // MikeBoundaryConditionModelWebTideList: MikeBoundaryConditionModel[];
-    // MikeScenario: MikeScenario;
-    // MikeSourceModelList: MikeSourceModel[];
-
-    // // MWQM Run TVItemID related -- this object is under province
-    // WebMWQMRunScenario?: WebMWQMRuns;
-    // BreadCrumbMWQMRunWebBaseList?: TVItemStatModel[];
-    // MWQMRunFileListList?: TVFileModel[][];
-    // MWQMRun: MWQMRun;
-
-    // // MWQM Site TVItemID related -- this object is under province
-    // WebMWQMSiteScenario?: WebMWQMSites;
-    // BreadCrumbMWQMSiteWebBaseList?: TVItemStatModel[];
-    // MWQMSiteFileListList?: TVFileModel[][];
-    // MWQMSite: MWQMSite;
-
-    // // MWQM Site TVItemID related -- this object is under province
-    // WebPolSourceSiteScenario?: WebPolSourceSites;
-    // BreadCrumbPolSourceSiteWebBaseList?: TVItemStatModel[];
-    // PolSourceSiteFileListList?: TVFileModel[][];
-    // PolSourceSite: PolSourceSite;
 }

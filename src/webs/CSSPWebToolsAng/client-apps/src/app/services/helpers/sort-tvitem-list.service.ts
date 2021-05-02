@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { AppStateService } from '../app-state.service';
-import { WebBase } from 'src/app/models/generated/web/WebBase.model';
 import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 import { AscDescEnum } from 'src/app/enums/generated/AscDescEnum';
 import { PredicateAscByService } from 'src/app/services/helpers/predicate-asc-by.service';
 import { PredicateDescByService } from 'src/app/services/helpers/predicate-desc-by.service';
 import { TVItemID_TVText_Sort } from 'src/app/models/TVItemID_TVText_Sort.model';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 
 @Injectable({
     providedIn: 'root'
@@ -16,12 +16,12 @@ export class SortTVItemListService {
         private predicateDescByService: PredicateDescByService) {
     }
 
-    SortTVItemList(arr: WebBase[], breadCrumb: WebBase[]): WebBase[] {
+    SortTVItemList(arr: TVItemModel[], breadCrumb: TVItemModel[]): TVItemModel[] {
         if (!arr || arr.length == 0) return arr;
         if (!breadCrumb || breadCrumb.length == 0) return arr;
 
-        let TVType: TVTypeEnum = breadCrumb[breadCrumb.length - 1].TVItemModel?.TVItem.TVType;
-        let TVTypeOfList: TVTypeEnum = arr[0].TVItemModel?.TVItem.TVType;
+        let TVType: TVTypeEnum = breadCrumb[breadCrumb.length - 1].TVItem.TVType;
+        let TVTypeOfList: TVTypeEnum = arr[0].TVItem.TVType;
         let AscDesc: AscDescEnum = AscDescEnum.Ascending;
 
         switch (TVType) {
@@ -169,14 +169,14 @@ export class SortTVItemListService {
                 break;
         }
 
-        let webBaseSorted: WebBase[] = [];
+        let tvItemStatMapModelSorted: TVItemModel[] = [];
         let arr2: TVItemID_TVText_Sort[] = [];
         let sortable: TVItemID_TVText_Sort[] = [];
 
         for (let i = 0; i < arr.length; i++) {
             sortable.push(<TVItemID_TVText_Sort>{
-                TVItemID: arr[i].TVItemModel.TVItem.TVItemID,
-                TVText: arr[i].TVItemModel.TVItemLanguageList[this.appStateService.AppState$.getValue().Language].TVText.toLowerCase(),
+                TVItemID: arr[i].TVItem.TVItemID,
+                TVText: arr[i].TVItemLanguageList[this.appStateService.AppState$.getValue().Language].TVText.toLowerCase(),
             });
         }
 
@@ -189,13 +189,13 @@ export class SortTVItemListService {
 
         for (let i = 0; i < sortable.length; i++) {
             for (let j = 0; j < arr.length; j++) {
-                if (arr2[i].TVItemID == arr[j].TVItemModel.TVItem.TVItemID) {
-                    webBaseSorted.push(arr[j]);
+                if (arr2[i].TVItemID == arr[j].TVItem.TVItemID) {
+                    tvItemStatMapModelSorted.push(arr[j]);
                     break;
                 }
             }
         }
 
-        return webBaseSorted;
+        return tvItemStatMapModelSorted;
     }
 }

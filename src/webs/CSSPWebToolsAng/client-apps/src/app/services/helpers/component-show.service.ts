@@ -6,24 +6,21 @@ import { RootSubComponentEnum } from 'src/app/enums/generated/RootSubComponentEn
 import { SectorSubComponentEnum } from 'src/app/enums/generated/SectorSubComponentEnum';
 import { AppState } from 'src/app/models/AppState.model';
 import { AppStateService } from 'src/app/services/app-state.service';
-import { AppLoadedService } from '../app-loaded.service';
-import { WebAreaService } from '../loaders/web-area.service';
-import { WebSectorService } from '../loaders/web-sector.service';
-import { WebCountryService } from '../loaders/web-country.service';
-import { WebMunicipalitiesService } from '../loaders/web-municipalities.service';
-import { WebProvinceService } from '../loaders/web-province.service';
+import { WebAreaService } from 'src/app/services/loaders/web-area.service';
+import { WebSectorService } from 'src/app/services/loaders/web-sector.service';
+import { WebCountryService } from 'src/app/services/loaders/web-country.service';
+import { WebProvinceService } from 'src/app/services/loaders/web-province.service';
 import { SubsectorSubComponentEnum } from 'src/app/enums/generated/SubsectorSubComponentEnum';
-import { WebSubsectorService } from '../loaders/web-subsector.service';
-import { WebMWQMSampleService } from '../loaders/web-mwqm-samples.service';
-import { WebRootService } from '../loaders/web-root.service';
+import { WebSubsectorService } from 'src/app/services/loaders/web-subsector.service';
+import { WebRootService } from 'src/app/services/loaders/web-root.service';
 import { MunicipalitySubComponentEnum } from 'src/app/enums/generated/MunicipalitySubComponentEnum';
-import { WebMunicipalityService } from '../loaders/web-municipalty.service';
+import { WebMunicipalityService } from 'src/app/services/loaders/web-municipalty.service';
 import { MWQMRunSubComponentEnum } from 'src/app/enums/generated/MWQMRunSubComponentEnum';
-import { WebMWQMRunService } from '../loaders/web-mwqm-runs.service';
-import { WebMWQMSiteService } from '../loaders/web-mwqm-sites.service';
-import { WebPolSourceSiteService } from '../loaders/web-pol-source-sites.service';
 import { MWQMSiteSubComponentEnum } from 'src/app/enums/generated/MWQMSiteSubComponentEnum';
 import { PolSourceSiteSubComponentEnum } from 'src/app/enums/generated/PolSourceSiteSubComponentEnum';
+import { WebMWQMRunsService } from 'src/app/services/loaders/web-mwqm-runs.service';
+import { WebMWQMSitesService } from 'src/app/services/loaders/web-mwqm-sites.service';
+import { WebPolSourceSitesService } from 'src/app/services/loaders/web-pol-source-sites.service';
 
 @Injectable({
   providedIn: 'root'
@@ -34,9 +31,9 @@ export class ComponentShowService {
     private webRootService: WebRootService,
     private webCountryService: WebCountryService,
     private webMunicipalityService: WebMunicipalityService,
-    private webMWQMRunService: WebMWQMRunService,
-    private webMWQMSiteService: WebMWQMSiteService,
-    private webPolSourceSiteService: WebPolSourceSiteService,
+    private webMWQMRunsService: WebMWQMRunsService,
+    private webMWQMSitesService: WebMWQMSitesService,
+    private webPolSourceSitesService: WebPolSourceSitesService,
     private webProvinceService: WebProvinceService,
     private webAreaService: WebAreaService,
     private webSectorService: WebSectorService,
@@ -60,17 +57,17 @@ export class ComponentShowService {
 
   ShowMWQMRun(mwqmRunSubComponent: MWQMRunSubComponentEnum) {
     this.appStateService.UpdateAppState(<AppState>{ MWQMRunSubComponent: mwqmRunSubComponent });
-    this.webMWQMRunService.DoWebMWQMRun(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
+    this.webMWQMRunsService.DoWebMWQMRuns(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
   }
 
   ShowMWQMSite(mwqmSiteSubComponent: MWQMSiteSubComponentEnum) {
     this.appStateService.UpdateAppState(<AppState>{ MWQMSiteSubComponent: mwqmSiteSubComponent });
-    this.webMWQMSiteService.DoWebMWQMSite(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
+    this.webMWQMSitesService.DoWebMWQMSites(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
   }
 
   ShowMWQMPolSourceSite(polSourceSiteSubComponent: PolSourceSiteSubComponentEnum) {
     this.appStateService.UpdateAppState(<AppState>{ PolSourceSiteSubComponent: polSourceSiteSubComponent });
-    this.webPolSourceSiteService.DoWebPolSourceSite(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
+    this.webPolSourceSitesService.DoWebPolSourceSites(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
   }
 
   ShowProvince(provinceSubComponent: ProvinceSubComponentEnum) {

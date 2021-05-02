@@ -5,12 +5,12 @@
  *
  */
 
-import { MWQMSite } from 'src/app/models/generated/db/MWQMSite.model';
+import { MWQMSiteModel } from 'src/app/models/generated/web/MWQMSiteModel.model';
 import { StatMWQMSiteSample } from 'src/app/models/generated/web/StatMWQMSiteSample.model';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 
 export class StatMWQMSite {
-    MWQMSite: MWQMSite;
+    MWQMSiteModel: MWQMSiteModel;
     SalinityAverage: number;
     StatMWQMSiteSampleList: StatMWQMSiteSample[];
     TVItemModel: TVItemModel;

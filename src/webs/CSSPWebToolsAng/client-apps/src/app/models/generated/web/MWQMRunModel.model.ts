@@ -7,10 +7,10 @@
 
 import { MWQMRun } from 'src/app/models/generated/db/MWQMRun.model';
 import { MWQMRunLanguage } from 'src/app/models/generated/db/MWQMRunLanguage.model';
-import { TVItemStatModel } from 'src/app/models/generated/web/TVItemStatModel.model';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 
 export class MWQMRunModel {
     MWQMRun: MWQMRun;
     MWQMRunLanguageList: MWQMRunLanguage[];
-    TVItemStatModel: TVItemStatModel;
+    TVItemModel: TVItemModel;
 }

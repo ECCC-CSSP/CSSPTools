@@ -1,13 +1,13 @@
-import { MWQMSample } from "./generated/db/MWQMSample.model";
 import { MWQMRunModel } from "./generated/web/MWQMRunModel.model";
+import { MWQMSampleModel } from "./generated/web/MWQMSampleModel.model";
 import { MWQMSiteModel } from "./generated/web/MWQMSiteModel.model";
 
-export class MWQMRunModelSiteAndSample {
+export class MWQMRunModelSiteAndSampleModel {
     MWQMRunModel?: MWQMRunModel;
-    MWQMSiteModelAndSampleList?: MWQMSiteModelAndSample[];
+    MWQMSiteModelAndSampleModelList?: MWQMSiteModelAndSampleModel[];
 }
 
-export class MWQMSiteModelAndSample {
+export class MWQMSiteModelAndSampleModel {
     MWQMSiteModel?: MWQMSiteModel;
-    MWQMSample?: MWQMSample;
+    MWQMSampleModel?: MWQMSampleModel;
 }

@@ -33,11 +33,11 @@ namespace CreateGzFileServices
 
             try
             {
-                await FillTVItemModelAndParentTVItemModelList(webProvince.TVItemStatMapModel, webProvince.TVItemStatModelParentList, TVItemProvince);
+                await FillTVItemModelAndParentTVItemModelList(webProvince.TVItemModel, webProvince.TVItemModelParentList, TVItemProvince);
 
-                await FillChildListTVItemModelList(webProvince.TVItemStatMapAreaList, TVItemProvince, TVTypeEnum.Area);
+                await FillChildListTVItemModelList(webProvince.TVItemModelAreaList, TVItemProvince, TVTypeEnum.Area);
 
-                await FillChildListTVItemModelList(webProvince.TVItemStatMapMunicipalityList, TVItemProvince, TVTypeEnum.Municipality);
+                await FillChildListTVItemModelList(webProvince.TVItemModelMunicipalityList, TVItemProvince, TVTypeEnum.Municipality);
 
                 await FillFileModelList(webProvince.TVFileModelList, TVItemProvince);
 

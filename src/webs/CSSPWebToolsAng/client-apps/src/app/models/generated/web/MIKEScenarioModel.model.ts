@@ -9,14 +9,13 @@ import { MikeBoundaryConditionModel } from 'src/app/models/generated/web/MikeBou
 import { MikeScenario } from 'src/app/models/generated/db/MikeScenario.model';
 import { MikeSourceModel } from 'src/app/models/generated/web/MikeSourceModel.model';
 import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model';
-import { TVItemStatMapModel } from 'src/app/models/generated/web/TVItemStatMapModel.model';
-import { TVItemStatModel } from 'src/app/models/generated/web/TVItemStatModel.model';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 
 export class MikeScenarioModel {
     MikeBoundaryConditionModelList: MikeBoundaryConditionModel[];
     MikeScenario: MikeScenario;
     MikeSourceModelList: MikeSourceModel[];
     TVFileModelList: TVFileModel[];
-    TVItemStatMapModel: TVItemStatMapModel;
-    TVItemStatModelParentList: TVItemStatModel[];
+    TVItemModel: TVItemModel;
+    TVItemModelParentList: TVItemModel[];
 }

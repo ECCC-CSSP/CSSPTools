@@ -18,7 +18,7 @@ namespace CSSPDBLocalServices.Tests
 {
     public partial class TVItemLocalServiceTest
     {
-        private PostTVItemModel FillPostTVItemModelForAdd(List<TVItemStatModel> tvItemParentList, string tvTextEN, string tvTextFR, TVTypeEnum tvType)
+        private PostTVItemModel FillPostTVItemModelForAdd(List<TVItemModel> tvItemParentList, string tvTextEN, string tvTextFR, TVTypeEnum tvType)
         {
             TVItem tvItemParent = null;
             //TVItem tvItemGrandParent = null;

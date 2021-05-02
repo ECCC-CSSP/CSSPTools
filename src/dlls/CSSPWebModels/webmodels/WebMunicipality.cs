@@ -12,8 +12,8 @@ namespace CSSPWebModels
     public partial class WebMunicipality
     {
         #region Properties
-        public TVItemStatMapModel TVItemStatMapModel { get; set; }
-        public List<TVItemStatModel> TVItemStatModelParentList { get; set; }
+        public TVItemModel TVItemModel { get; set; }
+        public List<TVItemModel> TVItemModelParentList { get; set; }
         public List<TVFileModel> TVFileModelList { get; set; }
         public List<ContactModel> MunicipalityContactModelList { get; set; }
         public List<TVItemLink> MunicipalityTVItemLinkList { get; set; }
@@ -23,8 +23,8 @@ namespace CSSPWebModels
         #region Constructors
         public WebMunicipality()
         {
-            TVItemStatMapModel = new TVItemStatMapModel();
-            TVItemStatModelParentList = new List<TVItemStatModel>();
+            TVItemModel = new TVItemModel();
+            TVItemModelParentList = new List<TVItemModel>();
             TVFileModelList = new List<TVFileModel>();
             MunicipalityContactModelList = new List<ContactModel>();
             MunicipalityTVItemLinkList = new List<TVItemLink>();

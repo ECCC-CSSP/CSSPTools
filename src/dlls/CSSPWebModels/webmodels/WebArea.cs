@@ -11,18 +11,18 @@ namespace CSSPWebModels
     public partial class WebArea
     {
         #region Properties
-        public TVItemStatMapModel TVItemStatMapModel { get; set; }
-        public List<TVItemStatModel> TVItemStatModelParentList { get; set; }
-        public List<TVItemStatMapModel> TVItemStatMapModelSectorList { get; set; }
+        public TVItemModel TVItemModel { get; set; }
+        public List<TVItemModel> TVItemModelParentList { get; set; }
+        public List<TVItemModel> TVItemModelSectorList { get; set; }
         public List<TVFileModel> TVFileModelList { get; set; }
         #endregion Properties
 
         #region Constructors
         public WebArea()
         {
-            TVItemStatMapModel = new TVItemStatMapModel();
-            TVItemStatModelParentList = new List<TVItemStatModel>();
-            TVItemStatMapModelSectorList = new List<TVItemStatMapModel>();
+            TVItemModel = new TVItemModel();
+            TVItemModelParentList = new List<TVItemModel>();
+            TVItemModelSectorList = new List<TVItemModel>();
             TVFileModelList = new List<TVFileModel>();
         }
         #endregion Constructors

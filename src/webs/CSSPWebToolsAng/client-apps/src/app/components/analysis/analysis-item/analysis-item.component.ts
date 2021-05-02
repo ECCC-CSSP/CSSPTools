@@ -5,7 +5,7 @@ import { GetTVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 import { AppState } from 'src/app/models/AppState.model';
 import { StatMWQMRun } from 'src/app/models/generated/web/StatMWQMRun.model';
 import { StatMWQMSite } from 'src/app/models/generated/web/StatMWQMSite.model';
-import { WebBase } from 'src/app/models/generated/web/WebBase.model';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
@@ -13,7 +13,7 @@ import { AnalysisService } from 'src/app/services/helpers/analysis.service';
 import { ComponentButtonSelectionService } from 'src/app/services/helpers/component-button-selection.service';
 import { DateFormatService } from 'src/app/services/helpers/date-format.service';
 import { TogglesService } from 'src/app/services/helpers/toggles.service';
-import { WebMWQMSampleService } from 'src/app/services/loaders/web-mwqm-samples.service';
+import { WebMWQMSamplesService } from 'src/app/services/loaders/web-mwqm-samples.service';
 import { MapService } from 'src/app/services/map/map.service';
 
 @Component({
@@ -23,7 +23,7 @@ import { MapService } from 'src/app/services/map/map.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AnalysisItemComponent implements OnInit, OnDestroy {
-  @Input() TVItemList: WebBase[] = [];
+  @Input() TVItemModelList: TVItemModel[] = [];
   @Input() AppState: AppState;
   @Input() StatMWQMSiteList: StatMWQMSite[] = [];
   @Input() StatMWQMRunList: StatMWQMRun[] = [];
@@ -40,12 +40,12 @@ export class AnalysisItemComponent implements OnInit, OnDestroy {
     public componentButtonSelectionService: ComponentButtonSelectionService,
     public dateFormatService: DateFormatService,
     public mapService: MapService,
-    private webMWQMSampleService: WebMWQMSampleService,
+    private webMWQMSamplesService: WebMWQMSamplesService,
     public analysisService: AnalysisService) { }
 
   ngOnInit(): void {
     this.language = <number>this.appStateService.AppState$.getValue().Language;
-    this.webMWQMSampleService.FillStatMWQMSiteList();
+    this.webMWQMSamplesService.FillStatMWQMSiteList();
   }
 
   ngOnDestroy(): void {

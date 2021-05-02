@@ -9,8 +9,7 @@ import { MWQMAnalysisReportParameter } from 'src/app/models/generated/db/MWQMAna
 import { MWQMSubsector } from 'src/app/models/generated/db/MWQMSubsector.model';
 import { MWQMSubsectorLanguage } from 'src/app/models/generated/db/MWQMSubsectorLanguage.model';
 import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model';
-import { TVItemStatMapModel } from 'src/app/models/generated/web/TVItemStatMapModel.model';
-import { TVItemStatModel } from 'src/app/models/generated/web/TVItemStatModel.model';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { UseOfSite } from 'src/app/models/generated/db/UseOfSite.model';
 
 export class WebSubsector {
@@ -18,8 +17,8 @@ export class WebSubsector {
     MWQMSubsector: MWQMSubsector;
     MWQMSubsectorLanguageList: MWQMSubsectorLanguage[];
     TVFileModelList: TVFileModel[];
-    TVItemStatMapModel: TVItemStatMapModel;
-    TVItemStatMapModelClassificationList: TVItemStatMapModel[];
-    TVItemStatModelParentList: TVItemStatModel[];
+    TVItemModel: TVItemModel;
+    TVItemModelClassificationList: TVItemModel[];
+    TVItemModelParentList: TVItemModel[];
     UseOfSiteList: UseOfSite[];
 }

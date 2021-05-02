@@ -16,7 +16,7 @@ namespace CreateGzFileServices
 {
     public partial class CreateGzFileService : ControllerBase, ICreateGzFileService
     {
-        private async Task FillChildListTVItemModelList(List<TVItemStatMapModel> TVItemStatMapChildList, TVItem TVItem, TVTypeEnum TVType)
+        private async Task FillChildListTVItemModelList(List<TVItemModel> TVItemChildList, TVItem TVItem, TVTypeEnum TVType)
         {
             List<TVItem> TVItemList = await GetTVItemChildrenListWithTVItemID(TVItem, TVType);
             List<TVItemLanguage> TVItemLanguageList = await GetTVItemLanguageChildrenListWithTVItemID(TVItem, TVType);
@@ -26,11 +26,11 @@ namespace CreateGzFileServices
 
             foreach (TVItem tvItem in TVItemList)
             {
-                TVItemStatMapModel tvItemStatMapModel = new TVItemStatMapModel();
-                tvItemStatMapModel.TVItem = tvItem;
-                tvItemStatMapModel.TVItemLanguageList = TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
+                TVItemModel tvItemModel = new TVItemModel();
+                tvItemModel.TVItem = tvItem;
+                tvItemModel.TVItemLanguageList = TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
 
-                tvItemStatMapModel.TVItemStatList = TVItemStatList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
+                tvItemModel.TVItemStatList = TVItemStatList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
 
                 foreach (MapInfo MapInfo in MapInfoList)
                 {
@@ -40,11 +40,11 @@ namespace CreateGzFileServices
                         MapInfoModel.MapInfo = MapInfo;
                         MapInfoModel.MapInfoPointList = MapInfoPointList.Where(c => c.MapInfoID == MapInfo.MapInfoID).Select(c => c).ToList();
                         
-                        tvItemStatMapModel.MapInfoModelList.Add(MapInfoModel);
+                        tvItemModel.MapInfoModelList.Add(MapInfoModel);
                     }
                 }
 
-                TVItemStatMapChildList.Add(tvItemStatMapModel);
+                TVItemChildList.Add(tvItemModel);
             }
         }
     }

@@ -16,7 +16,7 @@ namespace CreateGzFileServices
 {
     public partial class CreateGzFileService : ControllerBase, ICreateGzFileService
     {
-        private async Task FillTVItemModelAndParentTVItemModelList(TVItemStatMapModel TVItemStatMapModel, List<TVItemStatModel> TVItemParentList, TVItem TVItem)
+        private async Task FillTVItemModelAndParentTVItemModelList(TVItemModel TVItemModel, List<TVItemModel> TVItemParentList, TVItem TVItem)
         {
             List<TVItem> TVItemList = await GetTVItemParentListWithTVItem(TVItem);
             List<TVItemLanguage> TVItemLanguageList = await GetTVItemLanguageParentListWithTVItem(TVItem);
@@ -26,19 +26,19 @@ namespace CreateGzFileServices
 
             foreach (TVItem tvItem in TVItemList)
             {
-                TVItemStatModel tvItemStatModel = new TVItemStatModel();
-                tvItemStatModel.TVItem = tvItem;
-                tvItemStatModel.TVItemLanguageList = TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
-                tvItemStatModel.TVItemStatList = TVItemStatList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
+                TVItemModel tvItemModelParent = new TVItemModel();
+                tvItemModelParent.TVItem = tvItem;
+                tvItemModelParent.TVItemLanguageList = TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
+                tvItemModelParent.TVItemStatList = TVItemStatList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
 
-                TVItemParentList.Add(tvItemStatModel);
+                TVItemParentList.Add(tvItemModelParent);
             }
 
-            TVItemStatMapModel tvItemStatMapModel = new TVItemStatMapModel();
+            TVItemModel tvItemModel = new TVItemModel();
 
-            TVItemStatMapModel.TVItem = TVItemParentList[TVItemParentList.Count - 1].TVItem;
-            TVItemStatMapModel.TVItemLanguageList = TVItemParentList[TVItemParentList.Count - 1].TVItemLanguageList;
-            TVItemStatMapModel.TVItemStatList = TVItemParentList[TVItemParentList.Count - 1].TVItemStatList;
+            tvItemModel.TVItem = TVItemParentList[TVItemParentList.Count - 1].TVItem;
+            tvItemModel.TVItemLanguageList = TVItemParentList[TVItemParentList.Count - 1].TVItemLanguageList;
+            tvItemModel.TVItemStatList = TVItemParentList[TVItemParentList.Count - 1].TVItemStatList;
 
             foreach (MapInfo MapInfo in MapInfoList.Where(c => c.TVItemID == TVItem.TVItemID))
             {
@@ -46,7 +46,7 @@ namespace CreateGzFileServices
                     MapInfoModel.MapInfo = MapInfo;
                     MapInfoModel.MapInfoPointList = MapInfoPointList.Where(c => c.MapInfoID == MapInfo.MapInfoID).Select(c => c).ToList();
 
-                TVItemStatMapModel.MapInfoModelList.Add(MapInfoModel);
+                tvItemModel.MapInfoModelList.Add(MapInfoModel);
             }
         }
     }

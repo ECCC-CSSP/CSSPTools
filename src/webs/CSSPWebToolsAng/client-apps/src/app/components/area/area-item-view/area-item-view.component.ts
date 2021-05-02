@@ -3,8 +3,8 @@ import { AppLanguageService } from 'src/app/services/app-language.service';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { AppState } from 'src/app/models/AppState.model';
-import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { ShowTVItemService } from 'src/app/services/helpers/show-tvitem.service';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 
 @Component({
   selector: 'app-area-item-view',

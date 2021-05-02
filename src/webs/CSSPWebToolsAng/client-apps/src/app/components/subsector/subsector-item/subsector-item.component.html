@@ -95,12 +95,12 @@
 <app-mwqm-site-tvitem-list-item
     *ngIf="appStateService.AppState$?.getValue()?.SubsectorSubComponent == subsectorSubComponentEnum.MWQMSites"
     [AppState]="appStateService.AppState$?.getValue()"
-    [TVItemList]="appLoadedService.AppLoaded$?.getValue()?.SubsectorMWQMSiteList">
+    [TVItemModelList]="appLoadedService.AppLoaded$?.getValue()?.WebMWQMSites.MWQMSiteModelList">
 </app-mwqm-site-tvitem-list-item>
 
 <div *ngIf="appStateService.AppState$?.getValue()?.SubsectorSubComponent == subsectorSubComponentEnum.Analysis">
     <app-analysis-item [AppState]="appStateService.AppState$?.getValue()"
-    [TVItemList]="appLoadedService.AppLoaded$?.getValue()?.SubsectorMWQMSiteList"
+    [TVItemModelList]="appLoadedService.AppLoaded$?.getValue()?.WebMWQMSites.MWQMSiteModelList"
     [StatMWQMSiteList]="appLoadedService.AppLoaded$?.getValue()?.StatMWQMSiteList"
     [StatMWQMRunList]="appLoadedService.AppLoaded$?.getValue()?.StatMWQMRunList"
     ></app-analysis-item>
@@ -109,18 +109,18 @@
 <app-mwqm-run-tvitem-list-item
     *ngIf="appStateService.AppState$?.getValue()?.SubsectorSubComponent == subsectorSubComponentEnum.MWQMRuns"
     [AppState]="appStateService.AppState$?.getValue()"
-    [TVItemList]="appLoadedService.AppLoaded$?.getValue()?.SubsectorMWQMRunList">
+    [TVItemModelList]="appLoadedService.AppLoaded$?.getValue()?.WebMWQMRuns.MWQMRunModelList">
 </app-mwqm-run-tvitem-list-item>
 
 <app-pol-source-site-tvitem-list-item
     *ngIf="appStateService.AppState$?.getValue()?.SubsectorSubComponent == subsectorSubComponentEnum.PollutionSourceSites"
     [AppState]="appStateService.AppState$?.getValue()"
-    [TVItemList]="appLoadedService.AppLoaded$?.getValue()?.SubsectorPolSourceSiteList">
+    [TVItemModelList]="appLoadedService.AppLoaded$?.getValue()?.WebPolSourceSites.PolSourceSiteModelList">
 </app-pol-source-site-tvitem-list-item>
 
 <app-file-list *ngIf="appStateService.AppState$?.getValue()?.SubsectorSubComponent == subsectorSubComponentEnum.Files"
     [AppState]="appStateService.AppState$?.getValue()"
-    [TVFileModelListList]="appLoadedService.AppLoaded$?.getValue()?.SubsectorFileListList">
+    [TVFileModelListList]="appLoadedService.AppLoaded$?.getValue()?.WebSubsector.TVFileModelList">
 </app-file-list>
 
 <div *ngIf="appStateService.AppState$?.getValue()?.SubsectorSubComponent == subsectorSubComponentEnum.SubsectorTools">

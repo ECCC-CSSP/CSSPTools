@@ -29,20 +29,20 @@ namespace ReadGzFileServices
     {
         private void DoMergeJsonWebHydrometricSites(WebHydrometricSites WebHydrometricSites, WebHydrometricSites WebHydrometricSitesLocal)
         {
-            if (WebHydrometricSitesLocal.TVItemStatMapModel.TVItem.DBCommand != DBCommandEnum.Original
-                || WebHydrometricSitesLocal.TVItemStatMapModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-                || WebHydrometricSitesLocal.TVItemStatMapModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
+            if (WebHydrometricSitesLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
+                || WebHydrometricSitesLocal.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
+                || WebHydrometricSitesLocal.TVItemModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
             {
-                WebHydrometricSites.TVItemStatMapModel = WebHydrometricSitesLocal.TVItemStatMapModel;
+                WebHydrometricSites.TVItemModel = WebHydrometricSitesLocal.TVItemModel;
             }
 
-            if ((from c in WebHydrometricSitesLocal.TVItemStatModelParentList
+            if ((from c in WebHydrometricSitesLocal.TVItemModelParentList
                  where c.TVItem.DBCommand != DBCommandEnum.Original
                  || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
                  || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original
                  select c).Any())
             {
-                WebHydrometricSites.TVItemStatModelParentList = WebHydrometricSitesLocal.TVItemStatModelParentList;
+                WebHydrometricSites.TVItemModelParentList = WebHydrometricSitesLocal.TVItemModelParentList;
             }
 
             List<HydrometricSiteModel> HydrometricSiteModelList = (from c in WebHydrometricSitesLocal.HydrometricSiteModelList

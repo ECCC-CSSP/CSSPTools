@@ -401,7 +401,7 @@ namespace CSSPWebAPIsLocal.ReadController.Tests
                 string responseContent = await response.Content.ReadAsStringAsync();
                 WebArea webArea = JsonSerializer.Deserialize<WebArea>(responseContent);
                 Assert.NotNull(webArea);
-                Assert.NotNull(webArea.TVItemStatMapModel);
+                Assert.NotNull(webArea.TVItemModel);
             }
         }
         [Theory]
@@ -443,7 +443,7 @@ namespace CSSPWebAPIsLocal.ReadController.Tests
                 string responseContent = await response.Content.ReadAsStringAsync();
                 WebCountry webCountry = JsonSerializer.Deserialize<WebCountry>(responseContent);
                 Assert.NotNull(webCountry);
-                Assert.NotNull(webCountry.TVItemStatMapModelProvinceList);
+                Assert.NotNull(webCountry.TVItemModelProvinceList);
             }
         }
         [Theory]
@@ -632,7 +632,7 @@ namespace CSSPWebAPIsLocal.ReadController.Tests
                 string responseContent = await response.Content.ReadAsStringAsync();
                 WebProvince webProvince = JsonSerializer.Deserialize<WebProvince>(responseContent);
                 Assert.NotNull(webProvince);
-                Assert.NotNull(webProvince.TVItemStatMapAreaList);
+                Assert.NotNull(webProvince.TVItemModelAreaList);
                 Assert.NotNull(webProvince.SamplingPlanModelList);
             }
         }
@@ -653,7 +653,7 @@ namespace CSSPWebAPIsLocal.ReadController.Tests
                 string responseContent = await response.Content.ReadAsStringAsync();
                 WebRoot webRoot = JsonSerializer.Deserialize<WebRoot>(responseContent);
                 Assert.NotNull(webRoot);
-                Assert.NotNull(webRoot.TVItemStatMapModelCountryList);
+                Assert.NotNull(webRoot.TVItemModelCountryList);
             }
         }
         [Theory]
@@ -674,7 +674,7 @@ namespace CSSPWebAPIsLocal.ReadController.Tests
                 string responseContent = await response.Content.ReadAsStringAsync();
                 WebSector webSector = JsonSerializer.Deserialize<WebSector>(responseContent);
                 Assert.NotNull(webSector);
-                Assert.NotNull(webSector.TVItemStatMapModelSubsectorList);
+                Assert.NotNull(webSector.TVItemModelSubsectorList);
             }
         }
         [Theory]
@@ -695,7 +695,7 @@ namespace CSSPWebAPIsLocal.ReadController.Tests
                 string responseContent = await response.Content.ReadAsStringAsync();
                 WebSubsector webSubsector = JsonSerializer.Deserialize<WebSubsector>(responseContent);
                 Assert.NotNull(webSubsector);
-                Assert.NotNull(webSubsector.TVItemStatMapModelClassificationList);
+                Assert.NotNull(webSubsector.TVItemModelClassificationList);
             }
         }
         [Theory(Skip = "not implemented yet")]

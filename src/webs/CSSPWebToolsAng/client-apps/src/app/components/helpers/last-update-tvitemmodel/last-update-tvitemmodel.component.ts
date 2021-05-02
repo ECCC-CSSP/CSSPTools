@@ -1,7 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Input } from '@angular/core';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
-import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { ContactNameService } from 'src/app/services/helpers/contact-name.service';
 import { DateFormatService } from 'src/app/services/helpers/date-format.service';

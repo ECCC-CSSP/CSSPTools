@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { MapInfoDrawTypeEnum } from 'src/app/enums/generated/MapInfoDrawTypeEnum';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
 import { AppState } from 'src/app/models/AppState.model';
-import { TVItemStatMapModel } from 'src/app/models/generated/web/TVItemStatMapModel.model';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { MapMarkersService } from 'src/app/services/map/map-markers.service';
@@ -67,7 +67,7 @@ export class MapService {
     });
   }
 
-  DrawObjects(tvItemStatMapModelList: TVItemStatMapModel[]) {
+  DrawObjects(tvItemStatMapModelList: TVItemModel[]) {
     this.mapMarkersService.DrawMarkers(tvItemStatMapModelList);
     this.mapPolygonsService.DrawPolygons(tvItemStatMapModelList);
     this.mapPolylinesService.DrawPolylines(tvItemStatMapModelList);
@@ -109,7 +109,7 @@ export class MapService {
 
   }
 
-  ShowItem(tvItemStatMapModel: TVItemStatMapModel, event: Event) {
+  ShowItem(tvItemStatMapModel: TVItemModel, event: Event) {
     let length: number = this.appLoadedService.AppLoaded$.getValue().GoogleCrossPolylineListMVC.getLength();
     for (let i = 0; i < length; i++) {
       this.appLoadedService.AppLoaded$.getValue().GoogleCrossPolylineListMVC.getAt(i).setMap(null);

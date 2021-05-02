@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
-import { AppStateService } from '../app-state.service';
-import { PredicateAscByService } from 'src/app/services/helpers/predicate-asc-by.service';
 import { PredicateDescByService } from 'src/app/services/helpers/predicate-desc-by.service';
 import { TVItemID_TVText_Sort } from 'src/app/models/TVItemID_TVText_Sort.model';
-import { MWQMRun } from 'src/app/models/generated/db/MWQMRun.model';
 import { DateFormatService } from './date-format.service';
+import { MWQMRunModel } from 'src/app/models/generated/web/MWQMRunModel.model';
 
 @Injectable({
     providedIn: 'root'
@@ -14,17 +12,17 @@ export class SortMWQMRunListService {
         private dateFormatService: DateFormatService) {
     }
 
-    SortMWQMRunListDescByDate(arr: MWQMRun[]): MWQMRun[] {
+    SortMWQMRunListDescByDate(arr: MWQMRunModel[]): MWQMRunModel[] {
         if (!arr || arr.length == 0) return arr;
 
-        let mwqmRunSorted: MWQMRun[] = [];
+        let mwqmRunSorted: MWQMRunModel[] = [];
         let arr2: TVItemID_TVText_Sort[] = [];
         let sortable: TVItemID_TVText_Sort[] = [];
 
         for (let i = 0; i < arr.length; i++) {
             sortable.push(<TVItemID_TVText_Sort>{
-                TVItemID: arr[i].MWQMRunID,
-                TVText: `${ this.dateFormatService.GetMWQMRunDateTime_LocalDigit(arr[i])}`.toLowerCase(),
+                TVItemID: arr[i].MWQMRun.MWQMRunID,
+                TVText: `${ this.dateFormatService.GetMWQMRunDateTime_LocalDigit(arr[i].MWQMRun)}`.toLowerCase(),
             });
         }
 
@@ -32,7 +30,7 @@ export class SortMWQMRunListService {
 
         for (let i = 0; i < sortable.length; i++) {
             for (let j = 0; j < arr.length; j++) {
-                if (arr2[i].TVItemID == arr[j].MWQMRunID) {
+                if (arr2[i].TVItemID == arr[j].MWQMRun.MWQMRunID) {
                     mwqmRunSorted.push(arr[j]);
                     break;
                 }

@@ -33,7 +33,7 @@ namespace CreateGzFileServices
 
             try
             {
-                await FillTVItemModelAndParentTVItemModelList(webDrogueRuns.TVItemStatMapModel, webDrogueRuns.TVItemStatModelParentList, TVItemProvince);
+                await FillTVItemModelAndParentTVItemModelList(webDrogueRuns.TVItemModel, webDrogueRuns.TVItemModelParentList, TVItemProvince);
 
                 await FillDrogueRunModel(webDrogueRuns.DrogueRunModelList, TVItemProvince);
 

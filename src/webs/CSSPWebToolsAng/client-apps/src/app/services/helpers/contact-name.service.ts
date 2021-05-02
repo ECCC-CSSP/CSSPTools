@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Contact } from 'src/app/models/generated/db/Contact.model';
+import { ContactModel } from 'src/app/models/generated/web/ContactModel.model';
 import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { AppLanguageService } from 'src/app/services/app-language.service';
@@ -27,9 +27,9 @@ export class ContactNameService {
   private GetContactName(LastUpdateContactTVItemID: number)
   {
     if (this.appLoadedService.AppLoaded$?.getValue()?.WebAllContacts) {
-      const contactList: Contact[] = this.appLoadedService.AppLoaded$?.getValue()?.WebAllContacts.ContactList.filter((c) => { return c.ContactTVItemID == LastUpdateContactTVItemID });
-      if (contactList && contactList.length > 0) {
-        return `${contactList[0].FirstName} ${contactList[0].LastName}`;
+      const contactModelList: ContactModel[] = this.appLoadedService.AppLoaded$?.getValue()?.WebAllContacts.ContactModelList.filter((c) => { return c.Contact.ContactTVItemID == LastUpdateContactTVItemID });
+      if (contactModelList && contactModelList.length > 0) {
+        return `${contactModelList[0].Contact.FirstName} ${contactModelList[0].Contact.LastName}`;
       }
       else {
         return this.appLanguageService.AppLanguage?.ContactNotFound[this.appStateService.AppState$?.getValue().Language];

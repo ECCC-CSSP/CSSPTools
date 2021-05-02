@@ -20,7 +20,6 @@ namespace CreateGzFileServices
         {
             List<TVItem> TVItemList = await GetTVItemChildrenListWithTVItemID(TVItem, TVTypeEnum.Infrastructure);
             List<TVItemLanguage> TVItemLanguageList = await GetTVItemLanguageChildrenListWithTVItemID(TVItem, TVTypeEnum.Infrastructure);
-            List<TVItemStat> TVItemStatList = await GetTVItemStatChildrenListWithTVItemID(TVItem, TVTypeEnum.Infrastructure);
             List<MapInfo> MapInfoList = await GetMapInfoChildrenListWithTVItemID(TVItem, TVTypeEnum.Infrastructure);
             List<MapInfoPoint> MapInfoPointList = await GetMapInfoPointChildrenListWithTVItemID(TVItem, TVTypeEnum.Infrastructure);
 
@@ -45,9 +44,9 @@ namespace CreateGzFileServices
             {
                 InfrastructureModel InfrastructureModel = new InfrastructureModel();
 
-                TVItemMapModel tvItemMapModel = new TVItemMapModel();
-                tvItemMapModel.TVItem = tvItem;
-                tvItemMapModel.TVItemLanguageList = TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
+                TVItemModel TVItemModel = new TVItemModel();
+                TVItemModel.TVItem = tvItem;
+                TVItemModel.TVItemLanguageList = TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
 
                 foreach (MapInfo MapInfo in MapInfoList.Where(c => c.TVItemID == tvItem.TVItemID))
                 {
@@ -55,10 +54,10 @@ namespace CreateGzFileServices
                     MapInfoModel.MapInfo = MapInfo;
                     MapInfoModel.MapInfoPointList = MapInfoPointList.Where(c => c.MapInfoID == MapInfo.MapInfoID).Select(c => c).ToList();
 
-                    tvItemMapModel.MapInfoModelList.Add(MapInfoModel);
+                    TVItemModel.MapInfoModelList.Add(MapInfoModel);
                 }
 
-                InfrastructureModel.TVItemMapModel = tvItemMapModel;
+                InfrastructureModel.TVItemModel = TVItemModel;
 
                 foreach (TVItem tvItemFile in TVItemFileList.Where(c => c.ParentID == tvItem.TVItemID))
                 {

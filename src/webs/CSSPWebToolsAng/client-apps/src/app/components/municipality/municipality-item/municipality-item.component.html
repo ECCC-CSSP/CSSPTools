@@ -64,13 +64,13 @@
 <app-mike-scenario-tvitem-list-item
     *ngIf="appStateService.AppState$?.getValue()?.MunicipalitySubComponent == municipalitySubComponentEnum.MIKEScenarios"
     [AppState]="appStateService.AppState$?.getValue()"
-    [TVItemList]="appLoadedService.AppLoaded$?.getValue()?.TVItemMikeScenarioList">
+    [TVItemModelList]="appLoadedService.AppLoaded$?.getValue()?.WebMikeScenarios.MikeScenarioModelList">
 </app-mike-scenario-tvitem-list-item>
 
 <app-file-list
     *ngIf="appStateService.AppState$?.getValue()?.MunicipalitySubComponent == municipalitySubComponentEnum.Files"
     [AppState]="appStateService.AppState$?.getValue()"
-    [TVFileModelListList]="appLoadedService.AppLoaded$?.getValue()?.MunicipalityFileListList">
+    [TVFileModelListList]="appLoadedService.AppLoaded$?.getValue()?.WebMunicipality.TVFileModelList">
 </app-file-list>
 
 <div *ngIf="appStateService.AppState$?.getValue()?.MunicipalitySubComponent == municipalitySubComponentEnum.Contacts">

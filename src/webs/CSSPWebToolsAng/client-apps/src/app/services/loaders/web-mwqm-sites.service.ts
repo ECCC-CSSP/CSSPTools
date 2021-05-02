@@ -83,20 +83,11 @@ export class WebMWQMSitesService {
     }
 
     private UpdateWebMWQMSites(x: WebMWQMSites) {
-        // let mwqmSiteList: MWQMSite[] = [];
-        // let count: number = x.MWQMSiteModelList.length;
-        // for (let i = 0; i < count; i++) {
-        //         mwqmSiteList.push(x.MWQMSiteModelList[i].MWQMSite);
-        // }
-
         this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
             WebMWQMSites: x,
-            // MWQMSiteList: mwqmSiteList,
-            // BreadCrumbMWQMSiteWebBaseList: x?.TVItemParentList,
-            // BreadCrumbWebBaseList: x?.TVItemParentList
         });
 
-        this.historyService.AddHistory(this.appLoadedService.AppLoaded$.getValue()?.WebMWQMSites?.TVItemStatMapModel);
+        this.historyService.AddHistory(this.appLoadedService.AppLoaded$.getValue()?.WebMWQMSites?.TVItemModel);
 
         if (this.DoOther) {
             if (this.componentDataLoadedService.DataLoadedWebSubsector()) {

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MapInfoDrawTypeEnum } from 'src/app/enums/generated/MapInfoDrawTypeEnum';
 import { AppLoaded } from 'src/app/models/AppLoaded.model';
-import { TVItemStatMapModel } from 'src/app/models/generated/web/TVItemStatMapModel.model';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { MapHelperService } from 'src/app/services/map/map-helper.service';
@@ -16,7 +16,7 @@ export class MapPolygonsService {
     private mapHelperService: MapHelperService) {
   }
 
-  DrawPolygons(tvItemStatMapModelList: TVItemStatMapModel[]) {
+  DrawPolygons(tvItemStatMapModelList: TVItemModel[]) {
     let polygonList: google.maps.Polygon[] = [];
 
     for (let tvItemStatMapModel of tvItemStatMapModelList) {

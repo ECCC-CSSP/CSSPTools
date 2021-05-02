@@ -3,7 +3,7 @@ import { AppState } from 'src/app/models/AppState.model';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { AppStateService } from 'src/app/services/app-state.service';
-import { WebMWQMSiteService } from 'src/app/services/loaders/web-mwqm-sites.service';
+import { WebMWQMSitesService } from 'src/app/services/loaders/web-mwqm-sites.service';
 
 @Component({
   selector: 'app-mwqm-site-item',
@@ -17,10 +17,10 @@ export class MWQMSiteItemComponent implements OnInit, OnDestroy {
 
   constructor(public appStateService: AppStateService,
     public appLanguageService: AppLanguageService,
-    private webMWQMSiteService: WebMWQMSiteService) { }
+    private webMWQMSitesService: WebMWQMSitesService) { }
 
   ngOnInit(): void {
-    this.webMWQMSiteService.DoWebMWQMSite(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
+    this.webMWQMSitesService.DoWebMWQMSites(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
   }
 
   ngOnDestroy(): void {

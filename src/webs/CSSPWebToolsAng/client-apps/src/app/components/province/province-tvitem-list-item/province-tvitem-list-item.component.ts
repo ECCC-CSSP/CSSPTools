@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Input } from '@angular/core';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { AppState } from 'src/app/models/AppState.model';
-import { WebBase } from 'src/app/models/generated/web/WebBase.model';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { ShowTVItemService } from 'src/app/services/helpers/show-tvitem.service';
 import { SubPageService } from 'src/app/services/helpers/sub-page.service';
@@ -14,7 +14,7 @@ import { MapService } from 'src/app/services/map/map.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProvinceTVItemListItemComponent implements OnInit, OnDestroy {
-  @Input() TVItemList: WebBase[] = [];
+  @Input() TVItemModelList: TVItemModel[] = [];
   @Input() IsBreadCrumb: boolean = false;
   @Input() AppState: AppState;
 

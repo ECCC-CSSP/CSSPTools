@@ -39,10 +39,10 @@
 
 <app-sector-tvitem-list-item *ngIf="appStateService.AppState$?.getValue()?.AreaSubComponent == areaSubComponentEnum.Sectors"
     [AppState]="appStateService.AppState$?.getValue()"
-    [TVItemList]="appLoadedService.AppLoaded$?.getValue()?.AreaSectorList">
+    [TVItemModelList]="appLoadedService.AppLoaded$?.getValue()?.WebArea?.TVItemModelSectorList">
 </app-sector-tvitem-list-item>
 
 <app-file-list *ngIf="appStateService.AppState$?.getValue()?.AreaSubComponent == areaSubComponentEnum.Files"
     [AppState]="appStateService.AppState$?.getValue()"
-    [TVFileModelListList]="appLoadedService.AppLoaded$?.getValue()?.AreaFileListList">
+    [TVFileModelListList]="appLoadedService.AppLoaded$?.getValue()?.WebArea?.TVFileModelList">
 </app-file-list>
