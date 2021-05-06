@@ -1,56 +1,56 @@
 <mat-toolbar class="header">
     <span class="toolbar">
         <button mat-button
-            title="{{ appLanguageService.AppLanguage.ShellOpenHistoryMenu[appStateService.AppState$?.getValue().Language] }}"
+            title="{{ appLanguageService.ShellOpenHistoryMenu[appLanguageService.LangID] }}"
             [matMenuTriggerFor]="historyMenu">
             <mat-icon>history</mat-icon>
         </button>
         <mat-menu #historyMenu="matMenu">
             <div class="menuWidth">
-                <button mat-menu-item *ngFor="let history of appStateService.AppState$?.getValue()?.History"
+                <button mat-menu-item *ngFor="let history of appStateService.History"
                     (click)="NavigateTo(history)">
-                    {{ history.TVItemLanguageList[appStateService.AppState$?.getValue().Language].TVText }}
+                    {{ history.TVItemLanguageList[appLanguageService.LangID].TVText }}
                 </button>
             </div>
         </mat-menu>
 
         <button (click)="togglesService.ToggleMenu()" mat-button
-            title="{{ appLanguageService.AppLanguage.ShellOpenContextMenu[appStateService.AppState$?.getValue().Language] }}">
+            title="{{ appLanguageService.ShellOpenContextMenu[appLanguageService.LangID] }}">
             <mat-icon>menu</mat-icon>
         </button>
         <button mat-button (click)="Home()"
-            title="{{ appLanguageService.AppLanguage.ShellReturnHome[appStateService.AppState$?.getValue().Language] }}">
-            {{ appLanguageService.AppLanguage.ShellApplicationName[appStateService.AppState$?.getValue().Language] }}
+            title="{{ appLanguageService.ShellReturnHome[appLanguageService.LangID] }}">
+            {{ appLanguageService.ShellApplicationName[appLanguageService.LangID] }}
         </button>
         <span>
             <app-search></app-search>
         </span>
     </span>
     <span class="right">
-        <ng-container *ngIf="!appLoadedService.AppLoaded$?.getValue()?.LoggedInContact?.HasInternetConnection">
+        <ng-container *ngIf="!appLoadedService.LoggedInContact?.HasInternetConnection">
             <button mat-button>
                 <mat-icon
-                    title="{{ appLanguageService.AppLanguage.ShellNoInternet[appStateService.AppState$?.getValue().Language] }}">
+                    title="{{ appLanguageService.ShellNoInternet[appLanguageService.LangID] }}">
                     mobile_off</mat-icon>
             </button>
         </ng-container>
 
         <button mat-button>
             <mat-icon>account_circle</mat-icon>
-            <!-- {{ appLoadedService.AppLoaded$?.getValue()?.LoggedInContact?.LoginEmail }} -->
+            <!-- {{ appLoadedService.LoggedInContact?.LoginEmail }} -->
         </button>
-        <button mat-button *ngIf="(appStateService.AppState$?.getValue()?.Language == languageEnum.fr)"
+        <button mat-button *ngIf="(appLanguageService.Language == languageEnum.fr)"
             (click)="SetLanguage(languageEnum.en)">English</button>
-        <button mat-button *ngIf="(appStateService.AppState$?.getValue()?.Language == languageEnum.en)"
+        <button mat-button *ngIf="(appLanguageService.Language == languageEnum.en)"
             (click)="SetLanguage(languageEnum.fr)">Français</button>
-        <ng-container *ngIf="appLoadedService.AppLoaded$?.getValue()?.LoggedInContact?.HasInternetConnection">
+        <ng-container *ngIf="appLoadedService.LoggedInContact?.HasInternetConnection">
             <button mat-button (click)="togglesService.ToggleMap()"
-                title="{{ appLanguageService.AppLanguage.ShellShowMap[appStateService.AppState$?.getValue().Language] }}">
+                title="{{ appLanguageService.ShellShowMap[appLanguageService.LangID] }}">
                 <mat-icon>map</mat-icon>
             </button>
             <button mat-button
-                title="{{ appLanguageService.AppLanguage.ShellResizeMap[appStateService.AppState$?.getValue().Language] }}"
-                *ngIf="(appStateService.AppState$?.getValue()?.MapVisible)" [matMenuTriggerFor]="mapMenu">
+                title="{{ appLanguageService.ShellResizeMap[appLanguageService.LangID] }}"
+                *ngIf="(appStateService.MapVisible)" [matMenuTriggerFor]="mapMenu">
                 <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #mapMenu="matMenu">
@@ -71,39 +71,37 @@
 </mat-toolbar>
 
 <mat-sidenav-container class="container">
-    <mat-sidenav class="sidenav-left" #leftSideNav [opened]="appStateService.AppState$?.getValue()?.MenuVisible"
+    <mat-sidenav class="sidenav-left" #leftSideNav [opened]="appStateService.MenuVisible"
         mode="side">
-        <app-sidenav-menu [AppState]="appStateService.AppState$?.getValue()"></app-sidenav-menu>
+        <app-sidenav-menu></app-sidenav-menu>
     </mat-sidenav>
-    <mat-sidenav *ngIf="appLoadedService.AppLoaded$?.getValue()?.LoggedInContact?.HasInternetConnection" [ngClass]="GetMapSizeClass()"
-        #rightSideNav [opened]="appStateService.AppState$?.getValue()?.MapVisible" mode="side" position="end">
-        <app-map-item [AppState]="appStateService.AppState$?.getValue()"></app-map-item>
+    <mat-sidenav *ngIf="appLoadedService.LoggedInContact?.HasInternetConnection" [ngClass]="GetMapSizeClass()"
+        #rightSideNav [opened]="appStateService.MapVisible" mode="side" position="end">
+        <app-map-item></app-map-item>
     </mat-sidenav>
-    <span *ngIf="(appStateService.AppState$ | async).Working">
-
-    </span>
-    <app-error [Error]="(appStateService.AppState$ | async).Error"></app-error>
-    <app-bread-crumb [AppState]="appStateService.AppState$?.getValue()"></app-bread-crumb>
+    <app-error [Error]="appStateService.Error"></app-error>
+    <app-bread-crumb></app-bread-crumb>
 
     <div class="margin10">
-        <app-root-item *ngIf="appStateService.AppState$?.getValue().ShellSubComponent == shellSubComponentEnum.Root">
+        <app-root-item *ngIf="appStateService.ShellSubComponent == shellSubComponentEnum.Root">
         </app-root-item>
         <app-country-item
-            *ngIf="appStateService.AppState$?.getValue().ShellSubComponent == shellSubComponentEnum.Country">
+            *ngIf="appStateService.ShellSubComponent == shellSubComponentEnum.Country">
         </app-country-item>
         <app-province-item
-            *ngIf="appStateService.AppState$?.getValue().ShellSubComponent == shellSubComponentEnum.Province">
+            *ngIf="appStateService.ShellSubComponent == shellSubComponentEnum.Province">
         </app-province-item>
-        <app-area-item *ngIf="appStateService.AppState$?.getValue().ShellSubComponent == shellSubComponentEnum.Area">
+        <app-area-item
+         *ngIf="appStateService.ShellSubComponent == shellSubComponentEnum.Area">
         </app-area-item>
         <app-sector-item
-            *ngIf="appStateService.AppState$?.getValue().ShellSubComponent == shellSubComponentEnum.Sector">
+            *ngIf="appStateService.ShellSubComponent == shellSubComponentEnum.Sector">
         </app-sector-item>
         <app-subsector-item
-            *ngIf="appStateService.AppState$?.getValue().ShellSubComponent == shellSubComponentEnum.Subsector">
+            *ngIf="appStateService.ShellSubComponent == shellSubComponentEnum.Subsector">
         </app-subsector-item>
         <app-municipality-item
-            *ngIf="appStateService.AppState$?.getValue().ShellSubComponent == shellSubComponentEnum.Municipality">
+            *ngIf="appStateService.ShellSubComponent == shellSubComponentEnum.Municipality">
         </app-municipality-item>
     </div>
 

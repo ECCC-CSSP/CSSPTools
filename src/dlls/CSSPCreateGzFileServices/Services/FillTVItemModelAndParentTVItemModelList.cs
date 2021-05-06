@@ -33,12 +33,10 @@ namespace CreateGzFileServices
 
                 TVItemParentList.Add(tvItemModelParent);
             }
-
-            TVItemModel tvItemModel = new TVItemModel();
-
-            tvItemModel.TVItem = TVItemParentList[TVItemParentList.Count - 1].TVItem;
-            tvItemModel.TVItemLanguageList = TVItemParentList[TVItemParentList.Count - 1].TVItemLanguageList;
-            tvItemModel.TVItemStatList = TVItemParentList[TVItemParentList.Count - 1].TVItemStatList;
+            
+            TVItemModel .TVItem = TVItemParentList[TVItemParentList.Count - 1].TVItem;
+            TVItemModel .TVItemLanguageList = TVItemParentList[TVItemParentList.Count - 1].TVItemLanguageList;
+            TVItemModel.TVItemStatList = TVItemParentList[TVItemParentList.Count - 1].TVItemStatList;
 
             foreach (MapInfo MapInfo in MapInfoList.Where(c => c.TVItemID == TVItem.TVItemID))
             {
@@ -46,7 +44,7 @@ namespace CreateGzFileServices
                     MapInfoModel.MapInfo = MapInfo;
                     MapInfoModel.MapInfoPointList = MapInfoPointList.Where(c => c.MapInfoID == MapInfo.MapInfoID).Select(c => c).ToList();
 
-                tvItemModel.MapInfoModelList.Add(MapInfoModel);
+                TVItemModel.MapInfoModelList.Add(MapInfoModel);
             }
         }
     }

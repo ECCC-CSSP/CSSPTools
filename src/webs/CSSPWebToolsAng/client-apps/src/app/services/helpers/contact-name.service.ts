@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { ContactModel } from 'src/app/models/generated/web/ContactModel.model';
 import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
@@ -26,17 +27,17 @@ export class ContactNameService {
 
   private GetContactName(LastUpdateContactTVItemID: number)
   {
-    if (this.appLoadedService.AppLoaded$?.getValue()?.WebAllContacts) {
-      const contactModelList: ContactModel[] = this.appLoadedService.AppLoaded$?.getValue()?.WebAllContacts.ContactModelList.filter((c) => { return c.Contact.ContactTVItemID == LastUpdateContactTVItemID });
+    if (this.appLoadedService.WebAllContacts) {
+      const contactModelList: ContactModel[] = this.appLoadedService.WebAllContacts.ContactModelList.filter((c) => { return c.Contact.ContactTVItemID == LastUpdateContactTVItemID });
       if (contactModelList && contactModelList.length > 0) {
         return `${contactModelList[0].Contact.FirstName} ${contactModelList[0].Contact.LastName}`;
       }
       else {
-        return this.appLanguageService.AppLanguage?.ContactNotFound[this.appStateService.AppState$?.getValue().Language];
+        return this.appLanguageService.ContactNotFound[this.appLanguageService.LangID];
       }
     }
     else {
-      return this.appLanguageService.AppLanguage?.ContactNotFound[this.appStateService.AppState$?.getValue().Language];
+      return this.appLanguageService.ContactNotFound[this.appLanguageService.LangID];
     }
   }
 }

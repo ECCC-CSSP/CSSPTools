@@ -2,149 +2,155 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { AppLoaded } from 'src/app/models/AppLoaded.model';
 import { WebProvince } from 'src/app/models/generated/web/WebProvince.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
-import { StructureTVFileListService } from 'src/app/services/helpers/structure-tvfile-list.service';
-import { SortTVItemListService } from 'src/app/services/helpers/sort-tvitem-list.service';
 import { MapService } from 'src/app/services/map/map.service';
 import { ProvinceSubComponentEnum } from 'src/app/enums/generated/ProvinceSubComponentEnum';
-import { GetLanguageEnum, LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { ComponentDataLoadedService } from 'src/app/services/helpers/component-data-loaded.service';
-import { AppState } from 'src/app/models/AppState.model';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { HistoryService } from 'src/app/services/helpers/history.service';
+import { WebClimateSitesService } from './web-climate-sites.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WebProvinceService {
   private TVItemID: number;
-  private DoOther: boolean;
+  private DoNext: boolean;
+  private ForceReload: boolean;
   private sub: Subscription;
-  LangID: number = this.appStateService.AppState$?.getValue()?.Language == LanguageEnum.fr ? 1 : 0;
 
   constructor(private httpClient: HttpClient,
     private appStateService: AppStateService,
     private appLoadedService: AppLoadedService,
     private appLanguageService: AppLanguageService,
-    private sortTVItemListService: SortTVItemListService,
-    private structureTVFileListService: StructureTVFileListService,
     private mapService: MapService,
+    private webClimateSitesService: WebClimateSitesService,
     private componentDataLoadedService: ComponentDataLoadedService,
     private historyService: HistoryService) {
   }
 
-  DoWebProvince(TVItemID: number, DoOther: boolean) {
+  DoWebProvince(TVItemID: number, DoNext: boolean = true, ForceReload: boolean = true) {
     this.TVItemID = TVItemID;
-    this.DoOther = DoOther;
+    this.DoNext = DoNext;
+    this.ForceReload = ForceReload;
 
     this.sub ? this.sub.unsubscribe() : null;
 
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebProvince) {
-      this.KeepWebProvince();
+    if (ForceReload) {
+      this.sub = this.GetWebProvince().subscribe();
     }
     else {
-      this.sub = this.GetWebProvince().subscribe();
+      if (this.componentDataLoadedService.DataLoadedWebProvince()) {
+        this.KeepWebProvince();
+      }
+      else {
+        this.sub = this.GetWebProvince().subscribe();
+      }
     }
   }
 
   private GetWebProvince() {
-    let languageEnum = GetLanguageEnum();
-    this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
-      WebProvince: {},
-    });
-    this.appStateService.UpdateAppState(<AppState>{
-      Status: `${ this.appLanguageService.AppLanguage.Loading[this.LangID]} - ${ WebProvince }`,
-      Working: true
-    });
-    let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebProvince/${this.TVItemID}`;
+    this.appLoadedService.WebProvince = <WebProvince>{};
+
+    let NextText = this.DoNext ? `${this.appLanguageService.Next[this.appLanguageService.LangID]} - WebClimateSites` : '';
+    let ForceReloadText = this.ForceReload ? `${this.appLanguageService.ForceReload[this.appLanguageService.LangID]}` : '';
+    this.appStateService.Status = `${this.appLanguageService.Loading[this.appLanguageService.LangID]} - WebProvince - ${NextText} - ${ForceReloadText}`;
+    this.appStateService.Working = true;
+
+    let url: string = `${this.appLoadedService.BaseApiUrl}${this.appLanguageService.Language}-CA/Read/WebProvince/${this.TVItemID}`;
     return this.httpClient.get<WebProvince>(url).pipe(
       map((x: any) => {
         this.UpdateWebProvince(x);
         console.debug(x);
-        if (this.DoOther) {
-          //this.DoWebMunicipalities();
+        if (this.DoNext) {
+          this.DoWebClimateSites();
         }
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false, Error: <HttpErrorResponse>e });
+        this.appStateService.Status = ''
+        this.appStateService.Working = false
+        this.appStateService.Error = <HttpErrorResponse>e;
         console.debug(e);
       })))
     );
   }
 
+  private DoWebClimateSites() {
+    this.webClimateSitesService.DoWebClimateSites(this.TVItemID, this.DoNext);
+}
+
   private KeepWebProvince() {
-    this.UpdateWebProvince(this.appLoadedService.AppLoaded$?.getValue()?.WebProvince);
-    console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebProvince);
-    if (this.DoOther) {
-      //this.DoWebMunicipalities();
+    this.UpdateWebProvince(this.appLoadedService.WebProvince);
+    console.debug(this.appLoadedService.WebProvince);
+    if (this.DoNext) {
+      this.DoWebClimateSites();
     }
   }
 
   private UpdateWebProvince(x: WebProvince) {
-    this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
-      WebProvince: x,
-    });
+    this.appLoadedService.WebProvince = x;
 
-    this.historyService.AddHistory(this.appLoadedService.AppLoaded$.getValue()?.WebProvince?.TVItemModel);
+    this.historyService.AddHistory(this.appLoadedService.WebProvince?.TVItemModel);
 
-    if (this.DoOther) {
+    if (this.DoNext) {
       if (this.componentDataLoadedService.DataLoadedWebProvince()) {
-        this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
+        this.appStateService.Status = '';
+        this.appStateService.Working = false;
       }
     }
     else {
-      this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
+      this.appStateService.Status = '';
+      this.appStateService.Working = false;
     }
 
-    if (this.appStateService.AppState$.getValue().GoogleJSLoaded) {
-      if (this.appStateService.AppState$.getValue().ProvinceSubComponent == ProvinceSubComponentEnum.Areas) {
+    if (this.appStateService.GoogleJSLoaded) {
+      if (this.appStateService.ProvinceSubComponent == ProvinceSubComponentEnum.Areas) {
         this.mapService.ClearMap();
         this.mapService.DrawObjects([
-          ...this.appLoadedService.AppLoaded$.getValue().WebProvince.TVItemModelAreaList,
-          ...[this.appLoadedService.AppLoaded$.getValue().WebProvince.TVItemModel]
+          ...this.appLoadedService.WebProvince.TVItemModelAreaList,
+          ...[this.appLoadedService.WebProvince.TVItemModel]
         ]);
       }
 
-      if (this.appStateService.AppState$.getValue().ProvinceSubComponent == ProvinceSubComponentEnum.Municipalities) {
+      if (this.appStateService.ProvinceSubComponent == ProvinceSubComponentEnum.Municipalities) {
         this.mapService.ClearMap();
         this.mapService.DrawObjects([
-          ...this.appLoadedService.AppLoaded$.getValue().WebProvince.TVItemModelMunicipalityList,
-          ...[this.appLoadedService.AppLoaded$.getValue().WebProvince.TVItemModel]
+          ...this.appLoadedService.WebProvince.TVItemModelMunicipalityList,
+          ...[this.appLoadedService.WebProvince.TVItemModel]
         ]);
       }
 
-      if (this.appStateService.AppState$.getValue().ProvinceSubComponent == ProvinceSubComponentEnum.Files) {
+      if (this.appStateService.ProvinceSubComponent == ProvinceSubComponentEnum.Files) {
         this.mapService.ClearMap();
         this.mapService.DrawObjects([
-          ...this.appLoadedService.AppLoaded$.getValue().WebProvince.TVItemModelAreaList,
-          ...[this.appLoadedService.AppLoaded$.getValue().WebProvince.TVItemModel]
+          ...this.appLoadedService.WebProvince.TVItemModelAreaList,
+          ...[this.appLoadedService.WebProvince.TVItemModel]
         ]);
       }
 
-      if (this.appStateService.AppState$.getValue().ProvinceSubComponent == ProvinceSubComponentEnum.OpenData) {
+      if (this.appStateService.ProvinceSubComponent == ProvinceSubComponentEnum.OpenData) {
         this.mapService.ClearMap();
         this.mapService.DrawObjects([
-          ...this.appLoadedService.AppLoaded$.getValue().WebProvince.TVItemModelAreaList,
-          ...[this.appLoadedService.AppLoaded$.getValue().WebProvince.TVItemModel]
+          ...this.appLoadedService.WebProvince.TVItemModelAreaList,
+          ...[this.appLoadedService.WebProvince.TVItemModel]
         ]);
       }
 
-      if (this.appStateService.AppState$.getValue().ProvinceSubComponent == ProvinceSubComponentEnum.SamplingPlan) {
+      if (this.appStateService.ProvinceSubComponent == ProvinceSubComponentEnum.SamplingPlan) {
         this.mapService.ClearMap();
         this.mapService.DrawObjects([
-          ...this.appLoadedService.AppLoaded$.getValue().WebProvince.TVItemModelAreaList,
-          ...[this.appLoadedService.AppLoaded$.getValue().WebProvince.TVItemModel]
+          ...this.appLoadedService.WebProvince.TVItemModelAreaList,
+          ...[this.appLoadedService.WebProvince.TVItemModel]
         ]);
       }
 
-      if (this.appStateService.AppState$.getValue().ProvinceSubComponent == ProvinceSubComponentEnum.ProvinceTools) {
+      if (this.appStateService.ProvinceSubComponent == ProvinceSubComponentEnum.ProvinceTools) {
         this.mapService.ClearMap();
         this.mapService.DrawObjects([
-          ...this.appLoadedService.AppLoaded$.getValue().WebProvince.TVItemModelAreaList,
-          ...[this.appLoadedService.AppLoaded$.getValue().WebProvince.TVItemModel]
+          ...this.appLoadedService.WebProvince.TVItemModelAreaList,
+          ...[this.appLoadedService.WebProvince.TVItemModel]
         ]);
       }
     }

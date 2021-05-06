@@ -1,8 +1,9 @@
-import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { GetAscDescEnum } from 'src/app/enums/generated/AscDescEnum';
 import { GetProvinceSubComponentEnum } from 'src/app/enums/generated/ProvinceSubComponentEnum';
 import { GetSortOrderAngularEnum } from 'src/app/enums/generated/SortOrderAngularEnum';
 import { GetTVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
+
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
@@ -15,10 +16,11 @@ import { WebProvinceService } from 'src/app/services/loaders/web-province.servic
 @Component({
   selector: 'app-province-item',
   templateUrl: './province-item.component.html',
-  styleUrls: ['./province-item.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./province-item.component.css']
 })
 export class ProvinceItemComponent implements OnInit, OnDestroy {
+
+  
   provinceSubComponentEnum = GetProvinceSubComponentEnum();
   tvTypeEnum = GetTVTypeEnum();
   ascDescEnum = GetAscDescEnum();
@@ -34,7 +36,7 @@ export class ProvinceItemComponent implements OnInit, OnDestroy {
     public componentShowService: ComponentShowService) { }
 
   ngOnInit(): void {
-    this.webProvinceService.DoWebProvince(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
+    this.webProvinceService.DoWebProvince(this.appStateService.CurrentTVItemID, true);
   }
 
   ngOnDestroy(): void {

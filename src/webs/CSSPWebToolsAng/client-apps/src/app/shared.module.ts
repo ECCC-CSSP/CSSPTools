@@ -6,7 +6,7 @@ import { MaterialModule } from 'src/app/app-material.module';
 import { FileListItemDetailComponent } from 'src/app/components/files/file-list-item-detail/file-list-item-detail.component';
 import { FileListItemComponent } from 'src/app/components/files/file-list-item/file-list-item.component';
 import { FileListComponent } from 'src/app/components/files/file-list/file-list.component';
-import { FileUploadComponent } from 'src/app/components/files/file-upload/file-upload.component';
+//import { FileUploadComponent } from 'src/app/components/files/file-upload/file-upload.component';
 import { BreadCrumbComponent } from 'src/app/components/helpers/bread-crumb/bread-crumb.component';
 import { ErrorComponent } from 'src/app/components/helpers/error/error.component';
 import { FooterComponent } from 'src/app/components/helpers/footer/footer.component';
@@ -120,7 +120,7 @@ import { CountryItemCreateComponent } from './components/country/country-item-cr
     FileListItemDetailComponent,
     FileListItemEditComponent,
     FileListItemViewComponent,
-    FileUploadComponent,
+  //  FileUploadComponent,
     FooterComponent,
     HomeItemComponent,
     InfrastructureItemComponent,
@@ -224,7 +224,7 @@ import { CountryItemCreateComponent } from './components/country/country-item-cr
     FileListItemDetailComponent,
     FileListItemEditComponent,
     FileListItemViewComponent,
-    FileUploadComponent,
+    //FileUploadComponent,
     FooterComponent,
     HomeItemComponent,
     InfrastructureItemComponent,

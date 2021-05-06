@@ -2,9 +2,6 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { GetLanguageEnum, LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
-import { AppLoaded } from 'src/app/models/AppLoaded.model';
-import { AppState } from 'src/app/models/AppState.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { AppLanguageService } from 'src/app/services/app-language.service';
@@ -16,9 +13,9 @@ import { WebAllEmails } from 'src/app/models/generated/web/WebAllEmails.model';
     providedIn: 'root'
 })
 export class WebAllEmailsService {
-    private DoOther: boolean;
+    private DoNext: boolean;
+    private ForceReload: boolean;
     private sub: Subscription;
-    LangID: number = this.appStateService.AppState$?.getValue()?.Language == LanguageEnum.fr ? 1 : 0;
 
     constructor(private httpClient: HttpClient,
         private appStateService: AppStateService,
@@ -28,65 +25,76 @@ export class WebAllEmailsService {
         private componentDataLoadedService: ComponentDataLoadedService) {
     }
 
-    DoWebAllEmails(DoOther: boolean) {
-        this.DoOther = DoOther;
-    
+    DoWebAllEmails(DoNext: boolean = true, ForceReload: boolean = true) {
+        this.DoNext = DoNext;
+        this.ForceReload = ForceReload;
+
         this.sub ? this.sub.unsubscribe() : null;
-    
-        if (this.appLoadedService.AppLoaded$.getValue()?.WebAllEmails) {
-          this.KeepWebAllEmails();
+
+        if (ForceReload) {
+            this.sub = this.GetWebAllEmails().subscribe();
         }
         else {
-          this.sub = this.GetWebAllEmails().subscribe();
+            if (this.componentDataLoadedService.DataLoadedWebAllEmails()) {
+                this.KeepWebAllEmails();
+            }
+            else {
+                this.sub = this.GetWebAllEmails().subscribe();
+            }
         }
-      }
-    
+    }
+
     private GetWebAllEmails() {
-        let languageEnum = GetLanguageEnum();
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebAllEmails: {} });
-        this.appStateService.UpdateAppState(<AppState>{
-            Status: `${ this.appLanguageService.AppLanguage.Loading[this.LangID]} - ${ WebAllEmails }`,
-            Working: true
-        });
-        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebAllEmails`;
+        this.appLoadedService.WebAllEmails = <WebAllEmails>{};
+
+        let NextText = this.DoNext ? `${this.appLanguageService.Next[this.appLanguageService.LangID]} - WebAllHelpDocs` : '';
+        let ForceReloadText = this.ForceReload ? `${this.appLanguageService.ForceReload[this.appLanguageService.LangID]}` : '';
+        this.appStateService.Status = `${this.appLanguageService.Loading[this.appLanguageService.LangID]} - WebAllEmails - ${NextText} - ${ForceReloadText}`;
+        this.appStateService.Working = true;
+
+        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appLanguageService.Language}-CA/Read/WebAllEmails`;
         return this.httpClient.get<WebAllEmails>(url).pipe(
             map((x: any) => {
                 this.UpdateWebAllEmails(x);
                 console.debug(x);
-                if (this.DoOther) {
+                if (this.DoNext) {
                     this.DoWebAllHelpDocs();
                 }
             }),
             catchError(e => of(e).pipe(map(e => {
-                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false, Error: <HttpErrorResponse>e });
+                this.appStateService.Status = ''
+                this.appStateService.Working = false
+                this.appStateService.Error = <HttpErrorResponse>e;
                 console.debug(e);
             })))
         );
     }
 
     private DoWebAllHelpDocs() {
-        this.webAllHelpDocsServices.DoWebAllHelpDocs(this.DoOther);
+        this.webAllHelpDocsServices.DoWebAllHelpDocs(this.DoNext);
     }
-    
+
     private KeepWebAllEmails() {
-        this.UpdateWebAllEmails(this.appLoadedService.AppLoaded$?.getValue()?.WebAllEmails);
-        console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebAllHelpDocs);
-        if (this.DoOther) {
+        this.UpdateWebAllEmails(this.appLoadedService.WebAllEmails);
+        console.debug(this.appLoadedService.WebAllHelpDocs);
+        if (this.DoNext) {
             this.DoWebAllHelpDocs();
         }
     }
 
     private UpdateWebAllEmails(x: WebAllEmails) {
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebAllEmails: x, });
+        this.appLoadedService.WebAllEmails = x;
 
-        if (this.DoOther) {
+        if (this.DoNext) {
             if (this.componentDataLoadedService.DataLoadedWebRoot()) {
-                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
+                this.appStateService.Status = '';
+                this.appStateService.Working = false;
             }
         }
         else {
             if (this.componentDataLoadedService.DataLoadedWebAllEmails()) {
-                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
+                this.appStateService.Status = '';
+                this.appStateService.Working = false;
             }
         }
     }

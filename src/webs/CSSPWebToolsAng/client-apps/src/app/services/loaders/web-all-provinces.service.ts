@@ -2,9 +2,6 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { GetLanguageEnum, LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
-import { AppLoaded } from 'src/app/models/AppLoaded.model';
-import { AppState } from 'src/app/models/AppState.model';
 import { WebAllProvinces } from 'src/app/models/generated/web/WebAllProvinces.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
@@ -16,9 +13,9 @@ import { WebAllReportTypesService } from 'src/app/services/loaders/web-all-repor
     providedIn: 'root'
 })
 export class WebAllProvincesService {
-    private DoOther: boolean;
+    private DoNext: boolean;
+    private ForceReload: boolean;
     private sub: Subscription;
-    LangID: number = this.appStateService.AppState$?.getValue()?.Language == LanguageEnum.fr ? 1 : 0;
 
     constructor(private httpClient: HttpClient,
         private appStateService: AppStateService,
@@ -28,65 +25,76 @@ export class WebAllProvincesService {
         private componentDataLoadedService: ComponentDataLoadedService) {
     }
 
-    DoWebAllProvinces(DoOther: boolean) {
-        this.DoOther = DoOther;
-    
+    DoWebAllProvinces(DoNext: boolean = true, ForceReload: boolean = true) {
+        this.DoNext = DoNext;
+        this.ForceReload = ForceReload;
+
         this.sub ? this.sub.unsubscribe() : null;
-    
-        if (this.appLoadedService.AppLoaded$.getValue()?.WebAllProvinces) {
-          this.KeepWebAllProvinces();
+
+        if (ForceReload) {
+            this.sub = this.GetWebAllProvinces().subscribe();
         }
         else {
-          this.sub = this.GetWebAllProvinces().subscribe();
+            if (this.componentDataLoadedService.DataLoadedWebAllProvinces()) {
+                this.KeepWebAllProvinces();
+            }
+            else {
+                this.sub = this.GetWebAllProvinces().subscribe();
+            }
         }
-      }
-    
+    }
+
     private GetWebAllProvinces() {
-        let languageEnum = GetLanguageEnum();
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebAllProvinces: {} });
-        this.appStateService.UpdateAppState(<AppState>{
-            Status: `${ this.appLanguageService.AppLanguage.Loading[this.LangID]} - ${ WebAllProvinces }`,
-            Working: true
-        });
-        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebAllProvinces`;
+        this.appLoadedService.WebAllProvinces = <WebAllProvinces>{};
+
+        let NextText = this.DoNext ? `${this.appLanguageService.Next[this.appLanguageService.LangID]} - WebAllReportTypes` : '';
+        let ForceReloadText = this.ForceReload ? `${this.appLanguageService.ForceReload[this.appLanguageService.LangID]}` : '';
+        this.appStateService.Status = `${this.appLanguageService.Loading[this.appLanguageService.LangID]} - WebAllProvinces - ${NextText} - ${ForceReloadText}`;
+        this.appStateService.Working = true;
+
+        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appLanguageService.Language}-CA/Read/WebAllProvinces`;
         return this.httpClient.get<WebAllProvinces>(url).pipe(
             map((x: any) => {
                 this.UpdateWebAllProvinces(x);
                 console.debug(x);
-                if (this.DoOther) {
+                if (this.DoNext) {
                     this.DoWebAllReportTypes();
                 }
             }),
             catchError(e => of(e).pipe(map(e => {
-                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false, Error: <HttpErrorResponse>e });
+                this.appStateService.Status = ''
+                this.appStateService.Working = false
+                this.appStateService.Error = <HttpErrorResponse>e;
                 console.debug(e);
             })))
         );
     }
 
     private DoWebAllReportTypes() {
-        this.webAllReportTypesService.DoWebAllReportTypes(this.DoOther);
+        this.webAllReportTypesService.DoWebAllReportTypes(this.DoNext);
     }
-    
+
     private KeepWebAllProvinces() {
-        this.UpdateWebAllProvinces(this.appLoadedService.AppLoaded$?.getValue()?.WebAllProvinces);
-        console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebAllProvinces);
-        if (this.DoOther) {
+        this.UpdateWebAllProvinces(this.appLoadedService.WebAllProvinces);
+        console.debug(this.appLoadedService.WebAllProvinces);
+        if (this.DoNext) {
             this.DoWebAllReportTypes();
         }
     }
 
     private UpdateWebAllProvinces(x: WebAllProvinces) {
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebAllProvinces: x, });
+        this.appLoadedService.WebAllProvinces = x;
 
-        if (this.DoOther) {
+        if (this.DoNext) {
             if (this.componentDataLoadedService.DataLoadedWebRoot()) {
-                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
+                this.appStateService.Status = '';
+                this.appStateService.Working = false;
             }
         }
         else {
             if (this.componentDataLoadedService.DataLoadedWebAllProvinces()) {
-                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
+                this.appStateService.Status = '';
+                this.appStateService.Working = false;
             }
         }
     }

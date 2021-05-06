@@ -2,9 +2,6 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { GetLanguageEnum, LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
-import { AppState } from 'src/app/models/AppState.model';
-import { MWQMSample } from 'src/app/models/generated/db/MWQMSample.model';
 import { StatMWQMRun } from 'src/app/models/generated/web/StatMWQMRun.model';
 import { StatMWQMSite } from 'src/app/models/generated/web/StatMWQMSite.model';
 import { StatMWQMSiteSample } from 'src/app/models/generated/web/StatMWQMSiteSample.model';
@@ -26,7 +23,6 @@ import { AnalysisCalculationTypeEnum } from 'src/app/enums/generated/AnalysisCal
 import { TopComponentEnum } from 'src/app/enums/generated/TopComponentEnum';
 import { MWQMRunModel } from 'src/app/models/generated/web/MWQMRunModel.model';
 import { MWQMRunModelSiteAndSampleModel, MWQMSiteModelAndSampleModel } from 'src/app/models/MWQMRunModelSiteAndSample.model';
-import { AppLoaded } from 'src/app/models/AppLoaded.model';
 import { MWQMSampleModel } from 'src/app/models/generated/web/MWQMSampleModel.model';
 
 @Injectable({
@@ -34,9 +30,9 @@ import { MWQMSampleModel } from 'src/app/models/generated/web/MWQMSampleModel.mo
 })
 export class WebMWQMSamplesService {
     private TVItemID: number;
-    private DoOther: boolean;
+    private DoNext: boolean;
+    private ForceReload: boolean;
     private sub: Subscription;
-    LangID: number = this.appStateService.AppState$?.getValue()?.Language == LanguageEnum.fr ? 1 : 0;
 
     constructor(private httpClient: HttpClient,
         private appStateService: AppStateService,
@@ -49,22 +45,28 @@ export class WebMWQMSamplesService {
         private sortMWQMSiteSampleModelListService: SortMWQMSiteSampleModelListService) {
     }
 
-    DoWebMWQMSamples(TVItemID: number, DoOther: boolean) {
+    DoWebMWQMSamples(TVItemID: number, DoNext: boolean = true, ForceReload: boolean = true) {
         this.TVItemID = TVItemID;
-        this.DoOther = DoOther;
+        this.DoNext = DoNext;
+        this.ForceReload = ForceReload;
 
         this.sub ? this.sub.unsubscribe() : null;
 
-        if (this.appLoadedService.AppLoaded$.getValue()?.WebMWQMSamples) {
-            this.KeepWebMWQMSamples();
+        if (ForceReload) {
+            this.sub = this.GetWebMWQMSamples1980_2020().subscribe();
         }
         else {
-            this.sub = this.GetWebMWQMSamples1980_2020().subscribe();
+            if (this.componentDataLoadedService.DataLoadedWebMWQMSamples()) {
+                this.KeepWebMWQMSamples();
+            }
+            else {
+                this.sub = this.GetWebMWQMSamples1980_2020().subscribe();
+            }
         }
     }
 
     FillStatMWQMSiteList() {
-        let StatMWQMRunList: StatMWQMRun[] = this.appLoadedService.AppLoaded$?.getValue()?.StatMWQMRunList;
+        let StatMWQMRunList: StatMWQMRun[] = this.appLoadedService.StatMWQMRunList;
 
         if (StatMWQMRunList == undefined || StatMWQMRunList.length == 0) {
             return;
@@ -76,35 +78,35 @@ export class WebMWQMSamplesService {
         }
 
         let StatMWQMSiteList: StatMWQMSite[] = [];
-        let MWQMSiteModelActiveList: MWQMSiteModel[] = this.sortMWQMSiteModelService.SortMWQMSiteModelListByTVTextAsc(this.appLoadedService.AppLoaded$.getValue().WebMWQMSites.MWQMSiteModelList.filter(c => c.TVItemModel.TVItem.IsActive == true));
-        let MWQMSiteModelInactiveList: MWQMSiteModel[] = this.sortMWQMSiteModelService.SortMWQMSiteModelListByTVTextAsc(this.appLoadedService.AppLoaded$.getValue().WebMWQMSites.MWQMSiteModelList.filter(c => c.TVItemModel.TVItem.IsActive == false));
+        let MWQMSiteModelActiveList: MWQMSiteModel[] = this.sortMWQMSiteModelService.SortMWQMSiteModelListByTVTextAsc(this.appLoadedService.WebMWQMSites.MWQMSiteModelList.filter(c => c.TVItemModel.TVItem.IsActive == true));
+        let MWQMSiteModelInactiveList: MWQMSiteModel[] = this.sortMWQMSiteModelService.SortMWQMSiteModelListByTVTextAsc(this.appLoadedService.WebMWQMSites.MWQMSiteModelList.filter(c => c.TVItemModel.TVItem.IsActive == false));
         let countSite: number = MWQMSiteModelActiveList.length;
         for (let i = 0; i < countSite; i++) {
-            let MWQMSiteModelList: MWQMSiteModel[] = this.appLoadedService.AppLoaded$.getValue().WebMWQMSites.MWQMSiteModelList.filter(c => c.MWQMSite.MWQMSiteTVItemID == MWQMSiteModelActiveList[i].TVItemModel.TVItem.TVItemID);
+            let MWQMSiteModelList: MWQMSiteModel[] = this.appLoadedService.WebMWQMSites.MWQMSiteModelList.filter(c => c.MWQMSite.MWQMSiteTVItemID == MWQMSiteModelActiveList[i].TVItemModel.TVItem.TVItemID);
 
             let StatMWQMSiteSampleList: StatMWQMSiteSample[] = [];
-            if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.MWQMSites) {
+            if (this.appStateService.SubsectorSubComponent == SubsectorSubComponentEnum.MWQMSites) {
                 StatMWQMSiteSampleList = this.FillMWQMSiteSampleStatForMWQMSites(MWQMSiteModelActiveList[i].TVItemModel);
             }
 
-            if (this.appStateService.AppState$.getValue().TopComponent == TopComponentEnum.Home || this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.Analysis) {
+            if (this.appStateService.TopComponent == TopComponentEnum.Home || this.appStateService.SubsectorSubComponent == SubsectorSubComponentEnum.Analysis) {
                 StatMWQMSiteSampleList = this.FillMWQMSiteSampleStatForAnalysis(MWQMSiteModelActiveList[i].TVItemModel);
             }
 
             StatMWQMSiteList.push(<StatMWQMSite>{ SalinityAverage: this.GetSalinityAverage(StatMWQMSiteSampleList), MWQMSiteModel: MWQMSiteModelList[0], StatMWQMSiteSampleList: StatMWQMSiteSampleList, TVItemModel: MWQMSiteModelActiveList[i].TVItemModel });
         }
 
-        if (this.appStateService.AppState$.getValue().InactVisible) {
+        if (this.appStateService.InactVisible) {
             countSite = MWQMSiteModelInactiveList.length;
             for (let i = 0; i < countSite; i++) {
-                let MWQMSiteModelList: MWQMSiteModel[] = this.appLoadedService.AppLoaded$.getValue().WebMWQMSites.MWQMSiteModelList.filter(c => c.MWQMSite.MWQMSiteTVItemID == MWQMSiteModelInactiveList[i].TVItemModel.TVItem.TVItemID);
+                let MWQMSiteModelList: MWQMSiteModel[] = this.appLoadedService.WebMWQMSites.MWQMSiteModelList.filter(c => c.MWQMSite.MWQMSiteTVItemID == MWQMSiteModelInactiveList[i].TVItemModel.TVItem.TVItemID);
 
                 let StatMWQMSiteSampleList: StatMWQMSiteSample[] = [];
-                if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.MWQMSites) {
+                if (this.appStateService.SubsectorSubComponent == SubsectorSubComponentEnum.MWQMSites) {
                     StatMWQMSiteSampleList = this.FillMWQMSiteSampleStatForMWQMSites(MWQMSiteModelActiveList[i].TVItemModel);
                 }
 
-                if (this.appStateService.AppState$.getValue().TopComponent == TopComponentEnum.Home || this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.Analysis) {
+                if (this.appStateService.TopComponent == TopComponentEnum.Home || this.appStateService.SubsectorSubComponent == SubsectorSubComponentEnum.Analysis) {
                     StatMWQMSiteSampleList = this.FillMWQMSiteSampleStatForAnalysis(MWQMSiteModelActiveList[i].TVItemModel);
                 }
 
@@ -112,14 +114,12 @@ export class WebMWQMSamplesService {
             }
         }
 
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ StatMWQMSiteList: StatMWQMSiteList });
+        this.appLoadedService.StatMWQMSiteList = StatMWQMSiteList;
 
-        if (this.appLoadedService.AppLoaded$.getValue()?.StatMWQMRunList?.length > 0) {
-            if (this.appStateService.AppState$?.getValue()?.AnalysisStartRun == null) {
-                this.appStateService.UpdateAppState(<AppState>{
-                    AnalysisStartRun: this.appLoadedService.AppLoaded$.getValue().StatMWQMRunList[0],
-                    AnalysisEndRun: this.appLoadedService.AppLoaded$.getValue().StatMWQMRunList[this.appLoadedService.AppLoaded$.getValue().StatMWQMRunList.length - 1],
-                });
+        if (this.appLoadedService.StatMWQMRunList?.length > 0) {
+            if (this.appStateService.AnalysisStartRun == null) {
+                this.appStateService.AnalysisStartRun = this.appLoadedService.StatMWQMRunList[0];
+                this.appStateService.AnalysisEndRun = this.appLoadedService.StatMWQMRunList[this.appLoadedService.StatMWQMRunList.length - 1];
             }
         }
 
@@ -150,14 +150,14 @@ export class WebMWQMSamplesService {
         let mwqmRunModelSiteAndSampleModel: MWQMRunModelSiteAndSampleModel = new MWQMRunModelSiteAndSampleModel();
         let mwqmSiteModelAndSampleModelList: MWQMSiteModelAndSampleModel[] = [];
 
-        let mwqmRunModelList: MWQMRunModel[] = this.appLoadedService.AppLoaded$?.getValue()?.WebMWQMRuns.MWQMRunModelList?.filter(c => c.TVItemModel.TVItem.TVItemID == tvItemModel.TVItem.TVItemID);
+        let mwqmRunModelList: MWQMRunModel[] = this.appLoadedService.WebMWQMRuns.MWQMRunModelList?.filter(c => c.TVItemModel.TVItem.TVItemID == tvItemModel.TVItem.TVItemID);
 
         if (mwqmRunModelList !== undefined && mwqmRunModelList.length > 0) {
             mwqmRunModelSiteAndSampleModel.MWQMRunModel = mwqmRunModelList[0];
 
-            let mwqmSampleModelList: MWQMSampleModel[] = this.appLoadedService.AppLoaded$?.getValue()?.WebMWQMSamples.MWQMSampleModelList?.filter(c => c.MWQMSample.MWQMSiteTVItemID == tvItemModel.TVItem.TVItemID);
+            let mwqmSampleModelList: MWQMSampleModel[] = this.appLoadedService.WebMWQMSamples.MWQMSampleModelList?.filter(c => c.MWQMSample.MWQMSiteTVItemID == tvItemModel.TVItem.TVItemID);
 
-            let MWQMSiteModelActiveList: MWQMSiteModel[] = this.sortMWQMSiteModelService.SortMWQMSiteModelListByTVTextAsc(this.appLoadedService.AppLoaded$.getValue().WebMWQMSites.MWQMSiteModelList.filter(c => c.TVItemModel.TVItem.IsActive == true));
+            let MWQMSiteModelActiveList: MWQMSiteModel[] = this.sortMWQMSiteModelService.SortMWQMSiteModelListByTVTextAsc(this.appLoadedService.WebMWQMSites.MWQMSiteModelList.filter(c => c.TVItemModel.TVItem.IsActive == true));
 
             let count: number = MWQMSiteModelActiveList.length;
             for (let i = 0; i < count; i++) {
@@ -167,7 +167,7 @@ export class WebMWQMSamplesService {
                 }
             }
 
-            let MWQMSiteModelInactiveList: MWQMSiteModel[] = this.sortMWQMSiteModelService.SortMWQMSiteModelListByTVTextAsc(this.appLoadedService.AppLoaded$.getValue().WebMWQMSites.MWQMSiteModelList.filter(c => c.TVItemModel.TVItem.IsActive == false));
+            let MWQMSiteModelInactiveList: MWQMSiteModel[] = this.sortMWQMSiteModelService.SortMWQMSiteModelListByTVTextAsc(this.appLoadedService.WebMWQMSites.MWQMSiteModelList.filter(c => c.TVItemModel.TVItem.IsActive == false));
 
             count = MWQMSiteModelInactiveList.length;
             for (let i = 0; i < count; i++) {
@@ -184,19 +184,19 @@ export class WebMWQMSamplesService {
     }
 
     GetMWQMSiteDetail(tvItemModel: TVItemModel): StatMWQMSite {
-        let statMWQMSiteList: StatMWQMSite[] = this.appLoadedService.AppLoaded$.getValue().StatMWQMSiteList?.filter(c => c.TVItemModel.TVItem.TVItemID == tvItemModel.TVItem.TVItemID);
+        let statMWQMSiteList: StatMWQMSite[] = this.appLoadedService.StatMWQMSiteList?.filter(c => c.TVItemModel.TVItem.TVItemID == tvItemModel.TVItem.TVItemID);
         return statMWQMSiteList === undefined ? null : statMWQMSiteList[0];
     }
 
     GetMWQMSiteList(tvItemModel: TVItemModel): StatMWQMSite[] {
-        let statMWQMSiteList: StatMWQMSite[] = this.appLoadedService.AppLoaded$.getValue().StatMWQMSiteList?.filter(c => c.TVItemModel.TVItem.TVItemID == tvItemModel.TVItem.TVItemID);
+        let statMWQMSiteList: StatMWQMSite[] = this.appLoadedService.StatMWQMSiteList?.filter(c => c.TVItemModel.TVItem.TVItemID == tvItemModel.TVItem.TVItemID);
         return statMWQMSiteList === undefined ? null : statMWQMSiteList;
     }
 
     private FillStatMWQMRunList() {
         let StatMWQMRunList: StatMWQMRun[] = [];
 
-        let MWQMRunRoutineDescList: MWQMRunModel[] = this.sortMWQMRunListService.SortMWQMRunListDescByDate(this.appLoadedService.AppLoaded$.getValue().WebMWQMRuns.MWQMRunModelList);
+        let MWQMRunRoutineDescList: MWQMRunModel[] = this.sortMWQMRunListService.SortMWQMRunListDescByDate(this.appLoadedService.WebMWQMRuns.MWQMRunModelList);
 
         let countRun: number = MWQMRunRoutineDescList.length;
         for (let i = 0; i < countRun; i++) {
@@ -233,52 +233,58 @@ export class WebMWQMSamplesService {
             StatMWQMRunList.push(statMWQMRun);
         }
 
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ StatMWQMRunList: StatMWQMRunList });
+        this.appLoadedService.StatMWQMRunList = StatMWQMRunList;
+
         if (StatMWQMRunList.length > 0) {
-            this.appStateService.UpdateAppState(<AppState>{ AnalysisStartRun: StatMWQMRunList[0], AnalysisEndRun: StatMWQMRunList[StatMWQMRunList.length - 1] });
+            this.appStateService.AnalysisStartRun = StatMWQMRunList[0];
+            this.appStateService.AnalysisEndRun = StatMWQMRunList[StatMWQMRunList.length - 1];
         }
     }
 
     private GetWebMWQMSamples1980_2020() {
-        let languageEnum = GetLanguageEnum();
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebMWQMSamples: {} });
-        this.appStateService.UpdateAppState(<AppState>{
-            Status: `${this.appLanguageService.AppLanguage.Loading[this.LangID]} - ${WebMWQMSamples}`,
-            Working: true
-        });
-        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebMWQMSamples1980_2020/${this.TVItemID}`;
+        this.appLoadedService.WebMWQMSamples = <WebMWQMSamples>{};
+
+        let NextText = this.DoNext ? `${this.appLanguageService.Next[this.appLanguageService.LangID]} - WebMWQMSamples2021_2060` : '';
+        let ForceReloadText = this.ForceReload ? `${this.appLanguageService.ForceReload[this.appLanguageService.LangID]}` : '';
+        this.appStateService.Status = `${this.appLanguageService.Loading[this.appLanguageService.LangID]} - WebMWQMSamples1980_2020 - ${NextText} - ${ForceReloadText}`;
+        this.appStateService.Working = true;
+
+        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appLanguageService.Language}-CA/Read/WebMWQMSamples1980_2020/${this.TVItemID}`;
         return this.httpClient.get<WebMWQMSamples>(url).pipe(
             map((x: any) => {
                 this.UpdateWebMWQMSamples1980_2020(x);
                 console.debug(x);
-                if (this.DoOther) {
+                if (this.DoNext) {
                     this.GetWebMWQMSamples2021_2060();
                 }
             }),
             catchError(e => of(e).pipe(map(e => {
-                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false, Error: <HttpErrorResponse>e });
+                this.appStateService.Status = ''
+                this.appStateService.Working = false
+                this.appStateService.Error = <HttpErrorResponse>e;
                 console.debug(e);
             })))
         );
     }
 
     private GetWebMWQMSamples2021_2060() {
-        let languageEnum = GetLanguageEnum();
-        this.appStateService.UpdateAppState(<AppState>{
-            Status: `${this.appLanguageService.AppLanguage.Loading[this.LangID]} - ${WebMWQMSamples}`,
-            Working: true
-        });
-        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebMWQMSamples2021_2060/${this.TVItemID}`;
+        let ForceReloadText = this.ForceReload ? `${this.appLanguageService.ForceReload[this.appLanguageService.LangID]}` : '';
+        this.appStateService.Status = `${this.appLanguageService.Loading[this.appLanguageService.LangID]} - WebMWQMSamples2021_2060 - ${ForceReloadText}`;
+        this.appStateService.Working = true;
+
+        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appLanguageService.Language}-CA/Read/WebMWQMSamples2021_2060/${this.TVItemID}`;
         return this.httpClient.get<WebMWQMSamples>(url).pipe(
             map((x: any) => {
                 this.UpdateWebMWQMSamples2021_2060(x);
                 console.debug(x);
-                if (this.DoOther) {
+                if (this.DoNext) {
                     // nothing for now
                 }
             }),
             catchError(e => of(e).pipe(map(e => {
-                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false, Error: <HttpErrorResponse>e });
+                this.appStateService.Status = ''
+                this.appStateService.Working = false
+                this.appStateService.Error = <HttpErrorResponse>e;
                 console.debug(e);
             })))
         );
@@ -287,16 +293,16 @@ export class WebMWQMSamplesService {
     private FillMWQMSiteSampleStatForAnalysis(tvItemModel: TVItemModel): StatMWQMSiteSample[] {
         let SampleTypeText: string = `${SampleTypeEnum.Routine},`;
         let StatMWQMSiteSampleList: StatMWQMSiteSample[] = [];
-        let StatMWQMRunList: StatMWQMRun[] = this.appLoadedService.AppLoaded$.getValue()?.StatMWQMRunList;
+        let StatMWQMRunList: StatMWQMRun[] = this.appLoadedService.StatMWQMRunList;
 
-        let StatRuns = this.appStateService.AppState$.getValue().AnalysisRuns;
+        let StatRuns = this.appStateService.AnalysisRuns;
 
-        let MWQMSiteModelList: MWQMSiteModel[] = this.appLoadedService.AppLoaded$?.getValue()?.WebMWQMSites?.MWQMSiteModelList?.filter(
+        let MWQMSiteModelList: MWQMSiteModel[] = this.appLoadedService.WebMWQMSites?.MWQMSiteModelList?.filter(
             c => c.MWQMSite.MWQMSiteTVItemID == tvItemModel.TVItem.TVItemID);
 
         if (MWQMSiteModelList && MWQMSiteModelList.length > 0) {
             let MWQMSiteSampleModelSortedList: MWQMSampleModel[] = this.sortMWQMSiteSampleModelListService.SortMWQMSiteSampleModelListDescByDate(
-                this.appLoadedService.AppLoaded$?.getValue()?.WebMWQMSamples?.MWQMSampleModelList.filter(c => c.MWQMSample.MWQMSiteTVItemID == tvItemModel.TVItem.TVItemID)
+                this.appLoadedService.WebMWQMSamples?.MWQMSampleModelList.filter(c => c.MWQMSample.MWQMSiteTVItemID == tvItemModel.TVItem.TVItemID)
             );
 
             if (MWQMSiteSampleModelSortedList && MWQMSiteSampleModelSortedList.length > 0) {
@@ -353,41 +359,41 @@ export class WebMWQMSamplesService {
                                 let skipVal: boolean = false;
 
                                 // let SampleDate: Date = new Date(SampleYear, SampleMonth, SampleDay);
-                                // let AnalysisStartDate: Date = this.appStateService.AppState$.getValue().AnalysisStartRun.RunDate;
+                                // let AnalysisStartDate: Date = this.appStateService.AnalysisStartRun.RunDate;
 
                                 // Check Start Run Date
-                                if (MWQMSiteSampleModelSortedList[s].MWQMSample.SampleDateTime_Local.toString().substring(0, 10) > this.appStateService.AppState$.getValue().AnalysisStartRun.RunDate.toString().substring(0, 10)) {
+                                if (MWQMSiteSampleModelSortedList[s].MWQMSample.SampleDateTime_Local.toString().substring(0, 10) > this.appStateService.AnalysisStartRun.RunDate.toString().substring(0, 10)) {
                                     skipVal = true;
                                 }
 
                                 // Check End Run Date
-                                if (MWQMSiteSampleModelSortedList[s].MWQMSample.SampleDateTime_Local.toString().substring(0, 10) < this.appStateService.AppState$.getValue().AnalysisEndRun.RunDate.toString().substring(0, 10)) {
+                                if (MWQMSiteSampleModelSortedList[s].MWQMSample.SampleDateTime_Local.toString().substring(0, 10) < this.appStateService.AnalysisEndRun.RunDate.toString().substring(0, 10)) {
                                     skipVal = true;
                                 }
 
                                 // Check Runs
-                                if (useCount >= this.appStateService.AppState$.getValue().AnalysisRuns) {
+                                if (useCount >= this.appStateService.AnalysisRuns) {
                                     skipVal = true;
                                 }
 
-                                if (this.appStateService.AppState$.getValue().AnalysisCalculationType == AnalysisCalculationTypeEnum.All) {
+                                if (this.appStateService.AnalysisCalculationType == AnalysisCalculationTypeEnum.All) {
                                     // everything is ok, nothing to do
                                 }
 
-                                if (this.appStateService.AppState$.getValue().AnalysisCalculationType == AnalysisCalculationTypeEnum.Dry) {
-                                    if (StatMWQMRunList[r].RainDay1 >= this.appStateService.AppState$.getValue().AnalysisDry24h
-                                        && (StatMWQMRunList[r].RainDay1 + StatMWQMRunList[r].RainDay2) >= this.appStateService.AppState$.getValue().AnalysisDry48h
-                                        && (StatMWQMRunList[r].RainDay1 + StatMWQMRunList[r].RainDay2 + StatMWQMRunList[r].RainDay3) >= this.appStateService.AppState$.getValue().AnalysisDry72h
-                                        && (StatMWQMRunList[r].RainDay1 + StatMWQMRunList[r].RainDay2 + StatMWQMRunList[r].RainDay3 + StatMWQMRunList[r].RainDay4) >= this.appStateService.AppState$.getValue().AnalysisDry96h) {
+                                if (this.appStateService.AnalysisCalculationType == AnalysisCalculationTypeEnum.Dry) {
+                                    if (StatMWQMRunList[r].RainDay1 >= this.appStateService.AnalysisDry24h
+                                        && (StatMWQMRunList[r].RainDay1 + StatMWQMRunList[r].RainDay2) >= this.appStateService.AnalysisDry48h
+                                        && (StatMWQMRunList[r].RainDay1 + StatMWQMRunList[r].RainDay2 + StatMWQMRunList[r].RainDay3) >= this.appStateService.AnalysisDry72h
+                                        && (StatMWQMRunList[r].RainDay1 + StatMWQMRunList[r].RainDay2 + StatMWQMRunList[r].RainDay3 + StatMWQMRunList[r].RainDay4) >= this.appStateService.AnalysisDry96h) {
                                         skipVal = true;
                                     }
                                 }
 
-                                if (this.appStateService.AppState$.getValue().AnalysisCalculationType == AnalysisCalculationTypeEnum.Wet) {
-                                    if (StatMWQMRunList[r].RainDay1 <= this.appStateService.AppState$.getValue().AnalysisWet24h
-                                        && (StatMWQMRunList[r].RainDay1 + StatMWQMRunList[r].RainDay2) <= this.appStateService.AppState$.getValue().AnalysisWet48h
-                                        && (StatMWQMRunList[r].RainDay1 + StatMWQMRunList[r].RainDay2 + StatMWQMRunList[r].RainDay3) <= this.appStateService.AppState$.getValue().AnalysisWet72h
-                                        && (StatMWQMRunList[r].RainDay1 + StatMWQMRunList[r].RainDay2 + StatMWQMRunList[r].RainDay3 + StatMWQMRunList[r].RainDay4) <= this.appStateService.AppState$.getValue().AnalysisWet96h) {
+                                if (this.appStateService.AnalysisCalculationType == AnalysisCalculationTypeEnum.Wet) {
+                                    if (StatMWQMRunList[r].RainDay1 <= this.appStateService.AnalysisWet24h
+                                        && (StatMWQMRunList[r].RainDay1 + StatMWQMRunList[r].RainDay2) <= this.appStateService.AnalysisWet48h
+                                        && (StatMWQMRunList[r].RainDay1 + StatMWQMRunList[r].RainDay2 + StatMWQMRunList[r].RainDay3) <= this.appStateService.AnalysisWet72h
+                                        && (StatMWQMRunList[r].RainDay1 + StatMWQMRunList[r].RainDay2 + StatMWQMRunList[r].RainDay3 + StatMWQMRunList[r].RainDay4) <= this.appStateService.AnalysisWet96h) {
                                         skipVal = true;
                                     }
                                 }
@@ -474,16 +480,16 @@ export class WebMWQMSamplesService {
     private FillMWQMSiteSampleStatForMWQMSites(tvItemModel: TVItemModel): StatMWQMSiteSample[] {
         let SampleTypeText: string = `${SampleTypeEnum.Routine},`;
         let StatMWQMSiteSampleList: StatMWQMSiteSample[] = [];
-        let StatMWQMRunList: StatMWQMRun[] = this.appLoadedService.AppLoaded$.getValue()?.StatMWQMRunList;
+        let StatMWQMRunList: StatMWQMRun[] = this.appLoadedService.StatMWQMRunList;
 
-        let StatRuns: number = this.appStateService.AppState$.getValue().StatRunsForDetail;
+        let StatRuns: number = this.appStateService.StatRunsForDetail;
 
-        let MWQMSiteModelList: MWQMSiteModel[] = this.appLoadedService.AppLoaded$?.getValue()?.WebMWQMSites?.MWQMSiteModelList?.filter(
+        let MWQMSiteModelList: MWQMSiteModel[] = this.appLoadedService.WebMWQMSites?.MWQMSiteModelList?.filter(
             c => c.MWQMSite.MWQMSiteTVItemID == tvItemModel.TVItem.TVItemID);
 
         if (MWQMSiteModelList && MWQMSiteModelList.length > 0) {
             let MWQMSiteSampleModelSortedList: MWQMSampleModel[] = this.sortMWQMSiteSampleModelListService.SortMWQMSiteSampleModelListDescByDate(
-                this.appLoadedService.AppLoaded$?.getValue()?.WebMWQMSamples?.MWQMSampleModelList.filter(c => c.MWQMSample.MWQMSiteTVItemID == tvItemModel.TVItem.TVItemID)
+                this.appLoadedService.WebMWQMSamples?.MWQMSampleModelList.filter(c => c.MWQMSample.MWQMSiteTVItemID == tvItemModel.TVItem.TVItemID)
             );
 
             if (MWQMSiteSampleModelSortedList && MWQMSiteSampleModelSortedList.length > 0) {
@@ -793,45 +799,43 @@ export class WebMWQMSamplesService {
     }
 
     private KeepWebMWQMSamples() {
-        this.UpdateWebMWQMSamples1980_2020(this.appLoadedService.AppLoaded$?.getValue()?.WebMWQMSamples);
-        console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebMWQMSamples);
-        if (this.DoOther) {
+        this.UpdateWebMWQMSamples1980_2020(this.appLoadedService.WebMWQMSamples);
+        console.debug(this.appLoadedService.WebMWQMSamples);
+        if (this.DoNext) {
             // nothing else to add in the chain
         }
     }
 
     private UpdateWebMWQMSamples1980_2020(x: WebMWQMSamples) {
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
-            WebMWQMSamples: x
-        });
+        this.appLoadedService.WebMWQMSamples = x;
     }
     private UpdateWebMWQMSamples2021_2060(x: WebMWQMSamples) {
-        this.appLoadedService.AppLoaded$.getValue().WebMWQMSamples.MWQMSampleModelList.concat(x.MWQMSampleModelList);
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
-            WebMWQMSamples: this.appLoadedService.AppLoaded$.getValue().WebMWQMSamples
-        });
+        this.appLoadedService.WebMWQMSamples.MWQMSampleModelList.concat(x.MWQMSampleModelList);
+        this.appLoadedService.WebMWQMSamples = this.appLoadedService.WebMWQMSamples;
 
         this.FillStatMWQMRunList();
 
         this.FillStatMWQMSiteList();
 
-        if (this.DoOther) {
+        if (this.DoNext) {
             if (this.componentDataLoadedService.DataLoadedWebSubsector()) {
-                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
+                this.appStateService.Status = '';
+                this.appStateService.Working = false;
             }
         }
         else {
             if (this.componentDataLoadedService.DataLoadedWebMWQMSamples()) {
-                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
+                this.appStateService.Status = '';
+                this.appStateService.Working = false;
             }
         }
 
-        if (this.appStateService.AppState$.getValue().GoogleJSLoaded) {
-            if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.MWQMSites) {
+        if (this.appStateService.GoogleJSLoaded) {
+            if (this.appStateService.SubsectorSubComponent == SubsectorSubComponentEnum.MWQMSites) {
                 this.mapService.ClearMap();
                 this.mapService.DrawObjects([
-                    //...this.appLoadedService.AppLoaded$.getValue().WebMWQMSites.MWQMSiteModelList.,
-                    //...[this.appLoadedService.AppLoaded$.getValue().WebMWQMSites.TVItemModel],
+                    //...this.appLoadedService.WebMWQMSites.MWQMSiteModelList.,
+                    //...[this.appLoadedService.WebMWQMSites.TVItemModel],
                 ]);
             }
         }

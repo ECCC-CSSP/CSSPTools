@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { MapInfoDrawTypeEnum } from 'src/app/enums/generated/MapInfoDrawTypeEnum';
-import { AppLoaded } from 'src/app/models/AppLoaded.model';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
@@ -16,11 +15,11 @@ export class MapPolygonsService {
     private mapHelperService: MapHelperService) {
   }
 
-  DrawPolygons(tvItemStatMapModelList: TVItemModel[]) {
+  DrawPolygons(tvItemModelList: TVItemModel[]) {
     let polygonList: google.maps.Polygon[] = [];
 
-    for (let tvItemStatMapModel of tvItemStatMapModelList) {
-      for (let mapInfoModel of tvItemStatMapModel.MapInfoModelList) {
+    for (let tvItemModel of tvItemModelList) {
+      for (let mapInfoModel of tvItemModel.MapInfoModelList) {
         if (mapInfoModel.MapInfo?.MapInfoDrawType == MapInfoDrawTypeEnum.Polygon) {
 
           let polyPoints = new google.maps.MVCArray<google.maps.LatLng>();
@@ -38,19 +37,19 @@ export class MapPolygonsService {
             strokeWeight: 2,
             fillColor: fillColor,
             fillOpacity: 0.0,
-            map: this.appLoadedService.AppLoaded$.getValue().Map,
+            map: this.appLoadedService.Map,
           };
 
           polygonList.push(new google.maps.Polygon(options));
 
           google.maps.event.addListener(polygonList[polygonList.length - 1], "mousemove", (evt: google.maps.MouseEvent) => {
-            if (!this.appStateService.AppState$.getValue().EditMapChanged) {
+            if (!this.appStateService.EditMapChanged) {
               (<HTMLInputElement>document.getElementById("CurrentLatLng")).value = (evt.latLng.lat().toString().substring(0, 8) +
                 ' ' + evt.latLng.lng().toString().substring(0, 8));
             }
             else{
-              (<HTMLInputElement>document.getElementById("CurrentLatLng")).value = (this.appStateService.AppState$.getValue().MarkerDragStartPos.lat().toFixed(6) +
-              ' ' + this.appStateService.AppState$.getValue().MarkerDragStartPos.lng().toFixed(6));
+              (<HTMLInputElement>document.getElementById("CurrentLatLng")).value = (this.appStateService.MarkerDragStartPos.lat().toFixed(6) +
+              ' ' + this.appStateService.MarkerDragStartPos.lng().toFixed(6));
             }
           });
 
@@ -58,6 +57,6 @@ export class MapPolygonsService {
       };
     }
 
-    this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ GooglePolygonListMVC: new google.maps.MVCArray<google.maps.Polygon>(polygonList) });
+    this.appLoadedService.GooglePolygonListMVC = new google.maps.MVCArray<google.maps.Polygon>(polygonList);
   }
 }

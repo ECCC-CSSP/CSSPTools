@@ -2,129 +2,135 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { GetLanguageEnum, LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { MunicipalitySubComponentEnum } from 'src/app/enums/generated/MunicipalitySubComponentEnum';
-import { AppLoaded } from 'src/app/models/AppLoaded.model';
-import { AppState } from 'src/app/models/AppState.model';
 import { WebMunicipality } from 'src/app/models/generated/web/WebMunicipality.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
-import { StructureTVFileListService } from 'src/app/services/helpers/structure-tvfile-list.service';
 import { ComponentDataLoadedService } from 'src/app/services/helpers/component-data-loaded.service';
 import { MapService } from 'src/app/services/map/map.service';
-import { SortTVItemListService } from 'src/app/services/helpers/sort-tvitem-list.service';
 import { AppLanguageService } from 'src/app/services/app-language.service';
+import { WebMikeScenariosService } from './web-mike-scenarios.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class WebMunicipalityService {
     private TVItemID: number;
-    private DoOther: boolean;
+    private DoNext: boolean;
+    private ForceReload: boolean;
     private sub: Subscription;
-    LangID: number = this.appStateService.AppState$?.getValue()?.Language == LanguageEnum.fr ? 1 : 0;
 
     constructor(private httpClient: HttpClient,
         private appStateService: AppStateService,
         private appLoadedService: AppLoadedService,
         private appLanguageService: AppLanguageService,
-        private sortTVItemListService: SortTVItemListService,
-        private structureTVFileListService: StructureTVFileListService,
         private mapService: MapService,
+        private webMikeScenariosService: WebMikeScenariosService,
         private componentDataLoadedService: ComponentDataLoadedService) {
     }
 
-    DoWebMunicipality(TVItemID: number, DoOther: boolean) {
+    DoWebMunicipality(TVItemID: number, DoNext: boolean = true, ForceReload: boolean = true) {
         this.TVItemID = TVItemID;
-        this.DoOther = DoOther;
+        this.DoNext = DoNext;
+        this.ForceReload = ForceReload;
 
         this.sub ? this.sub.unsubscribe() : null;
 
-        if (this.appLoadedService.AppLoaded$.getValue()?.WebMunicipality) {
-            this.KeepWebMunicipality();
+        if (ForceReload) {
+            this.sub = this.GetWebMunicipality().subscribe();
         }
         else {
-            this.sub = this.GetWebMunicipality().subscribe();
+            if (this.componentDataLoadedService.DataLoadedWebMunicipality()) {
+                this.KeepWebMunicipality();
+            }
+            else {
+                this.sub = this.GetWebMunicipality().subscribe();
+            }
         }
     }
 
     private GetWebMunicipality() {
-        let languageEnum = GetLanguageEnum();
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
-            WebMunicipality: {},
-        });
-        this.appStateService.UpdateAppState(<AppState>{
-            Status: `${ this.appLanguageService.AppLanguage.Loading[this.LangID]} - ${ WebMunicipality }`,
-            Working: true
-        });
-        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebMunicipality/${this.TVItemID}`;
+        this.appLoadedService.WebMunicipality = <WebMunicipality>{};
+
+        let NextText = this.DoNext ? `${this.appLanguageService.Next[this.appLanguageService.LangID]} - WebMikeScenarios` : '';
+        let ForceReloadText = this.ForceReload ? `${this.appLanguageService.ForceReload[this.appLanguageService.LangID]}` : '';
+        this.appStateService.Status = `${this.appLanguageService.Loading[this.appLanguageService.LangID]} - WebMunicipality - ${NextText} - ${ForceReloadText}`;
+        this.appStateService.Working = true;
+
+        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appLanguageService.Language}-CA/Read/WebMunicipality/${this.TVItemID}`;
         return this.httpClient.get<WebMunicipality>(url).pipe(
             map((x: any) => {
                 this.UpdateWebMunicipality(x);
                 console.debug(x);
-                if (this.DoOther) {
-                    // nothing more to add in the chain
+                if (this.DoNext) {
+                    this.DoWebMikeScenarios();
                 }
             }),
             catchError(e => of(e).pipe(map(e => {
-                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false, Error: <HttpErrorResponse>e });
+                this.appStateService.Status = ''
+                this.appStateService.Working = false
+                this.appStateService.Error = <HttpErrorResponse>e;
                 console.debug(e);
             })))
         );
     }
 
+    private DoWebMikeScenarios() {
+        this.webMikeScenariosService.DoWebMikeScenarios(this.TVItemID, true);
+    }
+
     private KeepWebMunicipality() {
-        this.UpdateWebMunicipality(this.appLoadedService.AppLoaded$?.getValue()?.WebMunicipality);
-        console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebMunicipality);
-        if (this.DoOther) {
-            // nothing more to add in the chain
+        this.UpdateWebMunicipality(this.appLoadedService.WebMunicipality);
+        console.debug(this.appLoadedService.WebMunicipality);
+        if (this.DoNext) {
+            this.DoWebMikeScenarios();
         }
     }
 
     private UpdateWebMunicipality(x: WebMunicipality) {
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
-            WebMunicipality: x,
-        });
+        this.appLoadedService.WebMunicipality = x;
 
-        if (this.DoOther) {
+        if (this.DoNext) {
             if (this.componentDataLoadedService.DataLoadedWebMunicipality()) {
-                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
+                this.appStateService.Status = '';
+                this.appStateService.Working = false;
             }
         }
         else {
-            this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
+            this.appStateService.Status = '';
+            this.appStateService.Working = false;
         }
 
-        if (this.appStateService.AppState$.getValue().GoogleJSLoaded) {
-            if (this.appStateService.AppState$.getValue().MunicipalitySubComponent == MunicipalitySubComponentEnum.Infrastructures) {
+        if (this.appStateService.GoogleJSLoaded) {
+            if (this.appStateService.MunicipalitySubComponent == MunicipalitySubComponentEnum.Infrastructures) {
                 this.mapService.ClearMap();
                 this.mapService.DrawObjects([
-                    // ...this.appLoadedService.AppLoaded$.getValue().WebMunicipality.InfrastructureModelList,
-                    // ...[this.appLoadedService.AppLoaded$.getValue().WebMunicipality.TVItemModel]
+                    // ...this.appLoadedService.WebMunicipality.InfrastructureModelList,
+                    // ...[this.appLoadedService.WebMunicipality.TVItemModel]
                 ]);
             }
 
-            if (this.appStateService.AppState$.getValue().MunicipalitySubComponent == MunicipalitySubComponentEnum.Contacts) {
+            if (this.appStateService.MunicipalitySubComponent == MunicipalitySubComponentEnum.Contacts) {
                 this.mapService.ClearMap();
                 this.mapService.DrawObjects([
-                    // ...this.appLoadedService.AppLoaded$.getValue().WebMunicipality.InfrastructureModelList,
-                    // ...[this.appLoadedService.AppLoaded$.getValue().WebMunicipality.TVItemModel]
+                    // ...this.appLoadedService.WebMunicipality.InfrastructureModelList,
+                    // ...[this.appLoadedService.WebMunicipality.TVItemModel]
                 ]);
             }
 
-            if (this.appStateService.AppState$.getValue().MunicipalitySubComponent == MunicipalitySubComponentEnum.MIKEScenarios) {
+            if (this.appStateService.MunicipalitySubComponent == MunicipalitySubComponentEnum.MIKEScenarios) {
                 this.mapService.ClearMap();
                 this.mapService.DrawObjects([
-                    // ...this.appLoadedService.AppLoaded$.getValue().WebMunicipality.InfrastructureModelList,
-                    // ...[this.appLoadedService.AppLoaded$.getValue().WebMunicipality.TVItemModel]
+                    // ...this.appLoadedService.WebMunicipality.InfrastructureModelList,
+                    // ...[this.appLoadedService.WebMunicipality.TVItemModel]
                 ]);
             }
 
-            if (this.appStateService.AppState$.getValue().MunicipalitySubComponent == MunicipalitySubComponentEnum.Files) {
+            if (this.appStateService.MunicipalitySubComponent == MunicipalitySubComponentEnum.Files) {
                 this.mapService.ClearMap();
                 this.mapService.DrawObjects([
-                    // ...this.appLoadedService.AppLoaded$.getValue().WebMunicipality.InfrastructureModelList,
-                    // ...[this.appLoadedService.AppLoaded$.getValue().WebMunicipality.TVItemModel]
+                    // ...this.appLoadedService.WebMunicipality.InfrastructureModelList,
+                    // ...[this.appLoadedService.WebMunicipality.TVItemModel]
                 ]);
             }
         }

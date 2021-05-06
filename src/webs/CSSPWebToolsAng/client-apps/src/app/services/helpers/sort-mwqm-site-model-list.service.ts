@@ -1,19 +1,19 @@
 import { Injectable } from '@angular/core';
-import { AppStateService } from '../app-state.service';
 import { PredicateAscByService } from 'src/app/services/helpers/predicate-asc-by.service';
 import { TVItemID_TVText_Sort } from 'src/app/models/TVItemID_TVText_Sort.model';
 import { MWQMSiteModel } from 'src/app/models/generated/web/MWQMSiteModel.model';
+import { AppLanguageService } from '../app-language.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class SortMWQMSiteModelListService {
     constructor(private predicateAscByService: PredicateAscByService,
-        private appStateService: AppStateService) {
+        private appLanguageService: AppLanguageService) {
     }
 
     SortMWQMSiteModelListByTVTextAsc(arr: MWQMSiteModel[]): MWQMSiteModel[] {
-        let language: number = <number>this.appStateService.AppState$.getValue().Language;
+        let language: number = <number>this.appLanguageService.Language;
 
         if (!arr || arr.length == 0) return arr;
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model';
 import { AppStateService } from 'src/app/services/app-state.service';
@@ -7,8 +7,7 @@ import { ContactNameService } from 'src/app/services/helpers/contact-name.servic
 @Component({
   selector: 'app-last-udpate-tv-file-model',
   templateUrl: './last-update-tvfilemodel.component.html',
-  styleUrls: ['./last-update-tvfilemodel.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./last-update-tvfilemodel.component.css']
 })
 export class LastUpdateTVFileModelComponent implements OnInit, OnDestroy {
   @Input() TVFileModel: TVFileModel;

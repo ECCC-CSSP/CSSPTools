@@ -5,7 +5,7 @@
  *
  */
 
-import { AppStateService } from 'src/app/services/app-state.service';
+import { AppLanguageService } from 'src/app/services/app-language.service';
 import { EnumIDAndText } from 'src/app/models/generated/helper/EnumIDAndText.model';
 import { LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 
@@ -22,9 +22,9 @@ export function GetFileStatusEnum(): typeof FileStatusEnum
   return FileStatusEnum;
 }
 
-export function FileStatusEnum_GetOrderedText(appStateService: AppStateService): EnumIDAndText[] {
+export function FileStatusEnum_GetOrderedText(appLanguageService: AppLanguageService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if (appStateService.AppState$?.getValue().Language == LanguageEnum.fr) {
+    if (appLanguageService.Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'Changed (fr)' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'Sent (fr)' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'Accepté' });
@@ -42,9 +42,9 @@ export function FileStatusEnum_GetOrderedText(appStateService: AppStateService):
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function FileStatusEnum_GetIDText(enumID: number, appStateService: AppStateService): string {
+export function FileStatusEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
     let addressTypeEnunText: string;
-    FileStatusEnum_GetOrderedText(appStateService).forEach(e => {
+    FileStatusEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

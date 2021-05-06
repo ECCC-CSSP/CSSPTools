@@ -5,7 +5,7 @@
  *
  */
 
-import { AppStateService } from 'src/app/services/app-state.service';
+import { AppLanguageService } from 'src/app/services/app-language.service';
 import { EnumIDAndText } from 'src/app/models/generated/helper/EnumIDAndText.model';
 import { LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 
@@ -22,9 +22,9 @@ export function GetInfrastructureTypeEnum(): typeof InfrastructureTypeEnum
   return InfrastructureTypeEnum;
 }
 
-export function InfrastructureTypeEnum_GetOrderedText(appStateService: AppStateService): EnumIDAndText[] {
+export function InfrastructureTypeEnum_GetOrderedText(appLanguageService: AppLanguageService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if (appStateService.AppState$?.getValue().Language == LanguageEnum.fr) {
+    if (appLanguageService.Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'WWTP (fr)' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'Lift Station (fr)' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'Other (fr)' });
@@ -42,9 +42,9 @@ export function InfrastructureTypeEnum_GetOrderedText(appStateService: AppStateS
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function InfrastructureTypeEnum_GetIDText(enumID: number, appStateService: AppStateService): string {
+export function InfrastructureTypeEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
     let addressTypeEnunText: string;
-    InfrastructureTypeEnum_GetOrderedText(appStateService).forEach(e => {
+    InfrastructureTypeEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

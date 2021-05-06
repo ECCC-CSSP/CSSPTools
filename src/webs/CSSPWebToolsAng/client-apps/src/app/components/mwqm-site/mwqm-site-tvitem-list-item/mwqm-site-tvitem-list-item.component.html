@@ -1,35 +1,35 @@
 <mat-list>
     <span>{{
-        appLanguageService.AppLanguage.StatSampleNumber[this.appStateService.AppState$.getValue().Language]
+        appLanguageService.StatSampleNumber[this.appLanguageService.LangID]
         }}:&nbsp;</span>
 
     <mat-button-toggle-group>
         <mat-button-toggle (click)="SetStatRunsForDetail(10)"
-            [ngClass]="(AppState.StatRunsForDetail == 10) ? 'selected' : ''">
+            [ngClass]="(appStateService.StatRunsForDetail == 10) ? 'selected' : ''">
             10
         </mat-button-toggle>
         <mat-button-toggle (click)="SetStatRunsForDetail(15)"
-            [ngClass]="(AppState.StatRunsForDetail == 15) ? 'selected' : ''">
+            [ngClass]="(appStateService.StatRunsForDetail == 15) ? 'selected' : ''">
             15
         </mat-button-toggle>
         <mat-button-toggle (click)="SetStatRunsForDetail(20)"
-            [ngClass]="(AppState.StatRunsForDetail == 20) ? 'selected' : ''">
+            [ngClass]="(appStateService.StatRunsForDetail == 20) ? 'selected' : ''">
             20
         </mat-button-toggle>
         <mat-button-toggle (click)="SetStatRunsForDetail(25)"
-            [ngClass]="(AppState.StatRunsForDetail == 25) ? 'selected' : ''">
+            [ngClass]="(appStateService.StatRunsForDetail == 25) ? 'selected' : ''">
             25
         </mat-button-toggle>
         <mat-button-toggle (click)="SetStatRunsForDetail(30)"
-            [ngClass]="(AppState.StatRunsForDetail == 30) ? 'selected' : ''">
+            [ngClass]="(appStateService.StatRunsForDetail == 30) ? 'selected' : ''">
             30
         </mat-button-toggle>
         <mat-button-toggle (click)="SetStatRunsForDetail(35)"
-            [ngClass]="(AppState.StatRunsForDetail == 35) ? 'selected' : ''">
+            [ngClass]="(appStateService.StatRunsForDetail == 35) ? 'selected' : ''">
             35
         </mat-button-toggle>
         <mat-button-toggle (click)="SetStatRunsForDetail(40)"
-            [ngClass]="(AppState.StatRunsForDetail == 40) ? 'selected' : ''">
+            [ngClass]="(appStateService.StatRunsForDetail == 40) ? 'selected' : ''">
             40
         </mat-button-toggle>
     </mat-button-toggle-group>
@@ -37,23 +37,23 @@
 </mat-list>
 
 <mat-list *ngFor="let tvItemModel of TVItemModelList; let i = index">
-    <app-tvitem-menu [TVItemModel]="tvItemModel" [AppState]="AppState">
+    <app-tvitem-menu [TVItemModel]="tvItemModel" >
     </app-tvitem-menu>
 
-    <app-mwqm-site-tvitem-list-item-special [TVItemModel]="tvItemModel" [Index]="i + 1" [AppState]="AppState"
+    <app-mwqm-site-tvitem-list-item-special [TVItemModel]="tvItemModel" [Index]="i + 1" 
         [StatMWQMSite]="webMWQMSamplesService.GetMWQMSiteDetail(tvItemModel)">
     </app-mwqm-site-tvitem-list-item-special>
 
     <app-mwqm-site-item-view *ngIf="showTVItemService.TVItemVisible(tvItemModel)"
-        [TVItemModel]="tvItemModel" [AppState]="AppState">
+        [TVItemModel]="tvItemModel" >
     </app-mwqm-site-item-view>
 
-    <app-mwqm-site-item-edit *ngIf="AppState.EditVisible"
-        [TVItemModel]="tvItemModel" [AppState]="AppState">
+    <app-mwqm-site-item-edit *ngIf="appStateService.EditVisible"
+        [TVItemModel]="tvItemModel" >
     </app-mwqm-site-item-edit>
 
-    <app-mwqm-site-tvitem-list-detail *ngIf="appStateService.AppState$?.getValue()?.DetailVisible"
-        [TVItemModel]="tvItemModel" [AppState]="AppState"
+    <app-mwqm-site-tvitem-list-detail *ngIf="appStateService.DetailVisible"
+        [TVItemModel]="tvItemModel" 
         [StatMWQMSite]="webMWQMSamplesService.GetMWQMSiteDetail(tvItemModel)">
     </app-mwqm-site-tvitem-list-detail>
 </mat-list>

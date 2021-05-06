@@ -1,13 +1,11 @@
-import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AppStateService } from 'src/app/services/app-state.service';
-import { AppState } from 'src/app/models/AppState.model';
 
 @Component({
   selector: 'app-error',
   templateUrl: './error.component.html',
-  styleUrls: ['./error.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./error.component.css']
 })
 export class ErrorComponent implements OnInit, OnDestroy {
   @Input() Error: HttpErrorResponse;
@@ -22,6 +20,6 @@ export class ErrorComponent implements OnInit, OnDestroy {
   }
 
   ClearErrorMessage() {
-    this.appStateService.UpdateAppState(<AppState>{ Error: null });
+    this.appStateService.Error = null;
   }
 }

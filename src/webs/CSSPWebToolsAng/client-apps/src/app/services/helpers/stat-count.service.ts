@@ -10,14 +10,14 @@ export class StatCountService {
   constructor() {
   }
 
-  GetStatCount(tvItemStatMapModel: TVItemModel, tvType?: TVTypeEnum): string {
+  GetStatCount(tvItemModel: TVItemModel, tvType?: TVTypeEnum): string {
     let count = 0;
-    if (tvItemStatMapModel) {
+    if (tvItemModel) {
       if (tvType == null) { 
-        tvItemStatMapModel.TVItemStatList.filter((c) => { count += c.ChildCount });
+        tvItemModel.TVItemStatList.filter((c) => { count += c.ChildCount });
       }
       else {
-        let tvItemStat = tvItemStatMapModel.TVItemStatList.filter((c) => { return c.TVType == tvType });
+        let tvItemStat = tvItemModel.TVItemStatList.filter((c) => { return c.TVType == tvType });
         if (tvItemStat.length > 0) {
           count = tvItemStat[0].ChildCount;
         }

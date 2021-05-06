@@ -1,6 +1,6 @@
-<mat-list-item>
+<!-- <mat-list-item>
     <span mat-line>
-        <app-tvfile-menu [TVFileModel]="TVFileModel" [AppState]="AppState">
+        <app-tvfile-menu [TVFileModel]="TVFileModel" >
         </app-tvfile-menu>
 
         <button mat-button (click)="download(TVFileModel)">
@@ -8,9 +8,9 @@
             <span>&nbsp;&nbsp;</span>
             <span>{{ Index }} - {{ TVFileModel.TVFile.ServerFileName }} </span>
             <span>| {{ TVFileModel.TVFile.FileSize_kb }} </span>
-            <span>{{ appLanguageService.AppLanguage.KB[appStateService.AppState$?.getValue().Language] }} | </span>
+            <span>{{ appLanguageService.KB[appLanguageService.LangID] }} | </span>
             <span>{{ dateFormatService.GetFileCreateDate(TVFileModel) }}</span>
-            <app-last-udpate-tv-file-model *ngIf="appStateService.AppState$?.getValue()?.LastUpdateVisible"
+            <app-last-udpate-tv-file-model *ngIf="appStateService.LastUpdateVisible"
                 [TVFileModel]="TVFileModel"></app-last-udpate-tv-file-model>
         </button>
     </span>
@@ -19,16 +19,16 @@
         </mat-progress-bar>
     </span>
 
-</mat-list-item>
+</mat-list-item> -->
 
 <ng-container *ngIf="showTVFileService.TVFileVisible(TVFileModel)">
-    <app-file-list-item-view *ngIf="!AppState.EditVisible" [TVFileModel]="TVFileModel"
-        [AppState]="AppState">
+    <app-file-list-item-view *ngIf="!appStateService.EditVisible" [TVFileModel]="TVFileModel"
+        >
     </app-file-list-item-view>
 
-    <app-file-list-item-edit *ngIf="AppState.EditVisible" [TVFileModel]="TVFileModel" [AppState]="AppState">
+    <app-file-list-item-edit *ngIf="appStateService.EditVisible" [TVFileModel]="TVFileModel" >
     </app-file-list-item-edit>
 </ng-container>
 
-<app-file-list-item-detail [AppState]="AppState" *ngIf="AppState.DetailVisible" [TVFileModel]="TVFileModel">
+<app-file-list-item-detail  *ngIf="appStateService.DetailVisible" [TVFileModel]="TVFileModel">
 </app-file-list-item-detail>

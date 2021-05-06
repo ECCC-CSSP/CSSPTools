@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
-import { AppStateService } from 'src/app/services/app-state.service';
 import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model';
 import { PredicateAscByService } from 'src/app/services/helpers/predicate-asc-by.service';
 import { TVFileID_ServerFileName_Sort } from 'src/app/models/TVFileID_ServerFileName_Sort.model';
 import { FilePurposeEnum_GetOrderedText } from 'src/app/enums/generated/FilePurposeEnum';
 import { EnumIDAndText } from 'src/app/models/generated/helper/EnumIDAndText.model';
+import { AppLanguageService } from '../app-language.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StructureTVFileListService {
-  constructor(private appStateService: AppStateService,
+  constructor(private appLanguageService: AppLanguageService,
     private predicateAscByService: PredicateAscByService) {
   }
 
@@ -22,7 +22,7 @@ export class StructureTVFileListService {
     let arrFile2: TVFileID_ServerFileName_Sort[] = [];
     let sortable: TVFileID_ServerFileName_Sort[] = [];
 
-    let enumIDAndTextList: EnumIDAndText[] = FilePurposeEnum_GetOrderedText(this.appStateService);
+    let enumIDAndTextList: EnumIDAndText[] = FilePurposeEnum_GetOrderedText(this.appLanguageService);
 
     for (let i = 0; i < enumIDAndTextList.length; i++) {
       let tvFileModelList: TVFileModel[] = [];

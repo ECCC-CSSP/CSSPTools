@@ -5,7 +5,7 @@
  *
  */
 
-import { AppStateService } from 'src/app/services/app-state.service';
+import { AppLanguageService } from 'src/app/services/app-language.service';
 import { EnumIDAndText } from 'src/app/models/generated/helper/EnumIDAndText.model';
 import { LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 
@@ -96,9 +96,9 @@ export function GetReportTreeNodeTypeEnum(): typeof ReportTreeNodeTypeEnum
   return ReportTreeNodeTypeEnum;
 }
 
-export function ReportTreeNodeTypeEnum_GetOrderedText(appStateService: AppStateService): EnumIDAndText[] {
+export function ReportTreeNodeTypeEnum_GetOrderedText(appLanguageService: AppLanguageService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if (appStateService.AppState$?.getValue().Language == LanguageEnum.fr) {
+    if (appLanguageService.Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'ReportRootType' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'ReportCountryType' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'ReportProvinceType' });
@@ -264,9 +264,9 @@ export function ReportTreeNodeTypeEnum_GetOrderedText(appStateService: AppStateS
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function ReportTreeNodeTypeEnum_GetIDText(enumID: number, appStateService: AppStateService): string {
+export function ReportTreeNodeTypeEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
     let addressTypeEnunText: string;
-    ReportTreeNodeTypeEnum_GetOrderedText(appStateService).forEach(e => {
+    ReportTreeNodeTypeEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

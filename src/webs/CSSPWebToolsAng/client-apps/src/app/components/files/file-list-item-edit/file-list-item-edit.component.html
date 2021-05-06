@@ -1,9 +1,9 @@
 <blockquote>
-    <span *ngIf="(appStateService.AppState$ | async).Working">
+    <span *ngIf="appStateService.Working">
         <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     </span>
-    <p class="loading-status" *ngIf="(appStateService.AppState$ | async).Status">
-        {{ appStateService.AppState$?.getValue()?.Status }}
+    <p class="loading-status" *ngIf="appStateService.Status">
+        {{ appStateService.Status }}
     </p>
 
     <p style="background-color: darkgoldenrod;">This is the file edit component</p>

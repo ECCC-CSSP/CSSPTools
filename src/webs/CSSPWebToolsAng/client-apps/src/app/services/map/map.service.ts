@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { MapInfoDrawTypeEnum } from 'src/app/enums/generated/MapInfoDrawTypeEnum';
-import { AppLoaded } from 'src/app/models/AppLoaded.model';
-import { AppState } from 'src/app/models/AppState.model';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
@@ -25,107 +23,103 @@ export class MapService {
     private mapHelperService: MapHelperService) {
   }
 
-  MapMarkerSaveChanges()
-  {
+  MapMarkerSaveChanges() {
     let coordText: string = (<HTMLInputElement>document.getElementById('ChangedLatLng')).value;
     let lat: number = parseFloat(coordText.substring(0, coordText.indexOf(' ')));
     let lng: number = parseFloat(coordText.substring(coordText.indexOf(' ')));
-    alert(`${ this.appStateService.AppState$.getValue()?.MarkerTVItemID } ||| ${ this.appStateService.AppState$.getValue()?.MarkerMapInfoID } ||| ${ lat } ${ lng }`);
+    alert(`${this.appStateService?.MarkerTVItemID} ||| ${this.appStateService?.MarkerMapInfoID} ||| ${lat} ${lng}`);
 
-    this.appStateService.UpdateAppState(<AppState>{ MarkerLabel: '', EditMapChanged: false, MarkerMapInfoID: 0, MarkerDragStartPos: null, MarkerDragEndPos: null });
+    this.appStateService.MarkerLabel = '';
+    this.appStateService.EditMapChanged = false;
+    this.appStateService.MarkerMapInfoID = 0;
+    this.appStateService.MarkerDragStartPos = null;
+    this.appStateService.MarkerDragEndPos = null;
   }
 
   ClearMap() {
-    let length: number = this.appLoadedService.AppLoaded$.getValue()?.GoogleCrossPolylineListMVC?.getLength();
+    let length: number = this.appLoadedService.GoogleCrossPolylineListMVC?.getLength();
     for (let i = 0; i < length; i++) {
-      this.appLoadedService.AppLoaded$.getValue().GoogleCrossPolylineListMVC.getAt(i).setMap(null);
+      this.appLoadedService.GoogleCrossPolylineListMVC.getAt(i).setMap(null);
     }
 
-    length = this.appLoadedService.AppLoaded$.getValue()?.GoogleMarkerListMVC?.getLength();
+    length = this.appLoadedService.GoogleMarkerListMVC?.getLength();
     for (let i = 0; i < length; i++) {
-      this.appLoadedService.AppLoaded$.getValue().GoogleMarkerListMVC.getAt(i).setMap(null);
+      this.appLoadedService.GoogleMarkerListMVC.getAt(i).setMap(null);
     }
 
-    length = this.appLoadedService.AppLoaded$.getValue()?.GooglePolygonListMVC?.getLength();
+    length = this.appLoadedService.GooglePolygonListMVC?.getLength();
     for (let i = 0; i < length; i++) {
-      this.appLoadedService.AppLoaded$.getValue().GooglePolygonListMVC.getAt(i).setMap(null);
+      this.appLoadedService.GooglePolygonListMVC.getAt(i).setMap(null);
     }
 
-    length = this.appLoadedService.AppLoaded$.getValue()?.GooglePolylineListMVC?.getLength();
+    length = this.appLoadedService.GooglePolylineListMVC?.getLength();
     for (let i = 0; i < length; i++) {
-      this.appLoadedService.AppLoaded$.getValue().GooglePolylineListMVC.getAt(i).setMap(null);
+      this.appLoadedService.GooglePolylineListMVC.getAt(i).setMap(null);
     }
 
-    this.appLoadedService.AppLoaded$.getValue()?.GoogleMarkerListMVC?.clear();
-    this.appLoadedService.AppLoaded$.getValue()?.GooglePolygonListMVC?.clear();
-    this.appLoadedService.AppLoaded$.getValue()?.GooglePolylineListMVC?.clear();
+    this.appLoadedService.GoogleMarkerListMVC?.clear();
+    this.appLoadedService.GooglePolygonListMVC?.clear();
+    this.appLoadedService.GooglePolylineListMVC?.clear();
 
-    this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
-      GoogleMarkerListMVC: new google.maps.MVCArray<google.maps.Marker>([]),
-      GooglePolygonListMVC: new google.maps.MVCArray<google.maps.Polygon>([]),
-      GooglePolylineListMVC: new google.maps.MVCArray<google.maps.Polyline>([]),
-    });
+    this.appLoadedService.GoogleMarkerListMVC = new google.maps.MVCArray<google.maps.Marker>([]);
+    this.appLoadedService.GooglePolygonListMVC = new google.maps.MVCArray<google.maps.Polygon>([]);
+    this.appLoadedService.GooglePolylineListMVC = new google.maps.MVCArray<google.maps.Polyline>([]);
   }
 
-  DrawObjects(tvItemStatMapModelList: TVItemModel[]) {
-    this.mapMarkersService.DrawMarkers(tvItemStatMapModelList);
-    this.mapPolygonsService.DrawPolygons(tvItemStatMapModelList);
-    this.mapPolylinesService.DrawPolylines(tvItemStatMapModelList);
+  DrawObjects(tvItemModelList: TVItemModel[]) {
+    this.mapMarkersService.DrawMarkers(tvItemModelList);
+    this.mapPolygonsService.DrawPolygons(tvItemModelList);
+    this.mapPolylinesService.DrawPolylines(tvItemModelList);
     this.mapHelperService.FitBounds();
   }
 
   SetupMap(mapElement: any) {
-    this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
-      Map: new google.maps.Map(
-        mapElement.nativeElement,
-        {
-          center: new google.maps.LatLng(46.291624, -64.722614),
-          zoom: 10,
-          mapTypeId: google.maps.MapTypeId.HYBRID,
-        }
-      ),
-      GoogleCrossPolylineListMVC: new google.maps.MVCArray<google.maps.Polyline>([]),
-      GoogleMarkerListMVC: new google.maps.MVCArray<google.maps.Marker>([]),
-      GooglePolygonListMVC: new google.maps.MVCArray<google.maps.Polygon>([]),
-      GooglePolylineListMVC: new google.maps.MVCArray<google.maps.Polyline>([]),
-      MarkerOriginal: null,
-      MarkerChanged: null,
-    });
+    this.appLoadedService.Map = new google.maps.Map(
+      mapElement.nativeElement,
+      {
+        center: new google.maps.LatLng(46.291624, -64.722614),
+        zoom: 10,
+        mapTypeId: google.maps.MapTypeId.HYBRID,
+      }
+    );
+    this.appLoadedService.GoogleCrossPolylineListMVC = new google.maps.MVCArray<google.maps.Polyline>([]);
+    this.appLoadedService.GoogleMarkerListMVC = new google.maps.MVCArray<google.maps.Marker>([]);
+    this.appLoadedService.GooglePolygonListMVC = new google.maps.MVCArray<google.maps.Polygon>([]);
+    this.appLoadedService.GooglePolylineListMVC = new google.maps.MVCArray<google.maps.Polyline>([]);
+    this.appLoadedService.MarkerOriginal = null;
+    this.appLoadedService.MarkerChanged = null;
 
-    this.appLoadedService.AppLoaded$.getValue().Map.controls[google.maps.ControlPosition.TOP_CENTER].push(document.getElementById("MapTopCenterID"));
+    this.appLoadedService.Map.controls[google.maps.ControlPosition.TOP_CENTER].push(document.getElementById("MapTopCenterID"));
 
-    google.maps.event.addListener(this.appLoadedService.AppLoaded$.getValue().Map, "mousemove", (evt: google.maps.MouseEvent) => {
-      if (!this.appStateService.AppState$.getValue().EditMapChanged) {
+    google.maps.event.addListener(this.appLoadedService.Map, "mousemove", (evt: google.maps.MouseEvent) => {
+      if (!this.appStateService.EditMapChanged) {
         (<HTMLInputElement>document.getElementById("CurrentLatLng")).value = (evt.latLng.lat().toString().substring(0, 8) +
           ' ' + evt.latLng.lng().toString().substring(0, 8));
       }
-      else{
-        (<HTMLInputElement>document.getElementById("CurrentLatLng")).value = (this.appStateService.AppState$.getValue().MarkerDragStartPos.lat().toFixed(6) +
-        ' ' + this.appStateService.AppState$.getValue().MarkerDragStartPos.lng().toFixed(6));
+      else {
+        (<HTMLInputElement>document.getElementById("CurrentLatLng")).value = (this.appStateService.MarkerDragStartPos.lat().toFixed(6) +
+          ' ' + this.appStateService.MarkerDragStartPos.lng().toFixed(6));
       }
     });
-
-
-
   }
 
-  ShowItem(tvItemStatMapModel: TVItemModel, event: Event) {
-    let length: number = this.appLoadedService.AppLoaded$.getValue().GoogleCrossPolylineListMVC.getLength();
+  ShowItem(tvItemModel: TVItemModel, event: Event) {
+    let length: number = this.appLoadedService.GoogleCrossPolylineListMVC.getLength();
     for (let i = 0; i < length; i++) {
-      this.appLoadedService.AppLoaded$.getValue().GoogleCrossPolylineListMVC.getAt(i).setMap(null);
+      this.appLoadedService.GoogleCrossPolylineListMVC.getAt(i).setMap(null);
     }
 
     let CurrentPoint: google.maps.LatLng;
 
-    length = tvItemStatMapModel.MapInfoModelList.length;
+    length = tvItemModel.MapInfoModelList.length;
     for (let i = 0; i < length; i++) {
-      if (tvItemStatMapModel.MapInfoModelList[i].MapInfo.MapInfoDrawType == MapInfoDrawTypeEnum.Point) {
-        CurrentPoint = new google.maps.LatLng(tvItemStatMapModel.MapInfoModelList[i].MapInfoPointList[0].Lat, tvItemStatMapModel.MapInfoModelList[i].MapInfoPointList[0].Lng);
+      if (tvItemModel.MapInfoModelList[i].MapInfo.MapInfoDrawType == MapInfoDrawTypeEnum.Point) {
+        CurrentPoint = new google.maps.LatLng(tvItemModel.MapInfoModelList[i].MapInfoPointList[0].Lat, tvItemModel.MapInfoModelList[i].MapInfoPointList[0].Lng);
         break;
       }
     }
 
-    let CurrentBound: google.maps.LatLngBounds = this.appLoadedService.AppLoaded$.getValue().Map.getBounds()
+    let CurrentBound: google.maps.LatLngBounds = this.appLoadedService.Map.getBounds()
     let sw = CurrentBound.getSouthWest();
     let ne = CurrentBound.getNorthEast();
 
@@ -138,11 +132,11 @@ export class MapService {
       strokeColor: '#FCF',
       strokeOpacity: 0.5,
       strokeWeight: 2,
-      map: this.appLoadedService.AppLoaded$.getValue().Map,
+      map: this.appLoadedService.Map,
       zIndex: 200,
     });
 
-    this.appLoadedService.AppLoaded$.getValue().GoogleCrossPolylineListMVC.push(polyl1);
+    this.appLoadedService.GoogleCrossPolylineListMVC.push(polyl1);
     let CoordList2 = [];
     CoordList2.push(new google.maps.LatLng(ne.lat(), sw.lng()));
     CoordList2.push(new google.maps.LatLng(CurrentPoint.lat(), CurrentPoint.lng()));
@@ -152,11 +146,11 @@ export class MapService {
       strokeColor: '#FCF',
       strokeOpacity: 0.5,
       strokeWeight: 2,
-      map: this.appLoadedService.AppLoaded$.getValue().Map,
+      map: this.appLoadedService.Map,
       zIndex: 200,
     });
 
-    this.appLoadedService.AppLoaded$.getValue().GoogleCrossPolylineListMVC.push(polyl2);
+    this.appLoadedService.GoogleCrossPolylineListMVC.push(polyl2);
   }
 
 }

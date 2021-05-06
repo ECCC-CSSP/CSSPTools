@@ -1,9 +1,9 @@
 <blockquote *ngIf="MWQMRunModelSiteAndSampleModel">
     <strong>{{
-        appLanguageService.AppLanguage.TVItemListDetailMWQMRunDetailPrecipitations[appStateService.AppState$?.getValue()?.Language]
+        appLanguageService.TVItemListDetailMWQMRunDetailPrecipitations[appLanguageService.LangID]
         }} </strong>
     <span> (mm) : {{
-        appLanguageService.AppLanguage.TVItemListDetailMWQMRunDetailDay[appStateService.AppState$?.getValue()?.Language]
+        appLanguageService.TVItemListDetailMWQMRunDetailDay[appLanguageService.LangID]
         }}
     </span>
     <span>
@@ -54,7 +54,7 @@
         <span *ngFor="let MWQMSiteModelAndSampleModel of MWQMRunModelSiteAndSampleModel?.MWQMSiteModelAndSampleModelList">
             <span class="{{ GetClassFromFCValue(MWQMSiteModelAndSampleModel?.MWQMSampleModel.MWQMSample?.FecCol_MPN_100ml) }}">
                 {{
-                    MWQMSiteModelAndSampleModel?.MWQMSiteModel?.TVItemModel?.TVItemLanguageList[appStateService.AppState$?.getValue()?.Language].TVText
+                    MWQMSiteModelAndSampleModel?.MWQMSiteModel?.TVItemModel?.TVItemLanguageList[appLanguageService.LangID].TVText
                 }}&nbsp;({{ MWQMSiteModelAndSampleModel?.MWQMSampleModel.MWQMSample?.FecCol_MPN_100ml }})
             </span>
         </span>

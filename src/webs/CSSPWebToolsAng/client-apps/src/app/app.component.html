@@ -1,5 +1,2 @@
-<span *ngIf="(appStateService.AppState$ | async).Working">
-</span>
-
-<app-home-item *ngIf="((appStateService.AppState$ | async)?.TopComponent == topComponentEnum.Home)"></app-home-item>
-<app-shell-item *ngIf="((appStateService.AppState$ | async)?.TopComponent == topComponentEnum.Shell)"></app-shell-item>
+<app-home-item *ngIf="(appStateService.TopComponent == topComponentEnum.Home)"></app-home-item>
+<app-shell-item *ngIf="(appStateService.TopComponent == topComponentEnum.Shell)"></app-shell-item>

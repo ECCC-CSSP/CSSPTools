@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { GetCountrySubComponentEnum } from 'src/app/enums/generated/CountrySubComponentEnum';
@@ -12,13 +12,15 @@ import { ComponentButtonSelectionService } from 'src/app/services/helpers/compon
 import { ComponentShowService } from 'src/app/services/helpers/component-show.service';
 import { GetSortOrderAngularEnum } from 'src/app/enums/generated/SortOrderAngularEnum';
 
+
 @Component({
   selector: 'app-country-item',
   templateUrl: './country-item.component.html',
-  styleUrls: ['./country-item.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./country-item.component.css']
 })
 export class CountryItemComponent implements OnInit, OnDestroy {
+
+  
   countrySubComponentEnum = GetCountrySubComponentEnum();
   tvTypeEnum = GetTVTypeEnum();
   ascDescEnum = GetAscDescEnum();
@@ -36,7 +38,7 @@ export class CountryItemComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.webCountryService.DoWebCountry(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
+    this.webCountryService.DoWebCountry(this.appStateService.CurrentTVItemID, true);
   }
 
   ngOnDestroy(): void {

@@ -11,9 +11,9 @@ export class ComponentDataLoadedService {
 
   DataLoadedWebAllAddresses(): boolean {
     let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllAddresses === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllAddresses).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebAllAddresses.constructor === Object)) {
+    if (this.appLoadedService.WebAllAddresses === undefined
+      || (Object.keys(this.appLoadedService.WebAllAddresses).length === 0
+        && this.appLoadedService.WebAllAddresses.constructor === Object)) {
       AllTrue = false;
     }
 
@@ -22,9 +22,9 @@ export class ComponentDataLoadedService {
 
   DataLoadedWebAllContacts(): boolean {
     let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllContacts === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllContacts).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebAllContacts.constructor === Object)) {
+    if (this.appLoadedService.WebAllContacts === undefined
+      || (Object.keys(this.appLoadedService.WebAllContacts).length === 0
+        && this.appLoadedService.WebAllContacts.constructor === Object)) {
       AllTrue = false;
     }
 
@@ -33,9 +33,9 @@ export class ComponentDataLoadedService {
 
   DataLoadedWebAllCountries(): boolean {
     let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllCountries === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllCountries).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebAllCountries.constructor === Object)) {
+    if (this.appLoadedService.WebAllCountries === undefined
+      || (Object.keys(this.appLoadedService.WebAllCountries).length === 0
+        && this.appLoadedService.WebAllCountries.constructor === Object)) {
       AllTrue = false;
     }
 
@@ -44,9 +44,9 @@ export class ComponentDataLoadedService {
 
   DataLoadedWebAllEmails(): boolean {
     let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllEmails === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllEmails).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebAllEmails.constructor === Object)) {
+    if (this.appLoadedService.WebAllEmails === undefined
+      || (Object.keys(this.appLoadedService.WebAllEmails).length === 0
+        && this.appLoadedService.WebAllEmails.constructor === Object)) {
       AllTrue = false;
     }
 
@@ -55,9 +55,9 @@ export class ComponentDataLoadedService {
 
   DataLoadedWebAllHelpDocs(): boolean {
     let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllHelpDocs === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllHelpDocs).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebAllHelpDocs.constructor === Object)) {
+    if (this.appLoadedService.WebAllHelpDocs === undefined
+      || (Object.keys(this.appLoadedService.WebAllHelpDocs).length === 0
+        && this.appLoadedService.WebAllHelpDocs.constructor === Object)) {
       AllTrue = false;
     }
 
@@ -66,9 +66,9 @@ export class ComponentDataLoadedService {
 
   DataLoadedWebAllMunicipalities(): boolean {
     let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllMunicipalities === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllMunicipalities).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebAllMunicipalities.constructor === Object)) {
+    if (this.appLoadedService.WebAllMunicipalities === undefined
+      || (Object.keys(this.appLoadedService.WebAllMunicipalities).length === 0
+        && this.appLoadedService.WebAllMunicipalities.constructor === Object)) {
       AllTrue = false;
     }
 
@@ -77,31 +77,31 @@ export class ComponentDataLoadedService {
 
   DataLoadedWebAllMWQMLookupMPNs(): boolean {
     let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllMWQMLookupMPNs === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllMWQMLookupMPNs).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebAllMWQMLookupMPNs.constructor === Object)) {
+    if (this.appLoadedService.WebAllMWQMLookupMPNs === undefined
+      || (Object.keys(this.appLoadedService.WebAllMWQMLookupMPNs).length === 0
+        && this.appLoadedService.WebAllMWQMLookupMPNs.constructor === Object)) {
       AllTrue = false;
     }
 
     return AllTrue;
   }
 
-  DataLoadedWebPolSourceGroupings(): boolean {
+  DataLoadedWebAllPolSourceGroupings(): boolean {
     let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceGroupings === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceGroupings).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceGroupings.constructor === Object)) {
+    if (this.appLoadedService.WebAllPolSourceGroupings === undefined
+      || (Object.keys(this.appLoadedService.WebAllPolSourceGroupings).length === 0
+        && this.appLoadedService.WebAllPolSourceGroupings.constructor === Object)) {
       AllTrue = false;
     }
 
     return AllTrue;
   }
 
-  DataLoadedWebPolSourceSiteEffectTerms(): boolean {
+  DataLoadedWebAllPolSourceSiteEffectTerms(): boolean {
     let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceSiteEffectTerms === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceSiteEffectTerms).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceSiteEffectTerms.constructor === Object)) {
+    if (this.appLoadedService.WebAllPolSourceSiteEffectTerms === undefined
+      || (Object.keys(this.appLoadedService.WebAllPolSourceSiteEffectTerms).length === 0
+        && this.appLoadedService.WebAllPolSourceSiteEffectTerms.constructor === Object)) {
       AllTrue = false;
     }
 
@@ -110,9 +110,9 @@ export class ComponentDataLoadedService {
 
   DataLoadedWebAllProvinces(): boolean {
     let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllProvinces === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllProvinces).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebAllProvinces.constructor === Object)) {
+    if (this.appLoadedService.WebAllProvinces === undefined
+      || (Object.keys(this.appLoadedService.WebAllProvinces).length === 0
+        && this.appLoadedService.WebAllProvinces.constructor === Object)) {
       AllTrue = false;
     }
 
@@ -121,9 +121,9 @@ export class ComponentDataLoadedService {
 
   DataLoadedWebAllReportTypes(): boolean {
     let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllReportTypes === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllReportTypes).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebAllReportTypes.constructor === Object)) {
+    if (this.appLoadedService.WebAllReportTypes === undefined
+      || (Object.keys(this.appLoadedService.WebAllReportTypes).length === 0
+        && this.appLoadedService.WebAllReportTypes.constructor === Object)) {
       AllTrue = false;
     }
 
@@ -132,9 +132,9 @@ export class ComponentDataLoadedService {
 
   DataLoadedWebAllTels(): boolean {
     let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllTels === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllTels).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebAllTels.constructor === Object)) {
+    if (this.appLoadedService.WebAllTels === undefined
+      || (Object.keys(this.appLoadedService.WebAllTels).length === 0
+        && this.appLoadedService.WebAllTels.constructor === Object)) {
       AllTrue = false;
     }
 
@@ -143,9 +143,9 @@ export class ComponentDataLoadedService {
 
   DataLoadedWebAllTideLocations(): boolean {
     let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllTideLocations === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllTideLocations).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebAllTideLocations.constructor === Object)) {
+    if (this.appLoadedService.WebAllTideLocations === undefined
+      || (Object.keys(this.appLoadedService.WebAllTideLocations).length === 0
+        && this.appLoadedService.WebAllTideLocations.constructor === Object)) {
       AllTrue = false;
     }
 
@@ -154,9 +154,9 @@ export class ComponentDataLoadedService {
 
   DataLoadedWebArea(): boolean {
     let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebArea === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebArea).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebArea.constructor === Object)) {
+    if (this.appLoadedService.WebArea === undefined
+      || (Object.keys(this.appLoadedService.WebArea).length === 0
+        && this.appLoadedService.WebArea.constructor === Object)) {
       AllTrue = false;
     }
 
@@ -165,9 +165,9 @@ export class ComponentDataLoadedService {
 
   DataLoadedWebClimateSites(): boolean {
     let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebClimateSites === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebClimateSites).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebClimateSites.constructor === Object)) {
+    if (this.appLoadedService.WebClimateSites === undefined
+      || (Object.keys(this.appLoadedService.WebClimateSites).length === 0
+        && this.appLoadedService.WebClimateSites.constructor === Object)) {
       AllTrue = false;
     }
 
@@ -176,9 +176,9 @@ export class ComponentDataLoadedService {
 
   DataLoadedWebCountry(): boolean {
     let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebCountry === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebCountry).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebCountry.constructor === Object)) {
+    if (this.appLoadedService.WebCountry === undefined
+      || (Object.keys(this.appLoadedService.WebCountry).length === 0
+        && this.appLoadedService.WebCountry.constructor === Object)) {
       AllTrue = false;
     }
 
@@ -187,9 +187,9 @@ export class ComponentDataLoadedService {
 
   DataLoadedWebDrogueRuns(): boolean {
     let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebDrogueRuns === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebDrogueRuns).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebDrogueRuns.constructor === Object)) {
+    if (this.appLoadedService.WebDrogueRuns === undefined
+      || (Object.keys(this.appLoadedService.WebDrogueRuns).length === 0
+        && this.appLoadedService.WebDrogueRuns.constructor === Object)) {
       AllTrue = false;
     }
 
@@ -198,9 +198,9 @@ export class ComponentDataLoadedService {
 
   DataLoadedWebHelpDocs(): boolean {
     let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebAllHelpDocs === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllHelpDocs).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebAllHelpDocs.constructor === Object)) {
+    if (this.appLoadedService.WebAllHelpDocs === undefined
+      || (Object.keys(this.appLoadedService.WebAllHelpDocs).length === 0
+        && this.appLoadedService.WebAllHelpDocs.constructor === Object)) {
       AllTrue = false;
     }
 
@@ -209,9 +209,9 @@ export class ComponentDataLoadedService {
 
   DataLoadedWebHydrometricSites(): boolean {
     let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebHydrometricSites === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebHydrometricSites).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebHydrometricSites.constructor === Object)) {
+    if (this.appLoadedService.WebHydrometricSites === undefined
+      || (Object.keys(this.appLoadedService.WebHydrometricSites).length === 0
+        && this.appLoadedService.WebHydrometricSites.constructor === Object)) {
       AllTrue = false;
     }
 
@@ -220,9 +220,9 @@ export class ComponentDataLoadedService {
 
   DataLoadedWebLabSheets(): boolean {
     let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebLabSheets === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebLabSheets).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebLabSheets.constructor === Object)) {
+    if (this.appLoadedService.WebLabSheets === undefined
+      || (Object.keys(this.appLoadedService.WebLabSheets).length === 0
+        && this.appLoadedService.WebLabSheets.constructor === Object)) {
       AllTrue = false;
     }
 
@@ -231,9 +231,9 @@ export class ComponentDataLoadedService {
 
   DataLoadedWebMikeScenarios(): boolean {
     let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebMikeScenarios === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebMikeScenarios).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebMikeScenarios.constructor === Object)) {
+    if (this.appLoadedService.WebMikeScenarios === undefined
+      || (Object.keys(this.appLoadedService.WebMikeScenarios).length === 0
+        && this.appLoadedService.WebMikeScenarios.constructor === Object)) {
       AllTrue = false;
     }
 
@@ -242,9 +242,9 @@ export class ComponentDataLoadedService {
 
   DataLoadedWebMunicipality(): boolean {
     let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebMunicipality === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebMunicipality).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebMunicipality.constructor === Object)) {
+    if (this.appLoadedService.WebMunicipality === undefined
+      || (Object.keys(this.appLoadedService.WebMunicipality).length === 0
+        && this.appLoadedService.WebMunicipality.constructor === Object)) {
       AllTrue = false;
     }
 
@@ -253,9 +253,9 @@ export class ComponentDataLoadedService {
 
   DataLoadedWebMWQMRuns(): boolean {
     let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebMWQMRuns === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebMWQMRuns).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebMWQMRuns.constructor === Object)) {
+    if (this.appLoadedService.WebMWQMRuns === undefined
+      || (Object.keys(this.appLoadedService.WebMWQMRuns).length === 0
+        && this.appLoadedService.WebMWQMRuns.constructor === Object)) {
       AllTrue = false;
     }
 
@@ -264,9 +264,9 @@ export class ComponentDataLoadedService {
 
   DataLoadedWebMWQMSamples(): boolean {
     let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue().WebMWQMSamples === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue().WebMWQMSamples).length === 0
-        && this.appLoadedService.AppLoaded$.getValue().WebMWQMSamples.constructor === Object)) {
+    if (this.appLoadedService.WebMWQMSamples === undefined
+      || (Object.keys(this.appLoadedService.WebMWQMSamples).length === 0
+        && this.appLoadedService.WebMWQMSamples.constructor === Object)) {
       AllTrue = false;
     }
 
@@ -275,9 +275,9 @@ export class ComponentDataLoadedService {
 
   DataLoadedWebMWQMSites(): boolean {
     let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebMWQMSites === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebMWQMSites).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebMWQMSites.constructor === Object)) {
+    if (this.appLoadedService.WebMWQMSites === undefined
+      || (Object.keys(this.appLoadedService.WebMWQMSites).length === 0
+        && this.appLoadedService.WebMWQMSites.constructor === Object)) {
       AllTrue = false;
     }
 
@@ -286,9 +286,9 @@ export class ComponentDataLoadedService {
 
   DataLoadedWebPolSourceSites(): boolean {
     let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebPolSourceSites === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebPolSourceSites).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebPolSourceSites.constructor === Object)) {
+    if (this.appLoadedService.WebPolSourceSites === undefined
+      || (Object.keys(this.appLoadedService.WebPolSourceSites).length === 0
+        && this.appLoadedService.WebPolSourceSites.constructor === Object)) {
       AllTrue = false;
     }
 
@@ -298,9 +298,9 @@ export class ComponentDataLoadedService {
 
   DataLoadedWebProvince(): boolean {
     let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebProvince === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebProvince).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebProvince.constructor === Object)) {
+    if (this.appLoadedService.WebProvince === undefined
+      || (Object.keys(this.appLoadedService.WebProvince).length === 0
+        && this.appLoadedService.WebProvince.constructor === Object)) {
       AllTrue = false;
     }
 
@@ -309,70 +309,20 @@ export class ComponentDataLoadedService {
 
   DataLoadedWebRoot(): boolean {
     let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebRoot === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebRoot).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebRoot.constructor === Object)) {
+    if (this.appLoadedService.WebRoot === undefined
+      || (Object.keys(this.appLoadedService.WebRoot).length === 0
+        && this.appLoadedService.WebRoot.constructor === Object)) {
       AllTrue = false;
     }
-    // if (this.appLoadedService.AppLoaded$.getValue()?.WebAllContacts === undefined
-    //   || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllContacts).length === 0
-    //     && this.appLoadedService.AppLoaded$.getValue()?.WebAllContacts.constructor === Object)) {
-    //   AllTrue = false;
-    // }
-    // if (this.appLoadedService.AppLoaded$.getValue()?.WebAllCountries === undefined
-    //   || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllCountries).length === 0
-    //     && this.appLoadedService.AppLoaded$.getValue()?.WebAllCountries.constructor === Object)) {
-    //   AllTrue = false;
-    // }
-    // if (this.appLoadedService.AppLoaded$.getValue()?.WebAllProvinces === undefined
-    //   || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllProvinces).length === 0
-    //     && this.appLoadedService.AppLoaded$.getValue()?.WebAllProvinces.constructor === Object)) {
-    //   AllTrue = false;
-    // }
-    // if (this.appLoadedService.AppLoaded$.getValue()?.WebAllMunicipalities === undefined
-    //   || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllMunicipalities).length === 0
-    //     && this.appLoadedService.AppLoaded$.getValue()?.WebAllMunicipalities.constructor === Object)) {
-    //   AllTrue = false;
-    // }
-    // if (this.appLoadedService.AppLoaded$.getValue()?.WebAllHelpDocs === undefined
-    //   || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllHelpDocs).length === 0
-    //     && this.appLoadedService.AppLoaded$.getValue()?.WebAllHelpDocs.constructor === Object)) {
-    //   AllTrue = false;
-    // }
-    // if (this.appLoadedService.AppLoaded$.getValue()?.WebAllMWQMLookupMPNs === undefined
-    //   || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllMWQMLookupMPNs).length === 0
-    //     && this.appLoadedService.AppLoaded$.getValue()?.WebAllMWQMLookupMPNs.constructor === Object)) {
-    //   AllTrue = false;
-    // }
-    // if (this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceGroupings === undefined
-    //   || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceGroupings).length === 0
-    //     && this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceGroupings.constructor === Object)) {
-    //   AllTrue = false;
-    // }
-    // if (this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceSiteEffectTerms === undefined
-    //   || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceSiteEffectTerms).length === 0
-    //     && this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceSiteEffectTerms.constructor === Object)) {
-    //   AllTrue == false;
-    // }
-    // if (this.appLoadedService.AppLoaded$.getValue()?.WebAllReportTypes === undefined
-    //   || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllReportTypes).length === 0
-    //     && this.appLoadedService.AppLoaded$.getValue()?.WebAllReportTypes.constructor === Object)) {
-    //   AllTrue = false;
-    // }
-    // if (this.appLoadedService.AppLoaded$.getValue()?.WebAllTideLocations === undefined
-    //   || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebAllTideLocations).length === 0
-    //     && this.appLoadedService.AppLoaded$.getValue()?.WebAllTideLocations.constructor === Object)) {
-    //   AllTrue == false;
-    // }
 
     return AllTrue;
   }
 
   DataLoadedWebSector(): boolean {
     let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebSector === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebSector).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebSector.constructor === Object)) {
+    if (this.appLoadedService.WebSector === undefined
+      || (Object.keys(this.appLoadedService.WebSector).length === 0
+        && this.appLoadedService.WebSector.constructor === Object)) {
       AllTrue = false;
     }
 
@@ -381,40 +331,20 @@ export class ComponentDataLoadedService {
 
   DataLoadedWebSubsector(): boolean {
     let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebSubsector === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebSubsector).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebSubsector.constructor === Object)) {
+    if (this.appLoadedService.WebSubsector === undefined
+      || (Object.keys(this.appLoadedService.WebSubsector).length === 0
+        && this.appLoadedService.WebSubsector.constructor === Object)) {
       AllTrue = false;
     }
-    // if (this.appLoadedService.AppLoaded$.getValue().WebMWQMSite === undefined
-    //   || (Object.keys(this.appLoadedService.AppLoaded$.getValue().WebMWQMSite).length === 0
-    //     && this.appLoadedService.AppLoaded$.getValue().WebMWQMSite.constructor === Object)) {
-    //   AllTrue = false;
-    // }
-    // if (this.appLoadedService.AppLoaded$.getValue().WebMWQMRun === undefined
-    //   || (Object.keys(this.appLoadedService.AppLoaded$.getValue().WebMWQMRun).length === 0
-    //     && this.appLoadedService.AppLoaded$.getValue().WebMWQMRun.constructor === Object)) {
-    //   AllTrue = false;
-    // }
-    // if (this.appLoadedService.AppLoaded$.getValue().WebPolSourceSite === undefined
-    //   || (Object.keys(this.appLoadedService.AppLoaded$.getValue().WebPolSourceSite).length === 0
-    //     && this.appLoadedService.AppLoaded$.getValue().WebPolSourceSite.constructor === Object)) {
-    //   AllTrue = false;
-    // }
-    // if (this.appLoadedService.AppLoaded$.getValue().WebDrogueRun === undefined
-    //   || (Object.keys(this.appLoadedService.AppLoaded$.getValue().WebDrogueRun).length === 0
-    //     && this.appLoadedService.AppLoaded$.getValue().WebDrogueRun.constructor === Object)) {
-    //   AllTrue == false;
-    // }
 
     return AllTrue;
   }
 
   DataLoadedWebTideSites(): boolean {
     let AllTrue: boolean = true;
-    if (this.appLoadedService.AppLoaded$.getValue()?.WebTideSites === undefined
-      || (Object.keys(this.appLoadedService.AppLoaded$.getValue()?.WebTideSites).length === 0
-        && this.appLoadedService.AppLoaded$.getValue()?.WebTideSites.constructor === Object)) {
+    if (this.appLoadedService.WebTideSites === undefined
+      || (Object.keys(this.appLoadedService.WebTideSites).length === 0
+        && this.appLoadedService.WebTideSites.constructor === Object)) {
       AllTrue = false;
     }
 

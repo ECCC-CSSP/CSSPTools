@@ -5,7 +5,7 @@
  *
  */
 
-import { AppStateService } from 'src/app/services/app-state.service';
+import { AppLanguageService } from 'src/app/services/app-language.service';
 import { EnumIDAndText } from 'src/app/models/generated/helper/EnumIDAndText.model';
 import { LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 
@@ -28,9 +28,9 @@ export function GetSortOrderAngularEnum(): typeof SortOrderAngularEnum
   return SortOrderAngularEnum;
 }
 
-export function SortOrderAngularEnum_GetOrderedText(appStateService: AppStateService): EnumIDAndText[] {
+export function SortOrderAngularEnum_GetOrderedText(appLanguageService: AppLanguageService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if (appStateService.AppState$?.getValue().Language == LanguageEnum.fr) {
+    if (appLanguageService.Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'AreaSectors' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'CountryProvinces' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'MunicipalityMIKEScenarios' });
@@ -60,9 +60,9 @@ export function SortOrderAngularEnum_GetOrderedText(appStateService: AppStateSer
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function SortOrderAngularEnum_GetIDText(enumID: number, appStateService: AppStateService): string {
+export function SortOrderAngularEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
     let addressTypeEnunText: string;
-    SortOrderAngularEnum_GetOrderedText(appStateService).forEach(e => {
+    SortOrderAngularEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

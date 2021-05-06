@@ -1,8 +1,8 @@
-<app-file-upload [working]="appStateService.AppState$?.getValue()?.Working"></app-file-upload>
+<!-- <app-file-upload [working]="appStateService.Working"></app-file-upload> -->
 
 <div *ngFor="let TVFileModelList of TVFileModelListList">
     <mat-list *ngFor="let tvFileModel of TVFileModelList; let i = index">
         <h2 class="file-purpose" *ngIf="i == 0">{{ GetFilePurposeEnum_GetIDText(tvFileModel.TVFile.FilePurpose) }}</h2>
-        <app-file-list-item [Index]='(i + 1)' [AppState]="AppState" [TVFileModel]="tvFileModel"></app-file-list-item>
+        <app-file-list-item [Index]='(i + 1)'  [TVFileModel]="tvFileModel"></app-file-list-item>
     </mat-list>
 </div>

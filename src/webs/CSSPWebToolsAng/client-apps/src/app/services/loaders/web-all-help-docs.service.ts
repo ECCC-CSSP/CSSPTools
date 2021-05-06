@@ -2,9 +2,6 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { GetLanguageEnum, LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
-import { AppLoaded } from 'src/app/models/AppLoaded.model';
-import { AppState } from 'src/app/models/AppState.model';
 import { WebAllHelpDocs } from 'src/app/models/generated/web/WebAllHelpDocs.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
@@ -16,9 +13,9 @@ import { WebAllMunicipalitiesService } from 'src/app/services/loaders/web-all-mu
     providedIn: 'root'
 })
 export class WebAllHelpDocsService {
-    private DoOther: boolean;
+    private DoNext: boolean;
+    private ForceReload: boolean;
     private sub: Subscription;
-    LangID: number = this.appStateService.AppState$?.getValue()?.Language == LanguageEnum.fr ? 1 : 0;
 
     constructor(private httpClient: HttpClient,
         private appStateService: AppStateService,
@@ -28,65 +25,76 @@ export class WebAllHelpDocsService {
         private componentDataLoadedService: ComponentDataLoadedService) {
     }
 
-    DoWebAllHelpDocs(DoOther: boolean) {
-        this.DoOther = DoOther;
-    
+    DoWebAllHelpDocs(DoNext: boolean = true, ForceReload: boolean = true) {
+        this.DoNext = DoNext;
+        this.ForceReload = ForceReload;
+
         this.sub ? this.sub.unsubscribe() : null;
-    
-        if (this.appLoadedService.AppLoaded$.getValue()?.WebAllHelpDocs?.HelpDocList?.length > 0) {
-          this.KeepWebAllHelpDocs();
+
+        if (ForceReload) {
+            this.sub = this.GetWebAllHelpDocs().subscribe();
         }
         else {
-          this.sub = this.GetWebAllHelpDocs().subscribe();
+            if (this.componentDataLoadedService.DataLoadedWebAllEmails()) {
+                this.KeepWebAllHelpDocs();
+            }
+            else {
+                this.sub = this.GetWebAllHelpDocs().subscribe();
+            }
         }
-      }
-    
+    }
+
     private GetWebAllHelpDocs() {
-        let languageEnum = GetLanguageEnum();
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebAllHelpDocs: {} });
-        this.appStateService.UpdateAppState(<AppState>{
-            Status: `${ this.appLanguageService.AppLanguage.Loading[this.LangID]} - ${ WebAllHelpDocs }`,
-            Working: true
-        });
-        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebAllHelpDocs/0/1`;
+        this.appLoadedService.WebAllHelpDocs = <WebAllHelpDocs>{};
+
+        let NextText = this.DoNext ? `${this.appLanguageService.Next[this.appLanguageService.LangID]} - WebAllMunicipalities` : '';
+        let ForceReloadText = this.ForceReload ? `${this.appLanguageService.ForceReload[this.appLanguageService.LangID]}` : '';
+        this.appStateService.Status = `${this.appLanguageService.Loading[this.appLanguageService.LangID]} - WebAllHelpDocs - ${NextText} - ${ForceReloadText}`;
+        this.appStateService.Working = true;
+
+        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appLanguageService.Language}-CA/Read/WebAllHelpDocs`;
         return this.httpClient.get<WebAllHelpDocs>(url).pipe(
             map((x: any) => {
                 this.UpdateWebAllHelpDocs(x);
                 console.debug(x);
-                if (this.DoOther) {
+                if (this.DoNext) {
                     this.DoWebAllMunicipalities();
                 }
             }),
             catchError(e => of(e).pipe(map(e => {
-                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false, Error: <HttpErrorResponse>e });
+                this.appStateService.Status = ''
+                this.appStateService.Working = false
+                this.appStateService.Error = <HttpErrorResponse>e;
                 console.debug(e);
             })))
         );
     }
 
     private DoWebAllMunicipalities() {
-        this.webAllMunicipalitiesServices.DoWebAllMunicipalities(this.DoOther);
+        this.webAllMunicipalitiesServices.DoWebAllMunicipalities(this.DoNext);
     }
-    
+
     private KeepWebAllHelpDocs() {
-        this.UpdateWebAllHelpDocs(this.appLoadedService.AppLoaded$?.getValue()?.WebAllHelpDocs);
-        console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebAllHelpDocs);
-        if (this.DoOther) {
+        this.UpdateWebAllHelpDocs(this.appLoadedService.WebAllHelpDocs);
+        console.debug(this.appLoadedService.WebAllHelpDocs);
+        if (this.DoNext) {
             this.DoWebAllMunicipalities();
         }
     }
 
     private UpdateWebAllHelpDocs(x: WebAllHelpDocs) {
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebAllHelpDocs: x, });
+        this.appLoadedService.WebAllHelpDocs = x;
 
-        if (this.DoOther) {
+        if (this.DoNext) {
             if (this.componentDataLoadedService.DataLoadedWebRoot()) {
-                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
+                this.appStateService.Status = '';
+                this.appStateService.Working = false;
             }
         }
         else {
             if (this.componentDataLoadedService.DataLoadedWebAllHelpDocs()) {
-                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
+                this.appStateService.Status = '';
+                this.appStateService.Working = false;
             }
         }
     }

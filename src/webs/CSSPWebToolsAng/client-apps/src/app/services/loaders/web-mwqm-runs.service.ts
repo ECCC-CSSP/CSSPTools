@@ -2,15 +2,11 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { GetLanguageEnum, LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
-import { AppLoaded } from 'src/app/models/AppLoaded.model';
-import { AppState } from 'src/app/models/AppState.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { ComponentDataLoadedService } from 'src/app/services/helpers/component-data-loaded.service';
 import { HistoryService } from 'src/app/services/helpers/history.service';
-import { SortMWQMRunListService } from 'src/app/services/helpers/sort-mwqm-run-list-desc.service';
 import { WebPolSourceSitesService } from 'src/app/services/loaders/web-pol-source-sites.service';
 import { WebMWQMRuns } from 'src/app/models/generated/web/WebMWQMRuns.model';
 
@@ -19,86 +15,92 @@ import { WebMWQMRuns } from 'src/app/models/generated/web/WebMWQMRuns.model';
 })
 export class WebMWQMRunsService {
     private TVItemID: number;
-    private DoOther: boolean;
+    private DoNext: boolean;
+    private ForceReload: boolean;
     private sub: Subscription;
-    LangID: number = this.appStateService.AppState$?.getValue()?.Language == LanguageEnum.fr ? 1 : 0;
 
     constructor(private httpClient: HttpClient,
         private appStateService: AppStateService,
         private appLoadedService: AppLoadedService,
         private appLanguageService: AppLanguageService,
-        private sortMWQMRunListDescService: SortMWQMRunListService,
         private webPolSourceSitesService: WebPolSourceSitesService,
         private componentDataLoadedService: ComponentDataLoadedService,
         private historyService: HistoryService) {
     }
 
-    DoWebMWQMRuns(TVItemID: number, DoOther: boolean) {
+    DoWebMWQMRuns(TVItemID: number, DoNext: boolean = true, ForceReload: boolean = true) {
         this.TVItemID = TVItemID;
-        this.DoOther = DoOther;
+        this.DoNext = DoNext;
+        this.ForceReload = ForceReload;
 
         this.sub ? this.sub.unsubscribe() : null;
 
-        if (this.appLoadedService.AppLoaded$.getValue()?.WebMWQMRuns) {
-            this.KeepWebMWQMRuns();
+        if (ForceReload) {
+            this.sub = this.GetWebMWQMRuns().subscribe();
         }
         else {
-            this.sub = this.GetWebMWQMRuns().subscribe();
+            if (this.componentDataLoadedService.DataLoadedWebMWQMRuns()) {
+                this.KeepWebMWQMRuns();
+            }
+            else {
+                this.sub = this.GetWebMWQMRuns().subscribe();
+            }
         }
     }
 
     private GetWebMWQMRuns() {
-        let languageEnum = GetLanguageEnum();
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
-            WebMWQMRuns: {},
-        });
-        this.appStateService.UpdateAppState(<AppState>{
-            Status: `${ this.appLanguageService.AppLanguage.Loading[this.LangID]} - ${ WebMWQMRuns }`,
-            Working: true
-        });
-        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebMWQMRuns/${this.TVItemID}`;
+        this.appLoadedService.WebMWQMRuns = <WebMWQMRuns>{};
+
+        let NextText = this.DoNext ? `${this.appLanguageService.Next[this.appLanguageService.LangID]} - WebPolSourceSites` : '';
+        let ForceReloadText = this.ForceReload ? `${this.appLanguageService.ForceReload[this.appLanguageService.LangID]}` : '';
+        this.appStateService.Status = `${this.appLanguageService.Loading[this.appLanguageService.LangID]} - WebMWQMRuns - ${NextText} - ${ForceReloadText}`;
+        this.appStateService.Working = true;
+
+        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appLanguageService.LangID}-CA/Read/WebMWQMRuns/${this.TVItemID}`;
         return this.httpClient.get<WebMWQMRuns>(url).pipe(
             map((x: any) => {
                 this.UpdateWebMWQMRuns(x);
                 console.debug(x);
-                if (this.DoOther) {
+                if (this.DoNext) {
                     this.DoWebPolSourceSites();
                 }
             }),
             catchError(e => of(e).pipe(map(e => {
-                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false, Error: <HttpErrorResponse>e });
+                this.appStateService.Status = ''
+                this.appStateService.Working = false
+                this.appStateService.Error = <HttpErrorResponse>e;
                 console.debug(e);
             })))
         );
     }
 
     private DoWebPolSourceSites() {
-        this.webPolSourceSitesService.DoWebPolSourceSites(this.TVItemID, this.DoOther);
+        this.webPolSourceSitesService.DoWebPolSourceSites(this.TVItemID, this.DoNext);
     }
 
     private KeepWebMWQMRuns() {
-        this.UpdateWebMWQMRuns(this.appLoadedService.AppLoaded$?.getValue()?.WebMWQMRuns);
-        console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebMWQMRuns);
-        if (this.DoOther) {
+        this.UpdateWebMWQMRuns(this.appLoadedService.WebMWQMRuns);
+        console.debug(this.appLoadedService.WebMWQMRuns);
+        if (this.DoNext) {
             this.DoWebPolSourceSites();
         }
     }
 
     private UpdateWebMWQMRuns(x: WebMWQMRuns) {
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
-            WebMWQMRuns: x,
-        });
+        this.appLoadedService.WebMWQMRuns = x;
 
-        this.historyService.AddHistory(this.appLoadedService.AppLoaded$.getValue()?.WebMWQMRuns?.TVItemModel);
+        this.historyService.AddHistory(this.appLoadedService.WebMWQMRuns?.TVItemModel);
 
-        if (this.DoOther) {
+        if (this.DoNext) {
             if (this.componentDataLoadedService.DataLoadedWebSubsector()) {
-                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
+                this.appStateService.Status = '';
+                this.appStateService.Working = false;
             }
         }
         else {
             if (this.componentDataLoadedService.DataLoadedWebMWQMRuns()) {
-                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
+                this.appStateService.Status = '';
+                this.appStateService.Working = false;
             }
         }
     }

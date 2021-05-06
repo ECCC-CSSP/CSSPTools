@@ -4,7 +4,6 @@ import { CountrySubComponentEnum } from 'src/app/enums/generated/CountrySubCompo
 import { ProvinceSubComponentEnum } from 'src/app/enums/generated/ProvinceSubComponentEnum';
 import { RootSubComponentEnum } from 'src/app/enums/generated/RootSubComponentEnum';
 import { SectorSubComponentEnum } from 'src/app/enums/generated/SectorSubComponentEnum';
-import { AppState } from 'src/app/models/AppState.model';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { WebAreaService } from 'src/app/services/loaders/web-area.service';
 import { WebSectorService } from 'src/app/services/loaders/web-sector.service';
@@ -41,53 +40,53 @@ export class ComponentShowService {
   }
 
   ShowArea(areaSubComponent: AreaSubComponentEnum) {
-    this.appStateService.UpdateAppState(<AppState>{ AreaSubComponent: areaSubComponent });
-    this.webAreaService.DoWebArea(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
+    this.appStateService.AreaSubComponent = areaSubComponent;
+    this.webAreaService.DoWebArea(this.appStateService.CurrentTVItemID, true);
   }
 
   ShowCountry(countrySubComponent: CountrySubComponentEnum) {
-    this.appStateService.UpdateAppState(<AppState>{ CountrySubComponent: countrySubComponent });
-    this.webCountryService.DoWebCountry(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
+    this.appStateService.CountrySubComponent = countrySubComponent;
+    this.webCountryService.DoWebCountry(this.appStateService.CurrentTVItemID, true);
   }
 
   ShowMunicipality(municipalitySubComponent: MunicipalitySubComponentEnum) {
-    this.appStateService.UpdateAppState(<AppState>{ MunicipalitySubComponent: municipalitySubComponent });
-    this.webMunicipalityService.DoWebMunicipality(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
+    this.appStateService.MunicipalitySubComponent = municipalitySubComponent;
+    this.webMunicipalityService.DoWebMunicipality(this.appStateService.CurrentTVItemID, true);
   }
 
   ShowMWQMRun(mwqmRunSubComponent: MWQMRunSubComponentEnum) {
-    this.appStateService.UpdateAppState(<AppState>{ MWQMRunSubComponent: mwqmRunSubComponent });
-    this.webMWQMRunsService.DoWebMWQMRuns(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
+    this.appStateService.MWQMRunSubComponent = mwqmRunSubComponent;
+    this.webMWQMRunsService.DoWebMWQMRuns(this.appStateService.CurrentTVItemID, true);
   }
 
   ShowMWQMSite(mwqmSiteSubComponent: MWQMSiteSubComponentEnum) {
-    this.appStateService.UpdateAppState(<AppState>{ MWQMSiteSubComponent: mwqmSiteSubComponent });
-    this.webMWQMSitesService.DoWebMWQMSites(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
+    this.appStateService.MWQMSiteSubComponent = mwqmSiteSubComponent;
+    this.webMWQMSitesService.DoWebMWQMSites(this.appStateService.CurrentTVItemID, true);
   }
 
   ShowMWQMPolSourceSite(polSourceSiteSubComponent: PolSourceSiteSubComponentEnum) {
-    this.appStateService.UpdateAppState(<AppState>{ PolSourceSiteSubComponent: polSourceSiteSubComponent });
-    this.webPolSourceSitesService.DoWebPolSourceSites(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
+    this.appStateService.PolSourceSiteSubComponent = polSourceSiteSubComponent;
+    this.webPolSourceSitesService.DoWebPolSourceSites(this.appStateService.CurrentTVItemID, true);
   }
 
   ShowProvince(provinceSubComponent: ProvinceSubComponentEnum) {
-    this.appStateService.UpdateAppState(<AppState>{ ProvinceSubComponent: provinceSubComponent });
-    this.webProvinceService.DoWebProvince(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
+    this.appStateService.ProvinceSubComponent = provinceSubComponent;
+    this.webProvinceService.DoWebProvince(this.appStateService.CurrentTVItemID, true);
   }
 
   ShowRoot(rootSubComponent: RootSubComponentEnum) {
-    this.appStateService.UpdateAppState(<AppState>{ RootSubComponent: rootSubComponent });
+    this.appStateService.RootSubComponent = rootSubComponent;
     this.webRootService.DoWebRoot(true);
   }
 
   ShowSector(sectorSubComponent: SectorSubComponentEnum) {
-    this.appStateService.UpdateAppState(<AppState>{ SectorSubComponent: sectorSubComponent });
-    this.webSectorService.DoWebSector(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
+    this.appStateService.SectorSubComponent = sectorSubComponent;
+    this.webSectorService.DoWebSector(this.appStateService.CurrentTVItemID, true);
   }
 
   ShowSubsector(subsectorSubComponent: SubsectorSubComponentEnum) {
-    this.appStateService.UpdateAppState(<AppState>{ SubsectorSubComponent: subsectorSubComponent });
-    this.webSubsectorService.DoWebSubsector(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
+    this.appStateService.SubsectorSubComponent = subsectorSubComponent;
+    this.webSubsectorService.DoWebSubsector(this.appStateService.CurrentTVItemID, true);
   }
 
 }

@@ -36,11 +36,24 @@ namespace CSSPDesktopServices.Services
             {
                 try
                 {
-                    #region doing WebAllTVItems
+                    #region doing WebAllTVItems1980_2020 and WebAllTVItems2021_2060
                     var actionWebAllTVItems = await ReadGzFileService.ReadJSON<WebAllTVItems>(WebTypeEnum.WebAllTVItems1980_2020, 0);
                     if (((ObjectResult)actionWebAllTVItems.Result).StatusCode == 200)
                     {
                         webAllTVItems = (WebAllTVItems)((OkObjectResult)actionWebAllTVItems.Result).Value;
+                    }
+                    else
+                    {
+                        AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.CouldNotUpdateCSSPDBSearchWithTVItemsAndTVItemLanguages));
+                        return await Task.FromResult(false);
+                    }
+
+                    actionWebAllTVItems = await ReadGzFileService.ReadJSON<WebAllTVItems>(WebTypeEnum.WebAllTVItems2021_2060, 0);
+                    if (((ObjectResult)actionWebAllTVItems.Result).StatusCode == 200)
+                    {
+                        var webAllTVItems2 = (WebAllTVItems)((OkObjectResult)actionWebAllTVItems.Result).Value;
+
+                        webAllTVItems.TVItemList.AddRange(webAllTVItems2.TVItemList);
                     }
                     else
                     {
@@ -88,9 +101,9 @@ namespace CSSPDesktopServices.Services
                         InstallingStatus(new InstallingEventArgs(25 + (30 * skip/ total)));
 
                     }
-                    #endregion Doing WebAllTVItemLanguages
+                    #endregion Doing WebAllTVItems1980_2020 and WebAllTVItems2021_2060
 
-                    #region doing WebAllTVItemLanguage
+                    #region doing WebAllTVItemLanguage1980_2020 and WebAllTVItemLanguage2021_2060
                     var actionWebAllTVItemLanguages = await ReadGzFileService.ReadJSON<WebAllTVItemLanguages>(WebTypeEnum.WebAllTVItemLanguages1980_2020, 0);
                     if (((ObjectResult)actionWebAllTVItemLanguages.Result).StatusCode == 200)
                     {
@@ -101,6 +114,19 @@ namespace CSSPDesktopServices.Services
                         AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.CouldNotUpdateCSSPDBSearchWithTVItemsAndTVItemLanguages));
                         return await Task.FromResult(false);
                     }
+
+                    actionWebAllTVItemLanguages = await ReadGzFileService.ReadJSON<WebAllTVItemLanguages>(WebTypeEnum.WebAllTVItemLanguages2021_2060, 0);
+                    if (((ObjectResult)actionWebAllTVItemLanguages.Result).StatusCode == 200)
+                    {
+                        var webAllTVItemLanguages2 = (WebAllTVItemLanguages)((OkObjectResult)actionWebAllTVItemLanguages.Result).Value;
+                        webAllTVItemLanguages.TVItemLanguageList.AddRange(webAllTVItemLanguages2.TVItemLanguageList);
+                    }
+                    else
+                    {
+                        AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.CouldNotUpdateCSSPDBSearchWithTVItemsAndTVItemLanguages));
+                        return await Task.FromResult(false);
+                    }
+
 
                     skip = 0;
                     count = 1;
@@ -141,7 +167,7 @@ namespace CSSPDesktopServices.Services
 
                         InstallingStatus(new InstallingEventArgs(50 + (40 * skip / total)));
                     }
-                    #endregion doing WebAllTVItemLanguage
+                    #endregion doing WebAllTVItemLanguage1980_2020 and WebAllTVItemLanguage2021_2060
                 }
                 catch (Exception ex)
                 {

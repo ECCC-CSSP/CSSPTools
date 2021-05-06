@@ -1,12 +1,12 @@
-<button mat-button *ngFor="let tvItemStatMapModel of appLoadedService.AppLoaded$?.getValue()?.BreadCrumbTVItemModelList; let i = index"
-    [ngClass]="(appLoadedService.AppLoaded$.getValue().BreadCrumbTVItemModelList.length - 1 == i) ? 'selected' : ''"
-    (click)="subPageService.SetSubPage(tvItemStatMapModel)">
-    <span [ngClass]="tvItemStatMapModel?.TVItem?.IsActive ? '' : 'inactive'">
-        <span *ngIf="appStateService.AppState$?.getValue()?.DetailVisible">
-            [{{ tvItemStatMapModel?.TVItem?.TVItemID }}]
+<button mat-button *ngFor="let tvItemModel of appLoadedService.BreadCrumbTVItemModelList; let i = index"
+    [ngClass]="(appLoadedService.BreadCrumbTVItemModelList.length - 1 == i) ? 'selected' : ''"
+    (click)="subPageService.SetSubPage(tvItemModel)">
+    <span [ngClass]="tvItemModel?.TVItem?.IsActive ? '' : 'inactive'">
+        <span *ngIf="appStateService.DetailVisible">
+            [{{ tvItemModel?.TVItem?.TVItemID }}]
         </span>
-        {{ tvItemStatMapModel?.TVItemLanguageList[this.appStateService.AppState$.getValue().Language]?.TVText }}
+        {{ tvItemModel?.TVItemLanguageList[this.appLanguageService.LangID]?.TVText }}
     </span>
-    <app-stat-count *ngIf="appStateService.AppState$.getValue().StatCountVisible" [TVType]="null"
-            [TVItemModel]="tvItemStatMapModel"></app-stat-count>
+    <app-stat-count *ngIf="appStateService.StatCountVisible" [TVType]="null"
+            [TVItemModel]="tvItemModel"></app-stat-count>
 </button>

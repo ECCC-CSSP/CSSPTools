@@ -1,49 +1,49 @@
 <blockquote *ngIf="StatMWQMSite">
     <strong>{{
-        appLanguageService.AppLanguage.TVItemListDetailMWQMSiteDetailStatistics[appStateService.AppState$?.getValue()?.Language]
+        appLanguageService.TVItemListDetailMWQMSiteDetailStatistics[appLanguageService.LangID]
         }}:</strong>
     &nbsp;&nbsp;&nbsp;{{
-    appLanguageService.AppLanguage.TVItemListDetailMWQMSiteDetailSamples[appStateService.AppState$?.getValue()?.Language]
+    appLanguageService.TVItemListDetailMWQMSiteDetailSamples[appLanguageService.LangID]
     }} (<strong>{{ StatMWQMSite?.StatMWQMSiteSampleList[0]?.Samples }}</strong>)
     &nbsp;&nbsp;&nbsp;{{
-    appLanguageService.AppLanguage.TVItemListDetailMWQMSiteDetailDataset[appStateService.AppState$?.getValue()?.Language]
+    appLanguageService.TVItemListDetailMWQMSiteDetailDataset[appLanguageService.LangID]
     }} (<strong>{{ StatMWQMSite?.StatMWQMSiteSampleList[0]?.StartYear }} -
         {{ StatMWQMSite?.StatMWQMSiteSampleList[0]?.EndYear }}</strong>)
     &nbsp;&nbsp;&nbsp;{{
-    appLanguageService.AppLanguage.TVItemListDetailMWQMSiteDetailStatisticsPeriod[appStateService.AppState$?.getValue()?.Language]
+    appLanguageService.TVItemListDetailMWQMSiteDetailStatisticsPeriod[appLanguageService.LangID]
     }} (<strong>{{ StatMWQMSite?.StatMWQMSiteSampleList[0]?.StatStartYear }} -
         {{ StatMWQMSite?.StatMWQMSiteSampleList[0]?.StatEndYear }}</strong>)
     &nbsp;&nbsp;&nbsp;{{
-    appLanguageService.AppLanguage.TVItemListDetailMWQMSiteDetailLastSampleDate[appStateService.AppState$?.getValue()?.Language]
+    appLanguageService.TVItemListDetailMWQMSiteDetailLastSampleDate[appLanguageService.LangID]
     }} (<strong>
         {{ dateFormatService.GetStatMWQMSiteSampleSampleLastSampleDate(StatMWQMSite?.StatMWQMSiteSampleList[0]) }}
     </strong>)
     &nbsp;&nbsp;&nbsp;{{
-    appLanguageService.AppLanguage.TVItemListDetailMWQMSiteDetailNumberOfSample[appStateService.AppState$?.getValue()?.Language]
+    appLanguageService.TVItemListDetailMWQMSiteDetailNumberOfSample[appLanguageService.LangID]
     }}
     (<strong>{{ StatMWQMSite?.StatMWQMSiteSampleList[0]?.SampCount }}</strong>)
     &nbsp;&nbsp;&nbsp;{{
-    appLanguageService.AppLanguage.TVItemListDetailMWQMSiteDetailMinimumFC[appStateService.AppState$?.getValue()?.Language]
+    appLanguageService.TVItemListDetailMWQMSiteDetailMinimumFC[appLanguageService.LangID]
     }} (<strong>{{ StatMWQMSite?.StatMWQMSiteSampleList[0]?.MinFC }}</strong>)
     &nbsp;&nbsp;&nbsp;{{
-    appLanguageService.AppLanguage.TVItemListDetailMWQMSiteDetailMaximumFC[appStateService.AppState$?.getValue()?.Language]
+    appLanguageService.TVItemListDetailMWQMSiteDetailMaximumFC[appLanguageService.LangID]
     }} (<strong>{{ StatMWQMSite?.StatMWQMSiteSampleList[0]?.MaxFC }}</strong>)
     &nbsp;&nbsp;&nbsp;{{
-    appLanguageService.AppLanguage.TVItemListDetailMWQMSiteDetailGeometricMean[appStateService.AppState$?.getValue()?.Language]
+    appLanguageService.TVItemListDetailMWQMSiteDetailGeometricMean[appLanguageService.LangID]
     }}
     (<strong>{{ StatMWQMSite?.StatMWQMSiteSampleList[0]?.GeoMean | number:'1.1-1' }}</strong>)
     &nbsp;&nbsp;&nbsp;{{
-    appLanguageService.AppLanguage.TVItemListDetailMWQMSiteDetailMedian[appStateService.AppState$?.getValue()?.Language]
+    appLanguageService.TVItemListDetailMWQMSiteDetailMedian[appLanguageService.LangID]
     }} (<strong>{{ StatMWQMSite?.StatMWQMSiteSampleList[0]?.Median | number:'1.1-1' }}</strong>)
     &nbsp;&nbsp;&nbsp;{{
-    appLanguageService.AppLanguage.TVItemListDetailMWQMSiteDetailP90[appStateService.AppState$?.getValue()?.Language] }}
+    appLanguageService.TVItemListDetailMWQMSiteDetailP90[appLanguageService.LangID] }}
     (<strong>{{ StatMWQMSite?.StatMWQMSiteSampleList[0]?.P90 | number:'1.1-1' }}</strong>)
     &nbsp;&nbsp;&nbsp;{{
-    appLanguageService.AppLanguage.TVItemListDetailMWQMSiteDetailPerOfSampleWithFCOver43[appStateService.AppState$?.getValue()?.Language]
+    appLanguageService.TVItemListDetailMWQMSiteDetailPerOfSampleWithFCOver43[appLanguageService.LangID]
     }}
     (<strong>{{ StatMWQMSite?.StatMWQMSiteSampleList[0]?.PercOver43 | number:'1.1-1' }}%</strong>)
     &nbsp;&nbsp;&nbsp;{{
-    appLanguageService.AppLanguage.TVItemListDetailMWQMSiteDetailPerOfSampleWithFCOver260[appStateService.AppState$?.getValue()?.Language]
+    appLanguageService.TVItemListDetailMWQMSiteDetailPerOfSampleWithFCOver260[appLanguageService.LangID]
     }}
     (<strong>{{ StatMWQMSite?.StatMWQMSiteSampleList[0]?.PercOver260 | number:'1.1-1' }}%</strong>)
     <hr />

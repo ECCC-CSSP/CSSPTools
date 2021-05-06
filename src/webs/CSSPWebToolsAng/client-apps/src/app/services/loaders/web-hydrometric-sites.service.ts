@@ -2,9 +2,6 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { GetLanguageEnum, LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
-import { AppLoaded } from 'src/app/models/AppLoaded.model';
-import { AppState } from 'src/app/models/AppState.model';
 import { WebHydrometricSites } from 'src/app/models/generated/web/WebHydrometricSites.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
@@ -17,9 +14,9 @@ import { ComponentDataLoadedService } from 'src/app/services/helpers/component-d
 })
 export class WebHydrometricSitesService {
     private TVItemID: number;
-    private DoOther: boolean;
+    private DoNext: boolean;
+    private ForceReload: boolean;
     private sub: Subscription;
-    LangID: number = this.appStateService.AppState$?.getValue()?.Language == LanguageEnum.fr ? 1 : 0;
 
     constructor(private httpClient: HttpClient,
         private appStateService: AppStateService,
@@ -28,62 +25,72 @@ export class WebHydrometricSitesService {
         private componentDataLoadedService: ComponentDataLoadedService) {
     }
 
-    DoWebHydrometricSites(TVItemID: number, DoOther: boolean) {
+    DoWebHydrometricSites(TVItemID: number, DoNext: boolean = true, ForceReload: boolean = true) {
         this.TVItemID = TVItemID;
-        this.DoOther = DoOther;
-    
+        this.DoNext = DoNext;
+        this.ForceReload = ForceReload;
+
         this.sub ? this.sub.unsubscribe() : null;
-    
-        if (this.appLoadedService.AppLoaded$.getValue()?.WebHydrometricSites) {
-          this.KeepWebHydrometricSites();
+
+        if (ForceReload) {
+            this.sub = this.GetWebHydrometricSites().subscribe();
         }
         else {
-          this.sub = this.GetWebHydrometricSites().subscribe();
+            if (this.componentDataLoadedService.DataLoadedWebHydrometricSites()) {
+                this.KeepWebHydrometricSites();
+            }
+            else {
+                this.sub = this.GetWebHydrometricSites().subscribe();
+            }
         }
-      }
-    
+    }
+
     private GetWebHydrometricSites() {
-        let languageEnum = GetLanguageEnum();
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebHydrometricSites: {} });
-        this.appStateService.UpdateAppState(<AppState>{
-            Status: `${ this.appLanguageService.AppLanguage.Loading[this.LangID]} - ${ WebHydrometricSites }`,
-            Working: true
-        });
-        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebHydrometricSites/${this.TVItemID}`;
+        this.appLoadedService.WebHydrometricSites = <WebHydrometricSites>{};
+
+        let ForceReloadText = this.ForceReload ? `${this.appLanguageService.ForceReload[this.appLanguageService.LangID]}` : '';
+        this.appStateService.Status = `${this.appLanguageService.Loading[this.appLanguageService.LangID]} - WebHydrometricSites - ${ForceReloadText}`;
+        this.appStateService.Working = true;
+
+        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appLanguageService.Language}-CA/Read/WebHydrometricSites/${this.TVItemID}`;
         return this.httpClient.get<WebHydrometricSites>(url).pipe(
             map((x: any) => {
                 this.UpdateWebHydrometricSites(x);
                 console.debug(x);
-                if (this.DoOther) {
+                if (this.DoNext) {
                     // nothing else to add to the chain
                 }
             }),
             catchError(e => of(e).pipe(map(e => {
-                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false, Error: <HttpErrorResponse>e });
+                this.appStateService.Status = ''
+                this.appStateService.Working = false
+                this.appStateService.Error = <HttpErrorResponse>e;
                 console.debug(e);
             })))
         );
     }
 
     private KeepWebHydrometricSites() {
-        this.UpdateWebHydrometricSites(this.appLoadedService.AppLoaded$?.getValue()?.WebHydrometricSites);
-        console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebHydrometricSites);
-        if (this.DoOther) {
+        this.UpdateWebHydrometricSites(this.appLoadedService.WebHydrometricSites);
+        console.debug(this.appLoadedService.WebHydrometricSites);
+        if (this.DoNext) {
             // nothing more to add in the chain
         }
     }
 
     private UpdateWebHydrometricSites(x: WebHydrometricSites) {
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebHydrometricSites: x, });
+        this.appLoadedService.WebHydrometricSites = x;
 
-        if (this.DoOther) {
+        if (this.DoNext) {
             if (this.componentDataLoadedService.DataLoadedWebProvince()) {
-                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
+                this.appStateService.Status = '';
+                this.appStateService.Working = false;
             }
         }
         else {
             if (this.componentDataLoadedService.DataLoadedWebHydrometricSites()) {
-                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
+                this.appStateService.Status = '';
+                this.appStateService.Working = false;
             }
         }
     }

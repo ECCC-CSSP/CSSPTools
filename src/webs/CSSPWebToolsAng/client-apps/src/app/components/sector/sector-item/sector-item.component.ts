@@ -1,8 +1,9 @@
-import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { GetAscDescEnum } from 'src/app/enums/generated/AscDescEnum';
 import { GetSectorSubComponentEnum } from 'src/app/enums/generated/SectorSubComponentEnum';
 import { GetSortOrderAngularEnum } from 'src/app/enums/generated/SortOrderAngularEnum';
 import { GetTVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
+
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
@@ -15,10 +16,11 @@ import { WebSectorService } from 'src/app/services/loaders/web-sector.service';
 @Component({
   selector: 'app-sector-item',
   templateUrl: './sector-item.component.html',
-  styleUrls: ['./sector-item.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./sector-item.component.css']
 })
 export class SectorItemComponent implements OnInit, OnDestroy {
+
+  
   sectorSubComponentEnum = GetSectorSubComponentEnum();
   tvTypeEnum = GetTVTypeEnum();
   ascDescEnum = GetAscDescEnum();
@@ -34,7 +36,7 @@ export class SectorItemComponent implements OnInit, OnDestroy {
     public componentShowService: ComponentShowService) { }
 
   ngOnInit(): void {
-    this.webSectorService.DoWebSector(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
+    this.webSectorService.DoWebSector(this.appStateService.CurrentTVItemID, true);
   }
 
   ngOnDestroy(): void {

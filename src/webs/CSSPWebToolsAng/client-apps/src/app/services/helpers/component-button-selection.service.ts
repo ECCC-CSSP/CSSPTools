@@ -20,7 +20,7 @@ export class ComponentButtonSelectionService {
   }
 
   ColorSelectionArea(areaSubComponent: AreaSubComponentEnum) {
-    if (this.appStateService.AppState$.getValue().AreaSubComponent == areaSubComponent) {
+    if (this.appStateService.AreaSubComponent == areaSubComponent) {
       return 'selected';
     }
     else {
@@ -29,7 +29,7 @@ export class ComponentButtonSelectionService {
   }
 
   ColorSelectionCountry(countrySubComponent: CountrySubComponentEnum) {
-    if (this.appStateService.AppState$.getValue().CountrySubComponent == countrySubComponent) {
+    if (this.appStateService.CountrySubComponent == countrySubComponent) {
       return 'selected';
     }
     else {
@@ -38,7 +38,7 @@ export class ComponentButtonSelectionService {
   }
 
   ColorSelectionMunicipality(municipalitySubComponent: MunicipalitySubComponentEnum) {
-    if (this.appStateService.AppState$.getValue().MunicipalitySubComponent == municipalitySubComponent) {
+    if (this.appStateService.MunicipalitySubComponent == municipalitySubComponent) {
       return 'selected';
     }
     else {
@@ -47,7 +47,7 @@ export class ComponentButtonSelectionService {
   }
 
   ColorSelectionMWQMRun(mwqmRunSubComponent: MWQMRunSubComponentEnum) {
-    if (this.appStateService.AppState$.getValue().MWQMRunSubComponent == mwqmRunSubComponent) {
+    if (this.appStateService.MWQMRunSubComponent == mwqmRunSubComponent) {
       return 'selected';
     }
     else {
@@ -56,7 +56,7 @@ export class ComponentButtonSelectionService {
   }
 
   ColorSelectionMWQMSite(mwqmSiteSubComponent: MWQMSiteSubComponentEnum) {
-    if (this.appStateService.AppState$.getValue().MWQMSiteSubComponent == mwqmSiteSubComponent) {
+    if (this.appStateService.MWQMSiteSubComponent == mwqmSiteSubComponent) {
       return 'selected';
     }
     else {
@@ -65,7 +65,7 @@ export class ComponentButtonSelectionService {
   }
 
   ColorSelectionPolSourceSite(polSourceSiteSubComponent: PolSourceSiteSubComponentEnum) {
-    if (this.appStateService.AppState$.getValue().PolSourceSiteSubComponent == polSourceSiteSubComponent) {
+    if (this.appStateService.PolSourceSiteSubComponent == polSourceSiteSubComponent) {
       return 'selected';
     }
     else {
@@ -74,7 +74,7 @@ export class ComponentButtonSelectionService {
   }
 
   ColorSelectionProvince(provinceSubComponent: ProvinceSubComponentEnum) {
-    if (this.appStateService.AppState$.getValue().ProvinceSubComponent == provinceSubComponent) {
+    if (this.appStateService.ProvinceSubComponent == provinceSubComponent) {
       return 'selected';
     }
     else {
@@ -83,7 +83,7 @@ export class ComponentButtonSelectionService {
   }
 
   ColorSelectionRoot(rootSubComponent: RootSubComponentEnum) {
-    if (this.appStateService.AppState$.getValue()['RootSubComponent'] == rootSubComponent) {
+    if (this.appStateService['RootSubComponent'] == rootSubComponent) {
       return 'selected';
     }
     else {
@@ -92,7 +92,7 @@ export class ComponentButtonSelectionService {
   }
 
   ColorSelectionSector(sectorSubComponent: SectorSubComponentEnum) {
-    if (this.appStateService.AppState$.getValue().SectorSubComponent == sectorSubComponent) {
+    if (this.appStateService.SectorSubComponent == sectorSubComponent) {
       return 'selected';
     }
     else {
@@ -101,7 +101,7 @@ export class ComponentButtonSelectionService {
   }
 
   ColorSelectionSubsector(subsectorSubComponent: SubsectorSubComponentEnum) {
-    if (this.appStateService.AppState$.getValue().SubsectorSubComponent == subsectorSubComponent) {
+    if (this.appStateService.SubsectorSubComponent == subsectorSubComponent) {
       return 'selected';
     }
     else {

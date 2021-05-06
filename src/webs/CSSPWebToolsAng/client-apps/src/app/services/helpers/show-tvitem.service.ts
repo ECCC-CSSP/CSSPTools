@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { AppState } from 'src/app/models/AppState.model';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { AppStateService } from 'src/app/services/app-state.service';
 
@@ -21,7 +20,7 @@ export class ShowTVItemService {
     }
 
     TVItemVisible(tvItemModel: TVItemModel): boolean {
-        let tvItemModelExist: TVItemModel[] = this.appStateService.AppState$.getValue().ShowTVItemModelList.filter(c => c == tvItemModel);
+        let tvItemModelExist: TVItemModel[] = this.appStateService.ShowTVItemModelList.filter(c => c == tvItemModel);
         if (tvItemModelExist != undefined && tvItemModelExist.length > 0) {
             return true;
         }
@@ -30,16 +29,16 @@ export class ShowTVItemService {
     }
 
     private AddShowTVItem(tvItemModel: TVItemModel): void {
-        let tvItemModelExist: TVItemModel[] = this.appStateService.AppState$.getValue().ShowTVItemModelList.filter(c => c.TVItem.TVItemID == tvItemModel.TVItem.TVItemID);
+        let tvItemModelExist: TVItemModel[] = this.appStateService.ShowTVItemModelList.filter(c => c.TVItem.TVItemID == tvItemModel.TVItem.TVItemID);
         if (!(tvItemModelExist != undefined && tvItemModelExist.length > 0)) {
-            this.appStateService.AppState$.getValue().ShowTVItemModelList.push(tvItemModel);
+            this.appStateService.ShowTVItemModelList.push(tvItemModel);
         }
     }
 
     private RemoveShowTVItem(tvItemModel: TVItemModel): void {
-        let tvItemModelExist: TVItemModel[] = this.appStateService.AppState$.getValue().ShowTVItemModelList.filter(c => c == tvItemModel);
+        let tvItemModelExist: TVItemModel[] = this.appStateService.ShowTVItemModelList.filter(c => c == tvItemModel);
         if ((tvItemModelExist != undefined && tvItemModelExist.length > 0)) {
-            let ShowNewTVItemModelList: TVItemModel[] = this.appStateService.AppState$.getValue().ShowTVItemModelList;
+            let ShowNewTVItemModelList: TVItemModel[] = this.appStateService.ShowTVItemModelList;
             let count: number = ShowNewTVItemModelList.length;
             for (let i = 0; i < count; i++) {
                 if (ShowNewTVItemModelList[i] === tvItemModel) {
@@ -48,7 +47,7 @@ export class ShowTVItemService {
                 }
             }
 
-            this.appStateService.UpdateAppState(<AppState>{ ShowTVItemModelList: ShowNewTVItemModelList });
+            this.appStateService.ShowTVItemModelList = ShowNewTVItemModelList;
         }
     }
 

@@ -41,8 +41,8 @@ namespace ReadGzFileServices
 
             FileInfo fiGZ = new FileInfo(CSSPJSONPath + string.Format(fileName, TVItemID));
 
-            if (TVItemID > 0)
-            {
+            //if (TVItemID > 0)
+            //{
                 if (fiGZ.Exists)
                 {
                     gzExistLocaly = true;
@@ -272,29 +272,29 @@ namespace ReadGzFileServices
                         }
                     }
                 }
-            }
-            else
-            {
-                FileInfo fiGZLocal = new FileInfo($"{ CSSPJSONPathLocal }{ fiGZ.Name }");
+            //}
+            //else
+            //{
+            //    FileInfo fiGZLocal = new FileInfo($"{ CSSPJSONPathLocal }{ fiGZ.Name }");
 
-                T FromLocal = JsonSerializer.Deserialize<T>("{}");
+            //    T FromLocal = JsonSerializer.Deserialize<T>("{}");
 
-                if (fiGZLocal.Exists)
-                {
-                    using (FileStream gzipFileStreamLocal = fiGZLocal.OpenRead())
-                    {
-                        using (GZipStream gzStreamLocal = new GZipStream(gzipFileStreamLocal, CompressionMode.Decompress))
-                        {
-                            using (StreamReader srLocal = new StreamReader(gzStreamLocal))
-                            {
-                                FromLocal = JsonSerializer.Deserialize<T>(srLocal.ReadToEnd());
-                            }
-                        }
-                    }
-                }
+            //    if (fiGZLocal.Exists)
+            //    {
+            //        using (FileStream gzipFileStreamLocal = fiGZLocal.OpenRead())
+            //        {
+            //            using (GZipStream gzStreamLocal = new GZipStream(gzipFileStreamLocal, CompressionMode.Decompress))
+            //            {
+            //                using (StreamReader srLocal = new StreamReader(gzStreamLocal))
+            //                {
+            //                    FromLocal = JsonSerializer.Deserialize<T>(srLocal.ReadToEnd());
+            //                }
+            //            }
+            //        }
+            //    }
 
-                return await Task.FromResult(Ok(FromLocal));
-            }
+            //    return await Task.FromResult(Ok(FromLocal));
+            //}
         }
     }
 }

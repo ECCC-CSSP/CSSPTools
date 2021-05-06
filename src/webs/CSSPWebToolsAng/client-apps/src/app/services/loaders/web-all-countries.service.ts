@@ -2,9 +2,6 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { GetLanguageEnum, LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
-import { AppLoaded } from 'src/app/models/AppLoaded.model';
-import { AppState } from 'src/app/models/AppState.model';
 import { WebAllCountries } from 'src/app/models/generated/web/WebAllCountries.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
@@ -16,9 +13,9 @@ import { WebAllEmailsService } from 'src/app/services/loaders/web-all-emails.ser
     providedIn: 'root'
 })
 export class WebAllCountriesService {
-    private DoOther: boolean;
+    private DoNext: boolean;
+    private ForceReload: boolean;
     private sub: Subscription;
-    LangID: number = this.appStateService.AppState$?.getValue()?.Language == LanguageEnum.fr ? 1 : 0;
 
     constructor(private httpClient: HttpClient,
         private appStateService: AppStateService,
@@ -28,65 +25,76 @@ export class WebAllCountriesService {
         private componentDataLoadedService: ComponentDataLoadedService) {
     }
 
-    DoWebAllCountries(DoOther: boolean) {
-        this.DoOther = DoOther;
-    
+    DoWebAllCountries(DoNext: boolean = true, ForceReload: boolean = true) {
+        this.DoNext = DoNext;
+        this.ForceReload = ForceReload;
+
         this.sub ? this.sub.unsubscribe() : null;
-    
-        if (this.appLoadedService.AppLoaded$.getValue()?.WebAllCountries) {
-          this.KeepWebAllCountries();
+
+        if (ForceReload) {
+            this.sub = this.GetWebAllCountries().subscribe();
         }
         else {
-          this.sub = this.GetWebAllCountries().subscribe();
+            if (this.componentDataLoadedService.DataLoadedWebAllCountries()) {
+                this.KeepWebAllCountries();
+            }
+            else {
+                this.sub = this.GetWebAllCountries().subscribe();
+            }
         }
-      }
-    
+    }
+
     private GetWebAllCountries() {
-        let languageEnum = GetLanguageEnum();
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebAllCountries: {} });
-        this.appStateService.UpdateAppState(<AppState>{
-            Status: `${ this.appLanguageService.AppLanguage.Loading[this.LangID]} - ${ WebAllCountries }`,
-            Working: true
-        });
-        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebAllCountries`;
+        this.appLoadedService.WebAllCountries = <WebAllCountries>{};
+
+        let NextText = this.DoNext ? `${this.appLanguageService.Next[this.appLanguageService.LangID]} - WebAllEmails` : '';
+        let ForceReloadText = this.ForceReload ? `${this.appLanguageService.ForceReload[this.appLanguageService.LangID]}` : '';
+        this.appStateService.Status = `${this.appLanguageService.Loading[this.appLanguageService.LangID]} - WebAllCountries - ${NextText} - ${ForceReloadText}`;
+        this.appStateService.Working = true;
+
+        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appLanguageService.Language}-CA/Read/WebAllCountries`;
         return this.httpClient.get<WebAllCountries>(url).pipe(
             map((x: any) => {
                 this.UpdateWebAllCountries(x);
                 console.debug(x);
-                if (this.DoOther) {
+                if (this.DoNext) {
                     this.DoWebAllEmails();
                 }
             }),
             catchError(e => of(e).pipe(map(e => {
-                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false, Error: <HttpErrorResponse>e });
+                this.appStateService.Status = ''
+                this.appStateService.Working = false
+                this.appStateService.Error = <HttpErrorResponse>e;
                 console.debug(e);
             })))
         );
     }
 
     private DoWebAllEmails() {
-        this.webAllEmailsService.DoWebAllEmails(this.DoOther);
+        this.webAllEmailsService.DoWebAllEmails(this.DoNext);
     }
-    
+
     private KeepWebAllCountries() {
-        this.UpdateWebAllCountries(this.appLoadedService.AppLoaded$?.getValue()?.WebAllCountries);
-        console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebAllCountries);
-        if (this.DoOther) {
+        this.UpdateWebAllCountries(this.appLoadedService.WebAllCountries);
+        console.debug(this.appLoadedService.WebAllCountries);
+        if (this.DoNext) {
             this.DoWebAllEmails();
         }
     }
 
     private UpdateWebAllCountries(x: WebAllCountries) {
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebAllCountries: x, });
+        this.appLoadedService.WebAllCountries = x;
 
-        if (this.DoOther) {
+        if (this.DoNext) {
             if (this.componentDataLoadedService.DataLoadedWebRoot()) {
-                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
+                this.appStateService.Status = '';
+                this.appStateService.Working = false;
             }
         }
         else {
             if (this.componentDataLoadedService.DataLoadedWebAllCountries()) {
-                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
+                this.appStateService.Status = '';
+                this.appStateService.Working = false;
             }
         }
     }

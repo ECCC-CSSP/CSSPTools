@@ -2,9 +2,6 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { GetLanguageEnum, LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
-import { AppLoaded } from 'src/app/models/AppLoaded.model';
-import { AppState } from 'src/app/models/AppState.model';
 import { WebAllPolSourceSiteEffectTerms } from 'src/app/models/generated/web/WebAllPolSourceSiteEffectTerms.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
@@ -16,9 +13,9 @@ import { WebAllProvincesService } from 'src/app/services/loaders/web-all-provinc
     providedIn: 'root'
 })
 export class WebAllPolSourceSiteEffectTermsService {
-    private DoOther: boolean;
+    private DoNext: boolean;
+    private ForceReload: boolean;
     private sub: Subscription;
-    LangID: number = this.appStateService.AppState$?.getValue()?.Language == LanguageEnum.fr ? 1 : 0;
 
     constructor(private httpClient: HttpClient,
         private appStateService: AppStateService,
@@ -28,65 +25,76 @@ export class WebAllPolSourceSiteEffectTermsService {
         private componentDataLoadedService: ComponentDataLoadedService) {
     }
 
-    DoWebAllPolSourceSiteEffectTerms(DoOther: boolean) {
-        this.DoOther = DoOther;
+    DoWebAllPolSourceSiteEffectTerms(DoNext: boolean = true, ForceReload: boolean = true) {
+        this.DoNext = DoNext;
+        this.ForceReload = ForceReload;
 
         this.sub ? this.sub.unsubscribe() : null;
 
-        if (this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceSiteEffectTerms?.PolSourceSiteEffectTermList?.length > 0) {
-            this.KeepWebAllPolSourceSiteEffectTerms();
-        }
-        else {
+        if (ForceReload) {
             this.sub = this.GetWebAllPolSourceSiteEffectTerms().subscribe();
         }
+        else{
+            if (this.componentDataLoadedService.DataLoadedWebAllPolSourceSiteEffectTerms()) {
+                this.KeepWebAllPolSourceSiteEffectTerms();
+            }
+            else {
+                this.sub = this.GetWebAllPolSourceSiteEffectTerms().subscribe();
+            }
+            }
     }
 
     private GetWebAllPolSourceSiteEffectTerms() {
-        let languageEnum = GetLanguageEnum();
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebAllPolSourceSiteEffectTerms: {} });
-        this.appStateService.UpdateAppState(<AppState>{
-            Status: `${ this.appLanguageService.AppLanguage.Loading[this.LangID]} - ${ WebAllPolSourceSiteEffectTerms }`,
-            Working: true
-        });
-        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebAllPolSourceSiteEffectTerms`;
+        this.appLoadedService.WebAllPolSourceSiteEffectTerms = <WebAllPolSourceSiteEffectTerms>{};
+
+        let NextText = this.DoNext ? `${this.appLanguageService.Next[this.appLanguageService.LangID]} - WebAllProvinces` : '';
+        let ForceReloadText = this.ForceReload ? `${this.appLanguageService.ForceReload[this.appLanguageService.LangID]}` : '';
+        this.appStateService.Status = `${this.appLanguageService.Loading[this.appLanguageService.LangID]} - WebAllPolSourceSiteEffectTerms - ${NextText} - ${ForceReloadText}`;
+        this.appStateService.Working = true;
+
+        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appLanguageService.Language}-CA/Read/WebAllPolSourceSiteEffectTerms`;
         return this.httpClient.get<WebAllPolSourceSiteEffectTerms>(url).pipe(
             map((x: any) => {
                 this.UpdateWebAllPolSourceSiteEffectTerms(x);
                 console.debug(x);
-                if (this.DoOther) {
+                if (this.DoNext) {
                     this.DoWebAllProvinces();
                 }
             }),
             catchError(e => of(e).pipe(map(e => {
-                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false, Error: <HttpErrorResponse>e });
+                this.appStateService.Status = ''
+                this.appStateService.Working = false
+                this.appStateService.Error = <HttpErrorResponse>e;
                 console.debug(e);
             })))
         );
     }
 
     private DoWebAllProvinces() {
-        this.webAllProvincesService.DoWebAllProvinces(this.DoOther);
+        this.webAllProvincesService.DoWebAllProvinces(this.DoNext);
     }
 
     private KeepWebAllPolSourceSiteEffectTerms() {
-        this.UpdateWebAllPolSourceSiteEffectTerms(this.appLoadedService.AppLoaded$?.getValue()?.WebAllPolSourceSiteEffectTerms);
-        console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebAllPolSourceSiteEffectTerms);
-        if (this.DoOther) {
+        this.UpdateWebAllPolSourceSiteEffectTerms(this.appLoadedService.WebAllPolSourceSiteEffectTerms);
+        console.debug(this.appLoadedService.WebAllPolSourceSiteEffectTerms);
+        if (this.DoNext) {
             this.DoWebAllProvinces();
         }
     }
 
     private UpdateWebAllPolSourceSiteEffectTerms(x: WebAllPolSourceSiteEffectTerms) {
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebAllPolSourceSiteEffectTerms: x });
+        this.appLoadedService.WebAllPolSourceSiteEffectTerms = x;
 
-        if (this.DoOther) {
+        if (this.DoNext) {
             if (this.componentDataLoadedService.DataLoadedWebRoot()) {
-                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
+                this.appStateService.Status = '';
+                this.appStateService.Working = false;
             }
         }
         else {
-            if (this.componentDataLoadedService.DataLoadedWebPolSourceSiteEffectTerms()) {
-                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
+            if (this.componentDataLoadedService.DataLoadedWebAllPolSourceSiteEffectTerms()) {
+                this.appStateService.Status = '';
+                this.appStateService.Working = false;
             }
         }
     }

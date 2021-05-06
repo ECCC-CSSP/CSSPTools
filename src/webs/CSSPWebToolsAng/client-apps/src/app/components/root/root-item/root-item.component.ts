@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { GetRootSubComponentEnum } from 'src/app/enums/generated/RootSubComponentEnum';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
@@ -12,13 +12,15 @@ import { ComponentButtonSelectionService } from 'src/app/services/helpers/compon
 import { ComponentShowService } from 'src/app/services/helpers/component-show.service';
 import { GetSortOrderAngularEnum } from 'src/app/enums/generated/SortOrderAngularEnum';
 
+
 @Component({
   selector: 'app-root-item',
   templateUrl: './root-item.component.html',
-  styleUrls: ['./root-item.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./root-item.component.css']
 })
 export class RootItemComponent implements OnInit, OnDestroy {
+
+  
   rootSubComponentEnum = GetRootSubComponentEnum();
   tvTypeEnum = GetTVTypeEnum();
   ascDescEnum = GetAscDescEnum();
@@ -35,7 +37,7 @@ export class RootItemComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.webRootService.DoWebRoot(true);
+    this.webRootService.DoWebRoot(true, false);
   }
 
   ngOnDestroy(): void {

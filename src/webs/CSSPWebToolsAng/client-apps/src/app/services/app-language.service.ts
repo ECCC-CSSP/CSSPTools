@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AppLanguage } from 'src/app/models/AppLanguage.model';
-import { GetLanguageEnum } from '../enums/generated/LanguageEnum';
+import { GetLanguageEnum, LanguageEnum } from '../enums/generated/LanguageEnum';
 
 @Injectable({
   providedIn: 'root'
@@ -11,294 +10,273 @@ export class AppLanguageService {
 
   constructor() {
   }
-
-  get AppLanguage(): AppLanguage {
-    return {
-      AnalysisSite: ['Site', 'Site'],
-      AnalysisSamples: ['Samples', 'Échantillons'],
-      AnalysisPeriod: ['Period', 'Période'],
-      AnalysisMinFC: ['Min FC', 'CF min'],
-      AnalysisMaxFC: ['Max FC', 'CF max'],
-      AnalysisGMean: ['Geo. Mean', 'Moyenne Geo.'],
-      AnalysisMedian: ['Median', 'Médianne'],
-      AnalysisP90: ['P90', 'P90'],
-      AnalysisPerOver43: ['% > 43', '% > 43'],
-      AnalysisPerOver260: ['% > 260', '% > 260'],
-      AnalysisPrecipitation: ['Precipitation', 'Précipitation'],
-      AnalysisRunDay: ['Run Day', 'Tournée'],
-      AnalysisStartTide: ['Start Tide', 'Marée de début'],
-      AnalysisEndTide: ['End Tide', 'Marée de fin'],
-      AnalysisInactive: ['Inactive', 'Inactif'],
-
-      AnalysisDataVisibleFecalColiform: ['Fecal Coliform / 100 mL', 'Coliformes fécaux / 100 mL'],
-      AnalysisDataVisibleTemperature: ['Temperature (C)', 'Température (C)'],
-      AnalysisDataVisibleSalinity: ['Salinity (ppt)', 'Salinité (ppm)'],
-      AnalysisDataVisibleP90: ['P90', 'P90'],
-      AnalysisDataVisibleGeometriMean: ['Geometric Mean', 'Moyenne géométrique'],
-      AnalysisDataVisibleMedian: ['Median', 'Médiane'],
-      AnalysisDataVisiblePerAbove43: ['% > 43', '% > 43'],
-      AnalysisDataVisiblePerAbove260: ['% > 260', '% > 260'],
-
-      AnalysisOptionsAnalysisOptions: ['Analysis Options', 'Options d\'analyses'],
-      AnalysisOptionsStart: ['Start', 'Début'],
-      AnalysisOptionsEnd: ['End', 'Fin'],
-      AnalysisOptionsRuns: ['Runs', 'Tournées'],
-      AnalysisOptionsCalculation: ['Calculation', 'Calcul'],
-      AnalysisOptionsStartDate: ['Start Date', 'Date de début'],
-      AnalysisOptionsEndDate: ['End Date', 'Date de fin'],
-      AnalysisOptionsPPT: ['ppt', 'ppm'],
-      AnalysisOptionsHighlightSal: ['Highlight salinity deviation from average', 'Souligner l\'écart de salinité par rapport à la moyenne'],
-      AnalysisOptionsUpperLowerRainLimit: ['Upper and lower rain limit considered dry or wet', 'Limite de pluie supérieure et inférieure considérée comme sèche ou humide'],
-      AnalysisOptionsConsideredDry: ['Considered Dry', 'Considéré sec'],
-      AnalysisOptionsConsideredWet: ['Considered Wet', 'Considéré pluie'],
-      AnalysisOptionsDry: ['Dry', 'Sec'],
-      AnalysisOptionsWet: ['Wet', 'Pluie'],
-
-      AreaShowSectors: ['Show sectors', 'Montrer secteurs'],
-      AreaSectors: ['Sectors', 'Secteurs'],
-      AreaShowFiles: ['Show files', 'Montrer filières'],
-      AreaFiles: ['Files', 'Filières'],
-
-      ContactNotFound: ['Contact not found', 'Contact non trouvé'],
-
-      CountryShowProvinces: ['Show provinces', 'Montrer provinces'],
-      CountryProvinces: ['Provinces', 'Provinces'],
-      CountryShowFiles: ['Show files', 'Montrer filières'],
-      CountryFiles: ['Files', 'Filières'],
-      CountryShowOpenDataNationalTools: ['Show open data national tools', 'Montrer outils données ouvertes nationales'],
-      CountryOpenDataNational: ['Open Data National', 'Données ouvertes nationales'],
-      CountryShowEmailDistributionList: ['Show email distribution list', 'Montrer liste de distribution des courriels'],
-      CountryEmailDistributionList: ['Email Distribution List', 'Liste de distribution des courriels'],
-      CountryShowRainExceedance: ['Show rain exceedance', 'Montrer pluie dépassement'],
-      CountryRainExceedance: ['Rain Exceedance', 'Pluie dépassement'],
-
-      DateJanuary: ['January', 'janvier'],
-      DateFebruary: ['February', 'février'],
-      DateMarch: ['March', 'mars'],
-      DateApril: ['April', 'avril'],
-      DateMay: ['May', 'mai'],
-      DateJune: ['June', 'juin'],
-      DateJuly: ['July', 'juillet'],
-      DateAugust: ['August', 'août'],
-      DateSeptember: ['September', 'septembre'],
-      DateOctober: ['October', 'octobre'],
-      DateNovember: ['November', 'novembre'],
-      DateDecember: ['December', 'décembre'],
-
-      DateJanuaryAcronym: ['Jan', 'jan'],
-      DateFebruaryAcronym: ['Feb', 'fév'],
-      DateMarchAcronym: ['Mar', 'mar'],
-      DateAprilAcronym: ['Apr', 'avr'],
-      DateMayAcronym: ['May', 'mai'],
-      DateJuneAcronym: ['Jun', 'juin'],
-      DateJulyAcronym: ['Jul', 'jul'],
-      DateAugustAcronym: ['Aug', 'août'],
-      DateSeptemberAcronym: ['Sep', 'sep'],
-      DateOctoberAcronym: ['Oct', 'oct'],
-      DateNovemberAcronym: ['Nov', 'nov'],
-      DateDecemberAcronym: ['Dec', 'déc'],
-
-      HomeCSSPWebTools: ['CSSP Web Tools', 'PCCSM: outils Web'],
-      HomeTheWebToolWillLetYou: ['The Web tools will let you:', 'Avec les outils Web, il est possible de:'],
-      HomeViewAndUpdateWWTPInfo: ['view and update the waste water treatment plants and the lift stations information,', 'consulter et mettre à jour l\'information des usines de traitement des eaux usées et des postes de pompage,'],
-      HomeMakeCalculationUsingBoxModelAndVisualPlumes: ['make calculation using Box Model and Visual Plumes,', 'exécuter les calculs utilisant Box Model et Visual Plumes,'],
-      HomeSetupAndRunMIKEScenariosAndStoreInputsAndResults: ['Setup and run MIKE scenarios and store inputs and results', 'Configurer et exécuter des scénarios MIKE et stocker les entrées et les résultats'],
-      HomeManageMWQMInformation: ['Manage Marine Water Quality Monitorng Information', 'Gestion de l\'informmation de Surveillance de qualité d\'eau marine'],
-      HomeToHaveAccessWebToolsInformationAndApplication: ['To have access to Web Tools information and application, ', 'Pour accéder à l\'information et aux applications des outils Web,'],
-      HomePleaseContactASiteAdministratorListedBelow: ['please contact a site administrator listed below', 'veuillez contacter un administrateur du site suivants:'],
-      HomeStartUsingCSSPWebTools: ['Start using CSSP Web Tools', 'Utilisez les outils web PCCSM'],
-      HomeAzureVersion: ['(Azure Version)', '(Version Azure)'],
-
-      KB: ['KB', 'Ko'],
-
-      Loading: ['Loading', 'Téléchargement'],
-
-      // LoadingWebAllAddresses: ['Loading WebAllAddresses', 'Téléchargement - WebAllAddresses'],
-      // LoadingWebAllContacts: ['Loading WebAllContacts', 'Téléchargement - WebAllContacts'],
-      // LoadingWebAllCountries: ['Loading WebAllCountries', 'Téléchargement - WebAllCountries'],
-      // LoadingWebAllEmails: ['Loading WebAllEmails', 'Téléchargement - WebAllEmails'],
-      // LoadingWebAllHelpDocs: ['Loading WebAllHelpDocs', 'Téléchargement - WebAllHelpDocs'],
-      // LoadingWebAllMunicipalities: ['Loading WebAllMunicipalities', 'Téléchargement - WebAllMunicipalities'],
-      // LoadingWebAllMWQMLookupMPNs: ['Loading WebAllMWQMLookupMPNs', 'Téléchargement - WebAllMWQMLookupMPNs'],
-      // LoadingWebAllPolSourceGroupings: ['Loading WebAllPolSourceGroupings', 'Téléchargement - WebAllPolSourceGroupings'],
-      // LoadingWebAllPolSourceSiteEffectTerms: ['Loading WebAllPolSourceSiteEffectTerms', 'Téléchargement - WebAllPolSourceSiteEffectTerms'],
-      // LoadingWebAllProvinces: ['Loading WebAllProvinces', 'Téléchargement - WebAllProvinces'],
-      // LoadingWebAllReportTypes: ['Loading WebAllReportTypes', 'Téléchargement - WebAllReportTypes'],
-      // LoadingWebAllTels: ['Loading WebAllTels', 'Téléchargement - WebAllTels'],
-      // LoadingWebAllTideLocations: ['Loading WebAllTideLocations', 'Téléchargement - WebAllTideLocations'],
-      // LoadingWebAllTVItemLanguages1980_2020: ['Loading WebAllTVItemLanguages1980_2020', 'Téléchargement - WebAllTVItemLanguages1980_2020'],
-      // LoadingWebAllTVItemLanguages2021_2060: ['Loading WebAllTVItemLanguages2021_2060', 'Téléchargement - WebAllTVItemLanguages2021_2060'],
-      // LoadingWebAllTVItems1980_2020: ['Loading WebAllTVItems1980_2020', 'Téléchargement - WebAllTVItems1980_2020'],
-      // LoadingWebAllTVItems2021_2060: ['Loading WebAllTVItems2021_2060', 'Téléchargement - WebAllTVItems2021_2060'],
-      // LoadingWebArea: ['Loading WebArea', 'Téléchargement - WebArea'],
-      // LoadingWebClimateSites: ['Loading WebClimateSites', 'Téléchargement - WebClimateSites'],
-      // LoadingWebCountry: ['Loading WebCountry', 'Téléchargement - WebCountry'],
-      // LoadingWebDrogueRuns: ['Loading WebDrogueRuns', 'Téléchargement - WebDrogueRuns'],
-      // LoadingWebHydrometricSites: ['Loading WebHydrometricSites', 'Téléchargement - WebHydrometricSites'],
-      // LoadingWebLabSheets: ['Loading WebLabSheets', 'Téléchargement - WebLabSheets'],
-      // LoadingWebMikeScenarios: ['Loading WebMikeScenarios', 'Téléchargement - WebMikeScenarios'],
-      // LoadingWebMunicipality: ['Loading WebMunicipality', 'Téléchargement - WebMunicipality'],
-      // LoadingWebMWQMRuns: ['Loading WebMWQMRuns', 'Téléchargement - WebMWQMRuns'],
-      // LoadingWebMWQMSamples1980_2020: ['Loading WebMWQMSamples1980_2020', 'Téléchargement - WebMWQMSamples1980_2020'],
-      // LoadingWebMWQMSamples2021_2060: ['Loading WebMWQMSamples2021_2060', 'Téléchargement - WebMWQMSamples2021_2060'],
-      // LoadingWebMWQMSites: ['Loading WebMWQMSites', 'Téléchargement - WebMWQMSites'],
-      // LoadingWebMWQMPolSourceSites: ['Loading WebMWQMPolSourceSites', 'Téléchargement - WebMWQMPolSourceSites'],
-      // LoadingWebProvince: ['Loading WebProvince', 'Téléchargement - WebProvince'],
-      // LoadingWebRoot: ['Loading WebRoot', 'Téléchargement - WebRoot'],
-      // LoadingWebSector: ['Loading WebSector', 'Téléchargement - WebSector'],
-      // LoadingWebSubsector: ['Loading WebSubsector', 'Téléchargement - WebSubsector'],
-      // LoadingWebTideSites: ['Loading WebTideSites', 'Téléchargement - WebTideSites'],
-
-      MunicipalityShowContacts: ['Show contacts', 'Montrer contacts'],
-      MunicipalityContacts: ['Contacts', 'Contacts'],
-      MunicipalityShowFiles: ['Show files', 'Montrer filières'],
-      MunicipalityFiles: ['Files', 'Filières'],
-      MunicipalityShowInfrastructures: ['Show infrastructures', 'Montrer infrastructures'],
-      MunicipalityInfrastructures: ['Infrastructures', 'Infrastructures'],
-      MunicipalityShowMikeScenarios: ['Show MIKE scenaros', 'Montrer les scénarios de MIKE'],
-      MunicipalityMikeScenarios: ['MIKE Scenarios', 'Scénarios de MIKE'],
-
-      ProvinceShowAreas: ['Show areas', 'Montrer areas'],
-      ProvinceAreas: ['Areas', 'Régions'],
-      ProvinceShowMunicipalities: ['Show municipalities', 'Montrer municipalités'],
-      ProvinceMunicipalities: ['Municipalities', 'Municipalités'],
-      ProvinceShowFiles: ['Show files', 'Montrer filières'],
-      ProvinceFiles: ['Files', 'Filières'],
-      ProvinceShowOpenData: ['Show open data', 'Montrer données ouvertes'],
-      ProvinceOpenData: ['Open Data', 'Données ouvertes'],
-      ProvinceShowSamplingPlan: ['Show sampling plan', 'Montrer plan d\'échantillonnage'],
-      ProvinceSamplingPlan: ['Sampling Plan', 'Plan d\'échantillonnage'],
-      ProvinceShowProvinceTools: ['Show province tools', 'Montrer outils pour province'],
-      ProvinceProvinceTools: ['Province Tools', "Outils pour province"],
-
-      RootShowCountries: ['Show countries', 'Montrer pays'],
-      RootCountries: ['Countries', 'Pays'],
-      RootShowFiles: ['Show Files', 'Montrer filières'],
-      RootFiles: ['Files', 'Filières'],
-      RootShowExportArcGISTools: ['Show export Arc GIS tools', 'Montrer outils pour exportation Arc GIS'],
-      RootExportArcGIS: ['Export Arc GIS', 'Exportation Arc GIS'],
-
-      Saving: ['Saving', 'Sauvegarde'],
-
-      SearchSearch: ['Search', 'Rechercher'],
-
-      ShellApplicationName: ['CSSP Web Tools', 'PCCSM: outils Web'],
-      ShellOpenContextMenu: ['Open context menu', 'Ouvrir le menu contextuel'],
-      ShellOpenHistoryMenu: ['Open history menu', 'Ouvrir le menu historique'],
-      ShellReturnHome: ['Return home', 'Retour à la page d\'accueil'],
-      ShellShowMap: ['Show map', 'Montrer carte'],
-      ShellResizeMap: ['Resize map', 'Redimentionnez la carte'],
-      ShellNoInternet: ['No Internet', 'Pas d\'internet'],
-
-      SideNavMenuContextMenu: ['Context menu', 'Menu contextuel'],
-      SideNavMenuShowInactiveItems: ['Show inactive items', 'Montrer items inactifs'],
-      SideNavMenuInactive: ['Inactive', 'Inactif'],
-      SideNavMenuShowDetails: ['Show details', 'Montrer détails'],
-      SideNavMenuDetails: ['Details', 'Détails'],
-      SideNavMenuShowStatCount: ['Show stat count', 'Montrer stat nombre'],
-      SideNavMenuStatCount: ['Stat Count', 'Stat nombre'],
-      SideNavMenuShowLastUpdate: ['Show last update', 'Montrer dernière mise-à-jour'],
-      SideNavMenuLastUpdate: ['Last Update', 'Dernière mise-à-jour'],
-      SideNavMenuShowEdit: ['Show edit', 'Montrer modifier'],
-      SideNavMenuEdit: ['Edit', 'Modifier'],
-
-      SectorShowSubsectors: ['Show subsectors', 'Montrer sous-secteurs'],
-      SectorSubsectors: ['Subsectors', 'Sous-secteurs'],
-      SectorShowFiles: ['Show files', 'Montrer filières'],
-      SectorFiles: ['Files', 'Filières'],
-      SectorShowMIKEScenarios: ['Show MIKE scenarios', 'Montrer scénarios MIKE'],
-      SectorMIKEScenarios: ['MIKE Scenarios', 'Scénarios MIKE'],
-
-      StatSampleNumber: ['Stat sample number', 'Nombre d\'échantillon pour stat'],
-
-      SubsectorShowMWQMSites: ['Show MWQM sites', 'Montrer sites PSQEM'],
-      SubsectorMWQMSites: ['MWQM Sites', 'Sites PSQEM'],
-      SubsectorShowAnalysis: ['Show analysis', 'Montrer analyse'],
-      SubsectorAnalysis: ['Analysis', 'Analyse'],
-      SubsectorShowMWQMRuns: ['Show MWQM runs', 'Montrer tournées PSQEM'],
-      SubsectorMWQMRuns: ['MWQM Runs', 'Tournées PSQEM'],
-      SubsectorShowPollutionSourceSites: ['Show pollution source sites', 'Montrer sites des sources de pollution'],
-      SubsectorPollutionSourceSites: ['Pollution Source Sites', 'Sites des source de pollution'],
-      SubsectorShowFiles: ['Show files', 'Montrer filières'],
-      SubsectorFiles: ['Files', 'Filières'],
-      SubsectorShowSubsectorTools: ['Show subsector tools', 'Montrer outils de sous-secteurs'],
-      SubsectorSubsectorTools: ['Subsector Tools', 'Outils de sous-secteurs'],
-      SubsectorShowLogBook: ['Show log book', 'Montrer journal de bord'],
-      SubsectorLogBook: ['Log Book', 'Journal de bord'],
-
-      TVItemListDetailAreaSector: ['Sector', 'Secteur'],
-      TVItemListDetailAreaSubsector: ['Subsector', 'Sous-secteur'],
-      TVItemListDetailAreaMWQMSample: ['MWQM sample', 'Échantillons'],
-      TVItemListDetailAreaMWQMSite: ['MWQM site', 'Site de SQE'],
-      TVItemListDetailAreaMWQMRun: ['MWQM run', 'Tournées'],
-      TVItemListDetailAreaPolSourceSite: ['Pollution source site', 'Site de source de pollution'],
-
-      TVItemListDetailCountryProvince: ['Province', 'Province'],
-      TVItemListDetailCountryMunicipality: ['Municipality', 'Municipalité'],
-      TVItemListDetailCountryLiftStation: ['Lift station', 'Poste de pompage'],
-      TVItemListDetailCountryWWTP: ['WWTP', 'UÉEU'],
-      TVItemListDetailCountryArea: ['Area', 'Région'],
-      TVItemListDetailCountrySector: ['Sector', 'Secteur'],
-      TVItemListDetailCountrySubsector: ['Subsector', 'Sous-secteur'],
-      TVItemListDetailCountryMWQMSample: ['MWQM sample', 'Échantillons'],
-      TVItemListDetailCountryMWQMSite: ['MWQM site', 'Site de SQE'],
-      TVItemListDetailCountryMWQMRun: ['MWQM run', 'Tournées'],
-      TVItemListDetailCountryPolSourceSite: ['Pollution source site', 'Site de source de pollution'],
-      TVItemListDetailCountryMikeScenario: ['MIKE scenario', 'Scénario de MIKE'],
-      TVItemListDetailCountryBoxModel: ['Box model scenario', 'Scénario boitiers'],
-      TVItemListDetailCountryVPScenario: ['VP scenario', 'Scénario de MIKE'],
-
-      TVItemListDetailMunicipalityLiftStation: ['Lift station', 'Poste de pompage'],
-      TVItemListDetailMunicipalityWWTP: ['WWTP', 'UÉEU'],
-      TVItemListDetailMunicipalityMikeScenario: ['MIKE scenario', 'Scénario de MIKE'],
-      TVItemListDetailMunicipalityBoxModel: ['Box model scenario', 'Scénario boitiers'],
-      TVItemListDetailMunicipalityVPScenario: ['VP scenario', 'Scénario de MIKE'],
-
-      TVItemListDetailMWQMRunDetailPrecipitations: ['Precipitations', 'Précipitations'],
-      TVItemListDetailMWQMRunDetailDay: ['Day', 'Jour'],
-
-      TVItemListDetailMWQMSiteDetailStatistics: ['Statistics', 'Statistiques'],
-      TVItemListDetailMWQMSiteDetailSamples: ['Samples', 'Échantillons'],
-      TVItemListDetailMWQMSiteDetailDataset: ['Dataset', 'Ensemble de données'],
-      TVItemListDetailMWQMSiteDetailStatisticsPeriod: ['Statistics period', 'Période des statistiques'],
-      TVItemListDetailMWQMSiteDetailLastSampleDate: ['Last sample date', 'Date du dernier échantillon'],
-      TVItemListDetailMWQMSiteDetailNumberOfSample: ['Number of sample used for statistics', 'Nombre d\'échantillons utilisés dans les statistiques'],
-      TVItemListDetailMWQMSiteDetailMinimumFC: ['Minimum FC', 'CF minimum'],
-      TVItemListDetailMWQMSiteDetailMaximumFC: ['Maximum FC', 'CF maximum'],
-      TVItemListDetailMWQMSiteDetailGeometricMean: ['Geometric mean', 'Moyenne géométrique'],
-      TVItemListDetailMWQMSiteDetailMedian: ['Median', 'Médiane'],
-      TVItemListDetailMWQMSiteDetailP90: ['P90', 'P90'],
-      TVItemListDetailMWQMSiteDetailPerOfSampleWithFCOver43: ['Percentage of sample with FC > 43', 'Pourcentage des échantillons ayant des CF > 43'],
-      TVItemListDetailMWQMSiteDetailPerOfSampleWithFCOver260: ['Percentage of sample with FC > 260', 'Pourcentage des échantillons ayant des CF > 260'],
-
-
-      TVItemListDetailProvinceMunicipality: ['Municipality', 'Municipalité'],
-      TVItemListDetailProvinceLiftStation: ['Lift station', 'Poste de pompage'],
-      TVItemListDetailProvinceWWTP: ['WWTP', 'UÉEU'],
-      TVItemListDetailProvinceArea: ['Area', 'Région'],
-      TVItemListDetailProvinceSector: ['Sector', 'Secteur'],
-      TVItemListDetailProvinceSubsector: ['Subsector', 'Sous-secteur'],
-      TVItemListDetailProvinceMWQMSample: ['MWQM sample', 'Échantillons'],
-      TVItemListDetailProvinceMWQMSite: ['MWQM site', 'Site de SQE'],
-      TVItemListDetailProvinceMWQMRun: ['MWQM run', 'Tournées'],
-      TVItemListDetailProvincePolSourceSite: ['Pollution source site', 'Site de source de pollution'],
-      TVItemListDetailProvinceMikeScenario: ['MIKE scenario', 'Scénario de MIKE'],
-      TVItemListDetailProvinceBoxModel: ['Box model scenario', 'Scénario boitiers'],
-      TVItemListDetailProvinceVPScenario: ['VP scenario', 'Scénario de MIKE'],
-
-      TVItemListDetailSectorSubsector: ['Subsector', 'Sous-secteur'],
-      TVItemListDetailSectorMWQMSample: ['MWQM sample', 'Échantillons'],
-      TVItemListDetailSectorMWQMSite: ['MWQM site', 'Site de SQE'],
-      TVItemListDetailSectorMWQMRun: ['MWQM run', 'Tournées'],
-      TVItemListDetailSectorPolSourceSite: ['Pollution source site', 'Site de source de pollution'],
-      TVItemListDetailSectorMikeScenario: ['MIKE scenario', 'Scénario de MIKE'],
-
-      TVItemListDetailSubsectorMWQMSample: ['MWQM sample', 'Échantillons'],
-      TVItemListDetailSubsectorMWQMSite: ['MWQM site', 'Site de SQE'],
-      TVItemListDetailSubsectorMWQMRun: ['MWQM run', 'Tournées'],
-      TVItemListDetailSubsectorPolSourceSite: ['Pollution source site', 'Site de source de pollution'],
-
-
+  
+  SetLanguage(Language: LanguageEnum)
+  {
+    if (Language == LanguageEnum.fr)
+    {
+      this.Language = LanguageEnum.fr;
+      this.LangID = LanguageEnum.fr - 1;
+    }
+    else{
+      this.Language = LanguageEnum.en;
+      this.LangID = LanguageEnum.en - 1;
     }
   }
+
+  Language?: LanguageEnum = LanguageEnum.en;
+  LangID?: number = 0;
+
+  AnalysisSite: string[] =  ['Site', 'Site'];
+  AnalysisSamples: string[] = ['Samples', 'Échantillons'];
+  AnalysisPeriod: string[] = ['Period', 'Période'];
+  AnalysisMinFC: string[] = ['Min FC', 'CF min'];
+  AnalysisMaxFC: string[] = ['Max FC', 'CF max'];
+  AnalysisGMean: string[] = ['Geo. Mean', 'Moyenne Geo.'];
+  AnalysisMedian: string[] = ['Median', 'Médianne'];
+  AnalysisP90: string[] = ['P90', 'P90'];
+  AnalysisPerOver43: string[] = ['% > 43', '% > 43'];
+  AnalysisPerOver260: string[] = ['% > 260', '% > 260'];
+  AnalysisPrecipitation: string[] = ['Precipitation', 'Précipitation'];
+  AnalysisRunDay: string[] = ['Run Day', 'Tournée'];
+  AnalysisStartTide: string[] = ['Start Tide', 'Marée de début'];
+  AnalysisEndTide: string[] = ['End Tide', 'Marée de fin'];
+  AnalysisInactive: string[] = ['Inactive', 'Inactif'];
+
+  AnalysisDataVisibleFecalColiform: string[] = ['Fecal Coliform / 100 mL', 'Coliformes fécaux / 100 mL'];
+  AnalysisDataVisibleTemperature: string[] = ['Temperature (C)', 'Température (C)'];
+  AnalysisDataVisibleSalinity: string[] = ['Salinity (ppt)', 'Salinité (ppm)'];
+  AnalysisDataVisibleP90: string[] = ['P90', 'P90'];
+  AnalysisDataVisibleGeometriMean: string[] = ['Geometric Mean', 'Moyenne géométrique'];
+  AnalysisDataVisibleMedian: string[] = ['Median', 'Médiane'];
+  AnalysisDataVisiblePerAbove43: string[] = ['% > 43', '% > 43'];
+  AnalysisDataVisiblePerAbove260: string[] = ['% > 260', '% > 260'];
+
+  AnalysisOptionsAnalysisOptions: string[] = ['Analysis Options', 'Options d\'analyses'];
+  AnalysisOptionsStart: string[] = ['Start', 'Début'];
+  AnalysisOptionsEnd: string[] = ['End', 'Fin'];
+  AnalysisOptionsRuns: string[] = ['Runs', 'Tournées'];
+  AnalysisOptionsCalculation: string[] = ['Calculation', 'Calcul'];
+  AnalysisOptionsStartDate: string[] = ['Start Date', 'Date de début'];
+  AnalysisOptionsEndDate: string[] = ['End Date', 'Date de fin'];
+  AnalysisOptionsPPT: string[] = ['ppt', 'ppm'];
+  AnalysisOptionsHighlightSal: string[] = ['Highlight salinity deviation from average', 'Souligner l\'écart de salinité par rapport à la moyenne'];
+  AnalysisOptionsUpperLowerRainLimit: string[] = ['Upper and lower rain limit considered dry or wet', 'Limite de pluie supérieure et inférieure considérée comme sèche ou humide'];
+  AnalysisOptionsConsideredDry: string[] = ['Considered Dry', 'Considéré sec'];
+  AnalysisOptionsConsideredWet: string[] = ['Considered Wet', 'Considéré pluie'];
+  AnalysisOptionsDry: string[] = ['Dry', 'Sec'];
+  AnalysisOptionsWet: string[] = ['Wet', 'Pluie'];
+
+  AreaShowSectors: string[] = ['Show sectors', 'Montrer secteurs'];
+  AreaSectors: string[] = ['Sectors', 'Secteurs'];
+  AreaShowFiles: string[] = ['Show files', 'Montrer filières'];
+  AreaFiles: string[] = ['Files', 'Filières'];
+
+  ContactNotFound: string[] = ['Contact not found', 'Contact non trouvé'];
+
+  CountryShowProvinces: string[] = ['Show provinces', 'Montrer provinces'];
+  CountryProvinces: string[] = ['Provinces', 'Provinces'];
+  CountryShowFiles: string[] = ['Show files', 'Montrer filières'];
+  CountryFiles: string[] = ['Files', 'Filières'];
+  CountryShowOpenDataNationalTools: string[] = ['Show open data national tools', 'Montrer outils données ouvertes nationales'];
+  CountryOpenDataNational: string[] = ['Open Data National', 'Données ouvertes nationales'];
+  CountryShowEmailDistributionList: string[] = ['Show email distribution list', 'Montrer liste de distribution des courriels'];
+  CountryEmailDistributionList: string[] = ['Email Distribution List', 'Liste de distribution des courriels'];
+  CountryShowRainExceedance: string[] = ['Show rain exceedance', 'Montrer pluie dépassement'];
+  CountryRainExceedance: string[] = ['Rain Exceedance', 'Pluie dépassement'];
+
+  DateJanuary: string[] = ['January', 'janvier'];
+  DateFebruary: string[] = ['February', 'février'];
+  DateMarch: string[] = ['March', 'mars'];
+  DateApril: string[] = ['April', 'avril'];
+  DateMay: string[] = ['May', 'mai'];
+  DateJune: string[] = ['June', 'juin'];
+  DateJuly: string[] = ['July', 'juillet'];
+  DateAugust: string[] = ['August', 'août'];
+  DateSeptember: string[] = ['September', 'septembre'];
+  DateOctober: string[] = ['October', 'octobre'];
+  DateNovember: string[] = ['November', 'novembre'];
+  DateDecember: string[] = ['December', 'décembre'];
+
+  DateJanuaryAcronym: string[] = ['Jan', 'jan'];
+  DateFebruaryAcronym: string[] = ['Feb', 'fév'];
+  DateMarchAcronym: string[] = ['Mar', 'mar'];
+  DateAprilAcronym: string[] = ['Apr', 'avr'];
+  DateMayAcronym: string[] = ['May', 'mai'];
+  DateJuneAcronym: string[] = ['Jun', 'juin'];
+  DateJulyAcronym: string[] = ['Jul', 'jul'];
+  DateAugustAcronym: string[] = ['Aug', 'août'];
+  DateSeptemberAcronym: string[] = ['Sep', 'sep'];
+  DateOctoberAcronym: string[] = ['Oct', 'oct'];
+  DateNovemberAcronym: string[] = ['Nov', 'nov'];
+  DateDecemberAcronym: string[] = ['Dec', 'déc'];
+
+  ForceReload: string[] = ['Force Reload', 'Téléchargement forcé'];
+
+  HomeCSSPWebTools: string[] = ['CSSP Web Tools', 'PCCSM: outils Web'];
+  HomeTheWebToolWillLetYou: string[] = ['The Web tools will let you:', 'Avec les outils Web, il est possible de:'];
+  HomeViewAndUpdateWWTPInfo: string[] = ['view and update the waste water treatment plants and the lift stations information,', 'consulter et mettre à jour l\'information des usines de traitement des eaux usées et des postes de pompage,'];
+  HomeMakeCalculationUsingBoxModelAndVisualPlumes: string[] = ['make calculation using Box Model and Visual Plumes,', 'exécuter les calculs utilisant Box Model et Visual Plumes,'];
+  HomeSetupAndRunMIKEScenariosAndStoreInputsAndResults: string[] = ['Setup and run MIKE scenarios and store inputs and results', 'Configurer et exécuter des scénarios MIKE et stocker les entrées et les résultats'];
+  HomeManageMWQMInformation: string[] = ['Manage Marine Water Quality Monitorng Information', 'Gestion de l\'informmation de Surveillance de qualité d\'eau marine'];
+  HomeToHaveAccessWebToolsInformationAndApplication: string[] = ['To have access to Web Tools information and application, ', 'Pour accéder à l\'information et aux applications des outils Web,'];
+  HomePleaseContactASiteAdministratorListedBelow: string[] = ['please contact a site administrator listed below', 'veuillez contacter un administrateur du site suivants:'];
+  HomeStartUsingCSSPWebTools: string[] = ['Start using CSSP Web Tools', 'Utilisez les outils web PCCSM'];
+  HomeAzureVersion: string[] = ['(Azure Version)', '(Version Azure)'];
+
+  KB: string[] = ['KB', 'Ko'];
+
+  Loading: string[] = ['Loading', 'Téléchargement'];
+
+  MunicipalityShowContacts: string[] = ['Show contacts', 'Montrer contacts'];
+  MunicipalityContacts: string[] = ['Contacts', 'Contacts'];
+  MunicipalityShowFiles: string[] = ['Show files', 'Montrer filières'];
+  MunicipalityFiles: string[] = ['Files', 'Filières'];
+  MunicipalityShowInfrastructures: string[] = ['Show infrastructures', 'Montrer infrastructures'];
+  MunicipalityInfrastructures: string[] = ['Infrastructures', 'Infrastructures'];
+  MunicipalityShowMikeScenarios: string[] = ['Show MIKE scenaros', 'Montrer les scénarios de MIKE'];
+  MunicipalityMikeScenarios: string[] = ['MIKE Scenarios', 'Scénarios de MIKE'];
+
+  Next: string[] = ['Next', 'Prochain'];
+
+  ProvinceShowAreas: string[] = ['Show areas', 'Montrer areas'];
+  ProvinceAreas: string[] = ['Areas', 'Régions'];
+  ProvinceShowMunicipalities: string[] = ['Show municipalities', 'Montrer municipalités'];
+  ProvinceMunicipalities: string[] = ['Municipalities', 'Municipalités'];
+  ProvinceShowFiles: string[] = ['Show files', 'Montrer filières'];
+  ProvinceFiles: string[] = ['Files', 'Filières'];
+  ProvinceShowOpenData: string[] = ['Show open data', 'Montrer données ouvertes'];
+  ProvinceOpenData: string[] = ['Open Data', 'Données ouvertes'];
+  ProvinceShowSamplingPlan: string[] = ['Show sampling plan', 'Montrer plan d\'échantillonnage'];
+  ProvinceSamplingPlan: string[] = ['Sampling Plan', 'Plan d\'échantillonnage'];
+  ProvinceShowProvinceTools: string[] = ['Show province tools', 'Montrer outils pour province'];
+  ProvinceProvinceTools: string[] = ['Province Tools', "Outils pour province"];
+
+  RootShowCountries: string[] = ['Show countries', 'Montrer pays'];
+  RootCountries: string[] = ['Countries', 'Pays'];
+  RootShowFiles: string[] = ['Show Files', 'Montrer filières'];
+  RootFiles: string[] = ['Files', 'Filières'];
+  RootShowExportArcGISTools: string[] = ['Show export Arc GIS tools', 'Montrer outils pour exportation Arc GIS'];
+  RootExportArcGIS: string[] = ['Export Arc GIS', 'Exportation Arc GIS'];
+
+  Saving: string[] = ['Saving', 'Sauvegarde'];
+
+  SearchSearch: string[] = ['Search', 'Rechercher'];
+
+  ShellApplicationName: string[] = ['CSSP Web Tools', 'PCCSM: outils Web'];
+  ShellOpenContextMenu: string[] = ['Open context menu', 'Ouvrir le menu contextuel'];
+  ShellOpenHistoryMenu: string[] = ['Open history menu', 'Ouvrir le menu historique'];
+  ShellReturnHome: string[] = ['Return home', 'Retour à la page d\'accueil'];
+  ShellShowMap: string[] = ['Show map', 'Montrer carte'];
+  ShellResizeMap: string[] = ['Resize map', 'Redimentionnez la carte'];
+  ShellNoInternet: string[] = ['No Internet', 'Pas d\'internet'];
+
+  SideNavMenuContextMenu: string[] = ['Context menu', 'Menu contextuel'];
+  SideNavMenuShowInactiveItems: string[] = ['Show inactive items', 'Montrer items inactifs'];
+  SideNavMenuInactive: string[] = ['Inactive', 'Inactif'];
+  SideNavMenuShowDetails: string[] = ['Show details', 'Montrer détails'];
+  SideNavMenuDetails: string[] = ['Details', 'Détails'];
+  SideNavMenuShowStatCount: string[] = ['Show stat count', 'Montrer stat nombre'];
+  SideNavMenuStatCount: string[] = ['Stat Count', 'Stat nombre'];
+  SideNavMenuShowLastUpdate: string[] = ['Show last update', 'Montrer dernière mise-à-jour'];
+  SideNavMenuLastUpdate: string[] = ['Last Update', 'Dernière mise-à-jour'];
+  SideNavMenuShowEdit: string[] = ['Show edit', 'Montrer modifier'];
+  SideNavMenuEdit: string[] = ['Edit', 'Modifier'];
+
+  SectorShowSubsectors: string[] = ['Show subsectors', 'Montrer sous-secteurs'];
+  SectorSubsectors: string[] = ['Subsectors', 'Sous-secteurs'];
+  SectorShowFiles: string[] = ['Show files', 'Montrer filières'];
+  SectorFiles: string[] = ['Files', 'Filières'];
+  SectorShowMIKEScenarios: string[] = ['Show MIKE scenarios', 'Montrer scénarios MIKE'];
+  SectorMIKEScenarios: string[] = ['MIKE Scenarios', 'Scénarios MIKE'];
+
+  StatSampleNumber: string[] = ['Stat sample number', 'Nombre d\'échantillon pour stat'];
+
+  SubsectorShowMWQMSites: string[] = ['Show MWQM sites', 'Montrer sites PSQEM'];
+  SubsectorMWQMSites: string[] = ['MWQM Sites', 'Sites PSQEM'];
+  SubsectorShowAnalysis: string[] = ['Show analysis', 'Montrer analyse'];
+  SubsectorAnalysis: string[] = ['Analysis', 'Analyse'];
+  SubsectorShowMWQMRuns: string[] = ['Show MWQM runs', 'Montrer tournées PSQEM'];
+  SubsectorMWQMRuns: string[] = ['MWQM Runs', 'Tournées PSQEM'];
+  SubsectorShowPollutionSourceSites: string[] = ['Show pollution source sites', 'Montrer sites des sources de pollution'];
+  SubsectorPollutionSourceSites: string[] = ['Pollution Source Sites', 'Sites des source de pollution'];
+  SubsectorShowFiles: string[] = ['Show files', 'Montrer filières'];
+  SubsectorFiles: string[] = ['Files', 'Filières'];
+  SubsectorShowSubsectorTools: string[] = ['Show subsector tools', 'Montrer outils de sous-secteurs'];
+  SubsectorSubsectorTools: string[] = ['Subsector Tools', 'Outils de sous-secteurs'];
+  SubsectorShowLogBook: string[] = ['Show log book', 'Montrer journal de bord'];
+  SubsectorLogBook: string[] = ['Log Book', 'Journal de bord'];
+
+  TVItemListDetailAreaSector: string[] = ['Sector', 'Secteur'];
+  TVItemListDetailAreaSubsector: string[] = ['Subsector', 'Sous-secteur'];
+  TVItemListDetailAreaMWQMSample: string[] = ['MWQM sample', 'Échantillons'];
+  TVItemListDetailAreaMWQMSite: string[] = ['MWQM site', 'Site de SQE'];
+  TVItemListDetailAreaMWQMRun: string[] = ['MWQM run', 'Tournées'];
+  TVItemListDetailAreaPolSourceSite: string[] = ['Pollution source site', 'Site de source de pollution'];
+
+  TVItemListDetailCountryProvince: string[] = ['Province', 'Province'];
+  TVItemListDetailCountryMunicipality: string[] = ['Municipality', 'Municipalité'];
+  TVItemListDetailCountryLiftStation: string[] = ['Lift station', 'Poste de pompage'];
+  TVItemListDetailCountryWWTP: string[] = ['WWTP', 'UÉEU'];
+  TVItemListDetailCountryArea: string[] = ['Area', 'Région'];
+  TVItemListDetailCountrySector: string[] = ['Sector', 'Secteur'];
+  TVItemListDetailCountrySubsector: string[] = ['Subsector', 'Sous-secteur'];
+  TVItemListDetailCountryMWQMSample: string[] = ['MWQM sample', 'Échantillons'];
+  TVItemListDetailCountryMWQMSite: string[] = ['MWQM site', 'Site de SQE'];
+  TVItemListDetailCountryMWQMRun: string[] = ['MWQM run', 'Tournées'];
+  TVItemListDetailCountryPolSourceSite: string[] = ['Pollution source site', 'Site de source de pollution'];
+  TVItemListDetailCountryMikeScenario: string[] = ['MIKE scenario', 'Scénario de MIKE'];
+  TVItemListDetailCountryBoxModel: string[] = ['Box model scenario', 'Scénario boitiers'];
+  TVItemListDetailCountryVPScenario: string[] = ['VP scenario', 'Scénario de MIKE'];
+
+  TVItemListDetailMunicipalityLiftStation: string[] = ['Lift station', 'Poste de pompage'];
+  TVItemListDetailMunicipalityWWTP: string[] = ['WWTP', 'UÉEU'];
+  TVItemListDetailMunicipalityMikeScenario: string[] = ['MIKE scenario', 'Scénario de MIKE'];
+  TVItemListDetailMunicipalityBoxModel: string[] = ['Box model scenario', 'Scénario boitiers'];
+  TVItemListDetailMunicipalityVPScenario: string[] = ['VP scenario', 'Scénario de MIKE'];
+
+  TVItemListDetailMWQMRunDetailPrecipitations: string[] = ['Precipitations', 'Précipitations'];
+  TVItemListDetailMWQMRunDetailDay: string[] = ['Day', 'Jour'];
+
+  TVItemListDetailMWQMSiteDetailStatistics: string[] = ['Statistics', 'Statistiques'];
+  TVItemListDetailMWQMSiteDetailSamples: string[] = ['Samples', 'Échantillons'];
+  TVItemListDetailMWQMSiteDetailDataset: string[] = ['Dataset', 'Ensemble de données'];
+  TVItemListDetailMWQMSiteDetailStatisticsPeriod: string[] = ['Statistics period', 'Période des statistiques'];
+  TVItemListDetailMWQMSiteDetailLastSampleDate: string[] = ['Last sample date', 'Date du dernier échantillon'];
+  TVItemListDetailMWQMSiteDetailNumberOfSample: string[] = ['Number of sample used for statistics', 'Nombre d\'échantillons utilisés dans les statistiques'];
+  TVItemListDetailMWQMSiteDetailMinimumFC: string[] = ['Minimum FC', 'CF minimum'];
+  TVItemListDetailMWQMSiteDetailMaximumFC: string[] = ['Maximum FC', 'CF maximum'];
+  TVItemListDetailMWQMSiteDetailGeometricMean: string[] = ['Geometric mean', 'Moyenne géométrique'];
+  TVItemListDetailMWQMSiteDetailMedian: string[] = ['Median', 'Médiane'];
+  TVItemListDetailMWQMSiteDetailP90: string[] = ['P90', 'P90'];
+  TVItemListDetailMWQMSiteDetailPerOfSampleWithFCOver43: string[] = ['Percentage of sample with FC > 43', 'Pourcentage des échantillons ayant des CF > 43'];
+  TVItemListDetailMWQMSiteDetailPerOfSampleWithFCOver260: string[] = ['Percentage of sample with FC > 260', 'Pourcentage des échantillons ayant des CF > 260'];
+
+
+  TVItemListDetailProvinceMunicipality: string[] = ['Municipality', 'Municipalité'];
+  TVItemListDetailProvinceLiftStation: string[] = ['Lift station', 'Poste de pompage'];
+  TVItemListDetailProvinceWWTP: string[] = ['WWTP', 'UÉEU'];
+  TVItemListDetailProvinceArea: string[] = ['Area', 'Région'];
+  TVItemListDetailProvinceSector: string[] = ['Sector', 'Secteur'];
+  TVItemListDetailProvinceSubsector: string[] = ['Subsector', 'Sous-secteur'];
+  TVItemListDetailProvinceMWQMSample: string[] = ['MWQM sample', 'Échantillons'];
+  TVItemListDetailProvinceMWQMSite: string[] = ['MWQM site', 'Site de SQE'];
+  TVItemListDetailProvinceMWQMRun: string[] = ['MWQM run', 'Tournées'];
+  TVItemListDetailProvincePolSourceSite: string[] = ['Pollution source site', 'Site de source de pollution'];
+  TVItemListDetailProvinceMikeScenario: string[] = ['MIKE scenario', 'Scénario de MIKE'];
+  TVItemListDetailProvinceBoxModel: string[] = ['Box model scenario', 'Scénario boitiers'];
+  TVItemListDetailProvinceVPScenario: string[] = ['VP scenario', 'Scénario de MIKE'];
+
+  TVItemListDetailSectorSubsector: string[] = ['Subsector', 'Sous-secteur'];
+  TVItemListDetailSectorMWQMSample: string[] = ['MWQM sample', 'Échantillons'];
+  TVItemListDetailSectorMWQMSite: string[] = ['MWQM site', 'Site de SQE'];
+  TVItemListDetailSectorMWQMRun: string[] = ['MWQM run', 'Tournées'];
+  TVItemListDetailSectorPolSourceSite: string[] = ['Pollution source site', 'Site de source de pollution'];
+  TVItemListDetailSectorMikeScenario: string[] = ['MIKE scenario', 'Scénario de MIKE'];
+
+  TVItemListDetailSubsectorMWQMSample: string[] = ['MWQM sample', 'Échantillons'];
+  TVItemListDetailSubsectorMWQMSite: string[] = ['MWQM site', 'Site de SQE'];
+  TVItemListDetailSubsectorMWQMRun: string[] = ['MWQM run', 'Tournées'];
+  TVItemListDetailSubsectorPolSourceSite: string[] = ['Pollution source site', 'Site de source de pollution'];
+
 }

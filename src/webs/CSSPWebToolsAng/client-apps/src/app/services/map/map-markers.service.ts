@@ -1,37 +1,35 @@
 import { Injectable } from '@angular/core';
 import { MapInfoDrawTypeEnum } from 'src/app/enums/generated/MapInfoDrawTypeEnum';
-import { SubsectorSubComponentEnum } from 'src/app/enums/generated/SubsectorSubComponentEnum';
-import { AppLoaded } from 'src/app/models/AppLoaded.model';
-import { AppState } from 'src/app/models/AppState.model';
 import { MapInfoModel } from 'src/app/models/generated/web/MapInfoModel.model';
-import { StatMWQMSite } from 'src/app/models/generated/web/StatMWQMSite.model';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { MapHelperService } from 'src/app/services/map/map-helper.service';
+import { AppLanguageService } from '../app-language.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MapMarkersService {
 
-  tvItemStatMapModelList: TVItemModel[];
+  tvItemModelList: TVItemModel[];
 
   constructor(private appStateService: AppStateService,
     private appLoadedService: AppLoadedService,
+    private appLanguageService: AppLanguageService,
     private mapHelperService: MapHelperService) {
   }
 
-  DrawMarkers(tvItemStatMapModelList: TVItemModel[]) {
-    this.tvItemStatMapModelList = tvItemStatMapModelList;
+  DrawMarkers(tvItemModelList: TVItemModel[]) {
+    this.tvItemModelList = tvItemModelList;
 
-    let map: google.maps.Map = this.appLoadedService.AppLoaded$.getValue().Map;
+    let map: google.maps.Map = this.appLoadedService.Map;
 
     let markerList: google.maps.Marker[] = [];
 
     let count: number = 0;
-    for (let tvItemStatMapModel of tvItemStatMapModelList) {
-      for (let mapInfoModel of tvItemStatMapModel.MapInfoModelList) {
+    for (let tvItemModel of tvItemModelList) {
+      for (let mapInfoModel of tvItemModel.MapInfoModelList) {
         if (mapInfoModel.MapInfo?.MapInfoDrawType == MapInfoDrawTypeEnum.Point) {
           let mark: google.maps.Marker = new google.maps.Marker();
 
@@ -39,20 +37,20 @@ export class MapMarkersService {
 
           let position: google.maps.LatLngLiteral = { lat: mapInfoModel.MapInfoPointList[0].Lat, lng: mapInfoModel.MapInfoPointList[0].Lng };
           let label: google.maps.MarkerLabel = { color: '00ff00', fontWeight: 'bold', text: count.toString() };
-          let title = tvItemStatMapModel.TVItemLanguageList[this.appStateService.AppState$.getValue().Language].TVText;
-          let info = tvItemStatMapModel.TVItemLanguageList[this.appStateService.AppState$.getValue().Language].TVText;
-          let path: string = this.appStateService.AppState$.getValue().MapMarkerPathCharacters[3]; // 3 characters
+          let title = tvItemModel.TVItemLanguageList[this.appLanguageService.LangID].TVText;
+          let info = tvItemModel.TVItemLanguageList[this.appLanguageService.LangID].TVText;
+          let path: string = this.appStateService.MapMarkerPathCharacters[3]; // 3 characters
           let strokeColor: string = this.mapHelperService.GetMapMarkerColor(mapInfoModel.MapInfo.TVType);
           let fillColor: string = this.mapHelperService.GetMapMarkerColor(mapInfoModel.MapInfo.TVType);
 
           if (label.text) {
             if (label.text.length < 6) {
-              path = this.appStateService.AppState$.getValue().MapMarkerPathCharacters[label.text.length];
+              path = this.appStateService.MapMarkerPathCharacters[label.text.length];
             }
           }
 
-          // if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.MWQMSites) {
-          //   let statMWQMSiteList: StatMWQMSite[] = this.appLoadedService.AppLoaded$.getValue()?.StatMWQMSiteList?.filter(c => c.TVItemModel.TVItem.TVItemID == tvItemStatMapModel.TVItem.TVItemID);
+          // if (this.appStateService.SubsectorSubComponent == SubsectorSubComponentEnum.MWQMSites) {
+          //   let statMWQMSiteList: StatMWQMSite[] = this.appLoadedService.StatMWQMSiteList?.filter(c => c.TVItemModel.TVItem.TVItemID == tvItemModel.TVItem.TVItemID);
 
           //   if (statMWQMSiteList && statMWQMSiteList.length > 0) {
           //     strokeColor = statMWQMSiteList[0]?.StatMWQMSiteSampleList[0]?.ColorAndLetter?.hexColor;
@@ -77,41 +75,40 @@ export class MapMarkersService {
               labelOrigin: new google.maps.Point(0, -18),
             },
             map: map,
-            draggable: this.appStateService.AppState$.getValue().EditMapVisible,
+            draggable: this.appStateService.EditMapVisible,
             zIndex: mapInfoModel.MapInfo.MapInfoID,
           };
 
           mark = new google.maps.Marker(options);
 
-          if (this.appStateService.AppState$.getValue().EditMapVisible) {
+          if (this.appStateService.EditMapVisible) {
             google.maps.event.addListener(mark, "mousemove", (evt: google.maps.MouseEvent) => {
-              if (!this.appStateService.AppState$.getValue().EditMapChanged) {
+              if (!this.appStateService.EditMapChanged) {
                 (<HTMLInputElement>document.getElementById("CurrentLatLng")).value = (evt.latLng.lat().toString().substring(0, 8) +
                   ' ' + evt.latLng.lng().toString().substring(0, 8));
               }
               else{
-                (<HTMLInputElement>document.getElementById("CurrentLatLng")).value = (this.appStateService.AppState$.getValue().MarkerDragStartPos.lat().toFixed(6) +
-                ' ' + this.appStateService.AppState$.getValue().MarkerDragStartPos.lng().toFixed(6));
+                (<HTMLInputElement>document.getElementById("CurrentLatLng")).value = (this.appStateService.MarkerDragStartPos.lat().toFixed(6) +
+                ' ' + this.appStateService.MarkerDragStartPos.lng().toFixed(6));
               }
             });
 
             google.maps.event.addListener(mark, 'dragstart', () => {
-              this.appStateService.UpdateAppState(<AppState>{
-                MarkerTVItemID: mapInfoModel.MapInfo.TVItemID,
-                MarkerMapInfoID: mapInfoModel.MapInfo.MapInfoID,
-                MarkerDragStartPos: this.GetMapInfoCoord(mapInfoModel),
-                EditMapChanged: true,
-                MarkerLabel: mark.getLabel().text,
-              });
-              (<HTMLInputElement>document.getElementById("CurrentLatLng")).value = (this.appStateService.AppState$.getValue().MarkerDragStartPos.lat().toFixed(6) +
-                ' ' + this.appStateService.AppState$.getValue().MarkerDragStartPos.lng().toFixed(6));
+              this.appStateService.MarkerTVItemID = mapInfoModel.MapInfo.TVItemID;
+              this.appStateService.MarkerMapInfoID = mapInfoModel.MapInfo.MapInfoID;
+              this.appStateService.MarkerDragStartPos = this.GetMapInfoCoord(mapInfoModel);
+              this.appStateService.EditMapChanged =  true;
+              this.appStateService.MarkerLabel = mark.getLabel().text;
+             
+              (<HTMLInputElement>document.getElementById("CurrentLatLng")).value = (this.appStateService.MarkerDragStartPos.lat().toFixed(6) +
+                ' ' + this.appStateService.MarkerDragStartPos.lng().toFixed(6));
             });
             google.maps.event.addListener(mark, 'drag', () => {
               (<HTMLInputElement>document.getElementById("ChangedLatLng")).value = (mark.getPosition().lat().toFixed(6) +
                 ' ' + mark.getPosition().lng().toFixed(6));
             });
             google.maps.event.addListener(mark, 'dragend', () => {
-              this.appStateService.UpdateAppState(<AppState>{ MarkerDragEndPos: mark.getPosition() });
+              this.appStateService.MarkerDragEndPos = mark.getPosition();
               (<HTMLInputElement>document.getElementById("ChangedLatLng")).value = (mark.getPosition().lat().toFixed(6) +
                 ' ' + mark.getPosition().lng().toFixed(6));
             });
@@ -122,7 +119,7 @@ export class MapMarkersService {
       };
     }
 
-    this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ GoogleMarkerListMVC: new google.maps.MVCArray<google.maps.Marker>(markerList) });
+    this.appLoadedService.GoogleMarkerListMVC = new google.maps.MVCArray<google.maps.Marker>(markerList);
   }
 
   GetMapInfoCoord(mapInfoModel: MapInfoModel): google.maps.LatLng {

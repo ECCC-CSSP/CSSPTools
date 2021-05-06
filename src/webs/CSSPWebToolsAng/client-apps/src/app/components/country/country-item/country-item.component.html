@@ -1,75 +1,73 @@
-<span *ngIf="(appStateService.AppState$ | async).Working">
+<span *ngIf="appStateService.Working">
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </span>
-<p class="loading-status" *ngIf="(appStateService.AppState$ | async).Status">
-    {{ appStateService.AppState$?.getValue()?.Status }}
+<p class="loading-status" *ngIf="appStateService.Status">
+    {{ appStateService.Status }}
 </p>
 
 <button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionCountry(countrySubComponentEnum.Provinces)"
     (click)="componentShowService.ShowCountry(countrySubComponentEnum.Provinces)"
-    title="{{ appLanguageService.AppLanguage.CountryShowProvinces[appStateService.AppState$?.getValue().Language] }}">
+    title="{{ appLanguageService.CountryShowProvinces[appLanguageService.LangID] }}">
     <span>
-        {{ appLanguageService.AppLanguage.CountryProvinces[appStateService.AppState$?.getValue().Language] }}
-        <span class="badge-stat" *ngIf="appStateService.AppState$.getValue().StatCountVisible">
-            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebCountry?.TVItemModel, tvTypeEnum.Province) }}&nbsp;&nbsp;
+        {{ appLanguageService.CountryProvinces[appLanguageService.LangID] }}
+        <span class="badge-stat" *ngIf="appStateService.StatCountVisible">
+            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.WebCountry?.TVItemModel, tvTypeEnum.Province) }}&nbsp;&nbsp;
         </span>                                                                                                
     </span>
     <span class="biggerArrow"
         (click)="tvItemSortOrderService.ChangeTVItemSortOrder(sortOrderAngular.CountryProvinces, ascDescEnum.Ascending)"
-        *ngIf="appStateService.AppState$.getValue().CountryProvincesSortOrder == ascDescEnum.Descending">
+        *ngIf="appStateService.CountryProvincesSortOrder == ascDescEnum.Descending">
         &nbsp;&nbsp;&uarr;
     </span>
     <span class="biggerArrow"
         (click)="tvItemSortOrderService.ChangeTVItemSortOrder(sortOrderAngular.CountryProvinces, ascDescEnum.Descending)"
-        *ngIf="appStateService.AppState$.getValue().CountryProvincesSortOrder == ascDescEnum.Ascending">
+        *ngIf="appStateService.CountryProvincesSortOrder == ascDescEnum.Ascending">
         &nbsp;&nbsp;&darr;
     </span>
 </button>
 <button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionCountry(countrySubComponentEnum.Files)"
     (click)="componentShowService.ShowCountry(countrySubComponentEnum.Files)"
-    title="{{ appLanguageService.AppLanguage.CountryShowFiles[appStateService.AppState$?.getValue().Language] }}">
+    title="{{ appLanguageService.CountryShowFiles[appLanguageService.LangID] }}">
     <span>
-        {{ appLanguageService.AppLanguage.CountryFiles[appStateService.AppState$?.getValue().Language] }}
-        <span class="badge-stat" *ngIf="appStateService.AppState$.getValue().StatCountVisible">
-            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebCountry?.TVItemModel, tvTypeEnum.File) }}/
-            {{ statCountService.GetStatCount(appLoadedService.AppLoaded$.getValue().WebCountry?.TVItemModel, tvTypeEnum.TotalFile) }}&nbsp;&nbsp;
+        {{ appLanguageService.CountryFiles[appLanguageService.LangID] }}
+        <span class="badge-stat" *ngIf="appStateService.StatCountVisible">
+            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.WebCountry?.TVItemModel, tvTypeEnum.File) }}/
+            {{ statCountService.GetStatCount(appLoadedService.WebCountry?.TVItemModel, tvTypeEnum.TotalFile) }}&nbsp;&nbsp;
         </span>                                                                                                        
     </span>
 </button>
 <button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionCountry(countrySubComponentEnum.OpenDataNational)"
     (click)="componentShowService.ShowCountry(countrySubComponentEnum.OpenDataNational)"
-    title="{{ appLanguageService.AppLanguage.CountryShowOpenDataNationalTools[appStateService.AppState$?.getValue().Language] }}">
-    {{ appLanguageService.AppLanguage.CountryOpenDataNational[appStateService.AppState$?.getValue().Language] }}
+    title="{{ appLanguageService.CountryShowOpenDataNationalTools[appLanguageService.LangID] }}">
+    {{ appLanguageService.CountryOpenDataNational[appLanguageService.LangID] }}
 </button>
 <button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionCountry(countrySubComponentEnum.EmailDistributionList)"
     (click)="componentShowService.ShowCountry(countrySubComponentEnum.EmailDistributionList)"
-    title="{{ appLanguageService.AppLanguage.CountryShowEmailDistributionList[appStateService.AppState$?.getValue().Language] }}">
-    {{ appLanguageService.AppLanguage.CountryEmailDistributionList[appStateService.AppState$?.getValue().Language] }}
+    title="{{ appLanguageService.CountryShowEmailDistributionList[appLanguageService.LangID] }}">
+    {{ appLanguageService.CountryEmailDistributionList[appLanguageService.LangID] }}
 </button>
 <button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionCountry(countrySubComponentEnum.RainExceedance)"
     (click)="componentShowService.ShowCountry(countrySubComponentEnum.RainExceedance)"
-    title="{{ appLanguageService.AppLanguage.CountryShowRainExceedance[appStateService.AppState$?.getValue().Language] }}">
-    {{ appLanguageService.AppLanguage.CountryRainExceedance[appStateService.AppState$?.getValue().Language] }}
+    title="{{ appLanguageService.CountryShowRainExceedance[appLanguageService.LangID] }}">
+    {{ appLanguageService.CountryRainExceedance[appLanguageService.LangID] }}
 </button>
 
-<app-province-tvitem-list-item *ngIf="appStateService.AppState$?.getValue()?.CountrySubComponent == countrySubComponentEnum.Provinces"
-    [AppState]="appStateService.AppState$?.getValue()"
-    [TVItemModelList]="appLoadedService.AppLoaded$?.getValue()?.WebCountry?.TVItemModelProvinceList">
+<app-province-tvitem-list-item *ngIf="appStateService.CountrySubComponent == countrySubComponentEnum.Provinces"
+    [TVItemModelList]="appLoadedService.WebCountry?.TVItemModelProvinceList">
 </app-province-tvitem-list-item>
 
-<app-file-list *ngIf="appStateService.AppState$?.getValue()?.CountrySubComponent == countrySubComponentEnum.Files"
-    [AppState]="appStateService.AppState$?.getValue()"
-    [TVFileModelListList]="appLoadedService.AppLoaded$?.getValue()?.WebCountry?.TVFileModelList">
+<app-file-list *ngIf="appStateService.CountrySubComponent == countrySubComponentEnum.Files"
+    [TVFileModelListList]="appLoadedService.WebCountry?.TVFileModelList">
 </app-file-list>
 
-<div *ngIf="appStateService.AppState$?.getValue()?.CountrySubComponent == countrySubComponentEnum.OpenDataNational">
-    <app-open-data-national-item></app-open-data-national-item>
+<div *ngIf="appStateService.CountrySubComponent == countrySubComponentEnum.OpenDataNational">
+    <app-open-data-national-item ></app-open-data-national-item>
 </div>
 
-<div *ngIf="appStateService.AppState$?.getValue()?.CountrySubComponent == countrySubComponentEnum.EmailDistributionList">
-    <app-email-distribution-list-item></app-email-distribution-list-item>
+<div *ngIf="appStateService.CountrySubComponent == countrySubComponentEnum.EmailDistributionList">
+    <app-email-distribution-list-item ></app-email-distribution-list-item>
 </div>
 
-<div *ngIf="appStateService.AppState$?.getValue()?.CountrySubComponent == countrySubComponentEnum.RainExceedance">
+<div *ngIf="appStateService.CountrySubComponent == countrySubComponentEnum.RainExceedance">
     <app-rain-exceedance-item></app-rain-exceedance-item>
 </div>

@@ -1,8 +1,9 @@
-import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { GetAscDescEnum } from 'src/app/enums/generated/AscDescEnum';
 import { GetMunicipalitySubComponentEnum, MunicipalitySubComponentEnum } from 'src/app/enums/generated/MunicipalitySubComponentEnum';
 import { GetSortOrderAngularEnum } from 'src/app/enums/generated/SortOrderAngularEnum';
 import { GetTVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
+
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
@@ -15,10 +16,11 @@ import { WebMunicipalityService } from 'src/app/services/loaders/web-municipalty
 @Component({
   selector: 'app-municipality-item',
   templateUrl: './municipality-item.component.html',
-  styleUrls: ['./municipality-item.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./municipality-item.component.css']
 })
 export class MunicipalityItemComponent implements OnInit, OnDestroy {
+
+
   municipalitySubComponentEnum = GetMunicipalitySubComponentEnum();
   tvTypeEnum = GetTVTypeEnum();
   ascDescEnum = GetAscDescEnum();
@@ -34,7 +36,7 @@ export class MunicipalityItemComponent implements OnInit, OnDestroy {
     public componentShowService: ComponentShowService) { }
 
   ngOnInit(): void {
-    this.webMunicipalityService.DoWebMunicipality(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
+    this.webMunicipalityService.DoWebMunicipality(this.appStateService.CurrentTVItemID, true);
   }
 
   ngOnDestroy(): void {

@@ -2,9 +2,6 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { GetLanguageEnum, LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
-import { AppLoaded } from 'src/app/models/AppLoaded.model';
-import { AppState } from 'src/app/models/AppState.model';
 import { WebAllMunicipalities } from 'src/app/models/generated/web/WebAllMunicipalities.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
@@ -16,9 +13,9 @@ import { WebAllMWQMLookupMPNsService } from 'src/app/services/loaders/web-all-mw
     providedIn: 'root'
 })
 export class WebAllMunicipalitiesService {
-    private DoOther: boolean;
+    private DoNext: boolean;
+    private ForceReload: boolean;
     private sub: Subscription;
-    LangID: number = this.appStateService.AppState$?.getValue()?.Language == LanguageEnum.fr ? 1 : 0;
 
     constructor(private httpClient: HttpClient,
         private appStateService: AppStateService,
@@ -28,65 +25,77 @@ export class WebAllMunicipalitiesService {
         private componentDataLoadedService: ComponentDataLoadedService) {
     }
 
-    DoWebAllMunicipalities(DoOther: boolean) {
-        this.DoOther = DoOther;
-    
+    DoWebAllMunicipalities(DoNext: boolean = true, ForceReload: boolean = true) {
+        this.DoNext = DoNext;
+        this.ForceReload = ForceReload;
+
         this.sub ? this.sub.unsubscribe() : null;
-    
-        if (this.appLoadedService.AppLoaded$.getValue()?.WebAllMunicipalities) {
-          this.KeepWebAllMunicipalities();
+
+        if (ForceReload) {
+            this.sub = this.GetWebAllMunicipalities().subscribe();
         }
-        else {
-          this.sub = this.GetWebAllMunicipalities().subscribe();
-        }
-      }
-    
+        else
+        {
+            if (this.componentDataLoadedService.DataLoadedWebAllMunicipalities()) {
+                this.KeepWebAllMunicipalities();
+            }
+            else {
+                this.sub = this.GetWebAllMunicipalities().subscribe();
+            }
+            }
+    }
+
     private GetWebAllMunicipalities() {
-        let languageEnum = GetLanguageEnum();
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebAllMunicipalities: {} });
-        this.appStateService.UpdateAppState(<AppState>{
-            Status: `${ this.appLanguageService.AppLanguage.Loading[this.LangID]} - ${ WebAllMunicipalities }`,
-            Working: true
-        });
-        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebAllMunicipalities`;
+        this.appLoadedService.WebAllMunicipalities = <WebAllMunicipalities>{};
+        
+        let NextText = this.DoNext ? `${this.appLanguageService.Next[this.appLanguageService.LangID]} - WebAllMWQMLookupMPNs` : '';
+        let ForceReloadText = this.ForceReload ? `${this.appLanguageService.ForceReload[this.appLanguageService.LangID]}` : '';
+        this.appStateService.Status = `${this.appLanguageService.Loading[this.appLanguageService.LangID]} - WebAllMunicipalities - ${NextText} - ${ForceReloadText}`;
+        this.appStateService.Working = true;
+
+        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appLanguageService.Language}-CA/Read/WebAllMunicipalities`;
         return this.httpClient.get<WebAllMunicipalities>(url).pipe(
             map((x: any) => {
                 this.UpdateWebAllMunicipalities(x);
                 console.debug(x);
-                if (this.DoOther) {
+                if (this.DoNext) {
                     this.DoWebAllMWQMLookupMPNs();
                 }
             }),
             catchError(e => of(e).pipe(map(e => {
-                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false, Error: <HttpErrorResponse>e });
+                this.appStateService.Status = ''
+                this.appStateService.Working = false
+                this.appStateService.Error = <HttpErrorResponse>e;
                 console.debug(e);
             })))
         );
     }
 
     private DoWebAllMWQMLookupMPNs() {
-        this.webAllMWQMLookupMPNsService.DoWebAllMWQMLookupMPNs(this.DoOther);
+        this.webAllMWQMLookupMPNsService.DoWebAllMWQMLookupMPNs(this.DoNext);
     }
-    
+
     private KeepWebAllMunicipalities() {
-        this.UpdateWebAllMunicipalities(this.appLoadedService.AppLoaded$?.getValue()?.WebAllMunicipalities);
-        console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebAllMunicipalities);
-        if (this.DoOther) {
+        this.UpdateWebAllMunicipalities(this.appLoadedService.WebAllMunicipalities);
+        console.debug(this.appLoadedService.WebAllMunicipalities);
+        if (this.DoNext) {
             this.DoWebAllMWQMLookupMPNs();
         }
     }
 
     private UpdateWebAllMunicipalities(x: WebAllMunicipalities) {
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebAllMunicipalities: x, });
+        this.appLoadedService.WebAllMunicipalities = x;
 
-        if (this.DoOther) {
+        if (this.DoNext) {
             if (this.componentDataLoadedService.DataLoadedWebRoot()) {
-                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
+                this.appStateService.Status = '';
+                this.appStateService.Working = false;
             }
         }
         else {
             if (this.componentDataLoadedService.DataLoadedWebAllMunicipalities()) {
-                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
+                this.appStateService.Status = '';
+                this.appStateService.Working = false;
             }
         }
     }

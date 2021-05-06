@@ -2,9 +2,6 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { GetLanguageEnum, LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
-import { AppLoaded } from 'src/app/models/AppLoaded.model';
-import { AppState } from 'src/app/models/AppState.model';
 import { WebPolSourceSites } from 'src/app/models/generated/web/WebPolSourceSites.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
@@ -18,10 +15,10 @@ import { WebDrogueRunsService } from 'src/app/services/loaders/web-drogue-runs.s
 })
 export class WebPolSourceSitesService {
     private TVItemID: number;
-    private DoOther: boolean;
+    private DoNext: boolean;
+    private ForceReload: boolean;
     private sub: Subscription;
-    LangID: number = this.appStateService.AppState$?.getValue()?.Language == LanguageEnum.fr ? 1 : 0;
-  
+
     constructor(private httpClient: HttpClient,
         private appStateService: AppStateService,
         private appLoadedService: AppLoadedService,
@@ -31,72 +28,79 @@ export class WebPolSourceSitesService {
         private historyService: HistoryService) {
     }
 
-    DoWebPolSourceSites(TVItemID: number, DoOther: boolean) {
+    DoWebPolSourceSites(TVItemID: number, DoNext: boolean = true, ForceReload: boolean = true) {
         this.TVItemID = TVItemID;
-        this.DoOther = DoOther;
-    
+        this.DoNext = DoNext;
+        this.ForceReload = ForceReload;
+
         this.sub ? this.sub.unsubscribe() : null;
-    
-        if (this.appLoadedService.AppLoaded$.getValue()?.WebPolSourceSites) {
-          this.KeepWebPolSourceSites();
+
+        if (ForceReload) {
+            this.sub = this.GetWebPolSourceSites().subscribe();
         }
         else {
-          this.sub = this.GetWebPolSourceSites().subscribe();
+            if (this.componentDataLoadedService.DataLoadedWebPolSourceSites()) {
+                this.KeepWebPolSourceSites();
+            }
+            else {
+                this.sub = this.GetWebPolSourceSites().subscribe();
+            }
         }
-      }
-    
+    }
+
     private GetWebPolSourceSites() {
-        let languageEnum = GetLanguageEnum();
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
-            WebPolSourceSites: {},
-        });
-        this.appStateService.UpdateAppState(<AppState>{
-            Status: `${ this.appLanguageService.AppLanguage.Loading[this.LangID]} - ${ WebPolSourceSites }`,
-            Working: true
-        });
-        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebPolSourceSites/${this.TVItemID}`;
+        this.appLoadedService.WebPolSourceSites = <WebPolSourceSites>{};
+
+        let NextText = this.DoNext ? `${this.appLanguageService.Next[this.appLanguageService.LangID]} - WebDrogueRuns` : '';
+        let ForceReloadText = this.ForceReload ? `${this.appLanguageService.ForceReload[this.appLanguageService.LangID]}` : '';
+        this.appStateService.Status = `${this.appLanguageService.Loading[this.appLanguageService.LangID]} - WebPolSourceSites - ${NextText} - ${ForceReloadText}`;
+        this.appStateService.Working = true;
+
+        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appLanguageService.Language}-CA/Read/WebPolSourceSites/${this.TVItemID}`;
         return this.httpClient.get<WebPolSourceSites>(url).pipe(
             map((x: any) => {
                 this.UpdateWebPolSourceSites(x);
                 console.debug(x);
-                if (this.DoOther) {
+                if (this.DoNext) {
                     this.DoWebDrogueRuns();
                 }
             }),
             catchError(e => of(e).pipe(map(e => {
-                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false, Error: <HttpErrorResponse>e });
+                this.appStateService.Status = ''
+                this.appStateService.Working = false
+                this.appStateService.Error = <HttpErrorResponse>e;
                 console.debug(e);
             })))
         );
     }
 
     private DoWebDrogueRuns() {
-        this.webDrogueRunsService.DoWebDrogueRuns(this.TVItemID, this.DoOther);
+        this.webDrogueRunsService.DoWebDrogueRuns(this.TVItemID, this.DoNext);
     }
 
     private KeepWebPolSourceSites() {
-        this.UpdateWebPolSourceSites(this.appLoadedService.AppLoaded$?.getValue()?.WebPolSourceSites);
-        console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebPolSourceSites);
-        if (this.DoOther) {
+        this.UpdateWebPolSourceSites(this.appLoadedService.WebPolSourceSites);
+        console.debug(this.appLoadedService.WebPolSourceSites);
+        if (this.DoNext) {
             this.DoWebDrogueRuns();
         }
     }
 
     private UpdateWebPolSourceSites(x: WebPolSourceSites) {
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
-            WebPolSourceSites: x,
-        });
+        this.appLoadedService.WebPolSourceSites = x;
 
-        this.historyService.AddHistory(this.appLoadedService.AppLoaded$.getValue()?.WebPolSourceSites?.TVItemModel);
+        this.historyService.AddHistory(this.appLoadedService.WebPolSourceSites?.TVItemModel);
 
-        if (this.DoOther) {
+        if (this.DoNext) {
             if (this.componentDataLoadedService.DataLoadedWebSubsector()) {
-                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
+                this.appStateService.Status = '';
+                this.appStateService.Working = false;
             }
         }
         else {
             if (this.componentDataLoadedService.DataLoadedWebPolSourceSites()) {
-                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
+                this.appStateService.Status = '';
+                this.appStateService.Working = false;
             }
         }
     }

@@ -5,7 +5,7 @@
  *
  */
 
-import { AppStateService } from 'src/app/services/app-state.service';
+import { AppLanguageService } from 'src/app/services/app-language.service';
 import { EnumIDAndText } from 'src/app/models/generated/helper/EnumIDAndText.model';
 import { LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 
@@ -20,9 +20,9 @@ export function GetCSSPWQInputSheetTypeEnum(): typeof CSSPWQInputSheetTypeEnum
   return CSSPWQInputSheetTypeEnum;
 }
 
-export function CSSPWQInputSheetTypeEnum_GetOrderedText(appStateService: AppStateService): EnumIDAndText[] {
+export function CSSPWQInputSheetTypeEnum_GetOrderedText(appLanguageService: AppLanguageService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if (appStateService.AppState$?.getValue().Language == LanguageEnum.fr) {
+    if (appLanguageService.Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'A1' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'LTB' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'EC' });
@@ -36,9 +36,9 @@ export function CSSPWQInputSheetTypeEnum_GetOrderedText(appStateService: AppStat
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function CSSPWQInputSheetTypeEnum_GetIDText(enumID: number, appStateService: AppStateService): string {
+export function CSSPWQInputSheetTypeEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
     let addressTypeEnunText: string;
-    CSSPWQInputSheetTypeEnum_GetOrderedText(appStateService).forEach(e => {
+    CSSPWQInputSheetTypeEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

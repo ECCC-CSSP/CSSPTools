@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { GetAscDescEnum } from 'src/app/enums/generated/AscDescEnum';
 import { GetSortOrderAngularEnum } from 'src/app/enums/generated/SortOrderAngularEnum';
 import { GetSubsectorSubComponentEnum } from 'src/app/enums/generated/SubsectorSubComponentEnum';
@@ -16,15 +16,14 @@ import { WebSubsectorService } from 'src/app/services/loaders/web-subsector.serv
 @Component({
   selector: 'app-subsector-item',
   templateUrl: './subsector-item.component.html',
-  styleUrls: ['./subsector-item.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./subsector-item.component.css']
 })
 export class SubsectorItemComponent implements OnInit, OnDestroy {
   subsectorSubComponentEnum = GetSubsectorSubComponentEnum();
   tvTypeEnum = GetTVTypeEnum();
   ascDescEnum = GetAscDescEnum();
   sortOrderAngular = GetSortOrderAngularEnum();
-  
+
   constructor(public appStateService: AppStateService,
     public appLoadedService: AppLoadedService,
     public appLanguageService: AppLanguageService,
@@ -36,7 +35,7 @@ export class SubsectorItemComponent implements OnInit, OnDestroy {
     public componentShowService: ComponentShowService) { }
 
   ngOnInit(): void {
-    this.webSubsectorService.DoWebSubsector(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
+    this.webSubsectorService.DoWebSubsector(this.appStateService.CurrentTVItemID, true);
   }
 
   ngOnDestroy(): void {

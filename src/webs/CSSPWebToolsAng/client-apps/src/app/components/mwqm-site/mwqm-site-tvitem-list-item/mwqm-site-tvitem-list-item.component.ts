@@ -1,8 +1,7 @@
-import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { SubsectorSubComponentEnum } from 'src/app/enums/generated/SubsectorSubComponentEnum';
 import { GetTVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
-import { AppState } from 'src/app/models/AppState.model';
 import { MWQMSample } from 'src/app/models/generated/db/MWQMSample.model';
 import { MWQMSiteModel } from 'src/app/models/generated/web/MWQMSiteModel.model';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
@@ -18,12 +17,11 @@ import { MapService } from 'src/app/services/map/map.service';
 @Component({
   selector: 'app-mwqm-site-tvitem-list-item',
   templateUrl: './mwqm-site-tvitem-list-item.component.html',
-  styleUrls: ['./mwqm-site-tvitem-list-item.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./mwqm-site-tvitem-list-item.component.css']
 })
 export class MWQMSiteTVItemListItemComponent implements OnInit, OnDestroy {
   @Input() TVItemModelList: TVItemModel[] = [];
-  @Input() AppState: AppState;
+
   @Input() IsBreadCrumb: boolean = false;
 
   languageEnum = GetLanguageEnum();
@@ -49,17 +47,18 @@ export class MWQMSiteTVItemListItemComponent implements OnInit, OnDestroy {
   }
 
   SetStatRunsForDetail(runs: number) {
-    this.appStateService.UpdateAppState(<AppState>{ StatRunsForDetail: runs, Working: false });
+    this.appStateService.StatRunsForDetail = runs;
+    this.appStateService.Working = false;
     this.webMWQMSamplesService.FillStatMWQMSiteList();
 
-    let mwqmSiteModel: MWQMSiteModel[] = this.appLoadedService.AppLoaded$.getValue().WebMWQMSites.MWQMSiteModelList;
+    let mwqmSiteModel: MWQMSiteModel[] = this.appLoadedService.WebMWQMSites.MWQMSiteModelList;
 
-    if (this.appStateService.AppState$.getValue().GoogleJSLoaded) {
-      if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.MWQMSites) {
+    if (this.appStateService.GoogleJSLoaded) {
+      if (this.appStateService.SubsectorSubComponent == SubsectorSubComponentEnum.MWQMSites) {
         this.mapService.ClearMap();
         this.mapService.DrawObjects([
-          //...this.appLoadedService.AppLoaded$.getValue().WebMWQMSites.MWQMSiteModelList,
-          //...[this.appLoadedService.AppLoaded$.getValue().WebMWQMSites.TVItemModel
+          //...this.appLoadedService.WebMWQMSites.MWQMSiteModelList,
+          //...[this.appLoadedService.WebMWQMSites.TVItemModel
         ]);
       }
     }

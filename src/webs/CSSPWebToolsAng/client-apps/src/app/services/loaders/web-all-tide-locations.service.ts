@@ -2,9 +2,6 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { GetLanguageEnum, LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
-import { AppLoaded } from 'src/app/models/AppLoaded.model';
-import { AppState } from 'src/app/models/AppState.model';
 import { WebAllTideLocations } from 'src/app/models/generated/web/WebAllTideLocations.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
@@ -15,9 +12,9 @@ import { ComponentDataLoadedService } from 'src/app/services/helpers/component-d
     providedIn: 'root'
 })
 export class WebAllTideLocationsService {
-    private DoOther: boolean;
+    private DoNext: boolean;
+    private ForceReload: boolean;
     private sub: Subscription;
-    LangID: number = this.appStateService.AppState$?.getValue()?.Language == LanguageEnum.fr ? 1 : 0;
 
     constructor(private httpClient: HttpClient,
         private appStateService: AppStateService,
@@ -26,61 +23,71 @@ export class WebAllTideLocationsService {
         private componentDataLoadedService: ComponentDataLoadedService) {
     }
 
-    DoWebAllTideLocations(DoOther: boolean) {
-        this.DoOther = DoOther;
+    DoWebAllTideLocations(DoNext: boolean = true, ForceReload: boolean = true) {
+        this.DoNext = DoNext;
+        this.ForceReload = ForceReload;
 
         this.sub ? this.sub.unsubscribe() : null;
 
-        if (this.appLoadedService.AppLoaded$.getValue()?.WebAllTideLocations?.TideLocationList?.length > 0) {
-            this.KeepWebAllTideLocations();
+        if (ForceReload) {
+            this.sub = this.GetWebAllTideLocations().subscribe();
         }
         else {
-            this.sub = this.GetWebAllTideLocations().subscribe();
+            if (this.componentDataLoadedService.DataLoadedWebAllTideLocations()) {
+                this.KeepWebAllTideLocations();
+            }
+            else {
+                this.sub = this.GetWebAllTideLocations().subscribe();
+            }
         }
     }
 
     private GetWebAllTideLocations() {
-        let languageEnum = GetLanguageEnum();
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebAllTideLocations: {} });
-        this.appStateService.UpdateAppState(<AppState>{
-            Status: `${ this.appLanguageService.AppLanguage.Loading[this.LangID]} - ${ WebAllTideLocations }`,
-            Working: true
-        });
-        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebAllTideLocations`;
+        this.appLoadedService.WebAllTideLocations = <WebAllTideLocations>{};
+
+        let ForceReloadText = this.ForceReload ? `${this.appLanguageService.ForceReload[this.appLanguageService.LangID]}` : '';
+        this.appStateService.Status = `${this.appLanguageService.Loading[this.appLanguageService.LangID]} - WebAllTideLocations - ${ForceReloadText}`;
+        this.appStateService.Working = true;
+
+        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appLanguageService.Language}-CA/Read/WebAllTideLocations`;
         return this.httpClient.get<WebAllTideLocations>(url).pipe(
             map((x: any) => {
                 this.UpdateWebAllTideLocations(x);
                 console.debug(x);
-                if (this.DoOther) {
+                if (this.DoNext) {
                     // nothing more to add in the chain
                 }
             }),
             catchError(e => of(e).pipe(map(e => {
-                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false, Error: <HttpErrorResponse>e });
+                this.appStateService.Status = ''
+                this.appStateService.Working = false
+                this.appStateService.Error = <HttpErrorResponse>e;
                 console.debug(e);
             })))
         );
     }
 
     private KeepWebAllTideLocations() {
-        this.UpdateWebAllTideLocations(this.appLoadedService.AppLoaded$?.getValue()?.WebAllTideLocations);
-        console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebAllTideLocations);
-        if (this.DoOther) {
+        this.UpdateWebAllTideLocations(this.appLoadedService.WebAllTideLocations);
+        console.debug(this.appLoadedService.WebAllTideLocations);
+        if (this.DoNext) {
             // nothing more to add in the chain
         }
     }
 
     private UpdateWebAllTideLocations(x: WebAllTideLocations) {
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebAllTideLocations: x });
+        this.appLoadedService.WebAllTideLocations = x;
 
-        if (this.DoOther) {
+        if (this.DoNext) {
             if (this.componentDataLoadedService.DataLoadedWebRoot()) {
-                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
+                this.appStateService.Status = '';
+                this.appStateService.Working = false;
             }
         }
         else {
             if (this.componentDataLoadedService.DataLoadedWebAllTideLocations()) {
-                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
+                this.appStateService.Status = '';
+                this.appStateService.Working = false;
             }
         }
     }

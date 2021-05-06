@@ -2,9 +2,6 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { GetLanguageEnum, LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
-import { AppLoaded } from 'src/app/models/AppLoaded.model';
-import { AppState } from 'src/app/models/AppState.model';
 import { WebAllPolSourceGroupings } from 'src/app/models/generated/web/WebAllPolSourceGroupings.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
@@ -16,9 +13,9 @@ import { WebAllPolSourceSiteEffectTermsService } from 'src/app/services/loaders/
     providedIn: 'root'
 })
 export class WebAllPolSourceGroupingsService {
-    private DoOther: boolean;
+    private DoNext: boolean;
+    private ForceReload: boolean;
     private sub: Subscription;
-    LangID: number = this.appStateService.AppState$?.getValue()?.Language == LanguageEnum.fr ? 1 : 0;
 
     constructor(private httpClient: HttpClient,
         private appStateService: AppStateService,
@@ -28,65 +25,76 @@ export class WebAllPolSourceGroupingsService {
         private componentDataLoadedService: ComponentDataLoadedService) {
     }
 
-    DoWebAllPolSourceGroupings(DoOther: boolean) {
-        this.DoOther = DoOther;
+    DoWebAllPolSourceGroupings(DoNext: boolean = true, ForceReload: boolean = true) {
+        this.DoNext = DoNext;
+        this.ForceReload = ForceReload;
 
         this.sub ? this.sub.unsubscribe() : null;
 
-        if (this.appLoadedService.AppLoaded$.getValue()?.WebAllPolSourceGroupings) {
-            this.KeepWebAllPolSourceGroupings();
-        }
-        else {
+        if (ForceReload) {
             this.sub = this.GetWebAllPolSourceGroupings().subscribe();
         }
+        else{
+            if (this.componentDataLoadedService.DataLoadedWebAllPolSourceGroupings()) {
+                this.KeepWebAllPolSourceGroupings();
+            }
+            else {
+                this.sub = this.GetWebAllPolSourceGroupings().subscribe();
+            }
+            }
     }
 
     private GetWebAllPolSourceGroupings() {
-        let languageEnum = GetLanguageEnum();
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebAllPolSourceGroupings: {} });
-        this.appStateService.UpdateAppState(<AppState>{
-            Status: `${ this.appLanguageService.AppLanguage.Loading[this.LangID]} - ${ WebAllPolSourceGroupings }`,
-            Working: true
-        });
-        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebAllPolSourceGroupings`;
+        this.appLoadedService.WebAllPolSourceGroupings = <WebAllPolSourceGroupings>{};
+
+        let NextText = this.DoNext ? `${this.appLanguageService.Next[this.appLanguageService.LangID]} - WebAllPolSourceSiteEffectTerms` : '';
+        let ForceReloadText = this.ForceReload ? `${this.appLanguageService.ForceReload[this.appLanguageService.LangID]}` : '';
+        this.appStateService.Status = `${this.appLanguageService.Loading[this.appLanguageService.LangID]} - WebAllPolSourceGroupings - ${NextText} - ${ForceReloadText}`;
+        this.appStateService.Working = true;
+
+        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appLanguageService.Language}-CA/Read/WebAllPolSourceGroupings`;
         return this.httpClient.get<WebAllPolSourceGroupings>(url).pipe(
             map((x: any) => {
                 this.UpdateWebAllPolSourceGroupings(x);
                 console.debug(x);
-                if (this.DoOther) {
+                if (this.DoNext) {
                     this.DoWebAllPolSourceSiteEffectTerms();
                 }
             }),
             catchError(e => of(e).pipe(map(e => {
-                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false, Error: <HttpErrorResponse>e });
+                this.appStateService.Status = ''
+                this.appStateService.Working = false
+                this.appStateService.Error = <HttpErrorResponse>e;
                 console.debug(e);
             })))
         );
     }
 
     private DoWebAllPolSourceSiteEffectTerms() {
-        this.webAllPolSourceSiteEffectTermsService.DoWebAllPolSourceSiteEffectTerms(this.DoOther);
+        this.webAllPolSourceSiteEffectTermsService.DoWebAllPolSourceSiteEffectTerms(this.DoNext);
     }
 
     private KeepWebAllPolSourceGroupings() {
-        this.UpdateWebAllPolSourceGroupings(this.appLoadedService.AppLoaded$?.getValue()?.WebAllPolSourceGroupings);
-        console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebAllPolSourceGroupings);
-        if (this.DoOther) {
+        this.UpdateWebAllPolSourceGroupings(this.appLoadedService.WebAllPolSourceGroupings);
+        console.debug(this.appLoadedService.WebAllPolSourceGroupings);
+        if (this.DoNext) {
             this.DoWebAllPolSourceSiteEffectTerms();
         }
     }
 
     private UpdateWebAllPolSourceGroupings(x: WebAllPolSourceGroupings) {
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebAllPolSourceGroupings: x });
+        this.appLoadedService.WebAllPolSourceGroupings = x;
 
-        if (this.DoOther) {
+        if (this.DoNext) {
             if (this.componentDataLoadedService.DataLoadedWebRoot()) {
-                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
+                this.appStateService.Status = '';
+                this.appStateService.Working = false;
             }
         }
         else {
-            if (this.componentDataLoadedService.DataLoadedWebPolSourceGroupings()) {
-                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
+            if (this.componentDataLoadedService.DataLoadedWebAllPolSourceGroupings()) {
+                this.appStateService.Status = '';
+                this.appStateService.Working = false;
             }
         }
     }

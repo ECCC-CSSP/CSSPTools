@@ -7,20 +7,20 @@
 </span>
 <span>&nbsp;</span>
 <span [ngClass]="TVItemModel?.TVItem?.IsActive ? '' : 'inactive'">
-    <span *ngIf="appStateService.AppState$?.getValue()?.MapVisible">
+    <span *ngIf="appStateService.MapVisible">
         {{ Index }}&nbsp;-&nbsp;
     </span>
-    <span *ngIf="appStateService.AppState$?.getValue()?.DetailVisible">
-        [{{ TVItemModel.TVItem.TVItemID }}]
+    <span *ngIf="appStateService.DetailVisible">
+        [{{ TVItemModel?.TVItem?.TVItemID }}]
     </span>
-    {{ TVItemModel?.TVItemLanguageList[this.appStateService.AppState$.getValue().Language]?.TVText }}
+    {{ TVItemModel?.TVItemLanguageList[this.appLanguageService.LangID]?.TVText }}
 </span>
 <span>
-    ({{ GetMWQMSiteLatestClassificationEnum_GetIDText(StatMWQMSite?.MWQMSiteModel.MWQMSite?.MWQMSiteLatestClassification) }})
+    ({{ GetMWQMSiteLatestClassificationEnum_GetIDText(StatMWQMSite?.MWQMSiteModel?.MWQMSite?.MWQMSiteLatestClassification) }})
 </span>
-<app-stat-count *ngIf="appStateService.AppState$.getValue().StatCountVisible" [TVType]="tvTypeEnum.MWQMSiteSample"
+<app-stat-count *ngIf="appStateService.StatCountVisible" [TVType]="tvTypeEnum.MWQMSiteSample"
     [TVItemModel]="TVItemModel"></app-stat-count>
-<app-last-udpate-tv-item-model *ngIf="appStateService.AppState$?.getValue()?.LastUpdateVisible"
+<app-last-udpate-tv-item-model *ngIf="appStateService.LastUpdateVisible"
     [TVItemModel]="TVItemModel"></app-last-udpate-tv-item-model>
 
 <span *ngFor="let statMWQMSiteSample of StatMWQMSite?.StatMWQMSiteSampleList">

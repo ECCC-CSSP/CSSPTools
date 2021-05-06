@@ -6,12 +6,14 @@ import { PredicateAscByService } from 'src/app/services/helpers/predicate-asc-by
 import { PredicateDescByService } from 'src/app/services/helpers/predicate-desc-by.service';
 import { TVItemID_TVText_Sort } from 'src/app/models/TVItemID_TVText_Sort.model';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
+import { AppLanguageService } from '../app-language.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class SortTVItemListService {
     constructor(private appStateService: AppStateService,
+        private appLanguageService: AppLanguageService,
         private predicateAscByService: PredicateAscByService,
         private predicateDescByService: PredicateDescByService) {
     }
@@ -30,7 +32,7 @@ export class SortTVItemListService {
                     switch (TVTypeOfList) {
                         case TVTypeEnum.Sector:
                             {
-                                AscDesc = this.appStateService.AppState$.getValue().AreaSectorsSortOrder;
+                                AscDesc = this.appStateService.AreaSectorsSortOrder;
                             }
                             break;
                         default:
@@ -46,7 +48,7 @@ export class SortTVItemListService {
                     switch (TVTypeOfList) {
                         case TVTypeEnum.Province:
                             {
-                                AscDesc = this.appStateService.AppState$.getValue().CountryProvincesSortOrder;
+                                AscDesc = this.appStateService.CountryProvincesSortOrder;
                             }
                             break;
                         default:
@@ -62,12 +64,12 @@ export class SortTVItemListService {
                     switch (TVTypeOfList) {
                         case TVTypeEnum.Infrastructure:
                             {
-                                AscDesc = this.appStateService.AppState$.getValue().MunicipalityInfrastructuresSortOrder;
+                                AscDesc = this.appStateService.MunicipalityInfrastructuresSortOrder;
                             }
                             break;
                         case TVTypeEnum.MikeScenario:
                             {
-                                AscDesc = this.appStateService.AppState$.getValue().MunicipalityMIKEScenariosSortOrder;
+                                AscDesc = this.appStateService.MunicipalityMIKEScenariosSortOrder;
                             }
                             break;
                         default:
@@ -83,12 +85,12 @@ export class SortTVItemListService {
                     switch (TVTypeOfList) {
                         case TVTypeEnum.Area:
                             {
-                                AscDesc = this.appStateService.AppState$.getValue().ProvinceAreasSortOrder;
+                                AscDesc = this.appStateService.ProvinceAreasSortOrder;
                             }
                             break;
                         case TVTypeEnum.Municipality:
                             {
-                                AscDesc = this.appStateService.AppState$.getValue().ProvinceMunicipalitiesSortOrder;
+                                AscDesc = this.appStateService.ProvinceMunicipalitiesSortOrder;
                             }
                             break;
                         default:
@@ -104,7 +106,7 @@ export class SortTVItemListService {
                     switch (TVTypeOfList) {
                         case TVTypeEnum.Country:
                             {
-                                AscDesc = this.appStateService.AppState$.getValue().RootCountriesSortOrder;
+                                AscDesc = this.appStateService.RootCountriesSortOrder;
                             }
                             break;
                         default:
@@ -120,12 +122,12 @@ export class SortTVItemListService {
                     switch (TVTypeOfList) {
                         case TVTypeEnum.Subsector:
                             {
-                                AscDesc = this.appStateService.AppState$.getValue().SectorSubsectorsSortOrder;
+                                AscDesc = this.appStateService.SectorSubsectorsSortOrder;
                             }
                             break;
                         case TVTypeEnum.MikeScenario:
                             {
-                                AscDesc = this.appStateService.AppState$.getValue().SectorMikeScenariosSortOrder;
+                                AscDesc = this.appStateService.SectorMikeScenariosSortOrder;
                             }
                             break;
                         default:
@@ -141,17 +143,17 @@ export class SortTVItemListService {
                     switch (TVTypeOfList) {
                         case TVTypeEnum.MWQMSite:
                             {
-                                AscDesc = this.appStateService.AppState$.getValue().SubsectorMWQMSitesSortOrder;
+                                AscDesc = this.appStateService.SubsectorMWQMSitesSortOrder;
                             }
                             break;
                         case TVTypeEnum.MWQMRun:
                             {
-                                AscDesc = this.appStateService.AppState$.getValue().SubsectorMWQMRunsSortOrder;
+                                AscDesc = this.appStateService.SubsectorMWQMRunsSortOrder;
                             }
                             break;
                         case TVTypeEnum.PolSourceSite:
                             {
-                                AscDesc = this.appStateService.AppState$.getValue().SubsectorPolSourceSitesSortOrder;
+                                AscDesc = this.appStateService.SubsectorPolSourceSitesSortOrder;
                             }
                             break;
                         default:
@@ -169,14 +171,14 @@ export class SortTVItemListService {
                 break;
         }
 
-        let tvItemStatMapModelSorted: TVItemModel[] = [];
+        let tvItemModelSorted: TVItemModel[] = [];
         let arr2: TVItemID_TVText_Sort[] = [];
         let sortable: TVItemID_TVText_Sort[] = [];
 
         for (let i = 0; i < arr.length; i++) {
             sortable.push(<TVItemID_TVText_Sort>{
                 TVItemID: arr[i].TVItem.TVItemID,
-                TVText: arr[i].TVItemLanguageList[this.appStateService.AppState$.getValue().Language].TVText.toLowerCase(),
+                TVText: arr[i].TVItemLanguageList[this.appLanguageService.LangID].TVText.toLowerCase(),
             });
         }
 
@@ -190,12 +192,12 @@ export class SortTVItemListService {
         for (let i = 0; i < sortable.length; i++) {
             for (let j = 0; j < arr.length; j++) {
                 if (arr2[i].TVItemID == arr[j].TVItem.TVItemID) {
-                    tvItemStatMapModelSorted.push(arr[j]);
+                    tvItemModelSorted.push(arr[j]);
                     break;
                 }
             }
         }
 
-        return tvItemStatMapModelSorted;
+        return tvItemModelSorted;
     }
 }

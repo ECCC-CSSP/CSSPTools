@@ -38,23 +38,23 @@ namespace CSSPWebAPIsLocal.Controllers
         Task<ActionResult<WebAllTVItems>> WebAllTVItems1980_2020();
         Task<ActionResult<WebAllTVItems>> WebAllTVItems2021_2060();
         Task<ActionResult<WebArea>> WebArea(int TVItemID);
-        Task<ActionResult<WebClimateSites>> WebClimateSite(int TVItemID);
+        Task<ActionResult<WebClimateSites>> WebClimateSites(int TVItemID);
         Task<ActionResult<WebCountry>> WebCountry(int TVItemID);
         Task<ActionResult<WebDrogueRuns>> WebDrogueRun(int TVItemID);
-        Task<ActionResult<WebHydrometricSites>> WebHydrometricSite(int TVItemID);
+        Task<ActionResult<WebHydrometricSites>> WebHydrometricSites(int TVItemID);
         Task<ActionResult<WebLabSheets>> WebLabSheet(int TVItemID);
         Task<ActionResult<WebMikeScenarios>> WebMikeScenarios(int TVItemID);
         Task<ActionResult<WebMunicipality>> WebMunicipality(int TVItemID);
-        Task<ActionResult<WebMWQMRuns>> WebMWQMRun(int TVItemID);
-        Task<ActionResult<WebMWQMSamples>> WebMWQMSample1980_2020(int TVItemID);
-        Task<ActionResult<WebMWQMSamples>> WebMWQMSample2021_2060(int TVItemID);
-        Task<ActionResult<WebMWQMSites>> WebMWQMSite(int TVItemID);
-        Task<ActionResult<WebPolSourceSites>> WebPolSourceSite(int TVItemID);
+        Task<ActionResult<WebMWQMRuns>> WebMWQMRuns(int TVItemID);
+        Task<ActionResult<WebMWQMSamples>> WebMWQMSamples1980_2020(int TVItemID);
+        Task<ActionResult<WebMWQMSamples>> WebMWQMSamples2021_2060(int TVItemID);
+        Task<ActionResult<WebMWQMSites>> WebMWQMSites(int TVItemID);
+        Task<ActionResult<WebPolSourceSites>> WebPolSourceSites(int TVItemID);
         Task<ActionResult<WebProvince>> WebProvince(int TVItemID);
         Task<ActionResult<WebRoot>> WebRoot();
         Task<ActionResult<WebSector>> WebSector(int TVItemID);
         Task<ActionResult<WebSubsector>> WebSubsector(int TVItemID);
-        Task<ActionResult<WebTideSites>> WebTideSite(int TVItemID);
+        Task<ActionResult<WebTideSites>> WebTideSites(int TVItemID);
     }
 
     [Route("api/{culture}/[controller]")]
@@ -245,9 +245,9 @@ namespace CSSPWebAPIsLocal.Controllers
 
             return await ReadGzFileService.ReadJSON<WebArea>(WebTypeEnum.WebArea, TVItemID);
         }
-        [Route("WebClimateSite/{TVItemID:int}")]
+        [Route("WebClimateSites/{TVItemID:int}")]
         [HttpGet]
-        public async Task<ActionResult<WebClimateSites>> WebClimateSite(int TVItemID)
+        public async Task<ActionResult<WebClimateSites>> WebClimateSites(int TVItemID)
         {
             // TVItemID = ProvinceTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
@@ -275,9 +275,9 @@ namespace CSSPWebAPIsLocal.Controllers
 
             return await ReadGzFileService.ReadJSON<WebDrogueRuns>(WebTypeEnum.WebDrogueRuns, TVItemID);
         }
-        [Route("WebHydrometricSite/{TVItemID:int}")]
+        [Route("WebHydrometricSites/{TVItemID:int}")]
         [HttpGet]
-        public async Task<ActionResult<WebHydrometricSites>> WebHydrometricSite(int TVItemID)
+        public async Task<ActionResult<WebHydrometricSites>> WebHydrometricSites(int TVItemID)
         {
             // TVItemID = ProvinceTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
@@ -315,9 +315,9 @@ namespace CSSPWebAPIsLocal.Controllers
 
             return await ReadGzFileService.ReadJSON<WebMunicipality>(WebTypeEnum.WebMunicipality, TVItemID);
         }
-        [Route("WebMWQMRun/{TVItemID:int}")]
+        [Route("WebMWQMRuns/{TVItemID:int}")]
         [HttpGet]
-        public async Task<ActionResult<WebMWQMRuns>> WebMWQMRun(int TVItemID)
+        public async Task<ActionResult<WebMWQMRuns>> WebMWQMRuns(int TVItemID)
         {
             // TVItemID = SubsectorTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
@@ -325,9 +325,9 @@ namespace CSSPWebAPIsLocal.Controllers
 
             return await ReadGzFileService.ReadJSON<WebMWQMRuns>(WebTypeEnum.WebMWQMRuns, TVItemID);
         }
-        [Route("WebMWQMSample1980_2020/{TVItemID:int}")]
+        [Route("WebMWQMSamples1980_2020/{TVItemID:int}")]
         [HttpGet]
-        public async Task<ActionResult<WebMWQMSamples>> WebMWQMSample1980_2020(int TVItemID)
+        public async Task<ActionResult<WebMWQMSamples>> WebMWQMSamples1980_2020(int TVItemID)
         {
             // TVItemID = SubsectorTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
@@ -335,9 +335,9 @@ namespace CSSPWebAPIsLocal.Controllers
 
             return await ReadGzFileService.ReadJSON<WebMWQMSamples>(WebTypeEnum.WebMWQMSamples1980_2020);
         }
-        [Route("WebMWQMSample2021_2060/{TVItemID:int}")]
+        [Route("WebMWQMSamples2021_2060/{TVItemID:int}")]
         [HttpGet]
-        public async Task<ActionResult<WebMWQMSamples>> WebMWQMSample2021_2060(int TVItemID)
+        public async Task<ActionResult<WebMWQMSamples>> WebMWQMSamples2021_2060(int TVItemID)
         {
             // TVItemID = SubsectorTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
@@ -345,9 +345,9 @@ namespace CSSPWebAPIsLocal.Controllers
 
             return await ReadGzFileService.ReadJSON<WebMWQMSamples>(WebTypeEnum.WebMWQMSamples2021_2060);
         }
-        [Route("WebMWQMSite/{TVItemID:int}")]
+        [Route("WebMWQMSites/{TVItemID:int}")]
         [HttpGet]
-        public async Task<ActionResult<WebMWQMSites>> WebMWQMSite(int TVItemID)
+        public async Task<ActionResult<WebMWQMSites>> WebMWQMSites(int TVItemID)
         {
             // TVItemID = SubsectorTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
@@ -355,9 +355,9 @@ namespace CSSPWebAPIsLocal.Controllers
 
             return await ReadGzFileService.ReadJSON<WebMWQMSites>(WebTypeEnum.WebMWQMSites, TVItemID);
         }
-        [Route("WebPolSourceSite/{TVItemID:int}")]
+        [Route("WebPolSourceSites/{TVItemID:int}")]
         [HttpGet]
-        public async Task<ActionResult<WebPolSourceSites>> WebPolSourceSite(int TVItemID)
+        public async Task<ActionResult<WebPolSourceSites>> WebPolSourceSites(int TVItemID)
         {
             // TVItemID = SubsectorTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
@@ -404,9 +404,9 @@ namespace CSSPWebAPIsLocal.Controllers
 
             return await ReadGzFileService.ReadJSON<WebSubsector>(WebTypeEnum.WebSubsector, TVItemID);
         }
-        [Route("WebTideSite/{TVItemID:int}")]
+        [Route("WebTideSites/{TVItemID:int}")]
         [HttpGet]
-        public async Task<ActionResult<WebTideSites>> WebTideSite(int TVItemID)
+        public async Task<ActionResult<WebTideSites>> WebTideSites(int TVItemID)
         {
             // TVItemID = ProvinceTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);

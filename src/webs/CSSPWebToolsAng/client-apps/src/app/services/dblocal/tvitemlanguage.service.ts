@@ -5,7 +5,7 @@ import { catchError, map } from 'rxjs/operators';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
-import { AppState } from 'src/app/models/AppState.model';
+
 import { AppLanguageService } from '../app-language.service';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { TVItemLanguage } from 'src/app/models/generated/db/TVItemLanguage.model';
@@ -37,8 +37,7 @@ export class TVItemLanguageService {
 
     private DoModify() {
         let languageEnum = GetLanguageEnum();
-        this.appStateService.UpdateAppState(<AppState>{
-            Status: this.appLanguageService.AppLanguage.Saving[this.appStateService.AppState$?.getValue()?.Language],
+        this.appStateService.Status: this.appLanguageService.Saving[this.appLanguageService.LangID],
             Working: true
         });
 
@@ -48,15 +47,17 @@ export class TVItemLanguageService {
             })
         };
         
-        let tvItemLanguage: TVItemLanguage = JSON.parse(JSON.stringify(this.TVItemModel.TVItemLanguageList[this.appStateService.AppState$?.getValue()?.Language]));
+        let tvItemLanguage: TVItemLanguage = JSON.parse(JSON.stringify(this.TVItemModel.TVItemLanguageList[this.appLanguageService.LangID]));
 
-        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/TVItem/`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appLanguageService.LangID]}-CA/TVItem/`;
         return this.httpClient.put<TVItemLanguage>(url, tvItemLanguage, httpOptions).pipe(
             map((x: any) => {
                 console.debug(x);
             }),
             catchError(e => of(e).pipe(map(e => {
-                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false, Error: <HttpErrorResponse>e });
+                this.appStateService.Status = ''
+                this.appStateService.Working = false
+                this.appStateService.Error = <HttpErrorResponse>e;
                 console.debug(e);
             })))
         );

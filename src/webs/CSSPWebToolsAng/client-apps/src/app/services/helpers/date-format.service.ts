@@ -12,7 +12,7 @@ import { AppStateService } from 'src/app/services/app-state.service';
   providedIn: 'root'
 })
 export class DateFormatService {
-
+  
   constructor(private appStateService: AppStateService,
     private appLanguageService: AppLanguageService) {
   }
@@ -69,14 +69,14 @@ export class DateFormatService {
       let HourText: string = Hour < 10 ? `0${Hour}` : `${Hour}`;
       let MinuteText: string = Minute < 10 ? `0${Minute}` : `${Minute}`;
       let SecondText: string = Second < 10 ? `0${Second}` : `${Second}`;
-      if (this.appStateService.AppState$.getValue().Language == LanguageEnum.fr) {
+      if (this.appLanguageService.Language == LanguageEnum.fr) {
         return `${Day} ${this.GetMonthName(Month, false)} ${Year} ${HourText}:${MinuteText}:${SecondText} (utc)`;
       }
 
       return `${this.GetMonthName(Month, false)} ${Day}, ${Year} ${HourText}:${MinuteText}:${SecondText} (utc)`;
     }
     else {
-      if (this.appStateService.AppState$.getValue().Language == LanguageEnum.fr) {
+      if (this.appLanguageService.Language == LanguageEnum.fr) {
         return `${Day} ${this.GetMonthName(Month, false)} ${Year}`;
       }
 
@@ -90,86 +90,86 @@ export class DateFormatService {
       case 1:
         {
           if (acronym) {
-            return this.appLanguageService.AppLanguage.DateJanuaryAcronym[this.appStateService.AppState$.getValue().Language];
+            return this.appLanguageService.DateJanuaryAcronym[this.appLanguageService.LangID];
           }
-          return this.appLanguageService.AppLanguage.DateJanuary[this.appStateService.AppState$.getValue().Language];
+          return this.appLanguageService.DateJanuary[this.appLanguageService.LangID];
         }
       case 2:
         {
           if (acronym) {
-            return this.appLanguageService.AppLanguage.DateFebruaryAcronym[this.appStateService.AppState$.getValue().Language];
+            return this.appLanguageService.DateFebruaryAcronym[this.appLanguageService.LangID];
           }
-          return this.appLanguageService.AppLanguage.DateFebruary[this.appStateService.AppState$.getValue().Language];
+          return this.appLanguageService.DateFebruary[this.appLanguageService.LangID];
         }
       case 3:
         {
           if (acronym) {
-            return this.appLanguageService.AppLanguage.DateMarchAcronym[this.appStateService.AppState$.getValue().Language];
+            return this.appLanguageService.DateMarchAcronym[this.appLanguageService.LangID];
           }
-          return this.appLanguageService.AppLanguage.DateMarch[this.appStateService.AppState$.getValue().Language];
+          return this.appLanguageService.DateMarch[this.appLanguageService.LangID];
         }
       case 4:
         {
           if (acronym) {
-            return this.appLanguageService.AppLanguage.DateAprilAcronym[this.appStateService.AppState$.getValue().Language];
+            return this.appLanguageService.DateAprilAcronym[this.appLanguageService.LangID];
           }
-          return this.appLanguageService.AppLanguage.DateApril[this.appStateService.AppState$.getValue().Language];
+          return this.appLanguageService.DateApril[this.appLanguageService.LangID];
         }
       case 5:
         {
           if (acronym) {
-            return this.appLanguageService.AppLanguage.DateMayAcronym[this.appStateService.AppState$.getValue().Language];
+            return this.appLanguageService.DateMayAcronym[this.appLanguageService.LangID];
           }
-          return this.appLanguageService.AppLanguage.DateMay[this.appStateService.AppState$.getValue().Language];
+          return this.appLanguageService.DateMay[this.appLanguageService.LangID];
         }
       case 6:
         {
           if (acronym) {
-            return this.appLanguageService.AppLanguage.DateJuneAcronym[this.appStateService.AppState$.getValue().Language];
+            return this.appLanguageService.DateJuneAcronym[this.appLanguageService.LangID];
           }
-          return this.appLanguageService.AppLanguage.DateJune[this.appStateService.AppState$.getValue().Language];
+          return this.appLanguageService.DateJune[this.appLanguageService.LangID];
         }
       case 7:
         {
           if (acronym) {
-            return this.appLanguageService.AppLanguage.DateJulyAcronym[this.appStateService.AppState$.getValue().Language];
+            return this.appLanguageService.DateJulyAcronym[this.appLanguageService.LangID];
           }
-          return this.appLanguageService.AppLanguage.DateJuly[this.appStateService.AppState$.getValue().Language];
+          return this.appLanguageService.DateJuly[this.appLanguageService.LangID];
         }
       case 8:
         {
           if (acronym) {
-            return this.appLanguageService.AppLanguage.DateAugustAcronym[this.appStateService.AppState$.getValue().Language];
+            return this.appLanguageService.DateAugustAcronym[this.appLanguageService.LangID];
           }
-          return this.appLanguageService.AppLanguage.DateAugust[this.appStateService.AppState$.getValue().Language];
+          return this.appLanguageService.DateAugust[this.appLanguageService.LangID];
         }
       case 9:
         {
           if (acronym) {
-            return this.appLanguageService.AppLanguage.DateSeptemberAcronym[this.appStateService.AppState$.getValue().Language];
+            return this.appLanguageService.DateSeptemberAcronym[this.appLanguageService.LangID];
           }
-          return this.appLanguageService.AppLanguage.DateSeptember[this.appStateService.AppState$.getValue().Language];
+          return this.appLanguageService.DateSeptember[this.appLanguageService.LangID];
         }
       case 10:
         {
           if (acronym) {
-            return this.appLanguageService.AppLanguage.DateOctoberAcronym[this.appStateService.AppState$.getValue().Language];
+            return this.appLanguageService.DateOctoberAcronym[this.appLanguageService.LangID];
           }
-          return this.appLanguageService.AppLanguage.DateOctober[this.appStateService.AppState$.getValue().Language];
+          return this.appLanguageService.DateOctober[this.appLanguageService.LangID];
         }
       case 11:
         {
           if (acronym) {
-            return this.appLanguageService.AppLanguage.DateNovemberAcronym[this.appStateService.AppState$.getValue().Language];
+            return this.appLanguageService.DateNovemberAcronym[this.appLanguageService.LangID];
           }
-          return this.appLanguageService.AppLanguage.DateNovember[this.appStateService.AppState$.getValue().Language];
+          return this.appLanguageService.DateNovember[this.appLanguageService.LangID];
         }
       case 12:
         {
           if (acronym) {
-            return this.appLanguageService.AppLanguage.DateDecemberAcronym[this.appStateService.AppState$.getValue().Language];
+            return this.appLanguageService.DateDecemberAcronym[this.appLanguageService.LangID];
           }
-          return this.appLanguageService.AppLanguage.DateDecember[this.appStateService.AppState$.getValue().Language];
+          return this.appLanguageService.DateDecember[this.appLanguageService.LangID];
         }
     }
   }

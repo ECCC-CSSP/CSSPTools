@@ -1,9 +1,8 @@
-import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { GetAnalysisCalculationTypeEnum } from 'src/app/enums/generated/AnalysisCalculationTypeEnum';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { GetTVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
-import { AppState } from 'src/app/models/AppState.model';
 import { EnumIDAndText } from 'src/app/models/generated/helper/EnumIDAndText.model';
 import { StatMWQMRun } from 'src/app/models/generated/web/StatMWQMRun.model';
 import { StatMWQMSite } from 'src/app/models/generated/web/StatMWQMSite.model';
@@ -20,12 +19,10 @@ import { WebMWQMSamplesService } from 'src/app/services/loaders/web-mwqm-samples
 @Component({
   selector: 'app-analysis-options',
   templateUrl: './analysis-options.component.html',
-  styleUrls: ['./analysis-options.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./analysis-options.component.css']
 })
 export class AnalysisOptionsComponent implements OnInit, OnDestroy {
   @Input() TVItemModelList: TVItemModel[] = [];
-  @Input() AppState: AppState;
   @Input() StatMWQMSiteList: StatMWQMSite[] = [];
   @Input() StatMWQMRunList: StatMWQMRun[] = [];
 
@@ -52,25 +49,25 @@ export class AnalysisOptionsComponent implements OnInit, OnDestroy {
     private webMWQMSamplesService: WebMWQMSamplesService) { }
 
   ngOnInit(): void {
-    this.language = <number>this.appStateService.AppState$.getValue().Language;
+    this.language = <number>this.appLanguageService.Language;
     this.formStat = this.fb.group({
-      AnalysisStartRun: [this.appStateService.AppState$.getValue().AnalysisStartRun],
-      AnalysisEndRun: [this.appStateService.AppState$.getValue().AnalysisEndRun],
-      AnalysisRuns: [this.appStateService.AppState$.getValue().AnalysisRuns],
-      AnalysisFullYear: [this.appStateService.AppState$.getValue().AnalysisFullYear],
-      AnalysisShowOnlyUsed: [this.appStateService.AppState$.getValue().AnalysisShowOnlyUsed],
-      AnalysisCalculationType: [this.appStateService.AppState$.getValue().AnalysisCalculationType],
-      AnalysisHighlightSalFromAverage: [this.appStateService.AppState$.getValue().AnalysisHighlightSalFromAverage],
-      AnalysisShortRange: [this.appStateService.AppState$.getValue().AnalysisShortRange],
-      AnalysisMidRange: [this.appStateService.AppState$.getValue().AnalysisMidRange],
-      AnalysisDry24h: [this.appStateService.AppState$.getValue().AnalysisDry24h],
-      AnalysisDry48h: [this.appStateService.AppState$.getValue().AnalysisDry48h],
-      AnalysisDry72h: [this.appStateService.AppState$.getValue().AnalysisDry72h],
-      AnalysisDry96h: [this.appStateService.AppState$.getValue().AnalysisDry96h],
-      AnalysisWet24h: [this.appStateService.AppState$.getValue().AnalysisWet24h],
-      AnalysisWet48h: [this.appStateService.AppState$.getValue().AnalysisWet48h],
-      AnalysisWet72h: [this.appStateService.AppState$.getValue().AnalysisWet72h],
-      AnalysisWet96h: [this.appStateService.AppState$.getValue().AnalysisWet96h],
+      AnalysisStartRun: [this.appStateService.AnalysisStartRun],
+      AnalysisEndRun: [this.appStateService.AnalysisEndRun],
+      AnalysisRuns: [this.appStateService.AnalysisRuns],
+      AnalysisFullYear: [this.appStateService.AnalysisFullYear],
+      AnalysisShowOnlyUsed: [this.appStateService.AnalysisShowOnlyUsed],
+      AnalysisCalculationType: [this.appStateService.AnalysisCalculationType],
+      AnalysisHighlightSalFromAverage: [this.appStateService.AnalysisHighlightSalFromAverage],
+      AnalysisShortRange: [this.appStateService.AnalysisShortRange],
+      AnalysisMidRange: [this.appStateService.AnalysisMidRange],
+      AnalysisDry24h: [this.appStateService.AnalysisDry24h],
+      AnalysisDry48h: [this.appStateService.AnalysisDry48h],
+      AnalysisDry72h: [this.appStateService.AnalysisDry72h],
+      AnalysisDry96h: [this.appStateService.AnalysisDry96h],
+      AnalysisWet24h: [this.appStateService.AnalysisWet24h],
+      AnalysisWet48h: [this.appStateService.AnalysisWet48h],
+      AnalysisWet72h: [this.appStateService.AnalysisWet72h],
+      AnalysisWet96h: [this.appStateService.AnalysisWet96h],
     });
     this.enumIDAndTextList = this.analysisService.GetAnalysisCalculationTypeEnum_GetOrderedText();
     this.dryRain_mm_List = this.analysisService.GetDryRain();

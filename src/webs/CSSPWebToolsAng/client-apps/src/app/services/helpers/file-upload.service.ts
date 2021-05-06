@@ -16,7 +16,7 @@ export class FileUploadService {
     private httpClient: HttpClient) { }
 
   public upload(formData) {
-     const url: string = `${this.appLoadedService.BaseApiUrl}${this.languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Upload`;
+     const url: string = `${this.appLoadedService.BaseApiUrl}${this.languageEnum[this.appLanguageService.LangID]}-CA/Upload`;
 
     return this.httpClient.post<any>(url, formData, {
       reportProgress: true,
@@ -28,7 +28,7 @@ export class FileUploadService {
   //   var formData: any = new FormData();
   //   formData.append("fileName", file);
 
-  //   let url: string = `${this.appLoadedService.BaseApiUrl}${this.languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Upload`;
+  //   let url: string = `${this.appLoadedService.BaseApiUrl}${this.languageEnum[this.appLanguageService.LangID]}-CA/Upload`;
 
   //   return this.http.post<any>(url, formData, {
   //     reportProgress: true,

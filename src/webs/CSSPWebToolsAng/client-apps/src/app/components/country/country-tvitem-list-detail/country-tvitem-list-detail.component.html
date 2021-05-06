@@ -1,71 +1,71 @@
 <blockquote>
     <span *ngIf="tvTypeEnum.Province">
-        <span>{{ appLanguageService.AppLanguage.TVItemListDetailCountryProvince[appStateService.AppState$?.getValue().Language] }}&nbsp;&nbsp;</span>
+        <span>{{ appLanguageService.TVItemListDetailCountryProvince[appLanguageService.LangID] }}&nbsp;&nbsp;</span>
         <app-stat-count [TVType]="tvTypeEnum.Province" [TVItemModel]="TVItemModel">
         </app-stat-count>
     </span>
     <span *ngIf="tvTypeEnum.Municipality">
-        <span>{{ appLanguageService.AppLanguage.TVItemListDetailCountryMunicipality[appStateService.AppState$?.getValue().Language] }}&nbsp;&nbsp;</span>
+        <span>{{ appLanguageService.TVItemListDetailCountryMunicipality[appLanguageService.LangID] }}&nbsp;&nbsp;</span>
         <app-stat-count [TVType]="tvTypeEnum.Municipality" [TVItemModel]="TVItemModel">
         </app-stat-count>
     </span>
     <span *ngIf="tvTypeEnum.LiftStation">
-        <span>{{ appLanguageService.AppLanguage.TVItemListDetailCountryLiftStation[appStateService.AppState$?.getValue().Language] }}&nbsp;&nbsp;</span>
+        <span>{{ appLanguageService.TVItemListDetailCountryLiftStation[appLanguageService.LangID] }}&nbsp;&nbsp;</span>
         <app-stat-count [TVType]="tvTypeEnum.LiftStation" [TVItemModel]="TVItemModel">
         </app-stat-count>
     </span>
     <span *ngIf="tvTypeEnum.WasteWaterTreatmentPlant">
-        <span>{{ appLanguageService.AppLanguage.TVItemListDetailCountryWWTP[appStateService.AppState$?.getValue().Language] }}&nbsp;&nbsp;</span>
+        <span>{{ appLanguageService.TVItemListDetailCountryWWTP[appLanguageService.LangID] }}&nbsp;&nbsp;</span>
         <app-stat-count [TVType]="tvTypeEnum.WasteWaterTreatmentPlant" [TVItemModel]="TVItemModel">
         </app-stat-count>
     </span>
     <span *ngIf="tvTypeEnum.Area">
-        <span>{{ appLanguageService.AppLanguage.TVItemListDetailCountryArea[appStateService.AppState$?.getValue().Language] }}&nbsp;&nbsp;</span>
+        <span>{{ appLanguageService.TVItemListDetailCountryArea[appLanguageService.LangID] }}&nbsp;&nbsp;</span>
         <app-stat-count [TVType]="tvTypeEnum.Area" [TVItemModel]="TVItemModel">
         </app-stat-count>
     </span>
     <span *ngIf="tvTypeEnum.Sector">
-        <span>{{ appLanguageService.AppLanguage.TVItemListDetailCountrySector[appStateService.AppState$?.getValue().Language] }}&nbsp;&nbsp;</span>
+        <span>{{ appLanguageService.TVItemListDetailCountrySector[appLanguageService.LangID] }}&nbsp;&nbsp;</span>
         <app-stat-count [TVType]="tvTypeEnum.Sector" [TVItemModel]="TVItemModel">
         </app-stat-count>
     </span>
     <span *ngIf="tvTypeEnum.Subsector">
-        <span>{{ appLanguageService.AppLanguage.TVItemListDetailCountrySubsector[appStateService.AppState$?.getValue().Language] }}&nbsp;&nbsp;</span>
+        <span>{{ appLanguageService.TVItemListDetailCountrySubsector[appLanguageService.LangID] }}&nbsp;&nbsp;</span>
         <app-stat-count [TVType]="tvTypeEnum.Subsector" [TVItemModel]="TVItemModel">
         </app-stat-count>
     </span>
     <span *ngIf="tvTypeEnum.MWQMSiteSample">
-        <span>{{ appLanguageService.AppLanguage.TVItemListDetailCountryMWQMSample[appStateService.AppState$?.getValue().Language] }}&nbsp;&nbsp;</span>
+        <span>{{ appLanguageService.TVItemListDetailCountryMWQMSample[appLanguageService.LangID] }}&nbsp;&nbsp;</span>
         <app-stat-count [TVType]="tvTypeEnum.MWQMSiteSample" [TVItemModel]="TVItemModel">
         </app-stat-count>
     </span>
     <span *ngIf="tvTypeEnum.MWQMSite">
-        <span>{{ appLanguageService.AppLanguage.TVItemListDetailCountryMWQMSite[appStateService.AppState$?.getValue().Language] }}&nbsp;&nbsp;</span>
+        <span>{{ appLanguageService.TVItemListDetailCountryMWQMSite[appLanguageService.LangID] }}&nbsp;&nbsp;</span>
         <app-stat-count [TVType]="tvTypeEnum.MWQMSite" [TVItemModel]="TVItemModel">
         </app-stat-count>
     </span>
     <span *ngIf="tvTypeEnum.MWQMRun">
-        <span>{{ appLanguageService.AppLanguage.TVItemListDetailCountryMWQMRun[appStateService.AppState$?.getValue().Language] }}&nbsp;&nbsp;</span>
+        <span>{{ appLanguageService.TVItemListDetailCountryMWQMRun[appLanguageService.LangID] }}&nbsp;&nbsp;</span>
         <app-stat-count [TVType]="tvTypeEnum.MWQMRun" [TVItemModel]="TVItemModel">
         </app-stat-count>
     </span>
     <span *ngIf="tvTypeEnum.PolSourceSite">
-        <span>{{ appLanguageService.AppLanguage.TVItemListDetailCountryPolSourceSite[appStateService.AppState$?.getValue().Language] }}&nbsp;&nbsp;</span>
+        <span>{{ appLanguageService.TVItemListDetailCountryPolSourceSite[appLanguageService.LangID] }}&nbsp;&nbsp;</span>
         <app-stat-count [TVType]="tvTypeEnum.PolSourceSite" [TVItemModel]="TVItemModel">
         </app-stat-count>
     </span>
     <span *ngIf="tvTypeEnum.MikeScenario">
-        <span>{{ appLanguageService.AppLanguage.TVItemListDetailCountryMikeScenario[appStateService.AppState$?.getValue().Language] }}&nbsp;&nbsp;</span>
+        <span>{{ appLanguageService.TVItemListDetailCountryMikeScenario[appLanguageService.LangID] }}&nbsp;&nbsp;</span>
         <app-stat-count [TVType]="tvTypeEnum.MikeScenario" [TVItemModel]="TVItemModel">
         </app-stat-count>
     </span>
     <span *ngIf="tvTypeEnum.BoxModel">
-        <span>{{ appLanguageService.AppLanguage.TVItemListDetailCountryBoxModel[appStateService.AppState$?.getValue().Language] }}&nbsp;&nbsp;</span>
+        <span>{{ appLanguageService.TVItemListDetailCountryBoxModel[appLanguageService.LangID] }}&nbsp;&nbsp;</span>
         <app-stat-count [TVType]="tvTypeEnum.BoxModel" [TVItemModel]="TVItemModel">
         </app-stat-count>
     </span>
     <span *ngIf="tvTypeEnum.VisualPlumesScenario">
-        <span>{{ appLanguageService.AppLanguage.TVItemListDetailCountryVPScenario[appStateService.AppState$?.getValue().Language] }}&nbsp;&nbsp;</span>
+        <span>{{ appLanguageService.TVItemListDetailCountryVPScenario[appLanguageService.LangID] }}&nbsp;&nbsp;</span>
         <app-stat-count [TVType]="tvTypeEnum.VisualPlumesScenario" [TVItemModel]="TVItemModel">
         </app-stat-count>
     </span>

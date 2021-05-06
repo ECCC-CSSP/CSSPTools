@@ -1,6 +1,6 @@
 <ng-container>
     <div id="MapTopCenterID">
-        <button [ngClass]="AppState.EditMapVisible ? 'selected' : ''" mat-raised-button (click)="togglesService.ToggleEditMap(AppState)">
+        <button [ngClass]="appStateService.EditMapVisible ? 'selected' : ''" mat-raised-button (click)="togglesService.ToggleEditMap()">
             <mat-icon>edit</mat-icon>
             <span>&nbsp;Edit</span>
         </button>
@@ -9,14 +9,14 @@
             <input mat-matInput id="CurrentLatLng" type="text" />
         </button>
         <br /><br />
-        <button mat-raised-button color="warn" *ngIf="AppState.EditMapVisible && AppState.EditMapChanged" (click)="mapService.MapMarkerSaveChanges()">
+        <button mat-raised-button color="warn" *ngIf="appStateService.EditMapVisible && appStateService.EditMapChanged" (click)="mapService.MapMarkerSaveChanges()">
             <mat-icon title="Save Changes">save</mat-icon>
             <span>&nbsp;Save</span>
         </button>
         <span>&nbsp;&nbsp;</span>
-        <button mat-raised-button *ngIf="AppState.EditMapVisible && AppState.EditMapChanged" >
+        <button mat-raised-button *ngIf="appStateService.EditMapVisible && appStateService.EditMapChanged" >
             <input mat-matInput id="ChangedLatLng" type="text" />
-            <span>&nbsp;&nbsp;Item&nbsp;&nbsp;[{{ AppState.MarkerLabel }}]</span>
+            <span>&nbsp;&nbsp;Item&nbsp;&nbsp;[{{ appStateService.MarkerLabel }}]</span>
         </button>
     </div>
 </ng-container>

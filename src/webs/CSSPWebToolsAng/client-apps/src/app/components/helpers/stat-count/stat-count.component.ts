@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { AppStateService } from 'src/app/services/app-state.service';
@@ -7,8 +7,7 @@ import { StatCountService } from 'src/app/services/helpers/stat-count.service';
 @Component({
   selector: 'app-stat-count',
   templateUrl: './stat-count.component.html',
-  styleUrls: ['./stat-count.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./stat-count.component.css']
 })
 export class StatCountComponent implements OnInit, OnDestroy {
   @Input() TVItemModel: TVItemModel;

@@ -1,24 +1,24 @@
-<mat-list *ngFor="let tvItemStatMapModel of TVItemModelList; let i = index">
-    <app-tvitem-menu [TVItemModel]="tvItemStatMapModel" [AppState]="AppState">
+<mat-list *ngFor="let tvItemModel of TVItemModelList; let i = index">
+    <app-tvitem-menu [TVItemModel]="tvItemModel" >
     </app-tvitem-menu>
 
-    <button mat-button (click)="subPageService.SetSubPage(tvItemStatMapModel)">
-        <span [ngClass]="tvItemStatMapModel?.TVItem?.IsActive ? '' : 'inactive'">
-            <span *ngIf="appStateService.AppState$?.getValue()?.MapVisible">
+    <button mat-button (click)="subPageService.SetSubPage(tvItemModel)">
+        <span [ngClass]="tvItemModel?.TVItem?.IsActive ? '' : 'inactive'">
+            <span *ngIf="appStateService.MapVisible">
                 {{ i + 1 }}&nbsp;-&nbsp;
             </span>
-            <span *ngIf="appStateService.AppState$?.getValue()?.DetailVisible">
-                [{{ tvItemStatMapModel?.TVItem.TVItemID }}]
+            <span *ngIf="appStateService.DetailVisible">
+                [{{ tvItemModel?.TVItem.TVItemID }}]
             </span>
-            {{ tvItemStatMapModel?.TVItemLanguageList[this.appStateService.AppState$.getValue().Language]?.TVText }}
+            {{ tvItemModel?.TVItemLanguageList[this.appLanguageService.LangID]?.TVText }}
         </span>
-        <app-stat-count *ngIf="appStateService.AppState$.getValue().StatCountVisible" [TVType]="null"
-            [TVItemModel]="tvItemStatMapModel"></app-stat-count>
-        <app-last-udpate-tv-item-model *ngIf="appStateService.AppState$?.getValue()?.LastUpdateVisible"
-            [TVItemModel]="tvItemStatMapModel"></app-last-udpate-tv-item-model>
+        <app-stat-count *ngIf="appStateService.StatCountVisible" [TVType]="null"
+            [TVItemModel]="tvItemModel"></app-stat-count>
+        <app-last-udpate-tv-item-model *ngIf="appStateService.LastUpdateVisible"
+            [TVItemModel]="tvItemModel"></app-last-udpate-tv-item-model>
     </button>
 
-    <ng-container *ngIf="showTVItemService.TVItemVisible(tvItemStatMapModel)">
+    <ng-container *ngIf="showTVItemService.TVItemVisible(tvItemModel)">
         <mat-accordion multi>
             <mat-expansion-panel>
                 <mat-expansion-panel-header>
@@ -27,34 +27,34 @@
                         &nbsp;&nbsp;&nbsp;View
                     </mat-panel-title>
                 </mat-expansion-panel-header>
-                <app-country-item-view [TVItemModel]="tvItemStatMapModel" [AppState]="AppState">
+                <app-country-item-view [TVItemModel]="tvItemModel" >
                 </app-country-item-view>
             </mat-expansion-panel>
-            <mat-expansion-panel *ngIf="AppState.EditVisible">
+            <mat-expansion-panel *ngIf="appStateService.EditVisible">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
                         <mat-icon>edit</mat-icon>
                         &nbsp;&nbsp;&nbsp;Modify
                     </mat-panel-title>
                 </mat-expansion-panel-header>
-                <app-country-item-modify [TVItemModel]="tvItemStatMapModel"
-                    [AppState]="AppState">
+                <app-country-item-modify [TVItemModel]="tvItemModel"
+                    >
                 </app-country-item-modify>
             </mat-expansion-panel>
-            <mat-expansion-panel *ngIf="AppState.EditVisible">
+            <mat-expansion-panel *ngIf="appStateService.EditVisible">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
                         <mat-icon>add</mat-icon>
                         &nbsp;&nbsp;&nbsp;Create
                     </mat-panel-title>
                 </mat-expansion-panel-header>
-                <app-country-item-create [TVItemModel]="tvItemStatMapModel"
-                    [AppState]="AppState">
+                <app-country-item-create [TVItemModel]="tvItemModel"
+                    >
                 </app-country-item-create>
             </mat-expansion-panel>
         </mat-accordion>
     </ng-container>
 
-    <app-country-tvitem-list-detail [AppState]="AppState" *ngIf="!IsBreadCrumb && AppState?.DetailVisible"
-        [TVItemModel]="tvItemStatMapModel"></app-country-tvitem-list-detail>
+    <app-country-tvitem-list-detail  *ngIf="!IsBreadCrumb && appStateService.DetailVisible"
+        [TVItemModel]="tvItemModel"></app-country-tvitem-list-detail>
 </mat-list>

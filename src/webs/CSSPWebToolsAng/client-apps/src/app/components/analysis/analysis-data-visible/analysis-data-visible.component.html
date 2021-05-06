@@ -1,29 +1,29 @@
 <form [formGroup]="formDataVisible">
     <mat-checkbox (click)="analysisService.ToggleAnalysisFCDataVisible()" formControlName="AnalysisFCDataVisible"
-        [value]="appStateService?.AppState$?.getValue()?.AnalysisFCDataVisible">
-        {{ appLanguageService.AppLanguage.AnalysisDataVisibleFecalColiform[appStateService.AppState$?.getValue()?.Language] }}</mat-checkbox>
+        [value]="appStateService.AnalysisFCDataVisible">
+        {{ appLanguageService.AnalysisDataVisibleFecalColiform[appLanguageService.LangID] }}</mat-checkbox>
     <mat-checkbox (click)="analysisService.ToggleAnalysisTempDataVisible()" formControlName="AnalysisTempDataVisible"
-        [value]="appStateService?.AppState$?.getValue()?.AnalysisTempDataVisible">
-        {{ appLanguageService.AppLanguage.AnalysisDataVisibleTemperature[appStateService.AppState$?.getValue()?.Language] }}</mat-checkbox>
+        [value]="appStateService.AnalysisTempDataVisible">
+        {{ appLanguageService.AnalysisDataVisibleTemperature[appLanguageService.LangID] }}</mat-checkbox>
     <mat-checkbox (click)="analysisService.ToggleAnalysisSalDataVisible()" formControlName="AnalysisSalDataVisible"
-        [value]="appStateService?.AppState$?.getValue()?.AnalysisSalDataVisible">
-        {{ appLanguageService.AppLanguage.AnalysisDataVisibleSalinity[appStateService.AppState$?.getValue()?.Language] }}</mat-checkbox>
+        [value]="appStateService.AnalysisSalDataVisible">
+        {{ appLanguageService.AnalysisDataVisibleSalinity[appLanguageService.LangID] }}</mat-checkbox>
     <mat-checkbox (click)="analysisService.ToggleAnalysisP90DataVisible()" formControlName="AnalysisP90DataVisible"
-        [value]="appStateService?.AppState$?.getValue()?.AnalysisP90DataVisible">
-        {{ appLanguageService.AppLanguage.AnalysisDataVisibleP90[appStateService.AppState$?.getValue()?.Language] }}</mat-checkbox>
+        [value]="appStateService.AnalysisP90DataVisible">
+        {{ appLanguageService.AnalysisDataVisibleP90[appLanguageService.LangID] }}</mat-checkbox>
     <mat-checkbox (click)="analysisService.ToggleAnalysisGeoMeanDataVisible()"
         formControlName="AnalysisGeoMeanDataVisible"
-        [value]="appStateService?.AppState$?.getValue()?.AnalysisGeoMeanDataVisible">
-        {{ appLanguageService.AppLanguage.AnalysisDataVisibleP90[appStateService.AppState$?.getValue()?.Language] }}</mat-checkbox>
+        [value]="appStateService.AnalysisGeoMeanDataVisible">
+        {{ appLanguageService.AnalysisDataVisibleP90[appLanguageService.LangID] }}</mat-checkbox>
     <mat-checkbox (click)="analysisService.ToggleAnalysisMedianDataVisible()" formControlName="AnalysisMedianDataVisible"
-        [value]="appStateService?.AppState$?.getValue()?.AnalysisMedianDataVisible">
-        {{ appLanguageService.AppLanguage.AnalysisDataVisibleMedian[appStateService.AppState$?.getValue()?.Language] }}</mat-checkbox>
+        [value]="appStateService.AnalysisMedianDataVisible">
+        {{ appLanguageService.AnalysisDataVisibleMedian[appLanguageService.LangID] }}</mat-checkbox>
     <mat-checkbox (click)="analysisService.ToggleAnalysisPerOver43DataVisible()"
         formControlName="AnalysisPerOver43DataVisible"
-        [value]="appStateService?.AppState$?.getValue()?.AnalysisPerOver43DataVisible">
-        {{ appLanguageService.AppLanguage.AnalysisDataVisiblePerAbove43[appStateService.AppState$?.getValue()?.Language] }}</mat-checkbox>
+        [value]="appStateService.AnalysisPerOver43DataVisible">
+        {{ appLanguageService.AnalysisDataVisiblePerAbove43[appLanguageService.LangID] }}</mat-checkbox>
     <mat-checkbox (click)="analysisService.ToggleAnalysisPerOver260DataVisible()"
         formControlName="AnalysisPerOver260DataVisible"
-        [value]="appStateService?.AppState$?.getValue()?.AnalysisPerOver260DataVisible">
-        {{ appLanguageService.AppLanguage.AnalysisDataVisiblePerAbove260[appStateService.AppState$?.getValue()?.Language] }}</mat-checkbox>
+        [value]="appStateService.AnalysisPerOver260DataVisible">
+        {{ appLanguageService.AnalysisDataVisiblePerAbove260[appLanguageService.LangID] }}</mat-checkbox>
 </form>

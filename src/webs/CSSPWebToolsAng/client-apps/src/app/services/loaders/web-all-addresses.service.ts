@@ -2,9 +2,6 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { GetLanguageEnum, LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
-import { AppLoaded } from 'src/app/models/AppLoaded.model';
-import { AppState } from 'src/app/models/AppState.model';
 import { WebAllAddresses } from 'src/app/models/generated/web/WebAllAddresses.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
@@ -17,10 +14,10 @@ import { WebAllContactsService } from 'src/app/services/loaders/web-all-contacts
     providedIn: 'root'
 })
 export class WebAllAddressesService {
-    private DoOther: boolean;
+    private DoNext: boolean;
+    private ForceReload: boolean;
     private sub: Subscription;
-    LangID: number = this.appStateService.AppState$?.getValue()?.Language == LanguageEnum.fr ? 1 : 0;
-  
+
     constructor(private httpClient: HttpClient,
         private appStateService: AppStateService,
         private appLoadedService: AppLoadedService,
@@ -29,65 +26,76 @@ export class WebAllAddressesService {
         private componentDataLoadedService: ComponentDataLoadedService) {
     }
 
-    DoWebAllAddresses(DoOther: boolean) {
-        this.DoOther = DoOther;
-    
+    DoWebAllAddresses(DoNext: boolean = true, ForceReload: boolean = true) {
+        this.DoNext = DoNext;
+        this.ForceReload = ForceReload;
+
         this.sub ? this.sub.unsubscribe() : null;
 
-        if (this.appLoadedService.AppLoaded$.getValue()?.WebAllAddresses) {
-          this.KeepWebAllAddresses();
+        if (ForceReload) {
+            this.sub = this.GetWebAllAddresses().subscribe();
         }
         else {
-          this.sub = this.GetWebAllAddresses().subscribe();
+            if (this.componentDataLoadedService.DataLoadedWebAllAddresses()) {
+                this.KeepWebAllAddresses();
+            }
+            else {
+                this.sub = this.GetWebAllAddresses().subscribe();
+            }
         }
-      }
-    
+    }
+
     private GetWebAllAddresses() {
-        let languageEnum = GetLanguageEnum();
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebAllAddresses: {} });
-        this.appStateService.UpdateAppState(<AppState>{
-            Status: `${ this.appLanguageService.AppLanguage.Loading[this.LangID]} - ${ WebAllAddresses }`,
-            Working: true
-        });
-        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebAllAddresses`;
+        this.appLoadedService.WebAllAddresses = <WebAllAddresses>{};
+
+        let NextText = this.DoNext ? `${this.appLanguageService.Next[this.appLanguageService.LangID]} - WebAllContacts` : '';
+        let ForceReloadText = this.ForceReload ? `${this.appLanguageService.ForceReload[this.appLanguageService.LangID]}` : '';
+        this.appStateService.Status = `${this.appLanguageService.Loading[this.appLanguageService.LangID]} - WebAllAddresses - ${NextText} - ${ForceReloadText}`;
+        this.appStateService.Working = true;
+
+        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appLanguageService.Language}-CA/Read/WebAllAddresses`;
         return this.httpClient.get<WebAllAddresses>(url).pipe(
             map((x: WebAllAddresses) => {
                 this.UpdateWebAllAddresses(x);
                 console.debug(x);
-                if (this.DoOther) {
+                if (this.DoNext) {
                     this.DoWebAllContacts();
                 }
             }),
             catchError(e => of(e).pipe(map(e => {
-                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false, Error: <HttpErrorResponse>e });
+                this.appStateService.Status = ''
+                this.appStateService.Working = false
+                this.appStateService.Error = <HttpErrorResponse>e;
                 console.debug(e);
             })))
         );
     }
 
     private DoWebAllContacts() {
-        this.webAllContactsService.DoWebAllContacts(this.DoOther);
+        this.webAllContactsService.DoWebAllContacts(this.DoNext);
     }
 
     private KeepWebAllAddresses() {
-        this.UpdateWebAllAddresses(this.appLoadedService.AppLoaded$?.getValue()?.WebAllAddresses);
-        console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebAllAddresses);
-        if (this.DoOther) {
+        this.UpdateWebAllAddresses(this.appLoadedService.WebAllAddresses);
+        console.debug(this.appLoadedService.WebAllAddresses);
+        if (this.DoNext) {
             this.DoWebAllContacts();
         }
     }
 
     private UpdateWebAllAddresses(x: WebAllAddresses) {
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ WebAllAddresses: x });
+        this.appLoadedService.WebAllAddresses = x;
 
-        if (this.DoOther) {
+        if (this.DoNext) {
             if (this.componentDataLoadedService.DataLoadedWebRoot()) {
-                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
+                this.appStateService.Status = '';
+                this.appStateService.Working = false;
             }
         }
         else {
             if (this.componentDataLoadedService.DataLoadedWebAllAddresses()) {
-                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
+                this.appStateService.Status = '';
+                this.appStateService.Working = false;
             }
 
         }

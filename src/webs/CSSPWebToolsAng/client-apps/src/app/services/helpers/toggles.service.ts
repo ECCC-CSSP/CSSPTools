@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { AppState } from 'src/app/models/AppState.model';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { ShellSubComponentEnum } from 'src/app/enums/generated/ShellSubComponentEnum';
 import { WebAreaService } from 'src/app/services/loaders/web-area.service';
@@ -35,75 +34,80 @@ export class TogglesService {
     }
 
     ToggleDetail(): void {
-        this.appStateService.UpdateAppState(<AppState>{ DetailVisible: !this.appStateService.AppState$.getValue().DetailVisible, Working: false });
+        this.appStateService.DetailVisible = !this.appStateService.DetailVisible; 
+        this.appStateService.Working = false;
     }
 
-    ToggleInactive(appState: AppState): void {
-        this.appStateService.UpdateAppState(<AppState>{ InactVisible: !this.appStateService.AppState$.getValue().InactVisible });
-        this.ReloadPage(appState);
+    ToggleInactive(): void {
+        this.appStateService.InactVisible = !this.appStateService.InactVisible;
+        this.ReloadPage();
     }
 
     ToggleLastUpdate(): void {
-        this.appStateService.UpdateAppState(<AppState>{ LastUpdateVisible: !this.appStateService.AppState$.getValue().LastUpdateVisible, Working: false });
+        this.appStateService.LastUpdateVisible = !this.appStateService.LastUpdateVisible; 
+        this.appStateService.Working = false;
     }
 
     ToggleMap(): void {
-        this.appStateService.UpdateAppState(<AppState>{ MapVisible: !this.appStateService.AppState$.getValue().MapVisible });
+        this.appStateService.MapVisible = !this.appStateService.MapVisible;
     }
 
     ToggleMenu(): void {
-        this.appStateService.UpdateAppState(<AppState>{ MenuVisible: !this.appStateService.AppState$.getValue().MenuVisible });
+        this.appStateService.MenuVisible = !this.appStateService.MenuVisible;
     }
 
     ToggleStatCount(): void {
-        this.appStateService.UpdateAppState(<AppState>{ StatCountVisible: !this.appStateService.AppState$.getValue().StatCountVisible, Working: false });
+        this.appStateService.StatCountVisible = !this.appStateService.StatCountVisible; 
+        this.appStateService.Working = false;
     }
 
     ToggleEdit(): void {
-        this.appStateService.UpdateAppState(<AppState>{ EditVisible: !this.appStateService.AppState$.getValue().EditVisible, Working: false });
+        this.appStateService.EditVisible = !this.appStateService.EditVisible; 
+        this.appStateService.Working = false;
     }
 
-    ToggleEditMap(appState:AppState): void {
-        this.appStateService.UpdateAppState(<AppState>{ EditMapVisible: !this.appStateService.AppState$.getValue().EditMapVisible, Working: false });
-        this.ReloadPage(appState);
+    ToggleEditMap(): void {
+        this.appStateService.EditMapVisible = !this.appStateService.EditMapVisible; 
+        this.appStateService.Working = false;
+        this.ReloadPage();
     }
 
-    private ReloadPage(appState: AppState)
+    private ReloadPage()
     {
-        switch (appState.ShellSubComponent) {
+        switch (this.appStateService.ShellSubComponent) {
             case ShellSubComponentEnum.Area:
                 {
-                    this.webAreaService.DoWebArea(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
+                    this.webAreaService.DoWebArea(this.appStateService.CurrentTVItemID, true);
                 }
                 break;
             case ShellSubComponentEnum.Country:
                 {
-                    this.webCountryService.DoWebCountry(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
+                    this.webCountryService.DoWebCountry(this.appStateService.CurrentTVItemID, true);
                 }
                 break;
             case ShellSubComponentEnum.Municipality:
                 {
-                    this.webMunicipalityService.DoWebMunicipality(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
+                    this.webMunicipalityService.DoWebMunicipality(this.appStateService.CurrentTVItemID, true);
                 }
                 break;
             case ShellSubComponentEnum.MWQMRun:
                 {
-                    this.webMWQMRunsService.DoWebMWQMRuns(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
+                    this.webMWQMRunsService.DoWebMWQMRuns(this.appStateService.CurrentTVItemID, true);
                 }
                 break;
             case ShellSubComponentEnum.MWQMSite:
                 {
-                    this.webMWQMSitesService.DoWebMWQMSites(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
+                    this.webMWQMSitesService.DoWebMWQMSites(this.appStateService.CurrentTVItemID, true);
                 }
                 break;
             case ShellSubComponentEnum.PolSourceSite:
                 {
-                    this.webPolSourceSitesService.DoWebPolSourceSites(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
+                    this.webPolSourceSitesService.DoWebPolSourceSites(this.appStateService.CurrentTVItemID, true);
                 }
                 break;
             case ShellSubComponentEnum.Province:
                 {
-                    this.webProvinceService.DoWebProvince(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
+                    this.webProvinceService.DoWebProvince(this.appStateService.CurrentTVItemID, true);
                 }
                 break;
             case ShellSubComponentEnum.Root:
@@ -113,12 +117,12 @@ export class TogglesService {
                 break;
             case ShellSubComponentEnum.Sector:
                 {
-                    this.webSectorService.DoWebSector(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
+                    this.webSectorService.DoWebSector(this.appStateService.CurrentTVItemID, true);
                 }
                 break;
             case ShellSubComponentEnum.Subsector:
                 {
-                    this.webSubsectorService.DoWebSubsector(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
+                    this.webSubsectorService.DoWebSubsector(this.appStateService.CurrentTVItemID, true);
                 }
                 break;
             default:

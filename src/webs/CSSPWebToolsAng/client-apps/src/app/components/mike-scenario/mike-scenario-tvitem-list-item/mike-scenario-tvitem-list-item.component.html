@@ -1,32 +1,32 @@
-<mat-list *ngFor="let tvItemStatMapModel of TVItemModelList; let i = index">
-    <app-tvitem-menu [TVItemModel]="tvItemStatMapModel" [AppState]="AppState">
+<mat-list *ngFor="let tvItemModel of TVItemModelList; let i = index">
+    <app-tvitem-menu [TVItemModel]="tvItemModel" >
     </app-tvitem-menu>
 
-    <button mat-button (click)="subPageService.SetSubPage(tvItemStatMapModel)">
-        <span [ngClass]="tvItemStatMapModel?.TVItem?.IsActive ? '' : 'inactive'">
-            <span *ngIf="appStateService.AppState$?.getValue()?.MapVisible">
+    <button mat-button (click)="subPageService.SetSubPage(tvItemModel)">
+        <span [ngClass]="tvItemModel?.TVItem?.IsActive ? '' : 'inactive'">
+            <span *ngIf="appStateService.MapVisible">
                 {{ i + 1 }}&nbsp;-&nbsp;
             </span>
-            <span *ngIf="appStateService.AppState$?.getValue()?.DetailVisible">
-                [{{ tvItemStatMapModel?.TVItem?.TVItemID }}]
+            <span *ngIf="appStateService.DetailVisible">
+                [{{ tvItemModel?.TVItem?.TVItemID }}]
             </span>
-            {{ tvItemStatMapModel?.TVItemLanguageList[this.appStateService.AppState$.getValue().Language]?.TVText }}
+            {{ tvItemModel?.TVItemLanguageList[this.appLanguageService.LangID]?.TVText }}
         </span>
-        <app-stat-count *ngIf="appStateService.AppState$.getValue().StatCountVisible" [TVType]="null"
-            [TVItemModel]="tvItemStatMapModel"></app-stat-count>
-        <app-last-udpate-tv-item-model *ngIf="appStateService.AppState$?.getValue()?.LastUpdateVisible"
-            [TVItemModel]="tvItemStatMapModel"></app-last-udpate-tv-item-model>
+        <app-stat-count *ngIf="appStateService.StatCountVisible" [TVType]="null"
+            [TVItemModel]="tvItemModel"></app-stat-count>
+        <app-last-udpate-tv-item-model *ngIf="appStateService.LastUpdateVisible"
+            [TVItemModel]="tvItemModel"></app-last-udpate-tv-item-model>
     </button>
 
-    <app-mike-scenario-item-view *ngIf="showTVItemService.TVItemVisible(tvItemStatMapModel)"
-        [TVItemModel]="tvItemStatMapModel" [AppState]="AppState">
+    <app-mike-scenario-item-view *ngIf="showTVItemService.TVItemVisible(tvItemModel)"
+        [TVItemModel]="tvItemModel" >
     </app-mike-scenario-item-view>
 
-    <app-mike-scenario-item-edit *ngIf="AppState.EditVisible"
-        [TVItemModel]="tvItemStatMapModel" [AppState]="AppState">
+    <app-mike-scenario-item-edit *ngIf="appStateService.EditVisible"
+        [TVItemModel]="tvItemModel" >
     </app-mike-scenario-item-edit>
 
-    <app-mike-scenario-tvitem-list-detail [AppState]="AppState" *ngIf="AppState?.DetailVisible"
-        [TVItemModel]="tvItemStatMapModel">
+    <app-mike-scenario-tvitem-list-detail  *ngIf="appStateService.DetailVisible"
+        [TVItemModel]="tvItemModel">
     </app-mike-scenario-tvitem-list-detail>
 </mat-list>

@@ -2,9 +2,6 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { GetLanguageEnum, LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
-import { AppLoaded } from 'src/app/models/AppLoaded.model';
-import { AppState } from 'src/app/models/AppState.model';
 import { WebMWQMSites } from 'src/app/models/generated/web/WebMWQMSites.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
@@ -18,9 +15,9 @@ import { WebMWQMRunsService } from 'src/app/services/loaders/web-mwqm-runs.servi
 })
 export class WebMWQMSitesService {
     private TVItemID: number;
-    private DoOther: boolean;
+    private DoNext: boolean;
+    private ForceReload: boolean;
     private sub: Subscription;
-    LangID: number = this.appStateService.AppState$?.getValue()?.Language == LanguageEnum.fr ? 1 : 0;
 
     constructor(private httpClient: HttpClient,
         private appStateService: AppStateService,
@@ -31,72 +28,79 @@ export class WebMWQMSitesService {
         private historyService: HistoryService) {
     }
 
-    DoWebMWQMSites(TVItemID: number, DoOther: boolean) {
+    DoWebMWQMSites(TVItemID: number, DoNext: boolean = true, ForceReload: boolean = true) {
         this.TVItemID = TVItemID;
-        this.DoOther = DoOther;
+        this.DoNext = DoNext;
+        this.ForceReload = ForceReload;
 
         this.sub ? this.sub.unsubscribe() : null;
 
-        if (this.appLoadedService.AppLoaded$.getValue()?.WebMWQMSites) {
-            this.KeepWebMWQMSites();
+        if (ForceReload) {
+            this.sub = this.GetWebMWQMSites().subscribe();
         }
         else {
-            this.sub = this.GetWebMWQMSites().subscribe();
+            if (this.componentDataLoadedService.DataLoadedWebMWQMSites()) {
+                this.KeepWebMWQMSites();
+            }
+            else {
+                this.sub = this.GetWebMWQMSites().subscribe();
+            }
         }
     }
 
     private GetWebMWQMSites() {
-        let languageEnum = GetLanguageEnum();
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
-            WebMWQMSites: {},
-        });
-        this.appStateService.UpdateAppState(<AppState>{
-            Status: `${ this.appLanguageService.AppLanguage.Loading[this.LangID]} - ${ WebMWQMSites }`,
-            Working: true
-        });
-        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebMWQMSites/${this.TVItemID}`;
+        this.appLoadedService.WebMWQMSites = <WebMWQMSites>{};
+
+        let NextText = this.DoNext ? `${this.appLanguageService.Next[this.appLanguageService.LangID]} - WebMWQMRuns` : '';
+        let ForceReloadText = this.ForceReload ? `${this.appLanguageService.ForceReload[this.appLanguageService.LangID]}` : '';
+        this.appStateService.Status = `${this.appLanguageService.Loading[this.appLanguageService.LangID]} - WebMWQMSites - ${NextText} - ${ForceReloadText}`;
+        this.appStateService.Working = true;
+
+        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appLanguageService.Language}-CA/Read/WebMWQMSites/${this.TVItemID}`;
         return this.httpClient.get<WebMWQMSites>(url).pipe(
             map((x: any) => {
                 this.UpdateWebMWQMSites(x);
                 console.debug(x);
-                if (this.DoOther) {
+                if (this.DoNext) {
                     this.DoWebMWQMRuns();
                 }
             }),
             catchError(e => of(e).pipe(map(e => {
-                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: true, Error: <HttpErrorResponse>e });
+                this.appStateService.Status = '';
+                this.appStateService.Working = true;
+                this.appStateService.Error = <HttpErrorResponse>e;
                 console.debug(e);
             })))
         );
     }
 
     private DoWebMWQMRuns() {
-        this.webMWQMRunsService.DoWebMWQMRuns(this.TVItemID, this.DoOther);
+        this.webMWQMRunsService.DoWebMWQMRuns(this.TVItemID, this.DoNext);
     }
 
     private KeepWebMWQMSites() {
-        this.UpdateWebMWQMSites(this.appLoadedService.AppLoaded$?.getValue()?.WebMWQMSites);
-        console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebMWQMSites);
-        if (this.DoOther) {
+        this.UpdateWebMWQMSites(this.appLoadedService.WebMWQMSites);
+        console.debug(this.appLoadedService.WebMWQMSites);
+        if (this.DoNext) {
             this.DoWebMWQMRuns();
         }
     }
 
     private UpdateWebMWQMSites(x: WebMWQMSites) {
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
-            WebMWQMSites: x,
-        });
+        this.appLoadedService.WebMWQMSites = x;
 
-        this.historyService.AddHistory(this.appLoadedService.AppLoaded$.getValue()?.WebMWQMSites?.TVItemModel);
+        this.historyService.AddHistory(this.appLoadedService.WebMWQMSites?.TVItemModel);
 
-        if (this.DoOther) {
+        if (this.DoNext) {
             if (this.componentDataLoadedService.DataLoadedWebSubsector()) {
-                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
+                this.appStateService.Status = '';
+                this.appStateService.Working = false;
             }
         }
         else {
             if (this.componentDataLoadedService.DataLoadedWebMWQMSites()) {
-                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
+                this.appStateService.Status = '';
+                this.appStateService.Working = false;
             }
         }
     }

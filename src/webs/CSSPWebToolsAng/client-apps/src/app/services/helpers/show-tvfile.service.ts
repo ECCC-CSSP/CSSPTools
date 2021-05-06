@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { AppState } from 'src/app/models/AppState.model';
 import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model';
 import { AppStateService } from 'src/app/services/app-state.service';
 
@@ -21,7 +20,7 @@ export class ShowTVFileService {
     }
 
     TVFileVisible(tvFileModel: TVFileModel): boolean {
-        let tvFileModelExist: TVFileModel[] = this.appStateService.AppState$.getValue().ShowTVFileModelList.filter(c => c == tvFileModel);
+        let tvFileModelExist: TVFileModel[] = this.appStateService.ShowTVFileModelList.filter(c => c == tvFileModel);
         if (tvFileModelExist != undefined && tvFileModelExist.length > 0) {
             return true;
         }
@@ -30,16 +29,16 @@ export class ShowTVFileService {
     }
 
     private AddShowTVFile(tvFileModel: TVFileModel): void {
-        let tvFileModelExist: TVFileModel[] = this.appStateService.AppState$.getValue().ShowTVFileModelList.filter(c => c.TVFile.TVFileID == tvFileModel.TVFile.TVFileID);
+        let tvFileModelExist: TVFileModel[] = this.appStateService.ShowTVFileModelList.filter(c => c.TVFile.TVFileID == tvFileModel.TVFile.TVFileID);
         if (!(tvFileModelExist != undefined && tvFileModelExist.length > 0)) {
-            this.appStateService.AppState$.getValue().ShowTVFileModelList.push(tvFileModel);
+            this.appStateService.ShowTVFileModelList.push(tvFileModel);
         }
     }
 
     private RemoveShowTVFile(tvFileModel: TVFileModel): void {
-        let tvFileModelExist: TVFileModel[] = this.appStateService.AppState$.getValue().ShowTVFileModelList.filter(c => c == tvFileModel);
+        let tvFileModelExist: TVFileModel[] = this.appStateService.ShowTVFileModelList.filter(c => c == tvFileModel);
         if ((tvFileModelExist != undefined && tvFileModelExist.length > 0)) {
-            let ShowNewTVFileModelList: TVFileModel[] = this.appStateService.AppState$.getValue().ShowTVFileModelList;
+            let ShowNewTVFileModelList: TVFileModel[] = this.appStateService.ShowTVFileModelList;
             let count: number = ShowNewTVFileModelList.length;
             for (let i = 0; i < count; i++) {
                 if (ShowNewTVFileModelList[i] === tvFileModel) {
@@ -48,7 +47,7 @@ export class ShowTVFileService {
                 }
             }
 
-            this.appStateService.UpdateAppState(<AppState>{ ShowTVFileModelList: ShowNewTVFileModelList });
+            this.appStateService.ShowTVFileModelList = ShowNewTVFileModelList;
         }
     }
 

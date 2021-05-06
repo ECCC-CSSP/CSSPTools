@@ -5,7 +5,7 @@
  *
  */
 
-import { AppStateService } from 'src/app/services/app-state.service';
+import { AppLanguageService } from 'src/app/services/app-language.service';
 import { EnumIDAndText } from 'src/app/models/generated/helper/EnumIDAndText.model';
 import { LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 
@@ -30,9 +30,9 @@ export function GetSampleTypeEnum(): typeof SampleTypeEnum
   return SampleTypeEnum;
 }
 
-export function SampleTypeEnum_GetOrderedText(appStateService: AppStateService): EnumIDAndText[] {
+export function SampleTypeEnum_GetOrderedText(appLanguageService: AppLanguageService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if (appStateService.AppState$?.getValue().Language == LanguageEnum.fr) {
+    if (appLanguageService.Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 101, EnumText: 'Daily duplicate (fr)' });
         enumTextOrderedList.push({ EnumID: 102, EnumText: 'Infrastructure (fr)' });
         enumTextOrderedList.push({ EnumID: 103, EnumText: 'Intertech duplicate (fr)' });
@@ -66,9 +66,9 @@ export function SampleTypeEnum_GetOrderedText(appStateService: AppStateService):
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function SampleTypeEnum_GetIDText(enumID: number, appStateService: AppStateService): string {
+export function SampleTypeEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
     let addressTypeEnunText: string;
-    SampleTypeEnum_GetOrderedText(appStateService).forEach(e => {
+    SampleTypeEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

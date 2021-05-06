@@ -14,7 +14,7 @@ export class MapHelperService {
 
   FitBounds() {
     let bounds = new google.maps.LatLngBounds();
-    let googleMarkerMVCArray: google.maps.MVCArray<google.maps.Marker> = this.appLoadedService.AppLoaded$.getValue().GoogleMarkerListMVC;
+    let googleMarkerMVCArray: google.maps.MVCArray<google.maps.Marker> = this.appLoadedService.GoogleMarkerListMVC;
     let length: number = googleMarkerMVCArray.getLength();
     for (let i = 0; i < length; i++) {
       let marker: google.maps.Marker = googleMarkerMVCArray.getAt(i);
@@ -22,7 +22,7 @@ export class MapHelperService {
       bounds.extend(marker.getPosition());
     }
 
-    let googlePolygonMVCArray: google.maps.MVCArray<google.maps.Polygon> = this.appLoadedService.AppLoaded$.getValue().GooglePolygonListMVC;
+    let googlePolygonMVCArray: google.maps.MVCArray<google.maps.Polygon> = this.appLoadedService.GooglePolygonListMVC;
     length = googlePolygonMVCArray.getLength();
     for (let i = 0; i < length; i++) {
 
@@ -31,7 +31,7 @@ export class MapHelperService {
       });
     }
 
-    let googlePolylineMVCArray: google.maps.MVCArray<google.maps.Polyline> = this.appLoadedService.AppLoaded$.getValue().GooglePolylineListMVC;
+    let googlePolylineMVCArray: google.maps.MVCArray<google.maps.Polyline> = this.appLoadedService.GooglePolylineListMVC;
     length = googlePolylineMVCArray.getLength();
     for (let i = 0; i < length; i++) {
 
@@ -40,88 +40,88 @@ export class MapHelperService {
       });
     }
 
-    this.appLoadedService.AppLoaded$.getValue().Map.fitBounds(bounds);
+    this.appLoadedService.Map.fitBounds(bounds);
   }
 
   GetConditionColor(classification: ClassificationTypeEnum): string {
 
     switch (classification) {
-      case ClassificationTypeEnum.Approved: return this.appStateService.AppState$.getValue().ClassificationColorApproved;
-      case ClassificationTypeEnum.ConditionallyApproved: return this.appStateService.AppState$.getValue().ClassificationColorConditionallyApproved;
-      case ClassificationTypeEnum.ConditionallyRestricted: return this.appStateService.AppState$.getValue().ClassificationColorConditionallyRestricted;
-      case ClassificationTypeEnum.Prohibited: return this.appStateService.AppState$.getValue().ClassificationColorProhibited;
-      case ClassificationTypeEnum.Restricted: return this.appStateService.AppState$.getValue().ClassificationColorRestricted;
+      case ClassificationTypeEnum.Approved: return this.appStateService.ClassificationColorApproved;
+      case ClassificationTypeEnum.ConditionallyApproved: return this.appStateService.ClassificationColorConditionallyApproved;
+      case ClassificationTypeEnum.ConditionallyRestricted: return this.appStateService.ClassificationColorConditionallyRestricted;
+      case ClassificationTypeEnum.Prohibited: return this.appStateService.ClassificationColorProhibited;
+      case ClassificationTypeEnum.Restricted: return this.appStateService.ClassificationColorRestricted;
     }
   }
 
   GetMapMarkerColor(TVType: TVTypeEnum): string {
 
     switch (TVType) {
-      case TVTypeEnum.Area: return this.appStateService.AppState$.getValue().MapMarkerColorArea;
-      case TVTypeEnum.ClimateSite: return this.appStateService.AppState$.getValue().MapMarkerColorClimateSite;
-      case TVTypeEnum.Country: return this.appStateService.AppState$.getValue().MapMarkerColorCountry;
-      case TVTypeEnum.Failed: return this.appStateService.AppState$.getValue().MapMarkerColorFailed;
-      case TVTypeEnum.HydrometricSite: return this.appStateService.AppState$.getValue().MapMarkerColorHydrometricSite;
-      case TVTypeEnum.Infrastructure: return this.appStateService.AppState$.getValue().MapMarkerColorInfrastructure;
-      case TVTypeEnum.LessThan10: return this.appStateService.AppState$.getValue().MapMarkerColorLessThan10;
-      case TVTypeEnum.LiftStation: return this.appStateService.AppState$.getValue().MapMarkerColorLiftStation;
-      case TVTypeEnum.LineOverflow: return this.appStateService.AppState$.getValue().MapMarkerColorLineOverflow;
-      case TVTypeEnum.MeshNode: return this.appStateService.AppState$.getValue().MapMarkerColorMeshNode;
-      case TVTypeEnum.MikeBoundaryConditionMesh: return this.appStateService.AppState$.getValue().MapMarkerColorMikeBoundaryConditionMesh;
-      case TVTypeEnum.MikeBoundaryConditionWebTide: return this.appStateService.AppState$.getValue().MapMarkerColorMikeBoundaryConditionWebTide;
-      case TVTypeEnum.MikeScenario: return this.appStateService.AppState$.getValue().MapMarkerColorMikeScenario;
-      case TVTypeEnum.MikeSource: return this.appStateService.AppState$.getValue().MapMarkerColorMikeSource;
-      case TVTypeEnum.MikeSourceIncluded: return this.appStateService.AppState$.getValue().MapMarkerColorMikeSourceIncluded;
-      case TVTypeEnum.MikeSourceIsRiver: return this.appStateService.AppState$.getValue().MapMarkerColorMikeSourceIsRiver;
-      case TVTypeEnum.MikeSourceNotIncluded: return this.appStateService.AppState$.getValue().MapMarkerColorMikeSourceNotIncluded;
-      case TVTypeEnum.Municipality: return this.appStateService.AppState$.getValue().MapMarkerColorMunicipality;
-      case TVTypeEnum.MWQMRun: return this.appStateService.AppState$.getValue().MapMarkerColorMWQMRun;
-      case TVTypeEnum.MWQMSite: return this.appStateService.AppState$.getValue().MapMarkerColorMWQMSite;
-      case TVTypeEnum.NoData: return this.appStateService.AppState$.getValue().MapMarkerColorNoData;
-      case TVTypeEnum.NoDepuration: return this.appStateService.AppState$.getValue().MapMarkerColorNoDepuration;
-      case TVTypeEnum.OtherInfrastructure: return this.appStateService.AppState$.getValue().MapMarkerColorOtherInfrastructure;
-      case TVTypeEnum.Outfall: return this.appStateService.AppState$.getValue().MapMarkerColorOutfall;
-      case TVTypeEnum.Passed: return this.appStateService.AppState$.getValue().MapMarkerColorPassed;
-      case TVTypeEnum.PolSourceSite: return this.appStateService.AppState$.getValue().MapMarkerColorPolSourceSite;
-      case TVTypeEnum.Province: return this.appStateService.AppState$.getValue().MapMarkerColorProvince;
-      case TVTypeEnum.Sector: return this.appStateService.AppState$.getValue().MapMarkerColorSector;
-      case TVTypeEnum.SeeOtherMunicipality: return this.appStateService.AppState$.getValue().MapMarkerColorSeeOtherMunicipality;
-      case TVTypeEnum.Subsector: return this.appStateService.AppState$.getValue().MapMarkerColorSubsector;
-      case TVTypeEnum.TideSite: return this.appStateService.AppState$.getValue().MapMarkerColorTideSite;
-      case TVTypeEnum.WasteWaterTreatmentPlant: return this.appStateService.AppState$.getValue().MapMarkerColorWasteWaterTreatmentPlant;
-      case TVTypeEnum.WebTideNode: return this.appStateService.AppState$.getValue().MapMarkerColorWebTideNode;
+      case TVTypeEnum.Area: return this.appStateService.MapMarkerColorArea;
+      case TVTypeEnum.ClimateSite: return this.appStateService.MapMarkerColorClimateSite;
+      case TVTypeEnum.Country: return this.appStateService.MapMarkerColorCountry;
+      case TVTypeEnum.Failed: return this.appStateService.MapMarkerColorFailed;
+      case TVTypeEnum.HydrometricSite: return this.appStateService.MapMarkerColorHydrometricSite;
+      case TVTypeEnum.Infrastructure: return this.appStateService.MapMarkerColorInfrastructure;
+      case TVTypeEnum.LessThan10: return this.appStateService.MapMarkerColorLessThan10;
+      case TVTypeEnum.LiftStation: return this.appStateService.MapMarkerColorLiftStation;
+      case TVTypeEnum.LineOverflow: return this.appStateService.MapMarkerColorLineOverflow;
+      case TVTypeEnum.MeshNode: return this.appStateService.MapMarkerColorMeshNode;
+      case TVTypeEnum.MikeBoundaryConditionMesh: return this.appStateService.MapMarkerColorMikeBoundaryConditionMesh;
+      case TVTypeEnum.MikeBoundaryConditionWebTide: return this.appStateService.MapMarkerColorMikeBoundaryConditionWebTide;
+      case TVTypeEnum.MikeScenario: return this.appStateService.MapMarkerColorMikeScenario;
+      case TVTypeEnum.MikeSource: return this.appStateService.MapMarkerColorMikeSource;
+      case TVTypeEnum.MikeSourceIncluded: return this.appStateService.MapMarkerColorMikeSourceIncluded;
+      case TVTypeEnum.MikeSourceIsRiver: return this.appStateService.MapMarkerColorMikeSourceIsRiver;
+      case TVTypeEnum.MikeSourceNotIncluded: return this.appStateService.MapMarkerColorMikeSourceNotIncluded;
+      case TVTypeEnum.Municipality: return this.appStateService.MapMarkerColorMunicipality;
+      case TVTypeEnum.MWQMRun: return this.appStateService.MapMarkerColorMWQMRun;
+      case TVTypeEnum.MWQMSite: return this.appStateService.MapMarkerColorMWQMSite;
+      case TVTypeEnum.NoData: return this.appStateService.MapMarkerColorNoData;
+      case TVTypeEnum.NoDepuration: return this.appStateService.MapMarkerColorNoDepuration;
+      case TVTypeEnum.OtherInfrastructure: return this.appStateService.MapMarkerColorOtherInfrastructure;
+      case TVTypeEnum.Outfall: return this.appStateService.MapMarkerColorOutfall;
+      case TVTypeEnum.Passed: return this.appStateService.MapMarkerColorPassed;
+      case TVTypeEnum.PolSourceSite: return this.appStateService.MapMarkerColorPolSourceSite;
+      case TVTypeEnum.Province: return this.appStateService.MapMarkerColorProvince;
+      case TVTypeEnum.Sector: return this.appStateService.MapMarkerColorSector;
+      case TVTypeEnum.SeeOtherMunicipality: return this.appStateService.MapMarkerColorSeeOtherMunicipality;
+      case TVTypeEnum.Subsector: return this.appStateService.MapMarkerColorSubsector;
+      case TVTypeEnum.TideSite: return this.appStateService.MapMarkerColorTideSite;
+      case TVTypeEnum.WasteWaterTreatmentPlant: return this.appStateService.MapMarkerColorWasteWaterTreatmentPlant;
+      case TVTypeEnum.WebTideNode: return this.appStateService.MapMarkerColorWebTideNode;
     }
   }
 
   GetMapPolylineColor(FromTVType: TVTypeEnum, ToTVType: TVTypeEnum): string {
 
     if (FromTVType == TVTypeEnum.LineOverflow && ToTVType == TVTypeEnum.Outfall) {
-      return this.appStateService.AppState$.getValue().MapPolylineColorInfrastructureLineOverflowToOutfall;
+      return this.appStateService.MapPolylineColorInfrastructureLineOverflowToOutfall;
     }
     else if (FromTVType == TVTypeEnum.LiftStation && ToTVType == TVTypeEnum.LiftStation) {
-      return this.appStateService.AppState$.getValue().MapPolylineColorInfrastructureLiftStationToLiftStation;
+      return this.appStateService.MapPolylineColorInfrastructureLiftStationToLiftStation;
     }
     else if (FromTVType == TVTypeEnum.LiftStation && ToTVType == TVTypeEnum.Outfall) {
-      return this.appStateService.AppState$.getValue().MapPolylineColorInfrastructureLiftStationToOutfall;
+      return this.appStateService.MapPolylineColorInfrastructureLiftStationToOutfall;
     }
     else if (FromTVType == TVTypeEnum.LiftStation && ToTVType == TVTypeEnum.WasteWaterTreatmentPlant) {
-      return this.appStateService.AppState$.getValue().MapPolylineColorInfrastructureLiftStationToWWTP;
+      return this.appStateService.MapPolylineColorInfrastructureLiftStationToWWTP;
     }
     else if (FromTVType == TVTypeEnum.WasteWaterTreatmentPlant && ToTVType == TVTypeEnum.Outfall) {
-      return this.appStateService.AppState$.getValue().MapPolylineColorInfrastructureWWTPToOutfall;
+      return this.appStateService.MapPolylineColorInfrastructureWWTPToOutfall;
     }
     else {
-      return this.appStateService.AppState$.getValue().MapColorNotFound;
+      return this.appStateService.MapColorNotFound;
     }
   }
 
   GetMapPolygonColor(TVType: TVTypeEnum): string {
     switch (TVType) {
-      case TVTypeEnum.Area: return this.appStateService.AppState$.getValue().MapPolygonColorArea;
-      case TVTypeEnum.Country: return this.appStateService.AppState$.getValue().MapPolygonColorCountry;
-      case TVTypeEnum.Province: return this.appStateService.AppState$.getValue().MapPolygonColorProvince;
-      case TVTypeEnum.Sector: return this.appStateService.AppState$.getValue().MapPolygonColorSector;
-      case TVTypeEnum.Subsector: return this.appStateService.AppState$.getValue().MapPolygonColorSubsector;
+      case TVTypeEnum.Area: return this.appStateService.MapPolygonColorArea;
+      case TVTypeEnum.Country: return this.appStateService.MapPolygonColorCountry;
+      case TVTypeEnum.Province: return this.appStateService.MapPolygonColorProvince;
+      case TVTypeEnum.Sector: return this.appStateService.MapPolygonColorSector;
+      case TVTypeEnum.Subsector: return this.appStateService.MapPolygonColorSubsector;
     }
   }
 }

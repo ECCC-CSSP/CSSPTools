@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { GetAreaSubComponentEnum } from 'src/app/enums/generated/AreaSubComponentEnum';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
@@ -12,13 +12,15 @@ import { ComponentButtonSelectionService } from 'src/app/services/helpers/compon
 import { ComponentShowService } from 'src/app/services/helpers/component-show.service';
 import { GetSortOrderAngularEnum } from 'src/app/enums/generated/SortOrderAngularEnum';
 
+
 @Component({
   selector: 'app-area-item',
   templateUrl: './area-item.component.html',
-  styleUrls: ['./area-item.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./area-item.component.css']
 })
 export class AreaItemComponent implements OnInit, OnDestroy {
+
+  
   areaSubComponentEnum = GetAreaSubComponentEnum();
   tvTypeEnum = GetTVTypeEnum();
   ascDescEnum = GetAscDescEnum();
@@ -34,7 +36,7 @@ export class AreaItemComponent implements OnInit, OnDestroy {
     public componentShowService: ComponentShowService) { }
 
   ngOnInit(): void {
-    this.webAreaService.DoWebArea(this.appStateService.AppState$.getValue().CurrentTVItemID, true);
+    this.webAreaService.DoWebArea(this.appStateService.CurrentTVItemID, true);
   }
 
   ngOnDestroy(): void {

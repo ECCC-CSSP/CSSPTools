@@ -1,39 +1,39 @@
 <h2 class="center">
-    {{ appLanguageService.AppLanguage.SideNavMenuContextMenu[appStateService.AppState$?.getValue().Language] }}</h2>
+    {{ appLanguageService.SideNavMenuContextMenu[appLanguageService.LangID] }}</h2>
 <mat-list>
     <mat-list-item>
-        <button mat-button [ngClass]="appStateService.AppState$?.getValue()?.InactVisible ? 'selected' : ''"
-            (click)="togglesService.ToggleInactive(appStateService.AppState$?.getValue())"
-            title="{{ appLanguageService.AppLanguage.SideNavMenuShowInactiveItems[appStateService.AppState$?.getValue().Language] }}">
-            {{ appLanguageService.AppLanguage.SideNavMenuInactive[appStateService.AppState$?.getValue().Language] }}
+        <button mat-button [ngClass]="appStateService.InactVisible ? 'selected' : ''"
+            (click)="togglesService.ToggleInactive()"
+            title="{{ appLanguageService.SideNavMenuShowInactiveItems[appLanguageService.LangID] }}">
+            {{ appLanguageService.SideNavMenuInactive[appLanguageService.LangID] }}
         </button>
     </mat-list-item>
     <mat-list-item>
-        <button mat-button [ngClass]="appStateService.AppState$?.getValue()?.DetailVisible ? 'selected' : ''"
+        <button mat-button [ngClass]="appStateService.DetailVisible ? 'selected' : ''"
             (click)="togglesService.ToggleDetail()"
-            title="{{ appLanguageService.AppLanguage.SideNavMenuShowDetails[appStateService.AppState$?.getValue().Language] }}">
-            {{ appLanguageService.AppLanguage.SideNavMenuDetails[appStateService.AppState$?.getValue().Language] }}
+            title="{{ appLanguageService.SideNavMenuShowDetails[appLanguageService.LangID] }}">
+            {{ appLanguageService.SideNavMenuDetails[appLanguageService.LangID] }}
         </button>
     </mat-list-item>
     <mat-list-item>
-        <button mat-button [ngClass]="appStateService.AppState$?.getValue()?.StatCountVisible ? 'selected' : ''"
+        <button mat-button [ngClass]="appStateService.StatCountVisible ? 'selected' : ''"
             (click)="togglesService.ToggleStatCount()"
-            title="{{ appLanguageService.AppLanguage.SideNavMenuShowStatCount[appStateService.AppState$?.getValue().Language] }}">
-            {{ appLanguageService.AppLanguage.SideNavMenuStatCount[appStateService.AppState$?.getValue().Language] }}
+            title="{{ appLanguageService.SideNavMenuShowStatCount[appLanguageService.LangID] }}">
+            {{ appLanguageService.SideNavMenuStatCount[appLanguageService.LangID] }}
         </button>
     </mat-list-item>
     <mat-list-item>
-        <button mat-button [ngClass]="appStateService.AppState$?.getValue()?.LastUpdateVisible ? 'selected' : ''"
+        <button mat-button [ngClass]="appStateService.LastUpdateVisible ? 'selected' : ''"
             (click)="togglesService.ToggleLastUpdate()"
-            title="{{ appLanguageService.AppLanguage.SideNavMenuShowLastUpdate[appStateService.AppState$?.getValue().Language] }}">
-            {{ appLanguageService.AppLanguage.SideNavMenuLastUpdate[appStateService.AppState$?.getValue().Language] }}
+            title="{{ appLanguageService.SideNavMenuShowLastUpdate[appLanguageService.LangID] }}">
+            {{ appLanguageService.SideNavMenuLastUpdate[appLanguageService.LangID] }}
         </button>
     </mat-list-item>
     <mat-list-item>
-        <button mat-button [ngClass]="appStateService.AppState$?.getValue()?.EditVisible ? 'selected' : ''"
+        <button mat-button [ngClass]="appStateService.EditVisible ? 'selected' : ''"
             (click)="togglesService.ToggleEdit()"
-            title="{{ appLanguageService.AppLanguage.SideNavMenuShowEdit[appStateService.AppState$?.getValue().Language] }}">
-            {{ appLanguageService.AppLanguage.SideNavMenuEdit[appStateService.AppState$?.getValue().Language] }}
+            title="{{ appLanguageService.SideNavMenuShowEdit[appLanguageService.LangID] }}">
+            {{ appLanguageService.SideNavMenuEdit[appLanguageService.LangID] }}
         </button>
     </mat-list-item>
 </mat-list>

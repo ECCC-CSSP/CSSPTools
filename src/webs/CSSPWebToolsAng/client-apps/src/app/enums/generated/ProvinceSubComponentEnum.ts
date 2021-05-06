@@ -5,7 +5,7 @@
  *
  */
 
-import { AppStateService } from 'src/app/services/app-state.service';
+import { AppLanguageService } from 'src/app/services/app-language.service';
 import { EnumIDAndText } from 'src/app/models/generated/helper/EnumIDAndText.model';
 import { LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 
@@ -23,9 +23,9 @@ export function GetProvinceSubComponentEnum(): typeof ProvinceSubComponentEnum
   return ProvinceSubComponentEnum;
 }
 
-export function ProvinceSubComponentEnum_GetOrderedText(appStateService: AppStateService): EnumIDAndText[] {
+export function ProvinceSubComponentEnum_GetOrderedText(appLanguageService: AppLanguageService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if (appStateService.AppState$?.getValue().Language == LanguageEnum.fr) {
+    if (appLanguageService.Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'Areas (fr)' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'Municipalities (fr)' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'Files (fr)' });
@@ -45,9 +45,9 @@ export function ProvinceSubComponentEnum_GetOrderedText(appStateService: AppStat
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function ProvinceSubComponentEnum_GetIDText(enumID: number, appStateService: AppStateService): string {
+export function ProvinceSubComponentEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
     let addressTypeEnunText: string;
-    ProvinceSubComponentEnum_GetOrderedText(appStateService).forEach(e => {
+    ProvinceSubComponentEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

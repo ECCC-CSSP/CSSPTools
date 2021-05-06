@@ -1,8 +1,8 @@
-import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { GetMWQMSiteLatestClassificationEnum, MWQMSiteLatestClassificationEnum, MWQMSiteLatestClassificationEnum_GetIDText } from 'src/app/enums/generated/MWQMSiteLatestClassificationEnum';
 import { GetTVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
-import { AppState } from 'src/app/models/AppState.model';
+
 import { StatMWQMSite } from 'src/app/models/generated/web/StatMWQMSite.model';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { AppLanguageService } from 'src/app/services/app-language.service';
@@ -16,12 +16,11 @@ import { MapService } from 'src/app/services/map/map.service';
 @Component({
   selector: 'app-mwqm-site-tvitem-list-item-special',
   templateUrl: './mwqm-site-tvitem-list-item-special.component.html',
-  styleUrls: ['./mwqm-site-tvitem-list-item-special.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./mwqm-site-tvitem-list-item-special.component.css']
 })
 export class MWQMSiteTVItemListItemSpecialComponent implements OnInit, OnDestroy {
   @Input() TVItemModel: TVItemModel;
-  @Input() AppState: AppState;
+
   @Input() Index: number;
   @Input() StatMWQMSite: StatMWQMSite;
 
@@ -47,7 +46,7 @@ export class MWQMSiteTVItemListItemSpecialComponent implements OnInit, OnDestroy
   }
 
   GetMWQMSiteLatestClassificationEnum_GetIDText(mwqmSiteLatestClassification: MWQMSiteLatestClassificationEnum): string {
-    return MWQMSiteLatestClassificationEnum_GetIDText(mwqmSiteLatestClassification, this.appStateService);
+    return MWQMSiteLatestClassificationEnum_GetIDText(mwqmSiteLatestClassification, this.appLanguageService);
   }
 
   IsFirstOfNewYear(DateText: string) {

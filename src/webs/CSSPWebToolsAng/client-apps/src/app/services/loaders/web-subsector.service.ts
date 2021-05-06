@@ -2,17 +2,12 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { AppLoaded } from 'src/app/models/AppLoaded.model';
 import { WebSubsector } from 'src/app/models/generated/web/WebSubsector.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
-import { StructureTVFileListService } from 'src/app/services/helpers/structure-tvfile-list.service';
-import { SortTVItemListService } from 'src/app/services/helpers/sort-tvitem-list.service';
 import { MapService } from 'src/app/services/map/map.service';
 import { SubsectorSubComponentEnum } from 'src/app/enums/generated/SubsectorSubComponentEnum';
-import { GetLanguageEnum, LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { ComponentDataLoadedService } from 'src/app/services/helpers/component-data-loaded.service';
-import { AppState } from 'src/app/models/AppState.model';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { HistoryService } from 'src/app/services/helpers/history.service';
 import { WebMWQMSitesService } from 'src/app/services/loaders/web-mwqm-sites.service';
@@ -22,144 +17,149 @@ import { WebMWQMSitesService } from 'src/app/services/loaders/web-mwqm-sites.ser
 })
 export class WebSubsectorService {
     private TVItemID: number;
-    private DoOther: boolean;
+    private DoNext: boolean;
+    private ForceReload: boolean;
     private sub: Subscription;
-    LangID: number = this.appStateService.AppState$?.getValue()?.Language == LanguageEnum.fr ? 1 : 0;
 
     constructor(private httpClient: HttpClient,
         private appStateService: AppStateService,
         private appLoadedService: AppLoadedService,
         private appLanguageService: AppLanguageService,
-        private sortTVItemListService: SortTVItemListService,
-        private structureTVFileListService: StructureTVFileListService,
         private mapService: MapService,
         private componentDataLoadedService: ComponentDataLoadedService,
         private webMWQMSitesService: WebMWQMSitesService,
         private historyService: HistoryService) {
     }
 
-    DoWebSubsector(TVItemID: number, DoOther: boolean) {
+    DoWebSubsector(TVItemID: number, DoNext: boolean = true, ForceReload: boolean = true) {
         this.TVItemID = TVItemID;
-        this.DoOther = DoOther;
+        this.DoNext = DoNext;
+        this.ForceReload = ForceReload;
 
         this.sub ? this.sub.unsubscribe() : null;
 
-        if (this.appLoadedService.AppLoaded$.getValue()?.WebSubsector) {
-            this.KeepWebSubsector();
+        if (ForceReload) {
+            this.sub = this.GetWebSubsector().subscribe();
         }
         else {
-            this.sub = this.GetWebSubsector().subscribe();
+            if (this.componentDataLoadedService.DataLoadedWebSubsector()) {
+                this.KeepWebSubsector();
+            }
+            else {
+                this.sub = this.GetWebSubsector().subscribe();
+            }
         }
     }
 
     private GetWebSubsector() {
-        let languageEnum = GetLanguageEnum();
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
-            WebSubsector: {},
-        });
-        this.appStateService.UpdateAppState(<AppState>{
-            Status: `${this.appLanguageService.AppLanguage.Loading[this.LangID]} - ${ WebSubsector }`,
-            Working: true
-        });
-        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appStateService.AppState$.getValue().Language]}-CA/Read/WebSubsector/${this.TVItemID}`;
+        this.appLoadedService.WebSubsector = <WebSubsector>{};
+
+        let NextText = this.DoNext ? `${this.appLanguageService.Next[this.appLanguageService.LangID]} - WebMWQMSites` : '';
+        let ForceReloadText = this.ForceReload ? `${this.appLanguageService.ForceReload[this.appLanguageService.LangID]}` : '';
+        this.appStateService.Status = `${this.appLanguageService.Loading[this.appLanguageService.LangID]} - WebSubsector - ${NextText} - ${ForceReloadText}`;
+        this.appStateService.Working = true;
+
+        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appLanguageService.Language}-CA/Read/WebSubsector/${this.TVItemID}`;
         return this.httpClient.get<WebSubsector>(url).pipe(
             map((x: any) => {
                 this.UpdateWebSubsector(x);
                 console.debug(x);
-                if (this.DoOther) {
+                if (this.DoNext) {
                     this.DoWebMWQMSites();
                 }
             }),
             catchError(e => of(e).pipe(map(e => {
-                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false, Error: <HttpErrorResponse>e });
+                this.appStateService.Status = ''
+                this.appStateService.Working = false
+                this.appStateService.Error = <HttpErrorResponse>e;
                 console.debug(e);
             })))
         );
     }
 
     private DoWebMWQMSites() {
-        this.webMWQMSitesService.DoWebMWQMSites(this.TVItemID, this.DoOther);
+        this.webMWQMSitesService.DoWebMWQMSites(this.TVItemID, this.DoNext);
     }
 
     private KeepWebSubsector() {
-        this.UpdateWebSubsector(this.appLoadedService.AppLoaded$?.getValue()?.WebSubsector);
-        console.debug(this.appLoadedService.AppLoaded$?.getValue()?.WebSubsector);
-        if (this.DoOther) {
+        this.UpdateWebSubsector(this.appLoadedService.WebSubsector);
+        console.debug(this.appLoadedService.WebSubsector);
+        if (this.DoNext) {
             this.DoWebMWQMSites();
         }
     }
 
     private UpdateWebSubsector(x: WebSubsector) {
 
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{
-            WebSubsector: x,
-        });
+        this.appLoadedService.WebSubsector = x;
 
-        this.historyService.AddHistory(this.appLoadedService.AppLoaded$.getValue()?.WebSubsector?.TVItemModel);
+        this.historyService.AddHistory(this.appLoadedService.WebSubsector?.TVItemModel);
 
-        if (this.DoOther) {
+        if (this.DoNext) {
             if (this.componentDataLoadedService.DataLoadedWebSubsector()) {
-                this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
+                this.appStateService.Status = '';
+                this.appStateService.Working = false;
             }
         }
         else {
-            this.appStateService.UpdateAppState(<AppState>{ Status: '', Working: false });
+            this.appStateService.Status = '';
+            this.appStateService.Working = false;
         }
 
-        if (this.appStateService.AppState$.getValue().GoogleJSLoaded) {
-            if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.MWQMSites) {
+        if (this.appStateService.GoogleJSLoaded) {
+            if (this.appStateService.SubsectorSubComponent == SubsectorSubComponentEnum.MWQMSites) {
                 this.mapService.ClearMap();
                 this.mapService.DrawObjects([
-                    //...this.appLoadedService.AppLoaded$.getValue().WebMWQMSites.MWQMSiteModelList,
-                    ...[this.appLoadedService.AppLoaded$.getValue().WebSubsector.TVItemModel],
+                    //...this.appLoadedService.WebMWQMSites.MWQMSiteModelList,
+                    ...[this.appLoadedService.WebSubsector.TVItemModel],
                 ]);
             }
 
-            if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.Analysis) {
+            if (this.appStateService.SubsectorSubComponent == SubsectorSubComponentEnum.Analysis) {
                 this.mapService.ClearMap();
                 this.mapService.DrawObjects([
-                    //...this.appLoadedService.AppLoaded$.getValue().WebMWQMSites.MWQMSiteModelList,
-                    ...[this.appLoadedService.AppLoaded$.getValue().WebSubsector.TVItemModel],
+                    //...this.appLoadedService.WebMWQMSites.MWQMSiteModelList,
+                    ...[this.appLoadedService.WebSubsector.TVItemModel],
                 ]);
             }
 
-            if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.MWQMRuns) {
+            if (this.appStateService.SubsectorSubComponent == SubsectorSubComponentEnum.MWQMRuns) {
                 this.mapService.ClearMap();
                 this.mapService.DrawObjects([
-                    //...this.appLoadedService.AppLoaded$.getValue().WebMWQMRuns.MWQMRunModelList,
-                    ...[this.appLoadedService.AppLoaded$.getValue().WebSubsector.TVItemModel],
+                    //...this.appLoadedService.WebMWQMRuns.MWQMRunModelList,
+                    ...[this.appLoadedService.WebSubsector.TVItemModel],
                 ]);
             }
 
-            if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.PollutionSourceSites) {
+            if (this.appStateService.SubsectorSubComponent == SubsectorSubComponentEnum.PollutionSourceSites) {
                 this.mapService.ClearMap();
                 this.mapService.DrawObjects([
-                    //...this.appLoadedService.AppLoaded$.getValue().WebPolSourceSites.PolSourceSiteModelList,
-                    ...[this.appLoadedService.AppLoaded$.getValue().WebSubsector.TVItemModel],
+                    //...this.appLoadedService.WebPolSourceSites.PolSourceSiteModelList,
+                    ...[this.appLoadedService.WebSubsector.TVItemModel],
                 ]);
             }
 
-            if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.Files) {
+            if (this.appStateService.SubsectorSubComponent == SubsectorSubComponentEnum.Files) {
                 this.mapService.ClearMap();
                 this.mapService.DrawObjects([
-                    //...this.appLoadedService.AppLoaded$.getValue().WebMWQMSites.MWQMSiteModelList,
-                    ...[this.appLoadedService.AppLoaded$.getValue().WebSubsector.TVItemModel],
+                    //...this.appLoadedService.WebMWQMSites.MWQMSiteModelList,
+                    ...[this.appLoadedService.WebSubsector.TVItemModel],
                 ]);
             }
 
-            if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.SubsectorTools) {
+            if (this.appStateService.SubsectorSubComponent == SubsectorSubComponentEnum.SubsectorTools) {
                 this.mapService.ClearMap();
                 this.mapService.DrawObjects([
-                    //...this.appLoadedService.AppLoaded$.getValue().WebMWQMSites.MWQMSiteModelList,
-                    ...[this.appLoadedService.AppLoaded$.getValue().WebSubsector.TVItemModel],
+                    //...this.appLoadedService.WebMWQMSites.MWQMSiteModelList,
+                    ...[this.appLoadedService.WebSubsector.TVItemModel],
                 ]);
             }
 
-            if (this.appStateService.AppState$.getValue().SubsectorSubComponent == SubsectorSubComponentEnum.LogBook) {
+            if (this.appStateService.SubsectorSubComponent == SubsectorSubComponentEnum.LogBook) {
                 this.mapService.ClearMap();
                 this.mapService.DrawObjects([
-                    //...this.appLoadedService.AppLoaded$.getValue().WebMWQMSites.MWQMSiteModelList,
-                    ...[this.appLoadedService.AppLoaded$.getValue().WebSubsector.TVItemModel],
+                    //...this.appLoadedService.WebMWQMSites.MWQMSiteModelList,
+                    ...[this.appLoadedService.WebSubsector.TVItemModel],
                 ]);
             }
         }

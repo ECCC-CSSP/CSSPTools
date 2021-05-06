@@ -1,26 +1,26 @@
 <blockquote>
     <span *ngIf="tvTypeEnum.LiftStation">
-        <span>{{ appLanguageService.AppLanguage.TVItemListDetailCountryLiftStation[appStateService.AppState$?.getValue().Language] }}&nbsp;&nbsp;</span>
+        <span>{{ appLanguageService.TVItemListDetailCountryLiftStation[appLanguageService.LangID] }}&nbsp;&nbsp;</span>
         <app-stat-count [TVType]="tvTypeEnum.LiftStation" [TVItemModel]="TVItemModel">
         </app-stat-count>
     </span>
     <span *ngIf="tvTypeEnum.WasteWaterTreatmentPlant">
-        <span>{{ appLanguageService.AppLanguage.TVItemListDetailCountryWWTP[appStateService.AppState$?.getValue().Language] }}&nbsp;&nbsp;</span>
+        <span>{{ appLanguageService.TVItemListDetailCountryWWTP[appLanguageService.LangID] }}&nbsp;&nbsp;</span>
         <app-stat-count [TVType]="tvTypeEnum.WasteWaterTreatmentPlant" [TVItemModel]="TVItemModel">
         </app-stat-count>
     </span>
     <span *ngIf="tvTypeEnum.MikeScenario">
-        <span>{{ appLanguageService.AppLanguage.TVItemListDetailCountryMikeScenario[appStateService.AppState$?.getValue().Language] }}&nbsp;&nbsp;</span>
+        <span>{{ appLanguageService.TVItemListDetailCountryMikeScenario[appLanguageService.LangID] }}&nbsp;&nbsp;</span>
         <app-stat-count [TVType]="tvTypeEnum.MikeScenario" [TVItemModel]="TVItemModel">
         </app-stat-count>
     </span>
     <span *ngIf="tvTypeEnum.BoxModel">
-        <span>{{ appLanguageService.AppLanguage.TVItemListDetailCountryBoxModel[appStateService.AppState$?.getValue().Language] }}&nbsp;&nbsp;</span>
+        <span>{{ appLanguageService.TVItemListDetailCountryBoxModel[appLanguageService.LangID] }}&nbsp;&nbsp;</span>
         <app-stat-count [TVType]="tvTypeEnum.BoxModel" [TVItemModel]="TVItemModel">
         </app-stat-count>
     </span>
     <span *ngIf="tvTypeEnum.VisualPlumesScenario">
-        <span>{{ appLanguageService.AppLanguage.TVItemListDetailCountryVPScenario[appStateService.AppState$?.getValue().Language] }}&nbsp;&nbsp;</span>
+        <span>{{ appLanguageService.TVItemListDetailCountryVPScenario[appLanguageService.LangID] }}&nbsp;&nbsp;</span>
         <app-stat-count [TVType]="tvTypeEnum.VisualPlumesScenario" [TVItemModel]="TVItemModel">
         </app-stat-count>
     </span>

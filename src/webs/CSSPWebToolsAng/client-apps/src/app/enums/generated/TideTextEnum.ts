@@ -5,7 +5,7 @@
  *
  */
 
-import { AppStateService } from 'src/app/services/app-state.service';
+import { AppLanguageService } from 'src/app/services/app-language.service';
 import { EnumIDAndText } from 'src/app/models/generated/helper/EnumIDAndText.model';
 import { LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 
@@ -26,9 +26,9 @@ export function GetTideTextEnum(): typeof TideTextEnum
   return TideTextEnum;
 }
 
-export function TideTextEnum_GetOrderedText(appStateService: AppStateService): EnumIDAndText[] {
+export function TideTextEnum_GetOrderedText(appLanguageService: AppLanguageService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if (appStateService.AppState$?.getValue().Language == LanguageEnum.fr) {
+    if (appLanguageService.Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'Low Tide (fr)' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'Low Tide Falling (fr)' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'Low Tide Rising (fr)' });
@@ -54,9 +54,9 @@ export function TideTextEnum_GetOrderedText(appStateService: AppStateService): E
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function TideTextEnum_GetIDText(enumID: number, appStateService: AppStateService): string {
+export function TideTextEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
     let addressTypeEnunText: string;
-    TideTextEnum_GetOrderedText(appStateService).forEach(e => {
+    TideTextEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

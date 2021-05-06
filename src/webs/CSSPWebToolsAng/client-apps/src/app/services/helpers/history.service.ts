@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { AppState } from 'src/app/models/AppState.model';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { AppStateService } from 'src/app/services/app-state.service';
 
@@ -12,18 +11,18 @@ export class HistoryService {
     }
 
     AddHistory(tvItemModel: TVItemModel): void {
-        let tvItemModelExist: TVItemModel[] = this.appStateService.AppState$.getValue().History.filter(c => c.TVItem.TVItemID == tvItemModel.TVItem.TVItemID);
+        let tvItemModelExist: TVItemModel[] = this.appStateService.History.filter(c => c.TVItem.TVItemID == tvItemModel.TVItem.TVItemID);
         if (!(tvItemModelExist != undefined && tvItemModelExist.length > 0))
         {
-            this.appStateService.AppState$.getValue().History.push(tvItemModel);
+            this.appStateService.History.push(tvItemModel);
         }
     }
 
     RemoveHistory(tvItemModel: TVItemModel): void {
-        let tvItemModelExist: TVItemModel[] = this.appStateService.AppState$.getValue().History.filter(c => c == tvItemModel);
+        let tvItemModelExist: TVItemModel[] = this.appStateService.History.filter(c => c == tvItemModel);
         if (!(tvItemModelExist != undefined && tvItemModelExist.length > 0))
         {
-            let History: TVItemModel[] = this.appStateService.AppState$.getValue().History;
+            let History: TVItemModel[] = this.appStateService.History;
             let count: number = History.length;
             for(let i = 0; i < count; i++)
             {
@@ -34,7 +33,7 @@ export class HistoryService {
                 }
             }
 
-            this.appStateService.UpdateAppState(<AppState> { History: History });
+            this.appStateService.History = History;
         }
     }
 

@@ -5,7 +5,7 @@
  *
  */
 
-import { AppStateService } from 'src/app/services/app-state.service';
+import { AppLanguageService } from 'src/app/services/app-language.service';
 import { EnumIDAndText } from 'src/app/models/generated/helper/EnumIDAndText.model';
 import { LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 
@@ -20,9 +20,9 @@ export function GetAnalysisCalculationTypeEnum(): typeof AnalysisCalculationType
   return AnalysisCalculationTypeEnum;
 }
 
-export function AnalysisCalculationTypeEnum_GetOrderedText(appStateService: AppStateService): EnumIDAndText[] {
+export function AnalysisCalculationTypeEnum_GetOrderedText(appLanguageService: AppLanguageService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
-    if (appStateService.AppState$?.getValue().Language == LanguageEnum.fr) {
+    if (appLanguageService.Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'All' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'Wet' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'Dry' });
@@ -36,9 +36,9 @@ export function AnalysisCalculationTypeEnum_GetOrderedText(appStateService: AppS
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));
 }
 
-export function AnalysisCalculationTypeEnum_GetIDText(enumID: number, appStateService: AppStateService): string {
+export function AnalysisCalculationTypeEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
     let addressTypeEnunText: string;
-    AnalysisCalculationTypeEnum_GetOrderedText(appStateService).forEach(e => {
+    AnalysisCalculationTypeEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
             addressTypeEnunText = e.EnumText;
             return false;

@@ -4,10 +4,9 @@ import { Injectable } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { of } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, map, startWith, tap } from 'rxjs/operators';
-import { AppLoaded } from 'src/app/models/AppLoaded.model';
-import { AppState } from 'src/app/models/AppState.model';
 import { SearchResult } from 'src/app/models/generated/helper/SearchResult.model';
 import { AppStateService } from 'src/app/services/app-state.service';
+import { AppLanguageService } from '../app-language.service';
 import { AppLoadedService } from '../app-loaded.service';
 
 @Injectable({
@@ -17,7 +16,8 @@ export class SearchService {
 
     constructor(private httpClient: HttpClient,
         private appLoadedService: AppLoadedService,
-        private appStateService: AppStateService) {
+        private appStateService: AppStateService,
+        private appLanguageService: AppLanguageService) {
     }
 
     GetSearch(myControl: FormControl) {
@@ -25,33 +25,34 @@ export class SearchService {
             startWith(''),
             debounceTime(500),
             distinctUntilChanged(),
-            tap(term => {
+            tap((term: string) => {
                 this.GetSearchData(term);
             }));
     }
 
     private GetSearchData(term: string) {
-        this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ SearchResult: [] });
-        this.appStateService.UpdateAppState(<AppState>{ SearchWorking: true });
+        this.appLoadedService.SearchResult = [];
+        this.appStateService.SearchWorking = true;
         term = ('' + term).trim();
         if (!term) {
             of([]).pipe(
                 tap(() => {
-                    this.appStateService.UpdateAppState(<AppState>{ SearchWorking: false });
+                    this.appStateService.SearchWorking = false;
                     console.debug("Clean Search Result");
                 })
             ).subscribe();
         }
         else {           
-            this.httpClient.get<SearchResult>(`${this.appLoadedService.BaseApiUrl}${this.appStateService.AppState$.getValue().Language}-CA/search/${term}/1`).pipe(
+            this.httpClient.get<SearchResult>(`${this.appLoadedService.BaseApiUrl}${this.appLanguageService.Language}-CA/search/${term}/0`).pipe(
                 map((x: any) => {
-                    this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ SearchResult: x });
-                    this.appStateService.UpdateAppState(<AppState>{ SearchWorking: false });
+                    this.appLoadedService.SearchResult = x;
+                    this.appStateService.SearchWorking = false;
                     console.debug(x);
                 }),
                 catchError(e => of(e).pipe(map(e => {
-                    this.appLoadedService.UpdateAppLoaded(<AppLoaded>{ SearchResult: [] });
-                    this.appStateService.UpdateAppState(<AppState>{ SearchWorking: false, Error: <HttpErrorResponse>e });
+                    this.appLoadedService.SearchResult = [];
+                    this.appStateService.SearchWorking = false;
+                    this.appStateService.Error = <HttpErrorResponse>e;
                     console.debug(e);
                 })))
             ).subscribe();

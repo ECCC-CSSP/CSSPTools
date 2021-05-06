@@ -1,4 +1,5 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+
 import { SearchResult } from 'src/app/models/generated/helper/SearchResult.model';
 import { TypeIconService } from 'src/app/services/helpers/type-icon.service';
 import { TypeTextService } from 'src/app/services/helpers/type-text.service';
@@ -6,8 +7,7 @@ import { TypeTextService } from 'src/app/services/helpers/type-text.service';
 @Component({
   selector: 'app-search-option',
   templateUrl: './search-option.component.html',
-  styleUrls: ['./search-option.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./search-option.component.css']
 })
 export class SearchOptionComponent implements OnInit {
   @Input() searchResult: SearchResult;
