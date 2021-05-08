@@ -7,6 +7,7 @@ import { PredicateDescByService } from 'src/app/services/helpers/predicate-desc-
 import { TVItemID_TVText_Sort } from 'src/app/models/TVItemID_TVText_Sort.model';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { AppLanguageService } from '../app-language.service';
+import { AppLoadedService } from '../app-loaded.service';
 
 @Injectable({
     providedIn: 'root'
@@ -14,15 +15,15 @@ import { AppLanguageService } from '../app-language.service';
 export class SortTVItemListService {
     constructor(private appStateService: AppStateService,
         private appLanguageService: AppLanguageService,
+        private appLoadedService: AppLoadedService,
         private predicateAscByService: PredicateAscByService,
         private predicateDescByService: PredicateDescByService) {
     }
 
-    SortTVItemList(arr: TVItemModel[], breadCrumb: TVItemModel[]): TVItemModel[] {
-        if (!arr || arr.length == 0) return arr;
-        if (!breadCrumb || breadCrumb.length == 0) return arr;
+    SortTVItemList(arr: TVItemModel[]): TVItemModel[] {
+        if (typeof(arr) == "undefined" || !arr || arr.length == 0) return [];
 
-        let TVType: TVTypeEnum = breadCrumb[breadCrumb.length - 1].TVItem.TVType;
+        let TVType: TVTypeEnum = this.appLoadedService.BreadCrumbTVItemModelList[this.appLoadedService.BreadCrumbTVItemModelList.length - 1].TVItem.TVType;
         let TVTypeOfList: TVTypeEnum = arr[0].TVItem.TVType;
         let AscDesc: AscDescEnum = AscDescEnum.Ascending;
 
@@ -69,7 +70,7 @@ export class SortTVItemListService {
                             break;
                         case TVTypeEnum.MikeScenario:
                             {
-                                AscDesc = this.appStateService.MunicipalityMIKEScenariosSortOrder;
+                                AscDesc = this.appStateService.MunicipalityMikeScenariosSortOrder;
                             }
                             break;
                         default:

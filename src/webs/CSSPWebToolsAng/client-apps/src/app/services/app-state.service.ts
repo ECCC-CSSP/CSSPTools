@@ -200,7 +200,7 @@ export class AppStateService {
   MunicipalityFilesSortByProp?: FilesSortPropEnum = FilesSortPropEnum.FileName;
   MunicipalityFilesSortOrder?: AscDescEnum = AscDescEnum.Ascending;;
   MunicipalityInfrastructuresSortOrder?: AscDescEnum = AscDescEnum.Ascending;;
-  MunicipalityMIKEScenariosSortOrder?: AscDescEnum = AscDescEnum.Ascending;;
+  MunicipalityMikeScenariosSortOrder?: AscDescEnum = AscDescEnum.Ascending;;
   MWQMRunFilesSortByProp?: FilesSortPropEnum = FilesSortPropEnum.FileName;
   MWQMRunFilesSortOrder?: AscDescEnum = AscDescEnum.Ascending;;
   MWQMSiteFilesSortByProp?: FilesSortPropEnum = FilesSortPropEnum.FileName;

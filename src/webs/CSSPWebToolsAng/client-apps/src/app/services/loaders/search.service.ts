@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { of } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, map, startWith, tap } from 'rxjs/operators';
+import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { SearchResult } from 'src/app/models/generated/helper/SearchResult.model';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { AppLanguageService } from '../app-language.service';
@@ -31,6 +32,7 @@ export class SearchService {
     }
 
     private GetSearchData(term: string) {
+        let languageEnum = GetLanguageEnum();
         this.appLoadedService.SearchResult = [];
         this.appStateService.SearchWorking = true;
         term = ('' + term).trim();
@@ -43,7 +45,7 @@ export class SearchService {
             ).subscribe();
         }
         else {           
-            this.httpClient.get<SearchResult>(`${this.appLoadedService.BaseApiUrl}${this.appLanguageService.Language}-CA/search/${term}/0`).pipe(
+            this.httpClient.get<SearchResult>(`${this.appLoadedService.BaseApiUrl}${languageEnum[this.appLanguageService.Language]}-CA/search/${term}/0`).pipe(
                 map((x: any) => {
                     this.appLoadedService.SearchResult = x;
                     this.appStateService.SearchWorking = false;

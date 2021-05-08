@@ -8,6 +8,8 @@ import { AppLanguageService } from 'src/app/services/app-language.service';
 import { ComponentDataLoadedService } from 'src/app/services/helpers/component-data-loaded.service';
 import { WebAllHelpDocsService } from 'src/app/services/loaders/web-all-help-docs.service';
 import { WebAllEmails } from 'src/app/models/generated/web/WebAllEmails.model';
+import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
+import { MapService } from '../map/map.service';
 
 @Injectable({
     providedIn: 'root'
@@ -21,6 +23,7 @@ export class WebAllEmailsService {
         private appStateService: AppStateService,
         private appLoadedService: AppLoadedService,
         private appLanguageService: AppLanguageService,
+        private mapService: MapService,
         private webAllHelpDocsServices: WebAllHelpDocsService,
         private componentDataLoadedService: ComponentDataLoadedService) {
     }
@@ -28,6 +31,7 @@ export class WebAllEmailsService {
     DoWebAllEmails(DoNext: boolean = true, ForceReload: boolean = true) {
         this.DoNext = DoNext;
         this.ForceReload = ForceReload;
+        this.mapService.ClearMap();
 
         this.sub ? this.sub.unsubscribe() : null;
 
@@ -45,6 +49,7 @@ export class WebAllEmailsService {
     }
 
     private GetWebAllEmails() {
+        let languageEnum = GetLanguageEnum();
         this.appLoadedService.WebAllEmails = <WebAllEmails>{};
 
         let NextText = this.DoNext ? `${this.appLanguageService.Next[this.appLanguageService.LangID]} - WebAllHelpDocs` : '';
@@ -52,7 +57,7 @@ export class WebAllEmailsService {
         this.appStateService.Status = `${this.appLanguageService.Loading[this.appLanguageService.LangID]} - WebAllEmails - ${NextText} - ${ForceReloadText}`;
         this.appStateService.Working = true;
 
-        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appLanguageService.Language}-CA/Read/WebAllEmails`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appLanguageService.Language]}-CA/Read/WebAllEmails`;
         return this.httpClient.get<WebAllEmails>(url).pipe(
             map((x: any) => {
                 this.UpdateWebAllEmails(x);
@@ -85,17 +90,9 @@ export class WebAllEmailsService {
     private UpdateWebAllEmails(x: WebAllEmails) {
         this.appLoadedService.WebAllEmails = x;
 
-        if (this.DoNext) {
-            if (this.componentDataLoadedService.DataLoadedWebRoot()) {
-                this.appStateService.Status = '';
-                this.appStateService.Working = false;
-            }
-        }
-        else {
-            if (this.componentDataLoadedService.DataLoadedWebAllEmails()) {
-                this.appStateService.Status = '';
-                this.appStateService.Working = false;
-            }
+        if (this.componentDataLoadedService.DataLoadedWebAllEmails()) {
+            this.appStateService.Status = '';
+            this.appStateService.Working = false;
         }
     }
 }

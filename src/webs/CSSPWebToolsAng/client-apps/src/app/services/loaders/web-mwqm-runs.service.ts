@@ -9,6 +9,8 @@ import { ComponentDataLoadedService } from 'src/app/services/helpers/component-d
 import { HistoryService } from 'src/app/services/helpers/history.service';
 import { WebPolSourceSitesService } from 'src/app/services/loaders/web-pol-source-sites.service';
 import { WebMWQMRuns } from 'src/app/models/generated/web/WebMWQMRuns.model';
+import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
+import { MapService } from '../map/map.service';
 
 @Injectable({
     providedIn: 'root'
@@ -23,6 +25,7 @@ export class WebMWQMRunsService {
         private appStateService: AppStateService,
         private appLoadedService: AppLoadedService,
         private appLanguageService: AppLanguageService,
+        private mapService: MapService,
         private webPolSourceSitesService: WebPolSourceSitesService,
         private componentDataLoadedService: ComponentDataLoadedService,
         private historyService: HistoryService) {
@@ -32,6 +35,7 @@ export class WebMWQMRunsService {
         this.TVItemID = TVItemID;
         this.DoNext = DoNext;
         this.ForceReload = ForceReload;
+        this.mapService.ClearMap();
 
         this.sub ? this.sub.unsubscribe() : null;
 
@@ -49,6 +53,7 @@ export class WebMWQMRunsService {
     }
 
     private GetWebMWQMRuns() {
+        let languageEnum = GetLanguageEnum();
         this.appLoadedService.WebMWQMRuns = <WebMWQMRuns>{};
 
         let NextText = this.DoNext ? `${this.appLanguageService.Next[this.appLanguageService.LangID]} - WebPolSourceSites` : '';
@@ -91,17 +96,9 @@ export class WebMWQMRunsService {
 
         this.historyService.AddHistory(this.appLoadedService.WebMWQMRuns?.TVItemModel);
 
-        if (this.DoNext) {
-            if (this.componentDataLoadedService.DataLoadedWebSubsector()) {
-                this.appStateService.Status = '';
-                this.appStateService.Working = false;
-            }
-        }
-        else {
-            if (this.componentDataLoadedService.DataLoadedWebMWQMRuns()) {
-                this.appStateService.Status = '';
-                this.appStateService.Working = false;
-            }
+        if (this.componentDataLoadedService.DataLoadedWebMWQMRuns()) {
+            this.appStateService.Status = '';
+            this.appStateService.Working = false;
         }
     }
 }

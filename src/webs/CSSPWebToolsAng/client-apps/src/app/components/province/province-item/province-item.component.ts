@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { GetAscDescEnum } from 'src/app/enums/generated/AscDescEnum';
+import { AscDescEnum, GetAscDescEnum } from 'src/app/enums/generated/AscDescEnum';
 import { GetProvinceSubComponentEnum } from 'src/app/enums/generated/ProvinceSubComponentEnum';
 import { GetSortOrderAngularEnum } from 'src/app/enums/generated/SortOrderAngularEnum';
 import { GetTVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
@@ -9,8 +9,10 @@ import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { ComponentButtonSelectionService } from 'src/app/services/helpers/component-button-selection.service';
 import { ComponentShowService } from 'src/app/services/helpers/component-show.service';
+import { FilterService } from 'src/app/services/helpers/filter.service';
+import { SortTVItemListService } from 'src/app/services/helpers/sort-tvitem-list.service';
 import { StatCountService } from 'src/app/services/helpers/stat-count.service';
-import { TVItemSortOrderService } from 'src/app/services/helpers/tvitem-sort-order.service';
+//import { TVItemSortOrderService } from 'src/app/services/helpers/tvitem-sort-order.service';
 import { WebProvinceService } from 'src/app/services/loaders/web-province.service';
 
 @Component({
@@ -18,9 +20,7 @@ import { WebProvinceService } from 'src/app/services/loaders/web-province.servic
   templateUrl: './province-item.component.html',
   styleUrls: ['./province-item.component.css']
 })
-export class ProvinceItemComponent implements OnInit, OnDestroy {
-
-  
+export class ProvinceItemComponent implements OnInit, OnDestroy { 
   provinceSubComponentEnum = GetProvinceSubComponentEnum();
   tvTypeEnum = GetTVTypeEnum();
   ascDescEnum = GetAscDescEnum();
@@ -30,16 +30,26 @@ export class ProvinceItemComponent implements OnInit, OnDestroy {
     public appLoadedService: AppLoadedService,
     public appLanguageService: AppLanguageService,
     public webProvinceService: WebProvinceService,
-    public tvItemSortOrderService: TVItemSortOrderService,
+    //public tvItemSortOrderService: TVItemSortOrderService,
     public statCountService: StatCountService,
+    public sortTVItemListService: SortTVItemListService,
+    public filterService: FilterService,
     public componentButtonSelectionService: ComponentButtonSelectionService,
     public componentShowService: ComponentShowService) { }
 
   ngOnInit(): void {
-    this.webProvinceService.DoWebProvince(this.appStateService.CurrentTVItemID, true);
+    this.webProvinceService.DoWebProvince(this.appStateService.CurrentTVItemID, false);
   }
 
   ngOnDestroy(): void {
+  }
+
+  ChangeSortOrderForProvinceAreas(ascDesc: AscDescEnum) {
+    this.appStateService.ProvinceAreasSortOrder = ascDesc;
+  }
+  
+  ChangeSortOrderForProvinceMunicipalities(ascDesc: AscDescEnum) {
+    this.appStateService.ProvinceMunicipalitiesSortOrder = ascDesc;
   }
 
 }

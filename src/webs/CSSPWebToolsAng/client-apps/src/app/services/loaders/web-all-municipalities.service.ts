@@ -8,6 +8,8 @@ import { AppStateService } from 'src/app/services/app-state.service';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { ComponentDataLoadedService } from 'src/app/services/helpers/component-data-loaded.service';
 import { WebAllMWQMLookupMPNsService } from 'src/app/services/loaders/web-all-mwqm-lookup-mpns.service';
+import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
+import { MapService } from '../map/map.service';
 
 @Injectable({
     providedIn: 'root'
@@ -21,6 +23,7 @@ export class WebAllMunicipalitiesService {
         private appStateService: AppStateService,
         private appLoadedService: AppLoadedService,
         private appLanguageService: AppLanguageService,
+        private mapService: MapService,
         private webAllMWQMLookupMPNsService: WebAllMWQMLookupMPNsService,
         private componentDataLoadedService: ComponentDataLoadedService) {
     }
@@ -28,32 +31,33 @@ export class WebAllMunicipalitiesService {
     DoWebAllMunicipalities(DoNext: boolean = true, ForceReload: boolean = true) {
         this.DoNext = DoNext;
         this.ForceReload = ForceReload;
+        this.mapService.ClearMap();
 
         this.sub ? this.sub.unsubscribe() : null;
 
         if (ForceReload) {
             this.sub = this.GetWebAllMunicipalities().subscribe();
         }
-        else
-        {
+        else {
             if (this.componentDataLoadedService.DataLoadedWebAllMunicipalities()) {
                 this.KeepWebAllMunicipalities();
             }
             else {
                 this.sub = this.GetWebAllMunicipalities().subscribe();
             }
-            }
+        }
     }
 
     private GetWebAllMunicipalities() {
+        let languageEnum = GetLanguageEnum();
         this.appLoadedService.WebAllMunicipalities = <WebAllMunicipalities>{};
-        
+
         let NextText = this.DoNext ? `${this.appLanguageService.Next[this.appLanguageService.LangID]} - WebAllMWQMLookupMPNs` : '';
         let ForceReloadText = this.ForceReload ? `${this.appLanguageService.ForceReload[this.appLanguageService.LangID]}` : '';
         this.appStateService.Status = `${this.appLanguageService.Loading[this.appLanguageService.LangID]} - WebAllMunicipalities - ${NextText} - ${ForceReloadText}`;
         this.appStateService.Working = true;
 
-        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appLanguageService.Language}-CA/Read/WebAllMunicipalities`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appLanguageService.Language]}-CA/Read/WebAllMunicipalities`;
         return this.httpClient.get<WebAllMunicipalities>(url).pipe(
             map((x: any) => {
                 this.UpdateWebAllMunicipalities(x);
@@ -86,17 +90,9 @@ export class WebAllMunicipalitiesService {
     private UpdateWebAllMunicipalities(x: WebAllMunicipalities) {
         this.appLoadedService.WebAllMunicipalities = x;
 
-        if (this.DoNext) {
-            if (this.componentDataLoadedService.DataLoadedWebRoot()) {
-                this.appStateService.Status = '';
-                this.appStateService.Working = false;
-            }
-        }
-        else {
-            if (this.componentDataLoadedService.DataLoadedWebAllMunicipalities()) {
-                this.appStateService.Status = '';
-                this.appStateService.Working = false;
-            }
+        if (this.componentDataLoadedService.DataLoadedWebAllMunicipalities()) {
+            this.appStateService.Status = '';
+            this.appStateService.Working = false;
         }
     }
 }

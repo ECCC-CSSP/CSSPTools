@@ -2,11 +2,13 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { WebAllMWQMLookupMPNs } from 'src/app/models/generated/web/WebAllMWQMLookupMPNs.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { AppLanguageService } from '../app-language.service';
 import { ComponentDataLoadedService } from '../helpers/component-data-loaded.service';
+import { MapService } from '../map/map.service';
 import { WebAllPolSourceGroupingsService } from './web-all-pol-source-groupings.service';
 
 @Injectable({
@@ -21,6 +23,7 @@ export class WebAllMWQMLookupMPNsService {
         private appStateService: AppStateService,
         private appLoadedService: AppLoadedService,
         private appLanguageService: AppLanguageService,
+        private mapService: MapService,
         private webAllPolSourceGroupingsService: WebAllPolSourceGroupingsService,
         private componentDataLoadedService: ComponentDataLoadedService) {
     }
@@ -28,6 +31,7 @@ export class WebAllMWQMLookupMPNsService {
     DoWebAllMWQMLookupMPNs(DoNext: boolean = true, ForceReload: boolean = true) {
         this.DoNext = DoNext;
         this.ForceReload = ForceReload;
+        this.mapService.ClearMap();
 
         this.sub ? this.sub.unsubscribe() : null;
 
@@ -45,6 +49,7 @@ export class WebAllMWQMLookupMPNsService {
     }
 
     private GetWebAllMWQMLookupMPNs() {
+        let languageEnum = GetLanguageEnum();
         this.appLoadedService.WebAllMWQMLookupMPNs = <WebAllMWQMLookupMPNs>{};
 
         let NextText = this.DoNext ? `${this.appLanguageService.Next[this.appLanguageService.LangID]} - WebAllPolSourceGroupings` : '';
@@ -52,7 +57,7 @@ export class WebAllMWQMLookupMPNsService {
         this.appStateService.Status = `${this.appLanguageService.Loading[this.appLanguageService.LangID]} - WebAllMWQMLookupMPNs - ${NextText} - ${ForceReloadText}`;
         this.appStateService.Working = true;
 
-        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appLanguageService.Language}-CA/Read/WebAllMWQMLookupMPNs`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appLanguageService.Language]}-CA/Read/WebAllMWQMLookupMPNs`;
         return this.httpClient.get<WebAllMWQMLookupMPNs>(url).pipe(
             map((x: any) => {
                 this.UpdateWebAllMWQMLookupMPNs(x);
@@ -85,17 +90,9 @@ export class WebAllMWQMLookupMPNsService {
     private UpdateWebAllMWQMLookupMPNs(x: WebAllMWQMLookupMPNs) {
         this.appLoadedService.WebAllMWQMLookupMPNs = x;
 
-        if (this.DoNext) {
-            if (this.componentDataLoadedService.DataLoadedWebRoot()) {
-                this.appStateService.Status = '';
-                this.appStateService.Working = false;
-            }
-        }
-        else {
-            if (this.componentDataLoadedService.DataLoadedWebAllMWQMLookupMPNs()) {
-                this.appStateService.Status = '';
-                this.appStateService.Working = false;
-            }
+        if (this.componentDataLoadedService.DataLoadedWebAllMWQMLookupMPNs()) {
+            this.appStateService.Status = '';
+            this.appStateService.Working = false;
         }
     }
 }

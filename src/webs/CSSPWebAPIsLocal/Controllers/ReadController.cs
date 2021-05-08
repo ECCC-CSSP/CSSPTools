@@ -40,9 +40,9 @@ namespace CSSPWebAPIsLocal.Controllers
         Task<ActionResult<WebArea>> WebArea(int TVItemID);
         Task<ActionResult<WebClimateSites>> WebClimateSites(int TVItemID);
         Task<ActionResult<WebCountry>> WebCountry(int TVItemID);
-        Task<ActionResult<WebDrogueRuns>> WebDrogueRun(int TVItemID);
+        Task<ActionResult<WebDrogueRuns>> WebDrogueRuns(int TVItemID);
         Task<ActionResult<WebHydrometricSites>> WebHydrometricSites(int TVItemID);
-        Task<ActionResult<WebLabSheets>> WebLabSheet(int TVItemID);
+        Task<ActionResult<WebLabSheets>> WebLabSheets(int TVItemID);
         Task<ActionResult<WebMikeScenarios>> WebMikeScenarios(int TVItemID);
         Task<ActionResult<WebMunicipality>> WebMunicipality(int TVItemID);
         Task<ActionResult<WebMWQMRuns>> WebMWQMRuns(int TVItemID);
@@ -265,9 +265,9 @@ namespace CSSPWebAPIsLocal.Controllers
 
             return await ReadGzFileService.ReadJSON<WebCountry>(WebTypeEnum.WebCountry, TVItemID);
         }
-        [Route("WebDrogueRun/{TVItemID:int}")]
+        [Route("WebDrogueRuns/{TVItemID:int}")]
         [HttpGet]
-        public async Task<ActionResult<WebDrogueRuns>> WebDrogueRun(int TVItemID)
+        public async Task<ActionResult<WebDrogueRuns>> WebDrogueRuns(int TVItemID)
         {
             // TVItemID = SubsectorTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
@@ -285,9 +285,9 @@ namespace CSSPWebAPIsLocal.Controllers
 
             return await ReadGzFileService.ReadJSON<WebHydrometricSites>(WebTypeEnum.WebHydrometricSites, TVItemID);
         }
-        [Route("WebLabSheet/{TVItemID:int}")]
+        [Route("WebLabSheets/{TVItemID:int}")]
         [HttpGet]
-        public async Task<ActionResult<WebLabSheets>> WebLabSheet(int TVItemID)
+        public async Task<ActionResult<WebLabSheets>> WebLabSheets(int TVItemID)
         {
             // TVItemID = SubsectorTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
@@ -333,7 +333,7 @@ namespace CSSPWebAPIsLocal.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInLocalContactInfo();
 
-            return await ReadGzFileService.ReadJSON<WebMWQMSamples>(WebTypeEnum.WebMWQMSamples1980_2020);
+            return await ReadGzFileService.ReadJSON<WebMWQMSamples>(WebTypeEnum.WebMWQMSamples1980_2020, TVItemID);
         }
         [Route("WebMWQMSamples2021_2060/{TVItemID:int}")]
         [HttpGet]
@@ -343,7 +343,7 @@ namespace CSSPWebAPIsLocal.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInLocalContactInfo();
 
-            return await ReadGzFileService.ReadJSON<WebMWQMSamples>(WebTypeEnum.WebMWQMSamples2021_2060);
+            return await ReadGzFileService.ReadJSON<WebMWQMSamples>(WebTypeEnum.WebMWQMSamples2021_2060, TVItemID);
         }
         [Route("WebMWQMSites/{TVItemID:int}")]
         [HttpGet]
@@ -363,7 +363,7 @@ namespace CSSPWebAPIsLocal.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInLocalContactInfo();
 
-            return await ReadGzFileService.ReadJSON<WebPolSourceSites>(WebTypeEnum.WebPolSourceSites);
+            return await ReadGzFileService.ReadJSON<WebPolSourceSites>(WebTypeEnum.WebPolSourceSites, TVItemID);
         }
         [Route("WebProvince/{TVItemID:int}")]
         [HttpGet]

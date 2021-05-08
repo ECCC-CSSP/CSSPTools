@@ -19,7 +19,7 @@
 //   }
 
 //   download(tvFileModel: TVFileModel): Observable<Download> {
-//     let url: string = `${this.appLoadedService.BaseApiUrl}${this.appLanguageService.Language}-CA/download/${tvFileModel.TVItem.ParentID}/${tvFileModel.TVFile.ServerFileName}`;
+//     let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appLanguageService.Language]}-CA/download/${tvFileModel.TVItem.ParentID}/${tvFileModel.TVFile.ServerFileName}`;
 
 //     return this.http.get(url, {
 //       reportProgress: true,

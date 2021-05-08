@@ -15,12 +15,12 @@
         </span>                                                
     </span>
     <span class="biggerArrow"
-        (click)="tvItemSortOrderService.ChangeTVItemSortOrder(sortOrderAngular.SectorSubsectors, ascDescEnum.Ascending)"
+        (click)="ChangeSortOrderForSectorSubsectors(ascDescEnum.Ascending)"
         *ngIf="appStateService.SectorSubsectorsSortOrder == ascDescEnum.Descending">
         &nbsp;&nbsp;&uarr;
     </span>
     <span class="biggerArrow"
-        (click)="tvItemSortOrderService.ChangeTVItemSortOrder(sortOrderAngular.SectorSubsectors, ascDescEnum.Descending)"
+        (click)="ChangeSortOrderForSectorSubsectors(ascDescEnum.Descending)"
         *ngIf="appStateService.SectorSubsectorsSortOrder == ascDescEnum.Ascending">
         &nbsp;&nbsp;&darr;
     </span>
@@ -36,30 +36,9 @@
         </span>                                                        
     </span>
 </button>
-<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionSector(sectorSubComponentEnum.MIKEScenarios)"
-    (click)="componentShowService.ShowSector(sectorSubComponentEnum.MIKEScenarios)"
-    title="{{ appLanguageService.SectorShowMIKEScenarios[appLanguageService.LangID] }}">
-    <span>
-        {{ appLanguageService.SectorMIKEScenarios[appLanguageService.LangID] }}
-        <span class="badge-stat" *ngIf="appStateService.StatCountVisible">
-            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.WebSector?.TVItemModel, tvTypeEnum.MikeScenario) }}&nbsp;&nbsp;
-        </span>                                                                
-    </span>
-    <span class="biggerArrow"
-        (click)="tvItemSortOrderService.ChangeTVItemSortOrder(sortOrderAngular.SectorMikeScenarios, ascDescEnum.Ascending)"
-        *ngIf="appStateService.SectorMikeScenariosSortOrder == ascDescEnum.Descending">
-        &nbsp;&nbsp;&uarr;
-    </span>
-    <span class="biggerArrow"
-        (click)="tvItemSortOrderService.ChangeTVItemSortOrder(sortOrderAngular.SectorMikeScenarios, ascDescEnum.Descending)"
-        *ngIf="appStateService.SectorMikeScenariosSortOrder == ascDescEnum.Ascending">
-        &nbsp;&nbsp;&darr;
-    </span>
-</button>
 
 <app-subsector-tvitem-list-item *ngIf="appStateService.SectorSubComponent == sectorSubComponentEnum.Subsectors"
-    
-    [TVItemModelList]="appLoadedService.WebSector.TVItemModelSubsectorList">
+    [TVItemModelList]="sortTVItemListService.SortTVItemList(filterService.FilterTVItemModelList(appLoadedService.WebSector?.TVItemModelSubsectorList))">
 </app-subsector-tvitem-list-item>
 
 <app-file-list *ngIf="appStateService.SectorSubComponent == sectorSubComponentEnum.Files"

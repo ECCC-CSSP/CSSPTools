@@ -7,6 +7,9 @@ import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { ComponentDataLoadedService } from 'src/app/services/helpers/component-data-loaded.service';
+import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
+import { MapService } from '../map/map.service';
+import { RootSubComponentEnum } from 'src/app/enums/generated/RootSubComponentEnum';
 
 @Injectable({
     providedIn: 'root'
@@ -19,6 +22,7 @@ export class WebAllTideLocationsService {
     constructor(private httpClient: HttpClient,
         private appStateService: AppStateService,
         private appLoadedService: AppLoadedService,
+        private mapService: MapService,
         private appLanguageService: AppLanguageService,
         private componentDataLoadedService: ComponentDataLoadedService) {
     }
@@ -26,6 +30,7 @@ export class WebAllTideLocationsService {
     DoWebAllTideLocations(DoNext: boolean = true, ForceReload: boolean = true) {
         this.DoNext = DoNext;
         this.ForceReload = ForceReload;
+        this.mapService.ClearMap();
 
         this.sub ? this.sub.unsubscribe() : null;
 
@@ -43,13 +48,14 @@ export class WebAllTideLocationsService {
     }
 
     private GetWebAllTideLocations() {
+        let languageEnum = GetLanguageEnum();
         this.appLoadedService.WebAllTideLocations = <WebAllTideLocations>{};
 
         let ForceReloadText = this.ForceReload ? `${this.appLanguageService.ForceReload[this.appLanguageService.LangID]}` : '';
         this.appStateService.Status = `${this.appLanguageService.Loading[this.appLanguageService.LangID]} - WebAllTideLocations - ${ForceReloadText}`;
         this.appStateService.Working = true;
 
-        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appLanguageService.Language}-CA/Read/WebAllTideLocations`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appLanguageService.Language]}-CA/Read/WebAllTideLocations`;
         return this.httpClient.get<WebAllTideLocations>(url).pipe(
             map((x: any) => {
                 this.UpdateWebAllTideLocations(x);
@@ -57,6 +63,9 @@ export class WebAllTideLocationsService {
                 if (this.DoNext) {
                     // nothing more to add in the chain
                 }
+                this.appStateService.Status = ''
+                this.appStateService.Working = false
+                this.appStateService.Error = null;
             }),
             catchError(e => of(e).pipe(map(e => {
                 this.appStateService.Status = ''
@@ -78,16 +87,34 @@ export class WebAllTideLocationsService {
     private UpdateWebAllTideLocations(x: WebAllTideLocations) {
         this.appLoadedService.WebAllTideLocations = x;
 
-        if (this.DoNext) {
-            if (this.componentDataLoadedService.DataLoadedWebRoot()) {
-                this.appStateService.Status = '';
-                this.appStateService.Working = false;
-            }
+        if (this.componentDataLoadedService.DataLoadedWebAllTideLocations()) {
+            this.appStateService.Status = '';
+            this.appStateService.Working = false;
         }
-        else {
-            if (this.componentDataLoadedService.DataLoadedWebAllTideLocations()) {
-                this.appStateService.Status = '';
-                this.appStateService.Working = false;
+
+        if (this.appStateService.GoogleJSLoaded) {
+            if (this.appStateService.RootSubComponent == RootSubComponentEnum.Countries) {
+                this.mapService.ClearMap();
+                this.mapService.DrawObjects([
+                    ...this.appLoadedService.WebRoot.TVItemModelCountryList,
+                    ...[this.appLoadedService.WebRoot.TVItemModel]
+                ]);
+            }
+
+            if (this.appStateService.RootSubComponent == RootSubComponentEnum.Files) {
+                this.mapService.ClearMap();
+                this.mapService.DrawObjects([
+                    ...this.appLoadedService.WebRoot.TVItemModelCountryList,
+                    ...[this.appLoadedService.WebRoot.TVItemModel]
+                ]);
+            }
+
+            if (this.appStateService.RootSubComponent == RootSubComponentEnum.ExportArcGIS) {
+                this.mapService.ClearMap();
+                this.mapService.DrawObjects([
+                    ...this.appLoadedService.WebRoot.TVItemModelCountryList,
+                    ...[this.appLoadedService.WebRoot.TVItemModel]
+                ]);
             }
         }
     }

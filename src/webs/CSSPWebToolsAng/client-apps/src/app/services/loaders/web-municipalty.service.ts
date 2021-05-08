@@ -10,6 +10,7 @@ import { ComponentDataLoadedService } from 'src/app/services/helpers/component-d
 import { MapService } from 'src/app/services/map/map.service';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { WebMikeScenariosService } from './web-mike-scenarios.service';
+import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 
 @Injectable({
     providedIn: 'root'
@@ -33,6 +34,7 @@ export class WebMunicipalityService {
         this.TVItemID = TVItemID;
         this.DoNext = DoNext;
         this.ForceReload = ForceReload;
+        this.mapService.ClearMap();
 
         this.sub ? this.sub.unsubscribe() : null;
 
@@ -50,6 +52,7 @@ export class WebMunicipalityService {
     }
 
     private GetWebMunicipality() {
+        let languageEnum = GetLanguageEnum();
         this.appLoadedService.WebMunicipality = <WebMunicipality>{};
 
         let NextText = this.DoNext ? `${this.appLanguageService.Next[this.appLanguageService.LangID]} - WebMikeScenarios` : '';
@@ -57,7 +60,7 @@ export class WebMunicipalityService {
         this.appStateService.Status = `${this.appLanguageService.Loading[this.appLanguageService.LangID]} - WebMunicipality - ${NextText} - ${ForceReloadText}`;
         this.appStateService.Working = true;
 
-        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appLanguageService.Language}-CA/Read/WebMunicipality/${this.TVItemID}`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appLanguageService.Language]}-CA/Read/WebMunicipality/${this.TVItemID}`;
         return this.httpClient.get<WebMunicipality>(url).pipe(
             map((x: any) => {
                 this.UpdateWebMunicipality(x);
@@ -89,14 +92,9 @@ export class WebMunicipalityService {
 
     private UpdateWebMunicipality(x: WebMunicipality) {
         this.appLoadedService.WebMunicipality = x;
+        this.appLoadedService.BreadCrumbTVItemModelList = x.TVItemModelParentList;
 
-        if (this.DoNext) {
-            if (this.componentDataLoadedService.DataLoadedWebMunicipality()) {
-                this.appStateService.Status = '';
-                this.appStateService.Working = false;
-            }
-        }
-        else {
+        if (this.componentDataLoadedService.DataLoadedWebMunicipality()) {
             this.appStateService.Status = '';
             this.appStateService.Working = false;
         }

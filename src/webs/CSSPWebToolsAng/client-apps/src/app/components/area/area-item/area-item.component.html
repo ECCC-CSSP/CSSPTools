@@ -15,12 +15,12 @@
         </span>
     </span>
     <span class="biggerArrow"
-        (click)="tvItemSortOrderService.ChangeTVItemSortOrder(sortOrderAngular.AreaSectors, ascDescEnum.Ascending)"
+        (click)="ChangeSortOrderForAreaSectors(ascDescEnum.Ascending)"
         *ngIf="appStateService.AreaSectorsSortOrder == ascDescEnum.Descending">
         &nbsp;&nbsp;&uarr;
     </span>
     <span class="biggerArrow"
-        (click)="tvItemSortOrderService.ChangeTVItemSortOrder(sortOrderAngular.AreaSectors, ascDescEnum.Descending)"
+        (click)="ChangeSortOrderForAreaSectors(ascDescEnum.Descending)"
         *ngIf="appStateService.AreaSectorsSortOrder == ascDescEnum.Ascending">
         &nbsp;&nbsp;&darr;
     </span>
@@ -38,7 +38,7 @@
 </button>
 
 <app-sector-tvitem-list-item *ngIf="appStateService.AreaSubComponent == areaSubComponentEnum.Sectors"
-    [TVItemModelList]="appLoadedService.WebArea?.TVItemModelSectorList">
+    [TVItemModelList]="sortTVItemListService.SortTVItemList(filterService.FilterTVItemModelList(appLoadedService.WebArea?.TVItemModelSectorList))">
 </app-sector-tvitem-list-item>
 
 <app-file-list *ngIf="appStateService.AreaSubComponent == areaSubComponentEnum.Files"

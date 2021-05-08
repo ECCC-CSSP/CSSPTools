@@ -9,6 +9,8 @@ import { AppLanguageService } from 'src/app/services/app-language.service';
 import { ComponentDataLoadedService } from 'src/app/services/helpers/component-data-loaded.service';
 import { HistoryService } from 'src/app/services/helpers/history.service';
 import { WebMWQMRunsService } from 'src/app/services/loaders/web-mwqm-runs.service';
+import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
+import { MapService } from '../map/map.service';
 
 @Injectable({
     providedIn: 'root'
@@ -24,6 +26,7 @@ export class WebMWQMSitesService {
         private appLoadedService: AppLoadedService,
         private appLanguageService: AppLanguageService,
         private webMWQMRunsService: WebMWQMRunsService,
+        private mapService: MapService,
         private componentDataLoadedService: ComponentDataLoadedService,
         private historyService: HistoryService) {
     }
@@ -32,6 +35,7 @@ export class WebMWQMSitesService {
         this.TVItemID = TVItemID;
         this.DoNext = DoNext;
         this.ForceReload = ForceReload;
+        this.mapService.ClearMap();
 
         this.sub ? this.sub.unsubscribe() : null;
 
@@ -49,6 +53,7 @@ export class WebMWQMSitesService {
     }
 
     private GetWebMWQMSites() {
+        let languageEnum = GetLanguageEnum();
         this.appLoadedService.WebMWQMSites = <WebMWQMSites>{};
 
         let NextText = this.DoNext ? `${this.appLanguageService.Next[this.appLanguageService.LangID]} - WebMWQMRuns` : '';
@@ -56,7 +61,7 @@ export class WebMWQMSitesService {
         this.appStateService.Status = `${this.appLanguageService.Loading[this.appLanguageService.LangID]} - WebMWQMSites - ${NextText} - ${ForceReloadText}`;
         this.appStateService.Working = true;
 
-        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appLanguageService.Language}-CA/Read/WebMWQMSites/${this.TVItemID}`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appLanguageService.Language]}-CA/Read/WebMWQMSites/${this.TVItemID}`;
         return this.httpClient.get<WebMWQMSites>(url).pipe(
             map((x: any) => {
                 this.UpdateWebMWQMSites(x);
@@ -91,17 +96,9 @@ export class WebMWQMSitesService {
 
         this.historyService.AddHistory(this.appLoadedService.WebMWQMSites?.TVItemModel);
 
-        if (this.DoNext) {
-            if (this.componentDataLoadedService.DataLoadedWebSubsector()) {
-                this.appStateService.Status = '';
-                this.appStateService.Working = false;
-            }
-        }
-        else {
-            if (this.componentDataLoadedService.DataLoadedWebMWQMSites()) {
-                this.appStateService.Status = '';
-                this.appStateService.Working = false;
-            }
+        if (this.componentDataLoadedService.DataLoadedWebMWQMSites()) {
+            this.appStateService.Status = '';
+            this.appStateService.Working = false;
         }
     }
 }

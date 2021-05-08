@@ -55,6 +55,6 @@
         </mat-accordion>
     </ng-container>
 
-    <app-country-tvitem-list-detail  *ngIf="!IsBreadCrumb && appStateService.DetailVisible"
+    <app-country-tvitem-list-detail  *ngIf="appStateService.DetailVisible"
         [TVItemModel]="tvItemModel"></app-country-tvitem-list-detail>
 </mat-list>

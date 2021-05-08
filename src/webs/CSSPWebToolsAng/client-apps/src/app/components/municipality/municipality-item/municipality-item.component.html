@@ -35,13 +35,13 @@
         </span>
     </span>
     <span class="biggerArrow"
-        (click)="tvItemSortOrderService.ChangeTVItemSortOrder(sortOrderAngular.MunicipalityMIKEScenarios, ascDescEnum.Ascending)"
-        *ngIf="appStateService.MunicipalityMIKEScenariosSortOrder == ascDescEnum.Descending">
+        (click)="ChangeSortOrderForMunicipalityMikeScenarios(ascDescEnum.Ascending)"
+        *ngIf="appStateService.MunicipalityMikeScenariosSortOrder == ascDescEnum.Descending">
         &nbsp;&nbsp;&uarr;
     </span>
     <span class="biggerArrow"
-        (click)="tvItemSortOrderService.ChangeTVItemSortOrder(sortOrderAngular.MunicipalityMIKEScenarios, ascDescEnum.Descending)"
-        *ngIf="appStateService.MunicipalityMIKEScenariosSortOrder == ascDescEnum.Ascending">
+        (click)="ChangeSortOrderForMunicipalityMikeScenarios(ascDescEnum.Descending)"
+        *ngIf="appStateService.MunicipalityMikeScenariosSortOrder == ascDescEnum.Ascending">
         &nbsp;&nbsp;&darr;
     </span>
 </button>
@@ -63,8 +63,7 @@
 
 <app-mike-scenario-tvitem-list-item
     *ngIf="appStateService.MunicipalitySubComponent == municipalitySubComponentEnum.MIKEScenarios"
-    
-    [TVItemModelList]="appLoadedService.WebMikeScenarios.MikeScenarioModelList">
+    [TVItemModelList]="sortTVItemListService.SortTVItemList(filterService.FilterTVItemModelList(appLoadedService.WebMunicipality?.TVItemModelMikeScenarioList))">
 </app-mike-scenario-tvitem-list-item>
 
 <app-file-list

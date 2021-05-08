@@ -5,13 +5,12 @@ import { catchError, map } from 'rxjs/operators';
 import { WebCountry } from 'src/app/models/generated/web/WebCountry.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
-import { StructureTVFileListService } from 'src/app/services/helpers/structure-tvfile-list.service';
-import { SortTVItemListService } from 'src/app/services/helpers/sort-tvitem-list.service';
 import { MapService } from 'src/app/services/map/map.service';
 import { CountrySubComponentEnum } from 'src/app/enums/generated/CountrySubComponentEnum';
 import { ComponentDataLoadedService } from 'src/app/services/helpers/component-data-loaded.service';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { HistoryService } from 'src/app/services/helpers/history.service';
+import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +34,7 @@ export class WebCountryService {
     this.TVItemID = TVItemID;
     this.DoNext = DoNext;
     this.ForceReload = ForceReload;
+    this.mapService.ClearMap();
 
     this.sub ? this.sub.unsubscribe() : null;
 
@@ -52,13 +52,14 @@ export class WebCountryService {
   }
 
   private GetWebCountry() {
+    let languageEnum = GetLanguageEnum();
     this.appLoadedService.WebCountry = <WebCountry>{};
 
     let ForceReloadText = this.ForceReload ? `${this.appLanguageService.ForceReload[this.appLanguageService.LangID]}` : '';
     this.appStateService.Status = `${this.appLanguageService.Loading[this.appLanguageService.LangID]} - WebCountry - ${ForceReloadText}`;
     this.appStateService.Working = true;
 
-    let url: string = `${this.appLoadedService.BaseApiUrl}${this.appLanguageService.Language}-CA/Read/WebCountry/${this.TVItemID}`;
+    let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appLanguageService.Language]}-CA/Read/WebCountry/${this.TVItemID}`;
     return this.httpClient.get<WebCountry>(url).pipe(
       map((x: any) => {
         this.UpdateWebCountry(x);
@@ -85,18 +86,12 @@ export class WebCountryService {
   }
 
   private UpdateWebCountry(x: WebCountry) {
-
     this.appLoadedService.WebCountry = x;
+    this.appLoadedService.BreadCrumbTVItemModelList = x.TVItemModelParentList;
 
     this.historyService.AddHistory(this.appLoadedService.WebCountry?.TVItemModel);
 
-    if (this.DoNext) {
-      if (this.componentDataLoadedService.DataLoadedWebCountry()) {
-        this.appStateService.Status = '';
-        this.appStateService.Working = false;
-      }
-    }
-    else {
+    if (this.componentDataLoadedService.DataLoadedWebCountry()) {
       this.appStateService.Status = '';
       this.appStateService.Working = false;
     }

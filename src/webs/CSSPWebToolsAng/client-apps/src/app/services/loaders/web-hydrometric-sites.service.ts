@@ -7,6 +7,9 @@ import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { ComponentDataLoadedService } from 'src/app/services/helpers/component-data-loaded.service';
+import { WebDrogueRunsService } from './web-drogue-runs.service';
+import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
+import { MapService } from '../map/map.service';
 
 
 @Injectable({
@@ -22,6 +25,8 @@ export class WebHydrometricSitesService {
         private appStateService: AppStateService,
         private appLoadedService: AppLoadedService,
         private appLanguageService: AppLanguageService,
+        private mapService: MapService,
+        private webDrogueRunsService: WebDrogueRunsService,
         private componentDataLoadedService: ComponentDataLoadedService) {
     }
 
@@ -29,6 +34,7 @@ export class WebHydrometricSitesService {
         this.TVItemID = TVItemID;
         this.DoNext = DoNext;
         this.ForceReload = ForceReload;
+        this.mapService.ClearMap();
 
         this.sub ? this.sub.unsubscribe() : null;
 
@@ -46,19 +52,20 @@ export class WebHydrometricSitesService {
     }
 
     private GetWebHydrometricSites() {
+        let languageEnum = GetLanguageEnum();
         this.appLoadedService.WebHydrometricSites = <WebHydrometricSites>{};
 
         let ForceReloadText = this.ForceReload ? `${this.appLanguageService.ForceReload[this.appLanguageService.LangID]}` : '';
         this.appStateService.Status = `${this.appLanguageService.Loading[this.appLanguageService.LangID]} - WebHydrometricSites - ${ForceReloadText}`;
         this.appStateService.Working = true;
 
-        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appLanguageService.Language}-CA/Read/WebHydrometricSites/${this.TVItemID}`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appLanguageService.Language]}-CA/Read/WebHydrometricSites/${this.TVItemID}`;
         return this.httpClient.get<WebHydrometricSites>(url).pipe(
             map((x: any) => {
                 this.UpdateWebHydrometricSites(x);
                 console.debug(x);
                 if (this.DoNext) {
-                    // nothing else to add to the chain
+                    this.DoWebDrogueRuns();
                 }
             }),
             catchError(e => of(e).pipe(map(e => {
@@ -70,28 +77,24 @@ export class WebHydrometricSitesService {
         );
     }
 
+    private DoWebDrogueRuns() {
+        this.webDrogueRunsService.DoWebDrogueRuns(this.TVItemID, this.DoNext);
+    }
+
     private KeepWebHydrometricSites() {
         this.UpdateWebHydrometricSites(this.appLoadedService.WebHydrometricSites);
         console.debug(this.appLoadedService.WebHydrometricSites);
         if (this.DoNext) {
-            // nothing more to add in the chain
+            this.DoWebDrogueRuns();
         }
     }
 
     private UpdateWebHydrometricSites(x: WebHydrometricSites) {
         this.appLoadedService.WebHydrometricSites = x;
 
-        if (this.DoNext) {
-            if (this.componentDataLoadedService.DataLoadedWebProvince()) {
-                this.appStateService.Status = '';
-                this.appStateService.Working = false;
-            }
-        }
-        else {
-            if (this.componentDataLoadedService.DataLoadedWebHydrometricSites()) {
-                this.appStateService.Status = '';
-                this.appStateService.Working = false;
-            }
+        if (this.componentDataLoadedService.DataLoadedWebHydrometricSites()) {
+            this.appStateService.Status = '';
+            this.appStateService.Working = false;
         }
     }
 }

@@ -1,16 +1,16 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { GetAscDescEnum } from 'src/app/enums/generated/AscDescEnum';
-import { GetMunicipalitySubComponentEnum, MunicipalitySubComponentEnum } from 'src/app/enums/generated/MunicipalitySubComponentEnum';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { AscDescEnum, GetAscDescEnum } from 'src/app/enums/generated/AscDescEnum';
+import { GetMunicipalitySubComponentEnum } from 'src/app/enums/generated/MunicipalitySubComponentEnum';
 import { GetSortOrderAngularEnum } from 'src/app/enums/generated/SortOrderAngularEnum';
 import { GetTVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
-
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { ComponentButtonSelectionService } from 'src/app/services/helpers/component-button-selection.service';
 import { ComponentShowService } from 'src/app/services/helpers/component-show.service';
+import { FilterService } from 'src/app/services/helpers/filter.service';
+import { SortTVItemListService } from 'src/app/services/helpers/sort-tvitem-list.service';
 import { StatCountService } from 'src/app/services/helpers/stat-count.service';
-import { TVItemSortOrderService } from 'src/app/services/helpers/tvitem-sort-order.service';
 import { WebMunicipalityService } from 'src/app/services/loaders/web-municipalty.service';
 
 @Component({
@@ -19,8 +19,6 @@ import { WebMunicipalityService } from 'src/app/services/loaders/web-municipalty
   styleUrls: ['./municipality-item.component.css']
 })
 export class MunicipalityItemComponent implements OnInit, OnDestroy {
-
-
   municipalitySubComponentEnum = GetMunicipalitySubComponentEnum();
   tvTypeEnum = GetTVTypeEnum();
   ascDescEnum = GetAscDescEnum();
@@ -30,7 +28,8 @@ export class MunicipalityItemComponent implements OnInit, OnDestroy {
     public appLoadedService: AppLoadedService,
     public appLanguageService: AppLanguageService,
     public webMunicipalityService: WebMunicipalityService,
-    public tvItemSortOrderService: TVItemSortOrderService,
+    public sortTVItemListService: SortTVItemListService,
+    public filterService: FilterService,
     public statCountService: StatCountService,
     public componentButtonSelectionService: ComponentButtonSelectionService,
     public componentShowService: ComponentShowService) { }
@@ -40,5 +39,9 @@ export class MunicipalityItemComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+  }
+
+  ChangeSortOrderForMunicipalityMikeScenarios(ascDesc: AscDescEnum) {
+    this.appStateService.MunicipalityMikeScenariosSortOrder = ascDesc;
   }
 }

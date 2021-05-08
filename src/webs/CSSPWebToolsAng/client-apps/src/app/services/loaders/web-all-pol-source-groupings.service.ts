@@ -8,6 +8,8 @@ import { AppStateService } from 'src/app/services/app-state.service';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { ComponentDataLoadedService } from 'src/app/services/helpers/component-data-loaded.service';
 import { WebAllPolSourceSiteEffectTermsService } from 'src/app/services/loaders/web-all-pol-source-site-effect-terms.service';
+import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
+import { MapService } from '../map/map.service';
 
 @Injectable({
     providedIn: 'root'
@@ -21,6 +23,7 @@ export class WebAllPolSourceGroupingsService {
         private appStateService: AppStateService,
         private appLoadedService: AppLoadedService,
         private appLanguageService: AppLanguageService,
+        private mapService: MapService,
         private webAllPolSourceSiteEffectTermsService: WebAllPolSourceSiteEffectTermsService,
         private componentDataLoadedService: ComponentDataLoadedService) {
     }
@@ -28,23 +31,25 @@ export class WebAllPolSourceGroupingsService {
     DoWebAllPolSourceGroupings(DoNext: boolean = true, ForceReload: boolean = true) {
         this.DoNext = DoNext;
         this.ForceReload = ForceReload;
+        this.mapService.ClearMap();
 
         this.sub ? this.sub.unsubscribe() : null;
 
         if (ForceReload) {
             this.sub = this.GetWebAllPolSourceGroupings().subscribe();
         }
-        else{
+        else {
             if (this.componentDataLoadedService.DataLoadedWebAllPolSourceGroupings()) {
                 this.KeepWebAllPolSourceGroupings();
             }
             else {
                 this.sub = this.GetWebAllPolSourceGroupings().subscribe();
             }
-            }
+        }
     }
 
     private GetWebAllPolSourceGroupings() {
+        let languageEnum = GetLanguageEnum();
         this.appLoadedService.WebAllPolSourceGroupings = <WebAllPolSourceGroupings>{};
 
         let NextText = this.DoNext ? `${this.appLanguageService.Next[this.appLanguageService.LangID]} - WebAllPolSourceSiteEffectTerms` : '';
@@ -52,7 +57,7 @@ export class WebAllPolSourceGroupingsService {
         this.appStateService.Status = `${this.appLanguageService.Loading[this.appLanguageService.LangID]} - WebAllPolSourceGroupings - ${NextText} - ${ForceReloadText}`;
         this.appStateService.Working = true;
 
-        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appLanguageService.Language}-CA/Read/WebAllPolSourceGroupings`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appLanguageService.Language]}-CA/Read/WebAllPolSourceGroupings`;
         return this.httpClient.get<WebAllPolSourceGroupings>(url).pipe(
             map((x: any) => {
                 this.UpdateWebAllPolSourceGroupings(x);
@@ -85,17 +90,9 @@ export class WebAllPolSourceGroupingsService {
     private UpdateWebAllPolSourceGroupings(x: WebAllPolSourceGroupings) {
         this.appLoadedService.WebAllPolSourceGroupings = x;
 
-        if (this.DoNext) {
-            if (this.componentDataLoadedService.DataLoadedWebRoot()) {
-                this.appStateService.Status = '';
-                this.appStateService.Working = false;
-            }
-        }
-        else {
-            if (this.componentDataLoadedService.DataLoadedWebAllPolSourceGroupings()) {
-                this.appStateService.Status = '';
-                this.appStateService.Working = false;
-            }
+        if (this.componentDataLoadedService.DataLoadedWebAllPolSourceGroupings()) {
+            this.appStateService.Status = '';
+            this.appStateService.Working = false;
         }
     }
 }

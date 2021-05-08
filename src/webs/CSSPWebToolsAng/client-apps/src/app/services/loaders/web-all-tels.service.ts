@@ -8,6 +8,8 @@ import { AppLanguageService } from 'src/app/services/app-language.service';
 import { ComponentDataLoadedService } from 'src/app/services/helpers/component-data-loaded.service';
 import { WebAllTels } from 'src/app/models/generated/web/WebAllTels.model';
 import { WebAllTideLocationsService } from 'src/app/services/loaders/web-all-tide-locations.service';
+import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
+import { MapService } from '../map/map.service';
 
 @Injectable({
     providedIn: 'root'
@@ -21,6 +23,7 @@ export class WebAllTelsService {
         private appStateService: AppStateService,
         private appLoadedService: AppLoadedService,
         private appLanguageService: AppLanguageService,
+        private mapService: MapService,
         private webAllTideLocationsServices: WebAllTideLocationsService,
         private componentDataLoadedService: ComponentDataLoadedService) {
     }
@@ -28,10 +31,11 @@ export class WebAllTelsService {
     DoWebAllTels(DoNext: boolean = true, ForceReload: boolean = true) {
         this.DoNext = DoNext;
         this.ForceReload = ForceReload;
+        this.mapService.ClearMap();
 
         this.sub ? this.sub.unsubscribe() : null;
 
-            if (ForceReload) {
+        if (ForceReload) {
             this.sub = this.GetWebAllTels().subscribe();
         }
         else {
@@ -45,6 +49,7 @@ export class WebAllTelsService {
     }
 
     private GetWebAllTels() {
+        let languageEnum = GetLanguageEnum();
         this.appLoadedService.WebAllTels = <WebAllTels>{};
 
         let NextText = this.DoNext ? `${this.appLanguageService.Next[this.appLanguageService.LangID]} - WebAllAllTideLocations` : '';
@@ -52,7 +57,7 @@ export class WebAllTelsService {
         this.appStateService.Status = `${this.appLanguageService.Loading[this.appLanguageService.LangID]} - WebAllTels - ${NextText} - ${ForceReloadText}`
         this.appStateService.Working = true;
 
-        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appLanguageService.Language}-CA/Read/WebAllTels`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appLanguageService.Language]}-CA/Read/WebAllTels`;
         return this.httpClient.get<WebAllTels>(url).pipe(
             map((x: any) => {
                 this.UpdateWebAllTels(x);
@@ -85,17 +90,9 @@ export class WebAllTelsService {
     private UpdateWebAllTels(x: WebAllTels) {
         this.appLoadedService.WebAllTels = x;
 
-        if (this.DoNext) {
-            if (this.componentDataLoadedService.DataLoadedWebRoot()) {
-                this.appStateService.Status = '';
-                this.appStateService.Working = false;
-            }
-        }
-        else {
-            if (this.componentDataLoadedService.DataLoadedWebAllTels()) {
-                this.appStateService.Status = '';
-                this.appStateService.Working = false;
-            }
+        if (this.componentDataLoadedService.DataLoadedWebAllTels()) {
+            this.appStateService.Status = '';
+            this.appStateService.Working = false;
         }
     }
 }

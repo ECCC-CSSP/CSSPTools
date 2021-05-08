@@ -15,12 +15,12 @@
         </span>                                                                                                
     </span>
     <span class="biggerArrow"
-        (click)="tvItemSortOrderService.ChangeTVItemSortOrder(sortOrderAngular.CountryProvinces, ascDescEnum.Ascending)"
+        (click)="ChangeSortOrderForCountryProvinces(ascDescEnum.Ascending)"
         *ngIf="appStateService.CountryProvincesSortOrder == ascDescEnum.Descending">
         &nbsp;&nbsp;&uarr;
     </span>
     <span class="biggerArrow"
-        (click)="tvItemSortOrderService.ChangeTVItemSortOrder(sortOrderAngular.CountryProvinces, ascDescEnum.Descending)"
+        (click)="ChangeSortOrderForCountryProvinces(ascDescEnum.Descending)"
         *ngIf="appStateService.CountryProvincesSortOrder == ascDescEnum.Ascending">
         &nbsp;&nbsp;&darr;
     </span>
@@ -53,7 +53,7 @@
 </button>
 
 <app-province-tvitem-list-item *ngIf="appStateService.CountrySubComponent == countrySubComponentEnum.Provinces"
-    [TVItemModelList]="appLoadedService.WebCountry?.TVItemModelProvinceList">
+    [TVItemModelList]="sortTVItemListService.SortTVItemList(filterService.FilterTVItemModelList(appLoadedService.WebCountry?.TVItemModelProvinceList))">
 </app-province-tvitem-list-item>
 
 <app-file-list *ngIf="appStateService.CountrySubComponent == countrySubComponentEnum.Files"

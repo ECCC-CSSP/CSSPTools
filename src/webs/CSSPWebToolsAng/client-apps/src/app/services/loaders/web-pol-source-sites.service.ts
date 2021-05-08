@@ -8,7 +8,9 @@ import { AppStateService } from 'src/app/services/app-state.service';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { ComponentDataLoadedService } from 'src/app/services/helpers/component-data-loaded.service';
 import { HistoryService } from 'src/app/services/helpers/history.service';
-import { WebDrogueRunsService } from 'src/app/services/loaders/web-drogue-runs.service';
+import { WebLabSheetsService } from './web-lab-sheets.service';
+import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
+import { MapService } from '../map/map.service';
 
 @Injectable({
     providedIn: 'root'
@@ -23,7 +25,8 @@ export class WebPolSourceSitesService {
         private appStateService: AppStateService,
         private appLoadedService: AppLoadedService,
         private appLanguageService: AppLanguageService,
-        private webDrogueRunsService: WebDrogueRunsService,
+        private webLabSheetsService: WebLabSheetsService,
+        private mapService: MapService,
         private componentDataLoadedService: ComponentDataLoadedService,
         private historyService: HistoryService) {
     }
@@ -32,6 +35,7 @@ export class WebPolSourceSitesService {
         this.TVItemID = TVItemID;
         this.DoNext = DoNext;
         this.ForceReload = ForceReload;
+        this.mapService.ClearMap();
 
         this.sub ? this.sub.unsubscribe() : null;
 
@@ -49,6 +53,7 @@ export class WebPolSourceSitesService {
     }
 
     private GetWebPolSourceSites() {
+        let languageEnum = GetLanguageEnum();
         this.appLoadedService.WebPolSourceSites = <WebPolSourceSites>{};
 
         let NextText = this.DoNext ? `${this.appLanguageService.Next[this.appLanguageService.LangID]} - WebDrogueRuns` : '';
@@ -56,13 +61,13 @@ export class WebPolSourceSitesService {
         this.appStateService.Status = `${this.appLanguageService.Loading[this.appLanguageService.LangID]} - WebPolSourceSites - ${NextText} - ${ForceReloadText}`;
         this.appStateService.Working = true;
 
-        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appLanguageService.Language}-CA/Read/WebPolSourceSites/${this.TVItemID}`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appLanguageService.Language]}-CA/Read/WebPolSourceSites/${this.TVItemID}`;
         return this.httpClient.get<WebPolSourceSites>(url).pipe(
             map((x: any) => {
                 this.UpdateWebPolSourceSites(x);
                 console.debug(x);
                 if (this.DoNext) {
-                    this.DoWebDrogueRuns();
+                    this.DoWebLabSheets();
                 }
             }),
             catchError(e => of(e).pipe(map(e => {
@@ -74,15 +79,15 @@ export class WebPolSourceSitesService {
         );
     }
 
-    private DoWebDrogueRuns() {
-        this.webDrogueRunsService.DoWebDrogueRuns(this.TVItemID, this.DoNext);
+    private DoWebLabSheets() {
+        this.webLabSheetsService.DoWebLabSheets(this.TVItemID, this.DoNext);
     }
 
     private KeepWebPolSourceSites() {
         this.UpdateWebPolSourceSites(this.appLoadedService.WebPolSourceSites);
         console.debug(this.appLoadedService.WebPolSourceSites);
         if (this.DoNext) {
-            this.DoWebDrogueRuns();
+            this.DoWebLabSheets();
         }
     }
 
@@ -91,17 +96,9 @@ export class WebPolSourceSitesService {
 
         this.historyService.AddHistory(this.appLoadedService.WebPolSourceSites?.TVItemModel);
 
-        if (this.DoNext) {
-            if (this.componentDataLoadedService.DataLoadedWebSubsector()) {
-                this.appStateService.Status = '';
-                this.appStateService.Working = false;
-            }
-        }
-        else {
-            if (this.componentDataLoadedService.DataLoadedWebPolSourceSites()) {
-                this.appStateService.Status = '';
-                this.appStateService.Working = false;
-            }
+        if (this.componentDataLoadedService.DataLoadedWebPolSourceSites()) {
+            this.appStateService.Status = '';
+            this.appStateService.Working = false;
         }
     }
 }

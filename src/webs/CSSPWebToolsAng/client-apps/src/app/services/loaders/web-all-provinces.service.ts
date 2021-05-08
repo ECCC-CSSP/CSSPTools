@@ -8,6 +8,8 @@ import { AppStateService } from 'src/app/services/app-state.service';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { ComponentDataLoadedService } from 'src/app/services/helpers/component-data-loaded.service';
 import { WebAllReportTypesService } from 'src/app/services/loaders/web-all-report-types.service';
+import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
+import { MapService } from '../map/map.service';
 
 @Injectable({
     providedIn: 'root'
@@ -21,6 +23,7 @@ export class WebAllProvincesService {
         private appStateService: AppStateService,
         private appLoadedService: AppLoadedService,
         private appLanguageService: AppLanguageService,
+        private mapService: MapService,
         private webAllReportTypesService: WebAllReportTypesService,
         private componentDataLoadedService: ComponentDataLoadedService) {
     }
@@ -28,6 +31,7 @@ export class WebAllProvincesService {
     DoWebAllProvinces(DoNext: boolean = true, ForceReload: boolean = true) {
         this.DoNext = DoNext;
         this.ForceReload = ForceReload;
+        this.mapService.ClearMap();
 
         this.sub ? this.sub.unsubscribe() : null;
 
@@ -45,6 +49,7 @@ export class WebAllProvincesService {
     }
 
     private GetWebAllProvinces() {
+        let languageEnum = GetLanguageEnum();
         this.appLoadedService.WebAllProvinces = <WebAllProvinces>{};
 
         let NextText = this.DoNext ? `${this.appLanguageService.Next[this.appLanguageService.LangID]} - WebAllReportTypes` : '';
@@ -52,7 +57,7 @@ export class WebAllProvincesService {
         this.appStateService.Status = `${this.appLanguageService.Loading[this.appLanguageService.LangID]} - WebAllProvinces - ${NextText} - ${ForceReloadText}`;
         this.appStateService.Working = true;
 
-        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appLanguageService.Language}-CA/Read/WebAllProvinces`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appLanguageService.Language]}-CA/Read/WebAllProvinces`;
         return this.httpClient.get<WebAllProvinces>(url).pipe(
             map((x: any) => {
                 this.UpdateWebAllProvinces(x);
@@ -85,17 +90,9 @@ export class WebAllProvincesService {
     private UpdateWebAllProvinces(x: WebAllProvinces) {
         this.appLoadedService.WebAllProvinces = x;
 
-        if (this.DoNext) {
-            if (this.componentDataLoadedService.DataLoadedWebRoot()) {
-                this.appStateService.Status = '';
-                this.appStateService.Working = false;
-            }
-        }
-        else {
-            if (this.componentDataLoadedService.DataLoadedWebAllProvinces()) {
-                this.appStateService.Status = '';
-                this.appStateService.Working = false;
-            }
+        if (this.componentDataLoadedService.DataLoadedWebAllProvinces()) {
+            this.appStateService.Status = '';
+            this.appStateService.Working = false;
         }
     }
 }

@@ -40,7 +40,7 @@ export class TogglesService {
 
     ToggleInactive(): void {
         this.appStateService.InactVisible = !this.appStateService.InactVisible;
-        this.ReloadPage();
+        //this.ReloadPage();
     }
 
     ToggleLastUpdate(): void {
@@ -69,67 +69,67 @@ export class TogglesService {
     ToggleEditMap(): void {
         this.appStateService.EditMapVisible = !this.appStateService.EditMapVisible; 
         this.appStateService.Working = false;
-        this.ReloadPage();
+        //this.ReloadPage();
     }
 
-    private ReloadPage()
-    {
-        switch (this.appStateService.ShellSubComponent) {
-            case ShellSubComponentEnum.Area:
-                {
-                    this.webAreaService.DoWebArea(this.appStateService.CurrentTVItemID, true);
-                }
-                break;
-            case ShellSubComponentEnum.Country:
-                {
-                    this.webCountryService.DoWebCountry(this.appStateService.CurrentTVItemID, true);
-                }
-                break;
-            case ShellSubComponentEnum.Municipality:
-                {
-                    this.webMunicipalityService.DoWebMunicipality(this.appStateService.CurrentTVItemID, true);
-                }
-                break;
-            case ShellSubComponentEnum.MWQMRun:
-                {
-                    this.webMWQMRunsService.DoWebMWQMRuns(this.appStateService.CurrentTVItemID, true);
-                }
-                break;
-            case ShellSubComponentEnum.MWQMSite:
-                {
-                    this.webMWQMSitesService.DoWebMWQMSites(this.appStateService.CurrentTVItemID, true);
-                }
-                break;
-            case ShellSubComponentEnum.PolSourceSite:
-                {
-                    this.webPolSourceSitesService.DoWebPolSourceSites(this.appStateService.CurrentTVItemID, true);
-                }
-                break;
-            case ShellSubComponentEnum.Province:
-                {
-                    this.webProvinceService.DoWebProvince(this.appStateService.CurrentTVItemID, true);
-                }
-                break;
-            case ShellSubComponentEnum.Root:
-                {
-                    this.webRootService.DoWebRoot(true);
-                }
-                break;
-            case ShellSubComponentEnum.Sector:
-                {
-                    this.webSectorService.DoWebSector(this.appStateService.CurrentTVItemID, true);
-                }
-                break;
-            case ShellSubComponentEnum.Subsector:
-                {
-                    this.webSubsectorService.DoWebSubsector(this.appStateService.CurrentTVItemID, true);
-                }
-                break;
-            default:
-                {
+    // private ReloadPage()
+    // {
+    //     switch (this.appStateService.ShellSubComponent) {
+    //         case ShellSubComponentEnum.Area:
+    //             {
+    //                 this.webAreaService.DoWebArea(this.appStateService.CurrentTVItemID, true);
+    //             }
+    //             break;
+    //         case ShellSubComponentEnum.Country:
+    //             {
+    //                 this.webCountryService.DoWebCountry(this.appStateService.CurrentTVItemID, true);
+    //             }
+    //             break;
+    //         case ShellSubComponentEnum.Municipality:
+    //             {
+    //                 this.webMunicipalityService.DoWebMunicipality(this.appStateService.CurrentTVItemID, true);
+    //             }
+    //             break;
+    //         case ShellSubComponentEnum.MWQMRun:
+    //             {
+    //                 this.webMWQMRunsService.DoWebMWQMRuns(this.appStateService.CurrentTVItemID, true);
+    //             }
+    //             break;
+    //         case ShellSubComponentEnum.MWQMSite:
+    //             {
+    //                 this.webMWQMSitesService.DoWebMWQMSites(this.appStateService.CurrentTVItemID, true);
+    //             }
+    //             break;
+    //         case ShellSubComponentEnum.PolSourceSite:
+    //             {
+    //                 this.webPolSourceSitesService.DoWebPolSourceSites(this.appStateService.CurrentTVItemID, true);
+    //             }
+    //             break;
+    //         case ShellSubComponentEnum.Province:
+    //             {
+    //                 this.webProvinceService.DoWebProvince(this.appStateService.CurrentTVItemID, true);
+    //             }
+    //             break;
+    //         case ShellSubComponentEnum.Root:
+    //             {
+    //                 this.webRootService.DoWebRoot(true);
+    //             }
+    //             break;
+    //         case ShellSubComponentEnum.Sector:
+    //             {
+    //                 this.webSectorService.DoWebSector(this.appStateService.CurrentTVItemID, true);
+    //             }
+    //             break;
+    //         case ShellSubComponentEnum.Subsector:
+    //             {
+    //                 this.webSubsectorService.DoWebSubsector(this.appStateService.CurrentTVItemID, true);
+    //             }
+    //             break;
+    //         default:
+    //             {
 
-                }
-                break;
-        }
-    }
+    //             }
+    //             break;
+    //     }
+    // }
 }

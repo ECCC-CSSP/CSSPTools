@@ -46,6 +46,8 @@ export class LoggedInContactService {
     }
 
     private LoadGoogleJS() {
+        let languageEnum = GetLanguageEnum();
+
         if (!this.GoogleJSLoaded) { // load once
             if (this.appLoadedService.LoggedInContact) {
                 this.GoogleJSLoaded = new Promise((resolve) => {
@@ -59,7 +61,7 @@ export class LoggedInContactService {
                         node.src = `https://maps.googleapis.com/maps/api/js?key=${this.appLoadedService.LoggedInContact.GoogleMapKeyHash}&callback=__onGapiLoaded`;
                     }
                     else {
-                        node.src = `${this.appLoadedService.BaseApiUrl}${this.appLanguageService.Language}-CA/DownloadOther/GoogleMap.js`;
+                        node.src = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appLanguageService.Language]}-CA/DownloadOther/GoogleMap.js`;
                     }
                     node.type = 'text/javascript';
                     document.getElementsByTagName('head')[0].appendChild(node);
@@ -72,11 +74,12 @@ export class LoggedInContactService {
     }
 
     private GetLoggedInContact() {
+        let languageEnum = GetLanguageEnum();
         this.appLoadedService.LoggedInContact = <Contact>{};
         this.appStateService.Working = true;
         this.appStateService.Error = null;
         this.appStateService.Status = `${this.appLanguageService.Loading[this.appLanguageService.LangID]} - LoggedInContact`;
-        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appLanguageService.Language}-CA/LoggedInContact`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appLanguageService.Language]}-CA/LoggedInContact`;
         return this.httpClient.get<Contact>(url).pipe(
             map((x: any) => {
                 this.UpdateLoggedInContact(x);

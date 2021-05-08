@@ -18,8 +18,9 @@ export class FileService {
     }
 
     DownloadFile(ParentTVItemID: number, FileName: string) {
+        let languageEnum = GetLanguageEnum();
         this.appStateService.Working = true;
-        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appLanguageService.Language}-CA/download/${ParentTVItemID}/${FileName}`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appLanguageService.Language]}-CA/download/${ParentTVItemID}/${FileName}`;
         this.httpClient.get<Blob>(url).pipe(
             map((x: any) => {
                 this.appStateService.Working = false;
@@ -33,4 +34,8 @@ export class FileService {
             })))
         ).subscribe();
     }
+}
+
+function GetLanguageEnum() {
+    throw new Error('Function not implemented.');
 }

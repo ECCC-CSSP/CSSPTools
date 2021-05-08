@@ -7,6 +7,8 @@ import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { ComponentDataLoadedService } from 'src/app/services/helpers/component-data-loaded.service';
+import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
+import { MapService } from '../map/map.service';
 
 @Injectable({
     providedIn: 'root'
@@ -20,6 +22,7 @@ export class WebMikeScenariosService {
     constructor(private httpClient: HttpClient,
         private appStateService: AppStateService,
         private appLoadedService: AppLoadedService,
+        private mapService: MapService,
         private appLanguageService: AppLanguageService,
         private componentDataLoadedService: ComponentDataLoadedService) {
     }
@@ -28,6 +31,7 @@ export class WebMikeScenariosService {
         this.TVItemID = TVItemID;
         this.DoNext = DoNext;
         this.ForceReload = ForceReload;
+        this.mapService.ClearMap();
 
         this.sub ? this.sub.unsubscribe() : null;
 
@@ -45,13 +49,14 @@ export class WebMikeScenariosService {
     }
 
     private GetWebMikeScenarios() {
+        let languageEnum = GetLanguageEnum();
         this.appLoadedService.WebMikeScenarios = <WebMikeScenarios>{};
 
         let ForceReloadText = this.ForceReload ? `${this.appLanguageService.ForceReload[this.appLanguageService.LangID]}` : '';
         this.appStateService.Status = `${this.appLanguageService.Loading[this.appLanguageService.LangID]} - WebMikeScenarios - ${ForceReloadText}`;
         this.appStateService.Working = true;
 
-        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appLanguageService.Language}-CA/Read/WebMikeScenarios/${this.TVItemID}`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appLanguageService.Language]}-CA/Read/WebMikeScenarios/${this.TVItemID}`;
         return this.httpClient.get<WebMikeScenarios>(url).pipe(
             map((x: any) => {
                 this.UpdateWebMikeScenarios(x);
@@ -79,14 +84,9 @@ export class WebMikeScenariosService {
 
     private UpdateWebMikeScenarios(x: WebMikeScenarios) {
         this.appLoadedService.WebMikeScenarios = x
+        this.appLoadedService.BreadCrumbTVItemModelList = x.TVItemModelParentList;
 
-        if (this.DoNext) {
-            if (this.componentDataLoadedService.DataLoadedWebMikeScenarios()) {
-                this.appStateService.Status = '';
-                this.appStateService.Working = false;
-            }
-        }
-        else {
+        if (this.componentDataLoadedService.DataLoadedWebMikeScenarios()) {
             this.appStateService.Status = '';
             this.appStateService.Working = false;
         }

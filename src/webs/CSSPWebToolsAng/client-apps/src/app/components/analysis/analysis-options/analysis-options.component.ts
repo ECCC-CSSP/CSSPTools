@@ -14,7 +14,7 @@ import { AnalysisService } from 'src/app/services/helpers/analysis.service';
 import { ComponentButtonSelectionService } from 'src/app/services/helpers/component-button-selection.service';
 import { DateFormatService } from 'src/app/services/helpers/date-format.service';
 import { TogglesService } from 'src/app/services/helpers/toggles.service';
-import { WebMWQMSamplesService } from 'src/app/services/loaders/web-mwqm-samples.service';
+import { WebMWQMSamples2021_2060Service } from 'src/app/services/loaders/web-mwqm-samples_2021_2060.service';
 
 @Component({
   selector: 'app-analysis-options',
@@ -46,7 +46,7 @@ export class AnalysisOptionsComponent implements OnInit, OnDestroy {
     public dateFormatService: DateFormatService,
     private fb: FormBuilder,
     public analysisService: AnalysisService,
-    private webMWQMSamplesService: WebMWQMSamplesService) { }
+    private webMWQMSamples2021_2060Service: WebMWQMSamples2021_2060Service) { }
 
   ngOnInit(): void {
     this.language = <number>this.appLanguageService.Language;

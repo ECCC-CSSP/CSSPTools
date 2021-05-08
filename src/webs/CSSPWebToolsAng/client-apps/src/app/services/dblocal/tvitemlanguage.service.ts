@@ -49,7 +49,7 @@ export class TVItemLanguageService {
         
         let tvItemLanguage: TVItemLanguage = JSON.parse(JSON.stringify(this.TVItemModel.TVItemLanguageList[this.appLanguageService.LangID]));
 
-        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appLanguageService.LangID]}-CA/TVItem/`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appLanguageService.Language]}-CA/TVItem/`;
         return this.httpClient.put<TVItemLanguage>(url, tvItemLanguage, httpOptions).pipe(
             map((x: any) => {
                 console.debug(x);

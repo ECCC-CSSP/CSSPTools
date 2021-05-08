@@ -15,12 +15,12 @@
         </span>                
     </span>
     <span class="biggerArrow"
-        (click)="tvItemSortOrderService.ChangeTVItemSortOrder(sortOrderAngular.SubsectorMWQMSites, ascDescEnum.Ascending)"
+        (click)="ChangeSortOrderForSubsectorMWQMSites(ascDescEnum.Ascending)"
         *ngIf="appStateService.SubsectorMWQMSitesSortOrder == ascDescEnum.Descending">
         &nbsp;&nbsp;&uarr;
     </span>
     <span class="biggerArrow"
-        (click)="tvItemSortOrderService.ChangeTVItemSortOrder(sortOrderAngular.SubsectorMWQMSites, ascDescEnum.Descending)"
+        (click)="ChangeSortOrderForSubsectorMWQMSites(ascDescEnum.Ascending)"
         *ngIf="appStateService.SubsectorMWQMSitesSortOrder == ascDescEnum.Ascending">
         &nbsp;&nbsp;&darr;
     </span>
@@ -40,12 +40,12 @@
         </span>                        
     </span>
     <span class="biggerArrow"
-        (click)="tvItemSortOrderService.ChangeTVItemSortOrder(sortOrderAngular.SubsectorMWQMRuns, ascDescEnum.Ascending)"
+        (click)="ChangeSortOrderForSubsectorMWQMRuns(ascDescEnum.Ascending)"
         *ngIf="appStateService.SubsectorMWQMRunsSortOrder == ascDescEnum.Descending">
         &nbsp;&nbsp;&uarr;
     </span>
     <span class="biggerArrow"
-        (click)="tvItemSortOrderService.ChangeTVItemSortOrder(sortOrderAngular.SubsectorMWQMRuns, ascDescEnum.Descending)"
+        (click)="ChangeSortOrderForSubsectorMWQMRuns(ascDescEnum.Descending)"
         *ngIf="appStateService.SubsectorMWQMRunsSortOrder == ascDescEnum.Ascending">
         &nbsp;&nbsp;&darr;
     </span>
@@ -60,12 +60,12 @@
         </span>                                
     </span>
     <span class="biggerArrow"
-        (click)="tvItemSortOrderService.ChangeTVItemSortOrder(sortOrderAngular.SubsectorPolSourceSites, ascDescEnum.Ascending)"
+        (click)="ChangeSortOrderForSubsectorPolSourceSites(ascDescEnum.Ascending)"
         *ngIf="appStateService.SubsectorPolSourceSitesSortOrder == ascDescEnum.Descending">
         &nbsp;&nbsp;&uarr;
     </span>
     <span class="biggerArrow"
-        (click)="tvItemSortOrderService.ChangeTVItemSortOrder(sortOrderAngular.SubsectorPolSourceSites, ascDescEnum.Descending)"
+        (click)="ChangeSortOrderForSubsectorPolSourceSites(ascDescEnum.Descending)"
         *ngIf="appStateService.SubsectorPolSourceSitesSortOrder == ascDescEnum.Ascending">
         &nbsp;&nbsp;&darr;
     </span>
@@ -94,12 +94,12 @@
 
 <app-mwqm-site-tvitem-list-item
     *ngIf="appStateService.SubsectorSubComponent == subsectorSubComponentEnum.MWQMSites"
-    [TVItemModelList]="appLoadedService.WebMWQMSites?.MWQMSiteModelList">
+    [TVItemModelList]="sortTVItemListService.SortTVItemList(filterService.FilterTVItemModelList(appLoadedService.WebSubsector?.TVItemModelMWQMSiteList))">
 </app-mwqm-site-tvitem-list-item>
 
 <div *ngIf="appStateService.SubsectorSubComponent == subsectorSubComponentEnum.Analysis">
     <app-analysis-item
-    [TVItemModelList]="appLoadedService.WebMWQMSites.MWQMSiteModelList"
+    [TVItemModelList]="appLoadedService.WebSubsector?.TVItemModelMWQMSiteList"
     [StatMWQMSiteList]="appLoadedService.StatMWQMSiteList"
     [StatMWQMRunList]="appLoadedService.StatMWQMRunList"
     ></app-analysis-item>
@@ -107,12 +107,12 @@
 
 <app-mwqm-run-tvitem-list-item
     *ngIf="appStateService.SubsectorSubComponent == subsectorSubComponentEnum.MWQMRuns"
-    [TVItemModelList]="appLoadedService.WebMWQMRuns.MWQMRunModelList">
+    [TVItemModelList]="sortTVItemListService.SortTVItemList(filterService.FilterTVItemModelList(appLoadedService.WebSubsector?.TVItemModelMWQMRunList))">
 </app-mwqm-run-tvitem-list-item>
 
 <app-pol-source-site-tvitem-list-item
     *ngIf="appStateService.SubsectorSubComponent == subsectorSubComponentEnum.PollutionSourceSites"
-    [TVItemModelList]="appLoadedService.WebPolSourceSites.PolSourceSiteModelList">
+    [TVItemModelList]="sortTVItemListService.SortTVItemList(filterService.FilterTVItemModelList(appLoadedService.WebSubsector?.TVItemModelPolSourceSiteList))">
 </app-pol-source-site-tvitem-list-item>
 
 <app-file-list *ngIf="appStateService.SubsectorSubComponent == subsectorSubComponentEnum.Files"

@@ -14,6 +14,7 @@ namespace CSSPWebModels
         #region Properties
         public TVItemModel TVItemModel { get; set; }
         public List<TVItemModel> TVItemModelParentList { get; set; }
+        public List<TVItemModel> TVItemModelMikeScenarioList { get; set; }
         public List<TVFileModel> TVFileModelList { get; set; }
         public List<ContactModel> MunicipalityContactModelList { get; set; }
         public List<TVItemLink> MunicipalityTVItemLinkList { get; set; }
@@ -25,6 +26,7 @@ namespace CSSPWebModels
         {
             TVItemModel = new TVItemModel();
             TVItemModelParentList = new List<TVItemModel>();
+            TVItemModelMikeScenarioList = new List<TVItemModel>();
             TVFileModelList = new List<TVFileModel>();
             MunicipalityContactModelList = new List<ContactModel>();
             MunicipalityTVItemLinkList = new List<TVItemLink>();

@@ -1,9 +1,11 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { AscDescEnum } from 'src/app/enums/generated/AscDescEnum';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { ShowTVItemService } from 'src/app/services/helpers/show-tvitem.service';
+import { SortTVItemListService } from 'src/app/services/helpers/sort-tvitem-list.service';
 import { SubPageService } from 'src/app/services/helpers/sub-page.service';
 import { MapService } from 'src/app/services/map/map.service';
 
@@ -14,8 +16,6 @@ import { MapService } from 'src/app/services/map/map.service';
 })
 export class CountryTVItemListItemComponent implements OnInit, OnDestroy {
   @Input() TVItemModelList: TVItemModel[] = [];
-  @Input() IsBreadCrumb: boolean = false;
-
 
   languageEnum = GetLanguageEnum();
   
@@ -23,10 +23,12 @@ export class CountryTVItemListItemComponent implements OnInit, OnDestroy {
     public appLanguageService: AppLanguageService,
     public subPageService: SubPageService,
     public mapService: MapService,
+    public sortTVItemListService: SortTVItemListService,
     public showTVItemService: ShowTVItemService) {
   }
 
   ngOnInit() {
+    this.TVItemModelList = this.sortTVItemListService.SortTVItemList(this.TVItemModelList);
   }
 
   ngOnDestroy()

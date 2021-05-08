@@ -14,7 +14,6 @@ import { WebProvince } from 'src/app/models/generated/web/WebProvince.model';
 import { WebRoot } from 'src/app/models/generated/web/WebRoot.model';
 import { WebSector } from 'src/app/models/generated/web/WebSector.model';
 import { WebSubsector } from 'src/app/models/generated/web/WebSubsector.model';
-//import { Subscription } from 'rxjs';
 import { WebAllCountries } from 'src/app/models/generated/web/WebAllCountries.model';
 import { WebAllMunicipalities } from 'src/app/models/generated/web/WebAllMunicipalities.model';
 import { WebAllProvinces } from 'src/app/models/generated/web/WebAllProvinces.model';
@@ -39,7 +38,6 @@ import { StatMWQMSite } from 'src/app/models/generated/web/StatMWQMSite.model';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { ContactModel } from '../models/generated/web/ContactModel.model';
 
@@ -47,6 +45,9 @@ import { ContactModel } from '../models/generated/web/ContactModel.model';
   providedIn: 'root'
 })
 export class AppLoadedService {
+  BaseApiUrl = 'https://localhost:4447/api/'; 
+  //BaseApiUrl = 'https://localhost:44346/api/';
+
   LoggedInContact?: Contact;
   BreadCrumbTVItemModelList?: TVItemModel[];
 
@@ -89,6 +90,8 @@ export class AppLoadedService {
   WebMikeScenarios?: WebMikeScenarios;
   WebMunicipality?: WebMunicipality;
   WebMWQMRuns?: WebMWQMRuns;
+  WebMWQMSamples1980_2020?: WebMWQMSamples;
+  WebMWQMSamples2021_2060?: WebMWQMSamples;
   WebMWQMSamples?: WebMWQMSamples;
   WebMWQMSites?: WebMWQMSites;
   WebPolSourceSites?: WebPolSourceSites;
@@ -106,9 +109,6 @@ export class AppLoadedService {
   MWQMSiteList?: MWQMSiteModel[];
   StatMWQMRunList?: StatMWQMRun[];
   StatMWQMSiteList?: StatMWQMSite[];
-
-  //BaseApiUrl = 'https://localhost:4447/api/'; 
-  BaseApiUrl = 'https://localhost:44346/api/';
 
   constructor(public httpClient: HttpClient,
     public appStateService: AppStateService) {

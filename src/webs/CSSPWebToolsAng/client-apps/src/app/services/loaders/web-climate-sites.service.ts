@@ -8,6 +8,8 @@ import { AppStateService } from 'src/app/services/app-state.service';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { ComponentDataLoadedService } from 'src/app/services/helpers/component-data-loaded.service';
 import { WebHydrometricSitesService } from 'src/app/services/loaders/web-hydrometric-sites.service';
+import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
+import { MapService } from '../map/map.service';
 
 
 @Injectable({
@@ -23,6 +25,7 @@ export class WebClimateSitesService {
         private appStateService: AppStateService,
         private appLoadedService: AppLoadedService,
         private appLanguageService: AppLanguageService,
+        private mapService: MapService,
         private webHydrometricSitesService: WebHydrometricSitesService,
         private componentDataLoadedService: ComponentDataLoadedService) {
     }
@@ -31,6 +34,7 @@ export class WebClimateSitesService {
         this.TVItemID = TVItemID;
         this.DoNext = DoNext;
         this.ForceReload = ForceReload;
+        this.mapService.ClearMap();
 
         this.sub ? this.sub.unsubscribe() : null;
 
@@ -48,6 +52,7 @@ export class WebClimateSitesService {
     }
 
     private GetWebClimateSites() {
+        let languageEnum = GetLanguageEnum();
         this.appLoadedService.WebClimateSites = <WebClimateSites>{};
 
         let NextText = this.DoNext ? `${this.appLanguageService.Next[this.appLanguageService.LangID]} - WebHydrometricSites` : '';
@@ -55,7 +60,7 @@ export class WebClimateSitesService {
         this.appStateService.Status = `${this.appLanguageService.Loading[this.appLanguageService.LangID]} - WebClimateSites - ${NextText} - ${ForceReloadText}`;
         this.appStateService.Working = true;
 
-        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appLanguageService.Language}-CA/Read/WebClimateSites/${this.TVItemID}`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appLanguageService.Language]}-CA/Read/WebClimateSites/${this.TVItemID}`;
         return this.httpClient.get<WebClimateSites>(url).pipe(
             map((x: any) => {
                 this.UpdateWebClimateSites(x);
@@ -88,17 +93,9 @@ export class WebClimateSitesService {
     private UpdateWebClimateSites(x: WebClimateSites) {
         this.appLoadedService.WebClimateSites = x;
 
-        if (this.DoNext) {
-            if (this.componentDataLoadedService.DataLoadedWebProvince()) {
-                this.appStateService.Status = '';
-                this.appStateService.Working = false;
-            }
-        }
-        else {
-            if (this.componentDataLoadedService.DataLoadedWebClimateSites()) {
-                this.appStateService.Status = '';
-                this.appStateService.Working = false;
-            }
+        if (this.componentDataLoadedService.DataLoadedWebClimateSites()) {
+            this.appStateService.Status = '';
+            this.appStateService.Working = false;
         }
     }
 }

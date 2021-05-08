@@ -15,12 +15,12 @@
         </span>                                                                        
     </span>
     <span class="biggerArrow"
-        (click)="tvItemSortOrderService.ChangeTVItemSortOrder(sortOrderAngular.ProvinceAreas, ascDescEnum.Ascending)"
+        (click)="ChangeSortOrderForProvinceAreas(ascDescEnum.Ascending)"
         *ngIf="appStateService.ProvinceAreasSortOrder == ascDescEnum.Descending">
         &nbsp;&nbsp;&uarr;
     </span>
     <span class="biggerArrow"
-        (click)="tvItemSortOrderService.ChangeTVItemSortOrder(sortOrderAngular.ProvinceAreas, ascDescEnum.Descending)"
+        (click)="ChangeSortOrderForProvinceAreas(ascDescEnum.Descending)"
         *ngIf="appStateService.ProvinceAreasSortOrder == ascDescEnum.Ascending">
         &nbsp;&nbsp;&darr;
     </span>
@@ -35,12 +35,12 @@
         </span>                                                                                
     </span>
     <span class="biggerArrow"
-        (click)="tvItemSortOrderService.ChangeTVItemSortOrder(sortOrderAngular.ProvinceMunicipalities, ascDescEnum.Ascending)"
+        (click)="ChangeSortOrderForProvinceMunicipalities(ascDescEnum.Ascending)"
         *ngIf="appStateService.ProvinceMunicipalitiesSortOrder == ascDescEnum.Descending">
         &nbsp;&nbsp;&uarr;
     </span>
     <span class="biggerArrow"
-        (click)="tvItemSortOrderService.ChangeTVItemSortOrder(sortOrderAngular.ProvinceMunicipalities, ascDescEnum.Descending)"
+        (click)="ChangeSortOrderForProvinceMunicipalities(ascDescEnum.Descending)"
         *ngIf="appStateService.ProvinceMunicipalitiesSortOrder == ascDescEnum.Ascending">
         &nbsp;&nbsp;&darr;
     </span>
@@ -73,14 +73,12 @@
 </button>
 
 <app-area-tvitem-list-item *ngIf="appStateService.ProvinceSubComponent == provinceSubComponentEnum.Areas"
-    
-    [TVItemModelList]="appLoadedService.WebProvince.TVItemModelAreaList">
+    [TVItemModelList]="sortTVItemListService.SortTVItemList(filterService.FilterTVItemModelList(appLoadedService.WebProvince?.TVItemModelAreaList))">
 </app-area-tvitem-list-item>
 
 <app-municipality-tvitem-list-item
-    *ngIf="appStateService.ProvinceSubComponent == provinceSubComponentEnum.Municipalities"
-    
-    [TVItemModelList]="appLoadedService.WebProvince.TVItemModelMunicipalityList">
+    *ngIf="appStateService.ProvinceSubComponent == provinceSubComponentEnum.Municipalities"   
+    [TVItemModelList]="sortTVItemListService.SortTVItemList(filterService.FilterTVItemModelList(appLoadedService.WebProvince?.TVItemModelMunicipalityList))">
 </app-municipality-tvitem-list-item>
 
 <app-file-list *ngIf="appStateService.ProvinceSubComponent == provinceSubComponentEnum.Files"

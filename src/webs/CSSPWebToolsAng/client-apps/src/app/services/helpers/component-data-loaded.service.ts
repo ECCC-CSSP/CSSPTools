@@ -262,11 +262,22 @@ export class ComponentDataLoadedService {
     return AllTrue;
   }
 
-  DataLoadedWebMWQMSamples(): boolean {
+  DataLoadedWebMWQMSamples1980_2020(): boolean {
     let AllTrue: boolean = true;
-    if (this.appLoadedService.WebMWQMSamples === undefined
-      || (Object.keys(this.appLoadedService.WebMWQMSamples).length === 0
-        && this.appLoadedService.WebMWQMSamples.constructor === Object)) {
+    if (this.appLoadedService.WebMWQMSamples1980_2020 === undefined
+      || (Object.keys(this.appLoadedService.WebMWQMSamples1980_2020).length === 0
+        && this.appLoadedService.WebMWQMSamples1980_2020.constructor === Object)) {
+      AllTrue = false;
+    }
+
+    return AllTrue
+  }
+
+  DataLoadedWebMWQMSamples2021_2060(): boolean {
+    let AllTrue: boolean = true;
+    if (this.appLoadedService.WebMWQMSamples2021_2060 === undefined
+      || (Object.keys(this.appLoadedService.WebMWQMSamples2021_2060).length === 0
+        && this.appLoadedService.WebMWQMSamples2021_2060.constructor === Object)) {
       AllTrue = false;
     }
 

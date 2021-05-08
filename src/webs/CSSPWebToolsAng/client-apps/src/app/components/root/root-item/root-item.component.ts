@@ -4,13 +4,14 @@ import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { GetTVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
-import { GetAscDescEnum } from 'src/app/enums/generated/AscDescEnum';
+import { AscDescEnum, GetAscDescEnum } from 'src/app/enums/generated/AscDescEnum';
 import { WebRootService } from 'src/app/services/loaders/web-root.service';
-import { TVItemSortOrderService } from 'src/app/services/helpers/tvitem-sort-order.service';
 import { StatCountService } from 'src/app/services/helpers/stat-count.service';
 import { ComponentButtonSelectionService } from 'src/app/services/helpers/component-button-selection.service';
 import { ComponentShowService } from 'src/app/services/helpers/component-show.service';
 import { GetSortOrderAngularEnum } from 'src/app/enums/generated/SortOrderAngularEnum';
+import { SortTVItemListService } from 'src/app/services/helpers/sort-tvitem-list.service';
+import { FilterService } from 'src/app/services/helpers/filter.service';
 
 
 @Component({
@@ -19,19 +20,18 @@ import { GetSortOrderAngularEnum } from 'src/app/enums/generated/SortOrderAngula
   styleUrls: ['./root-item.component.css']
 })
 export class RootItemComponent implements OnInit, OnDestroy {
-
-  
   rootSubComponentEnum = GetRootSubComponentEnum();
   tvTypeEnum = GetTVTypeEnum();
   ascDescEnum = GetAscDescEnum();
   sortOrderAngular = GetSortOrderAngularEnum();
-  
+
   constructor(public appStateService: AppStateService,
     public appLoadedService: AppLoadedService,
     public appLanguageService: AppLanguageService,
     public webRootService: WebRootService,
-    public tvItemSortOrderService: TVItemSortOrderService,
     public statCountService: StatCountService,
+    public sortTVItemListService: SortTVItemListService,
+    public filterService: FilterService,
     public componentButtonSelectionService: ComponentButtonSelectionService,
     public componentShowService: ComponentShowService) {
   }
@@ -41,6 +41,10 @@ export class RootItemComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+  }
+
+  ChangeSortOrderForRootCountries(ascDesc: AscDescEnum) {
+    this.appStateService.RootCountriesSortOrder = ascDesc;
   }
 
 }

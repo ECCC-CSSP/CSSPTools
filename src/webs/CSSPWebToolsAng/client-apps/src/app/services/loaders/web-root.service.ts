@@ -6,8 +6,7 @@ import { WebRoot } from 'src/app/models/generated/web/WebRoot.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { MapService } from 'src/app/services/map/map.service';
-import { RootSubComponentEnum } from 'src/app/enums/generated/RootSubComponentEnum';
-import { GetLanguageEnum, LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
+import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { ComponentDataLoadedService } from 'src/app/services/helpers/component-data-loaded.service';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { HistoryService } from 'src/app/services/helpers/history.service';
@@ -34,6 +33,7 @@ export class WebRootService {
     DoWebRoot(DoNext: boolean = true, ForceReload: boolean = true) {
         this.DoNext = DoNext;
         this.ForceReload = ForceReload;
+        this.mapService.ClearMap();
 
         this.sub ? this.sub.unsubscribe() : null;
 
@@ -59,7 +59,7 @@ export class WebRootService {
         this.appStateService.Status = `${this.appLanguageService.Loading[this.appLanguageService.LangID]} - WebRoot - ${NextText} - ${ForceReloadText}`;
         this.appStateService.Working = true;
 
-        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appLanguageService.LangID]}-CA/Read/WebRoot`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appLanguageService.Language]}-CA/Read/WebRoot`;
         return this.httpClient.get<WebRoot>(url).pipe(
             map((x: any) => {
                 this.UpdateWebRoot(x);
@@ -91,44 +91,14 @@ export class WebRootService {
 
     private UpdateWebRoot(x: WebRoot) {
         this.appLoadedService.WebRoot = x;
+        this.appLoadedService.BreadCrumbTVItemModelList = x.TVItemModelParentList;
 
         this.historyService.AddHistory(this.appLoadedService.WebRoot?.TVItemModel);
 
-        if (this.DoNext) {
-            if (this.componentDataLoadedService.DataLoadedWebRoot()) {
-                this.appStateService.Status = '';
-                this.appStateService.Working = false;
-            }
-        }
-        else {
+        if (this.componentDataLoadedService.DataLoadedWebRoot()) {
             this.appStateService.Status = '';
             this.appStateService.Working = false;
         }
 
-        if (this.appStateService.GoogleJSLoaded) {
-            if (this.appStateService.RootSubComponent == RootSubComponentEnum.Countries) {
-                this.mapService.ClearMap();
-                this.mapService.DrawObjects([
-                    ...this.appLoadedService.WebRoot.TVItemModelCountryList,
-                    ...[this.appLoadedService.WebRoot.TVItemModel]
-                ]);
-            }
-
-            if (this.appStateService.RootSubComponent == RootSubComponentEnum.Files) {
-                this.mapService.ClearMap();
-                this.mapService.DrawObjects([
-                    ...this.appLoadedService.WebRoot.TVItemModelCountryList,
-                    ...[this.appLoadedService.WebRoot.TVItemModel]
-                ]);
-            }
-
-            if (this.appStateService.RootSubComponent == RootSubComponentEnum.ExportArcGIS) {
-                this.mapService.ClearMap();
-                this.mapService.DrawObjects([
-                    ...this.appLoadedService.WebRoot.TVItemModelCountryList,
-                    ...[this.appLoadedService.WebRoot.TVItemModel]
-                ]);
-            }
-        }
     }
 }

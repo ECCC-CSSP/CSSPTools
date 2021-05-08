@@ -19,6 +19,9 @@ export class WebSubsector {
     TVFileModelList: TVFileModel[];
     TVItemModel: TVItemModel;
     TVItemModelClassificationList: TVItemModel[];
+    TVItemModelMWQMRunList: TVItemModel[];
+    TVItemModelMWQMSiteList: TVItemModel[];
     TVItemModelParentList: TVItemModel[];
+    TVItemModelPolSourceSiteList: TVItemModel[];
     UseOfSiteList: UseOfSite[];
 }

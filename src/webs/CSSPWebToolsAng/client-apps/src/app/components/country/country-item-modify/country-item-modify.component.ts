@@ -14,7 +14,6 @@ import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 export class CountryItemModifyComponent implements OnInit, OnDestroy {
   @Input() TVItemModel: TVItemModel;
 
-
   formCountryModify: FormGroup;
 
   get f() { return this.formCountryModify.controls; }

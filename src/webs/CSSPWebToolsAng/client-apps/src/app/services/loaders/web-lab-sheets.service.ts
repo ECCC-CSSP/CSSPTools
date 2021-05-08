@@ -7,7 +7,9 @@ import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { ComponentDataLoadedService } from 'src/app/services/helpers/component-data-loaded.service';
-import { WebMWQMSamplesService } from 'src/app/services/loaders/web-mwqm-samples.service';
+import { WebMWQMSamples1980_2020Service } from 'src/app/services/loaders/web-mwqm-samples_1980_2020.service';
+import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
+import { MapService } from '../map/map.service';
 
 @Injectable({
     providedIn: 'root'
@@ -22,7 +24,8 @@ export class WebLabSheetsService {
         private appStateService: AppStateService,
         private appLoadedService: AppLoadedService,
         private appLanguageService: AppLanguageService,
-        private webMWQMSamplesService: WebMWQMSamplesService,
+        private mapService: MapService,
+        private webMWQMSamples1980_2020Service: WebMWQMSamples1980_2020Service,
         private componentDataLoadedService: ComponentDataLoadedService) {
     }
 
@@ -30,6 +33,7 @@ export class WebLabSheetsService {
         this.TVItemID = TVItemID;
         this.DoNext = DoNext;
         this.ForceReload = ForceReload;
+        this.mapService.ClearMap();
 
         this.sub ? this.sub.unsubscribe() : null;
 
@@ -47,6 +51,7 @@ export class WebLabSheetsService {
     }
 
     private GetWebLabSheets() {
+        let languageEnum = GetLanguageEnum();
         this.appLoadedService.WebLabSheets = <WebLabSheets>{};
 
         let NextText = this.DoNext ? `${this.appLanguageService.Next[this.appLanguageService.LangID]} - WebMWQMSamples` : '';
@@ -54,13 +59,13 @@ export class WebLabSheetsService {
         this.appStateService.Status = `${this.appLanguageService.Loading[this.appLanguageService.LangID]} - WebLabSheets - ${NextText} - ${ForceReloadText}`;
         this.appStateService.Working = true;
 
-        let url: string = `${this.appLoadedService.BaseApiUrl}${this.appLanguageService.Language}-CA/Read/WebLabSheets/${this.TVItemID}`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appLanguageService.Language]}-CA/Read/WebLabSheets/${this.TVItemID}`;
         return this.httpClient.get<WebLabSheets>(url).pipe(
             map((x: any) => {
                 this.UpdateWebLabSheets(x);
                 console.debug(x);
                 if (this.DoNext) {
-                    this.DoWebMWQMSamples();
+                    this.DoWebMWQMSamples1980_2020();
                 }
             }),
             catchError(e => of(e).pipe(map(e => {
@@ -72,32 +77,24 @@ export class WebLabSheetsService {
         );
     }
 
-    private DoWebMWQMSamples() {
-        this.webMWQMSamplesService.DoWebMWQMSamples(this.TVItemID, true);
+    private DoWebMWQMSamples1980_2020() {
+        this.webMWQMSamples1980_2020Service.DoWebMWQMSamples1980_2020(this.TVItemID, true);
     }
 
     private KeepWebLabSheets() {
         this.UpdateWebLabSheets(this.appLoadedService.WebLabSheets);
         console.debug(this.appLoadedService.WebLabSheets);
         if (this.DoNext) {
-            this.DoWebMWQMSamples();
+            this.DoWebMWQMSamples1980_2020();
         }
     }
 
     private UpdateWebLabSheets(x: WebLabSheets) {
         this.appLoadedService.WebLabSheets = x;
 
-        if (this.DoNext) {
-            if (this.componentDataLoadedService.DataLoadedWebSubsector()) {
-                this.appStateService.Status = '';
-                this.appStateService.Working = false;
-            }
-        }
-        else {
-            if (this.componentDataLoadedService.DataLoadedWebLabSheets()) {
-                this.appStateService.Status = '';
-                this.appStateService.Working = false;
-            }
+        if (this.componentDataLoadedService.DataLoadedWebLabSheets()) {
+            this.appStateService.Status = '';
+            this.appStateService.Working = false;
         }
     }
 }

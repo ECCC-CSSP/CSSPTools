@@ -11,7 +11,7 @@ import { AppStateService } from 'src/app/services/app-state.service';
 import { DateFormatService } from 'src/app/services/helpers/date-format.service';
 import { ShowTVItemService } from 'src/app/services/helpers/show-tvitem.service';
 import { SubPageService } from 'src/app/services/helpers/sub-page.service';
-import { WebMWQMSamplesService } from 'src/app/services/loaders/web-mwqm-samples.service';
+import { WebMWQMSamples2021_2060Service } from 'src/app/services/loaders/web-mwqm-samples_2021_2060.service';
 import { MapService } from 'src/app/services/map/map.service';
 
 @Component({
@@ -36,7 +36,7 @@ export class MWQMSiteTVItemListItemComponent implements OnInit, OnDestroy {
     public subPageService: SubPageService,
     public mapService: MapService,
     public dateFormatService: DateFormatService,
-    public webMWQMSamplesService: WebMWQMSamplesService,
+    public webMWQMSamples2021_2060Service: WebMWQMSamples2021_2060Service,
     public showTVItemService: ShowTVItemService) {
   }
 
@@ -49,7 +49,7 @@ export class MWQMSiteTVItemListItemComponent implements OnInit, OnDestroy {
   SetStatRunsForDetail(runs: number) {
     this.appStateService.StatRunsForDetail = runs;
     this.appStateService.Working = false;
-    this.webMWQMSamplesService.FillStatMWQMSiteList();
+    this.webMWQMSamples2021_2060Service.FillStatMWQMSiteList();
 
     let mwqmSiteModel: MWQMSiteModel[] = this.appLoadedService.WebMWQMSites.MWQMSiteModelList;
 

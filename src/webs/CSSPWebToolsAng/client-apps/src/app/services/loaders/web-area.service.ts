@@ -10,6 +10,7 @@ import { AreaSubComponentEnum } from 'src/app/enums/generated/AreaSubComponentEn
 import { ComponentDataLoadedService } from 'src/app/services/helpers/component-data-loaded.service';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { HistoryService } from 'src/app/services/helpers/history.service';
+import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 
 
 @Injectable({
@@ -34,6 +35,7 @@ export class WebAreaService {
     this.TVItemID = TVItemID;
     this.DoNext = DoNext;
     this.ForceReload = ForceReload;
+    this.mapService.ClearMap();
 
     this.sub ? this.sub.unsubscribe() : null;
 
@@ -51,13 +53,14 @@ export class WebAreaService {
   }
 
   private GetWebArea() {
+    let languageEnum = GetLanguageEnum();
     this.appLoadedService.WebArea = <WebArea>{};
 
     let ForceReloadText = this.ForceReload ? `${this.appLanguageService.ForceReload[this.appLanguageService.LangID]}` : '';
     this.appStateService.Status = `${this.appLanguageService.Loading[this.appLanguageService.LangID]} - WebAllTels - ${ForceReloadText}`;
     this.appStateService.Working = true;
 
-    let url: string = `${this.appLoadedService.BaseApiUrl}${this.appLanguageService.Language}-CA/Read/WebArea/${this.TVItemID}`;
+    let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appLanguageService.Language]}-CA/Read/WebArea/${this.TVItemID}`;
     return this.httpClient.get<WebArea>(url).pipe(
       map((x: any) => {
         this.UpdateWebArea(x);
@@ -84,18 +87,12 @@ export class WebAreaService {
   }
 
   private UpdateWebArea(x: WebArea) {
-
     this.appLoadedService.WebArea = x;
+    this.appLoadedService.BreadCrumbTVItemModelList = x.TVItemModelParentList;
 
     this.historyService.AddHistory(this.appLoadedService.WebArea?.TVItemModel);
 
-    if (this.DoNext) {
-      if (this.componentDataLoadedService.DataLoadedWebArea()) {
-        this.appStateService.Status = '';
-        this.appStateService.Working = false;
-      }
-    }
-    else {
+    if (this.componentDataLoadedService.DataLoadedWebArea()) {
       this.appStateService.Status = '';
       this.appStateService.Working = false;
     }

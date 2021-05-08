@@ -35,6 +35,7 @@ export class WebSectorService {
     this.TVItemID = TVItemID;
     this.DoNext = DoNext;
     this.ForceReload = ForceReload;
+    this.mapService.ClearMap();
 
     this.sub ? this.sub.unsubscribe() : null;
 
@@ -59,7 +60,7 @@ export class WebSectorService {
     this.appStateService.Status = `${this.appLanguageService.Loading[this.appLanguageService.LangID]} - WebSector - ${ForceReloadText}`;
     this.appStateService.Working = true;
 
-    let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appLanguageService.LangID]}-CA/Read/WebSector/${this.TVItemID}`;
+    let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appLanguageService.Language]}-CA/Read/WebSector/${this.TVItemID}`;
     return this.httpClient.get<WebSector>(url).pipe(
       map((x: any) => {
         this.UpdateWebSector(x);
@@ -87,16 +88,11 @@ export class WebSectorService {
 
   private UpdateWebSector(x: WebSector) {
     this.appLoadedService.WebSector = x;
+    this.appLoadedService.BreadCrumbTVItemModelList = x.TVItemModelParentList;
 
     this.historyService.AddHistory(this.appLoadedService.WebSector?.TVItemModel);
 
-    if (this.DoNext) {
-      if (this.componentDataLoadedService.DataLoadedWebSector()) {
-        this.appStateService.Status = '';
-        this.appStateService.Working = false;
-      }
-    }
-    else {
+    if (this.componentDataLoadedService.DataLoadedWebSector()) {
       this.appStateService.Status = '';
       this.appStateService.Working = false;
     }
