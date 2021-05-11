@@ -3,7 +3,8 @@ import { AscDescEnum, GetAscDescEnum } from 'src/app/enums/generated/AscDescEnum
 import { GetProvinceSubComponentEnum } from 'src/app/enums/generated/ProvinceSubComponentEnum';
 import { GetSortOrderAngularEnum } from 'src/app/enums/generated/SortOrderAngularEnum';
 import { GetTVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
-
+import { WebTypeEnum } from 'src/app/enums/generated/WebTypeEnum';
+import { WebClimateSites } from 'src/app/models/generated/web/WebClimateSites.model';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
@@ -12,8 +13,7 @@ import { ComponentShowService } from 'src/app/services/helpers/component-show.se
 import { FilterService } from 'src/app/services/helpers/filter.service';
 import { SortTVItemListService } from 'src/app/services/helpers/sort-tvitem-list.service';
 import { StatCountService } from 'src/app/services/helpers/stat-count.service';
-//import { TVItemSortOrderService } from 'src/app/services/helpers/tvitem-sort-order.service';
-import { WebProvinceService } from 'src/app/services/loaders/web-province.service';
+import { LoaderService } from 'src/app/services/loaders/loader.service';
 
 @Component({
   selector: 'app-province-item',
@@ -29,8 +29,7 @@ export class ProvinceItemComponent implements OnInit, OnDestroy {
   constructor(public appStateService: AppStateService,
     public appLoadedService: AppLoadedService,
     public appLanguageService: AppLanguageService,
-    public webProvinceService: WebProvinceService,
-    //public tvItemSortOrderService: TVItemSortOrderService,
+    public loaderService: LoaderService,
     public statCountService: StatCountService,
     public sortTVItemListService: SortTVItemListService,
     public filterService: FilterService,
@@ -38,7 +37,7 @@ export class ProvinceItemComponent implements OnInit, OnDestroy {
     public componentShowService: ComponentShowService) { }
 
   ngOnInit(): void {
-    this.webProvinceService.DoWebProvince(this.appStateService.CurrentTVItemID, false);
+    this.loaderService.Load<WebClimateSites>(WebTypeEnum.WebClimateSites, WebTypeEnum.WebHydrometricSites, false);
   }
 
   ngOnDestroy(): void {

@@ -9,16 +9,20 @@ export class ComponentDataLoadedService {
   constructor(private appLoadedService: AppLoadedService) {
   }
 
-  DataLoadedWebAllAddresses(): boolean {
-    let AllTrue: boolean = true;
-    if (this.appLoadedService.WebAllAddresses === undefined
-      || (Object.keys(this.appLoadedService.WebAllAddresses).length === 0
-        && this.appLoadedService.WebAllAddresses.constructor === Object)) {
-      AllTrue = false;
-    }
-
-    return AllTrue;
+  DataIsLoaded(obj: any) {
+    return (obj === undefined || (Object.keys(obj).length === 0 && obj.constructor === Object)) ? false : true;
   }
+
+  // DataLoadedWebAllAddresses(): boolean {
+  //   let obj: any = this.appLoadedService.WebAllAddresses;
+  //   if (obj === undefined
+  //     || (Object.keys(obj).length === 0
+  //       && obj.constructor === Object)) {
+  //     return false;
+  //   }
+
+  //   return true;
+  // }
 
   DataLoadedWebAllContacts(): boolean {
     let AllTrue: boolean = true;

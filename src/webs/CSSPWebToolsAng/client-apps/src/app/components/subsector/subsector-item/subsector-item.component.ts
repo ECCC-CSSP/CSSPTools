@@ -3,6 +3,8 @@ import { AscDescEnum, GetAscDescEnum } from 'src/app/enums/generated/AscDescEnum
 import { GetSortOrderAngularEnum } from 'src/app/enums/generated/SortOrderAngularEnum';
 import { GetSubsectorSubComponentEnum } from 'src/app/enums/generated/SubsectorSubComponentEnum';
 import { GetTVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
+import { WebTypeEnum } from 'src/app/enums/generated/WebTypeEnum';
+import { WebMWQMSites } from 'src/app/models/generated/web/WebMWQMSites.model';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
@@ -11,9 +13,7 @@ import { ComponentShowService } from 'src/app/services/helpers/component-show.se
 import { FilterService } from 'src/app/services/helpers/filter.service';
 import { SortTVItemListService } from 'src/app/services/helpers/sort-tvitem-list.service';
 import { StatCountService } from 'src/app/services/helpers/stat-count.service';
-//import { TVItemSortOrderService } from 'src/app/services/helpers/tvitem-sort-order.service';
-import { WebMWQMSamples2021_2060Service } from 'src/app/services/loaders/web-mwqm-samples_2021_2060.service';
-import { WebSubsectorService } from 'src/app/services/loaders/web-subsector.service';
+import { LoaderService } from 'src/app/services/loaders/loader.service';
 
 @Component({
   selector: 'app-subsector-item',
@@ -29,9 +29,7 @@ export class SubsectorItemComponent implements OnInit, OnDestroy {
   constructor(public appStateService: AppStateService,
     public appLoadedService: AppLoadedService,
     public appLanguageService: AppLanguageService,
-    public webSubsectorService: WebSubsectorService,
-    public webMWQMSamples2021_2060Service: WebMWQMSamples2021_2060Service,
-    //public tvItemSortOrderService: TVItemSortOrderService,
+    public loaderService: LoaderService,
     public statCountService: StatCountService,
     public sortTVItemListService: SortTVItemListService,
     public filterService: FilterService,
@@ -39,7 +37,7 @@ export class SubsectorItemComponent implements OnInit, OnDestroy {
     public componentShowService: ComponentShowService) { }
 
   ngOnInit(): void {
-    this.webSubsectorService.DoWebSubsector(this.appStateService.CurrentTVItemID, true);
+    this.loaderService.Load<WebMWQMSites>(WebTypeEnum.WebMWQMSites, WebTypeEnum.WebMWQMRuns, true);
   }
 
   ngOnDestroy(): void {

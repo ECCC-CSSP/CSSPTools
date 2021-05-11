@@ -7,8 +7,9 @@ import { EnumIDAndText } from 'src/app/models/generated/helper/EnumIDAndText.mod
 import { StatMWQMRun } from 'src/app/models/generated/web/StatMWQMRun.model';
 import { StatMWQMSite } from 'src/app/models/generated/web/StatMWQMSite.model';
 import { AppStateService } from 'src/app/services/app-state.service';
-import { WebMWQMSamples2021_2060Service } from 'src/app/services/loaders/web-mwqm-samples_2021_2060.service';
+//import { WebMWQMSamples2021_2060Service } from 'src/app/services/loaders/web-mwqm-samples_2021_2060.service';
 import { AppLanguageService } from '../app-language.service';
+import { LoaderService } from '../loaders/loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,9 @@ export class AnalysisService {
 
   constructor(private appStateService: AppStateService,
     private appLanguageService: AppLanguageService,
-    private webMWQMSamples2021_2060Service: WebMWQMSamples2021_2060Service) { }
+    private loaderService: LoaderService
+    //private webMWQMSamples2021_2060Service: WebMWQMSamples2021_2060Service
+    ) { }
 
 
   GetRainHighlight(statMWQMRun: StatMWQMRun): string {
@@ -108,7 +111,7 @@ export class AnalysisService {
 
   ToggleRemoveFromStat(statEndMWQMRun: StatMWQMRun) {
     statEndMWQMRun.RemoveFromStat = !statEndMWQMRun.RemoveFromStat;
-    this.webMWQMSamples2021_2060Service.FillStatMWQMSiteList();
+    this.loaderService.FillStatMWQMSiteList();
   }
 
   ToggleAnalysisFullYear(): void {
@@ -192,27 +195,27 @@ export class AnalysisService {
 
   SetStartRun(statStartMWQMRun: StatMWQMRun) {
     this.appStateService.AnalysisStartRun = statStartMWQMRun;
-    this.webMWQMSamples2021_2060Service.FillStatMWQMSiteList();
+    this.loaderService.FillStatMWQMSiteList();
   }
 
   SetEndRun(statEndMWQMRun: StatMWQMRun) {
     this.appStateService.AnalysisEndRun = statEndMWQMRun;
-    this.webMWQMSamples2021_2060Service.FillStatMWQMSiteList();
+    this.loaderService.FillStatMWQMSiteList();
   }
 
   SetRuns(runs: number) {
     this.appStateService.AnalysisRuns = runs;
-    this.webMWQMSamples2021_2060Service.FillStatMWQMSiteList();
+    this.loaderService.FillStatMWQMSiteList();
   }
 
   SetCalculationType(statCalculationType: AnalysisCalculationTypeEnum) {
     this.appStateService.AnalysisCalculationType = statCalculationType;
-    this.webMWQMSamples2021_2060Service.FillStatMWQMSiteList();
+    this.loaderService.FillStatMWQMSiteList();
   }
 
   SetHighlightSalFromAverage(sal: number) {
     this.appStateService.AnalysisHighlightSalFromAverage = sal;
-    this.webMWQMSamples2021_2060Service.FillStatMWQMSiteList();
+    this.loaderService.FillStatMWQMSiteList();
   }
 
   // SetShortRange(shortRange: number) {
@@ -225,42 +228,42 @@ export class AnalysisService {
 
   SetDry24h(dry24h: number) {
     this.appStateService.AnalysisDry24h = dry24h;
-    this.webMWQMSamples2021_2060Service.FillStatMWQMSiteList();
+    this.loaderService.FillStatMWQMSiteList();
   }
 
   SetDry48h(dry48h: number) {
-    this.webMWQMSamples2021_2060Service.FillStatMWQMSiteList();
+    this.loaderService.FillStatMWQMSiteList();
     this.appStateService.AnalysisDry48h = dry48h;
   }
 
   SetDry72h(dry72h: number) {
-    this.webMWQMSamples2021_2060Service.FillStatMWQMSiteList();
+    this.loaderService.FillStatMWQMSiteList();
     this.appStateService.AnalysisDry72h = dry72h;
   }
 
   SetDry96h(dry96h: number) {
-    this.webMWQMSamples2021_2060Service.FillStatMWQMSiteList();
+    this.loaderService.FillStatMWQMSiteList();
     this.appStateService.AnalysisDry96h = dry96h;
   }
 
   SetWet24h(wet24h: number) {
     this.appStateService.AnalysisWet24h = wet24h;
-    this.webMWQMSamples2021_2060Service.FillStatMWQMSiteList();
+    this.loaderService.FillStatMWQMSiteList();
   }
 
   SetWet48h(wet48h: number) {
     this.appStateService.AnalysisWet48h = wet48h;
-    this.webMWQMSamples2021_2060Service.FillStatMWQMSiteList();
+    this.loaderService.FillStatMWQMSiteList();
   }
 
   SetWet72h(wet72h: number) {
     this.appStateService.AnalysisWet72h = wet72h;
-    this.webMWQMSamples2021_2060Service.FillStatMWQMSiteList();
+    this.loaderService.FillStatMWQMSiteList();
   }
 
   SetWet96h(wet96h: number) {
     this.appStateService.AnalysisWet96h = wet96h;
-    this.webMWQMSamples2021_2060Service.FillStatMWQMSiteList();
+    this.loaderService.FillStatMWQMSiteList();
   }
 
 }

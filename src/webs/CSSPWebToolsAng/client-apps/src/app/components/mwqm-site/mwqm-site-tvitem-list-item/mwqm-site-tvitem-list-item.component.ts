@@ -11,7 +11,7 @@ import { AppStateService } from 'src/app/services/app-state.service';
 import { DateFormatService } from 'src/app/services/helpers/date-format.service';
 import { ShowTVItemService } from 'src/app/services/helpers/show-tvitem.service';
 import { SubPageService } from 'src/app/services/helpers/sub-page.service';
-import { WebMWQMSamples2021_2060Service } from 'src/app/services/loaders/web-mwqm-samples_2021_2060.service';
+import { LoaderService } from 'src/app/services/loaders/loader.service';
 import { MapService } from 'src/app/services/map/map.service';
 
 @Component({
@@ -21,8 +21,6 @@ import { MapService } from 'src/app/services/map/map.service';
 })
 export class MWQMSiteTVItemListItemComponent implements OnInit, OnDestroy {
   @Input() TVItemModelList: TVItemModel[] = [];
-
-  @Input() IsBreadCrumb: boolean = false;
 
   languageEnum = GetLanguageEnum();
   tvTypeEnum = GetTVTypeEnum();
@@ -36,7 +34,7 @@ export class MWQMSiteTVItemListItemComponent implements OnInit, OnDestroy {
     public subPageService: SubPageService,
     public mapService: MapService,
     public dateFormatService: DateFormatService,
-    public webMWQMSamples2021_2060Service: WebMWQMSamples2021_2060Service,
+    public loaderService: LoaderService,
     public showTVItemService: ShowTVItemService) {
   }
 
@@ -49,13 +47,15 @@ export class MWQMSiteTVItemListItemComponent implements OnInit, OnDestroy {
   SetStatRunsForDetail(runs: number) {
     this.appStateService.StatRunsForDetail = runs;
     this.appStateService.Working = false;
-    this.webMWQMSamples2021_2060Service.FillStatMWQMSiteList();
+    this.loaderService.FillStatMWQMSiteList();
 
     let mwqmSiteModel: MWQMSiteModel[] = this.appLoadedService.WebMWQMSites.MWQMSiteModelList;
 
     if (this.appStateService.GoogleJSLoaded) {
       if (this.appStateService.SubsectorSubComponent == SubsectorSubComponentEnum.MWQMSites) {
-        this.mapService.ClearMap();
+                if (this.appStateService.GoogleJSLoaded) {
+            this.mapService.ClearMap();
+        }
         this.mapService.DrawObjects([
           //...this.appLoadedService.WebMWQMSites.MWQMSiteModelList,
           //...[this.appLoadedService.WebMWQMSites.TVItemModel

@@ -5,13 +5,15 @@ import { AppStateService } from 'src/app/services/app-state.service';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { GetTVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 import { AscDescEnum, GetAscDescEnum } from 'src/app/enums/generated/AscDescEnum';
-import { WebRootService } from 'src/app/services/loaders/web-root.service';
 import { StatCountService } from 'src/app/services/helpers/stat-count.service';
 import { ComponentButtonSelectionService } from 'src/app/services/helpers/component-button-selection.service';
 import { ComponentShowService } from 'src/app/services/helpers/component-show.service';
 import { GetSortOrderAngularEnum } from 'src/app/enums/generated/SortOrderAngularEnum';
 import { SortTVItemListService } from 'src/app/services/helpers/sort-tvitem-list.service';
 import { FilterService } from 'src/app/services/helpers/filter.service';
+import { LoaderService } from 'src/app/services/loaders/loader.service';
+import { WebRoot } from 'src/app/models/generated/web/WebRoot.model';
+import { WebTypeEnum } from 'src/app/enums/generated/WebTypeEnum';
 
 
 @Component({
@@ -28,7 +30,7 @@ export class RootItemComponent implements OnInit, OnDestroy {
   constructor(public appStateService: AppStateService,
     public appLoadedService: AppLoadedService,
     public appLanguageService: AppLanguageService,
-    public webRootService: WebRootService,
+    private loaderService: LoaderService,
     public statCountService: StatCountService,
     public sortTVItemListService: SortTVItemListService,
     public filterService: FilterService,
@@ -37,7 +39,7 @@ export class RootItemComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.webRootService.DoWebRoot(true, false);
+    this.loaderService.Load<WebRoot>(WebTypeEnum.WebRoot, null, false);
   }
 
   ngOnDestroy(): void {

@@ -5,7 +5,7 @@ import { GetCountrySubComponentEnum } from 'src/app/enums/generated/CountrySubCo
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { GetTVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 import { AscDescEnum, GetAscDescEnum } from 'src/app/enums/generated/AscDescEnum';
-import { WebCountryService } from 'src/app/services/loaders/web-country.service';
+//import { WebCountryService } from 'src/app/services/loaders/web-country.service';
 //import { TVItemSortOrderService } from 'src/app/services/helpers/tvitem-sort-order.service';
 import { StatCountService } from 'src/app/services/helpers/stat-count.service';
 import { ComponentButtonSelectionService } from 'src/app/services/helpers/component-button-selection.service';
@@ -13,6 +13,9 @@ import { ComponentShowService } from 'src/app/services/helpers/component-show.se
 import { GetSortOrderAngularEnum } from 'src/app/enums/generated/SortOrderAngularEnum';
 import { FilterService } from 'src/app/services/helpers/filter.service';
 import { SortTVItemListService } from 'src/app/services/helpers/sort-tvitem-list.service';
+import { LoaderService } from 'src/app/services/loaders/loader.service';
+import { WebCountry } from 'src/app/models/generated/web/WebCountry.model';
+import { WebTypeEnum } from 'src/app/enums/generated/WebTypeEnum';
 
 
 @Component({
@@ -29,7 +32,8 @@ export class CountryItemComponent implements OnInit, OnDestroy {
   constructor(public appStateService: AppStateService,
     public appLoadedService: AppLoadedService,
     public appLanguageService: AppLanguageService,
-    public webCountryService: WebCountryService,
+    //public webCountryService: WebCountryService,
+    public loaderService: LoaderService,
     //public tvItemSortOrderService: TVItemSortOrderService,
     public statCountService: StatCountService,
     public sortTVItemListService: SortTVItemListService,
@@ -39,7 +43,7 @@ export class CountryItemComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.webCountryService.DoWebCountry(this.appStateService.CurrentTVItemID, false);
+    this.loaderService.Load<WebCountry>(WebTypeEnum.WebCountry, null, false);
   }
 
   ngOnDestroy(): void {

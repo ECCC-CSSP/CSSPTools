@@ -5,14 +5,16 @@ import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { GetTVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 import { AscDescEnum, GetAscDescEnum } from 'src/app/enums/generated/AscDescEnum';
-import { WebAreaService } from 'src/app/services/loaders/web-area.service';
-//import { TVItemSortOrderService } from 'src/app/services/helpers/tvitem-sort-order.service';
 import { StatCountService } from 'src/app/services/helpers/stat-count.service';
 import { ComponentButtonSelectionService } from 'src/app/services/helpers/component-button-selection.service';
 import { ComponentShowService } from 'src/app/services/helpers/component-show.service';
 import { GetSortOrderAngularEnum } from 'src/app/enums/generated/SortOrderAngularEnum';
 import { SortTVItemListService } from 'src/app/services/helpers/sort-tvitem-list.service';
 import { FilterService } from 'src/app/services/helpers/filter.service';
+import { LoaderService } from 'src/app/services/loaders/loader.service';
+import { WebArea } from 'src/app/models/generated/web/WebArea.model';
+import { WebTypeEnum } from 'src/app/enums/generated/WebTypeEnum';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 
 
 @Component({
@@ -21,7 +23,7 @@ import { FilterService } from 'src/app/services/helpers/filter.service';
   styleUrls: ['./area-item.component.css']
 })
 export class AreaItemComponent implements OnInit, OnDestroy {
-
+  @Input() TVItemModel: TVItemModel;
   
   areaSubComponentEnum = GetAreaSubComponentEnum();
   tvTypeEnum = GetTVTypeEnum();
@@ -31,8 +33,7 @@ export class AreaItemComponent implements OnInit, OnDestroy {
   constructor(public appStateService: AppStateService,
     public appLoadedService: AppLoadedService,
     public appLanguageService: AppLanguageService,
-    public webAreaService: WebAreaService,
-    //public tvItemSortOrderService: TVItemSortOrderService,
+    public loaderService: LoaderService,
     public statCountService: StatCountService,
     public sortTVItemListService: SortTVItemListService,
     public filterService: FilterService,
@@ -40,7 +41,7 @@ export class AreaItemComponent implements OnInit, OnDestroy {
     public componentShowService: ComponentShowService) { }
 
   ngOnInit(): void {
-    this.webAreaService.DoWebArea(this.appStateService.CurrentTVItemID, false);
+    this.loaderService.Load<WebArea>(WebTypeEnum.WebArea, null, false);
   }
 
   ngOnDestroy(): void {

@@ -88,7 +88,12 @@ export class AppStateService {
   MWQMSiteSubComponent?: MWQMSiteSubComponentEnum = MWQMSiteSubComponentEnum.Information; // Information | Files
   MWQMRunSubComponent?: MWQMRunSubComponentEnum = MWQMRunSubComponentEnum.Information; // Information | Files
   PolSourceSiteSubComponent?: PolSourceSiteSubComponentEnum = PolSourceSiteSubComponentEnum.Information; // Information | Files
-  CurrentTVItemID?: number = 1;
+  CurrentCountryTVItemID?: number = 0;
+  CurrentProvinceTVItemID?: number = 0;
+  CurrentMunicipalityTVItemID?: number = 0;
+  CurrentAreaTVItemID?: number = 0;
+  CurrentSectorTVItemID?: number = 0;
+  CurrentSubsectorTVItemID?: number = 0;
   SamplingPlanID?: number = 0;
   BaseApiUrl?: string = '';
   DetailVisible?: boolean = false;

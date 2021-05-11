@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { GetMWQMSiteLatestClassificationEnum, MWQMSiteLatestClassificationEnum, MWQMSiteLatestClassificationEnum_GetIDText } from 'src/app/enums/generated/MWQMSiteLatestClassificationEnum';
 import { GetTVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
-
 import { StatMWQMSite } from 'src/app/models/generated/web/StatMWQMSite.model';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { AppLanguageService } from 'src/app/services/app-language.service';
@@ -10,7 +9,7 @@ import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { DateFormatService } from 'src/app/services/helpers/date-format.service';
 import { SubPageService } from 'src/app/services/helpers/sub-page.service';
-import { WebMWQMSamples2021_2060Service } from 'src/app/services/loaders/web-mwqm-samples_2021_2060.service';
+import { LoaderService } from 'src/app/services/loaders/loader.service';
 import { MapService } from 'src/app/services/map/map.service';
 
 @Component({
@@ -36,7 +35,7 @@ export class MWQMSiteTVItemListItemSpecialComponent implements OnInit, OnDestroy
     public subPageService: SubPageService,
     public mapService: MapService,
     public dateFormatService: DateFormatService,
-    public webMWQMSamples2021_2060Service: WebMWQMSamples2021_2060Service) {
+    public loaderService: LoaderService) {
   }
 
   ngOnInit() {

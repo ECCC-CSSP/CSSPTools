@@ -56,7 +56,6 @@ namespace CreateGzFileServices
             //await CreateGzFile(WebTypeEnum.WebAllTVItems1980_2020, 0);
             //Console.WriteLine("Create WebAllTVItems2021_2060 doing...");
             //await CreateGzFile(WebTypeEnum.WebAllTVItems2021_2060, 0);
-
             //Console.WriteLine("Create WebRoot doing...");
             //await CreateGzFile(WebTypeEnum.WebRoot, 0);
 
@@ -108,6 +107,8 @@ namespace CreateGzFileServices
                                 await CreateGzFile(WebTypeEnum.WebClimateSites, tvItem.TVItemID);
                                 Console.WriteLine($"Create WebHydrometricSites [{tvItem.TVItemID}] doing...");
                                 await CreateGzFile(WebTypeEnum.WebHydrometricSites, tvItem.TVItemID);
+                                Console.WriteLine($"Create WebTideSites [{tvItem.TVItemID}] doing...");
+                                await CreateGzFile(WebTypeEnum.WebTideSites, tvItem.TVItemID);
                                 Console.WriteLine($"Create WebDrogueRuns [{tvItem.TVItemID}] doing...");
                                 await CreateGzFile(WebTypeEnum.WebDrogueRuns, tvItem.TVItemID);
                             }

@@ -69,6 +69,7 @@ namespace CSSPWebModels
                 case WebTypeEnum.WebRoot: fileName = $"{ WebTypeEnum.WebRoot }.gz"; break;
                 case WebTypeEnum.WebSector: fileName = $"{ WebTypeEnum.WebSector }_{ TVItemID }.gz"; break;
                 case WebTypeEnum.WebSubsector: fileName = $"{ WebTypeEnum.WebSubsector }_{ TVItemID }.gz"; break;
+                case WebTypeEnum.WebTideSites: fileName = $"{ WebTypeEnum.WebTideSites }_{ TVItemID }.gz"; break;
                 default:
                     return await Task.FromResult("WebError.gz");
             }

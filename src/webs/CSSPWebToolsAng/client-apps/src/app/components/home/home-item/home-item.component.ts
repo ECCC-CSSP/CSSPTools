@@ -4,8 +4,12 @@ import { TopComponentEnum } from 'src/app/enums/generated/TopComponentEnum';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppLanguageService } from 'src/app/services/app-language.service';
-import { WebRootService } from 'src/app/services/loaders/web-root.service';
+//import { WebRootService } from 'src/app/services/loaders/web-root.service';
 import { LoggedInContactService } from 'src/app/services/loaders/logged-in-contact.service';
+import { LoaderService } from 'src/app/services/loaders/loader.service';
+import { WebRoot } from 'src/app/models/generated/web/WebRoot.model';
+import { WebTypeEnum } from 'src/app/enums/generated/WebTypeEnum';
+import { WebAllAddresses } from 'src/app/models/generated/web/WebAllAddresses.model';
 
 @Component({
   selector: 'app-home-item',
@@ -20,15 +24,17 @@ export class HomeItemComponent implements OnInit, OnDestroy {
   constructor(public appLoadedService: AppLoadedService,
     public appStateService: AppStateService,
     public appLanguageService: AppLanguageService,
-    public webRootService: WebRootService,
+    private loaderService: LoaderService,
+    //public webRootService: WebRootService,
     public loggedInContactService: LoggedInContactService,
   ) { }
 
   ngOnInit(): void {
+    this.loaderService.Load<WebAllAddresses>(WebTypeEnum.WebAllAddresses, WebTypeEnum.WebAllContacts, false);
+    this.loggedInContactService.DoLoggedInContact(false);
   }
 
-  ngOnDestroy() {
-    this.webRootService.DoWebRoot(true, false);
+  ngOnDestroy(): void {
   }
 
   StartWithLanguage(LangID: number) {

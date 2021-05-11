@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { ShellSubComponentEnum } from 'src/app/enums/generated/ShellSubComponentEnum';
-import { WebAreaService } from 'src/app/services/loaders/web-area.service';
-import { WebCountryService } from 'src/app/services/loaders/web-country.service';
-import { WebMunicipalityService } from 'src/app/services/loaders/web-municipalty.service';
-import { WebMWQMRunsService } from 'src/app/services/loaders/web-mwqm-runs.service';
-import { WebMWQMSitesService } from 'src/app/services/loaders/web-mwqm-sites.service';
-import { WebPolSourceSitesService } from 'src/app/services/loaders/web-pol-source-sites.service';
-import { WebProvinceService } from 'src/app/services/loaders/web-province.service';
-import { WebRootService } from 'src/app/services/loaders/web-root.service';
-import { WebSectorService } from 'src/app/services/loaders/web-sector.service';
-import { WebSubsectorService } from 'src/app/services/loaders/web-subsector.service';
-import { AppLoadedService } from '../app-loaded.service';
+// import { WebAreaService } from 'src/app/services/loaders/web-area.service';
+// import { WebCountryService } from 'src/app/services/loaders/web-country.service';
+// import { WebMunicipalityService } from 'src/app/services/loaders/web-municipalty.service';
+// import { WebMWQMRunsService } from 'src/app/services/loaders/web-mwqm-runs.service';
+// import { WebMWQMSitesService } from 'src/app/services/loaders/web-mwqm-sites.service';
+// import { WebPolSourceSitesService } from 'src/app/services/loaders/web-pol-source-sites.service';
+// import { WebProvinceService } from 'src/app/services/loaders/web-province.service';
+//import { WebRootService } from 'src/app/services/loaders/web-root.service';
+// import { WebSectorService } from 'src/app/services/loaders/web-sector.service';
+// import { WebSubsectorService } from 'src/app/services/loaders/web-subsector.service';
+ import { AppLoadedService } from '../app-loaded.service';
+// import { LoaderService } from '../loaders/loader.service';
 
 @Injectable({
     providedIn: 'root'
@@ -19,16 +20,17 @@ import { AppLoadedService } from '../app-loaded.service';
 export class TogglesService {
     constructor(private appStateService: AppStateService,
         private appLoadedService: AppLoadedService,
-        private webAreaService: WebAreaService,
-        private webCountryService: WebCountryService,
-        private webMunicipalityService: WebMunicipalityService,
-        private webMWQMSitesService: WebMWQMSitesService,
-        private webMWQMRunsService: WebMWQMRunsService,
-        private webPolSourceSitesService: WebPolSourceSitesService,
-        private webProvinceService: WebProvinceService,
-        private webRootService: WebRootService,
-        private webSectorService: WebSectorService,
-        private webSubsectorService: WebSubsectorService,
+        // private webAreaService: WebAreaService,
+        // private webCountryService: WebCountryService,
+        // private webMunicipalityService: WebMunicipalityService,
+        // private webMWQMSitesService: WebMWQMSitesService,
+        // private webMWQMRunsService: WebMWQMRunsService,
+        // private webPolSourceSitesService: WebPolSourceSitesService,
+        // private webProvinceService: WebProvinceService,
+        // private loaderService: LoaderService,
+        //private webRootService: WebRootService,
+        // private webSectorService: WebSectorService,
+        // private webSubsectorService: WebSubsectorService,
     ) {
 
     }

@@ -41,7 +41,7 @@
     </app-tvitem-menu>
 
     <app-mwqm-site-tvitem-list-item-special [TVItemModel]="tvItemModel" [Index]="i + 1" 
-        [StatMWQMSite]="webMWQMSamples2021_2060Service.GetMWQMSiteDetail(tvItemModel)">
+        [StatMWQMSite]="loaderService.GetMWQMSiteDetail(tvItemModel)">
     </app-mwqm-site-tvitem-list-item-special>
 
     <app-mwqm-site-item-view *ngIf="showTVItemService.TVItemVisible(tvItemModel)"
@@ -54,6 +54,6 @@
 
     <app-mwqm-site-tvitem-list-detail *ngIf="appStateService.DetailVisible"
         [TVItemModel]="tvItemModel" 
-        [StatMWQMSite]="webMWQMSamples2021_2060Service.GetMWQMSiteDetail(tvItemModel)">
+        [StatMWQMSite]="loaderService.GetMWQMSiteDetail(tvItemModel)">
     </app-mwqm-site-tvitem-list-detail>
 </mat-list>

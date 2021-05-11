@@ -11,7 +11,7 @@ export class FilterService {
   }
 
   FilterTVItemModelList(tvItemModelList: TVItemModel[]) {
-    if (typeof(tvItemModelList) != "undefined") {
+    if (!(typeof(tvItemModelList) == "undefined" || tvItemModelList == null)) {
       if (!this.appStateService.InactVisible) {
         return tvItemModelList.filter(c => c.TVItem.IsActive == true);
       }

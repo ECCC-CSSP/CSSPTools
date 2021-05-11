@@ -14,7 +14,6 @@ import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 export class AreaItemEditComponent implements OnInit, OnDestroy {
   @Input() TVItemModel: TVItemModel;
 
-
   constructor(public appStateService: AppStateService,
     public appLoadedService: AppLoadedService,
     public appLanguageService: AppLanguageService,
