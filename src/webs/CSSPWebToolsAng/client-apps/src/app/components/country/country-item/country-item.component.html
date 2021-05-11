@@ -5,7 +5,7 @@
     {{ appStateService.Status }}
 </p>
 
-<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionCountry(countrySubComponentEnum.Provinces)"
+<button mat-button [ngClass]="appStateService.CountrySubComponent == countrySubComponentEnum.Provinces ? 'selected' : ''"
     (click)="componentShowService.ShowCountry(countrySubComponentEnum.Provinces)"
     title="{{ appLanguageService.CountryShowProvinces[appLanguageService.LangID] }}">
     <span>
@@ -25,7 +25,7 @@
         &nbsp;&nbsp;&darr;
     </span>
 </button>
-<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionCountry(countrySubComponentEnum.Files)"
+<button mat-button [ngClass]="appStateService.CountrySubComponent == countrySubComponentEnum.Files ? 'selected' : ''"
     (click)="componentShowService.ShowCountry(countrySubComponentEnum.Files)"
     title="{{ appLanguageService.CountryShowFiles[appLanguageService.LangID] }}">
     <span>
@@ -36,17 +36,17 @@
         </span>                                                                                                        
     </span>
 </button>
-<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionCountry(countrySubComponentEnum.OpenDataNational)"
+<button mat-button [ngClass]="appStateService.CountrySubComponent == countrySubComponentEnum.OpenDataNational ? 'selected' : ''"
     (click)="componentShowService.ShowCountry(countrySubComponentEnum.OpenDataNational)"
     title="{{ appLanguageService.CountryShowOpenDataNationalTools[appLanguageService.LangID] }}">
     {{ appLanguageService.CountryOpenDataNational[appLanguageService.LangID] }}
 </button>
-<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionCountry(countrySubComponentEnum.EmailDistributionList)"
+<button mat-button [ngClass]="appStateService.CountrySubComponent == countrySubComponentEnum.EmailDistributionList ? 'selected' : ''"
     (click)="componentShowService.ShowCountry(countrySubComponentEnum.EmailDistributionList)"
     title="{{ appLanguageService.CountryShowEmailDistributionList[appLanguageService.LangID] }}">
     {{ appLanguageService.CountryEmailDistributionList[appLanguageService.LangID] }}
 </button>
-<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionCountry(countrySubComponentEnum.RainExceedance)"
+<button mat-button [ngClass]="appStateService.CountrySubComponent == countrySubComponentEnum.RainExceedance ? 'selected' : ''"
     (click)="componentShowService.ShowCountry(countrySubComponentEnum.RainExceedance)"
     title="{{ appLanguageService.CountryShowRainExceedance[appLanguageService.LangID] }}">
     {{ appLanguageService.CountryRainExceedance[appLanguageService.LangID] }}

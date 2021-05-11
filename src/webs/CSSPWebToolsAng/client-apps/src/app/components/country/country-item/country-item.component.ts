@@ -5,10 +5,7 @@ import { GetCountrySubComponentEnum } from 'src/app/enums/generated/CountrySubCo
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { GetTVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 import { AscDescEnum, GetAscDescEnum } from 'src/app/enums/generated/AscDescEnum';
-//import { WebCountryService } from 'src/app/services/loaders/web-country.service';
-//import { TVItemSortOrderService } from 'src/app/services/helpers/tvitem-sort-order.service';
 import { StatCountService } from 'src/app/services/helpers/stat-count.service';
-import { ComponentButtonSelectionService } from 'src/app/services/helpers/component-button-selection.service';
 import { ComponentShowService } from 'src/app/services/helpers/component-show.service';
 import { GetSortOrderAngularEnum } from 'src/app/enums/generated/SortOrderAngularEnum';
 import { FilterService } from 'src/app/services/helpers/filter.service';
@@ -32,13 +29,10 @@ export class CountryItemComponent implements OnInit, OnDestroy {
   constructor(public appStateService: AppStateService,
     public appLoadedService: AppLoadedService,
     public appLanguageService: AppLanguageService,
-    //public webCountryService: WebCountryService,
     public loaderService: LoaderService,
-    //public tvItemSortOrderService: TVItemSortOrderService,
     public statCountService: StatCountService,
     public sortTVItemListService: SortTVItemListService,
     public filterService: FilterService,
-    public componentButtonSelectionService: ComponentButtonSelectionService,
     public componentShowService: ComponentShowService) {
   }
 

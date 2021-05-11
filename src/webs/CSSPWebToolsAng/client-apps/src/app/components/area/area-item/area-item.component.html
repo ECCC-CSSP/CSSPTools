@@ -5,7 +5,7 @@
     {{ appStateService.Status }}
 </p>
 
-<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionArea(areaSubComponentEnum.Sectors)"
+<button mat-button [ngClass]="appStateService.AreaSubComponent == areaSubComponentEnum.Sectors ? 'selected' : ''"
     (click)="componentShowService.ShowArea(areaSubComponentEnum.Sectors)"
     title="{{ appLanguageService.AreaShowSectors[appLanguageService.LangID] }}">
     <span>
@@ -25,7 +25,7 @@
         &nbsp;&nbsp;&darr;
     </span>
 </button>
-<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionArea(areaSubComponentEnum.Files)"
+<button mat-button [ngClass]="appStateService.AreaSubComponent == areaSubComponentEnum.Files ? 'selected' : ''"
     (click)="componentShowService.ShowArea(areaSubComponentEnum.Files)"
     title="{{ appLanguageService.AreaShowFiles[appLanguageService.LangID] }}">
     <span>

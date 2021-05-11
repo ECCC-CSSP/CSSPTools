@@ -5,7 +5,7 @@
     {{ appStateService.Status }}
 </p>
 
-<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionSubsector(subsectorSubComponentEnum.MWQMSites)"
+<button mat-button [ngClass]="appStateService.SubsectorSubComponent == subsectorSubComponentEnum.MWQMSites ? 'selected' : ''"
     (click)="componentShowService.ShowSubsector(subsectorSubComponentEnum.MWQMSites)"
     title="{{ appLanguageService.SubsectorShowMWQMSites[appLanguageService.LangID] }}">
     <span>
@@ -25,12 +25,12 @@
         &nbsp;&nbsp;&darr;
     </span>
 </button>
-<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionSubsector(subsectorSubComponentEnum.Analysis)"
+<button mat-button [ngClass]="appStateService.SubsectorSubComponent == subsectorSubComponentEnum.Analysis ? 'selected' : ''"
     (click)="componentShowService.ShowSubsector(subsectorSubComponentEnum.Analysis)"
     title="{{ appLanguageService.SubsectorShowAnalysis[appLanguageService.LangID] }}">
     {{ appLanguageService.SubsectorAnalysis[appLanguageService.LangID] }}
 </button>
-<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionSubsector(subsectorSubComponentEnum.MWQMRuns)"
+<button mat-button [ngClass]="appStateService.SubsectorSubComponent == subsectorSubComponentEnum.MWQMRuns ? 'selected' : ''"
     (click)="componentShowService.ShowSubsector(subsectorSubComponentEnum.MWQMRuns)"
     title="{{ appLanguageService.SubsectorShowMWQMRuns[appLanguageService.LangID] }}">
     <span>
@@ -50,7 +50,7 @@
         &nbsp;&nbsp;&darr;
     </span>
 </button>
-<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionSubsector(subsectorSubComponentEnum.PollutionSourceSites)"
+<button mat-button [ngClass]="appStateService.SubsectorSubComponent == subsectorSubComponentEnum.PollutionSourceSites ? 'selected' : ''"
     (click)="componentShowService.ShowSubsector(subsectorSubComponentEnum.PollutionSourceSites)"
     title="{{ appLanguageService.SubsectorShowPollutionSourceSites[appLanguageService.LangID] }}">
     <span>
@@ -70,7 +70,7 @@
         &nbsp;&nbsp;&darr;
     </span>
 </button>
-<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionSubsector(subsectorSubComponentEnum.Files)"
+<button mat-button [ngClass]="appStateService.SubsectorSubComponent == subsectorSubComponentEnum.Files ? 'selected' : ''"
     (click)="componentShowService.ShowSubsector(subsectorSubComponentEnum.Files)"
     title="{{ appLanguageService.SubsectorShowFiles[appLanguageService.LangID] }}">
     <span>
@@ -81,12 +81,12 @@
         </span>                                        
     </span>
 </button>
-<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionSubsector(subsectorSubComponentEnum.SubsectorTools)"
+<button mat-button [ngClass]="appStateService.SubsectorSubComponent == subsectorSubComponentEnum.SubsectorTools ? 'selected' : ''"
     (click)="componentShowService.ShowSubsector(subsectorSubComponentEnum.SubsectorTools)"
     title="{{ appLanguageService.SubsectorShowSubsectorTools[appLanguageService.LangID] }}">
     {{ appLanguageService.SubsectorSubsectorTools[appLanguageService.LangID] }}
 </button>
-<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionSubsector(subsectorSubComponentEnum.LogBook)"
+<button mat-button [ngClass]="appStateService.SubsectorSubComponent == subsectorSubComponentEnum.LogBook ? 'selected' : ''"
     (click)="componentShowService.ShowSubsector(subsectorSubComponentEnum.LogBook)"
     title="{{ appLanguageService.SubsectorShowLogBook[appLanguageService.LangID] }}">
     {{ appLanguageService.SubsectorLogBook[appLanguageService.LangID] }}

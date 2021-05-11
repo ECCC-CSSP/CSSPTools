@@ -8,7 +8,6 @@ import { WebClimateSites } from 'src/app/models/generated/web/WebClimateSites.mo
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
-import { ComponentButtonSelectionService } from 'src/app/services/helpers/component-button-selection.service';
 import { ComponentShowService } from 'src/app/services/helpers/component-show.service';
 import { FilterService } from 'src/app/services/helpers/filter.service';
 import { SortTVItemListService } from 'src/app/services/helpers/sort-tvitem-list.service';
@@ -33,7 +32,6 @@ export class ProvinceItemComponent implements OnInit, OnDestroy {
     public statCountService: StatCountService,
     public sortTVItemListService: SortTVItemListService,
     public filterService: FilterService,
-    public componentButtonSelectionService: ComponentButtonSelectionService,
     public componentShowService: ComponentShowService) { }
 
   ngOnInit(): void {

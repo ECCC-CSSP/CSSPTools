@@ -5,7 +5,7 @@
     {{ appStateService.Status }}
 </p>
 
-<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionMunicipality(municipalitySubComponentEnum.Infrastructures)"
+<button mat-button [ngClass]="appStateService.MunicipalitySubComponent == municipalitySubComponentEnum.Infrastructures ? 'selected' : ''"
     (click)="componentShowService.ShowMunicipality(municipalitySubComponentEnum.Infrastructures)"
     title="{{ appLanguageService.MunicipalityShowInfrastructures[appLanguageService.LangID] }}">
     <span>
@@ -15,7 +15,7 @@
         </span>
     </span>
 </button>
-<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionMunicipality(municipalitySubComponentEnum.Contacts)"
+<button mat-button [ngClass]="appStateService.MunicipalitySubComponent == municipalitySubComponentEnum.Contacts ? 'selected' : ''"
     (click)="componentShowService.ShowMunicipality(municipalitySubComponentEnum.Contacts)"
     title="{{ appLanguageService.MunicipalityShowContacts[appLanguageService.LangID] }}">
     <span>
@@ -25,7 +25,7 @@
         </span>
     </span>
 </button>
-<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionMunicipality(municipalitySubComponentEnum.MIKEScenarios)"
+<button mat-button [ngClass]="appStateService.MunicipalitySubComponent == municipalitySubComponentEnum.MIKEScenarios ? 'selected' : ''"
     (click)="componentShowService.ShowMunicipality(municipalitySubComponentEnum.MIKEScenarios)"
     title="{{ appLanguageService.MunicipalityShowMikeScenarios[appLanguageService.LangID] }}">
     <span>
@@ -45,7 +45,7 @@
         &nbsp;&nbsp;&darr;
     </span>
 </button>
-<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionMunicipality(municipalitySubComponentEnum.Files)"
+<button mat-button [ngClass]="appStateService.MunicipalitySubComponent == municipalitySubComponentEnum.Files ? 'selected' : ''"
     (click)="componentShowService.ShowMunicipality(municipalitySubComponentEnum.Files)"
     title="{{ appLanguageService.MunicipalityShowFiles[appLanguageService.LangID] }}">
     <span>

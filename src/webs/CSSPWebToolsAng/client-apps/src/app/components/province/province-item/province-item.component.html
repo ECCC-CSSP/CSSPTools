@@ -5,7 +5,7 @@
     {{ appStateService.Status }}
 </p>
 
-<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionProvince(provinceSubComponentEnum.Areas)"
+<button mat-button [ngClass]="appStateService.ProvinceSubComponent == provinceSubComponentEnum.Areas ? 'selected' : ''"
     (click)="componentShowService.ShowProvince(provinceSubComponentEnum.Areas)"
     title="{{ appLanguageService.ProvinceShowAreas[appLanguageService.LangID] }}">
     <span>
@@ -25,7 +25,7 @@
         &nbsp;&nbsp;&darr;
     </span>
 </button>
-<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionProvince(provinceSubComponentEnum.Municipalities)"
+<button mat-button [ngClass]="appStateService.ProvinceSubComponent == provinceSubComponentEnum.Municipalities ? 'selected' : ''"
     (click)="componentShowService.ShowProvince(provinceSubComponentEnum.Municipalities)"
     title="{{ appLanguageService.ProvinceShowMunicipalities[appLanguageService.LangID] }}">
     <span>
@@ -45,7 +45,7 @@
         &nbsp;&nbsp;&darr;
     </span>
 </button>
-<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionProvince(provinceSubComponentEnum.Files)"
+<button mat-button [ngClass]="appStateService.ProvinceSubComponent == provinceSubComponentEnum.Files ? 'selected' : ''"
     (click)="componentShowService.ShowProvince(provinceSubComponentEnum.Files)"
     title="{{ appLanguageService.ProvinceShowFiles[appLanguageService.LangID] }}">
     <span>
@@ -56,17 +56,17 @@
         </span>                                                                                        
     </span>
 </button>
-<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionProvince(provinceSubComponentEnum.OpenData)"
+<button mat-button [ngClass]="appStateService.ProvinceSubComponent == provinceSubComponentEnum.OpenData ? 'selected' : ''"
     (click)="componentShowService.ShowProvince(provinceSubComponentEnum.OpenData)"
     title="{{ appLanguageService.ProvinceShowOpenData[appLanguageService.LangID] }}">
     {{ appLanguageService.ProvinceOpenData[appLanguageService.LangID] }}
 </button>
-<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionProvince(provinceSubComponentEnum.SamplingPlan)"
+<button mat-button [ngClass]="appStateService.ProvinceSubComponent == provinceSubComponentEnum.SamplingPlan ? 'selected' : ''"
     (click)="componentShowService.ShowProvince(provinceSubComponentEnum.SamplingPlan)"
     title="{{ appLanguageService.ProvinceShowSamplingPlan[appLanguageService.LangID] }}">
     {{ appLanguageService.ProvinceSamplingPlan[appLanguageService.LangID] }}
 </button>
-<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionProvince(provinceSubComponentEnum.ProvinceTools)"
+<button mat-button [ngClass]="appStateService.ProvinceSubComponent == provinceSubComponentEnum.ProvinceTools ? 'selected' : ''"
     (click)="componentShowService.ShowProvince(provinceSubComponentEnum.ProvinceTools)"
     title="{{ appLanguageService.ProvinceShowProvinceTools[appLanguageService.LangID] }}">
     {{ appLanguageService.ProvinceProvinceTools[appLanguageService.LangID] }}

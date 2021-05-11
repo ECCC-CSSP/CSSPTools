@@ -9,14 +9,11 @@ import { WebSector } from 'src/app/models/generated/web/WebSector.model';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
-import { ComponentButtonSelectionService } from 'src/app/services/helpers/component-button-selection.service';
 import { ComponentShowService } from 'src/app/services/helpers/component-show.service';
 import { FilterService } from 'src/app/services/helpers/filter.service';
 import { SortTVItemListService } from 'src/app/services/helpers/sort-tvitem-list.service';
 import { StatCountService } from 'src/app/services/helpers/stat-count.service';
 import { LoaderService } from 'src/app/services/loaders/loader.service';
-//import { TVItemSortOrderService } from 'src/app/services/helpers/tvitem-sort-order.service';
-//import { WebSectorService } from 'src/app/services/loaders/web-sector.service';
 
 @Component({
   selector: 'app-sector-item',
@@ -40,7 +37,6 @@ export class SectorItemComponent implements OnInit, OnDestroy {
     public statCountService: StatCountService,
     public sortTVItemListService: SortTVItemListService,
     public filterService: FilterService,
-    public componentButtonSelectionService: ComponentButtonSelectionService,
     public componentShowService: ComponentShowService) { }
 
   ngOnInit(): void {

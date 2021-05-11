@@ -11,7 +11,6 @@ import { AppLanguageService } from 'src/app/services/app-language.service';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { AnalysisService } from 'src/app/services/helpers/analysis.service';
-import { ComponentButtonSelectionService } from 'src/app/services/helpers/component-button-selection.service';
 import { DateFormatService } from 'src/app/services/helpers/date-format.service';
 import { TogglesService } from 'src/app/services/helpers/toggles.service';
 import { LoaderService } from 'src/app/services/loaders/loader.service';
@@ -42,7 +41,6 @@ export class AnalysisOptionsComponent implements OnInit, OnDestroy {
     public appLoadedService: AppLoadedService,
     public togglesService: TogglesService,
     public appLanguageService: AppLanguageService,
-    public componentButtonSelectionService: ComponentButtonSelectionService,
     public dateFormatService: DateFormatService,
     private fb: FormBuilder,
     public analysisService: AnalysisService,

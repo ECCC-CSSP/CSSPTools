@@ -5,7 +5,7 @@
     {{ appStateService.Status }}
 </p>
 
-<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionRoot(rootSubComponentEnum.Countries)"
+<button mat-button [ngClass]="appStateService.RootSubComponent == rootSubComponentEnum.Countries ? 'selected' : ''"
     (click)="componentShowService.ShowRoot(rootSubComponentEnum.Countries)"
     title="{{ appLanguageService.RootShowCountries[appLanguageService.LangID] }}">
     <span>
@@ -26,7 +26,7 @@
     </span>
 </button>
 
-<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionRoot(rootSubComponentEnum.Files)"
+<button mat-button [ngClass]="appStateService.RootSubComponent == rootSubComponentEnum.Files ? 'selected' : ''"
     (click)="componentShowService.ShowRoot(rootSubComponentEnum.Files)"
     title="{{ appLanguageService.RootShowFiles[appLanguageService.LangID] }}">
     <span>
@@ -37,7 +37,7 @@
         </span>
     </span>
 </button>
-<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionRoot(rootSubComponentEnum.ExportArcGIS)"
+<button mat-button [ngClass]="appStateService.RootSubComponent == rootSubComponentEnum.ExportArcGIS ? 'selected' : ''"
     (click)="componentShowService.ShowRoot(rootSubComponentEnum.ExportArcGIS)"
     title="{{ appLanguageService.RootShowExportArcGISTools[appLanguageService.LangID] }}">
     {{ appLanguageService.RootExportArcGIS[appLanguageService.LangID] }}

@@ -6,7 +6,6 @@ import { AppStateService } from 'src/app/services/app-state.service';
 import { GetTVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 import { AscDescEnum, GetAscDescEnum } from 'src/app/enums/generated/AscDescEnum';
 import { StatCountService } from 'src/app/services/helpers/stat-count.service';
-import { ComponentButtonSelectionService } from 'src/app/services/helpers/component-button-selection.service';
 import { ComponentShowService } from 'src/app/services/helpers/component-show.service';
 import { GetSortOrderAngularEnum } from 'src/app/enums/generated/SortOrderAngularEnum';
 import { SortTVItemListService } from 'src/app/services/helpers/sort-tvitem-list.service';
@@ -37,7 +36,6 @@ export class AreaItemComponent implements OnInit, OnDestroy {
     public statCountService: StatCountService,
     public sortTVItemListService: SortTVItemListService,
     public filterService: FilterService,
-    public componentButtonSelectionService: ComponentButtonSelectionService,
     public componentShowService: ComponentShowService) { }
 
   ngOnInit(): void {

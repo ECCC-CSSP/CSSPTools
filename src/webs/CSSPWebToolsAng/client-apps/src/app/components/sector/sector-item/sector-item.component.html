@@ -5,7 +5,7 @@
     {{ appStateService.Status }}
 </p>
 
-<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionSector(sectorSubComponentEnum.Subsectors)"
+<button mat-button [ngClass]="appStateService.SectorSubComponent == sectorSubComponentEnum.Subsectors ? 'selected' : ''"
     (click)="componentShowService.ShowSector(sectorSubComponentEnum.Subsectors)"
     title="{{ appLanguageService.SectorShowSubsectors[appLanguageService.LangID] }}">
     <span>
@@ -25,7 +25,7 @@
         &nbsp;&nbsp;&darr;
     </span>
 </button>
-<button mat-button [ngClass]="componentButtonSelectionService.ColorSelectionSector(sectorSubComponentEnum.Files)" 
+<button mat-button [ngClass]="appStateService.SectorSubComponent == sectorSubComponentEnum.Files ? 'selected' : ''" 
 (click)="componentShowService.ShowSector(sectorSubComponentEnum.Files)"
     title="{{ appLanguageService.SectorShowFiles[appLanguageService.LangID] }}">
     <span>
