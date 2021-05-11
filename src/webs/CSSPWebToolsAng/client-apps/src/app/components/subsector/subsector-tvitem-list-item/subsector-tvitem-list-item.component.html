@@ -27,6 +27,6 @@
         [TVItemModel]="tvItemModel">
     </app-subsector-item-edit>
 
-    <app-subsector-tvitem-list-detail *ngIf="!IsBreadCrumb && appStateService.DetailVisible"
+    <app-subsector-tvitem-list-detail *ngIf="appStateService.DetailVisible"
         [TVItemModel]="tvItemModel"></app-subsector-tvitem-list-detail>
 </mat-list>

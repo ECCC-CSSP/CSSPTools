@@ -11,7 +11,6 @@ import { SubPageService } from 'src/app/services/helpers/sub-page.service';
   styleUrls: ['./bread-crumb.component.css']
 })
 export class BreadCrumbComponent implements OnInit, OnDestroy {
-
   
   constructor(public appStateService: AppStateService,
     public appLanguageService: AppLanguageService,

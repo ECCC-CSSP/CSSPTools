@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
-
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { AppStateService } from 'src/app/services/app-state.service';
@@ -15,8 +14,6 @@ import { MapService } from 'src/app/services/map/map.service';
 })
 export class ProvinceTVItemListItemComponent implements OnInit, OnDestroy {
   @Input() TVItemModelList: TVItemModel[] = [];
-  @Input() IsBreadCrumb: boolean = false;
-
 
   languageEnum = GetLanguageEnum();
   

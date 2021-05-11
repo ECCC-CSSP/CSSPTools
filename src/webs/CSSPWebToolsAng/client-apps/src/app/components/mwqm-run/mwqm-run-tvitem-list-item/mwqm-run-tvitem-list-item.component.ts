@@ -17,8 +17,6 @@ import { MapService } from 'src/app/services/map/map.service';
 export class MWQMRunTVItemListItemComponent implements OnInit, OnDestroy {
   @Input() TVItemModelList: TVItemModel[] = [];
 
-  @Input() IsBreadCrumb: boolean = false;
-
   languageEnum = GetLanguageEnum();
   
   constructor(public appStateService: AppStateService,

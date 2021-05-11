@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Subscription, timer } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -11,19 +11,8 @@ import { GetMapSizeEnum, MapSizeEnum } from 'src/app/enums/generated/MapSizeEnum
 import { TopComponentEnum } from 'src/app/enums/generated/TopComponentEnum';
 import { TogglesService } from 'src/app/services/helpers/toggles.service';
 import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
-//import { WebRootService } from 'src/app/services/loaders/web-root.service';
-// import { WebCountryService } from 'src/app/services/loaders/web-country.service';
-// import { WebProvinceService } from 'src/app/services/loaders/web-province.service';
-// import { WebAreaService } from 'src/app/services/loaders/web-area.service';
-// import { WebSectorService } from 'src/app/services/loaders/web-sector.service';
-// import { WebSubsectorService } from 'src/app/services/loaders/web-subsector.service';
-// import { WebMunicipalityService } from 'src/app/services/loaders/web-municipalty.service';
-// import { WebPolSourceSitesService } from 'src/app/services/loaders/web-pol-source-sites.service';
-// import { WebMWQMSitesService } from 'src/app/services/loaders/web-mwqm-sites.service';
-// import { WebMWQMRunsService } from 'src/app/services/loaders/web-mwqm-runs.service';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { LoaderService } from 'src/app/services/loaders/loader.service';
-import { WebRoot } from 'src/app/models/generated/web/WebRoot.model';
 import { WebTypeEnum } from 'src/app/enums/generated/WebTypeEnum';
 import { WebArea } from 'src/app/models/generated/web/WebArea.model';
 import { WebCountry } from 'src/app/models/generated/web/WebCountry.model';
@@ -49,16 +38,6 @@ export class ShellItemComponent implements OnInit, OnDestroy {
     public togglesService: TogglesService,
     private title: Title,
     private loaderService: LoaderService,
-    //private webRootService: WebRootService,
-    // private webCountryService: WebCountryService,
-    // private webProvinceService: WebProvinceService,
-    // private webAreaService: WebAreaService,
-    // private webSectorService: WebSectorService,
-    // private webSubsectorService: WebSubsectorService,
-    // private webMunicipalityService: WebMunicipalityService,
-    // private webMWQMSitesService: WebMWQMSitesService,
-    // private webMWQMRunsService: WebMWQMRunsService,
-    // private webPolSourceSitesService: WebPolSourceSitesService,
   ) { }
 
 
@@ -86,31 +65,11 @@ export class ShellItemComponent implements OnInit, OnDestroy {
       this.appStateService.ShellSubComponent = ShellSubComponentEnum.Municipality
       this.appStateService.CurrentMunicipalityTVItemID = tvItemModel.TVItem.TVItemID;
     }
-    // else if (tvItemModel.TVItem.TVType == TVTypeEnum.MWQMRun) {
-    //   this.webMWQMRunsService.DoWebMWQMRuns(tvItemModel.TVItem.TVItemID, true);
-    //   this.appStateService.ShellSubComponent = ShellSubComponentEnum.MWQMRun
-    //   this.appStateService.CurrentTVItemID = tvItemModel.TVItem.TVItemID;
-    // }
-    // else if (tvItemModel.TVItem.TVType == TVTypeEnum.MWQMSite) {
-    //   this.webMWQMSitesService.DoWebMWQMSites(tvItemModel.TVItem.TVItemID, true);
-    //   this.appStateService.ShellSubComponent = ShellSubComponentEnum.MWQMSite
-    //   this.appStateService.CurrentTVItemID = tvItemModel.TVItem.TVItemID;
-    // }
-    // else if (tvItemModel.TVItem.TVType == TVTypeEnum.PolSourceSite) {
-    //   this.webPolSourceSitesService.DoWebPolSourceSites(tvItemModel.TVItem.TVItemID, true);
-    //   this.appStateService.ShellSubComponent = ShellSubComponentEnum.PolSourceSite
-    //   this.appStateService.CurrentTVItemID = tvItemModel.TVItem.TVItemID;
-    // }
     else if (tvItemModel.TVItem.TVType == TVTypeEnum.Province) {
       this.loaderService.Load<WebProvince>(WebTypeEnum.WebProvince, WebTypeEnum.WebClimateSites, false);
       this.appStateService.ShellSubComponent = ShellSubComponentEnum.Province
       this.appStateService.CurrentProvinceTVItemID = tvItemModel.TVItem.TVItemID;
     }
-    // else if (tvItemModel.TVItem.TVType == TVTypeEnum.Root) {
-    //   this.loaderService.Load<WebRoot>(WebTypeEnum.WebRoot, WebTypeEnum.WebAllAddresses, false);
-    //   this.appStateService.ShellSubComponent = ShellSubComponentEnum.Root
-    //   this.appStateService.CurrentTVItemID = tvItemModel.TVItem.TVItemID;
-    // }
     else if (tvItemModel.TVItem.TVType == TVTypeEnum.Sector) {
       this.loaderService.Load<WebSector>(WebTypeEnum.WebSector, null, false);
       this.appStateService.ShellSubComponent = ShellSubComponentEnum.Sector

@@ -45,8 +45,8 @@ import { ContactModel } from '../models/generated/web/ContactModel.model';
   providedIn: 'root'
 })
 export class AppLoadedService {
-  BaseApiUrl = 'https://localhost:4447/api/'; 
-  //BaseApiUrl = 'https://localhost:44346/api/';
+  //BaseApiUrl = 'https://localhost:4447/api/'; 
+  BaseApiUrl = 'https://localhost:44346/api/';
 
   LoggedInContact?: Contact;
   BreadCrumbTVItemModelList?: TVItemModel[];

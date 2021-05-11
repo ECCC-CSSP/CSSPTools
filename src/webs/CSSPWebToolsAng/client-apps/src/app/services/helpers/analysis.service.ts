@@ -7,7 +7,6 @@ import { EnumIDAndText } from 'src/app/models/generated/helper/EnumIDAndText.mod
 import { StatMWQMRun } from 'src/app/models/generated/web/StatMWQMRun.model';
 import { StatMWQMSite } from 'src/app/models/generated/web/StatMWQMSite.model';
 import { AppStateService } from 'src/app/services/app-state.service';
-//import { WebMWQMSamples2021_2060Service } from 'src/app/services/loaders/web-mwqm-samples_2021_2060.service';
 import { AppLanguageService } from '../app-language.service';
 import { LoaderService } from '../loaders/loader.service';
 
@@ -19,7 +18,6 @@ export class AnalysisService {
   constructor(private appStateService: AppStateService,
     private appLanguageService: AppLanguageService,
     private loaderService: LoaderService
-    //private webMWQMSamples2021_2060Service: WebMWQMSamples2021_2060Service
     ) { }
 
 
