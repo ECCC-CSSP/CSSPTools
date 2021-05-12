@@ -37,13 +37,13 @@ export function LabSheetTypeEnum_GetOrderedText(appLanguageService: AppLanguageS
 }
 
 export function LabSheetTypeEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let LabSheetTypeEnumText: string;
     LabSheetTypeEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            LabSheetTypeEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return LabSheetTypeEnumText;
 }

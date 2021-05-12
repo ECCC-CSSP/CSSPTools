@@ -13,6 +13,7 @@ import { ComponentShowService } from 'src/app/services/helpers/component-show.se
 import { FilterService } from 'src/app/services/helpers/filter.service';
 import { SortTVItemListService } from 'src/app/services/helpers/sort-tvitem-list.service';
 import { StatCountService } from 'src/app/services/helpers/stat-count.service';
+import { StructureTVFileListService } from 'src/app/services/helpers/structure-tvfile-list.service';
 import { LoaderService } from 'src/app/services/loaders/loader.service';
 
 @Component({
@@ -37,7 +38,8 @@ export class SectorItemComponent implements OnInit, OnDestroy {
     public statCountService: StatCountService,
     public sortTVItemListService: SortTVItemListService,
     public filterService: FilterService,
-    public componentShowService: ComponentShowService) { }
+    public componentShowService: ComponentShowService,
+    public structureTVFileListService: StructureTVFileListService) { }
 
   ngOnInit(): void {
     this.loaderService.Load<WebSector>(WebTypeEnum.WebSector, null, false);

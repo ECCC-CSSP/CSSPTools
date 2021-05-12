@@ -34,13 +34,13 @@ export function AerationTypeEnum_GetOrderedText(appLanguageService: AppLanguageS
 }
 
 export function AerationTypeEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let AerationTypeEnumText: string;
     AerationTypeEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            AerationTypeEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return AerationTypeEnumText;
 }

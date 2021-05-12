@@ -166,13 +166,13 @@ export function ReportFieldTypeEnum_GetOrderedText(appLanguageService: AppLangua
 }
 
 export function ReportFieldTypeEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let ReportFieldTypeEnumText: string;
     ReportFieldTypeEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            ReportFieldTypeEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return ReportFieldTypeEnumText;
 }

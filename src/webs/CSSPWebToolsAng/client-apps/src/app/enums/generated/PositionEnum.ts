@@ -40,13 +40,13 @@ export function PositionEnum_GetOrderedText(appLanguageService: AppLanguageServi
 }
 
 export function PositionEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let PositionEnumText: string;
     PositionEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            PositionEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return PositionEnumText;
 }

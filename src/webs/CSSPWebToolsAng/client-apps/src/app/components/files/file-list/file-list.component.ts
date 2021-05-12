@@ -11,7 +11,6 @@ import { AppLanguageService } from 'src/app/services/app-language.service';
 export class FileListComponent implements OnInit, OnDestroy {
   @Input() TVFileModelListList: TVFileModel[][];
 
-
   constructor(public appLanguageService: AppLanguageService) {
   }
 

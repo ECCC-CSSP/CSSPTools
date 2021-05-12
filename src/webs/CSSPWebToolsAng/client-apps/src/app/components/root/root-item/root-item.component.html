@@ -48,7 +48,7 @@
 </app-country-tvitem-list-item>
 
 <app-file-list *ngIf="appStateService.RootSubComponent == rootSubComponentEnum.Files"
-    [TVFileModelListList]="appLoadedService.WebRoot.TVFileModelList">
+    [TVFileModelListList]="structureTVFileListService.StructureTVFileList(appLoadedService.WebRoot?.TVFileModelList)">
 </app-file-list>
 
 <div *ngIf="appStateService.RootSubComponent == rootSubComponentEnum.ExportArcGIS">

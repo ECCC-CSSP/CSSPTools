@@ -52,13 +52,13 @@ export function ExcelExportShowDataTypeEnum_GetOrderedText(appLanguageService: A
 }
 
 export function ExcelExportShowDataTypeEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let ExcelExportShowDataTypeEnumText: string;
     ExcelExportShowDataTypeEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            ExcelExportShowDataTypeEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return ExcelExportShowDataTypeEnumText;
 }

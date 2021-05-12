@@ -37,13 +37,13 @@ export function SiteTypeEnum_GetOrderedText(appLanguageService: AppLanguageServi
 }
 
 export function SiteTypeEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let SiteTypeEnumText: string;
     SiteTypeEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            SiteTypeEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return SiteTypeEnumText;
 }

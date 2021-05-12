@@ -12,6 +12,7 @@ import { ComponentShowService } from 'src/app/services/helpers/component-show.se
 import { FilterService } from 'src/app/services/helpers/filter.service';
 import { SortTVItemListService } from 'src/app/services/helpers/sort-tvitem-list.service';
 import { StatCountService } from 'src/app/services/helpers/stat-count.service';
+import { StructureTVFileListService } from 'src/app/services/helpers/structure-tvfile-list.service';
 import { LoaderService } from 'src/app/services/loaders/loader.service';
 //import { WebMunicipalityService } from 'src/app/services/loaders/web-municipalty.service';
 
@@ -34,7 +35,8 @@ export class MunicipalityItemComponent implements OnInit, OnDestroy {
     public sortTVItemListService: SortTVItemListService,
     public filterService: FilterService,
     public statCountService: StatCountService,
-    public componentShowService: ComponentShowService) { }
+    public componentShowService: ComponentShowService,
+    public structureTVFileListService: StructureTVFileListService) { }
 
   ngOnInit(): void {
     this.loaderService.Load<WebMunicipality>(WebTypeEnum.WebMunicipality, null, false);

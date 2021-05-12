@@ -49,13 +49,13 @@ export function SubsectorSubComponentEnum_GetOrderedText(appLanguageService: App
 }
 
 export function SubsectorSubComponentEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let SubsectorSubComponentEnumText: string;
     SubsectorSubComponentEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            SubsectorSubComponentEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return SubsectorSubComponentEnumText;
 }

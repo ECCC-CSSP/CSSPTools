@@ -49,13 +49,13 @@ export function SampleMatrixEnum_GetOrderedText(appLanguageService: AppLanguageS
 }
 
 export function SampleMatrixEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let SampleMatrixEnumText: string;
     SampleMatrixEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            SampleMatrixEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return SampleMatrixEnumText;
 }

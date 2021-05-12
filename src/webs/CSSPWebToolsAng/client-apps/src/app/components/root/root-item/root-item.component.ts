@@ -13,6 +13,7 @@ import { FilterService } from 'src/app/services/helpers/filter.service';
 import { LoaderService } from 'src/app/services/loaders/loader.service';
 import { WebRoot } from 'src/app/models/generated/web/WebRoot.model';
 import { WebTypeEnum } from 'src/app/enums/generated/WebTypeEnum';
+import { StructureTVFileListService } from 'src/app/services/helpers/structure-tvfile-list.service';
 
 
 @Component({
@@ -33,7 +34,8 @@ export class RootItemComponent implements OnInit, OnDestroy {
     public statCountService: StatCountService,
     public sortTVItemListService: SortTVItemListService,
     public filterService: FilterService,
-    public componentShowService: ComponentShowService) {
+    public componentShowService: ComponentShowService,
+    public structureTVFileListService: StructureTVFileListService) {
   }
 
   ngOnInit(): void {

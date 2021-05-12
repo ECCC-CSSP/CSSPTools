@@ -37,13 +37,13 @@ export function LogCommandEnum_GetOrderedText(appLanguageService: AppLanguageSer
 }
 
 export function LogCommandEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let LogCommandEnumText: string;
     LogCommandEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            LogCommandEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return LogCommandEnumText;
 }

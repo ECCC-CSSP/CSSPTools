@@ -133,13 +133,13 @@ export function WebTypeEnum_GetOrderedText(appLanguageService: AppLanguageServic
 }
 
 export function WebTypeEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let WebTypeEnumText: string;
     WebTypeEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            WebTypeEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return WebTypeEnumText;
 }

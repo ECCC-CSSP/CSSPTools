@@ -34,13 +34,13 @@ export function SameDayNextDayEnum_GetOrderedText(appLanguageService: AppLanguag
 }
 
 export function SameDayNextDayEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let SameDayNextDayEnumText: string;
     SameDayNextDayEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            SameDayNextDayEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return SameDayNextDayEnumText;
 }

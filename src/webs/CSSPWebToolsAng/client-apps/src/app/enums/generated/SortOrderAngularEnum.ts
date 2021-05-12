@@ -61,13 +61,13 @@ export function SortOrderAngularEnum_GetOrderedText(appLanguageService: AppLangu
 }
 
 export function SortOrderAngularEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let SortOrderAngularEnumText: string;
     SortOrderAngularEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            SortOrderAngularEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return SortOrderAngularEnumText;
 }

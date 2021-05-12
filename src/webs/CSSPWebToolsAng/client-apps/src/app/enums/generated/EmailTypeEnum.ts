@@ -40,13 +40,13 @@ export function EmailTypeEnum_GetOrderedText(appLanguageService: AppLanguageServ
 }
 
 export function EmailTypeEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let EmailTypeEnumText: string;
     EmailTypeEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            EmailTypeEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return EmailTypeEnumText;
 }

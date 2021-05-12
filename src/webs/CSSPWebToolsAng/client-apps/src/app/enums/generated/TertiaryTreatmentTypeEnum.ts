@@ -49,13 +49,13 @@ export function TertiaryTreatmentTypeEnum_GetOrderedText(appLanguageService: App
 }
 
 export function TertiaryTreatmentTypeEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let TertiaryTreatmentTypeEnumText: string;
     TertiaryTreatmentTypeEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            TertiaryTreatmentTypeEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return TertiaryTreatmentTypeEnumText;
 }

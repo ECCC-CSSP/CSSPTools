@@ -41,7 +41,6 @@
     [TVItemModelList]="sortTVItemListService.SortTVItemList(filterService.FilterTVItemModelList(appLoadedService.WebSector?.TVItemModelSubsectorList))">
 </app-subsector-tvitem-list-item>
 
-<app-file-list *ngIf="appStateService.SectorSubComponent == sectorSubComponentEnum.Files"
-    
-    [TVFileModelListList]="appLoadedService.WebSector.TVFileModelList">
+<app-file-list *ngIf="appStateService.SectorSubComponent == sectorSubComponentEnum.Files"   
+    [TVFileModelListList]="structureTVFileListService.StructureTVFileList(appLoadedService.WebSector?.TVFileModelList)">
 </app-file-list>

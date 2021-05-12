@@ -143,15 +143,15 @@ namespace GenerateAngularEnums
                     // ---------------------------------
                     sb.AppendLine(@"");
                     sb.AppendLine($@"export function { dllTypeInfoEnums.Name }_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {{");
-                    sb.AppendLine(@"    let addressTypeEnunText: string;");
+                    sb.AppendLine($@"    let { dllTypeInfoEnums.Name }Text: string;");
                     sb.AppendLine($@"    { dllTypeInfoEnums.Name }_GetOrderedText(appLanguageService).forEach(e => {{");
                     sb.AppendLine($@"        if (e.EnumID == enumID) {{");
-                    sb.AppendLine($@"            addressTypeEnunText = e.EnumText;");
+                    sb.AppendLine($@"            { dllTypeInfoEnums.Name }Text = e.EnumText;");
                     sb.AppendLine($@"            return false;");
                     sb.AppendLine(@"        }");
                     sb.AppendLine(@"    });");
                     sb.AppendLine(@"");
-                    sb.AppendLine(@"    return addressTypeEnunText;");
+                    sb.AppendLine($@"    return { dllTypeInfoEnums.Name }Text;");
                     sb.AppendLine(@"}");
 
                     FileInfo fiOutputGen = new FileInfo(Configuration.GetValue<string>("EnumNameFile").Replace("{EnumName}", dllTypeInfoEnums.Name.Replace("enum", ".enum")));

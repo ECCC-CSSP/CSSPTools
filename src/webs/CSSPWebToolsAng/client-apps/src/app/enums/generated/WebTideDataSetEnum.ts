@@ -61,13 +61,13 @@ export function WebTideDataSetEnum_GetOrderedText(appLanguageService: AppLanguag
 }
 
 export function WebTideDataSetEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let WebTideDataSetEnumText: string;
     WebTideDataSetEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            WebTideDataSetEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return WebTideDataSetEnumText;
 }

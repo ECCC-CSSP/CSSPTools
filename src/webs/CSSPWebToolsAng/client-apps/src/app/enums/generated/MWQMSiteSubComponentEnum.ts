@@ -34,13 +34,13 @@ export function MWQMSiteSubComponentEnum_GetOrderedText(appLanguageService: AppL
 }
 
 export function MWQMSiteSubComponentEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let MWQMSiteSubComponentEnumText: string;
     MWQMSiteSubComponentEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            MWQMSiteSubComponentEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return MWQMSiteSubComponentEnumText;
 }

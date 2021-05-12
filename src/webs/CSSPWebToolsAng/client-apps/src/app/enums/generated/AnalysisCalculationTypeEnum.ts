@@ -37,13 +37,13 @@ export function AnalysisCalculationTypeEnum_GetOrderedText(appLanguageService: A
 }
 
 export function AnalysisCalculationTypeEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let AnalysisCalculationTypeEnumText: string;
     AnalysisCalculationTypeEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            AnalysisCalculationTypeEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return AnalysisCalculationTypeEnumText;
 }

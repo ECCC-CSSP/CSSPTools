@@ -67,9 +67,8 @@
 </app-mike-scenario-tvitem-list-item>
 
 <app-file-list
-    *ngIf="appStateService.MunicipalitySubComponent == municipalitySubComponentEnum.Files"
-    
-    [TVFileModelListList]="appLoadedService.WebMunicipality.TVFileModelList">
+    *ngIf="appStateService.MunicipalitySubComponent == municipalitySubComponentEnum.Files"   
+    [TVFileModelListList]="structureTVFileListService.StructureTVFileList(appLoadedService.WebMunicipality?.TVFileModelList)">
 </app-file-list>
 
 <div *ngIf="appStateService.MunicipalitySubComponent == municipalitySubComponentEnum.Contacts">

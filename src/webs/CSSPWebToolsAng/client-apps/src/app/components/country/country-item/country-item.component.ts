@@ -13,6 +13,7 @@ import { SortTVItemListService } from 'src/app/services/helpers/sort-tvitem-list
 import { LoaderService } from 'src/app/services/loaders/loader.service';
 import { WebCountry } from 'src/app/models/generated/web/WebCountry.model';
 import { WebTypeEnum } from 'src/app/enums/generated/WebTypeEnum';
+import { StructureTVFileListService } from 'src/app/services/helpers/structure-tvfile-list.service';
 
 
 @Component({
@@ -33,7 +34,8 @@ export class CountryItemComponent implements OnInit, OnDestroy {
     public statCountService: StatCountService,
     public sortTVItemListService: SortTVItemListService,
     public filterService: FilterService,
-    public componentShowService: ComponentShowService) {
+    public componentShowService: ComponentShowService,
+    public structureTVFileListService: StructureTVFileListService) {
   }
 
   ngOnInit(): void {

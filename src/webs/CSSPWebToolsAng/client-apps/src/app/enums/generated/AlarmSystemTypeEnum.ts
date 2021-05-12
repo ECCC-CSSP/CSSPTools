@@ -43,13 +43,13 @@ export function AlarmSystemTypeEnum_GetOrderedText(appLanguageService: AppLangua
 }
 
 export function AlarmSystemTypeEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let AlarmSystemTypeEnumText: string;
     AlarmSystemTypeEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            AlarmSystemTypeEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return AlarmSystemTypeEnumText;
 }

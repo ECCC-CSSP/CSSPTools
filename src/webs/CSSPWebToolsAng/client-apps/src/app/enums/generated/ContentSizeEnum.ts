@@ -43,13 +43,13 @@ export function ContentSizeEnum_GetOrderedText(appLanguageService: AppLanguageSe
 }
 
 export function ContentSizeEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let ContentSizeEnumText: string;
     ContentSizeEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            ContentSizeEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return ContentSizeEnumText;
 }

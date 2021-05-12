@@ -82,7 +82,7 @@
 </app-municipality-tvitem-list-item>
 
 <app-file-list *ngIf="appStateService.ProvinceSubComponent == provinceSubComponentEnum.Files"
-    [TVFileModelListList]="appLoadedService.WebProvince.TVFileModelList">
+    [TVFileModelListList]="structureTVFileListService.StructureTVFileList(appLoadedService.WebProvince?.TVFileModelList)">
 </app-file-list>
 
 <div *ngIf="appStateService.ProvinceSubComponent == provinceSubComponentEnum.OpenData">

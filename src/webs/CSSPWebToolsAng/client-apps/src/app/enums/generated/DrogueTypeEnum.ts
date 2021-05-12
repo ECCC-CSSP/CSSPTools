@@ -34,13 +34,13 @@ export function DrogueTypeEnum_GetOrderedText(appLanguageService: AppLanguageSer
 }
 
 export function DrogueTypeEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let DrogueTypeEnumText: string;
     DrogueTypeEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            DrogueTypeEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return DrogueTypeEnumText;
 }

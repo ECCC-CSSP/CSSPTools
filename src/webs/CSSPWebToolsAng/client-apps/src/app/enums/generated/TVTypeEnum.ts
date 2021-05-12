@@ -286,13 +286,13 @@ export function TVTypeEnum_GetOrderedText(appLanguageService: AppLanguageService
 }
 
 export function TVTypeEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let TVTypeEnumText: string;
     TVTypeEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            TVTypeEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return TVTypeEnumText;
 }

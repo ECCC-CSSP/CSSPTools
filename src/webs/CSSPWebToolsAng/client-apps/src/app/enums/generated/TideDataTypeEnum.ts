@@ -34,13 +34,13 @@ export function TideDataTypeEnum_GetOrderedText(appLanguageService: AppLanguageS
 }
 
 export function TideDataTypeEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let TideDataTypeEnumText: string;
     TideDataTypeEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            TideDataTypeEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return TideDataTypeEnumText;
 }

@@ -265,13 +265,13 @@ export function ReportTreeNodeTypeEnum_GetOrderedText(appLanguageService: AppLan
 }
 
 export function ReportTreeNodeTypeEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let ReportTreeNodeTypeEnumText: string;
     ReportTreeNodeTypeEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            ReportTreeNodeTypeEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return ReportTreeNodeTypeEnumText;
 }

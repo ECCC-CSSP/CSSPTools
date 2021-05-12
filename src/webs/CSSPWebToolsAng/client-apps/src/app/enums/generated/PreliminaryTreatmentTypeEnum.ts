@@ -40,13 +40,13 @@ export function PreliminaryTreatmentTypeEnum_GetOrderedText(appLanguageService: 
 }
 
 export function PreliminaryTreatmentTypeEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let PreliminaryTreatmentTypeEnumText: string;
     PreliminaryTreatmentTypeEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            PreliminaryTreatmentTypeEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return PreliminaryTreatmentTypeEnumText;
 }

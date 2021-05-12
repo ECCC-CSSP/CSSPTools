@@ -40,13 +40,13 @@ export function AppTaskStatusEnum_GetOrderedText(appLanguageService: AppLanguage
 }
 
 export function AppTaskStatusEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let AppTaskStatusEnumText: string;
     AppTaskStatusEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            AppTaskStatusEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return AppTaskStatusEnumText;
 }

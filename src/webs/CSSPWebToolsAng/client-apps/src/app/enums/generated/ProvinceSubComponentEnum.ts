@@ -46,13 +46,13 @@ export function ProvinceSubComponentEnum_GetOrderedText(appLanguageService: AppL
 }
 
 export function ProvinceSubComponentEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let ProvinceSubComponentEnumText: string;
     ProvinceSubComponentEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            ProvinceSubComponentEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return ProvinceSubComponentEnumText;
 }

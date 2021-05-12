@@ -43,13 +43,13 @@ export function CountrySubComponentEnum_GetOrderedText(appLanguageService: AppLa
 }
 
 export function CountrySubComponentEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let CountrySubComponentEnumText: string;
     CountrySubComponentEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            CountrySubComponentEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return CountrySubComponentEnumText;
 }

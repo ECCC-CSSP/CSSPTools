@@ -37,13 +37,13 @@ export function MapInfoDrawTypeEnum_GetOrderedText(appLanguageService: AppLangua
 }
 
 export function MapInfoDrawTypeEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let MapInfoDrawTypeEnumText: string;
     MapInfoDrawTypeEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            MapInfoDrawTypeEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return MapInfoDrawTypeEnumText;
 }

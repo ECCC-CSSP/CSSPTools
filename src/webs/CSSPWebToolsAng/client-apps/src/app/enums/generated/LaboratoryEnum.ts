@@ -118,13 +118,13 @@ export function LaboratoryEnum_GetOrderedText(appLanguageService: AppLanguageSer
 }
 
 export function LaboratoryEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let LaboratoryEnumText: string;
     LaboratoryEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            LaboratoryEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return LaboratoryEnumText;
 }

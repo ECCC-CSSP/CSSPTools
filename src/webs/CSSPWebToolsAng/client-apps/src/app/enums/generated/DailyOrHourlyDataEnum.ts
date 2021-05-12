@@ -34,13 +34,13 @@ export function DailyOrHourlyDataEnum_GetOrderedText(appLanguageService: AppLang
 }
 
 export function DailyOrHourlyDataEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let DailyOrHourlyDataEnumText: string;
     DailyOrHourlyDataEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            DailyOrHourlyDataEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return DailyOrHourlyDataEnumText;
 }

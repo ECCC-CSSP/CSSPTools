@@ -40,13 +40,13 @@ export function MunicipalitySubComponentEnum_GetOrderedText(appLanguageService: 
 }
 
 export function MunicipalitySubComponentEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let MunicipalitySubComponentEnumText: string;
     MunicipalitySubComponentEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            MunicipalitySubComponentEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return MunicipalitySubComponentEnumText;
 }

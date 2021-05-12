@@ -34,13 +34,13 @@ export function ReportSortingEnum_GetOrderedText(appLanguageService: AppLanguage
 }
 
 export function ReportSortingEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let ReportSortingEnumText: string;
     ReportSortingEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            ReportSortingEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return ReportSortingEnumText;
 }

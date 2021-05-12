@@ -40,13 +40,13 @@ export function FilesSortPropEnum_GetOrderedText(appLanguageService: AppLanguage
 }
 
 export function FilesSortPropEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let FilesSortPropEnumText: string;
     FilesSortPropEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            FilesSortPropEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return FilesSortPropEnumText;
 }

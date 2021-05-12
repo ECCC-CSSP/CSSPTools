@@ -55,13 +55,13 @@ export function ContactTitleEnum_GetOrderedText(appLanguageService: AppLanguageS
 }
 
 export function ContactTitleEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let ContactTitleEnumText: string;
     ContactTitleEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            ContactTitleEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return ContactTitleEnumText;
 }

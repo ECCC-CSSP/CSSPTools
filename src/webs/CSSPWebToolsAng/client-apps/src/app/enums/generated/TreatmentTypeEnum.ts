@@ -127,13 +127,13 @@ export function TreatmentTypeEnum_GetOrderedText(appLanguageService: AppLanguage
 }
 
 export function TreatmentTypeEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let TreatmentTypeEnumText: string;
     TreatmentTypeEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            TreatmentTypeEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return TreatmentTypeEnumText;
 }

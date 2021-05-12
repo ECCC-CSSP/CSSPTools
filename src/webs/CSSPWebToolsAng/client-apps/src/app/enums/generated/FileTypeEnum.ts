@@ -94,13 +94,13 @@ export function FileTypeEnum_GetOrderedText(appLanguageService: AppLanguageServi
 }
 
 export function FileTypeEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let FileTypeEnumText: string;
     FileTypeEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            FileTypeEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return FileTypeEnumText;
 }

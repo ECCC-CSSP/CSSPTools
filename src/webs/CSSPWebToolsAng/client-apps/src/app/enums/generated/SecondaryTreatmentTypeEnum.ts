@@ -70,13 +70,13 @@ export function SecondaryTreatmentTypeEnum_GetOrderedText(appLanguageService: Ap
 }
 
 export function SecondaryTreatmentTypeEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let SecondaryTreatmentTypeEnumText: string;
     SecondaryTreatmentTypeEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            SecondaryTreatmentTypeEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return SecondaryTreatmentTypeEnumText;
 }

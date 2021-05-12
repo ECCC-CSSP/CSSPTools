@@ -43,13 +43,13 @@ export function MapSizeEnum_GetOrderedText(appLanguageService: AppLanguageServic
 }
 
 export function MapSizeEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let MapSizeEnumText: string;
     MapSizeEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            MapSizeEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return MapSizeEnumText;
 }

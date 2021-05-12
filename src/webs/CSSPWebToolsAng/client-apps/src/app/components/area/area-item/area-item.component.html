@@ -42,5 +42,5 @@
 </app-sector-tvitem-list-item>
 
 <app-file-list *ngIf="appStateService.AreaSubComponent == areaSubComponentEnum.Files"
-    [TVFileModelListList]="appLoadedService.WebArea?.TVFileModelList">
+    [TVFileModelListList]="structureTVFileListService.StructureTVFileList(appLoadedService.WebArea?.TVFileModelList)">
 </app-file-list>

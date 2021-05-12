@@ -43,13 +43,13 @@ export function InfrastructureTypeEnum_GetOrderedText(appLanguageService: AppLan
 }
 
 export function InfrastructureTypeEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let InfrastructureTypeEnumText: string;
     InfrastructureTypeEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            InfrastructureTypeEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return InfrastructureTypeEnumText;
 }

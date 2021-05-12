@@ -34,13 +34,13 @@ export function FacilityTypeEnum_GetOrderedText(appLanguageService: AppLanguageS
 }
 
 export function FacilityTypeEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let FacilityTypeEnumText: string;
     FacilityTypeEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            FacilityTypeEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return FacilityTypeEnumText;
 }

@@ -40,13 +40,13 @@ export function ActionDBTypeEnum_GetOrderedText(appLanguageService: AppLanguageS
 }
 
 export function ActionDBTypeEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let ActionDBTypeEnumText: string;
     ActionDBTypeEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            ActionDBTypeEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return ActionDBTypeEnumText;
 }

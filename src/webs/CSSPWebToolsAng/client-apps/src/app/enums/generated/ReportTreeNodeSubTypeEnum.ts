@@ -40,13 +40,13 @@ export function ReportTreeNodeSubTypeEnum_GetOrderedText(appLanguageService: App
 }
 
 export function ReportTreeNodeSubTypeEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let ReportTreeNodeSubTypeEnumText: string;
     ReportTreeNodeSubTypeEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            ReportTreeNodeSubTypeEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return ReportTreeNodeSubTypeEnumText;
 }

@@ -37,13 +37,13 @@ export function RootSubComponentEnum_GetOrderedText(appLanguageService: AppLangu
 }
 
 export function RootSubComponentEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let RootSubComponentEnumText: string;
     RootSubComponentEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            RootSubComponentEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return RootSubComponentEnumText;
 }

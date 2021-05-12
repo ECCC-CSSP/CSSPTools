@@ -34,13 +34,13 @@ export function AscDescEnum_GetOrderedText(appLanguageService: AppLanguageServic
 }
 
 export function AscDescEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let AscDescEnumText: string;
     AscDescEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            AscDescEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return AscDescEnumText;
 }

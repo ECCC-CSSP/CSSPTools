@@ -37,13 +37,13 @@ export function PolSourceIssueRiskEnum_GetOrderedText(appLanguageService: AppLan
 }
 
 export function PolSourceIssueRiskEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let PolSourceIssueRiskEnumText: string;
     PolSourceIssueRiskEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            PolSourceIssueRiskEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return PolSourceIssueRiskEnumText;
 }

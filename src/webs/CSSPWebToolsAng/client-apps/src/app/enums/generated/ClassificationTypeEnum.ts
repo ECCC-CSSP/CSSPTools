@@ -43,13 +43,13 @@ export function ClassificationTypeEnum_GetOrderedText(appLanguageService: AppLan
 }
 
 export function ClassificationTypeEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let ClassificationTypeEnumText: string;
     ClassificationTypeEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            ClassificationTypeEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return ClassificationTypeEnumText;
 }

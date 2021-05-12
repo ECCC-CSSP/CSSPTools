@@ -34,13 +34,13 @@ export function SamplingPlanTypeEnum_GetOrderedText(appLanguageService: AppLangu
 }
 
 export function SamplingPlanTypeEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let SamplingPlanTypeEnumText: string;
     SamplingPlanTypeEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            SamplingPlanTypeEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return SamplingPlanTypeEnumText;
 }

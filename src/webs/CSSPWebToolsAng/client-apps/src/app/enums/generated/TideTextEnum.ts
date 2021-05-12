@@ -55,13 +55,13 @@ export function TideTextEnum_GetOrderedText(appLanguageService: AppLanguageServi
 }
 
 export function TideTextEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let TideTextEnumText: string;
     TideTextEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            TideTextEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return TideTextEnumText;
 }

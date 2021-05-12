@@ -55,13 +55,13 @@ export function ScenarioStatusEnum_GetOrderedText(appLanguageService: AppLanguag
 }
 
 export function ScenarioStatusEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let ScenarioStatusEnumText: string;
     ScenarioStatusEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            ScenarioStatusEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return ScenarioStatusEnumText;
 }

@@ -116,7 +116,7 @@
 </app-pol-source-site-tvitem-list-item>
 
 <app-file-list *ngIf="appStateService.SubsectorSubComponent == subsectorSubComponentEnum.Files"
-    [TVFileModelListList]="appLoadedService.WebSubsector.TVFileModelList">
+    [TVFileModelListList]="structureTVFileListService.StructureTVFileList(appLoadedService.WebSubsector?.TVFileModelList)">
 </app-file-list>
 
 <div *ngIf="appStateService.SubsectorSubComponent == subsectorSubComponentEnum.SubsectorTools">

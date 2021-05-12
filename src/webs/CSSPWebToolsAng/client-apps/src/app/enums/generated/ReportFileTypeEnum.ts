@@ -40,13 +40,13 @@ export function ReportFileTypeEnum_GetOrderedText(appLanguageService: AppLanguag
 }
 
 export function ReportFileTypeEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let ReportFileTypeEnumText: string;
     ReportFileTypeEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            ReportFileTypeEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return ReportFileTypeEnumText;
 }

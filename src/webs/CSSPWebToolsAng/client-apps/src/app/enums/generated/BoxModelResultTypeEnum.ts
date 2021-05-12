@@ -43,13 +43,13 @@ export function BoxModelResultTypeEnum_GetOrderedText(appLanguageService: AppLan
 }
 
 export function BoxModelResultTypeEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let BoxModelResultTypeEnumText: string;
     BoxModelResultTypeEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            BoxModelResultTypeEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return BoxModelResultTypeEnumText;
 }

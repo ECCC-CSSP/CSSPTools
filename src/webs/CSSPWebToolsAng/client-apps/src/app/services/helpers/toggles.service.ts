@@ -1,18 +1,16 @@
 import { Injectable } from '@angular/core';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { ShellSubComponentEnum } from 'src/app/enums/generated/ShellSubComponentEnum';
-// import { WebAreaService } from 'src/app/services/loaders/web-area.service';
-// import { WebCountryService } from 'src/app/services/loaders/web-country.service';
-// import { WebMunicipalityService } from 'src/app/services/loaders/web-municipalty.service';
-// import { WebMWQMRunsService } from 'src/app/services/loaders/web-mwqm-runs.service';
-// import { WebMWQMSitesService } from 'src/app/services/loaders/web-mwqm-sites.service';
-// import { WebPolSourceSitesService } from 'src/app/services/loaders/web-pol-source-sites.service';
-// import { WebProvinceService } from 'src/app/services/loaders/web-province.service';
-//import { WebRootService } from 'src/app/services/loaders/web-root.service';
-// import { WebSectorService } from 'src/app/services/loaders/web-sector.service';
-// import { WebSubsectorService } from 'src/app/services/loaders/web-subsector.service';
- import { AppLoadedService } from '../app-loaded.service';
-// import { LoaderService } from '../loaders/loader.service';
+import { AppLoadedService } from '../app-loaded.service';
+import { LoaderService } from '../loaders/loader.service';
+import { WebTypeEnum } from 'src/app/enums/generated/WebTypeEnum';
+import { WebArea } from 'src/app/models/generated/web/WebArea.model';
+import { WebCountry } from 'src/app/models/generated/web/WebCountry.model';
+import { WebMunicipality } from 'src/app/models/generated/web/WebMunicipality.model';
+import { WebProvince } from 'src/app/models/generated/web/WebProvince.model';
+import { WebRoot } from 'src/app/models/generated/web/WebRoot.model';
+import { WebSector } from 'src/app/models/generated/web/WebSector.model';
+import { WebSubsector } from 'src/app/models/generated/web/WebSubsector.model';
 
 @Injectable({
     providedIn: 'root'
@@ -20,34 +18,24 @@ import { ShellSubComponentEnum } from 'src/app/enums/generated/ShellSubComponent
 export class TogglesService {
     constructor(private appStateService: AppStateService,
         private appLoadedService: AppLoadedService,
-        // private webAreaService: WebAreaService,
-        // private webCountryService: WebCountryService,
-        // private webMunicipalityService: WebMunicipalityService,
-        // private webMWQMSitesService: WebMWQMSitesService,
-        // private webMWQMRunsService: WebMWQMRunsService,
-        // private webPolSourceSitesService: WebPolSourceSitesService,
-        // private webProvinceService: WebProvinceService,
-        // private loaderService: LoaderService,
-        //private webRootService: WebRootService,
-        // private webSectorService: WebSectorService,
-        // private webSubsectorService: WebSubsectorService,
+        private loaderService: LoaderService
     ) {
 
     }
 
     ToggleDetail(): void {
-        this.appStateService.DetailVisible = !this.appStateService.DetailVisible; 
-        this.appStateService.Working = false;
+        this.appStateService.DetailVisible = !this.appStateService.DetailVisible;
+        this.ReloadPage();
     }
 
     ToggleInactive(): void {
         this.appStateService.InactVisible = !this.appStateService.InactVisible;
-        //this.ReloadPage();
+        this.ReloadPage();
     }
 
     ToggleLastUpdate(): void {
-        this.appStateService.LastUpdateVisible = !this.appStateService.LastUpdateVisible; 
-        this.appStateService.Working = false;
+        this.appStateService.LastUpdateVisible = !this.appStateService.LastUpdateVisible;
+        this.ReloadPage();
     }
 
     ToggleMap(): void {
@@ -59,79 +47,62 @@ export class TogglesService {
     }
 
     ToggleStatCount(): void {
-        this.appStateService.StatCountVisible = !this.appStateService.StatCountVisible; 
-        this.appStateService.Working = false;
+        this.appStateService.StatCountVisible = !this.appStateService.StatCountVisible;
+        this.ReloadPage();
     }
 
     ToggleEdit(): void {
-        this.appStateService.EditVisible = !this.appStateService.EditVisible; 
-        this.appStateService.Working = false;
+        this.appStateService.EditVisible = !this.appStateService.EditVisible;
+        this.ReloadPage();
     }
 
     ToggleEditMap(): void {
-        this.appStateService.EditMapVisible = !this.appStateService.EditMapVisible; 
-        this.appStateService.Working = false;
-        //this.ReloadPage();
+        this.appStateService.EditMapVisible = !this.appStateService.EditMapVisible;
+        this.ReloadPage();
     }
 
-    // private ReloadPage()
-    // {
-    //     switch (this.appStateService.ShellSubComponent) {
-    //         case ShellSubComponentEnum.Area:
-    //             {
-    //                 this.webAreaService.DoWebArea(this.appStateService.CurrentTVItemID, true);
-    //             }
-    //             break;
-    //         case ShellSubComponentEnum.Country:
-    //             {
-    //                 this.webCountryService.DoWebCountry(this.appStateService.CurrentTVItemID, true);
-    //             }
-    //             break;
-    //         case ShellSubComponentEnum.Municipality:
-    //             {
-    //                 this.webMunicipalityService.DoWebMunicipality(this.appStateService.CurrentTVItemID, true);
-    //             }
-    //             break;
-    //         case ShellSubComponentEnum.MWQMRun:
-    //             {
-    //                 this.webMWQMRunsService.DoWebMWQMRuns(this.appStateService.CurrentTVItemID, true);
-    //             }
-    //             break;
-    //         case ShellSubComponentEnum.MWQMSite:
-    //             {
-    //                 this.webMWQMSitesService.DoWebMWQMSites(this.appStateService.CurrentTVItemID, true);
-    //             }
-    //             break;
-    //         case ShellSubComponentEnum.PolSourceSite:
-    //             {
-    //                 this.webPolSourceSitesService.DoWebPolSourceSites(this.appStateService.CurrentTVItemID, true);
-    //             }
-    //             break;
-    //         case ShellSubComponentEnum.Province:
-    //             {
-    //                 this.webProvinceService.DoWebProvince(this.appStateService.CurrentTVItemID, true);
-    //             }
-    //             break;
-    //         case ShellSubComponentEnum.Root:
-    //             {
-    //                 this.webRootService.DoWebRoot(true);
-    //             }
-    //             break;
-    //         case ShellSubComponentEnum.Sector:
-    //             {
-    //                 this.webSectorService.DoWebSector(this.appStateService.CurrentTVItemID, true);
-    //             }
-    //             break;
-    //         case ShellSubComponentEnum.Subsector:
-    //             {
-    //                 this.webSubsectorService.DoWebSubsector(this.appStateService.CurrentTVItemID, true);
-    //             }
-    //             break;
-    //         default:
-    //             {
+    private ReloadPage() {
+        switch (this.appStateService.ShellSubComponent) {
+            case ShellSubComponentEnum.Area:
+                {
+                    this.loaderService.Load<WebArea>(WebTypeEnum.WebArea, null, false);
+                }
+                break;
+            case ShellSubComponentEnum.Country:
+                {
+                    this.loaderService.Load<WebCountry>(WebTypeEnum.WebCountry, null, false);
+                }
+                break;
+            case ShellSubComponentEnum.Municipality:
+                {
+                    this.loaderService.Load<WebMunicipality>(WebTypeEnum.WebMunicipality, null, false);
+                }
+                break;
+            case ShellSubComponentEnum.Province:
+                {
+                    this.loaderService.Load<WebProvince>(WebTypeEnum.WebProvince, null, false);
+                }
+                break;
+            case ShellSubComponentEnum.Root:
+                {
+                    this.loaderService.Load<WebRoot>(WebTypeEnum.WebRoot, null, false);
+                }
+                break;
+            case ShellSubComponentEnum.Sector:
+                {
+                    this.loaderService.Load<WebSector>(WebTypeEnum.WebSector, null, false);
+                }
+                break;
+            case ShellSubComponentEnum.Subsector:
+                {
+                    this.loaderService.Load<WebSubsector>(WebTypeEnum.WebSubsector, null, false);
+                }
+                break;
+            default:
+                {
 
-    //             }
-    //             break;
-    //     }
-    // }
+                }
+                break;
+        }
+    }
 }

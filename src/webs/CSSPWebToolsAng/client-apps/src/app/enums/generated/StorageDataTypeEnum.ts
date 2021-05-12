@@ -37,13 +37,13 @@ export function StorageDataTypeEnum_GetOrderedText(appLanguageService: AppLangua
 }
 
 export function StorageDataTypeEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let StorageDataTypeEnumText: string;
     StorageDataTypeEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            StorageDataTypeEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return StorageDataTypeEnumText;
 }

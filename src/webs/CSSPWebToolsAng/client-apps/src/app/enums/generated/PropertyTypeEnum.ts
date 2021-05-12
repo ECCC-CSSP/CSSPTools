@@ -46,13 +46,13 @@ export function PropertyTypeEnum_GetOrderedText(appLanguageService: AppLanguageS
 }
 
 export function PropertyTypeEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let PropertyTypeEnumText: string;
     PropertyTypeEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            PropertyTypeEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return PropertyTypeEnumText;
 }

@@ -61,13 +61,13 @@ export function ShellSubComponentEnum_GetOrderedText(appLanguageService: AppLang
 }
 
 export function ShellSubComponentEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let ShellSubComponentEnumText: string;
     ShellSubComponentEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            ShellSubComponentEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return ShellSubComponentEnumText;
 }

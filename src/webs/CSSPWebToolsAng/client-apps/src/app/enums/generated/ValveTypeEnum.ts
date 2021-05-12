@@ -37,13 +37,13 @@ export function ValveTypeEnum_GetOrderedText(appLanguageService: AppLanguageServ
 }
 
 export function ValveTypeEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let ValveTypeEnumText: string;
     ValveTypeEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            ValveTypeEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return ValveTypeEnumText;
 }

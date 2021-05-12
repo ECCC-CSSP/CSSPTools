@@ -34,13 +34,13 @@ export function CSSPWQInputTypeEnum_GetOrderedText(appLanguageService: AppLangua
 }
 
 export function CSSPWQInputTypeEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let CSSPWQInputTypeEnumText: string;
     CSSPWQInputTypeEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            CSSPWQInputTypeEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return CSSPWQInputTypeEnumText;
 }

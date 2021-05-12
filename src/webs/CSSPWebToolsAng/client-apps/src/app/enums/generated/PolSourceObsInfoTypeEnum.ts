@@ -40,13 +40,13 @@ export function PolSourceObsInfoTypeEnum_GetOrderedText(appLanguageService: AppL
 }
 
 export function PolSourceObsInfoTypeEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let PolSourceObsInfoTypeEnumText: string;
     PolSourceObsInfoTypeEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            PolSourceObsInfoTypeEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return PolSourceObsInfoTypeEnumText;
 }

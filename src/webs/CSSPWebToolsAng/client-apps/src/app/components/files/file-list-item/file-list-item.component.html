@@ -1,32 +1,31 @@
-<!-- <mat-list-item>
+<mat-list-item>
     <span mat-line>
         <app-tvfile-menu [TVFileModel]="TVFileModel" >
         </app-tvfile-menu>
 
-        <button mat-button (click)="download(TVFileModel)">
+        <button mat-button (click)="Download(TVFileModel)">
             <img src="{{ fileIconService.GetFileIcon(TVFileModel) }}" />
             <span>&nbsp;&nbsp;</span>
-            <span>{{ Index }} - {{ TVFileModel.TVFile.ServerFileName }} </span>
-            <span>| {{ TVFileModel.TVFile.FileSize_kb }} </span>
+            <span>{{ Index }} - {{ TVFileModel?.TVFile?.ServerFileName }} </span>
+            <span>| {{ TVFileModel?.TVFile?.FileSize_kb }} </span>
             <span>{{ appLanguageService.KB[appLanguageService.LangID] }} | </span>
             <span>{{ dateFormatService.GetFileCreateDate(TVFileModel) }}</span>
             <app-last-udpate-tv-file-model *ngIf="appStateService.LastUpdateVisible"
                 [TVFileModel]="TVFileModel"></app-last-udpate-tv-file-model>
         </button>
     </span>
-    <span mat-line *ngIf="download$ | async as download">
+    <!-- <span mat-line *ngIf="download$ | async as download">
         <mat-progress-bar [mode]="download.state == 'PENDING' ? 'buffer' : 'determinate'" [value]="download.progress">
         </mat-progress-bar>
-    </span>
+    </span> -->
 
-</mat-list-item> -->
+</mat-list-item>
 
 <ng-container *ngIf="showTVFileService.TVFileVisible(TVFileModel)">
-    <app-file-list-item-view *ngIf="!appStateService.EditVisible" [TVFileModel]="TVFileModel"
-        >
+    <app-file-list-item-view *ngIf="!appStateService.EditVisible" [TVFileModel]="TVFileModel">
     </app-file-list-item-view>
 
-    <app-file-list-item-edit *ngIf="appStateService.EditVisible" [TVFileModel]="TVFileModel" >
+    <app-file-list-item-edit *ngIf="appStateService.EditVisible" [TVFileModel]="TVFileModel">
     </app-file-list-item-edit>
 </ng-container>
 

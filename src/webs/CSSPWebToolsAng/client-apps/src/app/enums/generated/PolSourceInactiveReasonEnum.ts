@@ -37,13 +37,13 @@ export function PolSourceInactiveReasonEnum_GetOrderedText(appLanguageService: A
 }
 
 export function PolSourceInactiveReasonEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let PolSourceInactiveReasonEnumText: string;
     PolSourceInactiveReasonEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            PolSourceInactiveReasonEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return PolSourceInactiveReasonEnumText;
 }

@@ -4826,13 +4826,13 @@ pelouse au bord de l\'eau' });
 }
 
 export function PolSourceObsInfoEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let PolSourceObsInfoEnumText: string;
     PolSourceObsInfoEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            PolSourceObsInfoEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return PolSourceObsInfoEnumText;
 }

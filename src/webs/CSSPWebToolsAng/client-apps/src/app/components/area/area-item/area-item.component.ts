@@ -14,6 +14,7 @@ import { LoaderService } from 'src/app/services/loaders/loader.service';
 import { WebArea } from 'src/app/models/generated/web/WebArea.model';
 import { WebTypeEnum } from 'src/app/enums/generated/WebTypeEnum';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
+import { StructureTVFileListService } from 'src/app/services/helpers/structure-tvfile-list.service';
 
 
 @Component({
@@ -36,7 +37,8 @@ export class AreaItemComponent implements OnInit, OnDestroy {
     public statCountService: StatCountService,
     public sortTVItemListService: SortTVItemListService,
     public filterService: FilterService,
-    public componentShowService: ComponentShowService) { }
+    public componentShowService: ComponentShowService,
+    public structureTVFileListService: StructureTVFileListService) { }
 
   ngOnInit(): void {
     this.loaderService.Load<WebArea>(WebTypeEnum.WebArea, null, false);

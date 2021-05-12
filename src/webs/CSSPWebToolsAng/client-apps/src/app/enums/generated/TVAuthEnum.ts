@@ -46,13 +46,13 @@ export function TVAuthEnum_GetOrderedText(appLanguageService: AppLanguageService
 }
 
 export function TVAuthEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let TVAuthEnumText: string;
     TVAuthEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            TVAuthEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return TVAuthEnumText;
 }

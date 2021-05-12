@@ -39,13 +39,13 @@ export function LanguageEnum_GetOrderedText(appLanguageService: AppLanguageServi
 }
 
 export function LanguageEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let LanguageEnumText: string;
     LanguageEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            LanguageEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return LanguageEnumText;
 }

@@ -40,13 +40,13 @@ export function DBCommandEnum_GetOrderedText(appLanguageService: AppLanguageServ
 }
 
 export function DBCommandEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let DBCommandEnumText: string;
     DBCommandEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            DBCommandEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return DBCommandEnumText;
 }

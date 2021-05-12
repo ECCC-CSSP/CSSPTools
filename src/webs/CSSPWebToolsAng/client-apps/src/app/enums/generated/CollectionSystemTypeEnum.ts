@@ -61,13 +61,13 @@ export function CollectionSystemTypeEnum_GetOrderedText(appLanguageService: AppL
 }
 
 export function CollectionSystemTypeEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let CollectionSystemTypeEnumText: string;
     CollectionSystemTypeEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            CollectionSystemTypeEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return CollectionSystemTypeEnumText;
 }

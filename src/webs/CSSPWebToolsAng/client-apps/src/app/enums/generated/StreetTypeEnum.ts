@@ -58,13 +58,13 @@ export function StreetTypeEnum_GetOrderedText(appLanguageService: AppLanguageSer
 }
 
 export function StreetTypeEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let StreetTypeEnumText: string;
     StreetTypeEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            StreetTypeEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return StreetTypeEnumText;
 }

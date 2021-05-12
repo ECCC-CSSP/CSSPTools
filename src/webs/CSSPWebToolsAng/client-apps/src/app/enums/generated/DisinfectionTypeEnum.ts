@@ -49,13 +49,13 @@ export function DisinfectionTypeEnum_GetOrderedText(appLanguageService: AppLangu
 }
 
 export function DisinfectionTypeEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let DisinfectionTypeEnumText: string;
     DisinfectionTypeEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            DisinfectionTypeEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return DisinfectionTypeEnumText;
 }

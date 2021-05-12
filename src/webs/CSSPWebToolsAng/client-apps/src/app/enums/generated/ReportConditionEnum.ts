@@ -52,13 +52,13 @@ export function ReportConditionEnum_GetOrderedText(appLanguageService: AppLangua
 }
 
 export function ReportConditionEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let ReportConditionEnumText: string;
     ReportConditionEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            ReportConditionEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return ReportConditionEnumText;
 }

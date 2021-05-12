@@ -34,13 +34,13 @@ export function AreaSubComponentEnum_GetOrderedText(appLanguageService: AppLangu
 }
 
 export function AreaSubComponentEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let AreaSubComponentEnumText: string;
     AreaSubComponentEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            AreaSubComponentEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return AreaSubComponentEnumText;
 }

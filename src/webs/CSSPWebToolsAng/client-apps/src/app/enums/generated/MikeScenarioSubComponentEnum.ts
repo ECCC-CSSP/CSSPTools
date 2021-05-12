@@ -43,13 +43,13 @@ export function MikeScenarioSubComponentEnum_GetOrderedText(appLanguageService: 
 }
 
 export function MikeScenarioSubComponentEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let MikeScenarioSubComponentEnumText: string;
     MikeScenarioSubComponentEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            MikeScenarioSubComponentEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return MikeScenarioSubComponentEnumText;
 }

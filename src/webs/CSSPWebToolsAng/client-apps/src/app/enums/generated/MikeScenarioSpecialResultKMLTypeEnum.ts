@@ -43,13 +43,13 @@ export function MikeScenarioSpecialResultKMLTypeEnum_GetOrderedText(appLanguageS
 }
 
 export function MikeScenarioSpecialResultKMLTypeEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let MikeScenarioSpecialResultKMLTypeEnumText: string;
     MikeScenarioSpecialResultKMLTypeEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            MikeScenarioSpecialResultKMLTypeEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return MikeScenarioSpecialResultKMLTypeEnumText;
 }

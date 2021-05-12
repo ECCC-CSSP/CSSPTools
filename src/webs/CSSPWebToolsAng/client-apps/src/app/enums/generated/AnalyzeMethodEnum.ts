@@ -64,13 +64,13 @@ export function AnalyzeMethodEnum_GetOrderedText(appLanguageService: AppLanguage
 }
 
 export function AnalyzeMethodEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let AnalyzeMethodEnumText: string;
     AnalyzeMethodEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            AnalyzeMethodEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return AnalyzeMethodEnumText;
 }

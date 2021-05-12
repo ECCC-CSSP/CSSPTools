@@ -34,13 +34,13 @@ export function MikeBoundaryConditionLevelOrVelocityEnum_GetOrderedText(appLangu
 }
 
 export function MikeBoundaryConditionLevelOrVelocityEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let MikeBoundaryConditionLevelOrVelocityEnumText: string;
     MikeBoundaryConditionLevelOrVelocityEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            MikeBoundaryConditionLevelOrVelocityEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return MikeBoundaryConditionLevelOrVelocityEnumText;
 }

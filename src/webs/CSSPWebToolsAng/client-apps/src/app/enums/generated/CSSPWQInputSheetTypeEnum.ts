@@ -37,13 +37,13 @@ export function CSSPWQInputSheetTypeEnum_GetOrderedText(appLanguageService: AppL
 }
 
 export function CSSPWQInputSheetTypeEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let CSSPWQInputSheetTypeEnumText: string;
     CSSPWQInputSheetTypeEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            CSSPWQInputSheetTypeEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return CSSPWQInputSheetTypeEnumText;
 }

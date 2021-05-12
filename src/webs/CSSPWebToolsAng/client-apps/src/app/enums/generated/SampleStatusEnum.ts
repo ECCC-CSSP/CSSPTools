@@ -43,13 +43,13 @@ export function SampleStatusEnum_GetOrderedText(appLanguageService: AppLanguageS
 }
 
 export function SampleStatusEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let SampleStatusEnumText: string;
     SampleStatusEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            SampleStatusEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return SampleStatusEnumText;
 }

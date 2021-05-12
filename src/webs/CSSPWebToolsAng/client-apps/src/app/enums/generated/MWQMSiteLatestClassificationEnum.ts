@@ -46,13 +46,13 @@ export function MWQMSiteLatestClassificationEnum_GetOrderedText(appLanguageServi
 }
 
 export function MWQMSiteLatestClassificationEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let MWQMSiteLatestClassificationEnumText: string;
     MWQMSiteLatestClassificationEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            MWQMSiteLatestClassificationEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return MWQMSiteLatestClassificationEnumText;
 }

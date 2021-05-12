@@ -52,13 +52,13 @@ export function SpecialTableTypeEnum_GetOrderedText(appLanguageService: AppLangu
 }
 
 export function SpecialTableTypeEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let SpecialTableTypeEnumText: string;
     SpecialTableTypeEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            SpecialTableTypeEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return SpecialTableTypeEnumText;
 }

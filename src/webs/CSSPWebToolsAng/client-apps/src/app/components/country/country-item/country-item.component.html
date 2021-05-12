@@ -57,7 +57,7 @@
 </app-province-tvitem-list-item>
 
 <app-file-list *ngIf="appStateService.CountrySubComponent == countrySubComponentEnum.Files"
-    [TVFileModelListList]="appLoadedService.WebCountry?.TVFileModelList">
+    [TVFileModelListList]="structureTVFileListService.StructureTVFileList(appLoadedService.WebCountry?.TVFileModelList)">
 </app-file-list>
 
 <div *ngIf="appStateService.CountrySubComponent == countrySubComponentEnum.OpenDataNational">

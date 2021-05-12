@@ -34,13 +34,13 @@ export function RunningOnEnum_GetOrderedText(appLanguageService: AppLanguageServ
 }
 
 export function RunningOnEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let RunningOnEnumText: string;
     RunningOnEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            RunningOnEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return RunningOnEnumText;
 }

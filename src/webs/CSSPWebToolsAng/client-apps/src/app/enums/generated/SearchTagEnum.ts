@@ -136,13 +136,13 @@ export function SearchTagEnum_GetOrderedText(appLanguageService: AppLanguageServ
 }
 
 export function SearchTagEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let SearchTagEnumText: string;
     SearchTagEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            SearchTagEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return SearchTagEnumText;
 }

@@ -37,13 +37,13 @@ export function CanOverflowTypeEnum_GetOrderedText(appLanguageService: AppLangua
 }
 
 export function CanOverflowTypeEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let CanOverflowTypeEnumText: string;
     CanOverflowTypeEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            CanOverflowTypeEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return CanOverflowTypeEnumText;
 }

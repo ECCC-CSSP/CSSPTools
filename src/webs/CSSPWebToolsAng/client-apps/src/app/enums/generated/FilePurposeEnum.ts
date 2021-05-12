@@ -70,13 +70,13 @@ export function FilePurposeEnum_GetOrderedText(appLanguageService: AppLanguageSe
 }
 
 export function FilePurposeEnum_GetIDText(enumID: number, appLanguageService: AppLanguageService): string {
-    let addressTypeEnunText: string;
+    let FilePurposeEnumText: string;
     FilePurposeEnum_GetOrderedText(appLanguageService).forEach(e => {
         if (e.EnumID == enumID) {
-            addressTypeEnunText = e.EnumText;
+            FilePurposeEnumText = e.EnumText;
             return false;
         }
     });
 
-    return addressTypeEnunText;
+    return FilePurposeEnumText;
 }
