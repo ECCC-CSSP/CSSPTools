@@ -5,52 +5,79 @@
     {{ appStateService.Status }}
 </p>
 
-<button mat-button [ngClass]="appStateService.RootSubComponent == rootSubComponentEnum.Countries ? 'selected' : ''"
+<button mat-button [ngClass]="appStateService.UserPreference.RootSubComponent == rootSubComponentEnum.Countries ? 'selected' : ''"
     (click)="componentShowService.ShowRoot(rootSubComponentEnum.Countries)"
     title="{{ appLanguageService.RootShowCountries[appLanguageService.LangID] }}">
     <span>
         {{ appLanguageService.RootCountries[appLanguageService.LangID] }}
-        <span class="badge-stat" *ngIf="appStateService.StatCountVisible">
-            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.WebRoot?.TVItemModel, tvTypeEnum.Country) }}&nbsp;&nbsp;
+        <span class="badge-stat" *ngIf="appStateService.UserPreference.StatCountVisible">
+            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.WebRoot?.TVItemModel, tvTypeEnum.Country)
+            }}&nbsp;&nbsp;
         </span>
     </span>
-    <span class="biggerArrow"
-        (click)="ChangeSortOrderForRootCountries(ascDescEnum.Ascending)"
-        *ngIf="appStateService.RootCountriesSortOrder == ascDescEnum.Descending">
-        &nbsp;&nbsp;&uarr;
+    <span class="biggerArrow" *ngIf="appStateService.UserPreference.RootCountriesSortOrder == ascDescEnum.Descending"
+        (click)="this.appStateService.UserPreference.RootCountriesSortOrder = ascDescEnum.Ascending"
+        title="{{ appLanguageService.SortBy[appLanguageService.LangID]}} {{ appLanguageService.Ascending[appLanguageService.LangID] }}">
+        &nbsp;&nbsp;&#8679;
     </span>
-    <span class="biggerArrow"
-        (click)="ChangeSortOrderForRootCountries(ascDescEnum.Descending)"
-        *ngIf="appStateService.RootCountriesSortOrder == ascDescEnum.Ascending">
-        &nbsp;&nbsp;&darr;
+    <span class="biggerArrow" *ngIf="appStateService.UserPreference.RootCountriesSortOrder == ascDescEnum.Ascending"
+        (click)="this.appStateService.UserPreference.RootCountriesSortOrder = ascDescEnum.Descending"
+        title="{{ appLanguageService.SortBy[appLanguageService.LangID]}} {{ appLanguageService.Descending[appLanguageService.LangID] }}">
+        &nbsp;&nbsp;&#8681;
     </span>
 </button>
 
-<button mat-button [ngClass]="appStateService.RootSubComponent == rootSubComponentEnum.Files ? 'selected' : ''"
+<button mat-button [ngClass]="appStateService.UserPreference.RootSubComponent == rootSubComponentEnum.Files ? 'selected' : ''"
     (click)="componentShowService.ShowRoot(rootSubComponentEnum.Files)"
     title="{{ appLanguageService.RootShowFiles[appLanguageService.LangID] }}">
     <span>
         {{ appLanguageService.RootFiles[appLanguageService.LangID] }}
-        <span class="badge-stat" *ngIf="appStateService.StatCountVisible">
-            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.WebRoot?.TVItemModel, tvTypeEnum.File) }}/
+        <span class="badge-stat" *ngIf="appStateService.UserPreference.StatCountVisible">
+            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.WebRoot?.TVItemModel, tvTypeEnum.File) }} /
             {{ statCountService.GetStatCount(appLoadedService.WebRoot?.TVItemModel, tvTypeEnum.TotalFile) }}&nbsp;&nbsp;
         </span>
     </span>
+    <span mat-button [matMenuTriggerFor]="menu" title="{{ appLanguageService.FileName[appLanguageService.LangID] }}">&nbsp;&nbsp;
+        <span *ngIf="appStateService.UserPreference.RootFilesSortByProp == filesSortPropEnum.FileName" 
+        title="{{ appLanguageService.SortedBy[appLanguageService.LangID] }} {{ appLanguageService.FileName[appLanguageService.LangID] }}">
+            ({{ appLanguageService.FileNameAccro[appLanguageService.LangID] }})
+        </span>
+        <span *ngIf="appStateService.UserPreference.RootFilesSortByProp == filesSortPropEnum.FileType" 
+        title="{{ appLanguageService.SortedBy[appLanguageService.LangID] }} {{ appLanguageService.FileType[appLanguageService.LangID] }}">
+            ({{ appLanguageService.FileTypeAccro[appLanguageService.LangID] }})
+        </span>
+        <span *ngIf="appStateService.UserPreference.RootFilesSortByProp == filesSortPropEnum.FileSize" 
+        title="{{ appLanguageService.SortedBy[appLanguageService.LangID] }} {{ appLanguageService.FileSize[appLanguageService.LangID] }}">
+            ({{ appLanguageService.FileSizeAccro[appLanguageService.LangID] }})
+        </span>
+        <span *ngIf="appStateService.UserPreference.RootFilesSortByProp == filesSortPropEnum.FileDate" 
+        title="{{ appLanguageService.SortedBy[appLanguageService.LangID] }} {{ appLanguageService.FileDate[appLanguageService.LangID] }}">
+            ({{ appLanguageService.FileDateAccro[appLanguageService.LangID] }})
+        </span>
+    </span>
+    <mat-menu #menu="matMenu">
+        <h2  mat-menu-item >{{ appLanguageService.SortBy[appLanguageService.LangID] }}</h2>
+        <button mat-menu-item (click)="appStateService.UserPreference.RootFilesSortByProp = filesSortPropEnum.FileName">{{ appLanguageService.FileName[appLanguageService.LangID] }}</button>
+        <button mat-menu-item (click)="appStateService.UserPreference.RootFilesSortByProp = filesSortPropEnum.FileType">{{ appLanguageService.FileType[appLanguageService.LangID] }}</button>
+        <button mat-menu-item (click)="appStateService.UserPreference.RootFilesSortByProp = filesSortPropEnum.FileSize">{{ appLanguageService.FileSize[appLanguageService.LangID] }}</button>
+        <button mat-menu-item (click)="appStateService.UserPreference.RootFilesSortByProp = filesSortPropEnum.FileDate">{{ appLanguageService.FileDate[appLanguageService.LangID] }}</button>
+    </mat-menu>
 </button>
-<button mat-button [ngClass]="appStateService.RootSubComponent == rootSubComponentEnum.ExportArcGIS ? 'selected' : ''"
+<button mat-button [ngClass]="appStateService.UserPreference.RootSubComponent == rootSubComponentEnum.ExportArcGIS ? 'selected' : ''"
     (click)="componentShowService.ShowRoot(rootSubComponentEnum.ExportArcGIS)"
     title="{{ appLanguageService.RootShowExportArcGISTools[appLanguageService.LangID] }}">
     {{ appLanguageService.RootExportArcGIS[appLanguageService.LangID] }}
 </button>
 
-<app-country-tvitem-list-item *ngIf="appStateService.RootSubComponent == rootSubComponentEnum.Countries"   
+<app-country-tvitem-list-item *ngIf="appStateService.UserPreference.RootSubComponent == rootSubComponentEnum.Countries"
     [TVItemModelList]="sortTVItemListService.SortTVItemList(filterService.FilterTVItemModelList(appLoadedService.WebRoot?.TVItemModelCountryList))">
 </app-country-tvitem-list-item>
 
-<app-file-list *ngIf="appStateService.RootSubComponent == rootSubComponentEnum.Files"
-    [TVFileModelListList]="structureTVFileListService.StructureTVFileList(appLoadedService.WebRoot?.TVFileModelList)">
+<app-file-list *ngIf="appStateService.UserPreference.RootSubComponent == rootSubComponentEnum.Files"
+    [TVFileModelListList]="structureTVFileListService.StructureTVFileList(tvTypeEnum.Root, appLoadedService.WebRoot?.TVFileModelList)"
+    [FilesSortByProp]="appStateService.UserPreference.RootFilesSortByProp">
 </app-file-list>
 
-<div *ngIf="appStateService.RootSubComponent == rootSubComponentEnum.ExportArcGIS">
-    <app-export-arc-gis-item ></app-export-arc-gis-item>
+<div *ngIf="appStateService.UserPreference.RootSubComponent == rootSubComponentEnum.ExportArcGIS">
+    <app-export-arc-gis-item></app-export-arc-gis-item>
 </div>

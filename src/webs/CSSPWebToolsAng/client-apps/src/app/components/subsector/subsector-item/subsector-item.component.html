@@ -5,124 +5,152 @@
     {{ appStateService.Status }}
 </p>
 
-<button mat-button [ngClass]="appStateService.SubsectorSubComponent == subsectorSubComponentEnum.MWQMSites ? 'selected' : ''"
+<button mat-button
+    [ngClass]="appStateService.UserPreference.SubsectorSubComponent == subsectorSubComponentEnum.MWQMSites ? 'selected' : ''"
     (click)="componentShowService.ShowSubsector(subsectorSubComponentEnum.MWQMSites)"
     title="{{ appLanguageService.SubsectorShowMWQMSites[appLanguageService.LangID] }}">
     <span>
         {{ appLanguageService.SubsectorMWQMSites[appLanguageService.LangID] }}
-        <span class="badge-stat" *ngIf="appStateService.StatCountVisible">
-            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.WebSubsector?.TVItemModel, tvTypeEnum.MWQMSite) }}&nbsp;&nbsp;
-        </span>                
+        <span class="badge-stat" *ngIf="appStateService.UserPreference.StatCountVisible">
+            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.WebSubsector?.TVItemModel,
+            tvTypeEnum.MWQMSite) }}&nbsp;&nbsp;
+        </span>
     </span>
-    <span class="biggerArrow"
-        (click)="ChangeSortOrderForSubsectorMWQMSites(ascDescEnum.Ascending)"
-        *ngIf="appStateService.SubsectorMWQMSitesSortOrder == ascDescEnum.Descending">
-        &nbsp;&nbsp;&uarr;
+    <span class="biggerArrow" *ngIf="appStateService.UserPreference.SubsectorMWQMSitesSortOrder == ascDescEnum.Descending"
+        (click)="appStateService.UserPreference.SubsectorMWQMSitesSortOrder = ascDescEnum.Ascending">
+        &nbsp;&nbsp;&#8679;
     </span>
-    <span class="biggerArrow"
-        (click)="ChangeSortOrderForSubsectorMWQMSites(ascDescEnum.Ascending)"
-        *ngIf="appStateService.SubsectorMWQMSitesSortOrder == ascDescEnum.Ascending">
-        &nbsp;&nbsp;&darr;
+    <span class="biggerArrow" *ngIf="appStateService.UserPreference.SubsectorMWQMSitesSortOrder == ascDescEnum.Ascending"
+        (click)="appStateService.UserPreference.SubsectorMWQMSitesSortOrder = ascDescEnum.Descending">
+        &nbsp;&nbsp;&#8681;
     </span>
 </button>
-<button mat-button [ngClass]="appStateService.SubsectorSubComponent == subsectorSubComponentEnum.Analysis ? 'selected' : ''"
+<button mat-button
+    [ngClass]="appStateService.UserPreference.SubsectorSubComponent == subsectorSubComponentEnum.Analysis ? 'selected' : ''"
     (click)="componentShowService.ShowSubsector(subsectorSubComponentEnum.Analysis)"
     title="{{ appLanguageService.SubsectorShowAnalysis[appLanguageService.LangID] }}">
     {{ appLanguageService.SubsectorAnalysis[appLanguageService.LangID] }}
 </button>
-<button mat-button [ngClass]="appStateService.SubsectorSubComponent == subsectorSubComponentEnum.MWQMRuns ? 'selected' : ''"
+<button mat-button
+    [ngClass]="appStateService.UserPreference.SubsectorSubComponent == subsectorSubComponentEnum.MWQMRuns ? 'selected' : ''"
     (click)="componentShowService.ShowSubsector(subsectorSubComponentEnum.MWQMRuns)"
     title="{{ appLanguageService.SubsectorShowMWQMRuns[appLanguageService.LangID] }}">
     <span>
         {{ appLanguageService.SubsectorMWQMRuns[appLanguageService.LangID] }}
-        <span class="badge-stat" *ngIf="appStateService.StatCountVisible">
-            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.WebSubsector?.TVItemModel, tvTypeEnum.MWQMRun) }}&nbsp;&nbsp;
-        </span>                        
+        <span class="badge-stat" *ngIf="appStateService.UserPreference.StatCountVisible">
+            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.WebSubsector?.TVItemModel, tvTypeEnum.MWQMRun)
+            }}&nbsp;&nbsp;
+        </span>
     </span>
-    <span class="biggerArrow"
-        (click)="ChangeSortOrderForSubsectorMWQMRuns(ascDescEnum.Ascending)"
-        *ngIf="appStateService.SubsectorMWQMRunsSortOrder == ascDescEnum.Descending">
-        &nbsp;&nbsp;&uarr;
+    <span class="biggerArrow" *ngIf="appStateService.UserPreference.SubsectorMWQMRunsSortOrder == ascDescEnum.Descending"
+        (click)="appStateService.UserPreference.SubsectorMWQMRunsSortOrder = ascDescEnum.Ascending">
+        &nbsp;&nbsp;&#8679;
     </span>
-    <span class="biggerArrow"
-        (click)="ChangeSortOrderForSubsectorMWQMRuns(ascDescEnum.Descending)"
-        *ngIf="appStateService.SubsectorMWQMRunsSortOrder == ascDescEnum.Ascending">
-        &nbsp;&nbsp;&darr;
+    <span class="biggerArrow" *ngIf="appStateService.UserPreference.SubsectorMWQMRunsSortOrder == ascDescEnum.Ascending"
+        (click)="appStateService.UserPreference.SubsectorMWQMRunsSortOrder = ascDescEnum.Descending">
+        &nbsp;&nbsp;&#8681;
     </span>
 </button>
-<button mat-button [ngClass]="appStateService.SubsectorSubComponent == subsectorSubComponentEnum.PollutionSourceSites ? 'selected' : ''"
+<button mat-button
+    [ngClass]="appStateService.UserPreference.SubsectorSubComponent == subsectorSubComponentEnum.PollutionSourceSites ? 'selected' : ''"
     (click)="componentShowService.ShowSubsector(subsectorSubComponentEnum.PollutionSourceSites)"
     title="{{ appLanguageService.SubsectorShowPollutionSourceSites[appLanguageService.LangID] }}">
     <span>
         {{ appLanguageService.SubsectorPollutionSourceSites[appLanguageService.LangID] }}
-        <span class="badge-stat" *ngIf="appStateService.StatCountVisible">
-            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.WebSubsector?.TVItemModel, tvTypeEnum.PolSourceSite) }}&nbsp;&nbsp;
-        </span>                                
+        <span class="badge-stat" *ngIf="appStateService.UserPreference.StatCountVisible">
+            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.WebSubsector?.TVItemModel,
+            tvTypeEnum.PolSourceSite) }}&nbsp;&nbsp;
+        </span>
     </span>
-    <span class="biggerArrow"
-        (click)="ChangeSortOrderForSubsectorPolSourceSites(ascDescEnum.Ascending)"
-        *ngIf="appStateService.SubsectorPolSourceSitesSortOrder == ascDescEnum.Descending">
-        &nbsp;&nbsp;&uarr;
+    <span class="biggerArrow" *ngIf="appStateService.UserPreference.SubsectorPolSourceSitesSortOrder == ascDescEnum.Descending"
+        (click)="appStateService.UserPreference.SubsectorPolSourceSitesSortOrder = ascDescEnum.Ascending">
+        &nbsp;&nbsp;&#8679;
     </span>
-    <span class="biggerArrow"
-        (click)="ChangeSortOrderForSubsectorPolSourceSites(ascDescEnum.Descending)"
-        *ngIf="appStateService.SubsectorPolSourceSitesSortOrder == ascDescEnum.Ascending">
-        &nbsp;&nbsp;&darr;
+    <span class="biggerArrow" *ngIf="appStateService.UserPreference.SubsectorPolSourceSitesSortOrder == ascDescEnum.Ascending"
+        (click)="appStateService.UserPreference.SubsectorPolSourceSitesSortOrder = ascDescEnum.Descending">
+        &nbsp;&nbsp;&#8681;
     </span>
 </button>
-<button mat-button [ngClass]="appStateService.SubsectorSubComponent == subsectorSubComponentEnum.Files ? 'selected' : ''"
+<button mat-button
+    [ngClass]="appStateService.UserPreference.SubsectorSubComponent == subsectorSubComponentEnum.Files ? 'selected' : ''"
     (click)="componentShowService.ShowSubsector(subsectorSubComponentEnum.Files)"
     title="{{ appLanguageService.SubsectorShowFiles[appLanguageService.LangID] }}">
     <span>
         {{ appLanguageService.SubsectorFiles[appLanguageService.LangID] }}
-        <span class="badge-stat" *ngIf="appStateService.StatCountVisible">
-            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.WebSubsector?.TVItemModel, tvTypeEnum.File) }}/
-            {{ statCountService.GetStatCount(appLoadedService.WebSubsector?.TVItemModel, tvTypeEnum.TotalFile) }}&nbsp;&nbsp;
-        </span>                                        
+        <span class="badge-stat" *ngIf="appStateService.UserPreference.StatCountVisible">
+            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.WebSubsector?.TVItemModel, tvTypeEnum.File)
+            }} /
+            {{ statCountService.GetStatCount(appLoadedService.WebSubsector?.TVItemModel, tvTypeEnum.TotalFile)
+            }}&nbsp;&nbsp;
+        </span>
     </span>
+    <span mat-button [matMenuTriggerFor]="menu" title="{{ appLanguageService.FileName[appLanguageService.LangID] }}">&nbsp;&nbsp;
+        <span *ngIf="appStateService.UserPreference.SubsectorFilesSortByProp == filesSortPropEnum.FileName" 
+        title="{{ appLanguageService.SortedBy[appLanguageService.LangID] }} {{ appLanguageService.FileName[appLanguageService.LangID] }}">
+            ({{ appLanguageService.FileNameAccro[appLanguageService.LangID] }})
+        </span>
+        <span *ngIf="appStateService.UserPreference.SubsectorFilesSortByProp == filesSortPropEnum.FileType" 
+        title="{{ appLanguageService.SortedBy[appLanguageService.LangID] }} {{ appLanguageService.FileType[appLanguageService.LangID] }}">
+            ({{ appLanguageService.FileTypeAccro[appLanguageService.LangID] }})
+        </span>
+        <span *ngIf="appStateService.UserPreference.SubsectorFilesSortByProp == filesSortPropEnum.FileSize" 
+        title="{{ appLanguageService.SortedBy[appLanguageService.LangID] }} {{ appLanguageService.FileSize[appLanguageService.LangID] }}">
+            ({{ appLanguageService.FileSizeAccro[appLanguageService.LangID] }})
+        </span>
+        <span *ngIf="appStateService.UserPreference.SubsectorFilesSortByProp == filesSortPropEnum.FileDate" 
+        title="{{ appLanguageService.SortedBy[appLanguageService.LangID] }} {{ appLanguageService.FileDate[appLanguageService.LangID] }}">
+            ({{ appLanguageService.FileDateAccro[appLanguageService.LangID] }})
+        </span>
+    </span>
+    <mat-menu #menu="matMenu">
+        <h2  mat-menu-item >{{ appLanguageService.SortBy[appLanguageService.LangID] }}</h2>
+        <button mat-menu-item (click)="appStateService.UserPreference.SubsectorFilesSortByProp = filesSortPropEnum.FileName">{{ appLanguageService.FileName[appLanguageService.LangID] }}</button>
+        <button mat-menu-item (click)="appStateService.UserPreference.SubsectorFilesSortByProp = filesSortPropEnum.FileType">{{ appLanguageService.FileType[appLanguageService.LangID] }}</button>
+        <button mat-menu-item (click)="appStateService.UserPreference.SubsectorFilesSortByProp = filesSortPropEnum.FileSize">{{ appLanguageService.FileSize[appLanguageService.LangID] }}</button>
+        <button mat-menu-item (click)="appStateService.UserPreference.SubsectorFilesSortByProp = filesSortPropEnum.FileDate">{{ appLanguageService.FileDate[appLanguageService.LangID] }}</button>
+    </mat-menu>
 </button>
-<button mat-button [ngClass]="appStateService.SubsectorSubComponent == subsectorSubComponentEnum.SubsectorTools ? 'selected' : ''"
+<button mat-button
+    [ngClass]="appStateService.UserPreference.SubsectorSubComponent == subsectorSubComponentEnum.SubsectorTools ? 'selected' : ''"
     (click)="componentShowService.ShowSubsector(subsectorSubComponentEnum.SubsectorTools)"
     title="{{ appLanguageService.SubsectorShowSubsectorTools[appLanguageService.LangID] }}">
     {{ appLanguageService.SubsectorSubsectorTools[appLanguageService.LangID] }}
 </button>
-<button mat-button [ngClass]="appStateService.SubsectorSubComponent == subsectorSubComponentEnum.LogBook ? 'selected' : ''"
+<button mat-button
+    [ngClass]="appStateService.UserPreference.SubsectorSubComponent == subsectorSubComponentEnum.LogBook ? 'selected' : ''"
     (click)="componentShowService.ShowSubsector(subsectorSubComponentEnum.LogBook)"
     title="{{ appLanguageService.SubsectorShowLogBook[appLanguageService.LangID] }}">
     {{ appLanguageService.SubsectorLogBook[appLanguageService.LangID] }}
 </button>
 
-<app-mwqm-site-tvitem-list-item
-    *ngIf="appStateService.SubsectorSubComponent == subsectorSubComponentEnum.MWQMSites"
+<app-mwqm-site-tvitem-list-item *ngIf="appStateService.UserPreference.SubsectorSubComponent == subsectorSubComponentEnum.MWQMSites"
     [TVItemModelList]="sortTVItemListService.SortTVItemList(filterService.FilterTVItemModelList(appLoadedService.WebSubsector?.TVItemModelMWQMSiteList))">
 </app-mwqm-site-tvitem-list-item>
 
-<div *ngIf="appStateService.SubsectorSubComponent == subsectorSubComponentEnum.Analysis">
-    <app-analysis-item
-    [TVItemModelList]="appLoadedService.WebSubsector?.TVItemModelMWQMSiteList"
-    [StatMWQMSiteList]="appLoadedService.StatMWQMSiteList"
-    [StatMWQMRunList]="appLoadedService.StatMWQMRunList"
-    ></app-analysis-item>
+<div *ngIf="appStateService.UserPreference.SubsectorSubComponent == subsectorSubComponentEnum.Analysis">
+    <app-analysis-item [TVItemModelList]="appLoadedService.WebSubsector?.TVItemModelMWQMSiteList"
+        [StatMWQMSiteList]="appLoadedService.StatMWQMSiteList" [StatMWQMRunList]="appLoadedService.StatMWQMRunList">
+    </app-analysis-item>
 </div>
 
-<app-mwqm-run-tvitem-list-item
-    *ngIf="appStateService.SubsectorSubComponent == subsectorSubComponentEnum.MWQMRuns"
+<app-mwqm-run-tvitem-list-item *ngIf="appStateService.UserPreference.SubsectorSubComponent == subsectorSubComponentEnum.MWQMRuns"
     [TVItemModelList]="sortTVItemListService.SortTVItemList(filterService.FilterTVItemModelList(appLoadedService.WebSubsector?.TVItemModelMWQMRunList))">
 </app-mwqm-run-tvitem-list-item>
 
 <app-pol-source-site-tvitem-list-item
-    *ngIf="appStateService.SubsectorSubComponent == subsectorSubComponentEnum.PollutionSourceSites"
+    *ngIf="appStateService.UserPreference.SubsectorSubComponent == subsectorSubComponentEnum.PollutionSourceSites"
     [TVItemModelList]="sortTVItemListService.SortTVItemList(filterService.FilterTVItemModelList(appLoadedService.WebSubsector?.TVItemModelPolSourceSiteList))">
 </app-pol-source-site-tvitem-list-item>
 
-<app-file-list *ngIf="appStateService.SubsectorSubComponent == subsectorSubComponentEnum.Files"
-    [TVFileModelListList]="structureTVFileListService.StructureTVFileList(appLoadedService.WebSubsector?.TVFileModelList)">
+<app-file-list *ngIf="appStateService.UserPreference.SubsectorSubComponent == subsectorSubComponentEnum.Files"
+    [TVFileModelListList]="structureTVFileListService.StructureTVFileList(tvTypeEnum.Subsector, appLoadedService.WebSubsector?.TVFileModelList)"
+    [FilesSortByProp]="appStateService.UserPreference.SubsectorFilesSortByProp">
 </app-file-list>
 
-<div *ngIf="appStateService.SubsectorSubComponent == subsectorSubComponentEnum.SubsectorTools">
+<div *ngIf="appStateService.UserPreference.SubsectorSubComponent == subsectorSubComponentEnum.SubsectorTools">
     <app-subsector-tools-item></app-subsector-tools-item>
 </div>
 
-<div *ngIf="appStateService.SubsectorSubComponent == subsectorSubComponentEnum.LogBook">
+<div *ngIf="appStateService.UserPreference.SubsectorSubComponent == subsectorSubComponentEnum.LogBook">
     <app-log-book-item></app-log-book-item>
 </div>

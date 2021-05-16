@@ -18,6 +18,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\dlls\CSSPScrambleServices\CSSPScrambleServices.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="appsettings_uploadallfilestoazure.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

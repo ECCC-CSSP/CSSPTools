@@ -3,26 +3,18 @@ using CSSPDesktopServices.Models;
 using CSSPEnums;
 using CSSPDBModels;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using ReadGzFileServices;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
-using System.Reflection.Metadata.Ecma335;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
 using CSSPHelperModels;
 using CSSPDBPreferenceModels;
-using CSSPDBSearchModels;
 using CSSPDBCommandLogModels;
 using CSSPDBFilesManagementModels;
 using CSSPScrambleServices;
 using LoggedInServices;
-using Microsoft.AspNetCore.Mvc;
-using CSSPCultureServices.Resources;
-using System.Linq;
 
 namespace CSSPDesktopServices.Services
 {
@@ -36,7 +28,6 @@ namespace CSSPDesktopServices.Services
         string CSSPDBFilesManagement { get; set; }
         string CSSPDBPreference { get; set; }
         string CSSPDBLocal { get; set; }
-        string CSSPDBSearch { get; set; }
         string CSSPDBCommandLog { get; set; }
         string CSSPAzureUrl { get; set; }
         string CSSPLocalUrl { get; set; }       
@@ -51,7 +42,6 @@ namespace CSSPDesktopServices.Services
         Task<bool> CheckIfUpdateIsNeeded();
         Task<bool> CheckingInternetConnection();
         Task<bool> CreateAllRequiredDirectories();
-        Task<bool> FillCSSPDBSearch();
         Task<bool> InstallUpdates();
         Task<bool> Login(LoginModel loginModel);
         Task<bool> Logoff();
@@ -79,7 +69,6 @@ namespace CSSPDesktopServices.Services
         public string CSSPDBFilesManagement { get; set; }
         public string CSSPDBPreference { get; set; }
         public string CSSPDBLocal { get; set; }
-        public string CSSPDBSearch { get; set; }
         public string CSSPDBCommandLog { get; set; }
         public string CSSPAzureUrl { get; set; }
         public string CSSPLocalUrl { get; set; }
@@ -92,7 +81,6 @@ namespace CSSPDesktopServices.Services
 
         #region Properties private
         private CSSPDBLocalContext dbLocal { get; }
-        private CSSPDBSearchContext dbSearch { get; }
         private CSSPDBCommandLogContext dbCommandLog { get; }
         private CSSPDBPreferenceContext dbPreference { get; }
         private CSSPDBFilesManagementContext dbFM { get; }
@@ -118,7 +106,7 @@ namespace CSSPDesktopServices.Services
 
         #region Constructors
         public CSSPDesktopService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, ILoggedInService LoggedInService,
-            CSSPDBLocalContext dbLocal, CSSPDBSearchContext dbSearch, CSSPDBCommandLogContext dbCommandLog, 
+            CSSPDBLocalContext dbLocal, CSSPDBCommandLogContext dbCommandLog, 
             CSSPDBPreferenceContext dbPreference, CSSPDBFilesManagementContext dbFM, IReadGzFileService ReadGzFileService, 
             IScrambleService ScrambleService/*, IPreferenceService PreferenceService*/)
         {
@@ -127,13 +115,11 @@ namespace CSSPDesktopServices.Services
             this.enums = enums;
             this.LoggedInService = LoggedInService;
             this.dbLocal = dbLocal;
-            this.dbSearch = dbSearch;
             this.dbCommandLog = dbCommandLog;
             this.dbPreference = dbPreference;
             this.dbFM = dbFM;
             this.ReadGzFileService = ReadGzFileService;
             this.ScrambleService = ScrambleService;
-            //this.PreferenceService = PreferenceService;
 
             contact = new Contact();
         }
@@ -172,10 +158,6 @@ namespace CSSPDesktopServices.Services
 
             return await Task.FromResult(true);
         }
-        public async Task<bool> FillCSSPDBSearch()
-        {
-            return await DoFillCSSPDBSearch();
-        }
         public async Task<bool> InstallUpdates()
         {
             // need to stop CSSPWebAPIsLocal so we can copy over some files 
@@ -212,12 +194,6 @@ namespace CSSPDesktopServices.Services
 
             return await Task.FromResult(true);
         }
-        //public async Task<bool> Register(RegisterModel registerModel)
-        //{
-        //    if (!await DoRegister(registerModel)) return await Task.FromResult(false);
-
-        //    return await Task.FromResult(true);
-        //}
         public async Task<bool> Start()
         {
             if (!await DoStart()) return await Task.FromResult(false);
@@ -230,41 +206,9 @@ namespace CSSPDesktopServices.Services
 
             return await Task.FromResult(true);
         }
-        //public async Task<bool> UpdateCSSPDBSearch()
-        //{
-        //    return await DoUpdateCSSPDBSearch();
-        //}
-        //public async Task<Preference> GetPreferenceWithVariableName(string VariableName)
-        //{
-        //    return await DoGetPreferenceWithVariableName(VariableName);
-        //}
-        //public async Task<Preference> AddOrModifyPreferenceWithVariableName(string VariableName, string VariableValue)
-        //{
-        //    return await DoAddOrModifyPreference(VariableName, VariableValue);
-        //}
         #endregion Function public
 
         #region Functions private
-        //private async Task<bool> FillPreferenceList()
-        //{
-        //    var actionPreferenceList = await PreferenceService.GetPreferenceList();
-
-        //    if (((ObjectResult)actionPreferenceList.Result).StatusCode != 200)
-        //    {
-        //        AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotFill_, "List<Preference>")));
-        //        return await Task.FromResult(false);
-        //    }
-
-        //    if (((OkObjectResult)actionPreferenceList.Result).Value == null)
-        //    {
-        //        AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotFill_, "List<Preference>")));
-        //        return await Task.FromResult(false);
-        //    }
-
-        //    PreferenceList = (List<Preference>)((OkObjectResult)actionPreferenceList.Result).Value;
-
-        //    return await Task.FromResult(true);
-        //}
         #endregion Functions private
     }
 }

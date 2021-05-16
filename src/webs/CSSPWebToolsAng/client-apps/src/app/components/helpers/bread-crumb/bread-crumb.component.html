@@ -2,11 +2,11 @@
     [ngClass]="(appLoadedService.BreadCrumbTVItemModelList.length - 1 == i) ? 'selected' : ''"
     (click)="subPageService.SetSubPage(tvItemModel)">
     <span [ngClass]="tvItemModel?.TVItem?.IsActive ? '' : 'inactive'">
-        <span *ngIf="appStateService.DetailVisible">
+        <span *ngIf="appStateService.UserPreference.DetailVisible">
             [{{ tvItemModel?.TVItem?.TVItemID }}]
         </span>
         {{ tvItemModel?.TVItemLanguageList[this.appLanguageService.LangID]?.TVText }}
     </span>
-    <app-stat-count *ngIf="appStateService.StatCountVisible" [TVType]="null"
+    <app-stat-count *ngIf="appStateService.UserPreference.StatCountVisible" [TVType]="null"
             [TVItemModel]="tvItemModel"></app-stat-count>
 </button>

@@ -979,15 +979,6 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not update CSSPDBSearch with TVItems and TVItemLanguages.
-        /// </summary>
-        public static string CouldNotUpdateCSSPDBSearchWithTVItemsAndTVItemLanguages {
-            get {
-                return ResourceManager.GetString("CouldNotUpdateCSSPDBSearchWithTVItemsAndTVItemLanguages", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Create.
         /// </summary>
         public static string Create {
@@ -1047,15 +1038,6 @@ namespace CSSPCultureServices.Resources {
         public static string CSSPCultureOptionsEnCAFrCA {
             get {
                 return ResourceManager.GetString("CSSPCultureOptionsEnCAFrCA", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to CSSPDBSearch already filled.
-        /// </summary>
-        public static string CSSPDBSearchAlreadyFilled {
-            get {
-                return ResourceManager.GetString("CSSPDBSearchAlreadyFilled", resourceCulture);
             }
         }
         

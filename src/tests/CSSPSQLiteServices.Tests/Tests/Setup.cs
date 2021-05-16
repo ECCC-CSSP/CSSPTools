@@ -16,7 +16,6 @@ using Xunit;
 using CSSPDBCommandLogModels;
 using CSSPDBPreferenceModels;
 using CSSPDBFilesManagementModels;
-using CSSPDBSearchModels;
 
 namespace CSSPSQLiteServices.Tests
 {
@@ -36,7 +35,6 @@ namespace CSSPSQLiteServices.Tests
         private FileInfo fiCSSPDBCommandLog { get; set; }
         private FileInfo fiCSSPDBPreference { get; set; }
         private FileInfo fiCSSPDBFilesManagement { get; set; }
-        private FileInfo fiCSSPDBSearch { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -79,20 +77,6 @@ namespace CSSPSQLiteServices.Tests
             Services.AddDbContext<CSSPDBLocalContext>(options =>
             {
                 options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
-            });
-
-            /* ---------------------------------------------------------------------------------
-             * using CSSPDBSearch
-             * ---------------------------------------------------------------------------------      
-             */
-            string CSSPDBSearch = Configuration.GetValue<string>("CSSPDBSearch");
-            Assert.NotNull(CSSPDBSearch);
-
-            fiCSSPDBSearch = new FileInfo(CSSPDBSearch);
-
-            Services.AddDbContext<CSSPDBSearchContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiCSSPDBSearch.FullName }");
             });
 
             /* ---------------------------------------------------------------------------------

@@ -41,6 +41,12 @@ namespace CSSPDBLocalServices.Tests
                         Assert.NotNull(ReadGzFileService.webAppLoaded.WebRoot);
                     }
                     break;
+                case WebTypeEnum.WebAllSearch:
+                    {
+                        ReadGzFileService.webAppLoaded.WebAllSearch = await ReadGzFileService.GetUncompressJSON<WebAllSearch>(WebTypeEnum.WebAllSearch, ParentTVItemID);
+                        Assert.NotNull(ReadGzFileService.webAppLoaded.WebAllSearch);
+                    }
+                    break;
                 case WebTypeEnum.WebCountry:
                     {
                         ReadGzFileService.webAppLoaded.WebCountry = await ReadGzFileService.GetUncompressJSON<WebCountry>(WebTypeEnum.WebCountry, ParentTVItemID);
@@ -161,34 +167,10 @@ namespace CSSPDBLocalServices.Tests
                         Assert.NotNull(ReadGzFileService.webAppLoaded.WebAllReportTypes);
                     }
                     break;
-                case WebTypeEnum.WebAllTVItems1980_2020:
-                    {
-                        ReadGzFileService.webAppLoaded.WebAllTVItems1980_2020 = await ReadGzFileService.GetUncompressJSON<WebAllTVItems>(WebTypeEnum.WebAllTVItems1980_2020, ParentTVItemID);
-                        Assert.NotNull(ReadGzFileService.webAppLoaded.WebAllTVItems1980_2020);
-                    }
-                    break;
-                case WebTypeEnum.WebAllTVItems2021_2060:
-                    {
-                        ReadGzFileService.webAppLoaded.WebAllTVItems2021_2060 = await ReadGzFileService.GetUncompressJSON<WebAllTVItems>(WebTypeEnum.WebAllTVItems2021_2060, ParentTVItemID);
-                        Assert.NotNull(ReadGzFileService.webAppLoaded.WebAllTVItems2021_2060);
-                    }
-                    break;
                 case WebTypeEnum.WebAllPolSourceSiteEffectTerms:
                     {
                         ReadGzFileService.webAppLoaded.WebAllPolSourceSiteEffectTerms = await ReadGzFileService.GetUncompressJSON<WebAllPolSourceSiteEffectTerms>(WebTypeEnum.WebAllPolSourceSiteEffectTerms, ParentTVItemID);
                         Assert.NotNull(ReadGzFileService.webAppLoaded.WebAllPolSourceSiteEffectTerms);
-                    }
-                    break;
-                case WebTypeEnum.WebAllTVItemLanguages1980_2020:
-                    {
-                        ReadGzFileService.webAppLoaded.WebAllTVItemLanguages1980_2020 = await ReadGzFileService.GetUncompressJSON<WebAllTVItemLanguages>(WebTypeEnum.WebAllTVItemLanguages1980_2020, ParentTVItemID);
-                        Assert.NotNull(ReadGzFileService.webAppLoaded.WebAllTVItemLanguages1980_2020);
-                    }
-                    break;
-                case WebTypeEnum.WebAllTVItemLanguages2021_2060:
-                    {
-                        ReadGzFileService.webAppLoaded.WebAllTVItemLanguages2021_2060 = await ReadGzFileService.GetUncompressJSON<WebAllTVItemLanguages>(WebTypeEnum.WebAllTVItemLanguages2021_2060, ParentTVItemID);
-                        Assert.NotNull(ReadGzFileService.webAppLoaded.WebAllTVItemLanguages2021_2060);
                     }
                     break;
                 case WebTypeEnum.WebAllMunicipalities:

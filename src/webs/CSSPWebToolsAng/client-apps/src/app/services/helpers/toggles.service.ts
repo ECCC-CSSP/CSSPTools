@@ -24,35 +24,35 @@ export class TogglesService {
     }
 
     ToggleDetail(): void {
-        this.appStateService.DetailVisible = !this.appStateService.DetailVisible;
+        this.appStateService.UserPreference.DetailVisible = !this.appStateService.UserPreference.DetailVisible;
         this.ReloadPage();
     }
 
     ToggleInactive(): void {
-        this.appStateService.InactVisible = !this.appStateService.InactVisible;
+        this.appStateService.UserPreference.InactVisible = !this.appStateService.UserPreference.InactVisible;
         this.ReloadPage();
     }
 
     ToggleLastUpdate(): void {
-        this.appStateService.LastUpdateVisible = !this.appStateService.LastUpdateVisible;
+        this.appStateService.UserPreference.LastUpdateVisible = !this.appStateService.UserPreference.LastUpdateVisible;
         this.ReloadPage();
     }
 
     ToggleMap(): void {
-        this.appStateService.MapVisible = !this.appStateService.MapVisible;
+        this.appStateService.UserPreference.MapVisible = !this.appStateService.UserPreference.MapVisible;
     }
 
     ToggleMenu(): void {
-        this.appStateService.MenuVisible = !this.appStateService.MenuVisible;
+        this.appStateService.UserPreference.LeftSideNavVisible = !this.appStateService.UserPreference.LeftSideNavVisible;
     }
 
     ToggleStatCount(): void {
-        this.appStateService.StatCountVisible = !this.appStateService.StatCountVisible;
+        this.appStateService.UserPreference.StatCountVisible = !this.appStateService.UserPreference.StatCountVisible;
         this.ReloadPage();
     }
 
     ToggleEdit(): void {
-        this.appStateService.EditVisible = !this.appStateService.EditVisible;
+        this.appStateService.UserPreference.EditVisible = !this.appStateService.UserPreference.EditVisible;
         this.ReloadPage();
     }
 
@@ -62,7 +62,7 @@ export class TogglesService {
     }
 
     private ReloadPage() {
-        switch (this.appStateService.ShellSubComponent) {
+        switch (this.appStateService.UserPreference.ShellSubComponent) {
             case ShellSubComponentEnum.Area:
                 {
                     this.loaderService.Load<WebArea>(WebTypeEnum.WebArea, null, false);

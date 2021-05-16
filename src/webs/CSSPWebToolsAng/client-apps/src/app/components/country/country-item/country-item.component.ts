@@ -14,6 +14,7 @@ import { LoaderService } from 'src/app/services/loaders/loader.service';
 import { WebCountry } from 'src/app/models/generated/web/WebCountry.model';
 import { WebTypeEnum } from 'src/app/enums/generated/WebTypeEnum';
 import { StructureTVFileListService } from 'src/app/services/helpers/structure-tvfile-list.service';
+import { GetFilesSortPropEnum } from 'src/app/enums/generated/FilesSortPropEnum';
 
 
 @Component({
@@ -26,6 +27,7 @@ export class CountryItemComponent implements OnInit, OnDestroy {
   tvTypeEnum = GetTVTypeEnum();
   ascDescEnum = GetAscDescEnum();
   sortOrderAngular = GetSortOrderAngularEnum();
+  filesSortPropEnum = GetFilesSortPropEnum();
 
   constructor(public appStateService: AppStateService,
     public appLoadedService: AppLoadedService,
@@ -43,9 +45,5 @@ export class CountryItemComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-  }
-
-  ChangeSortOrderForCountryProvinces(ascDesc: AscDescEnum) {
-    this.appStateService.CountryProvincesSortOrder = ascDesc;
   }
 }

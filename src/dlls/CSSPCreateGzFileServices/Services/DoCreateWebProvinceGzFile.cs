@@ -43,6 +43,8 @@ namespace CreateGzFileServices
 
                 await FillSamplingPlanModelList(webProvince.SamplingPlanModelList, TVItemProvince);
 
+                webProvince.MunicipalityWithInfrastructureTVItemIDList = await GetMunicipalityWithInfrastructureTVItemIDList(TVItemProvince);
+
                 if (dbLocal != null)
                 {
                     await DoStoreLocal<WebProvince>(webProvince, $"{ WebTypeEnum.WebProvince }_{ ProvinceTVItemID }.gz");

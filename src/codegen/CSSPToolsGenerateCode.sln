@@ -109,6 +109,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPCustomAttributes", "..\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GenerateCSSPDBModelsDocs", "GenerateCSSPDBModelsDocs\GenerateCSSPDBModelsDocs.csproj", "{9AD6DA07-5281-4A66-B181-A571D14B69E9}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPScrambleServices", "..\dlls\CSSPScrambleServices\CSSPScrambleServices.csproj", "{EF580495-B9B7-4403-BE31-1F8493C63C82}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -755,6 +757,18 @@ Global
 		{9AD6DA07-5281-4A66-B181-A571D14B69E9}.Release|x64.Build.0 = Release|Any CPU
 		{9AD6DA07-5281-4A66-B181-A571D14B69E9}.Release|x86.ActiveCfg = Release|Any CPU
 		{9AD6DA07-5281-4A66-B181-A571D14B69E9}.Release|x86.Build.0 = Release|Any CPU
+		{EF580495-B9B7-4403-BE31-1F8493C63C82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF580495-B9B7-4403-BE31-1F8493C63C82}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF580495-B9B7-4403-BE31-1F8493C63C82}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{EF580495-B9B7-4403-BE31-1F8493C63C82}.Debug|x64.Build.0 = Debug|Any CPU
+		{EF580495-B9B7-4403-BE31-1F8493C63C82}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EF580495-B9B7-4403-BE31-1F8493C63C82}.Debug|x86.Build.0 = Debug|Any CPU
+		{EF580495-B9B7-4403-BE31-1F8493C63C82}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF580495-B9B7-4403-BE31-1F8493C63C82}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF580495-B9B7-4403-BE31-1F8493C63C82}.Release|x64.ActiveCfg = Release|Any CPU
+		{EF580495-B9B7-4403-BE31-1F8493C63C82}.Release|x64.Build.0 = Release|Any CPU
+		{EF580495-B9B7-4403-BE31-1F8493C63C82}.Release|x86.ActiveCfg = Release|Any CPU
+		{EF580495-B9B7-4403-BE31-1F8493C63C82}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

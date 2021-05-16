@@ -804,12 +804,6 @@
   <data name="_OnlyAvailableWhenRunningOnLocal" xml:space="preserve">
     <value>{0} only available when running on Local</value>
   </data>
-  <data name="CouldNotUpdateCSSPDBSearchWithTVItemsAndTVItemLanguages" xml:space="preserve">
-    <value>Could not update CSSPDBSearch with TVItems and TVItemLanguages</value>
-  </data>
-  <data name="CSSPDBSearchAlreadyFilled" xml:space="preserve">
-    <value>CSSPDBSearch already filled</value>
-  </data>
   <data name="CouldNotReadAzureStoreFrom_" xml:space="preserve">
     <value>Could not read AzureStore from {0}</value>
   </data>

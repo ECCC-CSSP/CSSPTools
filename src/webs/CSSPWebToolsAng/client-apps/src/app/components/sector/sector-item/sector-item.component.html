@@ -5,42 +5,68 @@
     {{ appStateService.Status }}
 </p>
 
-<button mat-button [ngClass]="appStateService.SectorSubComponent == sectorSubComponentEnum.Subsectors ? 'selected' : ''"
+<button mat-button [ngClass]="appStateService.UserPreference.SectorSubComponent == sectorSubComponentEnum.Subsectors ? 'selected' : ''"
     (click)="componentShowService.ShowSector(sectorSubComponentEnum.Subsectors)"
     title="{{ appLanguageService.SectorShowSubsectors[appLanguageService.LangID] }}">
     <span>
         {{ appLanguageService.SectorSubsectors[appLanguageService.LangID] }}
-        <span class="badge-stat" *ngIf="appStateService.StatCountVisible">
-            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.WebSector?.TVItemModel, tvTypeEnum.Subsector) }}&nbsp;&nbsp;
-        </span>                                                
+        <span class="badge-stat" *ngIf="appStateService.UserPreference.StatCountVisible">
+            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.WebSector?.TVItemModel, tvTypeEnum.Subsector)
+            }}&nbsp;&nbsp;
+        </span>
     </span>
-    <span class="biggerArrow"
-        (click)="ChangeSortOrderForSectorSubsectors(ascDescEnum.Ascending)"
-        *ngIf="appStateService.SectorSubsectorsSortOrder == ascDescEnum.Descending">
-        &nbsp;&nbsp;&uarr;
+    <span class="biggerArrow" *ngIf="appStateService.UserPreference.SectorSubsectorsSortOrder == ascDescEnum.Descending"
+        (click)="appStateService.UserPreference.SectorSubsectorsSortOrder = ascDescEnum.Ascending">
+        &nbsp;&nbsp;&#8679;
     </span>
-    <span class="biggerArrow"
-        (click)="ChangeSortOrderForSectorSubsectors(ascDescEnum.Descending)"
-        *ngIf="appStateService.SectorSubsectorsSortOrder == ascDescEnum.Ascending">
-        &nbsp;&nbsp;&darr;
+    <span class="biggerArrow" *ngIf="appStateService.UserPreference.SectorSubsectorsSortOrder == ascDescEnum.Ascending"
+        (click)="appStateService.UserPreference.SectorSubsectorsSortOrder = ascDescEnum.Descending">
+        &nbsp;&nbsp;&#8681;
     </span>
 </button>
-<button mat-button [ngClass]="appStateService.SectorSubComponent == sectorSubComponentEnum.Files ? 'selected' : ''" 
-(click)="componentShowService.ShowSector(sectorSubComponentEnum.Files)"
+<button mat-button [ngClass]="appStateService.UserPreference.SectorSubComponent == sectorSubComponentEnum.Files ? 'selected' : ''"
+    (click)="componentShowService.ShowSector(sectorSubComponentEnum.Files)"
     title="{{ appLanguageService.SectorShowFiles[appLanguageService.LangID] }}">
     <span>
         {{ appLanguageService.SectorFiles[appLanguageService.LangID] }}
-        <span class="badge-stat" *ngIf="appStateService.StatCountVisible">
-            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.WebSector?.TVItemModel, tvTypeEnum.File) }}/
-            {{ statCountService.GetStatCount(appLoadedService.WebSector?.TVItemModel, tvTypeEnum.TotalFile) }}&nbsp;&nbsp;
-        </span>                                                        
+        <span class="badge-stat" *ngIf="appStateService.UserPreference.StatCountVisible">
+            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.WebSector?.TVItemModel, tvTypeEnum.File) }} /
+            {{ statCountService.GetStatCount(appLoadedService.WebSector?.TVItemModel, tvTypeEnum.TotalFile)
+            }}&nbsp;&nbsp;
+        </span>
     </span>
+    <span mat-button [matMenuTriggerFor]="menu" title="{{ appLanguageService.FileName[appLanguageService.LangID] }}">&nbsp;&nbsp;
+        <span *ngIf="appStateService.UserPreference.SectorFilesSortByProp == filesSortPropEnum.FileName" 
+        title="{{ appLanguageService.SortedBy[appLanguageService.LangID] }} {{ appLanguageService.FileName[appLanguageService.LangID] }}">
+            ({{ appLanguageService.FileNameAccro[appLanguageService.LangID] }})
+        </span>
+        <span *ngIf="appStateService.UserPreference.SectorFilesSortByProp == filesSortPropEnum.FileType" 
+        title="{{ appLanguageService.SortedBy[appLanguageService.LangID] }} {{ appLanguageService.FileType[appLanguageService.LangID] }}">
+            ({{ appLanguageService.FileTypeAccro[appLanguageService.LangID] }})
+        </span>
+        <span *ngIf="appStateService.UserPreference.SectorFilesSortByProp == filesSortPropEnum.FileSize" 
+        title="{{ appLanguageService.SortedBy[appLanguageService.LangID] }} {{ appLanguageService.FileSize[appLanguageService.LangID] }}">
+            ({{ appLanguageService.FileSizeAccro[appLanguageService.LangID] }})
+        </span>
+        <span *ngIf="appStateService.UserPreference.SectorFilesSortByProp == filesSortPropEnum.FileDate" 
+        title="{{ appLanguageService.SortedBy[appLanguageService.LangID] }} {{ appLanguageService.FileDate[appLanguageService.LangID] }}">
+            ({{ appLanguageService.FileDateAccro[appLanguageService.LangID] }})
+        </span>
+    </span>
+    <mat-menu #menu="matMenu">
+        <h2  mat-menu-item >{{ appLanguageService.SortBy[appLanguageService.LangID] }}</h2>
+        <button mat-menu-item (click)="appStateService.UserPreference.SectorFilesSortByProp = filesSortPropEnum.FileName">{{ appLanguageService.FileName[appLanguageService.LangID] }}</button>
+        <button mat-menu-item (click)="appStateService.UserPreference.SectorFilesSortByProp = filesSortPropEnum.FileType">{{ appLanguageService.FileType[appLanguageService.LangID] }}</button>
+        <button mat-menu-item (click)="appStateService.UserPreference.SectorFilesSortByProp = filesSortPropEnum.FileSize">{{ appLanguageService.FileSize[appLanguageService.LangID] }}</button>
+        <button mat-menu-item (click)="appStateService.UserPreference.SectorFilesSortByProp = filesSortPropEnum.FileDate">{{ appLanguageService.FileDate[appLanguageService.LangID] }}</button>
+    </mat-menu>
 </button>
 
-<app-subsector-tvitem-list-item *ngIf="appStateService.SectorSubComponent == sectorSubComponentEnum.Subsectors"
+<app-subsector-tvitem-list-item *ngIf="appStateService.UserPreference.SectorSubComponent == sectorSubComponentEnum.Subsectors"
     [TVItemModelList]="sortTVItemListService.SortTVItemList(filterService.FilterTVItemModelList(appLoadedService.WebSector?.TVItemModelSubsectorList))">
 </app-subsector-tvitem-list-item>
 
-<app-file-list *ngIf="appStateService.SectorSubComponent == sectorSubComponentEnum.Files"   
-    [TVFileModelListList]="structureTVFileListService.StructureTVFileList(appLoadedService.WebSector?.TVFileModelList)">
+<app-file-list *ngIf="appStateService.UserPreference.SectorSubComponent == sectorSubComponentEnum.Files"
+    [TVFileModelListList]="structureTVFileListService.StructureTVFileList(tvTypeEnum.Sector, appLoadedService.WebSector?.TVFileModelList)"
+    [FilesSortByProp]="appStateService.UserPreference.SectorFilesSortByProp">
 </app-file-list>

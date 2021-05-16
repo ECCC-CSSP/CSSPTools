@@ -3,7 +3,7 @@
  *  
  */
 
-using CreateGzFileLocalServices;
+using CreateGzFileServices;
 using CSSPCultureServices.Services;
 using CSSPDBFilesManagementModels;
 using CSSPDBModels;

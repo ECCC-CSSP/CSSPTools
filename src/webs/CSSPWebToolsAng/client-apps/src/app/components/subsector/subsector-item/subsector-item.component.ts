@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { AscDescEnum, GetAscDescEnum } from 'src/app/enums/generated/AscDescEnum';
+import { GetFilesSortPropEnum } from 'src/app/enums/generated/FilesSortPropEnum';
 import { GetSortOrderAngularEnum } from 'src/app/enums/generated/SortOrderAngularEnum';
 import { GetSubsectorSubComponentEnum } from 'src/app/enums/generated/SubsectorSubComponentEnum';
 import { GetTVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
@@ -25,6 +26,7 @@ export class SubsectorItemComponent implements OnInit, OnDestroy {
   tvTypeEnum = GetTVTypeEnum();
   ascDescEnum = GetAscDescEnum();
   sortOrderAngular = GetSortOrderAngularEnum();
+  filesSortPropEnum = GetFilesSortPropEnum();
 
   constructor(public appStateService: AppStateService,
     public appLoadedService: AppLoadedService,
@@ -41,17 +43,5 @@ export class SubsectorItemComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-  }
-
-  ChangeSortOrderForSubsectorMWQMSites(ascDesc: AscDescEnum) {
-    this.appStateService.SubsectorMWQMSitesSortOrder = ascDesc;
-  }
-
-  ChangeSortOrderForSubsectorMWQMRuns(ascDesc: AscDescEnum) {
-    this.appStateService.SubsectorMWQMRunsSortOrder = ascDesc;
-  }
-
-  ChangeSortOrderForSubsectorPolSourceSites(ascDesc: AscDescEnum) {
-    this.appStateService.SubsectorPolSourceSitesSortOrder = ascDesc;
   }
 }

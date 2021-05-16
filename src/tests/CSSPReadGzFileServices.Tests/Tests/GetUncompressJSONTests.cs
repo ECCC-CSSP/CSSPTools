@@ -190,54 +190,6 @@ namespace ReadGzFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task GetUncompressJSON_WebAllTVItemLanguages1980_2020_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            WebTypeEnum webType = WebTypeEnum.WebAllTVItemLanguages1980_2020;
-
-            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebArea>(webType);
-            Assert.NotNull(JSONRes);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task GetUncompressJSON_WebAllTVItemLanguages2021_2060_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            WebTypeEnum webType = WebTypeEnum.WebAllTVItemLanguages2021_2060;
-
-            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebArea>(webType);
-            Assert.NotNull(JSONRes);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task GetUncompressJSON_WebAllTVItems1980_2020_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            WebTypeEnum webType = WebTypeEnum.WebAllTVItems1980_2020;
-
-            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebArea>(webType);
-            Assert.NotNull(JSONRes);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task GetUncompressJSON_WebAllTVItems2021_2060_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            WebTypeEnum webType = WebTypeEnum.WebAllTVItems2021_2060;
-
-            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebArea>(webType);
-            Assert.NotNull(JSONRes);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
         public async Task GetUncompressJSON_WebArea_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));

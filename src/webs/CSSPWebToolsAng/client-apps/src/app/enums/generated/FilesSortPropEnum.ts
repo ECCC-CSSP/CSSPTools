@@ -14,6 +14,7 @@ export enum FilesSortPropEnum {
     FileSize = 2,
     FileType = 3,
     FilePurpose = 4,
+    FileDate = 5,
 }
 
 export function GetFilesSortPropEnum(): typeof FilesSortPropEnum
@@ -28,12 +29,14 @@ export function FilesSortPropEnum_GetOrderedText(appLanguageService: AppLanguage
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'Grosseur de filière' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'Type de filière' });
         enumTextOrderedList.push({ EnumID: 4, EnumText: 'But de filière' });
+        enumTextOrderedList.push({ EnumID: 5, EnumText: 'File date' });
     }
     else {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'File name' });
         enumTextOrderedList.push({ EnumID: 2, EnumText: 'File size' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'File type' });
         enumTextOrderedList.push({ EnumID: 4, EnumText: 'File purpose' });
+        enumTextOrderedList.push({ EnumID: 5, EnumText: 'File date' });
     }
 
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));

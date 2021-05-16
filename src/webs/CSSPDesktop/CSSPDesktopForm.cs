@@ -11,19 +11,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ReadGzFileServices;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using CSSPDBPreferenceModels;
 using CSSPHelperModels;
-using CSSPDBSearchModels;
 using CSSPDBCommandLogModels;
 using CSSPDBFilesManagementModels;
 using CSSPScrambleServices;
@@ -513,24 +506,6 @@ namespace CSSPDesktop
             });
 
             /* ---------------------------------------------------------------------------------
-             * using CSSPDBSearch
-             * ---------------------------------------------------------------------------------      
-             */
-            string CSSPDBSearch = Configuration.GetValue<string>("CSSPDBSearch");
-            if (string.IsNullOrWhiteSpace(CSSPDBSearch))
-            {
-                richTextBoxStatus.AppendText(string.Format(_CouldNotBeFoundInConfigurationFile_, "CSSPDBSearch", "appsettings_csspdesktop.json"));
-                return await Task.FromResult(false);
-            }
-
-            FileInfo fiCSSPDBSearch = new FileInfo(CSSPDBSearch);
-
-            Services.AddDbContext<CSSPDBSearchContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiCSSPDBSearch.FullName }");
-            });
-
-            /* ---------------------------------------------------------------------------------
              * using CSSPDBCommandLog
              * ---------------------------------------------------------------------------------      
              */
@@ -652,13 +627,6 @@ namespace CSSPDesktop
             if (!fi.Exists)
             {
                 if (!await CSSPSQLiteService.CreateSQLiteCSSPDBCommandLog()) return await Task.FromResult(false);
-            }
-
-            // create CSSPDBSearch if it does not exist
-            fi = new FileInfo(CSSPDesktopService.CSSPDBSearch);
-            if (!fi.Exists)
-            {
-                if (!await CSSPSQLiteService.CreateSQLiteCSSPDBSearch()) return await Task.FromResult(false);
             }
 
             // create CSSPDBFilesManagement if it does not exist

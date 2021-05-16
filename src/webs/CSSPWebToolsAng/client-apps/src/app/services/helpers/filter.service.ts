@@ -12,7 +12,7 @@ export class FilterService {
 
   FilterTVItemModelList(tvItemModelList: TVItemModel[]) {
     if (!(typeof(tvItemModelList) == "undefined" || tvItemModelList == null)) {
-      if (!this.appStateService.InactVisible) {
+      if (!this.appStateService.UserPreference.InactVisible) {
         return tvItemModelList.filter(c => c.TVItem.IsActive == true);
       }
     }

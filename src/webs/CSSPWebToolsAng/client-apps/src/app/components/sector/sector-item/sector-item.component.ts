@@ -1,11 +1,11 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { AscDescEnum, GetAscDescEnum } from 'src/app/enums/generated/AscDescEnum';
+import { GetFilesSortPropEnum } from 'src/app/enums/generated/FilesSortPropEnum';
 import { GetSectorSubComponentEnum } from 'src/app/enums/generated/SectorSubComponentEnum';
 import { GetSortOrderAngularEnum } from 'src/app/enums/generated/SortOrderAngularEnum';
 import { GetTVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 import { WebTypeEnum } from 'src/app/enums/generated/WebTypeEnum';
 import { WebSector } from 'src/app/models/generated/web/WebSector.model';
-
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
@@ -21,20 +21,17 @@ import { LoaderService } from 'src/app/services/loaders/loader.service';
   templateUrl: './sector-item.component.html',
   styleUrls: ['./sector-item.component.css']
 })
-export class SectorItemComponent implements OnInit, OnDestroy {
-
-  
+export class SectorItemComponent implements OnInit, OnDestroy { 
   sectorSubComponentEnum = GetSectorSubComponentEnum();
   tvTypeEnum = GetTVTypeEnum();
   ascDescEnum = GetAscDescEnum();
   sortOrderAngular = GetSortOrderAngularEnum();
+  filesSortPropEnum = GetFilesSortPropEnum();
 
   constructor(public appStateService: AppStateService,
     public appLoadedService: AppLoadedService,
     public appLanguageService: AppLanguageService,
     public loaderService: LoaderService,
-    //public webSectorService: WebSectorService,
-    //public tvItemSortOrderService: TVItemSortOrderService,
     public statCountService: StatCountService,
     public sortTVItemListService: SortTVItemListService,
     public filterService: FilterService,
@@ -46,9 +43,5 @@ export class SectorItemComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-  }
-
-  ChangeSortOrderForSectorSubsectors(ascDesc: AscDescEnum) {
-    this.appStateService.SectorSubsectorsSortOrder = ascDesc;
   }
 }

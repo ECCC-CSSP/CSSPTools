@@ -439,74 +439,11 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not update CSSPDBSearch with TVItems and TVItemLanguages.
-        /// </summary>
-        public static string CouldNotUpdateCSSPDBSearchWithTVItemsAndTVItemLanguages {
-            get {
-                return ResourceManager.GetString("CouldNotUpdateCSSPDBSearchWithTVItemsAndTVItemLanguages", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Creating all required directories.
         /// </summary>
         public static string CreatingAllRequiredDirectories {
             get {
                 return ResourceManager.GetString("CreatingAllRequiredDirectories", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to CSSPDBSearch database successfully filled.
-        /// </summary>
-        public static string CSSPDBSearchDatabaseSuccessfullyFilled {
-            get {
-                return ResourceManager.GetString("CSSPDBSearchDatabaseSuccessfullyFilled", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to CSSPDBSearch database successfully updated.
-        /// </summary>
-        public static string CSSPDBSearchDatabaseSuccessUpdated {
-            get {
-                return ResourceManager.GetString("CSSPDBSearchDatabaseSuccessUpdated", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to CSSPDBSearch has {0} TVItems.
-        /// </summary>
-        public static string CSSPDBSearchHas_TVItems {
-            get {
-                return ResourceManager.GetString("CSSPDBSearchHas_TVItems", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to CSSPDBSearch has been updated with {0} items in TVItems.
-        /// </summary>
-        public static string CSSPDBSearchHasBeenUpdated_TVItems {
-            get {
-                return ResourceManager.GetString("CSSPDBSearchHasBeenUpdated_TVItems", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to CSSPDBSearch is empty.
-        /// </summary>
-        public static string CSSPDBSearchIsEmpty {
-            get {
-                return ResourceManager.GetString("CSSPDBSearchIsEmpty", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to CSSPDBSearch is not empty.
-        /// </summary>
-        public static string CSSPDBSearchIsNotEmpty {
-            get {
-                return ResourceManager.GetString("CSSPDBSearchIsNotEmpty", resourceCulture);
             }
         }
         
@@ -583,38 +520,11 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error while trying to fill CSSPDBSearch database with {0} information.
-        /// </summary>
-        public static string ErrorWhileTryingToFillCSSPDBSearchDatabaseWith_Info {
-            get {
-                return ResourceManager.GetString("ErrorWhileTryingToFillCSSPDBSearchDatabaseWith_Info", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Error while trying to login.
         /// </summary>
         public static string ErrorWhileTryingToLogin {
             get {
                 return ResourceManager.GetString("ErrorWhileTryingToLogin", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Error while trying to update CSSPDBSearch.
-        /// </summary>
-        public static string ErrorWhileTryingToUpdateCSSPDBSearch {
-            get {
-                return ResourceManager.GetString("ErrorWhileTryingToUpdateCSSPDBSearch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Error while trying to update CSSPDBSearch database from {0}.
-        /// </summary>
-        public static string ErrorWhileTryingToUpdateCSSPDBSearchDatabaseFrom_ {
-            get {
-                return ResourceManager.GetString("ErrorWhileTryingToUpdateCSSPDBSearchDatabaseFrom_", resourceCulture);
             }
         }
         
@@ -642,15 +552,6 @@ namespace CSSPCultureServices.Resources {
         public static string File_CreatedOnAzure {
             get {
                 return ResourceManager.GetString("File_CreatedOnAzure", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Filling CSSPDBSearch database with {0} information.
-        /// </summary>
-        public static string FillingCSSPDBSearchDatabaseWith_Info {
-            get {
-                return ResourceManager.GetString("FillingCSSPDBSearchDatabaseWith_Info", resourceCulture);
             }
         }
         
@@ -1038,24 +939,6 @@ namespace CSSPCultureServices.Resources {
         public static string UpdateCompleted {
             get {
                 return ResourceManager.GetString("UpdateCompleted", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Updating CSSPDBSearch database.
-        /// </summary>
-        public static string UpdatingCSSPDBSearchDatabase {
-            get {
-                return ResourceManager.GetString("UpdatingCSSPDBSearchDatabase", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Updating CSSPDBSearch. This can take some time..
-        /// </summary>
-        public static string UpdatingCSSPDBSearchThisCanTakeSomeTime {
-            get {
-                return ResourceManager.GetString("UpdatingCSSPDBSearchThisCanTakeSomeTime", resourceCulture);
             }
         }
         

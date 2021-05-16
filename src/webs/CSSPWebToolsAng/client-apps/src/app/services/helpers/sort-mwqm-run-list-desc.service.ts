@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { PredicateDescByService } from 'src/app/services/helpers/predicate-desc-by.service';
-import { TVItemID_TVText_Sort } from 'src/app/models/TVItemID_TVText_Sort.model';
 import { DateFormatService } from './date-format.service';
 import { MWQMRunModel } from 'src/app/models/generated/web/MWQMRunModel.model';
+import { TVItemID_TVText_Sort } from 'src/app/models/generated/web/TVItemID_TVText_Sort.model';
 
 @Injectable({
     providedIn: 'root'

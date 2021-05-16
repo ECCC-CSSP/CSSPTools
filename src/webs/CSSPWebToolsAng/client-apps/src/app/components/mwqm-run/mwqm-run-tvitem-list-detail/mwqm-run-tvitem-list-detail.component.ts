@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { MWQMRunModelSiteAndSampleModel } from 'src/app/models/generated/web/MWQMRunModelSiteAndSampleModel.model';
 
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
-import { MWQMRunModelSiteAndSampleModel } from 'src/app/models/MWQMRunModelSiteAndSample.model';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 
@@ -12,7 +12,6 @@ import { AppStateService } from 'src/app/services/app-state.service';
 })
 export class MWQMRunTVItemListDetailComponent implements OnInit, OnDestroy {
   @Input() TVItemModel: TVItemModel;
-
   @Input() MWQMRunModelSiteAndSampleModel: MWQMRunModelSiteAndSampleModel;
 
   constructor(public appStateService: AppStateService,

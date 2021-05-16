@@ -3,7 +3,7 @@
         <mat-icon>more_vert</mat-icon>
     </button>
     <mat-menu #menu="matMenu">
-        <ng-container *ngIf="appStateService.EditVisible">
+        <ng-container *ngIf="appStateService.UserPreference.EditVisible">
             <button class="selected" mat-menu-item (click)="ShowEdit(TVItemModel)">
                 <mat-icon>edit</mat-icon>
                 <span>Edit</span>
@@ -13,7 +13,7 @@
             <mat-icon>more_horiz</mat-icon>
             <span>More information</span>
         </button>
-        <ng-container *ngIf="appStateService.MapVisible">
+        <ng-container *ngIf="appStateService.UserPreference.MapVisible">
             <button mat-menu-item class="true ? 'selected' : ''" (click)="mapService.ShowItem(TVItemModel, $event)">
                 <mat-icon>place</mat-icon>
                 <span>Show item on map</span>

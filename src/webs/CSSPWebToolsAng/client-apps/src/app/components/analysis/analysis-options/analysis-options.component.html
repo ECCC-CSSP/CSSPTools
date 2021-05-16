@@ -19,12 +19,12 @@
                     <strong>{{
                         appLanguageService.AnalysisOptionsRuns[appLanguageService.LangID]
                         }}:</strong>&nbsp;
-                    {{ appStateService.AnalysisRuns }}&nbsp;
+                    {{ appStateService.UserPreference.AnalysisRuns }}&nbsp;
                     <strong>{{
                         appLanguageService.AnalysisOptionsCalculation[appLanguageService.LangID]
                         }}:</strong>&nbsp;
                     {{
-                    analysisService.GetAnalysisCalculationTypeEnum_GetIDText(appStateService.AnalysisCalculationType)
+                    analysisService.GetAnalysisCalculationTypeEnum_GetIDText(appStateService.UserPreference.AnalysisCalculationType)
                     }}&nbsp;
                     <!-- <strong>{{ appStateService.AnalysisShowOnlyUsed ? 'Show only used' : 'Show All' }}</strong>&nbsp; -->
 

@@ -30,14 +30,14 @@ export class AnalysisDataVisibleComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.language = <number>this.appLanguageService.Language;
     this.formDataVisible = this.fb.group({
-      AnalysisFCDataVisible: [ { value: this.appStateService.AnalysisFCDataVisible, disabled: true }],
-      AnalysisTempDataVisible: [this.appStateService.AnalysisTempDataVisible],
-      AnalysisSalDataVisible: [this.appStateService.AnalysisSalDataVisible],
-      AnalysisP90DataVisible: [this.appStateService.AnalysisP90DataVisible],
-      AnalysisGeoMeanDataVisible: [this.appStateService.AnalysisGeoMeanDataVisible],
-      AnalysisMedianDataVisible: [this.appStateService.AnalysisMedianDataVisible],
-      AnalysisPerOver43DataVisible: [this.appStateService.AnalysisPerOver43DataVisible],
-      AnalysisPerOver260DataVisible: [this.appStateService.AnalysisPerOver260DataVisible],
+      AnalysisFCDataVisible: [ { value: this.appStateService.UserPreference.AnalysisFCDataVisible, disabled: true }],
+      AnalysisTempDataVisible: [this.appStateService.UserPreference.AnalysisTempDataVisible],
+      AnalysisSalDataVisible: [this.appStateService.UserPreference.AnalysisSalDataVisible],
+      AnalysisP90DataVisible: [this.appStateService.UserPreference.AnalysisP90DataVisible],
+      AnalysisGeoMeanDataVisible: [this.appStateService.UserPreference.AnalysisGeoMeanDataVisible],
+      AnalysisMedianDataVisible: [this.appStateService.UserPreference.AnalysisMedianDataVisible],
+      AnalysisPerOver43DataVisible: [this.appStateService.UserPreference.AnalysisPerOver43DataVisible],
+      AnalysisPerOver260DataVisible: [this.appStateService.UserPreference.AnalysisPerOver260DataVisible],
     });
   }
 

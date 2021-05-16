@@ -207,54 +207,6 @@ namespace CreateGzFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task CreateGzFileService_CreateWebAllTVItemLanguages1980_2020_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllTVItemLanguages1980_2020);
-            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
-            Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task CreateGzFileService_CreateWebAllTVItemLanguages2021_2060_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllTVItemLanguages2021_2060);
-            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
-            Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task CreateGzFileService_CreateWebAllTVItems1980_2020_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllTVItems1980_2020);
-            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
-            Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task CreateGzFileService_CreateWebAllTVItems2021_2060_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllTVItems2021_2060);
-            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
-            Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
         public async Task CreateGzFileService_CreateWebAreaGzFile_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -428,6 +380,18 @@ namespace CreateGzFileServices.Tests
             Assert.True(await Setup(culture));
 
             var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebRoot);
+            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task CreateGzFileService_CreateWebAllSearch_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllSearch);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);

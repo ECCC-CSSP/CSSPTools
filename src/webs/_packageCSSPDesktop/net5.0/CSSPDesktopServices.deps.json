@@ -9,7 +9,6 @@
       "CSSPDesktopServices/1.0.0": {
         "dependencies": {
           "Azure.Storage.Blobs": "12.8.0",
-          "CSSPDBSearchServices": "1.0.0",
           "CSSPReadGzFileServices": "1.0.0",
           "CSSPSQLiteServices": "1.0.0",
           "CSSPWebModels": "1.0.0",
@@ -1295,42 +1294,6 @@
           "CSSPDBPreferenceModels.dll": {}
         }
       },
-      "CSSPDBSearchModels/1.0.0": {
-        "dependencies": {
-          "CSSPDBModels": "1.0.0",
-          "CSSPEnums": "1.0.0",
-          "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.3",
-          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.3",
-          "Microsoft.EntityFrameworkCore": "5.0.3",
-          "Microsoft.EntityFrameworkCore.SqlServer": "5.0.3",
-          "Microsoft.EntityFrameworkCore.Sqlite": "5.0.3",
-          "Microsoft.Extensions.Configuration": "5.0.0",
-          "Microsoft.Extensions.Configuration.Json": "5.0.0",
-          "Microsoft.Extensions.DependencyInjection": "5.0.1",
-          "System.IdentityModel.Tokens.Jwt": "6.8.0"
-        },
-        "runtime": {
-          "CSSPDBSearchModels.dll": {}
-        }
-      },
-      "CSSPDBSearchServices/1.0.0": {
-        "dependencies": {
-          "Azure.Storage.Blobs": "12.8.0",
-          "CSSPDBSearchModels": "1.0.0",
-          "CSSPHelperModels": "1.0.0",
-          "CSSPLoggedInServices": "1.0.0",
-          "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.3",
-          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.3",
-          "Microsoft.EntityFrameworkCore": "5.0.3",
-          "Microsoft.EntityFrameworkCore.SqlServer": "5.0.3",
-          "Microsoft.EntityFrameworkCore.Sqlite": "5.0.3",
-          "Microsoft.Extensions.Configuration": "5.0.0",
-          "Microsoft.Extensions.Configuration.Json": "5.0.0"
-        },
-        "runtime": {
-          "CSSPDBSearchServices.dll": {}
-        }
-      },
       "CSSPDBServices/1.0.0": {
         "dependencies": {
           "Azure.Storage.Blobs": "12.8.0",
@@ -1455,7 +1418,6 @@
           "CSSPDBCommandLogServices": "1.0.0",
           "CSSPDBFilesManagementModels": "1.0.0",
           "CSSPDBPreferenceModels": "1.0.0",
-          "CSSPDBSearchModels": "1.0.0",
           "CSSPDBServices": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.3",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.3",
@@ -2365,16 +2327,6 @@
       "sha512": ""
     },
     "CSSPDBPreferenceModels/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "CSSPDBSearchModels/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "CSSPDBSearchServices/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

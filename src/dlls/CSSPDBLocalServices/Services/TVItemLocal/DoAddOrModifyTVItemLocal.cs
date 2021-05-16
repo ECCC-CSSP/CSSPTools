@@ -330,7 +330,7 @@ namespace CSSPDBLocalServices
 
             foreach (ToRecreate toRecreate in ToRecreateList)
             {
-                CreateGzFileLocalService.CreateGzFileLocal(toRecreate.WebType, toRecreate.TVItemID);
+                CreateGzFileService.CreateGzFile(toRecreate.WebType, toRecreate.TVItemID);
             }
 
             return ValidationResults.Count == 0 ? true : false;

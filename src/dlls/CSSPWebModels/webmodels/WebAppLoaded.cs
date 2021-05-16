@@ -24,10 +24,6 @@ namespace CSSPWebModels
         public WebAllReportTypes WebAllReportTypes { get; set; }
         public WebAllTels WebAllTels { get; set; }
         public WebAllTideLocations WebAllTideLocations { get; set; }
-        public WebAllTVItemLanguages WebAllTVItemLanguages1980_2020 { get; set; }
-        public WebAllTVItemLanguages WebAllTVItemLanguages2021_2060 { get; set; }
-        public WebAllTVItems WebAllTVItems1980_2020 { get; set; }
-        public WebAllTVItems WebAllTVItems2021_2060 { get; set; }
         public WebArea WebArea { get; set; }
         public WebClimateSites WebClimateSites { get; set; }
         public WebCountry WebCountry { get; set; }
@@ -43,6 +39,7 @@ namespace CSSPWebModels
         public WebPolSourceSites WebPolSourceSites { get; set; }
         public WebProvince WebProvince { get; set; }
         public WebRoot WebRoot { get; set; }
+        public WebAllSearch WebAllSearch { get; set; }
         public WebSector WebSector { get; set; }
         public WebSubsector WebSubsector { get; set; }
         public WebTideSites WebTideSites { get; set; }

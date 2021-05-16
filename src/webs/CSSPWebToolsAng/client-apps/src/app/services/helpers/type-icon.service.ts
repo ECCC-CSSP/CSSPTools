@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
-import { AppStateService } from 'src/app/services/app-state.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TypeIconService {
 
-  constructor(private appStateService: AppStateService) {
+  constructor() {
   }
 
   GetTypeIcon(tvType: number) {

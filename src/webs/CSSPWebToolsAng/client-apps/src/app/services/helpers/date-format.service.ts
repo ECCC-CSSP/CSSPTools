@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { MWQMRun } from 'src/app/models/generated/db/MWQMRun.model';
 import { MWQMSample } from 'src/app/models/generated/db/MWQMSample.model';
+import { TVFile } from 'src/app/models/generated/db/TVFile.model';
 import { StatMWQMSiteSample } from 'src/app/models/generated/web/StatMWQMSiteSample.model';
 import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
@@ -28,6 +29,12 @@ export class DateFormatService {
     }
 
     return this.GetDateFromDateText(statMWQMSiteSample.LastSampleDate.toString(), true);
+  }
+
+  GetTVFileCreateDateTime_LocalDigit(tvFile: TVFile) {
+    let DateText: string = tvFile.FileCreatedDate_UTC.toString();
+
+    return `${DateText.substring(0, 4)}-${DateText.substring(5, 7)}-${DateText.substring(8, 10)}`;
   }
 
   GetMWQMRunDateTime_LocalDigit(mwqmRun: MWQMRun) {

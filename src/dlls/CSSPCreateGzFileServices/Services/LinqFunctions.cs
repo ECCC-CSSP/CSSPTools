@@ -1218,11 +1218,11 @@ namespace CreateGzFileServices
             if (dbLocal != null)
             {
                 List<int> MWQMRunIDList2 = await (from c in dbLocal.TVItems
-                                                 from r in dbLocal.MWQMRuns
-                                                 where c.TVItemID == r.MWQMRunTVItemID
-                                                 && c.TVPath.Contains(TVItemSubsector.TVPath + "p")
-                                                 && c.TVType == TVTypeEnum.MWQMRun
-                                                 select r.MWQMRunID).ToListAsync();
+                                                  from r in dbLocal.MWQMRuns
+                                                  where c.TVItemID == r.MWQMRunTVItemID
+                                                  && c.TVPath.Contains(TVItemSubsector.TVPath + "p")
+                                                  && c.TVType == TVTypeEnum.MWQMRun
+                                                  select r.MWQMRunID).ToListAsync();
 
                 return await (from rl in dbLocal.MWQMRunLanguages
                               where MWQMRunIDList2.Contains(rl.MWQMRunID)
@@ -1272,8 +1272,8 @@ namespace CreateGzFileServices
             if (dbLocal != null)
             {
                 List<Contact> contactList2 = await (from c in dbLocal.Contacts
-                                                   orderby c.LastName, c.FirstName, c.Initial
-                                                   select c).AsNoTracking().ToListAsync();
+                                                    orderby c.LastName, c.FirstName, c.Initial
+                                                    select c).AsNoTracking().ToListAsync();
 
                 foreach (Contact contact in contactList2)
                 {
@@ -2018,65 +2018,61 @@ namespace CreateGzFileServices
             return await (from c in db.ReportSections
                           select c).AsNoTracking().ToListAsync();
         }
-        private async Task<List<TVItem>> GetAllTVItem1980_2020()
+        private async Task<List<TVItem>> GetSearchableTVItem()
         {
-            DateTime BeforeDate = new DateTime(2021, 1, 1);
-
             if (dbLocal != null)
             {
                 return await (from c in dbLocal.TVItems
-                              where c.LastUpdateDate_UTC < BeforeDate
+                              where c.TVType == TVTypeEnum.Country
+                              || c.TVType == TVTypeEnum.Province
+                              || c.TVType == TVTypeEnum.Area
+                              || c.TVType == TVTypeEnum.Sector
+                              || c.TVType == TVTypeEnum.Subsector
+                              || c.TVType == TVTypeEnum.Municipality
                               select c).AsNoTracking().ToListAsync();
             }
 
             return await (from c in db.TVItems
-                          where c.LastUpdateDate_UTC < BeforeDate
+                          where c.TVType == TVTypeEnum.Country
+                          || c.TVType == TVTypeEnum.Province
+                          || c.TVType == TVTypeEnum.Area
+                          || c.TVType == TVTypeEnum.Sector
+                          || c.TVType == TVTypeEnum.Subsector
+                          || c.TVType == TVTypeEnum.Municipality
                           select c).AsNoTracking().ToListAsync();
         }
-        private async Task<List<TVItem>> GetAllTVItem2021_2060()
+        private async Task<List<TVItemLanguage>> GetSearchableTVItemLanguage()
         {
-            DateTime AfterDate = new DateTime(2020, 12, 31);
-
             if (dbLocal != null)
             {
-                return await (from c in dbLocal.TVItems
-                              where c.LastUpdateDate_UTC > AfterDate
-                              select c).AsNoTracking().ToListAsync();
-            }
+                List<int> TVItemIDList = await (from c in dbLocal.TVItems
+                                                where c.TVType == TVTypeEnum.Country
+                                                || c.TVType == TVTypeEnum.Province
+                                                || c.TVType == TVTypeEnum.Area
+                                                || c.TVType == TVTypeEnum.Sector
+                                                || c.TVType == TVTypeEnum.Subsector
+                                                || c.TVType == TVTypeEnum.Municipality
+                                                select c.TVItemID).ToListAsync();
 
-            return await (from c in db.TVItems
-                          where c.LastUpdateDate_UTC > AfterDate
-                          select c).AsNoTracking().ToListAsync();
-        }
-        private async Task<List<TVItemLanguage>> GetAllTVItemLanguage1980_2020()
-        {
-            DateTime BeforeDate = new DateTime(2021, 1, 1);
 
-            if (dbLocal != null)
-            {
                 return await (from cl in dbLocal.TVItemLanguages
-                              where cl.LastUpdateDate_UTC < BeforeDate
-                              select cl).AsNoTracking().ToListAsync();
+                              where TVItemIDList.Contains(cl.TVItemID)
+                              select cl).ToListAsync();
             }
+
+            List<int> TVItemIDList2 = await (from c in db.TVItems
+                                            where c.TVType == TVTypeEnum.Country
+                                            || c.TVType == TVTypeEnum.Province
+                                            || c.TVType == TVTypeEnum.Area
+                                            || c.TVType == TVTypeEnum.Sector
+                                            || c.TVType == TVTypeEnum.Subsector
+                                            || c.TVType == TVTypeEnum.Municipality
+                                            select c.TVItemID).ToListAsync();
+
 
             return await (from cl in db.TVItemLanguages
-                          where cl.LastUpdateDate_UTC < BeforeDate
-                          select cl).AsNoTracking().ToListAsync();
-        }
-        private async Task<List<TVItemLanguage>> GetAllTVItemLanguage2021_2060()
-        {
-            DateTime AfterDate = new DateTime(2020, 12, 31);
-
-            if (dbLocal != null)
-            {
-                return await (from cl in dbLocal.TVItemLanguages
-                              where cl.LastUpdateDate_UTC > AfterDate
-                              select cl).AsNoTracking().ToListAsync();
-            }
-
-            return await (from cl in db.TVItemLanguages
-                          where cl.LastUpdateDate_UTC > AfterDate
-                          select cl).AsNoTracking().ToListAsync();
+                          where TVItemIDList2.Contains(cl.TVItemID)
+                          select cl).ToListAsync();
         }
         private async Task<List<TVItem>> GetTVItemParentListWithTVItem(TVItem TVItem)
         {
@@ -2095,8 +2091,37 @@ namespace CreateGzFileServices
                           orderby c.TVLevel
                           select c).AsNoTracking().ToListAsync();
         }
+        private async Task<List<int>> GetMunicipalityWithInfrastructureTVItemIDList(TVItem TVItemProvince)
+        {
+            if (dbLocal != null)
+            {
+                return await (from c in dbLocal.TVItems
+                              from c2 in dbLocal.TVItems
+                              let infExist = (from d in dbLocal.Infrastructures
+                                              where d.InfrastructureTVItemID == c2.TVItemID
+                                              select d).Any()
+                              where c2.ParentID == c.TVItemID
+                              && c.TVPath.Contains(TVItemProvince.TVPath + "p")
+                              && c.TVType == TVTypeEnum.Municipality
+                              && c2.TVType == TVTypeEnum.Infrastructure
+                              && infExist == true
+                              select c.TVItemID).Distinct().ToListAsync();
+            }
+
+            return await (from c in db.TVItems
+                          from c2 in db.TVItems
+                          let infExist = (from d in db.Infrastructures
+                                          where d.InfrastructureTVItemID == c2.TVItemID
+                                          select d).Any()
+                          where c2.ParentID == c.TVItemID
+                          && c.TVPath.Contains(TVItemProvince.TVPath + "p")
+                          && c.TVType == TVTypeEnum.Municipality
+                          && c2.TVType == TVTypeEnum.Infrastructure
+                          && infExist == true
+                          select c.TVItemID).Distinct().ToListAsync();
+        }
         private async Task<List<TVItemLanguage>> GetTVItemLanguageParentListWithTVItem(TVItem TVItem)
-        {           
+        {
             List<int> ParentsTVItemID = TVItem.TVPath.Split("p", StringSplitOptions.RemoveEmptyEntries).Select(c => int.Parse(c)).ToList();
 
             if (dbLocal != null)

@@ -25,14 +25,14 @@ export class SubPageService {
   }
 
   SetSubPage(tvItemModel: TVItemModel) {
-    this.appStateService.ShellSubComponent = this.GetSubPage(tvItemModel.TVItem);
+    this.appStateService.UserPreference.ShellSubComponent = this.GetSubPage(tvItemModel.TVItem);
   }
 
   GetSubPage(tvItem: TVItem): ShellSubComponentEnum {
     switch (<TVTypeEnum>tvItem.TVType) {
       case TVTypeEnum.Area:
         {
-          this.appStateService.CurrentAreaTVItemID = tvItem.TVItemID;
+          this.appStateService.UserPreference.CurrentAreaTVItemID = tvItem.TVItemID;
           if (this.loaderService.DataIsLoaded(WebTypeEnum.WebArea))
           {
             if (this.appLoadedService.WebArea.TVItemModel.TVItem.TVItemID != tvItem.TVItemID)
@@ -44,7 +44,7 @@ export class SubPageService {
         }
       case TVTypeEnum.Country:
         {
-          this.appStateService.CurrentCountryTVItemID = tvItem.TVItemID;
+          this.appStateService.UserPreference.CurrentCountryTVItemID = tvItem.TVItemID;
           if (this.loaderService.DataIsLoaded(WebTypeEnum.WebCountry))
           {
             if (this.appLoadedService.WebCountry.TVItemModel.TVItem.TVItemID != tvItem.TVItemID)
@@ -56,7 +56,7 @@ export class SubPageService {
         }
       case TVTypeEnum.Municipality:
         {
-          this.appStateService.CurrentMunicipalityTVItemID = tvItem.TVItemID;
+          this.appStateService.UserPreference.CurrentMunicipalityTVItemID = tvItem.TVItemID;
           if (this.loaderService.DataIsLoaded(WebTypeEnum.WebMunicipality))
           {
             if (this.appLoadedService.WebMunicipality.TVItemModel.TVItem.TVItemID != tvItem.TVItemID)
@@ -80,7 +80,7 @@ export class SubPageService {
       //   }
       case TVTypeEnum.Province:
         {
-          this.appStateService.CurrentProvinceTVItemID = tvItem.TVItemID;
+          this.appStateService.UserPreference.CurrentProvinceTVItemID = tvItem.TVItemID;
           if (this.loaderService.DataIsLoaded(WebTypeEnum.WebProvince))
           {
             if (this.appLoadedService.WebProvince.TVItemModel.TVItem.TVItemID != tvItem.TVItemID)
@@ -96,7 +96,7 @@ export class SubPageService {
         }
       case TVTypeEnum.Sector:
         {
-          this.appStateService.CurrentSectorTVItemID = tvItem.TVItemID;
+          this.appStateService.UserPreference.CurrentSectorTVItemID = tvItem.TVItemID;
           if (this.loaderService.DataIsLoaded(WebTypeEnum.WebSector))
           {
             if (this.appLoadedService.WebSector.TVItemModel.TVItem.TVItemID != tvItem.TVItemID)
@@ -108,7 +108,7 @@ export class SubPageService {
         }
       case TVTypeEnum.Subsector:
         {
-          this.appStateService.CurrentSubsectorTVItemID = tvItem.TVItemID;
+          this.appStateService.UserPreference.CurrentSubsectorTVItemID = tvItem.TVItemID;
           if (this.loaderService.DataIsLoaded(WebTypeEnum.WebSubsector))
           {
             if (this.appLoadedService.WebSubsector.TVItemModel.TVItem.TVItemID != tvItem.TVItemID)

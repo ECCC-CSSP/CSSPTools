@@ -1,4 +1,4 @@
 <button mat-button class="{{ showTVFileService.TVFileVisible(TVFileModel) ? 'selected' : '' }}"
-    (click)="showTVFileService.ToggleShowTVFile(TVFileModel)" title="show more information for viewing or editing">
+    (click)="showTVFileService.ToggleShowTVFile(TVFileModel)" title="{{ appLanguageService.MoreInformationForViewingOrEditing[appLanguageService.LangID] }}">
     <mat-icon>more_vert</mat-icon>
 </button>

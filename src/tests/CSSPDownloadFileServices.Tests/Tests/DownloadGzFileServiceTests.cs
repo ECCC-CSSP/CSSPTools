@@ -215,62 +215,6 @@ namespace DownloadFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task DownloadGzFile_WebAllTVItemLanguages1980_2020_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            WebTypeEnum webType = WebTypeEnum.WebAllTVItemLanguages1980_2020;
-
-            var actionRes = await DownloadFileService.DownloadGzFile(webType);
-            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
-            Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task DownloadGzFile_WebAllTVItemLanguages2021_2060_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            WebTypeEnum webType = WebTypeEnum.WebAllTVItemLanguages2021_2060;
-
-            var actionRes = await DownloadFileService.DownloadGzFile(webType);
-            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
-            Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task DownloadGzFile_WebAllTVItems1980_2020_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            WebTypeEnum webType = WebTypeEnum.WebAllTVItems1980_2020;
-
-            var actionRes = await DownloadFileService.DownloadGzFile(webType);
-            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
-            Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task DownloadGzFile_WebAllTVItems2021_2060_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            WebTypeEnum webType = WebTypeEnum.WebAllTVItems2021_2060;
-
-            var actionRes = await DownloadFileService.DownloadGzFile(webType);
-            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
-            Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
         public async Task DownloadGzFile_WebArea_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));

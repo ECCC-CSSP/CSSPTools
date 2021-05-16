@@ -33,10 +33,6 @@ namespace CSSPWebAPIsLocal.Controllers
         Task<ActionResult<WebAllReportTypes>> WebAllReportTypes();
         Task<ActionResult<WebAllTels>> WebAllTels();
         Task<ActionResult<WebAllTideLocations>> WebAllTideLocations();
-        Task<ActionResult<WebAllTVItemLanguages>> WebAllTVItemLanguages1980_2020();
-        Task<ActionResult<WebAllTVItemLanguages>> WebAllTVItemLanguages2021_2060();
-        Task<ActionResult<WebAllTVItems>> WebAllTVItems1980_2020();
-        Task<ActionResult<WebAllTVItems>> WebAllTVItems2021_2060();
         Task<ActionResult<WebArea>> WebArea(int TVItemID);
         Task<ActionResult<WebClimateSites>> WebClimateSites(int TVItemID);
         Task<ActionResult<WebCountry>> WebCountry(int TVItemID);
@@ -52,6 +48,7 @@ namespace CSSPWebAPIsLocal.Controllers
         Task<ActionResult<WebPolSourceSites>> WebPolSourceSites(int TVItemID);
         Task<ActionResult<WebProvince>> WebProvince(int TVItemID);
         Task<ActionResult<WebRoot>> WebRoot();
+        Task<ActionResult<WebAllSearch>> WebAllSearch();
         Task<ActionResult<WebSector>> WebSector(int TVItemID);
         Task<ActionResult<WebSubsector>> WebSubsector(int TVItemID);
         Task<ActionResult<WebTideSites>> WebTideSites(int TVItemID);
@@ -199,42 +196,42 @@ namespace CSSPWebAPIsLocal.Controllers
 
             return await ReadGzFileService.ReadJSON<WebAllTideLocations>(WebTypeEnum.WebAllTideLocations);
         }
-        [Route("WebAllTVItemLanguages1980_2020")]
-        [HttpGet]
-        public async Task<ActionResult<WebAllTVItemLanguages>> WebAllTVItemLanguages1980_2020()
-        {
-            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
+        //[Route("WebAllTVItemLanguages1980_2020")]
+        //[HttpGet]
+        //public async Task<ActionResult<WebAllTVItemLanguages>> WebAllTVItemLanguages1980_2020()
+        //{
+        //    CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
+        //    await LoggedInService.SetLoggedInLocalContactInfo();
 
-            return await ReadGzFileService.ReadJSON<WebAllTVItemLanguages>(WebTypeEnum.WebAllTVItemLanguages1980_2020);
-        }
-        [Route("WebAllTVItemLanguages2021_2060")]
-        [HttpGet]
-        public async Task<ActionResult<WebAllTVItemLanguages>> WebAllTVItemLanguages2021_2060()
-        {
-            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
+        //    return await ReadGzFileService.ReadJSON<WebAllTVItemLanguages>(WebTypeEnum.WebAllTVItemLanguages1980_2020);
+        //}
+        //[Route("WebAllTVItemLanguages2021_2060")]
+        //[HttpGet]
+        //public async Task<ActionResult<WebAllTVItemLanguages>> WebAllTVItemLanguages2021_2060()
+        //{
+        //    CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
+        //    await LoggedInService.SetLoggedInLocalContactInfo();
 
-            return await ReadGzFileService.ReadJSON<WebAllTVItemLanguages>(WebTypeEnum.WebAllTVItemLanguages2021_2060);
-        }
-        [Route("WebAllTVItems1980_2020")]
-        [HttpGet]
-        public async Task<ActionResult<WebAllTVItems>> WebAllTVItems1980_2020()
-        {
-            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
+        //    return await ReadGzFileService.ReadJSON<WebAllTVItemLanguages>(WebTypeEnum.WebAllTVItemLanguages2021_2060);
+        //}
+        //[Route("WebAllTVItems1980_2020")]
+        //[HttpGet]
+        //public async Task<ActionResult<WebAllTVItems>> WebAllTVItems1980_2020()
+        //{
+        //    CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
+        //    await LoggedInService.SetLoggedInLocalContactInfo();
 
-            return await ReadGzFileService.ReadJSON<WebAllTVItems>(WebTypeEnum.WebAllTVItems1980_2020);
-        }
-        [Route("WebAllTVItems2021_2060")]
-        [HttpGet]
-        public async Task<ActionResult<WebAllTVItems>> WebAllTVItems2021_2060()
-        {
-            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
+        //    return await ReadGzFileService.ReadJSON<WebAllTVItems>(WebTypeEnum.WebAllTVItems1980_2020);
+        //}
+        //[Route("WebAllTVItems2021_2060")]
+        //[HttpGet]
+        //public async Task<ActionResult<WebAllTVItems>> WebAllTVItems2021_2060()
+        //{
+        //    CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
+        //    await LoggedInService.SetLoggedInLocalContactInfo();
 
-            return await ReadGzFileService.ReadJSON<WebAllTVItems>(WebTypeEnum.WebAllTVItems2021_2060);
-        }
+        //    return await ReadGzFileService.ReadJSON<WebAllTVItems>(WebTypeEnum.WebAllTVItems2021_2060);
+        //}
         [Route("WebArea/{TVItemID:int}")]
         [HttpGet]
         public async Task<ActionResult<WebArea>> WebArea(int TVItemID)
@@ -383,6 +380,15 @@ namespace CSSPWebAPIsLocal.Controllers
             await LoggedInService.SetLoggedInLocalContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebRoot>(WebTypeEnum.WebRoot);
+        }
+        [Route("WebAllSearch")]
+        [HttpGet]
+        public async Task<ActionResult<WebAllSearch>> WebAllSearch()
+        {
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInLocalContactInfo();
+
+            return await ReadGzFileService.ReadJSON<WebAllSearch>(WebTypeEnum.WebAllSearch);
         }
         [Route("WebSector/{TVItemID:int}")]
         [HttpGet]

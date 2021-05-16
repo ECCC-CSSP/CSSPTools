@@ -3,7 +3,7 @@
  *
  */
 
-using CreateGzFileLocalServices;
+using CreateGzFileServices;
 using CSSPCultureServices.Resources;
 using CSSPCultureServices.Services;
 using CSSPDBModels;
@@ -37,14 +37,14 @@ namespace CSSPDBLocalServices
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IReadGzFileService ReadGzFileService { get; }
-        private ICreateGzFileLocalService CreateGzFileLocalService { get; }
+        private ICreateGzFileService CreateGzFileService { get; }
         private List<ToRecreate> ToRecreateList { get; set; }
         private List<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
         public MapInfoLocalService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, ILoggedInService LoggedInService,
-           CSSPDBLocalContext dbLocal, IReadGzFileService ReadGzFileService, ICreateGzFileLocalService CreateGzFileLocalService)
+           CSSPDBLocalContext dbLocal, IReadGzFileService ReadGzFileService, ICreateGzFileService CreateGzFileService)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
@@ -52,7 +52,7 @@ namespace CSSPDBLocalServices
             this.enums = enums;
             this.dbLocal = dbLocal;
             this.ReadGzFileService = ReadGzFileService;
-            this.CreateGzFileLocalService = CreateGzFileLocalService;
+            this.CreateGzFileService = CreateGzFileService;
 
             ToRecreateList = new List<ToRecreate>();
         }

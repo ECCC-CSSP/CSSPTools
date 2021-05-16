@@ -52,33 +52,33 @@ export class ShellItemComponent implements OnInit, OnDestroy {
   NavigateTo(tvItemModel: TVItemModel) {
     if (tvItemModel.TVItem.TVType == TVTypeEnum.Area) {
       this.loaderService.Load<WebArea>(WebTypeEnum.WebArea, null, false);
-      this.appStateService.ShellSubComponent = ShellSubComponentEnum.Area
-      this.appStateService.CurrentAreaTVItemID = tvItemModel.TVItem.TVItemID;
+      this.appStateService.UserPreference.ShellSubComponent = ShellSubComponentEnum.Area
+      this.appStateService.UserPreference.CurrentAreaTVItemID = tvItemModel.TVItem.TVItemID;
     }
     else if (tvItemModel.TVItem.TVType == TVTypeEnum.Country) {
       this.loaderService.Load<WebCountry>(WebTypeEnum.WebCountry, null, false);
-      this.appStateService.ShellSubComponent = ShellSubComponentEnum.Country
-      this.appStateService.CurrentCountryTVItemID = tvItemModel.TVItem.TVItemID;
+      this.appStateService.UserPreference.ShellSubComponent = ShellSubComponentEnum.Country
+      this.appStateService.UserPreference.CurrentCountryTVItemID = tvItemModel.TVItem.TVItemID;
     }
     else if (tvItemModel.TVItem.TVType == TVTypeEnum.Municipality) {
       this.loaderService.Load<WebMunicipality>(WebTypeEnum.WebMunicipality, WebTypeEnum.WebMikeScenarios, false);
-      this.appStateService.ShellSubComponent = ShellSubComponentEnum.Municipality
-      this.appStateService.CurrentMunicipalityTVItemID = tvItemModel.TVItem.TVItemID;
+      this.appStateService.UserPreference.ShellSubComponent = ShellSubComponentEnum.Municipality
+      this.appStateService.UserPreference.CurrentMunicipalityTVItemID = tvItemModel.TVItem.TVItemID;
     }
     else if (tvItemModel.TVItem.TVType == TVTypeEnum.Province) {
       this.loaderService.Load<WebProvince>(WebTypeEnum.WebProvince, WebTypeEnum.WebClimateSites, false);
-      this.appStateService.ShellSubComponent = ShellSubComponentEnum.Province
-      this.appStateService.CurrentProvinceTVItemID = tvItemModel.TVItem.TVItemID;
+      this.appStateService.UserPreference.ShellSubComponent = ShellSubComponentEnum.Province
+      this.appStateService.UserPreference.CurrentProvinceTVItemID = tvItemModel.TVItem.TVItemID;
     }
     else if (tvItemModel.TVItem.TVType == TVTypeEnum.Sector) {
       this.loaderService.Load<WebSector>(WebTypeEnum.WebSector, null, false);
-      this.appStateService.ShellSubComponent = ShellSubComponentEnum.Sector
-      this.appStateService.CurrentSectorTVItemID = tvItemModel.TVItem.TVItemID;
+      this.appStateService.UserPreference.ShellSubComponent = ShellSubComponentEnum.Sector
+      this.appStateService.UserPreference.CurrentSectorTVItemID = tvItemModel.TVItem.TVItemID;
     }
     else if (tvItemModel.TVItem.TVType == TVTypeEnum.Subsector) {
       this.loaderService.Load<WebSubsector>(WebTypeEnum.WebSubsector, WebTypeEnum.WebMWQMSites, false);
-      this.appStateService.ShellSubComponent = ShellSubComponentEnum.Subsector
-      this.appStateService.CurrentSubsectorTVItemID = tvItemModel.TVItem.TVItemID;
+      this.appStateService.UserPreference.ShellSubComponent = ShellSubComponentEnum.Subsector
+      this.appStateService.UserPreference.CurrentSubsectorTVItemID = tvItemModel.TVItem.TVItemID;
     }
     else {
       alert(`${TVTypeEnum[tvItemModel.TVItem.TVType]} - Not Implemented Yet. See search.component.ts -- NavigateTo Function`);
@@ -86,7 +86,7 @@ export class ShellItemComponent implements OnInit, OnDestroy {
   }
 
   Home() {
-    this.appStateService.TopComponent = TopComponentEnum.Home;
+    this.appStateService.UserPreference.TopComponent = TopComponentEnum.Home;
   }
 
   SetLanguage(language: LanguageEnum) {
@@ -94,29 +94,29 @@ export class ShellItemComponent implements OnInit, OnDestroy {
   }
 
   SetMapSize(mapSize: MapSizeEnum) {
-    let MenuVisible: boolean = !(this.appStateService.MenuVisible);
-    this.appStateService.MapSize = mapSize;
-    this.appStateService.MenuVisible = MenuVisible;
+    let LeftSideNavVisible: boolean = !(this.appStateService.UserPreference.LeftSideNavVisible);
+    this.appStateService.UserPreference.MapSize = mapSize;
+    this.appStateService.UserPreference.LeftSideNavVisible = LeftSideNavVisible;
 
     if (!this.subMapSize) {
       this.subMapSize = timer(300, 300).pipe(
         tap(() => {
-          this.appStateService.MapSize = mapSize;
-          this.appStateService.MenuVisible = !MenuVisible
+          this.appStateService.UserPreference.MapSize = mapSize;
+          this.appStateService.UserPreference.LeftSideNavVisible = !LeftSideNavVisible
         })).subscribe();
     }
     else {
       this.subMapSize.unsubscribe();
       this.subMapSize = timer(300, 300).pipe(
         tap(() => {
-          this.appStateService.MapSize = mapSize;
-          this.appStateService.MenuVisible = !MenuVisible;
+          this.appStateService.UserPreference.MapSize = mapSize;
+          this.appStateService.UserPreference.LeftSideNavVisible = !LeftSideNavVisible;
         })).subscribe();
     }
   }
 
   ColorSelection(mapSize: MapSizeEnum) {
-    if (this.appStateService.MapSize == mapSize) {
+    if (this.appStateService.UserPreference.MapSize == mapSize) {
       return 'selected';
     }
     else {
@@ -125,6 +125,6 @@ export class ShellItemComponent implements OnInit, OnDestroy {
   }
 
   GetMapSizeClass(): string {
-    return MapSizeEnum[this.appStateService.MapSize];
+    return MapSizeEnum[this.appStateService.UserPreference.MapSize];
   }
 }

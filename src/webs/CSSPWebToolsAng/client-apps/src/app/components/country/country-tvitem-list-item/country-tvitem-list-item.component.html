@@ -4,17 +4,17 @@
 
     <button mat-button (click)="subPageService.SetSubPage(tvItemModel)">
         <span [ngClass]="tvItemModel?.TVItem?.IsActive ? '' : 'inactive'">
-            <span *ngIf="appStateService.MapVisible">
+            <span *ngIf="appStateService.UserPreference.MapVisible">
                 {{ i + 1 }}&nbsp;-&nbsp;
             </span>
-            <span *ngIf="appStateService.DetailVisible">
+            <span *ngIf="appStateService.UserPreference.DetailVisible">
                 [{{ tvItemModel?.TVItem.TVItemID }}]
             </span>
             {{ tvItemModel?.TVItemLanguageList[this.appLanguageService.LangID]?.TVText }}
         </span>
-        <app-stat-count *ngIf="appStateService.StatCountVisible" [TVType]="null"
+        <app-stat-count *ngIf="appStateService.UserPreference.StatCountVisible" [TVType]="null"
             [TVItemModel]="tvItemModel"></app-stat-count>
-        <app-last-udpate-tv-item-model *ngIf="appStateService.LastUpdateVisible"
+        <app-last-udpate-tv-item-model *ngIf="appStateService.UserPreference.LastUpdateVisible"
             [TVItemModel]="tvItemModel"></app-last-udpate-tv-item-model>
     </button>
 
@@ -30,7 +30,7 @@
                 <app-country-item-view [TVItemModel]="tvItemModel" >
                 </app-country-item-view>
             </mat-expansion-panel>
-            <mat-expansion-panel *ngIf="appStateService.EditVisible">
+            <mat-expansion-panel *ngIf="appStateService.UserPreference.EditVisible">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
                         <mat-icon>edit</mat-icon>
@@ -41,7 +41,7 @@
                     >
                 </app-country-item-modify>
             </mat-expansion-panel>
-            <mat-expansion-panel *ngIf="appStateService.EditVisible">
+            <mat-expansion-panel *ngIf="appStateService.UserPreference.EditVisible">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
                         <mat-icon>add</mat-icon>
@@ -55,6 +55,6 @@
         </mat-accordion>
     </ng-container>
 
-    <app-country-tvitem-list-detail  *ngIf="appStateService.DetailVisible"
+    <app-country-tvitem-list-detail  *ngIf="appStateService.UserPreference.DetailVisible"
         [TVItemModel]="tvItemModel"></app-country-tvitem-list-detail>
 </mat-list>

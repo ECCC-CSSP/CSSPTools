@@ -5,94 +5,123 @@
     {{ appStateService.Status }}
 </p>
 
-<button mat-button [ngClass]="appStateService.ProvinceSubComponent == provinceSubComponentEnum.Areas ? 'selected' : ''"
+<button mat-button [ngClass]="appStateService.UserPreference.ProvinceSubComponent == provinceSubComponentEnum.Areas ? 'selected' : ''"
     (click)="componentShowService.ShowProvince(provinceSubComponentEnum.Areas)"
     title="{{ appLanguageService.ProvinceShowAreas[appLanguageService.LangID] }}">
     <span>
         {{ appLanguageService.ProvinceAreas[appLanguageService.LangID] }}
-        <span class="badge-stat" *ngIf="appStateService.StatCountVisible">
-            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.WebProvince?.TVItemModel, tvTypeEnum.Area) }}&nbsp;&nbsp;
-        </span>                                                                        
+        <span class="badge-stat" *ngIf="appStateService.UserPreference.StatCountVisible">
+            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.WebProvince?.TVItemModel, tvTypeEnum.Area)
+            }}&nbsp;&nbsp;
+        </span>
     </span>
-    <span class="biggerArrow"
-        (click)="ChangeSortOrderForProvinceAreas(ascDescEnum.Ascending)"
-        *ngIf="appStateService.ProvinceAreasSortOrder == ascDescEnum.Descending">
-        &nbsp;&nbsp;&uarr;
+    <span class="biggerArrow" *ngIf="appStateService.UserPreference.ProvinceAreasSortOrder == ascDescEnum.Descending"
+        (click)="appStateService.UserPreference.ProvinceAreasSortOrder = ascDescEnum.Ascending">
+        &nbsp;&nbsp;&#8679;
     </span>
-    <span class="biggerArrow"
-        (click)="ChangeSortOrderForProvinceAreas(ascDescEnum.Descending)"
-        *ngIf="appStateService.ProvinceAreasSortOrder == ascDescEnum.Ascending">
-        &nbsp;&nbsp;&darr;
+    <span class="biggerArrow" *ngIf="appStateService.UserPreference.ProvinceAreasSortOrder == ascDescEnum.Ascending"
+        (click)="appStateService.UserPreference.ProvinceAreasSortOrder = ascDescEnum.Descending">
+        &nbsp;&nbsp;&#8681;
     </span>
 </button>
-<button mat-button [ngClass]="appStateService.ProvinceSubComponent == provinceSubComponentEnum.Municipalities ? 'selected' : ''"
+<button mat-button
+    [ngClass]="appStateService.UserPreference.ProvinceSubComponent == provinceSubComponentEnum.Municipalities ? 'selected' : ''"
     (click)="componentShowService.ShowProvince(provinceSubComponentEnum.Municipalities)"
     title="{{ appLanguageService.ProvinceShowMunicipalities[appLanguageService.LangID] }}">
     <span>
         {{ appLanguageService.ProvinceMunicipalities[appLanguageService.LangID] }}
-        <span class="badge-stat" *ngIf="appStateService.StatCountVisible">
-            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.WebProvince?.TVItemModel, tvTypeEnum.Municipality) }}&nbsp;&nbsp;
-        </span>                                                                                
+        <span class="badge-stat" *ngIf="appStateService.UserPreference.StatCountVisible">
+            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.WebProvince?.TVItemModel,
+            tvTypeEnum.Municipality) }}&nbsp;&nbsp;
+        </span>
     </span>
-    <span class="biggerArrow"
-        (click)="ChangeSortOrderForProvinceMunicipalities(ascDescEnum.Ascending)"
-        *ngIf="appStateService.ProvinceMunicipalitiesSortOrder == ascDescEnum.Descending">
-        &nbsp;&nbsp;&uarr;
+    <span class="biggerArrow" *ngIf="appStateService.UserPreference.ProvinceMunicipalitiesSortOrder == ascDescEnum.Descending"
+        (click)="appStateService.UserPreference.ProvinceMunicipalitiesSortOrder = ascDescEnum.Ascending">
+        &nbsp;&nbsp;&#8679;
     </span>
-    <span class="biggerArrow"
-        (click)="ChangeSortOrderForProvinceMunicipalities(ascDescEnum.Descending)"
-        *ngIf="appStateService.ProvinceMunicipalitiesSortOrder == ascDescEnum.Ascending">
-        &nbsp;&nbsp;&darr;
+    <span class="biggerArrow" *ngIf="appStateService.UserPreference.ProvinceMunicipalitiesSortOrder == ascDescEnum.Ascending"
+        (click)="appStateService.UserPreference.ProvinceMunicipalitiesSortOrder = ascDescEnum.Descending">
+        &nbsp;&nbsp;&#8681;
     </span>
 </button>
-<button mat-button [ngClass]="appStateService.ProvinceSubComponent == provinceSubComponentEnum.Files ? 'selected' : ''"
+<button mat-button [ngClass]="appStateService.UserPreference.ProvinceSubComponent == provinceSubComponentEnum.Files ? 'selected' : ''"
     (click)="componentShowService.ShowProvince(provinceSubComponentEnum.Files)"
     title="{{ appLanguageService.ProvinceShowFiles[appLanguageService.LangID] }}">
     <span>
         {{ appLanguageService.ProvinceFiles[appLanguageService.LangID] }}
-        <span class="badge-stat" *ngIf="appStateService.StatCountVisible">
-            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.WebProvince?.TVItemModel, tvTypeEnum.File) }}/
-            {{ statCountService.GetStatCount(appLoadedService.WebProvince?.TVItemModel, tvTypeEnum.TotalFile) }}&nbsp;&nbsp;
-        </span>                                                                                        
+        <span class="badge-stat" *ngIf="appStateService.UserPreference.StatCountVisible">
+            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.WebProvince?.TVItemModel, tvTypeEnum.File) }} /
+            {{ statCountService.GetStatCount(appLoadedService.WebProvince?.TVItemModel, tvTypeEnum.TotalFile)
+            }}&nbsp;&nbsp;
+        </span>
     </span>
+    <span mat-button [matMenuTriggerFor]="menu" title="{{ appLanguageService.FileName[appLanguageService.LangID] }}">&nbsp;&nbsp;
+        <span *ngIf="appStateService.UserPreference.ProvinceFilesSortByProp == filesSortPropEnum.FileName" 
+        title="{{ appLanguageService.SortedBy[appLanguageService.LangID] }} {{ appLanguageService.FileName[appLanguageService.LangID] }}">
+            ({{ appLanguageService.FileNameAccro[appLanguageService.LangID] }})
+        </span>
+        <span *ngIf="appStateService.UserPreference.ProvinceFilesSortByProp == filesSortPropEnum.FileType" 
+        title="{{ appLanguageService.SortedBy[appLanguageService.LangID] }} {{ appLanguageService.FileType[appLanguageService.LangID] }}">
+            ({{ appLanguageService.FileTypeAccro[appLanguageService.LangID] }})
+        </span>
+        <span *ngIf="appStateService.UserPreference.ProvinceFilesSortByProp == filesSortPropEnum.FileSize" 
+        title="{{ appLanguageService.SortedBy[appLanguageService.LangID] }} {{ appLanguageService.FileSize[appLanguageService.LangID] }}">
+            ({{ appLanguageService.FileSizeAccro[appLanguageService.LangID] }})
+        </span>
+        <span *ngIf="appStateService.UserPreference.ProvinceFilesSortByProp == filesSortPropEnum.FileDate" 
+        title="{{ appLanguageService.SortedBy[appLanguageService.LangID] }} {{ appLanguageService.FileDate[appLanguageService.LangID] }}">
+            ({{ appLanguageService.FileDateAccro[appLanguageService.LangID] }})
+        </span>
+    </span>
+    <mat-menu #menu="matMenu">
+        <h2  mat-menu-item >{{ appLanguageService.SortBy[appLanguageService.LangID] }}</h2>
+        <button mat-menu-item (click)="appStateService.UserPreference.ProvinceFilesSortByProp = filesSortPropEnum.FileName">{{ appLanguageService.FileName[appLanguageService.LangID] }}</button>
+        <button mat-menu-item (click)="appStateService.UserPreference.ProvinceFilesSortByProp = filesSortPropEnum.FileType">{{ appLanguageService.FileType[appLanguageService.LangID] }}</button>
+        <button mat-menu-item (click)="appStateService.UserPreference.ProvinceFilesSortByProp = filesSortPropEnum.FileSize">{{ appLanguageService.FileSize[appLanguageService.LangID] }}</button>
+        <button mat-menu-item (click)="appStateService.UserPreference.ProvinceFilesSortByProp = filesSortPropEnum.FileDate">{{ appLanguageService.FileDate[appLanguageService.LangID] }}</button>
+    </mat-menu>
 </button>
-<button mat-button [ngClass]="appStateService.ProvinceSubComponent == provinceSubComponentEnum.OpenData ? 'selected' : ''"
+<button mat-button
+    [ngClass]="appStateService.UserPreference.ProvinceSubComponent == provinceSubComponentEnum.OpenData ? 'selected' : ''"
     (click)="componentShowService.ShowProvince(provinceSubComponentEnum.OpenData)"
     title="{{ appLanguageService.ProvinceShowOpenData[appLanguageService.LangID] }}">
     {{ appLanguageService.ProvinceOpenData[appLanguageService.LangID] }}
 </button>
-<button mat-button [ngClass]="appStateService.ProvinceSubComponent == provinceSubComponentEnum.SamplingPlan ? 'selected' : ''"
+<button mat-button
+    [ngClass]="appStateService.UserPreference.ProvinceSubComponent == provinceSubComponentEnum.SamplingPlan ? 'selected' : ''"
     (click)="componentShowService.ShowProvince(provinceSubComponentEnum.SamplingPlan)"
     title="{{ appLanguageService.ProvinceShowSamplingPlan[appLanguageService.LangID] }}">
     {{ appLanguageService.ProvinceSamplingPlan[appLanguageService.LangID] }}
 </button>
-<button mat-button [ngClass]="appStateService.ProvinceSubComponent == provinceSubComponentEnum.ProvinceTools ? 'selected' : ''"
+<button mat-button
+    [ngClass]="appStateService.UserPreference.ProvinceSubComponent == provinceSubComponentEnum.ProvinceTools ? 'selected' : ''"
     (click)="componentShowService.ShowProvince(provinceSubComponentEnum.ProvinceTools)"
     title="{{ appLanguageService.ProvinceShowProvinceTools[appLanguageService.LangID] }}">
     {{ appLanguageService.ProvinceProvinceTools[appLanguageService.LangID] }}
 </button>
 
-<app-area-tvitem-list-item *ngIf="appStateService.ProvinceSubComponent == provinceSubComponentEnum.Areas"
+<app-area-tvitem-list-item *ngIf="appStateService.UserPreference.ProvinceSubComponent == provinceSubComponentEnum.Areas"
     [TVItemModelList]="sortTVItemListService.SortTVItemList(filterService.FilterTVItemModelList(appLoadedService.WebProvince?.TVItemModelAreaList))">
 </app-area-tvitem-list-item>
 
 <app-municipality-tvitem-list-item
-    *ngIf="appStateService.ProvinceSubComponent == provinceSubComponentEnum.Municipalities"   
-    [TVItemModelList]="sortTVItemListService.SortTVItemList(filterService.FilterTVItemModelList(appLoadedService.WebProvince?.TVItemModelMunicipalityList))">
+    *ngIf="appStateService.UserPreference.ProvinceSubComponent == provinceSubComponentEnum.Municipalities"
+    [TVItemModelInfrastructureModel]="sortTVItemMunicipalityListService.SortTVItemMunicipalityList(filterService.FilterTVItemModelList(appLoadedService.WebProvince?.TVItemModelMunicipalityList))">
 </app-municipality-tvitem-list-item>
 
-<app-file-list *ngIf="appStateService.ProvinceSubComponent == provinceSubComponentEnum.Files"
-    [TVFileModelListList]="structureTVFileListService.StructureTVFileList(appLoadedService.WebProvince?.TVFileModelList)">
+<app-file-list *ngIf="appStateService.UserPreference.ProvinceSubComponent == provinceSubComponentEnum.Files"
+    [TVFileModelListList]="structureTVFileListService.StructureTVFileList(tvTypeEnum.Province, appLoadedService.WebProvince?.TVFileModelList)"
+    [FilesSortByProp]="appStateService.UserPreference.ProvinceFilesSortByProp">
 </app-file-list>
 
-<div *ngIf="appStateService.ProvinceSubComponent == provinceSubComponentEnum.OpenData">
+<div *ngIf="appStateService.UserPreference.ProvinceSubComponent == provinceSubComponentEnum.OpenData">
     <app-open-data-item></app-open-data-item>
 </div>
 
-<div *ngIf="appStateService.ProvinceSubComponent == provinceSubComponentEnum.SamplingPlan">
+<div *ngIf="appStateService.UserPreference.ProvinceSubComponent == provinceSubComponentEnum.SamplingPlan">
     <app-sampling-plan-item></app-sampling-plan-item>
 </div>
 
-<div *ngIf="appStateService.ProvinceSubComponent == provinceSubComponentEnum.ProvinceTools">
+<div *ngIf="appStateService.UserPreference.ProvinceSubComponent == provinceSubComponentEnum.ProvinceTools">
     <app-provincial-tools-item></app-provincial-tools-item>
 </div>

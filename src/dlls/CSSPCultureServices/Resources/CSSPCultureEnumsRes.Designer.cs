@@ -2567,6 +2567,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File date.
+        /// </summary>
+        public static string FilesSortPropEnumFileDate {
+            get {
+                return ResourceManager.GetString("FilesSortPropEnumFileDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to File name.
         /// </summary>
         public static string FilesSortPropEnumFileName {
@@ -9318,6 +9327,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to WebAllSearch.
+        /// </summary>
+        public static string WebTypeEnumWebAllSearch {
+            get {
+                return ResourceManager.GetString("WebTypeEnumWebAllSearch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to WebAllTels.
         /// </summary>
         public static string WebTypeEnumWebAllTels {
@@ -9332,42 +9350,6 @@ namespace CSSPCultureServices.Resources {
         public static string WebTypeEnumWebAllTideLocations {
             get {
                 return ResourceManager.GetString("WebTypeEnumWebAllTideLocations", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to WebAllTVItemLanguages1980_2020.
-        /// </summary>
-        public static string WebTypeEnumWebAllTVItemLanguages1980_2020 {
-            get {
-                return ResourceManager.GetString("WebTypeEnumWebAllTVItemLanguages1980_2020", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to WebAllTVItemLanguages2021_2060.
-        /// </summary>
-        public static string WebTypeEnumWebAllTVItemLanguages2021_2060 {
-            get {
-                return ResourceManager.GetString("WebTypeEnumWebAllTVItemLanguages2021_2060", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to WebAllTVItems1980_2020.
-        /// </summary>
-        public static string WebTypeEnumWebAllTVItems1980_2020 {
-            get {
-                return ResourceManager.GetString("WebTypeEnumWebAllTVItems1980_2020", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to WebAllTVItems2021_2060.
-        /// </summary>
-        public static string WebTypeEnumWebAllTVItems2021_2060 {
-            get {
-                return ResourceManager.GetString("WebTypeEnumWebAllTVItems2021_2060", resourceCulture);
             }
         }
         

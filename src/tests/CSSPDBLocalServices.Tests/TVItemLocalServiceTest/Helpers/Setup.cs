@@ -3,7 +3,7 @@
  *  
  */
 
-using CreateGzFileLocalServices;
+using CreateGzFileServices;
 using CSSPCultureServices.Services;
 using CSSPDBFilesManagementModels;
 using CSSPDBModels;
@@ -36,7 +36,7 @@ namespace CSSPDBLocalServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private ITVItemLocalService PostTVItemModelService { get; set; }
         private IReadGzFileService ReadGzFileService { get; set; }
-        private ICreateGzFileLocalService CreateGzFileLocalService { get; set; }
+        private ICreateGzFileService CreateGzFileService { get; set; }
         private CSSPDBLocalContext dbLocal { get; set; }
         private string AzureStoreCSSPJSONPath { get; set; }
         private string CSSPJSONPath { get; set; }
@@ -135,7 +135,7 @@ namespace CSSPDBLocalServices.Tests
             Services.AddSingleton<IFilesManagementService, FilesManagementService>();
             Services.AddSingleton<IDownloadFileService, DownloadFileService>();
             Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
-            Services.AddSingleton<ICreateGzFileLocalService, CreateGzFileLocalService>();
+            Services.AddSingleton<ICreateGzFileService, CreateGzFileService>();
             Services.AddSingleton<ITVItemLocalService, TVItemLocalService>();
 
             Provider = Services.BuildServiceProvider();
@@ -160,8 +160,8 @@ namespace CSSPDBLocalServices.Tests
             ReadGzFileService = Provider.GetService<IReadGzFileService>();
             Assert.NotNull(ReadGzFileService);
 
-            CreateGzFileLocalService = Provider.GetService<ICreateGzFileLocalService>();
-            Assert.NotNull(CreateGzFileLocalService);
+            CreateGzFileService = Provider.GetService<ICreateGzFileService>();
+            Assert.NotNull(CreateGzFileService);
 
             if (ClearLocalDB)
             {

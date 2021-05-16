@@ -18,6 +18,7 @@ namespace CSSPWebModels
         public List<TVItemModel> TVItemModelMunicipalityList { get; set; }
         public List<TVFileModel> TVFileModelList { get; set; }
         public List<SamplingPlanModel> SamplingPlanModelList { get; set; }
+        public List<int> MunicipalityWithInfrastructureTVItemIDList { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -29,6 +30,7 @@ namespace CSSPWebModels
             TVItemModelMunicipalityList = new List<TVItemModel>();
             TVFileModelList = new List<TVFileModel>();
             SamplingPlanModelList = new List<SamplingPlanModel>();
+            MunicipalityWithInfrastructureTVItemIDList = new List<int>();
         }
         #endregion Constructors
     }

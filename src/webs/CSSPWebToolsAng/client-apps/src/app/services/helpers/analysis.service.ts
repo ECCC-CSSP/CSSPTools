@@ -22,16 +22,16 @@ export class AnalysisService {
 
 
   GetRainHighlight(statMWQMRun: StatMWQMRun): string {
-    if (statMWQMRun.RainDay1 >= this.appStateService.AnalysisWet24h) {
+    if (statMWQMRun.RainDay1 >= this.appStateService.UserPreference.AnalysisWet24h) {
       return 'highlightYellow';
     }
-    if ((statMWQMRun.RainDay1 + statMWQMRun.RainDay2) >= this.appStateService.AnalysisWet48h) {
+    if ((statMWQMRun.RainDay1 + statMWQMRun.RainDay2) >= this.appStateService.UserPreference.AnalysisWet48h) {
       return 'highlightYellow';
     }
-    if ((statMWQMRun.RainDay1 + statMWQMRun.RainDay2 + statMWQMRun.RainDay3) >= this.appStateService.AnalysisWet72h) {
+    if ((statMWQMRun.RainDay1 + statMWQMRun.RainDay2 + statMWQMRun.RainDay3) >= this.appStateService.UserPreference.AnalysisWet72h) {
       return 'highlightYellow';
     }
-    if ((statMWQMRun.RainDay1 + statMWQMRun.RainDay2 + statMWQMRun.RainDay3 + statMWQMRun.RainDay4) >= this.appStateService.AnalysisWet96h) {
+    if ((statMWQMRun.RainDay1 + statMWQMRun.RainDay2 + statMWQMRun.RainDay3 + statMWQMRun.RainDay4) >= this.appStateService.UserPreference.AnalysisWet96h) {
       return 'highlightYellow';
     }
 
@@ -39,7 +39,7 @@ export class AnalysisService {
   }
 
   GetSalinityHighlight(statMWQMSite: StatMWQMSite, runIndex: number): string {
-    let highlight: string = Math.abs(statMWQMSite?.StatMWQMSiteSampleList[runIndex]?.Sal - statMWQMSite.SalinityAverage) > this.appStateService.AnalysisHighlightSalFromAverage ? 'borderBottomRed' : ''
+    let highlight: string = Math.abs(statMWQMSite?.StatMWQMSiteSampleList[runIndex]?.Sal - statMWQMSite.SalinityAverage) > this.appStateService.UserPreference.AnalysisHighlightSalFromAverage ? 'borderBottomRed' : ''
 
     return highlight;
   }
@@ -113,7 +113,7 @@ export class AnalysisService {
   }
 
   ToggleAnalysisFullYear(): void {
-    this.appStateService.AnalysisFullYear = !this.appStateService.AnalysisFullYear;
+    this.appStateService.UserPreference.AnalysisFullYear = !this.appStateService.UserPreference.AnalysisFullYear;
     this.appStateService.Working = false;
   }
 
@@ -123,42 +123,42 @@ export class AnalysisService {
   }
 
   ToggleAnalysisFCDataVisible(): void {
-    this.appStateService.AnalysisFCDataVisible = !this.appStateService.AnalysisFCDataVisible;
+    this.appStateService.UserPreference.AnalysisFCDataVisible = !this.appStateService.UserPreference.AnalysisFCDataVisible;
     this.appStateService.Working = false;
   }
 
   ToggleAnalysisTempDataVisible(): void {
-    this.appStateService.AnalysisTempDataVisible = !this.appStateService.AnalysisTempDataVisible;
+    this.appStateService.UserPreference.AnalysisTempDataVisible = !this.appStateService.UserPreference.AnalysisTempDataVisible;
     this.appStateService.Working = false;
   }
 
   ToggleAnalysisSalDataVisible(): void {
-    this.appStateService.AnalysisSalDataVisible = !this.appStateService.AnalysisSalDataVisible;
+    this.appStateService.UserPreference.AnalysisSalDataVisible = !this.appStateService.UserPreference.AnalysisSalDataVisible;
     this.appStateService.Working = false;
   }
 
   ToggleAnalysisP90DataVisible(): void {
-    this.appStateService.AnalysisP90DataVisible = !this.appStateService.AnalysisP90DataVisible;
+    this.appStateService.UserPreference.AnalysisP90DataVisible = !this.appStateService.UserPreference.AnalysisP90DataVisible;
     this.appStateService.Working = false;
   }
 
   ToggleAnalysisGeoMeanDataVisible(): void {
-    this.appStateService.AnalysisGeoMeanDataVisible = !this.appStateService.AnalysisGeoMeanDataVisible;
+    this.appStateService.UserPreference.AnalysisGeoMeanDataVisible = !this.appStateService.UserPreference.AnalysisGeoMeanDataVisible;
     this.appStateService.Working = false;
   }
 
   ToggleAnalysisMedianDataVisible(): void {
-    this.appStateService.AnalysisMedianDataVisible = !this.appStateService.AnalysisMedianDataVisible;
+    this.appStateService.UserPreference.AnalysisMedianDataVisible = !this.appStateService.UserPreference.AnalysisMedianDataVisible;
     this.appStateService.Working = false;
   }
 
   ToggleAnalysisPerOver43DataVisible(): void {
-    this.appStateService.AnalysisPerOver43DataVisible = !this.appStateService.AnalysisPerOver43DataVisible;
+    this.appStateService.UserPreference.AnalysisPerOver43DataVisible = !this.appStateService.UserPreference.AnalysisPerOver43DataVisible;
     this.appStateService.Working = false;
   }
 
   ToggleAnalysisPerOver260DataVisible(): void {
-    this.appStateService.AnalysisPerOver260DataVisible = !this.appStateService.AnalysisPerOver260DataVisible;
+    this.appStateService.UserPreference.AnalysisPerOver260DataVisible = !this.appStateService.UserPreference.AnalysisPerOver260DataVisible;
     this.appStateService.Working = false;
   }
 
@@ -202,65 +202,65 @@ export class AnalysisService {
   }
 
   SetRuns(runs: number) {
-    this.appStateService.AnalysisRuns = runs;
+    this.appStateService.UserPreference.AnalysisRuns = runs;
     this.loaderService.FillStatMWQMSiteList();
   }
 
   SetCalculationType(statCalculationType: AnalysisCalculationTypeEnum) {
-    this.appStateService.AnalysisCalculationType = statCalculationType;
+    this.appStateService.UserPreference.AnalysisCalculationType = statCalculationType;
     this.loaderService.FillStatMWQMSiteList();
   }
 
   SetHighlightSalFromAverage(sal: number) {
-    this.appStateService.AnalysisHighlightSalFromAverage = sal;
+    this.appStateService.UserPreference.AnalysisHighlightSalFromAverage = sal;
     this.loaderService.FillStatMWQMSiteList();
   }
 
   // SetShortRange(shortRange: number) {
-  //   this.appStateService.AnalysisShortRange: shortRange });
+  //   this.appStateService.UserPreference.AnalysisShortRange: shortRange });
   // }
 
   // SetMidRange(midRange: number) {
-  //   this.appStateService.AnalysisMidRange: midRange });
+  //   this.appStateService.UserPreference.AnalysisMidRange: midRange });
   // }
 
   SetDry24h(dry24h: number) {
-    this.appStateService.AnalysisDry24h = dry24h;
+    this.appStateService.UserPreference.AnalysisDry24h = dry24h;
     this.loaderService.FillStatMWQMSiteList();
   }
 
   SetDry48h(dry48h: number) {
     this.loaderService.FillStatMWQMSiteList();
-    this.appStateService.AnalysisDry48h = dry48h;
+    this.appStateService.UserPreference.AnalysisDry48h = dry48h;
   }
 
   SetDry72h(dry72h: number) {
     this.loaderService.FillStatMWQMSiteList();
-    this.appStateService.AnalysisDry72h = dry72h;
+    this.appStateService.UserPreference.AnalysisDry72h = dry72h;
   }
 
   SetDry96h(dry96h: number) {
     this.loaderService.FillStatMWQMSiteList();
-    this.appStateService.AnalysisDry96h = dry96h;
+    this.appStateService.UserPreference.AnalysisDry96h = dry96h;
   }
 
   SetWet24h(wet24h: number) {
-    this.appStateService.AnalysisWet24h = wet24h;
+    this.appStateService.UserPreference.AnalysisWet24h = wet24h;
     this.loaderService.FillStatMWQMSiteList();
   }
 
   SetWet48h(wet48h: number) {
-    this.appStateService.AnalysisWet48h = wet48h;
+    this.appStateService.UserPreference.AnalysisWet48h = wet48h;
     this.loaderService.FillStatMWQMSiteList();
   }
 
   SetWet72h(wet72h: number) {
-    this.appStateService.AnalysisWet72h = wet72h;
+    this.appStateService.UserPreference.AnalysisWet72h = wet72h;
     this.loaderService.FillStatMWQMSiteList();
   }
 
   SetWet96h(wet96h: number) {
-    this.appStateService.AnalysisWet96h = wet96h;
+    this.appStateService.UserPreference.AnalysisWet96h = wet96h;
     this.loaderService.FillStatMWQMSiteList();
   }
 

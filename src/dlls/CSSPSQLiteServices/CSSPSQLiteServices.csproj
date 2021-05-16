@@ -40,7 +40,6 @@
     <ProjectReference Include="..\CSSPDBFilesManagementModels\CSSPDBFilesManagementModels.csproj" />
     <ProjectReference Include="..\CSSPDBCommandLogServices\CSSPDBCommandLogServices.csproj" />
     <ProjectReference Include="..\CSSPDBPreferenceModels\CSSPDBPreferenceModels.csproj" />
-    <ProjectReference Include="..\CSSPDBSearchModels\CSSPDBSearchModels.csproj" />
     <ProjectReference Include="..\CSSPDBServices\CSSPDBServices.csproj" />
   </ItemGroup>
 

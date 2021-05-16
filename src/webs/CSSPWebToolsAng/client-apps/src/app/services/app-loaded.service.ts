@@ -1,5 +1,4 @@
 import { Contact } from 'src/app/models/generated/db/Contact.model';
-import { SearchResult } from 'src/app/models/generated/helper/SearchResult.model';
 import { WebArea } from 'src/app/models/generated/web/WebArea.model';
 import { WebClimateSites } from 'src/app/models/generated/web/WebClimateSites.model';
 import { WebCountry } from 'src/app/models/generated/web/WebCountry.model';
@@ -12,6 +11,7 @@ import { WebMWQMSites } from 'src/app/models/generated/web/WebMWQMSites.model';
 import { WebPolSourceSites } from 'src/app/models/generated/web/WebPolSourceSites.model';
 import { WebProvince } from 'src/app/models/generated/web/WebProvince.model';
 import { WebRoot } from 'src/app/models/generated/web/WebRoot.model';
+import { WebAllSearch } from '../models/generated/web/WebAllSearch.model';
 import { WebSector } from 'src/app/models/generated/web/WebSector.model';
 import { WebSubsector } from 'src/app/models/generated/web/WebSubsector.model';
 import { WebAllCountries } from 'src/app/models/generated/web/WebAllCountries.model';
@@ -27,8 +27,6 @@ import { WebAllTideLocations } from 'src/app/models/generated/web/WebAllTideLoca
 import { WebAllAddresses } from 'src/app/models/generated/web/WebAllAddresses.model';
 import { WebAllEmails } from 'src/app/models/generated/web/WebAllEmails.model';
 import { WebAllTels } from 'src/app/models/generated/web/WebAllTels.model';
-import { WebAllTVItemLanguages } from 'src/app/models/generated/web/WebAllTVItemLanguages.model';
-import { WebAllTVItems } from 'src/app/models/generated/web/WebAllTVItems.model';
 import { WebLabSheets } from 'src/app/models/generated/web/WebLabSheets.model';
 import { WebMWQMSamples } from 'src/app/models/generated/web/WebMWQMSamples.model';
 import { WebTideSites } from 'src/app/models/generated/web/WebTideSites.model';
@@ -79,8 +77,6 @@ export class AppLoadedService {
   WebAllReportTypes?: WebAllReportTypes;
   WebAllTels?: WebAllTels;
   WebAllTideLocations?: WebAllTideLocations;
-  WebAllTVItemLanguages?: WebAllTVItemLanguages;
-  WebAllTVItems?: WebAllTVItems;
   WebArea?: WebArea;
   WebClimateSites?: WebClimateSites;
   WebCountry?: WebCountry;
@@ -97,13 +93,14 @@ export class AppLoadedService {
   WebPolSourceSites?: WebPolSourceSites;
   WebProvince?: WebProvince;
   WebRoot?: WebRoot;
+  WebAllSearch?: WebAllSearch;
   WebSector?: WebSector;
   WebSubsector?: WebSubsector;
   WebTideSites?: WebTideSites;
 
   AdminContactModel?: ContactModel[];
 
-  SearchResult?: SearchResult[];
+  SearchResult?: TVItemModel[];
 
   // MWQMRunRoutingList?: MWQMRun[];
   MWQMSiteList?: MWQMSiteModel[];

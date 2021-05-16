@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-
-import { SearchResult } from 'src/app/models/generated/helper/SearchResult.model';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
+import { AppLanguageService } from 'src/app/services/app-language.service';
 import { TypeIconService } from 'src/app/services/helpers/type-icon.service';
 import { TypeTextService } from 'src/app/services/helpers/type-text.service';
 
@@ -10,9 +10,10 @@ import { TypeTextService } from 'src/app/services/helpers/type-text.service';
   styleUrls: ['./search-option.component.css']
 })
 export class SearchOptionComponent implements OnInit {
-  @Input() searchResult: SearchResult;
+  @Input() searchResult: TVItemModel;
 
-  constructor(public typeTextService: TypeTextService,
+  constructor(public appLanguageService: AppLanguageService,
+    public typeTextService: TypeTextService,
     public typeIconService: TypeIconService) {
   }
 

@@ -34,6 +34,7 @@ import { WebMWQMSites } from 'src/app/models/generated/web/WebMWQMSites.model';
 import { WebPolSourceSites } from 'src/app/models/generated/web/WebPolSourceSites.model';
 import { WebProvince } from 'src/app/models/generated/web/WebProvince.model';
 import { WebRoot } from 'src/app/models/generated/web/WebRoot.model';
+import { WebAllSearch } from 'src/app/models/generated/web/WebAllSearch.model';
 import { WebSector } from 'src/app/models/generated/web/WebSector.model';
 import { WebSubsector } from 'src/app/models/generated/web/WebSubsector.model';
 import { WebTideSites } from 'src/app/models/generated/web/WebTideSites.model';
@@ -57,7 +58,6 @@ import { MWQMSampleModel } from 'src/app/models/generated/web/MWQMSampleModel.mo
 import { AnalysisCalculationTypeEnum } from 'src/app/enums/generated/AnalysisCalculationTypeEnum';
 import { MWQMRunModel } from 'src/app/models/generated/web/MWQMRunModel.model';
 import { StatMWQMSite } from 'src/app/models/generated/web/StatMWQMSite.model';
-import { MWQMRunModelSiteAndSampleModel, MWQMSiteModelAndSampleModel } from 'src/app/models/MWQMRunModelSiteAndSample.model';
 import { TopComponentEnum } from 'src/app/enums/generated/TopComponentEnum';
 import { SortMWQMSiteModelListService } from '../helpers/sort-mwqm-site-model-list.service';
 import { SortMWQMRunListService } from '../helpers/sort-mwqm-run-list-desc.service';
@@ -65,6 +65,9 @@ import { SortMWQMSiteSampleModelListService } from '../helpers/sort-mwqm-site-sa
 import { WebMWQMSamples } from 'src/app/models/generated/web/WebMWQMSamples.model';
 import { SortTVItemListService } from '../helpers/sort-tvitem-list.service';
 import { FilterService } from '../helpers/filter.service';
+import { MWQMSiteModelAndSampleModel } from 'src/app/models/generated/web/MWQMSiteModelAndSampleModel.model';
+import { MWQMRunModelSiteAndSampleModel } from 'src/app/models/generated/web/MWQMRunModelSiteAndSampleModel.model';
+import { SortTVItemMunicipalityListService } from '../helpers/sort-tvitem-municipality-list.service';
 
 
 @Injectable({
@@ -86,6 +89,7 @@ export class LoaderService {
         private sortMWQMRunListService: SortMWQMRunListService,
         private sortMWQMSiteSampleModelListService: SortMWQMSiteSampleModelListService,
         private sortTVItemListService: SortTVItemListService,
+        private sortTVItemMunicipalityListService: SortTVItemMunicipalityListService,
         private filterService: FilterService) {
     }
 
@@ -93,9 +97,6 @@ export class LoaderService {
         this.webType = webType;
         this.webTypeNext = webTypeNext;
         this.ForceReload = ForceReload;
-        if (this.appStateService.GoogleJSLoaded) {
-            this.mapService.ClearMap();
-        }
 
         this.sub ? this.sub.unsubscribe() : null;
 
@@ -180,30 +181,6 @@ export class LoaderService {
                     obj = this.appLoadedService.WebAllTideLocations;
                     return (obj === undefined || (Object.keys(obj).length === 0 && obj.constructor === Object)) ? false : true;
                 }
-            case WebTypeEnum.WebAllTVItemLanguages1980_2020:
-                {
-                    //obj = this.appLoadedService.WebAllTVItemLanguages1980_2020;
-                    //return (obj === undefined || (Object.keys(obj).length === 0 && obj.constructor === Object)) ? false : true;
-                }
-                break;
-            case WebTypeEnum.WebAllTVItemLanguages2021_2060:
-                {
-                    //obj = this.appLoadedService.WebAllTVItemLanguages2021_2060;
-                    //return (obj === undefined || (Object.keys(obj).length === 0 && obj.constructor === Object)) ? false : true;
-                }
-                break;
-            case WebTypeEnum.WebAllTVItems1980_2020:
-                {
-                    //obj = this.appLoadedService.WebAllTVItems1980_2020;
-                    //return (obj === undefined || (Object.keys(obj).length === 0 && obj.constructor === Object)) ? false : true;
-                }
-                break;
-            case WebTypeEnum.WebAllTVItems2021_2060:
-                {
-                    //obj = this.appLoadedService.WebAllTVItems2021_2060;
-                    //return (obj === undefined || (Object.keys(obj).length === 0 && obj.constructor === Object)) ? false : true;
-                }
-                break;
             case WebTypeEnum.WebArea:
                 {
                     obj = this.appLoadedService.WebArea;
@@ -211,7 +188,7 @@ export class LoaderService {
                         return false;
                     }
 
-                    let IsSame = this.appStateService.CurrentAreaTVItemID == this.appLoadedService.WebArea.TVItemModel.TVItem.TVItemID ? true : false;
+                    let IsSame = this.appStateService.UserPreference.CurrentAreaTVItemID == this.appLoadedService.WebArea.TVItemModel.TVItem.TVItemID ? true : false;
 
                     if (!IsSame) {
                         this.appLoadedService.WebArea = <WebArea>{};
@@ -227,7 +204,7 @@ export class LoaderService {
                         return false;
                     }
 
-                    let IsSame = this.appStateService.CurrentProvinceTVItemID == this.appLoadedService.WebClimateSites.TVItemModel.TVItem.TVItemID ? true : false;
+                    let IsSame = this.appStateService.UserPreference.CurrentProvinceTVItemID == this.appLoadedService.WebClimateSites.TVItemModel.TVItem.TVItemID ? true : false;
 
                     if (!IsSame) {
                         this.appLoadedService.WebClimateSites = <WebClimateSites>{};
@@ -243,7 +220,7 @@ export class LoaderService {
                         return false;
                     }
 
-                    let IsSame = this.appStateService.CurrentCountryTVItemID == this.appLoadedService.WebCountry.TVItemModel.TVItem.TVItemID ? true : false;
+                    let IsSame = this.appStateService.UserPreference.CurrentCountryTVItemID == this.appLoadedService.WebCountry.TVItemModel.TVItem.TVItemID ? true : false;
 
                     if (!IsSame) {
                         this.appLoadedService.WebCountry = <WebCountry>{};
@@ -259,7 +236,7 @@ export class LoaderService {
                         return false;
                     }
 
-                    let IsSame = this.appStateService.CurrentProvinceTVItemID == this.appLoadedService.WebDrogueRuns.TVItemModel.TVItem.TVItemID ? true : false;
+                    let IsSame = this.appStateService.UserPreference.CurrentProvinceTVItemID == this.appLoadedService.WebDrogueRuns.TVItemModel.TVItem.TVItemID ? true : false;
 
                     if (!IsSame) {
                         this.appLoadedService.WebDrogueRuns = <WebDrogueRuns>{};
@@ -275,7 +252,7 @@ export class LoaderService {
                         return false;
                     }
 
-                    let IsSame = this.appStateService.CurrentProvinceTVItemID == this.appLoadedService.WebHydrometricSites.TVItemModel.TVItem.TVItemID ? true : false;
+                    let IsSame = this.appStateService.UserPreference.CurrentProvinceTVItemID == this.appLoadedService.WebHydrometricSites.TVItemModel.TVItem.TVItemID ? true : false;
 
                     if (!IsSame) {
                         this.appLoadedService.WebHydrometricSites = <WebHydrometricSites>{};
@@ -291,7 +268,7 @@ export class LoaderService {
                         return false;
                     }
 
-                    let IsSame = this.appStateService.CurrentSubsectorTVItemID == this.appLoadedService.WebLabSheets.TVItemModel.TVItem.TVItemID ? true : false;
+                    let IsSame = this.appStateService.UserPreference.CurrentSubsectorTVItemID == this.appLoadedService.WebLabSheets.TVItemModel.TVItem.TVItemID ? true : false;
 
                     if (!IsSame) {
                         this.appLoadedService.WebLabSheets = <WebLabSheets>{};
@@ -307,7 +284,7 @@ export class LoaderService {
                         return false;
                     }
 
-                    let IsSame = this.appStateService.CurrentMunicipalityTVItemID == this.appLoadedService.WebMikeScenarios.TVItemModel.TVItem.TVItemID ? true : false;
+                    let IsSame = this.appStateService.UserPreference.CurrentMunicipalityTVItemID == this.appLoadedService.WebMikeScenarios.TVItemModel.TVItem.TVItemID ? true : false;
 
                     if (!IsSame) {
                         this.appLoadedService.WebMikeScenarios = <WebMikeScenarios>{};
@@ -323,7 +300,7 @@ export class LoaderService {
                         return false;
                     }
 
-                    let IsSame = this.appStateService.CurrentMunicipalityTVItemID == this.appLoadedService.WebMunicipality.TVItemModel.TVItem.TVItemID ? true : false;
+                    let IsSame = this.appStateService.UserPreference.CurrentMunicipalityTVItemID == this.appLoadedService.WebMunicipality.TVItemModel.TVItem.TVItemID ? true : false;
 
                     if (!IsSame) {
                         this.appLoadedService.WebMunicipality = <WebMunicipality>{};
@@ -339,7 +316,7 @@ export class LoaderService {
                         return false;
                     }
 
-                    let IsSame = this.appStateService.CurrentSubsectorTVItemID == this.appLoadedService.WebMWQMRuns.TVItemModel.TVItem.TVItemID ? true : false;
+                    let IsSame = this.appStateService.UserPreference.CurrentSubsectorTVItemID == this.appLoadedService.WebMWQMRuns.TVItemModel.TVItem.TVItemID ? true : false;
 
                     if (!IsSame) {
                         this.appLoadedService.WebMWQMRuns = <WebMWQMRuns>{};
@@ -355,7 +332,7 @@ export class LoaderService {
                         return false;
                     }
 
-                    let IsSame = this.appStateService.CurrentSubsectorTVItemID == this.appLoadedService.WebMWQMSamples1980_2020.TVItemModel.TVItem.TVItemID ? true : false;
+                    let IsSame = this.appStateService.UserPreference.CurrentSubsectorTVItemID == this.appLoadedService.WebMWQMSamples1980_2020.TVItemModel.TVItem.TVItemID ? true : false;
 
                     if (!IsSame) {
                         this.appLoadedService.WebMWQMSamples1980_2020 = <WebMWQMSamples1980_2020>{};
@@ -371,7 +348,7 @@ export class LoaderService {
                         return false;
                     }
 
-                    let IsSame = this.appStateService.CurrentSubsectorTVItemID == this.appLoadedService.WebMWQMSamples2021_2060.TVItemModel.TVItem.TVItemID ? true : false;
+                    let IsSame = this.appStateService.UserPreference.CurrentSubsectorTVItemID == this.appLoadedService.WebMWQMSamples2021_2060.TVItemModel.TVItem.TVItemID ? true : false;
 
                     if (!IsSame) {
                         this.appLoadedService.WebMWQMSamples2021_2060 = <WebMWQMSamples2021_2060>{};
@@ -387,7 +364,7 @@ export class LoaderService {
                         return false;
                     }
 
-                    let IsSame = this.appStateService.CurrentSubsectorTVItemID == this.appLoadedService.WebMWQMSites.TVItemModel.TVItem.TVItemID ? true : false;
+                    let IsSame = this.appStateService.UserPreference.CurrentSubsectorTVItemID == this.appLoadedService.WebMWQMSites.TVItemModel.TVItem.TVItemID ? true : false;
 
                     if (!IsSame) {
                         this.appLoadedService.WebMWQMSites = <WebMWQMSites>{};
@@ -403,7 +380,7 @@ export class LoaderService {
                         return false;
                     }
 
-                    let IsSame = this.appStateService.CurrentSubsectorTVItemID == this.appLoadedService.WebPolSourceSites.TVItemModel.TVItem.TVItemID ? true : false;
+                    let IsSame = this.appStateService.UserPreference.CurrentSubsectorTVItemID == this.appLoadedService.WebPolSourceSites.TVItemModel.TVItem.TVItemID ? true : false;
 
                     if (!IsSame) {
                         this.appLoadedService.WebPolSourceSites = <WebPolSourceSites>{};
@@ -419,7 +396,7 @@ export class LoaderService {
                         return false;
                     }
 
-                    let IsSame = this.appStateService.CurrentProvinceTVItemID == this.appLoadedService.WebProvince.TVItemModel.TVItem.TVItemID ? true : false;
+                    let IsSame = this.appStateService.UserPreference.CurrentProvinceTVItemID == this.appLoadedService.WebProvince.TVItemModel.TVItem.TVItemID ? true : false;
 
                     if (!IsSame) {
                         this.appLoadedService.WebProvince = <WebProvince>{};
@@ -438,6 +415,16 @@ export class LoaderService {
                     return true;
                 }
                 break;
+            case WebTypeEnum.WebAllSearch:
+                {
+                    obj = this.appLoadedService.WebAllSearch;
+                    if ((obj === undefined || (Object.keys(obj).length === 0 && obj.constructor === Object))) {
+                        return false;
+                    }
+
+                    return true;
+                }
+                break;
             case WebTypeEnum.WebSector:
                 {
                     obj = this.appLoadedService.WebSector;
@@ -445,7 +432,7 @@ export class LoaderService {
                         return false;
                     }
 
-                    let IsSame = this.appStateService.CurrentSectorTVItemID == this.appLoadedService.WebSector.TVItemModel.TVItem.TVItemID ? true : false;
+                    let IsSame = this.appStateService.UserPreference.CurrentSectorTVItemID == this.appLoadedService.WebSector.TVItemModel.TVItem.TVItemID ? true : false;
 
                     if (!IsSame) {
                         this.appLoadedService.WebSector = <WebSector>{};
@@ -461,7 +448,7 @@ export class LoaderService {
                         return false;
                     }
 
-                    let IsSame = this.appStateService.CurrentSubsectorTVItemID == this.appLoadedService.WebSubsector.TVItemModel.TVItem.TVItemID ? true : false;
+                    let IsSame = this.appStateService.UserPreference.CurrentSubsectorTVItemID == this.appLoadedService.WebSubsector.TVItemModel.TVItem.TVItemID ? true : false;
 
                     if (!IsSame) {
                         this.appLoadedService.WebSubsector = <WebSubsector>{};
@@ -477,7 +464,7 @@ export class LoaderService {
                         return false;
                     }
 
-                    let IsSame = this.appStateService.CurrentProvinceTVItemID == this.appLoadedService.WebTideSites.TVItemModel.TVItem.TVItemID ? true : false;
+                    let IsSame = this.appStateService.UserPreference.CurrentProvinceTVItemID == this.appLoadedService.WebTideSites.TVItemModel.TVItem.TVItemID ? true : false;
 
                     if (!IsSame) {
                         this.appLoadedService.WebTideSites = <WebTideSites>{};
@@ -563,109 +550,89 @@ export class LoaderService {
                     this.appLoadedService.WebAllTideLocations = <WebAllTideLocations>{};
                 }
                 break;
-            case WebTypeEnum.WebAllTVItemLanguages1980_2020:
-                {
-                    //this.appLoadedService.WebAllTVItemLanguages1980_2020 = <WebAllTVItemLanguages1980_2020>{};
-                }
-                break;
-            case WebTypeEnum.WebAllTVItemLanguages2021_2060:
-                {
-                    //this.appLoadedService.WebAllTVItemLanguages2021_2060 = <WebAllTVItemLanguages2021_2060>{};
-                }
-                break;
-            case WebTypeEnum.WebAllTVItems1980_2020:
-                {
-                    //this.appLoadedService.WebAllTVItems1980_2020 = <WebAllTVItems1980_2020>{};
-                }
-                break;
-            case WebTypeEnum.WebAllTVItems2021_2060:
-                {
-                    //this.appLoadedService.WebAllTVItems2021_2060 = <WebAllTVItems2021_2060>{};
-                }
-                break;
             case WebTypeEnum.WebArea:
                 {
                     this.appLoadedService.WebArea = <WebArea>{};
-                    TVItemIDText = `/${this.appStateService.CurrentAreaTVItemID}`;
+                    TVItemIDText = `/${this.appStateService.UserPreference.CurrentAreaTVItemID}`;
                 }
                 break;
             case WebTypeEnum.WebClimateSites:
                 {
                     this.appLoadedService.WebClimateSites = <WebClimateSites>{};
-                    TVItemIDText = `/${this.appStateService.CurrentProvinceTVItemID}`;
+                    TVItemIDText = `/${this.appStateService.UserPreference.CurrentProvinceTVItemID}`;
                 }
                 break;
             case WebTypeEnum.WebCountry:
                 {
                     this.appLoadedService.WebCountry = <WebCountry>{};
-                    TVItemIDText = `/${this.appStateService.CurrentCountryTVItemID}`;
+                    TVItemIDText = `/${this.appStateService.UserPreference.CurrentCountryTVItemID}`;
                 }
                 break;
             case WebTypeEnum.WebDrogueRuns:
                 {
                     this.appLoadedService.WebDrogueRuns = <WebDrogueRuns>{};
-                    TVItemIDText = `/${this.appStateService.CurrentProvinceTVItemID}`;
+                    TVItemIDText = `/${this.appStateService.UserPreference.CurrentProvinceTVItemID}`;
                 }
                 break;
             case WebTypeEnum.WebHydrometricSites:
                 {
                     this.appLoadedService.WebHydrometricSites = <WebHydrometricSites>{};
-                    TVItemIDText = `/${this.appStateService.CurrentProvinceTVItemID}`;
+                    TVItemIDText = `/${this.appStateService.UserPreference.CurrentProvinceTVItemID}`;
                 }
                 break;
             case WebTypeEnum.WebLabSheets:
                 {
                     this.appLoadedService.WebLabSheets = <WebLabSheets>{};
-                    TVItemIDText = `/${this.appStateService.CurrentSubsectorTVItemID}`;
+                    TVItemIDText = `/${this.appStateService.UserPreference.CurrentSubsectorTVItemID}`;
                 }
                 break;
             case WebTypeEnum.WebMikeScenarios:
                 {
                     this.appLoadedService.WebMikeScenarios = <WebMikeScenarios>{};
-                    TVItemIDText = `/${this.appStateService.CurrentMunicipalityTVItemID}`;
+                    TVItemIDText = `/${this.appStateService.UserPreference.CurrentMunicipalityTVItemID}`;
                 }
                 break;
             case WebTypeEnum.WebMunicipality:
                 {
                     this.appLoadedService.WebMunicipality = <WebMunicipality>{};
-                    TVItemIDText = `/${this.appStateService.CurrentMunicipalityTVItemID}`;
+                    TVItemIDText = `/${this.appStateService.UserPreference.CurrentMunicipalityTVItemID}`;
                 }
                 break;
             case WebTypeEnum.WebMWQMRuns:
                 {
                     this.appLoadedService.WebMWQMRuns = <WebMWQMRuns>{};
-                    TVItemIDText = `/${this.appStateService.CurrentSubsectorTVItemID}`;
+                    TVItemIDText = `/${this.appStateService.UserPreference.CurrentSubsectorTVItemID}`;
                 }
                 break;
             case WebTypeEnum.WebMWQMSamples1980_2020:
                 {
                     this.appLoadedService.WebMWQMSamples1980_2020 = <WebMWQMSamples1980_2020>{};
                     this.appLoadedService.WebMWQMSamples = <WebMWQMSamples>{};
-                    TVItemIDText = `/${this.appStateService.CurrentSubsectorTVItemID}`;
+                    TVItemIDText = `/${this.appStateService.UserPreference.CurrentSubsectorTVItemID}`;
                 }
                 break;
             case WebTypeEnum.WebMWQMSamples2021_2060:
                 {
                     this.appLoadedService.WebMWQMSamples2021_2060 = <WebMWQMSamples2021_2060>{};
-                    TVItemIDText = `/${this.appStateService.CurrentSubsectorTVItemID}`;
+                    TVItemIDText = `/${this.appStateService.UserPreference.CurrentSubsectorTVItemID}`;
                 }
                 break;
             case WebTypeEnum.WebMWQMSites:
                 {
                     this.appLoadedService.WebMWQMSites = <WebMWQMSites>{};
-                    TVItemIDText = `/${this.appStateService.CurrentSubsectorTVItemID}`;
+                    TVItemIDText = `/${this.appStateService.UserPreference.CurrentSubsectorTVItemID}`;
                 }
                 break;
             case WebTypeEnum.WebPolSourceSites:
                 {
                     this.appLoadedService.WebPolSourceSites = <WebPolSourceSites>{};
-                    TVItemIDText = `/${this.appStateService.CurrentSubsectorTVItemID}`;
+                    TVItemIDText = `/${this.appStateService.UserPreference.CurrentSubsectorTVItemID}`;
                 }
                 break;
             case WebTypeEnum.WebProvince:
                 {
                     this.appLoadedService.WebProvince = <WebProvince>{};
-                    TVItemIDText = `/${this.appStateService.CurrentProvinceTVItemID}`;
+                    TVItemIDText = `/${this.appStateService.UserPreference.CurrentProvinceTVItemID}`;
                 }
                 break;
             case WebTypeEnum.WebRoot:
@@ -673,22 +640,27 @@ export class LoaderService {
                     this.appLoadedService.WebRoot = <WebRoot>{};
                 }
                 break;
+            case WebTypeEnum.WebAllSearch:
+                {
+                    this.appLoadedService.WebAllSearch = <WebAllSearch>{};
+                }
+                break;
             case WebTypeEnum.WebSector:
                 {
                     this.appLoadedService.WebSector = <WebSector>{};
-                    TVItemIDText = `/${this.appStateService.CurrentSectorTVItemID}`;
+                    TVItemIDText = `/${this.appStateService.UserPreference.CurrentSectorTVItemID}`;
                 }
                 break;
             case WebTypeEnum.WebSubsector:
                 {
                     this.appLoadedService.WebSubsector = <WebSubsector>{};
-                    TVItemIDText = `/${this.appStateService.CurrentSubsectorTVItemID}`;
+                    TVItemIDText = `/${this.appStateService.UserPreference.CurrentSubsectorTVItemID}`;
                 }
                 break;
             case WebTypeEnum.WebTideSites:
                 {
                     this.appLoadedService.WebTideSites = <WebTideSites>{};
-                    TVItemIDText = `/${this.appStateService.CurrentProvinceTVItemID}`;
+                    TVItemIDText = `/${this.appStateService.UserPreference.CurrentProvinceTVItemID}`;
                 }
                 break;
             default:
@@ -773,26 +745,6 @@ export class LoaderService {
                     this.appLoadedService.WebAllTideLocations = x;
                 }
                 break;
-            case WebTypeEnum.WebAllTVItemLanguages1980_2020:
-                {
-                    //this.appLoadedService.WebAllTVItemLanguages1980_2020 = x;
-                }
-                break;
-            case WebTypeEnum.WebAllTVItemLanguages2021_2060:
-                {
-                    //this.appLoadedService.WebAllTVItemLanguages2021_2060 = x;
-                }
-                break;
-            case WebTypeEnum.WebAllTVItems1980_2020:
-                {
-                    //this.appLoadedService.WebAllTVItems1980_2020 = x;
-                }
-                break;
-            case WebTypeEnum.WebAllTVItems2021_2060:
-                {
-                    //this.appLoadedService.WebAllTVItems2021_2060 = x;
-                }
-                break;
             case WebTypeEnum.WebArea:
                 {
                     this.appLoadedService.BreadCrumbTVItemModelList = x.TVItemModelParentList;
@@ -801,14 +753,15 @@ export class LoaderService {
                     this.historyService.AddHistory(this.appLoadedService.WebArea?.TVItemModel);
 
                     if (this.appStateService.GoogleJSLoaded) {
-                        if (this.appStateService.AreaSubComponent == AreaSubComponentEnum.Sectors) {
+                        this.mapService.ClearMap();
+                        if (this.appStateService.UserPreference.AreaSubComponent == AreaSubComponentEnum.Sectors) {
                             this.mapService.DrawObjects([
                                 ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.appLoadedService.WebArea?.TVItemModelSectorList)),
                                 ...[this.appLoadedService.WebArea?.TVItemModel]
                             ]);
                         }
 
-                        if (this.appStateService.AreaSubComponent == AreaSubComponentEnum.Files) {
+                        if (this.appStateService.UserPreference.AreaSubComponent == AreaSubComponentEnum.Files) {
                             this.mapService.DrawObjects([
                                 ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.appLoadedService.WebArea?.TVItemModelSectorList)),
                                 ...[this.appLoadedService.WebArea?.TVItemModel]
@@ -830,35 +783,36 @@ export class LoaderService {
                     this.historyService.AddHistory(this.appLoadedService.WebCountry?.TVItemModel);
 
                     if (this.appStateService.GoogleJSLoaded) {
-                        if (this.appStateService.CountrySubComponent == CountrySubComponentEnum.Provinces) {
+                        this.mapService.ClearMap();
+                        if (this.appStateService.UserPreference.CountrySubComponent == CountrySubComponentEnum.Provinces) {
                             this.mapService.DrawObjects([
                                 ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.appLoadedService.WebCountry?.TVItemModelProvinceList)),
                                 ...[this.appLoadedService.WebCountry?.TVItemModel]
                             ]);
                         }
 
-                        if (this.appStateService.CountrySubComponent == CountrySubComponentEnum.Files) {
+                        if (this.appStateService.UserPreference.CountrySubComponent == CountrySubComponentEnum.Files) {
                             this.mapService.DrawObjects([
                                 ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.appLoadedService.WebCountry?.TVItemModelProvinceList)),
                                 ...[this.appLoadedService.WebCountry?.TVItemModel]
                             ]);
                         }
 
-                        if (this.appStateService.CountrySubComponent == CountrySubComponentEnum.OpenDataNational) {
+                        if (this.appStateService.UserPreference.CountrySubComponent == CountrySubComponentEnum.OpenDataNational) {
                             this.mapService.DrawObjects([
                                 ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.appLoadedService.WebCountry?.TVItemModelProvinceList)),
                                 ...[this.appLoadedService.WebCountry?.TVItemModel]
                             ]);
                         }
 
-                        if (this.appStateService.CountrySubComponent == CountrySubComponentEnum.EmailDistributionList) {
+                        if (this.appStateService.UserPreference.CountrySubComponent == CountrySubComponentEnum.EmailDistributionList) {
                             this.mapService.DrawObjects([
                                 ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.appLoadedService.WebCountry?.TVItemModelProvinceList)),
                                 ...[this.appLoadedService.WebCountry?.TVItemModel]
                             ]);
                         }
 
-                        if (this.appStateService.CountrySubComponent == CountrySubComponentEnum.RainExceedance) {
+                        if (this.appStateService.UserPreference.CountrySubComponent == CountrySubComponentEnum.RainExceedance) {
                             this.mapService.DrawObjects([
                                 ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.appLoadedService.WebCountry?.TVItemModelProvinceList)),
                                 ...[this.appLoadedService.WebCountry?.TVItemModel]
@@ -895,28 +849,29 @@ export class LoaderService {
                     this.historyService.AddHistory(this.appLoadedService.WebMunicipality?.TVItemModel);
 
                     if (this.appStateService.GoogleJSLoaded) {
-                        if (this.appStateService.MunicipalitySubComponent == MunicipalitySubComponentEnum.Infrastructures) {
+                        this.mapService.ClearMap();
+                        if (this.appStateService.UserPreference.MunicipalitySubComponent == MunicipalitySubComponentEnum.Infrastructures) {
                             this.mapService.DrawObjects([
                                 ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.appLoadedService.WebMunicipality?.TVItemModelInfrastructureList)),
                                 ...[this.appLoadedService.WebMunicipality?.TVItemModel]
                             ]);
                         }
 
-                        if (this.appStateService.MunicipalitySubComponent == MunicipalitySubComponentEnum.Contacts) {
+                        if (this.appStateService.UserPreference.MunicipalitySubComponent == MunicipalitySubComponentEnum.Contacts) {
                             this.mapService.DrawObjects([
                                 ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.appLoadedService.WebMunicipality?.TVItemModelInfrastructureList)),
                                 ...[this.appLoadedService.WebMunicipality?.TVItemModel]
                             ]);
                         }
 
-                        if (this.appStateService.MunicipalitySubComponent == MunicipalitySubComponentEnum.MIKEScenarios) {
+                        if (this.appStateService.UserPreference.MunicipalitySubComponent == MunicipalitySubComponentEnum.MIKEScenarios) {
                             this.mapService.DrawObjects([
                                 ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.appLoadedService.WebMunicipality?.TVItemModelInfrastructureList)),
                                 ...[this.appLoadedService.WebMunicipality?.TVItemModel]
                             ]);
                         }
 
-                        if (this.appStateService.MunicipalitySubComponent == MunicipalitySubComponentEnum.Files) {
+                        if (this.appStateService.UserPreference.MunicipalitySubComponent == MunicipalitySubComponentEnum.Files) {
                             this.mapService.DrawObjects([
                                 ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.appLoadedService.WebMunicipality?.TVItemModelInfrastructureList)),
                                 ...[this.appLoadedService.WebMunicipality?.TVItemModel]
@@ -960,42 +915,43 @@ export class LoaderService {
                     this.historyService.AddHistory(this.appLoadedService.WebProvince?.TVItemModel);
 
                     if (this.appStateService.GoogleJSLoaded) {
-                        if (this.appStateService.ProvinceSubComponent == ProvinceSubComponentEnum.Areas) {
+                        this.mapService.ClearMap();
+                        if (this.appStateService.UserPreference.ProvinceSubComponent == ProvinceSubComponentEnum.Areas) {
                             this.mapService.DrawObjects([
                                 ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.appLoadedService.WebProvince?.TVItemModelAreaList)),
                                 ...[this.appLoadedService.WebProvince?.TVItemModel]
                             ]);
                         }
 
-                        if (this.appStateService.ProvinceSubComponent == ProvinceSubComponentEnum.Municipalities) {
+                        if (this.appStateService.UserPreference.ProvinceSubComponent == ProvinceSubComponentEnum.Municipalities) {
                             this.mapService.DrawObjects([
-                                ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.appLoadedService.WebProvince?.TVItemModelMunicipalityList)),
+                                ...(this.sortTVItemMunicipalityListService.SortTVItemMunicipalityList(this.filterService.FilterTVItemModelList(this.appLoadedService.WebProvince?.TVItemModelMunicipalityList)).TVItemModeWithInfrastructurelList),
                                 ...[this.appLoadedService.WebProvince?.TVItemModel]
                             ]);
                         }
 
-                        if (this.appStateService.ProvinceSubComponent == ProvinceSubComponentEnum.Files) {
-                            this.mapService.DrawObjects([
-                                ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.appLoadedService.WebProvince?.TVItemModelAreaList)),
-                                ...[this.appLoadedService.WebProvince?.TVItemModel]
-                            ]);
-                        }
-
-                        if (this.appStateService.ProvinceSubComponent == ProvinceSubComponentEnum.OpenData) {
+                        if (this.appStateService.UserPreference.ProvinceSubComponent == ProvinceSubComponentEnum.Files) {
                             this.mapService.DrawObjects([
                                 ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.appLoadedService.WebProvince?.TVItemModelAreaList)),
                                 ...[this.appLoadedService.WebProvince?.TVItemModel]
                             ]);
                         }
 
-                        if (this.appStateService.ProvinceSubComponent == ProvinceSubComponentEnum.SamplingPlan) {
+                        if (this.appStateService.UserPreference.ProvinceSubComponent == ProvinceSubComponentEnum.OpenData) {
                             this.mapService.DrawObjects([
                                 ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.appLoadedService.WebProvince?.TVItemModelAreaList)),
                                 ...[this.appLoadedService.WebProvince?.TVItemModel]
                             ]);
                         }
 
-                        if (this.appStateService.ProvinceSubComponent == ProvinceSubComponentEnum.ProvinceTools) {
+                        if (this.appStateService.UserPreference.ProvinceSubComponent == ProvinceSubComponentEnum.SamplingPlan) {
+                            this.mapService.DrawObjects([
+                                ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.appLoadedService.WebProvince?.TVItemModelAreaList)),
+                                ...[this.appLoadedService.WebProvince?.TVItemModel]
+                            ]);
+                        }
+
+                        if (this.appStateService.UserPreference.ProvinceSubComponent == ProvinceSubComponentEnum.ProvinceTools) {
                             this.mapService.DrawObjects([
                                 ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.appLoadedService.WebProvince?.TVItemModelAreaList)),
                                 ...[this.appLoadedService.WebProvince?.TVItemModel]
@@ -1012,27 +968,33 @@ export class LoaderService {
                     this.historyService.AddHistory(this.appLoadedService.WebRoot?.TVItemModel);
 
                     if (this.appStateService.GoogleJSLoaded) {
-                        if (this.appStateService.RootSubComponent == RootSubComponentEnum.Countries) {
+                        this.mapService.ClearMap();
+                        if (this.appStateService.UserPreference.RootSubComponent == RootSubComponentEnum.Countries) {
                             this.mapService.DrawObjects([
                                 ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.appLoadedService.WebRoot?.TVItemModelCountryList)),
                                 ...[this.appLoadedService.WebRoot?.TVItemModel]
                             ]);
                         }
 
-                        if (this.appStateService.RootSubComponent == RootSubComponentEnum.Files) {
+                        if (this.appStateService.UserPreference.RootSubComponent == RootSubComponentEnum.Files) {
                             this.mapService.DrawObjects([
                                 ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.appLoadedService.WebRoot?.TVItemModelCountryList)),
                                 ...[this.appLoadedService.WebRoot?.TVItemModel]
                             ]);
                         }
 
-                        if (this.appStateService.RootSubComponent == RootSubComponentEnum.ExportArcGIS) {
+                        if (this.appStateService.UserPreference.RootSubComponent == RootSubComponentEnum.ExportArcGIS) {
                             this.mapService.DrawObjects([
                                 ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.appLoadedService.WebRoot?.TVItemModelCountryList)),
                                 ...[this.appLoadedService.WebRoot?.TVItemModel]
                             ]);
                         }
                     }
+                }
+                break;
+            case WebTypeEnum.WebAllSearch:
+                {
+                    this.appLoadedService.WebAllSearch = x;
                 }
                 break;
             case WebTypeEnum.WebSector:
@@ -1042,7 +1004,8 @@ export class LoaderService {
 
                     this.historyService.AddHistory(this.appLoadedService.WebSector?.TVItemModel);
                     if (this.appStateService.GoogleJSLoaded) {
-                        if (this.appStateService.SectorSubComponent == SectorSubComponentEnum.Subsectors) {
+                        this.mapService.ClearMap();
+                        if (this.appStateService.UserPreference.SectorSubComponent == SectorSubComponentEnum.Subsectors) {
                             this.mapService.DrawObjects([
                                 ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.appLoadedService.WebSector?.TVItemModelSubsectorList)),
                                 ...[this.appLoadedService.WebSector?.TVItemModel]
@@ -1058,58 +1021,60 @@ export class LoaderService {
 
                     this.historyService.AddHistory(this.appLoadedService.WebSubsector?.TVItemModel);
 
-
                     this.FillStatMWQMRunList();
 
                     this.FillStatMWQMSiteList();
 
-                    if (this.appStateService.SubsectorSubComponent == SubsectorSubComponentEnum.MWQMSites) {
-                        this.mapService.DrawObjects([
-                            ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.appLoadedService.WebSubsector?.TVItemModelMWQMSiteList)),
-                            ...[this.appLoadedService.WebSubsector?.TVItemModel],
-                        ]);
-                    }
+                    if (this.appStateService.GoogleJSLoaded) {
+                        this.mapService.ClearMap();
+                        if (this.appStateService.UserPreference.SubsectorSubComponent == SubsectorSubComponentEnum.MWQMSites) {
+                            this.mapService.DrawObjects([
+                                ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.appLoadedService.WebSubsector?.TVItemModelMWQMSiteList)),
+                                ...[this.appLoadedService.WebSubsector?.TVItemModel],
+                            ]);
+                        }
 
-                    if (this.appStateService.SubsectorSubComponent == SubsectorSubComponentEnum.Analysis) {
-                        this.mapService.DrawObjects([
-                            ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.appLoadedService.WebSubsector?.TVItemModelMWQMSiteList)),
-                            ...[this.appLoadedService.WebSubsector?.TVItemModel],
-                        ]);
-                    }
+                        if (this.appStateService.UserPreference.SubsectorSubComponent == SubsectorSubComponentEnum.Analysis) {
+                            this.mapService.DrawObjects([
+                                ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.appLoadedService.WebSubsector?.TVItemModelMWQMSiteList)),
+                                ...[this.appLoadedService.WebSubsector?.TVItemModel],
+                            ]);
+                        }
 
-                    if (this.appStateService.SubsectorSubComponent == SubsectorSubComponentEnum.MWQMRuns) {
-                        this.mapService.DrawObjects([
-                            ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.appLoadedService.WebSubsector?.TVItemModelMWQMRunList)),
-                            ...[this.appLoadedService.WebSubsector?.TVItemModel],
-                        ]);
-                    }
+                        if (this.appStateService.UserPreference.SubsectorSubComponent == SubsectorSubComponentEnum.MWQMRuns) {
+                            this.mapService.DrawObjects([
+                                ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.appLoadedService.WebSubsector?.TVItemModelMWQMRunList)),
+                                ...[this.appLoadedService.WebSubsector?.TVItemModel],
+                            ]);
+                        }
 
-                    if (this.appStateService.SubsectorSubComponent == SubsectorSubComponentEnum.PollutionSourceSites) {
-                        this.mapService.DrawObjects([
-                            ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.appLoadedService.WebSubsector?.TVItemModelPolSourceSiteList)),
-                            ...[this.appLoadedService.WebSubsector?.TVItemModel],
-                        ]);
-                    }
+                        if (this.appStateService.UserPreference.SubsectorSubComponent == SubsectorSubComponentEnum.PollutionSourceSites) {
+                            this.mapService.DrawObjects([
+                                ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.appLoadedService.WebSubsector?.TVItemModelPolSourceSiteList)),
+                                ...[this.appLoadedService.WebSubsector?.TVItemModel],
+                            ]);
+                        }
 
-                    if (this.appStateService.SubsectorSubComponent == SubsectorSubComponentEnum.Files) {
-                        this.mapService.DrawObjects([
-                            ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.appLoadedService.WebSubsector?.TVItemModelMWQMSiteList)),
-                            ...[this.appLoadedService.WebSubsector?.TVItemModel],
-                        ]);
-                    }
+                        if (this.appStateService.UserPreference.SubsectorSubComponent == SubsectorSubComponentEnum.Files) {
+                            this.mapService.DrawObjects([
+                                ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.appLoadedService.WebSubsector?.TVItemModelMWQMSiteList)),
+                                ...[this.appLoadedService.WebSubsector?.TVItemModel],
+                            ]);
+                        }
 
-                    if (this.appStateService.SubsectorSubComponent == SubsectorSubComponentEnum.SubsectorTools) {
-                        this.mapService.DrawObjects([
-                            ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.appLoadedService.WebSubsector?.TVItemModelMWQMSiteList)),
-                            ...[this.appLoadedService.WebSubsector?.TVItemModel],
-                        ]);
-                    }
+                        if (this.appStateService.UserPreference.SubsectorSubComponent == SubsectorSubComponentEnum.SubsectorTools) {
+                            this.mapService.DrawObjects([
+                                ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.appLoadedService.WebSubsector?.TVItemModelMWQMSiteList)),
+                                ...[this.appLoadedService.WebSubsector?.TVItemModel],
+                            ]);
+                        }
 
-                    if (this.appStateService.SubsectorSubComponent == SubsectorSubComponentEnum.LogBook) {
-                        this.mapService.DrawObjects([
-                            ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.appLoadedService.WebSubsector?.TVItemModelMWQMSiteList)),
-                            ...[this.appLoadedService.WebSubsector?.TVItemModel],
-                        ]);
+                        if (this.appStateService.UserPreference.SubsectorSubComponent == SubsectorSubComponentEnum.LogBook) {
+                            this.mapService.DrawObjects([
+                                ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.appLoadedService.WebSubsector?.TVItemModelMWQMSiteList)),
+                                ...[this.appLoadedService.WebSubsector?.TVItemModel],
+                            ]);
+                        }
                     }
                 }
                 break;
@@ -1200,27 +1165,7 @@ export class LoaderService {
                 break;
             case WebTypeEnum.WebAllTideLocations:
                 {
-                    this.Load<WebAllTideLocations>(this.webTypeNext, null, false);
-                }
-                break;
-            case WebTypeEnum.WebAllTVItemLanguages1980_2020:
-                {
-                    //this.Load<WebAllAddresses>(this.webTypeNext, WebTypeEnum.WebAllContacts, false);
-                }
-                break;
-            case WebTypeEnum.WebAllTVItemLanguages2021_2060:
-                {
-                    //this.Load<WebAllAddresses>(this.webTypeNext, WebTypeEnum.WebAllContacts, false);
-                }
-                break;
-            case WebTypeEnum.WebAllTVItems1980_2020:
-                {
-                    //this.Load<WebAllAddresses>(this.webTypeNext, WebTypeEnum.WebAllContacts, false);
-                }
-                break;
-            case WebTypeEnum.WebAllTVItems2021_2060:
-                {
-                    //this.Load<WebAllAddresses>(this.webTypeNext, WebTypeEnum.WebAllContacts, false);
+                    this.Load<WebAllTideLocations>(this.webTypeNext, WebTypeEnum.WebAllSearch, false);
                 }
                 break;
             case WebTypeEnum.WebArea:
@@ -1296,6 +1241,11 @@ export class LoaderService {
             case WebTypeEnum.WebRoot:
                 {
                     this.Load<WebRoot>(this.webTypeNext, null, false);
+                }
+                break;
+            case WebTypeEnum.WebAllSearch:
+                {
+                    this.Load<WebAllSearch>(this.webTypeNext, null, false);
                 }
                 break;
             case WebTypeEnum.WebSector:
@@ -1385,26 +1335,6 @@ export class LoaderService {
                     this.DoUpdate(this.appLoadedService.WebAllTideLocations);
                 }
                 break;
-            case WebTypeEnum.WebAllTVItemLanguages1980_2020:
-                {
-                    //this.DoUpdate(this.appLoadedService.WebAllTVItemLanguages1980_2020);
-                }
-                break;
-            case WebTypeEnum.WebAllTVItemLanguages2021_2060:
-                {
-                    //this.DoUpdate(this.appLoadedService.WebAllTVItemLanguages2021_2060);
-                }
-                break;
-            case WebTypeEnum.WebAllTVItems1980_2020:
-                {
-                    //this.DoUpdate(this.appLoadedService.WebAllTVItems1980_2020);
-                }
-                break;
-            case WebTypeEnum.WebAllTVItems2021_2060:
-                {
-                    //this.DoUpdate(this.appLoadedService.WebAllTVItems2021_2060);
-                }
-                break;
             case WebTypeEnum.WebArea:
                 {
                     this.DoUpdate(this.appLoadedService.WebArea);
@@ -1480,6 +1410,11 @@ export class LoaderService {
                     this.DoUpdate(this.appLoadedService.WebRoot);
                 }
                 break;
+            case WebTypeEnum.WebAllSearch:
+                {
+                    this.DoUpdate(this.appLoadedService.WebAllSearch);
+                }
+                break;
             case WebTypeEnum.WebSector:
                 {
                     this.DoUpdate(this.appLoadedService.WebSector);
@@ -1520,28 +1455,28 @@ export class LoaderService {
             let MWQMSiteModelList: MWQMSiteModel[] = this.appLoadedService.WebMWQMSites.MWQMSiteModelList.filter(c => c.MWQMSite.MWQMSiteTVItemID == MWQMSiteModelActiveList[i].TVItemModel.TVItem.TVItemID);
 
             let StatMWQMSiteSampleList: StatMWQMSiteSample[] = [];
-            if (this.appStateService.SubsectorSubComponent == SubsectorSubComponentEnum.MWQMSites) {
+            if (this.appStateService.UserPreference.SubsectorSubComponent == SubsectorSubComponentEnum.MWQMSites) {
                 StatMWQMSiteSampleList = this.FillMWQMSiteSampleStatForMWQMSites(MWQMSiteModelActiveList[i].TVItemModel);
             }
 
-            if (this.appStateService.TopComponent == TopComponentEnum.Home || this.appStateService.SubsectorSubComponent == SubsectorSubComponentEnum.Analysis) {
+            if (this.appStateService.UserPreference.TopComponent == TopComponentEnum.Home || this.appStateService.UserPreference.SubsectorSubComponent == SubsectorSubComponentEnum.Analysis) {
                 StatMWQMSiteSampleList = this.FillMWQMSiteSampleStatForAnalysis(MWQMSiteModelActiveList[i].TVItemModel);
             }
 
             StatMWQMSiteList.push(<StatMWQMSite>{ SalinityAverage: this.GetSalinityAverage(StatMWQMSiteSampleList), MWQMSiteModel: MWQMSiteModelList[0], StatMWQMSiteSampleList: StatMWQMSiteSampleList, TVItemModel: MWQMSiteModelActiveList[i].TVItemModel });
         }
 
-        if (this.appStateService.InactVisible) {
+        if (this.appStateService.UserPreference.InactVisible) {
             countSite = MWQMSiteModelInactiveList.length;
             for (let i = 0; i < countSite; i++) {
                 let MWQMSiteModelList: MWQMSiteModel[] = this.appLoadedService.WebMWQMSites.MWQMSiteModelList.filter(c => c.MWQMSite.MWQMSiteTVItemID == MWQMSiteModelInactiveList[i].TVItemModel.TVItem.TVItemID);
 
                 let StatMWQMSiteSampleList: StatMWQMSiteSample[] = [];
-                if (this.appStateService.SubsectorSubComponent == SubsectorSubComponentEnum.MWQMSites) {
+                if (this.appStateService.UserPreference.SubsectorSubComponent == SubsectorSubComponentEnum.MWQMSites) {
                     StatMWQMSiteSampleList = this.FillMWQMSiteSampleStatForMWQMSites(MWQMSiteModelActiveList[i].TVItemModel);
                 }
 
-                if (this.appStateService.TopComponent == TopComponentEnum.Home || this.appStateService.SubsectorSubComponent == SubsectorSubComponentEnum.Analysis) {
+                if (this.appStateService.UserPreference.TopComponent == TopComponentEnum.Home || this.appStateService.UserPreference.SubsectorSubComponent == SubsectorSubComponentEnum.Analysis) {
                     StatMWQMSiteSampleList = this.FillMWQMSiteSampleStatForAnalysis(MWQMSiteModelActiveList[i].TVItemModel);
                 }
 
@@ -1598,7 +1533,7 @@ export class LoaderService {
             for (let i = 0; i < count; i++) {
                 let mwqmSampleModelTempList: MWQMSampleModel[] = mwqmSampleModelList.filter(c => c.MWQMSample.MWQMSiteTVItemID == MWQMSiteModelActiveList[i].TVItemModel.TVItem.TVItemID);
                 if (mwqmSampleModelTempList !== undefined && mwqmSampleModelTempList.length > 0) {
-                    mwqmSiteModelAndSampleModelList.push(<MWQMSiteModelAndSampleModel>{ MWQMSiteModel: MWQMSiteModelActiveList[i], MWQMSample: mwqmSampleModelTempList[0] });
+                    mwqmSiteModelAndSampleModelList.push(<MWQMSiteModelAndSampleModel>{ MWQMSiteModel: MWQMSiteModelActiveList[i], MWQMSampleModel: mwqmSampleModelTempList[0] });
                 }
             }
 
@@ -1608,7 +1543,7 @@ export class LoaderService {
             for (let i = 0; i < count; i++) {
                 let mwqmSampleModelTempList: MWQMSampleModel[] = mwqmSampleModelList.filter(c => c.MWQMSample.MWQMSiteTVItemID == MWQMSiteModelInactiveList[i].TVItemModel.TVItem.TVItemID);
                 if (mwqmSampleModelTempList !== undefined && mwqmSampleModelTempList.length > 0) {
-                    mwqmSiteModelAndSampleModelList.push(<MWQMSiteModelAndSampleModel>{ MWQMSiteModel: MWQMSiteModelInactiveList[i], MWQMSample: mwqmSampleModelTempList[0] });
+                    mwqmSiteModelAndSampleModelList.push(<MWQMSiteModelAndSampleModel>{ MWQMSiteModel: MWQMSiteModelInactiveList[i], MWQMSampleModel: mwqmSampleModelTempList[0] });
                 }
             }
 
@@ -1681,7 +1616,7 @@ export class LoaderService {
         let StatMWQMSiteSampleList: StatMWQMSiteSample[] = [];
         let StatMWQMRunList: StatMWQMRun[] = this.appLoadedService.StatMWQMRunList;
 
-        let StatRuns = this.appStateService.AnalysisRuns;
+        let StatRuns = this.appStateService.UserPreference.AnalysisRuns;
 
         let MWQMSiteModelList: MWQMSiteModel[] = this.appLoadedService.WebMWQMSites?.MWQMSiteModelList?.filter(
             c => c.MWQMSite.MWQMSiteTVItemID == tvItemModel.TVItem.TVItemID);
@@ -1758,28 +1693,28 @@ export class LoaderService {
                                 }
 
                                 // Check Runs
-                                if (useCount >= this.appStateService.AnalysisRuns) {
+                                if (useCount >= this.appStateService.UserPreference.AnalysisRuns) {
                                     skipVal = true;
                                 }
 
-                                if (this.appStateService.AnalysisCalculationType == AnalysisCalculationTypeEnum.All) {
+                                if (this.appStateService.UserPreference.AnalysisCalculationType == AnalysisCalculationTypeEnum.All) {
                                     // everything is ok, nothing to do
                                 }
 
-                                if (this.appStateService.AnalysisCalculationType == AnalysisCalculationTypeEnum.Dry) {
-                                    if (StatMWQMRunList[r].RainDay1 >= this.appStateService.AnalysisDry24h
-                                        && (StatMWQMRunList[r].RainDay1 + StatMWQMRunList[r].RainDay2) >= this.appStateService.AnalysisDry48h
-                                        && (StatMWQMRunList[r].RainDay1 + StatMWQMRunList[r].RainDay2 + StatMWQMRunList[r].RainDay3) >= this.appStateService.AnalysisDry72h
-                                        && (StatMWQMRunList[r].RainDay1 + StatMWQMRunList[r].RainDay2 + StatMWQMRunList[r].RainDay3 + StatMWQMRunList[r].RainDay4) >= this.appStateService.AnalysisDry96h) {
+                                if (this.appStateService.UserPreference.AnalysisCalculationType == AnalysisCalculationTypeEnum.Dry) {
+                                    if (StatMWQMRunList[r].RainDay1 >= this.appStateService.UserPreference.AnalysisDry24h
+                                        && (StatMWQMRunList[r].RainDay1 + StatMWQMRunList[r].RainDay2) >= this.appStateService.UserPreference.AnalysisDry48h
+                                        && (StatMWQMRunList[r].RainDay1 + StatMWQMRunList[r].RainDay2 + StatMWQMRunList[r].RainDay3) >= this.appStateService.UserPreference.AnalysisDry72h
+                                        && (StatMWQMRunList[r].RainDay1 + StatMWQMRunList[r].RainDay2 + StatMWQMRunList[r].RainDay3 + StatMWQMRunList[r].RainDay4) >= this.appStateService.UserPreference.AnalysisDry96h) {
                                         skipVal = true;
                                     }
                                 }
 
-                                if (this.appStateService.AnalysisCalculationType == AnalysisCalculationTypeEnum.Wet) {
-                                    if (StatMWQMRunList[r].RainDay1 <= this.appStateService.AnalysisWet24h
-                                        && (StatMWQMRunList[r].RainDay1 + StatMWQMRunList[r].RainDay2) <= this.appStateService.AnalysisWet48h
-                                        && (StatMWQMRunList[r].RainDay1 + StatMWQMRunList[r].RainDay2 + StatMWQMRunList[r].RainDay3) <= this.appStateService.AnalysisWet72h
-                                        && (StatMWQMRunList[r].RainDay1 + StatMWQMRunList[r].RainDay2 + StatMWQMRunList[r].RainDay3 + StatMWQMRunList[r].RainDay4) <= this.appStateService.AnalysisWet96h) {
+                                if (this.appStateService.UserPreference.AnalysisCalculationType == AnalysisCalculationTypeEnum.Wet) {
+                                    if (StatMWQMRunList[r].RainDay1 <= this.appStateService.UserPreference.AnalysisWet24h
+                                        && (StatMWQMRunList[r].RainDay1 + StatMWQMRunList[r].RainDay2) <= this.appStateService.UserPreference.AnalysisWet48h
+                                        && (StatMWQMRunList[r].RainDay1 + StatMWQMRunList[r].RainDay2 + StatMWQMRunList[r].RainDay3) <= this.appStateService.UserPreference.AnalysisWet72h
+                                        && (StatMWQMRunList[r].RainDay1 + StatMWQMRunList[r].RainDay2 + StatMWQMRunList[r].RainDay3 + StatMWQMRunList[r].RainDay4) <= this.appStateService.UserPreference.AnalysisWet96h) {
                                         skipVal = true;
                                     }
                                 }
@@ -1868,7 +1803,7 @@ export class LoaderService {
         let StatMWQMSiteSampleList: StatMWQMSiteSample[] = [];
         let StatMWQMRunList: StatMWQMRun[] = this.appLoadedService.StatMWQMRunList;
 
-        let StatRuns: number = this.appStateService.StatRunsForDetail;
+        let StatRuns: number = this.appStateService.UserPreference.StatRunsForDetail;
 
         let MWQMSiteModelList: MWQMSiteModel[] = this.appLoadedService.WebMWQMSites?.MWQMSiteModelList?.filter(
             c => c.MWQMSite.MWQMSiteTVItemID == tvItemModel.TVItem.TVItemID);

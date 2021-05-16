@@ -1911,7 +1911,7 @@
           }
         }
       },
-      "CSSPCreateGzFileLocalServices/1.0.0": {
+      "CSSPCreateGzFileServices/1.0.0": {
         "dependencies": {
           "Azure.Storage.Blobs": "12.8.0",
           "CSSPDBFilesManagementModels": "1.0.0",
@@ -1926,7 +1926,7 @@
           "Microsoft.Extensions.Configuration.Json": "5.0.0"
         },
         "runtime": {
-          "CSSPCreateGzFileLocalServices.dll": {}
+          "CSSPCreateGzFileServices.dll": {}
         }
       },
       "CSSPCultureServices/1.0.0": {
@@ -1992,7 +1992,7 @@
       "CSSPDBLocalServices/1.0.0": {
         "dependencies": {
           "Azure.Storage.Blobs": "12.8.0",
-          "CSSPCreateGzFileLocalServices": "1.0.0",
+          "CSSPCreateGzFileServices": "1.0.0",
           "CSSPCultureServices": "1.0.0",
           "CSSPDBModels": "1.0.0",
           "CSSPEnums": "1.0.0",
@@ -3350,7 +3350,7 @@
       "path": "xunit.extensibility.execution/2.4.1",
       "hashPath": "xunit.extensibility.execution.2.4.1.nupkg.sha512"
     },
-    "CSSPCreateGzFileLocalServices/1.0.0": {
+    "CSSPCreateGzFileServices/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

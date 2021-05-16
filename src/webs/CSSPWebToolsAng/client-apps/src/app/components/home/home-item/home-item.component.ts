@@ -27,8 +27,8 @@ export class HomeItemComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.loaderService.Load<WebAllAddresses>(WebTypeEnum.WebAllAddresses, WebTypeEnum.WebAllContacts, false);
     this.loggedInContactService.DoLoggedInContact(false);
+    this.loaderService.Load<WebAllAddresses>(WebTypeEnum.WebAllAddresses, WebTypeEnum.WebAllContacts, false);
   }
 
   ngOnDestroy(): void {
@@ -42,6 +42,6 @@ export class HomeItemComponent implements OnInit, OnDestroy {
       this.appLanguageService.SetLanguage(LanguageEnum.en);
     }
     this.appStateService.Working = false;
-    this.appStateService.TopComponent = TopComponentEnum.Shell;
+    this.appStateService.UserPreference.TopComponent = TopComponentEnum.Shell;
   }
 }

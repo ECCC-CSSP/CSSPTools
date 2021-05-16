@@ -47,11 +47,8 @@ namespace CSSPWebModels
                 case WebTypeEnum.WebAllPolSourceSiteEffectTerms: fileName = $"{ WebTypeEnum.WebAllPolSourceSiteEffectTerms }.gz"; break;
                 case WebTypeEnum.WebAllProvinces: fileName = $"{ WebTypeEnum.WebAllProvinces }.gz"; break;
                 case WebTypeEnum.WebAllReportTypes: fileName = $"{ WebTypeEnum.WebAllReportTypes }.gz"; break;
+                case WebTypeEnum.WebAllSearch: fileName = $"{ WebTypeEnum.WebAllSearch }.gz"; break;
                 case WebTypeEnum.WebAllTideLocations: fileName = $"{ WebTypeEnum.WebAllTideLocations }.gz"; break;
-                case WebTypeEnum.WebAllTVItemLanguages1980_2020: fileName = $"{ WebTypeEnum.WebAllTVItemLanguages1980_2020 }.gz"; break;
-                case WebTypeEnum.WebAllTVItemLanguages2021_2060: fileName = $"{ WebTypeEnum.WebAllTVItemLanguages2021_2060 }.gz"; break;
-                case WebTypeEnum.WebAllTVItems1980_2020: fileName = $"{ WebTypeEnum.WebAllTVItems1980_2020 }.gz"; break;
-                case WebTypeEnum.WebAllTVItems2021_2060: fileName = $"{ WebTypeEnum.WebAllTVItems2021_2060 }.gz"; break;
                 case WebTypeEnum.WebArea: fileName = $"{ WebTypeEnum.WebArea }_{ TVItemID }.gz"; break;
                 case WebTypeEnum.WebClimateSites: fileName = $"{ WebTypeEnum.WebClimateSites }_{ TVItemID }.gz"; break;
                 case WebTypeEnum.WebCountry: fileName = $"{ WebTypeEnum.WebCountry }_{ TVItemID }.gz"; break;

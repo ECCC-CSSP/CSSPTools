@@ -222,9 +222,6 @@
   <data name="CouldNotUnzip_Error_" xml:space="preserve">
     <value>Could not unzip [{0}]. Erreur [{1}]</value>
   </data>
-  <data name="CouldNotUpdateCSSPDBSearchWithTVItemsAndTVItemLanguages" xml:space="preserve">
-    <value>Could not update CSSPDBSearch with TVItems and TVItemLanguages</value>
-  </data>
   <data name="CreatingAllRequiredDirectories" xml:space="preserve">
     <value>Creating all required directories</value>
   </data>
@@ -233,24 +230,6 @@
   </data>
   <data name="CSSPOtherFileNotFound_" xml:space="preserve">
     <value>CSSP other file not found {0}</value>
-  </data>
-  <data name="CSSPDBSearchDatabaseSuccessfullyFilled" xml:space="preserve">
-    <value>CSSPDBSearch database successfully filled</value>
-  </data>
-  <data name="CSSPDBSearchDatabaseSuccessUpdated" xml:space="preserve">
-    <value>CSSPDBSearch database successfully updated</value>
-  </data>
-  <data name="CSSPDBSearchHasBeenUpdated_TVItems" xml:space="preserve">
-    <value>CSSPDBSearch has been updated with {0} items in TVItems</value>
-  </data>
-  <data name="CSSPDBSearchHas_TVItems" xml:space="preserve">
-    <value>CSSPDBSearch has {0} TVItems</value>
-  </data>
-  <data name="CSSPDBSearchIsEmpty" xml:space="preserve">
-    <value>CSSPDBSearch is empty</value>
-  </data>
-  <data name="CSSPDBSearchIsNotEmpty" xml:space="preserve">
-    <value>CSSPDBSearch is not empty</value>
   </data>
   <data name="CSSPFilesManagementUpdateAzureStorage_AzureFileName_" xml:space="preserve">
     <value>CSSPFilesManagement.db Upate. AzureStorage {0} - AzureFileName {1}</value>
@@ -270,17 +249,8 @@
   <data name="Downloading_" xml:space="preserve">
     <value>Downloading {0}</value>
   </data>
-  <data name="ErrorWhileTryingToFillCSSPDBSearchDatabaseWith_Info" xml:space="preserve">
-    <value>Error while trying to fill CSSPDBSearch database with {0} information</value>
-  </data>
   <data name="ErrorWhileTryingToLogin" xml:space="preserve">
     <value>Error while trying to login</value>
-  </data>
-  <data name="ErrorWhileTryingToUpdateCSSPDBSearch" xml:space="preserve">
-    <value>Error while trying to update CSSPDBSearch</value>
-  </data>
-  <data name="ErrorWhileTryingToUpdateCSSPDBSearchDatabaseFrom_" xml:space="preserve">
-    <value>Error while trying to update CSSPDBSearch database from {0}</value>
   </data>
   <data name="ExecutingBackgroundApps" xml:space="preserve">
     <value>Executing background applications</value>
@@ -290,9 +260,6 @@
   </data>
   <data name="File_CreatedOnAzure" xml:space="preserve">
     <value>File {0} created on Azure</value>
-  </data>
-  <data name="FillingCSSPDBSearchDatabaseWith_Info" xml:space="preserve">
-    <value>Filling CSSPDBSearch database with {0} information</value>
   </data>
   <data name="FormTitleText" xml:space="preserve">
     <value>CSSP Desktop Application</value>
@@ -422,12 +389,6 @@
   </data>
   <data name="UpdateCompleted" xml:space="preserve">
     <value>Update Completed</value>
-  </data>
-  <data name="UpdatingCSSPDBSearchDatabase" xml:space="preserve">
-    <value>Updating CSSPDBSearch database</value>
-  </data>
-  <data name="UpdatingCSSPDBSearchThisCanTakeSomeTime" xml:space="preserve">
-    <value>Updating CSSPDBSearch. This can take some time.</value>
   </data>
   <data name="_CouldNotBeFoundInConfigurationFile_" xml:space="preserve">
     <value>{0} could not be found in the configuration file {1}</value>

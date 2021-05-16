@@ -1075,6 +1075,8 @@ namespace CSSPEnums
                     return CSSPCultureEnumsRes.FilesSortPropEnumFileType;
                 case FilesSortPropEnum.FilePurpose:
                     return CSSPCultureEnumsRes.FilesSortPropEnumFilePurpose;
+                case FilesSortPropEnum.FileDate:
+                    return CSSPCultureEnumsRes.FilesSortPropEnumFileDate;
                 default:
                     return CSSPCultureEnumsRes.Empty;
             }
@@ -3122,14 +3124,6 @@ namespace CSSPEnums
                     return CSSPCultureEnumsRes.WebTypeEnumWebAllTels;
                 case WebTypeEnum.WebAllTideLocations:
                     return CSSPCultureEnumsRes.WebTypeEnumWebAllTideLocations;
-                case WebTypeEnum.WebAllTVItemLanguages1980_2020:
-                    return CSSPCultureEnumsRes.WebTypeEnumWebAllTVItemLanguages1980_2020;
-                case WebTypeEnum.WebAllTVItemLanguages2021_2060:
-                    return CSSPCultureEnumsRes.WebTypeEnumWebAllTVItemLanguages2021_2060;
-                case WebTypeEnum.WebAllTVItems1980_2020:
-                    return CSSPCultureEnumsRes.WebTypeEnumWebAllTVItems1980_2020;
-                case WebTypeEnum.WebAllTVItems2021_2060:
-                    return CSSPCultureEnumsRes.WebTypeEnumWebAllTVItems2021_2060;
                 case WebTypeEnum.WebArea:
                     return CSSPCultureEnumsRes.WebTypeEnumWebArea;
                 case WebTypeEnum.WebClimateSites:
@@ -3160,6 +3154,8 @@ namespace CSSPEnums
                     return CSSPCultureEnumsRes.WebTypeEnumWebProvince;
                 case WebTypeEnum.WebRoot:
                     return CSSPCultureEnumsRes.WebTypeEnumWebRoot;
+                case WebTypeEnum.WebAllSearch:
+                    return CSSPCultureEnumsRes.WebTypeEnumWebAllSearch;
                 case WebTypeEnum.WebSector:
                     return CSSPCultureEnumsRes.WebTypeEnumWebSector;
                 case WebTypeEnum.WebSubsector:

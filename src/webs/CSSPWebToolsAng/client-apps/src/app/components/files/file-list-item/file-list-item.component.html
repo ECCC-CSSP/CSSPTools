@@ -1,33 +1,49 @@
 <mat-list-item>
-    <span mat-line>
-        <app-tvfile-menu [TVFileModel]="TVFileModel" >
-        </app-tvfile-menu>
-
-        <button mat-button (click)="Download(TVFileModel)">
-            <img src="{{ fileIconService.GetFileIcon(TVFileModel) }}" />
-            <span>&nbsp;&nbsp;</span>
+    <app-tvfile-menu [TVFileModel]="TVFileModel">
+    </app-tvfile-menu>
+    <a href="{{ GetURL() }}">
+        <img src="{{ fileIconService.GetFileIcon(TVFileModel) }}" />
+        <span>&nbsp;&nbsp;</span>
+        <ng-container *ngIf="FilesSortByProp == filesSortByProp.FileName">
             <span>{{ Index }} - {{ TVFileModel?.TVFile?.ServerFileName }} </span>
             <span>| {{ TVFileModel?.TVFile?.FileSize_kb }} </span>
-            <span>{{ appLanguageService.KB[appLanguageService.LangID] }} | </span>
-            <span>{{ dateFormatService.GetFileCreateDate(TVFileModel) }}</span>
-            <app-last-udpate-tv-file-model *ngIf="appStateService.LastUpdateVisible"
-                [TVFileModel]="TVFileModel"></app-last-udpate-tv-file-model>
-        </button>
-    </span>
-    <!-- <span mat-line *ngIf="download$ | async as download">
-        <mat-progress-bar [mode]="download.state == 'PENDING' ? 'buffer' : 'determinate'" [value]="download.progress">
-        </mat-progress-bar>
-    </span> -->
+            <span>{{ appLanguageService.KB[appLanguageService.LangID] }} </span>
+            <span>| {{ dateFormatService.GetFileCreateDate(TVFileModel) }} </span>
+        </ng-container>
+        <ng-container *ngIf="FilesSortByProp == filesSortByProp.FileType">
+            <span>{{ Index }} - {{
+                TVFileModel?.TVFile?.ServerFileName.substring(TVFileModel?.TVFile?.ServerFileName.indexOf(".")) }}
+            </span>
+            <span>| {{ TVFileModel?.TVFile?.ServerFileName.substring(0,
+                TVFileModel?.TVFile?.ServerFileName.indexOf(".")) }} </span>
+            <span>| {{ TVFileModel?.TVFile?.FileSize_kb }} </span>
+            <span>{{ appLanguageService.KB[appLanguageService.LangID] }} </span>
+            <span>| {{ dateFormatService.GetFileCreateDate(TVFileModel) }} </span>
+        </ng-container>
+        <ng-container *ngIf="FilesSortByProp == filesSortByProp.FileSize">
+            <span>{{ Index }} - {{ TVFileModel?.TVFile?.FileSize_kb }} </span>
+            <span>{{ appLanguageService.KB[appLanguageService.LangID] }} </span>
+            <span>| {{ TVFileModel?.TVFile?.ServerFileName }} </span>
+            <span>| {{ dateFormatService.GetFileCreateDate(TVFileModel) }} </span>
+        </ng-container>
+        <ng-container *ngIf="FilesSortByProp == filesSortByProp.FileDate">
+            <span>{{ Index }} - {{ dateFormatService.GetTVFileCreateDateTime_LocalDigit(TVFileModel?.TVFile) }} </span>
+            <span>| {{ TVFileModel?.TVFile?.ServerFileName }} </span>
+            <span>| {{ TVFileModel?.TVFile?.FileSize_kb }} </span>
+            <span>{{ appLanguageService.KB[appLanguageService.LangID] }}</span>
+        </ng-container>
+    </a>
 
+    <ng-container *ngIf="showTVFileService.TVFileVisible(TVFileModel)">
+        <app-file-list-item-view *ngIf="!appStateService.UserPreference.EditVisible" [TVFileModel]="TVFileModel">
+        </app-file-list-item-view>
+
+        <app-file-list-item-edit *ngIf="appStateService.UserPreference.EditVisible" [TVFileModel]="TVFileModel">
+        </app-file-list-item-edit>
+    </ng-container>
+
+    <app-file-list-item-detail *ngIf="appStateService.UserPreference.DetailVisible" [TVFileModel]="TVFileModel">
+    </app-file-list-item-detail>
+    <app-last-udpate-tv-file-model *ngIf="appStateService.UserPreference.LastUpdateVisible" [TVFileModel]="TVFileModel">
+    </app-last-udpate-tv-file-model>
 </mat-list-item>
-
-<ng-container *ngIf="showTVFileService.TVFileVisible(TVFileModel)">
-    <app-file-list-item-view *ngIf="!appStateService.EditVisible" [TVFileModel]="TVFileModel">
-    </app-file-list-item-view>
-
-    <app-file-list-item-edit *ngIf="appStateService.EditVisible" [TVFileModel]="TVFileModel">
-    </app-file-list-item-edit>
-</ng-container>
-
-<app-file-list-item-detail  *ngIf="appStateService.DetailVisible" [TVFileModel]="TVFileModel">
-</app-file-list-item-detail>

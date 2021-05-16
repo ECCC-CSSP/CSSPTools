@@ -23,7 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\dlls\CSSPDBSearchServices\CSSPDBSearchServices.csproj" />
     <ProjectReference Include="..\..\dlls\CSSPReadGzFileServices\CSSPReadGzFileServices.csproj" />
     <ProjectReference Include="..\..\dlls\CSSPSQLiteServices\CSSPSQLiteServices.csproj" />
     <ProjectReference Include="..\..\dlls\CSSPWebModels\CSSPWebModels.csproj" />

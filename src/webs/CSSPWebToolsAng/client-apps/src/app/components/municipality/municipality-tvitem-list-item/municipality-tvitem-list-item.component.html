@@ -1,32 +1,69 @@
-<mat-list *ngFor="let tvItemModel of TVItemModelList; let i = index">
-    <app-tvitem-menu [TVItemModel]="tvItemModel" >
-    </app-tvitem-menu>
+<br />
+<h2>{{ appLanguageService.MunicipalityWithInfrastructure[appLanguageService.LangID] }}</h2>
+<ng-container
+    *ngFor="let tvItemModel of TVItemModelInfrastructureModel.TVItemModeWithInfrastructurelList; let i = index">
+    <mat-list>
+        <app-tvitem-menu [TVItemModel]="tvItemModel">
+        </app-tvitem-menu>
 
-    <button mat-button (click)="subPageService.SetSubPage(tvItemModel)">
-        <span [ngClass]="tvItemModel?.TVItem?.IsActive ? '' : 'inactive'">
-            <span *ngIf="appStateService.MapVisible">
-                {{ i + 1 }}&nbsp;-&nbsp;
+        <button mat-button (click)="subPageService.SetSubPage(tvItemModel)">
+            <span [ngClass]="tvItemModel?.TVItem?.IsActive ? '' : 'inactive'">
+                <span *ngIf="appStateService.UserPreference.MapVisible">
+                    {{ i + 1 }}&nbsp;-&nbsp;
+                </span>
+                <span *ngIf="appStateService.UserPreference.DetailVisible">
+                    [{{ tvItemModel?.TVItem?.TVItemID }}]
+                </span>
+                {{ tvItemModel?.TVItemLanguageList[this.appLanguageService.LangID]?.TVText }}
             </span>
-            <span *ngIf="appStateService.DetailVisible">
-                [{{ tvItemModel?.TVItem?.TVItemID }}]
+            <app-stat-count *ngIf="appStateService.UserPreference.StatCountVisible" [TVType]="null"
+                [TVItemModel]="tvItemModel"></app-stat-count>
+            <app-last-udpate-tv-item-model *ngIf="appStateService.UserPreference.LastUpdateVisible"
+                [TVItemModel]="tvItemModel"></app-last-udpate-tv-item-model>
+        </button>
+
+        <app-municipality-item-view *ngIf="showTVItemService.TVItemVisible(tvItemModel)" [TVItemModel]="tvItemModel">
+        </app-municipality-item-view>
+
+        <app-municipality-item-edit *ngIf="appStateService.UserPreference.EditVisible" [TVItemModel]="tvItemModel">
+        </app-municipality-item-edit>
+
+        <app-municipality-tvitem-list-detail *ngIf="appStateService.UserPreference.DetailVisible"
+            [TVItemModel]="tvItemModel">
+        </app-municipality-tvitem-list-detail>
+    </mat-list>
+</ng-container>
+
+<br />
+<h2>{{ appLanguageService.MunicipalityWithoutInfrastructure[appLanguageService.LangID] }}</h2>
+<ng-container *ngFor="let tvItemModel of TVItemModelInfrastructureModel.TVItemModelWithoutInfrastructureList">
+    <mat-list>
+        <button mat-button class="{{ showTVItemService.TVItemVisible(tvItemModel) ? 'selected' : '' }}"
+            (click)="showTVItemService.ToggleShowTVItem(tvItemModel)"
+            title="{{ appLanguageService.MoreInformationForViewingOrEditing[appLanguageService.LangID] }}">
+            <mat-icon>more_vert</mat-icon>
+        </button>
+        <button mat-button (click)="subPageService.SetSubPage(tvItemModel)">
+            <span [ngClass]="tvItemModel?.TVItem?.IsActive ? '' : 'inactive'">
+                <span *ngIf="appStateService.UserPreference.DetailVisible">
+                    [{{ tvItemModel?.TVItem?.TVItemID }}]
+                </span>
+                {{ tvItemModel?.TVItemLanguageList[appLanguageService.LangID]?.TVText }}
             </span>
-            {{ tvItemModel?.TVItemLanguageList[this.appLanguageService.LangID]?.TVText }}
-        </span>
-        <app-stat-count *ngIf="appStateService.StatCountVisible" [TVType]="null"
-            [TVItemModel]="tvItemModel"></app-stat-count>
-        <app-last-udpate-tv-item-model *ngIf="appStateService.LastUpdateVisible"
-            [TVItemModel]="tvItemModel"></app-last-udpate-tv-item-model>
-    </button>
+            <app-stat-count *ngIf="appStateService.UserPreference.StatCountVisible" [TVType]="null"
+                [TVItemModel]="tvItemModel"></app-stat-count>
+            <app-last-udpate-tv-item-model *ngIf="appStateService.UserPreference.LastUpdateVisible"
+                [TVItemModel]="tvItemModel"></app-last-udpate-tv-item-model>
+        </button>
 
-    <app-municipality-item-view *ngIf="showTVItemService.TVItemVisible(tvItemModel)"
-        [TVItemModel]="tvItemModel" >
-    </app-municipality-item-view>
+        <app-municipality-item-view *ngIf="showTVItemService.TVItemVisible(tvItemModel)" [TVItemModel]="tvItemModel">
+        </app-municipality-item-view>
 
-    <app-municipality-item-edit *ngIf="appStateService.EditVisible"
-        [TVItemModel]="tvItemModel" >
-    </app-municipality-item-edit>
+        <app-municipality-item-edit *ngIf="appStateService.UserPreference.EditVisible" [TVItemModel]="tvItemModel">
+        </app-municipality-item-edit>
 
-    <app-municipality-tvitem-list-detail  *ngIf="appStateService.DetailVisible"
-        [TVItemModel]="tvItemModel">
-    </app-municipality-tvitem-list-detail>
-</mat-list>
+        <app-municipality-tvitem-list-detail *ngIf="appStateService.UserPreference.DetailVisible"
+            [TVItemModel]="tvItemModel">
+        </app-municipality-tvitem-list-detail>
+    </mat-list>
+</ng-container>

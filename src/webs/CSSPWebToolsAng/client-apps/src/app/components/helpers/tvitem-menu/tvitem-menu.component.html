@@ -1,8 +1,8 @@
 <button mat-button class="{{ showTVItemService.TVItemVisible(TVItemModel) ? 'selected' : '' }}"
-    (click)="showTVItemService.ToggleShowTVItem(TVItemModel)" title="show more information for viewing or editing">
+    (click)="showTVItemService.ToggleShowTVItem(TVItemModel)" title="{{ appLanguageService.MoreInformationForViewingOrEditing[appLanguageService.LangID] }}">
     <mat-icon>more_vert</mat-icon>
 </button>
 <button mat-button (click)="mapService.ShowItem(TVItemModel, $event)"
-    *ngIf="appStateService.MapVisible" title="show item on map">
+    *ngIf="appStateService.UserPreference.MapVisible" title="{{ appLanguageService.ShowItemOnMap[appLanguageService.LangID] }}">
     <mat-icon>place</mat-icon>
 </button>

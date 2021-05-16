@@ -455,23 +455,11 @@ namespace CSSPDBLocalServices.Tests
                     {
                         return await Task.FromResult(new List<TVItemModel>());
                     }
-                case WebTypeEnum.WebAllTVItems1980_2020:
-                    {
-                        return await Task.FromResult(new List<TVItemModel>());
-                    }
-                case WebTypeEnum.WebAllTVItems2021_2060:
+                case WebTypeEnum.WebAllSearch:
                     {
                         return await Task.FromResult(new List<TVItemModel>());
                     }
                 case WebTypeEnum.WebAllPolSourceSiteEffectTerms:
-                    {
-                        return await Task.FromResult(new List<TVItemModel>());
-                    }
-                case WebTypeEnum.WebAllTVItemLanguages1980_2020:
-                    {
-                        return await Task.FromResult(new List<TVItemModel>());
-                    }
-                case WebTypeEnum.WebAllTVItemLanguages2021_2060:
                     {
                         return await Task.FromResult(new List<TVItemModel>());
                     }

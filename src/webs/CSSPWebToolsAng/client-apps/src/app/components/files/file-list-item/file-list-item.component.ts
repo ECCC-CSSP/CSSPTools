@@ -1,7 +1,10 @@
-import { Component, OnInit, OnDestroy, Input, Inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { FilesSortPropEnum, GetFilesSortPropEnum } from 'src/app/enums/generated/FilesSortPropEnum';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
+import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model';
 import { AppLanguageService } from 'src/app/services/app-language.service';
+import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { DateFormatService } from 'src/app/services/helpers/date-format.service';
 import { FileIconService } from 'src/app/services/helpers/file-icon.service';
@@ -14,18 +17,22 @@ import { FileService } from 'src/app/services/loaders/file.service';
   styleUrls: ['./file-list-item.component.css']
 })
 export class FileListItemComponent implements OnInit, OnDestroy {
-  @Input() TVFileModel: TVFileModel = null;
+  @Input() TVFileModel: TVFileModel;
   @Input() Index: number;
+  @Input() FilesSortByProp: FilesSortPropEnum;
 
   languageEnum = GetLanguageEnum();
-  
-  constructor(public appStateService: AppStateService,
+
+  filesSortByProp = GetFilesSortPropEnum();
+
+  constructor(public appLanguageService: AppLanguageService,
+    public appLoadedService: AppLoadedService,
+    public appStateService: AppStateService,
     public dateFormatService: DateFormatService,
-    public appLanguageService: AppLanguageService,
     public fileIconService: FileIconService,
-    public fileService: FileService,
     public showTVFileService: ShowTVFileService,
-    ) {
+    private fileService: FileService
+  ) {
   }
 
   ngOnInit() {
@@ -34,12 +41,8 @@ export class FileListItemComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
   }
 
-  ShowCommands(tvFileModel: TVFileModel) {
-    alert("bonjour from ShowCommands");
+  GetURL() {
+    return this.appLoadedService.BaseApiUrl + this.languageEnum[this.appLanguageService.Language] + '-CA/download/' + this.TVFileModel.TVItem?.ParentID + '/' + this.TVFileModel.TVFile?.ServerFileName;
   }
 
-  Download(tvFileModel: TVFileModel)
-  {
-    alert("bonjour from Download");
-  }
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AscDescEnum, GetAscDescEnum } from 'src/app/enums/generated/AscDescEnum';
+import { GetFilesSortPropEnum } from 'src/app/enums/generated/FilesSortPropEnum';
 import { GetMunicipalitySubComponentEnum } from 'src/app/enums/generated/MunicipalitySubComponentEnum';
 import { GetSortOrderAngularEnum } from 'src/app/enums/generated/SortOrderAngularEnum';
 import { GetTVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
@@ -14,7 +15,6 @@ import { SortTVItemListService } from 'src/app/services/helpers/sort-tvitem-list
 import { StatCountService } from 'src/app/services/helpers/stat-count.service';
 import { StructureTVFileListService } from 'src/app/services/helpers/structure-tvfile-list.service';
 import { LoaderService } from 'src/app/services/loaders/loader.service';
-//import { WebMunicipalityService } from 'src/app/services/loaders/web-municipalty.service';
 
 @Component({
   selector: 'app-municipality-item',
@@ -26,11 +26,11 @@ export class MunicipalityItemComponent implements OnInit, OnDestroy {
   tvTypeEnum = GetTVTypeEnum();
   ascDescEnum = GetAscDescEnum();
   sortOrderAngular = GetSortOrderAngularEnum();
+  filesSortPropEnum = GetFilesSortPropEnum();
 
   constructor(public appStateService: AppStateService,
     public appLoadedService: AppLoadedService,
     public appLanguageService: AppLanguageService,
-    //public webMunicipalityService: WebMunicipalityService,
     public loaderService: LoaderService,
     public sortTVItemListService: SortTVItemListService,
     public filterService: FilterService,
@@ -43,9 +43,5 @@ export class MunicipalityItemComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-  }
-
-  ChangeSortOrderForMunicipalityMikeScenarios(ascDesc: AscDescEnum) {
-    this.appStateService.MunicipalityMikeScenariosSortOrder = ascDesc;
   }
 }

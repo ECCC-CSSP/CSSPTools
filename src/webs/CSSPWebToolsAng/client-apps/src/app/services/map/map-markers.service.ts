@@ -49,7 +49,7 @@ export class MapMarkersService {
             }
           }
 
-          // if (this.appStateService.SubsectorSubComponent == SubsectorSubComponentEnum.MWQMSites) {
+          // if (this.appStateService.UserPreference.SubsectorSubComponent == SubsectorSubComponentEnum.MWQMSites) {
           //   let statMWQMSiteList: StatMWQMSite[] = this.appLoadedService.StatMWQMSiteList?.filter(c => c.TVItemModel.TVItem.TVItemID == tvItemModel.TVItem.TVItemID);
 
           //   if (statMWQMSiteList && statMWQMSiteList.length > 0) {

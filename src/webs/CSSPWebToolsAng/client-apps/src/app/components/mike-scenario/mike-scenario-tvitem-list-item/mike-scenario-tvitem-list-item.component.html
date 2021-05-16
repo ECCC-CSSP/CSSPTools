@@ -4,17 +4,17 @@
 
     <button mat-button (click)="subPageService.SetSubPage(tvItemModel)">
         <span [ngClass]="tvItemModel?.TVItem?.IsActive ? '' : 'inactive'">
-            <span *ngIf="appStateService.MapVisible">
+            <span *ngIf="appStateService.UserPreference.MapVisible">
                 {{ i + 1 }}&nbsp;-&nbsp;
             </span>
-            <span *ngIf="appStateService.DetailVisible">
+            <span *ngIf="appStateService.UserPreference.DetailVisible">
                 [{{ tvItemModel?.TVItem?.TVItemID }}]
             </span>
             {{ tvItemModel?.TVItemLanguageList[this.appLanguageService.LangID]?.TVText }}
         </span>
-        <app-stat-count *ngIf="appStateService.StatCountVisible" [TVType]="null"
+        <app-stat-count *ngIf="appStateService.UserPreference.StatCountVisible" [TVType]="null"
             [TVItemModel]="tvItemModel"></app-stat-count>
-        <app-last-udpate-tv-item-model *ngIf="appStateService.LastUpdateVisible"
+        <app-last-udpate-tv-item-model *ngIf="appStateService.UserPreference.LastUpdateVisible"
             [TVItemModel]="tvItemModel"></app-last-udpate-tv-item-model>
     </button>
 
@@ -22,11 +22,11 @@
         [TVItemModel]="tvItemModel" >
     </app-mike-scenario-item-view>
 
-    <app-mike-scenario-item-edit *ngIf="appStateService.EditVisible"
+    <app-mike-scenario-item-edit *ngIf="appStateService.UserPreference.EditVisible"
         [TVItemModel]="tvItemModel" >
     </app-mike-scenario-item-edit>
 
-    <app-mike-scenario-tvitem-list-detail  *ngIf="appStateService.DetailVisible"
+    <app-mike-scenario-tvitem-list-detail  *ngIf="appStateService.UserPreference.DetailVisible"
         [TVItemModel]="tvItemModel">
     </app-mike-scenario-tvitem-list-detail>
 </mat-list>

@@ -45,14 +45,14 @@ export class MWQMSiteTVItemListItemComponent implements OnInit, OnDestroy {
   }
 
   SetStatRunsForDetail(runs: number) {
-    this.appStateService.StatRunsForDetail = runs;
+    this.appStateService.UserPreference.StatRunsForDetail = runs;
     this.appStateService.Working = false;
     this.loaderService.FillStatMWQMSiteList();
 
     let mwqmSiteModel: MWQMSiteModel[] = this.appLoadedService.WebMWQMSites.MWQMSiteModelList;
 
     if (this.appStateService.GoogleJSLoaded) {
-      if (this.appStateService.SubsectorSubComponent == SubsectorSubComponentEnum.MWQMSites) {
+      if (this.appStateService.UserPreference.SubsectorSubComponent == SubsectorSubComponentEnum.MWQMSites) {
                 if (this.appStateService.GoogleJSLoaded) {
             this.mapService.ClearMap();
         }

@@ -222,9 +222,6 @@
   <data name="CouldNotUnzip_Error_" xml:space="preserve">
     <value>Dans l'impossibilité de décompresser la filière [{0}]. Erreur [{1}]</value>
   </data>
-  <data name="CouldNotUpdateCSSPDBSearchWithTVItemsAndTVItemLanguages" xml:space="preserve">
-    <value>Dans l'impossibilité de mettre la base de données CSSPDBSearch avec TVItems et TVItemLanguages</value>
-  </data>
   <data name="CreatingAllRequiredDirectories" xml:space="preserve">
     <value>Création de tous les répertoires requis</value>
   </data>
@@ -233,24 +230,6 @@
   </data>
   <data name="CSSPOtherFileNotFound_" xml:space="preserve">
     <value>Autre filière non trouvé {0}</value>
-  </data>
-  <data name="CSSPDBSearchDatabaseSuccessfullyFilled" xml:space="preserve">
-    <value>Remplissage de la base de données CSSPDBSearch avec success</value>
-  </data>
-  <data name="CSSPDBSearchDatabaseSuccessUpdated" xml:space="preserve">
-    <value>Mise-à-jour de la base de données CSSPDBSearch avec success</value>
-  </data>
-  <data name="CSSPDBSearchHasBeenUpdated_TVItems" xml:space="preserve">
-    <value>Mise-à-jour complété pour CSSPDBSearch avec {0} items de TVItems</value>
-  </data>
-  <data name="CSSPDBSearchHas_TVItems" xml:space="preserve">
-    <value>CSSPDBSearch a {0} TVItems</value>
-  </data>
-  <data name="CSSPDBSearchIsEmpty" xml:space="preserve">
-    <value>CSSPDBSearch est vide</value>
-  </data>
-  <data name="CSSPDBSearchIsNotEmpty" xml:space="preserve">
-    <value>CSSPDBSearch n'est pas vide</value>
   </data>
   <data name="CSSPFilesManagementUpdateAzureStorage_AzureFileName_" xml:space="preserve">
     <value>CSSPFilesManagement.db entré. AzureStorage {0} - AzureFileName {1}</value>
@@ -270,17 +249,8 @@
   <data name="Downloading_" xml:space="preserve">
     <value>Téléchargement de {0}</value>
   </data>
-  <data name="ErrorWhileTryingToFillCSSPDBSearchDatabaseWith_Info" xml:space="preserve">
-    <value>Erreur lors du remplissage de la base de données CSSPDBSearch avec l'information de {0}</value>
-  </data>
   <data name="ErrorWhileTryingToLogin" xml:space="preserve">
     <value>Erreur pendant l'essay d'ouvrir une session</value>
-  </data>
-  <data name="ErrorWhileTryingToUpdateCSSPDBSearch" xml:space="preserve">
-    <value>Erreur lors de la mise-à-jour de CSSPDBSearch</value>
-  </data>
-  <data name="ErrorWhileTryingToUpdateCSSPDBSearchDatabaseFrom_" xml:space="preserve">
-    <value>Erreur lors de la mise-à-jour de la base de données CSSPDBSearch à partir de {0}</value>
   </data>
   <data name="ExecutingBackgroundApps" xml:space="preserve">
     <value>Exécution des applications d'arrière-plan</value>
@@ -290,9 +260,6 @@
   </data>
   <data name="File_CreatedOnAzure" xml:space="preserve">
     <value>Filière {0} créée dans Azure</value>
-  </data>
-  <data name="FillingCSSPDBSearchDatabaseWith_Info" xml:space="preserve">
-    <value>Remplissage de la base de données CSSPDBSearch avec l'information de {0}</value>
   </data>
   <data name="FormTitleText" xml:space="preserve">
     <value>Application PCCSM de bureau</value>
@@ -422,12 +389,6 @@
   </data>
   <data name="UpdateCompleted" xml:space="preserve">
     <value>Mise-à-jour complétée</value>
-  </data>
-  <data name="UpdatingCSSPDBSearchDatabase" xml:space="preserve">
-    <value>Mise-à-jour de la base de données CSSPDBSearch</value>
-  </data>
-  <data name="UpdatingCSSPDBSearchThisCanTakeSomeTime" xml:space="preserve">
-    <value>Mise-à-jour de CSSPDBSearch. Cette tâche peut prendre un peu de temps.</value>
   </data>
   <data name="_CouldNotBeFoundInConfigurationFile_" xml:space="preserve">
     <value>Dans l'impossibilité de trouver {0} dans la filière de configuration {1}</value>

@@ -119,23 +119,7 @@ namespace CSSPDBLocalServices.Tests
                     {
                         return await Task.FromResult(ReadGzFileService.webAppLoaded.WebRoot.TVItemModelParentList);
                     }
-                case WebTypeEnum.WebAllTVItems1980_2020:
-                    {
-                        return await Task.FromResult(ReadGzFileService.webAppLoaded.WebRoot.TVItemModelParentList);
-                    }
-                case WebTypeEnum.WebAllTVItems2021_2060:
-                    {
-                        return await Task.FromResult(ReadGzFileService.webAppLoaded.WebRoot.TVItemModelParentList);
-                    }
                 case WebTypeEnum.WebAllPolSourceSiteEffectTerms:
-                    {
-                        return await Task.FromResult(ReadGzFileService.webAppLoaded.WebRoot.TVItemModelParentList);
-                    }
-                case WebTypeEnum.WebAllTVItemLanguages1980_2020:
-                    {
-                        return await Task.FromResult(ReadGzFileService.webAppLoaded.WebRoot.TVItemModelParentList);
-                    }
-                case WebTypeEnum.WebAllTVItemLanguages2021_2060:
                     {
                         return await Task.FromResult(ReadGzFileService.webAppLoaded.WebRoot.TVItemModelParentList);
                     }
@@ -158,6 +142,10 @@ namespace CSSPDBLocalServices.Tests
                 case WebTypeEnum.WebAllEmails:
                     {
                         return await Task.FromResult(ReadGzFileService.webAppLoaded.WebRoot.TVItemModelParentList);
+                    }
+                case WebTypeEnum.WebAllSearch:
+                    {
+                        return await Task.FromResult(ReadGzFileService.webAppLoaded.WebAllSearch.TVItemModelList);
                     }
                 case WebTypeEnum.WebAllTels:
                     {

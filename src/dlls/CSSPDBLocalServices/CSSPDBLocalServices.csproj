@@ -40,7 +40,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CSSPCreateGzFileLocalServices\CSSPCreateGzFileLocalServices.csproj" />
+    <ProjectReference Include="..\CSSPCreateGzFileServices\CSSPCreateGzFileServices.csproj" />
     <ProjectReference Include="..\CSSPCultureServices\CSSPCultureServices.csproj" />
     <ProjectReference Include="..\CSSPDBModels\CSSPDBModels.csproj" />
     <ProjectReference Include="..\CSSPEnums\CSSPEnums.csproj" />

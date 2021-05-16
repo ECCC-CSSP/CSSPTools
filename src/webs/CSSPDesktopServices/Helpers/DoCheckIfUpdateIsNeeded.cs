@@ -98,19 +98,16 @@ namespace CSSPDesktopServices.Services
                 $"{ WebTypeEnum.WebAllProvinces }.gz",
                 $"{ WebTypeEnum.WebAllReportTypes }.gz",
                 $"{ WebTypeEnum.WebRoot }.gz",
+                $"{ WebTypeEnum.WebAllSearch }.gz",
                 $"{ WebTypeEnum.WebAllTels }.gz",
                 $"{ WebTypeEnum.WebAllTideLocations }.gz",
-                $"{ WebTypeEnum.WebAllTVItems1980_2020 }.gz",
-                $"{ WebTypeEnum.WebAllTVItems2021_2060 }.gz",
-                $"{ WebTypeEnum.WebAllTVItemLanguages1980_2020 }.gz",
-                $"{ WebTypeEnum.WebAllTVItemLanguages2021_2060 }.gz",
             };
 
             foreach (string jsonFileName in jsonFileNameList)
             {
                 string enumTypeName = jsonFileName.Substring(0, jsonFileName.IndexOf("."));
 
-                WebTypeEnum webType = WebTypeEnum.WebRoot;
+                WebTypeEnum webType;
 
                 foreach (int enumVal in Enum.GetValues(typeof(WebTypeEnum)))
                 {
@@ -162,15 +159,6 @@ namespace CSSPDesktopServices.Services
                 {
                     AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.AzureFile_DidNotChanged, jsonFileName)));
                 }
-            }
-
-            TVItem tvItem = await (from c in dbSearch.TVItems
-                                   select c).FirstOrDefaultAsync();
-
-            if (tvItem == null)
-            {
-                AppendStatus(new AppendEventArgs("CSSPDBSearch needs to be populated"));
-                UpdateIsNeeded = true;
             }
 
             AppendStatus(new AppendEventArgs(""));

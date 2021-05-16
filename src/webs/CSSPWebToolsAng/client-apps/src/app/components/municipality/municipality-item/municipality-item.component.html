@@ -5,72 +5,104 @@
     {{ appStateService.Status }}
 </p>
 
-<button mat-button [ngClass]="appStateService.MunicipalitySubComponent == municipalitySubComponentEnum.Infrastructures ? 'selected' : ''"
+<button mat-button
+    [ngClass]="appStateService.UserPreference.MunicipalitySubComponent == municipalitySubComponentEnum.Infrastructures ? 'selected' : ''"
     (click)="componentShowService.ShowMunicipality(municipalitySubComponentEnum.Infrastructures)"
     title="{{ appLanguageService.MunicipalityShowInfrastructures[appLanguageService.LangID] }}">
     <span>
         {{ appLanguageService.MunicipalityInfrastructures[appLanguageService.LangID] }}
-        <span class="badge-stat" *ngIf="appStateService.StatCountVisible">
-            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.WebMunicipality?.TVItemModel, tvTypeEnum.Infrastructure) }}&nbsp;&nbsp;
+        <span class="badge-stat" *ngIf="appStateService.UserPreference.StatCountVisible">
+            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.WebMunicipality?.TVItemModel,
+            tvTypeEnum.Infrastructure) }}&nbsp;&nbsp;
         </span>
     </span>
 </button>
-<button mat-button [ngClass]="appStateService.MunicipalitySubComponent == municipalitySubComponentEnum.Contacts ? 'selected' : ''"
+<button mat-button
+    [ngClass]="appStateService.UserPreference.MunicipalitySubComponent == municipalitySubComponentEnum.Contacts ? 'selected' : ''"
     (click)="componentShowService.ShowMunicipality(municipalitySubComponentEnum.Contacts)"
     title="{{ appLanguageService.MunicipalityShowContacts[appLanguageService.LangID] }}">
     <span>
         {{ appLanguageService.MunicipalityContacts[appLanguageService.LangID] }}
-        <span class="badge-stat" *ngIf="appStateService.StatCountVisible">
-            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.WebMunicipality?.TVItemModel, tvTypeEnum.Contact) }}&nbsp;&nbsp;
+        <span class="badge-stat" *ngIf="appStateService.UserPreference.StatCountVisible">
+            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.WebMunicipality?.TVItemModel,
+            tvTypeEnum.Contact) }}&nbsp;&nbsp;
         </span>
     </span>
 </button>
-<button mat-button [ngClass]="appStateService.MunicipalitySubComponent == municipalitySubComponentEnum.MIKEScenarios ? 'selected' : ''"
+<button mat-button
+    [ngClass]="appStateService.UserPreference.MunicipalitySubComponent == municipalitySubComponentEnum.MIKEScenarios ? 'selected' : ''"
     (click)="componentShowService.ShowMunicipality(municipalitySubComponentEnum.MIKEScenarios)"
     title="{{ appLanguageService.MunicipalityShowMikeScenarios[appLanguageService.LangID] }}">
     <span>
         {{ appLanguageService.MunicipalityMikeScenarios[appLanguageService.LangID] }}
-        <span class="badge-stat" *ngIf="appStateService.StatCountVisible">
-            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.WebMunicipality?.TVItemModel, tvTypeEnum.MikeScenario) }}&nbsp;&nbsp;
+        <span class="badge-stat" *ngIf="appStateService.UserPreference.StatCountVisible">
+            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.WebMunicipality?.TVItemModel,
+            tvTypeEnum.MikeScenario) }}&nbsp;&nbsp;
         </span>
     </span>
-    <span class="biggerArrow"
-        (click)="ChangeSortOrderForMunicipalityMikeScenarios(ascDescEnum.Ascending)"
-        *ngIf="appStateService.MunicipalityMikeScenariosSortOrder == ascDescEnum.Descending">
-        &nbsp;&nbsp;&uarr;
+    <span class="biggerArrow" *ngIf="appStateService.UserPreference.MunicipalityMikeScenariosSortOrder == ascDescEnum.Descending"
+        (click)="appStateService.UserPreference.MunicipalityMikeScenariosSortOrder = ascDescEnum.Ascending">
+        &nbsp;&nbsp;&#8679;
     </span>
-    <span class="biggerArrow"
-        (click)="ChangeSortOrderForMunicipalityMikeScenarios(ascDescEnum.Descending)"
-        *ngIf="appStateService.MunicipalityMikeScenariosSortOrder == ascDescEnum.Ascending">
-        &nbsp;&nbsp;&darr;
+    <span class="biggerArrow" *ngIf="appStateService.UserPreference.MunicipalityMikeScenariosSortOrder == ascDescEnum.Ascending"
+        (click)="appStateService.UserPreference.MunicipalityMikeScenariosSortOrder = ascDescEnum.Descending">
+        &nbsp;&nbsp;&#8681;
     </span>
 </button>
-<button mat-button [ngClass]="appStateService.MunicipalitySubComponent == municipalitySubComponentEnum.Files ? 'selected' : ''"
+<button mat-button
+    [ngClass]="appStateService.UserPreference.MunicipalitySubComponent == municipalitySubComponentEnum.Files ? 'selected' : ''"
     (click)="componentShowService.ShowMunicipality(municipalitySubComponentEnum.Files)"
     title="{{ appLanguageService.MunicipalityShowFiles[appLanguageService.LangID] }}">
     <span>
         {{ appLanguageService.MunicipalityFiles[appLanguageService.LangID] }}
-        <span class="badge-stat" *ngIf="appStateService.StatCountVisible">
-            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.WebMunicipality?.TVItemModel, tvTypeEnum.File) }}/
-            {{ statCountService.GetStatCount(appLoadedService.WebMunicipality?.TVItemModel, tvTypeEnum.TotalFile) }}&nbsp;&nbsp;
+        <span class="badge-stat" *ngIf="appStateService.UserPreference.StatCountVisible">
+            &nbsp;&nbsp;{{ statCountService.GetStatCount(appLoadedService.WebMunicipality?.TVItemModel, tvTypeEnum.File)
+            }} /
+            {{ statCountService.GetStatCount(appLoadedService.WebMunicipality?.TVItemModel, tvTypeEnum.TotalFile)
+            }}&nbsp;&nbsp;
         </span>
     </span>
+    <span mat-button [matMenuTriggerFor]="menu" title="{{ appLanguageService.FileName[appLanguageService.LangID] }}">&nbsp;&nbsp;
+        <span *ngIf="appStateService.UserPreference.MunicipalityFilesSortByProp == filesSortPropEnum.FileName" 
+        title="{{ appLanguageService.SortedBy[appLanguageService.LangID] }} {{ appLanguageService.FileName[appLanguageService.LangID] }}">
+            ({{ appLanguageService.FileNameAccro[appLanguageService.LangID] }})
+        </span>
+        <span *ngIf="appStateService.UserPreference.MunicipalityFilesSortByProp == filesSortPropEnum.FileType" 
+        title="{{ appLanguageService.SortedBy[appLanguageService.LangID] }} {{ appLanguageService.FileType[appLanguageService.LangID] }}">
+            ({{ appLanguageService.FileTypeAccro[appLanguageService.LangID] }})
+        </span>
+        <span *ngIf="appStateService.UserPreference.MunicipalityFilesSortByProp == filesSortPropEnum.FileSize" 
+        title="{{ appLanguageService.SortedBy[appLanguageService.LangID] }} {{ appLanguageService.FileSize[appLanguageService.LangID] }}">
+            ({{ appLanguageService.FileSizeAccro[appLanguageService.LangID] }})
+        </span>
+        <span *ngIf="appStateService.UserPreference.MunicipalityFilesSortByProp == filesSortPropEnum.FileDate" 
+        title="{{ appLanguageService.SortedBy[appLanguageService.LangID] }} {{ appLanguageService.FileDate[appLanguageService.LangID] }}">
+            ({{ appLanguageService.FileDateAccro[appLanguageService.LangID] }})
+        </span>
+    </span>
+    <mat-menu #menu="matMenu">
+        <h2  mat-menu-item >{{ appLanguageService.SortBy[appLanguageService.LangID] }}</h2>
+        <button mat-menu-item (click)="appStateService.UserPreference.MunicipalityFilesSortByProp = filesSortPropEnum.FileName">{{ appLanguageService.FileName[appLanguageService.LangID] }}</button>
+        <button mat-menu-item (click)="appStateService.UserPreference.MunicipalityFilesSortByProp = filesSortPropEnum.FileType">{{ appLanguageService.FileType[appLanguageService.LangID] }}</button>
+        <button mat-menu-item (click)="appStateService.UserPreference.MunicipalityFilesSortByProp = filesSortPropEnum.FileSize">{{ appLanguageService.FileSize[appLanguageService.LangID] }}</button>
+        <button mat-menu-item (click)="appStateService.UserPreference.MunicipalityFilesSortByProp = filesSortPropEnum.FileDate">{{ appLanguageService.FileDate[appLanguageService.LangID] }}</button>
+    </mat-menu>
 </button>
 
-<div *ngIf="appStateService.MunicipalitySubComponent == municipalitySubComponentEnum.Infrastructures">
+<div *ngIf="appStateService.UserPreference.MunicipalitySubComponent == municipalitySubComponentEnum.Infrastructures">
     <app-infrastructure-item></app-infrastructure-item>
 </div>
 
 <app-mike-scenario-tvitem-list-item
-    *ngIf="appStateService.MunicipalitySubComponent == municipalitySubComponentEnum.MIKEScenarios"
+    *ngIf="appStateService.UserPreference.MunicipalitySubComponent == municipalitySubComponentEnum.MIKEScenarios"
     [TVItemModelList]="sortTVItemListService.SortTVItemList(filterService.FilterTVItemModelList(appLoadedService.WebMunicipality?.TVItemModelMikeScenarioList))">
 </app-mike-scenario-tvitem-list-item>
 
-<app-file-list
-    *ngIf="appStateService.MunicipalitySubComponent == municipalitySubComponentEnum.Files"   
-    [TVFileModelListList]="structureTVFileListService.StructureTVFileList(appLoadedService.WebMunicipality?.TVFileModelList)">
+<app-file-list *ngIf="appStateService.UserPreference.MunicipalitySubComponent == municipalitySubComponentEnum.Files"
+    [TVFileModelListList]="structureTVFileListService.StructureTVFileList(tvTypeEnum.Municipality, appLoadedService.WebMunicipality?.TVFileModelList)"
+    [FilesSortByProp]="appStateService.UserPreference.MunicipalityFilesSortByProp">
 </app-file-list>
 
-<div *ngIf="appStateService.MunicipalitySubComponent == municipalitySubComponentEnum.Contacts">
-    <app-contact-item ></app-contact-item>
+<div *ngIf="appStateService.UserPreference.MunicipalitySubComponent == municipalitySubComponentEnum.Contacts">
+    <app-contact-item></app-contact-item>
 </div>

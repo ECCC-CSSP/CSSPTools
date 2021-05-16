@@ -56,7 +56,7 @@
         <ng-container *ngFor="let StatMWQMSite of StatMWQMSiteList; let j = index">
             <tr *ngIf="StatMWQMSite?.TVItemModel?.TVItem?.IsActive">
                 <td class="borderBottom">
-                    <span *ngIf="appStateService.MapVisible">
+                    <span *ngIf="appStateService.UserPreference.MapVisible">
                         <app-analysis-item-menu [TVItemModel]="StatMWQMSite?.TVItemModel" >
                         </app-analysis-item-menu>
                         <span>{{ j + 1 }} -</span>
@@ -104,24 +104,24 @@
                     {{ StatMWQMSite?.StatMWQMSiteSampleList[StatMWQMRun.RunIndex]?.FC > 500 ? 'highlightRed' : StatMWQMSite?.StatMWQMSiteSampleList[StatMWQMRun.RunIndex]?.FC > 43 ? 'highlightYellow': '' }}">
                         <span *ngIf="i == 0 && j == 0">FC -</span>
                         {{ StatMWQMSite?.StatMWQMSiteSampleList[StatMWQMRun.RunIndex]?.FC }}
-                        <span *ngIf="appStateService.AnalysisTempDataVisible"><br />
+                        <span *ngIf="appStateService.UserPreference.AnalysisTempDataVisible"><br />
                             <span *ngIf="i == 0 && j == 0">T -</span>
                             {{ StatMWQMSite?.StatMWQMSiteSampleList[StatMWQMRun.RunIndex]?.Temp | number:'1.1-1' }}
                         </span>
-                        <span *ngIf="appStateService.AnalysisSalDataVisible"><br />
+                        <span *ngIf="appStateService.UserPreference.AnalysisSalDataVisible"><br />
                             <span *ngIf="i == 0 && j == 0">S -</span>
                             <span class="{{ analysisService.GetSalinityHighlight(StatMWQMSite, StatMWQMRun.RunIndex) }}">
                                 {{ StatMWQMSite?.StatMWQMSiteSampleList[StatMWQMRun.RunIndex]?.Sal | number:'1.1-1' }}
                             </span>
                         </span>
-                        <span *ngIf="appStateService.AnalysisP90DataVisible"><br />
+                        <span *ngIf="appStateService.UserPreference.AnalysisP90DataVisible"><br />
                             <span *ngIf="i == 0 && j == 0">P90 -</span>
                             <span
                                 class="{{ StatMWQMSite?.StatMWQMSiteSampleList[StatMWQMRun.RunIndex]?.P90 > 43 ? 'borderBottomRed' : '' }}">
                                 {{ StatMWQMSite?.StatMWQMSiteSampleList[StatMWQMRun.RunIndex]?.P90 | number:'1.1-1' }}
                             </span>
                         </span>
-                        <span *ngIf="appStateService.AnalysisGeoMeanDataVisible"><br />
+                        <span *ngIf="appStateService.UserPreference.AnalysisGeoMeanDataVisible"><br />
                             <span *ngIf="i == 0 && j == 0">GM -</span>
                             <span
                                 class="{{ StatMWQMSite?.StatMWQMSiteSampleList[StatMWQMRun.RunIndex]?.GeoMean > 14 ? 'borderBottomRed' : '' }}">
@@ -129,7 +129,7 @@
                                 }}
                             </span>
                         </span>
-                        <span *ngIf="appStateService.AnalysisMedianDataVisible"><br />
+                        <span *ngIf="appStateService.UserPreference.AnalysisMedianDataVisible"><br />
                             <span *ngIf="i == 0 && j == 0">Med -</span>
                             <span
                                 class="{{ StatMWQMSite?.StatMWQMSiteSampleList[StatMWQMRun.RunIndex]?.Median > 14 ? 'borderBottomRed' : '' }}">
@@ -137,7 +137,7 @@
                                 }}
                             </span>
                         </span>
-                        <span *ngIf="appStateService.AnalysisPerOver43DataVisible"><br />
+                        <span *ngIf="appStateService.UserPreference.AnalysisPerOver43DataVisible"><br />
                             <span *ngIf="i == 0 && j == 0">> 43 -</span>
                             <span
                                 class="{{ StatMWQMSite?.StatMWQMSiteSampleList[StatMWQMRun.RunIndex]?.PercOver43 > 10 ? 'borderBottomRed' : '' }}">
@@ -145,7 +145,7 @@
                                 number:'1.1-1' }}
                             </span>
                         </span>
-                        <span *ngIf="appStateService.AnalysisPerOver260DataVisible"><br />
+                        <span *ngIf="appStateService.UserPreference.AnalysisPerOver260DataVisible"><br />
                             <span *ngIf="i == 0 && j == 0"> 260 -</span>
                             <span
                                 class="{{ StatMWQMSite?.StatMWQMSiteSampleList[StatMWQMRun.RunIndex]?.PercOver260 > 10 ? 'borderBottomRed' : '' }}">
@@ -277,7 +277,7 @@
                 {{ analysisService.GetTideInitialText(StatMWQMRun.EndTide) }}
             </td>
         </tr>
-        <tr *ngIf="appStateService.InactVisible">
+        <tr *ngIf="appStateService.UserPreference.InactVisible">
             <td colspan="11">
                 <h1>{{ appLanguageService.AnalysisInactive[appLanguageService.LangID]
                     }}</h1>
@@ -288,7 +288,7 @@
         <ng-container *ngFor="let StatMWQMSite of StatMWQMSiteList">
             <tr *ngIf="!StatMWQMSite?.TVItemModel?.TVItem?.IsActive">
                 <td class="borderBottom">
-                    <mat-icon *ngIf="appStateService.MapVisible"
+                    <mat-icon *ngIf="appStateService.UserPreference.MapVisible"
                         (click)="mapService.ShowItem(StatMWQMSite?.TVItemModel, $event)">place</mat-icon>
 
                     {{ StatMWQMSite?.TVItemModel?.TVItemLanguageList[language]?.TVText }}
@@ -331,40 +331,40 @@
                         class="borderBottom 
                     {{ StatMWQMSite?.StatMWQMSiteSampleList[StatMWQMRun.RunIndex]?.FC > 500 ? 'highlightRed' : StatMWQMSite?.StatMWQMSiteSampleList[StatMWQMRun.RunIndex]?.FC > 43 ? 'highlightYellow': '' }}">
                         {{ StatMWQMSite?.StatMWQMSiteSampleList[StatMWQMRun.RunIndex]?.FC }}
-                        <span *ngIf="appStateService.AnalysisTempDataVisible"><br />
+                        <span *ngIf="appStateService.UserPreference.AnalysisTempDataVisible"><br />
                             {{ StatMWQMSite?.StatMWQMSiteSampleList[StatMWQMRun.RunIndex]?.Temp | number:'1.1-1' }}
                         </span>
-                        <span *ngIf="appStateService.AnalysisSalDataVisible"><br />
+                        <span *ngIf="appStateService.UserPreference.AnalysisSalDataVisible"><br />
                             {{ StatMWQMSite?.StatMWQMSiteSampleList[StatMWQMRun.RunIndex]?.Sal | number:'1.1-1' }}
                         </span>
-                        <span *ngIf="appStateService.AnalysisP90DataVisible"><br />
+                        <span *ngIf="appStateService.UserPreference.AnalysisP90DataVisible"><br />
                             <span
                                 class="{{ StatMWQMSite?.StatMWQMSiteSampleList[StatMWQMRun.RunIndex]?.P90 > 43 ? 'borderBottomRed' : '' }}">
                                 {{ StatMWQMSite?.StatMWQMSiteSampleList[StatMWQMRun.RunIndex]?.P90 | number:'1.1-1' }}
                             </span>
                         </span>
-                        <span *ngIf="appStateService.AnalysisGeoMeanDataVisible"><br />
+                        <span *ngIf="appStateService.UserPreference.AnalysisGeoMeanDataVisible"><br />
                             <span
                                 class="{{ StatMWQMSite?.StatMWQMSiteSampleList[StatMWQMRun.RunIndex]?.GeoMean > 14 ? 'borderBottomRed' : '' }}">
                                 {{ StatMWQMSite?.StatMWQMSiteSampleList[StatMWQMRun.RunIndex]?.GeoMean | number:'1.1-1'
                                 }}
                             </span>
                         </span>
-                        <span *ngIf="appStateService.AnalysisMedianDataVisible"><br />
+                        <span *ngIf="appStateService.UserPreference.AnalysisMedianDataVisible"><br />
                             <span
                                 class="{{ StatMWQMSite?.StatMWQMSiteSampleList[StatMWQMRun.RunIndex]?.Median > 14 ? 'borderBottomRed' : '' }}">
                                 {{ StatMWQMSite?.StatMWQMSiteSampleList[StatMWQMRun.RunIndex]?.Median | number:'1.1-1'
                                 }}
                             </span>
                         </span>
-                        <span *ngIf="appStateService.AnalysisPerOver43DataVisible"><br />
+                        <span *ngIf="appStateService.UserPreference.AnalysisPerOver43DataVisible"><br />
                             <span
                                 class="{{ StatMWQMSite?.StatMWQMSiteSampleList[StatMWQMRun.RunIndex]?.PercOver43 > 10 ? 'borderBottomRed' : '' }}">
                                 {{ StatMWQMSite?.StatMWQMSiteSampleList[StatMWQMRun.RunIndex]?.PercOver43 |
                                 number:'1.1-1' }}
                             </span>
                         </span>
-                        <span *ngIf="appStateService.AnalysisPerOver260DataVisible"><br />
+                        <span *ngIf="appStateService.UserPreference.AnalysisPerOver260DataVisible"><br />
                             <span
                                 class="{{ StatMWQMSite?.StatMWQMSiteSampleList[StatMWQMRun.RunIndex]?.PercOver260 > 10 ? 'borderBottomRed' : '' }}">
                                 {{ StatMWQMSite?.StatMWQMSiteSampleList[StatMWQMRun.RunIndex]?.PercOver260 |

@@ -1,4 +1,4 @@
 <span>
     <mat-icon title="{{ typeTextService.GetTypeText(searchResult.TVItem.TVType) }}">{{ typeIconService.GetTypeIcon(searchResult.TVItem.TVType) }}</mat-icon>
-    ({{ typeTextService.GetTypeText(searchResult.TVItem.TVType) }}) - {{searchResult.TVItemLanguage.TVText}}
+    ({{ typeTextService.GetTypeText(searchResult.TVItem.TVType) }}) - {{searchResult.TVItemLanguageList[appLanguageService.LangID].TVText}}
 </span>

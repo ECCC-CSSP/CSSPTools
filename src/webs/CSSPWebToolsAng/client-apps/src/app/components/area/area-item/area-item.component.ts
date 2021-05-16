@@ -15,7 +15,7 @@ import { WebArea } from 'src/app/models/generated/web/WebArea.model';
 import { WebTypeEnum } from 'src/app/enums/generated/WebTypeEnum';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { StructureTVFileListService } from 'src/app/services/helpers/structure-tvfile-list.service';
-
+import { GetFilesSortPropEnum } from 'src/app/enums/generated/FilesSortPropEnum';
 
 @Component({
   selector: 'app-area-item',
@@ -29,6 +29,7 @@ export class AreaItemComponent implements OnInit, OnDestroy {
   tvTypeEnum = GetTVTypeEnum();
   ascDescEnum = GetAscDescEnum();
   sortOrderAngular = GetSortOrderAngularEnum();
+  filesSortPropEnum = GetFilesSortPropEnum();
 
   constructor(public appStateService: AppStateService,
     public appLoadedService: AppLoadedService,
@@ -48,7 +49,9 @@ export class AreaItemComponent implements OnInit, OnDestroy {
   }
 
   ChangeSortOrderForAreaSectors(ascDesc: AscDescEnum) {
-    this.appStateService.AreaSectorsSortOrder = ascDesc;
+    this.appStateService.UserPreference.AreaSectorsSortOrder = ascDesc;
   }
 
 }
+
+

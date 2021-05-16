@@ -12,7 +12,6 @@ using System.Text;
 using System.Threading.Tasks;
 using CSSPDBPreferenceModels;
 using CSSPDBCommandLogModels;
-using CSSPDBSearchModels;
 using CSSPDBFilesManagementModels;
 
 namespace CSSPSQLiteServices
@@ -25,13 +24,11 @@ namespace CSSPSQLiteServices
         Task<bool> CreateSQLiteCSSPDBFilesManagement();
         Task<bool> CreateSQLiteCSSPDBLocal();
         Task<bool> CreateSQLiteCSSPDBPreference();
-        Task<bool> CreateSQLiteCSSPDBSearch();
 
         Task<bool> CSSPDBCommandLogIsEmpty();
         Task<bool> CSSPDBFilesManagementIsEmpty();
         Task<bool> CSSPDBPreferenceIsEmpty();
         Task<bool> CSSPDBLocalIsEmpty();
-        Task<bool> CSSPDBSearchIsEmpty();
     }
 
     public partial class CSSPSQLiteService : ICSSPSQLiteService
@@ -42,7 +39,6 @@ namespace CSSPSQLiteServices
         #region Properties
         public string Error { get; set; }
         private CSSPDBLocalContext dbLocal { get; }
-        private CSSPDBSearchContext dbSearch { get; }
         private CSSPDBCommandLogContext dbCommandLog { get; }
         private CSSPDBPreferenceContext dbLogin { get; }
         private CSSPDBFilesManagementContext dbFM { get; }
@@ -54,14 +50,13 @@ namespace CSSPSQLiteServices
 
         #region Constructors
         public CSSPSQLiteService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, 
-            CSSPDBLocalContext dbLocal, CSSPDBSearchContext dbSearch, CSSPDBCommandLogContext dbCommandLog,
+            CSSPDBLocalContext dbLocal, CSSPDBCommandLogContext dbCommandLog,
             CSSPDBPreferenceContext dbLogin, CSSPDBFilesManagementContext dbFM)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.enums = enums;
             this.dbLocal = dbLocal;
-            this.dbSearch = dbSearch;
             this.dbCommandLog = dbCommandLog;
             this.dbLogin = dbLogin;
             this.dbFM = dbFM;
@@ -93,13 +88,6 @@ namespace CSSPSQLiteServices
 
             return await Task.FromResult(true);
         }
-        public async Task<bool> CreateSQLiteCSSPDBSearch()
-        {
-            if (!await DoCreateSQLiteCSSPDBSearch()) return await Task.FromResult(false);
-
-            return await Task.FromResult(true);
-        }
-
         public async Task<bool> CSSPDBCommandLogIsEmpty()
         {
             if (!await DoCSSPDBCommandLogIsEmpty()) return await Task.FromResult(false);
@@ -121,12 +109,6 @@ namespace CSSPSQLiteServices
         public async Task<bool> CSSPDBLocalIsEmpty()
         {
             if (!await DoCSSPDBLocalIsEmpty()) return await Task.FromResult(false);
-
-            return await Task.FromResult(true);
-        }
-        public async Task<bool> CSSPDBSearchIsEmpty()
-        {
-            if (!await DoCSSPDBSearchIsEmpty()) return await Task.FromResult(false);
 
             return await Task.FromResult(true);
         }

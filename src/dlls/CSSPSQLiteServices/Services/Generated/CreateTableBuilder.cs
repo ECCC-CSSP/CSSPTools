@@ -1411,23 +1411,11 @@ namespace CSSPSQLiteServices
                     break;
             }
 
-            if (DoSearch)
+            using (var command = dbLocal.Database.GetDbConnection().CreateCommand())
             {
-                using (var command = dbSearch.Database.GetDbConnection().CreateCommand())
-                {
-                    command.CommandText = CreateTable;
-                    dbSearch.Database.OpenConnection();
-                    command.ExecuteNonQuery();
-                }
-            }
-            else
-            {
-                using (var command = dbLocal.Database.GetDbConnection().CreateCommand())
-                {
-                    command.CommandText = CreateTable;
-                    dbLocal.Database.OpenConnection();
-                    command.ExecuteNonQuery();
-                }
+                command.CommandText = CreateTable;
+                dbLocal.Database.OpenConnection();
+                command.ExecuteNonQuery();
             }
 
             return await Task.FromResult(true);

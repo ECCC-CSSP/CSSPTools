@@ -28,17 +28,17 @@ export class ComponentShowService {
   }
 
   ShowArea(areaSubComponent: AreaSubComponentEnum) {
-    this.appStateService.AreaSubComponent = areaSubComponent;
+    this.appStateService.UserPreference.AreaSubComponent = areaSubComponent;
     this.loaderService.Load<WebArea>(WebTypeEnum.WebArea, null, false);
   }
 
   ShowCountry(countrySubComponent: CountrySubComponentEnum) {
-    this.appStateService.CountrySubComponent = countrySubComponent;
+    this.appStateService.UserPreference.CountrySubComponent = countrySubComponent;
     this.loaderService.Load<WebCountry>(WebTypeEnum.WebCountry, null, false);
   }
 
   ShowMunicipality(municipalitySubComponent: MunicipalitySubComponentEnum) {
-    this.appStateService.MunicipalitySubComponent = municipalitySubComponent;
+    this.appStateService.UserPreference.MunicipalitySubComponent = municipalitySubComponent;
     this.loaderService.Load<WebMunicipality>(WebTypeEnum.WebMunicipality, WebTypeEnum.WebMikeScenarios, false);
   }
 
@@ -59,22 +59,22 @@ export class ComponentShowService {
   // }
 
   ShowProvince(provinceSubComponent: ProvinceSubComponentEnum) {
-    this.appStateService.ProvinceSubComponent = provinceSubComponent;
+    this.appStateService.UserPreference.ProvinceSubComponent = provinceSubComponent;
     this.loaderService.Load<WebProvince>(WebTypeEnum.WebProvince, WebTypeEnum.WebClimateSites, false);
   }
 
   ShowRoot(rootSubComponent: RootSubComponentEnum) {
-    this.appStateService.RootSubComponent = rootSubComponent;
+    this.appStateService.UserPreference.RootSubComponent = rootSubComponent;
     this.loaderService.Load<WebRoot>(WebTypeEnum.WebRoot, WebTypeEnum.WebAllAddresses, false);
   }
 
   ShowSector(sectorSubComponent: SectorSubComponentEnum) {
-    this.appStateService.SectorSubComponent = sectorSubComponent;
+    this.appStateService.UserPreference.SectorSubComponent = sectorSubComponent;
     this.loaderService.Load<WebSector>(WebTypeEnum.WebSector, null, false);
   }
 
   ShowSubsector(subsectorSubComponent: SubsectorSubComponentEnum) {
-    this.appStateService.SubsectorSubComponent = subsectorSubComponent;
+    this.appStateService.UserPreference.SubsectorSubComponent = subsectorSubComponent;
     this.loaderService.Load<WebSubsector>(WebTypeEnum.WebSubsector, WebTypeEnum.WebMWQMSites, false);
   }
 

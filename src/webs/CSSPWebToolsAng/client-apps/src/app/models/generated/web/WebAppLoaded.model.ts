@@ -16,10 +16,9 @@ import { WebAllPolSourceGroupings } from 'src/app/models/generated/web/WebAllPol
 import { WebAllPolSourceSiteEffectTerms } from 'src/app/models/generated/web/WebAllPolSourceSiteEffectTerms.model';
 import { WebAllProvinces } from 'src/app/models/generated/web/WebAllProvinces.model';
 import { WebAllReportTypes } from 'src/app/models/generated/web/WebAllReportTypes.model';
+import { WebAllSearch } from 'src/app/models/generated/web/WebAllSearch.model';
 import { WebAllTels } from 'src/app/models/generated/web/WebAllTels.model';
 import { WebAllTideLocations } from 'src/app/models/generated/web/WebAllTideLocations.model';
-import { WebAllTVItemLanguages } from 'src/app/models/generated/web/WebAllTVItemLanguages.model';
-import { WebAllTVItems } from 'src/app/models/generated/web/WebAllTVItems.model';
 import { WebArea } from 'src/app/models/generated/web/WebArea.model';
 import { WebClimateSites } from 'src/app/models/generated/web/WebClimateSites.model';
 import { WebCountry } from 'src/app/models/generated/web/WebCountry.model';
@@ -50,12 +49,9 @@ export class WebAppLoaded {
     WebAllPolSourceSiteEffectTerms: WebAllPolSourceSiteEffectTerms;
     WebAllProvinces: WebAllProvinces;
     WebAllReportTypes: WebAllReportTypes;
+    WebAllSearch: WebAllSearch;
     WebAllTels: WebAllTels;
     WebAllTideLocations: WebAllTideLocations;
-    WebAllTVItemLanguages1980_2020: WebAllTVItemLanguages;
-    WebAllTVItemLanguages2021_2060: WebAllTVItemLanguages;
-    WebAllTVItems1980_2020: WebAllTVItems;
-    WebAllTVItems2021_2060: WebAllTVItems;
     WebArea: WebArea;
     WebClimateSites: WebClimateSites;
     WebCountry: WebCountry;

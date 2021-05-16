@@ -1,11 +1,10 @@
 import { _isNumberValue } from '@angular/cdk/coercion';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { of } from 'rxjs';
-import { catchError, debounceTime, distinctUntilChanged, map, startWith, tap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, map, startWith, tap } from 'rxjs/operators';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
-import { SearchResult } from 'src/app/models/generated/helper/SearchResult.model';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { AppLanguageService } from '../app-language.service';
 import { AppLoadedService } from '../app-loaded.service';
@@ -15,8 +14,7 @@ import { AppLoadedService } from '../app-loaded.service';
 })
 export class SearchService {
 
-    constructor(private httpClient: HttpClient,
-        private appLoadedService: AppLoadedService,
+    constructor(private appLoadedService: AppLoadedService,
         private appStateService: AppStateService,
         private appLanguageService: AppLanguageService) {
     }
@@ -44,20 +42,56 @@ export class SearchService {
                 })
             ).subscribe();
         }
-        else {           
-            this.httpClient.get<SearchResult>(`${this.appLoadedService.BaseApiUrl}${languageEnum[this.appLanguageService.Language]}-CA/search/${term}/0`).pipe(
-                map((x: any) => {
-                    this.appLoadedService.SearchResult = x;
-                    this.appStateService.SearchWorking = false;
-                    console.debug(x);
-                }),
-                catchError(e => of(e).pipe(map(e => {
-                    this.appLoadedService.SearchResult = [];
-                    this.appStateService.SearchWorking = false;
-                    this.appStateService.Error = <HttpErrorResponse>e;
-                    console.debug(e);
-                })))
-            ).subscribe();
+        else {
+            let TermList: string[] = term.split(' ');
+
+            if (TermList.length == 0) {
+                return [];
+            }
+            if (TermList.length == 1) {
+                let TVItemModelTempList: TVItemModel[] = this.appLoadedService.WebAllSearch.TVItemModelList.filter(c => c.TVItemLanguageList[this.appLanguageService.LangID].TVText.includes(TermList[0]));
+                if (TVItemModelTempList.length > 10) {
+                    return TVItemModelTempList.slice(0, 10);
+                }
+            }
+            if (TermList.length == 2) {
+                let TVItemModelTempList: TVItemModel[] = this.appLoadedService.WebAllSearch.TVItemModelList.filter(c =>
+                    c.TVItemLanguageList[this.appLanguageService.LangID].TVText.includes(TermList[0])
+                    && c.TVItemLanguageList[this.appLanguageService.LangID].TVText.includes(TermList[1]));
+                if (TVItemModelTempList.length > 10) {
+                    return TVItemModelTempList.slice(0, 10);
+                }
+            }
+            if (TermList.length == 3) {
+                let TVItemModelTempList: TVItemModel[] = this.appLoadedService.WebAllSearch.TVItemModelList.filter(c =>
+                    c.TVItemLanguageList[this.appLanguageService.LangID].TVText.includes(TermList[0])
+                    && c.TVItemLanguageList[this.appLanguageService.LangID].TVText.includes(TermList[1])
+                    && c.TVItemLanguageList[this.appLanguageService.LangID].TVText.includes(TermList[2]));
+                if (TVItemModelTempList.length > 10) {
+                    return TVItemModelTempList.slice(0, 10);
+                }
+            }
+            if (TermList.length == 4) {
+                let TVItemModelTempList: TVItemModel[] = this.appLoadedService.WebAllSearch.TVItemModelList.filter(c =>
+                    c.TVItemLanguageList[this.appLanguageService.LangID].TVText.includes(TermList[0])
+                    && c.TVItemLanguageList[this.appLanguageService.LangID].TVText.includes(TermList[1])
+                    && c.TVItemLanguageList[this.appLanguageService.LangID].TVText.includes(TermList[2])
+                    && c.TVItemLanguageList[this.appLanguageService.LangID].TVText.includes(TermList[3]));
+                if (TVItemModelTempList.length > 10) {
+                    return TVItemModelTempList.slice(0, 10);
+                }
+            }
+            if (TermList.length >= 5) {
+                let TVItemModelTempList: TVItemModel[] = this.appLoadedService.WebAllSearch.TVItemModelList.filter(c =>
+                    c.TVItemLanguageList[this.appLanguageService.LangID].TVText.includes(TermList[0])
+                    && c.TVItemLanguageList[this.appLanguageService.LangID].TVText.includes(TermList[1])
+                    && c.TVItemLanguageList[this.appLanguageService.LangID].TVText.includes(TermList[2])
+                    && c.TVItemLanguageList[this.appLanguageService.LangID].TVText.includes(TermList[3])
+                    && c.TVItemLanguageList[this.appLanguageService.LangID].TVText.includes(TermList[4]));
+                if (TVItemModelTempList.length > 10) {
+                    return TVItemModelTempList.slice(0, 10);
+                }
+            }
         }
     }
 }

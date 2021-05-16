@@ -107,14 +107,6 @@ namespace CreateGzFileServices
                     return await DoCreateWebAllTelsGzFile();
                 case WebTypeEnum.WebAllTideLocations:
                     return await DoCreateWebAllTideLocationsGzFile();
-                case WebTypeEnum.WebAllTVItemLanguages1980_2020:
-                    return await DoCreateWebAllTVItemLanguages1980_2020GzFile();
-                case WebTypeEnum.WebAllTVItemLanguages2021_2060:
-                    return await DoCreateWebAllTVItemLanguages2021_2060GzFile();
-                case WebTypeEnum.WebAllTVItems1980_2020:
-                    return await DoCreateWebAllTVItems1980_2020GzFile();
-                case WebTypeEnum.WebAllTVItems2021_2060:
-                    return await DoCreateWebAllTVItems2021_2060GzFile();
                 case WebTypeEnum.WebArea:
                     return await DoCreateWebAreaGzFile(TVItemID); // TVItemID = AreaTVItemID
                 case WebTypeEnum.WebClimateSites:
@@ -145,6 +137,8 @@ namespace CreateGzFileServices
                     return await DoCreateWebProvinceGzFile(TVItemID); // TVItemID = ProvinceTVItemID
                 case WebTypeEnum.WebRoot:
                     return await DoCreateWebRootGzFile();
+                case WebTypeEnum.WebAllSearch:
+                    return await DoCreateWebAllSearchGzFile();
                 case WebTypeEnum.WebSector:
                     return await DoCreateWebSectorGzFile(TVItemID); // TVItemID = SectorTVItemID
                 case WebTypeEnum.WebSubsector:

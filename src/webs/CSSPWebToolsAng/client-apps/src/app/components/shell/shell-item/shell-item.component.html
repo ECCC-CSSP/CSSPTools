@@ -7,14 +7,14 @@
         </button>
         <mat-menu #historyMenu="matMenu">
             <div class="menuWidth">
-                <button mat-menu-item *ngFor="let history of appStateService.History"
+                <button mat-menu-item *ngFor="let history of appStateService.UserPreference.History"
                     (click)="NavigateTo(history)">
                     {{ history.TVItemLanguageList[appLanguageService.LangID].TVText }}
                 </button>
             </div>
         </mat-menu>
 
-        <button (click)="togglesService.ToggleMenu()" mat-button
+        <button (click)="togglesService.ToggleMenu()" mat-button [ngClass]="appStateService.UserPreference.LeftSideNavVisible ? 'selected' : ''"
             title="{{ appLanguageService.ShellOpenContextMenu[appLanguageService.LangID] }}">
             <mat-icon>menu</mat-icon>
         </button>
@@ -37,7 +37,7 @@
 
         <button mat-button>
             <mat-icon>account_circle</mat-icon>
-            <!-- {{ appLoadedService.LoggedInContact?.LoginEmail }} -->
+            {{ appLoadedService.LoggedInContact?.LoginEmail }}
         </button>
         <button mat-button *ngIf="(appLanguageService.Language == languageEnum.fr)"
             (click)="SetLanguage(languageEnum.en)">English</button>
@@ -50,7 +50,7 @@
             </button>
             <button mat-button
                 title="{{ appLanguageService.ShellResizeMap[appLanguageService.LangID] }}"
-                *ngIf="(appStateService.MapVisible)" [matMenuTriggerFor]="mapMenu">
+                *ngIf="(appStateService.UserPreference.MapVisible)" [matMenuTriggerFor]="mapMenu">
                 <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #mapMenu="matMenu">
@@ -71,37 +71,37 @@
 </mat-toolbar>
 
 <mat-sidenav-container class="container">
-    <mat-sidenav class="sidenav-left" #leftSideNav [opened]="appStateService.MenuVisible"
+    <mat-sidenav class="sidenav-left" #leftSideNav [opened]="appStateService.UserPreference.LeftSideNavVisible"
         mode="side">
         <app-sidenav-menu></app-sidenav-menu>
     </mat-sidenav>
     <mat-sidenav *ngIf="appLoadedService.LoggedInContact?.HasInternetConnection" [ngClass]="GetMapSizeClass()"
-        #rightSideNav [opened]="appStateService.MapVisible" mode="side" position="end">
+        #rightSideNav [opened]="appStateService.UserPreference.MapVisible" mode="side" position="end">
         <app-map-item></app-map-item>
     </mat-sidenav>
     <app-error [Error]="appStateService.Error"></app-error>
     <app-bread-crumb></app-bread-crumb>
 
     <div class="margin10">
-        <app-root-item *ngIf="appStateService.ShellSubComponent == shellSubComponentEnum.Root">
+        <app-root-item *ngIf="appStateService.UserPreference.ShellSubComponent == shellSubComponentEnum.Root">
         </app-root-item>
         <app-country-item
-            *ngIf="appStateService.ShellSubComponent == shellSubComponentEnum.Country">
+            *ngIf="appStateService.UserPreference.ShellSubComponent == shellSubComponentEnum.Country">
         </app-country-item>
         <app-province-item
-            *ngIf="appStateService.ShellSubComponent == shellSubComponentEnum.Province">
+            *ngIf="appStateService.UserPreference.ShellSubComponent == shellSubComponentEnum.Province">
         </app-province-item>
         <app-area-item
-         *ngIf="appStateService.ShellSubComponent == shellSubComponentEnum.Area">
+         *ngIf="appStateService.UserPreference.ShellSubComponent == shellSubComponentEnum.Area">
         </app-area-item>
         <app-sector-item
-            *ngIf="appStateService.ShellSubComponent == shellSubComponentEnum.Sector">
+            *ngIf="appStateService.UserPreference.ShellSubComponent == shellSubComponentEnum.Sector">
         </app-sector-item>
         <app-subsector-item
-            *ngIf="appStateService.ShellSubComponent == shellSubComponentEnum.Subsector">
+            *ngIf="appStateService.UserPreference.ShellSubComponent == shellSubComponentEnum.Subsector">
         </app-subsector-item>
         <app-municipality-item
-            *ngIf="appStateService.ShellSubComponent == shellSubComponentEnum.Municipality">
+            *ngIf="appStateService.UserPreference.ShellSubComponent == shellSubComponentEnum.Municipality">
         </app-municipality-item>
     </div>
 

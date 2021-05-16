@@ -2760,16 +2760,10 @@
   <data name="WebTypeEnumWebMWQMSamples2021_2060" xml:space="preserve">
     <value>WebMWQMSamples2021_2060</value>
   </data>
-  <data name="WebTypeEnumWebAllTVItemLanguages1980_2020" xml:space="preserve">
-    <value>WebAllTVItemLanguages1980_2020</value>
+  <data name="FilesSortPropEnumFileDate" xml:space="preserve">
+    <value>File date</value>
   </data>
-  <data name="WebTypeEnumWebAllTVItemLanguages2021_2060" xml:space="preserve">
-    <value>WebAllTVItemLanguages2021_2060</value>
-  </data>
-  <data name="WebTypeEnumWebAllTVItems1980_2020" xml:space="preserve">
-    <value>WebAllTVItems1980_2020</value>
-  </data>
-  <data name="WebTypeEnumWebAllTVItems2021_2060" xml:space="preserve">
-    <value>WebAllTVItems2021_2060</value>
+  <data name="WebTypeEnumWebAllSearch" xml:space="preserve">
+    <value>WebAllSearch</value>
   </data>
 </root>

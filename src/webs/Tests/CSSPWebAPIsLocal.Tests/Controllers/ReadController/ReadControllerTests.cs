@@ -303,86 +303,86 @@ namespace CSSPWebAPIsLocal.ReadController.Tests
                 Assert.NotNull(webAllTideLocations.TideLocationList);
             }
         }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task ReadController_WebAllTVItemLanguages1980_2020_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
+        //[Theory]
+        //[InlineData("en-CA")]
+        ////[InlineData("fr-CA")]
+        //public async Task ReadController_WebAllTVItemLanguages1980_2020_Good_Test(string culture)
+        //{
+        //    Assert.True(await Setup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebAllTVItemLanguages1980_2020;
+        //    WebTypeEnum webType = WebTypeEnum.WebAllTVItemLanguages1980_2020;
 
-            using (HttpClient httpClient = new HttpClient())
-            {
-                string url = $"{ LocalUrl }api/{ culture }/Read/{ webType }";
-                var response = await httpClient.GetAsync(url);
-                Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-                string responseContent = await response.Content.ReadAsStringAsync();
-                WebAllTVItemLanguages webAllTVItemLanguages = JsonSerializer.Deserialize<WebAllTVItemLanguages>(responseContent);
-                Assert.NotNull(webAllTVItemLanguages);
-                Assert.NotNull(webAllTVItemLanguages.TVItemLanguageList);
-            }
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task ReadController_WebAllTVItemLanguages2021_2060_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
+        //    using (HttpClient httpClient = new HttpClient())
+        //    {
+        //        string url = $"{ LocalUrl }api/{ culture }/Read/{ webType }";
+        //        var response = await httpClient.GetAsync(url);
+        //        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        //        string responseContent = await response.Content.ReadAsStringAsync();
+        //        WebAllTVItemLanguages webAllTVItemLanguages = JsonSerializer.Deserialize<WebAllTVItemLanguages>(responseContent);
+        //        Assert.NotNull(webAllTVItemLanguages);
+        //        Assert.NotNull(webAllTVItemLanguages.TVItemLanguageList);
+        //    }
+        //}
+        //[Theory]
+        //[InlineData("en-CA")]
+        ////[InlineData("fr-CA")]
+        //public async Task ReadController_WebAllTVItemLanguages2021_2060_Good_Test(string culture)
+        //{
+        //    Assert.True(await Setup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebAllTVItemLanguages2021_2060;
+        //    WebTypeEnum webType = WebTypeEnum.WebAllTVItemLanguages2021_2060;
 
-            using (HttpClient httpClient = new HttpClient())
-            {
-                string url = $"{ LocalUrl }api/{ culture }/Read/{ webType }";
-                var response = await httpClient.GetAsync(url);
-                Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-                string responseContent = await response.Content.ReadAsStringAsync();
-                WebAllTVItemLanguages webAllTVItemLanguages = JsonSerializer.Deserialize<WebAllTVItemLanguages>(responseContent);
-                Assert.NotNull(webAllTVItemLanguages);
-                Assert.NotNull(webAllTVItemLanguages.TVItemLanguageList);
-            }
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task ReadController_WebAllTVItems1980_2020_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
+        //    using (HttpClient httpClient = new HttpClient())
+        //    {
+        //        string url = $"{ LocalUrl }api/{ culture }/Read/{ webType }";
+        //        var response = await httpClient.GetAsync(url);
+        //        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        //        string responseContent = await response.Content.ReadAsStringAsync();
+        //        WebAllTVItemLanguages webAllTVItemLanguages = JsonSerializer.Deserialize<WebAllTVItemLanguages>(responseContent);
+        //        Assert.NotNull(webAllTVItemLanguages);
+        //        Assert.NotNull(webAllTVItemLanguages.TVItemLanguageList);
+        //    }
+        //}
+        //[Theory]
+        //[InlineData("en-CA")]
+        ////[InlineData("fr-CA")]
+        //public async Task ReadController_WebAllTVItems1980_2020_Good_Test(string culture)
+        //{
+        //    Assert.True(await Setup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebAllTVItems1980_2020;
+        //    WebTypeEnum webType = WebTypeEnum.WebAllTVItems1980_2020;
 
-            using (HttpClient httpClient = new HttpClient())
-            {
-                string url = $"{ LocalUrl }api/{ culture }/Read/{ webType }";
-                var response = await httpClient.GetAsync(url);
-                Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-                string responseContent = await response.Content.ReadAsStringAsync();
-                WebAllTVItems webAllTVItems = JsonSerializer.Deserialize<WebAllTVItems>(responseContent);
-                Assert.NotNull(webAllTVItems);
-                Assert.NotNull(webAllTVItems.TVItemList);
-            }
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task ReadController_WebAllTVItems2021_2060_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
+        //    using (HttpClient httpClient = new HttpClient())
+        //    {
+        //        string url = $"{ LocalUrl }api/{ culture }/Read/{ webType }";
+        //        var response = await httpClient.GetAsync(url);
+        //        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        //        string responseContent = await response.Content.ReadAsStringAsync();
+        //        WebAllTVItems webAllTVItems = JsonSerializer.Deserialize<WebAllTVItems>(responseContent);
+        //        Assert.NotNull(webAllTVItems);
+        //        Assert.NotNull(webAllTVItems.TVItemList);
+        //    }
+        //}
+        //[Theory]
+        //[InlineData("en-CA")]
+        ////[InlineData("fr-CA")]
+        //public async Task ReadController_WebAllTVItems2021_2060_Good_Test(string culture)
+        //{
+        //    Assert.True(await Setup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebAllTVItems2021_2060;
+        //    WebTypeEnum webType = WebTypeEnum.WebAllTVItems2021_2060;
 
-            using (HttpClient httpClient = new HttpClient())
-            {
-                string url = $"{ LocalUrl }api/{ culture }/Read/{ webType }";
-                var response = await httpClient.GetAsync(url);
-                Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-                string responseContent = await response.Content.ReadAsStringAsync();
-                WebAllTVItems webAllTVItems = JsonSerializer.Deserialize<WebAllTVItems>(responseContent);
-                Assert.NotNull(webAllTVItems);
-                Assert.NotNull(webAllTVItems.TVItemList);
-            }
-        }
+        //    using (HttpClient httpClient = new HttpClient())
+        //    {
+        //        string url = $"{ LocalUrl }api/{ culture }/Read/{ webType }";
+        //        var response = await httpClient.GetAsync(url);
+        //        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        //        string responseContent = await response.Content.ReadAsStringAsync();
+        //        WebAllTVItems webAllTVItems = JsonSerializer.Deserialize<WebAllTVItems>(responseContent);
+        //        Assert.NotNull(webAllTVItems);
+        //        Assert.NotNull(webAllTVItems.TVItemList);
+        //    }
+        //}
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
@@ -654,6 +654,26 @@ namespace CSSPWebAPIsLocal.ReadController.Tests
                 WebRoot webRoot = JsonSerializer.Deserialize<WebRoot>(responseContent);
                 Assert.NotNull(webRoot);
                 Assert.NotNull(webRoot.TVItemModelCountryList);
+            }
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task ReadController_WebAllSearch_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebAllSearch;
+
+            using (HttpClient httpClient = new HttpClient())
+            {
+                string url = $"{ LocalUrl }api/{ culture }/Read/{ webType }";
+                var response = await httpClient.GetAsync(url);
+                Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+                string responseContent = await response.Content.ReadAsStringAsync();
+                WebAllSearch WebAllSearch = JsonSerializer.Deserialize<WebAllSearch>(responseContent);
+                Assert.NotNull(WebAllSearch);
+                Assert.NotNull(WebAllSearch.TVItemModelList);
             }
         }
         [Theory]

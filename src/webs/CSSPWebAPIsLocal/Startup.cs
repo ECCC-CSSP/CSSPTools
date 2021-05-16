@@ -17,20 +17,17 @@ using System.Linq;
 using System.Text;
 using DownloadFileServices;
 using ReadGzFileServices;
-using CSSPDBSearchServices;
 using Microsoft.AspNetCore.Http.Features;
 using CSSPDBPreferenceModels;
 using CSSPDBFilesManagementModels;
 using CSSPDBCommandLogModels;
-using CSSPDBSearchModels;
 using LoggedInServices;
 using CSSPDBServices;
 using CSSPScrambleServices;
 using CSSPHelperServices;
 using FilesManagementServices;
 using CSSPDBLocalServices;
-using CreateGzFileLocalServices;
-//using WebAppLoadedServices;
+using CreateGzFileServices;
 
 namespace CSSPWebAPIsLocal
 {
@@ -114,19 +111,6 @@ namespace CSSPWebAPIsLocal
                 options.UseSqlite($"Data Source={ fiCSSPDBCommandLog.FullName }");
             });
 
-            /* ---------------------------------------------------------------------------------
-             * using CSSPDBSearch
-             * ---------------------------------------------------------------------------------      
-             */
-            string CSSPDBSearchFileName = Configuration.GetValue<string>("CSSPDBSearch");
-
-            FileInfo fiCSSPDBSearch = new FileInfo(CSSPDBSearchFileName);
-
-            services.AddDbContext<CSSPDBSearchContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiCSSPDBSearch.FullName }");
-            });
-
 
             services.AddScoped<ICSSPCultureService, CSSPCultureService>();
             services.AddScoped<IEnums, Enums>();
@@ -139,8 +123,7 @@ namespace CSSPWebAPIsLocal
             services.AddScoped<IFilesManagementService, FilesManagementService>();
             services.AddScoped<IDownloadFileService, DownloadFileService>();
             services.AddScoped<IReadGzFileService, ReadGzFileService>();
-            services.AddScoped<ICreateGzFileLocalService, CreateGzFileLocalService>();
-            services.AddScoped<ICSSPDBSearchService, CSSPDBSearchService>();
+            services.AddScoped<ICreateGzFileService, CreateGzFileService>();
             services.AddScoped<ITVItemLocalService, TVItemLocalService>();
 
             //services.AddScoped<IWebAppLoadedService, WebAppLoadedService>();
@@ -156,7 +139,8 @@ namespace CSSPWebAPIsLocal
 
             //});
 
-            services.Configure<FormOptions>(o => {
+            services.Configure<FormOptions>(o =>
+            {
                 o.ValueLengthLimit = int.MaxValue;
                 o.MultipartBodyLengthLimit = int.MaxValue;
                 o.MemoryBufferThreshold = int.MaxValue;

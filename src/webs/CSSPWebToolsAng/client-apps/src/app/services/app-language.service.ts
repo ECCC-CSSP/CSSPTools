@@ -72,6 +72,8 @@ export class AppLanguageService {
   AreaShowFiles: string[] = ['Show files', 'Montrer filières'];
   AreaFiles: string[] = ['Files', 'Filières'];
 
+  Ascending: string[] = ['Ascending', 'Ascendant'];
+
   ContactNotFound: string[] = ['Contact not found', 'Contact non trouvé'];
 
   CountryShowProvinces: string[] = ['Show provinces', 'Montrer provinces'];
@@ -111,6 +113,17 @@ export class AppLanguageService {
   DateNovemberAcronym: string[] = ['Nov', 'nov'];
   DateDecemberAcronym: string[] = ['Dec', 'déc'];
 
+  Descending: string[] = ['Descending', 'Descendant'];
+
+  FileName: string[] = ['File Name', 'Nom de la filière'];
+  FileNameAccro: string[] = ['N', 'N'];
+  FileType: string[] = ['File Type', 'Type de la filière'];
+  FileTypeAccro: string[] = ['T', 'T'];
+  FileSize: string[] = ['File Size', 'Grosseur de la filière'];
+  FileSizeAccro: string[] = ['S', 'G'];
+  FileDate: string[] = ['File Date', 'Date de la filière'];
+  FileDateAccro: string[] = ['D', 'D'];
+
   ForceReload: string[] = ['Force Reload', 'Téléchargement forcé'];
 
   HomeCSSPWebTools: string[] = ['CSSP Web Tools', 'PCCSM: outils Web'];
@@ -128,6 +141,8 @@ export class AppLanguageService {
 
   Loading: string[] = ['Loading', 'Téléchargement'];
 
+  MoreInformationForViewingOrEditing: string[] = ['More information for viewing or editing', 'Plus d\'informations pour afficher ou modifier'];
+
   MunicipalityShowContacts: string[] = ['Show contacts', 'Montrer contacts'];
   MunicipalityContacts: string[] = ['Contacts', 'Contacts'];
   MunicipalityShowFiles: string[] = ['Show files', 'Montrer filières'];
@@ -137,7 +152,13 @@ export class AppLanguageService {
   MunicipalityShowMikeScenarios: string[] = ['Show MIKE scenaros', 'Montrer les scénarios de MIKE'];
   MunicipalityMikeScenarios: string[] = ['MIKE Scenarios', 'Scénarios de MIKE'];
 
+  MunicipalityWithInfrastructure: string[] = ['Municipality with infrastructure', 'Municipalité avec infrastructure'];
+  MunicipalityWithoutInfrastructure: string[] = ['Municipality without infrastructure', 'Municipality sans infrastructure'];
+
   Next: string[] = ['Next', 'Prochain'];
+
+  SortBy: string[] = ['Sort by', 'Trier par'];
+  SortedBy: string[] = ['Sorted by', 'Trier par'];
 
   ProvinceShowAreas: string[] = ['Show areas', 'Montrer areas'];
   ProvinceAreas: string[] = ['Areas', 'Régions'];
@@ -170,6 +191,8 @@ export class AppLanguageService {
   ShellShowMap: string[] = ['Show map', 'Montrer carte'];
   ShellResizeMap: string[] = ['Resize map', 'Redimentionnez la carte'];
   ShellNoInternet: string[] = ['No Internet', 'Pas d\'internet'];
+
+  ShowItemOnMap: string[] = ['Show item on map', 'Afficher l\'élément sur la carte'];
 
   SideNavMenuContextMenu: string[] = ['Context menu', 'Menu contextuel'];
   SideNavMenuShowInactiveItems: string[] = ['Show inactive items', 'Montrer items inactifs'];

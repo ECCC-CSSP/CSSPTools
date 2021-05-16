@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { AppLanguageService } from '../app-language.service';
@@ -17,7 +18,7 @@ export class FileService {
         private appLanguageService: AppLanguageService) {
     }
 
-    DownloadFile(ParentTVItemID: number, FileName: string) {
+    DoDownloadFile(ParentTVItemID: number, FileName: string) {
         let languageEnum = GetLanguageEnum();
         this.appStateService.Working = true;
         let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appLanguageService.Language]}-CA/download/${ParentTVItemID}/${FileName}`;
@@ -34,8 +35,14 @@ export class FileService {
             })))
         ).subscribe();
     }
-}
 
-function GetLanguageEnum() {
-    throw new Error('Function not implemented.');
+    DoUploadFile(formData) {
+        let languageEnum = GetLanguageEnum();
+        const url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appLanguageService.Language]}-CA/Upload`;
+
+        return this.httpClient.post<any>(url, formData, {
+            reportProgress: true,
+            observe: 'events'
+        });
+    }
 }
