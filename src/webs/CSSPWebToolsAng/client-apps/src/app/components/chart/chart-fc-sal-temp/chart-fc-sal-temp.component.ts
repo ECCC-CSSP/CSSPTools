@@ -65,7 +65,7 @@ export class ChartFCSalTempComponent implements OnInit, AfterViewInit, OnDestroy
     const data = {
       labels: labels,
       datasets: [{
-        label: 'FC (MPN / 100 mL)',
+        label: this.appLanguageService.ChartLabelFCMPNPer100ML[this.appLanguageService.LangID],
         backgroundColor: 'rgb(255, 99, 132)',
         borderColor: 'rgb(255, 99, 132)',
         data: dataFCList,
@@ -73,7 +73,7 @@ export class ChartFCSalTempComponent implements OnInit, AfterViewInit, OnDestroy
         type: 'bar',
       },
       {
-        label: 'Sal (ppt)',
+        label: this.appLanguageService.ChartLabelSalppt[this.appLanguageService.LangID],
         backgroundColor: 'rgb(0, 255, 22)',
         borderColor: 'rgb(0, 255, 22)',
         data: dataSalList,
@@ -82,7 +82,7 @@ export class ChartFCSalTempComponent implements OnInit, AfterViewInit, OnDestroy
         type: 'line',
       },
       {
-        label: 'Temp (deg C)',
+        label: this.appLanguageService.ChartLabelTempDegC[this.appLanguageService.LangID],
         backgroundColor: 'rgb(0, 22, 255)',
         borderColor: 'rgb(0, 22, 255)',
         data: dataTempList,

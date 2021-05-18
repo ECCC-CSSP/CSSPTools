@@ -17,8 +17,6 @@ declare let Chart: any;
 export class TableFCStatComponent implements OnInit, OnDestroy {
   @Input() StatMWQMSiteSampleList: StatMWQMSiteSample[] = [];
 
-  lang = GetLanguageEnum();
-
   //displayedColumns: string[] = ['Index', 'SampleDate', 'FC', 'Sal', 'Temp', 'pH', 'Depth', 'GeoMean', 'Median', 'P90', 'PercOver43', 'PercOver260'];
   displayedColumns: string[] = ['Index', 'SampleDate', 'FC', 'Sal', 'Temp', 'GeoMean', 'Median', 'P90', 'PercOver43', 'PercOver260'];
 
@@ -27,7 +25,6 @@ export class TableFCStatComponent implements OnInit, OnDestroy {
   constructor(public appLoadedService: AppLoadedService,
     public appStateService: AppStateService,
     public appLanguageService: AppLanguageService,
-    private loaderService: LoaderService,
     public loggedInContactService: LoggedInContactService,
   ) { }
 

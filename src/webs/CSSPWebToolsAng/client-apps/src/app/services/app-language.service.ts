@@ -10,15 +10,13 @@ export class AppLanguageService {
 
   constructor() {
   }
-  
-  SetLanguage(Language: LanguageEnum)
-  {
-    if (Language == LanguageEnum.fr)
-    {
+
+  SetLanguage(Language: LanguageEnum) {
+    if (Language == LanguageEnum.fr) {
       this.Language = LanguageEnum.fr;
       this.LangID = LanguageEnum.fr - 1;
     }
-    else{
+    else {
       this.Language = LanguageEnum.en;
       this.LangID = LanguageEnum.en - 1;
     }
@@ -27,7 +25,7 @@ export class AppLanguageService {
   Language?: LanguageEnum = LanguageEnum.en;
   LangID?: number = 0;
 
-  AnalysisSite: string[] =  ['Site', 'Site'];
+  AnalysisSite: string[] = ['Site', 'Site'];
   AnalysisSamples: string[] = ['Samples', 'Échantillons'];
   AnalysisPeriod: string[] = ['Period', 'Période'];
   AnalysisMinFC: string[] = ['Min FC', 'CF min'];
@@ -74,6 +72,14 @@ export class AppLanguageService {
 
   Ascending: string[] = ['Ascending', 'Ascendant'];
 
+  ChartLabelGMOver14: string[] = ['GM (>14 red)', 'MG (>14 rouge)'];
+  ChartLabelMedOver14: string[] = ['Med (>14 red)', 'Méd (>14 rouge)'];
+  ChartLabelP90Over43: string[] = ['P90 (>43 red)', 'P90 (>43 rouge)'];
+  ChartLabelOver43: string[] = ['>43 (>10% red)', '>43 (>10% rouge)'];
+  ChartLabelFCMPNPer100ML: string[] = ['FC (MPN / 100 mL)', 'CF (NPB / 100 mL)'];
+  ChartLabelSalppt: string[] = ['Sal (ppt)', 'Sal (ppm)'];
+  ChartLabelTempDegC: string[] = ['Temp (deg C)', 'Temp (deg C)'];
+
   ContactNotFound: string[] = ['Contact not found', 'Contact non trouvé'];
 
   CountryShowProvinces: string[] = ['Show provinces', 'Montrer provinces'];
@@ -86,6 +92,8 @@ export class AppLanguageService {
   CountryEmailDistributionList: string[] = ['Email Distribution List', 'Liste de distribution des courriels'];
   CountryShowRainExceedance: string[] = ['Show rain exceedance', 'Montrer pluie dépassement'];
   CountryRainExceedance: string[] = ['Rain Exceedance', 'Pluie dépassement'];
+
+  DegCelciusTitle: string[] = ['Degree Celcius', 'Dégré Celcius'];
 
   DateJanuary: string[] = ['January', 'janvier'];
   DateFebruary: string[] = ['February', 'février'];
@@ -115,6 +123,9 @@ export class AppLanguageService {
 
   Descending: string[] = ['Descending', 'Descendant'];
 
+  FCInit: string[] = ['FC', 'CF'];
+  FCInitTitle: string[] = ['Most probable number of fecal coliform per 100 mL', 'Nombre le plus probable de coliformes fécaux par 100 mL'];
+
   FileName: string[] = ['File Name', 'Nom de la filière'];
   FileNameAccro: string[] = ['N', 'N'];
   FileType: string[] = ['File Type', 'Type de la filière'];
@@ -125,6 +136,9 @@ export class AppLanguageService {
   FileDateAccro: string[] = ['D', 'D'];
 
   ForceReload: string[] = ['Force Reload', 'Téléchargement forcé'];
+
+  GMInit: string[] = ['GM', "MG"];
+  GMInitTitle: string[] = ['Geometric mean', 'Moyenne géométrique'];
 
   HomeCSSPWebTools: string[] = ['CSSP Web Tools', 'PCCSM: outils Web'];
   HomeTheWebToolWillLetYou: string[] = ['The Web tools will let you:', 'Avec les outils Web, il est possible de:'];
@@ -140,6 +154,9 @@ export class AppLanguageService {
   KB: string[] = ['KB', 'Ko'];
 
   Loading: string[] = ['Loading', 'Téléchargement'];
+
+  MedianInit: string[] = ['Med', 'Méd'];
+  MedianInitTitle: string[] = ['Median', 'Médianne'];
 
   MoreInformationForViewingOrEditing: string[] = ['More information for viewing or editing', 'Plus d\'informations pour afficher ou modifier'];
 
@@ -160,6 +177,18 @@ export class AppLanguageService {
   SortBy: string[] = ['Sort by', 'Trier par'];
   SortedBy: string[] = ['Sorted by', 'Trier par'];
 
+  P90Init: string[] = ['P90', 'P90'];
+  P90InitTitle: string[] = ['90% of the estimates exceed the P90 estimate', '90% des estimations dépassent l\'estimation P90'];
+
+  PercOver43Init: string[] = ['>43 (%)', '>43 (%)'];
+  PercOver43InitTitle: string[] = ['Percentage of samples exceeding 43', 'Pourcentage d\'échantillons dépassant 43'];
+
+  PercOver260Init: string[] = ['>260 (%)', '>260 (%)'];
+  PercOver260InitTitle: string[] = ['Percentage of samples exceeding 260', 'Pourcentage d\'échantillons dépassant 260'];
+
+  PPTInit: string[] = ['ppt', 'ppm'];
+  PPTInitTitle: string[] = ['Salinity in parts per thousand (ppt)', 'Salinité en parties pour mille (ppm)'];
+
   ProvinceShowAreas: string[] = ['Show areas', 'Montrer areas'];
   ProvinceAreas: string[] = ['Areas', 'Régions'];
   ProvinceShowMunicipalities: string[] = ['Show municipalities', 'Montrer municipalités'];
@@ -179,6 +208,9 @@ export class AppLanguageService {
   RootFiles: string[] = ['Files', 'Filières'];
   RootShowExportArcGISTools: string[] = ['Show export Arc GIS tools', 'Montrer outils pour exportation Arc GIS'];
   RootExportArcGIS: string[] = ['Export Arc GIS', 'Exportation Arc GIS'];
+
+  SampleDate: string[] = ['Sample Date', 'Date d\'échantillonnage'];
+  SampleDateTitle: string[] = ['The date the sample was taken', 'La date à laquelle l\'échantillon a été prélevé'];
 
   Saving: string[] = ['Saving', 'Sauvegarde'];
 

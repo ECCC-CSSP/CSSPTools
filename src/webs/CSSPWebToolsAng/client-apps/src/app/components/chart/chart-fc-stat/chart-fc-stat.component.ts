@@ -61,7 +61,7 @@ export class ChartFCStatComponent implements OnInit, AfterViewInit, OnDestroy {
     const data = {
       labels: labels,
       datasets: [{
-        label: 'GM (>14 red)',
+        label: this.appLanguageService.ChartLabelGMOver14[this.appLanguageService.LangID],
         backgroundColor: this.GetLineColorGM,
         borderColor: this.GetLineColorGM,
         data: dataGMList,
@@ -70,7 +70,7 @@ export class ChartFCStatComponent implements OnInit, AfterViewInit, OnDestroy {
         type: 'scatter',
       },
       {
-        label: 'Mdn (>14 red)',
+        label: this.appLanguageService.ChartLabelMedOver14[this.appLanguageService.LangID],
         backgroundColor: this.GetLineColorMdn,
         borderColor: this.GetLineColorMdn,
         data: dataMdnList,
@@ -79,7 +79,7 @@ export class ChartFCStatComponent implements OnInit, AfterViewInit, OnDestroy {
         type: 'scatter',
       },
       {
-        label: 'P90 (>43 red)',
+        label: this.appLanguageService.ChartLabelP90Over43[this.appLanguageService.LangID],
         backgroundColor: this.GetLineColorP90,
         borderColor: this.GetLineColorP90,
         data: dataP90List,
@@ -88,7 +88,7 @@ export class ChartFCStatComponent implements OnInit, AfterViewInit, OnDestroy {
         type: 'scatter',
       },
       {
-        label: '>43 (> 10% red)',
+        label: this.appLanguageService.ChartLabelOver43[this.appLanguageService.LangID],
         backgroundColor: this.GetLineColorPercOver43,
         borderColor: this.GetLineColorPercOver43,
         data: dataPercAbove43List,
