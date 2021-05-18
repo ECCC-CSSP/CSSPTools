@@ -1,12 +1,14 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { WebTypeEnum } from 'src/app/enums/generated/WebTypeEnum';
-
+import { ChartXYTextNumberModel } from 'src/app/models/generated/web/ChartXYTextNumberModel.model';
+import { StatMWQMSiteSample } from 'src/app/models/generated/web/StatMWQMSiteSample.model';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
-import { WebMWQMSites } from 'src/app/models/generated/web/WebMWQMSites.model';
 import { AppLanguageService } from 'src/app/services/app-language.service';
+import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
+import { DateFormatService } from 'src/app/services/helpers/date-format.service';
 import { LoaderService } from 'src/app/services/loaders/loader.service';
-//import { WebMWQMSitesService } from 'src/app/services/loaders/web-mwqm-sites.service';
+
+declare let Chart: any;
 
 @Component({
   selector: 'app-mwqm-site-item-view',
@@ -16,14 +18,24 @@ import { LoaderService } from 'src/app/services/loaders/loader.service';
 export class MWQMSiteItemViewComponent implements OnInit, OnDestroy {
   @Input() TVItemModel: TVItemModel;
 
+   StatMWQMSiteSampleList: StatMWQMSiteSample[] = [];
+   CanvasNameFCSalTemp: string = '';
+   CanvasNameFCStat: string = '';
+
+   displayedColumns: string[] = ['Index', 'SampleDate', 'FC', 'Sal', 'Temp', 'pH', 'Depth', 'GeoMean', 'Median', 'P90', 'PercOver43', 'PercOver260'];
 
   constructor(public appStateService: AppStateService,
     public appLanguageService: AppLanguageService,
-    //private webMWQMSitesService: WebMWQMSitesService
-    public loaderService: LoaderService) { }
+    public appLoadedService: AppLoadedService,
+    public loaderService: LoaderService,
+    public dateFormatService: DateFormatService) { }
 
   ngOnInit(): void {
-    //this.loaderService.Load<WebMWQMSites>(WebTypeEnum.WebMWQMSites, null, false);
+    let StatMWQMSite = this.appLoadedService.StatMWQMSiteList.filter(c => c.TVItemModel.TVItem.TVItemID == this.TVItemModel.TVItem.TVItemID)[0];
+    this.StatMWQMSiteSampleList = StatMWQMSite.StatMWQMSiteSampleList.filter(c => c.FC != null);
+
+    this.CanvasNameFCSalTemp = `CanvasFCSalTemp${this.TVItemModel.TVItem.TVItemID}` 
+    this.CanvasNameFCStat = `CanvasFCStat${this.TVItemModel.TVItem.TVItemID}` 
   }
 
   ngOnDestroy(): void {

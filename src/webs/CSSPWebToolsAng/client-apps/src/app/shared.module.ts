@@ -92,6 +92,10 @@ import { ProvinceItemViewComponent } from './components/province/province-item-v
 import { SectorItemViewComponent } from './components/sector/sector-item-view/sector-item-view.component';
 import { SubsectorItemViewComponent } from './components/subsector/subsector-item-view/subsector-item-view.component';
 import { CountryItemCreateComponent } from './components/country/country-item-create/country-item-create.component';
+import { HomeTestComponent } from './components/home/home-test/home-test.component';
+import { ChartFCSalTempComponent } from './components/chart/chart-fc-sal-temp/chart-fc-sal-temp.component';
+import { ChartFCStatComponent } from './components/chart/chart-fc-stat/chart-fc-stat.component';
+import { TableFCStatComponent } from './components/table/table-fc-stat/table-fc-stat.component';
 
 @NgModule({
   declarations: [
@@ -105,6 +109,8 @@ import { CountryItemCreateComponent } from './components/country/country-item-cr
     AreaTVItemListDetailComponent,
     AreaTVItemListItemComponent,
     BreadCrumbComponent,
+    ChartFCSalTempComponent,
+    ChartFCStatComponent,
     ContactItemComponent,
     CountryItemComponent,
     CountryItemCreateComponent,
@@ -120,9 +126,10 @@ import { CountryItemCreateComponent } from './components/country/country-item-cr
     FileListItemDetailComponent,
     FileListItemEditComponent,
     FileListItemViewComponent,
-  //  FileUploadComponent,
+    //  FileUploadComponent,
     FooterComponent,
     HomeItemComponent,
+    HomeTestComponent,
     InfrastructureItemComponent,
     LastUpdateTVFileModelComponent,
     LastUpdateTVItemModelComponent,
@@ -182,6 +189,7 @@ import { CountryItemCreateComponent } from './components/country/country-item-cr
     SubsectorTVItemListDetailComponent,
     SubsectorTVItemListItemComponent,
     SubsectorToolsItemComponent,
+    TableFCStatComponent,
     TVFileMenuComponent,
     TVItemMenuComponent
   ],
@@ -209,6 +217,8 @@ import { CountryItemCreateComponent } from './components/country/country-item-cr
     AreaTVItemListDetailComponent,
     AreaTVItemListItemComponent,
     BreadCrumbComponent,
+    ChartFCSalTempComponent,
+    ChartFCStatComponent,
     ContactItemComponent,
     CountryItemComponent,
     CountryItemCreateComponent,
@@ -227,6 +237,7 @@ import { CountryItemCreateComponent } from './components/country/country-item-cr
     //FileUploadComponent,
     FooterComponent,
     HomeItemComponent,
+    HomeTestComponent,
     InfrastructureItemComponent,
     LastUpdateTVFileModelComponent,
     LastUpdateTVItemModelComponent,
@@ -286,9 +297,9 @@ import { CountryItemCreateComponent } from './components/country/country-item-cr
     SubsectorTVItemListDetailComponent,
     SubsectorTVItemListItemComponent,
     SubsectorToolsItemComponent,
+    TableFCStatComponent,
     TVFileMenuComponent,
     TVItemMenuComponent
   ]
 })
 export class SharedModule { }
- 

@@ -31,6 +31,10 @@ export class DateFormatService {
     return this.GetDateFromDateText(statMWQMSiteSample.LastSampleDate.toString(), true);
   }
 
+  GetDateTime_LocalDigit(DateText: string) {
+    return `${DateText.substring(0, 4)}-${DateText.substring(5, 7)}-${DateText.substring(8, 10)}`;
+  }
+
   GetTVFileCreateDateTime_LocalDigit(tvFile: TVFile) {
     let DateText: string = tvFile.FileCreatedDate_UTC.toString();
 

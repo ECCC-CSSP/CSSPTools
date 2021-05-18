@@ -16,7 +16,7 @@ namespace CreateGzFileServices
 {
     public partial class CreateGzFileService : ControllerBase, ICreateGzFileService
     {
-        private async Task FillAllSearchTVItemModelList(List<TVItemModel> TVItemChildList)
+        private async Task FillAllSearchTVItemModelList(List<TVItemModel> TVItemSearchList)
         {
             List<TVItem> TVItemList = await GetSearchableTVItem();
             List<TVItemLanguage> TVItemLanguageList = await GetSearchableTVItemLanguage();
@@ -27,8 +27,12 @@ namespace CreateGzFileServices
                 tvItemModel.TVItem = tvItem;
                 tvItemModel.TVItemLanguageList = TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
 
-                TVItemChildList.Add(tvItemModel);
+                TVItemSearchList.Add(tvItemModel);
             }
+
+            TVItemSearchList = (from c in TVItemSearchList
+                                orderby c.TVItem.TVLevel
+                                select c).ToList();
         }
     }
 }
