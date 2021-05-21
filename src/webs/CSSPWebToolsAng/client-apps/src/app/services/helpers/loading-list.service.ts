@@ -5,11 +5,6 @@ import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 import { WebTypeEnum } from 'src/app/enums/generated/WebTypeEnum';
 import { LoadModel } from 'src/app/models/generated/web/LoadModel.model';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
-import { WebArea } from 'src/app/models/generated/web/WebArea.model';
-import { WebMunicipality } from 'src/app/models/generated/web/WebMunicipality.model';
-import { WebProvince } from 'src/app/models/generated/web/WebProvince.model';
-import { WebSector } from 'src/app/models/generated/web/WebSector.model';
-import { WebSubsector } from 'src/app/models/generated/web/WebSubsector.model';
 import { AppStateService } from '../app-state.service';
 
 @Injectable({
@@ -136,9 +131,9 @@ export class LoadListService {
   }
 
   private FillCountry(TVItemID: number, ForceReload: boolean) {
-    this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebCountry, TVItemID: TVItemID, ForceReload: ForceReload });
     this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebMonitoringRoutineStatsByYearForCountry, TVItemID: TVItemID, ForceReload: ForceReload });
     this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebMonitoringOtherStatsByYearForCountry, TVItemID: TVItemID, ForceReload: ForceReload });
+    this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebCountry, TVItemID: TVItemID, ForceReload: ForceReload });
   }
 
   private FillProvince(TVItemID: number, ForceReload: boolean) {
@@ -152,8 +147,8 @@ export class LoadListService {
   }
 
   private FillMunicipality(TVItemID: number, ForceReload: boolean) {
-    this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebMunicipality, TVItemID: TVItemID, ForceReload: ForceReload });
     this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebMikeScenarios, TVItemID: TVItemID, ForceReload: ForceReload });
+    this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebMunicipality, TVItemID: TVItemID, ForceReload: ForceReload });
   }
 
   private FillArea(TVItemID: number, ForceReload: boolean) {
@@ -165,7 +160,6 @@ export class LoadListService {
   }
 
   private FillSubsector(TVItemID: number, ForceReload: boolean) {
-    this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebSubsector, TVItemID: TVItemID, ForceReload: ForceReload });
     this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebLabSheets, TVItemID: TVItemID, ForceReload: ForceReload });
     this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebMWQMRuns, TVItemID: TVItemID, ForceReload: ForceReload });
     this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebMWQMSites, TVItemID: TVItemID, ForceReload: ForceReload });

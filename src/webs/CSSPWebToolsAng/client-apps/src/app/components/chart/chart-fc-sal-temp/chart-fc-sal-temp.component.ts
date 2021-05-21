@@ -1,10 +1,9 @@
 import { Component, OnInit, OnDestroy, Input, AfterViewInit } from '@angular/core';
-import { GetLanguageEnum, LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
+import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { LoggedInContactService } from 'src/app/services/loaders/logged-in-contact.service';
-import { LoaderService } from 'src/app/services/loaders/loader.service';
 import { StatMWQMSiteSample } from 'src/app/models/generated/web/StatMWQMSiteSample.model';
 import { ChartXYTextNumberModel } from 'src/app/models/generated/web/ChartXYTextNumberModel.model';
 
@@ -24,7 +23,6 @@ export class ChartFCSalTempComponent implements OnInit, AfterViewInit, OnDestroy
   constructor(public appLoadedService: AppLoadedService,
     public appStateService: AppStateService,
     public appLanguageService: AppLanguageService,
-    private loaderService: LoaderService,
     public loggedInContactService: LoggedInContactService,
   ) { }
 
@@ -136,7 +134,6 @@ export class ChartFCSalTempComponent implements OnInit, AfterViewInit, OnDestroy
       document.getElementById(this.CanvasNameFCSalTemp),
       config
     );
-
   }
 
   ngOnDestroy(): void {

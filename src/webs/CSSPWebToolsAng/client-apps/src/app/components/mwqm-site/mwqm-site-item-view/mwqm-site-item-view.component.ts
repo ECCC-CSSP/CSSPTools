@@ -8,8 +8,6 @@ import { AppStateService } from 'src/app/services/app-state.service';
 import { DateFormatService } from 'src/app/services/helpers/date-format.service';
 import { LoaderService } from 'src/app/services/loaders/loader.service';
 
-declare let Chart: any;
-
 @Component({
   selector: 'app-mwqm-site-item-view',
   templateUrl: './mwqm-site-item-view.component.html',

@@ -10,8 +10,6 @@ import { MWQMSampleModel } from 'src/app/models/generated/web/MWQMSampleModel.mo
 import { MWQMSiteModel } from 'src/app/models/generated/web/MWQMSiteModel.model';
 import { SampleTypeEnum_GetIDText } from 'src/app/enums/generated/SampleTypeEnum';
 
-declare let Chart: any;
-
 @Component({
   selector: 'app-table-run-data',
   templateUrl: './table-run-data.component.html',

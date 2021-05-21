@@ -1,13 +1,10 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { GetLanguageEnum, LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
+import { LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { LoggedInContactService } from 'src/app/services/loaders/logged-in-contact.service';
-import { LoaderService } from 'src/app/services/loaders/loader.service';
 import { StatMWQMSiteSample } from 'src/app/models/generated/web/StatMWQMSiteSample.model';
-
-declare let Chart: any;
 
 @Component({
   selector: 'app-table-fc-stat',
