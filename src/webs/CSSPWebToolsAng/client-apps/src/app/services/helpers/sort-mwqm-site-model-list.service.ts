@@ -15,13 +15,13 @@ export class SortMWQMSiteModelListService {
     SortMWQMSiteModelListByTVTextAsc(arr: MWQMSiteModel[]): MWQMSiteModel[] {
         let language: number = <number>this.appLanguageService.Language;
 
-        if (!arr || arr.length == 0) return arr;
+        if (!arr || arr?.length == 0) return arr;
 
         let mwqmSiteModelSorted: MWQMSiteModel[] = [];
         let arr2: TVItemID_TVText_Sort[] = [];
         let sortable: TVItemID_TVText_Sort[] = [];
 
-        for (let i = 0; i < arr.length; i++) {
+        for (let i = 0; i < arr?.length; i++) {
             sortable.push(<TVItemID_TVText_Sort>{
                 TVItemID: arr[i].TVItemModel.TVItem.TVItemID,
                 TVText: arr[i].TVItemModel.TVItemLanguageList[language].TVText,
@@ -30,8 +30,8 @@ export class SortMWQMSiteModelListService {
 
         arr2 = sortable.sort(this.predicateAscByService.PredicateAscBy('TVText'));
 
-        for (let i = 0; i < sortable.length; i++) {
-            for (let j = 0; j < arr.length; j++) {
+        for (let i = 0; i < sortable?.length; i++) {
+            for (let j = 0; j < arr?.length; j++) {
                 if (arr2[i].TVItemID == arr[j].TVItemModel.TVItem.TVItemID) {
                     mwqmSiteModelSorted.push(arr[j]);
                     break;

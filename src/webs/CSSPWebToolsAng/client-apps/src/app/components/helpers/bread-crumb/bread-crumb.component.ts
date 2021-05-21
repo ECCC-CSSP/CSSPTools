@@ -26,7 +26,7 @@ export class BreadCrumbComponent implements OnInit, OnDestroy {
   }
 
   IsLast(i: number) {
-    if (this.appLoadedService.BreadCrumbTVItemModelList.length - 1 == i) {
+    if (this.appLoadedService.BreadCrumbTVItemModelList?.length - 1 == i) {
       return true;
     }
     else {

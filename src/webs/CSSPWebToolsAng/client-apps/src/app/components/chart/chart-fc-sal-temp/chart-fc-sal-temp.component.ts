@@ -34,7 +34,7 @@ export class ChartFCSalTempComponent implements OnInit, AfterViewInit, OnDestroy
   ngAfterViewInit(): void {
     let labelList: string[] = [];
 
-    for (let i = 0, count = this.StatMWQMSiteSampleList.length; i < count; i++) {
+    for (let i = 0, count = this.StatMWQMSiteSampleList?.length; i < count; i++) {
       let DateText: string = this.StatMWQMSiteSampleList[i].SampleDate.toString();
       labelList.push(`${DateText.substring(0, 4)}-${DateText.substring(5, 7)}-${DateText.substring(8, 10)}`);
     }
@@ -47,7 +47,7 @@ export class ChartFCSalTempComponent implements OnInit, AfterViewInit, OnDestroy
     let dataSalList: ChartXYTextNumberModel[] = [];
     let dataTempList: ChartXYTextNumberModel[] = [];
 
-    for (let i = 0, count = this.StatMWQMSiteSampleList.length; i < count; i++) {
+    for (let i = 0, count = this.StatMWQMSiteSampleList?.length; i < count; i++) {
       let DateText: string = this.StatMWQMSiteSampleList[i].SampleDate.toString();
       let Dt = `${DateText.substring(0, 4)}-${DateText.substring(5, 7)}-${DateText.substring(8, 10)}`;
       let ChartXYTextNumberModel: ChartXYTextNumberModel = { x: Dt, y: this.StatMWQMSiteSampleList[i].FC }

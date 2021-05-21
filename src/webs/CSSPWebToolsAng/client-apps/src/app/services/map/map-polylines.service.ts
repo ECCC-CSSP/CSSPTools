@@ -39,7 +39,7 @@ export class MapPolylinesService {
 
           polylineList.push(new google.maps.Polyline(options));
 
-          google.maps.event.addListener(polylineList[polylineList.length - 1], "mousemove", (evt: google.maps.MouseEvent) => {
+          google.maps.event.addListener(polylineList[polylineList?.length - 1], "mousemove", (evt: google.maps.MouseEvent) => {
             if (!this.appStateService.EditMapChanged) {
               (<HTMLInputElement>document.getElementById("CurrentLatLng")).value = (evt.latLng.lat().toString().substring(0, 8) +
                 ' ' + evt.latLng.lng().toString().substring(0, 8));

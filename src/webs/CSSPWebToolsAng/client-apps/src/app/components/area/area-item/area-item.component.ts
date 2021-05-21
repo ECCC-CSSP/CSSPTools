@@ -3,7 +3,7 @@ import { GetAreaSubComponentEnum } from 'src/app/enums/generated/AreaSubComponen
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
-import { GetTVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
+import { GetTVTypeEnum, TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 import { AscDescEnum, GetAscDescEnum } from 'src/app/enums/generated/AscDescEnum';
 import { StatCountService } from 'src/app/services/helpers/stat-count.service';
 import { ComponentShowService } from 'src/app/services/helpers/component-show.service';
@@ -16,6 +16,7 @@ import { WebTypeEnum } from 'src/app/enums/generated/WebTypeEnum';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { StructureTVFileListService } from 'src/app/services/helpers/structure-tvfile-list.service';
 import { GetFilesSortPropEnum } from 'src/app/enums/generated/FilesSortPropEnum';
+import { LoadListService } from 'src/app/services/helpers/loading-list.service';
 
 @Component({
   selector: 'app-area-item',
@@ -35,6 +36,7 @@ export class AreaItemComponent implements OnInit, OnDestroy {
     public appLoadedService: AppLoadedService,
     public appLanguageService: AppLanguageService,
     public loaderService: LoaderService,
+    private loadListService: LoadListService,
     public statCountService: StatCountService,
     public sortTVItemListService: SortTVItemListService,
     public filterService: FilterService,
@@ -42,7 +44,8 @@ export class AreaItemComponent implements OnInit, OnDestroy {
     public structureTVFileListService: StructureTVFileListService) { }
 
   ngOnInit(): void {
-    this.loaderService.Load<WebArea>(WebTypeEnum.WebArea, null, false);
+    this.loadListService.SetToLoadList(TVTypeEnum.Area, this.appStateService.UserPreference.CurrentAreaTVItemID, false);
+    this.loaderService.LoadAll();
   }
 
   ngOnDestroy(): void {

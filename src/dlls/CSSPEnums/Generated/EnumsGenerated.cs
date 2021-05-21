@@ -3124,6 +3124,8 @@ namespace CSSPEnums
                     return CSSPCultureEnumsRes.WebTypeEnumWebAllTels;
                 case WebTypeEnum.WebAllTideLocations:
                     return CSSPCultureEnumsRes.WebTypeEnumWebAllTideLocations;
+                case WebTypeEnum.WebAllSearch:
+                    return CSSPCultureEnumsRes.WebTypeEnumWebAllSearch;
                 case WebTypeEnum.WebArea:
                     return CSSPCultureEnumsRes.WebTypeEnumWebArea;
                 case WebTypeEnum.WebClimateSites:
@@ -3154,14 +3156,20 @@ namespace CSSPEnums
                     return CSSPCultureEnumsRes.WebTypeEnumWebProvince;
                 case WebTypeEnum.WebRoot:
                     return CSSPCultureEnumsRes.WebTypeEnumWebRoot;
-                case WebTypeEnum.WebAllSearch:
-                    return CSSPCultureEnumsRes.WebTypeEnumWebAllSearch;
                 case WebTypeEnum.WebSector:
                     return CSSPCultureEnumsRes.WebTypeEnumWebSector;
                 case WebTypeEnum.WebSubsector:
                     return CSSPCultureEnumsRes.WebTypeEnumWebSubsector;
                 case WebTypeEnum.WebTideSites:
                     return CSSPCultureEnumsRes.WebTypeEnumWebTideSites;
+                case WebTypeEnum.WebMonitoringRoutineStatsByYearForCountry:
+                    return CSSPCultureEnumsRes.WebTypeEnumWebMonitoringRoutineStatsByYearForCountry;
+                case WebTypeEnum.WebMonitoringOtherStatsByYearForCountry:
+                    return CSSPCultureEnumsRes.WebTypeEnumWebMonitoringOtherStatsByYearForCountry;
+                case WebTypeEnum.WebMonitoringRoutineStatsByYearForProvince:
+                    return CSSPCultureEnumsRes.WebTypeEnumWebMonitoringRoutineStatsByYearForProvince;
+                case WebTypeEnum.WebMonitoringOtherStatsByYearForProvince:
+                    return CSSPCultureEnumsRes.WebTypeEnumWebMonitoringOtherStatsByYearForProvince;
                 default:
                     return CSSPCultureEnumsRes.Empty;
             }

@@ -3,7 +3,7 @@ import { GetRootSubComponentEnum } from 'src/app/enums/generated/RootSubComponen
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { AppLanguageService } from 'src/app/services/app-language.service';
-import { GetTVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
+import { GetTVTypeEnum, TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 import { GetAscDescEnum } from 'src/app/enums/generated/AscDescEnum';
 import { StatCountService } from 'src/app/services/helpers/stat-count.service';
 import { ComponentShowService } from 'src/app/services/helpers/component-show.service';
@@ -15,6 +15,7 @@ import { WebRoot } from 'src/app/models/generated/web/WebRoot.model';
 import { WebTypeEnum } from 'src/app/enums/generated/WebTypeEnum';
 import { StructureTVFileListService } from 'src/app/services/helpers/structure-tvfile-list.service';
 import { GetFilesSortPropEnum } from 'src/app/enums/generated/FilesSortPropEnum';
+import { LoadListService } from 'src/app/services/helpers/loading-list.service';
 
 
 @Component({
@@ -33,6 +34,7 @@ export class RootItemComponent implements OnInit, OnDestroy {
     public appLoadedService: AppLoadedService,
     public appLanguageService: AppLanguageService,
     public loaderService: LoaderService,
+    private loadListService: LoadListService,
     public statCountService: StatCountService,
     public sortTVItemListService: SortTVItemListService,
     public filterService: FilterService,
@@ -41,7 +43,8 @@ export class RootItemComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.loaderService.Load<WebRoot>(WebTypeEnum.WebRoot, null, false);
+    this.loadListService.SetToLoadList(TVTypeEnum.Root, this.appStateService.UserPreference.CurrentRootTVItemID, false);
+    this.loaderService.LoadAll();
   }
 
   ngOnDestroy(): void {

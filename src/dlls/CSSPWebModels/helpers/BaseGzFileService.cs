@@ -56,6 +56,10 @@ namespace CSSPWebModels
                 case WebTypeEnum.WebHydrometricSites: fileName = $"{ WebTypeEnum.WebHydrometricSites }_{ TVItemID }.gz"; break;
                 case WebTypeEnum.WebLabSheets: fileName = $"{ WebTypeEnum.WebLabSheets }_{ TVItemID }.gz"; break;
                 case WebTypeEnum.WebMikeScenarios: fileName = $"{ WebTypeEnum.WebMikeScenarios }_{ TVItemID }.gz"; break;
+                case WebTypeEnum.WebMonitoringOtherStatsByYearForCountry: fileName = $"{ WebTypeEnum.WebMonitoringOtherStatsByYearForCountry }_{ TVItemID }.gz"; break;
+                case WebTypeEnum.WebMonitoringRoutineStatsByYearForCountry: fileName = $"{ WebTypeEnum.WebMonitoringRoutineStatsByYearForCountry }_{ TVItemID }.gz"; break;
+                case WebTypeEnum.WebMonitoringOtherStatsByYearForProvince: fileName = $"{ WebTypeEnum.WebMonitoringOtherStatsByYearForProvince }_{ TVItemID }.gz"; break;
+                case WebTypeEnum.WebMonitoringRoutineStatsByYearForProvince: fileName = $"{ WebTypeEnum.WebMonitoringRoutineStatsByYearForProvince }_{ TVItemID }.gz"; break;
                 case WebTypeEnum.WebMunicipality: fileName = $"{ WebTypeEnum.WebMunicipality }_{ TVItemID }.gz"; break;
                 case WebTypeEnum.WebMWQMRuns: fileName = $"{ WebTypeEnum.WebMWQMRuns }_{ TVItemID }.gz"; break;
                 case WebTypeEnum.WebMWQMSamples1980_2020: fileName = $"{ WebTypeEnum.WebMWQMSamples1980_2020 }_{ TVItemID }.gz"; break;

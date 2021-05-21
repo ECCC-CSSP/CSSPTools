@@ -1,3 +1,10 @@
+<span *ngIf="appStateService.Working">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</span>
+<p class="loading-status" *ngIf="appStateService.Status">
+    {{ appStateService.Status }}
+</p>
+
 <div *ngIf="!(appStateService.Working)">
     <div *ngFor="let LangID of LangIDList" class="card-container">
         <mat-card>

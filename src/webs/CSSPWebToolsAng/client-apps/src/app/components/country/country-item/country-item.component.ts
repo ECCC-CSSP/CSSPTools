@@ -3,7 +3,7 @@ import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { GetCountrySubComponentEnum } from 'src/app/enums/generated/CountrySubComponentEnum';
 import { AppLanguageService } from 'src/app/services/app-language.service';
-import { GetTVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
+import { GetTVTypeEnum, TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 import { AscDescEnum, GetAscDescEnum } from 'src/app/enums/generated/AscDescEnum';
 import { StatCountService } from 'src/app/services/helpers/stat-count.service';
 import { ComponentShowService } from 'src/app/services/helpers/component-show.service';
@@ -15,6 +15,7 @@ import { WebCountry } from 'src/app/models/generated/web/WebCountry.model';
 import { WebTypeEnum } from 'src/app/enums/generated/WebTypeEnum';
 import { StructureTVFileListService } from 'src/app/services/helpers/structure-tvfile-list.service';
 import { GetFilesSortPropEnum } from 'src/app/enums/generated/FilesSortPropEnum';
+import { LoadListService } from 'src/app/services/helpers/loading-list.service';
 
 
 @Component({
@@ -33,6 +34,7 @@ export class CountryItemComponent implements OnInit, OnDestroy {
     public appLoadedService: AppLoadedService,
     public appLanguageService: AppLanguageService,
     public loaderService: LoaderService,
+    public loadListService: LoadListService,
     public statCountService: StatCountService,
     public sortTVItemListService: SortTVItemListService,
     public filterService: FilterService,
@@ -41,7 +43,8 @@ export class CountryItemComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.loaderService.Load<WebCountry>(WebTypeEnum.WebCountry, null, false);
+    this.loadListService.SetToLoadList(TVTypeEnum.Country, this.appStateService.UserPreference.CurrentCountryTVItemID, false);
+    this.loaderService.LoadAll();
   }
 
   ngOnDestroy(): void {

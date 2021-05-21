@@ -2766,4 +2766,16 @@
   <data name="WebTypeEnumWebAllSearch" xml:space="preserve">
     <value>WebAllSearch</value>
   </data>
+  <data name="WebTypeEnumWebMonitoringOtherStatsByYearForCountry" xml:space="preserve">
+    <value>WebMonitoringOtherStatsByYearForCountry</value>
+  </data>
+  <data name="WebTypeEnumWebMonitoringOtherStatsByYearForProvince" xml:space="preserve">
+    <value>WebMonitoringOtherStatsByYearForProvince</value>
+  </data>
+  <data name="WebTypeEnumWebMonitoringRoutineStatsByYearForCountry" xml:space="preserve">
+    <value>WebMonitoringRoutiineStatsByYearForCountry</value>
+  </data>
+  <data name="WebTypeEnumWebMonitoringRoutineStatsByYearForProvince" xml:space="preserve">
+    <value>WebMonitoringRoutineStatsByYearForProvince</value>
+  </data>
 </root>

@@ -19,11 +19,9 @@ export class MWQMSiteItemComponent implements OnInit, OnDestroy {
 
   constructor(public appStateService: AppStateService,
     public appLanguageService: AppLanguageService,
-    //private webMWQMSitesService: WebMWQMSitesService
     public loaderService: LoaderService) { }
 
   ngOnInit(): void {
-    //this.loaderService.Load<WebMWQMSites>(WebTypeEnum.WebMWQMSites, null, false);
   }
 
   ngOnDestroy(): void {

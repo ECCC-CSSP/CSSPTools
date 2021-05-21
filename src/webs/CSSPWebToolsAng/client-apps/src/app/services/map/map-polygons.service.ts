@@ -42,7 +42,7 @@ export class MapPolygonsService {
 
           polygonList.push(new google.maps.Polygon(options));
 
-          google.maps.event.addListener(polygonList[polygonList.length - 1], "mousemove", (evt: google.maps.MouseEvent) => {
+          google.maps.event.addListener(polygonList[polygonList?.length - 1], "mousemove", (evt: google.maps.MouseEvent) => {
             if (!this.appStateService.EditMapChanged) {
               (<HTMLInputElement>document.getElementById("CurrentLatLng")).value = (evt.latLng.lat().toString().substring(0, 8) +
                 ' ' + evt.latLng.lng().toString().substring(0, 8));

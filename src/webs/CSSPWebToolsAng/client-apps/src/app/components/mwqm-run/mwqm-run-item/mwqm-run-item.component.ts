@@ -19,12 +19,10 @@ export class MWQMRunItemComponent implements OnInit, OnDestroy {
   
   constructor(public appStateService: AppStateService,
     public appLanguageService: AppLanguageService,
-    //private webMWQMRunsService: WebMWQMRunsService
     public loaderService: LoaderService
     ) { }
 
   ngOnInit(): void {
-    //this.loaderService.Load<WebMWQMRuns>(WebTypeEnum.WebMWQMRuns, null, false);
   }
 
   ngOnDestroy(): void {

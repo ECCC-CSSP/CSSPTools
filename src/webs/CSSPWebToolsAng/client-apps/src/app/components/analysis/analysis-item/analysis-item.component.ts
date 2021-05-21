@@ -11,8 +11,8 @@ import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { AnalysisService } from 'src/app/services/helpers/analysis.service';
 import { DateFormatService } from 'src/app/services/helpers/date-format.service';
+import { StatService } from 'src/app/services/helpers/stat.service';
 import { TogglesService } from 'src/app/services/helpers/toggles.service';
-import { LoaderService } from 'src/app/services/loaders/loader.service';
 import { MapService } from 'src/app/services/map/map.service';
 
 @Component({
@@ -33,16 +33,16 @@ export class AnalysisItemComponent implements OnInit, OnDestroy {
 
   constructor(public appStateService: AppStateService,
     public appLoadedService: AppLoadedService,
-    public togglesService: TogglesService,
     public appLanguageService: AppLanguageService,
+    public statService: StatService,
+    public togglesService: TogglesService,
     public dateFormatService: DateFormatService,
     public mapService: MapService,
-    private loaderService: LoaderService,
     public analysisService: AnalysisService) { }
 
   ngOnInit(): void {
     this.language = <number>this.appLanguageService.Language;
-    this.loaderService.FillStatMWQMSiteList();
+    this.statService.FillStatMWQMSiteList();
   }
 
   ngOnDestroy(): void {

@@ -34,7 +34,7 @@ export class HomeTestComponent implements OnInit, OnDestroy {
     this.appStateService.UserPreference.CurrentSubsectorTVItemID = 635;
     this.appStateService.UserPreference.ShellSubComponent = ShellSubComponentEnum.Subsector;
     this.appStateService.UserPreference.SubsectorSubComponent = SubsectorSubComponentEnum.MWQMSites;
-    this.loaderService.Load<WebMWQMSites>(WebTypeEnum.WebMWQMSites, WebTypeEnum.WebMWQMRuns, false);
+    this.loaderService.Load<WebMWQMSites>(WebTypeEnum.WebMWQMSites, false);
 
   }
 }

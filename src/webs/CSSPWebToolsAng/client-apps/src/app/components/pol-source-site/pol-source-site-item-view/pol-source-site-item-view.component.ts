@@ -20,11 +20,9 @@ export class PolSourceSiteItemViewComponent implements OnInit, OnDestroy {
   constructor(public appStateService: AppStateService,
     public appLanguageService: AppLanguageService,
     public loaderService: LoaderService
-    //private webPolSourceSitesService: WebPolSourceSitesService
     ) { }
 
   ngOnInit(): void {
-    //this.loaderService.Load<WebPolSourceSites>(WebTypeEnum.WebPolSourceSites, null, false);
   }
 
   ngOnDestroy(): void {

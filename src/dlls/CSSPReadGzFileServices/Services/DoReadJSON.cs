@@ -218,6 +218,18 @@ namespace ReadGzFileServices
                                 case WebTypeEnum.WebMikeScenarios:
                                     DoMergeJsonWebMikeScenarios(FromAzureStore as WebMikeScenarios, FromLocal as WebMikeScenarios);
                                     break;
+                                case WebTypeEnum.WebMonitoringOtherStatsByYearForCountry:
+                                    DoMergeJsonWebWebMonitoringOtherStatsByYearForCountry(FromAzureStore as WebMonitoringOtherStatsByYearForCountry, FromLocal as WebMonitoringOtherStatsByYearForCountry);
+                                    break;
+                                case WebTypeEnum.WebMonitoringRoutineStatsByYearForCountry:
+                                    DoMergeJsonWebWebMonitoringRoutineStatsByYearForCountry(FromAzureStore as WebMonitoringRoutineStatsByYearForCountry, FromLocal as WebMonitoringRoutineStatsByYearForCountry);
+                                    break;
+                                case WebTypeEnum.WebMonitoringOtherStatsByYearForProvince:
+                                    DoMergeJsonWebMonitoringOtherStatsByYearForProvince(FromAzureStore as WebMonitoringOtherStatsByYearForProvince, FromLocal as WebMonitoringOtherStatsByYearForProvince);
+                                    break;
+                                case WebTypeEnum.WebMonitoringRoutineStatsByYearForProvince:
+                                    DoMergeJsonWebMonitoringRoutineStatsByYearForProvince(FromAzureStore as WebMonitoringRoutineStatsByYearForProvince, FromLocal as WebMonitoringRoutineStatsByYearForProvince);
+                                    break;
                                 case WebTypeEnum.WebMunicipality:
                                     DoMergeJsonWebMunicipality(FromAzureStore as WebMunicipality, FromLocal as WebMunicipality);
                                     break;

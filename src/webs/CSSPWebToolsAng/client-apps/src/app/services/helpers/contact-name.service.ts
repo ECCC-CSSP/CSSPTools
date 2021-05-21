@@ -31,7 +31,7 @@ export class ContactNameService {
   {
     if (this.loaderService.DataIsLoaded(WebTypeEnum.WebAllContacts)) {
       let contactModelList: ContactModel[] = this.appLoadedService.WebAllContacts.ContactModelList.filter(c => c.Contact != null && c.Contact.ContactTVItemID == LastUpdateContactTVItemID);
-      if (contactModelList != null && contactModelList.length > 0) {
+      if (contactModelList != null && contactModelList?.length > 0) {
         return `${contactModelList[0].Contact.FirstName} ${contactModelList[0].Contact.LastName}`;
       }
       else {

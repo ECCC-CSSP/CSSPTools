@@ -28,6 +28,6 @@
 
     <app-mwqm-run-tvitem-list-detail  *ngIf="appStateService.UserPreference.DetailVisible"
         [TVItemModel]="tvItemModel"
-        [MWQMRunModelSiteAndSampleModel]="loaderService.GetMWQMRunModelSiteAndSampleDetail(tvItemModel)">
+        [MWQMRunModelSiteAndSampleModel]="statService.GetMWQMRunModelSiteAndSampleDetail(tvItemModel)">
     </app-mwqm-run-tvitem-list-detail>
 </mat-list>

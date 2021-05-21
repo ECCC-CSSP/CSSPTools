@@ -3,7 +3,7 @@ import { AscDescEnum, GetAscDescEnum } from 'src/app/enums/generated/AscDescEnum
 import { GetFilesSortPropEnum } from 'src/app/enums/generated/FilesSortPropEnum';
 import { GetSectorSubComponentEnum } from 'src/app/enums/generated/SectorSubComponentEnum';
 import { GetSortOrderAngularEnum } from 'src/app/enums/generated/SortOrderAngularEnum';
-import { GetTVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
+import { GetTVTypeEnum, TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 import { WebTypeEnum } from 'src/app/enums/generated/WebTypeEnum';
 import { WebSector } from 'src/app/models/generated/web/WebSector.model';
 import { AppLanguageService } from 'src/app/services/app-language.service';
@@ -11,6 +11,7 @@ import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { ComponentShowService } from 'src/app/services/helpers/component-show.service';
 import { FilterService } from 'src/app/services/helpers/filter.service';
+import { LoadListService } from 'src/app/services/helpers/loading-list.service';
 import { SortTVItemListService } from 'src/app/services/helpers/sort-tvitem-list.service';
 import { StatCountService } from 'src/app/services/helpers/stat-count.service';
 import { StructureTVFileListService } from 'src/app/services/helpers/structure-tvfile-list.service';
@@ -32,6 +33,7 @@ export class SectorItemComponent implements OnInit, OnDestroy {
     public appLoadedService: AppLoadedService,
     public appLanguageService: AppLanguageService,
     public loaderService: LoaderService,
+    private loadListService: LoadListService,
     public statCountService: StatCountService,
     public sortTVItemListService: SortTVItemListService,
     public filterService: FilterService,
@@ -39,7 +41,8 @@ export class SectorItemComponent implements OnInit, OnDestroy {
     public structureTVFileListService: StructureTVFileListService) { }
 
   ngOnInit(): void {
-    this.loaderService.Load<WebSector>(WebTypeEnum.WebSector, null, false);
+    this.loadListService.SetToLoadList(TVTypeEnum.Sector, this.appStateService.UserPreference.CurrentSectorTVItemID, false);
+    this.loaderService.LoadAll();
   }
 
   ngOnDestroy(): void {

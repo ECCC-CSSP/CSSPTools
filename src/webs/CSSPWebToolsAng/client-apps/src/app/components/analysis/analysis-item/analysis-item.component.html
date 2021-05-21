@@ -282,7 +282,7 @@
                 <h1>{{ appLanguageService.AnalysisInactive[appLanguageService.LangID]
                     }}</h1>
             </td>
-            <td [attr.colspan]="StatMWQMRunList.length">
+            <td [attr.colspan]="StatMWQMRunList?.length">
             </td>
         </tr>
         <ng-container *ngFor="let StatMWQMSite of StatMWQMSiteList">

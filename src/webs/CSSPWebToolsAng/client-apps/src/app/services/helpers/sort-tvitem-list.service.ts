@@ -21,7 +21,7 @@ export class SortTVItemListService {
     }
 
     SortTVItemList(arr: TVItemModel[]): TVItemModel[] {
-        if (typeof (arr) == "undefined" || !arr || arr.length == 0 || arr == null) return [];
+        if (typeof (arr) == "undefined" || !arr || arr?.length == 0 || arr == null) return [];
 
         let TVTypeOfList: TVTypeEnum = arr[0].TVItem.TVType;
         let AscDesc: AscDescEnum = AscDescEnum.Ascending;
@@ -98,7 +98,7 @@ export class SortTVItemListService {
         let arr2: TVItemID_TVText_Sort[] = [];
         let sortable: TVItemID_TVText_Sort[] = [];
 
-        for (let i = 0; i < arr.length; i++) {
+        for (let i = 0; i < arr?.length; i++) {
             sortable.push(<TVItemID_TVText_Sort>{
                 TVItemID: arr[i].TVItem.TVItemID,
                 TVText: arr[i].TVItemLanguageList[this.appLanguageService.LangID].TVText.toLowerCase(),
@@ -112,8 +112,8 @@ export class SortTVItemListService {
             arr2 = sortable.sort(this.predicateDescByService.PredicateDescBy('TVText'));
         }
 
-        for (let i = 0; i < sortable.length; i++) {
-            for (let j = 0; j < arr.length; j++) {
+        for (let i = 0; i < sortable?.length; i++) {
+            for (let j = 0; j < arr?.length; j++) {
                 if (arr2[i].TVItemID == arr[j].TVItem.TVItemID) {
                     tvItemModelSorted.push(arr[j]);
                     break;

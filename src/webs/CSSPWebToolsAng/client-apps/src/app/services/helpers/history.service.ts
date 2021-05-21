@@ -12,7 +12,7 @@ export class HistoryService {
 
     AddHistory(tvItemModel: TVItemModel): void {
         let tvItemModelExist: TVItemModel[] = this.appStateService.UserPreference.History.filter(c => c.TVItem.TVItemID == tvItemModel.TVItem.TVItemID);
-        if (!(tvItemModelExist != undefined && tvItemModelExist.length > 0))
+        if (!(tvItemModelExist != undefined && tvItemModelExist?.length > 0))
         {
             this.appStateService.UserPreference.History.push(tvItemModel);
         }
@@ -20,10 +20,10 @@ export class HistoryService {
 
     RemoveHistory(tvItemModel: TVItemModel): void {
         let tvItemModelExist: TVItemModel[] = this.appStateService.UserPreference.History.filter(c => c == tvItemModel);
-        if (!(tvItemModelExist != undefined && tvItemModelExist.length > 0))
+        if (!(tvItemModelExist != undefined && tvItemModelExist?.length > 0))
         {
             let History: TVItemModel[] = this.appStateService.UserPreference.History;
-            let count: number = History.length;
+            let count: number = History?.length;
             for(let i = 0; i < count; i++)
             {
                 if (History[i] === tvItemModel)

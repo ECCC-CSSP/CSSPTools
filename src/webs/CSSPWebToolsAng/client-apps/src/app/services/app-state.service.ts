@@ -66,6 +66,7 @@ export class AppStateService {
       SectorSubComponent: SectorSubComponentEnum.Subsectors, // Subsectors | Files
       SubsectorSubComponent: SubsectorSubComponentEnum.MWQMSites, // MWQMSites | Analysis | MWQMRuns | PollutionSourceSites | Files | SubsectorTools | LogBook
       MunicipalitySubComponent: MunicipalitySubComponentEnum.Infrastructures, // Infrastructures | MikeScenarios | Contacts | Files
+      CurrentRootTVItemID: 1,
       CurrentCountryTVItemID: 0,
       CurrentProvinceTVItemID: 0,
       CurrentMunicipalityTVItemID: 0,

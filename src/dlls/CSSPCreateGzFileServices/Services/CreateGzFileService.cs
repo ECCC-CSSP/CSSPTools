@@ -145,6 +145,14 @@ namespace CreateGzFileServices
                     return await DoCreateWebSubsectorGzFile(TVItemID); // TVItemID = SubsectorTVItemID
                 case WebTypeEnum.WebTideSites:
                     return await DoCreateWebTideSitesGzFile(TVItemID); // TVItemID = ProvinceTVItemID
+                case WebTypeEnum.WebMonitoringOtherStatsByYearForCountry:
+                    return await DoCreateWebMonitoringOtherStatsByYearForCountryGzFile(TVItemID); // TVItemID = CountryTVItemID
+                case WebTypeEnum.WebMonitoringRoutineStatsByYearForCountry:
+                    return await DoCreateWebMonitoringRoutineStatsByYearForCountryGzFile(TVItemID); // TVItemID = CountryTVItemID
+                case WebTypeEnum.WebMonitoringOtherStatsByYearForProvince:
+                    return await DoCreateWebMonitoringOtherStatsByYearForProvinceGzFile(TVItemID); // TVItemID = ProvinceTVItemID
+                case WebTypeEnum.WebMonitoringRoutineStatsByYearForProvince:
+                    return await DoCreateWebMonitoringRoutineStatsByYearForProvinceGzFile(TVItemID); // TVItemID = ProvinceTVItemID
                 default:
                     return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._NotImplementedYet, $"{ webType }")));
             }

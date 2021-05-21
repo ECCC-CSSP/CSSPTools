@@ -31,17 +31,17 @@ export class StructureTVFileListService {
     let enumIDAndTextList: EnumIDAndText[] = FilePurposeEnum_GetOrderedText(this.appLanguageService);
     let Asc: boolean = true;
 
-    for (let i = 0; i < enumIDAndTextList.length; i++) {
+    for (let i = 0; i < enumIDAndTextList?.length; i++) {
       let tvFileModelList: TVFileModel[] = [];
       let tvFileModelSortedList: TVFileModel[] = [];
-      for (let j = 0; j < TVFileModelList.length; j++) {
+      for (let j = 0; j < TVFileModelList?.length; j++) {
         if (enumIDAndTextList[i].EnumID == TVFileModelList[j].TVFile.FilePurpose) {
           tvFileModelList.push(TVFileModelList[j]);
         }
       }
-      if (tvFileModelList.length > 0) {
+      if (tvFileModelList?.length > 0) {
 
-        for (let k = 0; k < tvFileModelList.length; k++) {
+        for (let k = 0; k < tvFileModelList?.length; k++) {
 
           let TextToSort: string = '';
           let FilesSortProp: FilesSortPropEnum = FilesSortPropEnum.FileName;
@@ -123,8 +123,8 @@ export class StructureTVFileListService {
           arrFile2 = sortable.sort(this.predicateDescByService.PredicateDescBy('TextToSort'));
         }
 
-        for (let k = 0; k < sortable.length; k++) {
-          for (let l = 0; l < tvFileModelList.length; l++) {
+        for (let k = 0; k < sortable?.length; k++) {
+          for (let l = 0; l < tvFileModelList?.length; l++) {
             if (arrFile2[k].TVFileID == tvFileModelList[l].TVFile.TVFileID) {
               tvFileModelSortedList.push(tvFileModelList[l]);
               break;
@@ -142,6 +142,6 @@ export class StructureTVFileListService {
   pad(n: number, width: number, z?: string) {
     z = z || '0';
     let nn = n + '';
-    return nn.length >= width ? nn : new Array(width - nn.length + 1).join(z) + nn;
+    return nn?.length >= width ? nn : new Array(width - nn?.length + 1).join(z) + nn;
   }
 }

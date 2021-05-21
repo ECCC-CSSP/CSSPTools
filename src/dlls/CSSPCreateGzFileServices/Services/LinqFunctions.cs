@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using Microsoft.VisualBasic;
 
 namespace CreateGzFileServices
 {
@@ -44,6 +45,23 @@ namespace CreateGzFileServices
             return await (from c in db.TVItems
                           where c.TVItemID == TVItemID
                           select c).AsNoTracking().FirstOrDefaultAsync();
+        }
+        private async Task<List<TVItemLanguage>> GetTVItemLanguageWithTVItemID(int TVItemID)
+        {
+            if (dbLocal != null)
+            {
+                return await (from c in dbLocal.TVItems
+                              from cl in dbLocal.TVItemLanguages
+                              where c.TVItemID == cl.TVItemID
+                              && c.TVItemID == TVItemID
+                              select cl).AsNoTracking().ToListAsync();
+            }
+
+            return await (from c in db.TVItems
+                          from cl in db.TVItemLanguages
+                          where c.TVItemID == cl.TVItemID
+                          && c.TVItemID == TVItemID
+                          select cl).AsNoTracking().ToListAsync();
         }
         private async Task<List<TVFile>> GetTVFileListWithTVItemID(int TVItemID)
         {
@@ -236,6 +254,163 @@ namespace CreateGzFileServices
                           where c.TVPath.Contains(ParentTVItem.TVPath + "p")
                           && c.TVType == tvType
                           select c).AsNoTracking().ToListAsync();
+        }
+        private async Task<List<MWQMSample>> GetMWQMSampleListUnderSubsector(TVItem subsectorTVItem)
+        {
+            if (dbLocal != null)
+            {
+                return await (from c in dbLocal.TVItems
+                              from s in dbLocal.MWQMSamples
+                              where c.TVItemID == s.MWQMSiteTVItemID
+                              && c.TVType == TVTypeEnum.MWQMSite
+                              && c.TVPath.Contains(subsectorTVItem.TVPath + "p")
+                              select s).AsNoTracking().ToListAsync();
+            }
+
+            return await (from c in db.TVItems
+                          from s in db.MWQMSamples
+                          where c.TVItemID == s.MWQMSiteTVItemID
+                          && c.TVType == TVTypeEnum.MWQMSite
+                          && c.TVPath.Contains(subsectorTVItem.TVPath + "p")
+                          select s).AsNoTracking().ToListAsync();
+        }
+        private int GetMWQMSampleCountOtherUnderCountry(TVItem countryTVItem, int Year)
+        {
+            if (dbLocal != null)
+            {
+                return (from c in dbLocal.TVItems
+                        from s in dbLocal.MWQMSamples
+                        where c.TVItemID == s.MWQMSiteTVItemID
+                        && c.TVType == TVTypeEnum.MWQMSite
+                        && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                        && !s.SampleTypesText.Contains("109,")
+                        && s.SampleDateTime_Local.Year == Year
+                        select s).Count();
+            }
+
+            return (from c in db.TVItems
+                    from s in db.MWQMSamples
+                    where c.TVItemID == s.MWQMSiteTVItemID
+                    && c.TVType == TVTypeEnum.MWQMSite
+                    && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                    && !s.SampleTypesText.Contains("109,")
+                    && s.SampleDateTime_Local.Year == Year
+                    select s).Count();
+        }
+        private int GetMWQMSampleCountRoutineUnderCountry(TVItem countryTVItem, int Year)
+        {
+            if (dbLocal != null)
+            {
+                return (from c in dbLocal.TVItems
+                        from s in dbLocal.MWQMSamples
+                        where c.TVItemID == s.MWQMSiteTVItemID
+                        && c.TVType == TVTypeEnum.MWQMSite
+                        && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                        && s.SampleTypesText.Contains("109,")
+                        && s.SampleDateTime_Local.Year == Year
+                        select s).Count();
+            }
+
+            return (from c in db.TVItems
+                    from s in db.MWQMSamples
+                    where c.TVItemID == s.MWQMSiteTVItemID
+                    && c.TVType == TVTypeEnum.MWQMSite
+                    && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                    && s.SampleTypesText.Contains("109,")
+                    && s.SampleDateTime_Local.Year == Year
+                    select s).Count();
+        }
+        private int GetMWQMSiteCountOtherUnderCountry(TVItem countryTVItem, int Year)
+        {
+            if (dbLocal != null)
+            {
+                return (from c in dbLocal.TVItems
+                        from s in dbLocal.MWQMSamples
+                        where c.TVItemID == s.MWQMSiteTVItemID
+                        && c.TVType == TVTypeEnum.MWQMSite
+                        && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                        && !s.SampleTypesText.Contains("109,")
+                        && s.SampleDateTime_Local.Year == Year
+                        select s.MWQMSiteTVItemID).Distinct().Count();
+            }
+
+            return (from c in db.TVItems
+                    from s in db.MWQMSamples
+                    where c.TVItemID == s.MWQMSiteTVItemID
+                    && c.TVType == TVTypeEnum.MWQMSite
+                    && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                    && !s.SampleTypesText.Contains("109,")
+                    && s.SampleDateTime_Local.Year == Year
+                    select s.MWQMSiteTVItemID).Distinct().Count();
+        }
+        private int GetMWQMSiteCountRoutineUnderCountry(TVItem countryTVItem, int Year)
+        {
+            if (dbLocal != null)
+            {
+                return (from c in dbLocal.TVItems
+                        from s in dbLocal.MWQMSamples
+                        where c.TVItemID == s.MWQMSiteTVItemID
+                        && c.TVType == TVTypeEnum.MWQMSite
+                        && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                        && s.SampleTypesText.Contains("109,")
+                        && s.SampleDateTime_Local.Year == Year
+                        select s.MWQMSiteTVItemID).Distinct().Count();
+            }
+
+            return (from c in db.TVItems
+                    from s in db.MWQMSamples
+                    where c.TVItemID == s.MWQMSiteTVItemID
+                    && c.TVType == TVTypeEnum.MWQMSite
+                    && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                    && s.SampleTypesText.Contains("109,")
+                    && s.SampleDateTime_Local.Year == Year
+                    select s.MWQMSiteTVItemID).Distinct().Count();
+        }
+        private int GetMWQMRunCountOtherUnderCountry(TVItem countryTVItem, int Year)
+        {
+            if (dbLocal != null)
+            {
+                return (from c in dbLocal.TVItems
+                        from s in dbLocal.MWQMSamples
+                        where c.TVItemID == s.MWQMSiteTVItemID
+                        && c.TVType == TVTypeEnum.MWQMSite
+                        && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                        && !s.SampleTypesText.Contains("109,")
+                        && s.SampleDateTime_Local.Year == Year
+                        select s.MWQMRunTVItemID).Distinct().Count();
+            }
+
+            return (from c in db.TVItems
+                    from s in db.MWQMSamples
+                    where c.TVItemID == s.MWQMSiteTVItemID
+                    && c.TVType == TVTypeEnum.MWQMSite
+                    && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                    && !s.SampleTypesText.Contains("109,")
+                    && s.SampleDateTime_Local.Year == Year
+                    select s.MWQMRunTVItemID).Distinct().Count();
+        }
+        private int GetMWQMRunCountRoutineUnderCountry(TVItem countryTVItem, int Year)
+        {
+            if (dbLocal != null)
+            {
+                return (from c in dbLocal.TVItems
+                        from s in dbLocal.MWQMSamples
+                        where c.TVItemID == s.MWQMSiteTVItemID
+                        && c.TVType == TVTypeEnum.MWQMSite
+                        && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                        && s.SampleTypesText.Contains("109,")
+                        && s.SampleDateTime_Local.Year == Year
+                        select s.MWQMRunTVItemID).Distinct().Count();
+            }
+
+            return (from c in db.TVItems
+                    from s in db.MWQMSamples
+                    where c.TVItemID == s.MWQMSiteTVItemID
+                    && c.TVType == TVTypeEnum.MWQMSite
+                    && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                    && s.SampleTypesText.Contains("109,")
+                    && s.SampleDateTime_Local.Year == Year
+                    select s.MWQMRunTVItemID).Distinct().Count();
         }
         private async Task<List<TVItemLanguage>> GetTVItemLanguageChildrenListWithTVItemID(TVItem ParentTVItem, TVTypeEnum tvType)
         {
@@ -2061,13 +2236,13 @@ namespace CreateGzFileServices
             }
 
             List<int> TVItemIDList2 = await (from c in db.TVItems
-                                            where c.TVType == TVTypeEnum.Country
-                                            || c.TVType == TVTypeEnum.Province
-                                            || c.TVType == TVTypeEnum.Area
-                                            || c.TVType == TVTypeEnum.Sector
-                                            || c.TVType == TVTypeEnum.Subsector
-                                            || c.TVType == TVTypeEnum.Municipality
-                                            select c.TVItemID).ToListAsync();
+                                             where c.TVType == TVTypeEnum.Country
+                                             || c.TVType == TVTypeEnum.Province
+                                             || c.TVType == TVTypeEnum.Area
+                                             || c.TVType == TVTypeEnum.Sector
+                                             || c.TVType == TVTypeEnum.Subsector
+                                             || c.TVType == TVTypeEnum.Municipality
+                                             select c.TVItemID).ToListAsync();
 
 
             return await (from cl in db.TVItemLanguages

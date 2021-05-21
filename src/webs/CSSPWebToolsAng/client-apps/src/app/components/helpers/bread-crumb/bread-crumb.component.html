@@ -1,5 +1,5 @@
 <button mat-button *ngFor="let tvItemModel of appLoadedService.BreadCrumbTVItemModelList; let i = index"
-    [ngClass]="(appLoadedService.BreadCrumbTVItemModelList.length - 1 == i) ? 'selected' : ''"
+    [ngClass]="(appLoadedService.BreadCrumbTVItemModelList?.length - 1 == i) ? 'selected' : ''"
     (click)="subPageService.SetSubPage(tvItemModel)">
     <span [ngClass]="tvItemModel?.TVItem?.IsActive ? '' : 'inactive'">
         <span *ngIf="appStateService.UserPreference.DetailVisible">

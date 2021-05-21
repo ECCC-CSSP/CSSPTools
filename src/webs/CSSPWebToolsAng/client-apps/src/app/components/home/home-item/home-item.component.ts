@@ -6,8 +6,9 @@ import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { LoggedInContactService } from 'src/app/services/loaders/logged-in-contact.service';
 import { LoaderService } from 'src/app/services/loaders/loader.service';
+import { LoadListService } from 'src/app/services/helpers/loading-list.service';
+import { LoadModel } from 'src/app/models/generated/web/LoadModel.model';
 import { WebTypeEnum } from 'src/app/enums/generated/WebTypeEnum';
-import { WebAllAddresses } from 'src/app/models/generated/web/WebAllAddresses.model';
 
 @Component({
   selector: 'app-home-item',
@@ -23,12 +24,14 @@ export class HomeItemComponent implements OnInit, OnDestroy {
     public appStateService: AppStateService,
     public appLanguageService: AppLanguageService,
     private loaderService: LoaderService,
-    public loggedInContactService: LoggedInContactService,
+    private loggedInContactService: LoggedInContactService,
+    private loadListService: LoadListService,
   ) { }
 
   ngOnInit(): void {
     this.loggedInContactService.DoLoggedInContact(false);
-    this.loaderService.Load<WebAllAddresses>(WebTypeEnum.WebAllAddresses, WebTypeEnum.WebAllContacts, false);
+    this.loadListService.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebAllContacts, TVItemID: this.appStateService.UserPreference.CurrentRootTVItemID, ForceReload: false });
+    this.loaderService.LoadAll();
   }
 
   ngOnDestroy(): void {

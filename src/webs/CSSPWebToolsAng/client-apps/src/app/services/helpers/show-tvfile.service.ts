@@ -21,7 +21,7 @@ export class ShowTVFileService {
 
     TVFileVisible(tvFileModel: TVFileModel): boolean {
         let tvFileModelExist: TVFileModel[] = this.appStateService.ShowTVFileModelList.filter(c => c == tvFileModel);
-        if (tvFileModelExist != undefined && tvFileModelExist.length > 0) {
+        if (tvFileModelExist != undefined && tvFileModelExist?.length > 0) {
             return true;
         }
 
@@ -30,16 +30,16 @@ export class ShowTVFileService {
 
     private AddShowTVFile(tvFileModel: TVFileModel): void {
         let tvFileModelExist: TVFileModel[] = this.appStateService.ShowTVFileModelList.filter(c => c.TVFile.TVFileID == tvFileModel.TVFile.TVFileID);
-        if (!(tvFileModelExist != undefined && tvFileModelExist.length > 0)) {
+        if (!(tvFileModelExist != undefined && tvFileModelExist?.length > 0)) {
             this.appStateService.ShowTVFileModelList.push(tvFileModel);
         }
     }
 
     private RemoveShowTVFile(tvFileModel: TVFileModel): void {
         let tvFileModelExist: TVFileModel[] = this.appStateService.ShowTVFileModelList.filter(c => c == tvFileModel);
-        if ((tvFileModelExist != undefined && tvFileModelExist.length > 0)) {
+        if ((tvFileModelExist != undefined && tvFileModelExist?.length > 0)) {
             let ShowNewTVFileModelList: TVFileModel[] = this.appStateService.ShowTVFileModelList;
-            let count: number = ShowNewTVFileModelList.length;
+            let count: number = ShowNewTVFileModelList?.length;
             for (let i = 0; i < count; i++) {
                 if (ShowNewTVFileModelList[i] === tvFileModel) {
                     ShowNewTVFileModelList.splice(i, 1);

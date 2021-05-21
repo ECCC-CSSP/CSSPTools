@@ -1,5 +1,5 @@
 <div *ngFor="let TVFileModelList of TVFileModelListList">
-    <div *ngIf="TVFileModelList != null && TVFileModelList.length > 0">
+    <div *ngIf="TVFileModelList != null && TVFileModelList?.length > 0">
         <mat-nav-list *ngFor="let tvFileModel of TVFileModelList; let i = index">
             <h2 class="file-purpose" *ngIf="i == 0">{{ GetFilePurposeEnum_GetIDText(tvFileModel?.TVFile?.FilePurpose) }}
             </h2>

@@ -65,37 +65,37 @@ export class TogglesService {
         switch (this.appStateService.UserPreference.ShellSubComponent) {
             case ShellSubComponentEnum.Area:
                 {
-                    this.loaderService.Load<WebArea>(WebTypeEnum.WebArea, null, false);
+                    this.loaderService.Load<WebArea>(WebTypeEnum.WebArea, false);
                 }
                 break;
             case ShellSubComponentEnum.Country:
                 {
-                    this.loaderService.Load<WebCountry>(WebTypeEnum.WebCountry, null, false);
+                    this.loaderService.Load<WebCountry>(WebTypeEnum.WebCountry, false);
                 }
                 break;
             case ShellSubComponentEnum.Municipality:
                 {
-                    this.loaderService.Load<WebMunicipality>(WebTypeEnum.WebMunicipality, null, false);
+                    this.loaderService.Load<WebMunicipality>(WebTypeEnum.WebMunicipality, false);
                 }
                 break;
             case ShellSubComponentEnum.Province:
                 {
-                    this.loaderService.Load<WebProvince>(WebTypeEnum.WebProvince, null, false);
+                    this.loaderService.Load<WebProvince>(WebTypeEnum.WebProvince, false);
                 }
                 break;
             case ShellSubComponentEnum.Root:
                 {
-                    this.loaderService.Load<WebRoot>(WebTypeEnum.WebRoot, null, false);
+                    this.loaderService.Load<WebRoot>(WebTypeEnum.WebRoot, false);
                 }
                 break;
             case ShellSubComponentEnum.Sector:
                 {
-                    this.loaderService.Load<WebSector>(WebTypeEnum.WebSector, null, false);
+                    this.loaderService.Load<WebSector>(WebTypeEnum.WebSector, false);
                 }
                 break;
             case ShellSubComponentEnum.Subsector:
                 {
-                    this.loaderService.Load<WebSubsector>(WebTypeEnum.WebSubsector, null, false);
+                    this.loaderService.Load<WebSubsector>(WebTypeEnum.WebSubsector, false);
                 }
                 break;
             default:

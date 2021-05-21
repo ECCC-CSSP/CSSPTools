@@ -21,7 +21,7 @@ export class ShowTVItemService {
 
     TVItemVisible(tvItemModel: TVItemModel): boolean {
         let tvItemModelExist: TVItemModel[] = this.appStateService.ShowTVItemModelList.filter(c => c == tvItemModel);
-        if (tvItemModelExist != undefined && tvItemModelExist.length > 0) {
+        if (tvItemModelExist != undefined && tvItemModelExist?.length > 0) {
             return true;
         }
 
@@ -30,16 +30,16 @@ export class ShowTVItemService {
 
     private AddShowTVItem(tvItemModel: TVItemModel): void {
         let tvItemModelExist: TVItemModel[] = this.appStateService.ShowTVItemModelList.filter(c => c.TVItem.TVItemID == tvItemModel.TVItem.TVItemID);
-        if (!(tvItemModelExist != undefined && tvItemModelExist.length > 0)) {
+        if (!(tvItemModelExist != undefined && tvItemModelExist?.length > 0)) {
             this.appStateService.ShowTVItemModelList.push(tvItemModel);
         }
     }
 
     private RemoveShowTVItem(tvItemModel: TVItemModel): void {
         let tvItemModelExist: TVItemModel[] = this.appStateService.ShowTVItemModelList.filter(c => c == tvItemModel);
-        if ((tvItemModelExist != undefined && tvItemModelExist.length > 0)) {
+        if ((tvItemModelExist != undefined && tvItemModelExist?.length > 0)) {
             let ShowNewTVItemModelList: TVItemModel[] = this.appStateService.ShowTVItemModelList;
-            let count: number = ShowNewTVItemModelList.length;
+            let count: number = ShowNewTVItemModelList?.length;
             for (let i = 0; i < count; i++) {
                 if (ShowNewTVItemModelList[i] === tvItemModel) {
                     ShowNewTVItemModelList.splice(i, 1);

@@ -57,6 +57,7 @@ namespace CSSPWebModels
         public SubsectorSubComponentEnum SubsectorSubComponent { get; set; }
         [CSSPEnumType]
         public MunicipalitySubComponentEnum MunicipalitySubComponent { get; set; }
+        public int CurrentRootTVItemID { get; set; }
         public int CurrentCountryTVItemID { get; set; }
         public int CurrentProvinceTVItemID { get; set; }
         public int CurrentMunicipalityTVItemID { get; set; }

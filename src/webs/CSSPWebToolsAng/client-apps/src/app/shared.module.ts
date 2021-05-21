@@ -96,6 +96,7 @@ import { HomeTestComponent } from './components/home/home-test/home-test.compone
 import { ChartFCSalTempComponent } from './components/chart/chart-fc-sal-temp/chart-fc-sal-temp.component';
 import { ChartFCStatComponent } from './components/chart/chart-fc-stat/chart-fc-stat.component';
 import { TableFCStatComponent } from './components/table/table-fc-stat/table-fc-stat.component';
+import { TableRunDataComponent } from './components/table/table-run-data/table-run-data.component';
 
 @NgModule({
   declarations: [
@@ -190,6 +191,7 @@ import { TableFCStatComponent } from './components/table/table-fc-stat/table-fc-
     SubsectorTVItemListItemComponent,
     SubsectorToolsItemComponent,
     TableFCStatComponent,
+    TableRunDataComponent,
     TVFileMenuComponent,
     TVItemMenuComponent
   ],
@@ -298,6 +300,7 @@ import { TableFCStatComponent } from './components/table/table-fc-stat/table-fc-
     SubsectorTVItemListItemComponent,
     SubsectorToolsItemComponent,
     TableFCStatComponent,
+    TableRunDataComponent,
     TVFileMenuComponent,
     TVItemMenuComponent
   ]

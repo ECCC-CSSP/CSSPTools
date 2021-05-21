@@ -58,6 +58,7 @@ export class UserPreferenceModel {
     CurrentCountryTVItemID: number;
     CurrentMunicipalityTVItemID: number;
     CurrentProvinceTVItemID: number;
+    CurrentRootTVItemID: number;
     CurrentSectorTVItemID: number;
     CurrentSubsectorTVItemID: number;
     DetailVisible: boolean;

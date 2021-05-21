@@ -44,15 +44,15 @@ export class MapMarkersService {
           let fillColor: string = this.mapHelperService.GetMapMarkerColor(mapInfoModel.MapInfo.TVType);
 
           if (label.text) {
-            if (label.text.length < 6) {
-              path = this.appStateService.MapMarkerPathCharacters[label.text.length];
+            if (label.text?.length < 6) {
+              path = this.appStateService.MapMarkerPathCharacters[label.text?.length];
             }
           }
 
           // if (this.appStateService.UserPreference.SubsectorSubComponent == SubsectorSubComponentEnum.MWQMSites) {
           //   let statMWQMSiteList: StatMWQMSite[] = this.appLoadedService.StatMWQMSiteList?.filter(c => c.TVItemModel.TVItem.TVItemID == tvItemModel.TVItem.TVItemID);
 
-          //   if (statMWQMSiteList && statMWQMSiteList.length > 0) {
+          //   if (statMWQMSiteList && statMWQMSiteList?.length > 0) {
           //     strokeColor = statMWQMSiteList[0]?.StatMWQMSiteSampleList[0]?.ColorAndLetter?.hexColor;
           //     fillColor = statMWQMSiteList[0]?.StatMWQMSiteSampleList[0]?.ColorAndLetter?.hexColor;
           //     label.text = `${label.text} ${statMWQMSiteList[0]?.StatMWQMSiteSampleList[0]?.ColorAndLetter?.letter}`;

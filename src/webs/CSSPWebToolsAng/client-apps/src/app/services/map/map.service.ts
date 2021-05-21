@@ -111,7 +111,7 @@ export class MapService {
 
     let CurrentPoint: google.maps.LatLng;
 
-    length = tvItemModel.MapInfoModelList.length;
+    length = tvItemModel.MapInfoModelList?.length;
     for (let i = 0; i < length; i++) {
       if (tvItemModel.MapInfoModelList[i].MapInfo.MapInfoDrawType == MapInfoDrawTypeEnum.Point) {
         CurrentPoint = new google.maps.LatLng(tvItemModel.MapInfoModelList[i].MapInfoPointList[0].Lat, tvItemModel.MapInfoModelList[i].MapInfoPointList[0].Lng);

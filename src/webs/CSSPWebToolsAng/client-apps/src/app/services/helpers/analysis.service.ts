@@ -9,6 +9,7 @@ import { StatMWQMSite } from 'src/app/models/generated/web/StatMWQMSite.model';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { AppLanguageService } from '../app-language.service';
 import { LoaderService } from '../loaders/loader.service';
+import { StatService } from './stat.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,8 @@ export class AnalysisService {
 
   constructor(private appStateService: AppStateService,
     private appLanguageService: AppLanguageService,
-    private loaderService: LoaderService
+    private loaderService: LoaderService,
+    private statService: StatService,
     ) { }
 
 
@@ -109,7 +111,7 @@ export class AnalysisService {
 
   ToggleRemoveFromStat(statEndMWQMRun: StatMWQMRun) {
     statEndMWQMRun.RemoveFromStat = !statEndMWQMRun.RemoveFromStat;
-    this.loaderService.FillStatMWQMSiteList();
+    this.statService.FillStatMWQMSiteList();
   }
 
   ToggleAnalysisFullYear(): void {
@@ -193,27 +195,27 @@ export class AnalysisService {
 
   SetStartRun(statStartMWQMRun: StatMWQMRun) {
     this.appStateService.AnalysisStartRun = statStartMWQMRun;
-    this.loaderService.FillStatMWQMSiteList();
+    this.statService.FillStatMWQMSiteList();
   }
 
   SetEndRun(statEndMWQMRun: StatMWQMRun) {
     this.appStateService.AnalysisEndRun = statEndMWQMRun;
-    this.loaderService.FillStatMWQMSiteList();
+    this.statService.FillStatMWQMSiteList();
   }
 
   SetRuns(runs: number) {
     this.appStateService.UserPreference.AnalysisRuns = runs;
-    this.loaderService.FillStatMWQMSiteList();
+    this.statService.FillStatMWQMSiteList();
   }
 
   SetCalculationType(statCalculationType: AnalysisCalculationTypeEnum) {
     this.appStateService.UserPreference.AnalysisCalculationType = statCalculationType;
-    this.loaderService.FillStatMWQMSiteList();
+    this.statService.FillStatMWQMSiteList();
   }
 
   SetHighlightSalFromAverage(sal: number) {
     this.appStateService.UserPreference.AnalysisHighlightSalFromAverage = sal;
-    this.loaderService.FillStatMWQMSiteList();
+    this.statService.FillStatMWQMSiteList();
   }
 
   // SetShortRange(shortRange: number) {
@@ -226,42 +228,42 @@ export class AnalysisService {
 
   SetDry24h(dry24h: number) {
     this.appStateService.UserPreference.AnalysisDry24h = dry24h;
-    this.loaderService.FillStatMWQMSiteList();
+    this.statService.FillStatMWQMSiteList();
   }
 
   SetDry48h(dry48h: number) {
-    this.loaderService.FillStatMWQMSiteList();
     this.appStateService.UserPreference.AnalysisDry48h = dry48h;
+    this.statService.FillStatMWQMSiteList();
   }
 
   SetDry72h(dry72h: number) {
-    this.loaderService.FillStatMWQMSiteList();
     this.appStateService.UserPreference.AnalysisDry72h = dry72h;
+    this.statService.FillStatMWQMSiteList();
   }
 
   SetDry96h(dry96h: number) {
-    this.loaderService.FillStatMWQMSiteList();
     this.appStateService.UserPreference.AnalysisDry96h = dry96h;
+    this.statService.FillStatMWQMSiteList();
   }
 
   SetWet24h(wet24h: number) {
     this.appStateService.UserPreference.AnalysisWet24h = wet24h;
-    this.loaderService.FillStatMWQMSiteList();
+    this.statService.FillStatMWQMSiteList();
   }
 
   SetWet48h(wet48h: number) {
     this.appStateService.UserPreference.AnalysisWet48h = wet48h;
-    this.loaderService.FillStatMWQMSiteList();
+    this.statService.FillStatMWQMSiteList();
   }
 
   SetWet72h(wet72h: number) {
     this.appStateService.UserPreference.AnalysisWet72h = wet72h;
-    this.loaderService.FillStatMWQMSiteList();
+    this.statService.FillStatMWQMSiteList();
   }
 
   SetWet96h(wet96h: number) {
     this.appStateService.UserPreference.AnalysisWet96h = wet96h;
-    this.loaderService.FillStatMWQMSiteList();
+    this.statService.FillStatMWQMSiteList();
   }
 
 }

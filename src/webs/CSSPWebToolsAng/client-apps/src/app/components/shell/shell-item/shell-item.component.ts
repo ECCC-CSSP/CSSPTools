@@ -51,32 +51,32 @@ export class ShellItemComponent implements OnInit, OnDestroy {
 
   NavigateTo(tvItemModel: TVItemModel) {
     if (tvItemModel.TVItem.TVType == TVTypeEnum.Area) {
-      this.loaderService.Load<WebArea>(WebTypeEnum.WebArea, null, false);
+      this.loaderService.Load<WebArea>(WebTypeEnum.WebArea, false);
       this.appStateService.UserPreference.ShellSubComponent = ShellSubComponentEnum.Area
       this.appStateService.UserPreference.CurrentAreaTVItemID = tvItemModel.TVItem.TVItemID;
     }
     else if (tvItemModel.TVItem.TVType == TVTypeEnum.Country) {
-      this.loaderService.Load<WebCountry>(WebTypeEnum.WebCountry, null, false);
+      this.loaderService.Load<WebCountry>(WebTypeEnum.WebCountry, false);
       this.appStateService.UserPreference.ShellSubComponent = ShellSubComponentEnum.Country
       this.appStateService.UserPreference.CurrentCountryTVItemID = tvItemModel.TVItem.TVItemID;
     }
     else if (tvItemModel.TVItem.TVType == TVTypeEnum.Municipality) {
-      this.loaderService.Load<WebMunicipality>(WebTypeEnum.WebMunicipality, WebTypeEnum.WebMikeScenarios, false);
+      this.loaderService.Load<WebMunicipality>(WebTypeEnum.WebMunicipality, false);
       this.appStateService.UserPreference.ShellSubComponent = ShellSubComponentEnum.Municipality
       this.appStateService.UserPreference.CurrentMunicipalityTVItemID = tvItemModel.TVItem.TVItemID;
     }
     else if (tvItemModel.TVItem.TVType == TVTypeEnum.Province) {
-      this.loaderService.Load<WebProvince>(WebTypeEnum.WebProvince, WebTypeEnum.WebClimateSites, false);
+      this.loaderService.Load<WebProvince>(WebTypeEnum.WebProvince, false);
       this.appStateService.UserPreference.ShellSubComponent = ShellSubComponentEnum.Province
       this.appStateService.UserPreference.CurrentProvinceTVItemID = tvItemModel.TVItem.TVItemID;
     }
     else if (tvItemModel.TVItem.TVType == TVTypeEnum.Sector) {
-      this.loaderService.Load<WebSector>(WebTypeEnum.WebSector, null, false);
+      this.loaderService.Load<WebSector>(WebTypeEnum.WebSector, false);
       this.appStateService.UserPreference.ShellSubComponent = ShellSubComponentEnum.Sector
       this.appStateService.UserPreference.CurrentSectorTVItemID = tvItemModel.TVItem.TVItemID;
     }
     else if (tvItemModel.TVItem.TVType == TVTypeEnum.Subsector) {
-      this.loaderService.Load<WebSubsector>(WebTypeEnum.WebSubsector, WebTypeEnum.WebMWQMSites, false);
+      this.loaderService.Load<WebSubsector>(WebTypeEnum.WebSubsector, false);
       this.appStateService.UserPreference.ShellSubComponent = ShellSubComponentEnum.Subsector
       this.appStateService.UserPreference.CurrentSubsectorTVItemID = tvItemModel.TVItem.TVItemID;
     }

@@ -172,6 +172,9 @@ export class AppLanguageService {
   MunicipalityWithInfrastructure: string[] = ['Municipality with infrastructure', 'Municipalité avec infrastructure'];
   MunicipalityWithoutInfrastructure: string[] = ['Municipality without infrastructure', 'Municipality sans infrastructure'];
 
+  MWQMSiteName: string[] = ['MWQM site', 'Site SQEM'];
+  MWQMSiteNameTitle: string[] = ['Name of marine water quality monitoring site', 'Nom du site surveillance de qualité d\'eau marine'];
+  
   Next: string[] = ['Next', 'Prochain'];
 
   SortBy: string[] = ['Sort by', 'Trier par'];
@@ -188,6 +191,9 @@ export class AppLanguageService {
 
   PPTInit: string[] = ['ppt', 'ppm'];
   PPTInitTitle: string[] = ['Salinity in parts per thousand (ppt)', 'Salinité en parties pour mille (ppm)'];
+
+  ProcessedBy: string[] = ['Processed by', 'Traité par'];
+  ProcessedByTitle: string[] = ['Processed by', 'Traité par'];
 
   ProvinceShowAreas: string[] = ['Show areas', 'Montrer areas'];
   ProvinceAreas: string[] = ['Areas', 'Régions'];
@@ -211,6 +217,12 @@ export class AppLanguageService {
 
   SampleDate: string[] = ['Sample Date', 'Date d\'échantillonnage'];
   SampleDateTitle: string[] = ['The date the sample was taken', 'La date à laquelle l\'échantillon a été prélevé'];
+
+  SampleNote: string[] = ['Sample note', 'Remarque d\'échantillon'];
+  SampleNoteTitle: string[] = ['Sample note', 'Remarque d\'échantillon'];
+
+  SampleTypes: string[] = ['Sample types', 'Type d\'échantillons'];
+  SampleTypesTitle: string[] = ['Sample types', 'Type d\'échantillons'];
 
   Saving: string[] = ['Saving', 'Sauvegarde'];
 

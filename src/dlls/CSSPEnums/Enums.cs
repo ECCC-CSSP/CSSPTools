@@ -1231,6 +1231,10 @@ namespace CSSPEnums
         WebSector = 30,
         WebSubsector = 31,
         WebTideSites = 32,
+        WebMonitoringRoutineStatsByYearForCountry = 33,
+        WebMonitoringOtherStatsByYearForCountry = 34,
+        WebMonitoringRoutineStatsByYearForProvince = 35,
+        WebMonitoringOtherStatsByYearForProvince = 36,
     }
     public enum WebTideDataSetEnum
     {

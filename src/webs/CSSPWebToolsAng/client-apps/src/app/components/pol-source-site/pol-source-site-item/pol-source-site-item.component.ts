@@ -19,11 +19,9 @@ export class PolSourceSiteItemComponent implements OnInit, OnDestroy {
   
   constructor(public appStateService: AppStateService,
     public appLanguageService: AppLanguageService,
-    //private webPolSourceSitesService: WebPolSourceSitesService
     public loaderService: LoaderService) { }
 
   ngOnInit(): void {
-    //this.loaderService.Load<WebPolSourceSites>(WebTypeEnum.WebPolSourceSites, null, false);
   }
 
   ngOnDestroy(): void {

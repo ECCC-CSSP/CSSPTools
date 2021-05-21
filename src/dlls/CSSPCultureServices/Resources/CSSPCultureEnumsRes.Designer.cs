@@ -9417,6 +9417,42 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to WebMonitoringOtherStatsByYearForCountry.
+        /// </summary>
+        public static string WebTypeEnumWebMonitoringOtherStatsByYearForCountry {
+            get {
+                return ResourceManager.GetString("WebTypeEnumWebMonitoringOtherStatsByYearForCountry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebMonitoringOtherStatsByYearForProvince.
+        /// </summary>
+        public static string WebTypeEnumWebMonitoringOtherStatsByYearForProvince {
+            get {
+                return ResourceManager.GetString("WebTypeEnumWebMonitoringOtherStatsByYearForProvince", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebMonitoringRoutiineStatsByYearForCountry.
+        /// </summary>
+        public static string WebTypeEnumWebMonitoringRoutineStatsByYearForCountry {
+            get {
+                return ResourceManager.GetString("WebTypeEnumWebMonitoringRoutineStatsByYearForCountry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebMonitoringRoutineStatsByYearForProvince.
+        /// </summary>
+        public static string WebTypeEnumWebMonitoringRoutineStatsByYearForProvince {
+            get {
+                return ResourceManager.GetString("WebTypeEnumWebMonitoringRoutineStatsByYearForProvince", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to WebMunicipalities.
         /// </summary>
         public static string WebTypeEnumWebMunicipalities {

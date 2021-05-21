@@ -44,7 +44,7 @@
 
     function isObjectEmpty(obj) {
         if (Object.getOwnPropertyNames) {
-            return Object.getOwnPropertyNames(obj).length === 0;
+            return Object.getOwnPropertyNames(obj)?.length === 0;
         } else {
             var k;
             for (k in obj) {
@@ -77,7 +77,7 @@
     function map(arr, fn) {
         var res = [],
             i;
-        for (i = 0; i < arr.length; ++i) {
+        for (i = 0; i < arr?.length; ++i) {
             res.push(fn(arr[i], i));
         }
         return res;
@@ -140,7 +140,7 @@
     } else {
         some = function (fun) {
             var t = Object(this),
-                len = t.length >>> 0,
+                len = t?.length >>> 0,
                 i;
 
             for (i = 0; i < len; i++) {
@@ -176,7 +176,7 @@
                 isNowValid =
                     isNowValid &&
                     flags.charsLeftOver === 0 &&
-                    flags.unusedTokens.length === 0 &&
+                    flags.unusedTokens?.length === 0 &&
                     flags.bigHour === undefined;
             }
 
@@ -239,8 +239,8 @@
             to._locale = from._locale;
         }
 
-        if (momentProperties.length > 0) {
-            for (i = 0; i < momentProperties.length; i++) {
+        if (momentProperties?.length > 0) {
+            for (i = 0; i < momentProperties?.length; i++) {
                 prop = momentProperties[i];
                 val = from[prop];
                 if (!isUndefined(val)) {
@@ -296,7 +296,7 @@
                     arg,
                     i,
                     key;
-                for (i = 0; i < arguments.length; i++) {
+                for (i = 0; i < arguments?.length; i++) {
                     arg = '';
                     if (typeof arguments[i] === 'object') {
                         arg += '\n[' + i + '] ';
@@ -437,7 +437,7 @@
 
     function zeroFill(number, targetLength, forceSign) {
         var absNumber = '' + Math.abs(number),
-            zerosToFill = targetLength - absNumber.length,
+            zerosToFill = targetLength - absNumber?.length,
             sign = number >= 0;
         return (
             (sign ? (forceSign ? '+' : '') : '-') +
@@ -492,7 +492,7 @@
             i,
             length;
 
-        for (i = 0, length = array.length; i < length; i++) {
+        for (i = 0, length = array?.length; i < length; i++) {
             if (formatTokenFunctions[array[i]]) {
                 array[i] = formatTokenFunctions[array[i]];
             } else {
@@ -751,7 +751,7 @@
             units = normalizeObjectUnits(units);
             var prioritized = getPrioritizedUnits(units),
                 i;
-            for (i = 0; i < prioritized.length; i++) {
+            for (i = 0; i < prioritized?.length; i++) {
                 this[prioritized[i].unit](units[prioritized[i].unit]);
             }
         } else {
@@ -836,7 +836,7 @@
                 array[callback] = toInt(input);
             };
         }
-        for (i = 0; i < token.length; i++) {
+        for (i = 0; i < token?.length; i++) {
             tokens[token[i]] = func;
         }
     }
@@ -876,7 +876,7 @@
         indexOf = function (o) {
             // I know
             var i;
-            for (i = 0; i < this.length; ++i) {
+            for (i = 0; i < this?.length; ++i) {
                 if (this[i] === o) {
                     return i;
                 }
@@ -1168,7 +1168,7 @@
 
     function computeMonthsParse() {
         function cmpLenRev(a, b) {
-            return b.length - a.length;
+            return b?.length - a?.length;
         }
 
         var shortPieces = [],
@@ -1243,7 +1243,7 @@
     addParseToken(['YYYYY', 'YYYYYY'], YEAR);
     addParseToken('YYYY', function (input, array) {
         array[YEAR] =
-            input.length === 2 ? hooks.parseTwoDigitYear(input) : toInt(input);
+            input?.length === 2 ? hooks.parseTwoDigitYear(input) : toInt(input);
     });
     addParseToken('YY', function (input, array) {
         array[YEAR] = hooks.parseTwoDigitYear(input);
@@ -1808,7 +1808,7 @@
 
     function computeWeekdaysParse() {
         function cmpLenRev(a, b) {
-            return b.length - a.length;
+            return b?.length - a?.length;
         }
 
         var minPieces = [],
@@ -1952,27 +1952,27 @@
         getParsingFlags(config).bigHour = true;
     });
     addParseToken('hmm', function (input, array, config) {
-        var pos = input.length - 2;
+        var pos = input?.length - 2;
         array[HOUR] = toInt(input.substr(0, pos));
         array[MINUTE] = toInt(input.substr(pos));
         getParsingFlags(config).bigHour = true;
     });
     addParseToken('hmmss', function (input, array, config) {
-        var pos1 = input.length - 4,
-            pos2 = input.length - 2;
+        var pos1 = input?.length - 4,
+            pos2 = input?.length - 2;
         array[HOUR] = toInt(input.substr(0, pos1));
         array[MINUTE] = toInt(input.substr(pos1, 2));
         array[SECOND] = toInt(input.substr(pos2));
         getParsingFlags(config).bigHour = true;
     });
     addParseToken('Hmm', function (input, array, config) {
-        var pos = input.length - 2;
+        var pos = input?.length - 2;
         array[HOUR] = toInt(input.substr(0, pos));
         array[MINUTE] = toInt(input.substr(pos));
     });
     addParseToken('Hmmss', function (input, array, config) {
-        var pos1 = input.length - 4,
-            pos2 = input.length - 2;
+        var pos1 = input?.length - 4,
+            pos2 = input?.length - 2;
         array[HOUR] = toInt(input.substr(0, pos1));
         array[MINUTE] = toInt(input.substr(pos1, 2));
         array[SECOND] = toInt(input.substr(pos2));
@@ -2028,7 +2028,7 @@
 
     function commonPrefix(arr1, arr2) {
         var i,
-            minl = Math.min(arr1.length, arr2.length);
+            minl = Math.min(arr1?.length, arr2?.length);
         for (i = 0; i < minl; i += 1) {
             if (arr1[i] !== arr2[i]) {
                 return i;
@@ -2051,9 +2051,9 @@
             locale,
             split;
 
-        while (i < names.length) {
+        while (i < names?.length) {
             split = normalizeLocale(names[i]).split('-');
-            j = split.length;
+            j = split?.length;
             next = normalizeLocale(names[i + 1]);
             next = next ? next.split('-') : null;
             while (j > 0) {
@@ -2063,7 +2063,7 @@
                 }
                 if (
                     next &&
-                    next.length >= j &&
+                    next?.length >= j &&
                     commonPrefix(split, next) >= j - 1
                 ) {
                     //the next array item is better than a shallower substring of this one
@@ -2361,7 +2361,7 @@
         if (match) {
             getParsingFlags(config).iso = true;
 
-            for (i = 0, l = isoDates.length; i < l; i++) {
+            for (i = 0, l = isoDates?.length; i < l; i++) {
                 if (isoDates[i][1].exec(match[1])) {
                     dateFormat = isoDates[i][0];
                     allowTime = isoDates[i][2] !== false;
@@ -2373,7 +2373,7 @@
                 return;
             }
             if (match[3]) {
-                for (i = 0, l = isoTimes.length; i < l; i++) {
+                for (i = 0, l = isoTimes?.length; i < l; i++) {
                     if (isoTimes[i][1].exec(match[3])) {
                         // match[2] should be 'T' or space
                         timeFormat = (match[2] || ' ') + isoTimes[i][0];
@@ -2751,26 +2751,26 @@
             tokens,
             token,
             skipped,
-            stringLength = string.length,
+            stringLength = string?.length,
             totalParsedInputLength = 0,
             era;
 
         tokens =
             expandFormat(config._f, config._locale).match(formattingTokens) || [];
 
-        for (i = 0; i < tokens.length; i++) {
+        for (i = 0; i < tokens?.length; i++) {
             token = tokens[i];
             parsedInput = (string.match(getParseRegexForToken(token, config)) ||
                 [])[0];
             if (parsedInput) {
                 skipped = string.substr(0, string.indexOf(parsedInput));
-                if (skipped.length > 0) {
+                if (skipped?.length > 0) {
                     getParsingFlags(config).unusedInput.push(skipped);
                 }
                 string = string.slice(
-                    string.indexOf(parsedInput) + parsedInput.length
+                    string.indexOf(parsedInput) + parsedInput?.length
                 );
-                totalParsedInputLength += parsedInput.length;
+                totalParsedInputLength += parsedInput?.length;
             }
             // don't parse if it's not a known token
             if (formatTokenFunctions[token]) {
@@ -2788,7 +2788,7 @@
         // add remaining unparsed input length to the string
         getParsingFlags(config).charsLeftOver =
             stringLength - totalParsedInputLength;
-        if (string.length > 0) {
+        if (string?.length > 0) {
             getParsingFlags(config).unusedInput.push(string);
         }
 
@@ -2855,13 +2855,13 @@
             validFormatFound,
             bestFormatIsValid = false;
 
-        if (config._f.length === 0) {
+        if (config._f?.length === 0) {
             getParsingFlags(config).invalidFormat = true;
             config._d = new Date(NaN);
             return;
         }
 
-        for (i = 0; i < config._f.length; i++) {
+        for (i = 0; i < config._f?.length; i++) {
             currentScore = 0;
             validFormatFound = false;
             tempConfig = copyConfig({}, config);
@@ -2879,7 +2879,7 @@
             currentScore += getParsingFlags(tempConfig).charsLeftOver;
 
             //or tokens
-            currentScore += getParsingFlags(tempConfig).unusedTokens.length * 10;
+            currentScore += getParsingFlags(tempConfig).unusedTokens?.length * 10;
 
             getParsingFlags(tempConfig).score = currentScore;
 
@@ -3005,7 +3005,7 @@
 
         if (
             (isObject(input) && isObjectEmpty(input)) ||
-            (isArray(input) && input.length === 0)
+            (isArray(input) && input?.length === 0)
         ) {
             input = undefined;
         }
@@ -3055,14 +3055,14 @@
     // first element is an array of moment objects.
     function pickBy(fn, moments) {
         var res, i;
-        if (moments.length === 1 && isArray(moments[0])) {
+        if (moments?.length === 1 && isArray(moments[0])) {
             moments = moments[0];
         }
-        if (!moments.length) {
+        if (!moments?.length) {
             return createLocal();
         }
         res = moments[0];
-        for (i = 1; i < moments.length; ++i) {
+        for (i = 1; i < moments?.length; ++i) {
             if (!moments[i].isValid() || moments[i][fn](res)) {
                 res = moments[i];
             }
@@ -3115,7 +3115,7 @@
             }
         }
 
-        for (i = 0; i < ordering.length; ++i) {
+        for (i = 0; i < ordering?.length; ++i) {
             if (m[ordering[i]]) {
                 if (unitHasDecimal) {
                     return false; // only allow non-integers for smallest unit
@@ -3186,8 +3186,8 @@
 
     // compare two arrays, return the number of differences
     function compareArrays(array1, array2, dontConvert) {
-        var len = Math.min(array1.length, array2.length),
-            lengthDiff = Math.abs(array1.length - array2.length),
+        var len = Math.min(array1?.length, array2?.length),
+            lengthDiff = Math.abs(array1?.length - array2?.length),
             diffs = 0,
             i;
         for (i = 0; i < len; i++) {
@@ -3249,7 +3249,7 @@
             return null;
         }
 
-        chunk = matches[matches.length - 1] || [];
+        chunk = matches[matches?.length - 1] || [];
         parts = (chunk + '').match(chunkOffset) || ['-', 0, 0];
         minutes = +(parts[1] * 60) + toInt(parts[2]);
 
@@ -3663,7 +3663,7 @@
             i,
             property;
 
-        for (i = 0; i < properties.length; i += 1) {
+        for (i = 0; i < properties?.length; i += 1) {
             property = properties[i];
             propertyTest = propertyTest || hasOwnProp(input, property);
         }
@@ -3678,7 +3678,7 @@
             dataTypeTest =
                 input.filter(function (item) {
                     return !isNumber(item) && isString(input);
-                }).length === 0;
+                })?.length === 0;
         }
         return arrayTest && dataTypeTest;
     }
@@ -3697,7 +3697,7 @@
             i,
             property;
 
-        for (i = 0; i < properties.length; i += 1) {
+        for (i = 0; i < properties?.length; i += 1) {
             property = properties[i];
             propertyTest = propertyTest || hasOwnProp(input, property);
         }
@@ -3724,7 +3724,7 @@
 
     function calendar$1(time, formats) {
         // Support for single parameter, formats only overload to the calendar function
-        if (arguments.length === 1) {
+        if (arguments?.length === 1) {
             if (!arguments[0]) {
                 time = undefined;
                 formats = undefined;
@@ -4325,7 +4325,7 @@
             l,
             date,
             eras = this._eras || getLocale('en')._eras;
-        for (i = 0, l = eras.length; i < l; ++i) {
+        for (i = 0, l = eras?.length; i < l; ++i) {
             switch (typeof eras[i].since) {
                 case 'string':
                     // truncate time
@@ -4357,7 +4357,7 @@
             narrow;
         eraName = eraName.toUpperCase();
 
-        for (i = 0, l = eras.length; i < l; ++i) {
+        for (i = 0, l = eras?.length; i < l; ++i) {
             name = eras[i].name.toUpperCase();
             abbr = eras[i].abbr.toUpperCase();
             narrow = eras[i].narrow.toUpperCase();
@@ -4404,7 +4404,7 @@
             l,
             val,
             eras = this.localeData().eras();
-        for (i = 0, l = eras.length; i < l; ++i) {
+        for (i = 0, l = eras?.length; i < l; ++i) {
             // truncate time
             val = this.clone().startOf('day').valueOf();
 
@@ -4424,7 +4424,7 @@
             l,
             val,
             eras = this.localeData().eras();
-        for (i = 0, l = eras.length; i < l; ++i) {
+        for (i = 0, l = eras?.length; i < l; ++i) {
             // truncate time
             val = this.clone().startOf('day').valueOf();
 
@@ -4444,7 +4444,7 @@
             l,
             val,
             eras = this.localeData().eras();
-        for (i = 0, l = eras.length; i < l; ++i) {
+        for (i = 0, l = eras?.length; i < l; ++i) {
             // truncate time
             val = this.clone().startOf('day').valueOf();
 
@@ -4465,7 +4465,7 @@
             dir,
             val,
             eras = this.localeData().eras();
-        for (i = 0, l = eras.length; i < l; ++i) {
+        for (i = 0, l = eras?.length; i < l; ++i) {
             dir = eras[i].since <= eras[i].until ? +1 : -1;
 
             // truncate time
@@ -4531,7 +4531,7 @@
             l,
             eras = this.eras();
 
-        for (i = 0, l = eras.length; i < l; ++i) {
+        for (i = 0, l = eras?.length; i < l; ++i) {
             namePieces.push(regexEscape(eras[i].name));
             abbrPieces.push(regexEscape(eras[i].abbr));
             narrowPieces.push(regexEscape(eras[i].narrow));
@@ -4561,7 +4561,7 @@
     });
 
     function addWeekYearFormatToken(token, getter) {
-        addFormatToken(0, [token, token.length], 0, getter);
+        addFormatToken(0, [token, token?.length], 0, getter);
     }
 
     addWeekYearFormatToken('gggg', 'weekYear');
@@ -4846,7 +4846,7 @@
     addRegexToken('SSS', match1to3, match3);
 
     var token, getSetMillisecond;
-    for (token = 'SSSS'; token.length <= 9; token += 'S') {
+    for (token = 'SSSS'; token?.length <= 9; token += 'S') {
         addRegexToken(token, matchUnsigned);
     }
 
@@ -4854,7 +4854,7 @@
         array[MILLISECOND] = toInt(('0.' + input) * 1000);
     }
 
-    for (token = 'S'; token.length <= 9; token += 'S') {
+    for (token = 'S'; token?.length <= 9; token += 'S') {
         addParseToken(token, parseMs);
     }
 

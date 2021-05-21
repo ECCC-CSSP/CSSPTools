@@ -18,7 +18,7 @@ export class StatCountService {
       }
       else {
         let tvItemStat = tvItemModel.TVItemStatList.filter((c) => { return c.TVType == tvType });
-        if (tvItemStat.length > 0) {
+        if (tvItemStat?.length > 0) {
           count = tvItemStat[0].ChildCount;
         }
       }
