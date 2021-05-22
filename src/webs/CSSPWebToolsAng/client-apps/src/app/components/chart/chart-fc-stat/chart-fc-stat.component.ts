@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, AfterViewChecked, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, AfterViewChecked, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
@@ -7,8 +7,9 @@ import { LoggedInContactService } from 'src/app/services/loaders/logged-in-conta
 import { LoaderService } from 'src/app/services/loaders/loader.service';
 import { StatMWQMSiteSample } from 'src/app/models/generated/web/StatMWQMSiteSample.model';
 import { ChartXYTextNumberModel } from 'src/app/models/generated/web/ChartXYTextNumberModel.model';
+import { Chart, registerables } from "chart.js";
 
-declare let Chart: any;
+Chart.register(...registerables);
 
 @Component({
   selector: 'app-chart-fc-stat',
@@ -17,7 +18,8 @@ declare let Chart: any;
 })
 export class ChartFCStatComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() StatMWQMSiteSampleList: StatMWQMSiteSample[] = [];
-  @Input() CanvasNameFCStat: string;
+  @ViewChild('chart')
+  private chartRef: ElementRef;
 
   lang = GetLanguageEnum();
 
@@ -33,93 +35,92 @@ export class ChartFCStatComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void
   {
-    // let labelList: string[] = [];
+    let labelList: string[] = [];
 
-    // for (let i = 0, count = this.StatMWQMSiteSampleList?.length; i < count; i++) {
-    //   let DateText: string = this.StatMWQMSiteSampleList[i].SampleDate.toString();
-    //   labelList.push(`${DateText.substring(0, 4)}-${DateText.substring(5, 7)}-${DateText.substring(8, 10)}`);
-    // }
+    for (let i = 0, count = this.StatMWQMSiteSampleList?.length; i < count; i++) {
+      let DateText: string = this.StatMWQMSiteSampleList[i].SampleDate.toString();
+      labelList.push(`${DateText.substring(0, 4)}-${DateText.substring(5, 7)}-${DateText.substring(8, 10)}`);
+    }
 
-    // const labels = labelList;
+    const labels = labelList;
 
-    // console.debug(labels);
+    console.debug(labels);
 
-    // let dataGMList: ChartXYTextNumberModel[] = [];
-    // let dataMdnList: ChartXYTextNumberModel[] = [];
-    // let dataP90List: ChartXYTextNumberModel[] = [];
-    // let dataPercAbove43List: ChartXYTextNumberModel[] = [];
+    let dataGMList: ChartXYTextNumberModel[] = [];
+    let dataMdnList: ChartXYTextNumberModel[] = [];
+    let dataP90List: ChartXYTextNumberModel[] = [];
+    let dataPercAbove43List: ChartXYTextNumberModel[] = [];
 
-    // for (let i = 0, count = this.StatMWQMSiteSampleList?.length; i < count; i++) {
-    //   let DateText: string = this.StatMWQMSiteSampleList[i].SampleDate.toString();
-    //   let Dt = `${DateText.substring(0, 4)}-${DateText.substring(5, 7)}-${DateText.substring(8, 10)}`;
-    //   dataGMList.push({ x: Dt, y: this.StatMWQMSiteSampleList[i].GeoMean });
-    //   dataMdnList.push({ x: Dt, y: this.StatMWQMSiteSampleList[i].Median });
-    //   dataP90List.push({ x: Dt, y: this.StatMWQMSiteSampleList[i].P90 });
-    //   dataPercAbove43List.push({ x: Dt, y: this.StatMWQMSiteSampleList[i].PercOver43 });
-    // }
+    for (let i = 0, count = this.StatMWQMSiteSampleList?.length; i < count; i++) {
+      let DateText: string = this.StatMWQMSiteSampleList[i].SampleDate.toString();
+      let Dt = `${DateText.substring(0, 4)}-${DateText.substring(5, 7)}-${DateText.substring(8, 10)}`;
+      dataGMList.push({ x: Dt, y: this.StatMWQMSiteSampleList[i].GeoMean });
+      dataMdnList.push({ x: Dt, y: this.StatMWQMSiteSampleList[i].Median });
+      dataP90List.push({ x: Dt, y: this.StatMWQMSiteSampleList[i].P90 });
+      dataPercAbove43List.push({ x: Dt, y: this.StatMWQMSiteSampleList[i].PercOver43 });
+    }
 
-    // const data = {
-    //   labels: labels,
-    //   datasets: [{
-    //     label: this.appLanguageService.ChartLabelGMOver14[this.appLanguageService.LangID],
-    //     backgroundColor: this.GetLineColorGM,
-    //     borderColor: this.GetLineColorGM,
-    //     data: dataGMList,
-    //     yAxisID: 'y',
-    //     stack: 'combined',
-    //     type: 'scatter',
-    //   },
-    //   {
-    //     label: this.appLanguageService.ChartLabelMedOver14[this.appLanguageService.LangID],
-    //     backgroundColor: this.GetLineColorMdn,
-    //     borderColor: this.GetLineColorMdn,
-    //     data: dataMdnList,
-    //     yAxisID: 'y',
-    //     stack: 'combined',
-    //     type: 'scatter',
-    //   },
-    //   {
-    //     label: this.appLanguageService.ChartLabelP90Over43[this.appLanguageService.LangID],
-    //     backgroundColor: this.GetLineColorP90,
-    //     borderColor: this.GetLineColorP90,
-    //     data: dataP90List,
-    //     yAxisID: 'y',
-    //     stack: 'combined',
-    //     type: 'scatter',
-    //   },
-    //   {
-    //     label: this.appLanguageService.ChartLabelOver43[this.appLanguageService.LangID],
-    //     backgroundColor: this.GetLineColorPercOver43,
-    //     borderColor: this.GetLineColorPercOver43,
-    //     data: dataPercAbove43List,
-    //     yAxisID: 'y',
-    //     stack: 'combined',
-    //     type: 'scatter',
-    //   }]
-    // };
+    const data: any = {
+      labels: labels,
+      datasets: [{
+        label: this.appLanguageService.ChartLabelGMOver14[this.appLanguageService.LangID],
+        backgroundColor: this.GetLineColorGM,
+        borderColor: this.GetLineColorGM,
+        data: dataGMList,
+        yAxisID: 'y',
+        stack: 'combined',
+        type: 'scatter',
+      },
+      {
+        label: this.appLanguageService.ChartLabelMedOver14[this.appLanguageService.LangID],
+        backgroundColor: this.GetLineColorMdn,
+        borderColor: this.GetLineColorMdn,
+        data: dataMdnList,
+        yAxisID: 'y',
+        stack: 'combined',
+        type: 'scatter',
+      },
+      {
+        label: this.appLanguageService.ChartLabelP90Over43[this.appLanguageService.LangID],
+        backgroundColor: this.GetLineColorP90,
+        borderColor: this.GetLineColorP90,
+        data: dataP90List,
+        yAxisID: 'y',
+        stack: 'combined',
+        type: 'scatter',
+      },
+      {
+        label: this.appLanguageService.ChartLabelOver43[this.appLanguageService.LangID],
+        backgroundColor: this.GetLineColorPercOver43,
+        borderColor: this.GetLineColorPercOver43,
+        data: dataPercAbove43List,
+        yAxisID: 'y',
+        stack: 'combined',
+        type: 'scatter',
+      }]
+    };
 
-    // const config = {
-    //   type: 'bar',
-    //   data,
-    //   options: {
-    //     responsive: true,
-    //     scales: {
-    //       y: {
-    //         type: 'linear',
-    //         display: true,
-    //         position: 'left',
-    //       },
-    //       xAxes: [{
-    //         type: 'time',
-    //       }]
-    //     }
-    //   }
-    // };
+    const config: any = {
+      type: 'bar',
+      data,
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            type: 'linear',
+            display: true,
+            position: 'left',
+          },
+          xAxes: [{
+            type: 'time',
+          }]
+        }
+      }
+    };
 
-    // let myChart = new Chart(
-    //   document.getElementById(this.CanvasNameFCStat),
-    //   config
-    // );
+    let myChart = new Chart(this.chartRef.nativeElement,
+      config
+    );
   }
 
   ngOnDestroy(): void {
