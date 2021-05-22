@@ -7,7 +7,7 @@ import { LoggedInContactService } from 'src/app/services/loaders/logged-in-conta
 import { LoaderService } from 'src/app/services/loaders/loader.service';
 import { StatMWQMSiteSample } from 'src/app/models/generated/web/StatMWQMSiteSample.model';
 import { ChartXYTextNumberModel } from 'src/app/models/generated/web/ChartXYTextNumberModel.model';
-import { Chart, registerables } from "chart.js";
+import { Chart, registerables } from 'chart.js';
 
 Chart.register(...registerables);
 

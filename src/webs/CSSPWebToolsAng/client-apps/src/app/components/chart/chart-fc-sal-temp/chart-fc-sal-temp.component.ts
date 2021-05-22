@@ -6,7 +6,7 @@ import { AppLanguageService } from 'src/app/services/app-language.service';
 import { LoggedInContactService } from 'src/app/services/loaders/logged-in-contact.service';
 import { StatMWQMSiteSample } from 'src/app/models/generated/web/StatMWQMSiteSample.model';
 import { ChartXYTextNumberModel } from 'src/app/models/generated/web/ChartXYTextNumberModel.model';
-import { Chart, registerables } from "chart.js";
+import { Chart, registerables } from 'chart.js';
 
 Chart.register(...registerables);
 

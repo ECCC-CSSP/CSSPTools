@@ -1,5 +1,5 @@
 /*!
- * Chart.js v3.2.0
+ * Chart.js v3.2.1
  * https://www.chartjs.org
  * (c) 2021 Chart.js Contributors
  * Released under the MIT License
@@ -87,11 +87,11 @@
         const me = this;
         let remaining = 0;
         me._charts.forEach((anims, chart) => {
-          if (!anims.running || !anims.items?.length) {
+          if (!anims.running || !anims.items.length) {
             return;
           }
           const items = anims.items;
-          let i = items?.length - 1;
+          let i = items.length - 1;
           let draw = false;
           let item;
           for (; i >= 0; --i) {
@@ -103,7 +103,7 @@
               item.tick(date);
               draw = true;
             } else {
-              items[i] = items[items?.length - 1];
+              items[i] = items[items.length - 1];
               items.pop();
             }
           }
@@ -111,12 +111,12 @@
             chart.draw();
             me._notify(chart, anims, date, 'progress');
           }
-          if (!items?.length) {
+          if (!items.length) {
             anims.running = false;
             me._notify(chart, anims, date, 'complete');
             anims.initial = false;
           }
-          remaining += items?.length;
+          remaining += items.length;
         });
         me._lastDate = date;
         if (remaining === 0) {
@@ -144,13 +144,13 @@
         this._getAnims(chart).listeners[event].push(cb);
       }
       add(chart, items) {
-        if (!items || !items?.length) {
+        if (!items || !items.length) {
           return;
         }
         this._getAnims(chart).items.push(...items);
       }
       has(chart) {
-        return this._getAnims(chart).items?.length > 0;
+        return this._getAnims(chart).items.length > 0;
       }
       start(chart) {
         const anims = this._charts.get(chart);
@@ -167,18 +167,18 @@
           return false;
         }
         const anims = this._charts.get(chart);
-        if (!anims || !anims.running || !anims.items?.length) {
+        if (!anims || !anims.running || !anims.items.length) {
           return false;
         }
         return true;
       }
       stop(chart) {
         const anims = this._charts.get(chart);
-        if (!anims || !anims.items?.length) {
+        if (!anims || !anims.items.length) {
           return;
         }
         const items = anims.items;
-        let i = items?.length - 1;
+        let i = items.length - 1;
         for (; i >= 0; --i) {
           items[i].cancel();
         }
@@ -206,7 +206,7 @@
         return eq(v.r) && eq(v.g) && eq(v.b) && eq(v.a);
     }
     function hexParse(str) {
-        var len = str?.length;
+        var len = str.length;
         var ret;
         if (str[0] === '#') {
             if (len === 4 || len === 5) {
@@ -576,9 +576,9 @@
         const keys = Object.keys(names);
         const tkeys = Object.keys(map$1);
         let i, j, k, ok, nk;
-        for (i = 0; i < keys?.length; i++) {
+        for (i = 0; i < keys.length; i++) {
             ok = nk = keys[i];
-            for (j = 0; j < tkeys?.length; j++) {
+            for (j = 0; j < tkeys.length; j++) {
                 k = tkeys[j];
                 nk = nk.replace(k, map$1[k]);
             }
@@ -598,7 +598,7 @@
             r: a[0],
             g: a[1],
             b: a[2],
-            a: a?.length === 4 ? a[3] : 255
+            a: a.length === 4 ? a[3] : 255
         };
     }
     function modHSL(v, i, ratio) {
@@ -617,9 +617,9 @@
     function fromObject(input) {
         var v = {r: 0, g: 0, b: 0, a: 255};
         if (Array.isArray(input)) {
-            if (input?.length >= 3) {
+            if (input.length >= 3) {
                 v = {r: input[0], g: input[1], b: input[2], a: 255};
-                if (input?.length > 3) {
+                if (input.length > 3) {
                     v.a = n2b(input[3]);
                 }
             }
@@ -802,7 +802,7 @@
     function each(loopable, fn, thisArg, reverse) {
       let i, len, keys;
       if (isArray(loopable)) {
-        len = loopable?.length;
+        len = loopable.length;
         if (reverse) {
           for (i = len - 1; i >= 0; i--) {
             fn.call(thisArg, loopable[i], i);
@@ -814,7 +814,7 @@
         }
       } else if (isObject(loopable)) {
         keys = Object.keys(loopable);
-        len = keys?.length;
+        len = keys.length;
         for (i = 0; i < len; i++) {
           fn.call(thisArg, loopable[keys[i]], keys[i]);
         }
@@ -822,10 +822,10 @@
     }
     function _elementsEqual(a0, a1) {
       let i, ilen, v0, v1;
-      if (!a0 || !a1 || a0?.length !== a1?.length) {
+      if (!a0 || !a1 || a0.length !== a1.length) {
         return false;
       }
-      for (i = 0, ilen = a0?.length; i < ilen; ++i) {
+      for (i = 0, ilen = a0.length; i < ilen; ++i) {
         v0 = a0[i];
         v1 = a1[i];
         if (v0.datasetIndex !== v1.datasetIndex || v0.index !== v1.index) {
@@ -841,7 +841,7 @@
       if (isObject(source)) {
         const target = Object.create(null);
         const keys = Object.keys(source);
-        const klen = keys?.length;
+        const klen = keys.length;
         let k = 0;
         for (; k < klen; ++k) {
           target[keys[k]] = clone(source[keys[k]]);
@@ -867,7 +867,7 @@
     }
     function merge(target, source, options) {
       const sources = isArray(source) ? source : [source];
-      const ilen = sources?.length;
+      const ilen = sources.length;
       if (!isObject(target)) {
         return target;
       }
@@ -879,7 +879,7 @@
           continue;
         }
         const keys = Object.keys(source);
-        for (let k = 0, klen = keys?.length; k < klen; ++k) {
+        for (let k = 0, klen = keys.length; k < klen; ++k) {
           merger(keys[k], target, source, options);
         }
       }
@@ -910,7 +910,7 @@
     const dot = '.';
     function indexOfDotOrLength(key, start) {
       const idx = key.indexOf(dot, start);
-      return idx === -1 ? key?.length : idx;
+      return idx === -1 ? key.length : idx;
     }
     function resolveObjectKey(obj, key) {
       if (key === emptyString) {
@@ -949,7 +949,7 @@
         return node;
       }
       const keys = key.split('.');
-      for (let i = 0, n = keys?.length; i < n; ++i) {
+      for (let i = 0, n = keys.length; i < n; ++i) {
         const k = keys[i];
         node = node[k] || (node[k] = Object.create(null));
       }
@@ -1098,7 +1098,7 @@
     }
     function _setMinAndMaxByKey(array, target, property) {
       let i, ilen, value;
-      for (i = 0, ilen = array?.length; i < ilen; i++) {
+      for (i = 0, ilen = array.length; i < ilen; i++) {
         value = array[i][property];
         if (!isNaN(value)) {
           target.min = Math.min(target.min, value);
@@ -1146,7 +1146,7 @@
     function _normalizeAngle(a) {
       return (a % TAU + TAU) % TAU;
     }
-    function _angleBetween(angle, start, end) {
+    function _angleBetween(angle, start, end, sameAngleIsFullCircle) {
       const a = _normalizeAngle(angle);
       const s = _normalizeAngle(start);
       const e = _normalizeAngle(end);
@@ -1154,7 +1154,8 @@
       const angleToEnd = _normalizeAngle(e - a);
       const startToAngle = _normalizeAngle(a - s);
       const endToAngle = _normalizeAngle(a - e);
-      return a === s || a === e || (angleToStart > angleToEnd && startToAngle < endToAngle);
+      return a === s || a === e || (sameAngleIsFullCircle && s === e)
+        || (angleToStart > angleToEnd && startToAngle < endToAngle);
     }
     function _limitValue(value, min, max) {
       return Math.max(min, Math.min(max, value));
@@ -1195,14 +1196,14 @@
       ctx.save();
       ctx.font = font;
       let longest = 0;
-      const ilen = arrayOfThings?.length;
+      const ilen = arrayOfThings.length;
       let i, j, jlen, thing, nestedThing;
       for (i = 0; i < ilen; i++) {
         thing = arrayOfThings[i];
         if (thing !== undefined && thing !== null && isArray(thing) !== true) {
           longest = _measureText(ctx, data, gc, longest, thing);
         } else if (isArray(thing)) {
-          for (j = 0, jlen = thing?.length; j < jlen; j++) {
+          for (j = 0, jlen = thing.length; j < jlen; j++) {
             nestedThing = thing[j];
             if (nestedThing !== undefined && nestedThing !== null && !isArray(nestedThing)) {
               longest = _measureText(ctx, data, gc, longest, nestedThing);
@@ -1211,8 +1212,8 @@
         }
       }
       ctx.restore();
-      const gcLen = gc?.length / 2;
-      if (gcLen > arrayOfThings?.length) {
+      const gcLen = gc.length / 2;
+      if (gcLen > arrayOfThings.length) {
         for (i = 0; i < gcLen; i++) {
           delete data[gc[i]];
         }
@@ -1396,7 +1397,7 @@
       if (opts.textBaseline) {
         ctx.textBaseline = opts.textBaseline;
       }
-      for (i = 0; i < lines?.length; ++i) {
+      for (i = 0; i < lines.length; ++i) {
         line = lines[i];
         if (stroke) {
           if (opts.strokeColor) {
@@ -1440,7 +1441,7 @@
     
     function _lookup(table, value, cmp) {
       cmp = cmp || ((index) => table[index] < value);
-      let hi = table?.length - 1;
+      let hi = table.length - 1;
       let lo = 0;
       let mid;
       while (hi - lo > 1) {
@@ -1459,14 +1460,14 @@
       _lookup(table, value, index => table[index][key] >= value);
     function _filterBetween(values, min, max) {
       let start = 0;
-      let end = values?.length;
+      let end = values.length;
       while (start < end && values[start] < min) {
         start++;
       }
       while (end > start && values[end - 1] > max) {
         end--;
       }
-      return start > 0 || end < values?.length
+      return start > 0 || end < values.length
         ? values.slice(start, end)
         : values;
     }
@@ -1511,7 +1512,7 @@
       if (index !== -1) {
         listeners.splice(index, 1);
       }
-      if (listeners?.length > 0) {
+      if (listeners.length > 0) {
         return;
       }
       arrayEvents.forEach((key) => {
@@ -1522,7 +1523,7 @@
     function _arrayUnique(items) {
       const set = new Set();
       let i, ilen;
-      for (i = 0, ilen = items?.length; i < ilen; ++i) {
+      for (i = 0, ilen = items.length; i < ilen; ++i) {
         set.add(items[i]);
       }
       if (set.size === ilen) {
@@ -1574,7 +1575,7 @@
     function getCanvasPosition(evt, canvas) {
       const e = evt.native || evt;
       const touches = e.touches;
-      const source = touches && touches?.length ? touches[0] : e;
+      const source = touches && touches.length ? touches[0] : e;
       const {offsetX, offsetY} = source;
       let box = false;
       let x, y;
@@ -1660,15 +1661,26 @@
       };
     }
     function retinaScale(chart, forceRatio, forceStyle) {
-      const pixelRatio = chart.currentDevicePixelRatio = forceRatio || 1;
-      const {canvas, width, height} = chart;
-      canvas.height = height * pixelRatio;
-      canvas.width = width * pixelRatio;
-      chart.ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+      const pixelRatio = forceRatio || 1;
+      const deviceHeight = Math.floor(chart.height * pixelRatio);
+      const deviceWidth = Math.floor(chart.width * pixelRatio);
+      chart.height = deviceHeight / pixelRatio;
+      chart.width = deviceWidth / pixelRatio;
+      const canvas = chart.canvas;
       if (canvas.style && (forceStyle || (!canvas.style.height && !canvas.style.width))) {
-        canvas.style.height = height + 'px';
-        canvas.style.width = width + 'px';
+        canvas.style.height = `${chart.height}px`;
+        canvas.style.width = `${chart.width}px`;
       }
+      if (chart.currentDevicePixelRatio !== pixelRatio
+          || canvas.height !== deviceHeight
+          || canvas.width !== deviceWidth) {
+        chart.currentDevicePixelRatio = pixelRatio;
+        canvas.height = deviceHeight;
+        canvas.width = deviceWidth;
+        chart.ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+        return true;
+      }
+      return false;
     }
     const supportsEventListenerOptions = (function() {
       let passiveSupported = false;
@@ -1703,9 +1715,9 @@
     function evaluateAllVisibleItems(chart, handler) {
       const metasets = chart.getSortedVisibleDatasetMetas();
       let index, data, element;
-      for (let i = 0, ilen = metasets?.length; i < ilen; ++i) {
+      for (let i = 0, ilen = metasets.length; i < ilen; ++i) {
         ({index, data} = metasets[i]);
-        for (let j = 0, jlen = data?.length; j < jlen; ++j) {
+        for (let j = 0, jlen = data.length; j < jlen; ++j) {
           element = data[j];
           if (!element.skip) {
             handler(element, index, j);
@@ -1716,7 +1728,7 @@
     function binarySearch(metaset, axis, value, intersect) {
       const {controller, data, _sorted} = metaset;
       const iScale = controller._cachedMeta.iScale;
-      if (iScale && axis === iScale.axis && _sorted && data?.length) {
+      if (iScale && axis === iScale.axis && _sorted && data.length) {
         const lookupMethod = iScale._reversePixels ? _rlookupByKey : _lookupByKey;
         if (!intersect) {
           return lookupMethod(data, axis, value);
@@ -1730,12 +1742,12 @@
           }
         }
       }
-      return {lo: 0, hi: data?.length - 1};
+      return {lo: 0, hi: data.length - 1};
     }
     function optimizedEvaluateItems(chart, axis, position, handler, intersect) {
       const metasets = chart.getSortedVisibleDatasetMetas();
       const value = position[axis];
-      for (let i = 0, ilen = metasets?.length; i < ilen; ++i) {
+      for (let i = 0, ilen = metasets.length; i < ilen; ++i) {
         const {index, data} = metasets[i];
         const {lo, hi} = binarySearch(metasets[i], axis, value, intersect);
         for (let j = lo; j <= hi; ++j) {
@@ -1819,7 +1831,7 @@
             ? getIntersectItems(chart, position, axis, useFinalPosition)
             : getNearestItems(chart, position, axis, false, useFinalPosition);
           const elements = [];
-          if (!items?.length) {
+          if (!items.length) {
             return [];
           }
           chart.getSortedVisibleDatasetMetas().forEach((meta) => {
@@ -1837,11 +1849,11 @@
           let items = options.intersect
             ? getIntersectItems(chart, position, axis, useFinalPosition) :
             getNearestItems(chart, position, axis, false, useFinalPosition);
-          if (items?.length > 0) {
+          if (items.length > 0) {
             const datasetIndex = items[0].datasetIndex;
             const data = chart.getDatasetMeta(datasetIndex).data;
             items = [];
-            for (let i = 0; i < data?.length; ++i) {
+            for (let i = 0; i < data.length; ++i) {
               items.push({element: data[i], datasetIndex, index: i});
             }
           }
@@ -1938,7 +1950,7 @@
     function resolve(inputs, context, index, info) {
       let cacheable = true;
       let i, ilen, value;
-      for (i = 0, ilen = inputs?.length; i < ilen; ++i) {
+      for (i = 0, ilen = inputs.length; i < ilen; ++i) {
         value = inputs[i];
         if (value === undefined) {
           continue;
@@ -1948,7 +1960,7 @@
           cacheable = false;
         }
         if (index !== undefined && isArray(value)) {
-          value = value[index % value?.length];
+          value = value[index % value.length];
           cacheable = false;
         }
         if (value !== undefined) {
@@ -1986,7 +1998,7 @@
     function wrapBoxes(boxes) {
       const layoutBoxes = [];
       let i, ilen, box;
-      for (i = 0, ilen = (boxes || [])?.length; i < ilen; ++i) {
+      for (i = 0, ilen = (boxes || []).length; i < ilen; ++i) {
         box = boxes[i];
         layoutBoxes.push({
           index: i,
@@ -2000,7 +2012,7 @@
     }
     function setLayoutDims(layouts, params) {
       let i, ilen, layout;
-      for (i = 0, ilen = layouts?.length; i < ilen; ++i) {
+      for (i = 0, ilen = layouts.length; i < ilen; ++i) {
         layout = layouts[i];
         if (layout.horizontal) {
           layout.width = layout.box.fullSize && params.availableWidth;
@@ -2089,7 +2101,7 @@
     function fitBoxes(boxes, chartArea, params) {
       const refitBoxes = [];
       let i, ilen, layout, box, refit, changed;
-      for (i = 0, ilen = boxes?.length, refit = 0; i < ilen; ++i) {
+      for (i = 0, ilen = boxes.length, refit = 0; i < ilen; ++i) {
         layout = boxes[i];
         box = layout.box;
         box.update(
@@ -2098,7 +2110,7 @@
           getMargins(layout.horizontal, chartArea)
         );
         const {same, other} = updateDims(chartArea, params, layout);
-        refit |= same && refitBoxes?.length;
+        refit |= same && refitBoxes.length;
         changed = changed || other;
         if (!box.fullSize) {
           refitBoxes.push(layout);
@@ -2111,7 +2123,7 @@
       let x = chartArea.x;
       let y = chartArea.y;
       let i, ilen, layout, box;
-      for (i = 0, ilen = boxes?.length; i < ilen; ++i) {
+      for (i = 0, ilen = boxes.length; i < ilen; ++i) {
         layout = boxes[i];
         box = layout.box;
         if (layout.horizontal) {
@@ -2175,8 +2187,8 @@
           return;
         }
         const padding = toPadding(chart.options.layout.padding);
-        const availableWidth = width - padding.width;
-        const availableHeight = height - padding.height;
+        const availableWidth = Math.max(width - padding.width, 0);
+        const availableHeight = Math.max(height - padding.height, 0);
         const boxes = buildLayoutBoxes(chart.boxes);
         const verticalBoxes = boxes.vertical;
         const horizontalBoxes = boxes.horizontal;
@@ -2334,7 +2346,7 @@
       const observer = new MutationObserver(entries => {
         const parent = _getParentNode(element);
         entries.forEach(entry => {
-          for (let i = 0; i < entry.addedNodes?.length; i++) {
+          for (let i = 0; i < entry.addedNodes.length; i++) {
             const added = entry.addedNodes[i];
             if (added === element || added === parent) {
               listener(entry.target);
@@ -2353,7 +2365,7 @@
       }
       const observer = new MutationObserver(entries => {
         entries.forEach(entry => {
-          for (let i = 0; i < entry.removedNodes?.length; i++) {
+          for (let i = 0; i < entry.removedNodes.length; i++) {
             if (entry.removedNodes[i] === canvas) {
               listener();
               break;
@@ -2688,7 +2700,7 @@
       _notify(resolved) {
         const method = resolved ? 'res' : 'rej';
         const promises = this._promises || [];
-        for (let i = 0; i < promises?.length; i++) {
+        for (let i = 0; i < promises.length; i++) {
           promises[i][method]();
         }
       }
@@ -2809,7 +2821,7 @@
         const props = Object.keys(values);
         const date = Date.now();
         let i;
-        for (i = props?.length - 1; i >= 0; --i) {
+        for (i = props.length - 1; i >= 0; --i) {
           const prop = props[i];
           if (prop.charAt(0) === '$') {
             continue;
@@ -2844,7 +2856,7 @@
           return;
         }
         const animations = this._createAnimations(target, values);
-        if (animations?.length) {
+        if (animations.length) {
           animator.add(this._chart, animations);
           return true;
         }
@@ -2853,7 +2865,7 @@
     function awaitAll(animations, properties) {
       const running = [];
       const keys = Object.keys(properties);
-      for (let i = 0; i < keys?.length; i++) {
+      for (let i = 0; i < keys.length; i++) {
         const anim = animations[keys[i]];
         if (anim && anim.active()) {
           running.push(anim.wait());
@@ -2920,7 +2932,7 @@
       const keys = [];
       const metasets = chart._getSortedDatasetMetas(filterVisible);
       let i, ilen;
-      for (i = 0, ilen = metasets?.length; i < ilen; ++i) {
+      for (i = 0, ilen = metasets.length; i < ilen; ++i) {
         keys.push(metasets[i].index);
       }
       return keys;
@@ -2932,7 +2944,7 @@
       if (value === null) {
         return;
       }
-      for (i = 0, ilen = keys?.length; i < ilen; ++i) {
+      for (i = 0, ilen = keys.length; i < ilen; ++i) {
         datasetIndex = +keys[i];
         if (datasetIndex === dsIndex) {
           if (options.all) {
@@ -2949,9 +2961,9 @@
     }
     function convertObjectDataToArray(data) {
       const keys = Object.keys(data);
-      const adata = new Array(keys?.length);
+      const adata = new Array(keys.length);
       let i, ilen, key;
-      for (i = 0, ilen = keys?.length; i < ilen; ++i) {
+      for (i = 0, ilen = keys.length; i < ilen; ++i) {
         key = keys[i];
         adata[i] = {
           x: key,
@@ -2994,7 +3006,7 @@
       const iAxis = iScale.axis;
       const vAxis = vScale.axis;
       const key = getStackKey(iScale, vScale, meta);
-      const ilen = parsed?.length;
+      const ilen = parsed.length;
       let stack;
       for (let i = 0; i < ilen; ++i) {
         const item = parsed[i];
@@ -3063,6 +3075,7 @@
         this._drawCount = undefined;
         this.enableOptionSharing = false;
         this.$context = undefined;
+        this._syncList = [];
         this.initialize();
       }
       initialize() {
@@ -3074,6 +3087,9 @@
         me.addElements();
       }
       updateIndex(datasetIndex) {
+        if (this.index !== datasetIndex) {
+          clearStacks(this._cachedMeta);
+        }
         this.index = datasetIndex;
       }
       linkScales() {
@@ -3125,16 +3141,20 @@
         const me = this;
         const dataset = me.getDataset();
         const data = dataset.data || (dataset.data = []);
+        const _data = me._data;
         if (isObject(data)) {
           me._data = convertObjectDataToArray(data);
-        } else if (me._data !== data) {
-          if (me._data) {
-            unlistenArrayEvents(me._data, me);
-            clearStacks(me._cachedMeta);
+        } else if (_data !== data) {
+          if (_data) {
+            unlistenArrayEvents(_data, me);
+            const meta = me._cachedMeta;
+            clearStacks(meta);
+            meta._parsed = [];
           }
           if (data && Object.isExtensible(data)) {
             listenArrayEvents(data, me);
           }
+          me._syncList = [];
           me._data = data;
         }
       }
@@ -3152,6 +3172,7 @@
         const dataset = me.getDataset();
         let stackChanged = false;
         me._dataCheck();
+        const oldStacked = meta._stacked;
         meta._stacked = isStacked(meta.vScale, meta);
         if (meta.stack !== dataset.stack) {
           stackChanged = true;
@@ -3159,7 +3180,7 @@
           meta.stack = dataset.stack;
         }
         me._resyncElements(resetNewElements);
-        if (stackChanged) {
+        if (stackChanged || oldStacked !== meta._stacked) {
           updateStacks(me, meta._parsed);
         }
       }
@@ -3176,7 +3197,7 @@
         const {_cachedMeta: meta, _data: data} = me;
         const {iScale, _stacked} = meta;
         const iAxis = iScale.axis;
-        let sorted = start === 0 && count === data?.length ? true : meta._sorted;
+        let sorted = start === 0 && count === data.length ? true : meta._sorted;
         let prev = start > 0 && meta._parsed[start - 1];
         let i, cur, parsed;
         if (me._parsing === false) {
@@ -3287,7 +3308,7 @@
         const meta = me._cachedMeta;
         const _parsed = meta._parsed;
         const sorted = meta._sorted && scale === meta.iScale;
-        const ilen = _parsed?.length;
+        const ilen = _parsed.length;
         const otherScale = me._getOtherScale(scale);
         const stack = canStack && meta._stacked && {keys: getSortedDatasetIndices(me.chart, true), values: null};
         const range = {min: Number.POSITIVE_INFINITY, max: Number.NEGATIVE_INFINITY};
@@ -3323,7 +3344,7 @@
         const parsed = this._cachedMeta._parsed;
         const values = [];
         let i, ilen, value;
-        for (i = 0, ilen = parsed?.length; i < ilen; ++i) {
+        for (i = 0, ilen = parsed.length; i < ilen; ++i) {
           value = parsed[i][scale.axis];
           if (isNumberFinite(value)) {
             values.push(value);
@@ -3363,7 +3384,7 @@
         const area = chart.chartArea;
         const active = [];
         const start = me._drawStart || 0;
-        const count = me._drawCount || (elements?.length - start);
+        const count = me._drawCount || (elements.length - start);
         let i;
         if (meta.dataset) {
           meta.dataset.draw(ctx, area, start, count);
@@ -3376,7 +3397,7 @@
             element.draw(ctx, area);
           }
         }
-        for (i = 0; i < active?.length; ++i) {
+        for (i = 0; i < active.length; ++i) {
           active[i].draw(ctx, area);
         }
       }
@@ -3390,16 +3411,18 @@
         const me = this;
         const dataset = me.getDataset();
         let context;
-        if (index >= 0 && index < me._cachedMeta.data?.length) {
+        if (index >= 0 && index < me._cachedMeta.data.length) {
           const element = me._cachedMeta.data[index];
           context = element.$context ||
             (element.$context = createDataContext(me.getContext(), index, element));
           context.parsed = me.getParsed(index);
           context.raw = dataset.data[index];
+          context.index = context.dataIndex = index;
         } else {
           context = me.$context ||
             (me.$context = createDatasetContext(me.chart.getContext(), me.index));
           context.dataset = dataset;
+          context.index = context.datasetIndex = me.index;
         }
         context.active = !!active;
         context.mode = mode;
@@ -3504,14 +3527,20 @@
       }
       _resyncElements(resetNewElements) {
         const me = this;
-        const numMeta = me._cachedMeta.data?.length;
-        const numData = me._data?.length;
+        const data = me._data;
+        const elements = me._cachedMeta.data;
+        for (const [method, arg1, arg2] of me._syncList) {
+          me[method](arg1, arg2);
+        }
+        me._syncList = [];
+        const numMeta = elements.length;
+        const numData = data.length;
+        const count = Math.min(numData, numMeta);
         if (numData > numMeta) {
           me._insertElements(numMeta, numData - numMeta, resetNewElements);
         } else if (numData < numMeta) {
           me._removeElements(numData, numMeta - numData);
         }
-        const count = Math.min(numData, numMeta);
         if (count) {
           me.parse(0, count);
         }
@@ -3523,8 +3552,8 @@
         const end = start + count;
         let i;
         const move = (arr) => {
-          arr?.length += count;
-          for (i = arr?.length - 1; i >= end; i--) {
+          arr.length += count;
+          for (i = arr.length - 1; i >= end; i--) {
             arr[i] = arr[i - count];
           }
         };
@@ -3553,21 +3582,21 @@
         meta.data.splice(start, count);
       }
       _onDataPush() {
-        const count = arguments?.length;
-        this._insertElements(this.getDataset().data?.length - count, count);
+        const count = arguments.length;
+        this._syncList.push(['_insertElements', this.getDataset().data.length - count, count]);
       }
       _onDataPop() {
-        this._removeElements(this._cachedMeta.data?.length - 1, 1);
+        this._syncList.push(['_removeElements', this._cachedMeta.data.length - 1, 1]);
       }
       _onDataShift() {
-        this._removeElements(0, 1);
+        this._syncList.push(['_removeElements', 0, 1]);
       }
       _onDataSplice(start, count) {
-        this._removeElements(start, count);
-        this._insertElements(start, arguments?.length - 2);
+        this._syncList.push(['_removeElements', start, count]);
+        this._syncList.push(['_insertElements', start, arguments.length - 2]);
       }
       _onDataUnshift() {
-        this._insertElements(0, arguments?.length);
+        this._syncList.push(['_insertElements', 0, arguments.length]);
       }
     }
     DatasetController.defaults = {};
@@ -3631,8 +3660,8 @@
         const locale = this.chart.options.locale;
         let notation;
         let delta = tickValue;
-        if (ticks?.length > 1) {
-          const maxTick = Math.max(Math.abs(ticks[0].value), Math.abs(ticks[ticks?.length - 1].value));
+        if (ticks.length > 1) {
+          const maxTick = Math.max(Math.abs(ticks[0].value), Math.abs(ticks[ticks.length - 1].value));
           if (maxTick < 1e-4 || maxTick > 1e+15) {
             notation = 'scientific';
           }
@@ -3656,8 +3685,8 @@
       }
     };
     function calculateDelta(tickValue, ticks) {
-      let delta = ticks?.length > 3 ? ticks[2].value - ticks[1].value : ticks[1].value - ticks[0].value;
-      if (Math.abs(delta) > 1 && tickValue !== Math.floor(tickValue)) {
+      let delta = ticks.length > 3 ? ticks[2].value - ticks[1].value : ticks[1].value - ticks[0].value;
+      if (Math.abs(delta) >= 1 && tickValue !== Math.floor(tickValue)) {
         delta = tickValue - Math.floor(tickValue);
       }
       return delta;
@@ -3731,7 +3760,7 @@
       const tickOpts = scale.options.ticks;
       const ticksLimit = tickOpts.maxTicksLimit || determineMaxTicks(scale);
       const majorIndices = tickOpts.major.enabled ? getMajorIndices(ticks) : [];
-      const numMajorIndices = majorIndices?.length;
+      const numMajorIndices = majorIndices.length;
       const first = majorIndices[0];
       const last = majorIndices[numMajorIndices - 1];
       const newTicks = [];
@@ -3747,7 +3776,7 @@
         for (i = 0, ilen = numMajorIndices - 1; i < ilen; i++) {
           skip(ticks, newTicks, spacing, majorIndices[i], majorIndices[i + 1]);
         }
-        skip(ticks, newTicks, spacing, last, isNullOrUndef(avgMajorSpacing) ? ticks?.length : last + avgMajorSpacing);
+        skip(ticks, newTicks, spacing, last, isNullOrUndef(avgMajorSpacing) ? ticks.length : last + avgMajorSpacing);
         return newTicks;
       }
       skip(ticks, newTicks, spacing);
@@ -3762,12 +3791,12 @@
     }
     function calculateSpacing(majorIndices, ticks, ticksLimit) {
       const evenMajorSpacing = getEvenSpacing(majorIndices);
-      const spacing = ticks?.length / ticksLimit;
+      const spacing = ticks.length / ticksLimit;
       if (!evenMajorSpacing) {
         return Math.max(spacing, 1);
       }
       const factors = _factorize(evenMajorSpacing);
-      for (let i = 0, ilen = factors?.length - 1; i < ilen; i++) {
+      for (let i = 0, ilen = factors.length - 1; i < ilen; i++) {
         const factor = factors[i];
         if (factor > spacing) {
           return factor;
@@ -3778,7 +3807,7 @@
     function getMajorIndices(ticks) {
       const result = [];
       let i, ilen;
-      for (i = 0, ilen = ticks?.length; i < ilen; i++) {
+      for (i = 0, ilen = ticks.length; i < ilen; i++) {
         if (ticks[i].major) {
           result.push(i);
         }
@@ -3790,7 +3819,7 @@
       let next = majorIndices[0];
       let i;
       spacing = Math.ceil(spacing);
-      for (i = 0; i < ticks?.length; i++) {
+      for (i = 0; i < ticks.length; i++) {
         if (i === next) {
           newTicks.push(ticks[i]);
           count++;
@@ -3800,7 +3829,7 @@
     }
     function skip(ticks, newTicks, spacing, majorStart, majorEnd) {
       const start = valueOrDefault(majorStart, 0);
-      const end = Math.min(valueOrDefault(majorEnd, ticks?.length), ticks?.length);
+      const end = Math.min(valueOrDefault(majorEnd, ticks.length), ticks.length);
       let count = 0;
       let length, i, next;
       spacing = Math.ceil(spacing);
@@ -3822,7 +3851,7 @@
       }
     }
     function getEvenSpacing(arr) {
-      const len = arr?.length;
+      const len = arr.length;
       let i, diff;
       if (len < 2) {
         return false;
@@ -3839,8 +3868,8 @@
     const offsetFromEdge = (scale, edge, offset) => edge === 'top' || edge === 'left' ? scale[edge] + offset : scale[edge] - offset;
     function sample(arr, numItems) {
       const result = [];
-      const increment = arr?.length / numItems;
-      const len = arr?.length;
+      const increment = arr.length / numItems;
+      const len = arr.length;
       let i = 0;
       for (; i < len; i += increment) {
         result.push(arr[Math.floor(i)]);
@@ -3848,7 +3877,7 @@
       return result;
     }
     function getPixelForGridLine(scale, index, offsetGridLines) {
-      const length = scale.ticks?.length;
+      const length = scale.ticks.length;
       const validIndex = Math.min(index, length - 1);
       const start = scale._startPixel;
       const end = scale._endPixel;
@@ -3873,7 +3902,7 @@
     function garbageCollect(caches, length) {
       each(caches, (cache) => {
         const gc = cache.gc;
-        const gcLen = gc?.length / 2;
+        const gcLen = gc.length / 2;
         let i;
         if (gcLen > length) {
           for (i = 0; i < gcLen; ++i) {
@@ -3892,7 +3921,7 @@
       }
       const font = toFont(options.font, fallback);
       const padding = toPadding(options.padding);
-      const lines = isArray(options.text) ? options.text?.length : 1;
+      const lines = isArray(options.text) ? options.text.length : 1;
       return (lines * font.lineHeight) + padding.height;
     }
     function createScaleContext(parent, scale) {
@@ -4014,7 +4043,7 @@
           return {min, max};
         }
         const metas = me.getMatchingVisibleMetas();
-        for (let i = 0, ilen = metas?.length; i < ilen; ++i) {
+        for (let i = 0, ilen = metas.length; i < ilen; ++i) {
           range = metas[i].controller.getMinMax(me, canStack);
           if (!minDefined) {
             min = Math.min(min, range.min);
@@ -4084,7 +4113,7 @@
         me.beforeBuildTicks();
         me.ticks = me.buildTicks() || [];
         me.afterBuildTicks();
-        const samplingEnabled = sampleSize < me.ticks?.length;
+        const samplingEnabled = sampleSize < me.ticks.length;
         me._convertTicksToLabels(samplingEnabled ? sample(me.ticks, sampleSize) : me.ticks);
         me.configure();
         me.beforeCalculateLabelRotation();
@@ -4173,7 +4202,7 @@
         const me = this;
         const tickOpts = me.options.ticks;
         let i, ilen, tick;
-        for (i = 0, ilen = ticks?.length; i < ilen; i++) {
+        for (i = 0, ilen = ticks.length; i < ilen; i++) {
           tick = ticks[i];
           tick.label = callback(tickOpts.callback, [tick.value, i, ticks], me);
         }
@@ -4195,7 +4224,7 @@
         const me = this;
         const options = me.options;
         const tickOpts = options.ticks;
-        const numTicks = me.ticks?.length;
+        const numTicks = me.ticks.length;
         const minRotation = tickOpts.minRotation || 0;
         const maxRotation = tickOpts.maxRotation;
         let labelRotation = minRotation;
@@ -4246,7 +4275,7 @@
             minSize.height = me.maxHeight;
             minSize.width = getTickMarkLength(gridOpts) + titleHeight;
           }
-          if (tickOpts.display && me.ticks?.length) {
+          if (tickOpts.display && me.ticks.length) {
             const {first, last, widest, highest} = me._getLabelSizes();
             const tickPadding = tickOpts.padding * 2;
             const angleRadians = toRadians(me.labelRotation);
@@ -4278,7 +4307,7 @@
         const labelsBelowTicks = position !== 'top' && me.axis === 'x';
         if (me.isHorizontal()) {
           const offsetLeft = me.getPixelForTick(0) - me.left;
-          const offsetRight = me.right - me.getPixelForTick(me.ticks?.length - 1);
+          const offsetRight = me.right - me.getPixelForTick(me.ticks.length - 1);
           let paddingLeft = 0;
           let paddingRight = 0;
           if (isRotated) {
@@ -4344,10 +4373,10 @@
         if (!labelSizes) {
           const sampleSize = me.options.ticks.sampleSize;
           let ticks = me.ticks;
-          if (sampleSize < ticks?.length) {
+          if (sampleSize < ticks.length) {
             ticks = sample(ticks, sampleSize);
           }
-          me._labelSizes = labelSizes = me._computeLabelSizes(ticks, ticks?.length);
+          me._labelSizes = labelSizes = me._computeLabelSizes(ticks, ticks.length);
         }
         return labelSizes;
       }
@@ -4369,7 +4398,7 @@
             width = _measureText(ctx, cache.data, cache.gc, width, label);
             height = lineHeight;
           } else if (isArray(label)) {
-            for (j = 0, jlen = label?.length; j < jlen; ++j) {
+            for (j = 0, jlen = label.length; j < jlen; ++j) {
               nestedLabel = label[j];
               if (!isNullOrUndef(nestedLabel) && !isArray(nestedLabel)) {
                 width = _measureText(ctx, cache.data, cache.gc, width, nestedLabel);
@@ -4404,7 +4433,7 @@
       getValueForPixel(pixel) {}
       getPixelForTick(index) {
         const ticks = this.ticks;
-        if (index < 0 || index > ticks?.length - 1) {
+        if (index < 0 || index > ticks.length - 1) {
           return null;
         }
         return this.getPixelForValue(ticks[index].value);
@@ -4433,7 +4462,7 @@
       getContext(index) {
         const me = this;
         const ticks = me.ticks || [];
-        if (index >= 0 && index < ticks?.length) {
+        if (index >= 0 && index < ticks.length) {
           const tick = ticks[index];
           return tick.$context ||
                     (tick.$context = createTickContext(me.getContext(), index, tick));
@@ -4460,7 +4489,7 @@
         if (display !== 'auto') {
           return !!display;
         }
-        return this.getMatchingVisibleMetas()?.length > 0;
+        return this.getMatchingVisibleMetas().length > 0;
       }
       _computeGridLineItems(chartArea) {
         const me = this;
@@ -4471,7 +4500,7 @@
         const offset = grid.offset;
         const isHorizontal = me.isHorizontal();
         const ticks = me.ticks;
-        const ticksLength = ticks?.length + (offset ? 1 : 0);
+        const ticksLength = ticks.length + (offset ? 1 : 0);
         const tl = getTickMarkLength(grid);
         const items = [];
         const borderOpts = grid.setContext(me.getContext());
@@ -4630,14 +4659,14 @@
           }
         }
         const labelSizes = me._getLabelSizes();
-        for (i = 0, ilen = ticks?.length; i < ilen; ++i) {
+        for (i = 0, ilen = ticks.length; i < ilen; ++i) {
           tick = ticks[i];
           label = tick.label;
           const optsAtIndex = optionTicks.setContext(me.getContext(i));
           pixel = me.getPixelForTick(i) + optionTicks.labelOffset;
           font = me._resolveTickFontOptions(i);
           lineHeight = font.lineHeight;
-          lineCount = isArray(label) ? label?.length : 1;
+          lineCount = isArray(label) ? label.length : 1;
           const halfCount = lineCount / 2;
           const color = optsAtIndex.color;
           const strokeColor = optsAtIndex.textStrokeColor;
@@ -4833,7 +4862,7 @@
           ctx.restore();
         };
         if (grid.display) {
-          for (i = 0, ilen = items?.length; i < ilen; ++i) {
+          for (i = 0, ilen = items.length; i < ilen; ++i) {
             const item = items[i];
             if (grid.drawOnChartArea) {
               drawLine(
@@ -4899,7 +4928,7 @@
         }
         const items = me._labelItems || (me._labelItems = me._computeLabelItems(chartArea));
         let i, ilen;
-        for (i = 0, ilen = items?.length; i < ilen; ++i) {
+        for (i = 0, ilen = items.length; i < ilen; ++i) {
           const item = items[i];
           const tickFont = item.font;
           const label = item.label;
@@ -4926,7 +4955,7 @@
         if (position === 'bottom') {
           offset += padding.bottom;
           if (isArray(title.text)) {
-            offset += font.lineHeight * (title.text?.length - 1);
+            offset += font.lineHeight * (title.text.length - 1);
           }
         } else {
           offset += padding.top;
@@ -4990,7 +5019,7 @@
         const axisID = me.axis + 'AxisID';
         const result = [];
         let i, ilen;
-        for (i = 0, ilen = metas?.length; i < ilen; ++i) {
+        for (i = 0, ilen = metas.length; i < ilen; ++i) {
           const meta = metas[i];
           if (meta[axisID] === me.id && (!type || meta.type === type)) {
             result.push(meta);
@@ -5001,6 +5030,11 @@
       _resolveTickFontOptions(index) {
         const opts = this.options.ticks.setContext(this.getContext(index));
         return toFont(opts.font);
+      }
+      _maxDigits() {
+        const me = this;
+        const fontSize = me._resolveTickFontOptions(0).lineHeight;
+        return (me.isHorizontal() ? me.width : me.height) / fontSize;
       }
     }
     
@@ -5120,7 +5154,7 @@
       if (isFunction(value) && descriptors.isScriptable(prop)) {
         value = _resolveScriptable(prop, value, target, receiver);
       }
-      if (isArray(value) && value?.length) {
+      if (isArray(value) && value.length) {
         value = _resolveArray(prop, value, target, descriptors.isIndexable);
       }
       if (needsSubResolver(prop, value)) {
@@ -5144,7 +5178,7 @@
     function _resolveArray(prop, value, target, isIndexable) {
       const {_proxy, _context, _subProxy, _descriptors: descriptors} = target;
       if (defined(_context.index) && isIndexable(prop)) {
-        value = value[_context.index % value?.length];
+        value = value[_context.index % value.length];
       } else if (isObject(value[0])) {
         const arr = value;
         const scopes = _proxy._scopes.filter(s => s !== arr);
@@ -5192,19 +5226,25 @@
           return false;
         }
       }
-      return _createResolver([...set], [''], rootScopes, fallback, () => {
-        const parent = resolver._getTarget();
-        if (!(prop in parent)) {
-          parent[prop] = {};
-        }
-        return parent[prop];
-      });
+      return _createResolver([...set], [''], rootScopes, fallback,
+        () => subGetTarget(resolver, prop, value));
     }
     function addScopesFromKey(set, allScopes, key, fallback) {
       while (key) {
         key = addScopes(set, allScopes, key, fallback);
       }
       return key;
+    }
+    function subGetTarget(resolver, prop, value) {
+      const parent = resolver._getTarget();
+      if (!(prop in parent)) {
+        parent[prop] = {};
+      }
+      const target = parent[prop];
+      if (isArray(target) && isObject(value)) {
+        return value;
+      }
+      return target;
     }
     function _resolveWithPrefixes(prop, prefixes, scopes, proxy) {
       let value;
@@ -5246,7 +5286,8 @@
     }
     
     const EPSILON = Number.EPSILON || 1e-14;
-    const getPoint = (points, i) => i < points?.length && !points[i].skip && points[i];
+    const getPoint = (points, i) => i < points.length && !points[i].skip && points[i];
+    const getValueAxis = (indexAxis) => indexAxis === 'x' ? 'y' : 'x';
     function splineCurve(firstPoint, middlePoint, afterPoint, t) {
       const previous = firstPoint.skip ? middlePoint : firstPoint;
       const current = middlePoint;
@@ -5271,7 +5312,7 @@
       };
     }
     function monotoneAdjust(points, deltaK, mK) {
-      const pointsLen = points?.length;
+      const pointsLen = points.length;
       let alphaK, betaK, tauK, squaredMagnitude, pointCurrent;
       let pointAfter = getPoint(points, 0);
       for (let i = 0; i < pointsLen - 1; ++i) {
@@ -5295,9 +5336,10 @@
         mK[i + 1] = betaK * tauK * deltaK[i];
       }
     }
-    function monotoneCompute(points, mK) {
-      const pointsLen = points?.length;
-      let deltaX, pointBefore, pointCurrent;
+    function monotoneCompute(points, mK, indexAxis = 'x') {
+      const valueAxis = getValueAxis(indexAxis);
+      const pointsLen = points.length;
+      let delta, pointBefore, pointCurrent;
       let pointAfter = getPoint(points, 0);
       for (let i = 0; i < pointsLen; ++i) {
         pointBefore = pointCurrent;
@@ -5306,21 +5348,23 @@
         if (!pointCurrent) {
           continue;
         }
-        const {x, y} = pointCurrent;
+        const iPixel = pointCurrent[indexAxis];
+        const vPixel = pointCurrent[valueAxis];
         if (pointBefore) {
-          deltaX = (x - pointBefore.x) / 3;
-          pointCurrent.cp1x = x - deltaX;
-          pointCurrent.cp1y = y - deltaX * mK[i];
+          delta = (iPixel - pointBefore[indexAxis]) / 3;
+          pointCurrent[`cp1${indexAxis}`] = iPixel - delta;
+          pointCurrent[`cp1${valueAxis}`] = vPixel - delta * mK[i];
         }
         if (pointAfter) {
-          deltaX = (pointAfter.x - x) / 3;
-          pointCurrent.cp2x = x + deltaX;
-          pointCurrent.cp2y = y + deltaX * mK[i];
+          delta = (pointAfter[indexAxis] - iPixel) / 3;
+          pointCurrent[`cp2${indexAxis}`] = iPixel + delta;
+          pointCurrent[`cp2${valueAxis}`] = vPixel + delta * mK[i];
         }
       }
     }
-    function splineCurveMonotone(points) {
-      const pointsLen = points?.length;
+    function splineCurveMonotone(points, indexAxis = 'x') {
+      const valueAxis = getValueAxis(indexAxis);
+      const pointsLen = points.length;
       const deltaK = Array(pointsLen).fill(0);
       const mK = Array(pointsLen);
       let i, pointBefore, pointCurrent;
@@ -5333,8 +5377,8 @@
           continue;
         }
         if (pointAfter) {
-          const slopeDeltaX = (pointAfter.x - pointCurrent.x);
-          deltaK[i] = slopeDeltaX !== 0 ? (pointAfter.y - pointCurrent.y) / slopeDeltaX : 0;
+          const slopeDelta = pointAfter[indexAxis] - pointCurrent[indexAxis];
+          deltaK[i] = slopeDelta !== 0 ? (pointAfter[valueAxis] - pointCurrent[valueAxis]) / slopeDelta : 0;
         }
         mK[i] = !pointBefore ? deltaK[i]
           : !pointAfter ? deltaK[i - 1]
@@ -5342,7 +5386,7 @@
           : (deltaK[i - 1] + deltaK[i]) / 2;
       }
       monotoneAdjust(points, deltaK, mK);
-      monotoneCompute(points, mK);
+      monotoneCompute(points, mK, indexAxis);
     }
     function capControlPoint(pt, min, max) {
       return Math.max(Math.min(pt, max), min);
@@ -5350,7 +5394,7 @@
     function capBezierPoints(points, area) {
       let i, ilen, point, inArea, inAreaPrev;
       let inAreaNext = _isPointInArea(points[0], area);
-      for (i = 0, ilen = points?.length; i < ilen; ++i) {
+      for (i = 0, ilen = points.length; i < ilen; ++i) {
         inAreaPrev = inArea;
         inArea = inAreaNext;
         inAreaNext = i < ilen - 1 && _isPointInArea(points[i + 1], area);
@@ -5368,16 +5412,16 @@
         }
       }
     }
-    function _updateBezierControlPoints(points, options, area, loop) {
+    function _updateBezierControlPoints(points, options, area, loop, indexAxis) {
       let i, ilen, point, controlPoints;
       if (options.spanGaps) {
         points = points.filter((pt) => !pt.skip);
       }
       if (options.cubicInterpolationMode === 'monotone') {
-        splineCurveMonotone(points);
+        splineCurveMonotone(points, indexAxis);
       } else {
-        let prev = loop ? points[points?.length - 1] : points[0];
-        for (i = 0, ilen = points?.length; i < ilen; ++i) {
+        let prev = loop ? points[points.length - 1] : points[0];
+        for (i = 0, ilen = points.length; i < ilen; ++i) {
           point = points[i];
           controlPoints = splineCurve(
             prev,
@@ -5509,7 +5553,7 @@
     function getSegment(segment, points, bounds) {
       const {property, start: startBound, end: endBound} = bounds;
       const {between, normalize} = propertyFn(property);
-      const count = points?.length;
+      const count = points.length;
       let {start, end, loop} = segment;
       let i, ilen;
       if (loop) {
@@ -5535,7 +5579,7 @@
         return [segment];
       }
       const {property, start: startBound, end: endBound} = bounds;
-      const count = points?.length;
+      const count = points.length;
       const {compare, between, normalize} = propertyFn(property);
       const {start, end, loop, style} = getSegment(segment, points, bounds);
       const result = [];
@@ -5552,6 +5596,9 @@
           continue;
         }
         value = normalize(point[property]);
+        if (value === prevValue) {
+          continue;
+        }
         inside = between(value, startBound, endBound);
         if (subStart === null && shouldStart()) {
           subStart = compare(value, startBound) === 0 ? i : prev;
@@ -5571,9 +5618,9 @@
     function _boundSegments(line, bounds) {
       const result = [];
       const segments = line.segments;
-      for (let i = 0; i < segments?.length; i++) {
+      for (let i = 0; i < segments.length; i++) {
         const sub = _boundSegment(segments[i], line.points, bounds);
-        if (sub?.length) {
+        if (sub.length) {
           result.push(...sub);
         }
       }
@@ -5601,7 +5648,7 @@
       return {start, end};
     }
     function solidSegments(points, start, max, loop) {
-      const count = points?.length;
+      const count = points.length;
       const result = [];
       let last = start;
       let prev = points[start];
@@ -5630,7 +5677,7 @@
     function _computeSegments(line, segmentOptions) {
       const points = line.points;
       const spanGaps = line.options.spanGaps;
-      const count = points?.length;
+      const count = points.length;
       if (!count) {
         return [];
       }
@@ -5650,7 +5697,7 @@
       return doSplitByStyles(segments, points, segmentOptions);
     }
     function doSplitByStyles(segments, points, segmentOptions) {
-      const count = points?.length;
+      const count = points.length;
       const result = [];
       let start = segments[0].start;
       let i = start;
@@ -5956,7 +6003,7 @@
         callback(component['after' + camelMethod], [], component);
       }
       _getRegistryForType(type) {
-        for (let i = 0; i < this._typedRegistries?.length; i++) {
+        for (let i = 0; i < this._typedRegistries.length; i++) {
           const reg = this._typedRegistries[i];
           if (reg.isForType(type)) {
             return reg;
@@ -6035,11 +6082,11 @@
     function allPlugins(config) {
       const plugins = [];
       const keys = Object.keys(registry.plugins.items);
-      for (let i = 0; i < keys?.length; i++) {
+      for (let i = 0; i < keys.length; i++) {
         plugins.push(registry.getPlugin(keys[i]));
       }
       const local = config.plugins || [];
-      for (let i = 0; i < local?.length; i++) {
+      for (let i = 0; i < local.length; i++) {
         const plugin = local[i];
         if (plugins.indexOf(plugin) === -1) {
           plugins.push(plugin);
@@ -6059,7 +6106,7 @@
     function createDescriptors(chart, plugins, options, all) {
       const result = [];
       const context = chart.getContext();
-      for (let i = 0; i < plugins?.length; i++) {
+      for (let i = 0; i < plugins.length; i++) {
         const plugin = plugins[i];
         const id = plugin.id;
         const opts = getOpts(options[id], all);
@@ -6345,7 +6392,7 @@
       return false;
     }
     
-    var version = "3.2.0";
+    var version = "3.2.1";
     
     const KNOWN_POSITIONS = ['top', 'bottom', 'left', 'right', 'chartArea'];
     function positionIsHorizontal(position, axis) {
@@ -6375,7 +6422,7 @@
     function getCanvas(item) {
       if (isDomSupported() && typeof item === 'string') {
         item = document.getElementById(item);
-      } else if (item && item?.length) {
+      } else if (item && item.length) {
         item = item[0];
       }
       if (item && item.canvas) {
@@ -6422,6 +6469,7 @@
         this._active = [];
         this._lastEvent = undefined;
         this._listeners = {};
+        this._responsiveListeners = undefined;
         this._sortedMetasets = [];
         this.scales = {};
         this.scale = undefined;
@@ -6507,15 +6555,13 @@
         const canvas = me.canvas;
         const aspectRatio = options.maintainAspectRatio && me.aspectRatio;
         const newSize = me.platform.getMaximumSize(canvas, width, height, aspectRatio);
-        const oldRatio = me.currentDevicePixelRatio;
         const newRatio = options.devicePixelRatio || me.platform.getDevicePixelRatio();
-        if (me.width === newSize.width && me.height === newSize.height && oldRatio === newRatio) {
-          return;
-        }
         me.width = newSize.width;
         me.height = newSize.height;
         me._aspectRatio = me.aspectRatio;
-        retinaScale(me, newRatio, true);
+        if (!retinaScale(me, newRatio, true)) {
+          return;
+        }
         me.notifyPlugins('resize', {size: newSize});
         callback(options.onResize, [me, newSize], me);
         if (me.attached) {
@@ -6602,8 +6648,8 @@
       _updateMetasets() {
         const me = this;
         const metasets = me._metasets;
-        const numData = me.data.datasets?.length;
-        const numMeta = metasets?.length;
+        const numData = me.data.datasets.length;
+        const numMeta = metasets.length;
         if (numMeta > numData) {
           for (let i = numData; i < numMeta; ++i) {
             me._destroyDatasetMeta(i);
@@ -6615,11 +6661,11 @@
       _removeUnreferencedMetasets() {
         const me = this;
         const {_metasets: metasets, data: {datasets}} = me;
-        if (metasets?.length > datasets?.length) {
+        if (metasets.length > datasets.length) {
           delete me._stacks;
         }
         metasets.forEach((meta, index) => {
-          if (datasets.filter(x => x === meta._dataset)?.length === 0) {
+          if (datasets.filter(x => x === meta._dataset).length === 0) {
             me._destroyDatasetMeta(index);
           }
         });
@@ -6630,7 +6676,7 @@
         const datasets = me.data.datasets;
         let i, ilen;
         me._removeUnreferencedMetasets();
-        for (i = 0, ilen = datasets?.length; i < ilen; i++) {
+        for (i = 0, ilen = datasets.length; i < ilen; i++) {
           const dataset = datasets[i];
           let meta = me.getDatasetMeta(i);
           const type = dataset.type || me.config.type;
@@ -6684,7 +6730,7 @@
         me.buildOrUpdateScales();
         const existingEvents = new Set(Object.keys(me._listeners));
         const newEvents = new Set(me.options.events);
-        if (!setsEqual(existingEvents, newEvents)) {
+        if (!setsEqual(existingEvents, newEvents) || !!this._responsiveListeners !== me.options.responsive) {
           me.unbindEvents();
           me.bindEvents();
         }
@@ -6695,7 +6741,7 @@
         const newControllers = me.buildOrUpdateControllers();
         me.notifyPlugins('beforeElementsUpdate');
         let minPadding = 0;
-        for (let i = 0, ilen = me.data.datasets?.length; i < ilen; i++) {
+        for (let i = 0, ilen = me.data.datasets.length; i < ilen; i++) {
           const {controller} = me.getDatasetMeta(i);
           const reset = !animsDisabled && newControllers.indexOf(controller) === -1;
           controller.buildOrUpdateElements(reset);
@@ -6745,7 +6791,7 @@
         if (me.notifyPlugins('beforeDatasetsUpdate', {mode, cancelable: true}) === false) {
           return;
         }
-        for (let i = 0, ilen = me.data.datasets?.length; i < ilen; ++i) {
+        for (let i = 0, ilen = me.data.datasets.length; i < ilen; ++i) {
           me._updateDataset(i, isFunction ? mode({datasetIndex: i}) : mode);
         }
         me.notifyPlugins('afterDatasetsUpdate', {mode});
@@ -6791,11 +6837,11 @@
           return;
         }
         const layers = me._layers;
-        for (i = 0; i < layers?.length && layers[i].z <= 0; ++i) {
+        for (i = 0; i < layers.length && layers[i].z <= 0; ++i) {
           layers[i].draw(me.chartArea);
         }
         me._drawDatasets();
-        for (; i < layers?.length; ++i) {
+        for (; i < layers.length; ++i) {
           layers[i].draw(me.chartArea);
         }
         me.notifyPlugins('afterDraw');
@@ -6805,7 +6851,7 @@
         const metasets = me._sortedMetasets;
         const result = [];
         let i, ilen;
-        for (i = 0, ilen = metasets?.length; i < ilen; ++i) {
+        for (i = 0, ilen = metasets.length; i < ilen; ++i) {
           const meta = metasets[i];
           if (!filterVisible || meta.visible) {
             result.push(meta);
@@ -6822,7 +6868,7 @@
           return;
         }
         const metasets = me.getSortedVisibleDatasetMetas();
-        for (let i = metasets?.length - 1; i >= 0; --i) {
+        for (let i = metasets.length - 1; i >= 0; --i) {
           me._drawDataset(metasets[i]);
         }
         me.notifyPlugins('afterDatasetsDraw');
@@ -6885,7 +6931,7 @@
         return this.$context || (this.$context = {chart: this, type: 'chart'});
       }
       getVisibleDatasetCount() {
-        return this.getSortedVisibleDatasetMetas()?.length;
+        return this.getSortedVisibleDatasetMetas().length;
       }
       isDatasetVisible(datasetIndex) {
         const dataset = this.data.datasets[datasetIndex];
@@ -6934,7 +6980,7 @@
         let i, ilen;
         me.stop();
         animator.remove(me);
-        for (i = 0, ilen = me.data.datasets?.length; i < ilen; ++i) {
+        for (i = 0, ilen = me.data.datasets.length; i < ilen; ++i) {
           me._destroyDatasetMeta(i);
         }
         me.config.clearCache();
@@ -6952,8 +6998,34 @@
         return this.canvas.toDataURL(...args);
       }
       bindEvents() {
+        this.bindUserEvents();
+        if (this.options.responsive) {
+          this.bindResponsiveEvents();
+        } else {
+          this.attached = true;
+        }
+      }
+      bindUserEvents() {
         const me = this;
         const listeners = me._listeners;
+        const platform = me.platform;
+        const _add = (type, listener) => {
+          platform.addEventListener(me, type, listener);
+          listeners[type] = listener;
+        };
+        const listener = function(e, x, y) {
+          e.offsetX = x;
+          e.offsetY = y;
+          me._eventHandler(e);
+        };
+        each(me.options.events, (type) => _add(type, listener));
+      }
+      bindResponsiveEvents() {
+        const me = this;
+        if (!me._responsiveListeners) {
+          me._responsiveListeners = {};
+        }
+        const listeners = me._responsiveListeners;
         const platform = me.platform;
         const _add = (type, listener) => {
           platform.addEventListener(me, type, listener);
@@ -6965,50 +7037,40 @@
             delete listeners[type];
           }
         };
-        let listener = function(e, x, y) {
-          e.offsetX = x;
-          e.offsetY = y;
-          me._eventHandler(e);
-        };
-        each(me.options.events, (type) => _add(type, listener));
-        if (me.options.responsive) {
-          listener = (width, height) => {
-            if (me.canvas) {
-              me.resize(width, height);
-            }
-          };
-          let detached;
-          const attached = () => {
-            _remove('attach', attached);
-            me.attached = true;
-            me.resize();
-            _add('resize', listener);
-            _add('detach', detached);
-          };
-          detached = () => {
-            me.attached = false;
-            _remove('resize', listener);
-            _add('attach', attached);
-          };
-          if (platform.isAttached(me.canvas)) {
-            attached();
-          } else {
-            detached();
+        const listener = (width, height) => {
+          if (me.canvas) {
+            me.resize(width, height);
           }
-        } else {
+        };
+        let detached;
+        const attached = () => {
+          _remove('attach', attached);
           me.attached = true;
+          me.resize();
+          _add('resize', listener);
+          _add('detach', detached);
+        };
+        detached = () => {
+          me.attached = false;
+          _remove('resize', listener);
+          _add('attach', attached);
+        };
+        if (platform.isAttached(me.canvas)) {
+          attached();
+        } else {
+          detached();
         }
       }
       unbindEvents() {
         const me = this;
-        const listeners = me._listeners;
-        if (!listeners) {
-          return;
-        }
-        me._listeners = {};
-        each(listeners, (listener, type) => {
+        each(me._listeners, (listener, type) => {
           me.platform.removeEventListener(me, type, listener);
         });
+        me._listeners = {};
+        each(me._responsiveListeners, (listener, type) => {
+          me.platform.removeEventListener(me, type, listener);
+        });
+        me._responsiveListeners = undefined;
       }
       updateHoverStyle(items, mode, enabled) {
         const prefix = enabled ? 'set' : 'remove';
@@ -7017,7 +7079,7 @@
           meta = this.getDatasetMeta(items[0].datasetIndex);
           meta.controller['_' + prefix + 'DatasetHoverStyle']();
         }
-        for (i = 0, ilen = items?.length; i < ilen; ++i) {
+        for (i = 0, ilen = items.length; i < ilen; ++i) {
           item = items[i];
           const controller = item && this.getDatasetMeta(item.datasetIndex).controller;
           if (controller) {
@@ -7057,10 +7119,10 @@
         const diff = (a, b) => a.filter(x => !b.some(y => x.datasetIndex === y.datasetIndex && x.index === y.index));
         const deactivated = diff(lastActive, active);
         const activated = replay ? active : diff(active, lastActive);
-        if (deactivated?.length) {
+        if (deactivated.length) {
           me.updateHoverStyle(deactivated, hoverOptions.mode, false);
         }
-        if (activated?.length && hoverOptions.mode) {
+        if (activated.length && hoverOptions.mode) {
           me.updateHoverStyle(activated, hoverOptions.mode, true);
         }
       }
@@ -7190,7 +7252,7 @@
       if (!scale._cache.$bar) {
         const metas = scale.getMatchingVisibleMetas('bar');
         let values = [];
-        for (let i = 0, ilen = metas?.length; i < ilen; i++) {
+        for (let i = 0, ilen = metas.length; i < ilen; i++) {
           values = values.concat(metas[i].controller.getAllParsedValues(scale));
         }
         scale._cache.$bar = _arrayUnique(values.sort((a, b) => a - b));
@@ -7202,14 +7264,20 @@
       let min = scale._length;
       let i, ilen, curr, prev;
       const updateMinAndPrev = () => {
-        min = Math.min(min, i && Math.abs(curr - prev) || min);
+        if (curr === 32767 || curr === -32768) {
+          return;
+        }
+        if (defined(prev)) {
+          min = Math.min(min, Math.abs(curr - prev) || min);
+        }
         prev = curr;
       };
-      for (i = 0, ilen = values?.length; i < ilen; ++i) {
+      for (i = 0, ilen = values.length; i < ilen; ++i) {
         curr = scale.getPixelForValue(values[i]);
         updateMinAndPrev();
       }
-      for (i = 0, ilen = scale.ticks?.length; i < ilen; ++i) {
+      prev = undefined;
+      for (i = 0, ilen = scale.ticks.length; i < ilen; ++i) {
         curr = scale.getPixelForTick(i);
         updateMinAndPrev();
       }
@@ -7235,7 +7303,7 @@
       const pixels = ruler.pixels;
       const curr = pixels[index];
       let prev = index > 0 ? pixels[index - 1] : null;
-      let next = index < pixels?.length - 1 ? pixels[index + 1] : null;
+      let next = index < pixels.length - 1 ? pixels[index + 1] : null;
       const percent = options.categoryPercentage;
       if (prev === null) {
         prev = curr - (next === null ? ruler.end - ruler.start : next - curr);
@@ -7352,7 +7420,7 @@
       update(mode) {
         const me = this;
         const meta = me._cachedMeta;
-        me.updateElements(meta.data, 0, meta.data?.length, mode);
+        me.updateElements(meta.data, 0, meta.data.length, mode);
       }
       updateElements(bars, start, count, mode) {
         const me = this;
@@ -7391,7 +7459,7 @@
         const iScale = meta.iScale;
         const metasets = iScale.getMatchingVisibleMetas(me._type);
         const stacked = iScale.options.stacked;
-        const ilen = metasets?.length;
+        const ilen = metasets.length;
         const stacks = [];
         let i, item;
         for (i = 0; i < ilen; ++i) {
@@ -7412,13 +7480,13 @@
             break;
           }
         }
-        if (!stacks?.length) {
+        if (!stacks.length) {
           stacks.push(undefined);
         }
         return stacks;
       }
       _getStackCount(index) {
-        return this._getStacks(undefined, index)?.length;
+        return this._getStacks(undefined, index).length;
       }
       _getStackIndex(datasetIndex, name, dataIndex) {
         const stacks = this._getStacks(datasetIndex, dataIndex);
@@ -7426,7 +7494,7 @@
           ? stacks.indexOf(name)
           : -1;
         return (index === -1)
-          ? stacks?.length - 1
+          ? stacks.length - 1
           : index;
       }
       _getRuler() {
@@ -7436,7 +7504,7 @@
         const iScale = meta.iScale;
         const pixels = [];
         let i, ilen;
-        for (i = 0, ilen = meta.data?.length; i < ilen; ++i) {
+        for (i = 0, ilen = meta.data.length; i < ilen; ++i) {
           pixels.push(iScale.getPixelForValue(me.getParsed(i)[iScale.axis], i));
         }
         const barThickness = opts.barThickness;
@@ -7540,7 +7608,7 @@
         const meta = me._cachedMeta;
         const vScale = meta.vScale;
         const rects = meta.data;
-        const ilen = rects?.length;
+        const ilen = rects.length;
         let i = 0;
         clipArea(chart.ctx, chart.chartArea);
         for (; i < ilen; ++i) {
@@ -7607,7 +7675,7 @@
       getMaxOverflow() {
         const {data, _parsed} = this._cachedMeta;
         let max = 0;
-        for (let i = data?.length - 1; i >= 0; --i) {
+        for (let i = data.length - 1; i >= 0; --i) {
           max = Math.max(max, data[i].size() / 2, _parsed[i]._custom);
         }
         return max > 0 && max;
@@ -7628,25 +7696,24 @@
       update(mode) {
         const me = this;
         const points = me._cachedMeta.data;
-        me.updateElements(points, 0, points?.length, mode);
+        me.updateElements(points, 0, points.length, mode);
       }
       updateElements(points, start, count, mode) {
         const me = this;
         const reset = mode === 'reset';
-        const {xScale, yScale} = me._cachedMeta;
+        const {iScale, vScale} = me._cachedMeta;
         const firstOpts = me.resolveDataElementOptions(start, mode);
         const sharedOptions = me.getSharedOptions(firstOpts);
         const includeOptions = me.includeOptions(mode, sharedOptions);
+        const iAxis = iScale.axis;
+        const vAxis = vScale.axis;
         for (let i = start; i < start + count; i++) {
           const point = points[i];
           const parsed = !reset && me.getParsed(i);
-          const x = reset ? xScale.getPixelForDecimal(0.5) : xScale.getPixelForValue(parsed.x);
-          const y = reset ? yScale.getBasePixel() : yScale.getPixelForValue(parsed.y);
-          const properties = {
-            x,
-            y,
-            skip: isNaN(x) || isNaN(y)
-          };
+          const properties = {};
+          const iPixel = properties[iAxis] = reset ? iScale.getPixelForDecimal(0.5) : iScale.getPixelForValue(parsed[iAxis]);
+          const vPixel = properties[vAxis] = reset ? vScale.getBasePixel() : vScale.getPixelForValue(parsed[vAxis]);
+          properties.skip = isNaN(iPixel) || isNaN(vPixel);
           if (includeOptions) {
             properties.options = me.resolveDataElementOptions(i, mode);
             if (reset) {
@@ -7714,8 +7781,8 @@
         const startY = Math.sin(startAngle);
         const endX = Math.cos(endAngle);
         const endY = Math.sin(endAngle);
-        const calcMax = (angle, a, b) => _angleBetween(angle, startAngle, endAngle) ? 1 : Math.max(a, a * cutout, b, b * cutout);
-        const calcMin = (angle, a, b) => _angleBetween(angle, startAngle, endAngle) ? -1 : Math.min(a, a * cutout, b, b * cutout);
+        const calcMax = (angle, a, b) => _angleBetween(angle, startAngle, endAngle, true) ? 1 : Math.max(a, a * cutout, b, b * cutout);
+        const calcMin = (angle, a, b) => _angleBetween(angle, startAngle, endAngle, true) ? -1 : Math.min(a, a * cutout, b, b * cutout);
         const maxX = calcMax(0, startX, endX);
         const maxY = calcMax(HALF_PI, startY, endY);
         const minX = calcMin(PI, startX, endX);
@@ -7755,7 +7822,7 @@
         let min = TAU;
         let max = -TAU;
         const me = this;
-        for (let i = 0; i < me.chart.data.datasets?.length; ++i) {
+        for (let i = 0; i < me.chart.data.datasets.length; ++i) {
           if (me.chart.isDatasetVisible(i)) {
             const controller = me.chart.getDatasetMeta(i).controller;
             const rotation = controller._getRotation();
@@ -7792,7 +7859,7 @@
         meta.total = me.calculateTotal();
         me.outerRadius = outerRadius - radiusLength * me._getRingWeightOffset(me.index);
         me.innerRadius = Math.max(me.outerRadius - radiusLength * chartWeight, 0);
-        me.updateElements(arcs, 0, arcs?.length, mode);
+        me.updateElements(arcs, 0, arcs.length, mode);
       }
       _circumference(i, reset) {
         const me = this;
@@ -7849,7 +7916,7 @@
         const metaData = meta.data;
         let total = 0;
         let i;
-        for (i = 0; i < metaData?.length; i++) {
+        for (i = 0; i < metaData.length; i++) {
           const value = meta._parsed[i];
           if (value !== null && !isNaN(value) && this.chart.getDataVisibility(i)) {
             total += Math.abs(value);
@@ -7881,7 +7948,7 @@
         const chart = me.chart;
         let i, ilen, meta, controller, options;
         if (!arcs) {
-          for (i = 0, ilen = chart.data.datasets?.length; i < ilen; ++i) {
+          for (i = 0, ilen = chart.data.datasets.length; i < ilen; ++i) {
             if (chart.isDatasetVisible(i)) {
               meta = chart.getDatasetMeta(i);
               arcs = meta.data;
@@ -7896,7 +7963,7 @@
         if (!arcs) {
           return 0;
         }
-        for (i = 0, ilen = arcs?.length; i < ilen; ++i) {
+        for (i = 0, ilen = arcs.length; i < ilen; ++i) {
           options = controller.resolveDataElementOptions(i);
           if (options.borderAlign !== 'inner') {
             max = Math.max(max, options.borderWidth || 0, options.hoverBorderWidth || 0);
@@ -7906,7 +7973,7 @@
       }
       getMaxOffset(arcs) {
         let max = 0;
-        for (let i = 0, ilen = arcs?.length; i < ilen; ++i) {
+        for (let i = 0, ilen = arcs.length; i < ilen; ++i) {
           const options = this.resolveDataElementOptions(i);
           max = Math.max(max, options.offset || 0, options.hoverOffset || 0);
         }
@@ -7925,7 +7992,7 @@
         return Math.max(valueOrDefault(this.chart.data.datasets[datasetIndex].weight, 1), 0);
       }
       _getVisibleDatasetWeightTotal() {
-        return this._getRingWeightOffset(this.chart.data.datasets?.length) || 1;
+        return this._getRingWeightOffset(this.chart.data.datasets.length) || 1;
       }
     }
     DoughnutController.id = 'doughnut';
@@ -7955,7 +8022,7 @@
           labels: {
             generateLabels(chart) {
               const data = chart.data;
-              if (data.labels?.length && data.datasets?.length) {
+              if (data.labels.length && data.datasets.length) {
                 return data.labels.map((label, i) => {
                   const meta = chart.getDatasetMeta(0);
                   const style = meta.controller.getStyle(i);
@@ -8013,7 +8080,7 @@
         me._drawCount = count;
         if (scaleRangesChanged(meta)) {
           start = 0;
-          count = points?.length;
+          count = points.length;
         }
         line._decimated = !!_dataset._decimated;
         line.points = points;
@@ -8031,10 +8098,12 @@
       updateElements(points, start, count, mode) {
         const me = this;
         const reset = mode === 'reset';
-        const {xScale, yScale, _stacked} = me._cachedMeta;
+        const {iScale, vScale, _stacked} = me._cachedMeta;
         const firstOpts = me.resolveDataElementOptions(start, mode);
         const sharedOptions = me.getSharedOptions(firstOpts);
         const includeOptions = me.includeOptions(mode, sharedOptions);
+        const iAxis = iScale.axis;
+        const vAxis = vScale.axis;
         const spanGaps = me.options.spanGaps;
         const maxGapLength = isNumber(spanGaps) ? spanGaps : Number.POSITIVE_INFINITY;
         const directUpdate = me.chart._animationsDisabled || reset || mode === 'none';
@@ -8043,11 +8112,11 @@
           const point = points[i];
           const parsed = me.getParsed(i);
           const properties = directUpdate ? point : {};
-          const nullData = isNullOrUndef(parsed.y);
-          const x = properties.x = xScale.getPixelForValue(parsed.x, i);
-          const y = properties.y = reset || nullData ? yScale.getBasePixel() : yScale.getPixelForValue(_stacked ? me.applyStack(yScale, parsed, _stacked) : parsed.y, i);
-          properties.skip = isNaN(x) || isNaN(y) || nullData;
-          properties.stop = i > 0 && (parsed.x - prevParsed.x) > maxGapLength;
+          const nullData = isNullOrUndef(parsed[vAxis]);
+          const iPixel = properties[iAxis] = iScale.getPixelForValue(parsed[iAxis], i);
+          const vPixel = properties[vAxis] = reset || nullData ? vScale.getBasePixel() : vScale.getPixelForValue(_stacked ? me.applyStack(vScale, parsed, _stacked) : parsed[vAxis], i);
+          properties.skip = isNaN(iPixel) || isNaN(vPixel) || nullData;
+          properties.stop = i > 0 && (parsed[iAxis] - prevParsed[iAxis]) > maxGapLength;
           properties.parsed = parsed;
           if (includeOptions) {
             properties.options = sharedOptions || me.resolveDataElementOptions(i, mode);
@@ -8065,15 +8134,16 @@
         const dataset = meta.dataset;
         const border = dataset.options && dataset.options.borderWidth || 0;
         const data = meta.data || [];
-        if (!data?.length) {
+        if (!data.length) {
           return border;
         }
         const firstPoint = data[0].size(me.resolveDataElementOptions(0));
-        const lastPoint = data[data?.length - 1].size(me.resolveDataElementOptions(data?.length - 1));
+        const lastPoint = data[data.length - 1].size(me.resolveDataElementOptions(data.length - 1));
         return Math.max(border, firstPoint, lastPoint) / 2;
       }
       draw() {
-        this._cachedMeta.dataset.updateControlPoints(this.chart.chartArea);
+        const meta = this._cachedMeta;
+        meta.dataset.updateControlPoints(this.chart.chartArea, meta.iScale.axis);
         super.draw();
       }
     }
@@ -8095,7 +8165,7 @@
       }
     };
     function getStartAndCountOfVisiblePoints(meta, points, animationsDisabled) {
-      const pointCount = points?.length;
+      const pointCount = points.length;
       let start = 0;
       let count = pointCount;
       if (meta._sorted) {
@@ -8145,10 +8215,21 @@
         this.innerRadius = undefined;
         this.outerRadius = undefined;
       }
+      getLabelAndValue(index) {
+        const me = this;
+        const meta = me._cachedMeta;
+        const chart = me.chart;
+        const labels = chart.data.labels || [];
+        const value = formatNumber(meta._parsed[index].r, chart.options.locale);
+        return {
+          label: labels[index] || '',
+          value,
+        };
+      }
       update(mode) {
         const arcs = this._cachedMeta.data;
         this._updateRadius();
-        this.updateElements(arcs, 0, arcs?.length, mode);
+        this.updateElements(arcs, 0, arcs.length, mode);
       }
       _updateRadius() {
         const me = this;
@@ -8245,7 +8326,7 @@
           labels: {
             generateLabels(chart) {
               const data = chart.data;
-              if (data.labels?.length && data.datasets?.length) {
+              if (data.labels.length && data.datasets.length) {
                 return data.labels.map((label, i) => {
                   const meta = chart.getDatasetMeta(0);
                   const style = meta.controller.getStyle(i);
@@ -8330,12 +8411,12 @@
           }
           const properties = {
             _loop: true,
-            _fullLoop: labels?.length === points?.length,
+            _fullLoop: labels.length === points.length,
             options
           };
           me.updateElement(line, undefined, properties, mode);
         }
-        me.updateElements(points, 0, points?.length, mode);
+        me.updateElements(points, 0, points.length, mode);
       }
       updateElements(points, start, count, mode) {
         const me = this;
@@ -8463,10 +8544,15 @@
         y: y + r * Math.sin(theta),
       };
     }
-    function pathArc(ctx, element) {
-      const {x, y, startAngle, endAngle, pixelMargin} = element;
-      const outerRadius = Math.max(element.outerRadius - pixelMargin, 0);
-      const innerRadius = element.innerRadius + pixelMargin;
+    function pathArc(ctx, element, offset) {
+      const {x, y, startAngle: start, endAngle: end, pixelMargin, innerRadius: innerR} = element;
+      const outerRadius = Math.max(element.outerRadius + offset - pixelMargin, 0);
+      const innerRadius = innerR > 0 ? innerR + offset + pixelMargin : 0;
+      const alpha = end - start;
+      const beta = Math.max(0.001, alpha * outerRadius - offset / PI) / outerRadius;
+      const angleOffset = (alpha - beta) / 2;
+      const startAngle = start + angleOffset;
+      const endAngle = end - angleOffset;
       const {outerStart, outerEnd, innerStart, innerEnd} = parseBorderRadius$1(element, innerRadius, outerRadius, endAngle - startAngle);
       const outerStartAdjustedRadius = outerRadius - outerStart;
       const outerEndAdjustedRadius = outerRadius - outerEnd;
@@ -8501,10 +8587,10 @@
       }
       ctx.closePath();
     }
-    function drawArc(ctx, element) {
+    function drawArc(ctx, element, offset) {
       if (element.fullCircles) {
         element.endAngle = element.startAngle + TAU;
-        pathArc(ctx, element);
+        pathArc(ctx, element, offset);
         for (let i = 0; i < element.fullCircles; ++i) {
           ctx.fill();
         }
@@ -8512,7 +8598,7 @@
       if (!isNaN(element.circumference)) {
         element.endAngle = element.startAngle + element.circumference % TAU;
       }
-      pathArc(ctx, element);
+      pathArc(ctx, element, offset);
       ctx.fill();
     }
     function drawFullCircleBorders(ctx, element, inner) {
@@ -8540,7 +8626,7 @@
         ctx.stroke();
       }
     }
-    function drawBorder(ctx, element) {
+    function drawBorder(ctx, element, offset) {
       const {options} = element;
       const inner = options.borderAlign === 'inner';
       if (!options.borderWidth) {
@@ -8559,7 +8645,7 @@
       if (inner) {
         clipArc(ctx, element);
       }
-      pathArc(ctx, element);
+      pathArc(ctx, element, offset);
       ctx.stroke();
     }
     class ArcElement extends Element {
@@ -8613,21 +8699,26 @@
       draw(ctx) {
         const me = this;
         const options = me.options;
-        const offset = options.offset || 0;
+        const offset = (options.offset || 0) / 2;
         me.pixelMargin = (options.borderAlign === 'inner') ? 0.33 : 0;
         me.fullCircles = Math.floor(me.circumference / TAU);
         if (me.circumference === 0 || me.innerRadius < 0 || me.outerRadius < 0) {
           return;
         }
         ctx.save();
-        if (offset && me.circumference < TAU) {
+        let radiusOffset = 0;
+        if (offset) {
+          radiusOffset = offset / 2;
           const halfAngle = (me.startAngle + me.endAngle) / 2;
-          ctx.translate(Math.cos(halfAngle) * offset, Math.sin(halfAngle) * offset);
+          ctx.translate(Math.cos(halfAngle) * radiusOffset, Math.sin(halfAngle) * radiusOffset);
+          if (me.circumference >= PI) {
+            radiusOffset = offset;
+          }
         }
         ctx.fillStyle = options.backgroundColor;
         ctx.strokeStyle = options.borderColor;
-        drawArc(ctx, me);
-        drawBorder(ctx, me);
+        drawArc(ctx, me, radiusOffset);
+        drawBorder(ctx, me, radiusOffset);
         ctx.restore();
       }
     }
@@ -8659,13 +8750,13 @@
       if (options.stepped) {
         return _steppedLineTo;
       }
-      if (options.tension) {
+      if (options.tension || options.cubicInterpolationMode === 'monotone') {
         return _bezierCurveTo;
       }
       return lineTo;
     }
     function pathVars(points, segment, params = {}) {
-      const count = points?.length;
+      const count = points.length;
       const {start: paramsStart = 0, end: paramsEnd = count - 1} = params;
       const {start: segmentStart, end: segmentEnd} = segment;
       const start = Math.max(paramsStart, segmentStart);
@@ -8749,15 +8840,15 @@
     }
     function _getSegmentMethod(line) {
       const opts = line.options;
-      const borderDash = opts.borderDash && opts.borderDash?.length;
-      const useFastPath = !line._decimated && !line._loop && !opts.tension && !opts.stepped && !borderDash;
+      const borderDash = opts.borderDash && opts.borderDash.length;
+      const useFastPath = !line._decimated && !line._loop && !opts.tension && opts.cubicInterpolationMode !== 'monotone' && !opts.stepped && !borderDash;
       return useFastPath ? fastPathSegment : pathSegment;
     }
     function _getInterpolationMethod(options) {
       if (options.stepped) {
         return _steppedInterpolation;
       }
-      if (options.tension) {
+      if (options.tension || options.cubicInterpolationMode === 'monotone') {
         return _bezierInterpolation;
       }
       return _pointInLine;
@@ -8787,7 +8878,7 @@
     }
     const usePath2D = typeof Path2D === 'function';
     function draw(ctx, line, start, count) {
-      if (usePath2D && line.segments?.length === 1) {
+      if (usePath2D && line.segments.length === 1) {
         strokePathWithCache(ctx, line, start, count);
       } else {
         strokePathDirect(ctx, line, start, count);
@@ -8809,12 +8900,12 @@
           Object.assign(this, cfg);
         }
       }
-      updateControlPoints(chartArea) {
+      updateControlPoints(chartArea, indexAxis) {
         const me = this;
         const options = me.options;
-        if (options.tension && !options.stepped && !me._pointsUpdated) {
+        if ((options.tension || options.cubicInterpolationMode === 'monotone') && !options.stepped && !me._pointsUpdated) {
           const loop = options.spanGaps ? me._loop : me._fullLoop;
-          _updateBezierControlPoints(me._points, options, chartArea, loop);
+          _updateBezierControlPoints(me._points, options, chartArea, loop, indexAxis);
           me._pointsUpdated = true;
         }
       }
@@ -8834,12 +8925,12 @@
       first() {
         const segments = this.segments;
         const points = this.points;
-        return segments?.length && points[segments[0].start];
+        return segments.length && points[segments[0].start];
       }
       last() {
         const segments = this.segments;
         const points = this.points;
-        const count = segments?.length;
+        const count = segments.length;
         return count && points[segments[count - 1].end];
       }
       interpolate(point, property) {
@@ -8848,13 +8939,13 @@
         const value = point[property];
         const points = me.points;
         const segments = _boundSegments(me, {property, start: value, end: value});
-        if (!segments?.length) {
+        if (!segments.length) {
           return;
         }
         const result = [];
         const _interpolate = _getInterpolationMethod(options);
         let i, ilen;
-        for (i = 0, ilen = segments?.length; i < ilen; ++i) {
+        for (i = 0, ilen = segments.length; i < ilen; ++i) {
           const {start, end} = segments[i];
           const p1 = points[start];
           const p2 = points[end];
@@ -8867,7 +8958,7 @@
           interpolated[property] = point[property];
           result.push(interpolated);
         }
-        return result?.length === 1 ? result[0] : result;
+        return result.length === 1 ? result[0] : result;
       }
       pathSegment(ctx, segment, params) {
         const segmentMethod = _getSegmentMethod(this);
@@ -8879,7 +8970,7 @@
         const segmentMethod = _getSegmentMethod(me);
         let loop = me._loop;
         start = start || 0;
-        count = count || (me.points?.length - start);
+        count = count || (me.points.length - start);
         for (const segment of segments) {
           loop &= segmentMethod(ctx, me, segment, {start, end: start + count - 1});
         }
@@ -8889,7 +8980,7 @@
         const me = this;
         const options = me.options || {};
         const points = me.points || [];
-        if (!points?.length || !options.borderWidth) {
+        if (!points.length || !options.borderWidth) {
           return;
         }
         ctx.save();
@@ -9294,7 +9385,7 @@
       });
     }
     function getStartAndCountOfVisiblePointsSimplified(meta, points) {
-      const pointCount = points?.length;
+      const pointCount = points.length;
       let start = 0;
       let count;
       const {iScale} = meta;
@@ -9460,7 +9551,7 @@
     function computeCircularBoundary(source) {
       const {scale, fill} = source;
       const options = scale.options;
-      const length = scale.getLabels()?.length;
+      const length = scale.getLabels().length;
       const target = [];
       const start = options.reverse ? scale.max : scale.min;
       const end = options.reverse ? scale.min : scale.max;
@@ -9518,7 +9609,7 @@
       const sourcePoints = line.points;
       const linesBelow = getLinesBelow(chart, index);
       linesBelow.push(createBoundaryLine({x: null, y: scale.bottom}, line));
-      for (let i = 0; i < segments?.length; i++) {
+      for (let i = 0; i < segments.length; i++) {
         const segment = segments[i];
         for (let j = segment.start; j <= segment.end; j++) {
           addPointsBelow(points, sourcePoints[j], linesBelow);
@@ -9530,7 +9621,7 @@
     function getLinesBelow(chart, index) {
       const below = [];
       const metas = chart.getSortedVisibleDatasetMetas();
-      for (let i = 0; i < metas?.length; i++) {
+      for (let i = 0; i < metas.length; i++) {
         const meta = metas[i];
         if (meta.index === index) {
           break;
@@ -9543,7 +9634,7 @@
     }
     function addPointsBelow(points, sourcePoint, linesBelow) {
       const postponed = [];
-      for (let j = 0; j < linesBelow?.length; j++) {
+      for (let j = 0; j < linesBelow.length; j++) {
         const line = linesBelow[j];
         const {first, last, point} = findPoint(line, sourcePoint, 'x');
         if (!point || (first && last)) {
@@ -9570,7 +9661,7 @@
       const linePoints = line.points;
       let first = false;
       let last = false;
-      for (let i = 0; i < segments?.length; i++) {
+      for (let i = 0; i < segments.length; i++) {
         const segment = segments[i];
         const firstValue = linePoints[segment.start][property];
         const lastValue = linePoints[segment.end][property];
@@ -9605,7 +9696,7 @@
       } else {
         points = pointsFromSegments(boundary, line);
       }
-      return points?.length ? new LineElement({
+      return points.length ? new LineElement({
         points,
         options: {tension: 0},
         _loop,
@@ -9759,7 +9850,7 @@
       const fillOption = lineOpts.fill;
       const color = lineOpts.backgroundColor;
       const {above = color, below = color} = fillOption || {};
-      if (target && line.points?.length) {
+      if (target && line.points.length) {
         clipArea(ctx, area);
         doFill(ctx, {line, target, above, below, area, scale, axis});
         unclipArea(ctx);
@@ -9768,7 +9859,7 @@
     var plugin_filler = {
       id: 'filler',
       afterDatasetsUpdate(chart, _args, options) {
-        const count = (chart.data.datasets || [])?.length;
+        const count = (chart.data.datasets || []).length;
         const sources = [];
         let meta, i, line, source;
         for (i = 0; i < count; ++i) {
@@ -9801,12 +9892,12 @@
         const draw = options.drawTime === 'beforeDraw';
         const metasets = chart.getSortedVisibleDatasetMetas();
         const area = chart.chartArea;
-        for (let i = metasets?.length - 1; i >= 0; --i) {
+        for (let i = metasets.length - 1; i >= 0; --i) {
           const source = metasets[i].$filler;
           if (!source) {
             continue;
           }
-          source.line.updateControlPoints(area);
+          source.line.updateControlPoints(area, source.axis);
           if (draw) {
             drawfill(chart.ctx, source, area);
           }
@@ -9817,7 +9908,7 @@
           return;
         }
         const metasets = chart.getSortedVisibleDatasetMetas();
-        for (let i = metasets?.length - 1; i >= 0; --i) {
+        for (let i = metasets.length - 1; i >= 0; --i) {
           const source = metasets[i].$filler;
           if (source) {
             drawfill(chart.ctx, source, chart.chartArea);
@@ -9949,14 +10040,14 @@
         let top = -lineHeight;
         me.legendItems.forEach((legendItem, i) => {
           const itemWidth = boxWidth + (fontSize / 2) + ctx.measureText(legendItem.text).width;
-          if (i === 0 || lineWidths[lineWidths?.length - 1] + itemWidth + 2 * padding > maxWidth) {
+          if (i === 0 || lineWidths[lineWidths.length - 1] + itemWidth + 2 * padding > maxWidth) {
             totalHeight += lineHeight;
-            lineWidths[lineWidths?.length - (i > 0 ? 0 : 1)] = 0;
+            lineWidths[lineWidths.length - (i > 0 ? 0 : 1)] = 0;
             top += lineHeight;
             row++;
           }
           hitboxes[i] = {left: 0, top, row, width: itemWidth, height: itemHeight};
-          lineWidths[lineWidths?.length - 1] += itemWidth + padding;
+          lineWidths[lineWidths.length - 1] += itemWidth + padding;
         });
         return totalHeight;
       }
@@ -10198,7 +10289,7 @@
         let i, hitBox, lh;
         if (x >= me.left && x <= me.right && y >= me.top && y <= me.bottom) {
           lh = me.legendHitBoxes;
-          for (i = 0; i < lh?.length; ++i) {
+          for (i = 0; i < lh.length; ++i) {
             hitBox = lh[i];
             if (x >= hitBox.left && x <= hitBox.left + hitBox.width && y >= hitBox.top && y <= hitBox.top + hitBox.height) {
               return me.legendItems[i];
@@ -10358,7 +10449,7 @@
         }
         me.width = me.right = maxWidth;
         me.height = me.bottom = maxHeight;
-        const lineCount = isArray(opts.text) ? opts.text?.length : 1;
+        const lineCount = isArray(opts.text) ? opts.text.length : 1;
         me._padding = toPadding(opts.padding);
         const textSize = lineCount * toFont(opts.font).lineHeight + me._padding.height;
         if (me.isHorizontal()) {
@@ -10464,14 +10555,14 @@
     
     const positioners = {
       average(items) {
-        if (!items?.length) {
+        if (!items.length) {
           return false;
         }
         let i, len;
         let x = 0;
         let y = 0;
         let count = 0;
-        for (i = 0, len = items?.length; i < len; ++i) {
+        for (i = 0, len = items.length; i < len; ++i) {
           const el = items[i].element;
           if (el && el.hasValue()) {
             const pos = el.tooltipPosition();
@@ -10486,14 +10577,14 @@
         };
       },
       nearest(items, eventPosition) {
-        if (!items?.length) {
+        if (!items.length) {
           return false;
         }
         let x = eventPosition.x;
         let y = eventPosition.y;
         let minDistance = Number.POSITIVE_INFINITY;
         let i, len, nearestElement;
-        for (i = 0, len = items?.length; i < len; ++i) {
+        for (i = 0, len = items.length; i < len; ++i) {
           const el = items[i].element;
           if (el && el.hasValue()) {
             const center = el.getCenterPoint();
@@ -10554,14 +10645,14 @@
       const bodyFont = toFont(options.bodyFont);
       const titleFont = toFont(options.titleFont);
       const footerFont = toFont(options.footerFont);
-      const titleLineCount = title?.length;
-      const footerLineCount = footer?.length;
-      const bodyLineItemCount = body?.length;
+      const titleLineCount = title.length;
+      const footerLineCount = footer.length;
+      const bodyLineItemCount = body.length;
       const padding = toPadding(options.padding);
       let height = padding.height;
       let width = 0;
-      let combinedBodyLength = body.reduce((count, bodyItem) => count + bodyItem.before?.length + bodyItem.lines?.length + bodyItem.after?.length, 0);
-      combinedBodyLength += tooltip.beforeBody?.length + tooltip.afterBody?.length;
+      let combinedBodyLength = body.reduce((count, bodyItem) => count + bodyItem.before.length + bodyItem.lines.length + bodyItem.after.length, 0);
+      combinedBodyLength += tooltip.beforeBody.length + tooltip.afterBody.length;
       if (titleLineCount) {
         height += titleLineCount * titleFont.lineHeight
                 + (titleLineCount - 1) * options.titleSpacing
@@ -10820,7 +10911,7 @@
         const labelTextColors = [];
         let tooltipItems = [];
         let i, len;
-        for (i = 0, len = active?.length; i < len; ++i) {
+        for (i = 0, len = active.length; i < len; ++i) {
           tooltipItems.push(createTooltipItem(me._chart, active[i]));
         }
         if (options.filter) {
@@ -10847,7 +10938,7 @@
         const active = me._active;
         let properties;
         let tooltipItems = [];
-        if (!active?.length) {
+        if (!active.length) {
           if (me.opacity !== 0) {
             properties = {
               opacity: 0
@@ -10938,7 +11029,7 @@
       drawTitle(pt, ctx, options) {
         const me = this;
         const title = me.title;
-        const length = title?.length;
+        const length = title.length;
         let titleFont, titleSpacing, i;
         if (length) {
           const rtlHelper = getRtlAdapter(options.rtl, me.x, me.width);
@@ -11046,17 +11137,17 @@
         xLinePadding = displayColors && bodyAlignForCalculation !== 'right'
           ? bodyAlign === 'center' ? (boxWidth / 2 + 1) : (boxWidth + 2)
           : 0;
-        for (i = 0, ilen = body?.length; i < ilen; ++i) {
+        for (i = 0, ilen = body.length; i < ilen; ++i) {
           bodyItem = body[i];
           textColor = me.labelTextColors[i];
           ctx.fillStyle = textColor;
           each(bodyItem.before, fillLineOfText);
           lines = bodyItem.lines;
-          if (displayColors && lines?.length) {
+          if (displayColors && lines.length) {
             me._drawColorBox(ctx, pt, i, rtlHelper, options);
             bodyLineHeight = Math.max(bodyFont.lineHeight, boxHeight);
           }
-          for (j = 0, jlen = lines?.length; j < jlen; ++j) {
+          for (j = 0, jlen = lines.length; j < jlen; ++j) {
             fillLineOfText(lines[j]);
             bodyLineHeight = bodyFont.lineHeight;
           }
@@ -11070,7 +11161,7 @@
       drawFooter(pt, ctx, options) {
         const me = this;
         const footer = me.footer;
-        const length = footer?.length;
+        const length = footer.length;
         let footerFont, i;
         if (length) {
           const rtlHelper = getRtlAdapter(options.rtl, me.x, me.width);
@@ -11167,7 +11258,7 @@
         };
         opacity = Math.abs(opacity) < 1e-3 ? 0 : opacity;
         const padding = toPadding(options.padding);
-        const hasTooltipContent = me.title?.length || me.beforeBody?.length || me.body?.length || me.afterBody?.length || me.footer?.length;
+        const hasTooltipContent = me.title.length || me.beforeBody.length || me.body.length || me.afterBody.length || me.footer.length;
         if (options.enabled && hasTooltipContent) {
           ctx.save();
           ctx.globalAlpha = opacity;
@@ -11330,10 +11421,10 @@
         callbacks: {
           beforeTitle: noop,
           title(tooltipItems) {
-            if (tooltipItems?.length > 0) {
+            if (tooltipItems.length > 0) {
               const item = tooltipItems[0];
               const labels = item.chart.data.labels;
-              const labelCount = labels ? labels?.length : 0;
+              const labelCount = labels ? labels.length : 0;
               if (this && this.options && this.options.mode === 'dataset') {
                 return item.dataset.label || '';
               } else if (item.label) {
@@ -11447,7 +11538,7 @@
         const labels = this.getLabels();
         index = isFinite(index) && labels[index] === raw ? index
           : findOrAddLabel(labels, raw, valueOrDefault(index, raw));
-        return validIndex(index, labels?.length - 1);
+        return validIndex(index, labels.length - 1);
       }
       determineDataLimits() {
         const me = this;
@@ -11458,7 +11549,7 @@
             min = 0;
           }
           if (!maxDefined) {
-            max = me.getLabels()?.length - 1;
+            max = me.getLabels().length - 1;
           }
         }
         me.min = min;
@@ -11471,8 +11562,8 @@
         const offset = me.options.offset;
         const ticks = [];
         let labels = me.getLabels();
-        labels = (min === 0 && max === labels?.length - 1) ? labels : labels.slice(min, max + 1);
-        me._valueRange = Math.max(labels?.length - (offset ? 0 : 1), 1);
+        labels = (min === 0 && max === labels.length - 1) ? labels : labels.slice(min, max + 1);
+        me._valueRange = Math.max(labels.length - (offset ? 0 : 1), 1);
         me._startValue = me.min - (offset ? 0.5 : 0);
         for (let value = min; value <= max; value++) {
           ticks.push({value});
@@ -11482,7 +11573,7 @@
       getLabelForValue(value) {
         const me = this;
         const labels = me.getLabels();
-        if (value >= 0 && value < labels?.length) {
+        if (value >= 0 && value < labels.length) {
           return labels[value];
         }
         return value;
@@ -11504,7 +11595,7 @@
       getPixelForTick(index) {
         const me = this;
         const ticks = me.ticks;
-        if (index < 0 || index > ticks?.length - 1) {
+        if (index < 0 || index > ticks.length - 1) {
           return null;
         }
         return me.getPixelForValue(ticks[index].value);
@@ -11527,13 +11618,14 @@
     function generateTicks$1(generationOptions, dataRange) {
       const ticks = [];
       const MIN_SPACING = 1e-14;
-      const {step, min, max, precision, count, maxTicks} = generationOptions;
+      const {step, min, max, precision, count, maxTicks, maxDigits, includeBounds} = generationOptions;
       const unit = step || 1;
       const maxSpaces = maxTicks - 1;
       const {min: rmin, max: rmax} = dataRange;
       const minDefined = !isNullOrUndef(min);
       const maxDefined = !isNullOrUndef(max);
       const countDefined = !isNullOrUndef(count);
+      const minSpacing = (rmax - rmin) / (maxDigits + 1);
       let spacing = niceNum((rmax - rmin) / maxSpaces / unit) * unit;
       let factor, niceMin, niceMax, numSpaces;
       if (spacing < MIN_SPACING && !minDefined && !maxDefined) {
@@ -11567,32 +11659,46 @@
           numSpaces = Math.ceil(numSpaces);
         }
       }
-      factor = Math.pow(10, isNullOrUndef(precision) ? _decimalPlaces(spacing) : precision);
+      const decimalPlaces = Math.max(
+        _decimalPlaces(spacing),
+        _decimalPlaces(niceMin),
+      );
+      factor = Math.pow(10, isNullOrUndef(precision) ? decimalPlaces : precision);
       niceMin = Math.round(niceMin * factor) / factor;
       niceMax = Math.round(niceMax * factor) / factor;
       let j = 0;
       if (minDefined) {
-        ticks.push({value: min});
-        if (niceMin <= min) {
-          j++;
-        }
-        if (almostEquals(Math.round((niceMin + j * spacing) * factor) / factor, min, spacing / 10)) {
+        if (includeBounds && niceMin !== min) {
+          ticks.push({value: min});
+          if (niceMin < min) {
+            j++;
+          }
+          if (almostEquals(Math.round((niceMin + j * spacing) * factor) / factor, min, relativeLabelSize(min, minSpacing, generationOptions))) {
+            j++;
+          }
+        } else if (niceMin < min) {
           j++;
         }
       }
       for (; j < numSpaces; ++j) {
         ticks.push({value: Math.round((niceMin + j * spacing) * factor) / factor});
       }
-      if (maxDefined) {
-        if (almostEquals(ticks[ticks?.length - 1].value, max, spacing / 10)) {
-          ticks[ticks?.length - 1].value = max;
+      if (maxDefined && includeBounds && niceMax !== max) {
+        if (almostEquals(ticks[ticks.length - 1].value, max, relativeLabelSize(max, minSpacing, generationOptions))) {
+          ticks[ticks.length - 1].value = max;
         } else {
           ticks.push({value: max});
         }
-      } else {
+      } else if (!maxDefined || niceMax === max) {
         ticks.push({value: niceMax});
       }
       return ticks;
+    }
+    function relativeLabelSize(value, minSpacing, {horizontal, minRotation}) {
+      const rad = toRadians(minRotation);
+      const ratio = (horizontal ? Math.sin(rad) : Math.cos(rad)) || 0.001;
+      const length = 0.75 * minSpacing * ('' + value).length;
+      return Math.min(minSpacing / ratio, length);
     }
     class LinearScaleBase extends Scale {
       constructor(cfg) {
@@ -11614,12 +11720,12 @@
       }
       handleTickRangeOptions() {
         const me = this;
-        const {beginAtZero, stacked} = me.options;
+        const {beginAtZero} = me.options;
         const {minDefined, maxDefined} = me.getUserBounds();
         let {min, max} = me;
         const setMin = v => (min = minDefined ? min : v);
         const setMax = v => (max = maxDefined ? max : v);
-        if (beginAtZero || stacked) {
+        if (beginAtZero) {
           const minSign = sign(min);
           const maxSign = sign(max);
           if (minSign < 0 && maxSign < 0) {
@@ -11669,6 +11775,10 @@
           precision: tickOpts.precision,
           step: tickOpts.stepSize,
           count: tickOpts.count,
+          maxDigits: me._maxDigits(),
+          horizontal: me.isHorizontal(),
+          minRotation: tickOpts.minRotation || 0,
+          includeBounds: tickOpts.includeBounds !== false
         };
         const dataRange = me._range || me;
         const ticks = generateTicks$1(numericGeneratorOptions, dataRange);
@@ -11691,8 +11801,8 @@
         let start = me.min;
         let end = me.max;
         super.configure();
-        if (me.options.offset && ticks?.length) {
-          const offset = (end - start) / Math.max(ticks?.length - 1, 1) / 2;
+        if (me.options.offset && ticks.length) {
+          const offset = (end - start) / Math.max(ticks.length - 1, 1) / 2;
           start -= offset;
           end += offset;
         }
@@ -11715,11 +11825,12 @@
       }
       computeTickLimit() {
         const me = this;
-        if (me.isHorizontal()) {
-          return Math.ceil(me.width / 40);
-        }
+        const horizontal = me.isHorizontal();
+        const length = horizontal ? me.width : me.height;
+        const minRotation = toRadians(me.options.ticks.minRotation);
+        const ratio = (horizontal ? Math.sin(minRotation) : Math.cos(minRotation)) || 0.001;
         const tickFont = me._resolveTickFontOptions(0);
-        return Math.ceil(me.height / tickFont.lineHeight);
+        return Math.ceil(length / Math.min(40, tickFont.lineHeight / ratio));
       }
       getPixelForValue(value) {
         return value === null ? NaN : this.getPixelForDecimal((value - this._startValue) / this._valueRange);
@@ -11887,7 +11998,7 @@
       if (isArray(label)) {
         return {
           w: _longestText(ctx, ctx.font, label),
-          h: label?.length * lineHeight
+          h: label.length * lineHeight
         };
       }
       return {
@@ -11923,7 +12034,7 @@
       let i, textSize, pointPosition;
       const labelSizes = [];
       const padding = [];
-      const valueCount = scale.getLabels()?.length;
+      const valueCount = scale.getLabels().length;
       for (i = 0; i < valueCount; i++) {
         const opts = scale.options.pointLabels.setContext(scale.getContext(i));
         padding[i] = opts.padding;
@@ -12130,7 +12241,7 @@
         me.yCenter = Math.floor(((maxTop + maxBottom) / 2) + me.top + me.paddingTop);
       }
       getIndexAngle(index) {
-        const angleMultiplier = TAU / this.getLabels()?.length;
+        const angleMultiplier = TAU / this.getLabels().length;
         const startAngle = this.options.startAngle || 0;
         return _normalizeAngle(index * angleMultiplier + toRadians(startAngle));
       }
@@ -12184,7 +12295,7 @@
           const ctx = me.ctx;
           ctx.save();
           ctx.beginPath();
-          pathRadiusLine(me, me.getDistanceFromCenterForValue(me._endValue), circular, me.getLabels()?.length);
+          pathRadiusLine(me, me.getDistanceFromCenterForValue(me._endValue), circular, me.getLabels().length);
           ctx.closePath();
           ctx.fillStyle = backgroundColor;
           ctx.fill();
@@ -12196,7 +12307,7 @@
         const ctx = me.ctx;
         const opts = me.options;
         const {angleLines, grid} = opts;
-        const labelCount = me.getLabels()?.length;
+        const labelCount = me.getLabels().length;
         let i, offset, position;
         if (opts.pointLabels.display) {
           drawPointLabels(me, labelCount);
@@ -12212,7 +12323,7 @@
         }
         if (angleLines.display) {
           ctx.save();
-          for (i = me.getLabels()?.length - 1; i >= 0; i--) {
+          for (i = me.getLabels().length - 1; i >= 0; i--) {
             const optsAtIndex = angleLines.setContext(me.getContext(i));
             const {color, lineWidth} = optsAtIndex;
             if (!lineWidth || !color) {
@@ -12358,7 +12469,7 @@
       return +value;
     }
     function determineUnitForAutoTicks(minUnit, min, max, capacity) {
-      const ilen = UNITS?.length;
+      const ilen = UNITS.length;
       for (let i = UNITS.indexOf(minUnit); i < ilen - 1; ++i) {
         const interval = INTERVALS[UNITS[i]];
         const factor = interval.steps ? interval.steps : Number.MAX_SAFE_INTEGER;
@@ -12369,7 +12480,7 @@
       return UNITS[ilen - 1];
     }
     function determineUnitForFormatting(scale, numTicks, minUnit, min, max) {
-      for (let i = UNITS?.length - 1; i >= UNITS.indexOf(minUnit); i--) {
+      for (let i = UNITS.length - 1; i >= UNITS.indexOf(minUnit); i--) {
         const unit = UNITS[i];
         if (INTERVALS[unit].common && scale._adapter.diff(max, min, unit) >= numTicks - 1) {
           return unit;
@@ -12378,7 +12489,7 @@
       return UNITS[minUnit ? UNITS.indexOf(minUnit) : 0];
     }
     function determineMajorUnit(unit) {
-      for (let i = UNITS.indexOf(unit) + 1, ilen = UNITS?.length; i < ilen; ++i) {
+      for (let i = UNITS.indexOf(unit) + 1, ilen = UNITS.length; i < ilen; ++i) {
         if (INTERVALS[UNITS[i]].common) {
           return UNITS[i];
         }
@@ -12387,7 +12498,7 @@
     function addTick(ticks, time, timestamps) {
       if (!timestamps) {
         ticks[time] = true;
-      } else if (timestamps?.length) {
+      } else if (timestamps.length) {
         const {lo, hi} = _lookup(timestamps, time);
         const timestamp = timestamps[lo] >= time ? timestamps[lo] : timestamps[hi];
         ticks[timestamp] = true;
@@ -12396,7 +12507,7 @@
     function setMajorTicks(scale, ticks, map, majorUnit) {
       const adapter = scale._adapter;
       const first = +adapter.startOf(ticks[0].value, majorUnit);
-      const last = ticks[ticks?.length - 1].value;
+      const last = ticks[ticks.length - 1].value;
       let major, index;
       for (major = first; major <= last; major = +adapter.add(major, 1, majorUnit)) {
         index = map[major];
@@ -12409,7 +12520,7 @@
     function ticksFromTimestamps(scale, values, majorUnit) {
       const ticks = [];
       const map = {};
-      const ilen = values?.length;
+      const ilen = values.length;
       let i, value;
       for (i = 0; i < ilen; ++i) {
         value = values[i];
@@ -12490,9 +12601,9 @@
         const arr = this.getLabelTimestamps();
         let min = Number.POSITIVE_INFINITY;
         let max = Number.NEGATIVE_INFINITY;
-        if (arr?.length) {
+        if (arr.length) {
           min = arr[0];
-          max = arr[arr?.length - 1];
+          max = arr[arr.length - 1];
         }
         return {min, max};
       }
@@ -12502,16 +12613,16 @@
         const timeOpts = options.time;
         const tickOpts = options.ticks;
         const timestamps = tickOpts.source === 'labels' ? me.getLabelTimestamps() : me._generate();
-        if (options.bounds === 'ticks' && timestamps?.length) {
+        if (options.bounds === 'ticks' && timestamps.length) {
           me.min = me._userMin || timestamps[0];
-          me.max = me._userMax || timestamps[timestamps?.length - 1];
+          me.max = me._userMax || timestamps[timestamps.length - 1];
         }
         const min = me.min;
         const max = me.max;
         const ticks = _filterBetween(timestamps, min, max);
         me._unit = timeOpts.unit || (tickOpts.autoSkip
           ? determineUnitForAutoTicks(timeOpts.minUnit, me.min, me.max, me._getLabelCapacity(min))
-          : determineUnitForFormatting(me, ticks?.length, timeOpts.minUnit, me.min, me.max));
+          : determineUnitForFormatting(me, ticks.length, timeOpts.minUnit, me.min, me.max));
         me._majorUnit = !tickOpts.major.enabled || me._unit === 'year' ? undefined
           : determineMajorUnit(me._unit);
         me.initOffsets(timestamps);
@@ -12525,21 +12636,21 @@
         let start = 0;
         let end = 0;
         let first, last;
-        if (me.options.offset && timestamps?.length) {
+        if (me.options.offset && timestamps.length) {
           first = me.getDecimalForValue(timestamps[0]);
-          if (timestamps?.length === 1) {
+          if (timestamps.length === 1) {
             start = 1 - first;
           } else {
             start = (me.getDecimalForValue(timestamps[1]) - first) / 2;
           }
-          last = me.getDecimalForValue(timestamps[timestamps?.length - 1]);
-          if (timestamps?.length === 1) {
+          last = me.getDecimalForValue(timestamps[timestamps.length - 1]);
+          if (timestamps.length === 1) {
             end = last;
           } else {
-            end = (last - me.getDecimalForValue(timestamps[timestamps?.length - 2])) / 2;
+            end = (last - me.getDecimalForValue(timestamps[timestamps.length - 2])) / 2;
           }
         }
-        const limit = timestamps?.length < 3 ? 0.5 : 0.25;
+        const limit = timestamps.length < 3 ? 0.5 : 0.25;
         start = _limitValue(start, 0, limit);
         end = _limitValue(end, 0, limit);
         me._offsets = {start, end, factor: 1 / (start + 1 + end)};
@@ -12599,7 +12710,7 @@
       }
       generateTickLabels(ticks) {
         let i, ilen, tick;
-        for (i = 0, ilen = ticks?.length; i < ilen; ++i) {
+        for (i = 0, ilen = ticks.length; i < ilen; ++i) {
           tick = ticks[i];
           tick.label = this._tickFormatFunction(tick.value, i, ticks);
         }
@@ -12647,14 +12758,14 @@
         const me = this;
         let timestamps = me._cache.data || [];
         let i, ilen;
-        if (timestamps?.length) {
+        if (timestamps.length) {
           return timestamps;
         }
         const metas = me.getMatchingVisibleMetas();
-        if (me._normalized && metas?.length) {
+        if (me._normalized && metas.length) {
           return (me._cache.data = metas[0].controller.getAllParsedValues(me));
         }
-        for (i = 0, ilen = metas?.length; i < ilen; ++i) {
+        for (i = 0, ilen = metas.length; i < ilen; ++i) {
           timestamps = timestamps.concat(metas[i].controller.getAllParsedValues(me));
         }
         return (me._cache.data = me.normalize(timestamps));
@@ -12663,11 +12774,11 @@
         const me = this;
         const timestamps = me._cache.labels || [];
         let i, ilen;
-        if (timestamps?.length) {
+        if (timestamps.length) {
           return timestamps;
         }
         const labels = me.getLabels();
-        for (i = 0, ilen = labels?.length; i < ilen; ++i) {
+        for (i = 0, ilen = labels.length; i < ilen; ++i) {
           timestamps.push(parse(me, labels[i]));
         }
         return (me._cache.labels = me._normalized ? timestamps : me.normalize(timestamps));
@@ -12723,13 +12834,13 @@
         const me = this;
         const timestamps = me._getTimestampsForTable();
         me._table = me.buildLookupTable(timestamps);
-        me._maxIndex = me._table?.length - 1;
+        me._maxIndex = me._table.length - 1;
         super.initOffsets(timestamps);
       }
       buildLookupTable(timestamps) {
         const me = this;
         const {min, max} = me;
-        if (!timestamps?.length) {
+        if (!timestamps.length) {
           return [
             {time: min, pos: 0},
             {time: max, pos: 1}
@@ -12737,7 +12848,7 @@
         }
         const items = [min];
         let i, ilen, curr;
-        for (i = 0, ilen = timestamps?.length; i < ilen; ++i) {
+        for (i = 0, ilen = timestamps.length; i < ilen; ++i) {
           curr = timestamps[i];
           if (curr > min && curr < max) {
             items.push(curr);
@@ -12749,15 +12860,15 @@
       _getTimestampsForTable() {
         const me = this;
         let timestamps = me._cache.all || [];
-        if (timestamps?.length) {
+        if (timestamps.length) {
           return timestamps;
         }
         const data = me.getDataTimestamps();
         const label = me.getLabelTimestamps();
-        if (data?.length && label?.length) {
+        if (data.length && label.length) {
           timestamps = me.normalize(data.concat(label));
         } else {
-          timestamps = data?.length ? data : label;
+          timestamps = data.length ? data : label;
         }
         timestamps = me._cache.all = timestamps;
         return timestamps;
