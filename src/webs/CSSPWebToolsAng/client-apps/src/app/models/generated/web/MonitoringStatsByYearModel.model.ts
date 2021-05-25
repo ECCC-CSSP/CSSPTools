@@ -5,10 +5,10 @@
  *
  */
 
-import { StatByYear } from 'src/app/models/generated/web/StatByYear.model';
+import { MonitoringStatByYear } from 'src/app/models/generated/web/MonitoringStatByYear.model';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 
 export class MonitoringStatsByYearModel {
-    StatByYearList: StatByYear[];
+    MonitoringStatByYearList: MonitoringStatByYear[];
     TVItemModel: TVItemModel;
 }

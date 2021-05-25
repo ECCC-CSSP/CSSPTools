@@ -1,5 +1,5 @@
 <mat-list *ngFor="let tvItemModel of TVItemModelList; let i = index">
-    <app-tvitem-menu [TVItemModel]="tvItemModel" >
+    <app-tvitem-menu [TVItemModel]="tvItemModel">
     </app-tvitem-menu>
 
     <button mat-button (click)="subPageService.SetSubPage(tvItemModel)">
@@ -19,42 +19,50 @@
     </button>
 
     <ng-container *ngIf="showTVItemService.TVItemVisible(tvItemModel)">
-        <mat-accordion multi>
-            <mat-expansion-panel>
-                <mat-expansion-panel-header>
-                    <mat-panel-title>
-                        <mat-icon>preview</mat-icon>
-                        &nbsp;&nbsp;&nbsp;View
-                    </mat-panel-title>
-                </mat-expansion-panel-header>
-                <app-country-item-view [TVItemModel]="tvItemModel" >
-                </app-country-item-view>
-            </mat-expansion-panel>
-            <mat-expansion-panel *ngIf="appStateService.UserPreference.EditVisible">
-                <mat-expansion-panel-header>
-                    <mat-panel-title>
-                        <mat-icon>edit</mat-icon>
-                        &nbsp;&nbsp;&nbsp;Modify
-                    </mat-panel-title>
-                </mat-expansion-panel-header>
-                <app-country-item-modify [TVItemModel]="tvItemModel"
-                    >
-                </app-country-item-modify>
-            </mat-expansion-panel>
-            <mat-expansion-panel *ngIf="appStateService.UserPreference.EditVisible">
-                <mat-expansion-panel-header>
-                    <mat-panel-title>
-                        <mat-icon>add</mat-icon>
-                        &nbsp;&nbsp;&nbsp;Create
-                    </mat-panel-title>
-                </mat-expansion-panel-header>
-                <app-country-item-create [TVItemModel]="tvItemModel"
-                    >
-                </app-country-item-create>
-            </mat-expansion-panel>
-        </mat-accordion>
+        <div>
+            <br />
+            <button mat-button (click)="ShowView = !ShowView" [ngClass]="ShowView ? 'selected' : ''">
+                View
+            </button>
+            <span>&nbsp;&nbsp;</span>
+            <button mat-button (click)="ShowModify = !ShowModify" [ngClass]="ShowModify ? 'selected' : ''">
+                Modify
+            </button>
+            <span>&nbsp;&nbsp;</span>
+            <button mat-button (click)="ShowAdd = !ShowAdd" [ngClass]="ShowAdd ? 'selected' : ''">
+                Add
+            </button>
+        </div>
+
+        <mat-card *ngIf="ShowView">
+            <mat-card-header>
+                <h3>View</h3>
+            </mat-card-header>
+            <mat-card-content>
+                This would hold info regarding basic Country info.
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card *ngIf="ShowModify">
+            <mat-card-header>
+                <h3>Modify</h3>
+            </mat-card-header>
+            <mat-card-content>
+                This will show Modify
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card *ngIf="ShowAdd">
+            <mat-card-header>
+                <h3>Add</h3>
+            </mat-card-header>
+            <mat-card-content>
+                This will show Add
+            </mat-card-content>
+        </mat-card>
+
     </ng-container>
 
-    <app-country-tvitem-list-detail  *ngIf="appStateService.UserPreference.DetailVisible"
-        [TVItemModel]="tvItemModel"></app-country-tvitem-list-detail>
+    <app-country-tvitem-list-detail *ngIf="appStateService.UserPreference.DetailVisible" [TVItemModel]="tvItemModel">
+    </app-country-tvitem-list-detail>
 </mat-list>

@@ -1,18 +1,16 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, AfterViewInit } from '@angular/core';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { GetCountrySubComponentEnum } from 'src/app/enums/generated/CountrySubComponentEnum';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { GetTVTypeEnum, TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
-import { AscDescEnum, GetAscDescEnum } from 'src/app/enums/generated/AscDescEnum';
+import { GetAscDescEnum } from 'src/app/enums/generated/AscDescEnum';
 import { StatCountService } from 'src/app/services/helpers/stat-count.service';
 import { ComponentShowService } from 'src/app/services/helpers/component-show.service';
 import { GetSortOrderAngularEnum } from 'src/app/enums/generated/SortOrderAngularEnum';
 import { FilterService } from 'src/app/services/helpers/filter.service';
 import { SortTVItemListService } from 'src/app/services/helpers/sort-tvitem-list.service';
 import { LoaderService } from 'src/app/services/loaders/loader.service';
-import { WebCountry } from 'src/app/models/generated/web/WebCountry.model';
-import { WebTypeEnum } from 'src/app/enums/generated/WebTypeEnum';
 import { StructureTVFileListService } from 'src/app/services/helpers/structure-tvfile-list.service';
 import { GetFilesSortPropEnum } from 'src/app/enums/generated/FilesSortPropEnum';
 import { LoadListService } from 'src/app/services/helpers/loading-list.service';
@@ -23,7 +21,7 @@ import { LoadListService } from 'src/app/services/helpers/loading-list.service';
   templateUrl: './country-item.component.html',
   styleUrls: ['./country-item.component.css']
 })
-export class CountryItemComponent implements OnInit, OnDestroy { 
+export class CountryItemComponent implements OnInit, OnDestroy {
   countrySubComponentEnum = GetCountrySubComponentEnum();
   tvTypeEnum = GetTVTypeEnum();
   ascDescEnum = GetAscDescEnum();

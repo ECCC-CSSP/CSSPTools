@@ -63,26 +63,26 @@ namespace CreateGzFileServices
 
                 List<MWQMSample> mwqmSampleList = await GetMWQMSampleListUnderSubsector(tvItemSubsector);
 
-                List<StatByYear> statByYearRoutineSubsectorList = new List<StatByYear>();
+                List<MonitoringStatByYear> monitoringStatByYearRoutingSubsectorList = new List<MonitoringStatByYear>();
 
                 for (int j = DateTime.Now.Year; j >= 1980; j--)
                 {
-                    StatByYear statByYearRoutine = new StatByYear();
-                    statByYearRoutine.Year = j;
-                    statByYearRoutine.MWQMSiteCount = (from c in mwqmSampleList
+                    MonitoringStatByYear monitoringStatByYearRouting = new MonitoringStatByYear();
+                    monitoringStatByYearRouting.Year = j;
+                    monitoringStatByYearRouting.MWQMSiteCount = (from c in mwqmSampleList
                                                        where c.SampleDateTime_Local.Year == j
                                                        && c.SampleTypesText.Contains("109")
                                                        select c.MWQMSiteTVItemID).Distinct().Count();
-                    statByYearRoutine.MWQMRunCount = (from c in mwqmSampleList
+                    monitoringStatByYearRouting.MWQMRunCount = (from c in mwqmSampleList
                                                       where c.SampleDateTime_Local.Year == j
                                                       && c.SampleTypesText.Contains("109")
                                                       select c.MWQMRunTVItemID).Distinct().Count();
-                    statByYearRoutine.MWQMSampleCount = (from c in mwqmSampleList
+                    monitoringStatByYearRouting.MWQMSampleCount = (from c in mwqmSampleList
                                                          where c.SampleDateTime_Local.Year == j
                                                          && c.SampleTypesText.Contains("109")
                                                          select c).Count();
 
-                    statByYearRoutineSubsectorList.Add(statByYearRoutine);
+                    monitoringStatByYearRoutingSubsectorList.Add(monitoringStatByYearRouting);
                 }
 
                 webMonitoringRoutineStatsByYearForProvince.MonitoringStatsByYearModelList.Add(new MonitoringStatsByYearModel()
@@ -95,7 +95,7 @@ namespace CreateGzFileServices
                                               select c).ToList()
 
                     },
-                    StatByYearList = statByYearRoutineSubsectorList
+                    MonitoringStatByYearList = monitoringStatByYearRoutingSubsectorList
                 });
             }
 
@@ -106,7 +106,7 @@ namespace CreateGzFileServices
 
             foreach (TVItem tvItemSector in tvItemSectorList)
             {
-                List<StatByYear> statByYearSectorRoutineList = new List<StatByYear>();
+                List<MonitoringStatByYear> statByYearSectorRoutineList = new List<MonitoringStatByYear>();
 
                 List<MonitoringStatsByYearModel> monitoringStatsByYearModelRoutineList = (from c in webMonitoringRoutineStatsByYearForProvince.MonitoringStatsByYearModelList
                                                                                           where c.TVItemModel.TVItem.ParentID == tvItemSector.TVItemID
@@ -114,7 +114,7 @@ namespace CreateGzFileServices
 
                 for (int j = DateTime.Now.Year; j >= 1980; j--)
                 {
-                    StatByYear statByYearSectorRoutine = new StatByYear();
+                    MonitoringStatByYear statByYearSectorRoutine = new MonitoringStatByYear();
                     statByYearSectorRoutine.Year = j;
                     statByYearSectorRoutine.MWQMSiteCount = 0;
                     statByYearSectorRoutine.MWQMRunCount = 0;
@@ -122,7 +122,7 @@ namespace CreateGzFileServices
 
                     foreach (MonitoringStatsByYearModel monitoringStatsByYearModel in monitoringStatsByYearModelRoutineList)
                     {
-                        StatByYear statByYear = (from c in monitoringStatsByYearModel.StatByYearList
+                        MonitoringStatByYear statByYear = (from c in monitoringStatsByYearModel.MonitoringStatByYearList
                                                  where c.Year == j
                                                  select c).FirstOrDefault();
 
@@ -145,7 +145,7 @@ namespace CreateGzFileServices
                                               select c).ToList()
 
                     },
-                    StatByYearList = statByYearSectorRoutineList
+                    MonitoringStatByYearList = statByYearSectorRoutineList
                 });
             }
 
@@ -156,7 +156,7 @@ namespace CreateGzFileServices
 
             foreach (TVItem tvItemArea in tvItemAreaList)
             {
-                List<StatByYear> statByYearAreaRoutineList = new List<StatByYear>();
+                List<MonitoringStatByYear> statByYearAreaRoutineList = new List<MonitoringStatByYear>();
 
                 List<MonitoringStatsByYearModel> monitoringStatsByYearModelRoutineList = (from c in webMonitoringRoutineStatsByYearForProvince.MonitoringStatsByYearModelList
                                                                                           where c.TVItemModel.TVItem.ParentID == tvItemArea.TVItemID
@@ -164,7 +164,7 @@ namespace CreateGzFileServices
 
                 for (int j = DateTime.Now.Year; j >= 1980; j--)
                 {
-                    StatByYear statByYearAreaRoutine = new StatByYear();
+                    MonitoringStatByYear statByYearAreaRoutine = new MonitoringStatByYear();
                     statByYearAreaRoutine.Year = j;
                     statByYearAreaRoutine.MWQMSiteCount = 0;
                     statByYearAreaRoutine.MWQMRunCount = 0;
@@ -172,7 +172,7 @@ namespace CreateGzFileServices
 
                     foreach (MonitoringStatsByYearModel monitoringStatsByYearModel in monitoringStatsByYearModelRoutineList)
                     {
-                        StatByYear statByYear = (from c in monitoringStatsByYearModel.StatByYearList
+                        MonitoringStatByYear statByYear = (from c in monitoringStatsByYearModel.MonitoringStatByYearList
                                                  where c.Year == j
                                                  select c).FirstOrDefault();
 
@@ -195,14 +195,14 @@ namespace CreateGzFileServices
                                               select c).ToList()
 
                     },
-                    StatByYearList = statByYearAreaRoutineList
+                    MonitoringStatByYearList = statByYearAreaRoutineList
                 });
             }
 
             // doing Province ----------------------------------------------
             // -----------------------------------------------------------
 
-            List<StatByYear> statByYearProvinceRoutineList = new List<StatByYear>();
+            List<MonitoringStatByYear> statByYearProvinceRoutineList = new List<MonitoringStatByYear>();
 
             List<MonitoringStatsByYearModel> monitoringStatsByYearModelProvinceRoutineList = (from c in webMonitoringRoutineStatsByYearForProvince.MonitoringStatsByYearModelList
                                                                                               where c.TVItemModel.TVItem.ParentID == tvItemProv.TVItemID
@@ -210,7 +210,7 @@ namespace CreateGzFileServices
 
             for (int j = DateTime.Now.Year; j >= 1980; j--)
             {
-                StatByYear statByYearProvinceRoutine = new StatByYear();
+                MonitoringStatByYear statByYearProvinceRoutine = new MonitoringStatByYear();
                 statByYearProvinceRoutine.Year = j;
                 statByYearProvinceRoutine.MWQMSiteCount = 0;
                 statByYearProvinceRoutine.MWQMRunCount = 0;
@@ -218,7 +218,7 @@ namespace CreateGzFileServices
 
                 foreach (MonitoringStatsByYearModel monitoringStatsByYearModel in monitoringStatsByYearModelProvinceRoutineList)
                 {
-                    StatByYear statByYear = (from c in monitoringStatsByYearModel.StatByYearList
+                    MonitoringStatByYear statByYear = (from c in monitoringStatsByYearModel.MonitoringStatByYearList
                                              where c.Year == j
                                              select c).FirstOrDefault();
 
@@ -241,7 +241,7 @@ namespace CreateGzFileServices
                                           select c).ToList()
 
                 },
-                StatByYearList = statByYearProvinceRoutineList
+                MonitoringStatByYearList = statByYearProvinceRoutineList
             });
 
             try

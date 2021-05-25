@@ -9,7 +9,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CSSPWebModels
 {
     [NotMapped]
-    public partial class StatByYear
+    public partial class MonitoringStatByYear
     {
         #region Properties
         public int Year { get; set; }
@@ -19,7 +19,7 @@ namespace CSSPWebModels
         #endregion Properties
 
         #region Constructors
-        public StatByYear()
+        public MonitoringStatByYear()
         {
 
         }

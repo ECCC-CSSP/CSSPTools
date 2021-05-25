@@ -42,13 +42,14 @@ import { WebMonitoringRoutineStatsByYearForCountry } from '../models/generated/w
 import { WebMonitoringRoutineStatsByYearForProvince } from '../models/generated/web/WebMonitoringRoutineStatsByYearForProvince.model';
 import { WebMonitoringOtherStatsByYearForCountry } from '../models/generated/web/WebMonitoringOtherStatsByYearForCountry.model';
 import { WebMonitoringOtherStatsByYearForProvince } from '../models/generated/web/WebMonitoringOtherStatsByYearForProvince.model';
+import { MonitoringStatsByYearModel } from '../models/generated/web/MonitoringStatsByYearModel.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AppLoadedService {
-  BaseApiUrl = 'https://localhost:4447/api/'; 
-  //BaseApiUrl = 'https://localhost:44346/api/';
+  //BaseApiUrl = 'https://localhost:4447/api/'; 
+  BaseApiUrl = 'https://localhost:44346/api/';
 
   LoggedInContact?: Contact;
   BreadCrumbTVItemModelList?: TVItemModel[];
@@ -114,6 +115,8 @@ export class AppLoadedService {
   MWQMSiteList?: MWQMSiteModel[];
   StatMWQMRunList?: StatMWQMRun[];
   StatMWQMSiteList?: StatMWQMSite[];
+
+  MonitoringStatsByYearModel?: MonitoringStatsByYearModel;
 
   constructor(public httpClient: HttpClient,
     public appStateService: AppStateService) {

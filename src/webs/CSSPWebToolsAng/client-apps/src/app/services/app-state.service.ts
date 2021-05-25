@@ -158,10 +158,10 @@ export class AppStateService {
       SubsectorMWQMRunsSortOrder: AscDescEnum.Descending,
       SubsectorMWQMSitesSortOrder: AscDescEnum.Ascending,
       SubsectorPolSourceSitesSortOrder: AscDescEnum.Ascending,
-
     };
-  // // http history related
-  // History: TVItemModel[] = [];
+
+  ShowMonitoringStatsChart: boolean = false;
+  ShowMonitoringStatsTable: boolean = false;
 
   // search http loading related
   SearchWorking?: boolean = false;

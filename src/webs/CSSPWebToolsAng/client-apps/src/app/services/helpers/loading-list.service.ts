@@ -137,17 +137,17 @@ export class LoadListService {
   }
 
   private FillProvince(TVItemID: number, ForceReload: boolean) {
-    this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebProvince, TVItemID: TVItemID, ForceReload: ForceReload });
+    // this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebClimateSites, TVItemID: TVItemID, ForceReload: ForceReload });
+    // this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebHydrometricSites, TVItemID: TVItemID, ForceReload: ForceReload });
+    // this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebTideSites, TVItemID: TVItemID, ForceReload: ForceReload });
+    // this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebDrogueRuns, TVItemID: TVItemID, ForceReload: ForceReload });
     this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebMonitoringRoutineStatsByYearForProvince, TVItemID: TVItemID, ForceReload: ForceReload });
     this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebMonitoringOtherStatsByYearForProvince, TVItemID: TVItemID, ForceReload: ForceReload });
-    this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebClimateSites, TVItemID: TVItemID, ForceReload: ForceReload });
-    this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebHydrometricSites, TVItemID: TVItemID, ForceReload: ForceReload });
-    this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebTideSites, TVItemID: TVItemID, ForceReload: ForceReload });
-    this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebDrogueRuns, TVItemID: TVItemID, ForceReload: ForceReload });
+    this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebProvince, TVItemID: TVItemID, ForceReload: ForceReload });
   }
 
   private FillMunicipality(TVItemID: number, ForceReload: boolean) {
-    this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebMikeScenarios, TVItemID: TVItemID, ForceReload: ForceReload });
+    // this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebMikeScenarios, TVItemID: TVItemID, ForceReload: ForceReload });
     this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebMunicipality, TVItemID: TVItemID, ForceReload: ForceReload });
   }
 
@@ -160,7 +160,7 @@ export class LoadListService {
   }
 
   private FillSubsector(TVItemID: number, ForceReload: boolean) {
-    this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebLabSheets, TVItemID: TVItemID, ForceReload: ForceReload });
+    // this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebLabSheets, TVItemID: TVItemID, ForceReload: ForceReload });
     this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebMWQMRuns, TVItemID: TVItemID, ForceReload: ForceReload });
     this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebMWQMSites, TVItemID: TVItemID, ForceReload: ForceReload });
     this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebPolSourceSites, TVItemID: TVItemID, ForceReload: ForceReload });

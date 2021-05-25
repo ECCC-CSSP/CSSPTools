@@ -1,0 +1,39 @@
+<div class="alignRight">
+    <button mat-button (click)="appStateService.ShowMonitoringStatsTable = false">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+<table condensed mat-table [dataSource]="appLoadedService.MonitoringStatsByYearModel?.MonitoringStatByYearList">
+
+    <ng-container matColumnDef="Year">
+        <th mat-header-cell *matHeaderCellDef title="{{appLanguageService.YearOfSampling[appLanguageService.LangID]}}">
+            {{appLanguageService.Year[appLanguageService.LangID]}}
+        </th>
+        <td mat-cell *matCellDef="let monstat"> {{ monstat.Year }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="MWQMSiteCount">
+        <th mat-header-cell *matHeaderCellDef title="{{appLanguageService.MWQMSiteCount[appLanguageService.LangID]}}">
+            {{appLanguageService.MWQMSiteCount[appLanguageService.LangID]}}
+        </th>
+        <td mat-cell *matCellDef="let monstat"> {{ monstat.MWQMSiteCount }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="MWQMRunCount">
+        <th mat-header-cell *matHeaderCellDef title="{{appLanguageService.MWQMRunCount[appLanguageService.LangID]}}">
+            {{appLanguageService.MWQMRunCount[appLanguageService.LangID]}}
+        </th>
+        <td mat-cell *matCellDef="let monstat"> {{monstat.MWQMRunCount}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="MWQMSampleCount">
+        <th mat-header-cell *matHeaderCellDef title="{{appLanguageService.MWQMSampleCount[appLanguageService.LangID]}}">
+            {{appLanguageService.MWQMSampleCount[appLanguageService.LangID]}}
+        </th>
+        <td mat-cell *matCellDef="let monstat"> {{monstat.MWQMSampleCount}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>

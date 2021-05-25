@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, AfterViewInit, AfterViewChecked } from '@angular/core';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
@@ -11,7 +11,6 @@ import { SubPageService } from 'src/app/services/helpers/sub-page.service';
   styleUrls: ['./bread-crumb.component.css']
 })
 export class BreadCrumbComponent implements OnInit, OnDestroy {
-  
   constructor(public appStateService: AppStateService,
     public appLanguageService: AppLanguageService,
     public appLoadedService: AppLoadedService,

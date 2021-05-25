@@ -40,19 +40,19 @@ namespace CreateGzFileServices
 
             WebMonitoringOtherStatsByYearForCountry webMonitoringOtherStatsByYearForCountry = new WebMonitoringOtherStatsByYearForCountry();
 
-            List<StatByYear> statByYearOtherCountryList = new List<StatByYear>();
+            List<MonitoringStatByYear> monitoringStatByYearOtherCountryList = new List<MonitoringStatByYear>();
 
             for (int j = DateTime.Now.Year; j >= 1980; j--)
             {
                 Console.WriteLine($"Doing Year {j}...");
 
-                StatByYear statByYearOther = new StatByYear();
-                statByYearOther.Year = j;
-                statByYearOther.MWQMSiteCount = GetMWQMSiteCountOtherUnderCountry(tvItemCountry, j);
-                statByYearOther.MWQMRunCount = GetMWQMRunCountOtherUnderCountry(tvItemCountry, j);
-                statByYearOther.MWQMSampleCount = GetMWQMSampleCountOtherUnderCountry(tvItemCountry, j);
+                MonitoringStatByYear monitoringStatByYearOther = new MonitoringStatByYear();
+                monitoringStatByYearOther.Year = j;
+                monitoringStatByYearOther.MWQMSiteCount = GetMWQMSiteCountOtherUnderCountry(tvItemCountry, j);
+                monitoringStatByYearOther.MWQMRunCount = GetMWQMRunCountOtherUnderCountry(tvItemCountry, j);
+                monitoringStatByYearOther.MWQMSampleCount = GetMWQMSampleCountOtherUnderCountry(tvItemCountry, j);
 
-                statByYearOtherCountryList.Add(statByYearOther);
+                monitoringStatByYearOtherCountryList.Add(monitoringStatByYearOther);
             }
 
             webMonitoringOtherStatsByYearForCountry.MonitoringStatsByYearModelList.Add(new MonitoringStatsByYearModel()
@@ -65,7 +65,7 @@ namespace CreateGzFileServices
                                           select c).ToList()
 
                 },
-                StatByYearList = statByYearOtherCountryList
+                MonitoringStatByYearList = monitoringStatByYearOtherCountryList
             });
             try
             {

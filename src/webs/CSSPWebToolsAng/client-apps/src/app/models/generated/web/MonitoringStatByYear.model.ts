@@ -6,7 +6,7 @@
  */
 
 
-export class StatByYear {
+export class MonitoringStatByYear {
     MWQMRunCount: number;
     MWQMSampleCount: number;
     MWQMSiteCount: number;

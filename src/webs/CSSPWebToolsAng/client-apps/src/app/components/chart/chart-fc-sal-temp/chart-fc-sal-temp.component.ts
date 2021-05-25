@@ -112,14 +112,14 @@ export class ChartFCSalTempComponent implements OnInit, AfterViewInit, OnDestroy
             display: true,
             position: 'right',
             min: -10,
-            max: 35,
+            max: 36,
           },
           y2: {
             type: 'linear',
             display: true,
             position: 'right',
             min: -10,
-            max: 35,
+            max: 36,
           },
           xAxes: [{
             type: 'time',

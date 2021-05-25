@@ -2,11 +2,41 @@
     [ngClass]="(appLoadedService.BreadCrumbTVItemModelList?.length - 1 == i) ? 'selected' : ''"
     (click)="subPageService.SetSubPage(tvItemModel)">
     <span [ngClass]="tvItemModel?.TVItem?.IsActive ? '' : 'inactive'">
-        <span *ngIf="appStateService.UserPreference.DetailVisible">
+        <span *ngIf="appStateService.UserPreference?.DetailVisible">
             [{{ tvItemModel?.TVItem?.TVItemID }}]
         </span>
         {{ tvItemModel?.TVItemLanguageList[this.appLanguageService.LangID]?.TVText }}
     </span>
-    <app-stat-count *ngIf="appStateService.UserPreference.StatCountVisible" [TVType]="null"
-            [TVItemModel]="tvItemModel"></app-stat-count>
+    <app-stat-count *ngIf="appStateService.UserPreference?.StatCountVisible" [TVType]="null"
+        [TVItemModel]="tvItemModel">
+    </app-stat-count>
 </button>
+
+<ng-container *ngIf="appLoadedService.BreadCrumbTVItemModelList?.length > 1">
+    <button mat-button [matMenuTriggerFor]="menu">
+        <mat-icon>menu</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu" color="primary">
+        <button mat-menu-item
+            (click)="appStateService.ShowMonitoringStatsChart = !appStateService.ShowMonitoringStatsChart">
+            <span *ngIf="appStateService.ShowMonitoringStatsChart">
+                Hide Monitoring Stats Chart
+            </span>           
+            <span *ngIf="!appStateService.ShowMonitoringStatsChart">
+                Show Monitoring Stats Chart
+            </span>           
+        </button>
+        <button mat-menu-item
+            (click)="appStateService.ShowMonitoringStatsTable = !appStateService.ShowMonitoringStatsTable">
+            <span *ngIf="appStateService.ShowMonitoringStatsTable">
+                Hide Monitoring Stats Table
+            </span>           
+            <span *ngIf="!appStateService.ShowMonitoringStatsTable">
+                Show Monitoring Stats Table
+            </span>           
+        </button>
+    </mat-menu>
+
+    <app-chart-monitoring-stat *ngIf="appStateService.ShowMonitoringStatsChart"></app-chart-monitoring-stat>
+    <app-table-monitoring-stat-data *ngIf="appStateService.ShowMonitoringStatsTable"></app-table-monitoring-stat-data>
+</ng-container>

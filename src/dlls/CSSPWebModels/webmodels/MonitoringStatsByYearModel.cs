@@ -13,14 +13,14 @@ namespace CSSPWebModels
     {
         #region Properties
         public TVItemModel TVItemModel { get; set; }
-        public List<StatByYear> StatByYearList { get; set; }
+        public List<MonitoringStatByYear> MonitoringStatByYearList { get; set; }
         #endregion Properties
 
         #region Constructors
         public MonitoringStatsByYearModel()
         {
             TVItemModel = new TVItemModel();
-            StatByYearList = new List<StatByYear>();
+            MonitoringStatByYearList = new List<MonitoringStatByYear>();
         }
         #endregion Constructors
     }

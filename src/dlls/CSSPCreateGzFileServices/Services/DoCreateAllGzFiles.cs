@@ -56,7 +56,7 @@ namespace CreateGzFileServices
             List< TVTypeEnum > tvTypeEnumList = new List<TVTypeEnum>()
             {
                 TVTypeEnum.Country,
-                //TVTypeEnum.Province,
+                TVTypeEnum.Province,
                 //TVTypeEnum.Area,
                 //TVTypeEnum.Sector,
                 //TVTypeEnum.Subsector,
@@ -83,8 +83,8 @@ namespace CreateGzFileServices
                             {
                                 //Console.WriteLine($"Create WebCountry [{tvItem.TVItemID}] doing...");
                                 //await CreateGzFile(WebTypeEnum.WebCountry, tvItem.TVItemID);
-                                //Console.WriteLine($"Create WebMonitoringRoutineStatsByYearForCountry [{tvItem.TVItemID}] doing...");
-                                //await CreateGzFile(WebTypeEnum.WebMonitoringRoutineStatsByYearForCountry, tvItem.TVItemID);
+                                Console.WriteLine($"Create WebMonitoringRoutineStatsByYearForCountry [{tvItem.TVItemID}] doing...");
+                                await CreateGzFile(WebTypeEnum.WebMonitoringRoutineStatsByYearForCountry, tvItem.TVItemID);
                                 Console.WriteLine($"Create WebMonitoringOtherStatsByYearForCountry [{tvItem.TVItemID}] doing...");
                                 await CreateGzFile(WebTypeEnum.WebMonitoringOtherStatsByYearForCountry, tvItem.TVItemID);
                             }

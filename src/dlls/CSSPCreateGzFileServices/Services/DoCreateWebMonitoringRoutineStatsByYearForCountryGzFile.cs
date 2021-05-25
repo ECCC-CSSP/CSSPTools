@@ -40,19 +40,19 @@ namespace CreateGzFileServices
 
             WebMonitoringRoutineStatsByYearForCountry webMonitoringRoutineStatsByYearForCountry = new WebMonitoringRoutineStatsByYearForCountry();
 
-            List<StatByYear> statByYearRoutineCountryList = new List<StatByYear>();
+            List<MonitoringStatByYear> monitoringStatByYearRoutingCountryList = new List<MonitoringStatByYear>();
 
             for (int j = DateTime.Now.Year; j >= 1980; j--)
             {
                 Console.WriteLine($"Doing Year {j}...");
 
-                StatByYear statByYearRoutine = new StatByYear();
-                statByYearRoutine.Year = j;
-                statByYearRoutine.MWQMSiteCount = GetMWQMSiteCountRoutineUnderCountry(tvItemCountry, j);
-                statByYearRoutine.MWQMRunCount = GetMWQMRunCountRoutineUnderCountry(tvItemCountry, j);
-                statByYearRoutine.MWQMSampleCount = GetMWQMSampleCountRoutineUnderCountry(tvItemCountry, j);
+                MonitoringStatByYear monitoringStatByYearRouting = new MonitoringStatByYear();
+                monitoringStatByYearRouting.Year = j;
+                monitoringStatByYearRouting.MWQMSiteCount = GetMWQMSiteCountRoutineUnderCountry(tvItemCountry, j);
+                monitoringStatByYearRouting.MWQMRunCount = GetMWQMRunCountRoutineUnderCountry(tvItemCountry, j);
+                monitoringStatByYearRouting.MWQMSampleCount = GetMWQMSampleCountRoutineUnderCountry(tvItemCountry, j);
 
-                statByYearRoutineCountryList.Add(statByYearRoutine);
+                monitoringStatByYearRoutingCountryList.Add(monitoringStatByYearRouting);
 
             }
 
@@ -66,7 +66,7 @@ namespace CreateGzFileServices
                                           select c).ToList()
 
                 },
-                StatByYearList = statByYearRoutineCountryList
+                MonitoringStatByYearList = monitoringStatByYearRoutingCountryList
             });
 
             try

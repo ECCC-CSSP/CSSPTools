@@ -1,0 +1,10 @@
+table {
+  width: 95%;
+  max-width: 500px;
+  min-width: 300px;
+  text-align: center;
+}
+
+.alignRight {
+  text-align: right;
+}

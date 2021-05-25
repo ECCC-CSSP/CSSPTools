@@ -172,6 +172,11 @@ export class AppLanguageService {
   MunicipalityWithInfrastructure: string[] = ['Municipality with infrastructure', 'Municipalité avec infrastructure'];
   MunicipalityWithoutInfrastructure: string[] = ['Municipality without infrastructure', 'Municipality sans infrastructure'];
 
+  MWQMRunCount: string[] = ['MWQM Run Count', 'Nombre de tournée SQEM'];
+
+  MWQMSampleCount: string[] = ['MWQM Sample Count', 'Nombre d\'échantillons SQEM'];
+
+  MWQMSiteCount: string[] = ['MWQM Site Count', 'Nombre de Site SQEM'];
   MWQMSiteName: string[] = ['MWQM site', 'Site SQEM'];
   MWQMSiteNameTitle: string[] = ['Name of marine water quality monitoring site', 'Nom du site surveillance de qualité d\'eau marine'];
   
@@ -346,4 +351,6 @@ export class AppLanguageService {
   TVItemListDetailSubsectorMWQMRun: string[] = ['MWQM run', 'Tournées'];
   TVItemListDetailSubsectorPolSourceSite: string[] = ['Pollution source site', 'Site de source de pollution'];
 
+  Year: string[] = ['Year', 'Année'];
+  YearOfSampling: string[] = ['Year of sampling', 'Année d\'échantillonnage'];
 }

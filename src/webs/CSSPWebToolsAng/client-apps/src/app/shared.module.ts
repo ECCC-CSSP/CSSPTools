@@ -97,6 +97,8 @@ import { ChartFCSalTempComponent } from './components/chart/chart-fc-sal-temp/ch
 import { ChartFCStatComponent } from './components/chart/chart-fc-stat/chart-fc-stat.component';
 import { TableFCStatComponent } from './components/table/table-fc-stat/table-fc-stat.component';
 import { TableRunDataComponent } from './components/table/table-run-data/table-run-data.component';
+import { ChartMonitoringStatComponent } from './components/chart/chart-monitoring-stat/chart-monitoring-stat.component';
+import { TableMonitoringStatDataComponent } from './components/table/table-monitoring-stat-data/table-monitoring-stat-data.component';
 
 @NgModule({
   declarations: [
@@ -112,6 +114,7 @@ import { TableRunDataComponent } from './components/table/table-run-data/table-r
     BreadCrumbComponent,
     ChartFCSalTempComponent,
     ChartFCStatComponent,
+    ChartMonitoringStatComponent,
     ContactItemComponent,
     CountryItemComponent,
     CountryItemCreateComponent,
@@ -192,6 +195,7 @@ import { TableRunDataComponent } from './components/table/table-run-data/table-r
     SubsectorToolsItemComponent,
     TableFCStatComponent,
     TableRunDataComponent,
+    TableMonitoringStatDataComponent,
     TVFileMenuComponent,
     TVItemMenuComponent
   ],
@@ -221,6 +225,7 @@ import { TableRunDataComponent } from './components/table/table-run-data/table-r
     BreadCrumbComponent,
     ChartFCSalTempComponent,
     ChartFCStatComponent,
+    ChartMonitoringStatComponent,
     ContactItemComponent,
     CountryItemComponent,
     CountryItemCreateComponent,
@@ -301,6 +306,7 @@ import { TableRunDataComponent } from './components/table/table-run-data/table-r
     SubsectorToolsItemComponent,
     TableFCStatComponent,
     TableRunDataComponent,
+    TableMonitoringStatDataComponent,
     TVFileMenuComponent,
     TVItemMenuComponent
   ]
