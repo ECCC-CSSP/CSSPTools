@@ -22,10 +22,6 @@ import { MapService } from 'src/app/services/map/map.service';
 export class CountryTVItemListItemComponent implements OnInit, OnDestroy {
   @Input() TVItemModelList: TVItemModel[] = [];
 
-  ShowView: boolean = false;
-  ShowModify: boolean = false;
-  ShowAdd: boolean = false;
-
   languageEnum = GetLanguageEnum();
 
   constructor(public appStateService: AppStateService,

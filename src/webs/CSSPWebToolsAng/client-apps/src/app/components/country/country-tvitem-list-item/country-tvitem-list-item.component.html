@@ -2,66 +2,9 @@
     <app-tvitem-menu [TVItemModel]="tvItemModel">
     </app-tvitem-menu>
 
-    <button mat-button (click)="subPageService.SetSubPage(tvItemModel)">
-        <span [ngClass]="tvItemModel?.TVItem?.IsActive ? '' : 'inactive'">
-            <span *ngIf="appStateService.UserPreference.MapVisible">
-                {{ i + 1 }}&nbsp;-&nbsp;
-            </span>
-            <span *ngIf="appStateService.UserPreference.DetailVisible">
-                [{{ tvItemModel?.TVItem.TVItemID }}]
-            </span>
-            {{ tvItemModel?.TVItemLanguageList[this.appLanguageService.LangID]?.TVText }}
-        </span>
-        <app-stat-count *ngIf="appStateService.UserPreference.StatCountVisible" [TVType]="null"
-            [TVItemModel]="tvItemModel"></app-stat-count>
-        <app-last-udpate-tv-item-model *ngIf="appStateService.UserPreference.LastUpdateVisible"
-            [TVItemModel]="tvItemModel"></app-last-udpate-tv-item-model>
-    </button>
+    <app-tvitem-item  [TVItemModel]="tvItemModel" [Index]="i"></app-tvitem-item>
 
-    <ng-container *ngIf="showTVItemService.TVItemVisible(tvItemModel)">
-        <div>
-            <br />
-            <button mat-button (click)="ShowView = !ShowView" [ngClass]="ShowView ? 'selected' : ''">
-                View
-            </button>
-            <span>&nbsp;&nbsp;</span>
-            <button mat-button (click)="ShowModify = !ShowModify" [ngClass]="ShowModify ? 'selected' : ''">
-                Modify
-            </button>
-            <span>&nbsp;&nbsp;</span>
-            <button mat-button (click)="ShowAdd = !ShowAdd" [ngClass]="ShowAdd ? 'selected' : ''">
-                Add
-            </button>
-        </div>
-
-        <mat-card *ngIf="ShowView">
-            <mat-card-header>
-                <h3>View</h3>
-            </mat-card-header>
-            <mat-card-content>
-                This would hold info regarding basic Country info.
-            </mat-card-content>
-        </mat-card>
-
-        <mat-card *ngIf="ShowModify">
-            <mat-card-header>
-                <h3>Modify</h3>
-            </mat-card-header>
-            <mat-card-content>
-                This will show Modify
-            </mat-card-content>
-        </mat-card>
-
-        <mat-card *ngIf="ShowAdd">
-            <mat-card-header>
-                <h3>Add</h3>
-            </mat-card-header>
-            <mat-card-content>
-                This will show Add
-            </mat-card-content>
-        </mat-card>
-
-    </ng-container>
+    <app-tvitem-open-menu  [TVItemModel]="tvItemModel"></app-tvitem-open-menu>
 
     <app-country-tvitem-list-detail *ngIf="appStateService.UserPreference.DetailVisible" [TVItemModel]="tvItemModel">
     </app-country-tvitem-list-detail>

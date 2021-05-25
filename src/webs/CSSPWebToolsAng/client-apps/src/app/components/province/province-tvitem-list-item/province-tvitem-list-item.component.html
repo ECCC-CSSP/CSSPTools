@@ -2,29 +2,9 @@
     <app-tvitem-menu [TVItemModel]="tvItemModel" >
     </app-tvitem-menu>
 
-    <button mat-button (click)="subPageService.SetSubPage(tvItemModel)">
-        <span [ngClass]="tvItemModel?.TVItem?.IsActive ? '' : 'inactive'">
-            <span *ngIf="appStateService.UserPreference.MapVisible">
-                {{ i + 1 }}&nbsp;-&nbsp;
-            </span>
-            <span *ngIf="appStateService.UserPreference.DetailVisible">
-                [{{ tvItemModel?.TVItem?.TVItemID }}]
-            </span>
-            {{ tvItemModel?.TVItemLanguageList[this.appLanguageService.LangID]?.TVText }}
-        </span>
-        <app-stat-count *ngIf="appStateService.UserPreference.StatCountVisible" [TVType]="null"
-            [TVItemModel]="tvItemModel"></app-stat-count>
-        <app-last-udpate-tv-item-model *ngIf="appStateService.UserPreference.LastUpdateVisible"
-            [TVItemModel]="tvItemModel"></app-last-udpate-tv-item-model>
-    </button>
+    <app-tvitem-item  [TVItemModel]="tvItemModel" [Index]="i"></app-tvitem-item>
 
-    <app-province-item-view *ngIf="showTVItemService.TVItemVisible(tvItemModel)"
-        [TVItemModel]="tvItemModel" >
-    </app-province-item-view>
-
-    <app-province-item-edit *ngIf="appStateService.UserPreference.EditVisible"
-        [TVItemModel]="tvItemModel" >
-    </app-province-item-edit>
+    <app-tvitem-open-menu  [TVItemModel]="tvItemModel"></app-tvitem-open-menu>
 
     <app-province-tvitem-list-detail  *ngIf="appStateService.UserPreference.DetailVisible"
         [TVItemModel]="tvItemModel"></app-province-tvitem-list-detail>

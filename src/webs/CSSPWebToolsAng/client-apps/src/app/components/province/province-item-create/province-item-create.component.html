@@ -1,0 +1,8 @@
+<form [formGroup]="formCountryCreate" (ngSubmit)="Create()">
+    <mat-form-field>
+        <mat-label>New country name</mat-label>
+        <input matInput formControlName="TVText" />
+        <mat-error *ngIf="f.TVText?.errors?.required">Required</mat-error>
+    </mat-form-field>
+    <button mat-button type="submit" [disabled]="!formCountryCreate.valid">Create</button>
+</form>

@@ -73,7 +73,6 @@ import { MWQMRunItemEditComponent } from './components/mwqm-run/mwqm-run-item-ed
 import { AreaItemEditComponent } from './components/area/area-item-edit/area-item-edit.component';
 import { TVItemMenuComponent } from './components/helpers/tvitem-menu/tvitem-menu.component';
 import { CountryItemModifyComponent } from './components/country/country-item-modify/country-item-modify.component';
-import { ProvinceItemEditComponent } from './components/province/province-item-edit/province-item-edit.component';
 import { MunicipalityItemEditComponent } from './components/municipality/municipality-item-edit/municipality-item-edit.component';
 import { TVFileMenuComponent } from './components/helpers/tvfile-menu/tvfile-menu.component';
 import { FileListItemEditComponent } from './components/files/file-list-item-edit/file-list-item-edit.component';
@@ -99,6 +98,10 @@ import { TableFCStatComponent } from './components/table/table-fc-stat/table-fc-
 import { TableRunDataComponent } from './components/table/table-run-data/table-run-data.component';
 import { ChartMonitoringStatComponent } from './components/chart/chart-monitoring-stat/chart-monitoring-stat.component';
 import { TableMonitoringStatDataComponent } from './components/table/table-monitoring-stat-data/table-monitoring-stat-data.component';
+import { TVItemItemComponent } from './components/helpers/tvitem-item/tvitem-item.component';
+import { TVItemOpenMenuComponent } from './components/helpers/tvitem-open-menu/tvitem-open-menu.component';
+import { ProvinceItemModifyComponent } from './components/province/province-item-modify/province-item-modify.component';
+import { ProvinceItemCreateComponent } from './components/province/province-item-create/province-item-create.component';
 
 @NgModule({
   declarations: [
@@ -169,7 +172,8 @@ import { TableMonitoringStatDataComponent } from './components/table/table-monit
     PolSourceSiteTVItemListDetailComponent,
     PolSourceSiteTVItemListItemComponent,
     ProvinceItemComponent,
-    ProvinceItemEditComponent,
+    ProvinceItemCreateComponent,
+    ProvinceItemModifyComponent,
     ProvinceItemViewComponent,
     ProvinceTVItemListDetailComponent,
     ProvinceTVItemListItemComponent,
@@ -197,7 +201,9 @@ import { TableMonitoringStatDataComponent } from './components/table/table-monit
     TableRunDataComponent,
     TableMonitoringStatDataComponent,
     TVFileMenuComponent,
-    TVItemMenuComponent
+    TVItemItemComponent,
+    TVItemMenuComponent,
+    TVItemOpenMenuComponent,
   ],
   imports: [
     CommonModule,
@@ -280,7 +286,8 @@ import { TableMonitoringStatDataComponent } from './components/table/table-monit
     PolSourceSiteTVItemListDetailComponent,
     PolSourceSiteTVItemListItemComponent,
     ProvinceItemComponent,
-    ProvinceItemEditComponent,
+    ProvinceItemCreateComponent,
+    ProvinceItemModifyComponent,
     ProvinceItemViewComponent,
     ProvinceTVItemListDetailComponent,
     ProvinceTVItemListItemComponent,
@@ -308,7 +315,9 @@ import { TableMonitoringStatDataComponent } from './components/table/table-monit
     TableRunDataComponent,
     TableMonitoringStatDataComponent,
     TVFileMenuComponent,
-    TVItemMenuComponent
+    TVItemItemComponent,
+    TVItemMenuComponent,
+    TVItemOpenMenuComponent,
   ]
 })
 export class SharedModule { }

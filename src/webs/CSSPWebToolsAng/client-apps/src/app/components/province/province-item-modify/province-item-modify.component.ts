@@ -7,11 +7,11 @@ import { AppStateService } from 'src/app/services/app-state.service';
 import { ShowTVItemService } from 'src/app/services/helpers/show-tvitem.service';
 
 @Component({
-  selector: 'app-province-item-edit',
-  templateUrl: './province-item-edit.component.html',
-  styleUrls: ['./province-item-edit.component.css']
+  selector: 'app-province-item-modify',
+  templateUrl: './province-item-modify.component.html',
+  styleUrls: ['./province-item-modify.component.css']
 })
-export class ProvinceItemEditComponent implements OnInit, OnDestroy {
+export class ProvinceItemModifyComponent implements OnInit, OnDestroy {
   @Input() TVItemModel: TVItemModel;
 
   
