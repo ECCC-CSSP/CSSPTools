@@ -1,0 +1,15 @@
+<button mat-button (click)="subPageService.SetSubPage(TVItemModel)">
+    <span [ngClass]="TVItemModel?.TVItem?.IsActive ? '' : 'inactive'">       
+        <span *ngIf="appStateService.UserPreference.MapVisible && Index != -1">
+            {{ Index + 1 }}&nbsp;-&nbsp;
+        </span>
+        <span *ngIf="appStateService.UserPreference.DetailVisible">
+            [{{ TVItemModel?.TVItem.TVItemID }}]
+        </span>
+        {{ TVItemModel?.TVItemLanguageList[this.appLanguageService.LangID]?.TVText }}
+    </span>
+    <app-stat-count *ngIf="appStateService.UserPreference.StatCountVisible" [TVType]="null"
+        [TVItemModel]="TVItemModel"></app-stat-count>
+    <app-tvitem-last-update *ngIf="appStateService.UserPreference.LastUpdateVisible"
+        [TVItemModel]="TVItemModel"></app-tvitem-last-update>
+</button>

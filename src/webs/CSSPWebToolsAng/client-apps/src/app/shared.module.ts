@@ -7,19 +7,17 @@ import { FileListItemDetailComponent } from 'src/app/components/files/file-list-
 import { FileListItemComponent } from 'src/app/components/files/file-list-item/file-list-item.component';
 import { FileListComponent } from 'src/app/components/files/file-list/file-list.component';
 //import { FileUploadComponent } from 'src/app/components/files/file-upload/file-upload.component';
-import { BreadCrumbComponent } from 'src/app/components/helpers/bread-crumb/bread-crumb.component';
-import { ErrorComponent } from 'src/app/components/helpers/error/error.component';
-import { FooterComponent } from 'src/app/components/helpers/footer/footer.component';
-import { SearchOptionComponent } from 'src/app/components/helpers/search-option/search-option.component';
-import { SearchComponent } from 'src/app/components/helpers/search/search.component';
-import { StatCountComponent } from 'src/app/components/helpers/stat-count/stat-count.component';
+import { BreadCrumbComponent } from 'src/app/components/bread-crumb/bread-crumb.component';
+import { ErrorComponent } from 'src/app/components/error/error.component';
+import { FooterComponent } from 'src/app/components/footer/footer.component';
+import { SearchOptionComponent } from 'src/app/components/search/search-option/search-option.component';
+import { SearchComponent } from 'src/app/components/search/search/search.component';
+import { StatCountComponent } from 'src/app/components/stat-count/stat-count.component';
 import { MapItemComponent } from 'src/app/components/map/map-item/map-item.component';
 import { SideNavMenuComponent } from 'src/app/components/sidenavs/sidenav-menu/sidenav-menu.component';
 import { AreaTVItemListDetailComponent } from 'src/app/components/area/area-tvitem-list-detail/area-tvitem-list-detail.component';
 import { AnalysisDataVisibleComponent } from './components/analysis/analysis-data-visible/analysis-data-visible.component';
 import { AnalysisOptionsComponent } from './components/analysis/analysis-options/analysis-options.component';
-import { LastUpdateTVFileModelComponent } from './components/helpers/last-update-tvfilemodel/last-update-tvfilemodel.component';
-import { LastUpdateTVItemModelComponent } from './components/helpers/last-update-tvitemmodel/last-update-tvitemmodel.component';
 import { AreaTVItemListItemComponent } from './components/area/area-tvitem-list-item/area-tvitem-list-item.component';
 import { AnalysisItemComponent } from './components/analysis/analysis-item/analysis-item.component';
 import { AreaItemComponent } from './components/area/area-item/area-item.component';
@@ -70,27 +68,12 @@ import { AnalysisItemMenuComponent } from './components/analysis/analysis-item-m
 import { MWQMSiteItemEditComponent } from './components/mwqm-site/mwqm-site-item-edit/mwqm-site-item-edit.component';
 import { PolSourceSiteItemEditComponent } from './components/pol-source-site/pol-source-site-item-edit/pol-source-site-item-edit.component';
 import { MWQMRunItemEditComponent } from './components/mwqm-run/mwqm-run-item-edit/mwqm-run-item-edit.component';
-import { AreaItemEditComponent } from './components/area/area-item-edit/area-item-edit.component';
-import { TVItemMenuComponent } from './components/helpers/tvitem-menu/tvitem-menu.component';
-import { CountryItemModifyComponent } from './components/country/country-item-modify/country-item-modify.component';
-import { MunicipalityItemEditComponent } from './components/municipality/municipality-item-edit/municipality-item-edit.component';
-import { TVFileMenuComponent } from './components/helpers/tvfile-menu/tvfile-menu.component';
-import { FileListItemEditComponent } from './components/files/file-list-item-edit/file-list-item-edit.component';
-import { SubsectorItemEditComponent } from './components/subsector/subsector-item-edit/subsector-item-edit.component';
-import { SectorItemEditComponent } from './components/sector/sector-item-edit/sector-item-edit.component';
+import { TVItemMenuComponent } from './components/tvitem/tvitem-menu/tvitem-menu.component';
 import { MikeScenarioItemEditComponent } from './components/mike-scenario/mike-scenario-item-edit/mike-scenario-item-edit.component';
-import { FileListItemViewComponent } from './components/files/file-list-item-view/file-list-item-view.component';
-import { AreaItemViewComponent } from './components/area/area-item-view/area-item-view.component';
-import { CountryItemViewComponent } from './components/country/country-item-view/country-item-view.component';
 import { MikeScenarioItemViewComponent } from './components/mike-scenario/mike-scenario-item-view/mike-scenario-item-view.component';
-import { MunicipalityItemViewComponent } from './components/municipality/municipality-item-view/municipality-item-view.component';
 import { MWQMRunItemViewComponent } from './components/mwqm-run/mwqm-run-item-view/mwqm-run-item-view.component';
 import { MWQMSiteItemViewComponent } from './components/mwqm-site/mwqm-site-item-view/mwqm-site-item-view.component';
 import { PolSourceSiteItemViewComponent } from './components/pol-source-site/pol-source-site-item-view/pol-source-site-item-view.component';
-import { ProvinceItemViewComponent } from './components/province/province-item-view/province-item-view.component';
-import { SectorItemViewComponent } from './components/sector/sector-item-view/sector-item-view.component';
-import { SubsectorItemViewComponent } from './components/subsector/subsector-item-view/subsector-item-view.component';
-import { CountryItemCreateComponent } from './components/country/country-item-create/country-item-create.component';
 import { HomeTestComponent } from './components/home/home-test/home-test.component';
 import { ChartFCSalTempComponent } from './components/chart/chart-fc-sal-temp/chart-fc-sal-temp.component';
 import { ChartFCStatComponent } from './components/chart/chart-fc-stat/chart-fc-stat.component';
@@ -98,10 +81,18 @@ import { TableFCStatComponent } from './components/table/table-fc-stat/table-fc-
 import { TableRunDataComponent } from './components/table/table-run-data/table-run-data.component';
 import { ChartMonitoringStatComponent } from './components/chart/chart-monitoring-stat/chart-monitoring-stat.component';
 import { TableMonitoringStatDataComponent } from './components/table/table-monitoring-stat-data/table-monitoring-stat-data.component';
-import { TVItemItemComponent } from './components/helpers/tvitem-item/tvitem-item.component';
-import { TVItemOpenMenuComponent } from './components/helpers/tvitem-open-menu/tvitem-open-menu.component';
-import { ProvinceItemModifyComponent } from './components/province/province-item-modify/province-item-modify.component';
-import { ProvinceItemCreateComponent } from './components/province/province-item-create/province-item-create.component';
+import { TVItemItemComponent } from './components/tvitem/tvitem-item/tvitem-item.component';
+import { FileListItemMenuComponent } from './components/files/file-list-item-menu/file-list-item-menu.component';
+import { FileListItemModifyComponent } from './components/files/file-list-item-modify/file-list-item-modify.component';
+import { FileListItemCreateComponent } from './components/files/file-list-item-create/file-list-item-create.component';
+import { FileListItemViewComponent } from './components/files/file-list-item-view/file-list-item-view.component';
+import { TVItemCreateComponent } from './components/tvitem/tvitem-create/tvitem-create.component';
+import { TVItemModifyComponent } from './components/tvitem/tvitem-modify/tvitem-modify.component';
+import { TVItemViewComponent } from './components/tvitem/tvitem-view/tvitem-view.component';
+import { TVItemMenuOpenComponent } from './components/tvitem/tvitem-menu-open/tvitem-menu-open.component';
+import { FileListItemMenuOpenComponent } from './components/files/file-list-item-menu-open/file-list-item-menu-open.component';
+import { FileListItemLastUpdateComponent } from './components/files/file-list-item-last-update/file-list-item-last-update.component';
+import { TVItemLastUpdateComponent } from './components/tvitem/tvitem-last-update/tvItem-last-update.component';
 
 @NgModule({
   declarations: [
@@ -110,8 +101,6 @@ import { ProvinceItemCreateComponent } from './components/province/province-item
     AnalysisItemMenuComponent,
     AnalysisOptionsComponent,
     AreaItemComponent,
-    AreaItemEditComponent,
-    AreaItemViewComponent,
     AreaTVItemListDetailComponent,
     AreaTVItemListItemComponent,
     BreadCrumbComponent,
@@ -120,9 +109,6 @@ import { ProvinceItemCreateComponent } from './components/province/province-item
     ChartMonitoringStatComponent,
     ContactItemComponent,
     CountryItemComponent,
-    CountryItemCreateComponent,
-    CountryItemModifyComponent,
-    CountryItemViewComponent,
     CountryTVItemListDetailComponent,
     CountryTVItemListItemComponent,
     EmailDistributionListItemComponent,
@@ -130,16 +116,18 @@ import { ProvinceItemCreateComponent } from './components/province/province-item
     ExportArcGISItemComponent,
     FileListComponent,
     FileListItemComponent,
+    FileListItemCreateComponent,
     FileListItemDetailComponent,
-    FileListItemEditComponent,
+    FileListItemLastUpdateComponent,
+    FileListItemModifyComponent,
+    FileListItemMenuComponent,
+    FileListItemMenuOpenComponent,
     FileListItemViewComponent,
     //  FileUploadComponent,
     FooterComponent,
     HomeItemComponent,
     HomeTestComponent,
     InfrastructureItemComponent,
-    LastUpdateTVFileModelComponent,
-    LastUpdateTVItemModelComponent,
     LogBookItemComponent,
     MapItemComponent,
     MapMenuComponent,
@@ -149,8 +137,6 @@ import { ProvinceItemCreateComponent } from './components/province/province-item
     MikeScenarioTVItemListDetailComponent,
     MikeScenarioTVItemListItemComponent,
     MunicipalityItemComponent,
-    MunicipalityItemEditComponent,
-    MunicipalityItemViewComponent,
     MunicipalityTVItemListDetailComponent,
     MunicipalityTVItemListItemComponent,
     MWQMRunItemComponent,
@@ -172,9 +158,6 @@ import { ProvinceItemCreateComponent } from './components/province/province-item
     PolSourceSiteTVItemListDetailComponent,
     PolSourceSiteTVItemListItemComponent,
     ProvinceItemComponent,
-    ProvinceItemCreateComponent,
-    ProvinceItemModifyComponent,
-    ProvinceItemViewComponent,
     ProvinceTVItemListDetailComponent,
     ProvinceTVItemListItemComponent,
     ProvincialToolsItemComponent,
@@ -184,26 +167,25 @@ import { ProvinceItemCreateComponent } from './components/province/province-item
     SearchComponent,
     SearchOptionComponent,
     SectorItemComponent,
-    SectorItemEditComponent,
-    SectorItemViewComponent,
     SectorTVItemListDetailComponent,
     SectorTVItemListItemComponent,
     ShellItemComponent,
     SideNavMenuComponent,
     StatCountComponent,
     SubsectorItemComponent,
-    SubsectorItemEditComponent,
-    SubsectorItemViewComponent,
     SubsectorTVItemListDetailComponent,
     SubsectorTVItemListItemComponent,
     SubsectorToolsItemComponent,
     TableFCStatComponent,
     TableRunDataComponent,
     TableMonitoringStatDataComponent,
-    TVFileMenuComponent,
+    TVItemCreateComponent,
     TVItemItemComponent,
+    TVItemLastUpdateComponent,
     TVItemMenuComponent,
-    TVItemOpenMenuComponent,
+    TVItemModifyComponent,
+    TVItemViewComponent,
+    TVItemMenuOpenComponent,
   ],
   imports: [
     CommonModule,
@@ -224,8 +206,6 @@ import { ProvinceItemCreateComponent } from './components/province/province-item
     AnalysisItemMenuComponent,
     AnalysisOptionsComponent,
     AreaItemComponent,
-    AreaItemEditComponent,
-    AreaItemViewComponent,
     AreaTVItemListDetailComponent,
     AreaTVItemListItemComponent,
     BreadCrumbComponent,
@@ -234,26 +214,24 @@ import { ProvinceItemCreateComponent } from './components/province/province-item
     ChartMonitoringStatComponent,
     ContactItemComponent,
     CountryItemComponent,
-    CountryItemCreateComponent,
-    CountryItemModifyComponent,
-    CountryItemViewComponent,
     CountryTVItemListDetailComponent,
     CountryTVItemListItemComponent,
     EmailDistributionListItemComponent,
     ErrorComponent,
     ExportArcGISItemComponent,
     FileListComponent,
-    FileListItemComponent,
+    FileListItemCreateComponent,
     FileListItemDetailComponent,
-    FileListItemEditComponent,
+    FileListItemLastUpdateComponent,
+    FileListItemModifyComponent,
+    FileListItemMenuComponent,
+    FileListItemMenuOpenComponent,
     FileListItemViewComponent,
     //FileUploadComponent,
     FooterComponent,
     HomeItemComponent,
     HomeTestComponent,
     InfrastructureItemComponent,
-    LastUpdateTVFileModelComponent,
-    LastUpdateTVItemModelComponent,
     LogBookItemComponent,
     MapItemComponent,
     MapMenuComponent,
@@ -263,8 +241,6 @@ import { ProvinceItemCreateComponent } from './components/province/province-item
     MikeScenarioTVItemListDetailComponent,
     MikeScenarioTVItemListItemComponent,
     MunicipalityItemComponent,
-    MunicipalityItemEditComponent,
-    MunicipalityItemViewComponent,
     MunicipalityTVItemListDetailComponent,
     MunicipalityTVItemListItemComponent,
     MWQMRunItemComponent,
@@ -286,9 +262,6 @@ import { ProvinceItemCreateComponent } from './components/province/province-item
     PolSourceSiteTVItemListDetailComponent,
     PolSourceSiteTVItemListItemComponent,
     ProvinceItemComponent,
-    ProvinceItemCreateComponent,
-    ProvinceItemModifyComponent,
-    ProvinceItemViewComponent,
     ProvinceTVItemListDetailComponent,
     ProvinceTVItemListItemComponent,
     ProvincialToolsItemComponent,
@@ -298,26 +271,25 @@ import { ProvinceItemCreateComponent } from './components/province/province-item
     SearchComponent,
     SearchOptionComponent,
     SectorItemComponent,
-    SectorItemEditComponent,
-    SectorItemViewComponent,
     SectorTVItemListDetailComponent,
     SectorTVItemListItemComponent,
     ShellItemComponent,
     SideNavMenuComponent,
     StatCountComponent,
     SubsectorItemComponent,
-    SubsectorItemEditComponent,
-    SubsectorItemViewComponent,
     SubsectorTVItemListDetailComponent,
     SubsectorTVItemListItemComponent,
     SubsectorToolsItemComponent,
     TableFCStatComponent,
     TableRunDataComponent,
     TableMonitoringStatDataComponent,
-    TVFileMenuComponent,
+    TVItemCreateComponent,
     TVItemItemComponent,
+    TVItemLastUpdateComponent,
     TVItemMenuComponent,
-    TVItemOpenMenuComponent,
+    TVItemModifyComponent,
+    TVItemViewComponent,
+    TVItemMenuOpenComponent,
   ]
 })
 export class SharedModule { }

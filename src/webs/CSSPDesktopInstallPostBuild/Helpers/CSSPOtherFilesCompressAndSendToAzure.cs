@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CSSPDesktopInstallPostBuild
@@ -38,10 +39,12 @@ namespace CSSPDesktopInstallPostBuild
 
             fi = new FileInfo($@"C:\CSSPTools\src\webs\CSSPDesktop\csspotherfiles.zip");
 
-            if (!fi.Exists)
+            int countSeconds = 0;
+            while (!fi.Exists)
             {
-                Console.WriteLine($"Zip file does not exist [{ fi.FullName }]");
-                return await Task.FromResult(false);
+                Console.WriteLine($"Zip file does not exist [{ fi.FullName }]. Time elapse {countSeconds} seconds.");
+                countSeconds += 1;
+                Thread.Sleep(1000);
             }
 
             try

@@ -20,8 +20,8 @@
 </span>
 <app-stat-count *ngIf="appStateService.UserPreference.StatCountVisible" [TVType]="tvTypeEnum.MWQMSiteSample"
     [TVItemModel]="TVItemModel"></app-stat-count>
-<app-last-udpate-tv-item-model *ngIf="appStateService.UserPreference.LastUpdateVisible"
-    [TVItemModel]="TVItemModel"></app-last-udpate-tv-item-model>
+<app-tvitem-last-update *ngIf="appStateService.UserPreference.LastUpdateVisible"
+    [TVItemModel]="TVItemModel"></app-tvitem-last-update>
 
 <span *ngFor="let statMWQMSiteSample of StatMWQMSite?.StatMWQMSiteSampleList">
     <span *ngIf="IsFirstOfNewYear(statMWQMSiteSample?.SampleDate?.toString())">

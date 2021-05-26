@@ -1,0 +1,10 @@
+<ng-container *ngIf="showTVFileService.TVFileVisible(TVFileModel)">
+    <app-file-list-item-view *ngIf="!appStateService.UserPreference.EditVisible" [TVFileModel]="TVFileModel">
+    </app-file-list-item-view>
+
+    <app-file-list-item-modify *ngIf="appStateService.UserPreference.EditVisible" [TVFileModel]="TVFileModel">
+    </app-file-list-item-modify>
+
+    <app-file-list-item-create *ngIf="appStateService.UserPreference.EditVisible" [TVFileModel]="TVFileModel">
+    </app-file-list-item-create>
+</ng-container>

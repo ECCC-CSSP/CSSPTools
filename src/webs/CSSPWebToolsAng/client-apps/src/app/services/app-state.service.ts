@@ -166,9 +166,6 @@ export class AppStateService {
   // search http loading related
   SearchWorking?: boolean = false;
 
-  // // stat
-  // StatRunsForDetail?: number = 30;
-
   // showing item
   ShowTVItemModelList?: TVItemModel[] = [];
 
@@ -178,56 +175,11 @@ export class AppStateService {
   // Analysis
   AnalysisStartRun?: StatMWQMRun = null;
   AnalysisEndRun?: StatMWQMRun = null;
-  // AnalysisRuns?: number = 30;
-  // AnalysisFullYear?: boolean = true;
   AnalysisShowOnlyUsed?: boolean = false;
-  // AnalysisCalculationType?: AnalysisCalculationTypeEnum = AnalysisCalculationTypeEnum.All;
-  // AnalysisHighlightSalFromAverage?: number = 8;
-  // AnalysisShortRange?: number = 3;
-  // AnalysisMidRange?: number = 3;
-  // AnalysisDry24h?: number = 4;
-  // AnalysisDry48h?: number = 8;
-  // AnalysisDry72h?: number = 12;
-  // AnalysisDry96h?: number = 16;
-  // AnalysisWet24h?: number = 12;
-  // AnalysisWet48h?: number = 25;
-  // AnalysisWet72h?: number = 37;
-  // AnalysisWet96h?: number = 50;
-  // AnalysisFCDataVisible?: boolean = true;
-  // AnalysisTempDataVisible?: boolean = false;
-  // AnalysisSalDataVisible?: boolean = false;
-  // AnalysisP90DataVisible?: boolean = false;
-  // AnalysisGeoMeanDataVisible?: boolean = false;
-  // AnalysisMedianDataVisible?: boolean = false;
-  // AnalysisPerOver43DataVisible?: boolean = false;
-  // AnalysisPerOver260DataVisible?: boolean = false;
 
-  // visual related
-  // TopComponent?: TopComponentEnum = TopComponentEnum.Home; // home | shell
-  // ShellSubComponent?: ShellSubComponentEnum = ShellSubComponentEnum.Root; // Root | Country | Province | Area | Sector | Subsector | Municipality
-  // RootSubComponent?: RootSubComponentEnum = RootSubComponentEnum.Countries; // Countries | Files | ExportArcGIS
-  // CountrySubComponent?: CountrySubComponentEnum = CountrySubComponentEnum.Provinces; // Provinces | Files | OpenDataNational | EmailDistributionList | RainExceedance
-  // ProvinceSubComponent?: ProvinceSubComponentEnum = ProvinceSubComponentEnum.Areas; // Areas | Municipalities | Files | SamplingPlan | OpenData | ProvinceTools
-  // AreaSubComponent?: AreaSubComponentEnum = AreaSubComponentEnum.Sectors; // Sectors | Files 
-  // SectorSubComponent?: SectorSubComponentEnum = SectorSubComponentEnum.Subsectors; // Subsectors | Files
-  // SubsectorSubComponent?: SubsectorSubComponentEnum = SubsectorSubComponentEnum.MWQMSites; // MWQMSites | Analysis | MWQMRuns | PollutionSourceSites | Files | SubsectorTools | LogBook
-  // MunicipalitySubComponent?: MunicipalitySubComponentEnum = MunicipalitySubComponentEnum.Infrastructures; // Infrastructures | MikeScenarios | Contacts | Files
-  // CurrentCountryTVItemID?: number = 0;
-  // CurrentProvinceTVItemID?: number = 0;
-  // CurrentMunicipalityTVItemID?: number = 0;
-  // CurrentAreaTVItemID?: number = 0;
-  // CurrentSectorTVItemID?: number = 0;
-  // CurrentSubsectorTVItemID?: number = 0;
   BaseApiUrl?: string = '';
-  // DetailVisible?: boolean = false;
-  // StatCountVisible?: boolean = false;
-  // LastUpdateVisible?: boolean = false;
-  // InactVisible?: boolean = false;
-  // LeftSideNavVisible?: boolean = false;
-  // EditVisible?: boolean = false;
 
   // map
-  // MapVisible?: boolean = true;
   EditMapVisible?: boolean = false;
   EditMapChanged?: boolean = false;
   MarkerDragStartPos: google.maps.LatLng = null;
@@ -235,8 +187,6 @@ export class AppStateService {
   MarkerTVItemID: number = 0;
   MarkerMapInfoID: number = 0;
   MarkerLabel: string = '';
-
-  // MapSize?: MapSizeEnum = MapSizeEnum.Size50; // Size30 | Size40 | Size50 | Size60 | Size70
 
   MapMarkerPathCharacters: string[] = [
     '',
@@ -246,60 +196,6 @@ export class AppStateService {
     'm0,0l-5,-10l-29,0l0,-20l68,0l0,20l-29,0l-5,10z',
     'm0,0l-5,-10l-35,0l0,-20l80,0l0,20l-35,0l-5,10z',
   ];
-
-  // MapMarkerColorArea?: string = '#0ffff0';
-  // MapMarkerColorClimateSite?: string = '#ff0000';
-  // MapMarkerColorCountry?: string = '#00ff00';
-  // MapMarkerColorFailed?: string = '#ff0000';
-  // MapMarkerColorHydrometricSite?: string = '#ff0000';
-  // MapMarkerColorInfrastructure?: string = '#ff0000';
-  // MapMarkerColorLessThan10?: string = '#ff0000';
-  // MapMarkerColorLiftStation?: string = '#ff0000';
-  // MapMarkerColorLineOverflow?: string = '#ff0000';
-  // MapMarkerColorMeshNode?: string = '#ff0000';
-  // MapMarkerColorMikeBoundaryConditionMesh?: string = '#ff0000';
-  // MapMarkerColorMikeBoundaryConditionWebTide?: string = '#ff0000';
-  // MapMarkerColorMikeScenario?: string = '#ff0000';
-  // MapMarkerColorMikeSource?: string = '#ff0000';
-  // MapMarkerColorMikeSourceIncluded?: string = '#ff0000';
-  // MapMarkerColorMikeSourceIsRiver?: string = '#ff0000';
-  // MapMarkerColorMikeSourceNotIncluded?: string = '#ff0000';
-  // MapMarkerColorMunicipality?: string = '#fff000';
-  // MapMarkerColorMWQMRun?: string = '#ff0000';
-  // MapMarkerColorMWQMSite?: string = '#f0f000';
-  // MapMarkerColorNoData?: string = '#ff0000';
-  // MapMarkerColorNoDepuration?: string = '#ff0000';
-  // MapMarkerColorOtherInfrastructure?: string = '#ff0000';
-  // MapMarkerColorOutfall?: string = '#ff0000';
-  // MapMarkerColorPassed?: string = '#ff0000';
-  // MapMarkerColorPolSourceSite?: string = '#ff0000';
-  // MapMarkerColorProvince?: string = '#ff00ff';
-  // MapMarkerColorSector?: string = '#ff00ff';
-  // MapMarkerColorSeeOtherMunicipality?: string = '#ff0000';
-  // MapMarkerColorSubsector?: string = '#0f0ff0';
-  // MapMarkerColorTideSite?: string = '#ff0000';
-  // MapMarkerColorWasteWaterTreatmentPlant?: string = '#ff0000';
-  // MapMarkerColorWebTideNode?: string = '#ff0000';
-
-  // ClassificationColorApproved?: string = '#ff0000';
-  // ClassificationColorConditionallyApproved?: string = '#ff0000';
-  // ClassificationColorConditionallyRestricted?: string = '#ff0000';
-  // ClassificationColorProhibited?: string = '#ff0000';
-  // ClassificationColorRestricted?: string = '#ff0000';
-
-  // MapPolylineColorInfrastructureLineOverflowToOutfall?: string = '#00ff00';
-  // MapPolylineColorInfrastructureLiftStationToLiftStation?: string = '#ff0000';
-  // MapPolylineColorInfrastructureLiftStationToOutfall?: string = '#ff00ff';
-  // MapPolylineColorInfrastructureLiftStationToWWTP?: string = '#ffff00';
-  // MapPolylineColorInfrastructureWWTPToOutfall?: string = '#00ffff';
-
-  // MapPolygonColorArea?: string = '#ff0000';
-  // MapPolygonColorCountry?: string = '#00ff00';
-  // MapPolygonColorProvince?: string = '#0000ff';
-  // MapPolygonColorSector?: string = '#ff00ff';
-  // MapPolygonColorSubsector?: string = '#ffff00';
-
-  // MapColorNotFound?: string = '#ffffff';
 
   zoom?: number = 12;
   center?: google.maps.LatLngLiteral = { lat: 46.0915449, lng: -64.7242012 };
@@ -311,34 +207,10 @@ export class AppStateService {
   };
   infoContent?: string = '';
 
-  //HasInternetConnection?: boolean;
-  //GoogleMapKey?: string;
   CSSLoaded?: boolean = false;
   IconLoaded?: boolean = false;
   GoogleJSLoaded?: boolean = false;
 
-  // sorting
-  // AreaSectorsSortOrder?: AscDescEnum = AscDescEnum.Ascending;
-  // AreaFilesSortByProp?: FilesSortPropEnum = FilesSortPropEnum.FileName;
-  // CountryProvincesSortOrder?: AscDescEnum = AscDescEnum.Ascending;
-  // CountryFilesSortByProp?: FilesSortPropEnum = FilesSortPropEnum.FileName;
-  // MunicipalityContactsSortOrder?: AscDescEnum = AscDescEnum.Ascending;
-  // MunicipalityFilesSortByProp?: FilesSortPropEnum = FilesSortPropEnum.FileName;
-  // MunicipalityInfrastructuresSortOrder?: AscDescEnum = AscDescEnum.Ascending;
-  // MunicipalityMikeScenariosSortOrder?: AscDescEnum = AscDescEnum.Ascending;
-  // MWQMSiteFilesSortByProp?: FilesSortPropEnum = FilesSortPropEnum.FileName;
-  // PolSourceSiteFilesSortByProp?: FilesSortPropEnum = FilesSortPropEnum.FileName;
-  // ProvinceAreasSortOrder?: AscDescEnum = AscDescEnum.Ascending;
-  // ProvinceFilesSortByProp?: FilesSortPropEnum = FilesSortPropEnum.FileName;
-  // ProvinceMunicipalitiesSortOrder?: AscDescEnum = AscDescEnum.Ascending;
-  // RootCountriesSortOrder?: AscDescEnum = AscDescEnum.Ascending;
-  // RootFilesSortByProp?: FilesSortPropEnum = FilesSortPropEnum.FileName;
-  // SectorFilesSortByProp?: FilesSortPropEnum = FilesSortPropEnum.FileName;
-  // SectorSubsectorsSortOrder?: AscDescEnum = AscDescEnum.Ascending;
-  // SubsectorFilesSortByProp?: FilesSortPropEnum = FilesSortPropEnum.FileName;
-  // SubsectorMWQMRunsSortOrder?: AscDescEnum = AscDescEnum.Descending;
-  // SubsectorMWQMSitesSortOrder?: AscDescEnum = AscDescEnum.Ascending;
-  // SubsectorPolSourceSitesSortOrder?: AscDescEnum = AscDescEnum.Ascending;
 
   constructor() {
   }

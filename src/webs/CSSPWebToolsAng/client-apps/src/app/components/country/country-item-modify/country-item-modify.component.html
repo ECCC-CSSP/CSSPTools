@@ -1,8 +1,0 @@
-<form [formGroup]="formCountryModify" (ngSubmit)="Modify()">
-    <mat-form-field>
-        <mat-label>Country Name</mat-label>
-        <input matInput formControlName="TVText" />
-        <mat-error *ngIf="f.TVText?.errors?.required">Required</mat-error>
-    </mat-form-field>
-    <button mat-button type="submit" [disabled]="!formCountryModify.valid">Modify</button>
-</form>

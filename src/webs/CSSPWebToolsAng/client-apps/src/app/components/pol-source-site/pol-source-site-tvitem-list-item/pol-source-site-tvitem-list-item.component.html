@@ -14,8 +14,8 @@
         </span>
         <app-stat-count *ngIf="appStateService.UserPreference.StatCountVisible" [TVType]="null"
             [TVItemModel]="tvItemModel"></app-stat-count>
-        <app-last-udpate-tv-item-model *ngIf="appStateService.UserPreference.LastUpdateVisible"
-            [TVItemModel]="tvItemModel"></app-last-udpate-tv-item-model>
+        <app-tvitem-last-update *ngIf="appStateService.UserPreference.LastUpdateVisible"
+            [TVItemModel]="tvItemModel"></app-tvitem-last-update>
     </button>
 
     <app-pol-source-site-item-view *ngIf="showTVItemService.TVItemVisible(tvItemModel)"

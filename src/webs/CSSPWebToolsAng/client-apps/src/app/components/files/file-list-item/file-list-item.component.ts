@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { FilesSortPropEnum, GetFilesSortPropEnum } from 'src/app/enums/generated/FilesSortPropEnum';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
-import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';

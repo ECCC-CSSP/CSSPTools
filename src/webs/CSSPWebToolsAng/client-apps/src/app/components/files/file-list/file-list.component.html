@@ -1,9 +1,16 @@
 <div *ngFor="let TVFileModelList of TVFileModelListList">
+    <ng-container *ngFor="let tvFileModel of TVFileModelList; let i = index">
+        <h2 class="file-purpose" *ngIf="i == 0">{{ GetFilePurposeEnum_GetIDText(tvFileModel?.TVFile?.FilePurpose) }}
+        </h2>
+    </ng-container>
     <div *ngIf="TVFileModelList != null && TVFileModelList?.length > 0">
-        <mat-nav-list *ngFor="let tvFileModel of TVFileModelList; let i = index">
-            <h2 class="file-purpose" *ngIf="i == 0">{{ GetFilePurposeEnum_GetIDText(tvFileModel?.TVFile?.FilePurpose) }}
-            </h2>
-            <app-file-list-item [FilesSortByProp]="FilesSortByProp" [Index]='(i + 1)' [TVFileModel]="tvFileModel"></app-file-list-item>
-        </mat-nav-list>
+        <div *ngFor="let tvFileModel of TVFileModelList; let i = index">
+            <app-file-list-item-menu [TVFileModel]="tvFileModel"> </app-file-list-item-menu>
+
+            <app-file-list-item [FilesSortByProp]="FilesSortByProp" [Index]='(i + 1)' [TVFileModel]="tvFileModel">
+            </app-file-list-item>           
+        
+            <app-file-list-item-menu-open [TVFileModel]="tvFileModel"></app-file-list-item-menu-open>       
+        </div>
     </div>
 </div>
