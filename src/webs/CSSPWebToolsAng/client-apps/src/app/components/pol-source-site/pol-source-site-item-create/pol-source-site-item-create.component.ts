@@ -4,14 +4,13 @@ import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { LoaderService } from 'src/app/services/loaders/loader.service';
-//import { WebPolSourceSitesService } from 'src/app/services/loaders/web-pol-source-sites.service';
 
 @Component({
-  selector: 'app-pol-source-site-item-edit',
-  templateUrl: './pol-source-site-item-edit.component.html',
-  styleUrls: ['./pol-source-site-item-edit.component.css']
+  selector: 'app-pol-source-site-item-create',
+  templateUrl: './pol-source-site-item-create.component.html',
+  styleUrls: ['./pol-source-site-item-create.component.css']
 })
-export class PolSourceSiteItemEditComponent implements OnInit, OnDestroy {
+export class PolSourceSiteItemCreateComponent implements OnInit, OnDestroy {
   @Input() TVItemModel: TVItemModel;
 
   

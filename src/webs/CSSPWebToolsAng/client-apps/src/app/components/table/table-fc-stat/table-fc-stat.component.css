@@ -3,6 +3,10 @@ table {
   text-align: center;
 }
 
+table th, table td {
+  text-align: center;
+}
+
 .FCBiggerThan499 {
 color: red;
 border: red solid 1px;

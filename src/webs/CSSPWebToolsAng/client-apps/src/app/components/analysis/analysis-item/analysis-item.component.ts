@@ -42,7 +42,8 @@ export class AnalysisItemComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.language = <number>this.appLanguageService.Language;
-    this.statService.FillStatMWQMSiteList();
+    // this.statService.FillStatMWQMRunList();
+    // this.statService.FillStatMWQMSiteList();
   }
 
   ngOnDestroy(): void {

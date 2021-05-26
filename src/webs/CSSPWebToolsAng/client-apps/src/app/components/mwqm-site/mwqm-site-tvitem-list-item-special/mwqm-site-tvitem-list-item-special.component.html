@@ -16,12 +16,14 @@
     {{ TVItemModel?.TVItemLanguageList[this.appLanguageService.LangID]?.TVText }}
 </span>
 <span>
-    ({{ GetMWQMSiteLatestClassificationEnum_GetIDText(StatMWQMSite?.MWQMSiteModel?.MWQMSite?.MWQMSiteLatestClassification) }})
+    ({{
+    GetMWQMSiteLatestClassificationEnum_GetIDText(StatMWQMSite?.MWQMSiteModel?.MWQMSite?.MWQMSiteLatestClassification)
+    }})
 </span>
 <app-stat-count *ngIf="appStateService.UserPreference.StatCountVisible" [TVType]="tvTypeEnum.MWQMSiteSample"
     [TVItemModel]="TVItemModel"></app-stat-count>
-<app-tvitem-last-update *ngIf="appStateService.UserPreference.LastUpdateVisible"
-    [TVItemModel]="TVItemModel"></app-tvitem-last-update>
+<app-tvitem-last-update *ngIf="appStateService.UserPreference.LastUpdateVisible" [TVItemModel]="TVItemModel">
+</app-tvitem-last-update>
 
 <span *ngFor="let statMWQMSiteSample of StatMWQMSite?.StatMWQMSiteSampleList">
     <span *ngIf="IsFirstOfNewYear(statMWQMSiteSample?.SampleDate?.toString())">

@@ -82,6 +82,8 @@ export class AppLanguageService {
 
   ContactNotFound: string[] = ['Contact not found', 'Contact non trouvé'];
 
+  Count: string[] = ['Count', 'Nombre'];
+
   CountryShowProvinces: string[] = ['Show provinces', 'Montrer provinces'];
   CountryProvinces: string[] = ['Provinces', 'Provinces'];
   CountryShowFiles: string[] = ['Show files', 'Montrer filières'];
@@ -172,11 +174,11 @@ export class AppLanguageService {
   MunicipalityWithInfrastructure: string[] = ['Municipality with infrastructure', 'Municipalité avec infrastructure'];
   MunicipalityWithoutInfrastructure: string[] = ['Municipality without infrastructure', 'Municipality sans infrastructure'];
 
-  MWQMRunCount: string[] = ['MWQM Run Count', 'Nombre de tournée SQEM'];
+  MWQMRun: string[] = ['MWQM Run', 'Tournée SQEM'];
 
-  MWQMSampleCount: string[] = ['MWQM Sample Count', 'Nombre d\'échantillons SQEM'];
+  MWQMSample: string[] = ['MWQM Sample', 'Echantillons SQEM'];
 
-  MWQMSiteCount: string[] = ['MWQM Site Count', 'Nombre de Site SQEM'];
+  MWQMSite: string[] = ['MWQM Site', 'Site SQEM'];
   MWQMSiteName: string[] = ['MWQM site', 'Site SQEM'];
   MWQMSiteNameTitle: string[] = ['Name of marine water quality monitoring site', 'Nom du site surveillance de qualité d\'eau marine'];
   

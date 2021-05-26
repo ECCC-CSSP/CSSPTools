@@ -49,6 +49,7 @@ export class MWQMSiteTVItemListItemComponent implements OnInit, OnDestroy {
   SetStatRunsForDetail(runs: number) {
     this.appStateService.UserPreference.StatRunsForDetail = runs;
     this.appStateService.Working = false;
+    this.statService.FillStatMWQMRunList();
     this.statService.FillStatMWQMSiteList();
 
     let mwqmSiteModel: MWQMSiteModel[] = this.appLoadedService.WebMWQMSites.MWQMSiteModelList;

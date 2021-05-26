@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
 import { MapInfoDrawTypeEnum } from 'src/app/enums/generated/MapInfoDrawTypeEnum';
+import { SubsectorSubComponentEnum } from 'src/app/enums/generated/SubsectorSubComponentEnum';
+import { PolSourceObservationIssue } from 'src/app/models/generated/db/PolSourceObservationIssue.model';
 import { MapInfoModel } from 'src/app/models/generated/web/MapInfoModel.model';
+import { PolSourceObservationModel } from 'src/app/models/generated/web/PolSourceObservationModel.model';
+import { PolSourceSiteModel } from 'src/app/models/generated/web/PolSourceSiteModel.model';
+import { StatMWQMSite } from 'src/app/models/generated/web/StatMWQMSite.model';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
 import { AppStateService } from 'src/app/services/app-state.service';
@@ -49,15 +54,51 @@ export class MapMarkersService {
             }
           }
 
-          // if (this.appStateService.UserPreference.SubsectorSubComponent == SubsectorSubComponentEnum.MWQMSites) {
-          //   let statMWQMSiteList: StatMWQMSite[] = this.appLoadedService.StatMWQMSiteList?.filter(c => c.TVItemModel.TVItem.TVItemID == tvItemModel.TVItem.TVItemID);
+          if (this.appStateService.UserPreference.SubsectorSubComponent == SubsectorSubComponentEnum.MWQMSites
+            || this.appStateService.UserPreference.SubsectorSubComponent == SubsectorSubComponentEnum.Analysis) {
+            let statMWQMSiteList: StatMWQMSite[] = this.appLoadedService.StatMWQMSiteList?.filter(c => c.TVItemModel.TVItem.TVItemID == tvItemModel.TVItem.TVItemID);
 
-          //   if (statMWQMSiteList && statMWQMSiteList?.length > 0) {
-          //     strokeColor = statMWQMSiteList[0]?.StatMWQMSiteSampleList[0]?.ColorAndLetter?.hexColor;
-          //     fillColor = statMWQMSiteList[0]?.StatMWQMSiteSampleList[0]?.ColorAndLetter?.hexColor;
-          //     label.text = `${label.text} ${statMWQMSiteList[0]?.StatMWQMSiteSampleList[0]?.ColorAndLetter?.letter}`;
-          //   }
-          // }
+            if (statMWQMSiteList && statMWQMSiteList?.length > 0) {
+              strokeColor = statMWQMSiteList[0]?.StatMWQMSiteSampleList[0]?.ColorAndLetter?.hexColor;
+              fillColor = statMWQMSiteList[0]?.StatMWQMSiteSampleList[0]?.ColorAndLetter?.hexColor;
+              label.text = `${label.text} ${statMWQMSiteList[0]?.StatMWQMSiteSampleList[0]?.ColorAndLetter?.letter}`;
+
+              path = this.appStateService.MapMarkerPathCharacters[label.text?.length];
+            }
+          }
+
+          if (this.appStateService.UserPreference.SubsectorSubComponent == SubsectorSubComponentEnum.PollutionSourceSites) {
+            strokeColor = '#ffffff';
+            fillColor = '#ffffff';
+            
+            let PolSourceSiteModelList: PolSourceSiteModel[] = this.appLoadedService.WebPolSourceSites.PolSourceSiteModelList?.filter(c => c.TVItemModel.TVItem.TVItemID == tvItemModel.TVItem.TVItemID);
+
+            if (PolSourceSiteModelList && PolSourceSiteModelList?.length > 0) {
+              if (PolSourceSiteModelList[0]?.PolSourceObservationModelList != null && PolSourceSiteModelList[0]?.PolSourceObservationModelList.length > 0) {
+                let polSourceObservationModel: PolSourceObservationModel = PolSourceSiteModelList[0]?.PolSourceObservationModelList[0];
+                if (polSourceObservationModel.PolSourceObservationIssueList != null && polSourceObservationModel.PolSourceObservationIssueList.length > 0) {
+                  let PolSourceObservationIssue: PolSourceObservationIssue = polSourceObservationModel.PolSourceObservationIssueList[0];
+
+                  let tvText: string = tvItemModel.TVItemLanguageList[this.appLanguageService.LangID].TVText;
+
+                  if (PolSourceObservationIssue.ObservationInfo.includes(',91003')) {
+                    strokeColor = '#ff0000';
+                    fillColor = '#ff0000';
+                  }
+                  if (PolSourceObservationIssue.ObservationInfo.includes(',91002')) {
+                    strokeColor = '#ffcc00';
+                    fillColor = '#ffcc00';
+                  }
+                  if (PolSourceObservationIssue.ObservationInfo.includes(',91001')) {
+                    strokeColor = '#00ff00';
+                    fillColor = '#00ff00';
+                  }
+                }
+              }
+
+              path = this.appStateService.MapMarkerPathCharacters[label.text?.length];
+            }
+          }
 
           let options: google.maps.MarkerOptions = {
             position: position,
@@ -87,9 +128,9 @@ export class MapMarkersService {
                 (<HTMLInputElement>document.getElementById("CurrentLatLng")).value = (evt.latLng.lat().toString().substring(0, 8) +
                   ' ' + evt.latLng.lng().toString().substring(0, 8));
               }
-              else{
+              else {
                 (<HTMLInputElement>document.getElementById("CurrentLatLng")).value = (this.appStateService.MarkerDragStartPos.lat().toFixed(6) +
-                ' ' + this.appStateService.MarkerDragStartPos.lng().toFixed(6));
+                  ' ' + this.appStateService.MarkerDragStartPos.lng().toFixed(6));
               }
             });
 
@@ -97,9 +138,9 @@ export class MapMarkersService {
               this.appStateService.MarkerTVItemID = mapInfoModel.MapInfo.TVItemID;
               this.appStateService.MarkerMapInfoID = mapInfoModel.MapInfo.MapInfoID;
               this.appStateService.MarkerDragStartPos = this.GetMapInfoCoord(mapInfoModel);
-              this.appStateService.EditMapChanged =  true;
+              this.appStateService.EditMapChanged = true;
               this.appStateService.MarkerLabel = mark.getLabel().text;
-             
+
               (<HTMLInputElement>document.getElementById("CurrentLatLng")).value = (this.appStateService.MarkerDragStartPos.lat().toFixed(6) +
                 ' ' + this.appStateService.MarkerDragStartPos.lng().toFixed(6));
             });

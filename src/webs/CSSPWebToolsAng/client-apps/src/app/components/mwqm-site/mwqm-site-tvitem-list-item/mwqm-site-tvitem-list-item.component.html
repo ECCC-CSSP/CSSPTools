@@ -37,23 +37,23 @@
 </mat-list>
 
 <mat-list *ngFor="let tvItemModel of TVItemModelList; let i = index">
-    <app-tvitem-menu [TVItemModel]="tvItemModel" >
+    <app-tvitem-menu [TVItemModel]="tvItemModel">
     </app-tvitem-menu>
 
-    <app-mwqm-site-tvitem-list-item-special [TVItemModel]="tvItemModel" [Index]="i + 1" 
+    <app-mwqm-site-tvitem-list-item-special [TVItemModel]="tvItemModel" [Index]="i + 1"
         [StatMWQMSite]="statService.GetMWQMSiteDetail(tvItemModel)">
     </app-mwqm-site-tvitem-list-item-special>
 
-    <app-mwqm-site-item-view *ngIf="showTVItemService.TVItemVisible(tvItemModel)"
-        [TVItemModel]="tvItemModel" >
+    <app-mwqm-site-item-view *ngIf="showTVItemService.TVItemVisible(tvItemModel)" [TVItemModel]="tvItemModel">
     </app-mwqm-site-item-view>
 
-    <app-mwqm-site-item-edit *ngIf="appStateService.UserPreference.EditVisible"
-        [TVItemModel]="tvItemModel" >
-    </app-mwqm-site-item-edit>
+    <app-mwqm-site-item-modify *ngIf="appStateService.UserPreference.EditVisible" [TVItemModel]="tvItemModel">
+    </app-mwqm-site-item-modify>
 
-    <app-mwqm-site-tvitem-list-detail *ngIf="appStateService.UserPreference.DetailVisible"
-        [TVItemModel]="tvItemModel" 
+    <app-mwqm-site-item-create *ngIf="appStateService.UserPreference.EditVisible" [TVItemModel]="tvItemModel">
+    </app-mwqm-site-item-create>
+
+    <app-mwqm-site-tvitem-list-detail *ngIf="appStateService.UserPreference.DetailVisible" [TVItemModel]="tvItemModel"
         [StatMWQMSite]="statService.GetMWQMSiteDetail(tvItemModel)">
     </app-mwqm-site-tvitem-list-detail>
 </mat-list>

@@ -2,3 +2,7 @@ table {
   width: 95%;
   text-align: center;
 }
+
+table th, table td {
+  text-align: center;
+}

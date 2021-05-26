@@ -5,6 +5,10 @@ table {
   text-align: center;
 }
 
+table th, table td {
+  text-align: center;
+}
+
 .alignRight {
   text-align: right;
 }

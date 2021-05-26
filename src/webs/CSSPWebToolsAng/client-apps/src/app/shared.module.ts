@@ -65,9 +65,6 @@ import { SubsectorTVItemListDetailComponent } from './components/subsector/subse
 import { SubsectorTVItemListItemComponent } from './components/subsector/subsector-tvitem-list-item/subsector-tvitem-list-item.component';
 import { MWQMSiteTVItemListItemSpecialComponent } from './components/mwqm-site/mwqm-site-tvitem-list-item-special/mwqm-site-tvitem-list-item-special.component';
 import { AnalysisItemMenuComponent } from './components/analysis/analysis-item-menu/analysis-item-menu.component';
-import { MWQMSiteItemEditComponent } from './components/mwqm-site/mwqm-site-item-edit/mwqm-site-item-edit.component';
-import { PolSourceSiteItemEditComponent } from './components/pol-source-site/pol-source-site-item-edit/pol-source-site-item-edit.component';
-import { MWQMRunItemEditComponent } from './components/mwqm-run/mwqm-run-item-edit/mwqm-run-item-edit.component';
 import { TVItemMenuComponent } from './components/tvitem/tvitem-menu/tvitem-menu.component';
 import { MikeScenarioItemEditComponent } from './components/mike-scenario/mike-scenario-item-edit/mike-scenario-item-edit.component';
 import { MikeScenarioItemViewComponent } from './components/mike-scenario/mike-scenario-item-view/mike-scenario-item-view.component';
@@ -93,6 +90,12 @@ import { TVItemMenuOpenComponent } from './components/tvitem/tvitem-menu-open/tv
 import { FileListItemMenuOpenComponent } from './components/files/file-list-item-menu-open/file-list-item-menu-open.component';
 import { FileListItemLastUpdateComponent } from './components/files/file-list-item-last-update/file-list-item-last-update.component';
 import { TVItemLastUpdateComponent } from './components/tvitem/tvitem-last-update/tvItem-last-update.component';
+import { MWQMRunItemModifyComponent } from './components/mwqm-run/mwqm-run-item-modify/mwqm-run-item-modify.component';
+import { MWQMRunItemCreateComponent } from './components/mwqm-run/mwqm-run-item-create/mwqm-run-item-create.component';
+import { MWQMSiteItemModifyComponent } from './components/mwqm-site/mwqm-site-item-modify/mwqm-site-item-modify.component';
+import { MWQMSiteItemCreateComponent } from './components/mwqm-site/mwqm-site-item-create/mwqm-site-item-create.component';
+import { PolSourceSiteItemModifyComponent } from './components/pol-source-site/pol-source-site-item-modify/pol-source-site-item-modify.component';
+import { PolSourceSiteItemCreateComponent } from './components/pol-source-site/pol-source-site-item-create/pol-source-site-item-create.component';
 
 @NgModule({
   declarations: [
@@ -140,12 +143,14 @@ import { TVItemLastUpdateComponent } from './components/tvitem/tvitem-last-updat
     MunicipalityTVItemListDetailComponent,
     MunicipalityTVItemListItemComponent,
     MWQMRunItemComponent,
-    MWQMRunItemEditComponent,
+    MWQMRunItemCreateComponent,
+    MWQMRunItemModifyComponent,
     MWQMRunItemViewComponent,
     MWQMRunTVItemListDetailComponent,
     MWQMRunTVItemListItemComponent,
     MWQMSiteItemComponent,
-    MWQMSiteItemEditComponent,
+    MWQMSiteItemCreateComponent,
+    MWQMSiteItemModifyComponent,
     MWQMSiteItemViewComponent,
     MWQMSiteTVItemListDetailComponent,
     MWQMSiteTVItemListItemComponent,
@@ -153,7 +158,8 @@ import { TVItemLastUpdateComponent } from './components/tvitem/tvitem-last-updat
     OpenDataItemComponent,
     OpenDataNationalItemComponent,
     PolSourceSiteItemComponent,
-    PolSourceSiteItemEditComponent,
+    PolSourceSiteItemCreateComponent,
+    PolSourceSiteItemModifyComponent,
     PolSourceSiteItemViewComponent,
     PolSourceSiteTVItemListDetailComponent,
     PolSourceSiteTVItemListItemComponent,
@@ -244,12 +250,14 @@ import { TVItemLastUpdateComponent } from './components/tvitem/tvitem-last-updat
     MunicipalityTVItemListDetailComponent,
     MunicipalityTVItemListItemComponent,
     MWQMRunItemComponent,
-    MWQMRunItemEditComponent,
+    MWQMRunItemCreateComponent,
+    MWQMRunItemModifyComponent,
     MWQMRunItemViewComponent,
     MWQMRunTVItemListDetailComponent,
     MWQMRunTVItemListItemComponent,
     MWQMSiteItemComponent,
-    MWQMSiteItemEditComponent,
+    MWQMSiteItemCreateComponent,
+    MWQMSiteItemModifyComponent,
     MWQMSiteItemViewComponent,
     MWQMSiteTVItemListDetailComponent,
     MWQMSiteTVItemListItemComponent,
@@ -257,7 +265,8 @@ import { TVItemLastUpdateComponent } from './components/tvitem/tvitem-last-updat
     OpenDataItemComponent,
     OpenDataNationalItemComponent,
     PolSourceSiteItemComponent,
-    PolSourceSiteItemEditComponent,
+    PolSourceSiteItemCreateComponent,
+    PolSourceSiteItemModifyComponent,
     PolSourceSiteItemViewComponent,
     PolSourceSiteTVItemListDetailComponent,
     PolSourceSiteTVItemListItemComponent,

@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CSSPWebModels;
+using System.Text.RegularExpressions;
 
 namespace CreateGzFileServices
 {
@@ -44,6 +45,14 @@ namespace CreateGzFileServices
                 TVItemModel TVItemModel = new TVItemModel();
                 TVItemModel.TVItem = tvItem;
                 TVItemModel.TVItemLanguageList = TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
+                foreach (TVItemLanguage tvItemLanguage in TVItemModel.TVItemLanguageList)
+                {
+                    tvItemLanguage.TVText = tvItemLanguage.TVText.Replace(Convert.ToChar(160), ' ');
+
+                    RegexOptions options = RegexOptions.None;
+                    Regex regex = new Regex("[ ]{2,}", options);
+                    tvItemLanguage.TVText = regex.Replace(tvItemLanguage.TVText, " ");
+                }
                 TVItemModel.TVItemStatList = TVItemStatList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
 
                 foreach (MapInfo MapInfo in MapInfoList.Where(c => c.TVItemID == tvItem.TVItemID))
@@ -75,7 +84,7 @@ namespace CreateGzFileServices
 
                 polSourceSiteModel.PolSourceSite = PolSourceSiteList.Where(c => c.PolSourceSiteTVItemID == tvItem.TVItemID).FirstOrDefault();
 
-                foreach (PolSourceObservation PolSourceObservation in PolSourceObservationList.Where(c => c.PolSourceSiteID == polSourceSiteModel.PolSourceSite.PolSourceSiteID))
+                foreach (PolSourceObservation PolSourceObservation in PolSourceObservationList.Where(c => c.PolSourceSiteID == polSourceSiteModel.PolSourceSite.PolSourceSiteID).OrderByDescending(c => c.ObservationDate_Local))
                 {
                     PolSourceObservationModel polSourceObservationModel = new PolSourceObservationModel();
                     polSourceObservationModel.PolSourceObservation = PolSourceObservation;

@@ -1,22 +1,18 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { WebTypeEnum } from 'src/app/enums/generated/WebTypeEnum';
-
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
-import { WebMWQMSites } from 'src/app/models/generated/web/WebMWQMSites.model';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { LoaderService } from 'src/app/services/loaders/loader.service';
-//import { WebMWQMSitesService } from 'src/app/services/loaders/web-mwqm-sites.service';
 
 @Component({
-  selector: 'app-mwqm-site-item-edit',
-  templateUrl: './mwqm-site-item-edit.component.html',
-  styleUrls: ['./mwqm-site-item-edit.component.css']
+  selector: 'app-mwqm-run-item-modify',
+  templateUrl: './mwqm-run-item-modify.component.html',
+  styleUrls: ['./mwqm-run-item-modify.component.css']
 })
-export class MWQMSiteItemEditComponent implements OnInit, OnDestroy {
+export class MWQMRunItemModifyComponent implements OnInit, OnDestroy {
   @Input() TVItemModel: TVItemModel;
 
-
+  
   constructor(public appStateService: AppStateService,
     public appLanguageService: AppLanguageService,
     public loaderService: LoaderService) { }
