@@ -189,6 +189,8 @@ namespace GenerateRepopulateTestDB
             {
                 if (polSourceGrouping.CSSPID % 100 == 0)
                 {
+                    Console.WriteLine($"doing reordering {polSourceGrouping.CSSPID} ...");
+
                     PolSourceGrouping polSourceGroupingStart = polSourceGrouping;
 
                     string StartStr = polSourceGroupingStart.CSSPID.ToString().Substring(0, 3);
