@@ -22,6 +22,8 @@ namespace CreateGzFileServices
                 return await Task.FromResult(false);
             }
 
+            // ---------------------------------
+
             Console.WriteLine("Create WebAllAddresses doing...");
             await CreateGzFile(WebTypeEnum.WebAllAddresses, 0);
             Console.WriteLine("Create WebAllContacts doing...");
