@@ -25,7 +25,6 @@ namespace CreateGzFileServices
 
             List<Infrastructure> InfrastructureList = await GetInfrastructureListUnderMunicipality(TVItem);
             List<InfrastructureLanguage> InfrastructureLanguageList = await GetInfrastructureLanguageListUnderMunicipality(TVItem);
-            List<Address> InfrastructureCivicAddressList = await GetInfrastructureCivicAddressListUnderMunicipality(TVItem);
             List<BoxModel> BoxModelList = await GetBoxModelListUnderMunicipality(TVItem);
             List<BoxModelLanguage> BoxModelLanguageList = await GetBoxModelLanguageListUnderMunicipality(TVItem);
             List<BoxModelResult> BoxModelResultList = await GetBoxModelResultListUnderMunicipality(TVItem);
@@ -73,7 +72,6 @@ namespace CreateGzFileServices
 
                 InfrastructureModel.Infrastructure = InfrastructureList.Where(c => c.InfrastructureTVItemID == tvItem.TVItemID).FirstOrDefault();
                 InfrastructureModel.InfrastructureLanguageList = InfrastructureLanguageList.Where(c => c.InfrastructureID == InfrastructureModel.Infrastructure.InfrastructureID).ToList();
-                InfrastructureModel.InfrastructureCivicAddress = InfrastructureCivicAddressList.Where(c => c.AddressTVItemID == InfrastructureModel.Infrastructure.CivicAddressTVItemID).FirstOrDefault();
 
                 foreach (BoxModel BoxModel in BoxModelList.Where(c => c.InfrastructureTVItemID == tvItem.TVItemID))
                 {

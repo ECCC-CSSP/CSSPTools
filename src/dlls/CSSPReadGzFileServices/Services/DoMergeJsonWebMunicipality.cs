@@ -46,14 +46,14 @@ namespace ReadGzFileServices
             }
 
             List<ContactModel> ContactModelList = (from c in WebMunicipalityLocal.MunicipalityContactModelList
-                                                   where c.TVItem.DBCommand != DBCommandEnum.Original
-                                                   || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-                                                   || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original
+                                                   where c.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
+                                                   || c.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
+                                                   || c.TVItemModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original
                                                    select c).ToList();
 
             foreach (ContactModel contactModel in ContactModelList)
             {
-                ContactModel contactModelOriginal = WebMunicipality.MunicipalityContactModelList.Where(c => c.TVItem.TVItemID == contactModel.TVItem.TVItemID).FirstOrDefault();
+                ContactModel contactModelOriginal = WebMunicipality.MunicipalityContactModelList.Where(c => c.TVItemModel.TVItem.TVItemID == contactModel.TVItemModel.TVItem.TVItemID).FirstOrDefault();
                 if (contactModelOriginal == null)
                 {
                     WebMunicipality.MunicipalityContactModelList.Add(contactModelOriginal);

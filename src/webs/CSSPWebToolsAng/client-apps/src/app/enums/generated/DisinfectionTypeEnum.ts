@@ -28,7 +28,7 @@ export function DisinfectionTypeEnum_GetOrderedText(appLanguageService: AppLangu
     let enumTextOrderedList: EnumIDAndText[] = [];
     if (appLanguageService.Language == LanguageEnum.fr) {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'Aucun' });
-        enumTextOrderedList.push({ EnumID: 2, EnumText: 'UV ' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'UV' });
         enumTextOrderedList.push({ EnumID: 3, EnumText: 'Chlorination No Dechlorination (fr)' });
         enumTextOrderedList.push({ EnumID: 4, EnumText: 'Chlorination With Dechlorination (fr)' });
         enumTextOrderedList.push({ EnumID: 5, EnumText: 'UV Seasonal (fr)' });

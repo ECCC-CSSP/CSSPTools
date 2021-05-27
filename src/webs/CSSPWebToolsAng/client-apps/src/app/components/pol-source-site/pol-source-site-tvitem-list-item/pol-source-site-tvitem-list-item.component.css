@@ -1,0 +1,16 @@
+
+.highRisk {
+    background-color: #ff0000;
+  }
+  
+  .moderateRisk {
+    background-color: #ffcc00;
+  }
+  
+  .lowRisk {
+    background-color: #00ff00;
+  }
+  
+  .unknownRisk {
+    background-color: #ffffff;
+  }

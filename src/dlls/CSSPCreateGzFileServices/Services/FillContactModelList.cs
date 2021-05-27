@@ -41,55 +41,27 @@ namespace CreateGzFileServices
 
             foreach (TVItem tvItem in TVItemContactList)
             {
+                TVItemModel tvItemModel = new TVItemModel();
+                tvItemModel.TVItem = tvItem;
+                tvItemModel.TVItemLanguageList = (from c in TVItemLanguageContactList
+                                                  where c.TVItemID == tvItem.TVItemID
+                                                  select c).ToList();
+
                 ContactModel contactModel = new ContactModel();
-                contactModel.TVItem = tvItem;
-                contactModel.TVItemLanguageList = TVItemLanguageContactList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
                 contactModel.Contact = ContactList.Where(c => c.ContactTVItemID == tvItem.TVItemID).FirstOrDefault();
+                contactModel.TVItemModel = tvItemModel;
 
-                // doing email
-                List<EmailModel> emailModelList = new List<EmailModel>();
+                contactModel.ContactEmailTVItemIDList = (from c in TVItemLinkContactEmailList
+                                                         where c.FromTVItemID == tvItem.TVItemID
+                                                         select c.ToTVItemID).ToList();
 
-                foreach(TVItemLink tvItemLink in TVItemLinkContactEmailList.Where(c => c.FromTVItemID == tvItem.TVItemID))
-                {
-                    EmailModel emailModel = new EmailModel();
-                    emailModel.Email = EmailList.Where(c => c.EmailTVItemID == tvItemLink.ToTVItemID).FirstOrDefault();
-                    emailModel.TVItem = TVItemEmailList.Where(c => c.TVItemID == tvItemLink.ToTVItemID).FirstOrDefault();
-                    emailModel.TVItemLanguageList = TVItemLanguageEmailList.Where(c => c.TVItemID == tvItemLink.ToTVItemID).ToList();
+                contactModel.ContactTelTVItemIDList = (from c in TVItemLinkContactTelList
+                                                       where c.FromTVItemID == tvItem.TVItemID
+                                                       select c.ToTVItemID).ToList();
 
-                    emailModelList.Add(emailModel);
-                }
-
-                contactModel.ContactEmailModelList = emailModelList;
-
-                // doing tel
-                List<TelModel> telModelList = new List<TelModel>();
-
-                foreach (TVItemLink tvItemLink in TVItemLinkContactTelList.Where(c => c.FromTVItemID == tvItem.TVItemID))
-                {
-                    TelModel telModel = new TelModel();
-                    telModel.Tel = TelList.Where(c => c.TelTVItemID == tvItemLink.ToTVItemID).FirstOrDefault();
-                    telModel.TVItem = TVItemTelList.Where(c => c.TVItemID == tvItemLink.ToTVItemID).FirstOrDefault();
-                    telModel.TVItemLanguageList = TVItemLanguageTelList.Where(c => c.TVItemID == tvItemLink.ToTVItemID).ToList();
-
-                    telModelList.Add(telModel);
-                }
-
-                contactModel.ContactTelModelList = telModelList;
-
-                // doing address
-                List<AddressModel> addressModelList = new List<AddressModel>();
-
-                foreach (TVItemLink tvItemLink in TVItemLinkContactAddressList.Where(c => c.FromTVItemID == tvItem.TVItemID))
-                {
-                    AddressModel addressModel = new AddressModel();
-                    addressModel.Address = AddressList.Where(c => c.AddressTVItemID == tvItemLink.ToTVItemID).FirstOrDefault();
-                    addressModel.TVItem = TVItemAddressList.Where(c => c.TVItemID == tvItemLink.ToTVItemID).FirstOrDefault();
-                    addressModel.TVItemLanguageList = TVItemLanguageAddressList.Where(c => c.TVItemID == tvItemLink.ToTVItemID).ToList();
-
-                    addressModelList.Add(addressModel);
-                }
-
-                contactModel.ContactAddressModelList = addressModelList;
+                contactModel.ContactAddressTVItemIDList = (from c in TVItemLinkContactAddressList
+                                                           where c.FromTVItemID == tvItem.TVItemID
+                                                           select c.ToTVItemID).ToList();
 
                 ContactModelList.Add(contactModel);
             }

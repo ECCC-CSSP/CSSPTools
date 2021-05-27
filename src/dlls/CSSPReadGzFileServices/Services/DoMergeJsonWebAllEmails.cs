@@ -30,14 +30,14 @@ namespace ReadGzFileServices
         private void DoMergeJsonWebAllEmails(WebAllEmails WebAllEmails, WebAllEmails WebAllEmailsLocal)
         {
             List<EmailModel> emailModelLocalList = (from c in WebAllEmailsLocal.EmailModelList
-                                                        where c.TVItem.DBCommand != DBCommandEnum.Original
-                                                        || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-                                                        || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original
+                                                        where c.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
+                                                        || c.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
+                                                        || c.TVItemModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original
                                                         select c).ToList();
 
             foreach (EmailModel emailModelLocal in emailModelLocalList)
             {
-                EmailModel emailModelOriginal = WebAllEmails.EmailModelList.Where(c => c.TVItem.TVItemID == emailModelLocal.TVItem.TVItemID).FirstOrDefault();
+                EmailModel emailModelOriginal = WebAllEmails.EmailModelList.Where(c => c.TVItemModel.TVItem.TVItemID == emailModelLocal.TVItemModel.TVItem.TVItemID).FirstOrDefault();
                 if (emailModelOriginal == null)
                 {
                     WebAllEmails.EmailModelList.Add(emailModelLocal);

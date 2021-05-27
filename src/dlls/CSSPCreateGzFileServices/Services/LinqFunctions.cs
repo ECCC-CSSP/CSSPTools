@@ -1070,104 +1070,92 @@ namespace CreateGzFileServices
                           && tl.ToTVType == TVTypeEnum.Contact
                           select c).AsNoTracking().ToListAsync();
         }
-        private async Task<List<Email>> GetMunicipalityContactEmailListUnderMunicipality(TVItem TVItemMunicipality)
+        private async Task<List<int>> GetMunicipalityContactEmailTVItemIDListUnderMunicipality(TVItem TVItemMunicipality)
         {
             if (dbLocal != null)
             {
                 return await (from tl in dbLocal.TVItemLinks
                               from c in dbLocal.Contacts
-                              from e in dbLocal.Emails
                               from tl2 in dbLocal.TVItemLinks
                               where tl.ToTVItemID == c.ContactTVItemID
                               && tl.FromTVItemID == TVItemMunicipality.TVItemID
                               && tl.FromTVType == TVTypeEnum.Municipality
                               && tl.ToTVType == TVTypeEnum.Contact
                               && tl2.FromTVItemID == tl.ToTVItemID
-                              && tl2.ToTVItemID == e.EmailTVItemID
                               && tl2.FromTVType == TVTypeEnum.Contact
                               && tl2.ToTVType == TVTypeEnum.Email
-                              select e).AsNoTracking().ToListAsync();
+                              select tl2.ToTVItemID).ToListAsync();
             }
 
             return await (from tl in db.TVItemLinks
                           from c in db.Contacts
-                          from e in db.Emails
                           from tl2 in db.TVItemLinks
                           where tl.ToTVItemID == c.ContactTVItemID
                           && tl.FromTVItemID == TVItemMunicipality.TVItemID
                           && tl.FromTVType == TVTypeEnum.Municipality
                           && tl.ToTVType == TVTypeEnum.Contact
                           && tl2.FromTVItemID == tl.ToTVItemID
-                          && tl2.ToTVItemID == e.EmailTVItemID
                           && tl2.FromTVType == TVTypeEnum.Contact
                           && tl2.ToTVType == TVTypeEnum.Email
-                          select e).AsNoTracking().ToListAsync();
+                          select tl2.ToTVItemID).ToListAsync();
         }
-        private async Task<List<Tel>> GetMunicipalityContactTelListUnderMunicipality(TVItem TVItemMunicipality)
+        private async Task<List<int>> GetMunicipalityContactTelTVItemIDListUnderMunicipality(TVItem TVItemMunicipality)
         {
             if (dbLocal != null)
             {
                 return await (from tl in dbLocal.TVItemLinks
                               from c in dbLocal.Contacts
-                              from t in dbLocal.Tels
                               from tl2 in dbLocal.TVItemLinks
                               where tl.ToTVItemID == c.ContactTVItemID
                               && tl.FromTVItemID == TVItemMunicipality.TVItemID
                               && tl.FromTVType == TVTypeEnum.Municipality
                               && tl.ToTVType == TVTypeEnum.Contact
                               && tl2.FromTVItemID == tl.ToTVItemID
-                              && tl2.ToTVItemID == t.TelTVItemID
                               && tl2.FromTVType == TVTypeEnum.Contact
                               && tl2.ToTVType == TVTypeEnum.Tel
-                              select t).AsNoTracking().ToListAsync();
+                              select tl2.ToTVItemID).ToListAsync();
             }
 
             return await (from tl in db.TVItemLinks
                           from c in db.Contacts
-                          from t in db.Tels
                           from tl2 in db.TVItemLinks
                           where tl.ToTVItemID == c.ContactTVItemID
                           && tl.FromTVItemID == TVItemMunicipality.TVItemID
                           && tl.FromTVType == TVTypeEnum.Municipality
                           && tl.ToTVType == TVTypeEnum.Contact
                           && tl2.FromTVItemID == tl.ToTVItemID
-                          && tl2.ToTVItemID == t.TelTVItemID
                           && tl2.FromTVType == TVTypeEnum.Contact
                           && tl2.ToTVType == TVTypeEnum.Tel
-                          select t).AsNoTracking().ToListAsync();
+                          select tl2.ToTVItemID).ToListAsync();
         }
-        private async Task<List<Address>> GetMunicipalityContactAddressListUnderMunicipality(TVItem TVItemMunicipality)
+        private async Task<List<int>> GetMunicipalityContactAddressTVItemIDListUnderMunicipality(TVItem TVItemMunicipality)
         {
             if (dbLocal != null)
             {
                 return await (from tl in dbLocal.TVItemLinks
                               from c in dbLocal.Contacts
-                              from a in dbLocal.Addresses
                               from tl2 in dbLocal.TVItemLinks
                               where tl.ToTVItemID == c.ContactTVItemID
                               && tl.FromTVItemID == TVItemMunicipality.TVItemID
                               && tl.FromTVType == TVTypeEnum.Municipality
                               && tl.ToTVType == TVTypeEnum.Contact
                               && tl2.FromTVItemID == tl.ToTVItemID
-                              && tl2.ToTVItemID == a.AddressTVItemID
                               && tl2.FromTVType == TVTypeEnum.Contact
                               && tl2.ToTVType == TVTypeEnum.Address
-                              select a).AsNoTracking().ToListAsync();
+                              select tl2.ToTVItemID).ToListAsync();
             }
 
             return await (from tl in db.TVItemLinks
                           from c in db.Contacts
-                          from a in db.Addresses
                           from tl2 in db.TVItemLinks
                           where tl.ToTVItemID == c.ContactTVItemID
                           && tl.FromTVItemID == TVItemMunicipality.TVItemID
                           && tl.FromTVType == TVTypeEnum.Municipality
                           && tl.ToTVType == TVTypeEnum.Contact
                           && tl2.FromTVItemID == tl.ToTVItemID
-                          && tl2.ToTVItemID == a.AddressTVItemID
                           && tl2.FromTVType == TVTypeEnum.Contact
                           && tl2.ToTVType == TVTypeEnum.Address
-                          select a).AsNoTracking().ToListAsync();
+                          select tl2.ToTVItemID).ToListAsync();
         }
         private async Task<List<SamplingPlan>> GetAllSamplingPlanUnderProvince(TVItem TVItemProvince)
         {

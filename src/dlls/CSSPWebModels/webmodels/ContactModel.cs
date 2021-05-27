@@ -13,22 +13,20 @@ namespace CSSPWebModels
     {
         #region Properties
         public Contact Contact { get; set; }
-        public TVItem TVItem { get; set; }
-        public List<TVItemLanguage> TVItemLanguageList { get; set; }
-        public List<EmailModel> ContactEmailModelList { get; set; }
-        public List<TelModel> ContactTelModelList { get; set; }
-        public List<AddressModel> ContactAddressModelList { get; set; }
+        public TVItemModel TVItemModel { get; set; }
+        public List<int> ContactEmailTVItemIDList { get; set; }
+        public List<int> ContactTelTVItemIDList { get; set; }
+        public List<int> ContactAddressTVItemIDList { get; set; }
         #endregion Properties
 
         #region Constructors
         public ContactModel()
         {
             Contact = new Contact();
-            TVItem = new TVItem();
-            TVItemLanguageList = new List<TVItemLanguage>();
-            ContactEmailModelList = new List<EmailModel>();
-            ContactTelModelList = new List<TelModel>();
-            ContactAddressModelList = new List<AddressModel>();
+            TVItemModel = new TVItemModel();
+            ContactEmailTVItemIDList = new List<int>();
+            ContactTelTVItemIDList = new List<int>();
+            ContactAddressTVItemIDList = new List<int>();
         }
         #endregion Constructors
     }

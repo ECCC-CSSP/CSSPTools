@@ -16,14 +16,14 @@ namespace CreateGzFileServices
 {
     public partial class CreateGzFileService : ControllerBase, ICreateGzFileService
     {
-        private async Task FillProvinceModelList(List<ProvinceModel> ProvinceModelList, TVItem TVItem)
+        private async Task FillProvinceModelList(List<TVItemModel> TVItemModelList, TVItem TVItem)
         {
             List<TVItem> TVItemList = await GetTVItemChildrenListWithTVItemID(TVItem, TVTypeEnum.Province);
             List<TVItemLanguage> TVItemLanguageList = await GetTVItemLanguageChildrenListWithTVItemID(TVItem, TVTypeEnum.Province);
 
             foreach (TVItem tvItem in TVItemList)
             {
-                ProvinceModelList.Add(new ProvinceModel()
+                TVItemModelList.Add(new TVItemModel()
                 {
                     TVItem = tvItem,
                     TVItemLanguageList = TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID).ToList(),

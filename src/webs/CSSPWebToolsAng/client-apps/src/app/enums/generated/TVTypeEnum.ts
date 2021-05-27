@@ -123,7 +123,7 @@ export function TVTypeEnum_GetOrderedText(appLanguageService: AppLanguageService
         enumTextOrderedList.push({ EnumID: 15, EnumText: 'Municipalité' });
         enumTextOrderedList.push({ EnumID: 16, EnumText: 'MWQM Site (fr)' });
         enumTextOrderedList.push({ EnumID: 17, EnumText: 'Site de la source de pollution' });
-        enumTextOrderedList.push({ EnumID: 18, EnumText: 'Province ' });
+        enumTextOrderedList.push({ EnumID: 18, EnumText: 'Province' });
         enumTextOrderedList.push({ EnumID: 19, EnumText: 'Secteur' });
         enumTextOrderedList.push({ EnumID: 20, EnumText: 'Sous-secteur' });
         enumTextOrderedList.push({ EnumID: 21, EnumText: 'Tél' });

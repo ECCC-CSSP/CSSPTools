@@ -5,8 +5,8 @@
  *
  */
 
-import { ProvinceModel } from 'src/app/models/generated/web/ProvinceModel.model';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 
 export class WebAllProvinces {
-    ProvinceModelList: ProvinceModel[];
+    TVItemModelList: TVItemModel[];
 }

@@ -177,7 +177,7 @@ export function ReportTreeNodeTypeEnum_GetOrderedText(appLanguageService: AppLan
         enumTextOrderedList.push({ EnumID: 76, EnumText: 'SubsectorClimateSiteDataType' });
         enumTextOrderedList.push({ EnumID: 77, EnumText: 'SubsectorHydrometricSiteRatingCurveValueType' });
         enumTextOrderedList.push({ EnumID: 78, EnumText: 'ReportSubsectorSpecialTableType' });
-        enumTextOrderedList.push({ EnumID: 79, EnumText: 'Type de résultat spécial du scénario MIKE raport (KML) ' });
+        enumTextOrderedList.push({ EnumID: 79, EnumText: 'Type de résultat spécial du scénario MIKE raport (KML)' });
     }
     else {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'ReportRootType' });

@@ -299,8 +299,8 @@ namespace CSSPDBLocalServices.Tests
                                     return await Task.FromResult((from c in ReadGzFileService.webAppLoaded.WebAllContacts.ContactModelList
                                                                   select new TVItemModel
                                                                   {
-                                                                      TVItem = c.TVItem,
-                                                                      TVItemLanguageList = c.TVItemLanguageList,
+                                                                      TVItem = c.TVItemModel.TVItem,
+                                                                      TVItemLanguageList = c.TVItemModel.TVItemLanguageList,
                                                                   }).ToList());
                                 }
                             default:

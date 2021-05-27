@@ -1,0 +1,19 @@
+<div>
+    <br>
+    {{ contactModel.Contact.FirstName }}
+    <ng-container *ngIf="contactModel.Contact.Initial">
+        {{ contactModel.Contact.Initial }}.&nbsp;
+    </ng-container>
+    {{ contactModel.Contact.LastName }}
+    {{ appLanguageService.ObservationDate[appLanguageService.LangID] }}:&nbsp;
+    {{
+    dateFormatService.GetDateTime_LocalDigit(PolSourceObservationModel.PolSourceObservation?.ObservationDate_Local.toString())}}&nbsp;
+    <span *ngIf="PolSourceObservationModel.PolSourceObservation?.DesktopReviewed">
+        {{ appLanguageService.DesktopReviewed[appLanguageService.LangID] }}
+    </span>
+</div>
+
+<div *ngFor="let polSourceObservationIssue of PolSourceObservationModel.PolSourceObservationIssueList">
+    <app-pol-source-site-item-issue [PolSourceObservationIssue]="polSourceObservationIssue">
+    </app-pol-source-site-item-issue>
+</div>

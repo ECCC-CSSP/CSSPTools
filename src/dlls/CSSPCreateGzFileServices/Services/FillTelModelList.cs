@@ -24,10 +24,15 @@ namespace CreateGzFileServices
 
             foreach (TVItem tvItem in TVItemList)
             {
+                TVItemModel tvItemModel = new TVItemModel();
+                tvItemModel.TVItem = tvItem;
+                tvItemModel.TVItemLanguageList = (from c in TVItemLanguageList
+                                                  where c.TVItemID == tvItem.TVItemID
+                                                  select c).ToList();
+
                 TelModelList.Add(new TelModel()
                 {
-                    TVItem = tvItem,
-                    TVItemLanguageList = TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID).ToList(),
+                    TVItemModel = tvItemModel,
                     Tel = TelList.Where(c => c.TelTVItemID == tvItem.TVItemID).FirstOrDefault(),
                 });
             }

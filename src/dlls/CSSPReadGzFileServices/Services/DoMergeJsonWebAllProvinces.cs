@@ -29,22 +29,22 @@ namespace ReadGzFileServices
     {
         private void DoMergeJsonWebAllProvinces(WebAllProvinces WebAllProvinces, WebAllProvinces WebAllProvincesLocal)
         {
-            List<ProvinceModel> provinceModelLocalList = (from c in WebAllProvincesLocal.ProvinceModelList
+            List<TVItemModel> tvItemModelLocalList = (from c in WebAllProvincesLocal.TVItemModelList
                                                     where c.TVItem.DBCommand != DBCommandEnum.Original
                                                     || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
                                                     || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original
                                                     select c).ToList();
 
-            foreach (ProvinceModel provinceModelLocal in provinceModelLocalList)
+            foreach (TVItemModel tvItemModelLocal in tvItemModelLocalList)
             {
-                ProvinceModel provinceModelOriginal = WebAllProvinces.ProvinceModelList.Where(c => c.TVItem.TVItemID == provinceModelLocal.TVItem.TVItemID).FirstOrDefault();
-                if (provinceModelOriginal == null)
+                TVItemModel tvItemModelOriginal = WebAllProvinces.TVItemModelList.Where(c => c.TVItem.TVItemID == tvItemModelLocal.TVItem.TVItemID).FirstOrDefault();
+                if (tvItemModelOriginal == null)
                 {
-                    WebAllProvinces.ProvinceModelList.Add(provinceModelLocal);
+                    WebAllProvinces.TVItemModelList.Add(tvItemModelLocal);
                 }
                 else
                 {
-                    provinceModelOriginal = provinceModelLocal;
+                    tvItemModelOriginal = tvItemModelLocal;
                 }
             }
         }

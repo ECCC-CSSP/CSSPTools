@@ -1,8 +1,12 @@
-<span *ngIf="appStateService.Working">
-    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-</span>
-<p class="loading-status" *ngIf="appStateService.Status">
-    {{ appStateService.Status }}
-</p>
-
-<p style="background-color: darkorchid;">This is the pol source site view component</p>
+<div *ngFor="let polSourceSiteModel of polSourceSiteService.GetPolSourceSiteModelList(TVItemModel)">
+    <div *ngIf="polSourceSiteModel.PolSourceSite?.CivicAddressTVItemID">
+        <app-address [TVItemID]="polSourceSiteModel.PolSourceSite?.CivicAddressTVItemID"></app-address>
+    </div>
+    <div *ngIf="!polSourceSiteModel.PolSourceSite?.CivicAddressTVItemID">
+        {{appLanguageService.NoAddress[appLanguageService.LangID]}}
+    </div>
+    <div *ngFor="let polSourceObservationModel of polSourceSiteModel.PolSourceObservationModelList">
+        <app-pol-source-site-item-obs [PolSourceObservationModel]="polSourceObservationModel">
+        </app-pol-source-site-item-obs>
+    </div>
+</div>

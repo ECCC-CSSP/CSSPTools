@@ -12,16 +12,14 @@ namespace CSSPWebModels
     public partial class TelModel
     {
         #region Properties
-        public TVItem TVItem { get; set; }
-        public List<TVItemLanguage> TVItemLanguageList { get; set; }
+        public TVItemModel TVItemModel { get; set; }
         public Tel Tel { get; set; }
         #endregion Properties
 
         #region Constructors
         public TelModel()
         {
-            TVItem = new TVItem();
-            TVItemLanguageList = new List<TVItemLanguage>();
+            TVItemModel = new TVItemModel();
             Tel = new Tel();
         }
         #endregion Constructors

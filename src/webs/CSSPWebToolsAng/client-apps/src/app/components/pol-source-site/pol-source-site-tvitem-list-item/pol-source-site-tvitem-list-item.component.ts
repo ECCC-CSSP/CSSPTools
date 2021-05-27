@@ -4,6 +4,7 @@ import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { AppStateService } from 'src/app/services/app-state.service';
+import { PolSourceSiteService } from 'src/app/services/helpers/pol-source-site.service';
 import { ShowTVItemService } from 'src/app/services/helpers/show-tvitem.service';
 import { SubPageService } from 'src/app/services/helpers/sub-page.service';
 import { MapService } from 'src/app/services/map/map.service';
@@ -22,7 +23,8 @@ export class PolSourceSiteTVItemListItemComponent implements OnInit, OnDestroy {
     public appLanguageService: AppLanguageService,
     public subPageService: SubPageService,
     public mapService: MapService,
-    public showTVItemService: ShowTVItemService) {
+    public showTVItemService: ShowTVItemService,
+    public polSourceSiteService: PolSourceSiteService) {
   }
 
   ngOnInit() {

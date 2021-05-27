@@ -5,8 +5,8 @@
  *
  */
 
-import { AllMunicipalityModel } from 'src/app/models/generated/web/AllMunicipalityModel.model';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 
 export class WebAllMunicipalities {
-    AllMunicipalityModelList: AllMunicipalityModel[];
+    TVItemModelList: TVItemModel[];
 }

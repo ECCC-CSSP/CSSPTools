@@ -1,0 +1,43 @@
+<h3>{{ appLanguageService.Address[appLanguageService.LangID] }}</h3>
+<div *ngIf="appLanguageService.LangID == 0">
+    {{ appLanguageService.Entered[appLanguageService.LangID] }}:&nbsp;
+    {{ addressModel.Address.StreetNumber }}&nbsp;
+    {{ streetType[addressModel.Address.StreetType] }},&nbsp;
+    {{ addressModel.Address.StreetName }},&nbsp;
+    {{
+    addressService.GetMunicipalityTVItemModel(addressModel.Address.MunicipalityTVItemID).TVItemLanguageList[appLanguageService.LangID].TVText
+    }}&nbsp;
+    {{
+    addressService.GetProvinceTVItemModel(addressModel.Address.ProvinceTVItemID).TVItemLanguageList[appLanguageService.LangID].TVText
+    }},&nbsp;
+    {{ addressModel.Address.PostalCode }},&nbsp;
+    {{
+    addressService.GetCountryTVItemModel(addressModel.Address.CountryTVItemID).TVItemLanguageList[appLanguageService.LangID].TVText
+    }}
+    <span *ngIf="addressModel.Address.GoogleAddressText">
+        <br />
+        {{ appLanguageService.Google[appLanguageService.LangID] }}:&nbsp;
+        {{ addressModel.Address.GoogleAddressText }}
+    </span>
+</div>
+<div *ngIf="appLanguageService.LangID == 1">
+    {{ appLanguageService.Entered[appLanguageService.LangID] }}:&nbsp;
+    {{ addressModel.Address.StreetNumber }}&nbsp;
+    {{ streetType[addressModel.Address.StreetType] }}&nbsp;
+    {{ addressModel.Address.StreetName }},&nbsp;
+    {{
+    addressService.GetMunicipalityTVItemModel(addressModel.Address.MunicipalityTVItemID).TVItemLanguageList[appLanguageService.LangID].TVText
+    }}&nbsp;
+    {{
+    addressService.GetProvinceTVItemModel(addressModel.Address.ProvinceTVItemID).TVItemLanguageList[appLanguageService.LangID].TVText
+    }},&nbsp;
+    {{ addressModel.Address.PostalCode }},&nbsp;
+    {{
+    addressService.GetCountryTVItemModel(addressModel.Address.CountryTVItemID).TVItemLanguageList[appLanguageService.LangID].TVText
+    }}
+    <span *ngIf="addressModel.Address.GoogleAddressText">
+        <br />
+        {{ appLanguageService.Google[appLanguageService.LangID] }}:&nbsp;
+        {{ addressModel.Address.GoogleAddressText }}
+    </span>
+</div>

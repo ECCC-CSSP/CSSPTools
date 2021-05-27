@@ -41,9 +41,9 @@ export function AnalyzeMethodEnum_GetOrderedText(appLanguageService: AppLanguage
         enumTextOrderedList.push({ EnumID: 7, EnumText: 'ZZ_0Q' });
         enumTextOrderedList.push({ EnumID: 8, EnumText: 'Méthode analytique 8' });
         enumTextOrderedList.push({ EnumID: 9, EnumText: 'Méthode analytique 9' });
-        enumTextOrderedList.push({ EnumID: 10, EnumText: 'Méthode analytique 10 ' });
+        enumTextOrderedList.push({ EnumID: 10, EnumText: 'Méthode analytique 10' });
         enumTextOrderedList.push({ EnumID: 11, EnumText: 'Méthode analytique 11' });
-        enumTextOrderedList.push({ EnumID: 12, EnumText: 'Méthode analytique 12 ' });
+        enumTextOrderedList.push({ EnumID: 12, EnumText: 'Méthode analytique 12' });
     }
     else {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'MF' });

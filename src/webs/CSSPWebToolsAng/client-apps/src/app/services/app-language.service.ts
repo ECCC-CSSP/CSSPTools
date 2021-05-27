@@ -25,6 +25,8 @@ export class AppLanguageService {
   Language?: LanguageEnum = LanguageEnum.en;
   LangID?: number = 0;
 
+  Address: string[] = ['Address', 'Adresse'];
+  
   AnalysisSite: string[] = ['Site', 'Site'];
   AnalysisSamples: string[] = ['Samples', 'Échantillons'];
   AnalysisPeriod: string[] = ['Period', 'Période'];
@@ -125,6 +127,10 @@ export class AppLanguageService {
 
   Descending: string[] = ['Descending', 'Descendant'];
 
+  DesktopReviewed: string[] = ['Desktop reviewed', 'Révisé au bureau'];
+  
+  Entered: string[] = ['Entered', 'Entré'];
+  
   FCInit: string[] = ['FC', 'CF'];
   FCInitTitle: string[] = ['Most probable number of fecal coliform per 100 mL', 'Nombre le plus probable de coliformes fécaux par 100 mL'];
 
@@ -142,6 +148,8 @@ export class AppLanguageService {
   GMInit: string[] = ['GM', "MG"];
   GMInitTitle: string[] = ['Geometric mean', 'Moyenne géométrique'];
 
+  Google: string[] = ['Google', 'Google'];
+  
   HomeCSSPWebTools: string[] = ['CSSP Web Tools', 'PCCSM: outils Web'];
   HomeTheWebToolWillLetYou: string[] = ['The Web tools will let you:', 'Avec les outils Web, il est possible de:'];
   HomeViewAndUpdateWWTPInfo: string[] = ['view and update the waste water treatment plants and the lift stations information,', 'consulter et mettre à jour l\'information des usines de traitement des eaux usées et des postes de pompage,'];
@@ -184,8 +192,9 @@ export class AppLanguageService {
   
   Next: string[] = ['Next', 'Prochain'];
 
-  SortBy: string[] = ['Sort by', 'Trier par'];
-  SortedBy: string[] = ['Sorted by', 'Trier par'];
+  NoAddress: string[] = ['No address', 'Aucune adresse'];
+
+  ObservationDate: string[] = ['Observation date', 'Date d\'observation'];
 
   P90Init: string[] = ['P90', 'P90'];
   P90InitTitle: string[] = ['90% of the estimates exceed the P90 estimate', '90% des estimations dépassent l\'estimation P90'];
@@ -263,6 +272,9 @@ export class AppLanguageService {
   SectorFiles: string[] = ['Files', 'Filières'];
   SectorShowMIKEScenarios: string[] = ['Show MIKE scenarios', 'Montrer scénarios MIKE'];
   SectorMIKEScenarios: string[] = ['MIKE Scenarios', 'Scénarios MIKE'];
+
+  SortBy: string[] = ['Sort by', 'Trier par'];
+  SortedBy: string[] = ['Sorted by', 'Trier par'];
 
   StatSampleNumber: string[] = ['Stat sample number', 'Nombre d\'échantillon pour stat'];
 

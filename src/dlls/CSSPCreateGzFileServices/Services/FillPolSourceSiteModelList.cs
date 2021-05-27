@@ -94,7 +94,6 @@ namespace CreateGzFileServices
                 }
 
                 polSourceSiteModel.PolSourceSiteEffectList = PolSourceSiteEffectList.Where(c => c.PolSourceSiteOrInfrastructureTVItemID == tvItem.TVItemID).ToList();
-                polSourceSiteModel.PolSourceSiteCivicAddress = PolSourceSiteCivicAddressList.Where(c => c.AddressTVItemID == tvItem.TVItemID).FirstOrDefault();
 
                 PolSourceSiteModelList.Add(polSourceSiteModel);
             }

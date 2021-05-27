@@ -38,8 +38,8 @@ namespace CSSPDBLocalServices
                         gzObjectList.tvItemSiblingList = (from c in ReadGzFileService.webAppLoaded.WebAllAddresses.AddressModelList
                                                           select new TVItemModel
                                                           {
-                                                              TVItem = c.TVItem,
-                                                              TVItemLanguageList = c.TVItemLanguageList,
+                                                              TVItem = c.TVItemModel.TVItem,
+                                                              TVItemLanguageList = c.TVItemModel.TVItemLanguageList,
                                                           }).ToList();
                     }
                     break;
@@ -111,8 +111,8 @@ namespace CSSPDBLocalServices
                         gzObjectList.tvItemSiblingList = (from c in ReadGzFileService.webAppLoaded.WebAllContacts.ContactModelList
                                                           select new TVItemModel
                                                           {
-                                                              TVItem = c.TVItem,
-                                                              TVItemLanguageList = c.TVItemLanguageList,
+                                                              TVItem = c.TVItemModel.TVItem,
+                                                              TVItemLanguageList = c.TVItemModel.TVItemLanguageList,
                                                           }).ToList();
                     }
                     break;
@@ -322,8 +322,8 @@ namespace CSSPDBLocalServices
                         gzObjectList.tvItemSiblingList = (from c in ReadGzFileService.webAppLoaded.WebAllEmails.EmailModelList
                                                           select new TVItemModel
                                                           {
-                                                              TVItem = c.TVItem,
-                                                              TVItemLanguageList = c.TVItemLanguageList,
+                                                              TVItem = c.TVItemModel.TVItem,
+                                                              TVItemLanguageList = c.TVItemModel.TVItemLanguageList,
                                                           }).ToList();
                     }
                     break;
@@ -624,8 +624,8 @@ namespace CSSPDBLocalServices
                         gzObjectList.tvItemSiblingList = (from c in ReadGzFileService.webAppLoaded.WebAllTels.TelModelList
                                                           select new TVItemModel
                                                           {
-                                                              TVItem = c.TVItem,
-                                                              TVItemLanguageList = c.TVItemLanguageList,
+                                                              TVItem = c.TVItemModel.TVItem,
+                                                              TVItemLanguageList = c.TVItemModel.TVItemLanguageList,
                                                           }).ToList();
                     }
                     break;

@@ -12,16 +12,14 @@ namespace CSSPWebModels
     public partial class EmailModel
     {
         #region Properties
-        public TVItem TVItem { get; set; }
-        public List<TVItemLanguage> TVItemLanguageList { get; set; }
+        public TVItemModel TVItemModel { get; set; }
         public Email Email { get; set; }
         #endregion Properties
 
         #region Constructors
         public EmailModel()
         {
-            TVItem = new TVItem();
-            TVItemLanguageList = new List<TVItemLanguage>();
+            TVItemModel = new TVItemModel();
             Email = new Email();
         }
         #endregion Constructors

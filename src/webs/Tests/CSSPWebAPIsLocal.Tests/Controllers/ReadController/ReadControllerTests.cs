@@ -100,7 +100,7 @@ namespace CSSPWebAPIsLocal.ReadController.Tests
                 string responseContent = await response.Content.ReadAsStringAsync();
                 WebAllCountries webAllCountries = JsonSerializer.Deserialize<WebAllCountries>(responseContent);
                 Assert.NotNull(webAllCountries);
-                Assert.NotNull(webAllCountries.CountryModelList);
+                Assert.NotNull(webAllCountries.TVItemModelList);
             }
         }
         [Theory]
@@ -160,7 +160,7 @@ namespace CSSPWebAPIsLocal.ReadController.Tests
                 string responseContent = await response.Content.ReadAsStringAsync();
                 WebAllMunicipalities webAllMunicipalities = JsonSerializer.Deserialize<WebAllMunicipalities>(responseContent);
                 Assert.NotNull(webAllMunicipalities);
-                Assert.NotNull(webAllMunicipalities.AllMunicipalityModelList);
+                Assert.NotNull(webAllMunicipalities.TVItemModelList);
             }
         }
         [Theory]
@@ -240,7 +240,7 @@ namespace CSSPWebAPIsLocal.ReadController.Tests
                 string responseContent = await response.Content.ReadAsStringAsync();
                 WebAllProvinces webAllProvinces = JsonSerializer.Deserialize<WebAllProvinces>(responseContent);
                 Assert.NotNull(webAllProvinces);
-                Assert.NotNull(webAllProvinces.ProvinceModelList);
+                Assert.NotNull(webAllProvinces.TVItemModelList);
             }
         }
         [Theory]

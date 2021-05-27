@@ -5,8 +5,8 @@
  *
  */
 
-import { CountryModel } from 'src/app/models/generated/web/CountryModel.model';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 
 export class WebAllCountries {
-    CountryModelList: CountryModel[];
+    TVItemModelList: TVItemModel[];
 }

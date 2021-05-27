@@ -39,13 +39,13 @@ namespace CSSPDBLocalServices
                         gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebRoot.TVItemModelParentList;
 
                         AddressModel addressModel = (from c in ReadGzFileService.webAppLoaded.WebAllAddresses.AddressModelList
-                                                     where c.TVItem.TVItemID == postTVItemModel.TVItem.TVItemID
+                                                     where c.TVItemModel.TVItem.TVItemID == postTVItemModel.TVItem.TVItemID
                                                      select c).FirstOrDefault();
 
                         gzObjectList.tvItemParentList.Add(new TVItemModel()
                         {
-                            TVItem = addressModel.TVItem,
-                            TVItemLanguageList = addressModel.TVItemLanguageList,
+                            TVItem = addressModel.TVItemModel.TVItem,
+                            TVItemLanguageList = addressModel.TVItemModel.TVItemLanguageList,
                         });
                     }
                     break;
@@ -132,13 +132,13 @@ namespace CSSPDBLocalServices
 
 
                         ContactModel contactModel = (from c in ReadGzFileService.webAppLoaded.WebAllContacts.ContactModelList
-                                                     where c.TVItem.TVItemID == postTVItemModel.TVItem.TVItemID
+                                                     where c.TVItemModel.TVItem.TVItemID == postTVItemModel.TVItem.TVItemID
                                                      select c).FirstOrDefault();
 
                         gzObjectList.tvItemParentList.Add(new TVItemModel()
                         {
-                            TVItem = contactModel.TVItem,
-                            TVItemLanguageList = contactModel.TVItemLanguageList,
+                            TVItem = contactModel.TVItemModel.TVItem,
+                            TVItemLanguageList = contactModel.TVItemModel.TVItemLanguageList,
                         });
                     }
                     break;
@@ -462,13 +462,13 @@ namespace CSSPDBLocalServices
                         gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebRoot.TVItemModelParentList;
 
                         EmailModel emailModel = (from c in ReadGzFileService.webAppLoaded.WebAllEmails.EmailModelList
-                                                 where c.TVItem.TVItemID == postTVItemModel.TVItem.TVItemID
+                                                 where c.TVItemModel.TVItem.TVItemID == postTVItemModel.TVItem.TVItemID
                                                  select c).FirstOrDefault();
 
                         gzObjectList.tvItemParentList.Add(new TVItemModel()
                         {
-                            TVItem = emailModel.TVItem,
-                            TVItemLanguageList = emailModel.TVItemLanguageList,
+                            TVItem = emailModel.TVItemModel.TVItem,
+                            TVItemLanguageList = emailModel.TVItemModel.TVItemLanguageList,
                         });
                     }
                     break;
@@ -838,13 +838,13 @@ namespace CSSPDBLocalServices
                         gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebRoot.TVItemModelParentList;
 
                         TelModel telModel = (from c in ReadGzFileService.webAppLoaded.WebAllTels.TelModelList
-                                                     where c.TVItem.TVItemID == postTVItemModel.TVItem.TVItemID
+                                                     where c.TVItemModel.TVItem.TVItemID == postTVItemModel.TVItem.TVItemID
                                                      select c).FirstOrDefault();
 
                         gzObjectList.tvItemParentList.Add(new TVItemModel()
                         {
-                            TVItem = telModel.TVItem,
-                            TVItemLanguageList = telModel.TVItemLanguageList,
+                            TVItem = telModel.TVItemModel.TVItem,
+                            TVItemLanguageList = telModel.TVItemModel.TVItemLanguageList,
                         });
                     }
                     break;

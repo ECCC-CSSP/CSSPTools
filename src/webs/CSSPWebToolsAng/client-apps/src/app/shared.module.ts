@@ -96,9 +96,13 @@ import { MWQMSiteItemModifyComponent } from './components/mwqm-site/mwqm-site-it
 import { MWQMSiteItemCreateComponent } from './components/mwqm-site/mwqm-site-item-create/mwqm-site-item-create.component';
 import { PolSourceSiteItemModifyComponent } from './components/pol-source-site/pol-source-site-item-modify/pol-source-site-item-modify.component';
 import { PolSourceSiteItemCreateComponent } from './components/pol-source-site/pol-source-site-item-create/pol-source-site-item-create.component';
+import { PolSourceSiteItemIssueComponent } from './components/pol-source-site/pol-source-site-item-issue/pol-source-site-item-issue.component';
+import { PolSourceSiteItemObsComponent } from './components/pol-source-site/pol-source-site-item-obs/pol-source-site-item-obs.component';
+import { AddressComponent } from './components/address/address.component';
 
 @NgModule({
   declarations: [
+    AddressComponent,
     AnalysisDataVisibleComponent,
     AnalysisItemComponent,
     AnalysisItemMenuComponent,
@@ -159,7 +163,9 @@ import { PolSourceSiteItemCreateComponent } from './components/pol-source-site/p
     OpenDataNationalItemComponent,
     PolSourceSiteItemComponent,
     PolSourceSiteItemCreateComponent,
+    PolSourceSiteItemIssueComponent,
     PolSourceSiteItemModifyComponent,
+    PolSourceSiteItemObsComponent,
     PolSourceSiteItemViewComponent,
     PolSourceSiteTVItemListDetailComponent,
     PolSourceSiteTVItemListItemComponent,
@@ -207,6 +213,7 @@ import { PolSourceSiteItemCreateComponent } from './components/pol-source-site/p
     MaterialModule,
     ReactiveFormsModule,
 
+    AddressComponent,
     AnalysisDataVisibleComponent,
     AnalysisItemComponent,
     AnalysisItemMenuComponent,
@@ -266,7 +273,9 @@ import { PolSourceSiteItemCreateComponent } from './components/pol-source-site/p
     OpenDataNationalItemComponent,
     PolSourceSiteItemComponent,
     PolSourceSiteItemCreateComponent,
+    PolSourceSiteItemIssueComponent,
     PolSourceSiteItemModifyComponent,
+    PolSourceSiteItemObsComponent,
     PolSourceSiteItemViewComponent,
     PolSourceSiteTVItemListDetailComponent,
     PolSourceSiteTVItemListItemComponent,

@@ -30,24 +30,15 @@ namespace ReadGzFileServices
         private void DoMergeJsonWebAllContacts(WebAllContacts WebAllContacts, WebAllContacts WebAllContactsLocal)
         {
             List<ContactModel> contactModelLocalList = (from c in WebAllContactsLocal.ContactModelList
-                                                        where c.TVItem.DBCommand != DBCommandEnum.Original
-                                                        || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-                                                        || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original
+                                                        where c.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
+                                                        || c.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
+                                                        || c.TVItemModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original
                                                         || c.Contact.DBCommand != DBCommandEnum.Original
-                                                        || (from e in c.ContactEmailModelList
-                                                            where e.TVItem.DBCommand != DBCommandEnum.Original
-                                                            select e).Any()
-                                                        || (from t in c.ContactTelModelList
-                                                            where t.TVItem.DBCommand != DBCommandEnum.Original
-                                                            select t).Any()
-                                                        || (from a in c.ContactAddressModelList
-                                                            where a.TVItem.DBCommand != DBCommandEnum.Original
-                                                            select a).Any()
                                                         select c).ToList();
 
             foreach (ContactModel contactModelLocal in contactModelLocalList)
             {
-                ContactModel contactModelOriginal = WebAllContacts.ContactModelList.Where(c => c.TVItem.TVItemID == contactModelLocal.TVItem.TVItemID).FirstOrDefault();
+                ContactModel contactModelOriginal = WebAllContacts.ContactModelList.Where(c => c.TVItemModel.TVItem.TVItemID == contactModelLocal.TVItemModel.TVItem.TVItemID).FirstOrDefault();
                 if (contactModelOriginal == null)
                 {
                     WebAllContacts.ContactModelList.Add(contactModelLocal);

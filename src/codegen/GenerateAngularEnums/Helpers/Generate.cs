@@ -11,6 +11,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace GenerateAngularEnums
@@ -118,7 +119,12 @@ namespace GenerateAngularEnums
                     List<EnumIDAndText> enumIDAndTextList = Enums.GetEnumTextOrderedList(dllTypeInfoEnums.Type);
                     foreach (EnumIDAndText enumIDAndText in enumIDAndTextList.OrderBy(c => c.EnumID))
                     {
-                        string EnumText = enumIDAndText.EnumText.Replace("'", "\\'");
+                        string EnumText = enumIDAndText.EnumText.Replace("'", "\\'").Replace(Convert.ToChar(160), ' ');
+
+                        RegexOptions options = RegexOptions.None;
+                        Regex regex = new Regex("[ ]{2,}", options);
+                        EnumText = regex.Replace(EnumText, " ").Trim();
+
                         sb.AppendLine($@"        enumTextOrderedList.push({{ EnumID: { enumIDAndText.EnumID }, EnumText: '{ EnumText }' }});");
                     }
 
@@ -129,7 +135,12 @@ namespace GenerateAngularEnums
                     enumIDAndTextList = Enums.GetEnumTextOrderedList(dllTypeInfoEnums.Type);
                     foreach (EnumIDAndText enumIDAndText in enumIDAndTextList.OrderBy(c => c.EnumID))
                     {
-                        string EnumText = enumIDAndText.EnumText.Replace("'", "\\'");
+                        string EnumText = enumIDAndText.EnumText.Replace("'", "\\'").Replace(Convert.ToChar(160), ' ');
+
+                        RegexOptions options = RegexOptions.None;
+                        Regex regex = new Regex("[ ]{2,}", options);
+                        EnumText = regex.Replace(EnumText, " ").Trim();
+
                         sb.AppendLine($@"        enumTextOrderedList.push({{ EnumID: { enumIDAndText.EnumID }, EnumText: '{ EnumText }' }});");
                     }
 

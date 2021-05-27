@@ -33,7 +33,7 @@ namespace CreateGzFileServices
 
             try
             {
-                await FillCountryModelList(webAllCountries.CountryModelList, TVItemRoot);
+                await FillCountryTVItemModelList(webAllCountries.TVItemModelList, TVItemRoot);
 
                 if (dbLocal != null)
                 {

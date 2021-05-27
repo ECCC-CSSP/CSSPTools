@@ -78,7 +78,7 @@ namespace ReadGzFileServices.Tests
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             WebAllCountries webAllCountries = (WebAllCountries)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webAllCountries);
-            Assert.NotNull(webAllCountries.CountryModelList);
+            Assert.NotNull(webAllCountries.TVItemModelList);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -126,7 +126,7 @@ namespace ReadGzFileServices.Tests
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             WebAllMunicipalities webAllMunicipalities = (WebAllMunicipalities)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webAllMunicipalities);
-            Assert.NotNull(webAllMunicipalities.AllMunicipalityModelList);
+            Assert.NotNull(webAllMunicipalities.TVItemModelList);
         }
         [Theory]
         [InlineData("en-CA")]

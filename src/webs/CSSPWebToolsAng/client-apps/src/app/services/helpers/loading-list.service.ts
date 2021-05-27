@@ -112,20 +112,20 @@ export class LoadListService {
   }
 
   private FillRoot(TVItemID: number, ForceReload: boolean) {
-    // this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebAllAddresses, TVItemID: TVItemID, ForceReload: ForceReload });
+    this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebAllAddresses, TVItemID: TVItemID, ForceReload: ForceReload });
     this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebAllContacts, TVItemID: TVItemID, ForceReload: ForceReload });
-    // this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebAllCountries, TVItemID: TVItemID, ForceReload: ForceReload });
-    // this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebAllEmails, TVItemID: TVItemID, ForceReload: ForceReload });
-    // this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebAllHelpDocs, TVItemID: TVItemID, ForceReload: ForceReload });
-    // this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebAllMunicipalities, TVItemID: TVItemID, ForceReload: ForceReload });
-    // this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebAllMWQMLookupMPNs, TVItemID: TVItemID, ForceReload: ForceReload });
-    // this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebAllPolSourceGroupings, TVItemID: TVItemID, ForceReload: ForceReload });
-    // this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebAllPolSourceSiteEffectTerms, TVItemID: TVItemID, ForceReload: ForceReload });
-    // this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebAllProvinces, TVItemID: TVItemID, ForceReload: ForceReload });
-    // this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebAllReportTypes, TVItemID: TVItemID, ForceReload: ForceReload });
+    this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebAllCountries, TVItemID: TVItemID, ForceReload: ForceReload });
+    this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebAllEmails, TVItemID: TVItemID, ForceReload: ForceReload });
+    this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebAllHelpDocs, TVItemID: TVItemID, ForceReload: ForceReload });
+    this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebAllMunicipalities, TVItemID: TVItemID, ForceReload: ForceReload });
+    this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebAllMWQMLookupMPNs, TVItemID: TVItemID, ForceReload: ForceReload });
+    this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebAllPolSourceGroupings, TVItemID: TVItemID, ForceReload: ForceReload });
+    this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebAllPolSourceSiteEffectTerms, TVItemID: TVItemID, ForceReload: ForceReload });
+    this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebAllProvinces, TVItemID: TVItemID, ForceReload: ForceReload });
+    this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebAllReportTypes, TVItemID: TVItemID, ForceReload: ForceReload });
     this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebAllSearch, TVItemID: TVItemID, ForceReload: ForceReload });
-    // this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebAllTels, TVItemID: TVItemID, ForceReload: ForceReload });
-    // this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebAllTideLocations, TVItemID: TVItemID, ForceReload: ForceReload });
+    this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebAllTels, TVItemID: TVItemID, ForceReload: ForceReload });
+    this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebAllTideLocations, TVItemID: TVItemID, ForceReload: ForceReload });
     this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebRoot, TVItemID: TVItemID, ForceReload: ForceReload });
 
   }
