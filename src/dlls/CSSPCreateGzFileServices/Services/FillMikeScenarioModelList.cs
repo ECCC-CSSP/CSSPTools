@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CSSPWebModels;
+using System.Text.RegularExpressions;
 
 namespace CreateGzFileServices
 {
@@ -63,6 +64,16 @@ namespace CreateGzFileServices
                 {
                     tvItemModel.TVItem = tvItem;
                     tvItemModel.TVItemLanguageList = TVItemLanguageListMikeScenario.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
+
+                    foreach (TVItemLanguage tvItemLanguage in tvItemModel.TVItemLanguageList)
+                    {
+                        tvItemLanguage.TVText = tvItemLanguage.TVText.Replace(Convert.ToChar(160), ' ');
+
+                        RegexOptions options = RegexOptions.None;
+                        Regex regex = new Regex("[ ]{2,}", options);
+                        tvItemLanguage.TVText = regex.Replace(tvItemLanguage.TVText, " ");
+                    }
+
                     tvItemModel.TVItemStatList = TVItemStatListMikeScenario.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
 
                     MikeScenarioModel.TVItemModelParentList.Add(tvItemModel);
@@ -100,6 +111,15 @@ namespace CreateGzFileServices
                     TVItemModelMikeSource.TVItem = tvItem;
                     TVItemModelMikeSource.TVItemLanguageList = TVItemLanguageListMikeSource.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
 
+                    foreach (TVItemLanguage tvItemLanguage in TVItemModelMikeSource.TVItemLanguageList)
+                    {
+                        tvItemLanguage.TVText = tvItemLanguage.TVText.Replace(Convert.ToChar(160), ' ');
+
+                        RegexOptions options = RegexOptions.None;
+                        Regex regex = new Regex("[ ]{2,}", options);
+                        tvItemLanguage.TVText = regex.Replace(tvItemLanguage.TVText, " ");
+                    }
+
                     foreach (MapInfo MapInfo in MapInfoListMikeSource.Where(c => c.TVItemID == tvItem.TVItemID))
                     {
                         MapInfoModel MapInfoModel = new MapInfoModel();
@@ -124,6 +144,15 @@ namespace CreateGzFileServices
                     TVItemModel TVItemModelBC = new TVItemModel();
                     TVItemModelBC.TVItem = tvItem;
                     TVItemModelBC.TVItemLanguageList = TVItemLanguageListMikeSource.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
+
+                    foreach (TVItemLanguage tvItemLanguage in TVItemModelBC.TVItemLanguageList)
+                    {
+                        tvItemLanguage.TVText = tvItemLanguage.TVText.Replace(Convert.ToChar(160), ' ');
+
+                        RegexOptions options = RegexOptions.None;
+                        Regex regex = new Regex("[ ]{2,}", options);
+                        tvItemLanguage.TVText = regex.Replace(tvItemLanguage.TVText, " ");
+                    }
 
                     foreach (MapInfo MapInfo in MapInfoListMikeSource.Where(c => c.TVItemID == tvItem.TVItemID))
                     {

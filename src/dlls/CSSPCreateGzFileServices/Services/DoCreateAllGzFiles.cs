@@ -24,48 +24,48 @@ namespace CreateGzFileServices
 
             // ---------------------------------
 
-            //Console.WriteLine("Create WebAllAddresses doing...");
-            //await CreateGzFile(WebTypeEnum.WebAllAddresses, 0);
-            //Console.WriteLine("Create WebAllContacts doing...");
-            //await CreateGzFile(WebTypeEnum.WebAllContacts, 0);
-            //Console.WriteLine("CreateAllCountries doing...");
-            //await CreateGzFile(WebTypeEnum.WebAllCountries, 0);
-            //Console.WriteLine("Create WebAllEmails doing...");
-            //await CreateGzFile(WebTypeEnum.WebAllEmails, 0);
-            //Console.WriteLine("Create WebAllHelpDocs doing...");
-            //await CreateGzFile(WebTypeEnum.WebAllHelpDocs, 0);
-            //Console.WriteLine("Create WebAllMunicipalities doing...");
-            //await CreateGzFile(WebTypeEnum.WebAllMunicipalities, 0);
-            //Console.WriteLine("Create WebAllMWQMLookupMPNs doing...");
-            //await CreateGzFile(WebTypeEnum.WebAllMWQMLookupMPNs, 0);
+            Console.WriteLine("Create WebAllAddresses doing...");
+            await CreateGzFile(WebTypeEnum.WebAllAddresses, 0);
+            Console.WriteLine("Create WebAllContacts doing...");
+            await CreateGzFile(WebTypeEnum.WebAllContacts, 0);
+            Console.WriteLine("CreateAllCountries doing...");
+            await CreateGzFile(WebTypeEnum.WebAllCountries, 0);
+            Console.WriteLine("Create WebAllEmails doing...");
+            await CreateGzFile(WebTypeEnum.WebAllEmails, 0);
+            Console.WriteLine("Create WebAllHelpDocs doing...");
+            await CreateGzFile(WebTypeEnum.WebAllHelpDocs, 0);
+            Console.WriteLine("Create WebAllMunicipalities doing...");
+            await CreateGzFile(WebTypeEnum.WebAllMunicipalities, 0);
+            Console.WriteLine("Create WebAllMWQMLookupMPNs doing...");
+            await CreateGzFile(WebTypeEnum.WebAllMWQMLookupMPNs, 0);
             Console.WriteLine("Create WebAllPolSourceGroupings doing...");
             await CreateGzFile(WebTypeEnum.WebAllPolSourceGroupings, 0);
-            //Console.WriteLine("Create WebAllPolSourceSiteEffectTerms doing...");
-            //await CreateGzFile(WebTypeEnum.WebAllPolSourceSiteEffectTerms, 0);
-            //Console.WriteLine("Create WebAllProvinces doing...");
-            //await CreateGzFile(WebTypeEnum.WebAllProvinces, 0);
-            //Console.WriteLine("Create WebAllReportTypes doing...");
-            //await CreateGzFile(WebTypeEnum.WebAllReportTypes, 0);
-            //Console.WriteLine("Create WebAllTels doing...");
-            //await CreateGzFile(WebTypeEnum.WebAllTels, 0);
-            //Console.WriteLine("Create WebAllTideLocations doing...");
-            //await CreateGzFile(WebTypeEnum.WebAllTideLocations, 0);
-            //Console.WriteLine("Create WebRoot doing...");
-            //await CreateGzFile(WebTypeEnum.WebRoot, 0);
-            //Console.WriteLine("Create WebAllSearch doing...");
-            //await CreateGzFile(WebTypeEnum.WebAllSearch, 0);
+            Console.WriteLine("Create WebAllPolSourceSiteEffectTerms doing...");
+            await CreateGzFile(WebTypeEnum.WebAllPolSourceSiteEffectTerms, 0);
+            Console.WriteLine("Create WebAllProvinces doing...");
+            await CreateGzFile(WebTypeEnum.WebAllProvinces, 0);
+            Console.WriteLine("Create WebAllReportTypes doing...");
+            await CreateGzFile(WebTypeEnum.WebAllReportTypes, 0);
+            Console.WriteLine("Create WebAllTels doing...");
+            await CreateGzFile(WebTypeEnum.WebAllTels, 0);
+            Console.WriteLine("Create WebAllTideLocations doing...");
+            await CreateGzFile(WebTypeEnum.WebAllTideLocations, 0);
+            Console.WriteLine("Create WebRoot doing...");
+            await CreateGzFile(WebTypeEnum.WebRoot, 0);
+            Console.WriteLine("Create WebAllSearch doing...");
+            await CreateGzFile(WebTypeEnum.WebAllSearch, 0);
 
-            List< TVTypeEnum > tvTypeEnumList = new List<TVTypeEnum>()
+            List<TVTypeEnum> tvTypeEnumList = new List<TVTypeEnum>()
             {
-                //TVTypeEnum.Country,
-                //TVTypeEnum.Province,
-                //TVTypeEnum.Area,
-                //TVTypeEnum.Sector,
-                //TVTypeEnum.Subsector,
-                //TVTypeEnum.Municipality,
+                TVTypeEnum.Country,
+                TVTypeEnum.Province,
+                TVTypeEnum.Area,
+                TVTypeEnum.Sector,
+                TVTypeEnum.Subsector,
+                TVTypeEnum.Municipality,
             };
 
-            foreach(TVTypeEnum tvType in tvTypeEnumList)
+            foreach (TVTypeEnum tvType in tvTypeEnumList)
             {
                 List<TVItem> tvItemList = (from c in db.TVItems
                                            where c.TVType == tvType

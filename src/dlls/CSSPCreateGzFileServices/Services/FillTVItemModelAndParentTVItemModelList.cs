@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CSSPWebModels;
+using System.Text.RegularExpressions;
 
 namespace CreateGzFileServices
 {
@@ -29,13 +30,33 @@ namespace CreateGzFileServices
                 TVItemModel tvItemModelParent = new TVItemModel();
                 tvItemModelParent.TVItem = tvItem;
                 tvItemModelParent.TVItemLanguageList = TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
+
+                foreach (TVItemLanguage tvItemLanguage in tvItemModelParent.TVItemLanguageList)
+                {
+                    tvItemLanguage.TVText = tvItemLanguage.TVText.Replace(Convert.ToChar(160), ' ');
+
+                    RegexOptions options = RegexOptions.None;
+                    Regex regex = new Regex("[ ]{2,}", options);
+                    tvItemLanguage.TVText = regex.Replace(tvItemLanguage.TVText, " ");
+                }
+
                 tvItemModelParent.TVItemStatList = TVItemStatList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
 
                 TVItemParentList.Add(tvItemModelParent);
             }
             
-            TVItemModel .TVItem = TVItemParentList[TVItemParentList.Count - 1].TVItem;
-            TVItemModel .TVItemLanguageList = TVItemParentList[TVItemParentList.Count - 1].TVItemLanguageList;
+            TVItemModel.TVItem = TVItemParentList[TVItemParentList.Count - 1].TVItem;
+            TVItemModel.TVItemLanguageList = TVItemParentList[TVItemParentList.Count - 1].TVItemLanguageList;
+
+            foreach (TVItemLanguage tvItemLanguage in TVItemModel.TVItemLanguageList)
+            {
+                tvItemLanguage.TVText = tvItemLanguage.TVText.Replace(Convert.ToChar(160), ' ');
+
+                RegexOptions options = RegexOptions.None;
+                Regex regex = new Regex("[ ]{2,}", options);
+                tvItemLanguage.TVText = regex.Replace(tvItemLanguage.TVText, " ");
+            }
+
             TVItemModel.TVItemStatList = TVItemParentList[TVItemParentList.Count - 1].TVItemStatList;
 
             foreach (MapInfo MapInfo in MapInfoList.Where(c => c.TVItemID == TVItem.TVItemID))

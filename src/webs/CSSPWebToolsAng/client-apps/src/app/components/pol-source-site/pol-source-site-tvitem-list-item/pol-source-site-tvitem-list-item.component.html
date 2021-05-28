@@ -12,7 +12,7 @@
                 [{{ tvItemModel.TVItem.TVItemID }}]
             </span>
             <span [ngClass]="polSourceSiteService.GetRiskColor(tvItemModel)">&nbsp;&nbsp;&nbsp;</span>
-            {{ tvItemModel?.TVItemLanguageList[this.appLanguageService.LangID]?.TVText }}
+            {{ tvItemModel?.TVItemLanguageList[appLanguageService.LangID]?.TVText }}
         </span>
         <app-stat-count *ngIf="appStateService.UserPreference.StatCountVisible" [TVType]="null"
             [TVItemModel]="tvItemModel"></app-stat-count>

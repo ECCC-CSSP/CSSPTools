@@ -12,8 +12,7 @@ namespace CSSPWebModels
     public partial class RainExceedanceModel
     {
         #region Properties
-        public TVItem TVItem { get; set; }
-        public List<TVItemLanguage> TVItemLanguageList { get; set; }
+        public TVItemModel TVItemModel { get; set; }
         public RainExceedance RainExceedance { get; set; }
         public List<RainExceedanceClimateSite> RainExceedanceClimateSiteList { get; set; } 
         #endregion Properties
@@ -21,8 +20,7 @@ namespace CSSPWebModels
         #region Constructors
         public RainExceedanceModel()
         {
-            TVItem = new TVItem();
-            TVItemLanguageList = new List<TVItemLanguage>();
+            TVItemModel = new TVItemModel();
             RainExceedance = new RainExceedance();
             RainExceedanceClimateSiteList = new List<RainExceedanceClimateSite>();
         }

@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CSSPWebModels;
+using System.Text.RegularExpressions;
 
 namespace CreateGzFileServices
 {
@@ -23,11 +24,22 @@ namespace CreateGzFileServices
 
             foreach (TVItem tvItem in TVItemList)
             {
-                TVItemModelList.Add(new TVItemModel()
+                TVItemModel tvItemModel = new TVItemModel();
+                tvItemModel.TVItem = tvItem;
+                tvItemModel.TVItemLanguageList = (from c in TVItemLanguageList
+                                                  where c.TVItemID == tvItem.TVItemID
+                                                  select c).ToList();
+
+                foreach (TVItemLanguage tvItemLanguage in tvItemModel.TVItemLanguageList)
                 {
-                    TVItem = tvItem,
-                    TVItemLanguageList = TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID).ToList(),
-                });
+                    tvItemLanguage.TVText = tvItemLanguage.TVText.Replace(Convert.ToChar(160), ' ');
+
+                    RegexOptions options = RegexOptions.None;
+                    Regex regex = new Regex("[ ]{2,}", options);
+                    tvItemLanguage.TVText = regex.Replace(tvItemLanguage.TVText, " ");
+                }
+
+                TVItemModelList.Add(tvItemModel);
             }
         }
     }

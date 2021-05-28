@@ -131,6 +131,8 @@ export class AppLanguageService {
   
   Entered: string[] = ['Entered', 'Entré'];
   
+  ExtraComments: string[] = ['Extra Comments', 'Extra commentaires'];
+  
   FCInit: string[] = ['FC', 'CF'];
   FCInitTitle: string[] = ['Most probable number of fecal coliform per 100 mL', 'Nombre le plus probable de coliformes fécaux par 100 mL'];
 
@@ -160,6 +162,8 @@ export class AppLanguageService {
   HomePleaseContactASiteAdministratorListedBelow: string[] = ['please contact a site administrator listed below', 'veuillez contacter un administrateur du site suivants:'];
   HomeStartUsingCSSPWebTools: string[] = ['Start using CSSP Web Tools', 'Utilisez les outils web PCCSM'];
   HomeAzureVersion: string[] = ['(Azure Version)', '(Version Azure)'];
+
+  Issue: string[] = ['Issue', 'Item'];
 
   KB: string[] = ['KB', 'Ko'];
 
@@ -194,7 +198,7 @@ export class AppLanguageService {
 
   NoAddress: string[] = ['No address', 'Aucune adresse'];
 
-  ObservationDate: string[] = ['Observation date', 'Date d\'observation'];
+  Observation: string[] = ['Observation', 'Observation'];
 
   P90Init: string[] = ['P90', 'P90'];
   P90InitTitle: string[] = ['90% of the estimates exceed the P90 estimate', '90% des estimations dépassent l\'estimation P90'];
@@ -364,6 +368,8 @@ export class AppLanguageService {
   TVItemListDetailSubsectorMWQMSite: string[] = ['MWQM site', 'Site de SQE'];
   TVItemListDetailSubsectorMWQMRun: string[] = ['MWQM run', 'Tournées'];
   TVItemListDetailSubsectorPolSourceSite: string[] = ['Pollution source site', 'Site de source de pollution'];
+
+  WrittenDescription: string[] = ['Written Description', "Ancienne description"];
 
   Year: string[] = ['Year', 'Année'];
   YearOfSampling: string[] = ['Year of sampling', 'Année d\'échantillonnage'];

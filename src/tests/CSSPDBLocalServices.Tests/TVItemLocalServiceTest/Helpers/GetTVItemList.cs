@@ -79,8 +79,8 @@ namespace CSSPDBLocalServices.Tests
                                     return await Task.FromResult((from c in ReadGzFileService.webAppLoaded.WebCountry.RainExceedanceModelList
                                                                   select new TVItemModel
                                                                   {
-                                                                      TVItem = c.TVItem,
-                                                                      TVItemLanguageList = c.TVItemLanguageList,
+                                                                      TVItem = c.TVItemModel.TVItem,
+                                                                      TVItemLanguageList = c.TVItemModel.TVItemLanguageList,
                                                                   }).ToList());
                                 }
                             case TVTypeEnum.File:

@@ -732,13 +732,13 @@ namespace CSSPDBLocalServices
                         gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebCountry.TVItemModelParentList;
 
                         RainExceedanceModel rainExceedanceModel = (from c in ReadGzFileService.webAppLoaded.WebCountry.RainExceedanceModelList
-                                                                 where c.TVItem.TVItemID == postTVItemModel.TVItem.TVItemID
+                                                                 where c.TVItemModel.TVItem.TVItemID == postTVItemModel.TVItem.TVItemID
                                                                  select c).FirstOrDefault();
 
                         gzObjectList.tvItemParentList.Add(new TVItemModel()
                         {
-                            TVItem = rainExceedanceModel.TVItem,
-                            TVItemLanguageList = rainExceedanceModel.TVItemLanguageList,
+                            TVItem = rainExceedanceModel.TVItemModel.TVItem,
+                            TVItemLanguageList = rainExceedanceModel.TVItemModel.TVItemLanguageList,
                         });
                     }
                     break;

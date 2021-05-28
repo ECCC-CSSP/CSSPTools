@@ -1,19 +1,30 @@
-<div>
-    <br>
-    {{ contactModel.Contact.FirstName }}
-    <ng-container *ngIf="contactModel.Contact.Initial">
-        {{ contactModel.Contact.Initial }}.&nbsp;
-    </ng-container>
-    {{ contactModel.Contact.LastName }}
-    {{ appLanguageService.ObservationDate[appLanguageService.LangID] }}:&nbsp;
-    {{
-    dateFormatService.GetDateTime_LocalDigit(PolSourceObservationModel.PolSourceObservation?.ObservationDate_Local.toString())}}&nbsp;
-    <span *ngIf="PolSourceObservationModel.PolSourceObservation?.DesktopReviewed">
-        {{ appLanguageService.DesktopReviewed[appLanguageService.LangID] }}
-    </span>
-</div>
-
-<div *ngFor="let polSourceObservationIssue of PolSourceObservationModel.PolSourceObservationIssueList">
-    <app-pol-source-site-item-issue [PolSourceObservationIssue]="polSourceObservationIssue">
-    </app-pol-source-site-item-issue>
-</div>
+<mat-card>
+    <mat-card-header>
+        <h2 class="forgroundBlue">
+            {{
+            dateFormatService.GetDateTime_LocalDigit(PolSourceObservationModel.PolSourceObservation?.ObservationDate_Local.toString())}}&nbsp;
+            {{ appLanguageService.Observation[appLanguageService.LangID] }}:&nbsp;
+            <span *ngIf="contactModel">
+                {{ contactModel?.Contact?.FirstName }}
+                <ng-container *ngIf="contactModel?.Contact?.Initial">
+                    {{ contactModel?.Contact?.Initial }}.
+                </ng-container>
+                {{ contactModel?.Contact?.LastName }}
+            </span>
+            <span *ngIf="contactModel">
+                {{ contactModel.TVItemModel.TVItemLanguageList[appLanguageService.LangID].TVText }}
+            </span>
+            <span *ngIf="PolSourceObservationModel.PolSourceObservation?.DesktopReviewed">
+                {{ appLanguageService.DesktopReviewed[appLanguageService.LangID] }}
+            </span>
+        </h2>
+    </mat-card-header>
+    <mat-card-content>
+        <div *ngFor="let polSourceObservationIssue of PolSourceObservationModel.PolSourceObservationIssueList">
+            <app-pol-source-site-item-issue [PolSourceObservationModel]="PolSourceObservationModel"
+                [PolSourceObservationIssue]="polSourceObservationIssue">
+            </app-pol-source-site-item-issue>
+        </div>
+    </mat-card-content>
+</mat-card>
+<br />

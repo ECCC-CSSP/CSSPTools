@@ -14,6 +14,7 @@ import { MWQMRunModelSiteAndSampleModel } from 'src/app/models/generated/web/MWQ
 import { MWQMSampleModel } from 'src/app/models/generated/web/MWQMSampleModel.model';
 import { MWQMSiteModel } from 'src/app/models/generated/web/MWQMSiteModel.model';
 import { MWQMSiteModelAndSampleModel } from 'src/app/models/generated/web/MWQMSiteModelAndSampleModel.model';
+import { PolSourceGroupingModel } from 'src/app/models/generated/web/PolSourceGroupingModel.model';
 import { PolSourceObservationModel } from 'src/app/models/generated/web/PolSourceObservationModel.model';
 import { PolSourceSiteModel } from 'src/app/models/generated/web/PolSourceSiteModel.model';
 import { StatMWQMRun } from 'src/app/models/generated/web/StatMWQMRun.model';
@@ -86,12 +87,107 @@ export class PolSourceSiteService {
 
   GetSentence(ObservationInfo: string): string {
     let retStr = '';
-    let PolSourceObsInfo = GetPolSourceObsInfoEnum();
-    let EnumIDAndTextList: EnumIDAndText[] = PolSourceObsInfoEnum_GetOrderedText(this.appLanguageService);
     let strArr: string[] = ObservationInfo.split(',');
+    if (strArr == undefined || strArr.length == 0) {
+      return '';
+    }
     for (let i = 0, count = strArr.length; i < count; i++) {
       if (strArr[i] != '') {
-        retStr += EnumIDAndTextList.filter(c => c.EnumID == parseInt(strArr[i]))[0].EnumText;
+        let polSourceGroupingModelList: PolSourceGroupingModel[] = this.appLoadedService.WebAllPolSourceGroupings.PolSourceGroupingModelList.filter(c => c.PolSourceGrouping.CSSPID == parseInt(strArr[i]));
+        if (polSourceGroupingModelList != null || polSourceGroupingModelList != undefined) {
+          let reportPartText: string = polSourceGroupingModelList[0]?.PolSourceGroupingLanguageList[this.appLanguageService.LangID]?.Report;
+          switch ((strArr[i]).substring(0, 3)) {
+            case "101":
+              {
+                if (this.appLanguageService.LangID == 1) // français
+                {
+                  reportPartText = reportPartText.replace("Source", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Source</strong>");
+
+                }
+                else {
+                  reportPartText = reportPartText.replace("Source", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Source</strong>");
+                }
+              }
+              break;
+            case "250":
+              {
+                if (this.appLanguageService.LangID == 1) // français
+                {
+                  reportPartText = reportPartText.replace("Pathway", "<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Pathway</strong>");
+                }
+                else {
+                  reportPartText = reportPartText.replace("Pathway", "<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Pathway</strong>");
+                }
+              }
+              break;
+            case "900":
+              {
+                if (this.appLanguageService.LangID == 1) // français
+                {
+                  reportPartText = reportPartText.replace("Statut", "<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Statut</strong>");
+                }
+                else {
+                  reportPartText = reportPartText.replace("Status", "<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Status</strong>");
+                }
+              }
+              break;
+            case "910":
+              {
+                if (this.appLanguageService.LangID == 1) // français
+                {
+                  reportPartText = reportPartText.replace("risque", "<strong>risque</strong>");
+                }
+                else {
+                  reportPartText = reportPartText.replace("Risk", "<strong>Risk</strong>");
+                }
+              }
+              break;
+            case "110":
+            case "120":
+            case "122":
+            case "151":
+            case "152":
+            case "153":
+            case "155":
+            case "156":
+            case "157":
+            case "163":
+            case "166":
+            case "167":
+            case "170":
+            case "171":
+            case "172":
+            case "173":
+            case "176":
+            case "178":
+            case "181":
+            case "182":
+            case "183":
+            case "185":
+            case "186":
+            case "187":
+            case "190":
+            case "191":
+            case "192":
+            case "193":
+            case "194":
+            case "196":
+            case "198":
+            case "199":
+            case "220":
+            case "930":
+              {
+                reportPartText = `<span class=""hidden"">${reportPartText}</span>`;
+              }
+              break;
+            default:
+              break;
+          }
+          retStr += reportPartText;
+        }
+        else {
+          retStr += `[[${strArr[i]}]]`;
+        }
       }
     }
     return retStr;

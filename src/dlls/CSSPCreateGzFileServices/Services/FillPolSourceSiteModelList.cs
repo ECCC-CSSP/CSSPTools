@@ -45,6 +45,7 @@ namespace CreateGzFileServices
                 TVItemModel TVItemModel = new TVItemModel();
                 TVItemModel.TVItem = tvItem;
                 TVItemModel.TVItemLanguageList = TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
+
                 foreach (TVItemLanguage tvItemLanguage in TVItemModel.TVItemLanguageList)
                 {
                     tvItemLanguage.TVText = tvItemLanguage.TVText.Replace(Convert.ToChar(160), ' ');
@@ -53,6 +54,7 @@ namespace CreateGzFileServices
                     Regex regex = new Regex("[ ]{2,}", options);
                     tvItemLanguage.TVText = regex.Replace(tvItemLanguage.TVText, " ");
                 }
+                
                 TVItemModel.TVItemStatList = TVItemStatList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
 
                 foreach (MapInfo MapInfo in MapInfoList.Where(c => c.TVItemID == tvItem.TVItemID))
