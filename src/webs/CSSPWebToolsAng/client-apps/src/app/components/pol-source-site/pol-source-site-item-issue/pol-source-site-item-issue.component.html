@@ -4,13 +4,15 @@
         &nbsp;&nbsp;
         <span>{{ PolSourceObservationModel?.PolSourceObservation?.Observation_ToBeDeleted }}</span>
     </p>
-    <h3>{{ appLanguageService.Issue[appLanguageService.LangID] }} ({{ PolSourceObservationIssue.Ordinal + 1 }})</h3>
-    <blockquote>
-        <p innerHTML="{{ polSourceSiteService.GetSentence(PolSourceObservationIssue.ObservationInfo) }}"></p>       
-        <p *ngIf="PolSourceObservationIssue?.ExtraComment">
-            <strong>{{ appLanguageService.ExtraComments[appLanguageService.LangID] }}:</strong>
-            &nbsp;&nbsp;
-            <span>{{ PolSourceObservationIssue?.ExtraComment }}</span>
-        </p>
-    </blockquote>
+    <ng-container *ngIf="!PolSourceObservationModel?.PolSourceObservation?.Observation_ToBeDeleted">
+        <h3>{{ appLanguageService.Issue[appLanguageService.LangID] }} ({{ PolSourceObservationIssue.Ordinal + 1 }})</h3>
+        <blockquote>
+            <p innerHTML="{{ polSourceSiteService.GetSentence(PolSourceObservationIssue.ObservationInfo) }}"></p>
+            <p *ngIf="PolSourceObservationIssue?.ExtraComment">
+                <strong>{{ appLanguageService.ExtraComments[appLanguageService.LangID] }}:</strong>
+                &nbsp;&nbsp;
+                <span>{{ PolSourceObservationIssue?.ExtraComment }}</span>
+            </p>
+        </blockquote>
+    </ng-container>
 </blockquote>

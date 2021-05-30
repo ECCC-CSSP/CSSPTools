@@ -95,7 +95,7 @@ export class PolSourceSiteService {
       if (strArr[i] != '') {
         let polSourceGroupingModelList: PolSourceGroupingModel[] = this.appLoadedService.WebAllPolSourceGroupings.PolSourceGroupingModelList.filter(c => c.PolSourceGrouping.CSSPID == parseInt(strArr[i]));
         if (polSourceGroupingModelList != null || polSourceGroupingModelList != undefined) {
-          let reportPartText: string = polSourceGroupingModelList[0]?.PolSourceGroupingLanguageList[this.appLanguageService.LangID]?.Report;
+          let reportPartText: string = ` ${polSourceGroupingModelList[0]?.PolSourceGroupingLanguageList[this.appLanguageService.LangID]?.Report} `;
           switch ((strArr[i]).substring(0, 3)) {
             case "101":
               {
@@ -142,6 +142,17 @@ export class PolSourceSiteService {
                 }
               }
               break;
+            case "930":
+              {
+                if (this.appLanguageService.LangID == 1) // français
+                {
+                  reportPartText = `<br /><br />${reportPartText}`;
+                }
+                else {
+                  reportPartText = `<br /><br />${reportPartText}`;
+                }
+              }
+              break;
             case "110":
             case "120":
             case "122":
@@ -175,7 +186,6 @@ export class PolSourceSiteService {
             case "198":
             case "199":
             case "220":
-            case "930":
               {
                 reportPartText = `<span class=""hidden"">${reportPartText}</span>`;
               }
@@ -190,7 +200,7 @@ export class PolSourceSiteService {
         }
       }
     }
-    return retStr;
+    return retStr.replace('  ', ' ');
   }
 
 }
