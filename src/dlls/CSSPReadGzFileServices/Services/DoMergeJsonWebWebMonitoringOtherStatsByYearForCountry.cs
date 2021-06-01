@@ -27,7 +27,7 @@ namespace ReadGzFileServices
 {
     public partial class ReadGzFileService : ControllerBase, IReadGzFileService
     {
-        private void DoMergeJsonWebWebMonitoringOtherStatsByYearForCountry(WebMonitoringOtherStatsByYearForCountry WebMonitoringOtherStatsByYearForCountry, WebMonitoringOtherStatsByYearForCountry WebMonitoringOtherStatsByYearForCountryLocal)
+        private void DoMergeJsonWebWebMonitoringOtherStatsCountry(WebMonitoringOtherStatsCountry WebMonitoringOtherStatsCountry, WebMonitoringOtherStatsCountry WebMonitoringOtherStatsCountryLocal)
         {
         //    if (WebMonitoringOtherStatsByYearForCountryLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
         //      || WebMonitoringOtherStatsByYearForCountryLocal.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original

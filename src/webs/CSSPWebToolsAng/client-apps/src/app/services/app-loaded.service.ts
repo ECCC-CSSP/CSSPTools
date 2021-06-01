@@ -38,11 +38,11 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { ContactModel } from '../models/generated/web/ContactModel.model';
-import { WebMonitoringRoutineStatsByYearForCountry } from '../models/generated/web/WebMonitoringRoutineStatsByYearForCountry.model';
-import { WebMonitoringRoutineStatsByYearForProvince } from '../models/generated/web/WebMonitoringRoutineStatsByYearForProvince.model';
-import { WebMonitoringOtherStatsByYearForCountry } from '../models/generated/web/WebMonitoringOtherStatsByYearForCountry.model';
-import { WebMonitoringOtherStatsByYearForProvince } from '../models/generated/web/WebMonitoringOtherStatsByYearForProvince.model';
-import { MonitoringStatsByYearModel } from '../models/generated/web/MonitoringStatsByYearModel.model';
+import { WebMonitoringOtherStatsCountry } from '../models/generated/web/WebMonitoringOtherStatsCountry.model';
+import { WebMonitoringRoutineStatsCountry } from '../models/generated/web/WebMonitoringRoutineStatsCountry.model';
+import { WebMonitoringOtherStatsProvince } from '../models/generated/web/WebMonitoringOtherStatsProvince.model';
+import { WebMonitoringRoutineStatsProvince } from '../models/generated/web/WebMonitoringRoutineStatsProvince.model';
+import { MonitoringStatsModel } from '../models/generated/web/MonitoringStatsModel.model';
 
 @Injectable({
   providedIn: 'root'
@@ -89,10 +89,10 @@ export class AppLoadedService {
   WebHydrometricSites?: WebHydrometricSites;
   WebLabSheets?: WebLabSheets;
   WebMikeScenarios?: WebMikeScenarios;
-  WebMonitoringOtherStatsByYearForCountry?: WebMonitoringOtherStatsByYearForCountry;
-  WebMonitoringRoutineStatsByYearForCountry?: WebMonitoringRoutineStatsByYearForCountry;
-  WebMonitoringOtherStatsByYearForProvince?: WebMonitoringOtherStatsByYearForProvince;
-  WebMonitoringRoutineStatsByYearForProvince?: WebMonitoringRoutineStatsByYearForProvince;
+  WebMonitoringOtherStatsCountry?: WebMonitoringOtherStatsCountry;
+  WebMonitoringRoutineStatsCountry?: WebMonitoringRoutineStatsCountry;
+  WebMonitoringOtherStatsProvince?: WebMonitoringOtherStatsProvince;
+  WebMonitoringRoutineStatsProvince?: WebMonitoringRoutineStatsProvince;
   WebMunicipality?: WebMunicipality;
   WebMWQMRuns?: WebMWQMRuns;
   WebMWQMSamples1980_2020?: WebMWQMSamples;
@@ -116,7 +116,7 @@ export class AppLoadedService {
   StatMWQMRunList?: StatMWQMRun[];
   StatMWQMSiteList?: StatMWQMSite[];
 
-  MonitoringStatsByYearModel?: MonitoringStatsByYearModel;
+  MonitoringStatsModel?: MonitoringStatsModel;
 
   constructor(public httpClient: HttpClient,
     public appStateService: AppStateService) {

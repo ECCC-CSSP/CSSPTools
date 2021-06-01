@@ -3270,16 +3270,64 @@
   <data name="WebTypeEnumWebAllSearch" xml:space="preserve">
     <value>WebAllSearch</value>
   </data>
-  <data name="WebTypeEnumWebMonitoringRoutineStatsByYearForCountry" xml:space="preserve">
-    <value>WebMonitoringRoutiineStatsByYearForCountry</value>
+  <data name="WebTypeEnumWebMonitoringRoutineStatsCountry" xml:space="preserve">
+    <value>WebMonitoringRoutiineStatsCountry</value>
   </data>
-  <data name="WebTypeEnumWebMonitoringRoutineStatsByYearForProvince" xml:space="preserve">
-    <value>WebMonitoringRoutineStatsByYearForProvince</value>
+  <data name="WebTypeEnumWebMonitoringRoutineStatsProvince" xml:space="preserve">
+    <value>WebMonitoringRoutineStatsProvince</value>
   </data>
-  <data name="WebTypeEnumWebMonitoringOtherStatsByYearForCountry" xml:space="preserve">
-    <value>WebMonitoringOtherStatsByYearForCountry</value>
+  <data name="WebTypeEnumWebMonitoringOtherStatsCountry" xml:space="preserve">
+    <value>WebMonitoringOtherStatsCountry</value>
   </data>
-  <data name="WebTypeEnumWebMonitoringOtherStatsByYearForProvince" xml:space="preserve">
-    <value>WebMonitoringOtherStatsByYearForProvince</value>
+  <data name="WebTypeEnumWebMonitoringOtherStatsProvince" xml:space="preserve">
+    <value>WebMonitoringOtherStatsProvince</value>
+  </data>
+  <data name="MonthEnumApril" xml:space="preserve">
+    <value>April</value>
+  </data>
+  <data name="MonthEnumAugust" xml:space="preserve">
+    <value>August</value>
+  </data>
+  <data name="MonthEnumDecember" xml:space="preserve">
+    <value>December</value>
+  </data>
+  <data name="MonthEnumFebruary" xml:space="preserve">
+    <value>February</value>
+  </data>
+  <data name="MonthEnumJanuary" xml:space="preserve">
+    <value>January</value>
+  </data>
+  <data name="MonthEnumJuly" xml:space="preserve">
+    <value>July</value>
+  </data>
+  <data name="MonthEnumJune" xml:space="preserve">
+    <value>June</value>
+  </data>
+  <data name="MonthEnumMarch" xml:space="preserve">
+    <value>March</value>
+  </data>
+  <data name="MonthEnumMay" xml:space="preserve">
+    <value>May</value>
+  </data>
+  <data name="MonthEnumNovember" xml:space="preserve">
+    <value>November</value>
+  </data>
+  <data name="MonthEnumOctober" xml:space="preserve">
+    <value>October</value>
+  </data>
+  <data name="MonthEnumSeptember" xml:space="preserve">
+    <value>September</value>
+  </data>
+  <data name="SeasonEnumFall" xml:space="preserve">
+    <value>Fall</value>
+  </data>
+  <data name="SeasonEnumSpring" xml:space="preserve">
+    <value>Spring</value>
+  </data>
+  <data name="SeasonEnumSummer" xml:space="preserve">
+    <value>Summer</value>
+  </data>
+  <data name="SeasonEnumWinter" xml:space="preserve">
+    <value>Winter</value>
   </data>
 </root>

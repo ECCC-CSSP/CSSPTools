@@ -18,7 +18,6 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Threading.Tasks;
-using CSSPDBPreferenceModels;
 using CSSPDBFilesManagementModels;
 using LoggedInServices;
 using CSSPWebModels;
@@ -27,7 +26,7 @@ namespace ReadGzFileServices
 {
     public partial class ReadGzFileService : ControllerBase, IReadGzFileService
     {
-        private void DoMergeJsonWebMonitoringRoutineStatsByYearForProvince(WebMonitoringRoutineStatsByYearForProvince WebMonitoringRoutineStatsByYearForProvince, WebMonitoringRoutineStatsByYearForProvince WebMonitoringRoutineStatsByYearForProvinceLocal)
+        private void DoMergeJsonWebMonitoringRoutineStatsProvince(WebMonitoringRoutineStatsProvince WebMonitoringRoutineStatsProvince, WebMonitoringRoutineStatsProvince WebMonitoringRoutineStatsProvinceLocal)
         {
         //    if (WebMonitoringOtherStatsByYearForCountryLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
         //      || WebMonitoringOtherStatsByYearForCountryLocal.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original

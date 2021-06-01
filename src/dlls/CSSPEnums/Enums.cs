@@ -503,6 +503,28 @@ namespace CSSPEnums
         Files = 4,
         GeneralResults = 5
     }
+    public enum MonthEnum
+    {
+        January = 1,
+        February = 2,
+        March = 3,
+        April = 4,
+        May = 5,
+        June = 6,
+        July = 7, 
+        August = 8,
+        September = 9,
+        October = 10,
+        November = 11,
+        December = 12,
+    }
+    public enum SeasonEnum
+    {
+        Winter = 1,
+        Spring = 2,
+        Summer = 3,
+        Fall = 4,
+    }
     public enum MWQMRunSubComponentEnum
     {
         Information = 1,
@@ -1231,10 +1253,10 @@ namespace CSSPEnums
         WebSector = 30,
         WebSubsector = 31,
         WebTideSites = 32,
-        WebMonitoringRoutineStatsByYearForCountry = 33,
-        WebMonitoringOtherStatsByYearForCountry = 34,
-        WebMonitoringRoutineStatsByYearForProvince = 35,
-        WebMonitoringOtherStatsByYearForProvince = 36,
+        WebMonitoringRoutineStatsCountry = 33,
+        WebMonitoringOtherStatsCountry = 34,
+        WebMonitoringRoutineStatsProvince = 35,
+        WebMonitoringOtherStatsProvince = 36,
     }
     public enum WebTideDataSetEnum
     {

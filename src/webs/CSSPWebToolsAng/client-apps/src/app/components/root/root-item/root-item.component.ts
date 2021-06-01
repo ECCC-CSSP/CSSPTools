@@ -11,8 +11,6 @@ import { GetSortOrderAngularEnum } from 'src/app/enums/generated/SortOrderAngula
 import { SortTVItemListService } from 'src/app/services/helpers/sort-tvitem-list.service';
 import { FilterService } from 'src/app/services/helpers/filter.service';
 import { LoaderService } from 'src/app/services/loaders/loader.service';
-import { WebRoot } from 'src/app/models/generated/web/WebRoot.model';
-import { WebTypeEnum } from 'src/app/enums/generated/WebTypeEnum';
 import { StructureTVFileListService } from 'src/app/services/helpers/structure-tvfile-list.service';
 import { GetFilesSortPropEnum } from 'src/app/enums/generated/FilesSortPropEnum';
 import { LoadListService } from 'src/app/services/helpers/loading-list.service';

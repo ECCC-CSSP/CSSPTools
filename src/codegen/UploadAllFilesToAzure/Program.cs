@@ -13,6 +13,9 @@ namespace UploadAllFilesToAzure
     {
         static void Main(string[] args)
         {
+            int CountFileTotal = 0;
+            int CountFileUploaded = 0;
+
             Console.WriteLine("Hello World!");
 
             Startup startup = new Startup();
@@ -50,7 +53,8 @@ namespace UploadAllFilesToAzure
                 List<FileInfo> fileInfoList = d.GetFiles().ToList();
                 foreach (FileInfo fi in fileInfoList)
                 {
-                    Console.WriteLine($"\t\t{ fi.FullName }");
+                    CountFileTotal += 1;
+                    Console.WriteLine($"\t\t File Count: {CountFileTotal} -- { fi.FullName }");
 
 
                     bool ShouldUpload = true;
@@ -77,6 +81,9 @@ namespace UploadAllFilesToAzure
                                 {
                                     file.Create(stream.Length);
                                     file.Upload(stream);
+
+                                    CountFileUploaded += 1;
+                                    Console.WriteLine($"\t\t File Updaloaded Count {CountFileUploaded} -- { fi.FullName }");
                                 }
                             }
                         }

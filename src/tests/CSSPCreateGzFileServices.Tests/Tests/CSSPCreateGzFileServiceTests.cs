@@ -435,11 +435,11 @@ namespace CreateGzFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task CreateGzFileService_WebMonitoringRoutineStatsByYearForProvince_Good_Test(string culture)
+        public async Task CreateGzFileService_WebMonitoringRoutineStatsProvince_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMonitoringRoutineStatsByYearForProvince, 7);
+            var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMonitoringRoutineStatsProvince, 7);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
@@ -447,11 +447,11 @@ namespace CreateGzFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task CreateGzFileService_WebMonitoringOtherStatsByYearForProvince_Good_Test(string culture)
+        public async Task CreateGzFileService_WebMonitoringOtherStatsProvince_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMonitoringOtherStatsByYearForProvince, 7);
+            var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMonitoringOtherStatsProvince, 7);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
@@ -459,11 +459,11 @@ namespace CreateGzFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task CreateGzFileService_WebMonitoringRoutineStatsByYearForCountry_Good_Test(string culture)
+        public async Task CreateGzFileService_WebMonitoringRoutineStatsCountry_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMonitoringRoutineStatsByYearForCountry, 5);
+            var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMonitoringRoutineStatsCountry, 5);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
@@ -471,11 +471,11 @@ namespace CreateGzFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task CreateGzFileService_WebMonitoringOtherStatsByYearForCountry_Good_Test(string culture)
+        public async Task CreateGzFileService_WebMonitoringOtherStatsCountry_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMonitoringOtherStatsByYearForCountry, 5);
+            var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMonitoringOtherStatsCountry, 5);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);

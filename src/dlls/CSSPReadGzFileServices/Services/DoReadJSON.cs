@@ -218,17 +218,17 @@ namespace ReadGzFileServices
                                 case WebTypeEnum.WebMikeScenarios:
                                     DoMergeJsonWebMikeScenarios(FromAzureStore as WebMikeScenarios, FromLocal as WebMikeScenarios);
                                     break;
-                                case WebTypeEnum.WebMonitoringOtherStatsByYearForCountry:
-                                    DoMergeJsonWebWebMonitoringOtherStatsByYearForCountry(FromAzureStore as WebMonitoringOtherStatsByYearForCountry, FromLocal as WebMonitoringOtherStatsByYearForCountry);
+                                case WebTypeEnum.WebMonitoringOtherStatsCountry:
+                                    DoMergeJsonWebWebMonitoringOtherStatsCountry(FromAzureStore as WebMonitoringOtherStatsCountry, FromLocal as WebMonitoringOtherStatsCountry);
                                     break;
-                                case WebTypeEnum.WebMonitoringRoutineStatsByYearForCountry:
-                                    DoMergeJsonWebWebMonitoringRoutineStatsByYearForCountry(FromAzureStore as WebMonitoringRoutineStatsByYearForCountry, FromLocal as WebMonitoringRoutineStatsByYearForCountry);
+                                case WebTypeEnum.WebMonitoringRoutineStatsCountry:
+                                    DoMergeJsonWebWebMonitoringRoutineStatsCountry(FromAzureStore as WebMonitoringRoutineStatsCountry, FromLocal as WebMonitoringRoutineStatsCountry);
                                     break;
-                                case WebTypeEnum.WebMonitoringOtherStatsByYearForProvince:
-                                    DoMergeJsonWebMonitoringOtherStatsByYearForProvince(FromAzureStore as WebMonitoringOtherStatsByYearForProvince, FromLocal as WebMonitoringOtherStatsByYearForProvince);
+                                case WebTypeEnum.WebMonitoringOtherStatsProvince:
+                                    DoMergeJsonWebMonitoringOtherStatsProvince(FromAzureStore as WebMonitoringOtherStatsProvince, FromLocal as WebMonitoringOtherStatsProvince);
                                     break;
-                                case WebTypeEnum.WebMonitoringRoutineStatsByYearForProvince:
-                                    DoMergeJsonWebMonitoringRoutineStatsByYearForProvince(FromAzureStore as WebMonitoringRoutineStatsByYearForProvince, FromLocal as WebMonitoringRoutineStatsByYearForProvince);
+                                case WebTypeEnum.WebMonitoringRoutineStatsProvince:
+                                    DoMergeJsonWebMonitoringRoutineStatsProvince(FromAzureStore as WebMonitoringRoutineStatsProvince, FromLocal as WebMonitoringRoutineStatsProvince);
                                     break;
                                 case WebTypeEnum.WebMunicipality:
                                     DoMergeJsonWebMunicipality(FromAzureStore as WebMunicipality, FromLocal as WebMunicipality);

@@ -54,11 +54,11 @@ import { FilterService } from '../helpers/filter.service';
 import { SortTVItemMunicipalityListService } from '../helpers/sort-tvitem-municipality-list.service';
 import { StatService } from '../helpers/stat.service';
 import { LoadListService } from '../helpers/loading-list.service';
-import { WebMonitoringRoutineStatsByYearForCountry } from 'src/app/models/generated/web/WebMonitoringRoutineStatsByYearForCountry.model';
-import { WebMonitoringOtherStatsByYearForCountry } from 'src/app/models/generated/web/WebMonitoringOtherStatsByYearForCountry.model';
-import { WebMonitoringOtherStatsByYearForProvince } from 'src/app/models/generated/web/WebMonitoringOtherStatsByYearForProvince.model';
-import { WebMonitoringRoutineStatsByYearForProvince } from 'src/app/models/generated/web/WebMonitoringRoutineStatsByYearForProvince.model';
-import { MonitoringStatsByYearModel } from 'src/app/models/generated/web/MonitoringStatsByYearModel.model';
+import { WebMonitoringOtherStatsCountry } from 'src/app/models/generated/web/WebMonitoringOtherStatsCountry.model';
+import { WebMonitoringRoutineStatsCountry } from 'src/app/models/generated/web/WebMonitoringRoutineStatsCountry.model';
+import { WebMonitoringOtherStatsProvince } from 'src/app/models/generated/web/WebMonitoringOtherStatsProvince.model';
+import { WebMonitoringRoutineStatsProvince } from 'src/app/models/generated/web/WebMonitoringRoutineStatsProvince.model';
+import { MonitoringStatsModel } from 'src/app/models/generated/web/MonitoringStatsModel.model';
 
 
 @Injectable({
@@ -83,8 +83,12 @@ export class LoaderService {
     }
 
     LoadAll() {
-        this.appStateService.ShowMonitoringStatsChart = false;
-        this.appStateService.ShowMonitoringStatsTable = false;
+        this.appStateService.ShowMonitoringStatsChartByYear = false;
+        this.appStateService.ShowMonitoringStatsChartByMonth = false;
+        this.appStateService.ShowMonitoringStatsChartBySeason = false;
+        this.appStateService.ShowMonitoringStatsTableByYear = false;
+        this.appStateService.ShowMonitoringStatsTableByMonth = false;
+        this.appStateService.ShowMonitoringStatsTableBySeason = false;
 
         if (this.loadListService.ToLoadList != undefined && this.loadListService.ToLoadList?.length > 0) {
             this.WebType = this.loadListService.ToLoadList[0].WebType;
@@ -111,10 +115,10 @@ export class LoaderService {
                 case WebTypeEnum.WebHydrometricSites: this.Load<WebHydrometricSites>(this.WebType, this.ForceReload); break;
                 case WebTypeEnum.WebLabSheets: this.Load<WebLabSheets>(this.WebType, this.ForceReload); break;
                 case WebTypeEnum.WebMikeScenarios: this.Load<WebMikeScenarios>(this.WebType, this.ForceReload); break;
-                case WebTypeEnum.WebMonitoringOtherStatsByYearForCountry: this.Load<WebMonitoringOtherStatsByYearForCountry>(this.WebType, this.ForceReload); break;
-                case WebTypeEnum.WebMonitoringRoutineStatsByYearForCountry: this.Load<WebMonitoringRoutineStatsByYearForCountry>(this.WebType, this.ForceReload); break;
-                case WebTypeEnum.WebMonitoringOtherStatsByYearForProvince: this.Load<WebMonitoringOtherStatsByYearForProvince>(this.WebType, this.ForceReload); break;
-                case WebTypeEnum.WebMonitoringRoutineStatsByYearForProvince: this.Load<WebMonitoringRoutineStatsByYearForProvince>(this.WebType, this.ForceReload); break;
+                case WebTypeEnum.WebMonitoringOtherStatsCountry: this.Load<WebMonitoringOtherStatsCountry>(this.WebType, this.ForceReload); break;
+                case WebTypeEnum.WebMonitoringRoutineStatsCountry: this.Load<WebMonitoringRoutineStatsCountry>(this.WebType, this.ForceReload); break;
+                case WebTypeEnum.WebMonitoringOtherStatsProvince: this.Load<WebMonitoringOtherStatsProvince>(this.WebType, this.ForceReload); break;
+                case WebTypeEnum.WebMonitoringRoutineStatsProvince: this.Load<WebMonitoringRoutineStatsProvince>(this.WebType, this.ForceReload); break;
                 case WebTypeEnum.WebMunicipality: this.Load<WebMunicipality>(this.WebType, this.ForceReload); break;
                 case WebTypeEnum.WebMWQMRuns: this.Load<WebMWQMRuns>(this.WebType, this.ForceReload); break;
                 case WebTypeEnum.WebMWQMSamples1980_2020: this.Load<WebMWQMSamples1980_2020>(this.WebType, this.ForceReload); break;
@@ -336,9 +340,9 @@ export class LoaderService {
                     return IsSame;
                 }
                 break;
-            case WebTypeEnum.WebMonitoringOtherStatsByYearForCountry:
+            case WebTypeEnum.WebMonitoringOtherStatsCountry:
                 {
-                    obj = this.appLoadedService.WebMonitoringOtherStatsByYearForCountry;
+                    obj = this.appLoadedService.WebMonitoringOtherStatsCountry;
                     if ((obj === undefined || (Object.keys(obj)?.length === 0 && obj.constructor === Object))) {
                         return false;
                     }
@@ -346,15 +350,15 @@ export class LoaderService {
                     let IsSame = this.appStateService.UserPreference.CurrentCountryTVItemID == this.appLoadedService.WebCountry?.TVItemModel?.TVItem?.TVItemID ? true : false;
 
                     if (!IsSame) {
-                        this.appLoadedService.WebMonitoringOtherStatsByYearForCountry = <WebMonitoringOtherStatsByYearForCountry>{};
+                        this.appLoadedService.WebMonitoringOtherStatsCountry = <WebMonitoringOtherStatsCountry>{};
                     }
 
                     return IsSame;
                 }
                 break;
-            case WebTypeEnum.WebMonitoringRoutineStatsByYearForCountry:
+            case WebTypeEnum.WebMonitoringRoutineStatsCountry:
                 {
-                    obj = this.appLoadedService.WebMonitoringRoutineStatsByYearForCountry;
+                    obj = this.appLoadedService.WebMonitoringRoutineStatsCountry;
                     if ((obj === undefined || (Object.keys(obj)?.length === 0 && obj.constructor === Object))) {
                         return false;
                     }
@@ -362,15 +366,15 @@ export class LoaderService {
                     let IsSame = this.appStateService.UserPreference.CurrentCountryTVItemID == this.appLoadedService.WebCountry?.TVItemModel?.TVItem?.TVItemID ? true : false;
 
                     if (!IsSame) {
-                        this.appLoadedService.WebMonitoringRoutineStatsByYearForCountry = <WebMonitoringRoutineStatsByYearForCountry>{};
+                        this.appLoadedService.WebMonitoringRoutineStatsCountry = <WebMonitoringRoutineStatsCountry>{};
                     }
 
                     return IsSame;
                 }
                 break;
-            case WebTypeEnum.WebMonitoringOtherStatsByYearForProvince:
+            case WebTypeEnum.WebMonitoringOtherStatsProvince:
                 {
-                    obj = this.appLoadedService.WebMonitoringOtherStatsByYearForProvince;
+                    obj = this.appLoadedService.WebMonitoringOtherStatsProvince;
                     if ((obj === undefined || (Object.keys(obj)?.length === 0 && obj.constructor === Object))) {
                         return false;
                     }
@@ -378,15 +382,15 @@ export class LoaderService {
                     let IsSame = this.appStateService.UserPreference.CurrentProvinceTVItemID == this.appLoadedService.WebProvince?.TVItemModel?.TVItem?.TVItemID ? true : false;
 
                     if (!IsSame) {
-                        this.appLoadedService.WebMonitoringOtherStatsByYearForProvince = <WebMonitoringOtherStatsByYearForProvince>{};
+                        this.appLoadedService.WebMonitoringOtherStatsProvince = <WebMonitoringOtherStatsProvince>{};
                     }
 
                     return IsSame;
                 }
                 break;
-            case WebTypeEnum.WebMonitoringRoutineStatsByYearForProvince:
+            case WebTypeEnum.WebMonitoringRoutineStatsProvince:
                 {
-                    obj = this.appLoadedService.WebMonitoringRoutineStatsByYearForProvince;
+                    obj = this.appLoadedService.WebMonitoringRoutineStatsProvince;
                     if ((obj === undefined || (Object.keys(obj)?.length === 0 && obj.constructor === Object))) {
                         return false;
                     }
@@ -394,7 +398,7 @@ export class LoaderService {
                     let IsSame = this.appStateService.UserPreference.CurrentProvinceTVItemID == this.appLoadedService.WebProvince?.TVItemModel?.TVItem?.TVItemID ? true : false;
 
                     if (!IsSame) {
-                        this.appLoadedService.WebMonitoringRoutineStatsByYearForProvince = <WebMonitoringRoutineStatsByYearForProvince>{};
+                        this.appLoadedService.WebMonitoringRoutineStatsProvince = <WebMonitoringRoutineStatsProvince>{};
                     }
 
                     return IsSame;
@@ -659,7 +663,7 @@ export class LoaderService {
             case WebTypeEnum.WebArea:
                 {
                     this.appLoadedService.WebArea = <WebArea>{};
-                    this.appLoadedService.MonitoringStatsByYearModel = <MonitoringStatsByYearModel>{};
+                    this.appLoadedService.MonitoringStatsModel = <MonitoringStatsModel>{};
                     TVItemIDText = `/${this.appStateService.UserPreference.CurrentAreaTVItemID}`;
                 }
                 break;
@@ -672,7 +676,7 @@ export class LoaderService {
             case WebTypeEnum.WebCountry:
                 {
                     this.appLoadedService.WebCountry = <WebCountry>{};
-                    this.appLoadedService.MonitoringStatsByYearModel = <MonitoringStatsByYearModel>{};
+                    this.appLoadedService.MonitoringStatsModel = <MonitoringStatsModel>{};
                     TVItemIDText = `/${this.appStateService.UserPreference.CurrentCountryTVItemID}`;
                 }
                 break;
@@ -700,27 +704,27 @@ export class LoaderService {
                     TVItemIDText = `/${this.appStateService.UserPreference.CurrentMunicipalityTVItemID}`;
                 }
                 break;
-            case WebTypeEnum.WebMonitoringOtherStatsByYearForCountry:
+            case WebTypeEnum.WebMonitoringOtherStatsCountry:
                 {
-                    this.appLoadedService.WebMonitoringOtherStatsByYearForCountry = <WebMonitoringOtherStatsByYearForCountry>{};
+                    this.appLoadedService.WebMonitoringOtherStatsCountry = <WebMonitoringOtherStatsCountry>{};
                     TVItemIDText = `/${this.appStateService.UserPreference.CurrentCountryTVItemID}`;
                 }
                 break;
-            case WebTypeEnum.WebMonitoringRoutineStatsByYearForCountry:
+            case WebTypeEnum.WebMonitoringRoutineStatsCountry:
                 {
-                    this.appLoadedService.WebMonitoringRoutineStatsByYearForCountry = <WebMonitoringRoutineStatsByYearForCountry>{};
+                    this.appLoadedService.WebMonitoringRoutineStatsCountry = <WebMonitoringRoutineStatsCountry>{};
                     TVItemIDText = `/${this.appStateService.UserPreference.CurrentCountryTVItemID}`;
                 }
                 break;
-            case WebTypeEnum.WebMonitoringOtherStatsByYearForProvince:
+            case WebTypeEnum.WebMonitoringOtherStatsProvince:
                 {
-                    this.appLoadedService.WebMonitoringOtherStatsByYearForProvince = <WebMonitoringOtherStatsByYearForProvince>{};
+                    this.appLoadedService.WebMonitoringOtherStatsProvince = <WebMonitoringOtherStatsProvince>{};
                     TVItemIDText = `/${this.appStateService.UserPreference.CurrentProvinceTVItemID}`;
                 }
                 break;
-            case WebTypeEnum.WebMonitoringRoutineStatsByYearForProvince:
+            case WebTypeEnum.WebMonitoringRoutineStatsProvince:
                 {
-                    this.appLoadedService.WebMonitoringRoutineStatsByYearForProvince = <WebMonitoringRoutineStatsByYearForProvince>{};
+                    this.appLoadedService.WebMonitoringRoutineStatsProvince = <WebMonitoringRoutineStatsProvince>{};
                     TVItemIDText = `/${this.appStateService.UserPreference.CurrentProvinceTVItemID}`;
                 }
                 break;
@@ -764,7 +768,7 @@ export class LoaderService {
             case WebTypeEnum.WebProvince:
                 {
                     this.appLoadedService.WebProvince = <WebProvince>{};
-                    this.appLoadedService.MonitoringStatsByYearModel = <MonitoringStatsByYearModel>{};
+                    this.appLoadedService.MonitoringStatsModel = <MonitoringStatsModel>{};
                     TVItemIDText = `/${this.appStateService.UserPreference.CurrentProvinceTVItemID}`;
                 }
                 break;
@@ -781,14 +785,14 @@ export class LoaderService {
             case WebTypeEnum.WebSector:
                 {
                     this.appLoadedService.WebSector = <WebSector>{};
-                    this.appLoadedService.MonitoringStatsByYearModel = <MonitoringStatsByYearModel>{};
+                    this.appLoadedService.MonitoringStatsModel = <MonitoringStatsModel>{};
                     TVItemIDText = `/${this.appStateService.UserPreference.CurrentSectorTVItemID}`;
                 }
                 break;
             case WebTypeEnum.WebSubsector:
                 {
                     this.appLoadedService.WebSubsector = <WebSubsector>{};
-                    this.appLoadedService.MonitoringStatsByYearModel = <MonitoringStatsByYearModel>{};
+                    this.appLoadedService.MonitoringStatsModel = <MonitoringStatsModel>{};
                     TVItemIDText = `/${this.appStateService.UserPreference.CurrentSubsectorTVItemID}`;
                 }
                 break;
@@ -816,62 +820,42 @@ export class LoaderService {
             case WebTypeEnum.WebArea: 
             {
                 this.appLoadedService.BreadCrumbTVItemModelList = this.appLoadedService.WebArea.TVItemModelParentList; 
-                this.appLoadedService.MonitoringStatsByYearModel = this.appLoadedService?.WebMonitoringRoutineStatsByYearForProvince?.MonitoringStatsByYearModelList?.filter(c => c.TVItemModel.TVItem.TVItemID == this.appStateService.UserPreference.CurrentAreaTVItemID)[0];
-                // if (this.appStateService.ShowMonitoringStatsChart)
-                // {
-                //     this.chartMonitoringStatsService.DrawChart();                
-                // }
+                this.appLoadedService.MonitoringStatsModel = this.appLoadedService?.WebMonitoringRoutineStatsProvince?.MonitoringStatsModelList?.filter(c => c.TVItemModel.TVItem.TVItemID == this.appStateService.UserPreference.CurrentAreaTVItemID)[0];
             }
             break;
             case WebTypeEnum.WebCountry: 
             {
                 this.appLoadedService.BreadCrumbTVItemModelList = this.appLoadedService.WebCountry.TVItemModelParentList; 
-                this.appLoadedService.MonitoringStatsByYearModel = this.appLoadedService?.WebMonitoringRoutineStatsByYearForCountry?.MonitoringStatsByYearModelList?.filter(c => c.TVItemModel.TVItem.TVItemID == this.appStateService.UserPreference.CurrentCountryTVItemID)[0];
-                // if (this.appStateService.ShowMonitoringStatsChart)
-                // {
-                //     this.chartMonitoringStatsService.DrawChart();                
-                // }
+                this.appLoadedService.MonitoringStatsModel = this.appLoadedService?.WebMonitoringRoutineStatsCountry?.MonitoringStatsModelList?.filter(c => c.TVItemModel.TVItem.TVItemID == this.appStateService.UserPreference.CurrentCountryTVItemID)[0];
             }
             break;
             case WebTypeEnum.WebMunicipality: 
             {
                 this.appLoadedService.BreadCrumbTVItemModelList = this.appLoadedService.WebMunicipality.TVItemModelParentList; 
-                this.appLoadedService.MonitoringStatsByYearModel = <MonitoringStatsByYearModel>{};
+                this.appLoadedService.MonitoringStatsModel = <MonitoringStatsModel>{};
             }
             break;
             case WebTypeEnum.WebProvince: 
             {
                 this.appLoadedService.BreadCrumbTVItemModelList = this.appLoadedService.WebProvince.TVItemModelParentList; 
-                this.appLoadedService.MonitoringStatsByYearModel = this.appLoadedService?.WebMonitoringRoutineStatsByYearForProvince?.MonitoringStatsByYearModelList?.filter(c => c.TVItemModel.TVItem.TVItemID == this.appStateService.UserPreference.CurrentProvinceTVItemID)[0];
-                // if (this.appStateService.ShowMonitoringStatsChart)
-                // {
-                //     this.chartMonitoringStatsService.DrawChart();                
-                // }
+                this.appLoadedService.MonitoringStatsModel = this.appLoadedService?.WebMonitoringRoutineStatsProvince?.MonitoringStatsModelList?.filter(c => c.TVItemModel.TVItem.TVItemID == this.appStateService.UserPreference.CurrentProvinceTVItemID)[0];
             }
             break;
             case WebTypeEnum.WebRoot: {
                 this.appLoadedService.BreadCrumbTVItemModelList = this.appLoadedService.WebRoot.TVItemModelParentList; 
-                this.appLoadedService.MonitoringStatsByYearModel = <MonitoringStatsByYearModel>{};
+                this.appLoadedService.MonitoringStatsModel = <MonitoringStatsModel>{};
             }
             break;
             case WebTypeEnum.WebSector: 
             {
                 this.appLoadedService.BreadCrumbTVItemModelList = this.appLoadedService.WebSector.TVItemModelParentList; 
-                this.appLoadedService.MonitoringStatsByYearModel = this.appLoadedService?.WebMonitoringRoutineStatsByYearForProvince?.MonitoringStatsByYearModelList?.filter(c => c.TVItemModel.TVItem.TVItemID == this.appStateService.UserPreference.CurrentSectorTVItemID)[0];
-                // if (this.appStateService.ShowMonitoringStatsChart)
-                // {
-                //     this.chartMonitoringStatsService.DrawChart();                
-                // }
+                this.appLoadedService.MonitoringStatsModel = this.appLoadedService?.WebMonitoringRoutineStatsProvince?.MonitoringStatsModelList?.filter(c => c.TVItemModel.TVItem.TVItemID == this.appStateService.UserPreference.CurrentSectorTVItemID)[0];
             }
             break;
             case WebTypeEnum.WebSubsector: 
             {
                 this.appLoadedService.BreadCrumbTVItemModelList = this.appLoadedService.WebSubsector.TVItemModelParentList; 
-                this.appLoadedService.MonitoringStatsByYearModel = this.appLoadedService?.WebMonitoringRoutineStatsByYearForProvince?.MonitoringStatsByYearModelList?.filter(c => c.TVItemModel.TVItem.TVItemID == this.appStateService.UserPreference.CurrentSubsectorTVItemID)[0];
-                // if (this.appStateService.ShowMonitoringStatsChart)
-                // {
-                //     this.chartMonitoringStatsService.DrawChart();                
-                // }
+                this.appLoadedService.MonitoringStatsModel = this.appLoadedService?.WebMonitoringRoutineStatsProvince?.MonitoringStatsModelList?.filter(c => c.TVItemModel.TVItem.TVItemID == this.appStateService.UserPreference.CurrentSubsectorTVItemID)[0];
             }
             break;
             default:
@@ -954,7 +938,7 @@ export class LoaderService {
 
                     this.historyService.AddHistory(this.appLoadedService.WebArea?.TVItemModel);
 
-                    this.appLoadedService.MonitoringStatsByYearModel = this.appLoadedService?.WebMonitoringRoutineStatsByYearForProvince?.MonitoringStatsByYearModelList?.filter(c => c.TVItemModel.TVItem.TVItemID == this.appStateService.UserPreference.CurrentAreaTVItemID)[0];
+                    this.appLoadedService.MonitoringStatsModel = this.appLoadedService?.WebMonitoringRoutineStatsProvince?.MonitoringStatsModelList?.filter(c => c.TVItemModel.TVItem.TVItemID == this.appStateService.UserPreference.CurrentAreaTVItemID)[0];
 
                     if (this.appStateService.GoogleJSLoaded) {
                         this.DoUpdateWebAreaMap();
@@ -973,7 +957,7 @@ export class LoaderService {
 
                     this.historyService.AddHistory(this.appLoadedService.WebCountry?.TVItemModel);
 
-                    this.appLoadedService.MonitoringStatsByYearModel = this.appLoadedService?.WebMonitoringRoutineStatsByYearForCountry?.MonitoringStatsByYearModelList?.filter(c => c.TVItemModel.TVItem.TVItemID == this.appStateService.UserPreference.CurrentCountryTVItemID)[0];
+                    this.appLoadedService.MonitoringStatsModel = this.appLoadedService?.WebMonitoringRoutineStatsCountry?.MonitoringStatsModelList?.filter(c => c.TVItemModel.TVItem.TVItemID == this.appStateService.UserPreference.CurrentCountryTVItemID)[0];
 
                     if (this.appStateService.GoogleJSLoaded) {
                         this.DoUpdateWebCountryMap();
@@ -1001,24 +985,24 @@ export class LoaderService {
                     this.appLoadedService.WebMikeScenarios = x;
                 }
                 break;
-            case WebTypeEnum.WebMonitoringOtherStatsByYearForCountry:
+            case WebTypeEnum.WebMonitoringOtherStatsCountry:
                 {
-                    this.appLoadedService.WebMonitoringOtherStatsByYearForCountry = x;
+                    this.appLoadedService.WebMonitoringOtherStatsCountry = x;
                 }
                 break;
-            case WebTypeEnum.WebMonitoringRoutineStatsByYearForCountry:
+            case WebTypeEnum.WebMonitoringRoutineStatsCountry:
                 {
-                    this.appLoadedService.WebMonitoringRoutineStatsByYearForCountry = x;
+                    this.appLoadedService.WebMonitoringRoutineStatsCountry = x;
                 }
                 break;
-            case WebTypeEnum.WebMonitoringOtherStatsByYearForProvince:
+            case WebTypeEnum.WebMonitoringOtherStatsProvince:
                 {
-                    this.appLoadedService.WebMonitoringOtherStatsByYearForProvince = x;
+                    this.appLoadedService.WebMonitoringOtherStatsProvince = x;
                 }
                 break;
-            case WebTypeEnum.WebMonitoringRoutineStatsByYearForProvince:
+            case WebTypeEnum.WebMonitoringRoutineStatsProvince:
                 {
-                    this.appLoadedService.WebMonitoringRoutineStatsByYearForProvince = x;
+                    this.appLoadedService.WebMonitoringRoutineStatsProvince = x;
                 }
                 break;
             case WebTypeEnum.WebMunicipality:
@@ -1067,7 +1051,7 @@ export class LoaderService {
 
                     this.historyService.AddHistory(this.appLoadedService.WebProvince?.TVItemModel);
 
-                    this.appLoadedService.MonitoringStatsByYearModel = this.appLoadedService?.WebMonitoringRoutineStatsByYearForProvince?.MonitoringStatsByYearModelList?.filter(c => c.TVItemModel.TVItem.TVItemID == this.appStateService.UserPreference.CurrentProvinceTVItemID)[0];
+                    this.appLoadedService.MonitoringStatsModel = this.appLoadedService?.WebMonitoringRoutineStatsProvince?.MonitoringStatsModelList?.filter(c => c.TVItemModel.TVItem.TVItemID == this.appStateService.UserPreference.CurrentProvinceTVItemID)[0];
 
                     if (this.appStateService.GoogleJSLoaded) {
                         this.DoUpdateWebProvinceMap();
@@ -1110,7 +1094,7 @@ export class LoaderService {
 
                     this.historyService.AddHistory(this.appLoadedService.WebSubsector?.TVItemModel);
 
-                    this.appLoadedService.MonitoringStatsByYearModel = this.appLoadedService?.WebMonitoringRoutineStatsByYearForProvince?.MonitoringStatsByYearModelList?.filter(c => c.TVItemModel.TVItem.TVItemID == this.appStateService.UserPreference.CurrentSubsectorTVItemID)[0];
+                    this.appLoadedService.MonitoringStatsModel = this.appLoadedService?.WebMonitoringRoutineStatsProvince?.MonitoringStatsModelList?.filter(c => c.TVItemModel.TVItem.TVItemID == this.appStateService.UserPreference.CurrentSubsectorTVItemID)[0];
 
                     this.statService.FillStatMWQMRunList();
 

@@ -26,7 +26,6 @@ import { CountryTVItemListDetailComponent } from './components/country/country-t
 import { CountryTVItemListItemComponent } from './components/country/country-tvitem-list-item/country-tvitem-list-item.component';
 import { ContactItemComponent } from './components/contact/contact-item/contact-item.component';
 import { EmailDistributionListItemComponent } from './components/email-distribution-list/email-distribution-list-item/email-distribution-list-item.component';
-import { ExportArcGISItemComponent } from './components/export-arc-gis/export-arc-gis-item/export-arc-gis-item.component';
 import { InfrastructureItemComponent } from './components/infrastructure/infrastructure-item/infrastructure-item.component';
 import { LogBookItemComponent } from './components/log-book/log-book-item/log-book-item.component';
 import { MikeScenarioItemComponent } from './components/mike-scenario/mike-scenario-item/mike-scenario-item.component';
@@ -76,8 +75,6 @@ import { ChartFCSalTempComponent } from './components/chart/chart-fc-sal-temp/ch
 import { ChartFCStatComponent } from './components/chart/chart-fc-stat/chart-fc-stat.component';
 import { TableFCStatComponent } from './components/table/table-fc-stat/table-fc-stat.component';
 import { TableRunDataComponent } from './components/table/table-run-data/table-run-data.component';
-import { ChartMonitoringStatComponent } from './components/chart/chart-monitoring-stat/chart-monitoring-stat.component';
-import { TableMonitoringStatDataComponent } from './components/table/table-monitoring-stat-data/table-monitoring-stat-data.component';
 import { TVItemItemComponent } from './components/tvitem/tvitem-item/tvitem-item.component';
 import { FileListItemMenuComponent } from './components/files/file-list-item-menu/file-list-item-menu.component';
 import { FileListItemModifyComponent } from './components/files/file-list-item-modify/file-list-item-modify.component';
@@ -99,6 +96,14 @@ import { PolSourceSiteItemCreateComponent } from './components/pol-source-site/p
 import { PolSourceSiteItemIssueComponent } from './components/pol-source-site/pol-source-site-item-issue/pol-source-site-item-issue.component';
 import { PolSourceSiteItemObsComponent } from './components/pol-source-site/pol-source-site-item-obs/pol-source-site-item-obs.component';
 import { AddressComponent } from './components/address/address.component';
+import { ExportArcGISComponent } from './components/export-arc-gis/export-arc-gis/export-arc-gis.component';
+import { NotImplementedYetComponent } from './components/not-implemented-yet/not-implemented-yet/not-implemented-yet.component';
+import { ChartMonitoringStatByYearComponent } from './components/chart/chart-monitoring-stat-by-year/chart-monitoring-stat-by-year.component';
+import { TableMonitoringStatByYearComponent } from './components/table/table-monitoring-stat-by-year/table-monitoring-stat-by-year.component';
+import { ChartMonitoringStatByMonthComponent } from './components/chart/chart-monitoring-stat-by-month/chart-monitoring-stat-by-month.component';
+import { ChartMonitoringStatBySeasonComponent } from './components/chart/chart-monitoring-stat-by-season/chart-monitoring-stat-by-season.component';
+import { TableMonitoringStatByMonthComponent } from './components/table/table-monitoring-stat-by-month/table-monitoring-stat-by-month.component';
+import { TableMonitoringStatBySeasonComponent } from './components/table/table-monitoring-stat-by-season/table-monitoring-stat-by-season.component';
 
 @NgModule({
   declarations: [
@@ -113,14 +118,16 @@ import { AddressComponent } from './components/address/address.component';
     BreadCrumbComponent,
     ChartFCSalTempComponent,
     ChartFCStatComponent,
-    ChartMonitoringStatComponent,
+    ChartMonitoringStatByYearComponent,
+    ChartMonitoringStatByMonthComponent,
+    ChartMonitoringStatBySeasonComponent,
     ContactItemComponent,
     CountryItemComponent,
     CountryTVItemListDetailComponent,
     CountryTVItemListItemComponent,
     EmailDistributionListItemComponent,
     ErrorComponent,
-    ExportArcGISItemComponent,
+    ExportArcGISComponent,
     FileListComponent,
     FileListItemComponent,
     FileListItemCreateComponent,
@@ -159,6 +166,7 @@ import { AddressComponent } from './components/address/address.component';
     MWQMSiteTVItemListDetailComponent,
     MWQMSiteTVItemListItemComponent,
     MWQMSiteTVItemListItemSpecialComponent,
+    NotImplementedYetComponent,
     OpenDataItemComponent,
     OpenDataNationalItemComponent,
     PolSourceSiteItemComponent,
@@ -190,7 +198,9 @@ import { AddressComponent } from './components/address/address.component';
     SubsectorToolsItemComponent,
     TableFCStatComponent,
     TableRunDataComponent,
-    TableMonitoringStatDataComponent,
+    TableMonitoringStatByYearComponent,
+    TableMonitoringStatByMonthComponent,
+    TableMonitoringStatBySeasonComponent,
     TVItemCreateComponent,
     TVItemItemComponent,
     TVItemLastUpdateComponent,
@@ -224,14 +234,16 @@ import { AddressComponent } from './components/address/address.component';
     BreadCrumbComponent,
     ChartFCSalTempComponent,
     ChartFCStatComponent,
-    ChartMonitoringStatComponent,
+    ChartMonitoringStatByYearComponent,
+    ChartMonitoringStatBySeasonComponent,
+    ChartMonitoringStatBySeasonComponent,
     ContactItemComponent,
     CountryItemComponent,
     CountryTVItemListDetailComponent,
     CountryTVItemListItemComponent,
     EmailDistributionListItemComponent,
     ErrorComponent,
-    ExportArcGISItemComponent,
+    ExportArcGISComponent,
     FileListComponent,
     FileListItemCreateComponent,
     FileListItemDetailComponent,
@@ -269,6 +281,7 @@ import { AddressComponent } from './components/address/address.component';
     MWQMSiteTVItemListDetailComponent,
     MWQMSiteTVItemListItemComponent,
     MWQMSiteTVItemListItemSpecialComponent,
+    NotImplementedYetComponent,
     OpenDataItemComponent,
     OpenDataNationalItemComponent,
     PolSourceSiteItemComponent,
@@ -300,7 +313,9 @@ import { AddressComponent } from './components/address/address.component';
     SubsectorToolsItemComponent,
     TableFCStatComponent,
     TableRunDataComponent,
-    TableMonitoringStatDataComponent,
+    TableMonitoringStatByYearComponent,
+    TableMonitoringStatByMonthComponent,
+    TableMonitoringStatBySeasonComponent,
     TVItemCreateComponent,
     TVItemItemComponent,
     TVItemLastUpdateComponent,

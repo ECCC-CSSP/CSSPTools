@@ -7,12 +7,10 @@
 
 import { RainExceedance } from 'src/app/models/generated/db/RainExceedance.model';
 import { RainExceedanceClimateSite } from 'src/app/models/generated/db/RainExceedanceClimateSite.model';
-import { TVItem } from 'src/app/models/generated/db/TVItem.model';
-import { TVItemLanguage } from 'src/app/models/generated/db/TVItemLanguage.model';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 
 export class RainExceedanceModel {
     RainExceedance: RainExceedance;
     RainExceedanceClimateSiteList: RainExceedanceClimateSite[];
-    TVItem: TVItem;
-    TVItemLanguageList: TVItemLanguage[];
+    TVItemModel: TVItemModel;
 }

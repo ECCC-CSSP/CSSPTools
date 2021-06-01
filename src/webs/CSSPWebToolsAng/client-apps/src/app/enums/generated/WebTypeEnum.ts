@@ -42,10 +42,10 @@ export enum WebTypeEnum {
     WebSector = 30,
     WebSubsector = 31,
     WebTideSites = 32,
-    WebMonitoringRoutineStatsByYearForCountry = 33,
-    WebMonitoringOtherStatsByYearForCountry = 34,
-    WebMonitoringRoutineStatsByYearForProvince = 35,
-    WebMonitoringOtherStatsByYearForProvince = 36,
+    WebMonitoringRoutineStatsCountry = 33,
+    WebMonitoringOtherStatsCountry = 34,
+    WebMonitoringRoutineStatsProvince = 35,
+    WebMonitoringOtherStatsProvince = 36,
 }
 
 export function GetWebTypeEnum(): typeof WebTypeEnum
@@ -88,10 +88,10 @@ export function WebTypeEnum_GetOrderedText(appLanguageService: AppLanguageServic
         enumTextOrderedList.push({ EnumID: 30, EnumText: 'WebSector' });
         enumTextOrderedList.push({ EnumID: 31, EnumText: 'WebSubsector' });
         enumTextOrderedList.push({ EnumID: 32, EnumText: 'WebTideSites' });
-        enumTextOrderedList.push({ EnumID: 33, EnumText: 'WebMonitoringRoutiineStatsByYearForCountry' });
-        enumTextOrderedList.push({ EnumID: 34, EnumText: 'WebMonitoringOtherStatsByYearForCountry' });
-        enumTextOrderedList.push({ EnumID: 35, EnumText: 'WebMonitoringRoutineStatsByYearForProvince' });
-        enumTextOrderedList.push({ EnumID: 36, EnumText: 'WebMonitoringOtherStatsByYearForProvince' });
+        enumTextOrderedList.push({ EnumID: 33, EnumText: 'WebMonitoringRoutiineStatsCountry' });
+        enumTextOrderedList.push({ EnumID: 34, EnumText: 'WebMonitoringOtherStatsCountry' });
+        enumTextOrderedList.push({ EnumID: 35, EnumText: 'WebMonitoringRoutineStatsProvince' });
+        enumTextOrderedList.push({ EnumID: 36, EnumText: 'WebMonitoringOtherStatsProvince' });
     }
     else {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'WebAllAddresses' });
@@ -126,10 +126,10 @@ export function WebTypeEnum_GetOrderedText(appLanguageService: AppLanguageServic
         enumTextOrderedList.push({ EnumID: 30, EnumText: 'WebSector' });
         enumTextOrderedList.push({ EnumID: 31, EnumText: 'WebSubsector' });
         enumTextOrderedList.push({ EnumID: 32, EnumText: 'WebTideSites' });
-        enumTextOrderedList.push({ EnumID: 33, EnumText: 'WebMonitoringRoutiineStatsByYearForCountry' });
-        enumTextOrderedList.push({ EnumID: 34, EnumText: 'WebMonitoringOtherStatsByYearForCountry' });
-        enumTextOrderedList.push({ EnumID: 35, EnumText: 'WebMonitoringRoutineStatsByYearForProvince' });
-        enumTextOrderedList.push({ EnumID: 36, EnumText: 'WebMonitoringOtherStatsByYearForProvince' });
+        enumTextOrderedList.push({ EnumID: 33, EnumText: 'WebMonitoringRoutiineStatsCountry' });
+        enumTextOrderedList.push({ EnumID: 34, EnumText: 'WebMonitoringOtherStatsCountry' });
+        enumTextOrderedList.push({ EnumID: 35, EnumText: 'WebMonitoringRoutineStatsProvince' });
+        enumTextOrderedList.push({ EnumID: 36, EnumText: 'WebMonitoringOtherStatsProvince' });
     }
 
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));

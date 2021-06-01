@@ -274,7 +274,7 @@ namespace CreateGzFileServices
                           && c.TVPath.Contains(subsectorTVItem.TVPath + "p")
                           select s).AsNoTracking().ToListAsync();
         }
-        private int GetMWQMSampleCountOtherUnderCountry(TVItem countryTVItem, int Year)
+        private int GetMWQMSampleCountOtherByYearUnderCountry(TVItem countryTVItem, int Year)
         {
             if (dbLocal != null)
             {
@@ -297,7 +297,159 @@ namespace CreateGzFileServices
                     && s.SampleDateTime_Local.Year == Year
                     select s).Count();
         }
-        private int GetMWQMSampleCountRoutineUnderCountry(TVItem countryTVItem, int Year)
+        private int GetMWQMSampleCountOtherByMonthUnderCountry(TVItem countryTVItem, MonthEnum Month)
+        {
+            if (dbLocal != null)
+            {
+                return (from c in dbLocal.TVItems
+                        from s in dbLocal.MWQMSamples
+                        where c.TVItemID == s.MWQMSiteTVItemID
+                        && c.TVType == TVTypeEnum.MWQMSite
+                        && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                        && !s.SampleTypesText.Contains("109,")
+                        && s.SampleDateTime_Local.Month == (int)Month
+                        select s).Count();
+            }
+
+            return (from c in db.TVItems
+                    from s in db.MWQMSamples
+                    where c.TVItemID == s.MWQMSiteTVItemID
+                    && c.TVType == TVTypeEnum.MWQMSite
+                    && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                    && !s.SampleTypesText.Contains("109,")
+                    && s.SampleDateTime_Local.Month == (int)Month
+                    select s).Count();
+        }
+        private int GetMWQMSampleCountOtherBySeasonUnderCountry(TVItem countryTVItem, SeasonEnum Season)
+        {
+            if (dbLocal != null)
+            {
+                switch (Season)
+                {
+                    case SeasonEnum.Winter:
+                        return (from c in dbLocal.TVItems
+                                from s in dbLocal.MWQMSamples
+                                where c.TVItemID == s.MWQMSiteTVItemID
+                                && c.TVType == TVTypeEnum.MWQMSite
+                                && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                                && !s.SampleTypesText.Contains("109,")
+                                && ((s.SampleDateTime_Local.Month == (int)MonthEnum.December
+                                && s.SampleDateTime_Local.Day > 20)
+                                || s.SampleDateTime_Local.Month == (int)MonthEnum.January
+                                || s.SampleDateTime_Local.Month == (int)MonthEnum.February
+                                || (s.SampleDateTime_Local.Month == (int)MonthEnum.March
+                                && s.SampleDateTime_Local.Day < 21))
+                                select s).Count();
+                    case SeasonEnum.Spring:
+                        return (from c in dbLocal.TVItems
+                                from s in dbLocal.MWQMSamples
+                                where c.TVItemID == s.MWQMSiteTVItemID
+                                && c.TVType == TVTypeEnum.MWQMSite
+                                && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                                && !s.SampleTypesText.Contains("109,")
+                                && ((s.SampleDateTime_Local.Month == (int)MonthEnum.March
+                                && s.SampleDateTime_Local.Day > 20)
+                                || s.SampleDateTime_Local.Month == (int)MonthEnum.April
+                                || s.SampleDateTime_Local.Month == (int)MonthEnum.May
+                                || (s.SampleDateTime_Local.Month == (int)MonthEnum.June
+                                && s.SampleDateTime_Local.Day < 21))
+                                select s).Count();
+                    case SeasonEnum.Summer:
+                        return (from c in dbLocal.TVItems
+                                from s in dbLocal.MWQMSamples
+                                where c.TVItemID == s.MWQMSiteTVItemID
+                                && c.TVType == TVTypeEnum.MWQMSite
+                                && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                                && !s.SampleTypesText.Contains("109,")
+                                && ((s.SampleDateTime_Local.Month == (int)MonthEnum.June
+                                && s.SampleDateTime_Local.Day > 20)
+                                || s.SampleDateTime_Local.Month == (int)MonthEnum.July
+                                || s.SampleDateTime_Local.Month == (int)MonthEnum.August
+                                || (s.SampleDateTime_Local.Month == (int)MonthEnum.September
+                                && s.SampleDateTime_Local.Day < 21))
+                                select s).Count();
+                    case SeasonEnum.Fall:
+                        return (from c in dbLocal.TVItems
+                                from s in dbLocal.MWQMSamples
+                                where c.TVItemID == s.MWQMSiteTVItemID
+                                && c.TVType == TVTypeEnum.MWQMSite
+                                && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                                && !s.SampleTypesText.Contains("109,")
+                                && ((s.SampleDateTime_Local.Month == (int)MonthEnum.September
+                                && s.SampleDateTime_Local.Day > 20)
+                                || s.SampleDateTime_Local.Month == (int)MonthEnum.October
+                                || s.SampleDateTime_Local.Month == (int)MonthEnum.November
+                                || (s.SampleDateTime_Local.Month == (int)MonthEnum.December
+                                && s.SampleDateTime_Local.Day < 21))
+                                select s).Count();
+                    default:
+                        return -1;
+                }
+            }
+
+            switch (Season)
+            {
+                case SeasonEnum.Winter:
+                    return (from c in db.TVItems
+                            from s in db.MWQMSamples
+                            where c.TVItemID == s.MWQMSiteTVItemID
+                            && c.TVType == TVTypeEnum.MWQMSite
+                            && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                            && !s.SampleTypesText.Contains("109,")
+                            && ((s.SampleDateTime_Local.Month == (int)MonthEnum.December
+                            && s.SampleDateTime_Local.Day > 20)
+                            || s.SampleDateTime_Local.Month == (int)MonthEnum.January
+                            || s.SampleDateTime_Local.Month == (int)MonthEnum.February
+                            || (s.SampleDateTime_Local.Month == (int)MonthEnum.March
+                            && s.SampleDateTime_Local.Day < 21))
+                            select s).Count();
+                case SeasonEnum.Spring:
+                    return (from c in db.TVItems
+                            from s in db.MWQMSamples
+                            where c.TVItemID == s.MWQMSiteTVItemID
+                            && c.TVType == TVTypeEnum.MWQMSite
+                            && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                            && !s.SampleTypesText.Contains("109,")
+                            && ((s.SampleDateTime_Local.Month == (int)MonthEnum.March
+                            && s.SampleDateTime_Local.Day > 20)
+                            || s.SampleDateTime_Local.Month == (int)MonthEnum.April
+                            || s.SampleDateTime_Local.Month == (int)MonthEnum.May
+                            || (s.SampleDateTime_Local.Month == (int)MonthEnum.June
+                            && s.SampleDateTime_Local.Day < 21))
+                            select s).Count();
+                case SeasonEnum.Summer:
+                    return (from c in db.TVItems
+                            from s in db.MWQMSamples
+                            where c.TVItemID == s.MWQMSiteTVItemID
+                            && c.TVType == TVTypeEnum.MWQMSite
+                            && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                            && !s.SampleTypesText.Contains("109,")
+                            && ((s.SampleDateTime_Local.Month == (int)MonthEnum.June
+                            && s.SampleDateTime_Local.Day > 20)
+                            || s.SampleDateTime_Local.Month == (int)MonthEnum.July
+                            || s.SampleDateTime_Local.Month == (int)MonthEnum.August
+                            || (s.SampleDateTime_Local.Month == (int)MonthEnum.September
+                            && s.SampleDateTime_Local.Day < 21))
+                            select s).Count();
+                case SeasonEnum.Fall:
+                    return (from c in db.TVItems
+                            from s in db.MWQMSamples
+                            where c.TVItemID == s.MWQMSiteTVItemID
+                            && c.TVType == TVTypeEnum.MWQMSite
+                            && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                            && !s.SampleTypesText.Contains("109,")
+                            && ((s.SampleDateTime_Local.Month == (int)MonthEnum.September
+                            && s.SampleDateTime_Local.Day > 20)
+                            || s.SampleDateTime_Local.Month == (int)MonthEnum.October
+                            || s.SampleDateTime_Local.Month == (int)MonthEnum.November
+                            || (s.SampleDateTime_Local.Month == (int)MonthEnum.December
+                            && s.SampleDateTime_Local.Day < 21))
+                            select s).Count();
+                default:
+                    return -1;
+            }
+        }
+        private int GetMWQMSampleCountRoutineByYearUnderCountry(TVItem countryTVItem, int Year)
         {
             if (dbLocal != null)
             {
@@ -320,7 +472,159 @@ namespace CreateGzFileServices
                     && s.SampleDateTime_Local.Year == Year
                     select s).Count();
         }
-        private int GetMWQMSiteCountOtherUnderCountry(TVItem countryTVItem, int Year)
+        private int GetMWQMSampleCountRoutineByMonthUnderCountry(TVItem countryTVItem, MonthEnum Month)
+        {
+            if (dbLocal != null)
+            {
+                return (from c in dbLocal.TVItems
+                        from s in dbLocal.MWQMSamples
+                        where c.TVItemID == s.MWQMSiteTVItemID
+                        && c.TVType == TVTypeEnum.MWQMSite
+                        && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                        && s.SampleTypesText.Contains("109,")
+                        && s.SampleDateTime_Local.Month == (int)Month
+                        select s).Count();
+            }
+
+            return (from c in db.TVItems
+                    from s in db.MWQMSamples
+                    where c.TVItemID == s.MWQMSiteTVItemID
+                    && c.TVType == TVTypeEnum.MWQMSite
+                    && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                    && s.SampleTypesText.Contains("109,")
+                    && s.SampleDateTime_Local.Month == (int)Month
+                    select s).Count();
+        }
+        private int GetMWQMSampleCountRoutineBySeasonUnderCountry(TVItem countryTVItem, SeasonEnum Season)
+        {
+            if (dbLocal != null)
+            {
+                switch (Season)
+                {
+                    case SeasonEnum.Winter:
+                        return (from c in dbLocal.TVItems
+                                from s in dbLocal.MWQMSamples
+                                where c.TVItemID == s.MWQMSiteTVItemID
+                                && c.TVType == TVTypeEnum.MWQMSite
+                                && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                                && s.SampleTypesText.Contains("109,")
+                                && ((s.SampleDateTime_Local.Month == (int)MonthEnum.December
+                                && s.SampleDateTime_Local.Day > 20)
+                                || s.SampleDateTime_Local.Month == (int)MonthEnum.January
+                                || s.SampleDateTime_Local.Month == (int)MonthEnum.February
+                                || (s.SampleDateTime_Local.Month == (int)MonthEnum.March
+                                && s.SampleDateTime_Local.Day < 21))
+                                select s).Count();
+                    case SeasonEnum.Spring:
+                        return (from c in dbLocal.TVItems
+                                from s in dbLocal.MWQMSamples
+                                where c.TVItemID == s.MWQMSiteTVItemID
+                                && c.TVType == TVTypeEnum.MWQMSite
+                                && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                                && s.SampleTypesText.Contains("109,")
+                                && ((s.SampleDateTime_Local.Month == (int)MonthEnum.March
+                                && s.SampleDateTime_Local.Day > 20)
+                                || s.SampleDateTime_Local.Month == (int)MonthEnum.April
+                                || s.SampleDateTime_Local.Month == (int)MonthEnum.May
+                                || (s.SampleDateTime_Local.Month == (int)MonthEnum.June
+                                && s.SampleDateTime_Local.Day < 21))
+                                select s).Count();
+                    case SeasonEnum.Summer:
+                        return (from c in dbLocal.TVItems
+                                from s in dbLocal.MWQMSamples
+                                where c.TVItemID == s.MWQMSiteTVItemID
+                                && c.TVType == TVTypeEnum.MWQMSite
+                                && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                                && s.SampleTypesText.Contains("109,")
+                                && ((s.SampleDateTime_Local.Month == (int)MonthEnum.June
+                                && s.SampleDateTime_Local.Day > 20)
+                                || s.SampleDateTime_Local.Month == (int)MonthEnum.July
+                                || s.SampleDateTime_Local.Month == (int)MonthEnum.August
+                                || (s.SampleDateTime_Local.Month == (int)MonthEnum.September
+                                && s.SampleDateTime_Local.Day < 21))
+                                select s).Count();
+                    case SeasonEnum.Fall:
+                        return (from c in dbLocal.TVItems
+                                from s in dbLocal.MWQMSamples
+                                where c.TVItemID == s.MWQMSiteTVItemID
+                                && c.TVType == TVTypeEnum.MWQMSite
+                                && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                                && s.SampleTypesText.Contains("109,")
+                                && ((s.SampleDateTime_Local.Month == (int)MonthEnum.September
+                                && s.SampleDateTime_Local.Day > 20)
+                                || s.SampleDateTime_Local.Month == (int)MonthEnum.October
+                                || s.SampleDateTime_Local.Month == (int)MonthEnum.November
+                                || (s.SampleDateTime_Local.Month == (int)MonthEnum.December
+                                && s.SampleDateTime_Local.Day < 21))
+                                select s).Count();
+                    default:
+                        return -1;
+                }
+            }
+
+            switch (Season)
+            {
+                case SeasonEnum.Winter:
+                    return (from c in db.TVItems
+                            from s in db.MWQMSamples
+                            where c.TVItemID == s.MWQMSiteTVItemID
+                            && c.TVType == TVTypeEnum.MWQMSite
+                            && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                            && s.SampleTypesText.Contains("109,")
+                            && ((s.SampleDateTime_Local.Month == (int)MonthEnum.December
+                            && s.SampleDateTime_Local.Day > 20)
+                            || s.SampleDateTime_Local.Month == (int)MonthEnum.January
+                            || s.SampleDateTime_Local.Month == (int)MonthEnum.February
+                            || (s.SampleDateTime_Local.Month == (int)MonthEnum.March
+                            && s.SampleDateTime_Local.Day < 21))
+                            select s).Count();
+                case SeasonEnum.Spring:
+                    return (from c in db.TVItems
+                            from s in db.MWQMSamples
+                            where c.TVItemID == s.MWQMSiteTVItemID
+                            && c.TVType == TVTypeEnum.MWQMSite
+                            && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                            && s.SampleTypesText.Contains("109,")
+                            && ((s.SampleDateTime_Local.Month == (int)MonthEnum.March
+                            && s.SampleDateTime_Local.Day > 20)
+                            || s.SampleDateTime_Local.Month == (int)MonthEnum.April
+                            || s.SampleDateTime_Local.Month == (int)MonthEnum.May
+                            || (s.SampleDateTime_Local.Month == (int)MonthEnum.June
+                            && s.SampleDateTime_Local.Day < 21))
+                            select s).Count();
+                case SeasonEnum.Summer:
+                    return (from c in db.TVItems
+                            from s in db.MWQMSamples
+                            where c.TVItemID == s.MWQMSiteTVItemID
+                            && c.TVType == TVTypeEnum.MWQMSite
+                            && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                            && s.SampleTypesText.Contains("109,")
+                            && ((s.SampleDateTime_Local.Month == (int)MonthEnum.June
+                            && s.SampleDateTime_Local.Day > 20)
+                            || s.SampleDateTime_Local.Month == (int)MonthEnum.July
+                            || s.SampleDateTime_Local.Month == (int)MonthEnum.August
+                            || (s.SampleDateTime_Local.Month == (int)MonthEnum.September
+                            && s.SampleDateTime_Local.Day < 21))
+                            select s).Count();
+                case SeasonEnum.Fall:
+                    return (from c in db.TVItems
+                            from s in db.MWQMSamples
+                            where c.TVItemID == s.MWQMSiteTVItemID
+                            && c.TVType == TVTypeEnum.MWQMSite
+                            && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                            && s.SampleTypesText.Contains("109,")
+                            && ((s.SampleDateTime_Local.Month == (int)MonthEnum.September
+                            && s.SampleDateTime_Local.Day > 20)
+                            || s.SampleDateTime_Local.Month == (int)MonthEnum.October
+                            || s.SampleDateTime_Local.Month == (int)MonthEnum.November
+                            || (s.SampleDateTime_Local.Month == (int)MonthEnum.December
+                            && s.SampleDateTime_Local.Day < 21))
+                            select s).Count();
+                default:
+                    return -1;
+            }
+        }
+        private int GetMWQMSiteCountOtherByYearUnderCountry(TVItem countryTVItem, int Year)
         {
             if (dbLocal != null)
             {
@@ -343,7 +647,159 @@ namespace CreateGzFileServices
                     && s.SampleDateTime_Local.Year == Year
                     select s.MWQMSiteTVItemID).Distinct().Count();
         }
-        private int GetMWQMSiteCountRoutineUnderCountry(TVItem countryTVItem, int Year)
+        private int GetMWQMSiteCountOtherByMonthUnderCountry(TVItem countryTVItem, MonthEnum Month)
+        {
+            if (dbLocal != null)
+            {
+                return (from c in dbLocal.TVItems
+                        from s in dbLocal.MWQMSamples
+                        where c.TVItemID == s.MWQMSiteTVItemID
+                        && c.TVType == TVTypeEnum.MWQMSite
+                        && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                        && !s.SampleTypesText.Contains("109,")
+                        && s.SampleDateTime_Local.Month == (int)Month
+                        select s.MWQMSiteTVItemID).Distinct().Count();
+            }
+
+            return (from c in db.TVItems
+                    from s in db.MWQMSamples
+                    where c.TVItemID == s.MWQMSiteTVItemID
+                    && c.TVType == TVTypeEnum.MWQMSite
+                    && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                    && !s.SampleTypesText.Contains("109,")
+                    && s.SampleDateTime_Local.Month == (int)Month
+                    select s.MWQMSiteTVItemID).Distinct().Count();
+        }
+        private int GetMWQMSiteCountOtherBySeasonUnderCountry(TVItem countryTVItem, SeasonEnum Season)
+        {
+            if (dbLocal != null)
+            {
+                switch (Season)
+                {
+                    case SeasonEnum.Winter:
+                        return (from c in dbLocal.TVItems
+                                from s in dbLocal.MWQMSamples
+                                where c.TVItemID == s.MWQMSiteTVItemID
+                                && c.TVType == TVTypeEnum.MWQMSite
+                                && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                                && !s.SampleTypesText.Contains("109,")
+                                && ((s.SampleDateTime_Local.Month == (int)MonthEnum.December
+                                && s.SampleDateTime_Local.Day > 20)
+                                || s.SampleDateTime_Local.Month == (int)MonthEnum.January
+                                || s.SampleDateTime_Local.Month == (int)MonthEnum.February
+                                || (s.SampleDateTime_Local.Month == (int)MonthEnum.March
+                                && s.SampleDateTime_Local.Day < 21))
+                                select s.MWQMSiteTVItemID).Distinct().Count();
+                    case SeasonEnum.Spring:
+                        return (from c in dbLocal.TVItems
+                                from s in dbLocal.MWQMSamples
+                                where c.TVItemID == s.MWQMSiteTVItemID
+                                && c.TVType == TVTypeEnum.MWQMSite
+                                && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                                && !s.SampleTypesText.Contains("109,")
+                                && ((s.SampleDateTime_Local.Month == (int)MonthEnum.March
+                                && s.SampleDateTime_Local.Day > 20)
+                                || s.SampleDateTime_Local.Month == (int)MonthEnum.April
+                                || s.SampleDateTime_Local.Month == (int)MonthEnum.May
+                                || (s.SampleDateTime_Local.Month == (int)MonthEnum.June
+                                && s.SampleDateTime_Local.Day < 21))
+                                select s.MWQMSiteTVItemID).Distinct().Count();
+                    case SeasonEnum.Summer:
+                        return (from c in dbLocal.TVItems
+                                from s in dbLocal.MWQMSamples
+                                where c.TVItemID == s.MWQMSiteTVItemID
+                                && c.TVType == TVTypeEnum.MWQMSite
+                                && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                                && !s.SampleTypesText.Contains("109,")
+                                && ((s.SampleDateTime_Local.Month == (int)MonthEnum.June
+                                && s.SampleDateTime_Local.Day > 20)
+                                || s.SampleDateTime_Local.Month == (int)MonthEnum.July
+                                || s.SampleDateTime_Local.Month == (int)MonthEnum.August
+                                || (s.SampleDateTime_Local.Month == (int)MonthEnum.September
+                                && s.SampleDateTime_Local.Day < 21))
+                                select s.MWQMSiteTVItemID).Distinct().Count();
+                    case SeasonEnum.Fall:
+                        return (from c in dbLocal.TVItems
+                                from s in dbLocal.MWQMSamples
+                                where c.TVItemID == s.MWQMSiteTVItemID
+                                && c.TVType == TVTypeEnum.MWQMSite
+                                && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                                && !s.SampleTypesText.Contains("109,")
+                                && ((s.SampleDateTime_Local.Month == (int)MonthEnum.September
+                                && s.SampleDateTime_Local.Day > 20)
+                                || s.SampleDateTime_Local.Month == (int)MonthEnum.October
+                                || s.SampleDateTime_Local.Month == (int)MonthEnum.November
+                                || (s.SampleDateTime_Local.Month == (int)MonthEnum.December
+                                && s.SampleDateTime_Local.Day < 21))
+                                select s.MWQMSiteTVItemID).Distinct().Count();
+                    default:
+                        return -1;
+                }
+            }
+
+            switch (Season)
+            {
+                case SeasonEnum.Winter:
+                    return (from c in db.TVItems
+                            from s in db.MWQMSamples
+                            where c.TVItemID == s.MWQMSiteTVItemID
+                            && c.TVType == TVTypeEnum.MWQMSite
+                            && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                            && !s.SampleTypesText.Contains("109,")
+                            && ((s.SampleDateTime_Local.Month == (int)MonthEnum.December
+                            && s.SampleDateTime_Local.Day > 20)
+                            || s.SampleDateTime_Local.Month == (int)MonthEnum.January
+                            || s.SampleDateTime_Local.Month == (int)MonthEnum.February
+                            || (s.SampleDateTime_Local.Month == (int)MonthEnum.March
+                            && s.SampleDateTime_Local.Day < 21))
+                            select s.MWQMSiteTVItemID).Distinct().Count();
+                case SeasonEnum.Spring:
+                    return (from c in db.TVItems
+                            from s in db.MWQMSamples
+                            where c.TVItemID == s.MWQMSiteTVItemID
+                            && c.TVType == TVTypeEnum.MWQMSite
+                            && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                            && !s.SampleTypesText.Contains("109,")
+                            && ((s.SampleDateTime_Local.Month == (int)MonthEnum.March
+                            && s.SampleDateTime_Local.Day > 20)
+                            || s.SampleDateTime_Local.Month == (int)MonthEnum.April
+                            || s.SampleDateTime_Local.Month == (int)MonthEnum.May
+                            || (s.SampleDateTime_Local.Month == (int)MonthEnum.June
+                            && s.SampleDateTime_Local.Day < 21))
+                            select s.MWQMSiteTVItemID).Distinct().Count();
+                case SeasonEnum.Summer:
+                    return (from c in db.TVItems
+                            from s in db.MWQMSamples
+                            where c.TVItemID == s.MWQMSiteTVItemID
+                            && c.TVType == TVTypeEnum.MWQMSite
+                            && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                            && !s.SampleTypesText.Contains("109,")
+                            && ((s.SampleDateTime_Local.Month == (int)MonthEnum.June
+                            && s.SampleDateTime_Local.Day > 20)
+                            || s.SampleDateTime_Local.Month == (int)MonthEnum.July
+                            || s.SampleDateTime_Local.Month == (int)MonthEnum.August
+                            || (s.SampleDateTime_Local.Month == (int)MonthEnum.September
+                            && s.SampleDateTime_Local.Day < 21))
+                            select s.MWQMSiteTVItemID).Distinct().Count();
+                case SeasonEnum.Fall:
+                    return (from c in db.TVItems
+                            from s in db.MWQMSamples
+                            where c.TVItemID == s.MWQMSiteTVItemID
+                            && c.TVType == TVTypeEnum.MWQMSite
+                            && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                            && !s.SampleTypesText.Contains("109,")
+                            && ((s.SampleDateTime_Local.Month == (int)MonthEnum.September
+                            && s.SampleDateTime_Local.Day > 20)
+                            || s.SampleDateTime_Local.Month == (int)MonthEnum.October
+                            || s.SampleDateTime_Local.Month == (int)MonthEnum.November
+                            || (s.SampleDateTime_Local.Month == (int)MonthEnum.December
+                            && s.SampleDateTime_Local.Day < 21))
+                            select s.MWQMSiteTVItemID).Distinct().Count();
+                default:
+                    return -1;
+            }
+        }
+        private int GetMWQMSiteCountRoutineByYearUnderCountry(TVItem countryTVItem, int Year)
         {
             if (dbLocal != null)
             {
@@ -366,7 +822,159 @@ namespace CreateGzFileServices
                     && s.SampleDateTime_Local.Year == Year
                     select s.MWQMSiteTVItemID).Distinct().Count();
         }
-        private int GetMWQMRunCountOtherUnderCountry(TVItem countryTVItem, int Year)
+        private int GetMWQMSiteCountRoutineByMonthUnderCountry(TVItem countryTVItem, MonthEnum Month)
+        {
+            if (dbLocal != null)
+            {
+                return (from c in dbLocal.TVItems
+                        from s in dbLocal.MWQMSamples
+                        where c.TVItemID == s.MWQMSiteTVItemID
+                        && c.TVType == TVTypeEnum.MWQMSite
+                        && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                        && s.SampleTypesText.Contains("109,")
+                        && s.SampleDateTime_Local.Month == (int)Month
+                        select s.MWQMSiteTVItemID).Distinct().Count();
+            }
+
+            return (from c in db.TVItems
+                    from s in db.MWQMSamples
+                    where c.TVItemID == s.MWQMSiteTVItemID
+                    && c.TVType == TVTypeEnum.MWQMSite
+                    && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                    && s.SampleTypesText.Contains("109,")
+                    && s.SampleDateTime_Local.Month == (int)Month
+                    select s.MWQMSiteTVItemID).Distinct().Count();
+        }
+        private int GetMWQMSiteCountRoutineBySeasonUnderCountry(TVItem countryTVItem, SeasonEnum Season)
+        {
+            if (dbLocal != null)
+            {
+                switch (Season)
+                {
+                    case SeasonEnum.Winter:
+                        return (from c in dbLocal.TVItems
+                                from s in dbLocal.MWQMSamples
+                                where c.TVItemID == s.MWQMSiteTVItemID
+                                && c.TVType == TVTypeEnum.MWQMSite
+                                && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                                && s.SampleTypesText.Contains("109,")
+                                && ((s.SampleDateTime_Local.Month == (int)MonthEnum.December
+                                && s.SampleDateTime_Local.Day > 20)
+                                || s.SampleDateTime_Local.Month == (int)MonthEnum.January
+                                || s.SampleDateTime_Local.Month == (int)MonthEnum.February
+                                || (s.SampleDateTime_Local.Month == (int)MonthEnum.March
+                                && s.SampleDateTime_Local.Day < 21))
+                                select s.MWQMSiteTVItemID).Distinct().Count();
+                    case SeasonEnum.Spring:
+                        return (from c in dbLocal.TVItems
+                                from s in dbLocal.MWQMSamples
+                                where c.TVItemID == s.MWQMSiteTVItemID
+                                && c.TVType == TVTypeEnum.MWQMSite
+                                && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                                && s.SampleTypesText.Contains("109,")
+                                && ((s.SampleDateTime_Local.Month == (int)MonthEnum.March
+                                && s.SampleDateTime_Local.Day > 20)
+                                || s.SampleDateTime_Local.Month == (int)MonthEnum.April
+                                || s.SampleDateTime_Local.Month == (int)MonthEnum.May
+                                || (s.SampleDateTime_Local.Month == (int)MonthEnum.June
+                                && s.SampleDateTime_Local.Day < 21))
+                                select s.MWQMSiteTVItemID).Distinct().Count();
+                    case SeasonEnum.Summer:
+                        return (from c in dbLocal.TVItems
+                                from s in dbLocal.MWQMSamples
+                                where c.TVItemID == s.MWQMSiteTVItemID
+                                && c.TVType == TVTypeEnum.MWQMSite
+                                && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                                && s.SampleTypesText.Contains("109,")
+                                && ((s.SampleDateTime_Local.Month == (int)MonthEnum.June
+                                && s.SampleDateTime_Local.Day > 20)
+                                || s.SampleDateTime_Local.Month == (int)MonthEnum.July
+                                || s.SampleDateTime_Local.Month == (int)MonthEnum.August
+                                || (s.SampleDateTime_Local.Month == (int)MonthEnum.September
+                                && s.SampleDateTime_Local.Day < 21))
+                                select s.MWQMSiteTVItemID).Distinct().Count();
+                    case SeasonEnum.Fall:
+                        return (from c in dbLocal.TVItems
+                                from s in dbLocal.MWQMSamples
+                                where c.TVItemID == s.MWQMSiteTVItemID
+                                && c.TVType == TVTypeEnum.MWQMSite
+                                && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                                && s.SampleTypesText.Contains("109,")
+                                && ((s.SampleDateTime_Local.Month == (int)MonthEnum.September
+                                && s.SampleDateTime_Local.Day > 20)
+                                || s.SampleDateTime_Local.Month == (int)MonthEnum.October
+                                || s.SampleDateTime_Local.Month == (int)MonthEnum.November
+                                || (s.SampleDateTime_Local.Month == (int)MonthEnum.December
+                                && s.SampleDateTime_Local.Day < 21))
+                                select s.MWQMSiteTVItemID).Distinct().Count();
+                    default:
+                        return -1;
+                }
+            }
+
+            switch (Season)
+            {
+                case SeasonEnum.Winter:
+                    return (from c in db.TVItems
+                            from s in db.MWQMSamples
+                            where c.TVItemID == s.MWQMSiteTVItemID
+                            && c.TVType == TVTypeEnum.MWQMSite
+                            && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                            && s.SampleTypesText.Contains("109,")
+                            && ((s.SampleDateTime_Local.Month == (int)MonthEnum.December
+                            && s.SampleDateTime_Local.Day > 20)
+                            || s.SampleDateTime_Local.Month == (int)MonthEnum.January
+                            || s.SampleDateTime_Local.Month == (int)MonthEnum.February
+                            || (s.SampleDateTime_Local.Month == (int)MonthEnum.March
+                            && s.SampleDateTime_Local.Day < 21))
+                            select s.MWQMSiteTVItemID).Distinct().Count();
+                case SeasonEnum.Spring:
+                    return (from c in db.TVItems
+                            from s in db.MWQMSamples
+                            where c.TVItemID == s.MWQMSiteTVItemID
+                            && c.TVType == TVTypeEnum.MWQMSite
+                            && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                            && s.SampleTypesText.Contains("109,")
+                            && ((s.SampleDateTime_Local.Month == (int)MonthEnum.March
+                            && s.SampleDateTime_Local.Day > 20)
+                            || s.SampleDateTime_Local.Month == (int)MonthEnum.April
+                            || s.SampleDateTime_Local.Month == (int)MonthEnum.May
+                            || (s.SampleDateTime_Local.Month == (int)MonthEnum.June
+                            && s.SampleDateTime_Local.Day < 21))
+                            select s.MWQMSiteTVItemID).Distinct().Count();
+                case SeasonEnum.Summer:
+                    return (from c in db.TVItems
+                            from s in db.MWQMSamples
+                            where c.TVItemID == s.MWQMSiteTVItemID
+                            && c.TVType == TVTypeEnum.MWQMSite
+                            && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                            && s.SampleTypesText.Contains("109,")
+                            && ((s.SampleDateTime_Local.Month == (int)MonthEnum.June
+                            && s.SampleDateTime_Local.Day > 20)
+                            || s.SampleDateTime_Local.Month == (int)MonthEnum.July
+                            || s.SampleDateTime_Local.Month == (int)MonthEnum.August
+                            || (s.SampleDateTime_Local.Month == (int)MonthEnum.September
+                            && s.SampleDateTime_Local.Day < 21))
+                            select s.MWQMSiteTVItemID).Distinct().Count();
+                case SeasonEnum.Fall:
+                    return (from c in db.TVItems
+                            from s in db.MWQMSamples
+                            where c.TVItemID == s.MWQMSiteTVItemID
+                            && c.TVType == TVTypeEnum.MWQMSite
+                            && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                            && s.SampleTypesText.Contains("109,")
+                            && ((s.SampleDateTime_Local.Month == (int)MonthEnum.September
+                            && s.SampleDateTime_Local.Day > 20)
+                            || s.SampleDateTime_Local.Month == (int)MonthEnum.October
+                            || s.SampleDateTime_Local.Month == (int)MonthEnum.November
+                            || (s.SampleDateTime_Local.Month == (int)MonthEnum.December
+                            && s.SampleDateTime_Local.Day < 21))
+                            select s.MWQMSiteTVItemID).Distinct().Count();
+                default:
+                    return -1;
+            }
+        }
+        private int GetMWQMRunCountOtherByYearUnderCountry(TVItem countryTVItem, int Year)
         {
             if (dbLocal != null)
             {
@@ -389,7 +997,159 @@ namespace CreateGzFileServices
                     && s.SampleDateTime_Local.Year == Year
                     select s.MWQMRunTVItemID).Distinct().Count();
         }
-        private int GetMWQMRunCountRoutineUnderCountry(TVItem countryTVItem, int Year)
+        private int GetMWQMRunCountOtherByMonthUnderCountry(TVItem countryTVItem, MonthEnum Month)
+        {
+            if (dbLocal != null)
+            {
+                return (from c in dbLocal.TVItems
+                        from s in dbLocal.MWQMSamples
+                        where c.TVItemID == s.MWQMSiteTVItemID
+                        && c.TVType == TVTypeEnum.MWQMSite
+                        && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                        && !s.SampleTypesText.Contains("109,")
+                        && s.SampleDateTime_Local.Month == (int)Month
+                        select s.MWQMRunTVItemID).Distinct().Count();
+            }
+
+            return (from c in db.TVItems
+                    from s in db.MWQMSamples
+                    where c.TVItemID == s.MWQMSiteTVItemID
+                    && c.TVType == TVTypeEnum.MWQMSite
+                    && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                    && !s.SampleTypesText.Contains("109,")
+                    && s.SampleDateTime_Local.Month == (int)Month
+                    select s.MWQMRunTVItemID).Distinct().Count();
+        }
+        private int GetMWQMRunCountOtherBySeasonUnderCountry(TVItem countryTVItem, SeasonEnum Season)
+        {
+            if (dbLocal != null)
+            {
+                switch (Season)
+                {
+                    case SeasonEnum.Winter:
+                        return (from c in dbLocal.TVItems
+                                from s in dbLocal.MWQMSamples
+                                where c.TVItemID == s.MWQMSiteTVItemID
+                                && c.TVType == TVTypeEnum.MWQMSite
+                                && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                                && !s.SampleTypesText.Contains("109,")
+                                && ((s.SampleDateTime_Local.Month == (int)MonthEnum.December
+                                && s.SampleDateTime_Local.Day > 20)
+                                || s.SampleDateTime_Local.Month == (int)MonthEnum.January
+                                || s.SampleDateTime_Local.Month == (int)MonthEnum.February
+                                || (s.SampleDateTime_Local.Month == (int)MonthEnum.March
+                                && s.SampleDateTime_Local.Day < 21))
+                                select s.MWQMRunTVItemID).Distinct().Count();
+                    case SeasonEnum.Spring:
+                        return (from c in dbLocal.TVItems
+                                from s in dbLocal.MWQMSamples
+                                where c.TVItemID == s.MWQMSiteTVItemID
+                                && c.TVType == TVTypeEnum.MWQMSite
+                                && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                                && !s.SampleTypesText.Contains("109,")
+                                && ((s.SampleDateTime_Local.Month == (int)MonthEnum.March
+                                && s.SampleDateTime_Local.Day > 20)
+                                || s.SampleDateTime_Local.Month == (int)MonthEnum.April
+                                || s.SampleDateTime_Local.Month == (int)MonthEnum.May
+                                || (s.SampleDateTime_Local.Month == (int)MonthEnum.June
+                                && s.SampleDateTime_Local.Day < 21))
+                                select s.MWQMRunTVItemID).Distinct().Count();
+                    case SeasonEnum.Summer:
+                        return (from c in dbLocal.TVItems
+                                from s in dbLocal.MWQMSamples
+                                where c.TVItemID == s.MWQMSiteTVItemID
+                                && c.TVType == TVTypeEnum.MWQMSite
+                                && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                                && !s.SampleTypesText.Contains("109,")
+                                && ((s.SampleDateTime_Local.Month == (int)MonthEnum.June
+                                && s.SampleDateTime_Local.Day > 20)
+                                || s.SampleDateTime_Local.Month == (int)MonthEnum.July
+                                || s.SampleDateTime_Local.Month == (int)MonthEnum.August
+                                || (s.SampleDateTime_Local.Month == (int)MonthEnum.September
+                                && s.SampleDateTime_Local.Day < 21))
+                                select s.MWQMRunTVItemID).Distinct().Count();
+                    case SeasonEnum.Fall:
+                        return (from c in dbLocal.TVItems
+                                from s in dbLocal.MWQMSamples
+                                where c.TVItemID == s.MWQMSiteTVItemID
+                                && c.TVType == TVTypeEnum.MWQMSite
+                                && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                                && !s.SampleTypesText.Contains("109,")
+                                && ((s.SampleDateTime_Local.Month == (int)MonthEnum.September
+                                && s.SampleDateTime_Local.Day > 20)
+                                || s.SampleDateTime_Local.Month == (int)MonthEnum.October
+                                || s.SampleDateTime_Local.Month == (int)MonthEnum.November
+                                || (s.SampleDateTime_Local.Month == (int)MonthEnum.December
+                                && s.SampleDateTime_Local.Day < 21))
+                                select s.MWQMRunTVItemID).Distinct().Count();
+                    default:
+                        return -1;
+                }
+            }
+
+            switch (Season)
+            {
+                case SeasonEnum.Winter:
+                    return (from c in db.TVItems
+                            from s in db.MWQMSamples
+                            where c.TVItemID == s.MWQMSiteTVItemID
+                            && c.TVType == TVTypeEnum.MWQMSite
+                            && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                            && !s.SampleTypesText.Contains("109,")
+                            && ((s.SampleDateTime_Local.Month == (int)MonthEnum.December
+                            && s.SampleDateTime_Local.Day > 20)
+                            || s.SampleDateTime_Local.Month == (int)MonthEnum.January
+                            || s.SampleDateTime_Local.Month == (int)MonthEnum.February
+                            || (s.SampleDateTime_Local.Month == (int)MonthEnum.March
+                            && s.SampleDateTime_Local.Day < 21))
+                            select s.MWQMRunTVItemID).Distinct().Count();
+                case SeasonEnum.Spring:
+                    return (from c in db.TVItems
+                            from s in db.MWQMSamples
+                            where c.TVItemID == s.MWQMSiteTVItemID
+                            && c.TVType == TVTypeEnum.MWQMSite
+                            && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                            && !s.SampleTypesText.Contains("109,")
+                            && ((s.SampleDateTime_Local.Month == (int)MonthEnum.March
+                            && s.SampleDateTime_Local.Day > 20)
+                            || s.SampleDateTime_Local.Month == (int)MonthEnum.April
+                            || s.SampleDateTime_Local.Month == (int)MonthEnum.May
+                            || (s.SampleDateTime_Local.Month == (int)MonthEnum.June
+                            && s.SampleDateTime_Local.Day < 21))
+                            select s.MWQMRunTVItemID).Distinct().Count();
+                case SeasonEnum.Summer:
+                    return (from c in db.TVItems
+                            from s in db.MWQMSamples
+                            where c.TVItemID == s.MWQMSiteTVItemID
+                            && c.TVType == TVTypeEnum.MWQMSite
+                            && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                            && !s.SampleTypesText.Contains("109,")
+                            && ((s.SampleDateTime_Local.Month == (int)MonthEnum.June
+                            && s.SampleDateTime_Local.Day > 20)
+                            || s.SampleDateTime_Local.Month == (int)MonthEnum.July
+                            || s.SampleDateTime_Local.Month == (int)MonthEnum.August
+                            || (s.SampleDateTime_Local.Month == (int)MonthEnum.September
+                            && s.SampleDateTime_Local.Day < 21))
+                            select s.MWQMRunTVItemID).Distinct().Count();
+                case SeasonEnum.Fall:
+                    return (from c in db.TVItems
+                            from s in db.MWQMSamples
+                            where c.TVItemID == s.MWQMSiteTVItemID
+                            && c.TVType == TVTypeEnum.MWQMSite
+                            && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                            && !s.SampleTypesText.Contains("109,")
+                            && ((s.SampleDateTime_Local.Month == (int)MonthEnum.September
+                            && s.SampleDateTime_Local.Day > 20)
+                            || s.SampleDateTime_Local.Month == (int)MonthEnum.October
+                            || s.SampleDateTime_Local.Month == (int)MonthEnum.November
+                            || (s.SampleDateTime_Local.Month == (int)MonthEnum.December
+                            && s.SampleDateTime_Local.Day < 21))
+                            select s.MWQMRunTVItemID).Distinct().Count();
+                default:
+                    return -1;
+            }
+        }
+        private int GetMWQMRunCountRoutineByYearUnderCountry(TVItem countryTVItem, int Year)
         {
             if (dbLocal != null)
             {
@@ -411,6 +1171,158 @@ namespace CreateGzFileServices
                     && s.SampleTypesText.Contains("109,")
                     && s.SampleDateTime_Local.Year == Year
                     select s.MWQMRunTVItemID).Distinct().Count();
+        }
+        private int GetMWQMRunCountRoutineByMonthUnderCountry(TVItem countryTVItem, MonthEnum Month)
+        {
+            if (dbLocal != null)
+            {
+                return (from c in dbLocal.TVItems
+                        from s in dbLocal.MWQMSamples
+                        where c.TVItemID == s.MWQMSiteTVItemID
+                        && c.TVType == TVTypeEnum.MWQMSite
+                        && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                        && s.SampleTypesText.Contains("109,")
+                        && s.SampleDateTime_Local.Month == (int)Month
+                        select s.MWQMRunTVItemID).Distinct().Count();
+            }
+
+            return (from c in db.TVItems
+                    from s in db.MWQMSamples
+                    where c.TVItemID == s.MWQMSiteTVItemID
+                    && c.TVType == TVTypeEnum.MWQMSite
+                    && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                    && s.SampleTypesText.Contains("109,")
+                    && s.SampleDateTime_Local.Month == (int)Month
+                    select s.MWQMRunTVItemID).Distinct().Count();
+        }
+        private int GetMWQMRunCountRoutineBySeasonUnderCountry(TVItem countryTVItem, SeasonEnum Season)
+        {
+            if (dbLocal != null)
+            {
+                switch (Season)
+                {
+                    case SeasonEnum.Winter:
+                        return (from c in dbLocal.TVItems
+                                from s in dbLocal.MWQMSamples
+                                where c.TVItemID == s.MWQMSiteTVItemID
+                                && c.TVType == TVTypeEnum.MWQMSite
+                                && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                                && s.SampleTypesText.Contains("109,")
+                                && ((s.SampleDateTime_Local.Month == (int)MonthEnum.December
+                                && s.SampleDateTime_Local.Day > 20)
+                                || s.SampleDateTime_Local.Month == (int)MonthEnum.January
+                                || s.SampleDateTime_Local.Month == (int)MonthEnum.February
+                                || (s.SampleDateTime_Local.Month == (int)MonthEnum.March
+                                && s.SampleDateTime_Local.Day < 21))
+                                select s.MWQMRunTVItemID).Distinct().Count();
+                    case SeasonEnum.Spring:
+                        return (from c in dbLocal.TVItems
+                                from s in dbLocal.MWQMSamples
+                                where c.TVItemID == s.MWQMSiteTVItemID
+                                && c.TVType == TVTypeEnum.MWQMSite
+                                && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                                && s.SampleTypesText.Contains("109,")
+                                && ((s.SampleDateTime_Local.Month == (int)MonthEnum.March
+                                && s.SampleDateTime_Local.Day > 20)
+                                || s.SampleDateTime_Local.Month == (int)MonthEnum.April
+                                || s.SampleDateTime_Local.Month == (int)MonthEnum.May
+                                || (s.SampleDateTime_Local.Month == (int)MonthEnum.June
+                                && s.SampleDateTime_Local.Day < 21))
+                                select s.MWQMRunTVItemID).Distinct().Count();
+                    case SeasonEnum.Summer:
+                        return (from c in dbLocal.TVItems
+                                from s in dbLocal.MWQMSamples
+                                where c.TVItemID == s.MWQMSiteTVItemID
+                                && c.TVType == TVTypeEnum.MWQMSite
+                                && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                                && s.SampleTypesText.Contains("109,")
+                                && ((s.SampleDateTime_Local.Month == (int)MonthEnum.June
+                                && s.SampleDateTime_Local.Day > 20)
+                                || s.SampleDateTime_Local.Month == (int)MonthEnum.July
+                                || s.SampleDateTime_Local.Month == (int)MonthEnum.August
+                                || (s.SampleDateTime_Local.Month == (int)MonthEnum.September
+                                && s.SampleDateTime_Local.Day < 21))
+                                select s.MWQMRunTVItemID).Distinct().Count();
+                    case SeasonEnum.Fall:
+                        return (from c in dbLocal.TVItems
+                                from s in dbLocal.MWQMSamples
+                                where c.TVItemID == s.MWQMSiteTVItemID
+                                && c.TVType == TVTypeEnum.MWQMSite
+                                && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                                && s.SampleTypesText.Contains("109,")
+                                && ((s.SampleDateTime_Local.Month == (int)MonthEnum.September
+                                && s.SampleDateTime_Local.Day > 20)
+                                || s.SampleDateTime_Local.Month == (int)MonthEnum.October
+                                || s.SampleDateTime_Local.Month == (int)MonthEnum.November
+                                || (s.SampleDateTime_Local.Month == (int)MonthEnum.December
+                                && s.SampleDateTime_Local.Day < 21))
+                                select s.MWQMRunTVItemID).Distinct().Count();
+                    default:
+                        return -1;
+                }
+            }
+
+            switch (Season)
+            {
+                case SeasonEnum.Winter:
+                    return (from c in db.TVItems
+                            from s in db.MWQMSamples
+                            where c.TVItemID == s.MWQMSiteTVItemID
+                            && c.TVType == TVTypeEnum.MWQMSite
+                            && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                            && s.SampleTypesText.Contains("109,")
+                            && ((s.SampleDateTime_Local.Month == (int)MonthEnum.December
+                            && s.SampleDateTime_Local.Day > 20)
+                            || s.SampleDateTime_Local.Month == (int)MonthEnum.January
+                            || s.SampleDateTime_Local.Month == (int)MonthEnum.February
+                            || (s.SampleDateTime_Local.Month == (int)MonthEnum.March
+                            && s.SampleDateTime_Local.Day < 21))
+                            select s.MWQMRunTVItemID).Distinct().Count();
+                case SeasonEnum.Spring:
+                    return (from c in db.TVItems
+                            from s in db.MWQMSamples
+                            where c.TVItemID == s.MWQMSiteTVItemID
+                            && c.TVType == TVTypeEnum.MWQMSite
+                            && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                            && s.SampleTypesText.Contains("109,")
+                            && ((s.SampleDateTime_Local.Month == (int)MonthEnum.March
+                            && s.SampleDateTime_Local.Day > 20)
+                            || s.SampleDateTime_Local.Month == (int)MonthEnum.April
+                            || s.SampleDateTime_Local.Month == (int)MonthEnum.May
+                            || (s.SampleDateTime_Local.Month == (int)MonthEnum.June
+                            && s.SampleDateTime_Local.Day < 21))
+                            select s.MWQMRunTVItemID).Distinct().Count();
+                case SeasonEnum.Summer:
+                    return (from c in db.TVItems
+                            from s in db.MWQMSamples
+                            where c.TVItemID == s.MWQMSiteTVItemID
+                            && c.TVType == TVTypeEnum.MWQMSite
+                            && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                            && s.SampleTypesText.Contains("109,")
+                            && ((s.SampleDateTime_Local.Month == (int)MonthEnum.June
+                            && s.SampleDateTime_Local.Day > 20)
+                            || s.SampleDateTime_Local.Month == (int)MonthEnum.July
+                            || s.SampleDateTime_Local.Month == (int)MonthEnum.August
+                            || (s.SampleDateTime_Local.Month == (int)MonthEnum.September
+                            && s.SampleDateTime_Local.Day < 21))
+                            select s.MWQMRunTVItemID).Distinct().Count();
+                case SeasonEnum.Fall:
+                    return (from c in db.TVItems
+                            from s in db.MWQMSamples
+                            where c.TVItemID == s.MWQMSiteTVItemID
+                            && c.TVType == TVTypeEnum.MWQMSite
+                            && c.TVPath.Contains(countryTVItem.TVPath + "p")
+                            && s.SampleTypesText.Contains("109,")
+                            && ((s.SampleDateTime_Local.Month == (int)MonthEnum.September
+                            && s.SampleDateTime_Local.Day > 20)
+                            || s.SampleDateTime_Local.Month == (int)MonthEnum.October
+                            || s.SampleDateTime_Local.Month == (int)MonthEnum.November
+                            || (s.SampleDateTime_Local.Month == (int)MonthEnum.December
+                            && s.SampleDateTime_Local.Day < 21))
+                            select s.MWQMRunTVItemID).Distinct().Count();
+                default:
+                    return -1;
+            }
         }
         private async Task<List<TVItemLanguage>> GetTVItemLanguageChildrenListWithTVItemID(TVItem ParentTVItem, TVTypeEnum tvType)
         {

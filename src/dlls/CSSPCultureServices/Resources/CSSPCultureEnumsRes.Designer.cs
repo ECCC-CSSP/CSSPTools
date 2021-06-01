@@ -3665,6 +3665,114 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to April.
+        /// </summary>
+        public static string MonthEnumApril {
+            get {
+                return ResourceManager.GetString("MonthEnumApril", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to August.
+        /// </summary>
+        public static string MonthEnumAugust {
+            get {
+                return ResourceManager.GetString("MonthEnumAugust", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to December.
+        /// </summary>
+        public static string MonthEnumDecember {
+            get {
+                return ResourceManager.GetString("MonthEnumDecember", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to February.
+        /// </summary>
+        public static string MonthEnumFebruary {
+            get {
+                return ResourceManager.GetString("MonthEnumFebruary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to January.
+        /// </summary>
+        public static string MonthEnumJanuary {
+            get {
+                return ResourceManager.GetString("MonthEnumJanuary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to July.
+        /// </summary>
+        public static string MonthEnumJuly {
+            get {
+                return ResourceManager.GetString("MonthEnumJuly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to June.
+        /// </summary>
+        public static string MonthEnumJune {
+            get {
+                return ResourceManager.GetString("MonthEnumJune", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to March.
+        /// </summary>
+        public static string MonthEnumMarch {
+            get {
+                return ResourceManager.GetString("MonthEnumMarch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to May.
+        /// </summary>
+        public static string MonthEnumMay {
+            get {
+                return ResourceManager.GetString("MonthEnumMay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to November.
+        /// </summary>
+        public static string MonthEnumNovember {
+            get {
+                return ResourceManager.GetString("MonthEnumNovember", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to October.
+        /// </summary>
+        public static string MonthEnumOctober {
+            get {
+                return ResourceManager.GetString("MonthEnumOctober", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to September.
+        /// </summary>
+        public static string MonthEnumSeptember {
+            get {
+                return ResourceManager.GetString("MonthEnumSeptember", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contacts.
         /// </summary>
         public static string MunicipalitySubComponentEnumContacts {
@@ -6897,6 +7005,42 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fall.
+        /// </summary>
+        public static string SeasonEnumFall {
+            get {
+                return ResourceManager.GetString("SeasonEnumFall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spring.
+        /// </summary>
+        public static string SeasonEnumSpring {
+            get {
+                return ResourceManager.GetString("SeasonEnumSpring", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Summer.
+        /// </summary>
+        public static string SeasonEnumSummer {
+            get {
+                return ResourceManager.GetString("SeasonEnumSummer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Winter.
+        /// </summary>
+        public static string SeasonEnumWinter {
+            get {
+                return ResourceManager.GetString("SeasonEnumWinter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to SecondaryTreatmentType.
         /// </summary>
         public static string SecondaryTreatmentType {
@@ -9417,38 +9561,38 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to WebMonitoringOtherStatsByYearForCountry.
+        ///   Looks up a localized string similar to WebMonitoringOtherStatsCountry.
         /// </summary>
-        public static string WebTypeEnumWebMonitoringOtherStatsByYearForCountry {
+        public static string WebTypeEnumWebMonitoringOtherStatsCountry {
             get {
-                return ResourceManager.GetString("WebTypeEnumWebMonitoringOtherStatsByYearForCountry", resourceCulture);
+                return ResourceManager.GetString("WebTypeEnumWebMonitoringOtherStatsCountry", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to WebMonitoringOtherStatsByYearForProvince.
+        ///   Looks up a localized string similar to WebMonitoringOtherStatsProvince.
         /// </summary>
-        public static string WebTypeEnumWebMonitoringOtherStatsByYearForProvince {
+        public static string WebTypeEnumWebMonitoringOtherStatsProvince {
             get {
-                return ResourceManager.GetString("WebTypeEnumWebMonitoringOtherStatsByYearForProvince", resourceCulture);
+                return ResourceManager.GetString("WebTypeEnumWebMonitoringOtherStatsProvince", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to WebMonitoringRoutiineStatsByYearForCountry.
+        ///   Looks up a localized string similar to WebMonitoringRoutiineStatsCountry.
         /// </summary>
-        public static string WebTypeEnumWebMonitoringRoutineStatsByYearForCountry {
+        public static string WebTypeEnumWebMonitoringRoutineStatsCountry {
             get {
-                return ResourceManager.GetString("WebTypeEnumWebMonitoringRoutineStatsByYearForCountry", resourceCulture);
+                return ResourceManager.GetString("WebTypeEnumWebMonitoringRoutineStatsCountry", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to WebMonitoringRoutineStatsByYearForProvince.
+        ///   Looks up a localized string similar to WebMonitoringRoutineStatsProvince.
         /// </summary>
-        public static string WebTypeEnumWebMonitoringRoutineStatsByYearForProvince {
+        public static string WebTypeEnumWebMonitoringRoutineStatsProvince {
             get {
-                return ResourceManager.GetString("WebTypeEnumWebMonitoringRoutineStatsByYearForProvince", resourceCulture);
+                return ResourceManager.GetString("WebTypeEnumWebMonitoringRoutineStatsProvince", resourceCulture);
             }
         }
         

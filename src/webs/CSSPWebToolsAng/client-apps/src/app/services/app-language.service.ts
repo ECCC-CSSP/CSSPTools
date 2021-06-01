@@ -74,6 +74,12 @@ export class AppLanguageService {
 
   Ascending: string[] = ['Ascending', 'Ascendant'];
 
+  ByMonth: string[] = ['By Month', 'Par Mois'];
+  BySeason: string[] = ['By Season', 'Par Saison'];
+  ByYear: string[] = ['By Year', 'Par An'];
+
+  Chart: string[] = ['Chart', 'Graphique']
+
   ChartLabelGMOver14: string[] = ['GM (>14 red)', 'MG (>14 rouge)'];
   ChartLabelMedOver14: string[] = ['Med (>14 red)', 'Méd (>14 rouge)'];
   ChartLabelP90Over43: string[] = ['P90 (>43 red)', 'P90 (>43 rouge)'];
@@ -82,6 +88,8 @@ export class AppLanguageService {
   ChartLabelSalppt: string[] = ['Sal (ppt)', 'Sal (ppm)'];
   ChartLabelTempDegC: string[] = ['Temp (deg C)', 'Temp (deg C)'];
 
+  Close: string[] = ['Close', 'Fermer'];
+  
   ContactNotFound: string[] = ['Contact not found', 'Contact non trouvé'];
 
   Count: string[] = ['Count', 'Nombre'];
@@ -152,6 +160,8 @@ export class AppLanguageService {
 
   Google: string[] = ['Google', 'Google'];
   
+  Hide: string[] = ['Hide', 'Cacher'];
+
   HomeCSSPWebTools: string[] = ['CSSP Web Tools', 'PCCSM: outils Web'];
   HomeTheWebToolWillLetYou: string[] = ['The Web tools will let you:', 'Avec les outils Web, il est possible de:'];
   HomeViewAndUpdateWWTPInfo: string[] = ['view and update the waste water treatment plants and the lift stations information,', 'consulter et mettre à jour l\'information des usines de traitement des eaux usées et des postes de pompage,'];
@@ -171,6 +181,12 @@ export class AppLanguageService {
 
   MedianInit: string[] = ['Med', 'Méd'];
   MedianInitTitle: string[] = ['Median', 'Médianne'];
+
+  MonitoringStats: string[] = ['Monitoring Stats', 'Stats d\'échantillonnage']
+
+  Month: string[] = ['Month', 'Mois'];
+
+  MonthOfSampling: string[] = ['Month of sampling', 'Mois d\'échantillonnage'];
 
   MoreInformationForViewingOrEditing: string[] = ['More information for viewing or editing', 'Plus d\'informations pour afficher ou modifier'];
 
@@ -198,6 +214,7 @@ export class AppLanguageService {
 
   NoAddress: string[] = ['No address', 'Aucune adresse'];
 
+  NotImplementedYet: string[] = ['Not Implemented Yet', 'Pas encore mis en œuvre']
   Observation: string[] = ['Observation', 'Observation'];
 
   P90Init: string[] = ['P90', 'P90'];
@@ -248,6 +265,9 @@ export class AppLanguageService {
 
   SearchSearch: string[] = ['Search', 'Rechercher'];
 
+  Season: string[] = ['Season', 'Saison'];
+  SeasonOfSampling: string[] = ['Season of sampling', 'Saison d\'échantillonnage'];
+
   ShellApplicationName: string[] = ['CSSP Web Tools', 'PCCSM: outils Web'];
   ShellOpenContextMenu: string[] = ['Open context menu', 'Ouvrir le menu contextuel'];
   ShellOpenHistoryMenu: string[] = ['Open history menu', 'Ouvrir le menu historique'];
@@ -255,6 +275,8 @@ export class AppLanguageService {
   ShellShowMap: string[] = ['Show map', 'Montrer carte'];
   ShellResizeMap: string[] = ['Resize map', 'Redimentionnez la carte'];
   ShellNoInternet: string[] = ['No Internet', 'Pas d\'internet'];
+
+  Show: string[] = ['Show', 'Montre-Moi'];
 
   ShowItemOnMap: string[] = ['Show item on map', 'Afficher l\'élément sur la carte'];
 
@@ -297,6 +319,8 @@ export class AppLanguageService {
   SubsectorShowLogBook: string[] = ['Show log book', 'Montrer journal de bord'];
   SubsectorLogBook: string[] = ['Log Book', 'Journal de bord'];
 
+  Table: string[] = ['Table', 'Tableau'];
+  
   TVItemListDetailAreaSector: string[] = ['Sector', 'Secteur'];
   TVItemListDetailAreaSubsector: string[] = ['Subsector', 'Sous-secteur'];
   TVItemListDetailAreaMWQMSample: string[] = ['MWQM sample', 'Échantillons'];

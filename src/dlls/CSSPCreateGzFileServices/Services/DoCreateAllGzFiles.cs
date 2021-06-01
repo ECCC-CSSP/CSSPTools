@@ -17,6 +17,7 @@ namespace CreateGzFileServices
     {
         private async Task<bool> DoCreateAllGzFiles()
         {
+            
             if (LoggedInService.LoggedInContactInfo == null || LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
                 return await Task.FromResult(false);
@@ -55,8 +56,8 @@ namespace CreateGzFileServices
 
             List<TVTypeEnum> tvTypeEnumList = new List<TVTypeEnum>()
             {
-                //TVTypeEnum.Country,
-                //TVTypeEnum.Province,
+                TVTypeEnum.Country,
+                TVTypeEnum.Province,
                 //TVTypeEnum.Area,
                 //TVTypeEnum.Sector,
                 //TVTypeEnum.Subsector,
@@ -81,12 +82,12 @@ namespace CreateGzFileServices
                             break;
                         case TVTypeEnum.Country:
                             {
-                                Console.WriteLine($"Create WebCountry [{tvItem.TVItemID}] doing...");
-                                await CreateGzFile(WebTypeEnum.WebCountry, tvItem.TVItemID);
-                                Console.WriteLine($"Create WebMonitoringRoutineStatsByYearForCountry [{tvItem.TVItemID}] doing...");
-                                await CreateGzFile(WebTypeEnum.WebMonitoringRoutineStatsByYearForCountry, tvItem.TVItemID);
-                                Console.WriteLine($"Create WebMonitoringOtherStatsByYearForCountry [{tvItem.TVItemID}] doing...");
-                                await CreateGzFile(WebTypeEnum.WebMonitoringOtherStatsByYearForCountry, tvItem.TVItemID);
+                                //Console.WriteLine($"Create WebCountry [{tvItem.TVItemID}] doing...");
+                                //await CreateGzFile(WebTypeEnum.WebCountry, tvItem.TVItemID);
+                                Console.WriteLine($"Create WebMonitoringRoutineStatsCountry [{tvItem.TVItemID}] doing...");
+                                await CreateGzFile(WebTypeEnum.WebMonitoringRoutineStatsCountry, tvItem.TVItemID);
+                                Console.WriteLine($"Create WebMonitoringOtherStatsCountry [{tvItem.TVItemID}] doing...");
+                                await CreateGzFile(WebTypeEnum.WebMonitoringOtherStatsCountry, tvItem.TVItemID);
                             }
                             break;
                         case TVTypeEnum.Municipality:
@@ -99,20 +100,20 @@ namespace CreateGzFileServices
                             break;
                         case TVTypeEnum.Province:
                             {
-                                Console.WriteLine($"Create WebProvince [{tvItem.TVItemID}] doing...");
-                                await CreateGzFile(WebTypeEnum.WebProvince, tvItem.TVItemID);
-                                Console.WriteLine($"Create WebClimateSites [{tvItem.TVItemID}] doing...");
-                                await CreateGzFile(WebTypeEnum.WebClimateSites, tvItem.TVItemID);
-                                Console.WriteLine($"Create WebHydrometricSites [{tvItem.TVItemID}] doing...");
-                                await CreateGzFile(WebTypeEnum.WebHydrometricSites, tvItem.TVItemID);
-                                Console.WriteLine($"Create WebTideSites [{tvItem.TVItemID}] doing...");
-                                await CreateGzFile(WebTypeEnum.WebTideSites, tvItem.TVItemID);
-                                Console.WriteLine($"Create WebDrogueRuns [{tvItem.TVItemID}] doing...");
-                                await CreateGzFile(WebTypeEnum.WebDrogueRuns, tvItem.TVItemID);
-                                Console.WriteLine($"Create WebMonitoringRoutineStatsByYearForProvince [{tvItem.TVItemID}] doing...");
-                                await CreateGzFile(WebTypeEnum.WebMonitoringRoutineStatsByYearForProvince, tvItem.TVItemID);
-                                Console.WriteLine($"Create WebMonitoringOtherStatsByYearForProvince [{tvItem.TVItemID}] doing...");
-                                await CreateGzFile(WebTypeEnum.WebMonitoringOtherStatsByYearForProvince, tvItem.TVItemID);
+                                //Console.WriteLine($"Create WebProvince [{tvItem.TVItemID}] doing...");
+                                //await CreateGzFile(WebTypeEnum.WebProvince, tvItem.TVItemID);
+                                //Console.WriteLine($"Create WebClimateSites [{tvItem.TVItemID}] doing...");
+                                //await CreateGzFile(WebTypeEnum.WebClimateSites, tvItem.TVItemID);
+                                //Console.WriteLine($"Create WebHydrometricSites [{tvItem.TVItemID}] doing...");
+                                //await CreateGzFile(WebTypeEnum.WebHydrometricSites, tvItem.TVItemID);
+                                //Console.WriteLine($"Create WebTideSites [{tvItem.TVItemID}] doing...");
+                                //await CreateGzFile(WebTypeEnum.WebTideSites, tvItem.TVItemID);
+                                //Console.WriteLine($"Create WebDrogueRuns [{tvItem.TVItemID}] doing...");
+                                //await CreateGzFile(WebTypeEnum.WebDrogueRuns, tvItem.TVItemID);
+                                Console.WriteLine($"Create WebMonitoringRoutineStatsProvince [{tvItem.TVItemID}] doing...");
+                                await CreateGzFile(WebTypeEnum.WebMonitoringRoutineStatsProvince, tvItem.TVItemID);
+                                Console.WriteLine($"Create WebMonitoringOtherStatsProvince [{tvItem.TVItemID}] doing...");
+                                await CreateGzFile(WebTypeEnum.WebMonitoringOtherStatsProvince, tvItem.TVItemID);
                             }
                             break;
                         case TVTypeEnum.Sector:

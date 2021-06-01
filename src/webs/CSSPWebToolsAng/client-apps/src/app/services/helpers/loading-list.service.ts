@@ -131,8 +131,8 @@ export class LoadListService {
   }
 
   private FillCountry(TVItemID: number, ForceReload: boolean) {
-    this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebMonitoringRoutineStatsByYearForCountry, TVItemID: TVItemID, ForceReload: ForceReload });
-    this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebMonitoringOtherStatsByYearForCountry, TVItemID: TVItemID, ForceReload: ForceReload });
+    this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebMonitoringRoutineStatsCountry, TVItemID: TVItemID, ForceReload: ForceReload });
+    this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebMonitoringOtherStatsCountry, TVItemID: TVItemID, ForceReload: ForceReload });
     this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebCountry, TVItemID: TVItemID, ForceReload: ForceReload });
   }
 
@@ -141,8 +141,8 @@ export class LoadListService {
     // this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebHydrometricSites, TVItemID: TVItemID, ForceReload: ForceReload });
     // this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebTideSites, TVItemID: TVItemID, ForceReload: ForceReload });
     // this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebDrogueRuns, TVItemID: TVItemID, ForceReload: ForceReload });
-    this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebMonitoringRoutineStatsByYearForProvince, TVItemID: TVItemID, ForceReload: ForceReload });
-    this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebMonitoringOtherStatsByYearForProvince, TVItemID: TVItemID, ForceReload: ForceReload });
+    this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebMonitoringRoutineStatsProvince, TVItemID: TVItemID, ForceReload: ForceReload });
+    this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebMonitoringOtherStatsProvince, TVItemID: TVItemID, ForceReload: ForceReload });
     this.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebProvince, TVItemID: TVItemID, ForceReload: ForceReload });
   }
 

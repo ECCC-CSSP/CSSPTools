@@ -5,12 +5,25 @@
     </ng-container>
     <div *ngIf="TVFileModelList != null && TVFileModelList?.length > 0">
         <div *ngFor="let tvFileModel of TVFileModelList; let i = index">
-            <app-file-list-item-menu [TVFileModel]="tvFileModel"> </app-file-list-item-menu>
+            <button mat-button ngClass="{{ showTVFileService.TVFileVisible(tvFileModel) ? 'selected' : '' }}"
+                (click)="showTVFileService.ToggleShowTVFile(tvFileModel)"
+                title="{{ appLanguageService.MoreInformationForViewingOrEditing[appLanguageService.LangID] }}">
+
+                <mat-icon>menu</mat-icon>
+            </button>
 
             <app-file-list-item [FilesSortByProp]="FilesSortByProp" [Index]='(i + 1)' [TVFileModel]="tvFileModel">
-            </app-file-list-item>           
-        
-            <app-file-list-item-menu-open [TVFileModel]="tvFileModel"></app-file-list-item-menu-open>       
+            </app-file-list-item>
+
+            <app-file-list-item-view *ngIf="showTVFileService.TVFileVisible(tvFileModel)" [TVFileModel]="tvFileModel">
+            </app-file-list-item-view>
+
+            <app-file-list-item-modify *ngIf="appStateService.UserPreference.EditVisible" [TVFileModel]="tvFileModel">
+            </app-file-list-item-modify>
+
+            <app-file-list-item-create *ngIf="appStateService.UserPreference.EditVisible" [TVFileModel]="tvFileModel">
+            </app-file-list-item-create>
+
         </div>
     </div>
 </div>

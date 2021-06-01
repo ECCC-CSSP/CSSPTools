@@ -1,0 +1,50 @@
+<mat-card class="chartSize">
+    <mat-card-header>
+        <p>
+            <button mat-raised-button (click)="appStateService.ShowMonitoringStatsTableByMonth = false">
+                <span>{{ appLanguageService.Close[appLanguageService.LangID] }}</span>
+            </button>
+        </p>
+    </mat-card-header>
+    <mat-card-content>
+        <table mat-table [dataSource]="appLoadedService.MonitoringStatsModel?.MonitoringStatByMonthList">
+
+            <ng-container matColumnDef="Month">
+                <th mat-header-cell *matHeaderCellDef
+                    title="{{appLanguageService.MonthOfSampling[appLanguageService.LangID]}}">
+                    {{appLanguageService.Month[appLanguageService.LangID]}}
+                </th>
+                <td mat-cell *matCellDef="let monstat"> {{ monthEnum[monstat.Month] }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="MWQMSiteCount">
+                <th mat-header-cell *matHeaderCellDef
+                    title="{{appLanguageService.MWQMSite[appLanguageService.LangID]}}">
+                    {{appLanguageService.MWQMSite[appLanguageService.LangID]}}
+                    <br />{{appLanguageService.Count[appLanguageService.LangID]}}
+                </th>
+                <td mat-cell *matCellDef="let monstat"> {{ monstat.MWQMSiteCount }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="MWQMRunCount">
+                <th mat-header-cell *matHeaderCellDef title="{{appLanguageService.MWQMRun[appLanguageService.LangID]}}">
+                    {{appLanguageService.MWQMRun[appLanguageService.LangID]}}
+                    <br />{{appLanguageService.Count[appLanguageService.LangID]}}
+                </th>
+                <td mat-cell *matCellDef="let monstat"> {{monstat.MWQMRunCount}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="MWQMSampleCount">
+                <th mat-header-cell *matHeaderCellDef
+                    title="{{appLanguageService.MWQMSample[appLanguageService.LangID]}}">
+                    {{appLanguageService.MWQMSample[appLanguageService.LangID]}}
+                    <br />{{appLanguageService.Count[appLanguageService.LangID]}}
+                </th>
+                <td mat-cell *matCellDef="let monstat"> {{monstat.MWQMSampleCount}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    </mat-card-content>
+</mat-card>
