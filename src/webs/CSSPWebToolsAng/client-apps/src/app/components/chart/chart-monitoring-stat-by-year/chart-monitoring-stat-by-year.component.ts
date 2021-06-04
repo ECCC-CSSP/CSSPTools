@@ -8,6 +8,7 @@ import { LoaderService } from 'src/app/services/loaders/loader.service';
 import { Chart, registerables } from 'chart.js';
 import { MonitoringStatByYear } from 'src/app/models/generated/web/MonitoringStatByYear.model';
 import { ChartXYTextNumberModel } from 'src/app/models/generated/web/ChartXYTextNumberModel.model';
+import { ChartService } from 'src/app/services/helpers/chart.service';
 
 Chart.register(...registerables);
 
@@ -19,6 +20,8 @@ Chart.register(...registerables);
 export class ChartMonitoringStatByYearComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('chart')
   chartRef: ElementRef;
+  myChart: any;
+  chartFileName: string = '';
 
   lang = GetLanguageEnum();
 
@@ -27,15 +30,17 @@ export class ChartMonitoringStatByYearComponent implements OnInit, AfterViewInit
     public appLanguageService: AppLanguageService,
     private loaderService: LoaderService,
     public loggedInContactService: LoggedInContactService,
+    public chartService: ChartService,
   ) { }
 
   ngOnInit(): void {
   }
 
-  ngAfterViewInit(): void
-  {
-    let labelList: string[] = [];
+  ngAfterViewInit(): void {   
+    let chartTitle = this.chartService.GetChartMonitoringStatsByYearTitle(this.appLoadedService.MonitoringStatsModel.TVItemModel); 
+    this.chartFileName = this.chartService.GetChartMonitoringStatsByYearFileName(this.appLoadedService.MonitoringStatsModel.TVItemModel); 
 
+    let labelList: string[] = [];
     let MonitoringStatsByYearList: MonitoringStatByYear[] = this.appLoadedService.MonitoringStatsModel?.MonitoringStatByYearList;
 
     if (this.appLoadedService.MonitoringStatsModel?.MonitoringStatByYearList?.length == 0) return;
@@ -95,6 +100,12 @@ export class ChartMonitoringStatByYearComponent implements OnInit, AfterViewInit
       type: 'line',
       data,
       options: {
+        plugins: {
+          title: {
+            display: true,
+            text: chartTitle,
+          },
+        },
         responsive: true,
         scales: {
           y: {
@@ -114,12 +125,12 @@ export class ChartMonitoringStatByYearComponent implements OnInit, AfterViewInit
       }
     };
 
-    let myChart = new Chart(this.chartRef.nativeElement,
+    this.myChart = new Chart(this.chartRef.nativeElement,
       config
     );
-
-      }
+  }
 
   ngOnDestroy(): void {
   }
+
 }

@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -59,6 +59,7 @@ import { WebMonitoringRoutineStatsCountry } from 'src/app/models/generated/web/W
 import { WebMonitoringOtherStatsProvince } from 'src/app/models/generated/web/WebMonitoringOtherStatsProvince.model';
 import { WebMonitoringRoutineStatsProvince } from 'src/app/models/generated/web/WebMonitoringRoutineStatsProvince.model';
 import { MonitoringStatsModel } from 'src/app/models/generated/web/MonitoringStatsModel.model';
+import { TableConvertToCSVModel } from 'src/app/models/generated/web/TableConvertToCSVModel.model';
 
 
 @Injectable({
@@ -80,6 +81,86 @@ export class LoaderService {
         private sortTVItemListService: SortTVItemListService,
         private sortTVItemMunicipalityListService: SortTVItemMunicipalityListService,
         private filterService: FilterService) {
+    }
+
+    CreateTempPNG(pngBlob: Blob, chartFileName: string) {
+
+        this.sub ? this.sub.unsubscribe() : null;
+
+        this.sub = this.DoCreateTempPNG(pngBlob, chartFileName).subscribe();
+    }
+
+    private DoCreateTempPNG(pngBlob: Blob, chartFileName: string) {
+        let languageEnum = GetLanguageEnum();
+
+        this.appStateService.Status = `${this.appLanguageService.Saving[this.appLanguageService.LangID]} - ${chartFileName}`;
+        this.appStateService.Working = true;
+
+        const url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appLanguageService.Language]}-CA/CreateFile/CreateTempPNG`;
+
+        var data = new FormData();
+        data.append("mypic", pngBlob, chartFileName);
+        // var oReq = new XMLHttpRequest();
+        // oReq.open("POST", "http://localhost:52704/api/uploadfile/myfile.jpg/", true);
+        // oReq.onload = function (oEvent) {
+        //   alert(this.responseText);
+        // };
+        // oReq.send(data);   
+
+        return this.httpClient.post<any>(url, data).pipe(map((x: any) => { this.DoUpdateForCreateTempPNG(x, chartFileName); }), catchError(e => of(e).pipe(map(e => { this.DoError(e); }))));
+    }
+
+    private DoUpdateForCreateTempPNG(x: any, chartFileName) {
+        let languageEnum = GetLanguageEnum();
+
+        this.appStateService.Status = '';
+        this.appStateService.Working = false;
+        console.debug(x);
+
+        const url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appLanguageService.Language]}-CA/DownloadTemp/${chartFileName}`;
+
+        let a = document.createElement('a');
+        a.href = url;
+        a.click();
+    }
+
+    CreateTempCSV(tableConvertToCSVModel: TableConvertToCSVModel) {
+
+        this.sub ? this.sub.unsubscribe() : null;
+
+        this.sub = this.DoCreateTempCSV(tableConvertToCSVModel).subscribe();
+    }
+
+    private DoCreateTempCSV(tableConvertToCSVModel: TableConvertToCSVModel) {
+        let languageEnum = GetLanguageEnum();
+
+        this.appStateService.Status = `${this.appLanguageService.Saving[this.appLanguageService.LangID]} - ${tableConvertToCSVModel.TableFileName}`;
+        this.appStateService.Working = true;
+
+        const url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appLanguageService.Language]}-CA/CreateFile/CreateTempCSV`;
+
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+            })
+        };
+
+        return this.httpClient.post<any>(url, JSON.stringify(tableConvertToCSVModel), httpOptions).pipe(map((x: any) => { this.DoUpdateForCreateTempCSV(x, tableConvertToCSVModel); }), catchError(e => of(e).pipe(map(e => { this.DoError(e); }))));
+    }
+
+    private DoUpdateForCreateTempCSV(x: any, tableConvertToCSVModel: TableConvertToCSVModel) {
+        let languageEnum = GetLanguageEnum();
+
+        this.appStateService.Status = '';
+        this.appStateService.Working = false;
+        console.debug(x);
+
+        const url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appLanguageService.Language]}-CA/DownloadTemp/${tableConvertToCSVModel.TableFileName}`;
+
+        let a = document.createElement('a');
+        a.href = url;
+        //a.download = tableConvertToCSVModel.TableFileName;
+        a.click();
     }
 
     LoadAll() {
@@ -817,47 +898,47 @@ export class LoaderService {
 
     private DoUpdateBreadCrumbOnly() {
         switch (this.WebType) {
-            case WebTypeEnum.WebArea: 
-            {
-                this.appLoadedService.BreadCrumbTVItemModelList = this.appLoadedService.WebArea.TVItemModelParentList; 
-                this.appLoadedService.MonitoringStatsModel = this.appLoadedService?.WebMonitoringRoutineStatsProvince?.MonitoringStatsModelList?.filter(c => c.TVItemModel.TVItem.TVItemID == this.appStateService.UserPreference.CurrentAreaTVItemID)[0];
-            }
-            break;
-            case WebTypeEnum.WebCountry: 
-            {
-                this.appLoadedService.BreadCrumbTVItemModelList = this.appLoadedService.WebCountry.TVItemModelParentList; 
-                this.appLoadedService.MonitoringStatsModel = this.appLoadedService?.WebMonitoringRoutineStatsCountry?.MonitoringStatsModelList?.filter(c => c.TVItemModel.TVItem.TVItemID == this.appStateService.UserPreference.CurrentCountryTVItemID)[0];
-            }
-            break;
-            case WebTypeEnum.WebMunicipality: 
-            {
-                this.appLoadedService.BreadCrumbTVItemModelList = this.appLoadedService.WebMunicipality.TVItemModelParentList; 
-                this.appLoadedService.MonitoringStatsModel = <MonitoringStatsModel>{};
-            }
-            break;
-            case WebTypeEnum.WebProvince: 
-            {
-                this.appLoadedService.BreadCrumbTVItemModelList = this.appLoadedService.WebProvince.TVItemModelParentList; 
-                this.appLoadedService.MonitoringStatsModel = this.appLoadedService?.WebMonitoringRoutineStatsProvince?.MonitoringStatsModelList?.filter(c => c.TVItemModel.TVItem.TVItemID == this.appStateService.UserPreference.CurrentProvinceTVItemID)[0];
-            }
-            break;
+            case WebTypeEnum.WebArea:
+                {
+                    this.appLoadedService.BreadCrumbTVItemModelList = this.appLoadedService.WebArea.TVItemModelParentList;
+                    this.appLoadedService.MonitoringStatsModel = this.appLoadedService?.WebMonitoringRoutineStatsProvince?.MonitoringStatsModelList?.filter(c => c.TVItemModel.TVItem.TVItemID == this.appStateService.UserPreference.CurrentAreaTVItemID)[0];
+                }
+                break;
+            case WebTypeEnum.WebCountry:
+                {
+                    this.appLoadedService.BreadCrumbTVItemModelList = this.appLoadedService.WebCountry.TVItemModelParentList;
+                    this.appLoadedService.MonitoringStatsModel = this.appLoadedService?.WebMonitoringRoutineStatsCountry?.MonitoringStatsModelList?.filter(c => c.TVItemModel.TVItem.TVItemID == this.appStateService.UserPreference.CurrentCountryTVItemID)[0];
+                }
+                break;
+            case WebTypeEnum.WebMunicipality:
+                {
+                    this.appLoadedService.BreadCrumbTVItemModelList = this.appLoadedService.WebMunicipality.TVItemModelParentList;
+                    this.appLoadedService.MonitoringStatsModel = <MonitoringStatsModel>{};
+                }
+                break;
+            case WebTypeEnum.WebProvince:
+                {
+                    this.appLoadedService.BreadCrumbTVItemModelList = this.appLoadedService.WebProvince.TVItemModelParentList;
+                    this.appLoadedService.MonitoringStatsModel = this.appLoadedService?.WebMonitoringRoutineStatsProvince?.MonitoringStatsModelList?.filter(c => c.TVItemModel.TVItem.TVItemID == this.appStateService.UserPreference.CurrentProvinceTVItemID)[0];
+                }
+                break;
             case WebTypeEnum.WebRoot: {
-                this.appLoadedService.BreadCrumbTVItemModelList = this.appLoadedService.WebRoot.TVItemModelParentList; 
+                this.appLoadedService.BreadCrumbTVItemModelList = this.appLoadedService.WebRoot.TVItemModelParentList;
                 this.appLoadedService.MonitoringStatsModel = <MonitoringStatsModel>{};
             }
-            break;
-            case WebTypeEnum.WebSector: 
-            {
-                this.appLoadedService.BreadCrumbTVItemModelList = this.appLoadedService.WebSector.TVItemModelParentList; 
-                this.appLoadedService.MonitoringStatsModel = this.appLoadedService?.WebMonitoringRoutineStatsProvince?.MonitoringStatsModelList?.filter(c => c.TVItemModel.TVItem.TVItemID == this.appStateService.UserPreference.CurrentSectorTVItemID)[0];
-            }
-            break;
-            case WebTypeEnum.WebSubsector: 
-            {
-                this.appLoadedService.BreadCrumbTVItemModelList = this.appLoadedService.WebSubsector.TVItemModelParentList; 
-                this.appLoadedService.MonitoringStatsModel = this.appLoadedService?.WebMonitoringRoutineStatsProvince?.MonitoringStatsModelList?.filter(c => c.TVItemModel.TVItem.TVItemID == this.appStateService.UserPreference.CurrentSubsectorTVItemID)[0];
-            }
-            break;
+                break;
+            case WebTypeEnum.WebSector:
+                {
+                    this.appLoadedService.BreadCrumbTVItemModelList = this.appLoadedService.WebSector.TVItemModelParentList;
+                    this.appLoadedService.MonitoringStatsModel = this.appLoadedService?.WebMonitoringRoutineStatsProvince?.MonitoringStatsModelList?.filter(c => c.TVItemModel.TVItem.TVItemID == this.appStateService.UserPreference.CurrentSectorTVItemID)[0];
+                }
+                break;
+            case WebTypeEnum.WebSubsector:
+                {
+                    this.appLoadedService.BreadCrumbTVItemModelList = this.appLoadedService.WebSubsector.TVItemModelParentList;
+                    this.appLoadedService.MonitoringStatsModel = this.appLoadedService?.WebMonitoringRoutineStatsProvince?.MonitoringStatsModelList?.filter(c => c.TVItemModel.TVItem.TVItemID == this.appStateService.UserPreference.CurrentSubsectorTVItemID)[0];
+                }
+                break;
             default:
                 break;
         }

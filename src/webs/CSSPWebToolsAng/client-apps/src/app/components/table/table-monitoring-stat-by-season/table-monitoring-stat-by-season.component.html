@@ -4,10 +4,11 @@
             <button mat-raised-button (click)="appStateService.ShowMonitoringStatsTableBySeason = false">
                 <span>{{ appLanguageService.Close[appLanguageService.LangID] }}</span>
             </button>
+            <app-table-download-button [myTable]="myTable" [tableFileName]="tableFileName"></app-table-download-button>
         </p>
     </mat-card-header>
     <mat-card-content>
-        <table mat-table [dataSource]="appLoadedService.MonitoringStatsModel?.MonitoringStatBySeasonList">
+        <table #table mat-table [dataSource]="appLoadedService.MonitoringStatsModel?.MonitoringStatBySeasonList">
 
             <ng-container matColumnDef="Season">
                 <th mat-header-cell *matHeaderCellDef

@@ -74,9 +74,9 @@ export class AppLanguageService {
 
   Ascending: string[] = ['Ascending', 'Ascendant'];
 
-  ByMonth: string[] = ['By Month', 'Par Mois'];
-  BySeason: string[] = ['By Season', 'Par Saison'];
-  ByYear: string[] = ['By Year', 'Par An'];
+  ByMonth: string[] = ['by month', 'par mois'];
+  BySeason: string[] = ['by season', 'par saison'];
+  ByYear: string[] = ['by year', 'par année'];
 
   Chart: string[] = ['Chart', 'Graphique']
 
@@ -182,7 +182,7 @@ export class AppLanguageService {
   MedianInit: string[] = ['Med', 'Méd'];
   MedianInitTitle: string[] = ['Median', 'Médianne'];
 
-  MonitoringStats: string[] = ['Monitoring Stats', 'Stats d\'échantillonnage']
+  MonitoringStats: string[] = ['Monitoring stats', 'Stats d\'échantillonnage']
 
   Month: string[] = ['Month', 'Mois'];
 
@@ -261,6 +261,8 @@ export class AppLanguageService {
   SampleTypes: string[] = ['Sample types', 'Type d\'échantillons'];
   SampleTypesTitle: string[] = ['Sample types', 'Type d\'échantillons'];
 
+  Save: string[] = ['Save', 'Sauvegarder'];
+  
   Saving: string[] = ['Saving', 'Sauvegarde'];
 
   SearchSearch: string[] = ['Search', 'Rechercher'];

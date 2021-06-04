@@ -1,0 +1,6 @@
+<button mat-raised-button (click)="tableService.CreateTempCSV(this.myTable, this.tableFileName)">
+  <mat-icon>download</mat-icon>
+  <span>{{ appLanguageService.Save[appLanguageService.LangID] }}</span>
+</button>
+<p innerHTML="{{ CSVString }}" *ngIf="CSVString">
+</p>

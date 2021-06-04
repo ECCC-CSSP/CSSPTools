@@ -104,6 +104,8 @@ import { ChartMonitoringStatByMonthComponent } from './components/chart/chart-mo
 import { ChartMonitoringStatBySeasonComponent } from './components/chart/chart-monitoring-stat-by-season/chart-monitoring-stat-by-season.component';
 import { TableMonitoringStatByMonthComponent } from './components/table/table-monitoring-stat-by-month/table-monitoring-stat-by-month.component';
 import { TableMonitoringStatBySeasonComponent } from './components/table/table-monitoring-stat-by-season/table-monitoring-stat-by-season.component';
+import { ChartDownloadButtonComponent } from './components/chart/chart-download-button/chart-download-button.component';
+import { TableDownloadButtonComponent } from './components/table/table-download-button/table-download-button.component';
 
 @NgModule({
   declarations: [
@@ -116,6 +118,7 @@ import { TableMonitoringStatBySeasonComponent } from './components/table/table-m
     AreaTVItemListDetailComponent,
     AreaTVItemListItemComponent,
     BreadCrumbComponent,
+    ChartDownloadButtonComponent,
     ChartFCSalTempComponent,
     ChartFCStatComponent,
     ChartMonitoringStatByYearComponent,
@@ -196,6 +199,7 @@ import { TableMonitoringStatBySeasonComponent } from './components/table/table-m
     SubsectorTVItemListDetailComponent,
     SubsectorTVItemListItemComponent,
     SubsectorToolsItemComponent,
+    TableDownloadButtonComponent,
     TableFCStatComponent,
     TableRunDataComponent,
     TableMonitoringStatByYearComponent,
@@ -232,6 +236,7 @@ import { TableMonitoringStatBySeasonComponent } from './components/table/table-m
     AreaTVItemListDetailComponent,
     AreaTVItemListItemComponent,
     BreadCrumbComponent,
+    ChartDownloadButtonComponent,
     ChartFCSalTempComponent,
     ChartFCStatComponent,
     ChartMonitoringStatByYearComponent,
@@ -311,6 +316,7 @@ import { TableMonitoringStatBySeasonComponent } from './components/table/table-m
     SubsectorTVItemListDetailComponent,
     SubsectorTVItemListItemComponent,
     SubsectorToolsItemComponent,
+    TableDownloadButtonComponent,
     TableFCStatComponent,
     TableRunDataComponent,
     TableMonitoringStatByYearComponent,

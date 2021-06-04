@@ -43,6 +43,7 @@ namespace DownloadFileServices.Tests
         private string AzureStoreCSSPJSONPath { get; set; }
         private string CSSPJSONPath { get; set; }
         private string CSSPFilesPath { get; set; }
+        private string CSSPTempFilesPath { get; set; }
         private string CSSPAzureUrl { get; set; }
         #endregion Properties
 
@@ -73,6 +74,9 @@ namespace DownloadFileServices.Tests
 
             CSSPFilesPath = Configuration.GetValue<string>("CSSPFilesPath");
             Assert.NotNull(CSSPFilesPath);
+
+            CSSPTempFilesPath = Configuration.GetValue<string>("CSSPTempFilesPath");
+            Assert.NotNull(CSSPTempFilesPath);
 
             /* ---------------------------------------------------------------------------------
              * using TestDB

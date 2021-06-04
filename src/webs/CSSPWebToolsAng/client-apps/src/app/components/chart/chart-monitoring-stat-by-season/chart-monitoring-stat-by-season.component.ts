@@ -9,6 +9,7 @@ import { Chart, registerables } from 'chart.js';
 import { ChartXYTextNumberModel } from 'src/app/models/generated/web/ChartXYTextNumberModel.model';
 import { MonitoringStatBySeason } from 'src/app/models/generated/web/MonitoringStatBySeason.model';
 import { SeasonEnum } from 'src/app/enums/generated/SeasonEnum';
+import { ChartService } from 'src/app/services/helpers/chart.service';
 
 Chart.register(...registerables);
 
@@ -20,6 +21,8 @@ Chart.register(...registerables);
 export class ChartMonitoringStatBySeasonComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('chart')
   chartRef: ElementRef;
+  myChart: Chart;
+  chartFileName: string = '';
 
   lang = GetLanguageEnum();
 
@@ -28,13 +31,16 @@ export class ChartMonitoringStatBySeasonComponent implements OnInit, AfterViewIn
     public appLanguageService: AppLanguageService,
     private loaderService: LoaderService,
     public loggedInContactService: LoggedInContactService,
+    public chartService: ChartService
   ) { }
 
   ngOnInit(): void {
   }
 
-  ngAfterViewInit(): void
-  {
+  ngAfterViewInit(): void {
+    let chartTitle = this.chartService.GetChartMonitoringStatsBySeasonTitle(this.appLoadedService.MonitoringStatsModel.TVItemModel);
+    this.chartFileName = this.chartService.GetChartMonitoringStatsBySeasonFileName(this.appLoadedService.MonitoringStatsModel.TVItemModel);
+
     let labelList: string[] = [];
 
     let MonitoringStatsBySeasonList: MonitoringStatBySeason[] = this.appLoadedService.MonitoringStatsModel?.MonitoringStatBySeasonList;
@@ -70,7 +76,7 @@ export class ChartMonitoringStatBySeasonComponent implements OnInit, AfterViewIn
         data: dataMWQMSiteCountList,
         yAxisID: 'y',
         stack: 'combined',
-        type: 'scatter',
+        type: 'line',
       },
       {
         label: 'MWQM Run Count',
@@ -79,7 +85,7 @@ export class ChartMonitoringStatBySeasonComponent implements OnInit, AfterViewIn
         data: dataMWQMRunCountList,
         yAxisID: 'y',
         stack: 'combined',
-        type: 'scatter',
+        type: 'line',
       },
       {
         label: 'MWQM Sample Count',
@@ -88,7 +94,7 @@ export class ChartMonitoringStatBySeasonComponent implements OnInit, AfterViewIn
         data: dataMWQMSampleCountList,
         yAxisID: 'y2',
         stack: 'combined',
-        type: 'scatter',
+        type: 'line',
       }]
     };
 
@@ -96,6 +102,12 @@ export class ChartMonitoringStatBySeasonComponent implements OnInit, AfterViewIn
       type: 'line',
       data,
       options: {
+        plugins: {
+          title: {
+            display: true,
+            text: chartTitle,
+          },
+        },
         responsive: true,
         scales: {
           y: {
@@ -115,11 +127,11 @@ export class ChartMonitoringStatBySeasonComponent implements OnInit, AfterViewIn
       }
     };
 
-    let myChart = new Chart(this.chartRef.nativeElement,
+    this.myChart = new Chart(this.chartRef.nativeElement,
       config
     );
 
-      }
+  }
 
   ngOnDestroy(): void {
   }

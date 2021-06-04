@@ -3,6 +3,8 @@
     <button mat-raised-button (click)="appStateService.ShowMonitoringStatsChartByYear = false">
       <span>{{ appLanguageService.Close[appLanguageService.LangID] }}</span>
     </button>
+    &nbsp;&nbsp;
+    <app-chart-download-button [myChart]="myChart" [chartFileName]="chartFileName"></app-chart-download-button>
   </mat-card-header>
   <mat-card-content>
     <canvas #chart></canvas>
