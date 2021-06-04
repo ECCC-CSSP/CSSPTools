@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
+import { WebChartAndTableTypeEnum } from 'src/app/enums/generated/WebChartAndTableTypeEnum';
 import { TableConvertToCSVModel } from 'src/app/models/generated/web/TableConvertToCSVModel.model';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { AppLanguageService } from '../app-language.service';
@@ -38,53 +39,103 @@ export class TableService {
     return newFileName;
   }
 
-  GetTableMonitoringStatsByYearTitle(tvItemModel: TVItemModel): string {
-    let MonitoringStats: string = this.appLanguageService.MonitoringStats[this.appLanguageService.LangID];
-    let ByYear: string = this.appLanguageService.ByYear[this.appLanguageService.LangID];
-    let TVText: string = this.appLoadedService.MonitoringStatsModel.TVItemModel.TVItemLanguageList[this.appLanguageService.LangID].TVText;
+  GetTableTitle(tvItemModel: TVItemModel, webChartAndTableType: WebChartAndTableTypeEnum): string {
+    let TitlePart1: string = '';
+    let TitlePart2: string = '';
+    let TitlePart3: string = '';
 
-    return `${MonitoringStats} ${ByYear} (${TVText})`;
+    switch (webChartAndTableType) {
+      case WebChartAndTableTypeEnum.FCSalTemp:
+        {
+          TitlePart1 = this.appLanguageService.FCSalTemp[this.appLanguageService.LangID];
+          TitlePart2 = '';
+          TitlePart3 = '';
+        }
+        break;
+      case WebChartAndTableTypeEnum.FCStats:
+        {
+          TitlePart1 = this.appLanguageService.FCStats[this.appLanguageService.LangID];
+          TitlePart2 = '';
+          TitlePart3 = '';
+        }
+        break;
+      case WebChartAndTableTypeEnum.MonitoringStatsByMonth:
+        {
+          TitlePart1 = this.appLanguageService.MonitoringStats[this.appLanguageService.LangID];
+          TitlePart2 = this.appLanguageService.ByMonth[this.appLanguageService.LangID];
+          TitlePart3 = this.appLoadedService.MonitoringStatsModel.TVItemModel.TVItemLanguageList[this.appLanguageService.LangID].TVText;
+        }
+        break;
+      case WebChartAndTableTypeEnum.MonitoringStatsBySeason:
+        {
+          TitlePart1 = this.appLanguageService.MonitoringStats[this.appLanguageService.LangID];
+          TitlePart2 = this.appLanguageService.BySeason[this.appLanguageService.LangID];
+          TitlePart3 = this.appLoadedService.MonitoringStatsModel.TVItemModel.TVItemLanguageList[this.appLanguageService.LangID].TVText;
+        }
+        break;
+      case WebChartAndTableTypeEnum.MonitoringStatsByYear:
+        {
+          TitlePart1 = this.appLanguageService.MonitoringStats[this.appLanguageService.LangID];
+          TitlePart2 = this.appLanguageService.ByYear[this.appLanguageService.LangID];
+          TitlePart3 = this.appLoadedService.MonitoringStatsModel.TVItemModel.TVItemLanguageList[this.appLanguageService.LangID].TVText;
+        }
+        break;
+      default:
+        break;
+    }
+
+    return `${TitlePart1} ${TitlePart2} (${TitlePart3})`;
   }
 
-  GetTableMonitoringStatsByYearFileName(tvItemModel: TVItemModel): string {
-    let MonitoringStats: string = this.appLanguageService.MonitoringStats[this.appLanguageService.LangID];
-    let ByYear: string = this.appLanguageService.ByYear[this.appLanguageService.LangID];
-    let TVText: string = this.appLoadedService.MonitoringStatsModel.TVItemModel.TVItemLanguageList[this.appLanguageService.LangID].TVText;
+  GetTableFileName(tvItemModel: TVItemModel, webChartAndTableType: WebChartAndTableTypeEnum): string {
+    let FileNamePart1: string = '';
+    let FileNamePart2: string = '';
+    let FileNamePart3: string = '';
 
-    return this.CleanFileName(`${MonitoringStats} ${ByYear} ${TVText}.csv`);
+    switch (webChartAndTableType) {
+      case WebChartAndTableTypeEnum.FCSalTemp:
+        {
+          FileNamePart1 = this.appLanguageService.FCSalTemp[this.appLanguageService.LangID];
+          FileNamePart2 = '';
+          FileNamePart3 = '';
+        }
+        break;
+      case WebChartAndTableTypeEnum.FCStats:
+        {
+          FileNamePart1 = this.appLanguageService.FCStats[this.appLanguageService.LangID];
+          FileNamePart2 = '';
+          FileNamePart3 = '';
+        }
+        break;
+      case WebChartAndTableTypeEnum.MonitoringStatsByMonth:
+        {
+          FileNamePart1 = this.appLanguageService.MonitoringStats[this.appLanguageService.LangID];
+          FileNamePart2 = this.appLanguageService.ByMonth[this.appLanguageService.LangID];
+          FileNamePart3 = this.appLoadedService.MonitoringStatsModel.TVItemModel.TVItemLanguageList[this.appLanguageService.LangID].TVText;
+        }
+        break;
+      case WebChartAndTableTypeEnum.MonitoringStatsBySeason:
+        {
+          FileNamePart1 = this.appLanguageService.MonitoringStats[this.appLanguageService.LangID];
+          FileNamePart2 = this.appLanguageService.BySeason[this.appLanguageService.LangID];
+          FileNamePart3 = this.appLoadedService.MonitoringStatsModel.TVItemModel.TVItemLanguageList[this.appLanguageService.LangID].TVText;
+        }
+        break;
+      case WebChartAndTableTypeEnum.MonitoringStatsByYear:
+        {
+          FileNamePart1 = this.appLanguageService.MonitoringStats[this.appLanguageService.LangID];
+          FileNamePart2 = this.appLanguageService.ByYear[this.appLanguageService.LangID];
+          FileNamePart3 = this.appLoadedService.MonitoringStatsModel.TVItemModel.TVItemLanguageList[this.appLanguageService.LangID].TVText;
+        }
+        break;
+      default:
+        break;
+    }
+
+
+    return this.CleanFileName(`${FileNamePart1} ${FileNamePart2} ${FileNamePart3}.csv`);
   }
 
-  GetTableMonitoringStatsByMonthTitle(tvItemModel: TVItemModel): string {
-    let MonitoringStats: string = this.appLanguageService.MonitoringStats[this.appLanguageService.LangID];
-    let ByMonth: string = this.appLanguageService.ByMonth[this.appLanguageService.LangID];
-    let TVText: string = this.appLoadedService.MonitoringStatsModel.TVItemModel.TVItemLanguageList[this.appLanguageService.LangID].TVText;
-
-    return `${MonitoringStats} ${ByMonth} (${TVText})`;
-  }
-
-  GetTableMonitoringStatsByMonthFileName(tvItemModel: TVItemModel): string {
-    let MonitoringStats: string = this.appLanguageService.MonitoringStats[this.appLanguageService.LangID];
-    let ByMonth: string = this.appLanguageService.ByMonth[this.appLanguageService.LangID];
-    let TVText: string = this.appLoadedService.MonitoringStatsModel.TVItemModel.TVItemLanguageList[this.appLanguageService.LangID].TVText;
-
-    return this.CleanFileName(`${MonitoringStats} ${ByMonth} ${TVText}.csv`);
-  }
-
-  GetTableMonitoringStatsBySeasonTitle(tvItemModel: TVItemModel): string {
-    let MonitoringStats: string = this.appLanguageService.MonitoringStats[this.appLanguageService.LangID];
-    let BySeason: string = this.appLanguageService.BySeason[this.appLanguageService.LangID];
-    let TVText: string = this.appLoadedService.MonitoringStatsModel.TVItemModel.TVItemLanguageList[this.appLanguageService.LangID].TVText;
-
-    return `${MonitoringStats} ${BySeason} (${TVText})`;
-  }
-
-  GetTableMonitoringStatsBySeasonFileName(tvItemModel: TVItemModel): string {
-    let MonitoringStats: string = this.appLanguageService.MonitoringStats[this.appLanguageService.LangID];
-    let BySeason: string = this.appLanguageService.BySeason[this.appLanguageService.LangID];
-    let TVText: string = this.appLoadedService.MonitoringStatsModel.TVItemModel.TVItemLanguageList[this.appLanguageService.LangID].TVText;
-
-    return this.CleanFileName(`${MonitoringStats} ${BySeason} ${TVText}.csv`);
-  }
 
   CreateTempCSV(myTable: any, tableFileName: string): void {
 

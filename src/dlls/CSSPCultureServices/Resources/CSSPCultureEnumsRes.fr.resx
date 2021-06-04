@@ -2826,4 +2826,19 @@
   <data name="SeasonEnumWinter" xml:space="preserve">
     <value>Hiver</value>
   </data>
+  <data name="WebChartAndTableTypeEnumFCSalTemp" xml:space="preserve">
+    <value>FCSalTemp</value>
+  </data>
+  <data name="WebChartAndTableTypeEnumFCStats" xml:space="preserve">
+    <value>FCStats</value>
+  </data>
+  <data name="WebChartAndTableTypeEnumMonitoringStatsByMonth" xml:space="preserve">
+    <value>MonitoringStatsByMonth</value>
+  </data>
+  <data name="WebChartAndTableTypeEnumMonitoringStatsBySeason" xml:space="preserve">
+    <value>MonitoringStatsBySeason</value>
+  </data>
+  <data name="WebChartAndTableTypeEnumMonitoringStatsByYear" xml:space="preserve">
+    <value>MonitoringStatsByYear</value>
+  </data>
 </root>

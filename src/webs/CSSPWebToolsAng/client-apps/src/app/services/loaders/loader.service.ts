@@ -100,12 +100,6 @@ export class LoaderService {
 
         var data = new FormData();
         data.append("mypic", pngBlob, chartFileName);
-        // var oReq = new XMLHttpRequest();
-        // oReq.open("POST", "http://localhost:52704/api/uploadfile/myfile.jpg/", true);
-        // oReq.onload = function (oEvent) {
-        //   alert(this.responseText);
-        // };
-        // oReq.send(data);   
 
         return this.httpClient.post<any>(url, data).pipe(map((x: any) => { this.DoUpdateForCreateTempPNG(x, chartFileName); }), catchError(e => of(e).pipe(map(e => { this.DoError(e); }))));
     }
@@ -159,7 +153,6 @@ export class LoaderService {
 
         let a = document.createElement('a');
         a.href = url;
-        //a.download = tableConvertToCSVModel.TableFileName;
         a.click();
     }
 

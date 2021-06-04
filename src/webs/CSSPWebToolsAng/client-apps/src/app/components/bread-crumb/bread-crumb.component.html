@@ -19,30 +19,30 @@
     <mat-menu #menu="matMenu" color="primary">
         <button mat-menu-item>{{ appLanguageService.MonitoringStats[appLanguageService.LangID] }}</button>
         <mat-divider></mat-divider>
-        <button mat-menu-item  [ngClass]="appStateService.ShowMonitoringStatsChartByYear ? 'selected' : ''"
+        <button mat-menu-item [ngClass]="appStateService.ShowMonitoringStatsChartByYear ? 'selected' : ''"
             (click)="appStateService.ShowMonitoringStatsChartByYear = !appStateService.ShowMonitoringStatsChartByYear">
             <span>
                 <mat-icon>insights</mat-icon>
                 {{ appLanguageService.Chart[appLanguageService.LangID] }}
                 {{ appLanguageService.ByYear[appLanguageService.LangID] }}
 
-            </span>           
+            </span>
         </button>
-        <button mat-menu-item  [ngClass]="appStateService.ShowMonitoringStatsTableByYear ? 'selected' : ''"
+        <button mat-menu-item [ngClass]="appStateService.ShowMonitoringStatsTableByYear ? 'selected' : ''"
             (click)="appStateService.ShowMonitoringStatsTableByYear = !appStateService.ShowMonitoringStatsTableByYear">
             <span>
                 <mat-icon>table_rows</mat-icon>
                 {{ appLanguageService.Table[appLanguageService.LangID] }}
                 {{ appLanguageService.ByYear[appLanguageService.LangID] }}
-            </span>           
+            </span>
         </button>
-        <button mat-menu-item  [ngClass]="appStateService.ShowMonitoringStatsChartByMonth ? 'selected' : ''"
+        <button mat-menu-item [ngClass]="appStateService.ShowMonitoringStatsChartByMonth ? 'selected' : ''"
             (click)="appStateService.ShowMonitoringStatsChartByMonth = !appStateService.ShowMonitoringStatsChartByMonth">
             <span>
                 <mat-icon>insights</mat-icon>
                 {{ appLanguageService.Chart[appLanguageService.LangID] }}
                 {{ appLanguageService.ByMonth[appLanguageService.LangID] }}
-            </span>           
+            </span>
         </button>
         <button mat-menu-item [ngClass]="appStateService.ShowMonitoringStatsTableByMonth ? 'selected' : ''"
             (click)="appStateService.ShowMonitoringStatsTableByMonth = !appStateService.ShowMonitoringStatsTableByMonth">
@@ -50,7 +50,7 @@
                 <mat-icon>table_rows</mat-icon>
                 {{ appLanguageService.Table[appLanguageService.LangID] }}
                 {{ appLanguageService.ByMonth[appLanguageService.LangID] }}
-            </span>           
+            </span>
         </button>
         <button mat-menu-item [ngClass]="appStateService.ShowMonitoringStatsChartBySeason ? 'selected' : ''"
             (click)="appStateService.ShowMonitoringStatsChartBySeason = !appStateService.ShowMonitoringStatsChartBySeason">
@@ -58,7 +58,7 @@
                 <mat-icon>insights</mat-icon>
                 {{ appLanguageService.Chart[appLanguageService.LangID] }}
                 {{ appLanguageService.BySeason[appLanguageService.LangID] }}
-            </span>           
+            </span>
         </button>
         <button mat-menu-item [ngClass]="appStateService.ShowMonitoringStatsTableBySeason ? 'selected' : ''"
             (click)="appStateService.ShowMonitoringStatsTableBySeason = !appStateService.ShowMonitoringStatsTableBySeason">
@@ -66,14 +66,20 @@
                 <mat-icon>table_rows</mat-icon>
                 {{ appLanguageService.Table[appLanguageService.LangID] }}
                 {{ appLanguageService.BySeason[appLanguageService.LangID] }}
-            </span>           
+            </span>
         </button>
     </mat-menu>
 
-    <app-chart-monitoring-stat-by-year *ngIf="appStateService.ShowMonitoringStatsChartByYear"></app-chart-monitoring-stat-by-year>
-    <app-table-monitoring-stat-by-year *ngIf="appStateService.ShowMonitoringStatsTableByYear"></app-table-monitoring-stat-by-year>
-    <app-chart-monitoring-stat-by-month *ngIf="appStateService.ShowMonitoringStatsChartByMonth"></app-chart-monitoring-stat-by-month>
-    <app-table-monitoring-stat-by-month *ngIf="appStateService.ShowMonitoringStatsTableByMonth"></app-table-monitoring-stat-by-month>
-    <app-chart-monitoring-stat-by-season *ngIf="appStateService.ShowMonitoringStatsChartBySeason"></app-chart-monitoring-stat-by-season>
-    <app-table-monitoring-stat-by-season *ngIf="appStateService.ShowMonitoringStatsTableBySeason"></app-table-monitoring-stat-by-season>
+    <app-chart-card *ngIf="appStateService.ShowMonitoringStatsChartByYear" [webChartAndTableType]="webChartAndTableType.MonitoringStatsByYear">
+    </app-chart-card>
+    <app-table-card *ngIf="appStateService.ShowMonitoringStatsTableByYear" [webChartAndTableType]="webChartAndTableType.MonitoringStatsByYear">
+    </app-table-card>
+    <app-chart-card *ngIf="appStateService.ShowMonitoringStatsChartByMonth" [webChartAndTableType]="webChartAndTableType.MonitoringStatsByMonth">
+    </app-chart-card>
+    <app-table-card *ngIf="appStateService.ShowMonitoringStatsTableByMonth" [webChartAndTableType]="webChartAndTableType.MonitoringStatsByMonth">
+    </app-table-card>
+    <app-chart-card *ngIf="appStateService.ShowMonitoringStatsChartBySeason" [webChartAndTableType]="webChartAndTableType.MonitoringStatsBySeason">
+    </app-chart-card>
+    <app-table-card *ngIf="appStateService.ShowMonitoringStatsTableBySeason" [webChartAndTableType]="webChartAndTableType.MonitoringStatsBySeason">
+    </app-table-card>
 </ng-container>

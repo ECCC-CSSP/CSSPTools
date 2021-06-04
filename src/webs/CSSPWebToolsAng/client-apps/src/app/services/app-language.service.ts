@@ -137,12 +137,17 @@ export class AppLanguageService {
 
   DesktopReviewed: string[] = ['Desktop reviewed', 'Révisé au bureau'];
   
+  Download: string[] = ['Download', 'Télécharger'];
+
   Entered: string[] = ['Entered', 'Entré'];
   
   ExtraComments: string[] = ['Extra Comments', 'Extra commentaires'];
   
   FCInit: string[] = ['FC', 'CF'];
   FCInitTitle: string[] = ['Most probable number of fecal coliform per 100 mL', 'Nombre le plus probable de coliformes fécaux par 100 mL'];
+
+  FCSalTemp: string[] = ['FC Sal Temp', 'CF Sal Temp'];
+  FCStats: string[] = ['FC Stats', 'Stats CF'];
 
   FileName: string[] = ['File Name', 'Nom de la filière'];
   FileNameAccro: string[] = ['N', 'N'];

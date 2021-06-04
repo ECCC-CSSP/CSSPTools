@@ -30,8 +30,6 @@ namespace CreateFileServices
 
                 if (file.Length > 0)
                 {
-                    //string fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.ToString().Trim();
-
                     FileInfo fi = new FileInfo($"{CSSPTempFilesPath}{file.FileName}");
 
                     using (FileStream stream = new FileStream(fi.FullName, FileMode.Create))

@@ -1219,6 +1219,14 @@ namespace CSSPEnums
         Automatically = 2,
         None = 3,
     }
+    public enum WebChartAndTableTypeEnum
+    {
+        MonitoringStatsByYear = 1,
+        MonitoringStatsByMonth = 2,
+        MonitoringStatsBySeason = 3,
+        FCSalTemp = 4,
+        FCStats = 5,
+    }
     public enum WebTypeEnum
     {
         WebAllAddresses = 1,

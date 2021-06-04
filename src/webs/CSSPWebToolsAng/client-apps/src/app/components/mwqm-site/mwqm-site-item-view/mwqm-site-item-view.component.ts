@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { ChartXYTextNumberModel } from 'src/app/models/generated/web/ChartXYTextNumberModel.model';
 import { StatMWQMSiteSample } from 'src/app/models/generated/web/StatMWQMSiteSample.model';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { AppLanguageService } from 'src/app/services/app-language.service';

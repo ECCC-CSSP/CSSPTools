@@ -9264,6 +9264,51 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to FCSalTemp.
+        /// </summary>
+        public static string WebChartAndTableTypeEnumFCSalTemp {
+            get {
+                return ResourceManager.GetString("WebChartAndTableTypeEnumFCSalTemp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FCStats.
+        /// </summary>
+        public static string WebChartAndTableTypeEnumFCStats {
+            get {
+                return ResourceManager.GetString("WebChartAndTableTypeEnumFCStats", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MonitoringStatsByMonth.
+        /// </summary>
+        public static string WebChartAndTableTypeEnumMonitoringStatsByMonth {
+            get {
+                return ResourceManager.GetString("WebChartAndTableTypeEnumMonitoringStatsByMonth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MonitoringStatsBySeason.
+        /// </summary>
+        public static string WebChartAndTableTypeEnumMonitoringStatsBySeason {
+            get {
+                return ResourceManager.GetString("WebChartAndTableTypeEnumMonitoringStatsBySeason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MonitoringStatsByYear.
+        /// </summary>
+        public static string WebChartAndTableTypeEnumMonitoringStatsByYear {
+            get {
+                return ResourceManager.GetString("WebChartAndTableTypeEnumMonitoringStatsByYear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to WebTideDataSet.
         /// </summary>
         public static string WebTideDataSet {

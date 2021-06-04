@@ -98,14 +98,8 @@ import { PolSourceSiteItemObsComponent } from './components/pol-source-site/pol-
 import { AddressComponent } from './components/address/address.component';
 import { ExportArcGISComponent } from './components/export-arc-gis/export-arc-gis/export-arc-gis.component';
 import { NotImplementedYetComponent } from './components/not-implemented-yet/not-implemented-yet/not-implemented-yet.component';
-import { ChartMonitoringStatByYearComponent } from './components/chart/chart-monitoring-stat-by-year/chart-monitoring-stat-by-year.component';
-import { TableMonitoringStatByYearComponent } from './components/table/table-monitoring-stat-by-year/table-monitoring-stat-by-year.component';
-import { ChartMonitoringStatByMonthComponent } from './components/chart/chart-monitoring-stat-by-month/chart-monitoring-stat-by-month.component';
-import { ChartMonitoringStatBySeasonComponent } from './components/chart/chart-monitoring-stat-by-season/chart-monitoring-stat-by-season.component';
-import { TableMonitoringStatByMonthComponent } from './components/table/table-monitoring-stat-by-month/table-monitoring-stat-by-month.component';
-import { TableMonitoringStatBySeasonComponent } from './components/table/table-monitoring-stat-by-season/table-monitoring-stat-by-season.component';
-import { ChartDownloadButtonComponent } from './components/chart/chart-download-button/chart-download-button.component';
-import { TableDownloadButtonComponent } from './components/table/table-download-button/table-download-button.component';
+import { ChartCardComponent } from './components/chart/chart-card/chart-card.component';
+import { TableCardComponent } from './components/table/table-card/table-card.component';
 
 @NgModule({
   declarations: [
@@ -118,12 +112,9 @@ import { TableDownloadButtonComponent } from './components/table/table-download-
     AreaTVItemListDetailComponent,
     AreaTVItemListItemComponent,
     BreadCrumbComponent,
-    ChartDownloadButtonComponent,
+    ChartCardComponent,
     ChartFCSalTempComponent,
     ChartFCStatComponent,
-    ChartMonitoringStatByYearComponent,
-    ChartMonitoringStatByMonthComponent,
-    ChartMonitoringStatBySeasonComponent,
     ContactItemComponent,
     CountryItemComponent,
     CountryTVItemListDetailComponent,
@@ -199,12 +190,9 @@ import { TableDownloadButtonComponent } from './components/table/table-download-
     SubsectorTVItemListDetailComponent,
     SubsectorTVItemListItemComponent,
     SubsectorToolsItemComponent,
-    TableDownloadButtonComponent,
+    TableCardComponent,
     TableFCStatComponent,
     TableRunDataComponent,
-    TableMonitoringStatByYearComponent,
-    TableMonitoringStatByMonthComponent,
-    TableMonitoringStatBySeasonComponent,
     TVItemCreateComponent,
     TVItemItemComponent,
     TVItemLastUpdateComponent,
@@ -236,12 +224,9 @@ import { TableDownloadButtonComponent } from './components/table/table-download-
     AreaTVItemListDetailComponent,
     AreaTVItemListItemComponent,
     BreadCrumbComponent,
-    ChartDownloadButtonComponent,
+    ChartCardComponent,
     ChartFCSalTempComponent,
     ChartFCStatComponent,
-    ChartMonitoringStatByYearComponent,
-    ChartMonitoringStatBySeasonComponent,
-    ChartMonitoringStatBySeasonComponent,
     ContactItemComponent,
     CountryItemComponent,
     CountryTVItemListDetailComponent,
@@ -316,12 +301,9 @@ import { TableDownloadButtonComponent } from './components/table/table-download-
     SubsectorTVItemListDetailComponent,
     SubsectorTVItemListItemComponent,
     SubsectorToolsItemComponent,
-    TableDownloadButtonComponent,
+    TableCardComponent,
     TableFCStatComponent,
     TableRunDataComponent,
-    TableMonitoringStatByYearComponent,
-    TableMonitoringStatByMonthComponent,
-    TableMonitoringStatBySeasonComponent,
     TVItemCreateComponent,
     TVItemItemComponent,
     TVItemLastUpdateComponent,

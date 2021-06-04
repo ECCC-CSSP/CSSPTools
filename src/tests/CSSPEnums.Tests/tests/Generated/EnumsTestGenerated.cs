@@ -5377,6 +5377,49 @@ namespace CSSPEnums.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
+        public async Task GetResValueForTypeAndID_ForEnum_WebChartAndTableTypeEnum_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            string retStr = enums.GetResValueForTypeAndID(typeof(WebChartAndTableTypeEnum), -100);
+            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
+
+            retStr = enums.GetResValueForTypeAndID(typeof(WebChartAndTableTypeEnum), 10000000);
+            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
+
+            retStr = enums.GetResValueForTypeAndID(typeof(WebChartAndTableTypeEnum), null);
+            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
+
+            retStr = enums.GetResValueForTypeAndID(typeof(string), null);
+            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
+
+            foreach (int i in Enum.GetValues(typeof(WebChartAndTableTypeEnum)))
+            {
+                retStr = enums.GetResValueForTypeAndID(typeof(WebChartAndTableTypeEnum), i);
+
+                switch ((WebChartAndTableTypeEnum)i)
+                {
+                    case WebChartAndTableTypeEnum.MonitoringStatsByYear:
+                        Assert.Equal(CSSPCultureEnumsRes.WebChartAndTableTypeEnumMonitoringStatsByYear, retStr);
+                        break;
+                    case WebChartAndTableTypeEnum.MonitoringStatsByMonth:
+                        Assert.Equal(CSSPCultureEnumsRes.WebChartAndTableTypeEnumMonitoringStatsByMonth, retStr);
+                        break;
+                    case WebChartAndTableTypeEnum.MonitoringStatsBySeason:
+                        Assert.Equal(CSSPCultureEnumsRes.WebChartAndTableTypeEnumMonitoringStatsBySeason, retStr);
+                        break;
+                    case WebChartAndTableTypeEnum.FCSalTemp:
+                        Assert.Equal(CSSPCultureEnumsRes.WebChartAndTableTypeEnumFCSalTemp, retStr);
+                        break;
+                    case WebChartAndTableTypeEnum.FCStats:
+                        Assert.Equal(CSSPCultureEnumsRes.WebChartAndTableTypeEnumFCStats, retStr);
+                        break;
+                }
+            }
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_WebTypeEnum_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -9403,6 +9446,41 @@ namespace CSSPEnums.Tests
                         break;
                     default:
                         Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "ValveTypeEnum"), retStr);
+                        break;
+                }
+            }
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task Enums_WebChartAndTableTypeOK_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            string retStr = enums.EnumTypeOK(typeof(WebChartAndTableTypeEnum), null);
+            Assert.Equal("", retStr);
+
+            retStr = enums.EnumTypeOK(typeof(WebChartAndTableTypeEnum), -100);
+            Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "WebChartAndTableTypeEnum"), retStr);
+
+            retStr = enums.EnumTypeOK(typeof(WebChartAndTableTypeEnum), 10000000);
+            Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "WebChartAndTableTypeEnum"), retStr);
+
+            foreach (int i in Enum.GetValues(typeof(WebChartAndTableTypeEnum)))
+            {
+                retStr = enums.EnumTypeOK(typeof(WebChartAndTableTypeEnum), i);
+
+                switch ((WebChartAndTableTypeEnum)i)
+                {
+                     case WebChartAndTableTypeEnum.MonitoringStatsByYear:
+                     case WebChartAndTableTypeEnum.MonitoringStatsByMonth:
+                     case WebChartAndTableTypeEnum.MonitoringStatsBySeason:
+                     case WebChartAndTableTypeEnum.FCSalTemp:
+                     case WebChartAndTableTypeEnum.FCStats:
+                        Assert.Equal("", retStr);
+                        break;
+                    default:
+                        Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "WebChartAndTableTypeEnum"), retStr);
                         break;
                 }
             }
@@ -13684,6 +13762,32 @@ namespace CSSPEnums.Tests
             enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
             List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(ValveTypeEnum));
+            Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+
+            EnumIDAndText enumTextOrdered = new EnumIDAndText();
+            Assert.NotNull(enumTextOrdered);
+
+            for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
+            {
+                Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+            }
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task Enums_WebChartAndTableTypeEnumTextOrdered_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
+            foreach (int i in Enum.GetValues(typeof(WebChartAndTableTypeEnum)))
+            {
+                enumTextOrderedList.Add(new EnumIDAndText() { EnumID = i, EnumText = enums.GetResValueForTypeAndID(typeof(WebChartAndTableTypeEnum), i) });
+            }
+            enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
+
+            List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(WebChartAndTableTypeEnum));
             Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
             EnumIDAndText enumTextOrdered = new EnumIDAndText();
