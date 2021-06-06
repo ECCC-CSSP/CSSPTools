@@ -3164,10 +3164,12 @@ namespace CSSPEnums
                     return CSSPCultureEnumsRes.WebChartAndTableTypeEnumMonitoringStatsByMonth;
                 case WebChartAndTableTypeEnum.MonitoringStatsBySeason:
                     return CSSPCultureEnumsRes.WebChartAndTableTypeEnumMonitoringStatsBySeason;
-                case WebChartAndTableTypeEnum.FCSalTemp:
-                    return CSSPCultureEnumsRes.WebChartAndTableTypeEnumFCSalTemp;
-                case WebChartAndTableTypeEnum.FCStats:
-                    return CSSPCultureEnumsRes.WebChartAndTableTypeEnumFCStats;
+                case WebChartAndTableTypeEnum.MWQMSiteFCSalTempData:
+                    return CSSPCultureEnumsRes.WebChartAndTableTypeEnumMWQMSiteFCSalTempData;
+                case WebChartAndTableTypeEnum.MWQMSiteFCStats:
+                    return CSSPCultureEnumsRes.WebChartAndTableTypeEnumMWQMSiteFCStats;
+                case WebChartAndTableTypeEnum.MWQMRunData:
+                    return CSSPCultureEnumsRes.WebChartAndTableTypeEnumMWQMRunData;
                 default:
                     return CSSPCultureEnumsRes.Empty;
             }

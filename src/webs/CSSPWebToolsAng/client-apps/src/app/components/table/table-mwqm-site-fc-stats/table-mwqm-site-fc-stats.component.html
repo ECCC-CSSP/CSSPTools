@@ -1,0 +1,97 @@
+<h2>
+  <button mat-raised-button (click)="CreateTempCSV()">
+    <mat-icon>download</mat-icon>
+  </button>
+  {{ tableTitle }}
+</h2>
+
+<table #table mat-table  [dataSource]="StatMWQMSiteSampleList">
+  <ng-container matColumnDef="Index">
+    <th mat-header-cell *matHeaderCellDef> # </th>
+    <td mat-cell *matCellDef="let stat; let i = index;"> {{StatMWQMSiteSampleList?.length - i}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="SampleDate">
+    <th mat-header-cell *matHeaderCellDef title="{{appLanguageService.SampleDateTitle[appLanguageService.LangID]}}">
+      {{appLanguageService.SampleDate[appLanguageService.LangID]}}
+    </th>
+    <td mat-cell *matCellDef="let stat"> {{stat.SampleDate | date:"yyyy-MM-dd" }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="FC">
+    <th mat-header-cell *matHeaderCellDef title="{{appLanguageService.FCInitTitle[appLanguageService.LangID]}}">
+      {{appLanguageService.FCInit[appLanguageService.LangID]}}
+    </th>
+    <td mat-cell *matCellDef="let stat"><span [ngClass]="tableService.GetFCClass(stat.FC)"> {{stat.FC}} </span></td>
+  </ng-container>
+
+  <ng-container matColumnDef="Sal">
+    <th mat-header-cell *matHeaderCellDef title="{{appLanguageService.PPTInitTitle[appLanguageService.LangID]}}">
+      {{appLanguageService.PPTInit[appLanguageService.LangID]}}
+    </th>
+    <td mat-cell *matCellDef="let stat"> {{stat.Sal}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="Temp">
+    <th mat-header-cell *matHeaderCellDef title="{{appLanguageService.DegCelciusTitle[appLanguageService.LangID]}}">
+      ºC
+    </th>
+    <td mat-cell *matCellDef="let stat"> {{stat.Temp}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="pH">
+    <th mat-header-cell *matHeaderCellDef> pH </th>
+    <td mat-cell *matCellDef="let stat"> {{stat.PH}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="Depth">
+    <th mat-header-cell *matHeaderCellDef> D </th>
+    <td mat-cell *matCellDef="let stat"> {{stat.Depth}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="GeoMean">
+    <th mat-header-cell *matHeaderCellDef title="{{appLanguageService.GMInitTitle[appLanguageService.LangID]}}">
+      {{appLanguageService.GMInit[appLanguageService.LangID]}}
+    </th>
+    <td mat-cell *matCellDef="let stat"><span [ngClass]="tableService.GetGMClass(stat.GeoMean)"> {{stat.GeoMean |
+        number:'1.0-1'}} </span></td>
+  </ng-container>
+
+  <ng-container matColumnDef="Median">
+    <th mat-header-cell *matHeaderCellDef title="{{appLanguageService.MedianInitTitle[appLanguageService.LangID]}}">
+      {{appLanguageService.MedianInit[appLanguageService.LangID]}}
+    </th>
+    <td mat-cell *matCellDef="let stat"><span [ngClass]="tableService.GetMedClass(stat.Median)"> {{stat.Median |
+        number:'1.0-1'}}
+      </span></td>
+  </ng-container>
+
+  <ng-container matColumnDef="P90">
+    <th mat-header-cell *matHeaderCellDef title="{{appLanguageService.P90InitTitle[appLanguageService.LangID]}}">
+      {{appLanguageService.P90Init[appLanguageService.LangID]}}
+    </th>
+    <td mat-cell *matCellDef="let stat"><span [ngClass]="tableService.GetP90Class(stat.P90)"> {{stat.P90 | number:'1.0-1'}}
+      </span></td>
+  </ng-container>
+
+  <ng-container matColumnDef="PercOver43">
+    <th mat-header-cell *matHeaderCellDef title="{{appLanguageService.PercOver43InitTitle[appLanguageService.LangID]}}">
+      {{appLanguageService.PercOver43Init[appLanguageService.LangID]}}
+    </th>
+    <td mat-cell *matCellDef="let stat"><span [ngClass]="tableService.GetPercOver43Class(stat.PercOver43)"> {{stat.PercOver43 |
+        number:'1.0-1'}} </span></td>
+  </ng-container>
+
+  <ng-container matColumnDef="PercOver260">
+    <th mat-header-cell *matHeaderCellDef
+      title="{{appLanguageService.PercOver260InitTitle[appLanguageService.LangID]}}">
+      {{appLanguageService.PercOver260Init[appLanguageService.LangID]}}
+    </th>
+    <td mat-cell *matCellDef="let stat"><span [ngClass]="tableService.GetPercOver260Class(stat.PercOver260)">
+        {{stat.PercOver260
+        | number:'1.0-1'}} </span></td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedFCStatsColumns; sticky: true"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedFCStatsColumns;"></tr>
+</table>

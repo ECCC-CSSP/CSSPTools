@@ -13,8 +13,9 @@ export enum WebChartAndTableTypeEnum {
     MonitoringStatsByYear = 1,
     MonitoringStatsByMonth = 2,
     MonitoringStatsBySeason = 3,
-    FCSalTemp = 4,
-    FCStats = 5,
+    MWQMSiteFCSalTempData = 4,
+    MWQMSiteFCStats = 5,
+    MWQMRunData = 6,
 }
 
 export function GetWebChartAndTableTypeEnum(): typeof WebChartAndTableTypeEnum
@@ -25,18 +26,20 @@ export function GetWebChartAndTableTypeEnum(): typeof WebChartAndTableTypeEnum
 export function WebChartAndTableTypeEnum_GetOrderedText(appLanguageService: AppLanguageService): EnumIDAndText[] {
     let enumTextOrderedList: EnumIDAndText[] = [];
     if (appLanguageService.Language == LanguageEnum.fr) {
-        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Empty (fr)' });
-        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Empty (fr)' });
-        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Empty (fr)' });
-        enumTextOrderedList.push({ EnumID: 4, EnumText: 'Empty (fr)' });
-        enumTextOrderedList.push({ EnumID: 5, EnumText: 'Empty (fr)' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'MonitoringStatsByYear' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'MonitoringStatsByMonth' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'MonitoringStatsBySeason' });
+        enumTextOrderedList.push({ EnumID: 4, EnumText: 'MWQMSiteFCSalTempData' });
+        enumTextOrderedList.push({ EnumID: 5, EnumText: 'MWQMSiteFCStats' });
+        enumTextOrderedList.push({ EnumID: 6, EnumText: 'MWQMRunData' });
     }
     else {
-        enumTextOrderedList.push({ EnumID: 1, EnumText: 'Empty' });
-        enumTextOrderedList.push({ EnumID: 2, EnumText: 'Empty' });
-        enumTextOrderedList.push({ EnumID: 3, EnumText: 'Empty' });
-        enumTextOrderedList.push({ EnumID: 4, EnumText: 'Empty' });
-        enumTextOrderedList.push({ EnumID: 5, EnumText: 'Empty' });
+        enumTextOrderedList.push({ EnumID: 1, EnumText: 'MonitoringStatsByYear' });
+        enumTextOrderedList.push({ EnumID: 2, EnumText: 'MonitoringStatsByMonth' });
+        enumTextOrderedList.push({ EnumID: 3, EnumText: 'MonitoringStatsBySeason' });
+        enumTextOrderedList.push({ EnumID: 4, EnumText: 'MWQMSiteFCSalTempData' });
+        enumTextOrderedList.push({ EnumID: 5, EnumText: 'MWQMSiteFCStats' });
+        enumTextOrderedList.push({ EnumID: 6, EnumText: 'MWQMRunData' });
     }
 
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));

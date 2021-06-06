@@ -9264,24 +9264,6 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to FCSalTemp.
-        /// </summary>
-        public static string WebChartAndTableTypeEnumFCSalTemp {
-            get {
-                return ResourceManager.GetString("WebChartAndTableTypeEnumFCSalTemp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to FCStats.
-        /// </summary>
-        public static string WebChartAndTableTypeEnumFCStats {
-            get {
-                return ResourceManager.GetString("WebChartAndTableTypeEnumFCStats", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to MonitoringStatsByMonth.
         /// </summary>
         public static string WebChartAndTableTypeEnumMonitoringStatsByMonth {
@@ -9305,6 +9287,33 @@ namespace CSSPCultureServices.Resources {
         public static string WebChartAndTableTypeEnumMonitoringStatsByYear {
             get {
                 return ResourceManager.GetString("WebChartAndTableTypeEnumMonitoringStatsByYear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MWQMRunData.
+        /// </summary>
+        public static string WebChartAndTableTypeEnumMWQMRunData {
+            get {
+                return ResourceManager.GetString("WebChartAndTableTypeEnumMWQMRunData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MWQMSiteFCSalTempData.
+        /// </summary>
+        public static string WebChartAndTableTypeEnumMWQMSiteFCSalTempData {
+            get {
+                return ResourceManager.GetString("WebChartAndTableTypeEnumMWQMSiteFCSalTempData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MWQMSiteFCStats.
+        /// </summary>
+        public static string WebChartAndTableTypeEnumMWQMSiteFCStats {
+            get {
+                return ResourceManager.GetString("WebChartAndTableTypeEnumMWQMSiteFCStats", resourceCulture);
             }
         }
         

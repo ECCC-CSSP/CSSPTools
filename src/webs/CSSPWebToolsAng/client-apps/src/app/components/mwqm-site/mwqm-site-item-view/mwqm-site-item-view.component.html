@@ -1,10 +1,15 @@
-<span *ngIf="appStateService.Working">
-    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-</span>
-<p class="loading-status" *ngIf="appStateService.Status">
-    {{ appStateService.Status }}
-</p>
+<mat-card class="mat-elevation-z0">
+    <mat-card-content>
+        <app-chart-base [webChartAndTableType]="webChartAndTableType.MWQMSiteFCSalTempData" [TVItemModel]="TVItemModel"
+            [ChartVisible]="false">
+        </app-chart-base>
 
-<app-chart-fc-sal-temp [StatMWQMSiteSampleList]="StatMWQMSiteSampleList"></app-chart-fc-sal-temp>
-<app-chart-fc-stat [StatMWQMSiteSampleList]="StatMWQMSiteSampleList"></app-chart-fc-stat>
-<app-table-fc-stat [StatMWQMSiteSampleList]="StatMWQMSiteSampleList"></app-table-fc-stat>
+        <app-chart-base [webChartAndTableType]="webChartAndTableType.MWQMSiteFCStats" [TVItemModel]="TVItemModel"
+            [ChartVisible]="false">
+        </app-chart-base>
+
+        <app-table-base [webChartAndTableType]="webChartAndTableType.MWQMSiteFCStats" [TVItemModel]="TVItemModel"
+            [TableVisible]="false">
+        </app-table-base>
+    </mat-card-content>
+</mat-card>

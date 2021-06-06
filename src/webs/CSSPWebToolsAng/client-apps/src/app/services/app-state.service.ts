@@ -160,12 +160,7 @@ export class AppStateService {
       SubsectorPolSourceSitesSortOrder: AscDescEnum.Ascending,
     };
 
-  ShowMonitoringStatsChartByYear: boolean = false;
-  ShowMonitoringStatsChartByMonth: boolean = false;
-  ShowMonitoringStatsChartBySeason: boolean = false;
-  ShowMonitoringStatsTableByYear: boolean = false;
-  ShowMonitoringStatsTableByMonth: boolean = false;
-  ShowMonitoringStatsTableBySeason: boolean = false;
+  ShowMonitoringStats?: boolean = false;
 
   // search http loading related
   SearchWorking?: boolean = false;

@@ -1,0 +1,22 @@
+<button mat-raised-button [ngClass]="TableVisible ? 'selected' : ''" (click)="ToggleTableVisible()">
+  <mat-icon>article</mat-icon>{{ buttonText }}
+</button>
+&nbsp;&nbsp;
+
+<ng-container *ngIf="TableVisible">
+  <app-table-mwqm-site-fc-stats *ngIf="webChartAndTableType == WebChartAndTableType.MWQMSiteFCStats"
+    [TVItemModel]="TVItemModel" [webChartAndTableType]="webChartAndTableType">
+  </app-table-mwqm-site-fc-stats>
+  <app-table-monitoring-stats-by-month *ngIf="webChartAndTableType == WebChartAndTableType.MonitoringStatsByMonth"
+    [TVItemModel]="TVItemModel" [webChartAndTableType]="webChartAndTableType">
+  </app-table-monitoring-stats-by-month>
+  <app-table-monitoring-stats-by-season *ngIf="webChartAndTableType == WebChartAndTableType.MonitoringStatsBySeason"
+    [TVItemModel]="TVItemModel" [webChartAndTableType]="webChartAndTableType">
+  </app-table-monitoring-stats-by-season>
+  <app-table-monitoring-stats-by-year *ngIf="webChartAndTableType == WebChartAndTableType.MonitoringStatsByYear"
+    [TVItemModel]="TVItemModel" [webChartAndTableType]="webChartAndTableType">
+  </app-table-monitoring-stats-by-year>
+  <app-table-mwqm-run-data *ngIf="webChartAndTableType == WebChartAndTableType.MWQMRunData"
+    [TVItemModel]="TVItemModel" [webChartAndTableType]="webChartAndTableType">
+  </app-table-mwqm-run-data>
+</ng-container>

@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
+import { SampleTypeEnum_GetIDText } from 'src/app/enums/generated/SampleTypeEnum';
 import { WebChartAndTableTypeEnum } from 'src/app/enums/generated/WebChartAndTableTypeEnum';
 import { TableConvertToCSVModel } from 'src/app/models/generated/web/TableConvertToCSVModel.model';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
@@ -42,42 +43,43 @@ export class TableService {
   GetTableTitle(tvItemModel: TVItemModel, webChartAndTableType: WebChartAndTableTypeEnum): string {
     let TitlePart1: string = '';
     let TitlePart2: string = '';
-    let TitlePart3: string = '';
+    let TitlePart3: string = tvItemModel.TVItemLanguageList[this.appLanguageService.LangID].TVText;
 
     switch (webChartAndTableType) {
-      case WebChartAndTableTypeEnum.FCSalTemp:
+      case WebChartAndTableTypeEnum.MWQMRunData:
+        {
+          TitlePart1 = this.appLanguageService.Runs[this.appLanguageService.LangID];
+          TitlePart2 = '';
+        }
+        break;
+      case WebChartAndTableTypeEnum.MWQMSiteFCSalTempData:
         {
           TitlePart1 = this.appLanguageService.FCSalTemp[this.appLanguageService.LangID];
           TitlePart2 = '';
-          TitlePart3 = '';
         }
         break;
-      case WebChartAndTableTypeEnum.FCStats:
+      case WebChartAndTableTypeEnum.MWQMSiteFCSalTempData:
         {
           TitlePart1 = this.appLanguageService.FCStats[this.appLanguageService.LangID];
           TitlePart2 = '';
-          TitlePart3 = '';
         }
         break;
       case WebChartAndTableTypeEnum.MonitoringStatsByMonth:
         {
           TitlePart1 = this.appLanguageService.MonitoringStats[this.appLanguageService.LangID];
           TitlePart2 = this.appLanguageService.ByMonth[this.appLanguageService.LangID];
-          TitlePart3 = this.appLoadedService.MonitoringStatsModel.TVItemModel.TVItemLanguageList[this.appLanguageService.LangID].TVText;
         }
         break;
       case WebChartAndTableTypeEnum.MonitoringStatsBySeason:
         {
           TitlePart1 = this.appLanguageService.MonitoringStats[this.appLanguageService.LangID];
           TitlePart2 = this.appLanguageService.BySeason[this.appLanguageService.LangID];
-          TitlePart3 = this.appLoadedService.MonitoringStatsModel.TVItemModel.TVItemLanguageList[this.appLanguageService.LangID].TVText;
         }
         break;
       case WebChartAndTableTypeEnum.MonitoringStatsByYear:
         {
           TitlePart1 = this.appLanguageService.MonitoringStats[this.appLanguageService.LangID];
           TitlePart2 = this.appLanguageService.ByYear[this.appLanguageService.LangID];
-          TitlePart3 = this.appLoadedService.MonitoringStatsModel.TVItemModel.TVItemLanguageList[this.appLanguageService.LangID].TVText;
         }
         break;
       default:
@@ -90,42 +92,43 @@ export class TableService {
   GetTableFileName(tvItemModel: TVItemModel, webChartAndTableType: WebChartAndTableTypeEnum): string {
     let FileNamePart1: string = '';
     let FileNamePart2: string = '';
-    let FileNamePart3: string = '';
+    let FileNamePart3: string = tvItemModel.TVItemLanguageList[this.appLanguageService.LangID].TVText;
 
     switch (webChartAndTableType) {
-      case WebChartAndTableTypeEnum.FCSalTemp:
+      case WebChartAndTableTypeEnum.MWQMRunData:
+        {
+          FileNamePart1 = this.appLanguageService.Runs[this.appLanguageService.LangID];
+          FileNamePart2 = '';
+        }
+        break;
+      case WebChartAndTableTypeEnum.MWQMSiteFCSalTempData:
         {
           FileNamePart1 = this.appLanguageService.FCSalTemp[this.appLanguageService.LangID];
           FileNamePart2 = '';
-          FileNamePart3 = '';
         }
         break;
-      case WebChartAndTableTypeEnum.FCStats:
+      case WebChartAndTableTypeEnum.MWQMSiteFCStats:
         {
           FileNamePart1 = this.appLanguageService.FCStats[this.appLanguageService.LangID];
           FileNamePart2 = '';
-          FileNamePart3 = '';
         }
         break;
       case WebChartAndTableTypeEnum.MonitoringStatsByMonth:
         {
           FileNamePart1 = this.appLanguageService.MonitoringStats[this.appLanguageService.LangID];
           FileNamePart2 = this.appLanguageService.ByMonth[this.appLanguageService.LangID];
-          FileNamePart3 = this.appLoadedService.MonitoringStatsModel.TVItemModel.TVItemLanguageList[this.appLanguageService.LangID].TVText;
         }
         break;
       case WebChartAndTableTypeEnum.MonitoringStatsBySeason:
         {
           FileNamePart1 = this.appLanguageService.MonitoringStats[this.appLanguageService.LangID];
           FileNamePart2 = this.appLanguageService.BySeason[this.appLanguageService.LangID];
-          FileNamePart3 = this.appLoadedService.MonitoringStatsModel.TVItemModel.TVItemLanguageList[this.appLanguageService.LangID].TVText;
         }
         break;
       case WebChartAndTableTypeEnum.MonitoringStatsByYear:
         {
           FileNamePart1 = this.appLanguageService.MonitoringStats[this.appLanguageService.LangID];
           FileNamePart2 = this.appLanguageService.ByYear[this.appLanguageService.LangID];
-          FileNamePart3 = this.appLoadedService.MonitoringStatsModel.TVItemModel.TVItemLanguageList[this.appLanguageService.LangID].TVText;
         }
         break;
       default:
@@ -205,4 +208,53 @@ export class TableService {
 
     this.loaderService.CreateTempCSV(tableConvertToCSVModel);
   }
+
+  GetFCClass(val: number) {
+    if (val > 499) return "FCBiggerThan499";
+    if (val > 259) return "FCBiggerThan259";
+    if (val > 43) return "FCBiggerThan43";
+    return "";
+  }
+  GetGMClass(val: number) {
+    if (val > 88) return "GMBiggerThan88";
+    if (val > 14) return "GMBiggerThan14";
+    return "";
+  }
+  GetMedClass(val: number) {
+    if (val > 88) return "MedBiggerThan88";
+    if (val > 14) return "MedBiggerThan14";
+    return "";
+  }
+  GetP90Class(val: number) {
+    if (val > 260) return "P90BiggerThan260";
+    if (val > 43) return "P90BiggerThan43";
+    return "";
+  }
+  GetPercOver43Class(val: number) {
+    if (val > 10) return "PercOver43BiggerThan10";
+    return "";
+  }
+  GetPercOver260Class(val: number) {
+    if (val > 10) return "PercOver260BiggerThan10";
+    return "";
+  }
+
+  GetSampleTypesText(sampleTypes: string) {
+    let retVal: string = '';
+    let SampleTypeEnumTextList: string[] = sampleTypes.split(',')
+    for (let i = 0, count = SampleTypeEnumTextList?.length; i < count; i++) {
+      if (SampleTypeEnumTextList[i]) {
+        retVal = retVal + SampleTypeEnum_GetIDText(parseInt(SampleTypeEnumTextList[i]), this.appLanguageService) + ', ';
+      }
+    }
+
+    return retVal.substring(0, retVal?.length - 2);
+  }
+
+  CleanEmptyOrVide(sampleNote: string) {
+    if (sampleNote == 'Empty' || sampleNote == 'Vide') {
+      return '';
+    }
+  }
+  
 }

@@ -1,0 +1,42 @@
+<h2>
+  <button mat-raised-button (click)="CreateTempCSV()">
+    <mat-icon>download</mat-icon>
+  </button>
+  {{ tableTitle }}
+</h2>
+
+<table #table class="tableSize" mat-table [dataSource]="appLoadedService.MonitoringStatsModel?.MonitoringStatBySeasonList">
+  <ng-container matColumnDef="Season">
+    <th mat-header-cell *matHeaderCellDef title="{{appLanguageService.SeasonOfSampling[appLanguageService.LangID]}}">
+      {{appLanguageService.Season[appLanguageService.LangID]}}
+    </th>
+    <td mat-cell *matCellDef="let monstat"> {{ seasonEnum[monstat.Season] }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="MWQMSiteCount">
+    <th mat-header-cell *matHeaderCellDef title="{{appLanguageService.MWQMSite[appLanguageService.LangID]}}">
+      {{appLanguageService.MWQMSite[appLanguageService.LangID]}}
+      <br />{{appLanguageService.Count[appLanguageService.LangID]}}
+    </th>
+    <td mat-cell *matCellDef="let monstat"> {{ monstat.MWQMSiteCount }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="MWQMRunCount">
+    <th mat-header-cell *matHeaderCellDef title="{{appLanguageService.MWQMRun[appLanguageService.LangID]}}">
+      {{appLanguageService.MWQMRun[appLanguageService.LangID]}}
+      <br />{{appLanguageService.Count[appLanguageService.LangID]}}
+    </th>
+    <td mat-cell *matCellDef="let monstat"> {{monstat.MWQMRunCount}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="MWQMSampleCount">
+    <th mat-header-cell *matHeaderCellDef title="{{appLanguageService.MWQMSample[appLanguageService.LangID]}}">
+      {{appLanguageService.MWQMSample[appLanguageService.LangID]}}
+      <br />{{appLanguageService.Count[appLanguageService.LangID]}}
+    </th>
+    <td mat-cell *matCellDef="let monstat"> {{monstat.MWQMSampleCount}} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedSeasonColumns; sticky: true"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedSeasonColumns;"></tr>
+</table>

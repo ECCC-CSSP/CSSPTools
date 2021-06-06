@@ -1224,8 +1224,9 @@ namespace CSSPEnums
         MonitoringStatsByYear = 1,
         MonitoringStatsByMonth = 2,
         MonitoringStatsBySeason = 3,
-        FCSalTemp = 4,
-        FCStats = 5,
+        MWQMSiteFCSalTempData = 4,
+        MWQMSiteFCStats = 5,
+        MWQMRunData = 6,
     }
     public enum WebTypeEnum
     {

@@ -1,0 +1,68 @@
+
+<h2>
+  <button mat-raised-button (click)="CreateTempCSV()">
+    <mat-icon>download</mat-icon>
+  </button>
+  {{ tableTitle }}
+</h2>
+
+<table #table mat-table [dataSource]="MWQMRunDataTableModelList">
+  <ng-container matColumnDef="MWQMSiteName">
+    <th mat-header-cell *matHeaderCellDef title="{{appLanguageService.MWQMSiteNameTitle[appLanguageService.LangID]}}">
+      {{appLanguageService.MWQMSiteName[appLanguageService.LangID]}}
+    </th>
+    <td mat-cell *matCellDef="let sample"> {{ sample.MWQMSiteName }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="SampleDate">
+    <th mat-header-cell *matHeaderCellDef title="{{appLanguageService.SampleDateTitle[appLanguageService.LangID]}}">
+      {{appLanguageService.SampleDate[appLanguageService.LangID]}}
+    </th>
+    <td mat-cell *matCellDef="let sample"> {{ sample.SampleDate | date:"hh:mm" }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="FC">
+    <th mat-header-cell *matHeaderCellDef title="{{appLanguageService.FCInitTitle[appLanguageService.LangID]}}">
+      {{appLanguageService.FCInit[appLanguageService.LangID]}}
+    </th>
+    <td mat-cell *matCellDef="let sample"> {{sample.FC}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="Sal">
+    <th mat-header-cell *matHeaderCellDef title="{{appLanguageService.PPTInitTitle[appLanguageService.LangID]}}">
+      {{appLanguageService.PPTInit[appLanguageService.LangID]}}
+    </th>
+    <td mat-cell *matCellDef="let sample"> {{sample.Sal}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="Temp">
+    <th mat-header-cell *matHeaderCellDef title="{{appLanguageService.DegCelciusTitle[appLanguageService.LangID]}}">
+      ºC
+    </th>
+    <td mat-cell *matCellDef="let sample"> {{sample.Temp}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="ProcessedBy">
+    <th mat-header-cell *matHeaderCellDef title="{{appLanguageService.ProcessedByTitle[appLanguageService.LangID]}}">
+      {{appLanguageService.ProcessedBy[appLanguageService.LangID]}}
+    </th>
+    <td mat-cell *matCellDef="let sample"> {{sample.ProcessedBy}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="SampleTypes">
+    <th mat-header-cell *matHeaderCellDef title="{{appLanguageService.SampleTypesTitle[appLanguageService.LangID]}}">
+      {{appLanguageService.SampleTypes[appLanguageService.LangID]}}
+    </th>
+    <td mat-cell *matCellDef="let sample"> {{ tableService.GetSampleTypesText(sample.SampleTypes)}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="SampleNote">
+    <th mat-header-cell *matHeaderCellDef title="{{appLanguageService.SampleNoteTitle[appLanguageService.LangID]}}">
+      {{appLanguageService.SampleNote[appLanguageService.LangID]}}
+    </th>
+    <td mat-cell *matCellDef="let sample"> {{tableService.CleanEmptyOrVide(sample.SampleNote)}} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedRunsColumns; sticky: true"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedRunsColumns;"></tr>
+</table>

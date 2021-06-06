@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { GetWebChartAndTableTypeEnum } from 'src/app/enums/generated/WebChartAndTableTypeEnum';
 import { WebTypeEnum } from 'src/app/enums/generated/WebTypeEnum';
 import { MWQMRunDataTableModel } from 'src/app/models/generated/web/MWQMRunDataTableModel.model';
 import { MWQMRunModel } from 'src/app/models/generated/web/MWQMRunModel.model';
@@ -22,6 +23,8 @@ import { LoaderService } from 'src/app/services/loaders/loader.service';
 })
 export class MWQMRunItemViewComponent implements OnInit, OnDestroy {
   @Input() TVItemModel: TVItemModel;
+
+  webChartAndTableType = GetWebChartAndTableTypeEnum();
 
   constructor(public appStateService: AppStateService,
     public appLanguageService: AppLanguageService,

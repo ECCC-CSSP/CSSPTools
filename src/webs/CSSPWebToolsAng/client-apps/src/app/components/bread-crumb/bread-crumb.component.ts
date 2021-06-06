@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GetWebChartAndTableTypeEnum } from 'src/app/enums/generated/WebChartAndTableTypeEnum';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
@@ -12,7 +13,6 @@ import { SubPageService } from 'src/app/services/helpers/sub-page.service';
   styleUrls: ['./bread-crumb.component.css']
 })
 export class BreadCrumbComponent implements OnInit, OnDestroy {
-
   webChartAndTableType = GetWebChartAndTableTypeEnum();
 
   constructor(public appStateService: AppStateService,
@@ -20,6 +20,7 @@ export class BreadCrumbComponent implements OnInit, OnDestroy {
     public appLoadedService: AppLoadedService,
     public subPageService: SubPageService) {
   }
+
 
   ngOnInit() {
   }
@@ -37,4 +38,8 @@ export class BreadCrumbComponent implements OnInit, OnDestroy {
     }
   }
 
+  ToggleMonitoringStatsVisible()
+  {
+    this.appStateService.ShowMonitoringStats = !this.appStateService.ShowMonitoringStats;
+  }
 }

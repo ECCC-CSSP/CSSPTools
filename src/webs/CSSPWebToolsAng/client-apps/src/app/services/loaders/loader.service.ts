@@ -157,13 +157,8 @@ export class LoaderService {
     }
 
     LoadAll() {
-        this.appStateService.ShowMonitoringStatsChartByYear = false;
-        this.appStateService.ShowMonitoringStatsChartByMonth = false;
-        this.appStateService.ShowMonitoringStatsChartBySeason = false;
-        this.appStateService.ShowMonitoringStatsTableByYear = false;
-        this.appStateService.ShowMonitoringStatsTableByMonth = false;
-        this.appStateService.ShowMonitoringStatsTableBySeason = false;
-
+        this.appStateService.ShowMonitoringStats = false;
+        
         if (this.loadListService.ToLoadList != undefined && this.loadListService.ToLoadList?.length > 0) {
             this.WebType = this.loadListService.ToLoadList[0].WebType;
             this.ForceReload = this.loadListService.ToLoadList[0].ForceReload;

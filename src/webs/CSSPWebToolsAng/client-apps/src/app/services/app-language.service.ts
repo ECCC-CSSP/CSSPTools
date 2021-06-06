@@ -88,6 +88,9 @@ export class AppLanguageService {
   ChartLabelSalppt: string[] = ['Sal (ppt)', 'Sal (ppm)'];
   ChartLabelTempDegC: string[] = ['Temp (deg C)', 'Temp (deg C)'];
 
+  ChartHide: string[] = ['Hide chart', 'Cacher graphique'];
+  ChartView: string[] = ['View chart', 'Voir graphique'];
+
   Close: string[] = ['Close', 'Fermer'];
   
   ContactNotFound: string[] = ['Contact not found', 'Contact non trouvé'];
@@ -257,6 +260,8 @@ export class AppLanguageService {
   RootShowExportArcGISTools: string[] = ['Show export Arc GIS tools', 'Montrer outils pour exportation Arc GIS'];
   RootExportArcGIS: string[] = ['Export Arc GIS', 'Exportation Arc GIS'];
 
+  Runs: string[] = ['Runs', 'Tournées'];
+  
   SampleDate: string[] = ['Sample Date', 'Date d\'échantillonnage'];
   SampleDateTitle: string[] = ['The date the sample was taken', 'La date à laquelle l\'échantillon a été prélevé'];
 
@@ -327,7 +332,10 @@ export class AppLanguageService {
   SubsectorLogBook: string[] = ['Log Book', 'Journal de bord'];
 
   Table: string[] = ['Table', 'Tableau'];
-  
+
+  TableHide: string[] = ['Hide table', 'Cacher tableau'];
+  TableView: string[] = ['View table', 'Voir tableau'];
+
   TVItemListDetailAreaSector: string[] = ['Sector', 'Secteur'];
   TVItemListDetailAreaSubsector: string[] = ['Subsector', 'Sous-secteur'];
   TVItemListDetailAreaMWQMSample: string[] = ['MWQM sample', 'Échantillons'];

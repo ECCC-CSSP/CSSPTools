@@ -71,10 +71,6 @@ import { MWQMRunItemViewComponent } from './components/mwqm-run/mwqm-run-item-vi
 import { MWQMSiteItemViewComponent } from './components/mwqm-site/mwqm-site-item-view/mwqm-site-item-view.component';
 import { PolSourceSiteItemViewComponent } from './components/pol-source-site/pol-source-site-item-view/pol-source-site-item-view.component';
 import { HomeTestComponent } from './components/home/home-test/home-test.component';
-import { ChartFCSalTempComponent } from './components/chart/chart-fc-sal-temp/chart-fc-sal-temp.component';
-import { ChartFCStatComponent } from './components/chart/chart-fc-stat/chart-fc-stat.component';
-import { TableFCStatComponent } from './components/table/table-fc-stat/table-fc-stat.component';
-import { TableRunDataComponent } from './components/table/table-run-data/table-run-data.component';
 import { TVItemItemComponent } from './components/tvitem/tvitem-item/tvitem-item.component';
 import { FileListItemMenuComponent } from './components/files/file-list-item-menu/file-list-item-menu.component';
 import { FileListItemModifyComponent } from './components/files/file-list-item-modify/file-list-item-modify.component';
@@ -98,8 +94,19 @@ import { PolSourceSiteItemObsComponent } from './components/pol-source-site/pol-
 import { AddressComponent } from './components/address/address.component';
 import { ExportArcGISComponent } from './components/export-arc-gis/export-arc-gis/export-arc-gis.component';
 import { NotImplementedYetComponent } from './components/not-implemented-yet/not-implemented-yet/not-implemented-yet.component';
-import { ChartCardComponent } from './components/chart/chart-card/chart-card.component';
-import { TableCardComponent } from './components/table/table-card/table-card.component';
+import { ChartBaseComponent } from './components/chart/chart-base/chart-base.component';
+import { ChartMonitoringStatsByYearComponent } from './components/chart/chart-monitoring-stats-by-year/chart-monitoring-stats-by-year.component';
+import { ChartMWQMSiteFCSalTempComponent } from './components/chart/chart-mwqm-site-fc-sal-temp/chart-mwqm-site-fc-sal-temp.component';
+import { ChartMWQMSiteFCStatsComponent } from './components/chart/chart-mwqm-site-fc-stats/chart-mwqm-site-fc-stats.component';
+import { ChartMonitoringStatsByMonthComponent } from './components/chart/chart-monitoring-stats-by-month/chart-monitoring-stats-by-month.component';
+import { ChartMonitoringStatsBySeasonComponent } from './components/chart/chart-monitoring-stats-by-season/chart-monitoring-stats-by-season.component';
+import { ChartMWQMRunDataComponent } from './components/chart/chart-mwqm-run-data/chart-mwqm-run-data.component';
+import { TableBaseComponent } from './components/table/table-base/table-base.component';
+import { TableMWQMSiteFCStatsComponent } from './components/table/table-mwqm-site-fc-stats/table-mwqm-site-fc-stats.component';
+import { TableMonitoringStatsByMonthComponent } from './components/table/table-monitoring-stats-by-month/table-monitoring-stats-by-month.component';
+import { TableMonitoringStatsBySeasonComponent } from './components/table/table-monitoring-stats-by-season/table-monitoring-stats-by-season.component';
+import { TableMonitoringStatsByYearComponent } from './components/table/table-monitoring-stats-by-year/table-monitoring-stats-by-year.component';
+import { TableMWQMRunDataComponent } from './components/table/table-mwqm-run-data/table-mwqm-run-data.component';
 
 @NgModule({
   declarations: [
@@ -112,9 +119,13 @@ import { TableCardComponent } from './components/table/table-card/table-card.com
     AreaTVItemListDetailComponent,
     AreaTVItemListItemComponent,
     BreadCrumbComponent,
-    ChartCardComponent,
-    ChartFCSalTempComponent,
-    ChartFCStatComponent,
+    ChartBaseComponent,
+    ChartMonitoringStatsByMonthComponent,
+    ChartMonitoringStatsBySeasonComponent,
+    ChartMonitoringStatsByYearComponent,
+    ChartMWQMRunDataComponent,
+    ChartMWQMSiteFCSalTempComponent,
+    ChartMWQMSiteFCStatsComponent,
     ContactItemComponent,
     CountryItemComponent,
     CountryTVItemListDetailComponent,
@@ -190,9 +201,12 @@ import { TableCardComponent } from './components/table/table-card/table-card.com
     SubsectorTVItemListDetailComponent,
     SubsectorTVItemListItemComponent,
     SubsectorToolsItemComponent,
-    TableCardComponent,
-    TableFCStatComponent,
-    TableRunDataComponent,
+    TableBaseComponent,
+    TableMonitoringStatsByMonthComponent,
+    TableMonitoringStatsBySeasonComponent,
+    TableMonitoringStatsByYearComponent,
+    TableMWQMRunDataComponent,
+    TableMWQMSiteFCStatsComponent,
     TVItemCreateComponent,
     TVItemItemComponent,
     TVItemLastUpdateComponent,
@@ -224,9 +238,13 @@ import { TableCardComponent } from './components/table/table-card/table-card.com
     AreaTVItemListDetailComponent,
     AreaTVItemListItemComponent,
     BreadCrumbComponent,
-    ChartCardComponent,
-    ChartFCSalTempComponent,
-    ChartFCStatComponent,
+    ChartBaseComponent,
+    ChartMonitoringStatsByMonthComponent,
+    ChartMonitoringStatsBySeasonComponent,
+    ChartMonitoringStatsByYearComponent,
+    ChartMWQMRunDataComponent,
+    ChartMWQMSiteFCSalTempComponent,
+    ChartMWQMSiteFCStatsComponent,
     ContactItemComponent,
     CountryItemComponent,
     CountryTVItemListDetailComponent,
@@ -301,9 +319,12 @@ import { TableCardComponent } from './components/table/table-card/table-card.com
     SubsectorTVItemListDetailComponent,
     SubsectorTVItemListItemComponent,
     SubsectorToolsItemComponent,
-    TableCardComponent,
-    TableFCStatComponent,
-    TableRunDataComponent,
+    TableBaseComponent,
+    TableMonitoringStatsByMonthComponent,
+    TableMonitoringStatsBySeasonComponent,
+    TableMonitoringStatsByYearComponent,
+    TableMWQMRunDataComponent,
+    TableMWQMSiteFCStatsComponent,
     TVItemCreateComponent,
     TVItemItemComponent,
     TVItemLastUpdateComponent,

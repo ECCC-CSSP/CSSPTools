@@ -5408,11 +5408,14 @@ namespace CSSPEnums.Tests
                     case WebChartAndTableTypeEnum.MonitoringStatsBySeason:
                         Assert.Equal(CSSPCultureEnumsRes.WebChartAndTableTypeEnumMonitoringStatsBySeason, retStr);
                         break;
-                    case WebChartAndTableTypeEnum.FCSalTemp:
-                        Assert.Equal(CSSPCultureEnumsRes.WebChartAndTableTypeEnumFCSalTemp, retStr);
+                    case WebChartAndTableTypeEnum.MWQMSiteFCSalTempData:
+                        Assert.Equal(CSSPCultureEnumsRes.WebChartAndTableTypeEnumMWQMSiteFCSalTempData, retStr);
                         break;
-                    case WebChartAndTableTypeEnum.FCStats:
-                        Assert.Equal(CSSPCultureEnumsRes.WebChartAndTableTypeEnumFCStats, retStr);
+                    case WebChartAndTableTypeEnum.MWQMSiteFCStats:
+                        Assert.Equal(CSSPCultureEnumsRes.WebChartAndTableTypeEnumMWQMSiteFCStats, retStr);
+                        break;
+                    case WebChartAndTableTypeEnum.MWQMRunData:
+                        Assert.Equal(CSSPCultureEnumsRes.WebChartAndTableTypeEnumMWQMRunData, retStr);
                         break;
                 }
             }
@@ -9475,8 +9478,9 @@ namespace CSSPEnums.Tests
                      case WebChartAndTableTypeEnum.MonitoringStatsByYear:
                      case WebChartAndTableTypeEnum.MonitoringStatsByMonth:
                      case WebChartAndTableTypeEnum.MonitoringStatsBySeason:
-                     case WebChartAndTableTypeEnum.FCSalTemp:
-                     case WebChartAndTableTypeEnum.FCStats:
+                     case WebChartAndTableTypeEnum.MWQMSiteFCSalTempData:
+                     case WebChartAndTableTypeEnum.MWQMSiteFCStats:
+                     case WebChartAndTableTypeEnum.MWQMRunData:
                         Assert.Equal("", retStr);
                         break;
                     default:

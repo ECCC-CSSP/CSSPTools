@@ -1,0 +1,26 @@
+<button mat-raised-button [ngClass]="ChartVisible ? 'selected' : ''" (click)="ToggleChartVisible()">
+  <mat-icon>insights</mat-icon>
+  {{ buttonText }}
+</button>
+&nbsp;&nbsp;
+
+<ng-container *ngIf="ChartVisible" class="chartSize">
+  <app-chart-mwqm-site-fc-sal-temp *ngIf="webChartAndTableType == WebChartAndTableType.MWQMSiteFCSalTempData"
+    [TVItemModel]="TVItemModel" [webChartAndTableType]="webChartAndTableType">
+  </app-chart-mwqm-site-fc-sal-temp>
+  <app-chart-mwqm-site-fc-stats *ngIf="webChartAndTableType == WebChartAndTableType.MWQMSiteFCStats"
+    [TVItemModel]="TVItemModel" [webChartAndTableType]="webChartAndTableType">
+  </app-chart-mwqm-site-fc-stats>
+  <app-chart-monitoring-stats-by-month *ngIf="webChartAndTableType == WebChartAndTableType.MonitoringStatsByMonth"
+    [TVItemModel]="TVItemModel" [webChartAndTableType]="webChartAndTableType">
+  </app-chart-monitoring-stats-by-month>
+  <app-chart-monitoring-stats-by-season *ngIf="webChartAndTableType == WebChartAndTableType.MonitoringStatsBySeason"
+    [TVItemModel]="TVItemModel" [webChartAndTableType]="webChartAndTableType">
+  </app-chart-monitoring-stats-by-season>
+  <app-chart-monitoring-stats-by-year *ngIf="webChartAndTableType == WebChartAndTableType.MonitoringStatsByYear"
+    [TVItemModel]="TVItemModel" [webChartAndTableType]="webChartAndTableType">
+  </app-chart-monitoring-stats-by-year>
+  <app-chart-mwqm-run-data *ngIf="webChartAndTableType == WebChartAndTableType.MWQMRunData"
+    [TVItemModel]="TVItemModel" [webChartAndTableType]="webChartAndTableType">
+  </app-chart-mwqm-run-data>
+</ng-container>
