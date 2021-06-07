@@ -110,7 +110,7 @@
 </app-municipality-tvitem-list-item>
 
 <app-file-list *ngIf="appStateService.UserPreference.ProvinceSubComponent == provinceSubComponentEnum.Files"
-    [TVFileModelListList]="structureTVFileListService.StructureTVFileList(tvTypeEnum.Province, appLoadedService.WebProvince?.TVFileModelList)"
+    [TVFileModelByPurposeList]="structureTVFileListService.StructureTVFileList(tvTypeEnum.Province, appLoadedService.WebProvince?.TVFileModelList)"
     [FilesSortByProp]="appStateService.UserPreference.ProvinceFilesSortByProp">
 </app-file-list>
 

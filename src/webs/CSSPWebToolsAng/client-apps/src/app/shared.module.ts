@@ -107,6 +107,7 @@ import { TableMonitoringStatsByMonthComponent } from './components/table/table-m
 import { TableMonitoringStatsBySeasonComponent } from './components/table/table-monitoring-stats-by-season/table-monitoring-stats-by-season.component';
 import { TableMonitoringStatsByYearComponent } from './components/table/table-monitoring-stats-by-year/table-monitoring-stats-by-year.component';
 import { TableMWQMRunDataComponent } from './components/table/table-mwqm-run-data/table-mwqm-run-data.component';
+import { FileListByPurposeComponent } from './components/files/file-list-by-purpose/file-list-by-purpose.component';
 
 @NgModule({
   declarations: [
@@ -134,6 +135,7 @@ import { TableMWQMRunDataComponent } from './components/table/table-mwqm-run-dat
     ErrorComponent,
     ExportArcGISComponent,
     FileListComponent,
+    FileListByPurposeComponent,
     FileListItemComponent,
     FileListItemCreateComponent,
     FileListItemDetailComponent,
@@ -253,6 +255,7 @@ import { TableMWQMRunDataComponent } from './components/table/table-mwqm-run-dat
     ErrorComponent,
     ExportArcGISComponent,
     FileListComponent,
+    FileListByPurposeComponent,
     FileListItemCreateComponent,
     FileListItemDetailComponent,
     FileListItemLastUpdateComponent,

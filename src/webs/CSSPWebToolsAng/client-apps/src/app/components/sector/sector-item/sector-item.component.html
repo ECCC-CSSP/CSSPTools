@@ -67,6 +67,6 @@
 </app-subsector-tvitem-list-item>
 
 <app-file-list *ngIf="appStateService.UserPreference.SectorSubComponent == sectorSubComponentEnum.Files"
-    [TVFileModelListList]="structureTVFileListService.StructureTVFileList(tvTypeEnum.Sector, appLoadedService.WebSector?.TVFileModelList)"
+    [TVFileModelByPurposeList]="structureTVFileListService.StructureTVFileList(tvTypeEnum.Sector, appLoadedService.WebSector?.TVFileModelList)"
     [FilesSortByProp]="appStateService.UserPreference.SectorFilesSortByProp">
 </app-file-list>

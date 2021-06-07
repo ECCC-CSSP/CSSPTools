@@ -97,7 +97,7 @@
 </app-province-tvitem-list-item>
 
 <app-file-list *ngIf="appStateService.UserPreference.CountrySubComponent == countrySubComponentEnum.Files"
-    [TVFileModelListList]="structureTVFileListService.StructureTVFileList(tvTypeEnum.Country, appLoadedService.WebCountry?.TVFileModelList)"
+    [TVFileModelByPurposeList]="structureTVFileListService.StructureTVFileList(tvTypeEnum.Country, appLoadedService.WebCountry?.TVFileModelList)"
     [FilesSortByProp]="appStateService.UserPreference.CountryFilesSortByProp">
 </app-file-list>
 

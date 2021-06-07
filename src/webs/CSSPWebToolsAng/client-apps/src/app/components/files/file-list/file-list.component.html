@@ -1,29 +1,8 @@
-<div *ngFor="let TVFileModelList of TVFileModelListList">
-    <ng-container *ngFor="let tvFileModel of TVFileModelList; let i = index">
-        <h2 class="file-purpose" *ngIf="i == 0">{{ GetFilePurposeEnum_GetIDText(tvFileModel?.TVFile?.FilePurpose) }}
-        </h2>
-    </ng-container>
-    <div *ngIf="TVFileModelList != null && TVFileModelList?.length > 0">
-        <div *ngFor="let tvFileModel of TVFileModelList; let i = index">
-            <button mat-button ngClass="{{ showTVFileService.TVFileVisible(tvFileModel) ? 'selected' : '' }}"
-                (click)="showTVFileService.ToggleShowTVFile(tvFileModel)"
-                title="{{ appLanguageService.MoreInformationForViewingOrEditing[appLanguageService.LangID] }}">
-
-                <mat-icon>menu</mat-icon>
-            </button>
-
-            <app-file-list-item [FilesSortByProp]="FilesSortByProp" [Index]='(i + 1)' [TVFileModel]="tvFileModel">
-            </app-file-list-item>
-
-            <app-file-list-item-view *ngIf="showTVFileService.TVFileVisible(tvFileModel)" [TVFileModel]="tvFileModel">
-            </app-file-list-item-view>
-
-            <app-file-list-item-modify *ngIf="appStateService.UserPreference.EditVisible" [TVFileModel]="tvFileModel">
-            </app-file-list-item-modify>
-
-            <app-file-list-item-create *ngIf="appStateService.UserPreference.EditVisible" [TVFileModel]="tvFileModel">
-            </app-file-list-item-create>
-
-        </div>
+<div *ngFor="let tvFileModelByPurpose of TVFileModelByPurposeList">
+    <h2 class="file-purpose">{{ GetFilePurposeEnum_GetIDText(tvFileModelByPurpose.FilePurpose) }}
+    </h2>
+    <div *ngFor="let tvFileModel of tvFileModelByPurpose.TVFileModelList; let i = index">
+        <app-file-list-by-purpose [TVFileModel]="tvFileModel" [FilesSortByProp]="FilesSortByProp" [Index]='(i + 1)'>
+        </app-file-list-by-purpose>
     </div>
 </div>

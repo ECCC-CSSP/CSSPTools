@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-
 import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model';
 import { AppLanguageService } from 'src/app/services/app-language.service';
 import { AppLoadedService } from 'src/app/services/app-loaded.service';
@@ -27,4 +26,8 @@ export class FileListItemMenuComponent implements OnInit, OnDestroy {
   {
   }
 
+  ToggleShowTVFile(TVFileModel)
+  {
+    this.showTVFileService.ToggleShowTVFile(TVFileModel);
+  }
 }

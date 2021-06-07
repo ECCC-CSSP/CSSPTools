@@ -74,7 +74,7 @@
 </app-country-tvitem-list-item>
 
 <app-file-list *ngIf="appStateService.UserPreference.RootSubComponent == rootSubComponentEnum.Files"
-    [TVFileModelListList]="structureTVFileListService.StructureTVFileList(tvTypeEnum.Root, appLoadedService.WebRoot?.TVFileModelList)"
+    [TVFileModelByPurposeList]="structureTVFileListService.StructureTVFileList(tvTypeEnum.Root, appLoadedService.WebRoot?.TVFileModelList)"
     [FilesSortByProp]="appStateService.UserPreference.RootFilesSortByProp">
 </app-file-list>
 

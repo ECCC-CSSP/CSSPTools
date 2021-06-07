@@ -99,7 +99,7 @@
 </app-mike-scenario-tvitem-list-item>
 
 <app-file-list *ngIf="appStateService.UserPreference.MunicipalitySubComponent == municipalitySubComponentEnum.Files"
-    [TVFileModelListList]="structureTVFileListService.StructureTVFileList(tvTypeEnum.Municipality, appLoadedService.WebMunicipality?.TVFileModelList)"
+    [TVFileModelByPurposeList]="structureTVFileListService.StructureTVFileList(tvTypeEnum.Municipality, appLoadedService.WebMunicipality?.TVFileModelList)"
     [FilesSortByProp]="appStateService.UserPreference.MunicipalityFilesSortByProp">
 </app-file-list>
 

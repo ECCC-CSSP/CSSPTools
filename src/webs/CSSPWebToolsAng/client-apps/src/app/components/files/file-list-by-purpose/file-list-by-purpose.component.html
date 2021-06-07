@@ -1,0 +1,13 @@
+<button mat-raised-button (click)="testing()">testing</button>
+
+<app-file-list-item-menu [TVFileModel]="TVFileModel"></app-file-list-item-menu>
+
+<app-file-list-item [FilesSortByProp]="FilesSortByProp" [Index]='Index' [TVFileModel]="TVFileModel">
+</app-file-list-item>
+
+<app-file-list-item-menu-open [TVFileModel]="TVFileModel"></app-file-list-item-menu-open>
+
+<app-file-list-item-detail *ngIf="appStateService.UserPreference.DetailVisible" [TVFileModel]="TVFileModel">
+</app-file-list-item-detail>
+<app-file-list-item-last-update *ngIf="appStateService.UserPreference.LastUpdateVisible" [TVFileModel]="TVFileModel">
+</app-file-list-item-last-update>

@@ -14,6 +14,10 @@ import { ShowTVFileService } from 'src/app/services/helpers/show-tvfile.service'
 export class FileListItemMenuOpenComponent implements OnInit, OnDestroy {
   @Input() TVFileModel: TVFileModel;
 
+  ShowView: boolean = true;
+  ShowModify: boolean = false;
+  ShowCreate: boolean = false;
+  
   constructor(public appStateService: AppStateService,
     public appLoadedService: AppLoadedService,
     public appLanguageService: AppLanguageService,

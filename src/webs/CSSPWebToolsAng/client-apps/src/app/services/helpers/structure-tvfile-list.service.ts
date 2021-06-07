@@ -10,6 +10,7 @@ import { FilesSortPropEnum } from 'src/app/enums/generated/FilesSortPropEnum';
 import { DateFormatService } from './date-format.service';
 import { PredicateDescByService } from './predicate-desc-by.service';
 import { TVFileID_Text_Sort } from 'src/app/models/generated/web/TVFileID_Text_Sort.model';
+import { TVFileModelByPurpose } from 'src/app/models/generated/web/TVFileModelByPurpose.model';
 
 @Injectable({
   providedIn: 'root'
@@ -22,10 +23,10 @@ export class StructureTVFileListService {
     private predicateDescByService: PredicateDescByService) {
   }
 
-  StructureTVFileList(tvTypeEnum: TVTypeEnum, TVFileModelList: TVFileModel[]): TVFileModel[][] {
-    if (!TVFileModelList) return [[]];
+  StructureTVFileList(tvTypeEnum: TVTypeEnum, TVFileModelList: TVFileModel[]): TVFileModelByPurpose[] {
+    if (!TVFileModelList) return [];
 
-    let tvFileModelListList: TVFileModel[][] = [[]];
+    let tvFileModelByPurposeList: TVFileModelByPurpose[] = [];
     let arrFile2: TVFileID_Text_Sort[] = [];
     let sortable: TVFileID_Text_Sort[] = [];
     let enumIDAndTextList: EnumIDAndText[] = FilePurposeEnum_GetOrderedText(this.appLanguageService);
@@ -132,11 +133,15 @@ export class StructureTVFileListService {
           }
         }
 
-        tvFileModelListList.push(tvFileModelSortedList);
+        let tvFileModelByPurpose: TVFileModelByPurpose = new TVFileModelByPurpose();
+        tvFileModelByPurpose.FilePurpose = tvFileModelSortedList[0].TVFile.FilePurpose;
+        tvFileModelByPurpose.TVFileModelList = tvFileModelSortedList;            
+
+        tvFileModelByPurposeList.push(tvFileModelByPurpose);
       }
     }
 
-    return tvFileModelListList;
+    return tvFileModelByPurposeList;
   }
 
   pad(n: number, width: number, z?: string) {

@@ -1,4 +1,4 @@
-<a href="{{ GetURL() }}">
+<!-- <a href="{{ GetURL() }}">
     <img src="{{ fileIconService.GetFileIcon(TVFileModel) }}" />
     <span>&nbsp;&nbsp;</span>
     <ng-container *ngIf="FilesSortByProp == filesSortByProp.FileName">
@@ -29,7 +29,13 @@
         <span>| {{ TVFileModel?.TVFile?.FileSize_kb }} </span>
         <span>{{ appLanguageService.KB[appLanguageService.LangID] }}</span>
     </ng-container>
-</a>
+</a> -->
+<span>
+    <span>{{ Index }} - {{ dateFormatService.GetTVFileCreateDateTime_LocalDigit(TVFileModel?.TVFile) }} </span>
+    <span>| {{ TVFileModel?.TVFile?.ServerFileName }} </span>
+    <span>| {{ TVFileModel?.TVFile?.FileSize_kb }} </span>
+    <span>{{ appLanguageService.KB[appLanguageService.LangID] }}</span>
+</span>
 
 <app-file-list-item-detail *ngIf="appStateService.UserPreference.DetailVisible" [TVFileModel]="TVFileModel">
 </app-file-list-item-detail>

@@ -1,10 +1,42 @@
-<ng-container>
-    <app-file-list-item-view *ngIf="!appStateService.UserPreference.EditVisible" [TVFileModel]="TVFileModel">
-    </app-file-list-item-view>
+<ng-container *ngIf="showTVFileService.TVFileVisible(TVFileModel)">
+    <p>
+        <button mat-raised-button (click)="ShowView = !ShowView" [ngClass]="ShowView ? 'selected' : ''">
+            View
+        </button>
+        <span>&nbsp;&nbsp;</span>
+        <button mat-raised-button (click)="ShowModify = !ShowModify" [ngClass]="ShowModify ? 'selected' : ''">
+            Modify
+        </button>
+        <span>&nbsp;&nbsp;</span>
+        <button mat-raised-button (click)="ShowCreate = !ShowCreate" [ngClass]="ShowCreate ? 'selected' : ''">
+            Create
+        </button>
+    </p>
+    <mat-card *ngIf="ShowView">
+        <mat-card-header>
+            <h3>View</h3>
+        </mat-card-header>
+        <mat-card-content>
+            <app-file-list-item-view [TVFileModel]="TVFileModel"> </app-file-list-item-view>
+        </mat-card-content>
+    </mat-card>
+    <p *ngIf="ShowView && ShowModify">&nbsp;</p>
+    <mat-card *ngIf="ShowModify">
+        <mat-card-header>
+            <h3>Modify</h3>
+        </mat-card-header>
+        <mat-card-content>
+            <app-file-list-item-modify [TVFileModel]="TVFileModel"> </app-file-list-item-modify>
+        </mat-card-content>
+    </mat-card>
+    <p *ngIf="(ShowView || ShowModify) && ShowCreate">&nbsp;</p>
+    <mat-card *ngIf="ShowCreate">
+        <mat-card-header>
+            <h3>Create</h3>
+        </mat-card-header>
+        <mat-card-content>
+            <app-file-list-item-create [TVFileModel]="TVFileModel"> </app-file-list-item-create>
+        </mat-card-content>
+    </mat-card>
 
-    <app-file-list-item-modify *ngIf="appStateService.UserPreference.EditVisible" [TVFileModel]="TVFileModel">
-    </app-file-list-item-modify>
-
-    <app-file-list-item-create *ngIf="appStateService.UserPreference.EditVisible" [TVFileModel]="TVFileModel">
-    </app-file-list-item-create>
 </ng-container>
