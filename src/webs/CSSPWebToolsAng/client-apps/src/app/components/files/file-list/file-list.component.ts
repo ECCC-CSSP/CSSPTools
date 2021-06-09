@@ -39,7 +39,8 @@ export class FileListComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
   }
 
-  GetFilePurposeEnum_GetIDText(filePurposeEnum: number): string {
-    return FilePurposeEnum_GetIDText(filePurposeEnum, this.appLanguageService);
+  testing()
+  {
+    alert("bonjour");
   }
 }

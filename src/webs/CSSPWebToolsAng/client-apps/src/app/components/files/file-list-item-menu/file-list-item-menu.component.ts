@@ -22,12 +22,6 @@ export class FileListItemMenuComponent implements OnInit, OnDestroy {
   ngOnInit() {
   }
 
-  ngOnDestroy()
-  {
-  }
-
-  ToggleShowTVFile(TVFileModel)
-  {
-    this.showTVFileService.ToggleShowTVFile(TVFileModel);
+  ngOnDestroy() {
   }
 }

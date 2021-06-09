@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { AscDescEnum, GetAscDescEnum } from 'src/app/enums/generated/AscDescEnum';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { GetAscDescEnum } from 'src/app/enums/generated/AscDescEnum';
 import { GetFilesSortPropEnum } from 'src/app/enums/generated/FilesSortPropEnum';
 import { GetSortOrderAngularEnum } from 'src/app/enums/generated/SortOrderAngularEnum';
 import { GetSubsectorSubComponentEnum } from 'src/app/enums/generated/SubsectorSubComponentEnum';

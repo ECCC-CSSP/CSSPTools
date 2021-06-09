@@ -1,8 +1,5 @@
 <div *ngFor="let tvFileModelByPurpose of TVFileModelByPurposeList">
-    <h2 class="file-purpose">{{ GetFilePurposeEnum_GetIDText(tvFileModelByPurpose.FilePurpose) }}
-    </h2>
-    <div *ngFor="let tvFileModel of tvFileModelByPurpose.TVFileModelList; let i = index">
-        <app-file-list-by-purpose [TVFileModel]="tvFileModel" [FilesSortByProp]="FilesSortByProp" [Index]='(i + 1)'>
-        </app-file-list-by-purpose>
-    </div>
+    <button mat-raised-button (click)="testing()">testing</button>
+    <app-file-list-by-purpose [TVFileModelByPurpose]="tvFileModelByPurpose" [FilesSortByProp]="FilesSortByProp">
+    </app-file-list-by-purpose>
 </div>
