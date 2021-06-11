@@ -191,6 +191,13 @@ namespace CSSPEnums
         Ascending = 1,
         Descending = 2
     }
+    public enum DBCommandEnum
+    {
+        Original = 1,
+        Modified = 2,
+        Created = 3,
+        Deleted = 4,
+    }
     public enum BeaufortScaleEnum
     {
         Calm = 0,
@@ -455,13 +462,6 @@ namespace CSSPEnums
         enAndfr = 3,
         es = 4,
     }
-    public enum DBCommandEnum
-    {
-        Original = 1,
-        Modified = 2,
-        Created = 3,
-        Deleted = 4,
-    }
     public enum LogCommandEnum
     {
         Add = 1,
@@ -511,19 +511,12 @@ namespace CSSPEnums
         April = 4,
         May = 5,
         June = 6,
-        July = 7, 
+        July = 7,
         August = 8,
         September = 9,
         October = 10,
         November = 11,
         December = 12,
-    }
-    public enum SeasonEnum
-    {
-        Winter = 1,
-        Spring = 2,
-        Summer = 3,
-        Fall = 4,
     }
     public enum MWQMRunSubComponentEnum
     {
@@ -933,6 +926,13 @@ namespace CSSPEnums
         u = 34,
         notag = 35,
         fcsv = 36,
+    }
+    public enum SeasonEnum
+    {
+        Winter = 1,
+        Spring = 2,
+        Summer = 3,
+        Fall = 4,
     }
     public enum SecondaryTreatmentTypeEnum
     {

@@ -34,7 +34,7 @@ namespace ScrambleServices.Tests
         {
             Configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-                .AddJsonFile("appsettings_csspscrambleServicestests.json")
+                .AddJsonFile("appsettings_csspscrambleservicestests.json")
                 .Build();
 
             Services = new ServiceCollection();

@@ -1,6 +1,6 @@
 import { ViewChild, Component, OnInit, OnDestroy, Input } from '@angular/core';
 
-import { AppStateService } from 'src/app/services/app-state.service';
+import { AppStateService } from 'src/app/services/app/app-state.service';
 import { MapService } from 'src/app/services/map/map.service';
 
 @Component({

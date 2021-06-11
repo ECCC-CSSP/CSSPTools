@@ -7,10 +7,10 @@ import { PolSourceObservationModel } from 'src/app/models/generated/web/PolSourc
 import { PolSourceSiteModel } from 'src/app/models/generated/web/PolSourceSiteModel.model';
 import { StatMWQMSite } from 'src/app/models/generated/web/StatMWQMSite.model';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
-import { AppLoadedService } from 'src/app/services/app-loaded.service';
-import { AppStateService } from 'src/app/services/app-state.service';
+import { AppLoadedService } from 'src/app/services/app/app-loaded.service';
+import { AppStateService } from 'src/app/services/app/app-state.service';
 import { MapHelperService } from 'src/app/services/map/map-helper.service';
-import { AppLanguageService } from '../app-language.service';
+import { AppLanguageService } from '../app/app-language.service';
 
 @Injectable({
   providedIn: 'root'
@@ -160,7 +160,11 @@ export class MapMarkersService {
       };
     }
 
-    this.appLoadedService.GoogleMarkerListMVC = new google.maps.MVCArray<google.maps.Marker>(markerList);
+    for (let i = 0, count = markerList.length; i < count; i++) {
+      this.appLoadedService.GoogleMarkerListMVC.push(markerList[i]);
+    }
+
+    //this.appLoadedService.GoogleMarkerListMVC = new google.maps.MVCArray<google.maps.Marker>(markerList);
   }
 
   GetMapInfoCoord(mapInfoModel: MapInfoModel): google.maps.LatLng {

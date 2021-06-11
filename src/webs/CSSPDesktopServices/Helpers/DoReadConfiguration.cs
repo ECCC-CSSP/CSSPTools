@@ -93,6 +93,13 @@ namespace CSSPDesktopServices.Services
                 return await Task.FromResult(false);
             }
 
+            CSSPTempFilesPath = Configuration.GetValue<string>("CSSPTempFilesPath");
+            if (string.IsNullOrWhiteSpace(CSSPTempFilesPath))
+            {
+                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes._CouldNotBeFoundInConfigurationFile_, "CSSPOtherFilesPath", "appsettings_csspdesktop.json")));
+                return await Task.FromResult(false);
+            }
+
             AzureStoreCSSPWebAPIsLocalPath = Configuration.GetValue<string>("AzureStoreCSSPWebAPIsLocalPath");
             if (string.IsNullOrWhiteSpace(AzureStoreCSSPWebAPIsLocalPath))
             {

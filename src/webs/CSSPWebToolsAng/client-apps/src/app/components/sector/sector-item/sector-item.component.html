@@ -35,31 +35,7 @@
             }}&nbsp;&nbsp;
         </span>
     </span>
-    <span mat-button [matMenuTriggerFor]="menu" title="{{ appLanguageService.FileName[appLanguageService.LangID] }}">&nbsp;&nbsp;
-        <span *ngIf="appStateService.UserPreference.SectorFilesSortByProp == filesSortPropEnum.FileName" 
-        title="{{ appLanguageService.SortedBy[appLanguageService.LangID] }} {{ appLanguageService.FileName[appLanguageService.LangID] }}">
-            ({{ appLanguageService.FileNameAccro[appLanguageService.LangID] }})
-        </span>
-        <span *ngIf="appStateService.UserPreference.SectorFilesSortByProp == filesSortPropEnum.FileType" 
-        title="{{ appLanguageService.SortedBy[appLanguageService.LangID] }} {{ appLanguageService.FileType[appLanguageService.LangID] }}">
-            ({{ appLanguageService.FileTypeAccro[appLanguageService.LangID] }})
-        </span>
-        <span *ngIf="appStateService.UserPreference.SectorFilesSortByProp == filesSortPropEnum.FileSize" 
-        title="{{ appLanguageService.SortedBy[appLanguageService.LangID] }} {{ appLanguageService.FileSize[appLanguageService.LangID] }}">
-            ({{ appLanguageService.FileSizeAccro[appLanguageService.LangID] }})
-        </span>
-        <span *ngIf="appStateService.UserPreference.SectorFilesSortByProp == filesSortPropEnum.FileDate" 
-        title="{{ appLanguageService.SortedBy[appLanguageService.LangID] }} {{ appLanguageService.FileDate[appLanguageService.LangID] }}">
-            ({{ appLanguageService.FileDateAccro[appLanguageService.LangID] }})
-        </span>
-    </span>
-    <mat-menu #menu="matMenu">
-        <h2  mat-menu-item >{{ appLanguageService.SortBy[appLanguageService.LangID] }}</h2>
-        <button mat-menu-item (click)="appStateService.UserPreference.SectorFilesSortByProp = filesSortPropEnum.FileName">{{ appLanguageService.FileName[appLanguageService.LangID] }}</button>
-        <button mat-menu-item (click)="appStateService.UserPreference.SectorFilesSortByProp = filesSortPropEnum.FileType">{{ appLanguageService.FileType[appLanguageService.LangID] }}</button>
-        <button mat-menu-item (click)="appStateService.UserPreference.SectorFilesSortByProp = filesSortPropEnum.FileSize">{{ appLanguageService.FileSize[appLanguageService.LangID] }}</button>
-        <button mat-menu-item (click)="appStateService.UserPreference.SectorFilesSortByProp = filesSortPropEnum.FileDate">{{ appLanguageService.FileDate[appLanguageService.LangID] }}</button>
-    </mat-menu>
+    <app-file-sort-menu [TVType]="tvTypeEnum.Sector"></app-file-sort-menu>
 </button>
 
 <app-subsector-tvitem-list-item *ngIf="appStateService.UserPreference.SectorSubComponent == sectorSubComponentEnum.Subsectors"
@@ -67,6 +43,5 @@
 </app-subsector-tvitem-list-item>
 
 <app-file-list *ngIf="appStateService.UserPreference.SectorSubComponent == sectorSubComponentEnum.Files"
-    [TVFileModelByPurposeList]="structureTVFileListService.StructureTVFileList(tvTypeEnum.Sector, appLoadedService.WebSector?.TVFileModelList)"
-    [FilesSortByProp]="appStateService.UserPreference.SectorFilesSortByProp">
+    [TVType]="tvTypeEnum.Sector">
 </app-file-list>

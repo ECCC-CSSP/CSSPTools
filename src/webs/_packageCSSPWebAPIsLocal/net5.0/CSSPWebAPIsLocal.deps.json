@@ -37,6 +37,7 @@
           "CSSPDBCommandLogModels": "1.0.0",
           "CSSPDBLocalServices": "1.0.0",
           "CSSPDBServices": "1.0.0",
+          "CSSPLocalFileInfoServices": "1.0.0",
           "CSSPReadGzFileServices": "1.0.0",
           "CSSPWebModels": "1.0.0",
           "Microsoft.AspNetCore.Authentication.Certificate": "5.0.3",
@@ -2045,6 +2046,17 @@
         },
         "compile": {
           "CSSPHelperServices.dll": {}
+        }
+      },
+      "CSSPLocalFileInfoServices/1.0.0": {
+        "dependencies": {
+          "CSSPWebModels": "1.0.0"
+        },
+        "runtime": {
+          "CSSPLocalFileInfoServices.dll": {}
+        },
+        "compile": {
+          "CSSPLocalFileInfoServices.dll": {}
         }
       },
       "CSSPLoggedInServices/1.0.0": {
@@ -4746,6 +4758,11 @@
       "sha512": ""
     },
     "CSSPHelperServices/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "CSSPLocalFileInfoServices/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

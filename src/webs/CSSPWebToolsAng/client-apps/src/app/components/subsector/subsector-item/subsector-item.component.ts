@@ -4,18 +4,16 @@ import { GetFilesSortPropEnum } from 'src/app/enums/generated/FilesSortPropEnum'
 import { GetSortOrderAngularEnum } from 'src/app/enums/generated/SortOrderAngularEnum';
 import { GetSubsectorSubComponentEnum } from 'src/app/enums/generated/SubsectorSubComponentEnum';
 import { GetTVTypeEnum, TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
-import { WebTypeEnum } from 'src/app/enums/generated/WebTypeEnum';
-import { WebMWQMSites } from 'src/app/models/generated/web/WebMWQMSites.model';
-import { AppLanguageService } from 'src/app/services/app-language.service';
-import { AppLoadedService } from 'src/app/services/app-loaded.service';
-import { AppStateService } from 'src/app/services/app-state.service';
+import { AppLanguageService } from 'src/app/services/app/app-language.service';
+import { AppLoadedService } from 'src/app/services/app/app-loaded.service';
+import { AppStateService } from 'src/app/services/app/app-state.service';
 import { ComponentShowService } from 'src/app/services/helpers/component-show.service';
-import { FilterService } from 'src/app/services/helpers/filter.service';
-import { LoadListService } from 'src/app/services/helpers/loading-list.service';
+import { FilterService } from 'src/app/services/tvitem/filter.service';
 import { SortTVItemListService } from 'src/app/services/helpers/sort-tvitem-list.service';
 import { StatCountService } from 'src/app/services/helpers/stat-count.service';
-import { StructureTVFileListService } from 'src/app/services/helpers/structure-tvfile-list.service';
-import { LoaderService } from 'src/app/services/loaders/loader.service';
+import { JsonLoadListService } from 'src/app/services/json/json-loading-list.service';
+import { JsonLoadAllService } from 'src/app/services/json';
+import { TVFileModelByPurposeService } from 'src/app/services/file';
 
 @Component({
   selector: 'app-subsector-item',
@@ -32,17 +30,17 @@ export class SubsectorItemComponent implements OnInit, OnDestroy {
   constructor(public appStateService: AppStateService,
     public appLoadedService: AppLoadedService,
     public appLanguageService: AppLanguageService,
-    public loaderService: LoaderService,
-    private loadListService: LoadListService,
+    public jsonLoadAllService: JsonLoadAllService,
+    private jsonLoadListService: JsonLoadListService,
     public statCountService: StatCountService,
     public sortTVItemListService: SortTVItemListService,
     public filterService: FilterService,
     public componentShowService: ComponentShowService,
-    public structureTVFileListService: StructureTVFileListService) { }
+    public tvFileModelByPurposeService: TVFileModelByPurposeService) { }
 
   ngOnInit(): void {
-    this.loadListService.SetToLoadList(TVTypeEnum.Subsector, this.appStateService.UserPreference.CurrentSubsectorTVItemID, false);
-    this.loaderService.LoadAll();
+    this.jsonLoadListService.SetToLoadList(TVTypeEnum.Subsector, this.appStateService.UserPreference.CurrentSubsectorTVItemID, false);
+    this.jsonLoadAllService.LoadAll();
   }
 
   ngOnDestroy(): void {

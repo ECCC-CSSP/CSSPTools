@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GetWebChartAndTableTypeEnum } from 'src/app/enums/generated/WebChartAndTableTypeEnum';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
-import { AppLanguageService } from 'src/app/services/app-language.service';
+import { AppLanguageService } from 'src/app/services/app/app-language.service';
 
-import { AppLoadedService } from 'src/app/services/app-loaded.service';
-import { AppStateService } from 'src/app/services/app-state.service';
+import { AppLoadedService } from 'src/app/services/app/app-loaded.service';
+import { AppStateService } from 'src/app/services/app/app-state.service';
 import { SubPageService } from 'src/app/services/helpers/sub-page.service';
 
 @Component({

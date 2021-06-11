@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
+import { count } from 'rxjs/operators';
 import { MapInfoDrawTypeEnum } from 'src/app/enums/generated/MapInfoDrawTypeEnum';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
-import { AppLoadedService } from 'src/app/services/app-loaded.service';
-import { AppStateService } from 'src/app/services/app-state.service';
+import { AppLoadedService } from 'src/app/services/app/app-loaded.service';
+import { AppStateService } from 'src/app/services/app/app-state.service';
 import { MapHelperService } from 'src/app/services/map/map-helper.service';
 
 @Injectable({
@@ -47,9 +48,9 @@ export class MapPolygonsService {
               (<HTMLInputElement>document.getElementById("CurrentLatLng")).value = (evt.latLng.lat().toString().substring(0, 8) +
                 ' ' + evt.latLng.lng().toString().substring(0, 8));
             }
-            else{
+            else {
               (<HTMLInputElement>document.getElementById("CurrentLatLng")).value = (this.appStateService.MarkerDragStartPos.lat().toFixed(6) +
-              ' ' + this.appStateService.MarkerDragStartPos.lng().toFixed(6));
+                ' ' + this.appStateService.MarkerDragStartPos.lng().toFixed(6));
             }
           });
 
@@ -57,6 +58,9 @@ export class MapPolygonsService {
       };
     }
 
-    this.appLoadedService.GooglePolygonListMVC = new google.maps.MVCArray<google.maps.Polygon>(polygonList);
+    for (let i = 0, count = polygonList.length; i < count; i++) {
+      this.appLoadedService.GooglePolygonListMVC.push(polygonList[i]);
+    }
+
   }
 }

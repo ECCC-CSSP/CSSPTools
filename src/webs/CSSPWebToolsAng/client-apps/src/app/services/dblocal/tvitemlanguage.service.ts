@@ -2,11 +2,11 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { Injectable } from '@angular/core';
 import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { AppLoadedService } from 'src/app/services/app-loaded.service';
-import { AppStateService } from 'src/app/services/app-state.service';
+import { AppLoadedService } from 'src/app/services/app/app-loaded.service';
+import { AppStateService } from 'src/app/services/app/app-state.service';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 
-import { AppLanguageService } from '../app-language.service';
+import { AppLanguageService } from '../app/app-language.service';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { TVItemLanguage } from 'src/app/models/generated/db/TVItemLanguage.model';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';

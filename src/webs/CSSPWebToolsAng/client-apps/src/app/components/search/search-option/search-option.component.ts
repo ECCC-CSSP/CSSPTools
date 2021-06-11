@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
-import { AppLanguageService } from 'src/app/services/app-language.service';
+import { AppLanguageService } from 'src/app/services/app/app-language.service';
 import { TypeIconService } from 'src/app/services/helpers/type-icon.service';
 import { TypeTextService } from 'src/app/services/helpers/type-text.service';
 

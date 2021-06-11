@@ -5,7 +5,7 @@
  *
  */
 
-import { AppLanguageService } from 'src/app/services/app-language.service';
+import { AppLanguageService } from 'src/app/services/app/app-language.service';
 import { EnumIDAndText } from 'src/app/models/generated/helper/EnumIDAndText.model';
 
 export enum LanguageEnum {

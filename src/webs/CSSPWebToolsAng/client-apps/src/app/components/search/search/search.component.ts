@@ -1,12 +1,12 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { FormControl } from '@angular/forms';
-import { AppLoadedService } from 'src/app/services/app-loaded.service';
-import { AppStateService } from 'src/app/services/app-state.service';
-import { AppLanguageService } from 'src/app/services/app-language.service';
-import { SearchService } from 'src/app/services/loaders/search.service';
+import { AppLoadedService } from 'src/app/services/app/app-loaded.service';
+import { AppStateService } from 'src/app/services/app/app-state.service';
+import { AppLanguageService } from 'src/app/services/app/app-language.service';
+import { SearchService } from 'src/app/services/search/search.service';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
-import { LoadListService } from 'src/app/services/helpers/loading-list.service';
+import { JsonLoadListService } from 'src/app/services/json/json-loading-list.service';
 
 @Component({
   selector: 'app-search',
@@ -25,7 +25,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     public appStateService: AppStateService,
     public appLanguageService: AppLanguageService,
     private searchService: SearchService,
-    public loadListService: LoadListService,
+    public jsonLoadListService: JsonLoadListService,
   ) {
   }
 

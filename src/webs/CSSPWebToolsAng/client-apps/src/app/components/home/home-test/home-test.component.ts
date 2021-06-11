@@ -1,13 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { AppStateService } from 'src/app/services/app-state.service';
-import { AppLoadedService } from 'src/app/services/app-loaded.service';
-import { AppLanguageService } from 'src/app/services/app-language.service';
-import { LoaderService } from 'src/app/services/loaders/loader.service';
+import { AppStateService } from 'src/app/services/app/app-state.service';
+import { AppLoadedService } from 'src/app/services/app/app-loaded.service';
+import { AppLanguageService } from 'src/app/services/app/app-language.service';
 import { WebTypeEnum } from 'src/app/enums/generated/WebTypeEnum';
 import { ShellSubComponentEnum } from 'src/app/enums/generated/ShellSubComponentEnum';
 import { SubsectorSubComponentEnum } from 'src/app/enums/generated/SubsectorSubComponentEnum';
 import { WebMWQMSites } from 'src/app/models/generated/web/WebMWQMSites.model';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
+import { JsonLoadAllService, JsonLoadListService } from 'src/app/services/json';
+import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 
 @Component({
   selector: 'app-home-test',
@@ -20,7 +21,8 @@ export class HomeTestComponent implements OnInit, OnDestroy {
   constructor(public appLoadedService: AppLoadedService,
     public appStateService: AppStateService,
     public appLanguageService: AppLanguageService,
-    private loaderService: LoaderService,
+    private jsonLoadAllService: JsonLoadAllService,
+    private jsonLoadListService: JsonLoadListService
   ) { }
 
   ngOnInit(): void {
@@ -34,7 +36,7 @@ export class HomeTestComponent implements OnInit, OnDestroy {
     this.appStateService.UserPreference.CurrentSubsectorTVItemID = 635;
     this.appStateService.UserPreference.ShellSubComponent = ShellSubComponentEnum.Subsector;
     this.appStateService.UserPreference.SubsectorSubComponent = SubsectorSubComponentEnum.MWQMSites;
-    this.loaderService.Load<WebMWQMSites>(WebTypeEnum.WebMWQMSites, false);
-
+    this.jsonLoadListService.SetToLoadList(TVTypeEnum.Subsector, 635, false);
+    this.jsonLoadAllService.LoadAll();
   }
 }

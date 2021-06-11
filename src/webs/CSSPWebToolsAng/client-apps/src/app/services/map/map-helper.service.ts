@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ClassificationTypeEnum } from 'src/app/enums/generated/ClassificationTypeEnum';
 import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
-import { AppLoadedService } from 'src/app/services/app-loaded.service';
-import { AppStateService } from 'src/app/services/app-state.service';
+import { AppLoadedService } from 'src/app/services/app/app-loaded.service';
+import { AppStateService } from 'src/app/services/app/app-state.service';
 
 @Injectable({
   providedIn: 'root'

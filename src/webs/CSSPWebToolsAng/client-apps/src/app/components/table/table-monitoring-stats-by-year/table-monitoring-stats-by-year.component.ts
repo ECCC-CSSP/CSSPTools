@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy, Input, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
-import { AppStateService } from 'src/app/services/app-state.service';
-import { AppLoadedService } from 'src/app/services/app-loaded.service';
-import { AppLanguageService } from 'src/app/services/app-language.service';
-import { LoggedInContactService } from 'src/app/services/loaders/logged-in-contact.service';
+import { AppStateService } from 'src/app/services/app/app-state.service';
+import { AppLoadedService } from 'src/app/services/app/app-loaded.service';
+import { AppLanguageService } from 'src/app/services/app/app-language.service';
+import { LoggedInContactService } from 'src/app/services/contact/logged-in-contact.service';
 import { Chart, registerables } from 'chart.js';
-import { TableService } from 'src/app/services/helpers/table.service';
+import { TableService } from 'src/app/services/table/table.service';
 import { WebChartAndTableTypeEnum } from 'src/app/enums/generated/WebChartAndTableTypeEnum';
 import { LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';

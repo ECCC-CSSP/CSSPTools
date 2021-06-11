@@ -1,4 +1,11 @@
 <p class="error" *ngIf="Error">
     {{ Error?.message }}
-    <button mat-button (click)="ClearErrorMessage()">X</button>
+    <button mat-button
+    [ngClass]="InnerErrorMessageVisible ? 'selected' : ''"
+    (click)="ToggleInnerErrorMessageVisibility()"><mat-icon>menu</mat-icon></button>
+    <button mat-button (click)="ClearErrorMessage()"><mat-icon>close</mat-icon></button>
+    <span *ngIf="Error?.error && InnerErrorMessageVisible">
+        <br /><br />
+        {{ Error?.error }}
+    </span>
 </p>

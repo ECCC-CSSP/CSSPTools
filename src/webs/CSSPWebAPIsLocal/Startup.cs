@@ -29,6 +29,8 @@ using FilesManagementServices;
 using CSSPDBLocalServices;
 using CreateGzFileServices;
 using CreateFileServices;
+using CSSPWebAPIsLocal.Controllers;
+using CSSPLocalFileInfoServices;
 
 namespace CSSPWebAPIsLocal
 {
@@ -127,6 +129,7 @@ namespace CSSPWebAPIsLocal
             services.AddScoped<ICreateGzFileService, CreateGzFileService>();
             services.AddScoped<ITVItemLocalService, TVItemLocalService>();
             services.AddScoped<ICreateFileService, CreateFileService>();
+            services.AddScoped<ILocalFileInfoService, LocalFileInfoService>();
 
             //services.AddScoped<IWebAppLoadedService, WebAppLoadedService>();
 

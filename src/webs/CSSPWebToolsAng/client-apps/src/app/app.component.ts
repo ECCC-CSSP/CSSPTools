@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GetTopComponentEnum } from 'src/app/enums/generated/TopComponentEnum';
-import { AppStateService } from 'src/app/services/app-state.service';
-import { LoggedInContactService } from 'src/app/services/loaders/logged-in-contact.service';
-import { AppLanguageService } from './services/app-language.service';
-import { AppLoadedService } from './services/app-loaded.service';
+import { AppStateService } from 'src/app/services/app/app-state.service';
+import { LoggedInContactService } from 'src/app/services/contact/logged-in-contact.service';
+import { AppLanguageService } from './services/app/app-language.service';
+import { AppLoadedService } from './services/app/app-loaded.service';
 
 @Component({
   selector: 'app-root',

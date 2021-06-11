@@ -7,13 +7,12 @@ import { EnumIDAndText } from 'src/app/models/generated/helper/EnumIDAndText.mod
 import { StatMWQMRun } from 'src/app/models/generated/web/StatMWQMRun.model';
 import { StatMWQMSite } from 'src/app/models/generated/web/StatMWQMSite.model';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
-import { AppLanguageService } from 'src/app/services/app-language.service';
-import { AppLoadedService } from 'src/app/services/app-loaded.service';
-import { AppStateService } from 'src/app/services/app-state.service';
-import { AnalysisService } from 'src/app/services/helpers/analysis.service';
+import { AppLanguageService } from 'src/app/services/app/app-language.service';
+import { AppLoadedService } from 'src/app/services/app/app-loaded.service';
+import { AppStateService } from 'src/app/services/app/app-state.service';
+import { AnalysisService } from 'src/app/services/analysis/analysis.service';
 import { DateFormatService } from 'src/app/services/helpers/date-format.service';
 import { TogglesService } from 'src/app/services/helpers/toggles.service';
-import { LoaderService } from 'src/app/services/loaders/loader.service';
 
 @Component({
   selector: 'app-analysis-options',
@@ -43,8 +42,7 @@ export class AnalysisOptionsComponent implements OnInit, OnDestroy {
     public appLanguageService: AppLanguageService,
     public dateFormatService: DateFormatService,
     private fb: FormBuilder,
-    public analysisService: AnalysisService,
-    private loaderService: LoaderService) { }
+    public analysisService: AnalysisService) { }
 
   ngOnInit(): void {
     this.language = <number>this.appLanguageService.Language;

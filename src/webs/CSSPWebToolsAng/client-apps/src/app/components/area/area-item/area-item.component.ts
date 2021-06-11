@@ -1,22 +1,19 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { GetAreaSubComponentEnum } from 'src/app/enums/generated/AreaSubComponentEnum';
-import { AppLanguageService } from 'src/app/services/app-language.service';
-import { AppLoadedService } from 'src/app/services/app-loaded.service';
-import { AppStateService } from 'src/app/services/app-state.service';
+import { AppLanguageService } from 'src/app/services/app/app-language.service';
+import { AppLoadedService } from 'src/app/services/app/app-loaded.service';
+import { AppStateService } from 'src/app/services/app/app-state.service';
 import { GetTVTypeEnum, TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 import { AscDescEnum, GetAscDescEnum } from 'src/app/enums/generated/AscDescEnum';
 import { StatCountService } from 'src/app/services/helpers/stat-count.service';
 import { ComponentShowService } from 'src/app/services/helpers/component-show.service';
 import { GetSortOrderAngularEnum } from 'src/app/enums/generated/SortOrderAngularEnum';
 import { SortTVItemListService } from 'src/app/services/helpers/sort-tvitem-list.service';
-import { FilterService } from 'src/app/services/helpers/filter.service';
-import { LoaderService } from 'src/app/services/loaders/loader.service';
-import { WebArea } from 'src/app/models/generated/web/WebArea.model';
-import { WebTypeEnum } from 'src/app/enums/generated/WebTypeEnum';
+import { FilterService } from 'src/app/services/tvitem/filter.service';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
-import { StructureTVFileListService } from 'src/app/services/helpers/structure-tvfile-list.service';
 import { GetFilesSortPropEnum } from 'src/app/enums/generated/FilesSortPropEnum';
-import { LoadListService } from 'src/app/services/helpers/loading-list.service';
+import { JsonLoadListService, JsonLoadAllService } from 'src/app/services/json';
+import { TVFileModelByPurposeService } from 'src/app/services/file';
 
 @Component({
   selector: 'app-area-item',
@@ -35,17 +32,17 @@ export class AreaItemComponent implements OnInit, OnDestroy {
   constructor(public appStateService: AppStateService,
     public appLoadedService: AppLoadedService,
     public appLanguageService: AppLanguageService,
-    public loaderService: LoaderService,
-    private loadListService: LoadListService,
+    public jsonLoadAllService: JsonLoadAllService,
+    private jsonLoadListService: JsonLoadListService,
     public statCountService: StatCountService,
     public sortTVItemListService: SortTVItemListService,
     public filterService: FilterService,
     public componentShowService: ComponentShowService,
-    public structureTVFileListService: StructureTVFileListService) { }
+    public tvFileModelByPurposeService: TVFileModelByPurposeService) { }
 
   ngOnInit(): void {
-    this.loadListService.SetToLoadList(TVTypeEnum.Area, this.appStateService.UserPreference.CurrentAreaTVItemID, false);
-    this.loaderService.LoadAll();
+    this.jsonLoadListService.SetToLoadList(TVTypeEnum.Area, this.appStateService.UserPreference.CurrentAreaTVItemID, false);
+    this.jsonLoadAllService.LoadAll();
   }
 
   ngOnDestroy(): void {

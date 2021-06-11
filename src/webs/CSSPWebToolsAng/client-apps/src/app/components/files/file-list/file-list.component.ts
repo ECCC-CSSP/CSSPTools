@@ -1,15 +1,15 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { FilePurposeEnum_GetIDText } from 'src/app/enums/generated/FilePurposeEnum';
 import { FilesSortPropEnum, GetFilesSortPropEnum } from 'src/app/enums/generated/FilesSortPropEnum';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
-import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model';
+import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 import { TVFileModelByPurpose } from 'src/app/models/generated/web/TVFileModelByPurpose.model';
-import { AppLanguageService } from 'src/app/services/app-language.service';
-import { AppLoadedService } from 'src/app/services/app-loaded.service';
-import { AppStateService } from 'src/app/services/app-state.service';
+import { AppLanguageService } from 'src/app/services/app/app-language.service';
+import { AppLoadedService } from 'src/app/services/app/app-loaded.service';
+import { AppStateService } from 'src/app/services/app/app-state.service';
 import { DateFormatService } from 'src/app/services/helpers/date-format.service';
-import { FileIconService } from 'src/app/services/helpers/file-icon.service';
-import { ShowTVFileService } from 'src/app/services/helpers/show-tvfile.service';
+import { FileIconService } from 'src/app/services/file/file-icon.service';
+import { FileSortByPropService, ShowTVFileService } from 'src/app/services/file';
+import { TVFileModelByPurposeService } from 'src/app/services/file';
 
 @Component({
   selector: 'app-file-list',
@@ -17,30 +17,31 @@ import { ShowTVFileService } from 'src/app/services/helpers/show-tvfile.service'
   styleUrls: ['./file-list.component.css']
 })
 export class FileListComponent implements OnInit, OnDestroy {
-  @Input() TVFileModelByPurposeList: TVFileModelByPurpose[];
-  @Input() FilesSortByProp: FilesSortPropEnum;
-
+  @Input() TVType: TVTypeEnum;
+  
   languageEnum = GetLanguageEnum();
 
   filesSortByProp = GetFilesSortPropEnum();
 
+  TVFileModelByPurposeList: TVFileModelByPurpose[] = [];
+  FilesSortByProp: FilesSortPropEnum;
+  
   constructor(public appLoadedService: AppLoadedService,
     public appStateService: AppStateService,
     public appLanguageService: AppLanguageService,
     public showTVFileService: ShowTVFileService,
     public fileIconService: FileIconService,
     public dateFormatService: DateFormatService,
+    public tvFileModelByPurposeService: TVFileModelByPurposeService,
+    private fileSortByPropService: FileSortByPropService
   ) {
   }
 
   ngOnInit() {
+    this.TVFileModelByPurposeList = this.tvFileModelByPurposeService.GetSortedTVFileModelByPurposeList(this.TVType);
+    this.FilesSortByProp = this.fileSortByPropService.GetFileSortByProp(this.TVType);
   }
 
   ngOnDestroy() {
-  }
-
-  testing()
-  {
-    alert("bonjour");
   }
 }

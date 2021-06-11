@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
-import { AppStateService } from 'src/app/services/app-state.service';
+import { AppStateService } from 'src/app/services/app/app-state.service';
 
 @Injectable({
     providedIn: 'root'

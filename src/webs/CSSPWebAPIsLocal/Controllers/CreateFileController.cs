@@ -73,38 +73,6 @@ namespace CSSPWebAPIsLocal.Controllers
 
             return await CreateFileService.CreateTempPNG(Request);
 
-            //string CSSPTempFilePath = Configuration.GetValue<string>("CSSPTempFilePath");
-            //if (string.IsNullOrWhiteSpace(CSSPTempFilePath))
-            //{
-            //    return await Task.FromResult(BadRequest("CSSPTempFilePath is empty"));
-            //}
-
-            //try
-            //{
-            //    IFormFile file = Request.Form.Files[0];
-
-            //    if (file.Length > 0)
-            //    {
-            //        string fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.ToString().Trim();
-
-            //        FileInfo fi = new FileInfo($@"{CSSPTempFilePath}{fileName}");
-
-            //        using (FileStream stream = new FileStream(fi.FullName, FileMode.Create))
-            //        {
-            //            file.CopyTo(stream);
-            //        }
-
-            //        return await Task.FromResult(Ok(true));
-            //    }
-            //    else
-            //    {
-            //        return await Task.FromResult(BadRequest("This is a bad request"));
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    return await Task.FromResult(StatusCode(500, $"Internal server error: {ex}"));
-            //}
         }
         #endregion Functions public
 

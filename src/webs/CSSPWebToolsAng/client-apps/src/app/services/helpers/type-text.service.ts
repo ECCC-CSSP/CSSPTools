@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TVTypeEnum_GetIDText } from 'src/app/enums/generated/TVTypeEnum';
-import { AppLanguageService } from '../app-language.service';
+import { AppLanguageService } from '../app/app-language.service';
 
 @Injectable({
   providedIn: 'root'

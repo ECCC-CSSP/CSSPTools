@@ -2414,6 +2414,69 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Area.
+        /// </summary>
+        public static string FileModelTypeEnumArea {
+            get {
+                return ResourceManager.GetString("FileModelTypeEnumArea", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Country.
+        /// </summary>
+        public static string FileModelTypeEnumCountry {
+            get {
+                return ResourceManager.GetString("FileModelTypeEnumCountry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Municipality.
+        /// </summary>
+        public static string FileModelTypeEnumMunicipality {
+            get {
+                return ResourceManager.GetString("FileModelTypeEnumMunicipality", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Province.
+        /// </summary>
+        public static string FileModelTypeEnumProvince {
+            get {
+                return ResourceManager.GetString("FileModelTypeEnumProvince", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Root.
+        /// </summary>
+        public static string FileModelTypeEnumRoot {
+            get {
+                return ResourceManager.GetString("FileModelTypeEnumRoot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sector.
+        /// </summary>
+        public static string FileModelTypeEnumSector {
+            get {
+                return ResourceManager.GetString("FileModelTypeEnumSector", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Subsector.
+        /// </summary>
+        public static string FileModelTypeEnumSubsector {
+            get {
+                return ResourceManager.GetString("FileModelTypeEnumSubsector", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to FilePurpose.
         /// </summary>
         public static string FilePurpose {

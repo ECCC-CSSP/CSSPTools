@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { AppStateService } from 'src/app/services/app-state.service';
+import { AppStateService } from 'src/app/services/app/app-state.service';
 import { ShellSubComponentEnum } from 'src/app/enums/generated/ShellSubComponentEnum';
-import { AppLoadedService } from '../app-loaded.service';
-import { LoaderService } from '../loaders/loader.service';
+import { AppLoadedService } from '../app/app-loaded.service';
 import { WebTypeEnum } from 'src/app/enums/generated/WebTypeEnum';
 import { WebArea } from 'src/app/models/generated/web/WebArea.model';
 import { WebCountry } from 'src/app/models/generated/web/WebCountry.model';
@@ -11,6 +10,8 @@ import { WebProvince } from 'src/app/models/generated/web/WebProvince.model';
 import { WebRoot } from 'src/app/models/generated/web/WebRoot.model';
 import { WebSector } from 'src/app/models/generated/web/WebSector.model';
 import { WebSubsector } from 'src/app/models/generated/web/WebSubsector.model';
+import { JsonLoadAllService, JsonLoadListService } from 'src/app/services/json';
+import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 
 @Injectable({
     providedIn: 'root'
@@ -18,8 +19,8 @@ import { WebSubsector } from 'src/app/models/generated/web/WebSubsector.model';
 export class TogglesService {
     constructor(private appStateService: AppStateService,
         private appLoadedService: AppLoadedService,
-        private loaderService: LoaderService
-    ) {
+        private jsonLoadAllService: JsonLoadAllService,
+        private jsonLoadListService: JsonLoadListService) {
 
     }
 
@@ -65,37 +66,37 @@ export class TogglesService {
         switch (this.appStateService.UserPreference.ShellSubComponent) {
             case ShellSubComponentEnum.Area:
                 {
-                    this.loaderService.Load<WebArea>(WebTypeEnum.WebArea, false);
+                    this.jsonLoadListService.SetToLoadList(TVTypeEnum.Area, this.appStateService.UserPreference.CurrentAreaTVItemID, false);
                 }
                 break;
             case ShellSubComponentEnum.Country:
                 {
-                    this.loaderService.Load<WebCountry>(WebTypeEnum.WebCountry, false);
+                    this.jsonLoadListService.SetToLoadList(TVTypeEnum.Country, this.appStateService.UserPreference.CurrentCountryTVItemID, false);
                 }
                 break;
             case ShellSubComponentEnum.Municipality:
                 {
-                    this.loaderService.Load<WebMunicipality>(WebTypeEnum.WebMunicipality, false);
+                    this.jsonLoadListService.SetToLoadList(TVTypeEnum.Municipality, this.appStateService.UserPreference.CurrentMunicipalityTVItemID, false);
                 }
                 break;
             case ShellSubComponentEnum.Province:
                 {
-                    this.loaderService.Load<WebProvince>(WebTypeEnum.WebProvince, false);
+                    this.jsonLoadListService.SetToLoadList(TVTypeEnum.Province, this.appStateService.UserPreference.CurrentProvinceTVItemID, false);
                 }
                 break;
             case ShellSubComponentEnum.Root:
                 {
-                    this.loaderService.Load<WebRoot>(WebTypeEnum.WebRoot, false);
+                    this.jsonLoadListService.SetToLoadList(TVTypeEnum.Root, this.appStateService.UserPreference.CurrentRootTVItemID, false);
                 }
                 break;
             case ShellSubComponentEnum.Sector:
                 {
-                    this.loaderService.Load<WebSector>(WebTypeEnum.WebSector, false);
+                    this.jsonLoadListService.SetToLoadList(TVTypeEnum.Sector, this.appStateService.UserPreference.CurrentSectorTVItemID, false);
                 }
                 break;
             case ShellSubComponentEnum.Subsector:
                 {
-                    this.loaderService.Load<WebSubsector>(WebTypeEnum.WebSubsector, false);
+                    this.jsonLoadListService.SetToLoadList(TVTypeEnum.Subsector, this.appStateService.UserPreference.CurrentSubsectorTVItemID, false);
                 }
                 break;
             default:
@@ -104,5 +105,7 @@ export class TogglesService {
                 }
                 break;
         }
+
+        this.jsonLoadAllService.LoadAll();
     }
 }

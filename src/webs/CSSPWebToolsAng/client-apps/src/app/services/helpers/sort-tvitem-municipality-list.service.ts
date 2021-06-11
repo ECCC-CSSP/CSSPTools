@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { AppStateService } from '../app-state.service';
+import { AppStateService } from '../app/app-state.service';
 import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 import { AscDescEnum } from 'src/app/enums/generated/AscDescEnum';
 import { PredicateAscByService } from 'src/app/services/helpers/predicate-asc-by.service';
 import { PredicateDescByService } from 'src/app/services/helpers/predicate-desc-by.service';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
-import { AppLanguageService } from '../app-language.service';
-import { AppLoadedService } from '../app-loaded.service';
+import { AppLanguageService } from '../app/app-language.service';
+import { AppLoadedService } from '../app/app-loaded.service';
 import { TVItemID_TVText_Sort } from 'src/app/models/generated/web/TVItemID_TVText_Sort.model';
 import { TVItemModelInfrastructureModel } from 'src/app/models/generated/web/TVItemModelInfrastructureModel.model';
 

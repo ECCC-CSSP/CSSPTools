@@ -1,13 +1,11 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
-
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
-import { AppLanguageService } from 'src/app/services/app-language.service';
-import { AppStateService } from 'src/app/services/app-state.service';
+import { AppLanguageService } from 'src/app/services/app/app-language.service';
+import { AppStateService } from 'src/app/services/app/app-state.service';
 import { ShowTVItemService } from 'src/app/services/helpers/show-tvitem.service';
 import { StatService } from 'src/app/services/helpers/stat.service';
 import { SubPageService } from 'src/app/services/helpers/sub-page.service';
-import { LoaderService } from 'src/app/services/loaders/loader.service';
 import { MapService } from 'src/app/services/map/map.service';
 
 @Component({
@@ -25,7 +23,6 @@ export class MWQMRunTVItemListItemComponent implements OnInit, OnDestroy {
     public subPageService: SubPageService,
     public statService: StatService,
     public mapService: MapService,
-    public loaderService: LoaderService,
     public showTVItemService: ShowTVItemService) {
   }
 

@@ -1,12 +1,7 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { WebTypeEnum } from 'src/app/enums/generated/WebTypeEnum';
-
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
-import { WebMWQMRuns } from 'src/app/models/generated/web/WebMWQMRuns.model';
-import { AppLanguageService } from 'src/app/services/app-language.service';
-import { AppStateService } from 'src/app/services/app-state.service';
-import { LoaderService } from 'src/app/services/loaders/loader.service';
-//import { WebMWQMRunsService } from 'src/app/services/loaders/web-mwqm-runs.service';
+import { AppLanguageService } from 'src/app/services/app/app-language.service';
+import { AppStateService } from 'src/app/services/app/app-state.service';
 
 @Component({
   selector: 'app-mwqm-run-item',
@@ -18,9 +13,7 @@ export class MWQMRunItemComponent implements OnInit, OnDestroy {
 
   
   constructor(public appStateService: AppStateService,
-    public appLanguageService: AppLanguageService,
-    public loaderService: LoaderService
-    ) { }
+    public appLanguageService: AppLanguageService) { }
 
   ngOnInit(): void {
   }

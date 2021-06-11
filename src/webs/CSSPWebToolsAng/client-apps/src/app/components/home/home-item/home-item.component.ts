@@ -1,14 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GetLanguageEnum, LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { TopComponentEnum } from 'src/app/enums/generated/TopComponentEnum';
-import { AppStateService } from 'src/app/services/app-state.service';
-import { AppLoadedService } from 'src/app/services/app-loaded.service';
-import { AppLanguageService } from 'src/app/services/app-language.service';
-import { LoggedInContactService } from 'src/app/services/loaders/logged-in-contact.service';
-import { LoaderService } from 'src/app/services/loaders/loader.service';
-import { LoadListService } from 'src/app/services/helpers/loading-list.service';
-import { LoadModel } from 'src/app/models/generated/web/LoadModel.model';
+import { AppStateService } from 'src/app/services/app/app-state.service';
+import { AppLoadedService } from 'src/app/services/app/app-loaded.service';
+import { AppLanguageService } from 'src/app/services/app/app-language.service';
+import { LoggedInContactService } from 'src/app/services/contact/logged-in-contact.service';
+import { JsonLoadAllService, JsonLoadListService } from 'src/app/services/json';
 import { WebTypeEnum } from 'src/app/enums/generated/WebTypeEnum';
+import { JsonLoadModel } from 'src/app/models/generated/web/JsonLoadModel.model';
 
 @Component({
   selector: 'app-home-item',
@@ -23,15 +22,15 @@ export class HomeItemComponent implements OnInit, OnDestroy {
   constructor(public appLoadedService: AppLoadedService,
     public appStateService: AppStateService,
     public appLanguageService: AppLanguageService,
-    private loaderService: LoaderService,
+    private jsonLoadAllService: JsonLoadAllService,
     private loggedInContactService: LoggedInContactService,
-    private loadListService: LoadListService,
+    private jsonLoadListService: JsonLoadListService,
   ) { }
 
   ngOnInit(): void {
     this.loggedInContactService.DoLoggedInContact(false);
-    this.loadListService.ToLoadList.push(<LoadModel>{ WebType: WebTypeEnum.WebAllContacts, TVItemID: this.appStateService.UserPreference.CurrentRootTVItemID, ForceReload: false });
-    this.loaderService.LoadAll();
+    this.jsonLoadListService.JsonToLoadList.push(<JsonLoadModel>{ WebType: WebTypeEnum.WebAllContacts, TVItemID: this.appStateService.UserPreference.CurrentRootTVItemID, ForceReload: false });
+    this.jsonLoadAllService.LoadAll();
   }
 
   ngOnDestroy(): void {

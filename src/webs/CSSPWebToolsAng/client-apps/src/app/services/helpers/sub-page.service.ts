@@ -10,9 +10,9 @@ import { WebMunicipality } from 'src/app/models/generated/web/WebMunicipality.mo
 import { WebProvince } from 'src/app/models/generated/web/WebProvince.model';
 import { WebSector } from 'src/app/models/generated/web/WebSector.model';
 import { WebSubsector } from 'src/app/models/generated/web/WebSubsector.model';
-import { AppStateService } from 'src/app/services/app-state.service';
-import { AppLoadedService } from '../app-loaded.service';
-import { LoaderService } from '../loaders/loader.service';
+import { AppStateService } from 'src/app/services/app/app-state.service';
+import { AppLoadedService } from '../app/app-loaded.service';
+import { JsonDataIsLoadedService } from '../json/json-data-is-loaded.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +21,7 @@ export class SubPageService {
 
   constructor(private appStateService: AppStateService,
     private appLoadedService: AppLoadedService, 
-    private loaderService: LoaderService) {
+    private jsonDataIsLoadedService: JsonDataIsLoadedService) {
   }
 
   SetSubPage(tvItemModel: TVItemModel) {
@@ -33,7 +33,7 @@ export class SubPageService {
       case TVTypeEnum.Area:
         {
           this.appStateService.UserPreference.CurrentAreaTVItemID = tvItem.TVItemID;
-          if (this.loaderService.DataIsLoaded(WebTypeEnum.WebArea))
+          if (this.jsonDataIsLoadedService.DataIsLoaded(WebTypeEnum.WebArea))
           {
             if (this.appLoadedService.WebArea.TVItemModel.TVItem.TVItemID != tvItem.TVItemID)
             {
@@ -45,7 +45,7 @@ export class SubPageService {
       case TVTypeEnum.Country:
         {
           this.appStateService.UserPreference.CurrentCountryTVItemID = tvItem.TVItemID;
-          if (this.loaderService.DataIsLoaded(WebTypeEnum.WebCountry))
+          if (this.jsonDataIsLoadedService.DataIsLoaded(WebTypeEnum.WebCountry))
           {
             if (this.appLoadedService.WebCountry.TVItemModel.TVItem.TVItemID != tvItem.TVItemID)
             {
@@ -57,7 +57,7 @@ export class SubPageService {
       case TVTypeEnum.Municipality:
         {
           this.appStateService.UserPreference.CurrentMunicipalityTVItemID = tvItem.TVItemID;
-          if (this.loaderService.DataIsLoaded(WebTypeEnum.WebMunicipality))
+          if (this.jsonDataIsLoadedService.DataIsLoaded(WebTypeEnum.WebMunicipality))
           {
             if (this.appLoadedService.WebMunicipality.TVItemModel.TVItem.TVItemID != tvItem.TVItemID)
             {
@@ -81,7 +81,7 @@ export class SubPageService {
       case TVTypeEnum.Province:
         {
           this.appStateService.UserPreference.CurrentProvinceTVItemID = tvItem.TVItemID;
-          if (this.loaderService.DataIsLoaded(WebTypeEnum.WebProvince))
+          if (this.jsonDataIsLoadedService.DataIsLoaded(WebTypeEnum.WebProvince))
           {
             if (this.appLoadedService.WebProvince.TVItemModel.TVItem.TVItemID != tvItem.TVItemID)
             {
@@ -97,7 +97,7 @@ export class SubPageService {
       case TVTypeEnum.Sector:
         {
           this.appStateService.UserPreference.CurrentSectorTVItemID = tvItem.TVItemID;
-          if (this.loaderService.DataIsLoaded(WebTypeEnum.WebSector))
+          if (this.jsonDataIsLoadedService.DataIsLoaded(WebTypeEnum.WebSector))
           {
             if (this.appLoadedService.WebSector.TVItemModel.TVItem.TVItemID != tvItem.TVItemID)
             {
@@ -109,7 +109,7 @@ export class SubPageService {
       case TVTypeEnum.Subsector:
         {
           this.appStateService.UserPreference.CurrentSubsectorTVItemID = tvItem.TVItemID;
-          if (this.loaderService.DataIsLoaded(WebTypeEnum.WebSubsector))
+          if (this.jsonDataIsLoadedService.DataIsLoaded(WebTypeEnum.WebSubsector))
           {
             if (this.appLoadedService.WebSubsector.TVItemModel.TVItem.TVItemID != tvItem.TVItemID)
             {

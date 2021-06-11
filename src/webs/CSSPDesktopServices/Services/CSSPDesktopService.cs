@@ -74,6 +74,7 @@ namespace CSSPDesktopServices.Services
         public string CSSPLocalUrl { get; set; }
         public string CSSPWebAPIsLocalPath { get; set; }
         public  string CSSPOtherFilesPath { get; set; }
+        public string CSSPTempFilesPath { get; set; }
         public string AzureStore { get; set; }
         public Contact contact { get; set; }
         //public List<Preference> PreferenceList { get; set; }

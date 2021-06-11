@@ -1,20 +1,19 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GetRootSubComponentEnum } from 'src/app/enums/generated/RootSubComponentEnum';
-import { AppLoadedService } from 'src/app/services/app-loaded.service';
-import { AppStateService } from 'src/app/services/app-state.service';
-import { AppLanguageService } from 'src/app/services/app-language.service';
+import { AppLoadedService } from 'src/app/services/app/app-loaded.service';
+import { AppStateService } from 'src/app/services/app/app-state.service';
+import { AppLanguageService } from 'src/app/services/app/app-language.service';
 import { GetTVTypeEnum, TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 import { GetAscDescEnum } from 'src/app/enums/generated/AscDescEnum';
 import { StatCountService } from 'src/app/services/helpers/stat-count.service';
 import { ComponentShowService } from 'src/app/services/helpers/component-show.service';
 import { GetSortOrderAngularEnum } from 'src/app/enums/generated/SortOrderAngularEnum';
 import { SortTVItemListService } from 'src/app/services/helpers/sort-tvitem-list.service';
-import { FilterService } from 'src/app/services/helpers/filter.service';
-import { LoaderService } from 'src/app/services/loaders/loader.service';
-import { StructureTVFileListService } from 'src/app/services/helpers/structure-tvfile-list.service';
+import { FilterService } from 'src/app/services/tvitem/filter.service';
 import { GetFilesSortPropEnum } from 'src/app/enums/generated/FilesSortPropEnum';
-import { LoadListService } from 'src/app/services/helpers/loading-list.service';
-
+import { JsonLoadListService } from 'src/app/services/json/json-loading-list.service';
+import { JsonLoadAllService } from 'src/app/services/json';
+import { FileSortByPropService, TVFileModelByPurposeService } from 'src/app/services/file';
 
 @Component({
   selector: 'app-root-item',
@@ -31,18 +30,19 @@ export class RootItemComponent implements OnInit, OnDestroy {
   constructor(public appStateService: AppStateService,
     public appLoadedService: AppLoadedService,
     public appLanguageService: AppLanguageService,
-    public loaderService: LoaderService,
-    private loadListService: LoadListService,
+    public jsonLoadAllService: JsonLoadAllService,
+    private jsonLoadListService: JsonLoadListService,
     public statCountService: StatCountService,
     public sortTVItemListService: SortTVItemListService,
     public filterService: FilterService,
     public componentShowService: ComponentShowService,
-    public structureTVFileListService: StructureTVFileListService) {
+    public tvFileModelByPurposeService: TVFileModelByPurposeService,
+    public fileSortByPropService: FileSortByPropService) {
   }
 
   ngOnInit(): void {
-    this.loadListService.SetToLoadList(TVTypeEnum.Root, this.appStateService.UserPreference.CurrentRootTVItemID, false);
-    this.loaderService.LoadAll();
+    this.jsonLoadListService.SetToLoadList(TVTypeEnum.Root, this.appStateService.UserPreference.CurrentRootTVItemID, false);
+    this.jsonLoadAllService.LoadAll();
   }
 
   ngOnDestroy(): void {

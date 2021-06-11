@@ -6,8 +6,8 @@ import { TVFile } from 'src/app/models/generated/db/TVFile.model';
 import { StatMWQMSiteSample } from 'src/app/models/generated/web/StatMWQMSiteSample.model';
 import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
-import { AppLanguageService } from 'src/app/services/app-language.service';
-import { AppStateService } from 'src/app/services/app-state.service';
+import { AppLanguageService } from 'src/app/services/app/app-language.service';
+import { AppStateService } from 'src/app/services/app/app-state.service';
 
 @Injectable({
   providedIn: 'root'

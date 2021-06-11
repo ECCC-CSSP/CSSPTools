@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 
-import { AppLanguageService } from 'src/app/services/app-language.service';
-import { AppStateService } from 'src/app/services/app-state.service';
+import { AppLanguageService } from 'src/app/services/app/app-language.service';
+import { AppStateService } from 'src/app/services/app/app-state.service';
 import { TogglesService } from 'src/app/services/helpers/toggles.service';
 
 @Component({

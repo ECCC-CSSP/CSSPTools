@@ -4,9 +4,8 @@ import { CountrySubComponentEnum } from 'src/app/enums/generated/CountrySubCompo
 import { ProvinceSubComponentEnum } from 'src/app/enums/generated/ProvinceSubComponentEnum';
 import { RootSubComponentEnum } from 'src/app/enums/generated/RootSubComponentEnum';
 import { SectorSubComponentEnum } from 'src/app/enums/generated/SectorSubComponentEnum';
-import { AppStateService } from 'src/app/services/app-state.service';
+import { AppStateService } from 'src/app/services/app/app-state.service';
 import { MunicipalitySubComponentEnum } from 'src/app/enums/generated/MunicipalitySubComponentEnum';
-import { LoaderService } from '../loaders/loader.service';
 import { WebRoot } from 'src/app/models/generated/web/WebRoot.model';
 import { WebTypeEnum } from 'src/app/enums/generated/WebTypeEnum';
 import { WebArea } from 'src/app/models/generated/web/WebArea.model';
@@ -16,6 +15,8 @@ import { WebProvince } from 'src/app/models/generated/web/WebProvince.model';
 import { WebSector } from 'src/app/models/generated/web/WebSector.model';
 import { WebSubsector } from 'src/app/models/generated/web/WebSubsector.model';
 import { SubsectorSubComponentEnum } from 'src/app/enums/generated/SubsectorSubComponentEnum';
+import { JsonLoadAllService, JsonLoadListService } from '../json';
+import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 
 @Injectable({
   providedIn: 'root'
@@ -23,59 +24,50 @@ import { SubsectorSubComponentEnum } from 'src/app/enums/generated/SubsectorSubC
 export class ComponentShowService {
 
   constructor(private appStateService: AppStateService,
-    private loaderService: LoaderService,
-    ){
+    private jsonLoadAllService: JsonLoadAllService,
+    private jsonLoadListService: JsonLoadListService){
   }
 
   ShowArea(areaSubComponent: AreaSubComponentEnum) {
     this.appStateService.UserPreference.AreaSubComponent = areaSubComponent;
-    this.loaderService.Load<WebArea>(WebTypeEnum.WebArea, false);
+    this.jsonLoadListService.SetToLoadList(TVTypeEnum.Area, this.appStateService.UserPreference.CurrentAreaTVItemID, false);
+    this.jsonLoadAllService.LoadAll();
   }
 
   ShowCountry(countrySubComponent: CountrySubComponentEnum) {
     this.appStateService.UserPreference.CountrySubComponent = countrySubComponent;
-    this.loaderService.Load<WebCountry>(WebTypeEnum.WebCountry, false);
+    this.jsonLoadListService.SetToLoadList(TVTypeEnum.Country, this.appStateService.UserPreference.CurrentCountryTVItemID, false);
+    this.jsonLoadAllService.LoadAll();
   }
 
   ShowMunicipality(municipalitySubComponent: MunicipalitySubComponentEnum) {
     this.appStateService.UserPreference.MunicipalitySubComponent = municipalitySubComponent;
-    this.loaderService.Load<WebMunicipality>(WebTypeEnum.WebMunicipality, false);
+    this.jsonLoadListService.SetToLoadList(TVTypeEnum.Municipality, this.appStateService.UserPreference.CurrentMunicipalityTVItemID, false);
+    this.jsonLoadAllService.LoadAll();
   }
-
-  // ShowMWQMRun(mwqmRunSubComponent: MWQMRunSubComponentEnum) {
-  //   this.appStateService.MWQMRunSubComponent = mwqmRunSubComponent;
-  //   this.loaderService.Load<WebMunicipality>(WebTypeEnum.WebMunicipality, false);
-  //   this.webMWQMRunsService.DoWebMWQMRuns(this.appStateService.CurrentTVItemID, true);
-  // }
-
-  // ShowMWQMSite(mwqmSiteSubComponent: MWQMSiteSubComponentEnum) {
-  //   this.appStateService.MWQMSiteSubComponent = mwqmSiteSubComponent;
-  //   this.webMWQMSitesService.DoWebMWQMSites(this.appStateService.CurrentTVItemID, true);
-  // }
-
-  // ShowMWQMPolSourceSite(polSourceSiteSubComponent: PolSourceSiteSubComponentEnum) {
-  //   this.appStateService.PolSourceSiteSubComponent = polSourceSiteSubComponent;
-  //   this.webPolSourceSitesService.DoWebPolSourceSites(this.appStateService.CurrentTVItemID, true);
-  // }
 
   ShowProvince(provinceSubComponent: ProvinceSubComponentEnum) {
     this.appStateService.UserPreference.ProvinceSubComponent = provinceSubComponent;
-    this.loaderService.Load<WebProvince>(WebTypeEnum.WebProvince, false);
+    this.jsonLoadListService.SetToLoadList(TVTypeEnum.Province, this.appStateService.UserPreference.CurrentProvinceTVItemID, false);
+    this.jsonLoadAllService.LoadAll();
   }
 
   ShowRoot(rootSubComponent: RootSubComponentEnum) {
     this.appStateService.UserPreference.RootSubComponent = rootSubComponent;
-    this.loaderService.Load<WebRoot>(WebTypeEnum.WebRoot, false);
+    this.jsonLoadListService.SetToLoadList(TVTypeEnum.Root, this.appStateService.UserPreference.CurrentRootTVItemID, false);
+    this.jsonLoadAllService.LoadAll();
   }
 
   ShowSector(sectorSubComponent: SectorSubComponentEnum) {
     this.appStateService.UserPreference.SectorSubComponent = sectorSubComponent;
-    this.loaderService.Load<WebSector>(WebTypeEnum.WebSector, false);
+    this.jsonLoadListService.SetToLoadList(TVTypeEnum.Sector, this.appStateService.UserPreference.CurrentSectorTVItemID, false);
+    this.jsonLoadAllService.LoadAll();
   }
 
   ShowSubsector(subsectorSubComponent: SubsectorSubComponentEnum) {
     this.appStateService.UserPreference.SubsectorSubComponent = subsectorSubComponent;
-    this.loaderService.Load<WebSubsector>(WebTypeEnum.WebSubsector, false);
+    this.jsonLoadListService.SetToLoadList(TVTypeEnum.Subsector, this.appStateService.UserPreference.CurrentSubsectorTVItemID, false);
+    this.jsonLoadAllService.LoadAll();
   }
 
 }

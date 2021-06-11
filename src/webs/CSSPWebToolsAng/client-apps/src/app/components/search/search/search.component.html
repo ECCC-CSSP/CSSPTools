@@ -6,7 +6,7 @@
     <span *ngIf="appStateService.SearchWorking">
         <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     </span>
-    <mat-autocomplete #searchAuto="matAutocomplete" (optionSelected)="loadListService.NavigateTo($event.option.value)"
+    <mat-autocomplete #searchAuto="matAutocomplete" (optionSelected)="jsonLoadListService.NavigateTo($event.option.value)"
         [displayWith]="displayFn">
         <mat-option *ngFor="let option of appLoadedService.SearchResult" [value]="option">
             <app-search-option [searchResult]="option"></app-search-option>

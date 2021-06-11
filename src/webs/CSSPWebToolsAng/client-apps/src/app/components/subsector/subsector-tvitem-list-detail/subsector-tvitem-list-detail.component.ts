@@ -3,8 +3,8 @@ import { LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
-import { AppLanguageService } from 'src/app/services/app-language.service';
-import { AppStateService } from 'src/app/services/app-state.service';
+import { AppLanguageService } from 'src/app/services/app/app-language.service';
+import { AppStateService } from 'src/app/services/app/app-state.service';
 
 @Component({
   selector: 'app-subsector-tvitem-list-detail',

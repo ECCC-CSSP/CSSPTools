@@ -2,13 +2,12 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { FilesSortPropEnum, GetFilesSortPropEnum } from 'src/app/enums/generated/FilesSortPropEnum';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model';
-import { AppLanguageService } from 'src/app/services/app-language.service';
-import { AppLoadedService } from 'src/app/services/app-loaded.service';
-import { AppStateService } from 'src/app/services/app-state.service';
+import { AppLanguageService } from 'src/app/services/app/app-language.service';
+import { AppLoadedService } from 'src/app/services/app/app-loaded.service';
+import { AppStateService } from 'src/app/services/app/app-state.service';
 import { DateFormatService } from 'src/app/services/helpers/date-format.service';
-import { FileIconService } from 'src/app/services/helpers/file-icon.service';
-import { ShowTVFileService } from 'src/app/services/helpers/show-tvfile.service';
-import { FileService } from 'src/app/services/loaders/file.service';
+import { FileIconService } from 'src/app/services/file/file-icon.service';
+import { ShowTVFileService } from 'src/app/services/file';
 
 @Component({
   selector: 'app-file-list-item',
@@ -29,9 +28,7 @@ export class FileListItemComponent implements OnInit, OnDestroy {
     public appStateService: AppStateService,
     public dateFormatService: DateFormatService,
     public fileIconService: FileIconService,
-    public showTVFileService: ShowTVFileService,
-    private fileService: FileService
-  ) {
+    public showTVFileService: ShowTVFileService) {
   }
 
   ngOnInit() {

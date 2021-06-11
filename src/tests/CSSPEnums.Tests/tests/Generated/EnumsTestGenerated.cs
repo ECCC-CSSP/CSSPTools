@@ -703,6 +703,46 @@ namespace CSSPEnums.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
+        public async Task GetResValueForTypeAndID_ForEnum_DBCommandEnum_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            string retStr = enums.GetResValueForTypeAndID(typeof(DBCommandEnum), -100);
+            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
+
+            retStr = enums.GetResValueForTypeAndID(typeof(DBCommandEnum), 10000000);
+            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
+
+            retStr = enums.GetResValueForTypeAndID(typeof(DBCommandEnum), null);
+            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
+
+            retStr = enums.GetResValueForTypeAndID(typeof(string), null);
+            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
+
+            foreach (int i in Enum.GetValues(typeof(DBCommandEnum)))
+            {
+                retStr = enums.GetResValueForTypeAndID(typeof(DBCommandEnum), i);
+
+                switch ((DBCommandEnum)i)
+                {
+                    case DBCommandEnum.Original:
+                        Assert.Equal(CSSPCultureEnumsRes.DBCommandEnumOriginal, retStr);
+                        break;
+                    case DBCommandEnum.Modified:
+                        Assert.Equal(CSSPCultureEnumsRes.DBCommandEnumModified, retStr);
+                        break;
+                    case DBCommandEnum.Created:
+                        Assert.Equal(CSSPCultureEnumsRes.DBCommandEnumCreated, retStr);
+                        break;
+                    case DBCommandEnum.Deleted:
+                        Assert.Equal(CSSPCultureEnumsRes.DBCommandEnumDeleted, retStr);
+                        break;
+                }
+            }
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_BeaufortScaleEnum_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -1989,46 +2029,6 @@ namespace CSSPEnums.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
-        public async Task GetResValueForTypeAndID_ForEnum_DBCommandEnum_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            string retStr = enums.GetResValueForTypeAndID(typeof(DBCommandEnum), -100);
-            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
-
-            retStr = enums.GetResValueForTypeAndID(typeof(DBCommandEnum), 10000000);
-            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
-
-            retStr = enums.GetResValueForTypeAndID(typeof(DBCommandEnum), null);
-            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
-
-            retStr = enums.GetResValueForTypeAndID(typeof(string), null);
-            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
-
-            foreach (int i in Enum.GetValues(typeof(DBCommandEnum)))
-            {
-                retStr = enums.GetResValueForTypeAndID(typeof(DBCommandEnum), i);
-
-                switch ((DBCommandEnum)i)
-                {
-                    case DBCommandEnum.Original:
-                        Assert.Equal(CSSPCultureEnumsRes.DBCommandEnumOriginal, retStr);
-                        break;
-                    case DBCommandEnum.Modified:
-                        Assert.Equal(CSSPCultureEnumsRes.DBCommandEnumModified, retStr);
-                        break;
-                    case DBCommandEnum.Created:
-                        Assert.Equal(CSSPCultureEnumsRes.DBCommandEnumCreated, retStr);
-                        break;
-                    case DBCommandEnum.Deleted:
-                        Assert.Equal(CSSPCultureEnumsRes.DBCommandEnumDeleted, retStr);
-                        break;
-                }
-            }
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_LogCommandEnum_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -2323,46 +2323,6 @@ namespace CSSPEnums.Tests
                         break;
                     case MonthEnum.December:
                         Assert.Equal(CSSPCultureEnumsRes.MonthEnumDecember, retStr);
-                        break;
-                }
-            }
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task GetResValueForTypeAndID_ForEnum_SeasonEnum_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            string retStr = enums.GetResValueForTypeAndID(typeof(SeasonEnum), -100);
-            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
-
-            retStr = enums.GetResValueForTypeAndID(typeof(SeasonEnum), 10000000);
-            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
-
-            retStr = enums.GetResValueForTypeAndID(typeof(SeasonEnum), null);
-            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
-
-            retStr = enums.GetResValueForTypeAndID(typeof(string), null);
-            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
-
-            foreach (int i in Enum.GetValues(typeof(SeasonEnum)))
-            {
-                retStr = enums.GetResValueForTypeAndID(typeof(SeasonEnum), i);
-
-                switch ((SeasonEnum)i)
-                {
-                    case SeasonEnum.Winter:
-                        Assert.Equal(CSSPCultureEnumsRes.SeasonEnumWinter, retStr);
-                        break;
-                    case SeasonEnum.Spring:
-                        Assert.Equal(CSSPCultureEnumsRes.SeasonEnumSpring, retStr);
-                        break;
-                    case SeasonEnum.Summer:
-                        Assert.Equal(CSSPCultureEnumsRes.SeasonEnumSummer, retStr);
-                        break;
-                    case SeasonEnum.Fall:
-                        Assert.Equal(CSSPCultureEnumsRes.SeasonEnumFall, retStr);
                         break;
                 }
             }
@@ -4157,6 +4117,46 @@ namespace CSSPEnums.Tests
                         break;
                     case SearchTagEnum.fcsv:
                         Assert.Equal(CSSPCultureEnumsRes.SearchTagEnumfcsv, retStr);
+                        break;
+                }
+            }
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task GetResValueForTypeAndID_ForEnum_SeasonEnum_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            string retStr = enums.GetResValueForTypeAndID(typeof(SeasonEnum), -100);
+            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
+
+            retStr = enums.GetResValueForTypeAndID(typeof(SeasonEnum), 10000000);
+            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
+
+            retStr = enums.GetResValueForTypeAndID(typeof(SeasonEnum), null);
+            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
+
+            retStr = enums.GetResValueForTypeAndID(typeof(string), null);
+            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
+
+            foreach (int i in Enum.GetValues(typeof(SeasonEnum)))
+            {
+                retStr = enums.GetResValueForTypeAndID(typeof(SeasonEnum), i);
+
+                switch ((SeasonEnum)i)
+                {
+                    case SeasonEnum.Winter:
+                        Assert.Equal(CSSPCultureEnumsRes.SeasonEnumWinter, retStr);
+                        break;
+                    case SeasonEnum.Spring:
+                        Assert.Equal(CSSPCultureEnumsRes.SeasonEnumSpring, retStr);
+                        break;
+                    case SeasonEnum.Summer:
+                        Assert.Equal(CSSPCultureEnumsRes.SeasonEnumSummer, retStr);
+                        break;
+                    case SeasonEnum.Fall:
+                        Assert.Equal(CSSPCultureEnumsRes.SeasonEnumFall, retStr);
                         break;
                 }
             }
@@ -6162,6 +6162,40 @@ namespace CSSPEnums.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
+        public async Task Enums_DBCommandOK_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            string retStr = enums.EnumTypeOK(typeof(DBCommandEnum), null);
+            Assert.Equal("", retStr);
+
+            retStr = enums.EnumTypeOK(typeof(DBCommandEnum), -100);
+            Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "DBCommandEnum"), retStr);
+
+            retStr = enums.EnumTypeOK(typeof(DBCommandEnum), 10000000);
+            Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "DBCommandEnum"), retStr);
+
+            foreach (int i in Enum.GetValues(typeof(DBCommandEnum)))
+            {
+                retStr = enums.EnumTypeOK(typeof(DBCommandEnum), i);
+
+                switch ((DBCommandEnum)i)
+                {
+                     case DBCommandEnum.Original:
+                     case DBCommandEnum.Modified:
+                     case DBCommandEnum.Created:
+                     case DBCommandEnum.Deleted:
+                        Assert.Equal("", retStr);
+                        break;
+                    default:
+                        Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "DBCommandEnum"), retStr);
+                        break;
+                }
+            }
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
         public async Task Enums_BeaufortScaleOK_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -7128,40 +7162,6 @@ namespace CSSPEnums.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
-        public async Task Enums_DBCommandOK_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            string retStr = enums.EnumTypeOK(typeof(DBCommandEnum), null);
-            Assert.Equal("", retStr);
-
-            retStr = enums.EnumTypeOK(typeof(DBCommandEnum), -100);
-            Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "DBCommandEnum"), retStr);
-
-            retStr = enums.EnumTypeOK(typeof(DBCommandEnum), 10000000);
-            Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "DBCommandEnum"), retStr);
-
-            foreach (int i in Enum.GetValues(typeof(DBCommandEnum)))
-            {
-                retStr = enums.EnumTypeOK(typeof(DBCommandEnum), i);
-
-                switch ((DBCommandEnum)i)
-                {
-                     case DBCommandEnum.Original:
-                     case DBCommandEnum.Modified:
-                     case DBCommandEnum.Created:
-                     case DBCommandEnum.Deleted:
-                        Assert.Equal("", retStr);
-                        break;
-                    default:
-                        Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "DBCommandEnum"), retStr);
-                        break;
-                }
-            }
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
         public async Task Enums_LogCommandOK_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -7400,40 +7400,6 @@ namespace CSSPEnums.Tests
                         break;
                     default:
                         Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "MonthEnum"), retStr);
-                        break;
-                }
-            }
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task Enums_SeasonOK_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            string retStr = enums.EnumTypeOK(typeof(SeasonEnum), null);
-            Assert.Equal("", retStr);
-
-            retStr = enums.EnumTypeOK(typeof(SeasonEnum), -100);
-            Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "SeasonEnum"), retStr);
-
-            retStr = enums.EnumTypeOK(typeof(SeasonEnum), 10000000);
-            Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "SeasonEnum"), retStr);
-
-            foreach (int i in Enum.GetValues(typeof(SeasonEnum)))
-            {
-                retStr = enums.EnumTypeOK(typeof(SeasonEnum), i);
-
-                switch ((SeasonEnum)i)
-                {
-                     case SeasonEnum.Winter:
-                     case SeasonEnum.Spring:
-                     case SeasonEnum.Summer:
-                     case SeasonEnum.Fall:
-                        Assert.Equal("", retStr);
-                        break;
-                    default:
-                        Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "SeasonEnum"), retStr);
                         break;
                 }
             }
@@ -8652,6 +8618,40 @@ namespace CSSPEnums.Tests
                         break;
                     default:
                         Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "SearchTagEnum"), retStr);
+                        break;
+                }
+            }
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task Enums_SeasonOK_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            string retStr = enums.EnumTypeOK(typeof(SeasonEnum), null);
+            Assert.Equal("", retStr);
+
+            retStr = enums.EnumTypeOK(typeof(SeasonEnum), -100);
+            Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "SeasonEnum"), retStr);
+
+            retStr = enums.EnumTypeOK(typeof(SeasonEnum), 10000000);
+            Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "SeasonEnum"), retStr);
+
+            foreach (int i in Enum.GetValues(typeof(SeasonEnum)))
+            {
+                retStr = enums.EnumTypeOK(typeof(SeasonEnum), i);
+
+                switch ((SeasonEnum)i)
+                {
+                     case SeasonEnum.Winter:
+                     case SeasonEnum.Spring:
+                     case SeasonEnum.Summer:
+                     case SeasonEnum.Fall:
+                        Assert.Equal("", retStr);
+                        break;
+                    default:
+                        Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "SeasonEnum"), retStr);
                         break;
                 }
             }
@@ -11596,6 +11596,32 @@ namespace CSSPEnums.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
+        public async Task Enums_DBCommandEnumTextOrdered_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
+            foreach (int i in Enum.GetValues(typeof(DBCommandEnum)))
+            {
+                enumTextOrderedList.Add(new EnumIDAndText() { EnumID = i, EnumText = enums.GetResValueForTypeAndID(typeof(DBCommandEnum), i) });
+            }
+            enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
+
+            List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(DBCommandEnum));
+            Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+
+            EnumIDAndText enumTextOrdered = new EnumIDAndText();
+            Assert.NotNull(enumTextOrdered);
+
+            for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
+            {
+                Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+            }
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
         public async Task Enums_BeaufortScaleEnumTextOrdered_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -12272,32 +12298,6 @@ namespace CSSPEnums.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
-        public async Task Enums_DBCommandEnumTextOrdered_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
-            foreach (int i in Enum.GetValues(typeof(DBCommandEnum)))
-            {
-                enumTextOrderedList.Add(new EnumIDAndText() { EnumID = i, EnumText = enums.GetResValueForTypeAndID(typeof(DBCommandEnum), i) });
-            }
-            enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
-
-            List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(DBCommandEnum));
-            Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
-
-            EnumIDAndText enumTextOrdered = new EnumIDAndText();
-            Assert.NotNull(enumTextOrdered);
-
-            for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
-            {
-                Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
-            }
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
         public async Task Enums_LogCommandEnumTextOrdered_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -12466,32 +12466,6 @@ namespace CSSPEnums.Tests
             enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
             List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(MonthEnum));
-            Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
-
-            EnumIDAndText enumTextOrdered = new EnumIDAndText();
-            Assert.NotNull(enumTextOrdered);
-
-            for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
-            {
-                Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
-            }
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task Enums_SeasonEnumTextOrdered_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
-            foreach (int i in Enum.GetValues(typeof(SeasonEnum)))
-            {
-                enumTextOrderedList.Add(new EnumIDAndText() { EnumID = i, EnumText = enums.GetResValueForTypeAndID(typeof(SeasonEnum), i) });
-            }
-            enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
-
-            List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(SeasonEnum));
             Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
             EnumIDAndText enumTextOrdered = new EnumIDAndText();
@@ -13272,6 +13246,32 @@ namespace CSSPEnums.Tests
             enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
             List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(SearchTagEnum));
+            Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+
+            EnumIDAndText enumTextOrdered = new EnumIDAndText();
+            Assert.NotNull(enumTextOrdered);
+
+            for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
+            {
+                Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+            }
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task Enums_SeasonEnumTextOrdered_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
+            foreach (int i in Enum.GetValues(typeof(SeasonEnum)))
+            {
+                enumTextOrderedList.Add(new EnumIDAndText() { EnumID = i, EnumText = enums.GetResValueForTypeAndID(typeof(SeasonEnum), i) });
+            }
+            enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
+
+            List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(SeasonEnum));
             Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
             EnumIDAndText enumTextOrdered = new EnumIDAndText();

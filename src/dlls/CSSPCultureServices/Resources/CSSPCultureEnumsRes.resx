@@ -3348,4 +3348,25 @@
   <data name="WebChartAndTableTypeEnumMWQMRunData" xml:space="preserve">
     <value>MWQMRunData</value>
   </data>
+  <data name="FileModelTypeEnumArea" xml:space="preserve">
+    <value>Area</value>
+  </data>
+  <data name="FileModelTypeEnumCountry" xml:space="preserve">
+    <value>Country</value>
+  </data>
+  <data name="FileModelTypeEnumMunicipality" xml:space="preserve">
+    <value>Municipality</value>
+  </data>
+  <data name="FileModelTypeEnumProvince" xml:space="preserve">
+    <value>Province</value>
+  </data>
+  <data name="FileModelTypeEnumSector" xml:space="preserve">
+    <value>Sector</value>
+  </data>
+  <data name="FileModelTypeEnumSubsector" xml:space="preserve">
+    <value>Subsector</value>
+  </data>
+  <data name="FileModelTypeEnumRoot" xml:space="preserve">
+    <value>Root</value>
+  </data>
 </root>
